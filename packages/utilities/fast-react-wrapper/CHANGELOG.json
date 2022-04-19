@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Sun, 17 Apr 2022 07:11:18 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.2.1",
+      "version": "0.2.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Merge branch 'master' into wanFixString",
+            "author": "74849806+wannieman98@users.noreply.github.com",
+            "commit": "14bc5d5f2ae608328eb16ad7e619bab00415f60a",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 14 Apr 2022 07:12:36 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.2.1",
       "version": "0.2.1",

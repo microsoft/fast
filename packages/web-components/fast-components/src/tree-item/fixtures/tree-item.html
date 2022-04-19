@@ -62,3 +62,15 @@
         <use href="#icon"></use>
     </svg>
 </fast-tree-item>
+
+<h2>Text ellipsis</h2>
+<style>
+    .text-ellipsis::part(content-region) {
+        min-width: 0;
+    }
+</style>
+<fast-tree-item class="text-ellipsis" style="width: 50px;">
+    <span style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        Tree item
+    </span>
+</fast-tree-item>

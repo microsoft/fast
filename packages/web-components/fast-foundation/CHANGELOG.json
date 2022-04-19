@@ -2,6 +2,47 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 17 Apr 2022 07:11:18 GMT",
+      "tag": "@microsoft/fast-foundation_v2.42.1",
+      "version": "2.42.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Merge branch 'master' into wanFixString",
+            "author": "74849806+wannieman98@users.noreply.github.com",
+            "commit": "14bc5d5f2ae608328eb16ad7e619bab00415f60a",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "74849806+wannieman98@users.noreply.github.com",
+            "commit": "14bc5d5f2ae608328eb16ad7e619bab00415f60a",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix: scrolling back from end and forward retains next flipper in horizontal-scroll",
+            "author": "robarb@microsoft.com",
+            "commit": "1aded3649afee9645a68d3f642876e543c5019b8",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Ensured that tabs without an ID use a unique ID to prevent duplicate IDs when multiple tabs are on a page",
+            "author": "chhol@microsoft.com",
+            "commit": "79fe8b9bb4fe572d191fb07e4a73811f54d35d47",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Ensure the skeleton component's object element is not included in the accessibility tree",
+            "author": "chhol@microsoft.com",
+            "commit": "91cfbfe096d74ad2bf5a9421fa718585b342a32e",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 14 Apr 2022 07:12:36 GMT",
       "tag": "@microsoft/fast-foundation_v2.42.0",
       "version": "2.42.0",
