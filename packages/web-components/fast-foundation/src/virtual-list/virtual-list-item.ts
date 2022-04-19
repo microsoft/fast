@@ -80,20 +80,28 @@ export class VirtualListItem extends FoundationElement {
     public listItemContext: VirtualListItemContext;
 
     /**
-     *  Flag indicating whether the item should load contents
-     *
-     * @public
-     */
-    @observable
-    public loadContent: boolean = false;
-
-    /**
      *  idleCallbackQueue instance
      *
      * @public
      */
     @observable
     public idleCallbackQueue: IdleCallbackQueue;
+
+    /**
+     *
+     *
+     * @public
+     */
+    @observable
+    public listItemTemplate: ViewTemplate;
+
+    /**
+     *  Flag indicating whether the item should load contents
+     *
+     * @internal
+     */
+    @observable
+    public loadContent: boolean = false;
 
     private idleLoadRequested: boolean = false;
 
@@ -132,7 +140,7 @@ export class VirtualListItem extends FoundationElement {
      * @internal
      */
     resolveTemplate(): ViewTemplate {
-        return this.listItemContext.listItemContentsTemplate;
+        return this.listItemTemplate;
     }
 
     /**

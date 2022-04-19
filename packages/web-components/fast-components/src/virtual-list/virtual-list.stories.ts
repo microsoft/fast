@@ -198,15 +198,15 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         }
 
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualList;
+        stackh1.listItemTemplate = listItemContentsTemplate;
         stackh1.listItemContext = {
-            listItemContentsTemplate: listItemContentsTemplate,
             titleString: "title:",
         };
         stackh1.items = newDataSet(50, 1);
 
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualList;
+        stackh2.listItemTemplate = listItemContentsTemplate;
         stackh2.listItemContext = {
-            listItemContentsTemplate: listItemContentsTemplate,
             titleString: "title:",
         };
         stackh2.items = data;
@@ -214,8 +214,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackhImmediate = document.getElementById(
             "stackhimmediate"
         ) as FoundationVirtualList;
+        stackhImmediate.listItemTemplate = listItemContentsTemplate;
         stackhImmediate.listItemContext = {
-            listItemContentsTemplate: listItemContentsTemplate,
             titleString: "title:",
         };
         stackhImmediate.items = data;
@@ -239,8 +239,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
         stackv2.items = data;
+        stackv2.listItemTemplate = listItemContentsTemplate;
         stackv2.listItemContext = {
-            listItemContentsTemplate: listItemContentsTemplate,
             titleString: "title:",
         };
 
@@ -248,8 +248,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackv3.sizemap = dataSizeMap;
         stackv3.items = data;
         stackv3.viewportElement = document.documentElement;
+        stackv3.listItemTemplate = variableHeightContentsTemplate;
         stackv3.listItemContext = {
-            listItemContentsTemplate: variableHeightContentsTemplate,
             titleString: "title:",
         };
         stackv3.onclick = toggleSize;
