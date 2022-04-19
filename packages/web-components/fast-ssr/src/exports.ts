@@ -1,10 +1,13 @@
-import { RenderInfo } from "@lit-labs/ssr";
+import { fileURLToPath } from "url";
+import { readFileSync } from "fs";
+import { dirname, resolve } from "path";
 import {
     Compiler,
     DOM,
     ElementStyles,
     ViewBehaviorFactory,
 } from "@microsoft/fast-element";
+import { RenderInfo } from "@lit-labs/ssr";
 import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
 import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
 import {
@@ -18,6 +21,12 @@ import {
     TemplateRendererConfiguration,
 } from "./template-renderer/template-renderer.js";
 import { SSRView } from "./view.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const fastStyleDefinition = readFileSync(
+    resolve(__dirname, "./styles/fast-style.js")
+).toString();
 
 export type Configuration = TemplateRendererConfiguration;
 Compiler.setDefaultStrategy(
@@ -58,6 +67,7 @@ export default function (
     templateRenderer: TemplateRenderer;
     elementRenderer: typeof FASTElementRenderer;
     defaultRenderInfo: RenderInfo;
+    fastStyleDefinition: string;
 } {
     const templateRenderer = new TemplateRenderer(config);
     const elementRenderer = class extends FASTElementRenderer {
@@ -79,5 +89,6 @@ export default function (
             customElementHostStack: [],
             customElementInstanceStack: [],
         },
+        fastStyleDefinition,
     };
 }

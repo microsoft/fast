@@ -5,6 +5,7 @@
     "rootDir": ".",
     "outDir": "../dist/esm",
     "declarationDir": "../dist/dts",
+    "module": "esnext",
     "lib": [
       "dom",
       "esnext"
