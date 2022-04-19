@@ -1,4 +1,5 @@
 import { installWindowOnGlobal } from "@lit-labs/ssr/lib/dom-shim.js";
+import { CSSStyleDeclaration, CSSStyleSheet } from "happy-dom";
 
 class DOMTokenList {
     #tokens = new Set<string>();
@@ -35,18 +36,34 @@ class DOMTokenList {
         yield* this.#tokens.values();
     }
 }
-class Node {
+
+class EventTarget {
+    addEventListener() {}
+    removeEventListener() {}
+}
+class Node extends EventTarget {
     appendChild() {}
     removeChild() {}
+    getRootNode() {
+        return document;
+    }
+
+    get parentElement() {
+        return null;
+    }
 }
 
 class Element extends Node {}
 
-abstract class HTMLElement extends Element {
+class HTMLElement extends Element {
     #attributes = new Map<string, string | DOMTokenList>();
     #shadowRoot: null | ShadowRoot = null;
 
+    public tagName!: string;
+
     public readonly classList = new DOMTokenList();
+
+    public style = new CSSStyleDeclaration();
 
     public get attributes(): { name: string; value: string }[] {
         return Array.from(this.#attributes).map(([name, value]) => {
@@ -62,7 +79,7 @@ abstract class HTMLElement extends Element {
         return this.#shadowRoot;
     }
 
-    public abstract attributeChangedCallback?(
+    public attributeChangedCallback?(
         name: string,
         old: string | null,
         value: string | null
@@ -107,6 +124,7 @@ abstract class HTMLElement extends Element {
 
 class Document {
     head = new Node();
+    body = this.createElement("body");
     adoptedStyleSheets = [];
     createTreeWalker() {
         return {};
@@ -115,26 +133,14 @@ class Document {
         return {};
     }
     createElement(tagName: string) {
-        return { tagName };
+        const el = new HTMLElement();
+        el.tagName = tagName;
+        return el;
     }
     querySelector() {
         return undefined;
     }
     addEventListener() {}
-}
-
-class CSSStyleDeclaration {
-    setProperty() {}
-}
-
-class CSSStyleSheet {
-    get cssRules() {
-        return [{ style: new CSSStyleDeclaration() }];
-    }
-    replace() {}
-    insertRule() {
-        return 0;
-    }
 }
 
 class MediaQueryList {
@@ -148,4 +154,5 @@ installWindowOnGlobal({
     document: new Document(),
     Node,
     CSSStyleSheet,
+    CSSStyleDeclaration,
 });
