@@ -6,7 +6,6 @@ function getPackageDir(pkg) {
 }
 
 const outputPath = path.resolve(__dirname, "../static");
-
 const homepageDir = getPackageDir("@microsoft/fast-website");
 const utilitiesDir = getPackageDir("@microsoft/site-utilities");
 const fastComponentsDir = getPackageDir("@microsoft/fast-components");
@@ -30,5 +29,6 @@ const utilitiesAssets = path.resolve(utilitiesDir, "statics/assets");
         verbose: true,
         up: true,
     });
+
     await copy([`${utilitiesAssets}/badges/*.svg`], `${outputPath}/badges`);
 })();
