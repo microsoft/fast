@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-web-utilities
 
-This log was last generated on Sun, 03 Apr 2022 07:12:01 GMT and should not be manually modified.
+This log was last generated on Sun, 17 Apr 2022 07:11:18 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 5.3.0
+
+Sun, 17 Apr 2022 07:11:18 GMT
+
+### Minor changes
+
+- Instead of matchAll, used regex replace for pascalCase and added number to add to spinalCase (74849806+wannieman98@users.noreply.github.com)
 
 ## 5.2.0
 
