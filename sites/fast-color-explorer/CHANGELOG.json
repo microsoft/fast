@@ -2,6 +2,44 @@
   "name": "@microsoft/fast-color-explorer",
   "entries": [
     {
+      "date": "Sun, 17 Apr 2022 07:11:18 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.28.1",
+            "author": "chhol@microsoft.com",
+            "commit": "79fe8b9bb4fe572d191fb07e4a73811f54d35d47",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.3.0",
+            "author": "74849806+wannieman98@users.noreply.github.com",
+            "commit": "14bc5d5f2ae608328eb16ad7e619bab00415f60a",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 14 Apr 2022 07:12:36 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.28.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "adc9a35efa8045a2b7d4a7b7fc71a386d511cbab",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 13 Apr 2022 07:09:53 GMT",
       "tag": "@microsoft/fast-color-explorer_v1.6.19",
       "version": "1.6.19",

@@ -1,14 +1,16 @@
-import { css } from "@microsoft/fast-element";
 import type { ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
+import type {
+    FoundationElementTemplate,
+    SelectOptions,
+} from "@microsoft/fast-foundation";
 import {
     disabledCursor,
     display,
     focusVisible,
     forcedColorsStylesheetBehavior,
-} from "@microsoft/fast-foundation";
-import type {
-    FoundationElementTemplate,
-    SelectOptions,
+    ListboxOption,
+    Select,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -29,25 +31,32 @@ import {
     neutralFillInputRest,
     neutralFillStealthRest,
     neutralForegroundRest,
-    neutralLayerFloating,
-    neutralStrokeRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens.js";
+import { listboxStyles } from "../listbox/listbox.styles.js";
 import { elevation } from "../styles/elevation.js";
 import { heightNumber } from "../styles/size.js";
 
 /**
- * Styles for Select
+ * Styles for Select.
+ *
  * @public
  */
 export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOptions> = (
     context,
     definition
-) =>
-    css`
-    ${display("inline-flex")} :host {
+) => {
+    const selectContext = context.name === context.tagFor(Select);
+
+    // The expression interpolations present in this block cause Prettier to generate
+    // various formatting bugs.
+    // prettier-ignore
+    return css`
+    ${display("inline-flex")}
+
+    :host {
         --elevation: 14;
         background: ${neutralFillInputRest};
         border-radius: calc(${controlCornerRadius} * 1px);
@@ -63,22 +72,41 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
         vertical-align: top;
     }
 
+    ${selectContext ? css`
+        :host(:not([aria-haspopup])) {
+            --elevation: 0;
+            border: 0;
+            height: auto;
+            min-width: 0;
+        }
+    ` : ""}
+
+    ${listboxStyles(context, definition)}
+
     .listbox {
         ${elevation}
-        background: ${neutralLayerFloating};
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
-        border-radius: calc(${controlCornerRadius} * 1px);
-        box-sizing: border-box;
-        display: inline-flex;
-        flex-direction: column;
+        border: none;
+        display: flex;
         left: 0;
-        max-height: calc(var(--max-height) - (${heightNumber} * 1px));
-        padding: calc(${designUnit} * 1px) 0;
-        overflow-y: auto;
         position: absolute;
         width: 100%;
         z-index: 1;
     }
+
+    .control + .listbox {
+        --stroke-size: calc(${designUnit} * ${strokeWidth} * 2);
+        max-height: calc(
+            (var(--listbox-max-height) * ${heightNumber} + var(--stroke-size)) * 1px
+        );
+    }
+
+    ${selectContext ? css`
+        :host(:not([aria-haspopup])) .listbox {
+            left: auto;
+            position: static;
+            z-index: auto;
+        }
+    ` : ""}
 
     .listbox[hidden] {
         display: none;
@@ -104,10 +132,17 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
 
     :host(:${focusVisible}) {
         border-color: ${focusStrokeOuter};
+    }
+
+    :host(:not([size]):not([multiple]):not([open]):${focusVisible}),
+    :host([multiple]:${focusVisible}),
+    :host([size]:${focusVisible}) {
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
     }
 
-    :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
+    :host(:not([multiple]):not([size]):${focusVisible}) ::slotted(${context.tagFor(
+        ListboxOption
+    )}[aria-selected="true"]:not([disabled])) {
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
         border-color: ${focusStrokeOuter};
         background: ${accentFillFocus};
@@ -139,19 +174,13 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
     :host([open][position="above"]) .listbox {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-    }
-
-    :host([open][position="below"]) .listbox {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
-
-    :host([open][position="above"]) .listbox {
         border-bottom: 0;
         bottom: calc(${heightNumber} * 1px);
     }
 
     :host([open][position="below"]) .listbox {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
         border-top: 0;
         top: calc(${heightNumber} * 1px);
     }
@@ -159,10 +188,11 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
     .selected-value {
         flex: 1 1 auto;
         font-family: inherit;
-        text-align: start;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        min-width: calc(var(--listbox-scroll-width, 0) - (${designUnit} * 4) * 1px);
         overflow: hidden;
+        text-align: start;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .indicator {
@@ -202,10 +232,9 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
     ::slotted(option) {
         flex: 0 0 auto;
     }
-
 `.withBehaviors(
-        forcedColorsStylesheetBehavior(
-            css`
+    forcedColorsStylesheetBehavior(
+        css`
             :host(:not([disabled]):hover),
             :host(:not([disabled]):active) {
                 border-color: ${SystemColors.Highlight};
@@ -266,3 +295,4 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
         `
         )
     );
+};

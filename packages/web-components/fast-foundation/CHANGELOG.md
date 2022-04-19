@@ -1,8 +1,27 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 07 Apr 2022 07:12:06 GMT and should not be manually modified.
+This log was last generated on Sun, 17 Apr 2022 07:11:18 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.42.1
+
+Sun, 17 Apr 2022 07:11:18 GMT
+
+### Patches
+
+- fix: scrolling back from end and forward retains next flipper in horizontal-scroll (robarb@microsoft.com)
+- Ensured that tabs without an ID use a unique ID to prevent duplicate IDs when multiple tabs are on a page (chhol@microsoft.com)
+- Ensure the skeleton component's object element is not included in the accessibility tree (chhol@microsoft.com)
+
+## 2.42.0
+
+Thu, 14 Apr 2022 07:12:36 GMT
+
+### Minor changes
+
+- Implements `<dialog>` element events on FastDialog (web@bennypowers.com)
+- add multiselect mode to select (john.kreitlow@microsoft.com)
 
 ## 2.41.1
 
