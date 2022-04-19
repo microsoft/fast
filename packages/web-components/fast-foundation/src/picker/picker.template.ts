@@ -1,12 +1,12 @@
 import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
-import { AnchoredRegion } from "../anchored-region";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
-import type { Picker } from "./picker";
-import { PickerMenu } from "./picker-menu";
-import { PickerMenuOption } from "./picker-menu-option";
-import { PickerList } from "./picker-list";
-import { PickerListItem } from "./picker-list-item";
+import { AnchoredRegion } from "../anchored-region/anchored-region.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { ElementDefinitionContext } from "../design-system/registration-context.js";
+import type { Picker } from "./picker.js";
+import { PickerMenu } from "./picker-menu.js";
+import { PickerMenuOption } from "./picker-menu-option.js";
+import { PickerList } from "./picker-list.js";
+import { PickerListItem } from "./picker-list-item.js";
 
 function createDefaultListItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const pickerListItemTag: string = context.tagFor(PickerListItem);

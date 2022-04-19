@@ -2,6 +2,314 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 17 Apr 2022 07:11:18 GMT",
+      "tag": "@microsoft/fast-components_v2.28.1",
+      "version": "2.28.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Ensured that tabs without an ID use a unique ID to prevent duplicate IDs when multiple tabs are on a page",
+            "author": "chhol@microsoft.com",
+            "commit": "79fe8b9bb4fe572d191fb07e4a73811f54d35d47",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Add story to apply text ellipsis on tree item",
+            "author": "fcollonval@gmail.com",
+            "commit": "1acda294e74177219b0198c622157009ff31f2a2",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "74849806+wannieman98@users.noreply.github.com",
+            "commit": "14bc5d5f2ae608328eb16ad7e619bab00415f60a",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.42.1",
+            "author": "robarb@microsoft.com",
+            "commit": "1aded3649afee9645a68d3f642876e543c5019b8",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 14 Apr 2022 07:12:36 GMT",
+      "tag": "@microsoft/fast-components_v2.28.0",
+      "version": "2.28.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "feat(dialog): implement <dialog> interface",
+            "author": "web@bennypowers.com",
+            "commit": "9f670f6b0b5df7b2c07199883226e07779d77dc5",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.42.0",
+            "author": "web@bennypowers.com",
+            "commit": "9f670f6b0b5df7b2c07199883226e07779d77dc5",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "add multiselect mode to select",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "adc9a35efa8045a2b7d4a7b7fc71a386d511cbab",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 13 Apr 2022 07:09:53 GMT",
+      "tag": "@microsoft/fast-components_v2.27.1",
+      "version": "2.27.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "update test harness and server modules",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "5a248860b2e31795da486887c437ef6092a2f29c",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 12 Apr 2022 07:13:35 GMT",
+      "tag": "@microsoft/fast-components_v2.27.1",
+      "version": "2.27.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Merge branch 'master' into patch-1",
+            "author": "pradkum@microsoft.com",
+            "commit": "e481cf7a85de47bc6e42b44ec64c5f81349435f9",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "yinon@hotmail.com",
+            "commit": "3e4d72447520f40d234b1df2cc70446dcef8bb47",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.41.1",
+            "author": "yinon@hotmail.com",
+            "commit": "3e4d72447520f40d234b1df2cc70446dcef8bb47",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 10 Apr 2022 07:11:09 GMT",
+      "tag": "@microsoft/fast-components_v2.27.0",
+      "version": "2.27.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Converted the fast-components package to type:module",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ce036beba8bad7ae1875f0d7f3bbb7c304757b9c",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "set disclosure appearance attribute in connected callback to ensure the element can be constructed without error",
+            "author": "chhol@microsoft.com",
+            "commit": "b5a3dbbeba7182f2ac5f93d36d90a292ad558d5f",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 07 Apr 2022 07:12:06 GMT",
+      "tag": "@microsoft/fast-components_v2.26.2",
+      "version": "2.26.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Added the picker to the component explorer site",
+            "author": "scomea@microsoft.com",
+            "commit": "c9bd1b900afa95b47e0f79a6409f256dd2827fdb",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 06 Apr 2022 07:12:42 GMT",
+      "tag": "@microsoft/fast-components_v2.26.1",
+      "version": "2.26.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ead7f7340654236f2503359e2fc6f0b41639b507",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 03 Apr 2022 07:12:01 GMT",
+      "tag": "@microsoft/fast-components_v2.26.0",
+      "version": "2.26.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "assign appearance in connectedCallback instead of constructor to support document.createElement",
+            "author": "chhol@microsoft.com",
+            "commit": "e262781f170c817f7bbab00bb80daafefeac6a45",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "fix a bug on breadcrumb stories where multiple items were added when the button was clicked",
+            "author": "chhol@microsoft.com",
+            "commit": "77cd8a472f4e898245d3da91dbe40e2771a439e5",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.8.0",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "35913ce3a2dcba83bebb63cce2b8edf4e9da7df9",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.40.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f6107c448ab6446667f4d9e86d9f9c11fff075aa",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.2.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f6107c448ab6446667f4d9e86d9f9c11fff075aa",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-colors to v5.2.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "317400b3f9bb9d0c74030af60472a931aee464ea",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 31 Mar 2022 07:13:31 GMT",
+      "tag": "@microsoft/fast-components_v2.25.4",
+      "version": "2.25.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix hidden menu items should not be included in the tabindex",
+            "author": "chhol@microsoft.com",
+            "commit": "3739c60925bc91dada3aaa71a72af5392c731fc1",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 27 Mar 2022 07:11:50 GMT",
+      "tag": "@microsoft/fast-components_v2.25.3",
+      "version": "2.25.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.38.0",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "8c41d877143f04377fc599b533317c4d950ebb0b",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 24 Mar 2022 07:12:08 GMT",
+      "tag": "@microsoft/fast-components_v2.25.2",
+      "version": "2.25.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.37.2",
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "commit": "03a237b0007f6e446242043ae17b142e5cbb5359",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 20 Mar 2022 07:15:44 GMT",
+      "tag": "@microsoft/fast-components_v2.25.1",
+      "version": "2.25.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix for default selection behavior for listbox and select",
+            "author": "26874831+atmgrifter00@users.noreply.github.com",
+            "commit": "1898cd9a73f2cf9496a2a78d18e13bd87aa012df",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 17 Mar 2022 07:11:51 GMT",
+      "tag": "@microsoft/fast-components_v2.25.0",
+      "version": "2.25.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "`vscode-html-languageservice` as dev dependency",
+            "author": "fcollonval@gmail.com",
+            "commit": "7927947eacacda558b37df0158988adbaabeb49f",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 16 Mar 2022 07:12:41 GMT",
+      "tag": "@microsoft/fast-components_v2.24.0",
+      "version": "2.24.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "enable no tabbing",
+            "author": "scomea@microsoft.com",
+            "commit": "09b97ab3e9d7c1d71a048667d0aa0368569ab64a",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.37.0",
+            "author": "scomea@microsoft.com",
+            "commit": "09b97ab3e9d7c1d71a048667d0aa0368569ab64a",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 15 Mar 2022 07:12:38 GMT",
       "tag": "@microsoft/fast-components_v2.23.1",
       "version": "2.23.1",

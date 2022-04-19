@@ -3,7 +3,7 @@ import {
     ProgressOptions,
     progressTemplate as template,
 } from "@microsoft/fast-foundation";
-import { progressStyles as styles } from "./progress.styles";
+import { progressStyles as styles } from "./progress.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#BaseProgress} registration for configuring the component with a DesignSystem.

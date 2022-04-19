@@ -24,7 +24,7 @@ import { Calendar } from '@microsoft/fast-foundation';
 import { Card as Card_2 } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
 import { CheckboxOptions } from '@microsoft/fast-foundation';
-import { Combobox } from '@microsoft/fast-foundation';
+import { Combobox as Combobox_2 } from '@microsoft/fast-foundation';
 import { ComboboxOptions } from '@microsoft/fast-foundation';
 import { Container } from '@microsoft/fast-foundation';
 import { DataGrid } from '@microsoft/fast-foundation';
@@ -65,7 +65,7 @@ import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
 import { RadioOptions } from '@microsoft/fast-foundation';
 import { Search as Search_2 } from '@microsoft/fast-foundation';
-import { Select } from '@microsoft/fast-foundation';
+import { Select as Select_2 } from '@microsoft/fast-foundation';
 import { SelectOptions } from '@microsoft/fast-foundation';
 import { Skeleton } from '@microsoft/fast-foundation';
 import { Slider } from '@microsoft/fast-foundation';
@@ -320,10 +320,12 @@ export const allComponents: {
     fastHorizontalScroll: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").HorizontalScrollOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").HorizontalScrollOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
     fastListbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
         baseName: string;
+        baseClass: typeof import("@microsoft/fast-foundation").ListboxElement;
         template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").ListboxElement, any>;
         styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ElementStyles;
     }> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
         baseName: string;
+        baseClass: typeof import("@microsoft/fast-foundation").ListboxElement;
         template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").ListboxElement, any>;
         styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ElementStyles;
     }, typeof Listbox>;
@@ -540,9 +542,11 @@ export const allComponents: {
 
 // @public
 export class Anchor extends Anchor_2 {
-    appearance: AnchorAppearance;
+    appearance?: AnchorAppearance;
     // (undocumented)
     appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
+    // (undocumented)
+    connectedCallback(): void;
     // @internal
     defaultSlottedContentChanged(oldValue: any, newValue: any): void;
 }
@@ -641,7 +645,13 @@ export interface ColorRecipe {
     evaluate(element: HTMLElement, reference?: Swatch): Swatch;
 }
 
-export { Combobox }
+// @public
+export class Combobox extends Combobox_2 {
+    // @internal (undocumented)
+    protected maxHeightChanged(prev: number | undefined, next: number): void;
+    // @internal
+    protected updateComputedStylesheet(): void;
+}
 
 // @public
 export const comboboxStyles: FoundationElementTemplate<ElementStyles, ComboboxOptions>;
@@ -769,9 +779,11 @@ export const disabledOpacity: import("@microsoft/fast-foundation").CSSDesignToke
 // @internal (undocumented)
 export class Disclosure extends Disclosure_2 {
     // @public
-    appearance: DisclosureAppearance;
+    appearance?: DisclosureAppearance;
     // (undocumented)
     appearanceChanged(oldValue: DisclosureAppearance, newValue: DisclosureAppearance): void;
+    // (undocumented)
+    connectedCallback(): void;
     // (undocumented)
     get disclosureHeight(): number;
     // @override
@@ -1002,10 +1014,12 @@ export const fastHorizontalScroll: (overrideDefinition?: import("@microsoft/fast
 // @public
 export const fastListbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
+    baseClass: typeof ListboxElement;
     template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<ListboxElement, any>;
     styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => ElementStyles;
 }> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
     baseName: string;
+    baseClass: typeof ListboxElement;
     template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<ListboxElement, any>;
     styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => ElementStyles;
 }, typeof Listbox>;
@@ -1337,6 +1351,9 @@ export const foregroundOnAccentRest: import("@microsoft/fast-foundation").CSSDes
 // @public (undocumented)
 export const foregroundOnAccentRestLarge: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
+// @public
+export const heightNumberAsToken: DesignToken<number>;
+
 // Warning: (ae-internal-missing-underscore) The name "HorizontalScroll" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
@@ -1374,8 +1391,10 @@ export function isDark(color: Swatch): boolean;
 // @public
 export class Listbox extends ListboxElement {
     // @internal
-    protected sizeChanged(prev: number | unknown, next: number): void;
-    }
+    protected sizeChanged(prev: number | undefined, next: number): void;
+    // @internal
+    protected updateComputedStylesheet(): void;
+}
 
 export { ListboxOption }
 
@@ -1682,7 +1701,7 @@ export interface Recipe<T> {
 export class Search extends Search_2 {
     // @public
     appearance: SearchAppearance;
-    }
+}
 
 // @public
 export type SearchAppearance = "filled" | "outline";
@@ -1690,7 +1709,21 @@ export type SearchAppearance = "filled" | "outline";
 // @public
 export const searchStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").AnchorOptions>) => import("@microsoft/fast-element").ElementStyles;
 
-export { Select }
+// @public
+export class Select extends Select_2 {
+    // @internal (undocumented)
+    protected listboxScrollWidthChanged(): void;
+    // @internal
+    protected maxHeightChanged(prev: number | undefined, next: number): void;
+    // @internal @override
+    multipleChanged(prev: boolean | undefined, next: boolean): void;
+    // (undocumented)
+    setPositioning(): void;
+    // @internal @override
+    protected sizeChanged(prev: number | undefined, next: number): void;
+    // @internal
+    protected updateComputedStylesheet(): void;
+}
 
 // @public
 export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOptions>;
@@ -1895,11 +1928,11 @@ export const verticalSliderLabelStyles: ElementStyles;
 // dist/dts/custom-elements.d.ts:151:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
 // dist/dts/custom-elements.d.ts:191:5 - (ae-incompatible-release-tags) The symbol "fastDesignSystemProvider" is marked as @public, but its signature references "DesignSystemProvider" which is marked as @internal
 // dist/dts/custom-elements.d.ts:201:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
-// dist/dts/custom-elements.d.ts:311:5 - (ae-incompatible-release-tags) The symbol "fastSearch" is marked as @public, but its signature references "Search" which is marked as @internal
-// dist/dts/custom-elements.d.ts:339:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
-// dist/dts/custom-elements.d.ts:378:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
-// dist/dts/custom-elements.d.ts:395:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
-// dist/dts/custom-elements.d.ts:413:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
+// dist/dts/custom-elements.d.ts:313:5 - (ae-incompatible-release-tags) The symbol "fastSearch" is marked as @public, but its signature references "Search" which is marked as @internal
+// dist/dts/custom-elements.d.ts:341:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
+// dist/dts/custom-elements.d.ts:380:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
+// dist/dts/custom-elements.d.ts:397:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
+// dist/dts/custom-elements.d.ts:415:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
 
 // (No @packageDocumentation comment for this package)
 

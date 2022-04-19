@@ -51,9 +51,9 @@
   },
   "dependencies": {
     "@fluentui/web-components": "^2.2.1",
-    "@microsoft/fast-colors": "^5.1.5",
-    "@microsoft/fast-components": "^2.23.1",
-    "@microsoft/fast-element": "^1.8.0",
-    "@microsoft/fast-react-wrapper": "^0.1.39"
+    "@microsoft/fast-colors": "^5.2.0",
+    "@microsoft/fast-components": "^2.28.1",
+    "@microsoft/fast-element": "^1.9.0",
+    "@microsoft/fast-react-wrapper": "^0.2.1"
   }
 }

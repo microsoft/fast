@@ -1,4 +1,4 @@
-import { composedParent } from "./composed-parent";
+import { composedParent } from "./composed-parent.js";
 
 /**
  * Determines if the reference element contains the test element in a "composed" DOM tree that

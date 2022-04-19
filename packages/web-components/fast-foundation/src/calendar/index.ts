@@ -1,3 +1,3 @@
-export * from "./calendar";
-export * from "./calendar.template";
-export * from "./date-formatter";
+export * from "./calendar.js";
+export * from "./calendar.template.js";
+export * from "./date-formatter.js";

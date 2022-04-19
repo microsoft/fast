@@ -33,3 +33,54 @@ import { TreeItemStyles as styles } from "./tree-view.styles";
 })
 export class FASTTreeItem extends TreeItem {}
 ```
+
+## API
+
+
+
+### class: `TreeItem`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                 | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `expanded`      | public  | `boolean`                             | `false` | When true, the control will be appear expanded by user interaction.                                                                                                                         |                   |
+| `selected`      | public  | `boolean`                             |         | When true, the control will appear selected by user interaction.                                                                                                                            |                   |
+| `disabled`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [disabled HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) for more information. |                   |
+| `isNestedItem`  | public  |                                       |         | Whether the tree is nested                                                                                                                                                                  |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                     | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                  | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.         | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name | Field    | Inherited From |
+| ---- | -------- | -------------- |
+|      | expanded |                |
+|      | selected |                |
+|      | disabled |                |
+
+<hr/>
+
+### Functions
+
+| Name                | Description                      | Parameters    | Return              |
+| ------------------- | -------------------------------- | ------------- | ------------------- |
+| `isTreeItemElement` | check if the item is a tree item | `el: Element` | `el is HTMLElement` |
+
+<hr/>
+
+

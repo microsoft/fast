@@ -436,7 +436,7 @@ export interface ColumnDefinition {
 //
 // @public
 export class Combobox extends FormAssociatedCombobox {
-    autocomplete: ComboboxAutocomplete | undefined;
+    autocomplete: ComboboxAutocomplete | "inline" | "list" | "both" | "none" | undefined;
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
@@ -466,7 +466,7 @@ export class Combobox extends FormAssociatedCombobox {
     // @internal
     maxHeight: number;
     open: boolean;
-    // (undocumented)
+    // @internal
     protected openChanged(): void;
     get options(): ListboxOption[];
     set options(value: ListboxOption[]);
@@ -478,16 +478,16 @@ export class Combobox extends FormAssociatedCombobox {
     // (undocumented)
     protected positionChanged(): void;
     // @internal
-    selectedIndexChanged(prev: number, next: number): void;
+    selectedIndexChanged(prev: number | undefined, next: number): void;
     // @internal
-    selectedOptionsChanged(prev: unknown, next: HTMLElement[]): void;
+    selectedOptionsChanged(prev: ListboxOption[] | undefined, next: ListboxOption[]): void;
     // @internal
     selectPreviousOption(): void;
     // @internal
     setDefaultSelectedOption(): void;
     setPositioning(): void;
     // @internal
-    slottedOptionsChanged(prev: Element[], next: HTMLElement[]): void;
+    slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void;
     get value(): string;
     set value(next: string);
     }
@@ -632,7 +632,7 @@ export class DataGrid extends FoundationElement {
     focusColumnIndex: number;
     focusRowIndex: number;
     static generateColumns: (row: object) => ColumnDefinition[];
-    generateHeader: GenerateHeaderOptions;
+    generateHeader: GenerateHeaderOptions | "none" | "default" | "sticky";
     gridTemplateColumns: string;
     // @internal (undocumented)
     handleFocus(e: FocusEvent): void;
@@ -643,6 +643,7 @@ export class DataGrid extends FoundationElement {
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
     headerCellItemTemplate?: ViewTemplate;
+    noTabbing: boolean;
     // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
@@ -652,7 +653,7 @@ export class DataGrid extends FoundationElement {
 
 // @public
 export class DataGridCell extends FoundationElement {
-    cellType: DataGridCellTypes;
+    cellType: DataGridCellTypes | "default" | "columnheader" | "rowheader";
     columnDefinition: ColumnDefinition | null;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -711,7 +712,7 @@ export class DataGridRow extends FoundationElement {
     isActiveRow: boolean;
     rowData: object | null;
     rowIndex: number;
-    rowType: DataGridRowTypes;
+    rowType: DataGridRowTypes | "default" | "header" | "sticky-header";
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
     }
@@ -1037,7 +1038,7 @@ export function display(displayValue: CSSDisplayPropertyValue): string;
 // @public
 export class Divider extends FoundationElement {
     orientation: Orientation;
-    role: DividerRole;
+    role: DividerRole | "separator" | "presentation";
 }
 
 // @public
@@ -1115,7 +1116,7 @@ export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
 
 // @public
 export class Flipper extends FoundationElement {
-    direction: FlipperDirection;
+    direction: FlipperDirection | "next" | "previous";
     disabled: boolean;
     hiddenFromAT: boolean;
     keyupHandler(e: Event & KeyboardEvent): void;
@@ -1405,9 +1406,6 @@ export abstract class Listbox extends FoundationElement {
     get length(): number;
     // @internal
     mousedownHandler(e: MouseEvent): boolean | void;
-    multiple: boolean;
-    // @internal
-    multipleChanged(prev: boolean | undefined, next: boolean): void;
     get options(): ListboxOption[];
     set options(value: ListboxOption[]);
     // @internal
@@ -1492,7 +1490,8 @@ export class ListboxElement extends Listbox {
     keydownHandler(e: KeyboardEvent): boolean | void;
     // @internal @override
     mousedownHandler(e: MouseEvent): boolean | void;
-    // @internal @override
+    multiple: boolean;
+    // @internal
     multipleChanged(prev: boolean | undefined, next: boolean): void;
     // @internal
     protected rangeStartIndex: number;
@@ -1628,7 +1627,7 @@ export class MenuItem extends FoundationElement {
     handleMouseOver: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     hasSubmenu: boolean;
-    role: MenuItemRole;
+    role: MenuItemRole | "menuitem" | "menuitemcheckbox" | "menuitemradio";
     // @internal (undocumented)
     startColumnCount: MenuItemColumnCount;
     // @internal (undocumented)
@@ -1974,7 +1973,7 @@ export class RadioGroup extends FoundationElement {
     name: string;
     // (undocumented)
     protected nameChanged(): void;
-    orientation: Orientation;
+    orientation: Orientation | "horizontal" | "vertical";
     readOnly: boolean;
     // @internal (undocumented)
     slottedRadioButtons: HTMLElement[];
@@ -2143,8 +2142,12 @@ export const searchTemplate: FoundationElementTemplate<ViewTemplate<Search>, Sea
 export class Select extends FormAssociatedSelect {
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
+    // @internal
+    get collapsible(): boolean;
     // (undocumented)
     connectedCallback(): void;
+    // @internal
+    control: HTMLElement;
     // @internal
     disabledChanged(prev: boolean, next: boolean): void;
     displayValue: string;
@@ -2160,21 +2163,27 @@ export class Select extends FormAssociatedSelect {
     listboxId: string;
     // @internal
     maxHeight: number;
-    // @internal
+    // @internal @override
+    mousedownHandler(e: MouseEvent): boolean | void;
+    multipleChanged(prev: boolean | undefined, next: boolean): void;
     open: boolean;
-    // (undocumented)
-    protected openChanged(): void;
-    position: SelectPosition;
-    positionAttribute: SelectPosition;
+    // @internal
+    protected openChanged(prev: boolean | undefined, next: boolean): void;
+    position: SelectPosition | "above" | "below";
+    positionAttribute: SelectPosition | "above" | "below";
     // (undocumented)
     protected positionChanged(): void;
     // @internal
-    selectedIndexChanged(prev: number, next: number): void;
-    // (undocumented)
+    selectedIndexChanged(prev: number | undefined, next: number): void;
+    // @internal @override
+    protected selectedOptionsChanged(prev: ListboxOption[] | undefined, next: ListboxOption[]): void;
+    // @internal @override
     protected setDefaultSelectedOption(): void;
     setPositioning(): void;
+    // @internal @override
+    protected sizeChanged(prev: number | undefined, next: number): void;
     // @internal
-    slottedOptionsChanged(prev: Element[], next: Element[]): void;
+    slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void;
     get value(): string;
     set value(next: string);
     }
@@ -2493,7 +2502,7 @@ export class TextArea extends FormAssociatedTextArea {
     name: string;
     placeholder: string;
     readOnly: boolean;
-    resize: TextAreaResize;
+    resize: TextAreaResize | "none" | "both" | "horizontal" | "vertical";
     rows: number;
     spellcheck: boolean;
     }
@@ -2538,7 +2547,7 @@ export class TextField extends FormAssociatedTextField {
     readOnly: boolean;
     size: number;
     spellcheck: boolean;
-    type: TextFieldType;
+    type: TextFieldType | "email" | "password" | "tel" | "text" | "url";
     }
 
 // @internal
@@ -2576,6 +2585,8 @@ export class Toolbar extends FoundationElement {
     connectedCallback(): void;
     // @internal
     direction: Direction;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
     // @internal
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal
@@ -2589,7 +2600,7 @@ export class Toolbar extends FoundationElement {
     protected slottedItemsChanged(): void;
     // @internal
     slottedLabel: HTMLElement[];
-}
+    }
 
 // @internal (undocumented)
 export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
@@ -2624,7 +2635,7 @@ export class Tooltip extends FoundationElement {
     // @internal (undocumented)
     horizontalScaling: AxisScalingMode;
     horizontalViewportLock: boolean;
-    position: TooltipPosition;
+    position: TooltipPosition | "top" | "right" | "bottom" | "left" | "start" | "end" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-start" | "top-end" | "bottom-start" | "bottom-end";
     // @internal
     region: AnchoredRegion;
     // @internal (undocumented)

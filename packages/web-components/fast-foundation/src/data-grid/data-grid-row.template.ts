@@ -1,9 +1,9 @@
 import { children, elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
-import type { DataGridRow } from "./data-grid-row";
-import { DataGridCell } from "./data-grid-cell";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { ElementDefinitionContext } from "../design-system/registration-context.js";
+import type { DataGridRow } from "./data-grid-row.js";
+import { DataGridCell } from "./data-grid-cell.js";
 
 function createCellItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const cellTag = context.tagFor(DataGridCell);

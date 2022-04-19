@@ -1,10 +1,12 @@
-import { ArrowKeys } from "@microsoft/fast-web-utilities";
 import type {
     ListboxOption as FASTOption,
-    Select as FASTSelectType,
+    Select as FASTSelectType
 } from "@microsoft/fast-foundation";
-import { expect } from "chai";
+import { ArrowKeys } from "@microsoft/fast-web-utilities";
+import chai from "chai";
 import type { ElementHandle } from "playwright";
+
+const { expect } = chai;
 
 type FASTSelect = HTMLElement & FASTSelectType;
 

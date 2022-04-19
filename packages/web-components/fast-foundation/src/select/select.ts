@@ -1,14 +1,23 @@
-import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import { uniqueId } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { DelegatesARIAListbox, Listbox } from "../listbox";
-import type { ListboxOption } from "../listbox-option/listbox-option";
-import { StartEnd } from "../patterns/start-end";
-import type { StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
-import { FormAssociatedSelect } from "./select.form-associated";
-import { SelectPosition } from "./select.options";
+import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
+import {
+    ArrowKeys,
+    keyEnd,
+    keyEnter,
+    keyEscape,
+    keyHome,
+    keySpace,
+    keyTab,
+    uniqueId,
+} from "@microsoft/fast-web-utilities";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import type { ListboxOption } from "../listbox-option/listbox-option.js";
+import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { FormAssociatedSelect } from "./select.form-associated.js";
+import { SelectPosition } from "./select.options.js";
 
 /**
  * Select configuration options
@@ -29,11 +38,26 @@ export class Select extends FormAssociatedSelect {
     /**
      * The open attribute.
      *
-     * @internal
+     * @public
+     * @remarks
+     * HTML Attribute: open
      */
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;
-    protected openChanged() {
+
+    /**
+     * Sets focus and synchronizes ARIA attributes when the open property changes.
+     *
+     * @param prev - the previous open value
+     * @param next - the current open value
+     *
+     * @internal
+     */
+    protected openChanged(prev: boolean | undefined, next: boolean): void {
+        if (!this.collapsible) {
+            return;
+        }
+
         if (this.open) {
             this.ariaControls = this.listboxId;
             this.ariaExpanded = "true";
@@ -52,6 +76,11 @@ export class Select extends FormAssociatedSelect {
         this.ariaExpanded = "false";
     }
 
+    /**
+     * The selectedIndex when the open property is true.
+     *
+     * @internal
+     */
     private indexWhenOpened: number;
 
     /**
@@ -60,6 +89,24 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     private _value: string;
+
+    /**
+     * The component is collapsible when in single-selection mode with no size attribute.
+     *
+     * @internal
+     */
+    @volatile
+    public get collapsible(): boolean {
+        return !(this.multiple || typeof this.size === "number");
+    }
+
+    /**
+     * The ref to the internal `.control` element.
+     *
+     * @internal
+     */
+    @observable
+    public control: HTMLElement;
 
     /**
      * The value property.
@@ -105,6 +152,13 @@ export class Select extends FormAssociatedSelect {
         }
     }
 
+    /**
+     * Sets the value and display value to match the first selected option.
+     *
+     * @param shouldEmit - if true, the input and change events will be emitted
+     *
+     * @internal
+     */
     private updateValue(shouldEmit?: boolean) {
         if (this.$fastController.isConnected) {
             this.value = this.firstSelectedOption ? this.firstSelectedOption.value : "";
@@ -130,7 +184,7 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public selectedIndexChanged(prev: number, next: number): void {
+    public selectedIndexChanged(prev: number | undefined, next: number): void {
         super.selectedIndexChanged(prev, next);
         this.updateValue();
     }
@@ -141,7 +195,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition;
+    public positionAttribute: SelectPosition | "above" | "below";
 
     /**
      * Indicates the initial state of the position attribute.
@@ -156,7 +210,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @observable
-    public position: SelectPosition = SelectPosition.below;
+    public position: SelectPosition | "above" | "below" = SelectPosition.below;
     protected positionChanged() {
         this.positionAttribute = this.position;
         this.setPositioning();
@@ -179,7 +233,6 @@ export class Select extends FormAssociatedSelect {
     /**
      * Calculate and apply listbox positioning based on available viewport space.
      *
-     * @param force - direction to force the listbox to display
      * @public
      */
     public setPositioning(): void {
@@ -208,11 +261,6 @@ export class Select extends FormAssociatedSelect {
      */
     @observable
     public maxHeight: number = 0;
-    private maxHeightChanged(): void {
-        if (this.listbox) {
-            this.listbox.style.setProperty("--max-height", `${this.maxHeight}px`);
-        }
-    }
 
     /**
      * The value displayed on the button.
@@ -247,7 +295,9 @@ export class Select extends FormAssociatedSelect {
         // Call the base class's implementation setDefaultSelectedOption instead of the select's
         // override, in order to reset the selectedIndex without using the value property.
         super.setDefaultSelectedOption();
-        this.value = this.firstSelectedOption.value;
+        if (this.selectedIndex === -1) {
+            this.selectedIndex = 0;
+        }
     }
 
     /**
@@ -274,7 +324,7 @@ export class Select extends FormAssociatedSelect {
 
         super.clickHandler(e);
 
-        this.open = !this.open;
+        this.open = this.collapsible && !this.open;
 
         if (!this.open && this.indexWhenOpened !== this.selectedIndex) {
             this.updateValue(true);
@@ -284,12 +334,14 @@ export class Select extends FormAssociatedSelect {
     }
 
     /**
-     * Handle focus state when the element or its children lose focus.
+     * Handles focus state when the element or its children lose focus.
      *
      * @param e - The focus event
      * @internal
      */
     public focusoutHandler(e: FocusEvent): boolean | void {
+        super.focusoutHandler(e);
+
         if (!this.open) {
             return true;
         }
@@ -309,19 +361,78 @@ export class Select extends FormAssociatedSelect {
     }
 
     /**
-     * Synchronize the form-associated proxy and update the value property of the element.
+     * Synchronize the form-associated proxy and updates the value property of the element.
      *
      * @param prev - the previous collection of slotted option elements
      * @param next - the next collection of slotted option elements
      *
      * @internal
      */
-    public slottedOptionsChanged(prev: Element[], next: Element[]): void {
+    public slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void {
         super.slottedOptionsChanged(prev, next);
         this.setProxyOptions();
         this.updateValue();
     }
 
+    /**
+     * Prevents focus when size is set and a scrollbar is clicked.
+     *
+     * @param e - the mouse event object
+     *
+     * @override
+     * @internal
+     */
+    public mousedownHandler(e: MouseEvent): boolean | void {
+        if (e.offsetX >= 0 && e.offsetX <= this.listbox?.scrollWidth) {
+            return super.mousedownHandler(e);
+        }
+
+        return this.collapsible;
+    }
+
+    /**
+     * Sets the multiple property on the proxy element.
+     *
+     * @param prev - the previous multiple value
+     * @param next - the current multiple value
+     */
+    public multipleChanged(prev: boolean | undefined, next: boolean) {
+        super.multipleChanged(prev, next);
+
+        if (this.proxy) {
+            this.proxy.multiple = next;
+        }
+    }
+
+    /**
+     * Updates the selectedness of each option when the list of selected options changes.
+     *
+     * @param prev - the previous list of selected options
+     * @param next - the current list of selected options
+     *
+     * @override
+     * @internal
+     */
+    protected selectedOptionsChanged(
+        prev: ListboxOption[] | undefined,
+        next: ListboxOption[]
+    ): void {
+        super.selectedOptionsChanged(prev, next);
+        this.options?.forEach((o, i) => {
+            const proxyOption = this.proxy?.options.item(i);
+            if (proxyOption) {
+                proxyOption.selected = o.selected;
+            }
+        });
+    }
+
+    /**
+     * Sets the selected index to match the first option with the selected attribute, or
+     * the first selectable option.
+     *
+     * @override
+     * @internal
+     */
     protected setDefaultSelectedOption(): void {
         const options: ListboxOption[] =
             this.options ?? Array.from(this.children).filter(Listbox.slottedOptionFilter);
@@ -339,7 +450,7 @@ export class Select extends FormAssociatedSelect {
     }
 
     /**
-     * Reset and fill the proxy to match the component's options.
+     * Resets and fills the proxy to match the component's options.
      *
      * @internal
      */
@@ -352,7 +463,7 @@ export class Select extends FormAssociatedSelect {
                     (option instanceof HTMLOptionElement ? option.cloneNode() : null);
 
                 if (proxyOption) {
-                    this.proxy.appendChild(proxyOption);
+                    this.proxy.options.add(proxyOption);
                 }
             });
         }
@@ -369,35 +480,41 @@ export class Select extends FormAssociatedSelect {
         const key = e.key || e.key.charCodeAt(0);
 
         switch (key) {
-            case " ": {
-                if (this.typeaheadExpired) {
-                    e.preventDefault();
+            case keySpace: {
+                e.preventDefault();
+                if (this.collapsible && this.typeAheadExpired) {
                     this.open = !this.open;
                 }
                 break;
             }
 
-            case "Enter": {
+            case keyHome:
+            case keyEnd: {
+                e.preventDefault();
+                break;
+            }
+
+            case keyEnter: {
                 e.preventDefault();
                 this.open = !this.open;
                 break;
             }
 
-            case "Escape": {
-                if (this.open) {
+            case keyEscape: {
+                if (this.collapsible && this.open) {
                     e.preventDefault();
                     this.open = false;
                 }
                 break;
             }
 
-            case "Tab": {
-                if (!this.open) {
-                    return true;
+            case keyTab: {
+                if (this.collapsible && this.open) {
+                    e.preventDefault();
+                    this.open = false;
                 }
 
-                e.preventDefault();
-                this.open = false;
+                return true;
             }
         }
 
@@ -406,12 +523,29 @@ export class Select extends FormAssociatedSelect {
             this.indexWhenOpened = this.selectedIndex;
         }
 
-        return true;
+        return !(key in ArrowKeys);
     }
 
     public connectedCallback() {
         super.connectedCallback();
         this.forcedPosition = !!this.positionAttribute;
+    }
+
+    /**
+     * Updates the proxy's size property when the size attribute changes.
+     *
+     * @param prev - the previous size
+     * @param next - the current size
+     *
+     * @override
+     * @internal
+     */
+    protected sizeChanged(prev: number | undefined, next: number) {
+        super.sizeChanged(prev, next);
+
+        if (this.proxy) {
+            this.proxy.size = next;
+        }
     }
 }
 

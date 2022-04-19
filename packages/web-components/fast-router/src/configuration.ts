@@ -1,14 +1,14 @@
 import { Constructable } from "@microsoft/fast-element";
-import { DefaultNavigationQueue, NavigationQueue } from "./navigation";
-import { Layout, Transition } from "./view";
-import { RouteCollection, RouteMatch } from "./routes";
-import { DefaultLinkHandler, LinkHandler } from "./links";
-import { DefaultNavigationProcess, NavigationProcess } from "./process";
-import { DefaultTitleBuilder, TitleBuilder } from "./titles";
-import { DefaultRoutingEventSink, RoutingEventSink } from "./events";
-import { isNavigationPhaseContributor, NavigationContributor } from "./contributors";
-import { NavigationPhaseHook, NavigationPhaseName } from "./phases";
-import { DefaultRouteRecognizer, RouteRecognizer } from "./recognizer";
+import { DefaultNavigationQueue, NavigationQueue } from "./navigation.js";
+import { Layout, Transition } from "./view.js";
+import { RouteCollection, RouteMatch } from "./routes.js";
+import { DefaultLinkHandler, LinkHandler } from "./links.js";
+import { DefaultNavigationProcess, NavigationProcess } from "./process.js";
+import { DefaultTitleBuilder, TitleBuilder } from "./titles.js";
+import { DefaultRoutingEventSink, RoutingEventSink } from "./events.js";
+import { isNavigationPhaseContributor, NavigationContributor } from "./contributors.js";
+import { NavigationPhaseHook, NavigationPhaseName } from "./phases.js";
+import { DefaultRouteRecognizer, RouteRecognizer } from "./recognizer.js";
 
 /**
  * @alpha

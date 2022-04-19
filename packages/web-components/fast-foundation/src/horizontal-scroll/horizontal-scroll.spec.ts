@@ -176,6 +176,33 @@ describe("HorizontalScroll", () => {
 
             await disconnect();
         });
+
+        it("should disable the next flipper when it's scrolled back from the end and scrolled forward", async () => {
+            const { element, disconnect } = await setup();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
+
+            expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
+
+            element.scrollToPrevious();
+            await DOM.nextUpdate();
+
+            expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
+
+            expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
+
+            await disconnect();
+        })
     });
 
     describe("Scrolling", () => {

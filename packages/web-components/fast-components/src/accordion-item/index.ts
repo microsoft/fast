@@ -3,7 +3,7 @@ import {
     AccordionItemOptions,
     accordionItemTemplate as template,
 } from "@microsoft/fast-foundation";
-import { accordionItemStyles as styles } from "./accordion-item.styles";
+import { accordionItemStyles as styles } from "./accordion-item.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#AccordionItem} registration for configuring the component with a DesignSystem.

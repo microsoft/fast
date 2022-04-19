@@ -10,7 +10,7 @@ import {
     TreeItemOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { Swatch } from "../color/swatch";
+import { Swatch } from "../color/swatch.js";
 import {
     accentForegroundRest,
     baseHeightMultiplier,
@@ -31,8 +31,8 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
-import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
+} from "../design-tokens.js";
+import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index.js";
 
 const ltr = css`
     .expand-collapse-glyph {
