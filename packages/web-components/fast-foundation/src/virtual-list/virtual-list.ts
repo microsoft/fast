@@ -14,7 +14,16 @@ import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utili
 import { FoundationElement } from "../foundation-element";
 import { IntersectionService } from "../utilities/intersection-service";
 import { IdleCallbackQueue } from "../utilities/idle-callback-queue";
-import type { ResizeObserverClassDefinition } from "../utilities/resize-observer";
+import type {
+    ResizeObserverClassDefinition,
+    ResizeObserverEntry,
+} from "../utilities/resize-observer";
+import type {
+    SizeMap,
+    VirtualListItem,
+    VirtualListItemLoadMode,
+} from "./virtual-list-item";
+
 /**
  * Defines when the component updates its position automatically.
  *
@@ -23,27 +32,19 @@ import type { ResizeObserverClassDefinition } from "../utilities/resize-observer
 export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
 
 /**
- * Used to describe the position of an element within the list
- *
- * @public
- */
-export interface SizeMap {
-    // start position
-    readonly start: number;
-
-    // end position
-    readonly end: number;
-
-    // list item size
-    readonly size: number;
-}
-
-/**
  *  The VirtualList class
  *
  * @public
  */
 export class VirtualList extends FoundationElement {
+    /**
+     *
+     *
+     * @public
+     */
+    @attr({ attribute: "list-item-load-mode" })
+    public listItemLoadMode: VirtualListItemLoadMode;
+
     /**
      *  Whether or not the display should virtualize
      *
@@ -201,11 +202,6 @@ export class VirtualList extends FoundationElement {
      */
     @observable
     public listItemContext: object;
-    private listItemContextChanged(): void {
-        if (this.listItemContext.hasOwnProperty("idleCallbackQueue")) {
-            this.listItemContext["idleCallbackQueue"] = this.idleCallbackQueue;
-        }
-    }
 
     /**
      * Defines the idle callback timeout value.
@@ -623,7 +619,7 @@ export class VirtualList extends FoundationElement {
             return;
         }
         this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
-            this.requestPositionUpdates.bind(this)
+            this.resizeDetected.bind(this)
         );
         this.resizeDetector.observe(this);
     }
@@ -637,6 +633,48 @@ export class VirtualList extends FoundationElement {
             this.resizeDetector.disconnect();
             this.resizeDetector = null;
         }
+    }
+
+    private resizeDetected(entries: ResizeObserverEntry[]): void {
+        let itemsResized: boolean = false;
+        const newMap: SizeMap[] = this.sizemap.slice(0);
+
+        entries.forEach((entry: ResizeObserverEntry) => {
+            if (entry.target === this.viewportElement || entry.target === this) {
+                this.requestPositionUpdates();
+                return;
+            } else {
+                itemsResized = true;
+                const index: number = (entry.target as VirtualListItem).itemIndex;
+                const itemSizeMap: SizeMap = {
+                    start: newMap[index].start,
+                    size:
+                        this.orientation === Orientation.vertical
+                            ? entry.contentRect.height
+                            : entry.contentRect.width,
+                    end: newMap[index].end,
+                };
+                newMap.splice(index, 1, itemSizeMap);
+            }
+            if (!itemsResized) {
+                return;
+            }
+
+            const mapLength: number = this.sizemap.length;
+
+            let currentPosition: number = 0;
+            for (let i: number = 0; i < mapLength; i++) {
+                const nextPosition = currentPosition + newMap[i].size;
+                newMap.splice(i, 1, {
+                    start: currentPosition,
+                    size: newMap[i].size,
+                    end: nextPosition,
+                });
+                currentPosition = nextPosition;
+            }
+
+            this.sizemap = newMap;
+        });
     }
 
     /**

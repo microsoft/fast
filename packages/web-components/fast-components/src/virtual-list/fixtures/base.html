@@ -23,6 +23,7 @@
     item-size="200"
     auto-update-mode="auto"
     idle-callback-timeout="500"
+    list-item-load-mode="idle"
     id="stackh1"
     style="
         height: 220px;
@@ -45,6 +46,7 @@
         item-size="200"
         viewport-buffer="200"
         auto-update-mode="auto"
+        list-item-load-mode="idle"
         id="stackh2"
         style="
             height: 220px;
@@ -168,7 +170,7 @@
     "
 >
     <h3 style="grid-column: 1; grid-row: 1;">
-        vertical spans whole page
+        variable heights, auto item resize
     </h3>
     <fast-virtual-list
         auto-update-mode="auto"
@@ -200,6 +202,7 @@
         auto-update-mode="auto"
         id="stackv2"
         idle-callback-timeout="2000"
+        list-item-load-mode="idle"
         style="
             grid-column: 3;
             grid-row: 2;
@@ -212,7 +215,7 @@
     ></fast-virtual-list>
 
     <h3 style="grid-column: 5; grid-row: 1;">
-        Variable heights
+        Variable heights, controlled sizemap
     </h3>
 
     <fast-virtual-list
@@ -221,13 +224,13 @@
         viewport-buffer="800"
         auto-update-mode="auto"
         idle-callback-timeout="2000"
+        list-item-load-mode="idle"
         id="stackv3"
         style="
             grid-column: 5;
             grid-row: 2;
-            height: 800px;
             width: 200px;
-            overflow-y: scroll;
+            overflow-y: hidden;
             overflow-x: hidden;
             display: block;
         "

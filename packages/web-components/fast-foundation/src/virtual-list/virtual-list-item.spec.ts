@@ -1,9 +1,7 @@
 import { expect } from "chai";
 import { VirtualListItem, VirtualListItemContext } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { Orientation } from "@microsoft/fast-web-utilities";
-import { DOM, customElement, html } from "@microsoft/fast-element";
-import { timeout } from "../test-utilities/timeout";
+import { DOM,html } from "@microsoft/fast-element";
 import { IdleCallbackQueue } from "../utilities/idle-callback-queue";
 
 const FASTVirtualListItem = VirtualListItem.compose({
@@ -61,7 +59,7 @@ describe("VirtualListItem", () => {
     it("should set loadContent to false if loadMode is set to 'manual'", async () => {
         const { element, connect, disconnect } = await setup();
 
-        element.listItemContext.loadMode = "manual";
+        element.loadMode = "manual";
 
         await connect();
 
@@ -74,7 +72,7 @@ describe("VirtualListItem", () => {
     it("should set loadContent to false and then true if loadMode is set to 'idle'", async () => {
         const { element, connect, disconnect } = await setup();
 
-        element.listItemContext.loadMode = "idle";
+        element.loadMode = "idle";
         element.idleCallbackQueue = new IdleCallbackQueue();
         element.idleCallbackQueue.idleCallbackTimeout = 0;
 

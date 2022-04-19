@@ -1,4 +1,4 @@
-import { html, when } from "@microsoft/fast-element";
+import { html, ViewTemplate, when } from "@microsoft/fast-element";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
 import {
@@ -200,7 +200,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualList;
         stackh1.listItemContext = {
             listItemContentsTemplate: listItemContentsTemplate,
-            loadMode: "idle",
             titleString: "title:",
         };
         stackh1.items = newDataSet(50, 1);
@@ -208,7 +207,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualList;
         stackh2.listItemContext = {
             listItemContentsTemplate: listItemContentsTemplate,
-            loadMode: "idle",
             titleString: "title:",
         };
         stackh2.items = data;
@@ -242,7 +240,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
         stackv2.items = data;
         stackv2.listItemContext = {
-            loadMode: "idle",
             listItemContentsTemplate: listItemContentsTemplate,
             titleString: "title:",
         };
@@ -250,8 +247,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackv3 = document.getElementById("stackv3") as FoundationVirtualList;
         stackv3.sizemap = dataSizeMap;
         stackv3.items = data;
+        stackv3.viewportElement = document.documentElement;
         stackv3.listItemContext = {
-            loadMode: "idle",
             listItemContentsTemplate: variableHeightContentsTemplate,
             titleString: "title:",
         };
