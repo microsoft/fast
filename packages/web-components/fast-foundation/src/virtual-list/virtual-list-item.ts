@@ -16,6 +16,22 @@ import type { IdleCallbackQueue } from "../utilities/idle-callback-queue";
 export type VirtualListItemLoadMode = "immediate" | "manual" | "idle";
 
 /**
+ * Used to describe the position of an element within the list
+ *
+ * @public
+ */
+export interface SizeMap {
+    // start position
+    readonly start: number;
+
+    // end position
+    readonly end: number;
+
+    // list item size
+    readonly size: number;
+}
+
+/**
  * List item context interface
  *
  * @public
@@ -23,9 +39,6 @@ export type VirtualListItemLoadMode = "immediate" | "manual" | "idle";
 export interface VirtualListItemContext {
     // the template to use to render the list item
     listItemContentsTemplate: ViewTemplate;
-
-    // Sets the behavior for how the component updates the loadContent prop
-    loadMode?: VirtualListItemLoadMode;
 }
 
 /**
@@ -34,6 +47,14 @@ export interface VirtualListItemContext {
  * @public
  */
 export class VirtualListItem extends FoundationElement {
+    /**
+     *
+     *
+     * @public
+     */
+    @observable
+    public loadMode: VirtualListItemLoadMode;
+
     /**
      * The ViewTemplate used to render contents.
      *
@@ -81,7 +102,7 @@ export class VirtualListItem extends FoundationElement {
      */
     connectedCallback() {
         super.connectedCallback();
-        switch (this.listItemContext.loadMode) {
+        switch (this.loadMode) {
             case "manual":
                 break;
 
