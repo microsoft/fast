@@ -56,7 +56,7 @@ export class VirtualListItem extends FoundationElement {
     public loadMode: VirtualListItemLoadMode;
 
     /**
-     * The ViewTemplate used to render contents.
+     * The data associated with this item
      *
      * @public
      */
@@ -88,7 +88,7 @@ export class VirtualListItem extends FoundationElement {
     public idleCallbackQueue: IdleCallbackQueue;
 
     /**
-     *
+     * The viewtemplate used to render the item
      *
      * @public
      */
@@ -122,6 +122,8 @@ export class VirtualListItem extends FoundationElement {
                 this.loadContent = true;
                 break;
         }
+
+        this.$emit("listitemconnected");
     }
 
     /**
@@ -133,6 +135,8 @@ export class VirtualListItem extends FoundationElement {
         }
         this.loadContent = false;
         this.idleLoadRequested = false;
+        this.$emit("listitemdisconnected");
+
         super.disconnectedCallback();
     }
 
