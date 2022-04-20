@@ -7,35 +7,40 @@ const { spawn } = require("cross-spawn");
 program
     .option("-l, --library <name>", "run benchmarks in <name> library")
     .option("-b, --benchmark <name>", "run the benchmark: <name>")
+    .option("-m, --memory", "check memory metrics")
     .option(
         "-v, --versions [versions...]",
-        "specify versions, if not specified, default is local and master"
+        "specify available versions, you can also use 'local' or 'master' that would point to github branches"
+    )
+    .option(
+        "-lb, --localBenchFile <name>",
+        "specify the html file you want your local version to use, only valid if 'local' is one of the versions you passed in"
     )
     .parse(process.argv);
 
 const options = program.opts();
 
 //TODO: add defaults
-const { library, benchmark, versions } = options;
+const { library, benchmark: benchmarkName, versions, localBenchFile, memory } = options;
 console.log("options", options);
 
 const TACH_SCHEMA =
     "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json";
 
+const MEMORY_METRIC = "memory";
+const LOCAL = "local";
+const MASTER = "master";
+
 //create tachometer schema based on options
-// TODO: these need to be moved to browser options
-// browser: "chrome",
-// headless: true,
-// addArguments: ["--js-flags=--expose-gc", "--enable-precise-memory-info"],
 const defaultBenchOptions = {
     // Tachometer default is 50, but locally let's only do 10
-    sampleSize: 10,
+    sampleSize: 30,
     // Tachometer default is 3 minutes, but let's shrink it to 1 here to save some
     timeout: 1,
 };
 
 //TODO: customize measurement types
-const isMemoryBench = benchmark.toLowerCase() === "memory";
+const isMemoryBench = benchmarkName.toLowerCase() === MEMORY_METRIC || memory;
 
 const measurement = isMemoryBench
     ? [
@@ -48,12 +53,19 @@ const measurement = isMemoryBench
     : [
           {
               mode: "performance",
-              entryName: benchmark,
+              entryName: benchmarkName,
           },
       ];
 
-async function generateBenchmarks(localBranchName) {
-    const url = `benchmarks/${library}/${benchmark}/index.html`;
+/**
+ * Generates the benchmarks array expected by the tachometer config file.
+ * @returns {ConfigFile["benchmarks"], []} an array of benchmarks
+ */
+async function generateBenchmarks() {
+    const localBranchName = versions.includes(LOCAL)
+        ? await getLocalGitBranchName()
+        : undefined;
+
     const browser = {
         name: "chrome",
         headless: true,
@@ -61,14 +73,19 @@ async function generateBenchmarks(localBranchName) {
 
     if (isMemoryBench)
         browser.addArguments = ["--js-flags=--expose-gc", "--enable-precise-memory-info"];
+
     /** @type {ConfigFile["benchmarks"]} */
     const benchmarks = [];
     versions.forEach(version => {
-        const isBranch = version === "local" || version === "master";
-        const benchmark = { url, browser, name: benchmark, measurement };
+        const isLocalBranch = version === LOCAL;
+        const isBranch = isLocalBranch || version === MASTER;
+        const htmlFile = isLocalBranch && localBenchFile ? localBenchFile : "index.html";
+        const url = `benchmarks/${library}/${benchmarkName}/${htmlFile}`;
+
+        const benchmark = { url, browser, name: benchmarkName, measurement };
         const package = `@microsoft/${library}`;
         if (isBranch) {
-            const ref = version === "local" ? localBranchName : "master";
+            const ref = version === LOCAL ? localBranchName : MASTER;
             benchmark.packageVersions = {
                 label: version,
                 dependencies: {
@@ -127,7 +144,9 @@ async function writeConfig(name, config, dest = ROOT_DIR) {
 async function getLocalGitBranchName() {
     return new Promise((resolve, reject) => {
         const res = exec("git branch --show-current");
-        res.stdout.on("data", data => (data ? resolve(data.trim()) : reject()));
+        res.stdout.on("data", data =>
+            data ? resolve(data.trim()) : reject("Error in getting local branch name.")
+        );
     }).catch(error => {
         throw new Error(
             `Unable to retrieve local branch name: ${error}, make sure you have "git" installed.`
@@ -141,12 +160,10 @@ async function getLocalGitBranchName() {
  */
 async function generateConfig() {
     try {
-        const localBranchName = await getLocalGitBranchName();
-        const benchmarks = await generateBenchmarks(localBranchName);
+        const benchmarks = await generateBenchmarks();
         /** @type {ConfigFile} */
         const config = { $schema: TACH_SCHEMA, ...defaultBenchOptions, benchmarks };
-
-        return await writeConfig(benchmark + ".config", config, "dist");
+        return await writeConfig(benchmarkName + ".config", config, "dist");
     } catch (error) {
         throw new Error(error);
     }
@@ -201,7 +218,6 @@ async function buildBenchmark(configPath) {
  * @returns {Promise}
  */
 async function runBenchmark(configPath) {
-    console.log("run at config path", configPath);
     return new Promise((resolve, reject) => {
         const args = ["tach", "--config", configPath];
         const child = spawn("npx", args, { stdio: "inherit" });
@@ -227,7 +243,8 @@ const tsConfig = {
 
 const run = async () => {
     try {
-        const configPath = await generateConfig(options);
+        const configPath = await generateConfig();
+        console.log("configPath", configPath);
         await checkNpmRegistryIsAvailable();
         const tsConfigPath = await writeConfig(`tsconfig.${library}`, tsConfig);
         await buildBenchmark(tsConfigPath);

@@ -96,19 +96,19 @@ To run the benchmark, supply all the options listed below, example: `yarn run be
 
 ### Options
 
-| Option -            | Example                         | Description                                                                                                                                              |
-| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--library`         | `--library=fast-element`        | The package library you want to run benchmarks in                                                                                                        |
-| `--test`            | `--test=render`                 | Benchmark name                                                                                                                                           |
-| `--versions`        | `--versions=1.9.0 1.4.0 local`  | Supply versions of the library, [Available versions](#https://www.npmjs.com/package/@microsoft/fast-element), delimited by `space`                       |
-| `--local-test-file` | `--local-test-file=index2.html` | This option is only turned on if you've supplied 'local' as one of the versions AND you want to add different implementation for the same benchmark test |
+| Option -           | Example                        | Description                                                                                                                                              |
+| ------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--library`        | `--library=fast-element`       | The package library you want to run benchmarks in                                                                                                        |
+| `--benchmark`      | `--benchmark=render`           | Benchmark name                                                                                                                                           |
+| `--versions`       | `--versions=1.9.0 1.4.0 local` | Supply versions of the library, [Available versions](#https://www.npmjs.com/package/@microsoft/fast-element), delimited by `space`                       |
+| `--localBenchFile` | `--localBenchFile=index2.html` | This option is only turned on if you've supplied 'local' as one of the versions AND you want to add different implementation for the same benchmark test |
 
-'local' version should be used when you added custom test
+'local' version should be used when you added custom benchmark
 
 if no 'local' version is provided in --versions, all listed versions will point to the index.html to run benchmarks
 
 example:
-`yarn run benchmark --library=fast-element --test=binding --versions=1.9.0 local --local-test-file=index2.html`
-`yarn run benchmark --library=fast-element --test=binding --versions=1.9.0 local`
-`yarn run benchmark --library=fast-element --test=binding --versions=1.9.0 master`
+`yarn run benchmark --library=fast-element --benchmark=binding --versions=1.9.0 local --localBenchFile=index2.html`
+`yarn run benchmark --library=fast-element --benchmark=binding --versions=1.9.0 local`
+`yarn run benchmark --library=fast-element --benchmark=binding --versions=1.9.0 master`
 `yarn run benchmark --library=fast-foundation --benchmark=form-associated -v 2.34.0 2.42.1`
