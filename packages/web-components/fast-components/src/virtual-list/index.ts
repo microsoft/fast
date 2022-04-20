@@ -1,6 +1,7 @@
 import {
     VirtualList,
     VirtualListItem,
+    virtualListItemTemplate,
     virtualListTemplate,
 } from "@microsoft/fast-foundation";
 import { virtualListStyles } from "./virtual-list.styles";
@@ -40,6 +41,7 @@ export { VirtualList };
 export const fastVirtualListItem = VirtualListItem.compose({
     baseName: "virtual-list-item",
     baseClass: VirtualListItem,
+    template: virtualListItemTemplate,
     styles: virtualListItemStyles,
 });
 
