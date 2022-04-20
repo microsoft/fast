@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Improve wording for usage of `@@`.",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "eimantas@stork.software",
+  "dependentChangeType": "none"
+}
