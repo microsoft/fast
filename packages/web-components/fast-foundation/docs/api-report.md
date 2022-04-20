@@ -2910,9 +2910,7 @@ export class VirtualListItem extends FoundationElement {
     loadContent: boolean;
     // (undocumented)
     loadMode: VirtualListItemLoadMode;
-    // @internal (undocumented)
-    resolveTemplate(): ViewTemplate;
-}
+    }
 
 // @public
 export interface VirtualListItemContext {
@@ -2922,6 +2920,9 @@ export interface VirtualListItemContext {
 
 // @public
 export type VirtualListItemLoadMode = "immediate" | "manual" | "idle";
+
+// @public
+export const virtualListItemTemplate: FoundationElementTemplate<ViewTemplate<VirtualListItem>>;
 
 // @public
 export const virtualListTemplate: FoundationElementTemplate<ViewTemplate<VirtualList>>;

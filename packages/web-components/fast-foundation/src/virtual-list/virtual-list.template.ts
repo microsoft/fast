@@ -18,7 +18,6 @@ function createDefaultVerticalItemTemplate(
         :loadMode="${(x, c) => c.parent.listItemLoadMode}"
         :listItemTemplate="${(x, c) => c.parent.listItemTemplate}"
         style="
-            height:  ${(x, c) => `${c.parent.visibleItemMap[c.index]?.size}px`};
             transform: ${(x, c) =>
                 `translateY(${c.parent.visibleItemMap[c.index]?.start}px)`};
         "
@@ -39,7 +38,6 @@ function createDefaultHorizontalItemTemplate(
         :loadMode="${(x, c) => c.parent.listItemLoadMode}"
         :listItemTemplate="${(x, c) => c.parent.listItemTemplate}"
         style="
-            width:  ${(x, c) => `${c.parent.visibleItemMap[c.index]?.size}px`};
             transform: ${(x, c) =>
                 `translateX(${c.parent.visibleItemMap[c.index]?.start}px)`};
         "
