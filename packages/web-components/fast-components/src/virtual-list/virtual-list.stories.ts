@@ -4,6 +4,7 @@ import { STORY_RENDERED } from "@storybook/core-events";
 import {
     VirtualList as FoundationVirtualList,
     SizeMap,
+    Slider,
     VirtualListItem,
 } from "@microsoft/fast-foundation";
 import VirtualListTemplate from "./fixtures/base.html";
@@ -173,14 +174,40 @@ const variableHeightContentsTemplate = html`
         style="
             margin: 4px 0 4px 0;
             width: 200px;
-            height: ${x => x.itemData.itemHeight};
+            height: auto;
+            background: lightgrey;
         "
     >
-        <button
+        <fast-slider
             style="
-                width: 100%;
-                height: 100%;
+                width: 180px;
+                margin: 10px 10px 0 10px;
+            "
+            min="60"
+            max="800"
+            step="1"
+            value="${x => x.itemData.itemHeight}"
+            @change="${(x, c) => {
+                if (x.itemData.itemHeight !== (c.event.target as Slider).currentValue) {
+                    x.itemData.itemHeight = (c.event.target as Slider).currentValue;
+                    ((c.event.target as Slider).parentElement
+                        ?.children[1] as HTMLButtonElement).style.height = `${
+                        (c.event.target as Slider).currentValue
+                    }px`;
+                }
+            }}"
+        ></fast-slider>
+        <button
+            id="varbutton${x => x.itemData.title}"
+            style="
+                margin: 0 10px 10px 10px;
+                width: calc(100% - 20px);
+                height: ${x => x.itemData.itemHeight}px;
                 background-image: url('${x => x.itemData.url}');
+                background-size: cover;
+                background-position: center center;
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
             "
         >
             <div style="background-color: white">
@@ -275,15 +302,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     }
 });
 
-// function toggleSize(e: PointerEvent): void {
-//     const listItem: HTMLElement = e.target as HTMLElement;
-//     if (listItem.clientHeight === 200) {
-//         listItem.style.height = "60px";
-//     } else {
-//         listItem.style.height = "200px";
-//     }
-// }
-
 function toggleSizeMap(index: number): void {
     const stackv3 = document.getElementById("stackv3") as FoundationVirtualList;
 
@@ -344,7 +362,7 @@ function newDataSet(rowCount: number, prefix: number): object[] {
             value: `${i}`,
             title: `item #${i}`,
             url: `https://picsum.photos/200/200?random=${prefix * 1000 + i}`,
-            itemHeight: `${100 + Math.floor(Math.random() * 100)}px`,
+            itemHeight: `${60 + Math.floor(Math.random() * 140)}`,
         });
     }
     return newData;
