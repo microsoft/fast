@@ -1,27 +1,62 @@
-import { customElement, FASTElement, html, repeat } from "@microsoft/fast-element";
+import {
+    attr,
+    customElement,
+    FASTElement,
+    html,
+    observable,
+    repeat,
+} from "@microsoft/fast-element";
 import { FormAssociated, FoundationElement } from "@microsoft/fast-foundation";
+import { _random, adjectives, colours, nouns } from "../../../utils/constants.js";
 
 const itemCount = 250;
+let id = 0;
 
-const template = html<_XItem>`
-    <slot></slot>
-`;
+export class RandomItem {
+    label: string;
 
-@customElement({
-    name: "x-item",
-    template,
-})
-class _XItem extends FoundationElement {}
-// eslint-disable-next-line @typescript-eslint/naming-convention
-interface _XItem extends FormAssociated {}
+    constructor(public readonly id: number) {
+        this.label =
+            adjectives[_random(adjectives.length)] +
+            " " +
+            colours[_random(colours.length)] +
+            " " +
+            nouns[_random(nouns.length)];
+    }
+}
+function generateData(count: number) {
+    const data = [];
 
-/**
- * A form-associated base class for the {@link @microsoft/fast-foundation#(Button:class)} component.
- *
- * @internal
- */
-export class FormAssociatedButton extends FormAssociated(_XItem) {
+    for (let i = 0; i < count; i++) {
+        data.push(new RandomItem(++id));
+    }
+
+    return data;
+}
+const data: RandomItem[] = generateData(itemCount);
+
+/* eslint-disable @typescript-eslint/naming-convention */
+class _Button extends FASTElement {}
+interface _Button extends FormAssociated {}
+/* eslint-enable @typescript-eslint/naming-convention */
+
+class FormAssociatedButton extends FormAssociated(_Button as any) {
     proxy = document.createElement("input");
+}
+
+class Button extends FormAssociatedButton {}
+@customElement({
+    name: "x-button",
+    template: html`
+        <button>${x => x.value}</button>
+    `,
+    styles: "",
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+})
+export class FluentButton extends Button {
+    @attr value: string = "";
 }
 
 const xAppTemplate = html<XApp>`
@@ -29,7 +64,7 @@ const xAppTemplate = html<XApp>`
         ${repeat(
             x => x.items,
             html`
-                <x-item></x-item>
+                <x-button :value=${x => x.label}>${x => x.label}</x-button>
             `
         )}
     </div>
@@ -39,7 +74,7 @@ const xAppTemplate = html<XApp>`
     template: xAppTemplate,
 })
 class XApp extends FASTElement {
-    items: number[] = Array(itemCount).fill(0);
+    @observable items: RandomItem[] = data;
 }
 
 declare global {
@@ -62,7 +97,7 @@ function measureMemory() {
 }
 
 //support older browsesrs or if we're not using modules
-export default async () => {
+(async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
 
@@ -77,7 +112,7 @@ export default async () => {
     const updateComplete = () => new Promise(r => requestAnimationFrame(r));
 
     const render = async () => {
-        // can change to main dir file name
+        // can change to defaultt to (check file name) main dir file name
         const test = "form-associated";
         const start = getTestStartName(test);
         performance.mark(start);
@@ -93,4 +128,4 @@ export default async () => {
     performance
         .getEntriesByType("measure")
         .forEach(m => console.log(`${m.name}: ${m.duration.toFixed(3)}ms`));
-};
+})();

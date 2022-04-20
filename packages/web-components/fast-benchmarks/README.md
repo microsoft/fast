@@ -108,6 +108,7 @@ To run the benchmark, supply all the options listed below, example: `yarn run be
 if no 'local' version is provided in --versions, all listed versions will point to the index.html to run benchmarks
 
 example:
-`yarn run benchmark --library=fast-element --test=binding -versions=1.9.0 local --local-test-file=index2.html`
-`yarn run benchmark --library=fast-element --test=binding -versions=1.9.0 local`
-`yarn run benchmark --library=fast-element --test=binding -versions=1.9.0 master`
+`yarn run benchmark --library=fast-element --test=binding --versions=1.9.0 local --local-test-file=index2.html`
+`yarn run benchmark --library=fast-element --test=binding --versions=1.9.0 local`
+`yarn run benchmark --library=fast-element --test=binding --versions=1.9.0 master`
+`yarn run benchmark --library=fast-foundation --benchmark=form-associated -v 2.34.0 2.42.1`

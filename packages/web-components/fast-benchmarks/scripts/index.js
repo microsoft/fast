@@ -17,6 +17,7 @@ const options = program.opts();
 
 //TODO: add defaults
 const { library, benchmark, versions } = options;
+console.log("options", options);
 
 const TACH_SCHEMA =
     "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json";
@@ -30,7 +31,6 @@ const defaultBenchOptions = {
     // Tachometer default is 50, but locally let's only do 10
     sampleSize: 10,
     // Tachometer default is 3 minutes, but let's shrink it to 1 here to save some
-    // GitHub Action minutes
     timeout: 1,
 };
 
@@ -65,7 +65,7 @@ async function generateBenchmarks(localBranchName) {
     const benchmarks = [];
     versions.forEach(version => {
         const isBranch = version === "local" || version === "master";
-        const benchmark = { url, browser, name: version, measurement };
+        const benchmark = { url, browser, name: benchmark, measurement };
         const package = `@microsoft/${library}`;
         if (isBranch) {
             const ref = version === "local" ? localBranchName : "master";
@@ -102,15 +102,21 @@ async function generateBenchmarks(localBranchName) {
  *  See https://www.npmjs.com/package/tachometer#config-file
  * @param {string} name
  * @param {ConfigFile} config
- * @returns {string} location of the newly generated config json file
+ * @param {string} dest destination folder where config file will be generated, if empty string means it's rootDir
+ * @returns {string} path location of newly generated config json file
  */
-async function writeConfig(name, config) {
-    const configName = name + ".config.json";
-    const configPath = join(__dirname, "../dist", configName);
 
-    await mkdir(join(__dirname, "../dist"), { recursive: true });
+const ROOT_DIR = "";
+async function writeConfig(name, config, dest = ROOT_DIR) {
+    /** @type {boolean} check if des string contains any characters matching a letter, if it does, it is not a rootDir */
+    const isRootDir = !dest.match("[a-zA-Z]+") && !ROOT_DIR;
+    const configName = name + ".json";
+    const configPath = join(__dirname, "../" + dest, configName);
+
+    if (!isRootDir) await mkdir(join(__dirname, "../" + dest), { recursive: true });
     await writeFile(configPath, JSON.stringify(config, null, 2), "utf8");
-    return join("dist", configName);
+
+    return isRootDir ? join(process.cwd(), configName) : join(dest, configName);
 }
 
 /**
@@ -129,13 +135,21 @@ async function getLocalGitBranchName() {
     });
 }
 
+/**
+ * Generate tachometer config file
+ * @returns {string} path location of newly generated config json file
+ */
 async function generateConfig() {
-    const localBranchName = await getLocalGitBranchName();
-    const benchmarks = await generateBenchmarks(localBranchName);
-    /** @type {ConfigFile} */
-    const config = { $schema: TACH_SCHEMA, ...defaultBenchOptions, benchmarks };
+    try {
+        const localBranchName = await getLocalGitBranchName();
+        const benchmarks = await generateBenchmarks(localBranchName);
+        /** @type {ConfigFile} */
+        const config = { $schema: TACH_SCHEMA, ...defaultBenchOptions, benchmarks };
 
-    return await writeConfig(benchmark, config);
+        return await writeConfig(benchmark + ".config", config, "dist");
+    } catch (error) {
+        throw new Error(error);
+    }
 }
 
 /**
@@ -160,16 +174,17 @@ async function checkNpmRegistryIsAvailable() {
 
 /**
  * Build tsc file
+ * @param {string} configPath the generated tsconfig path
  * @returns {Promise}
  */
-async function buildBenchmark() {
+async function buildBenchmark(configPath) {
     return new Promise((resolve, reject) => {
-        const args = ["run", "build"];
-        const child = spawn("npm", args, { stdio: "inherit" });
+        const args = ["-p", configPath];
+        const child = spawn("tsc", args, { stdio: "inherit" });
         child.on("close", code => {
             if (code !== 0) {
                 reject({
-                    command: "npm run build",
+                    command: `tsc -p ${configPath}`,
                 });
                 return;
             }
@@ -186,6 +201,7 @@ async function buildBenchmark() {
  * @returns {Promise}
  */
 async function runBenchmark(configPath) {
+    console.log("run at config path", configPath);
     return new Promise((resolve, reject) => {
         const args = ["tach", "--config", configPath];
         const child = spawn("npx", args, { stdio: "inherit" });
@@ -199,17 +215,26 @@ async function runBenchmark(configPath) {
             resolve(void 0);
         });
     }).catch(error => {
-        throw error;
+        return error;
     });
 }
 
+// create tsconfig.{my-library}.json file and add include path to it
+const tsConfig = {
+    extends: "./tsconfig.json",
+    include: ["utils/**/*.ts", `benchmarks/${library}/**/*.ts`],
+};
+
 const run = async () => {
-    const configPath = await generateConfig(options);
-
-    await checkNpmRegistryIsAvailable();
-    await buildBenchmark();
-
-    await runBenchmark(configPath);
+    try {
+        const configPath = await generateConfig(options);
+        await checkNpmRegistryIsAvailable();
+        const tsConfigPath = await writeConfig(`tsconfig.${library}`, tsConfig);
+        await buildBenchmark(tsConfigPath);
+        await runBenchmark(configPath);
+    } catch (error) {
+        return error;
+    }
 };
 
 run();

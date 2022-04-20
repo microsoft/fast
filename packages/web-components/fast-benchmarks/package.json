@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "build": "tsc --build",
+        "build": "tsc && tsc --build",
         "benchmark": "node scripts/index.js",
         "help": "node ./scripts/index.js --help",
         "benchmark:binding": "tach --config benchmarks/fast-element/binding/tachometer.json",
@@ -13,7 +13,7 @@
     "license": "ISC",
     "dependencies": {
         "@microsoft/fast-element": "file:../fast-element",
-        "@microsoft/fast-foundation": "^2.42.1",
+        "@microsoft/fast-foundation": "file:../fast-foundation",
         "tachometer": "^0.5.10"
     },
     "devDependencies": {
