@@ -127,6 +127,14 @@ export const textAreaStyles: FoundationElementTemplate<ElementStyles> = (
     :host([disabled]) .control {
         border-color: ${neutralStrokeRest};
     }
+
+    :host([cols]){
+        width: initial;
+    }
+
+    :host([rows]) .control {
+        height: initial;
+    }
  `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
