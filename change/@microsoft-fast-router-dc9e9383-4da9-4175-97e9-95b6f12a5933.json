@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Pull up api-extractor.json to root and then extend it for each project",
-  "packageName": "@microsoft/fast-router",
-  "email": "stephanosp@microsoft.com",
-  "dependentChangeType": "none"
-}

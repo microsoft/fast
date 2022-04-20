@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixes a rendering glitch which flasehes when intially expanding a group of tree items",
-  "packageName": "@microsoft/fast-components",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}
