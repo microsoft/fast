@@ -71,11 +71,6 @@ jobs:
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         run: yarn lerna run test --stream
 
-      - name: Install playwright dependencies and browsers
-        run: |
-          yarn playwright install-deps
-          yarn playwright install
-
       - name: Initialize CodeQL
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         uses: github/codeql-action/init@v1
