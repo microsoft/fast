@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 17 Apr 2022 07:11:18 GMT and should not be manually modified.
+This log was last generated on Wed, 20 Apr 2022 07:13:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.29.0
+
+Wed, 20 Apr 2022 07:13:17 GMT
+
+### Minor changes
+
+- support custom row and col sizes on text area (chhol@microsoft.com)
+
+### Patches
+
+- fixes a rendering glitch which flasehes when intially expanding a group of tree items (chhol@microsoft.com)
 
 ## 2.28.1
 
