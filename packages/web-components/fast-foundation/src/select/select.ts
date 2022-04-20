@@ -210,7 +210,7 @@ export class Select extends FormAssociatedSelect {
      */
     @observable
     public maxHeight: number = 0;
-    private maxHeightChanged(): void {
+    protected maxHeightChanged(): void {
         if (this.listbox) {
             this.listbox.style.setProperty("--max-height", `${this.maxHeight}px`);
         }

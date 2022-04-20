@@ -137,7 +137,7 @@ export class DataGrid extends FoundationElement {
      */
     @attr({ attribute: "no-tabbing", mode: "boolean" })
     public noTabbing: boolean = false;
-    private noTabbingChanged(): void {
+    protected noTabbingChanged(): void {
         if (this.$fastController.isConnected) {
             if (this.noTabbing) {
                 this.setAttribute("tabIndex", "-1");
@@ -163,7 +163,7 @@ export class DataGrid extends FoundationElement {
     @attr({ attribute: "generate-header" })
     public generateHeader: GenerateHeaderOptions | "none" | "default" | "sticky" =
         GenerateHeaderOptions.default;
-    private generateHeaderChanged(): void {
+    protected generateHeaderChanged(): void {
         if (this.$fastController.isConnected) {
             this.toggleGeneratedHeader();
         }
@@ -178,7 +178,7 @@ export class DataGrid extends FoundationElement {
      */
     @attr({ attribute: "grid-template-columns" })
     public gridTemplateColumns: string;
-    private gridTemplateColumnsChanged(): void {
+    protected gridTemplateColumnsChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateRowIndexes();
         }
@@ -191,7 +191,7 @@ export class DataGrid extends FoundationElement {
      */
     @observable
     public rowsData: object[] = [];
-    private rowsDataChanged(): void {
+    protected rowsDataChanged(): void {
         if (this.columnDefinitions === null && this.rowsData.length > 0) {
             this.columnDefinitions = DataGrid.generateColumns(this.rowsData[0]);
         }
@@ -207,7 +207,7 @@ export class DataGrid extends FoundationElement {
      */
     @observable
     public columnDefinitions: ColumnDefinition[] | null = null;
-    private columnDefinitionsChanged(): void {
+    protected columnDefinitionsChanged(): void {
         if (this.columnDefinitions === null) {
             this.generatedGridTemplateColumns = "";
             return;

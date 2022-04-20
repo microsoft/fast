@@ -80,7 +80,7 @@ export class Picker extends FormAssociatedPicker {
      */
     @attr({ attribute: "selection" })
     public selection: string = "";
-    private selectionChanged(): void {
+    protected selectionChanged(): void {
         if (this.$fastController.isConnected) {
             this.handleSelectionChange();
             if (this.proxy instanceof HTMLInputElement) {
@@ -99,7 +99,7 @@ export class Picker extends FormAssociatedPicker {
      */
     @attr({ attribute: "options" })
     public options: string;
-    private optionsChanged(): void {
+    protected optionsChanged(): void {
         this.optionsList = this.options
             .split(",")
             .map(opt => opt.trim())
@@ -205,7 +205,7 @@ export class Picker extends FormAssociatedPicker {
      */
     @attr({ attribute: "menu-placement" })
     public menuPlacement: menuConfigs = "bottom-fill";
-    private menuPlacementChanged(): void {
+    protected menuPlacementChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateMenuConfig();
         }
@@ -218,7 +218,7 @@ export class Picker extends FormAssociatedPicker {
      */
     @observable
     public showLoading: boolean = false;
-    private showLoadingChanged(): void {
+    protected showLoadingChanged(): void {
         if (this.$fastController.isConnected) {
             DOM.queueUpdate(() => {
                 this.setFocusedOption(0);
@@ -234,7 +234,7 @@ export class Picker extends FormAssociatedPicker {
      */
     @observable
     public listItemTemplate: ViewTemplate;
-    private listItemTemplateChanged(): void {
+    protected listItemTemplateChanged(): void {
         this.updateListItemTemplate();
     }
 
@@ -246,7 +246,7 @@ export class Picker extends FormAssociatedPicker {
      */
     @observable
     public defaultListItemTemplate?: ViewTemplate;
-    private defaultListItemTemplateChanged(): void {
+    protected defaultListItemTemplateChanged(): void {
         this.updateListItemTemplate();
     }
 
@@ -266,7 +266,7 @@ export class Picker extends FormAssociatedPicker {
      */
     @observable
     public menuOptionTemplate: ViewTemplate;
-    private menuOptionTemplateChanged(): void {
+    protected menuOptionTemplateChanged(): void {
         this.updateOptionTemplate();
     }
 
@@ -278,7 +278,7 @@ export class Picker extends FormAssociatedPicker {
      */
     @observable
     public defaultMenuOptionTemplate?: ViewTemplate;
-    private defaultMenuOptionTemplateChanged(): void {
+    protected defaultMenuOptionTemplateChanged(): void {
         this.updateOptionTemplate();
     }
 
@@ -324,7 +324,7 @@ export class Picker extends FormAssociatedPicker {
      */
     @observable
     public query: string;
-    private queryChanged(): void {
+    protected queryChanged(): void {
         if (this.$fastController.isConnected) {
             if (this.inputElement.value !== this.query) {
                 this.inputElement.value = this.query;
@@ -341,7 +341,7 @@ export class Picker extends FormAssociatedPicker {
      */
     @observable
     public filteredOptionsList: string[] = [];
-    private filteredOptionsListChanged(): void {
+    protected filteredOptionsListChanged(): void {
         if (this.$fastController.isConnected) {
             this.showNoOptions =
                 this.filteredOptionsList.length === 0 &&
@@ -357,7 +357,7 @@ export class Picker extends FormAssociatedPicker {
      */
     @observable
     public flyoutOpen: boolean = false;
-    private flyoutOpenChanged(): void {
+    protected flyoutOpenChanged(): void {
         if (this.flyoutOpen) {
             DOM.queueUpdate(this.setRegionProps);
             this.$emit("menuopening", { bubbles: false });

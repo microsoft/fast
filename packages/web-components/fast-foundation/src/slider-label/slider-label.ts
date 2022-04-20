@@ -38,7 +38,7 @@ export class SliderLabel extends FoundationElement {
      */
     @attr
     public position: string;
-    private positionChanged(): void {
+    protected positionChanged(): void {
         this.positionStyle = this.positionAsStyle();
     }
 

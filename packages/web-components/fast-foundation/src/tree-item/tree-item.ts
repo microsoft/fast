@@ -40,7 +40,7 @@ export class TreeItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public expanded: boolean = false;
-    private expandedChanged(): void {
+    protected expandedChanged(): void {
         if (this.$fastController.isConnected) {
             this.$emit("expanded-change", this);
         }
@@ -54,7 +54,7 @@ export class TreeItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public selected: boolean;
-    private selectedChanged(): void {
+    protected selectedChanged(): void {
         if (this.$fastController.isConnected) {
             this.$emit("selected-change", this);
         }
@@ -99,7 +99,7 @@ export class TreeItem extends FoundationElement {
      */
     @observable
     public items: HTMLElement[];
-    private itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
+    protected itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this.items.forEach((node: HTMLElement) => {
                 if (isTreeItemElement(node)) {
