@@ -35,7 +35,7 @@ The markup above always references the latest release of the components. When de
 <script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-components@2.16.0/dist/fast-components.min.js"></script>
 ```
 
-The best place to put this is typically in your `_Layout.cshtml` file in the script section at the bottom of the `<body>`. Be sure to use double `@` if you are placing this script in any of the files with `cshtml` extension as compiler may confuse it with Razor directive:
+The best place to put this is typically in your `_Layout.cshtml` file in the script section at the bottom of the `<body>`. Be sure to use double `@` if you are placing this script in any of the files with `cshtml` extension as compiler will treat it with Razor directive:
 
 ```html
 <script type="module" src="https://cdn.jsdelivr.net/npm/@@microsoft/fast-components/dist/fast-components.min.js"></script>
