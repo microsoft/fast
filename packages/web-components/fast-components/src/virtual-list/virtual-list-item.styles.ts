@@ -24,10 +24,10 @@ export const virtualListItemStyles: (
         :host {
             position: absolute;
             display: block;
-            contain: size layout;
+            contain: layout;
             box-sizing: border-box;
-            height: 100%;
-            width: 100%;
+            height: auto;
+            width: auto;
             background: ${fillColor};
         }
     `.withBehaviors(

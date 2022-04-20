@@ -39,33 +39,6 @@ const horizontalImageItemTemplate = html`
     </fast-card>
 `;
 
-const verticalImageItemTemplate = html`
-    <fast-card
-        style="
-            position: absolute;
-            contain: strict;
-            height:  200px;
-            width:  100%;
-            transform: ${(x, c) =>
-            `translateY(${c.parent.visibleItemMap[c.index]?.start}px)`};
-        "
-    >
-        <div style="margin: 5px 20px 0 20px; color: white">
-            ${x => x.title}
-        </div>
-
-        <div
-            style="
-                height: 160px;
-                width:160px;
-                margin:10px 20px 10px 20px;
-                position: absolute;
-                background-image: url('${x => x.url}');
-            "
-        ></div>
-    </fast-card>
-`;
-
 const gridItemTemplate = html`
     <div
         style="
@@ -118,7 +91,12 @@ const rowItemTemplate = html`
 
 const listItemContentsTemplate = html`
     <fast-card>
-        <div style="margin: 5px 20px 0 20px; color: white">
+        <div
+            style="
+                margin: 5px 20px 0 20px;
+                color: white;
+            "
+        >
             ${x => x.listItemContext.titleString} ${x => x.itemData.title}
         </div>
         ${when(
@@ -129,18 +107,8 @@ const listItemContentsTemplate = html`
                 height: 160px;
                 width:160px;
                 margin:10px 20px 10px 20px;
-                position: absolute;
                 background-image: url('${x => x.itemData.url}');
             "
-                ></div>
-                <div
-                    style="
-                        height: 120px;
-                        margin:60px 10px 10px 10px;
-                        opacity: 0.5;
-                        display: flex;
-                        flex-direction: row;
-                    "
                 ></div>
             `
         )}
@@ -154,7 +122,6 @@ const listItemContentsTemplate = html`
                     height: 160px;
                     width:160px;
                     margin:10px 20px 10px 20px;
-                    position: absolute;
             "
                 ></div>
             `
@@ -162,20 +129,59 @@ const listItemContentsTemplate = html`
     </fast-card>
 `;
 
-const variableHeightContentsTemplate = html`
+const toggleHeightItemTemplate = html`
+    <fast-virtual-list-item
+        :itemData="${x => x}"
+        :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
+        :listItemContext="${(x, c) => c.parent.listItemContext}"
+        :idleCallbackQueue="${(x, c) => c.parent.idleCallbackQueue}"
+        :loadMode="${(x, c) => c.parent.listItemLoadMode}"
+        :listItemTemplate="${(x, c) => c.parent.listItemTemplate}"
+        style="
+            height: ${(x, c) => `${c.parent.visibleItemMap[c.index]?.size}px`};
+            transform: ${(x, c) =>
+            `translateY(${c.parent.visibleItemMap[c.index]?.start}px)`};
+        "
+    ></fast-virtual-list-item>
+`;
+
+const toggleHeightContentsTemplate = html`
     <div
         style="
             margin: 4px 0 4px 0;
-            width: 100%;
-            height: calc(100% - 8px);
+            width: 200px;
+            height: 100%;
         "
     >
         <button
             style="
-            width: 100%;
-            height: 100%;
-            background-image: url('${x => x.itemData.url}');
+                width: 100%;
+                height: 100%;
+                background-image: url('${x => x.itemData.url}');
+            "
+            @click="${(x, c) => toggleSizeMap(x.itemIndex)}"
+        >
+            <div style="background-color: white">
+                ${x => x.listItemContext.titleString} ${x => x.itemData.title}
+            </div>
+        </button>
+    </div>
+`;
+
+const variableHeightContentsTemplate = html`
+    <div
+        style="
+            margin: 4px 0 4px 0;
+            width: 200px;
+            height: ${x => x.itemData.itemHeight};
         "
+    >
+        <button
+            style="
+                width: 100%;
+                height: 100%;
+                background-image: url('${x => x.itemData.url}');
+            "
         >
             <div style="background-color: white">
                 ${x => x.listItemContext.titleString} ${x => x.itemData.title}
@@ -239,7 +245,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             titleString: "title:",
         };
         stackv1.items = data;
-        stackv1.onclick = toggleSize;
 
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
         stackv2.items = data;
@@ -252,11 +257,11 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackv3.sizemap = dataSizeMap;
         stackv3.items = data;
         stackv3.viewportElement = document.documentElement;
-        stackv3.listItemTemplate = variableHeightContentsTemplate;
+        stackv3.itemTemplate = toggleHeightItemTemplate;
+        stackv3.listItemTemplate = toggleHeightContentsTemplate;
         stackv3.listItemContext = {
             titleString: "title:",
         };
-        stackv3.onclick = toggleSizeMap;
 
         const reloadImmediateButton = document.getElementById("reloadimmediate");
         if (reloadImmediateButton) {
@@ -270,18 +275,17 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     }
 });
 
-function toggleSize(e: PointerEvent): void {
-    const listItem: HTMLElement = e.target as HTMLElement;
-    if (listItem.clientHeight === 200) {
-        listItem.style.height = "60px";
-    } else {
-        listItem.style.height = "200px";
-    }
-}
+// function toggleSize(e: PointerEvent): void {
+//     const listItem: HTMLElement = e.target as HTMLElement;
+//     if (listItem.clientHeight === 200) {
+//         listItem.style.height = "60px";
+//     } else {
+//         listItem.style.height = "200px";
+//     }
+// }
 
-function toggleSizeMap(e: PointerEvent): void {
+function toggleSizeMap(index: number): void {
     const stackv3 = document.getElementById("stackv3") as FoundationVirtualList;
-    const index: number = (e.target as VirtualListItem).itemIndex;
 
     let currentPosition: number = 0;
     const toggleMap: SizeMap[] = stackv3.sizemap.slice(0, index);
@@ -340,6 +344,7 @@ function newDataSet(rowCount: number, prefix: number): object[] {
             value: `${i}`,
             title: `item #${i}`,
             url: `https://picsum.photos/200/200?random=${prefix * 1000 + i}`,
+            itemHeight: `${100 + Math.floor(Math.random() * 100)}px`,
         });
     }
     return newData;

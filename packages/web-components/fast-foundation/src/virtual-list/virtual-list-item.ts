@@ -1,4 +1,4 @@
-import { observable, ViewTemplate } from "@microsoft/fast-element";
+import { HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element";
 import type { IdleCallbackQueue } from "../utilities/idle-callback-queue";
 
@@ -105,6 +105,8 @@ export class VirtualListItem extends FoundationElement {
 
     private idleLoadRequested: boolean = false;
 
+    private customView: HTMLView | null = null;
+
     /**
      * @internal
      */
@@ -123,6 +125,8 @@ export class VirtualListItem extends FoundationElement {
                 break;
         }
 
+        this.customView = this.listItemTemplate.render(this, this);
+
         this.$emit("listitemconnected");
     }
 
@@ -133,19 +137,23 @@ export class VirtualListItem extends FoundationElement {
         if (!this.loadContent && this.idleLoadRequested) {
             this.idleCallbackQueue?.cancelIdleCallback(this);
         }
+        this.$emit("listitemdisconnected");
         this.loadContent = false;
         this.idleLoadRequested = false;
-        this.$emit("listitemdisconnected");
+        if (this.customView) {
+            this.customView.dispose();
+            this.customView = null;
+        }
 
         super.disconnectedCallback();
     }
 
-    /**
-     * @internal
-     */
-    resolveTemplate(): ViewTemplate {
-        return this.listItemTemplate;
-    }
+    // /**
+    //  * @internal
+    //  */
+    // resolveTemplate(): ViewTemplate {
+    //     return this.listItemTemplate;
+    // }
 
     /**
      * Queue up for idle loading
