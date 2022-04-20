@@ -175,6 +175,36 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: auto-resize-items
+     */
+    @attr({ attribute: "auto-resize-items", mode: "boolean" })
+    public autoResizeItems: boolean;
+    private autoResizeItemsChanged(prev: boolean): void {
+        if (this.$fastController.isConnected) {
+            if (this.autoResizeItems) {
+                this.addEventListener("listitemconnected", this.handleListItemConnected);
+                this.addEventListener(
+                    "listitemdisconnected",
+                    this.handleListItemDisconnected
+                );
+            } else if (prev) {
+                this.removeEventListener(
+                    "listitemconnected",
+                    this.handleListItemConnected
+                );
+                this.removeEventListener(
+                    "listitemdisconnected",
+                    this.handleListItemDisconnected
+                );
+            }
+        }
+    }
+
+    /**
      * The HTML element being used as the viewport
      *
      * @public
@@ -346,6 +376,12 @@ export class VirtualList extends FoundationElement {
     // notifier used to trigger updates after changes to sizemap array
     private sizemapObserver: Notifier | null = null;
 
+    //
+    private pendingSizemap: SizeMap[] | null = null;
+
+    //
+    private pendingSizemapChangeIndex: number = -1;
+
     /**
      * flag that indicates whether an additional position update should be requested
      * after the current one resolves (ie. possible geometry changes after the last request)
@@ -376,6 +412,15 @@ export class VirtualList extends FoundationElement {
 
         this.initializeRepeatBehavior();
         this.initializeResizeDetector();
+
+        if (this.autoResizeItems) {
+            this.addEventListener("listitemconnected", this.handleListItemConnected);
+            this.addEventListener(
+                "listitemdisconnected",
+                this.handleListItemDisconnected
+            );
+        }
+
         this.doReset();
     }
 
@@ -392,6 +437,15 @@ export class VirtualList extends FoundationElement {
         this.unobserveSizeMap();
         this.visibleItems = this.visibleItems.splice(0, this.visibleItems.length);
         this.visibleItemMap = [];
+
+        if (this.autoResizeItems) {
+            this.removeEventListener("listitemconnected", this.handleListItemConnected);
+            this.removeEventListener(
+                "listitemdisconnected",
+                this.handleListItemDisconnected
+            );
+        }
+
         this.disconnectResizeDetector();
     }
 
@@ -427,6 +481,22 @@ export class VirtualList extends FoundationElement {
             size: this.itemSize,
         };
     };
+
+    public handleListItemConnected(e: Event): void {
+        if (e.defaultPrevented) {
+            return;
+        }
+        e.preventDefault();
+        this.resizeDetector?.observe(e.target as Element);
+    }
+
+    public handleListItemDisconnected(e: Event): void {
+        if (e.defaultPrevented) {
+            return;
+        }
+        e.preventDefault();
+        this.resizeDetector?.unobserve(e.target as Element);
+    }
 
     /**
      * starts observing the items array
@@ -468,6 +538,25 @@ export class VirtualList extends FoundationElement {
 
         const newObserver = (this.sizemapObserver = Observable.getNotifier(this.sizemap));
         newObserver.subscribe(this);
+    }
+
+    /**
+     * generates a default sizemap
+     */
+    private generateSizeMap(): SizeMap[] {
+        const sizemap: SizeMap[] = [];
+        const itemsCount: number = this.items.length;
+        let currentPosition: number = 0;
+        for (let i = 0; i < itemsCount; i++) {
+            const mapEnd = this.itemSize + currentPosition;
+            sizemap.push({
+                start: currentPosition,
+                size: this.itemSize,
+                end: mapEnd,
+            });
+            currentPosition = mapEnd;
+        }
+        return sizemap;
     }
 
     /**
@@ -549,6 +638,9 @@ export class VirtualList extends FoundationElement {
     private doReset(): void {
         this.pendingReset = false;
         this.cancelPendingPositionUpdates();
+        if (this.autoResizeItems) {
+            this.sizemap = this.generateSizeMap();
+        }
         this.observeItems();
         this.observeSizeMap();
         this.updateDimensions();
@@ -644,45 +736,67 @@ export class VirtualList extends FoundationElement {
     }
 
     private resizeDetected(entries: ResizeObserverEntry[]): void {
-        let itemsResized: boolean = false;
-        const newMap: SizeMap[] = this.sizemap.slice(0);
-
+        let recalculateNeeded: boolean = false;
         entries.forEach((entry: ResizeObserverEntry) => {
             if (entry.target === this.viewportElement || entry.target === this) {
                 this.requestPositionUpdates();
-                return;
             } else {
-                itemsResized = true;
-                const index: number = (entry.target as VirtualListItem).itemIndex;
-                const itemSizeMap: SizeMap = {
-                    start: newMap[index].start,
-                    size:
-                        this.orientation === Orientation.vertical
-                            ? entry.contentRect.height
-                            : entry.contentRect.width,
-                    end: newMap[index].end,
-                };
-                newMap.splice(index, 1, itemSizeMap);
+                if ((entry.target as VirtualListItem).$fastController.isConnected) {
+                    const index: number = (entry.target as VirtualListItem).itemIndex;
+                    if (
+                        this.pendingSizemapChangeIndex === -1 ||
+                        index < this.pendingSizemapChangeIndex
+                    ) {
+                        this.pendingSizemapChangeIndex = index;
+                    }
+                    if (this.pendingSizemap === null) {
+                        this.pendingSizemap = this.sizemap.slice();
+                        recalculateNeeded = true;
+                    }
+                    const itemSizeMap: SizeMap = {
+                        start: this.pendingSizemap[index].start,
+                        size:
+                            this.orientation === Orientation.vertical
+                                ? entry.contentRect.height
+                                : entry.contentRect.width,
+                        end: this.pendingSizemap[index].end,
+                    };
+                    this.pendingSizemap.splice(index, 1, itemSizeMap);
+                }
             }
-            if (!itemsResized) {
-                return;
-            }
-
-            const mapLength: number = this.sizemap.length;
-
-            let currentPosition: number = 0;
-            for (let i: number = 0; i < mapLength; i++) {
-                const nextPosition = currentPosition + newMap[i].size;
-                newMap.splice(i, 1, {
-                    start: currentPosition,
-                    size: newMap[i].size,
-                    end: nextPosition,
+            if (recalculateNeeded) {
+                DOM.queueUpdate(() => {
+                    this.recalculateSizeMap();
                 });
-                currentPosition = nextPosition;
             }
-
-            this.sizemap = newMap;
         });
+    }
+
+    /**
+     *
+     */
+    private recalculateSizeMap(): void {
+        if (this.pendingSizemap === null) {
+            return;
+        }
+
+        const mapLength: number = this.pendingSizemap.length;
+
+        let currentPosition: number = this.pendingSizemap[this.pendingSizemapChangeIndex]
+            .start;
+        for (let i: number = this.pendingSizemapChangeIndex; i < mapLength; i++) {
+            const nextPosition = currentPosition + this.pendingSizemap[i].size;
+            this.pendingSizemap.splice(i, 1, {
+                start: currentPosition,
+                size: this.pendingSizemap[i].size,
+                end: nextPosition,
+            });
+            currentPosition = nextPosition;
+        }
+
+        this.sizemap = this.pendingSizemap;
+        this.pendingSizemap = null;
+        this.pendingSizemapChangeIndex = -1;
     }
 
     /**
@@ -867,7 +981,7 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
-     *  Updates the size maps
+     *  Updates the visible items size map
      */
     private updateVisibleItemSizes(
         newFirstRenderedIndex: number,

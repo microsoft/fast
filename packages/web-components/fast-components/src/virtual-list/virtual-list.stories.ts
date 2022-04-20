@@ -233,9 +233,13 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackGrid.items = gridData;
 
         const stackv1 = document.getElementById("stackv1") as FoundationVirtualList;
-        stackv1.itemTemplate = verticalImageItemTemplate;
         stackv1.viewportElement = document.documentElement;
+        stackv1.listItemTemplate = variableHeightContentsTemplate;
+        stackv1.listItemContext = {
+            titleString: "title:",
+        };
         stackv1.items = data;
+        stackv1.onclick = toggleSize;
 
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
         stackv2.items = data;
@@ -252,7 +256,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackv3.listItemContext = {
             titleString: "title:",
         };
-        stackv3.onclick = toggleSize;
+        stackv3.onclick = toggleSizeMap;
 
         const reloadImmediateButton = document.getElementById("reloadimmediate");
         if (reloadImmediateButton) {
@@ -267,6 +271,15 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 });
 
 function toggleSize(e: PointerEvent): void {
+    const listItem: HTMLElement = e.target as HTMLElement;
+    if (listItem.clientHeight === 200) {
+        listItem.style.height = "60px";
+    } else {
+        listItem.style.height = "200px";
+    }
+}
+
+function toggleSizeMap(e: PointerEvent): void {
     const stackv3 = document.getElementById("stackv3") as FoundationVirtualList;
     const index: number = (e.target as VirtualListItem).itemIndex;
 

@@ -46,11 +46,11 @@ export class FASTVirtualList extends VirtualList{}
 | Name                | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | ------------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | `loadMode`          | public  | `VirtualListItemLoadMode`             |         |                                                                                                                                                                                     |                   |
-| `itemData`          | public  | `object`                              |         | The ViewTemplate used to render contents.                                                                                                                                           |                   |
+| `itemData`          | public  | `object`                              |         | The data associated with this item                                                                                                                                                  |                   |
 | `itemIndex`         | public  | `number`                              |         | The index of the item in the items array.                                                                                                                                           |                   |
 | `listItemContext`   | public  | `VirtualListItemContext`              |         | Custom context provided to the parent virtual list                                                                                                                                  |                   |
 | `idleCallbackQueue` | public  | `IdleCallbackQueue`                   |         | idleCallbackQueue instance                                                                                                                                                          |                   |
-| `listItemTemplate`  | public  | `ViewTemplate`                        |         |                                                                                                                                                                                     |                   |
+| `listItemTemplate`  | public  | `ViewTemplate`                        |         | The viewtemplate used to render the item                                                                                                                                            |                   |
 | `$presentation`     | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
 | `template`          | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
 | `styles`            | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
@@ -88,6 +88,7 @@ export class FASTVirtualList extends VirtualList{}
 | `recycle`               | public  | `boolean`                             | `true`     | Whether or not to recycle the html container used to display items. May help performance but containers may retain artifacts from previous use that developers will need to clear.       |                   |
 | `items`                 | public  | `object[]`                            | `[]`       | The array of items to be displayed                                                                                                                                                       |                   |
 | `sizemap`               | public  | `SizeMap[]`                           |            | The sizemap for the items Authors need to provide a sizemap for arrays of irregular size items, when the items have a uniform size use the 'item-size' attribute instead.                |                   |
+| `autoResizeItems`       | public  | `boolean`                             |            |                                                                                                                                                                                          |                   |
 | `viewportElement`       | public  | `HTMLElement`                         |            | The HTML element being used as the viewport                                                                                                                                              |                   |
 | `itemTemplate`          | public  | `ViewTemplate`                        |            | The ViewTemplate used in the items repeat loop                                                                                                                                           |                   |
 | `listItemTemplate`      | public  | `ViewTemplate`                        |            | The ViewTemplate used to render a virtual list item                                                                                                                                      |                   |
@@ -100,13 +101,15 @@ export class FASTVirtualList extends VirtualList{}
 
 #### Methods
 
-| Name                     | Privacy   | Description             | Parameters | Return | Inherited From    |
-| ------------------------ | --------- | ----------------------- | ---------- | ------ | ----------------- |
-| `update`                 | public    | Request a layout update |            | `void` |                   |
-| `requestPositionUpdates` | protected | get position updates    |            | `void` |                   |
-| `reset`                  | protected | request reset           |            | `void` |                   |
-| `templateChanged`        | protected |                         |            | `void` | FoundationElement |
-| `stylesChanged`          | protected |                         |            | `void` | FoundationElement |
+| Name                         | Privacy   | Description             | Parameters | Return | Inherited From    |
+| ---------------------------- | --------- | ----------------------- | ---------- | ------ | ----------------- |
+| `update`                     | public    | Request a layout update |            | `void` |                   |
+| `handleListItemConnected`    | public    |                         | `e: Event` | `void` |                   |
+| `handleListItemDisconnected` | public    |                         | `e: Event` | `void` |                   |
+| `requestPositionUpdates`     | protected | get position updates    |            | `void` |                   |
+| `reset`                      | protected | request reset           |            | `void` |                   |
+| `templateChanged`            | protected |                         |            | `void` | FoundationElement |
+| `stylesChanged`              | protected |                         |            | `void` | FoundationElement |
 
 #### Attributes
 
@@ -120,6 +123,7 @@ export class FASTVirtualList extends VirtualList{}
 | `orientation`            | orientation           |                |
 | `auto-update-mode`       | autoUpdateMode        |                |
 | `recycle`                | recycle               |                |
+| `auto-resize-items`      | autoResizeItems       |                |
 | `idle-callback-timeout`  | idleCallbackTimeout   |                |
 
 <hr/>
