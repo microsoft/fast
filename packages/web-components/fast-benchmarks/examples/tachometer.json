@@ -5,7 +5,7 @@
     "benchmarks": [
         {
             "name": "previous-version",
-            "url": "fast-element/binding/index.html",
+            "url": "benchmarks/fast-element/binding/index.html",
             "browser": {
                 "name": "chrome",
                 "headless": true
@@ -25,7 +25,7 @@
         },
         {
             "name": "current-version",
-            "url": "fast-element/binding/index.html",
+            "url": "benchmarks/fast-element/binding/index.html",
             "browser": {
                 "name": "chrome",
                 "headless": true
@@ -54,7 +54,7 @@
         },
         {
             "name": "local-version",
-            "url": "fast-element/binding/index2.html",
+            "url": "benchmarks/fast-element/binding/index2.html",
             "browser": {
                 "name": "chrome",
                 "headless": true

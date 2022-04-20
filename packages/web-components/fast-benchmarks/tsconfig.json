@@ -16,8 +16,7 @@
         "noImplicitThis": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
-        "experimentalDecorators": true
-    },
-    "include": ["fast-element/**/*.ts", "utils/**/*.ts"],
-    "exclude": []
+        "experimentalDecorators": true,
+        "skipLibCheck": true
+    }
 }

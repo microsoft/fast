@@ -1,21 +1,20 @@
 import {
     attr,
+    bind,
     css,
     customElement,
     FASTElement,
     html,
-    observable,
+    oneTime,
     repeat,
 } from "@microsoft/fast-element";
-
-import { _random, adjectives, colours, nouns } from "../../utils/constants.js";
+import { _random, adjectives, colours, nouns } from "../../../utils/constants.js";
 import runBenchmark from "./shared.js";
 
 const itemCount = 250;
 let id = 0;
-
 export class RandomItem {
-    @observable label: string;
+    label: string;
 
     constructor(public readonly id: number) {
         this.label =
@@ -63,11 +62,13 @@ class XItem extends FASTElement {
 }
 
 const xAppTemplate = html<XApp>`
-    <div id="container">
+    <div id="test-container">
         ${repeat(
             x => x.items,
-            html`
-                <x-item :value="${x => x.label}"></x-item>
+            html<RandomItem>`
+                <x-item
+                    :value="${bind((x: { label: string }) => x.label, oneTime)}"
+                ></x-item>
             `
         )}
     </div>
@@ -77,7 +78,7 @@ const xAppTemplate = html<XApp>`
     template: xAppTemplate,
 })
 class XApp extends FASTElement {
-    @observable items: RandomItem[] = data;
+    items: RandomItem[] = data;
 }
 
 runBenchmark();

@@ -16,8 +16,8 @@ function measureMemory() {
         window.usedJSHeapSize = 0;
     }
 }
-//support older browsesrs or if we're not using modules
 
+//support older browsesrs or if we're not using modules
 export default async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
@@ -33,7 +33,8 @@ export default async () => {
     const updateComplete = () => new Promise(r => requestAnimationFrame(r));
 
     const render = async () => {
-        const test = "binding";
+        // can change to main dir file name
+        const test = "render";
         const start = getTestStartName(test);
         performance.mark(start);
         create();
