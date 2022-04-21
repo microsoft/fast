@@ -26,7 +26,7 @@ export const toolbarTemplate: FoundationElementTemplate<
             property: "childItems",
             attributeFilter: ["disabled", "hidden"],
             filter: elements(),
-            subtree: true
+            subtree: true,
         })}
     >
         <slot name="label"></slot>
