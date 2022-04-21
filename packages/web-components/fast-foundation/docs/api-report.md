@@ -2440,7 +2440,7 @@ export class Tabs extends FoundationElement {
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
-    adjust(adjustment: number): void;
+    adjust(adjustment: number, supressFocus?: boolean): void;
     // @internal (undocumented)
     connectedCallback(): void;
     orientation: TabsOrientation;
@@ -2456,7 +2456,8 @@ export class Tabs extends FoundationElement {
     tabs: HTMLElement[];
     // @internal (undocumented)
     tabsChanged(): void;
-    }
+    protected togglePanel(tabpanel: HTMLElement, show: boolean): void;
+}
 
 // @internal
 export interface Tabs extends StartEnd {

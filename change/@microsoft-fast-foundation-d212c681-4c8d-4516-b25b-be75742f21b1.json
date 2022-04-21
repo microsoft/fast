@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "fix: adds updates to tabs to support info-pane",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}

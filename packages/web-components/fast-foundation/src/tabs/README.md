@@ -127,11 +127,12 @@ export const myTabs = Tabs.compose({
 
 #### Methods
 
-| Name              | Privacy   | Description                    | Parameters           | Return | Inherited From    |
-| ----------------- | --------- | ------------------------------ | -------------------- | ------ | ----------------- |
-| `adjust`          | public    | The adjust method for FASTTabs | `adjustment: number` | `void` |                   |
-| `templateChanged` | protected |                                |                      | `void` | FoundationElement |
-| `stylesChanged`   | protected |                                |                      | `void` | FoundationElement |
+| Name              | Privacy   | Description                                   | Parameters                                  | Return | Inherited From    |
+| ----------------- | --------- | --------------------------------------------- | ------------------------------------------- | ------ | ----------------- |
+| `togglePanel`     | protected | Helper method that shows and hides tab panels | `tabpanel: HTMLElement, show: boolean`      |        |                   |
+| `adjust`          | public    | The adjust method for FASTTabs                | `adjustment: number, supressFocus: boolean` | `void` |                   |
+| `templateChanged` | protected |                                               |                                             | `void` | FoundationElement |
+| `stylesChanged`   | protected |                                               |                                             | `void` | FoundationElement |
 
 #### Attributes
 

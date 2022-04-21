@@ -15,6 +15,7 @@ export const tabsTemplate: FoundationElementTemplate<ViewTemplate<Tabs>, TabsOpt
     <template class="${x => x.orientation}">
         ${startSlotTemplate(context, definition)}
         <div class="tablist" part="tablist" role="tablist">
+            <slot name="tabs-start"></slot>
             <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>
 
             ${when(
@@ -27,6 +28,7 @@ export const tabsTemplate: FoundationElementTemplate<ViewTemplate<Tabs>, TabsOpt
                     ></div>
                 `
             )}
+            <slot name="tabs-end"></slot>
         </div>
         ${endSlotTemplate(context, definition)}
         <div class="tabpanel">

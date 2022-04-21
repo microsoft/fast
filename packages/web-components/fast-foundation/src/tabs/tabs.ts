@@ -217,6 +217,19 @@ export class Tabs extends FoundationElement {
         });
     };
 
+    /**
+     * Helper method that shows and hides tab panels
+     * @param tabpanel - the panel that should be toggled off or on
+     * @param show - Should show or hide
+     */
+    protected togglePanel(tabpanel: HTMLElement, show: boolean) {
+        if (show) {
+            tabpanel.removeAttribute("hidden");
+        } else {
+            tabpanel.setAttribute("hidden", "");
+        }
+    }
+
     private setTabPanels = (): void => {
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
@@ -225,9 +238,7 @@ export class Tabs extends FoundationElement {
             const tabpanelId: string = this.tabpanelIds[index];
             tabpanel.setAttribute("id", tabpanelId);
             tabpanel.setAttribute("aria-labelledby", tabId);
-            this.activeTabIndex !== index
-                ? tabpanel.setAttribute("hidden", "")
-                : tabpanel.removeAttribute("hidden");
+            this.togglePanel(tabpanel, this.activeTabIndex === index);
         });
     };
 
@@ -243,10 +254,12 @@ export class Tabs extends FoundationElement {
         });
     }
 
-    private setComponent(): void {
+    private setComponent(supressFocus: boolean = false): void {
         if (this.activeTabIndex !== this.prevActiveTabIndex) {
             this.activeid = this.tabIds[this.activeTabIndex] as string;
-            this.focusTab();
+            if (!supressFocus) {
+                this.focusTab();
+            }
             this.change();
         }
     }
@@ -344,14 +357,14 @@ export class Tabs extends FoundationElement {
      * @remarks
      * This method allows the active index to be adjusted by numerical increments
      */
-    public adjust(adjustment: number): void {
+    public adjust(adjustment: number, supressFocus: boolean = false): void {
         this.prevActiveTabIndex = this.activeTabIndex;
         this.activeTabIndex = wrapInBounds(
             0,
             this.tabs.length - 1,
             this.activeTabIndex + adjustment
         );
-        this.setComponent();
+        this.setComponent(supressFocus);
     }
 
     private adjustForward = (e: KeyboardEvent): void => {
@@ -401,7 +414,6 @@ export class Tabs extends FoundationElement {
         this.activetab = tab;
         this.prevActiveTabIndex = this.activeTabIndex;
         this.activeTabIndex = index;
-        tab.focus();
         this.setComponent();
     };
 
