@@ -1,6 +1,6 @@
 import { css, DOM, html } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { HorizontalScroll, horizontalScrollTemplate as template } from "./index";
 
 const styles = css`

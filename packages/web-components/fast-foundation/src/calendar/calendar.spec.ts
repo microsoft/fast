@@ -1,6 +1,6 @@
 import { customElement, DOM, html } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { Calendar, calendarTemplate } from "./index";
 import { DateFormatter } from "./date-formatter";
 import {

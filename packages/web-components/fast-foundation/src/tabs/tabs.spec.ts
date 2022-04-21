@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
 import { css, DOM, customElement, html } from "@microsoft/fast-element";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { Tab, tabTemplate } from "../tab";
 import { TabPanel, tabPanelTemplate } from "../tab-panel";
 import { TabsOrientation, Tabs, tabsTemplate as template } from "./index";

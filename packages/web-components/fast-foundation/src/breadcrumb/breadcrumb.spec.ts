@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Breadcrumb, breadcrumbTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { BreadcrumbItem, breadcrumbItemTemplate } from "../breadcrumb-item";
 import { DOM } from "@microsoft/fast-element";
 

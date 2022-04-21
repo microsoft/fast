@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { BaseProgress as Progress, progressTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { customElement } from "@microsoft/fast-element";
 
 const FASTProgress = Progress.compose({

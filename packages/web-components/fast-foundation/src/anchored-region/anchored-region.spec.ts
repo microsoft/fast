@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { AnchoredRegion, anchoredRegionTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { DOM } from "@microsoft/fast-element";
 
 const FASTAnchoredRegion = AnchoredRegion.compose({
@@ -61,7 +61,7 @@ describe("Anchored Region", () => {
 
         await connect();
         await DOM.nextUpdate();
-        
+
         expect(element.clientHeight).to.equal(content.clientHeight);
         expect(element.clientWidth).to.equal(content.clientWidth);
 

@@ -2,7 +2,7 @@ import { DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { ListboxOption } from "../listbox-option/listbox-option";
 import { listboxOptionTemplate as itemTemplate } from "../listbox-option/listbox-option.template";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { ListboxElement, listboxTemplate as template } from "./index";
 
 describe("Listbox", () => {
