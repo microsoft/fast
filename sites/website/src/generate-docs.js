@@ -247,7 +247,6 @@ async function copyArticleMarkdown() {
                 `title: ${file.metadata.title}`,
                 `sidebar_label: ${file.metadata.sidebar_label}`,
                 `custom_edit_url: ${file.metadata.custom_edit_url}`,
-                `custom_description: ${file.metadata.description}`,
                 "---",
             ];
 
