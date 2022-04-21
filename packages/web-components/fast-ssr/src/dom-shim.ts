@@ -66,13 +66,15 @@ class HTMLElement extends Element {
     public style = new CSSStyleDeclaration();
 
     public get attributes(): { name: string; value: string }[] {
-        return Array.from(this.#attributes).map(([name, value]) => {
-            if (typeof value === "string") {
-                return { name, value };
-            } else {
-                return { name, value: value.toString() };
-            }
-        });
+        return Array.from(this.#attributes)
+            .filter(([name, value]) => value !== undefined && value !== null)
+            .map(([name, value]) => {
+                if (typeof value === "string") {
+                    return { name, value };
+                } else {
+                    return { name, value: value.toString() };
+                }
+            });
     }
 
     public get shadowRoot() {
