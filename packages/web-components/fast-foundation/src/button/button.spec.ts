@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { DOM } from "@microsoft/fast-element";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { Button, buttonTemplate as template } from "./index";
 import { eventClick } from "@microsoft/fast-web-utilities";
 
@@ -609,7 +609,7 @@ describe("Button", () => {
                spans.forEach((span: HTMLSpanElement) => {
                    span.click()
                    expect(wasClicked).to.equal(false);
-               }) 
+               })
             }
 
             await disconnect();

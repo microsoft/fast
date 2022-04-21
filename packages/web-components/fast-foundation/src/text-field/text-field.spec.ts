@@ -1,5 +1,5 @@
 import { expect, assert } from "chai";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { TextField, textFieldTemplate as template } from "./index";
 import { TextFieldType } from "./text-field";
 

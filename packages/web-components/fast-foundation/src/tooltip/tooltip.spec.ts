@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { DOM } from "@microsoft/fast-element";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { tooltipTemplate as template, Tooltip } from "./index";
 import { TooltipPosition } from "./tooltip";
 import { AnchoredRegion, anchoredRegionTemplate } from '../anchored-region';
