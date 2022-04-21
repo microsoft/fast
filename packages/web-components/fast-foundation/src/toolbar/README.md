@@ -96,17 +96,19 @@ export const myToolbar = Toolbar.compose({
 | --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | `activeIndex`   |         |                                       |         |                                                                                                                                                                                     |                   |
 | `orientation`   | public  | `Orientation`                         |         | The orientation of the toolbar.                                                                                                                                                     |                   |
+| `childItems`    | public  | `Element[]`                           |         |                                                                                                                                                                                     |                   |
 | `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
 | `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
 | `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
-| Name                  | Privacy   | Description | Parameters | Return | Inherited From    |
-| --------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `slottedItemsChanged` | protected |             |            | `void` |                   |
-| `templateChanged`     | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`       | protected |             |            | `void` | FoundationElement |
+| Name                  | Privacy   | Description | Parameters                                      | Return | Inherited From    |
+| --------------------- | --------- | ----------- | ----------------------------------------------- | ------ | ----------------- |
+| `slottedItemsChanged` | protected |             |                                                 | `void` |                   |
+| `childItemsChanged`   | protected |             | `prev: undefined or Element[], next: Element[]` | `void` |                   |
+| `templateChanged`     | protected |             |                                                 | `void` | FoundationElement |
+| `stylesChanged`       | protected |             |                                                 | `void` | FoundationElement |
 
 #### Attributes
 
