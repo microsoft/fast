@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 20 Apr 2022 07:13:17 GMT and should not be manually modified.
+This log was last generated on Thu, 21 Apr 2022 07:13:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.29.1
+
+Thu, 21 Apr 2022 07:13:54 GMT
+
+### Patches
+
+- Added support for styling slider value on the track (47367562+bheston@users.noreply.github.com)
 
 ## 2.29.0
 
