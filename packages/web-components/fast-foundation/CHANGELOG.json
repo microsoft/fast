@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 21 Apr 2022 07:13:54 GMT",
+      "tag": "@microsoft/fast-foundation_v2.42.2",
+      "version": "2.42.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "Improve wording for usage of `@@`.",
+            "author": "eimantas@stork.software",
+            "commit": "0be3fad176207292996440f208bd1c9812499b46",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Added support for styling slider value on the track",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "20836e97d291137c5600fb4ee6d643c2b55b11ee",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Apr 2022 07:13:17 GMT",
       "tag": "@microsoft/fast-foundation_v2.42.1",
       "version": "2.42.1",
