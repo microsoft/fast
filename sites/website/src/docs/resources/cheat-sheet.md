@@ -703,6 +703,13 @@ typeRampBaseFontSize.setValueFor(myElement, "20px");
 
 ---
 
+
+### [Branch Guide](https://www.fast.design/docs/community/branch-guide)
+
+When contributing to the FAST repository, please follow the standards defined in this guide.
+
+---
+
 ### [Contributing to `fast-components`](https://www.fast.design/docs/community/contributor-guide/#developing-in-fast-components)
 
 ```shell
