@@ -102,11 +102,12 @@ export const myToolbar = Toolbar.compose({
 
 #### Methods
 
-| Name                  | Privacy   | Description | Parameters | Return | Inherited From    |
-| --------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `slottedItemsChanged` | protected |             |            | `void` |                   |
-| `templateChanged`     | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`       | protected |             |            | `void` | FoundationElement |
+| Name                  | Privacy   | Description | Parameters                                      | Return | Inherited From    |
+| --------------------- | --------- | ----------- | ----------------------------------------------- | ------ | ----------------- |
+| `slottedItemsChanged` | protected |             |                                                 | `void` |                   |
+| `childItemsChanged`   | protected |             | `prev: undefined or Element[], next: Element[]` | `void` |                   |
+| `templateChanged`     | protected |             |                                                 | `void` | FoundationElement |
+| `stylesChanged`       | protected |             |                                                 | `void` | FoundationElement |
 
 #### Attributes
 

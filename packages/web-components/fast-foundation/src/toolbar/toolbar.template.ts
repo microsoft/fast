@@ -1,4 +1,4 @@
-import { elements, html, slotted } from "@microsoft/fast-element";
+import { children, elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
@@ -22,6 +22,12 @@ export const toolbarTemplate: FoundationElementTemplate<
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusin="${(x, c) => x.focusinHandler(c.event as FocusEvent)}"
         @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
+        ${children({
+            property: "childItems",
+            attributeFilter: ["disabled", "hidden"],
+            filter: elements(),
+            subtree: true
+        })}
     >
         <slot name="label"></slot>
         <div class="positioning-region" part="positioning-region">

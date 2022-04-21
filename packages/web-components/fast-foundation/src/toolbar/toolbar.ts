@@ -107,7 +107,9 @@ export class Toolbar extends FoundationElement {
     @observable
     public slottedItems: HTMLElement[];
     protected slottedItemsChanged(): void {
-        this.childElementsChange();
+        if (this.$fastController.isConnected) {
+            this.reduceFocusableElements();
+        }
     }
 
     /**
@@ -132,7 +134,13 @@ export class Toolbar extends FoundationElement {
         return true;
     }
 
-    private observer: MutationObserver;
+    @observable
+    public childItems: Element[];
+    protected childItemsChanged(prev: undefined | Element[], next: Element[]): void {
+        if (this.$fastController.isConnected) {
+            this.reduceFocusableElements();
+        }
+    }
 
     /**
      * @internal
@@ -140,24 +148,6 @@ export class Toolbar extends FoundationElement {
     public connectedCallback() {
         super.connectedCallback();
         this.direction = getDirection(this);
-        this.start.addEventListener("slotchange", this.childElementsChange);
-        this.end.addEventListener("slotchange", this.childElementsChange);
-        this.observer = new MutationObserver(this.childElementsChange);
-        // only observe if the disabled or hidden state of nodes change
-        this.observer.observe(this, {
-            subtree: true,
-            attributeFilter: ["disabled", "hidden"],
-        });
-    }
-
-    /**
-     * @internal
-     */
-    public disconnectedCallback() {
-        super.disconnectedCallback();
-        this.start.removeEventListener("slotchange", this.childElementsChange);
-        this.end.removeEventListener("slotchange", this.childElementsChange);
-        this.observer.disconnect();
     }
 
     /**
@@ -317,12 +307,6 @@ export class Toolbar extends FoundationElement {
             });
         }
     }
-
-    private childElementsChange = (): void => {
-        if (this.$fastController.isConnected) {
-            this.reduceFocusableElements();
-        }
-    };
 }
 
 /**
