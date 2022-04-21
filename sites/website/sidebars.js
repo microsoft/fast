@@ -151,6 +151,7 @@ module.exports = {
                 "community/join",
                 "community/code-of-conduct",
                 "community/contributor-guide",
+                "community/branch-guide",
                 "community/writing-documentation",
                 {
                     type: "category",
