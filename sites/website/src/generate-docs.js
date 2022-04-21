@@ -138,6 +138,18 @@ async function copyArticleMarkdown() {
             },
         },
         {
+            src: path.resolve(root, "BRANCH_GUIDE.md"),
+            dest: path.resolve(outputDir, "community/branch-guide.md"),
+            metadata: {
+                id: "branch-guide",
+                title: "Branch Guide",
+                sidebar_label: "Branch Guide",
+                custom_edit_url:
+                    "https://github.com/microsoft/fast/blob/master/BRANCH_GUIDE.md",
+                desciption: "A branch guide for the FAST repository.",
+            },
+        },
+        {
             src: path.resolve(root, "LICENSE"),
             dest: path.resolve(outputDir, "resources/license.md"),
             metadata: {
