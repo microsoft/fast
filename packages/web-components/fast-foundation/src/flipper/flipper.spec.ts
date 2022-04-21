@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { DOM } from "@microsoft/fast-element";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { FlipperDirection } from "./flipper.options";
 import { Flipper, flipperTemplate as template } from "./index";
 
@@ -75,7 +75,7 @@ describe("Flipper", () => {
         const { element, connect, disconnect } = await setup();
 
         element.setAttribute("aria-hidden", "false");
-        
+
         await connect();
         await DOM.nextUpdate();
 

@@ -1,6 +1,6 @@
 import { DOM } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { NumberField, numberFieldTemplate as template } from "./index";
 
 const FASTNumberField = NumberField.compose({

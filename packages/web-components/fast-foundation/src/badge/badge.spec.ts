@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Badge, badgeTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 
 const FASTBadge = Badge.compose({
     baseName: "badge",

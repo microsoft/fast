@@ -1,8 +1,8 @@
 import { DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { listboxOptionTemplate } from "../listbox-option/listbox-option.template.js";
-import { fixture } from "../test-utilities/fixture.js";
-import { ListboxOption } from "./listbox-option.js";
+import { listboxOptionTemplate } from "../listbox-option/listbox-option.template";
+import { fixture } from "../testing/fixture";
+import { ListboxOption } from "./listbox-option";
 
 describe("ListboxOption", () => {
     const FASTOption = ListboxOption.compose({

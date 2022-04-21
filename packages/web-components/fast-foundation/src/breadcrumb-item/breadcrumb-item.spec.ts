@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { BreadcrumbItem, breadcrumbItemTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 
 const FASTBreadcrumbItem = BreadcrumbItem.compose({
     baseName: "breadcrumb-item",
