@@ -88,12 +88,12 @@ export class VirtualListItem extends FoundationElement {
     public idleCallbackQueue: IdleCallbackQueue;
 
     /**
-     * The viewtemplate used to render the item
+     * The viewtemplate used to render the item contents
      *
      * @public
      */
     @observable
-    public listItemTemplate: ViewTemplate;
+    public listItemContentsTemplate: ViewTemplate;
 
     /**
      *  Flag indicating whether the item should load contents
@@ -125,7 +125,9 @@ export class VirtualListItem extends FoundationElement {
                 break;
         }
 
-        this.customView = this.listItemTemplate.render(this, this);
+        if (this.listItemContentsTemplate) {
+            this.customView = this.listItemContentsTemplate.render(this, this);
+        }
 
         this.$emit("listitemconnected");
     }
