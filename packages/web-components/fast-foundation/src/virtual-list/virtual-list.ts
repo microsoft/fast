@@ -25,7 +25,7 @@ import type {
 } from "./virtual-list-item";
 
 /**
- * Defines when the component updates its position automatically.
+ * Defines what triggers the component to update layout.
  *
  * @public
  */
@@ -38,12 +38,14 @@ export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
  */
 export class VirtualList extends FoundationElement {
     /**
-     *
-     *
-     * @public
+     * Item size to use if one is not specified
      */
-    @attr({ attribute: "list-item-load-mode" })
-    public listItemLoadMode: VirtualListItemLoadMode;
+    private static defaultItemSize = 50;
+
+    /**
+     * Viewport buffer to use if one is not specified
+     */
+    private static defaultViewportBuffer = 100;
 
     /**
      *  Whether or not the display should virtualize
@@ -59,7 +61,9 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
-     * The HTML ID of the viewport element
+     * The HTML ID of the viewport element.
+     * If no viewport is set the default viewport is the element itself.
+     * Note that viewportElement can be set directly as well.
      *
      * @public
      * @remarks
@@ -75,14 +79,16 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
-     * The size in pixels of each item along the virtualization axis
+     * The size in pixels of each item along the virtualization axis.
+     * When auto-resizing this is the amount of space reserved for elements until
+     * they actually render and report size.  The default value is 50.
      *
      * @public
      * @remarks
      * HTML Attribute: item-size
      */
     @attr({ attribute: "item-size", converter: nullableNumberConverter })
-    public itemSize: number = 50;
+    public itemSize: number = VirtualList.defaultItemSize;
     private itemSizeChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateDimensions();
@@ -91,18 +97,23 @@ export class VirtualList extends FoundationElement {
 
     /**
      * Defines an area in pixels on either end of the viewport where items outside the viewport
-     * will still be rendered.
+     * will still be rendered.  The default value is 100.
      *
      * @public
      * @remarks
      * HTML Attribute: viewport-buffer
      */
     @attr({ attribute: "viewport-buffer", converter: nullableNumberConverter })
-    public viewportBuffer: number = 100;
+    public viewportBuffer: number = VirtualList.defaultViewportBuffer;
+    private viewportBufferChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateDimensions();
+        }
+    }
 
     /**
      * Whether the list is oriented vertically or horizontally.
-     * Default is vertical
+     * Default is vertical.
      *
      * @public
      * @remarks
@@ -146,7 +157,7 @@ export class VirtualList extends FoundationElement {
     public recycle: boolean = true;
 
     /**
-     *  The array of items to be displayed
+     *  The array of items to be displayed.
      *
      * @public
      */
@@ -175,7 +186,8 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
-     *
+     * When true the virtual list component will track the size of child virtual-list-items and automatically
+     * update the size of the item in the size map.
      *
      * @public
      * @remarks
@@ -242,6 +254,21 @@ export class VirtualList extends FoundationElement {
     public listItemContext: object;
 
     /**
+     * Determines when child virtual list items load content,
+     * or more specifically when the item's "loadContent" observable prop
+     * becomes 'true'.
+     *
+     * "immediate": When the component connects.
+     * "manual": When set manually by some external code (ie. 'myListItem.laodContent = true')
+     * "idle": Items are loaded based on available idle cycles.
+     *
+     *
+     * @public
+     */
+    @attr({ attribute: "list-item-load-mode" })
+    public listItemLoadMode: VirtualListItemLoadMode;
+
+    /**
      * Defines the idle callback timeout value.
      * Defaults to 1000
      *
@@ -274,7 +301,8 @@ export class VirtualList extends FoundationElement {
     public defaultHorizontalItemTemplate: ViewTemplate;
 
     /**
-     * The items that are currently visible (includes buffer regions)
+     * The items that are currently visible (includes buffer regions).
+     * This is the array used by the component repeat directive.
      *
      * @internal
      */
@@ -333,7 +361,8 @@ export class VirtualList extends FoundationElement {
     public lastRenderedIndex: number = -1;
 
     /**
-     * the idle callback queue for this list instance
+     * the idle callback queue for this list instance.
+     * List items can use this instance to coordinate idle loading.
      *
      * @internal
      */
@@ -376,14 +405,17 @@ export class VirtualList extends FoundationElement {
     // notifier used to trigger updates after changes to sizemap array
     private sizemapObserver: Notifier | null = null;
 
-    //
+    // A sizemap[] that is being recalculated but has not yet been applied
     private pendingSizemap: SizeMap[] | null = null;
 
-    //
+    /**
+     * The lowest index that has changed in the pending sizemap.
+     * ie. lower indexes are still correct.
+     */
     private pendingSizemapChangeIndex: number = -1;
 
     /**
-     * flag that indicates whether an additional position update should be requested
+     * Flag that indicates whether an additional position update should be requested
      * after the current one resolves (ie. possible geometry changes after the last request)
      */
     private finalUpdateNeeded: boolean = false;
@@ -735,6 +767,10 @@ export class VirtualList extends FoundationElement {
         }
     }
 
+    /**
+     * Handles resize events.  These could come from either the component itself,
+     * the viewport element, or child list items when auto resize is enabled.
+     */
     private resizeDetected(entries: ResizeObserverEntry[]): void {
         let recalculateNeeded: boolean = false;
         entries.forEach((entry: ResizeObserverEntry) => {
@@ -773,7 +809,7 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
-     *
+     *  Updates the positions in the pending sizemap and applies it
      */
     private recalculateSizeMap(): void {
         if (this.pendingSizemap === null) {
