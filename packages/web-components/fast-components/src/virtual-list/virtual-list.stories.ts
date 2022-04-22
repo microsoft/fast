@@ -208,6 +208,7 @@ const variableHeightContentsTemplate = html`
                 background-position: center center;
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
+                transition: height 0.4s linear;
             "
         >
             <div style="background-color: white">
