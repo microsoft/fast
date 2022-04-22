@@ -113,10 +113,28 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name                               | Privacy   | Description | Parameters                                          | Return | Inherited From    |
+| ---------------------------------- | --------- | ----------- | --------------------------------------------------- | ------ | ----------------- |
+| `anchorChanged`                    | protected |             |                                                     | `void` |                   |
+| `viewportChanged`                  | protected |             |                                                     | `void` |                   |
+| `horizontalPositioningModeChanged` | protected |             |                                                     | `void` |                   |
+| `horizontalDefaultPositionChanged` | protected |             |                                                     | `void` |                   |
+| `horizontalViewportLockChanged`    | protected |             |                                                     | `void` |                   |
+| `horizontalInsetChanged`           | protected |             |                                                     | `void` |                   |
+| `horizontalThresholdChanged`       | protected |             |                                                     | `void` |                   |
+| `horizontalScalingChanged`         | protected |             |                                                     | `void` |                   |
+| `verticalPositioningModeChanged`   | protected |             |                                                     | `void` |                   |
+| `verticalDefaultPositionChanged`   | protected |             |                                                     | `void` |                   |
+| `verticalViewportLockChanged`      | protected |             |                                                     | `void` |                   |
+| `verticalInsetChanged`             | protected |             |                                                     | `void` |                   |
+| `verticalThresholdChanged`         | protected |             |                                                     | `void` |                   |
+| `verticalScalingChanged`           | protected |             |                                                     | `void` |                   |
+| `fixedPlacementChanged`            | protected |             |                                                     | `void` |                   |
+| `autoUpdateModeChanged`            | protected |             | `prevMode: AutoUpdateMode, newMode: AutoUpdateMode` | `void` |                   |
+| `anchorElementChanged`             | protected |             |                                                     | `void` |                   |
+| `viewportElementChanged`           | protected |             |                                                     | `void` |                   |
+| `templateChanged`                  | protected |             |                                                     | `void` | FoundationElement |
+| `stylesChanged`                    | protected |             |                                                     | `void` | FoundationElement |
 
 #### Attributes
 

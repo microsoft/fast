@@ -60,10 +60,13 @@ export class FASTTreeItem extends TreeItem {}
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name              | Privacy   | Description | Parameters                                   | Return | Inherited From    |
+| ----------------- | --------- | ----------- | -------------------------------------------- | ------ | ----------------- |
+| `expandedChanged` | protected |             |                                              | `void` |                   |
+| `selectedChanged` | protected |             |                                              | `void` |                   |
+| `itemsChanged`    | protected |             | `oldValue: unknown, newValue: HTMLElement[]` | `void` |                   |
+| `templateChanged` | protected |             |                                              | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |                                              | `void` | FoundationElement |
 
 #### Attributes
 

@@ -119,6 +119,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `openChanged`              | protected |                                                                            |            |        |                   |
 | `positionChanged`          | protected |                                                                            |            |        |                   |
 | `setPositioning`           | public    | Calculate and apply listbox positioning based on available viewport space. | `force`    | `void` |                   |
+| `maxHeightChanged`         | protected |                                                                            |            | `void` |                   |
 | `setDefaultSelectedOption` | protected |                                                                            |            | `void` |                   |
 | `selectFirstOption`        | public    | Moves focus to the first selectable option.                                |            | `void` | Listbox           |
 | `setSelectedOptions`       | public    | Sets an option as selected and gives it focus.                             |            |        | Listbox           |
