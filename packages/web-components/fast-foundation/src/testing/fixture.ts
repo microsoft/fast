@@ -13,6 +13,7 @@ import type {
 
 /**
  * Options used to customize the creation of the test fixture.
+ * @public
  */
 export interface FixtureOptions {
     /**
@@ -45,6 +46,10 @@ export interface FixtureOptions {
     designSystem?: DesignSystem;
 }
 
+/**
+ * A test fixture.
+ * @public
+ */
 export interface Fixture<TElement = HTMLElement> {
     /**
      * The document the fixture is running in.
@@ -105,6 +110,7 @@ function findElement(view: HTMLView): HTMLElement {
 
 /**
  * Creates a random, unique name suitable for use as a Custom Element name.
+ * @public
  */
 export function uniqueElementName(): string {
     return `fast-unique-${Math.random().toString(36).substring(7)}`;
@@ -124,6 +130,7 @@ function isElementRegistry<T>(
  * @remarks
  * Yields control to the caller one Microtask later, in order to
  * ensure that the DOM has settled.
+ * @public
  */
 export async function fixture<TElement = HTMLElement>(
     templateNameOrRegistry:
