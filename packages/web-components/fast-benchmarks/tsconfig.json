@@ -18,5 +18,6 @@
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "skipLibCheck": true
-    }
+    },
+    "include": ["utils/**/*.ts", "benchmarks/fast-components/**/*.ts"]
 }

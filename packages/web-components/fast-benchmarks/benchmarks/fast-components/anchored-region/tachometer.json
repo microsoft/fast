@@ -1,0 +1,49 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
+    "sampleSize": 100,
+    "timeout": 1,
+    "benchmarks": [
+        {
+            "url": "benchmarks/fast-components/anchored-region/index.html",
+            "browser": {
+                "name": "chrome",
+                "headless": true
+            },
+            "name": "fast-components/anchoredRegion",
+            "measurement": [
+                {
+                    "mode": "performance",
+                    "entryName": "anchored"
+                }
+            ],
+            "packageVersions": {
+                "label": "2.29.1",
+                "dependencies": {
+                    "@microsoft/fast-element": "1.9.0",
+                    "@microsoft/fast-components": "^2.29.1"
+                }
+            }
+        },
+        {
+            "url": "benchmarks/fast-components/anchored-region/index2.html",
+            "browser": {
+                "name": "chrome",
+                "headless": true
+            },
+            "name": "floating-ui/computePosition",
+            "measurement": [
+                {
+                    "mode": "performance",
+                    "entryName": "anchored"
+                }
+            ],
+            "packageVersions": {
+                "label": "0.4.5",
+                "dependencies": {
+                    "@floating-ui/dom": "^0.4.5",
+                    "@microsoft/fast-element": "1.9.0"
+                }
+            }
+        }
+    ]
+}
