@@ -137,7 +137,7 @@ const toggleHeightItemTemplate = html`
         :listItemContext="${(x, c) => c.parent.listItemContext}"
         :idleCallbackQueue="${(x, c) => c.parent.idleCallbackQueue}"
         :loadMode="${(x, c) => c.parent.listItemLoadMode}"
-        :listItemTemplate="${(x, c) => c.parent.listItemTemplate}"
+        :listItemContentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"
         style="
             height: ${(x, c) => `${c.parent.visibleItemMap[c.index]?.size}px`};
             transform: ${(x, c) =>
@@ -231,14 +231,14 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         }
 
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualList;
-        stackh1.listItemTemplate = listItemContentsTemplate;
+        stackh1.listItemContentsTemplate = listItemContentsTemplate;
         stackh1.listItemContext = {
             titleString: "title:",
         };
         stackh1.items = newDataSet(50, 1);
 
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualList;
-        stackh2.listItemTemplate = listItemContentsTemplate;
+        stackh2.listItemContentsTemplate = listItemContentsTemplate;
         stackh2.listItemContext = {
             titleString: "title:",
         };
@@ -247,7 +247,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackhImmediate = document.getElementById(
             "stackhimmediate"
         ) as FoundationVirtualList;
-        stackhImmediate.listItemTemplate = listItemContentsTemplate;
+        stackhImmediate.listItemContentsTemplate = listItemContentsTemplate;
         stackhImmediate.listItemContext = {
             titleString: "title:",
         };
@@ -267,7 +267,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const stackv1 = document.getElementById("stackv1") as FoundationVirtualList;
         stackv1.viewportElement = document.documentElement;
-        stackv1.listItemTemplate = variableHeightContentsTemplate;
+        stackv1.listItemContentsTemplate = variableHeightContentsTemplate;
+        stackv1.viewportBuffer = 0;
         stackv1.listItemContext = {
             titleString: "title:",
         };
@@ -275,7 +276,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
         stackv2.items = data;
-        stackv2.listItemTemplate = listItemContentsTemplate;
+        stackv2.listItemContentsTemplate = listItemContentsTemplate;
         stackv2.listItemContext = {
             titleString: "title:",
         };
@@ -285,7 +286,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackv3.items = data;
         stackv3.viewportElement = document.documentElement;
         stackv3.itemTemplate = toggleHeightItemTemplate;
-        stackv3.listItemTemplate = toggleHeightContentsTemplate;
+        stackv3.listItemContentsTemplate = toggleHeightContentsTemplate;
         stackv3.listItemContext = {
             titleString: "title:",
         };
