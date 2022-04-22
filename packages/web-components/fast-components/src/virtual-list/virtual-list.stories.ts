@@ -160,7 +160,7 @@ const toggleHeightContentsTemplate = html`
                 height: 100%;
                 background-image: url('${x => x.itemData.url}');
             "
-            @click="${(x, c) => toggleSizeMap(x.itemIndex)}"
+            @click="${(x, c) => toggleSizeMap(c.event, x.itemIndex)}"
         >
             <div style="background-color: white">
                 ${x => x.listItemContext.titleString} ${x => x.itemData.title}
@@ -186,10 +186,10 @@ const variableHeightContentsTemplate = html`
             min="60"
             max="800"
             step="1"
-            value="${x => x.itemData.itemHeight}"
+            value="${x => x.itemData.itemSize}"
             @change="${(x, c) => {
-                if (x.itemData.itemHeight !== (c.event.target as Slider).currentValue) {
-                    x.itemData.itemHeight = (c.event.target as Slider).currentValue;
+                if (x.itemData.itemSize !== (c.event.target as Slider).currentValue) {
+                    x.itemData.itemSize = (c.event.target as Slider).currentValue;
                     ((c.event.target as Slider).parentElement
                         ?.children[1] as HTMLButtonElement).style.height = `${
                         (c.event.target as Slider).currentValue
@@ -202,7 +202,7 @@ const variableHeightContentsTemplate = html`
             style="
                 margin: 0 10px 10px 10px;
                 width: calc(100% - 20px);
-                height: ${x => x.itemData.itemHeight}px;
+                height: ${x => x.itemData.itemSize}px;
                 background-image: url('${x => x.itemData.url}');
                 background-size: cover;
                 background-position: center center;
@@ -268,7 +268,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackv1 = document.getElementById("stackv1") as FoundationVirtualList;
         stackv1.viewportElement = document.documentElement;
         stackv1.listItemContentsTemplate = variableHeightContentsTemplate;
-        stackv1.viewportBuffer = 0;
         stackv1.listItemContext = {
             titleString: "title:",
         };
@@ -303,7 +302,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     }
 });
 
-function toggleSizeMap(index: number): void {
+// sets the height of an item by setting a value in the sizemap directly
+function toggleSizeMap(e: Event, index: number): void {
     const stackv3 = document.getElementById("stackv3") as FoundationVirtualList;
 
     let currentPosition: number = 0;
@@ -313,7 +313,11 @@ function toggleSizeMap(index: number): void {
         currentPosition = toggleMap[index - 1].end;
     }
 
-    const changeSize: number = stackv3.sizemap[index].size === 60 ? 200 : 60;
+    const baseSize: number = (stackv3.items[index] as any).itemSize;
+    const collapsedSize: number = (stackv3.items[index] as any).itemCollapsedSize;
+
+    const changeSize: number =
+        stackv3.sizemap[index].size === baseSize ? collapsedSize : baseSize;
 
     toggleMap.push({
         start: currentPosition,
@@ -333,11 +337,14 @@ function toggleSizeMap(index: number): void {
         });
     }
 
+    // big modifications directly to large arrays won't perform well
+    // until we can observe an array without calculating splices
     // stackv3.sizemap.splice(0, stackv3.sizemap.length, ...toggleMap);
 
     stackv3.sizemap = toggleMap;
 }
 
+// do a full reload of the "immediate" list
 function reloadImmediate(): void {
     const stackhImmediate = document.getElementById(
         "stackhimmediate"
@@ -348,6 +355,7 @@ function reloadImmediate(): void {
     }, 50);
 }
 
+// do a full reload of the "idle" list
 function reloadIdle(): void {
     const stackhIdle = document.getElementById("stackh2") as FoundationVirtualList;
     stackhIdle.items = [];
@@ -356,6 +364,7 @@ function reloadIdle(): void {
     }, 50);
 }
 
+// create a sample data set
 function newDataSet(rowCount: number, prefix: number): object[] {
     const newData: object[] = [];
     for (let i = 1; i <= rowCount; i++) {
@@ -363,22 +372,24 @@ function newDataSet(rowCount: number, prefix: number): object[] {
             value: `${i}`,
             title: `item #${i}`,
             url: `https://picsum.photos/200/200?random=${prefix * 1000 + i}`,
-            itemHeight: `${60 + Math.floor(Math.random() * 140)}`,
+            itemSize: 100 + Math.floor(Math.random() * 100),
+            itemCollapsedSize: 100,
         });
     }
     return newData;
 }
 
+// generate a sizemap for a data set
 function generateSizeMap(data: object[]) {
     const sizemap: SizeMap[] = [];
     const itemsCount: number = data.length;
     let currentPosition: number = 0;
-    const itemBaseSize: number = 60;
     for (let i = 0; i < itemsCount; i++) {
-        const mapEnd = itemBaseSize + currentPosition;
+        const itemCollapsedSize = (data[i] as any).itemCollapsedSize;
+        const mapEnd = itemCollapsedSize + currentPosition;
         sizemap.push({
             start: currentPosition,
-            size: itemBaseSize,
+            size: itemCollapsedSize,
             end: mapEnd,
         });
         currentPosition = mapEnd;
