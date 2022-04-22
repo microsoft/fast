@@ -148,13 +148,6 @@ export class VirtualListItem extends FoundationElement {
         super.disconnectedCallback();
     }
 
-    // /**
-    //  * @internal
-    //  */
-    // resolveTemplate(): ViewTemplate {
-    //     return this.listItemTemplate;
-    // }
-
     /**
      * Queue up for idle loading
      */
