@@ -638,6 +638,7 @@ export class VirtualList extends FoundationElement {
         }
         this.finalUpdateNeeded = false;
         this.pendingPositioningUpdate = true;
+        this.idleCallbackQueue.suspend();
 
         VirtualList.intersectionService.requestPosition(
             this.containerElement,
@@ -1079,6 +1080,7 @@ export class VirtualList extends FoundationElement {
      */
     private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
         if (!this.pendingPositioningUpdate) {
+            this.idleCallbackQueue.resume();
             return;
         }
 
@@ -1086,6 +1088,10 @@ export class VirtualList extends FoundationElement {
 
         if (this.finalUpdateNeeded) {
             this.requestPositionUpdates();
+        } else {
+            // TODO: refine so we don't get stuck suspeneded unexpectedly,
+            // better control, etc...
+            this.idleCallbackQueue.resume();
         }
 
         const containerEntry = entries.find(x => x.target === this.containerElement);
