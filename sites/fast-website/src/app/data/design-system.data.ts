@@ -16,7 +16,7 @@ export const designSystemData = [
         icon: FastIcon,
     },
     {
-        url: "https://developer.microsoft.com/en-us/fluentui#/",
+        url: "https://docs.microsoft.com/en-us/fluent-ui/web-components/",
         anchorText: "Fluent UI",
         icon: FluentUIIcon,
     },
@@ -26,7 +26,7 @@ export const designSystemData = [
         icon: FuriousIcon,
     },
     {
-        url: "https://code.visualstudio.com/",
+        url: "https://github.com/microsoft/vscode-webview-ui-toolkit",
         anchorText: "VS Code",
         icon: VSCodeIcon,
     },
