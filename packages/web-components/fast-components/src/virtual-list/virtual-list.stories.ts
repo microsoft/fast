@@ -173,54 +173,68 @@ const variableHeightContentsTemplate = html`
     <div
         style="
             margin: 4px 0 4px 0;
+            padding: 4px;
             width: 200px;
             height: auto;
+            transition: height 0.4s linear;
             background: lightgrey;
         "
     >
-        <fast-slider
+        <div
             style="
-                width: 180px;
-                margin: 10px 10px 0 10px;
-            "
-            min="60"
-            max="800"
-            step="1"
-            value="${x => x.itemData.itemSize}"
-            @change="${(x, c) => {
-                if (x.itemData.itemSize !== (c.event.target as Slider).currentValue) {
-                    x.itemData.itemSize = (c.event.target as Slider).currentValue;
-                    ((c.event.target as Slider).parentElement
-                        ?.children[1] as HTMLButtonElement).style.height = `${
-                        (c.event.target as Slider).currentValue
-                    }px`;
-                }
-            }}"
-        ></fast-slider>
-        <button
-            id="varbutton${x => x.itemData.title}"
-            style="
-                margin: 0 10px 10px 10px;
-                width: calc(100% - 20px);
+                width: 100%;
                 height: ${x => x.itemData.itemSize}px;
                 background-image: url('${x => x.itemData.url}');
                 background-size: cover;
                 background-position: center center;
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
-                transition: height 0.4s linear;
+                background-color: dark-gray;
             "
         >
-            <div style="background-color: white">
+            <div
+                style="
+            background-color: white;
+        "
+            >
                 ${x => x.listItemContext.titleString} ${x => x.itemData.title}
             </div>
-        </button>
+
+            ${when(
+                x => x.loadContent,
+                html`
+                    <fast-slider
+                        style="
+                        width: 180px;
+                        margin: 10px 10px 0 10px;
+                    "
+                        min="60"
+                        max="400"
+                        step="1"
+                        value="${x => x.itemData.itemSize}"
+                        @change="${(x, c) => {
+                            if (
+                                x.itemData.itemSize !==
+                                (c.event.target as Slider).currentValue
+                            ) {
+                                x.itemData.itemSize = (c.event
+                                    .target as Slider).currentValue;
+                                ((c.event.target as Slider)
+                                    .parentElement as HTMLElement).style.height = `${
+                                    (c.event.target as Slider).currentValue
+                                }px`;
+                            }
+                        }}"
+                    ></fast-slider>
+                `
+            )}
+        </div>
     </div>
 `;
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtual-list")) {
-        data = newDataSet(10000, 1);
+        data = newDataSet(5000, 1);
         dataSizeMap = generateSizeMap(data);
 
         gridData = [];
@@ -272,7 +286,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackv1.listItemContext = {
             titleString: "title:",
         };
-        stackv1.items = data;
+        stackv1.items = newDataSet(5000, 1);
 
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
         stackv2.items = data;
