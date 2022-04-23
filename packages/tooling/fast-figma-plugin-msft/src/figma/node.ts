@@ -1,3 +1,4 @@
+import { isDark, SwatchRGB } from "@fluentui/web-components";
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import {
     AppliedDesignTokens,
@@ -307,6 +308,52 @@ export class FigmaPluginNode extends PluginNode {
         }
 
         return null;
+    }
+
+    public handleManualDarkMode(): boolean {
+        if (isInstanceNode(this.node)) {
+            if (this.node.variantProperties) {
+                const currentDarkMode = this.node.variantProperties["Dark mode"];
+                if (currentDarkMode) {
+                    const color = this.getEffectiveFillColor();
+                    if (color) {
+                        let trueString = "Yes";
+                        let falseString = "No";
+                        // Thanks Figma for supporting "true", "True", "yes", and "Yes", but not doing the work to interpret it. Assume it's paired.
+                        switch (currentDarkMode) {
+                            case "yes":
+                            case "no":
+                                trueString = "yes";
+                                falseString = "no";
+                                break;
+                            case "Yes":
+                            case "No":
+                                trueString = "Yes";
+                                falseString = "No";
+                                break;
+                            case "true":
+                            case "false":
+                                trueString = "true";
+                                falseString = "false";
+                                break;
+                            case "True":
+                            case "False":
+                                trueString = "True";
+                                falseString = "False";
+                                break;
+                        }
+                        const containerIsDark = isDark(SwatchRGB.from(color));
+                        // console.log("handleManualDarkMode", this.node.variantProperties['Dark mode'], "color", color.toStringHexRGB(), "dark", containerIsDark);
+                        this.node.setProperties({
+                            "Dark mode": containerIsDark ? trueString : falseString,
+                        });
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     protected getPluginData<K extends keyof PluginNodeData>(key: K): string | undefined {
