@@ -178,18 +178,18 @@ const variableHeightContentsTemplate = html`
             height: auto;
             transition: height 0.4s linear;
             background: lightgrey;
+            background-image: url('${x => x.itemData.url}');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-color: dark-gray;
         "
     >
         <div
             style="
                 width: 100%;
                 height: ${x => x.itemData.itemSize}px;
-                background-image: url('${x => x.itemData.url}');
-                background-size: cover;
-                background-position: center center;
-                background-repeat: no-repeat;
-                background-size: 100% 100%;
-                background-color: dark-gray;
             "
         >
             <div

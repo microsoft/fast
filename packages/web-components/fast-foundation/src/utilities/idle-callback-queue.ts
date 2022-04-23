@@ -26,6 +26,30 @@ export class IdleCallbackQueue {
     private currentCallbackElement: Element | undefined;
     private currentCallback: (() => void) | undefined;
 
+    private suspended: boolean = false;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    public suspend(): void {
+        this.suspended = true;
+    }
+
+    /**
+     *
+     *
+     * @internal
+     */
+    public resume(): void {
+        if (!this.suspended) {
+            return;
+        }
+        this.suspended = false;
+        this.nextCallback();
+    }
+
     /**
      * Request an idle callback
      *
@@ -65,7 +89,7 @@ export class IdleCallbackQueue {
      * Queue up the next item
      */
     private nextCallback = (): void => {
-        if (this.currentCallbackId || this.callbackQueue.size === 0) {
+        if (this.suspended || this.currentCallbackId || this.callbackQueue.size === 0) {
             return;
         }
 
