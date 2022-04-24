@@ -96,6 +96,25 @@ export class VirtualListItem extends FoundationElement {
     public listItemContentsTemplate: ViewTemplate;
 
     /**
+     * The list sizemap
+     *
+     * @public
+     */
+    @observable
+    public sizeMap: SizeMap[];
+    private sizeMapChanged(): void {
+        this.itemSizeMap = this.sizeMap[this.itemIndex];
+    }
+
+    /**
+     * The item sizemap
+     *
+     * @public
+     */
+    @observable
+    public itemSizeMap: SizeMap;
+
+    /**
      *  Flag indicating whether the item should load contents
      *
      * @internal
@@ -136,18 +155,17 @@ export class VirtualListItem extends FoundationElement {
      * @internal
      */
     disconnectedCallback(): void {
+        super.disconnectedCallback();
         if (!this.loadContent && this.idleLoadRequested) {
             this.idleCallbackQueue?.cancelIdleCallback(this);
         }
-        this.$emit("listitemdisconnected");
         this.loadContent = false;
         this.idleLoadRequested = false;
         if (this.customView) {
             this.customView.dispose();
             this.customView = null;
         }
-
-        super.disconnectedCallback();
+        this.$emit("listitemdisconnected");
     }
 
     /**

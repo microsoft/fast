@@ -172,43 +172,58 @@ const toggleHeightContentsTemplate = html`
 const variableHeightContentsTemplate = html`
     <div
         style="
-            margin: 4px 0 4px 0;
-            padding: 4px;
             width: 200px;
-            height: auto;
-            transition: height 0.4s linear;
-            background: lightgrey;
-            background-image: url('${x => x.itemData.url}');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-            background-color: dark-gray;
+            height:  auto;
+            background-color: light-gray;
+            contain: layout;
         "
     >
         <div
             style="
-                width: 100%;
-                height: ${x => x.itemData.itemSize}px;
+                margin: 4px;
+                height: calc(100% - 8px);
+                width: calc(100% - 8px);
+                position: absolute;
+                background-image: url('${x => x.itemData.url}');
+                background-size: cover;
+                background-position: center center;
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                background-color: light-gray;
             "
         >
-            <div
-                style="
-            background-color: white;
-        "
-            >
+            <div style="background-color: white; position: absolute; margin: 10px;">
                 ${x => x.listItemContext.titleString} ${x => x.itemData.title}
             </div>
+        </div>
 
-            ${when(
-                x => x.loadContent,
-                html`
+        ${when(
+            x => !x.loadContent,
+            html`
+                <div
+                    style="
+                        width: 100%;
+                        height: ${x => x.itemSizeMap.size}px;
+                    "
+                ></div>
+            `
+        )}
+        ${when(
+            x => x.loadContent,
+            html`
+                <div
+                    style="
+                        width: 100%;
+                        height: ${x => x.itemData.itemSize}px;
+                        transition: height 0.4s linear;
+                    "
+                >
                     <fast-slider
                         style="
-                        width: 180px;
-                        margin: 10px 10px 0 10px;
-                    "
-                        min="60"
+                            width: 180px;
+                            margin: 50px 10px 0 10px;
+                        "
+                        min="100"
                         max="400"
                         step="1"
                         value="${x => x.itemData.itemSize}"
@@ -226,9 +241,9 @@ const variableHeightContentsTemplate = html`
                             }
                         }}"
                     ></fast-slider>
-                `
-            )}
-        </div>
+                </div>
+            `
+        )}
     </div>
 `;
 
