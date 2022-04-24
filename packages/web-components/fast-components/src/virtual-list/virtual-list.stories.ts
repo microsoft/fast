@@ -174,7 +174,6 @@ const variableHeightContentsTemplate = html`
         style="
             width: 200px;
             height:  auto;
-            background-color: light-gray;
             contain: layout;
         "
     >
@@ -189,7 +188,7 @@ const variableHeightContentsTemplate = html`
                 background-position: center center;
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
-                background-color: light-gray;
+                background-color: black;
             "
         >
             <div style="background-color: white; position: absolute; margin: 10px;">
