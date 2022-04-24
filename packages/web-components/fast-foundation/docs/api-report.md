@@ -2905,12 +2905,14 @@ export class VirtualListItem extends FoundationElement {
     idleCallbackQueue: IdleCallbackQueue;
     itemData: object;
     itemIndex: number;
+    itemSizeMap: SizeMap;
     listItemContentsTemplate: ViewTemplate;
     listItemContext: VirtualListItemContext;
     // @internal
     loadContent: boolean;
     // (undocumented)
     loadMode: VirtualListItemLoadMode;
+    sizeMap: SizeMap[];
     }
 
 // @public
