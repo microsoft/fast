@@ -629,7 +629,13 @@ export class VirtualList extends FoundationElement {
      */
     protected requestPositionUpdates(): void {
         if (!this.virtualizationEnabled) {
-            this.updateVisibleItems();
+            if (this.pendingPositioningUpdate) {
+                return;
+            }
+            DOM.queueUpdate(() => {
+                this.pendingPositioningUpdate = false;
+                this.updateVisibleItems();
+            });
             return;
         }
         if (this.pendingPositioningUpdate) {
