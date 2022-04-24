@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 24 Apr 2022 07:13:26 GMT",
+      "tag": "@microsoft/fast-foundation_v2.42.2",
+      "version": "2.42.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "Update to fix broken links and grammar.",
+            "author": "16669785+awentzel@users.noreply.github.com",
+            "commit": "ed08697132b639f3104562b16a0dcf5c5653a878",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 Apr 2022 07:13:54 GMT",
       "tag": "@microsoft/fast-foundation_v2.42.2",
       "version": "2.42.2",
