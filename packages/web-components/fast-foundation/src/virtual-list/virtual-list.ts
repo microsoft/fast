@@ -154,7 +154,7 @@ export class VirtualList extends FoundationElement {
      * @public
      */
     @attr({ attribute: "recycle", mode: "boolean" })
-    public recycle: boolean = true;
+    public recycle: boolean = false;
 
     /**
      *  The array of items to be displayed.
@@ -778,7 +778,11 @@ export class VirtualList extends FoundationElement {
             if (entry.target === this.viewportElement || entry.target === this) {
                 this.requestPositionUpdates();
             } else {
-                if ((entry.target as VirtualListItem).$fastController.isConnected) {
+                if (
+                    (entry.target as VirtualListItem).$fastController.isConnected &&
+                    (!this.autoResizeItems ||
+                        (entry.target as VirtualListItem).loadContent)
+                ) {
                     const index: number = (entry.target as VirtualListItem).itemIndex;
                     if (
                         this.pendingSizemapChangeIndex === -1 ||
