@@ -5,6 +5,10 @@ import type { FoundationElementTemplate } from "../foundation-element";
 import type { VirtualList } from "./virtual-list";
 import { VirtualListItem } from "./virtual-list-item";
 
+/**
+ * Creates a default vertical item template.  This is the template that defines what list items are created by the
+ * list's repeat directive.  Authors can improve performance by tailoring templates to their specific scenario.
+ */
 function createDefaultVerticalItemTemplate(
     context: ElementDefinitionContext
 ): ViewTemplate {
@@ -26,6 +30,10 @@ function createDefaultVerticalItemTemplate(
 `;
 }
 
+/**
+ * Creates a default horizontal item template.  This is the template that defines what list items are created by the
+ * list's repeat directive.  Authors can improve performance by tailoring templates to their specific scenario.
+ */
 function createDefaultHorizontalItemTemplate(
     context: ElementDefinitionContext
 ): ViewTemplate {
