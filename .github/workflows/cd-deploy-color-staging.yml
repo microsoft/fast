@@ -13,11 +13,13 @@ on:
     branches:
       - master
     paths:
-      - ${{ env.AZURE_WEBAPP_DIST_PATH }}/**
+      - ${{ env.AZURE_WEBAPP_BUILD_PATH }}/**
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
+    paths:
+      - ${{ env.AZURE_WEBAPP_BUILD_PATH }}/**
 
 jobs:
   build:

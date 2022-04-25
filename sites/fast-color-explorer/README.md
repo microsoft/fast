@@ -1,5 +1,5 @@
 # Introduction 
-Application for testing UI color system.
+FAST Color Explorer is an application used for testing UI color system.
 
 ## Getting Started
 Follow setup instructions in (https://github.com/Microsoft/fast/blob/master/CONTRIBUTING.md)(https://github.com/Microsoft/fast/blob/master/CONTRIBUTING.md)
