@@ -1,0 +1,55 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
+    "sampleSize": 50,
+    "timeout": 0,
+    "benchmarks": [
+        {
+            "url": "benchmarks/fast-foundation/form-associated/index.html",
+            "browser": {
+                "name": "chrome",
+                "headless": true,
+                "addArguments": ["--js-flags=--expose-gc", "--enable-precise-memory-info"]
+            },
+            "name": "master",
+            "measurement": [
+                {
+                    "name": "usedJSHeapSize",
+                    "mode": "expression",
+                    "expression": "window.usedJSHeapSize"
+                }
+            ],
+            "packageVersions": {
+                "label": "2.42.1",
+                "dependencies": {
+                    "@microsoft/fast-element": "1.9.0",
+                    "@microsoft/fast-foundation": "2.42.1",
+                    "@microsoft/fast-web-utilities": "5.3.0"
+                }
+            }
+        },
+        {
+            "url": "benchmarks/fast-foundation/form-associated/index.html",
+            "browser": {
+                "name": "chrome",
+                "headless": true,
+                "addArguments": ["--js-flags=--expose-gc", "--enable-precise-memory-info"]
+            },
+            "name": "current",
+            "measurement": [
+                {
+                    "name": "usedJSHeapSize",
+                    "mode": "expression",
+                    "expression": "window.usedJSHeapSize"
+                }
+            ],
+            "packageVersions": {
+                "label": "local",
+                "dependencies": {
+                    "@microsoft/fast-foundation": "2.33.2",
+                    "@microsoft/fast-element": "1.9.0",
+                    "@microsoft/fast-web-utilities": "5.3.0"
+                }
+            }
+        }
+    ]
+}
