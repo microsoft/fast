@@ -149,23 +149,31 @@ const toggleHeightItemTemplate = html`
 const toggleHeightContentsTemplate = html`
     <div
         style="
-            margin: 4px 0 4px 0;
             width: 200px;
             height: 100%;
         "
     >
-        <button
+        <fast-button
             style="
                 width: 100%;
                 height: 100%;
                 background-image: url('${x => x.itemData.url}');
+                background-size: cover;
+                background-position: center center;
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                background-color: darkgray;
             "
             @click="${(x, c) => toggleSizeMap(c.event, x.itemIndex)}"
         >
-            <div style="background-color: white">
+            <div
+                style="
+                background-color: black;
+            "
+            >
                 ${x => x.listItemContext.titleString} ${x => x.itemData.title}
             </div>
-        </button>
+        </fast-button>
     </div>
 `;
 
@@ -391,7 +399,7 @@ function newDataSet(rowCount: number, prefix: number): object[] {
             value: `${i}`,
             title: `item #${i}`,
             url: `https://picsum.photos/200/200?random=${prefix * 1000 + i}`,
-            itemSize: 100 + Math.floor(Math.random() * 100),
+            itemSize: 100 + Math.floor(Math.random() * 300),
             itemCollapsedSize: 100,
         });
     }
@@ -404,7 +412,7 @@ function generateSizeMap(data: object[]) {
     const itemsCount: number = data.length;
     let currentPosition: number = 0;
     for (let i = 0; i < itemsCount; i++) {
-        const itemCollapsedSize = (data[i] as any).itemCollapsedSize;
+        const itemCollapsedSize = (data[i] as any).itemSize;
         const mapEnd = itemCollapsedSize + currentPosition;
         sizemap.push({
             start: currentPosition,

@@ -904,7 +904,16 @@ export class VirtualList extends FoundationElement {
      * Gets the viewport element by id, or defaults to element
      */
     private getViewport(): HTMLElement {
-        return document.getElementById(this.viewport) ?? this;
+        let viewport: HTMLElement | null = null;
+        const rootNode = this.getRootNode();
+
+        if (rootNode instanceof ShadowRoot) {
+            viewport = rootNode.getElementById(this.viewport);
+        } else {
+            viewport = document.getElementById(this.viewport);
+        }
+
+        return viewport ?? this;
     }
 
     /**
