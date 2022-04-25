@@ -9,7 +9,6 @@ import {
     RepeatDirective,
     Splice,
     ViewTemplate,
-    TargetedHTMLDirective,
 } from "@microsoft/fast-element";
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
