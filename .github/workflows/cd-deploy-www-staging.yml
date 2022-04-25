@@ -3,10 +3,17 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'sites/website/**'
+      - '.github/workflows/cd-deploy-www-staging.yml'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
+    paths:
+      - 'sites/website/**'
+      - '.github/workflows/cd-deploy-www-staging.yml'
+
 
 env:
   AZURE_WEBAPP_ACTIVE_STAGE_NAME: www-west-app
