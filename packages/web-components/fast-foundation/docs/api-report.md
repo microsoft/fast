@@ -2865,6 +2865,7 @@ export class VirtualList extends FoundationElement {
     // @internal
     idleCallbackQueue: IdleCallbackQueue;
     idleCallbackTimeout: number;
+    idleLoadMode: VirtualListIdleLoadMode;
     items: object[];
     itemSize: number;
     itemTemplate: ViewTemplate;
@@ -2895,6 +2896,9 @@ export class VirtualList extends FoundationElement {
 
 // @public
 export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
+
+// @public
+export type VirtualListIdleLoadMode = "auto" | "enabled" | "suspended";
 
 // @public
 export class VirtualListItem extends FoundationElement {
