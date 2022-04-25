@@ -14,6 +14,7 @@ on:
     paths:
       - 'sites/fast-component-explorer/**'
       - '.github/workflows/cd-deploy-explore-staging.yml'
+
 env:
   AZURE_WEBAPP_ACTIVE_STAGE_NAME: explore-west-app
   AZURE_WEBAPP_PASSIVE_STAGE_NAME: explore-east-app
