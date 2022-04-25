@@ -1,5 +1,17 @@
 name: Deploy Color Explorer
 
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'sites/fast-color-explorer/**'
+      - '.github/workflows/cd-deploy-color-staging.yml'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - master
+
 env:
   AZURE_WEBAPP_ACTIVE_STAGE_NAME: color-west-app
   AZURE_WEBAPP_PASSIVE_STAGE_NAME: color-east-app
@@ -7,17 +19,6 @@ env:
   AZURE_WEBAPP_DIST_PATH: sites/fast-color-explorer/www
   AZURE_WEBAPP_SLOT_NAME: stage
   ARTIFACT_NAME: color-explorer-site
-
-on:
-  push:
-    branches:
-      - master
-    paths:
-      - ${{ env.AZURE_WEBAPP_DIST_PATH }}/**
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - master
 
 jobs:
   build:
