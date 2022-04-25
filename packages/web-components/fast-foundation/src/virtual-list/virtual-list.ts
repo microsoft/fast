@@ -9,6 +9,7 @@ import {
     RepeatDirective,
     Splice,
     ViewTemplate,
+    TargetedHTMLDirective,
 } from "@microsoft/fast-element";
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
@@ -30,6 +31,13 @@ import type {
  * @public
  */
 export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
+
+/**
+ * Defines how the idle load queue behaves.
+ *
+ * @public
+ */
+export type VirtualListIdleLoadMode = "auto" | "enabled" | "suspended";
 
 /**
  *  The VirtualList class
@@ -212,6 +220,25 @@ export class VirtualList extends FoundationElement {
                     "listitemdisconnected",
                     this.handleListItemDisconnected
                 );
+            }
+        }
+    }
+
+    /**
+     * Controls the idle load queue behavior.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: idle-load-mode
+     */
+    @attr({ attribute: "idle-load-mode" })
+    public idleLoadMode: VirtualListIdleLoadMode = "auto";
+    private idleLoadModeChanged(): void {
+        if (this.$fastController.isConnected) {
+            if (this.idleLoadMode === "suspended") {
+                this.idleCallbackQueue.suspend();
+            } else {
+                this.idleCallbackQueue.resume();
             }
         }
     }
@@ -427,6 +454,10 @@ export class VirtualList extends FoundationElement {
         super.connectedCallback();
 
         this.idleCallbackQueue.idleCallbackTimeout = this.idleCallbackTimeout;
+        if (this.idleLoadMode === "suspended") {
+            this.idleCallbackQueue.suspend();
+        }
+
         this.viewportElement = this.viewportElement ?? this.getViewport();
         this.resetAutoUpdateMode("manual", this.autoUpdateMode);
 
@@ -644,7 +675,9 @@ export class VirtualList extends FoundationElement {
         }
         this.finalUpdateNeeded = false;
         this.pendingPositioningUpdate = true;
-        this.idleCallbackQueue.suspend();
+        if (this.idleLoadMode === "auto") {
+            this.idleCallbackQueue.suspend();
+        }
 
         VirtualList.intersectionService.requestPosition(
             this.containerElement,
@@ -1099,7 +1132,9 @@ export class VirtualList extends FoundationElement {
      */
     private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
         if (!this.pendingPositioningUpdate) {
-            this.idleCallbackQueue.resume();
+            if (this.idleLoadMode === "auto") {
+                this.idleCallbackQueue.resume();
+            }
             return;
         }
 
@@ -1108,9 +1143,9 @@ export class VirtualList extends FoundationElement {
         if (this.finalUpdateNeeded) {
             this.requestPositionUpdates();
         } else {
-            // TODO: refine so we don't get stuck suspeneded unexpectedly,
-            // better control, etc...
-            this.idleCallbackQueue.resume();
+            if (this.idleLoadMode === "auto") {
+                this.idleCallbackQueue.resume();
+            }
         }
 
         const containerEntry = entries.find(x => x.target === this.containerElement);
