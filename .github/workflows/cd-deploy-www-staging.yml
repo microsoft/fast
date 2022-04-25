@@ -23,6 +23,9 @@ jobs:
     steps:
     - name: Checkout Branch
       uses: actions/checkout@master
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GH_TOKEN }}
 
     - name: Install Lerna
       run: yarn global add lerna
