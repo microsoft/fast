@@ -188,7 +188,7 @@ const variableHeightContentsTemplate = html`
                 background-position: center center;
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
-                background-color: black;
+                background-color: darkgray;
             "
         >
             <div style="background-color: white; position: absolute; margin: 10px;">
@@ -196,27 +196,17 @@ const variableHeightContentsTemplate = html`
             </div>
         </div>
 
-        ${when(
-            x => !x.loadContent,
-            html`
-                <div
-                    style="
-                        width: 100%;
-                        height: ${x => x.itemSizeMap.size}px;
-                    "
-                ></div>
-            `
-        )}
-        ${when(
-            x => x.loadContent,
-            html`
-                <div
-                    style="
-                        width: 100%;
-                        height: ${x => x.itemData.itemSize}px;
-                        transition: height 0.4s linear;
-                    "
-                >
+        <div
+            style="
+                width: 100%;
+                height: ${x =>
+                !x.loadContent ? x.itemSizeMap.size : x.itemData.itemSize}px;
+                transition: height 0.1s ease-out;
+            "
+        >
+            ${when(
+                x => x.loadContent,
+                html`
                     <fast-slider
                         style="
                             width: 180px;
@@ -240,9 +230,9 @@ const variableHeightContentsTemplate = html`
                             }
                         }}"
                     ></fast-slider>
-                </div>
-            `
-        )}
+                `
+            )}
+        </div>
     </div>
 `;
 
