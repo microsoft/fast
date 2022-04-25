@@ -11,6 +11,9 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
+    paths:
+      - 'sites/fast-color-explorer/**'
+      - '.github/workflows/cd-deploy-color-staging.yml'
 
 env:
   AZURE_WEBAPP_ACTIVE_STAGE_NAME: color-west-app
@@ -105,12 +108,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Close PR
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_COLOR_PR_TOKEN }}
-          action: "close"
+    - name: Close PR
+      id: closepullrequest
+      uses: Azure/static-web-apps-deploy@v1
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_COLOR_PR_TOKEN }}
+        action: "close"
 
   notify:
     runs-on: ubuntu-latest
