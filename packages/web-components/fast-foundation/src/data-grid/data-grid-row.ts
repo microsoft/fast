@@ -32,7 +32,7 @@ export class DataGridRow extends FoundationElement {
      */
     @attr({ attribute: "grid-template-columns" })
     public gridTemplateColumns: string;
-    private gridTemplateColumnsChanged(): void {
+    protected gridTemplateColumnsChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateRowStyle();
         }
@@ -48,7 +48,7 @@ export class DataGridRow extends FoundationElement {
     @attr({ attribute: "row-type" })
     public rowType: DataGridRowTypes | "default" | "header" | "sticky-header" =
         DataGridRowTypes.default;
-    private rowTypeChanged(): void {
+    protected rowTypeChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateItemTemplate();
         }
@@ -61,7 +61,7 @@ export class DataGridRow extends FoundationElement {
      */
     @observable
     public rowData: object | null = null;
-    private rowDataChanged(): void {
+    protected rowDataChanged(): void {
         if (this.rowData !== null && this.isActiveRow) {
             this.refocusOnLoad = true;
             return;

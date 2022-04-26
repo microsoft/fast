@@ -42,7 +42,13 @@ export class Combobox extends FormAssociatedCombobox {
      * HTML Attribute: autocomplete
      */
     @attr({ attribute: "autocomplete", mode: "fromView" })
-    autocomplete: ComboboxAutocomplete | "inline" | "list" | "both" | "none" | undefined;
+    public autocomplete:
+        | ComboboxAutocomplete
+        | "inline"
+        | "list"
+        | "both"
+        | "none"
+        | undefined;
 
     /**
      * Reference to the internal text input element.
@@ -118,7 +124,7 @@ export class Combobox extends FormAssociatedCombobox {
      */
     @observable
     public maxHeight: number = 0;
-    private maxHeightChanged(): void {
+    protected maxHeightChanged(): void {
         if (this.listbox) {
             this.listbox.style.setProperty("--max-height", `${this.maxHeight}px`);
         }

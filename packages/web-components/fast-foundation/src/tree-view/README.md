@@ -116,10 +116,11 @@ export const myTreeView = TreeView.compose({
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name                      | Privacy   | Description | Parameters | Return | Inherited From    |
+| ------------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `slottedTreeItemsChanged` | protected |             |            | `void` |                   |
+| `templateChanged`         | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`           | protected |             |            | `void` | FoundationElement |
 
 #### Attributes
 

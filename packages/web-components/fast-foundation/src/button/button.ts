@@ -50,7 +50,7 @@ export class Button extends FormAssociatedButton {
      */
     @attr
     public formaction: string;
-    private formactionChanged(): void {
+    protected formactionChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.formAction = this.formaction;
         }
@@ -65,7 +65,7 @@ export class Button extends FormAssociatedButton {
      */
     @attr
     public formenctype: string;
-    private formenctypeChanged(): void {
+    protected formenctypeChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.formEnctype = this.formenctype;
         }
@@ -80,7 +80,7 @@ export class Button extends FormAssociatedButton {
      */
     @attr
     public formmethod: string;
-    private formmethodChanged(): void {
+    protected formmethodChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.formMethod = this.formmethod;
         }
@@ -95,7 +95,7 @@ export class Button extends FormAssociatedButton {
      */
     @attr({ mode: "boolean" })
     public formnovalidate: boolean;
-    private formnovalidateChanged(): void {
+    protected formnovalidateChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.formNoValidate = this.formnovalidate;
         }
@@ -110,7 +110,7 @@ export class Button extends FormAssociatedButton {
      */
     @attr
     public formtarget: "_self" | "_blank" | "_parent" | "_top";
-    private formtargetChanged(): void {
+    protected formtargetChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.formTarget = this.formtarget;
         }
@@ -125,7 +125,7 @@ export class Button extends FormAssociatedButton {
      */
     @attr
     public type: "submit" | "reset" | "button";
-    private typeChanged(
+    protected typeChanged(
         previous: "submit" | "reset" | "button" | void,
         next: "submit" | "reset" | "button"
     ): void {

@@ -68,7 +68,7 @@ export class DataGridCell extends FoundationElement {
      */
     @attr({ attribute: "grid-column" })
     public gridColumn: string;
-    private gridColumnChanged(): void {
+    protected gridColumnChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateCellStyle();
         }
@@ -89,7 +89,7 @@ export class DataGridCell extends FoundationElement {
      */
     @observable
     public columnDefinition: ColumnDefinition | null = null;
-    private columnDefinitionChanged(
+    protected columnDefinitionChanged(
         oldValue: ColumnDefinition | null,
         newValue: ColumnDefinition | null
     ): void {
