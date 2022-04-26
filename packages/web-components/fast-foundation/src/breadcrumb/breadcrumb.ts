@@ -15,7 +15,7 @@ export class Breadcrumb extends FoundationElement {
      */
     @observable
     public slottedBreadcrumbItems: HTMLElement[];
-    public slottedBreadcrumbItemsChanged() {
+    protected slottedBreadcrumbItemsChanged() {
         if (this.$fastController.isConnected) {
             if (
                 this.slottedBreadcrumbItems === undefined ||

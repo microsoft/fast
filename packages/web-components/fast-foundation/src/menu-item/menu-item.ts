@@ -79,7 +79,7 @@ export class MenuItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public expanded: boolean;
-    private expandedChanged(oldValue: boolean): void {
+    protected expandedChanged(oldValue: boolean): void {
         if (this.$fastController.isConnected) {
             if (this.submenu === undefined) {
                 return;
@@ -118,7 +118,7 @@ export class MenuItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public checked: boolean;
-    private checkedChanged(oldValue: boolean, newValue: boolean): void {
+    protected checkedChanged(oldValue: boolean, newValue: boolean): void {
         if (this.$fastController.isConnected) {
             this.$emit("change");
         }

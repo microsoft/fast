@@ -90,7 +90,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr
     public anchor: string = "";
-    private anchorChanged(): void {
+    protected anchorChanged(): void {
         if (this.initialLayoutComplete) {
             this.anchorElement = this.getAnchor();
         }
@@ -105,7 +105,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr
     public viewport: string = "";
-    private viewportChanged(): void {
+    protected viewportChanged(): void {
         if (this.initialLayoutComplete) {
             this.viewportElement = this.getViewport();
         }
@@ -123,7 +123,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "horizontal-positioning-mode" })
     public horizontalPositioningMode: AxisPositioningMode = "uncontrolled";
-    private horizontalPositioningModeChanged(): void {
+    protected horizontalPositioningModeChanged(): void {
         this.requestReset();
     }
 
@@ -136,7 +136,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "horizontal-default-position" })
     public horizontalDefaultPosition: HorizontalPosition = "unset";
-    private horizontalDefaultPositionChanged(): void {
+    protected horizontalDefaultPositionChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -149,7 +149,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "horizontal-viewport-lock", mode: "boolean" })
     public horizontalViewportLock: boolean = false;
-    private horizontalViewportLockChanged(): void {
+    protected horizontalViewportLockChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -162,7 +162,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "horizontal-inset", mode: "boolean" })
     public horizontalInset: boolean = false;
-    private horizontalInsetChanged(): void {
+    protected horizontalInsetChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -176,7 +176,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "horizontal-threshold" })
     public horizontalThreshold: number;
-    private horizontalThresholdChanged(): void {
+    protected horizontalThresholdChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -189,7 +189,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "horizontal-scaling" })
     public horizontalScaling: AxisScalingMode = "content";
-    private horizontalScalingChanged(): void {
+    protected horizontalScalingChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -205,7 +205,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "vertical-positioning-mode" })
     public verticalPositioningMode: AxisPositioningMode = "uncontrolled";
-    private verticalPositioningModeChanged(): void {
+    protected verticalPositioningModeChanged(): void {
         this.requestReset();
     }
 
@@ -218,7 +218,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "vertical-default-position" })
     public verticalDefaultPosition: VerticalPosition = "unset";
-    private verticalDefaultPositionChanged(): void {
+    protected verticalDefaultPositionChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -231,7 +231,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "vertical-viewport-lock", mode: "boolean" })
     public verticalViewportLock: boolean = false;
-    private verticalViewportLockChanged(): void {
+    protected verticalViewportLockChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -244,7 +244,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "vertical-inset", mode: "boolean" })
     public verticalInset: boolean = false;
-    private verticalInsetChanged(): void {
+    protected verticalInsetChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -258,7 +258,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "vertical-threshold" })
     public verticalThreshold: number;
-    private verticalThresholdChanged(): void {
+    protected verticalThresholdChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -271,7 +271,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "vertical-scaling" })
     public verticalScaling: AxisScalingMode = "content";
-    private verticalScalingChanged(): void {
+    protected verticalScalingChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -286,7 +286,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "fixed-placement", mode: "boolean" })
     public fixedPlacement: boolean = false;
-    private fixedPlacementChanged(): void {
+    protected fixedPlacementChanged(): void {
         if (
             (this as FoundationElement).$fastController.isConnected &&
             this.initialLayoutComplete
@@ -304,7 +304,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "auto-update-mode" })
     public autoUpdateMode: AutoUpdateMode = "anchor";
-    private autoUpdateModeChanged(
+    protected autoUpdateModeChanged(
         prevMode: AutoUpdateMode,
         newMode: AutoUpdateMode
     ): void {
@@ -329,7 +329,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @observable
     public anchorElement: HTMLElement | null = null;
-    private anchorElementChanged(): void {
+    protected anchorElementChanged(): void {
         this.requestReset();
     }
 
@@ -340,7 +340,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @observable
     public viewportElement: HTMLElement | null = null;
-    private viewportElementChanged(): void {
+    protected viewportElementChanged(): void {
         if (
             (this as FoundationElement).$fastController.isConnected &&
             this.initialLayoutComplete

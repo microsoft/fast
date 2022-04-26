@@ -28,7 +28,7 @@ export class Menu extends FoundationElement {
      */
     @observable
     public items: HTMLSlotElement;
-    private itemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
+    protected itemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
         // only update children after the component is connected and
         // the setItems has run on connectedCallback
         // (menuItems is undefined until then)

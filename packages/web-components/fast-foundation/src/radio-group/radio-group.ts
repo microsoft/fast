@@ -32,7 +32,7 @@ export class RadioGroup extends FoundationElement {
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
-    private readOnlyChanged(): void {
+    protected readOnlyChanged(): void {
         if (this.slottedRadioButtons !== undefined) {
             this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
                 if (this.readOnly) {
@@ -53,7 +53,7 @@ export class RadioGroup extends FoundationElement {
      */
     @attr({ attribute: "disabled", mode: "boolean" })
     public disabled: boolean;
-    private disabledChanged(): void {
+    protected disabledChanged(): void {
         if (this.slottedRadioButtons !== undefined) {
             this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
                 if (this.disabled) {
@@ -122,7 +122,10 @@ export class RadioGroup extends FoundationElement {
      */
     @observable
     public slottedRadioButtons: HTMLElement[];
-    private slottedRadioButtonsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
+    protected slottedRadioButtonsChanged(
+        oldValue: unknown,
+        newValue: HTMLElement[]
+    ): void {
         if (this.slottedRadioButtons && this.slottedRadioButtons.length > 0) {
             this.setupRadioButtons();
         }

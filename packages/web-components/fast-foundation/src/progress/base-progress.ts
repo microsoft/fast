@@ -45,7 +45,7 @@ export class BaseProgress extends FoundationElement {
      */
     @attr({ converter: nullableNumberConverter })
     public value: number | null;
-    private valueChanged(): void {
+    protected valueChanged(): void {
         if (this.$fastController.isConnected) {
             this.updatePercentComplete();
         }
@@ -59,7 +59,7 @@ export class BaseProgress extends FoundationElement {
      */
     @attr({ converter: nullableNumberConverter })
     public min: number;
-    private minChanged(): void {
+    protected minChanged(): void {
         if (this.$fastController.isConnected) {
             this.updatePercentComplete();
         }
@@ -73,7 +73,7 @@ export class BaseProgress extends FoundationElement {
      */
     @attr({ converter: nullableNumberConverter })
     public max: number;
-    private maxChanged(): void {
+    protected maxChanged(): void {
         if (this.$fastController.isConnected) {
             this.updatePercentComplete();
         }
