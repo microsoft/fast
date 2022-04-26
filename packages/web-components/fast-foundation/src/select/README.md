@@ -139,9 +139,9 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Fields
 
-| Name           | Privacy | Type     | Default | Description                                                             | Inherited From |
-| -------------- | ------- | -------- | ------- | ----------------------------------------------------------------------- | -------------- |
-| `ariaControls` | public  | `string` |         | See https://www.w3.org/TR/wai-aria-1.2/#combobox for more information |                |
+| Name           | Privacy | Type             | Default | Description                                                             | Inherited From |
+| -------------- | ------- | ---------------- | ------- | ----------------------------------------------------------------------- | -------------- |
+| `ariaControls` | public  | `string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#combobox for more information |                |
 
 <hr/>
 
