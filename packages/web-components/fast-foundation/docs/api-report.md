@@ -2910,19 +2910,13 @@ export class VirtualListItem extends FoundationElement {
     itemIndex: number;
     itemSizeMap: SizeMap;
     listItemContentsTemplate: ViewTemplate;
-    listItemContext: VirtualListItemContext;
+    listItemContext: object;
     // @internal
     loadContent: boolean;
     // (undocumented)
     loadMode: VirtualListItemLoadMode;
     sizeMap: SizeMap[];
     }
-
-// @public
-export interface VirtualListItemContext {
-    // (undocumented)
-    listItemContentsTemplate: ViewTemplate;
-}
 
 // @public
 export type VirtualListItemLoadMode = "immediate" | "manual" | "idle";
