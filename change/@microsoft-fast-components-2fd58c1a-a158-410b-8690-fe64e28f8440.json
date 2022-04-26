@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "fix broken disclosure",
+  "comment": "fix disclosure connected callback not invoked",
   "packageName": "@microsoft/fast-components",
   "email": "scomea@microsoft.com",
   "dependentChangeType": "patch"
