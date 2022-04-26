@@ -53,7 +53,17 @@ export class Combobox extends FormAssociatedCombobox {
      * HTML Attribute: autocomplete
      */
     @attr({ attribute: "autocomplete", mode: "fromView" })
+<<<<<<< HEAD
     autocomplete: ComboboxAutocomplete | undefined;
+=======
+    public autocomplete:
+        | ComboboxAutocomplete
+        | "inline"
+        | "list"
+        | "both"
+        | "none"
+        | undefined;
+>>>>>>> feat: update private change handlers to protected (#5872)
 
     /**
      * Reference to the internal text input element.

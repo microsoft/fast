@@ -194,6 +194,10 @@ export const myDataGrid = DataGrid.compose({
 | Name                         | Privacy   | Description | Parameters         | Return | Inherited From    |
 | ---------------------------- | --------- | ----------- | ------------------ | ------ | ----------------- |
 | `gridTemplateColumnsChanged` | protected |             |                    | `void` |                   |
+<<<<<<< HEAD
+=======
+| `rowTypeChanged`             | protected |             |                    | `void` |                   |
+>>>>>>> feat: update private change handlers to protected (#5872)
 | `rowDataChanged`             | protected |             |                    | `void` |                   |
 | `handleFocusout`             | public    |             | `e: FocusEvent`    | `void` |                   |
 | `handleCellFocus`            | public    |             | `e: Event`         | `void` |                   |
@@ -293,6 +297,10 @@ export const myDataGrid = DataGrid.compose({
 | Name                         | Privacy   | Description | Parameters | Return | Inherited From    |
 | ---------------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
 | `noTabbingChanged`           | protected |             |            | `void` |                   |
+<<<<<<< HEAD
+=======
+| `generateHeaderChanged`      | protected |             |            | `void` |                   |
+>>>>>>> feat: update private change handlers to protected (#5872)
 | `gridTemplateColumnsChanged` | protected |             |            | `void` |                   |
 | `rowsDataChanged`            | protected |             |            | `void` |                   |
 | `columnDefinitionsChanged`   | protected |             |            | `void` |                   |
