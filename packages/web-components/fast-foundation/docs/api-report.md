@@ -2892,7 +2892,7 @@ export class VirtualList extends FoundationElement {
 }
 
 // @public
-export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
+export type VirtualListAutoUpdateMode = "manual" | "viewport" | "auto" | "self";
 
 // @public
 export type VirtualListIdleLoadMode = "auto" | "enabled" | "suspended";
