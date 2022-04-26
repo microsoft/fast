@@ -32,16 +32,6 @@ export interface SizeMap {
 }
 
 /**
- * List item context interface
- *
- * @public
- */
-export interface VirtualListItemContext {
-    // the template to use to render the list item
-    listItemContentsTemplate: ViewTemplate;
-}
-
-/**
  *  The VirtualListItem class
  *
  * @public
@@ -77,7 +67,7 @@ export class VirtualListItem extends FoundationElement {
      * @public
      */
     @observable
-    public listItemContext: VirtualListItemContext;
+    public listItemContext: object;
 
     /**
      *  idleCallbackQueue instance
