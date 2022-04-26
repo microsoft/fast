@@ -4,6 +4,7 @@ on:
     branches:
       - master
     paths:
+      - '**.md'
       - 'sites/website/**'
       - 'sites/fast-website/**'
       - '.github/workflows/cd-deploy-www-staging.yml'
@@ -12,10 +13,10 @@ on:
     branches:
       - master
     paths:
+      - '**.md'
       - 'sites/website/**'
       - 'sites/fast-website/**'
       - '.github/workflows/cd-deploy-www-staging.yml'
-
 
 env:
   AZURE_WEBAPP_ACTIVE_STAGE_NAME: www-west-app
