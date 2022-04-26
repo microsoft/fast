@@ -79,7 +79,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
-    private readOnlyChanged(): void {
+    protected readOnlyChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
