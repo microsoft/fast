@@ -7,10 +7,6 @@
     provided array of data and a FAST template. Only elements that are in the bounds of
     the "viewport" element and the definable buffer region are actually rendered. The
     default viewport is the stack element itself.
-    <p>
-        The item templates in each of the examples consist of a fast-card element with a
-        title, a skeleton element and an image.
-    </p>
 </h3>
 
 <h3>
@@ -44,7 +40,7 @@
         orientation="horizontal"
         item-size="200"
         viewport-buffer="200"
-        auto-update-mode="auto"
+        auto-update-mode="self"
         list-item-load-mode="idle"
         id="stackh2"
         style="
@@ -68,7 +64,7 @@
         orientation="horizontal"
         item-size="200"
         viewport-buffer="200"
-        auto-update-mode="auto"
+        auto-update-mode="self"
         id="stackhimmediate"
         style="
             height: 220px;
@@ -88,7 +84,7 @@
     orientation="horizontal"
     item-size="200"
     viewport-buffer="200"
-    auto-update-mode="auto"
+    auto-update-mode="self"
     id="stackh3"
     style="
         height: 220px;
@@ -109,7 +105,7 @@
 <div style="height: 220px; width: 100%; display: grid; justify-items: center;">
     <fast-virtual-list
         orientation="horizontal"
-        auto-update-mode="auto"
+        auto-update-mode="self"
         item-size="200"
         id="stackh4"
         viewport="viewporth4"
@@ -149,7 +145,7 @@
     style="height: 800px; width: 800px; overflow-x: scroll; overflow-y: scroll;"
 >
     <fast-virtual-list
-        auto-update-mode="auto"
+        auto-update-mode="viewport"
         viewport-buffer="100"
         viewport="gridcontainer"
         orientation="vertical"
@@ -190,7 +186,7 @@
         orientation="vertical"
         item-size="200"
         viewport-buffer="200"
-        auto-update-mode="auto"
+        auto-update-mode="self"
         id="stackv2"
         idle-callback-timeout="2000"
         list-item-load-mode="idle"

@@ -1,4 +1,4 @@
-import { html, ViewTemplate, when } from "@microsoft/fast-element";
+import { html, ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/index.js";
 import type { VirtualListItem } from "./virtual-list-item.js";
 
