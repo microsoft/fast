@@ -73,10 +73,15 @@ export const myTooltip = Tooltip.compose({
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name                     | Privacy   | Description | Parameters                      | Return | Inherited From    |
+| ------------------------ | --------- | ----------- | ------------------------------- | ------ | ----------------- |
+| `visibleChanged`         | protected |             |                                 | `void` |                   |
+| `anchorChanged`          | protected |             |                                 | `void` |                   |
+| `positionChanged`        | protected |             |                                 | `void` |                   |
+| `anchorElementChanged`   | protected |             | `oldValue: HTMLElement or null` | `void` |                   |
+| `viewportElementChanged` | protected |             |                                 | `void` |                   |
+| `templateChanged`        | protected |             |                                 | `void` | FoundationElement |
+| `stylesChanged`          | protected |             |                                 | `void` | FoundationElement |
 
 #### Events
 

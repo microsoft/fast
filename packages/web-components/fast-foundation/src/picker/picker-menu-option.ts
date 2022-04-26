@@ -30,7 +30,7 @@ export class PickerMenuOption extends FoundationElement {
      */
     @observable
     public contentsTemplate: ViewTemplate;
-    private contentsTemplateChanged(): void {
+    protected contentsTemplateChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateView();
         }

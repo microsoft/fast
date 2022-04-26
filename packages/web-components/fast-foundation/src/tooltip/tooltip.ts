@@ -32,7 +32,7 @@ export class Tooltip extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public visible: boolean;
-    private visibleChanged(): void {
+    protected visibleChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.updateTooltipVisibility();
             this.updateLayout();
@@ -48,7 +48,7 @@ export class Tooltip extends FoundationElement {
      */
     @attr
     public anchor: string = "";
-    private anchorChanged(): void {
+    protected anchorChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.anchorElement = this.getAnchor();
         }
@@ -89,7 +89,7 @@ export class Tooltip extends FoundationElement {
         | "top-end"
         | "bottom-start"
         | "bottom-end";
-    private positionChanged(): void {
+    protected positionChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.updateLayout();
         }
@@ -132,7 +132,7 @@ export class Tooltip extends FoundationElement {
      */
     @observable
     public anchorElement: HTMLElement | null = null;
-    private anchorElementChanged(oldValue: HTMLElement | null): void {
+    protected anchorElementChanged(oldValue: HTMLElement | null): void {
         if ((this as FASTElement).$fastController.isConnected) {
             if (oldValue !== null && oldValue !== undefined) {
                 oldValue.removeEventListener("mouseover", this.handleAnchorMouseOver);
@@ -193,7 +193,7 @@ export class Tooltip extends FoundationElement {
      */
     @observable
     public viewportElement: HTMLElement | null = null;
-    private viewportElementChanged(): void {
+    protected viewportElementChanged(): void {
         if (this.region !== null && this.region !== undefined) {
             this.region.viewportElement = this.viewportElement;
         }

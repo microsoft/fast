@@ -150,6 +150,7 @@ export const mySliderLabel = SliderLabel.compose({
 
 | Name                             | Privacy   | Description                                 | Parameters             | Return | Inherited From    |
 | -------------------------------- | --------- | ------------------------------------------- | ---------------------- | ------ | ----------------- |
+| `readOnlyChanged`                | protected |                                             |                        | `void` |                   |
 | `increment`                      | public    | Increment the value by the step             |                        | `void` |                   |
 | `decrement`                      | public    | Decrement the value by the step             |                        | `void` |                   |
 | `setThumbPositionForOrientation` | public    | Places the thumb based on the current value | `direction: Direction` | `void` |                   |
@@ -218,6 +219,7 @@ export const mySliderLabel = SliderLabel.compose({
 
 | Name              | Privacy   | Description | Parameters | Return | Inherited From    |
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `positionChanged` | protected |             |            | `void` |                   |
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 

@@ -78,12 +78,15 @@ export const myRadioGroup = RadioGroup.compose({
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `nameChanged`     | protected |             |            | `void` |                   |
-| `valueChanged`    | protected |             |            | `void` |                   |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name                         | Privacy   | Description | Parameters                                   | Return | Inherited From    |
+| ---------------------------- | --------- | ----------- | -------------------------------------------- | ------ | ----------------- |
+| `readOnlyChanged`            | protected |             |                                              | `void` |                   |
+| `disabledChanged`            | protected |             |                                              | `void` |                   |
+| `nameChanged`                | protected |             |                                              | `void` |                   |
+| `valueChanged`               | protected |             |                                              | `void` |                   |
+| `slottedRadioButtonsChanged` | protected |             | `oldValue: unknown, newValue: HTMLElement[]` | `void` |                   |
+| `templateChanged`            | protected |             |                                              | `void` | FoundationElement |
+| `stylesChanged`              | protected |             |                                              | `void` | FoundationElement |
 
 #### Events
 

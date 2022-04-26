@@ -129,6 +129,9 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 
 | Name              | Privacy   | Description | Parameters | Return | Inherited From    |
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `valueChanged`    | protected |             |            | `void` |                   |
+| `minChanged`      | protected |             |            | `void` |                   |
+| `maxChanged`      | protected |             |            | `void` |                   |
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
