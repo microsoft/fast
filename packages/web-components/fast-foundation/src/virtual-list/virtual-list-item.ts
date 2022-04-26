@@ -1,6 +1,6 @@
 import { HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
-import type { IdleCallbackQueue } from "../utilities/idle-callback-queue";
+import { FoundationElement } from "../foundation-element/index.js";
+import type { IdleCallbackQueue } from "../utilities/idle-callback-queue.js";
 
 /**
  * Defines the possible loading behaviors a Virtual List Item
