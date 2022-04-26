@@ -125,6 +125,8 @@ describe("VirtualList", () => {
         element.virtualizationEnabled = false;
         await connect();
 
+        await DOM.nextUpdate();
+
         expect(element.visibleItems.length).to.equal(100);
 
         await disconnect();

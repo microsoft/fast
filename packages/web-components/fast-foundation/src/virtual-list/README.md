@@ -37,9 +37,9 @@ export class FASTVirtualList extends VirtualList{}
 
 #### Superclass
 
-| Name                | Module                  | Package |
-| ------------------- | ----------------------- | ------- |
-| `FoundationElement` | /src/foundation-element |         |
+| Name                | Module                           | Package |
+| ------------------- | -------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/index.js |         |
 
 #### Fields
 
@@ -48,7 +48,7 @@ export class FASTVirtualList extends VirtualList{}
 | `loadMode`                 | public  | `VirtualListItemLoadMode`             |         |                                                                                                                                                                                     |                   |
 | `itemData`                 | public  | `object`                              |         | The data associated with this item                                                                                                                                                  |                   |
 | `itemIndex`                | public  | `number`                              |         | The index of the item in the items array.                                                                                                                                           |                   |
-| `listItemContext`          | public  | `VirtualListItemContext`              |         | Custom context provided to the parent virtual list                                                                                                                                  |                   |
+| `listItemContext`          | public  | `object`                              |         | Custom context provided to the parent virtual list                                                                                                                                  |                   |
 | `idleCallbackQueue`        | public  | `IdleCallbackQueue`                   |         | idleCallbackQueue instance                                                                                                                                                          |                   |
 | `listItemContentsTemplate` | public  | `ViewTemplate`                        |         | The viewtemplate used to render the item contents                                                                                                                                   |                   |
 | `sizeMap`                  | public  | `SizeMap[]`                           |         | The list sizemap                                                                                                                                                                    |                   |
@@ -72,9 +72,9 @@ export class FASTVirtualList extends VirtualList{}
 
 #### Superclass
 
-| Name                | Module                  | Package |
-| ------------------- | ----------------------- | ------- |
-| `FoundationElement` | /src/foundation-element |         |
+| Name                | Module                           | Package |
+| ------------------- | -------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/index.js |         |
 
 #### Fields
 
