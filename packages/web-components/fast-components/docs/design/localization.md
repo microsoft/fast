@@ -11,7 +11,7 @@ Many CSS layout properties like [flexbox](https://developer.mozilla.org/en-US/do
 `@microsoft/fast-components ` export [`direction`](/docs/api/fast-components.direction) (a [DesignToken](/docs/api/fast-foundation.designtoken)) that can be used to configure the primary direction of the document.
 
 ### DirectionalStyleSheetBehavior
-[`DirectionalStyleSheetBehavior`](/docs/api/fast-foundation.directionalstylesheetbehavior/) can be used to apply arbitrary LTR and RTL stylesheets, depending on the nearest [`FASTDesignSystemProvider`s direction](/docs/api/fast-components.fastdesignsystemprovider.direction/) property.
+[`DirectionalStyleSheetBehavior`](/docs/api/fast-components.directionalstylesheetbehavior) can be used to apply arbitrary LTR and RTL stylesheets, depending on the nearest [`FASTDesignSystemProvider`s direction](/docs/api/fast-components.fastdesignsystemprovider) property.
 
 **Example: Using `DirectionalStyleSheetBehavior`**
 ```ts
