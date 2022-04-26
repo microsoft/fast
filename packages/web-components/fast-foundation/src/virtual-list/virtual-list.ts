@@ -11,18 +11,18 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import { IntersectionService } from "../utilities/intersection-service";
-import { IdleCallbackQueue } from "../utilities/idle-callback-queue";
+import { FoundationElement } from "../foundation-element/index.js";
+import { IntersectionService } from "../utilities/intersection-service.js";
+import { IdleCallbackQueue } from "../utilities/idle-callback-queue.js";
 import type {
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
-} from "../utilities/resize-observer";
+} from "../utilities/resize-observer.js";
 import type {
     SizeMap,
     VirtualListItem,
     VirtualListItemLoadMode,
-} from "./virtual-list-item";
+} from "./virtual-list-item.js";
 
 /**
  * Defines what triggers the component to update layout.

@@ -1,9 +1,9 @@
 import { html, ref, ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import type { ElementDefinitionContext } from "..";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { VirtualList } from "./virtual-list";
-import { VirtualListItem } from "./virtual-list-item";
+import type { FoundationElementTemplate } from "../foundation-element/index.js";
+import type { VirtualList } from "./virtual-list.js";
+import { VirtualListItem } from "./virtual-list-item.js";
 
 /**
  * Creates a default vertical item template.  This is the template that defines what list items are created by the

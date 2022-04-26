@@ -4,8 +4,8 @@ import {
     virtualListItemTemplate,
     virtualListTemplate,
 } from "@microsoft/fast-foundation";
-import { virtualListStyles } from "./virtual-list.styles";
-import { virtualListItemStyles } from "./virtual-list-item.styles";
+import { virtualListStyles } from "./virtual-list.styles.js";
+import { virtualListItemStyles } from "./virtual-list-item.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#VirtualList} registration for configuring the component with a DesignSystem.
