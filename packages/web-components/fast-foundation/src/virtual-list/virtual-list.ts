@@ -29,7 +29,7 @@ import type {
  *
  * @public
  */
-export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
+export type VirtualListAutoUpdateMode = "manual" | "viewport" | "auto" | "self";
 
 /**
  * Defines how the idle load queue behaves.
@@ -765,8 +765,17 @@ export class VirtualList extends FoundationElement {
                 this.stopWindowEventListeners();
                 break;
 
-            case "viewport-resize":
+            case "self":
                 this.stopViewportResizeDetector();
+                this.removeEventListener(eventScroll, this.handleScrollEvent);
+                break;
+
+            case "viewport":
+                this.stopViewportResizeDetector();
+                this.viewportElement.removeEventListener(
+                    eventScroll,
+                    this.handleScrollEvent
+                );
                 break;
         }
 
@@ -776,8 +785,24 @@ export class VirtualList extends FoundationElement {
                 this.startWindowUpdateEventListeners();
                 break;
 
-            case "viewport-resize":
+            case "self":
                 this.startViewportResizeDetector();
+                this.addEventListener(eventScroll, this.handleScrollEvent, {
+                    passive: true,
+                    capture: true,
+                });
+                break;
+
+            case "viewport":
+                this.startViewportResizeDetector();
+                this.viewportElement.addEventListener(
+                    eventScroll,
+                    this.handleScrollEvent,
+                    {
+                        passive: true,
+                        capture: true,
+                    }
+                );
                 break;
         }
     }
@@ -911,6 +936,14 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
+     * stops event listeners that can trigger auto updating
+     */
+    private stopWindowEventListeners(): void {
+        window.removeEventListener(eventResize, this.requestPositionUpdates);
+        window.removeEventListener(eventScroll, this.requestPositionUpdates);
+    }
+
+    /**
      * handle scroll events
      */
     private handleScrollEvent = (e: Event): void => {
@@ -923,14 +956,6 @@ export class VirtualList extends FoundationElement {
     private handleResizeEvent = (e: Event): void => {
         this.requestPositionUpdates();
     };
-
-    /**
-     * stops event listeners that can trigger auto updating
-     */
-    private stopWindowEventListeners(): void {
-        window.removeEventListener(eventResize, this.requestPositionUpdates);
-        window.removeEventListener(eventScroll, this.requestPositionUpdates);
-    }
 
     /**
      * Gets the viewport element by id, or defaults to element

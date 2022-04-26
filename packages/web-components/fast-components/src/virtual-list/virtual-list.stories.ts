@@ -10,8 +10,7 @@ import {
 import VirtualListTemplate from "./fixtures/base.html";
 
 let data;
-let dataSizeMap;
-let gridData: object[];
+let gridData;
 
 const horizontalImageItemTemplate = html`
     <fast-card
@@ -73,7 +72,7 @@ const gridItemTemplate = html`
 
 const rowItemTemplate = html`
     <fast-virtual-list
-        auto-update-mode="auto"
+        auto-update-mode="viewport"
         orientation="horizontal"
         item-size="200"
         viewport-buffer="100"
@@ -105,11 +104,11 @@ const listItemContentsTemplate = html`
             html`
                 <div
                     style="
-                height: 160px;
-                width:160px;
-                margin:10px 20px 10px 20px;
-                background-image: url('${x => x.itemData.url}');
-            "
+                        height: 160px;
+                        width:160px;
+                        margin:10px 20px 10px 20px;
+                        background-image: url('${x => x.itemData.url}');
+                "
                 ></div>
             `
         )}
@@ -181,7 +180,6 @@ const variableHeightContentsTemplate = html`
     <div
         style="
             width: 200px;
-            height:  auto;
             contain: layout;
         "
     >
@@ -247,7 +245,6 @@ const variableHeightContentsTemplate = html`
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtual-list")) {
         data = newDataSet(5000, 1);
-        dataSizeMap = generateSizeMap(data);
 
         gridData = [];
 
@@ -308,8 +305,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         };
 
         const stackv3 = document.getElementById("stackv3") as FoundationVirtualList;
-        stackv3.sizemap = dataSizeMap;
-        stackv3.items = data;
+        stackv3.items = newDataSet(1000, 1);
+        stackv3.sizemap = generateSizeMap(stackv3.items);
         stackv3.viewportElement = document.documentElement;
         stackv3.itemTemplate = toggleHeightItemTemplate;
         stackv3.listItemContentsTemplate = toggleHeightContentsTemplate;
@@ -412,11 +409,11 @@ function generateSizeMap(data: object[]) {
     const itemsCount: number = data.length;
     let currentPosition: number = 0;
     for (let i = 0; i < itemsCount; i++) {
-        const itemCollapsedSize = (data[i] as any).itemSize;
-        const mapEnd = itemCollapsedSize + currentPosition;
+        const itemSize = (data[i] as any).itemSize;
+        const mapEnd = itemSize + currentPosition;
         sizemap.push({
             start: currentPosition,
-            size: itemCollapsedSize,
+            size: itemSize,
             end: mapEnd,
         });
         currentPosition = mapEnd;
