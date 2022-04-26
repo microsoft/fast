@@ -158,12 +158,12 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Fields
 
-| Name                   | Privacy | Type                             | Default | Description                                                            | Inherited From |
-| ---------------------- | ------- | -------------------------------- | ------- | ---------------------------------------------------------------------- | -------------- |
-| `ariaActiveDescendant` | public  | `string`                         |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
-| `ariaDisabled`         | public  | `"true" or "false"`              |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
-| `ariaExpanded`         | public  | `"true" or "false" or undefined` |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
-| `ariaMultiSelectable`  | public  | `"true" or "false" or undefined` |         | See https://w3c.github.io/aria/#listbox for more information          |                |
+| Name                   | Privacy | Type                                  | Default | Description                                                            | Inherited From |
+| ---------------------- | ------- | ------------------------------------- | ------- | ---------------------------------------------------------------------- | -------------- |
+| `ariaActiveDescendant` | public  | `string or null`                      |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
+| `ariaDisabled`         | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
+| `ariaExpanded`         | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
+| `ariaMultiSelectable`  | public  | `"true" or "false" or string or null` |         | See https://w3c.github.io/aria/#listbox for more information          |                |
 
 <hr/>
 
