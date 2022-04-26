@@ -1090,9 +1090,6 @@ export type EndOptions = {
 // @public
 export const endSlotTemplate: (context: ElementDefinitionContext, definition: EndOptions) => ViewTemplate<StartEnd>;
 
-// @public @deprecated
-export const endTemplate: ViewTemplate<StartEnd>;
-
 // @public
 export interface Factory<T extends Constructable = any> {
     construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
@@ -2349,15 +2346,7 @@ export class StartEnd {
     // (undocumented)
     end: HTMLSlotElement;
     // (undocumented)
-    endContainer: HTMLSpanElement;
-    // (undocumented)
-    handleEndContentChange(): void;
-    // (undocumented)
-    handleStartContentChange(): void;
-    // (undocumented)
     start: HTMLSlotElement;
-    // (undocumented)
-    startContainer: HTMLSpanElement;
 }
 
 // @public
@@ -2370,9 +2359,6 @@ export type StartOptions = {
 
 // @public
 export const startSlotTemplate: (context: ElementDefinitionContext, definition: StartOptions) => ViewTemplate<StartEnd>;
-
-// @public @deprecated
-export const startTemplate: ViewTemplate<StartEnd>;
 
 // @public
 export type StaticDesignTokenValue<T> = T extends Function ? never : T;
