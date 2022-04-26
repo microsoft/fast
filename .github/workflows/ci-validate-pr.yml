@@ -37,7 +37,7 @@ jobs:
           ${{ runner.os }}-yarn-
 
     - name: Install package dependencies
-      run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
+      run: yarn install --frozen-lockfile --ignore-scripts
 
     - name: Check for the presence of changed files inside ./change
       run: yarn checkchange
