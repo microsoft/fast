@@ -44,8 +44,9 @@ export class TreeView extends FoundationElement {
      *
      * @internal
      */
-    @observable slottedTreeItems: HTMLElement[];
-    private slottedTreeItemsChanged(): void {
+    @observable
+    public slottedTreeItems: HTMLElement[];
+    protected slottedTreeItemsChanged(): void {
         if (this.$fastController.isConnected) {
             // update for slotted children change
             this.setItems();

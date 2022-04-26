@@ -49,7 +49,7 @@ export class Dialog extends FoundationElement {
      */
     @attr({ attribute: "trap-focus", mode: "boolean" })
     public trapFocus: boolean = true;
-    private trapFocusChanged = (): void => {
+    protected trapFocusChanged = (): void => {
         if ((this as FoundationElement).$fastController.isConnected) {
             this.updateTrapFocus();
         }

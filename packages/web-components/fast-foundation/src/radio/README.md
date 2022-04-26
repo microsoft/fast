@@ -102,6 +102,7 @@ export const myRadio = Radio.compose<RadioOptions>({
 
 | Name              | Privacy   | Description | Parameters | Return | Inherited From    |
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `readOnlyChanged` | protected |             |            | `void` |                   |
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
