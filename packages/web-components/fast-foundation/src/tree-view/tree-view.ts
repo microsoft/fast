@@ -147,7 +147,7 @@ export class TreeView extends FoundationElement {
             case keyArrowLeft:
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     const item = e.target as HTMLElement;
-                    // when focus is on an open node, close the node
+
                     if (
                         item instanceof TreeItem &&
                         item.childItemLength() > 0 &&
@@ -160,8 +160,6 @@ export class TreeView extends FoundationElement {
                     ) {
                         TreeItem.focusItem(item.parentElement);
                     }
-                    // when focus is on a child node that is also either an end node or a closed node,
-                    // move focus to its parent
                 }
                 return false;
             case keyArrowRight:
