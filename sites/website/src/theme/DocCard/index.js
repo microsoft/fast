@@ -8,9 +8,9 @@ import React from "react";
 import Link from "@docusaurus/Link";
 import { findFirstCategoryLink, useDocById } from "@docusaurus/theme-common";
 import clsx from "clsx";
-import styles from "./styles.module.css";
 import isInternalUrl from "@docusaurus/isInternalUrl";
 import { translate } from "@docusaurus/Translate";
+import styles from "./styles.module.css";
 
 function CardContainer({ href, children }) {
     const className = clsx(
@@ -34,7 +34,7 @@ function CardLayout({ href, icon, title, description }) {
                 {icon} {title}
             </h2>
             <div
-                className={clsx("text--truncate", styles.cardDescription)}
+                className={clsx("text", styles.cardDescription, styles.lineClamp)}
                 title={description}
             >
                 {description}
@@ -48,11 +48,11 @@ function CardCategory({ item }) {
     return (
         <CardLayout
             href={href}
-            icon="🗃️"
+            icon=""
             title={item.label}
             description={translate(
                 {
-                    message: "{count} items",
+                    message: item.customProps?.description || "{count} items",
                     id: "theme.docs.DocCard.categoryDescription",
                     description:
                         "The default description for a category card in the generated index about how many items this category includes",
@@ -66,14 +66,14 @@ function CardCategory({ item }) {
 }
 
 function CardLink({ item }) {
-    const icon = isInternalUrl(item.href) ? "📄️" : "🔗";
+    const icon = isInternalUrl(item.href) ? "" : "🔗";
     const doc = useDocById(item.docId ?? undefined);
     return (
         <CardLayout
             href={item.href}
             icon={icon}
             title={item.label}
-            description={doc?.description}
+            description={item.customProps?.description || doc?.description}
         />
     );
 }

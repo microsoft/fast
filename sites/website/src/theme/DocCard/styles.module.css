@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-.cardContainer {
-  height: 8rem;
+ .cardContainer {
+  height: 11rem;
   color: var(--ifm-color-emphasis-800);
   --ifm-link-color: var(--ifm-color-emphasis-800);
   --ifm-link-hover-color: var(--ifm-color-emphasis-800);
@@ -40,4 +40,11 @@
 .cardDescription {
   font-size: 0.8rem;
   min-height: 0.8rem;
+}
+
+.lineClamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
