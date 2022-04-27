@@ -4,25 +4,25 @@ on:
     branches:
       - master
     paths:
-      - 'packages/web-components/**/docs/api-report.md'
+      - '.github/workflows/cd-deploy-www-staging.yml'
       - 'packages/utilities/fast-animation/docs/api-report.md'
       - 'packages/utilities/fast-color/docs/api-report.md'
       - 'packages/utilities/fast-react-wrapper/docs/api-report.md'
-      - 'sites/website/**'
+      - 'packages/web-components/**/docs/api-report.md'
       - 'sites/fast-website/**'
-      - '.github/workflows/cd-deploy-www-staging.yml'
+      - 'sites/website/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
     paths:
-      - 'packages/web-components/**/docs/api-report.md'
+      - '.github/workflows/cd-deploy-www-staging.yml'
       - 'packages/utilities/fast-animation/docs/api-report.md'
       - 'packages/utilities/fast-color/docs/api-report.md'
       - 'packages/utilities/fast-react-wrapper/docs/api-report.md'
-      - 'sites/website/**'
+      - 'packages/web-components/**/docs/api-report.md'
       - 'sites/fast-website/**'
-      - '.github/workflows/cd-deploy-www-staging.yml'
+      - 'sites/website/**'
 
 env:
   AZURE_WEBAPP_ACTIVE_STAGE_NAME: www-west-app

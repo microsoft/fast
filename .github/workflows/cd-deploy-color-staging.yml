@@ -5,15 +5,15 @@ on:
     branches:
       - master
     paths:
-      - 'sites/fast-color-explorer/**'
       - '.github/workflows/cd-deploy-color-staging.yml'
+      - 'sites/fast-color-explorer/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
     paths:
-      - 'sites/fast-color-explorer/**'
       - '.github/workflows/cd-deploy-color-staging.yml'
+      - 'sites/fast-color-explorer/**'
 
 env:
   AZURE_WEBAPP_ACTIVE_STAGE_NAME: color-west-app

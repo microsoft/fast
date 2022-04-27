@@ -5,8 +5,8 @@ on:
     branches:
       - master
     paths:
-      - 'sites/fast-component-explorer/**'
       - '.github/workflows/cd-deploy-explore-staging.yml'
+      - 'sites/fast-component-explorer/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
