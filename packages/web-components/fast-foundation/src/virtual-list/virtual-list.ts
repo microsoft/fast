@@ -857,15 +857,10 @@ export class VirtualList extends FoundationElement {
                         this.pendingSizemap = this.sizemap.slice();
                         recalculateNeeded = true;
                     }
-                    const itemSizeMap: SizeMap = {
-                        start: this.pendingSizemap[index].start,
-                        size:
-                            this.orientation === Orientation.vertical
-                                ? entry.contentRect.height
-                                : entry.contentRect.width,
-                        end: this.pendingSizemap[index].end,
-                    };
-                    this.pendingSizemap.splice(index, 1, itemSizeMap);
+                    this.pendingSizemap[index].size =
+                        this.orientation === Orientation.vertical
+                            ? entry.contentRect.height
+                            : entry.contentRect.width;
                 }
             }
             if (recalculateNeeded) {
@@ -888,14 +883,13 @@ export class VirtualList extends FoundationElement {
 
         let currentPosition: number = this.pendingSizemap[this.pendingSizemapChangeIndex]
             .start;
+        let currentSizeMap: SizeMap;
         for (let i: number = this.pendingSizemapChangeIndex; i < mapLength; i++) {
-            const nextPosition = currentPosition + this.pendingSizemap[i].size;
-            this.pendingSizemap.splice(i, 1, {
-                start: currentPosition,
-                size: this.pendingSizemap[i].size,
-                end: nextPosition,
-            });
-            currentPosition = nextPosition;
+            currentSizeMap = this.pendingSizemap[i];
+            currentSizeMap.start = currentPosition;
+            currentSizeMap.end = currentPosition + currentSizeMap.size;
+
+            currentPosition = currentSizeMap.end;
         }
 
         this.sizemap = this.pendingSizemap;

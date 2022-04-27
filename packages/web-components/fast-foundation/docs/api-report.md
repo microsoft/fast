@@ -2605,11 +2605,11 @@ export function singleton<T extends Constructable>(target: T & Partial<RegisterS
 // @public
 export interface SizeMap {
     // (undocumented)
-    readonly end: number;
+    end: number;
     // (undocumented)
-    readonly size: number;
+    size: number;
     // (undocumented)
-    readonly start: number;
+    start: number;
 }
 
 // @public
