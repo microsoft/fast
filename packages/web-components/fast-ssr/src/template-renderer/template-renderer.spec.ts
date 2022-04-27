@@ -179,6 +179,26 @@ test.describe("TemplateRenderer", () => {
         expect(result).toBe(`<input type="checkbox"  />`);
     });
 
+    test("should evaluate bindings for html element", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = consolidate(templateRenderer.render(html`<html attr=${x => "value"}></html>`, defaultRenderInfo));
+
+        expect(result).toBe(`<html attr="value"></html>`);
+    });
+    test("should evaluate bindings for head element", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = consolidate(templateRenderer.render(html`<head attr=${x => "value"}></head>`, defaultRenderInfo));
+
+        expect(result).toBe(`<head attr="value"></head>`);
+    });
+
+    test("should evaluate bindings for body element", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = consolidate(templateRenderer.render(html`<body attr=${x => "value"}></body>`, defaultRenderInfo));
+
+        expect(result).toBe(`<body attr="value"></body>`);
+    });
+
     test("should emit embedded templates", () =>{
         const { templateRenderer, defaultRenderInfo} = fastSSR();
 
