@@ -1518,6 +1518,9 @@ export class ListboxOption extends FoundationElement {
     constructor(text?: string, value?: string, defaultSelected?: boolean, selected?: boolean);
     checked?: boolean;
     protected checkedChanged(prev: boolean | unknown, next?: boolean): void;
+    content: Node[];
+    // @internal
+    protected contentChanged(prev: undefined | Node[], next: Node[]): void;
     defaultSelected: boolean;
     // (undocumented)
     protected defaultSelectedChanged(): void;
@@ -2152,7 +2155,9 @@ export class Select extends FormAssociatedSelect {
     control: HTMLElement;
     // @internal
     disabledChanged(prev: boolean, next: boolean): void;
-    displayValue: string;
+    // (undocumented)
+    disconnectedCallback(): void;
+    get displayValue(): string;
     // @internal
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal

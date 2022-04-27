@@ -72,6 +72,29 @@ export class ListboxOption extends FoundationElement {
     }
 
     /**
+     * The default slotted content.
+     *
+     * @public
+     */
+    @observable
+    public content: Node[];
+
+    /**
+     * Updates the proxy's text content when the default slot changes.
+     * @param prev - the previous content value
+     * @param next - the current content value
+     *
+     * @internal
+     */
+    protected contentChanged(prev: undefined | Node[], next: Node[]): void {
+        if (this.proxy instanceof HTMLOptionElement) {
+            this.proxy.textContent = this.textContent;
+        }
+
+        this.$emit("contentchange", null, { bubbles: true });
+    }
+
+    /**
      * The defaultSelected state of the option.
      * @public
      */
@@ -181,7 +204,7 @@ export class ListboxOption extends FoundationElement {
 
         this.dirtyValue = true;
 
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLOptionElement) {
             this.proxy.value = next;
         }
 
