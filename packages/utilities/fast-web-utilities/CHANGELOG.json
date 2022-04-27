@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-web-utilities",
   "entries": [
     {
+      "date": "Wed, 27 Apr 2022 07:21:09 GMT",
+      "tag": "@microsoft/fast-web-utilities_v5.4.0",
+      "version": "5.4.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "update to typescript 4.6.2 and update ARIAMixin typings",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/eslint-config-fast-dna to v2.1.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 17 Apr 2022 07:11:18 GMT",
       "tag": "@microsoft/fast-web-utilities_v5.3.0",
       "version": "5.3.0",

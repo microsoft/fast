@@ -140,7 +140,8 @@ module.exports = {
             {
                 docs: {
                     sidebarPath: require.resolve("./sidebars.js"),
-                    showLastUpdateTime: true,
+                    // Refer to https://github.com/microsoft/fast/issues/5865 effects of using true
+                    showLastUpdateTime: false,
                     remarkPlugins: [require("mdx-mermaid")],
                 },
                 theme: {

@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 21 Apr 2022 07:13:54 GMT and should not be manually modified.
+This log was last generated on Wed, 27 Apr 2022 07:21:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.43.0
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Minor changes
+
+- update to typescript 4.6.2 and update ARIAMixin typings (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.4.0 (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v1.10.0 (chhol@microsoft.com)
 
 ## 2.42.2
 
