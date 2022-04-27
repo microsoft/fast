@@ -22,13 +22,13 @@ export type VirtualListItemLoadMode = "immediate" | "manual" | "idle";
  */
 export interface SizeMap {
     // start position
-    readonly start: number;
+    start: number;
 
     // end position
-    readonly end: number;
+    end: number;
 
     // list item size
-    readonly size: number;
+    size: number;
 }
 
 /**

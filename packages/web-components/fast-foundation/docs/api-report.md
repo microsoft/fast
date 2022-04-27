@@ -2603,11 +2603,11 @@ export function selectTemplate<T extends FASTSelect>(options?: SelectOptions): E
 // @public
 export interface SizeMap {
     // (undocumented)
-    readonly end: number;
+    end: number;
     // (undocumented)
-    readonly size: number;
+    size: number;
     // (undocumented)
-    readonly start: number;
+    start: number;
 }
 
 // @public
