@@ -300,7 +300,7 @@ export class NumberField extends FormAssociatedNumberField {
     }
 
     /**
-     * Selects all the text in the text-field
+     * Selects all the text in the number field
      *
      * @public
      */

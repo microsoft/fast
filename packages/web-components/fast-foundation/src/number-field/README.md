@@ -111,6 +111,7 @@ This component is built with the expectation that focus is delegated to the inpu
 | ----------------- | --------- | ----------------------------------------- | ---------- | ------ | ----------------- |
 | `stepUp`          | public    | Increments the value using the step value |            | `void` |                   |
 | `stepDown`        | public    | Decrements the value using the step value |            | `void` |                   |
+| `select`          | public    | Selects all the text in the number field  |            | `void` |                   |
 | `templateChanged` | protected |                                           |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |                                           |            | `void` | FoundationElement |
 

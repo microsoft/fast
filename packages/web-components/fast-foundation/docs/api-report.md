@@ -1722,6 +1722,7 @@ export class NumberField extends FormAssociatedNumberField {
     minlength: number;
     placeholder: string;
     readOnly: boolean;
+    protected select(): void;
     size: number;
     step: number;
     stepDown(): void;
@@ -2506,6 +2507,7 @@ export class TextArea extends FormAssociatedTextArea {
     readOnly: boolean;
     resize: TextAreaResize | "none" | "both" | "horizontal" | "vertical";
     rows: number;
+    protected select(): void;
     spellcheck: boolean;
     }
 
@@ -2547,6 +2549,7 @@ export class TextField extends FormAssociatedTextField {
     pattern: string;
     placeholder: string;
     readOnly: boolean;
+    protected select(): void;
     size: number;
     spellcheck: boolean;
     type: TextFieldType | "email" | "password" | "tel" | "text" | "url";

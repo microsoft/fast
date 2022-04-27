@@ -202,7 +202,7 @@ export class TextField extends FormAssociatedTextField {
     }
 
     /**
-     * Selects all the text in the text-field
+     * Selects all the text in the text field
      *
      * @public
      */

@@ -167,7 +167,7 @@ export class TextArea extends FormAssociatedTextArea {
     public defaultSlottedNodes: Node[];
 
     /**
-     * Selects all the text in the text-field
+     * Selects all the text in the text area
      *
      * @public
      */

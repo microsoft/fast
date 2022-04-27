@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add select method to number field, text field, and text area components",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
