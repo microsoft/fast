@@ -300,6 +300,15 @@ export class NumberField extends FormAssociatedNumberField {
     }
 
     /**
+     * Selects all the text in the text-field
+     *
+     * @public
+     */
+    protected select(): void {
+        this.control.select();
+    }
+
+    /**
      * Handles the internal control's `input` event
      * @internal
      */

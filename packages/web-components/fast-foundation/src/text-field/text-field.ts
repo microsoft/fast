@@ -202,6 +202,15 @@ export class TextField extends FormAssociatedTextField {
     }
 
     /**
+     * Selects all the text in the text-field
+     *
+     * @public
+     */
+    protected select(): void {
+        this.control.select();
+    }
+
+    /**
      * Handles the internal control's `input` event
      * @internal
      */
