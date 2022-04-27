@@ -127,7 +127,7 @@ export abstract class Listbox extends FoundationElement {
      * @public
      */
     public static slottedOptionFilter = (n: HTMLElement) =>
-        isListboxOption(n) && !n.disabled && !n.hidden;
+        isListboxOption(n) && !n.hidden;
 
     /**
      * The default slotted elements.
