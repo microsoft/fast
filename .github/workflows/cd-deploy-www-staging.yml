@@ -4,7 +4,10 @@ on:
     branches:
       - master
     paths:
-      - '**.md'
+      - 'packages/web-components/**/docs/api-report.md'
+      - 'packages/utilities/fast-animation/docs/api-report.md'
+      - 'packages/utilities/fast-color/docs/api-report.md'
+      - 'packages/utilities/fast-react-wrapper/docs/api-report.md'
       - 'sites/website/**'
       - 'sites/fast-website/**'
       - '.github/workflows/cd-deploy-www-staging.yml'
@@ -13,7 +16,10 @@ on:
     branches:
       - master
     paths:
-      - '**.md'
+      - 'packages/web-components/**/docs/api-report.md'
+      - 'packages/utilities/fast-animation/docs/api-report.md'
+      - 'packages/utilities/fast-color/docs/api-report.md'
+      - 'packages/utilities/fast-react-wrapper/docs/api-report.md'
       - 'sites/website/**'
       - 'sites/fast-website/**'
       - '.github/workflows/cd-deploy-www-staging.yml'
