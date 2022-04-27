@@ -2,6 +2,140 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 27 Apr 2022 07:21:09 GMT",
+      "tag": "@microsoft/fast-components_v2.30.0",
+      "version": "2.30.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix disclosure connected callback not invoked",
+            "author": "scomea@microsoft.com",
+            "commit": "b2e60071e8a893e5202973a8790edf7754015853",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-colors to v5.3.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.4.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.43.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "update to typescript 4.6.2 and update ARIAMixin typings",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "update link for directionalstylesheetbehavior",
+            "author": "steph@huynhicode.dev",
+            "commit": "d00066c745dd71603b37b191f4ac86639f6ea32b",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 24 Apr 2022 07:13:26 GMT",
+      "tag": "@microsoft/fast-components_v2.29.1",
+      "version": "2.29.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "16669785+awentzel@users.noreply.github.com",
+            "commit": "ed08697132b639f3104562b16a0dcf5c5653a878",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Apr 2022 07:13:54 GMT",
+      "tag": "@microsoft/fast-components_v2.29.1",
+      "version": "2.29.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Added support for styling slider value on the track",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "20836e97d291137c5600fb4ee6d643c2b55b11ee",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Apr 2022 07:13:17 GMT",
+      "tag": "@microsoft/fast-components_v2.29.0",
+      "version": "2.29.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "support custom row and col sizes on text area",
+            "author": "chhol@microsoft.com",
+            "commit": "f9d5283d22390c8089d4065c3e089c245515fe0e",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fixes a rendering glitch which flasehes when intially expanding a group of tree items",
+            "author": "chhol@microsoft.com",
+            "commit": "b484a5c5a15e94e467feead7bca65e5c9b2be4fb",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Pull up api-extractor.json to root and then extend it for each project",
+            "author": "stephanosp@microsoft.com",
+            "commit": "e3076337cbc2d260a497116061ee3bba3866a97d",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-colors to v5.2.0",
+            "author": "stephanosp@microsoft.com",
+            "commit": "e3076337cbc2d260a497116061ee3bba3866a97d",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "stephanosp@microsoft.com",
+            "commit": "e3076337cbc2d260a497116061ee3bba3866a97d",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.42.1",
+            "author": "stephanosp@microsoft.com",
+            "commit": "e3076337cbc2d260a497116061ee3bba3866a97d",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 17 Apr 2022 07:11:18 GMT",
       "tag": "@microsoft/fast-components_v2.28.1",
       "version": "2.28.1",

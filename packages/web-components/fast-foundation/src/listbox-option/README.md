@@ -102,12 +102,12 @@ export const myOption = ListboxOption.compose({
 
 #### Fields
 
-| Name           | Privacy | Type                             | Default | Description                                                            | Inherited From |
-| -------------- | ------- | -------------------------------- | ------- | ---------------------------------------------------------------------- | -------------- |
-| `ariaChecked`  | public  | `"true" or "false" or undefined` |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
-| `ariaPosInSet` | public  | `string`                         |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
-| `ariaSelected` | public  | `"true" or "false" or undefined` |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
-| `ariaSetSize`  | public  | `string`                         |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
+| Name           | Privacy | Type                                  | Default | Description                                                            | Inherited From |
+| -------------- | ------- | ------------------------------------- | ------- | ---------------------------------------------------------------------- | -------------- |
+| `ariaChecked`  | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
+| `ariaPosInSet` | public  | `string or null`                      |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
+| `ariaSelected` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
+| `ariaSetSize`  | public  | `string or null`                      |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
 
 <hr/>
 

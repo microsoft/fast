@@ -150,7 +150,7 @@ export class DelegatesARIALink {
      * HTML Attribute: aria-expanded
      */
     @attr({ attribute: "aria-expanded" })
-    public ariaExpanded: "true" | "false" | undefined;
+    public ariaExpanded: "true" | "false" | string | null;
 }
 
 /**

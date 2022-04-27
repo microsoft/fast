@@ -24,6 +24,7 @@ export class Disclosure extends FoundationDisclosure {
     private totalHeight: number = 0;
 
     public connectedCallback(): void {
+        super.connectedCallback();
         if (!this.appearance) {
             this.appearance = "accent";
         }

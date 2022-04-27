@@ -2,6 +2,50 @@
   "name": "@microsoft/fast-animation",
   "entries": [
     {
+      "date": "Wed, 27 Apr 2022 07:21:09 GMT",
+      "tag": "@microsoft/fast-animation_v4.2.0",
+      "version": "4.2.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "update to typescript 4.6.2 and update ARIAMixin typings",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-animation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/eslint-config-fast-dna to v2.1.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-animation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.4.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Apr 2022 07:13:17 GMT",
+      "tag": "@microsoft/fast-animation_v4.1.10",
+      "version": "4.1.10",
+      "comments": {
+        "none": [
+          {
+            "comment": "Pull up api-extractor.json to root and then extend it for each project",
+            "author": "stephanosp@microsoft.com",
+            "commit": "e3076337cbc2d260a497116061ee3bba3866a97d",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 17 Apr 2022 07:11:18 GMT",
       "tag": "@microsoft/fast-animation_v4.1.10",
       "version": "4.1.10",

@@ -2,6 +2,66 @@
   "name": "@microsoft/fast-color-explorer",
   "entries": [
     {
+      "date": "Wed, 27 Apr 2022 07:21:09 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.30.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 24 Apr 2022 07:13:26 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.29.1",
+            "author": "16669785+awentzel@users.noreply.github.com",
+            "commit": "ed08697132b639f3104562b16a0dcf5c5653a878",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Apr 2022 07:13:54 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.29.1",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "20836e97d291137c5600fb4ee6d643c2b55b11ee",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Apr 2022 07:13:17 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.29.0",
+            "author": "stephanosp@microsoft.com",
+            "commit": "e3076337cbc2d260a497116061ee3bba3866a97d",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 17 Apr 2022 07:11:18 GMT",
       "tag": "@microsoft/fast-color-explorer_v1.6.19",
       "version": "1.6.19",

@@ -2,6 +2,88 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 27 Apr 2022 07:21:09 GMT",
+      "tag": "@microsoft/fast-foundation_v2.43.0",
+      "version": "2.43.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "update to typescript 4.6.2 and update ARIAMixin typings",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.4.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 24 Apr 2022 07:13:26 GMT",
+      "tag": "@microsoft/fast-foundation_v2.42.2",
+      "version": "2.42.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "Update to fix broken links and grammar.",
+            "author": "16669785+awentzel@users.noreply.github.com",
+            "commit": "ed08697132b639f3104562b16a0dcf5c5653a878",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Apr 2022 07:13:54 GMT",
+      "tag": "@microsoft/fast-foundation_v2.42.2",
+      "version": "2.42.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "Improve wording for usage of `@@`.",
+            "author": "eimantas@stork.software",
+            "commit": "0be3fad176207292996440f208bd1c9812499b46",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Added support for styling slider value on the track",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "20836e97d291137c5600fb4ee6d643c2b55b11ee",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Apr 2022 07:13:17 GMT",
+      "tag": "@microsoft/fast-foundation_v2.42.1",
+      "version": "2.42.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Pull up api-extractor.json to root and then extend it for each project",
+            "author": "stephanosp@microsoft.com",
+            "commit": "e3076337cbc2d260a497116061ee3bba3866a97d",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 17 Apr 2022 07:11:18 GMT",
       "tag": "@microsoft/fast-foundation_v2.42.1",
       "version": "2.42.1",

@@ -13,9 +13,7 @@ const fastComponents = path.dirname(
 
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");
-
 const root = path.resolve(projectRoot, "../../");
-
 const outputDir = path.resolve(projectRoot, "docs");
 
 function findFiles(startPath, filter, paths = []) {
@@ -95,11 +93,8 @@ async function copyArticleMarkdown() {
         path.resolve(fastFoundation, "docs/integrations"),
         "integrations"
     );
-
     await moveMarkdownFiles(path.resolve(fastFoundation, "docs/tools"), "tools");
-
     await moveMarkdownFiles(path.resolve(fastElement, "docs/guide"), "fast-element");
-
     await moveMarkdownFiles(path.resolve(fastComponents, "docs/design"), "design");
 
     const componentDocs = findFiles(path.resolve(fastFoundation, "src"), "README.md");
@@ -135,6 +130,18 @@ async function copyArticleMarkdown() {
                 sidebar_label: "Contributor Guide",
                 custom_edit_url:
                     "https://github.com/microsoft/fast/edit/master/CONTRIBUTING.md",
+            },
+        },
+        {
+            src: path.resolve(root, "BRANCH_GUIDE.md"),
+            dest: path.resolve(outputDir, "community/branch-guide.md"),
+            metadata: {
+                id: "branch-guide",
+                title: "Branch Guide",
+                sidebar_label: "Branch Guide",
+                custom_edit_url:
+                    "https://github.com/microsoft/fast/blob/master/BRANCH_GUIDE.md",
+                desciption: "A branch guide for the FAST repository.",
             },
         },
         {
@@ -180,17 +187,6 @@ async function copyArticleMarkdown() {
                     "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/README.md",
             },
         },
-        // {
-        //     src: path.resolve(root, "examples/site-rebrand-tutorial/README.md"),
-        //     dest: path.resolve(outputDir, "tutorials/site-rebrand.md"),
-        //     metadata: {
-        //         id: "site-rebrand",
-        //         title: "Using FAST to Rebrand an Existing Website",
-        //         sidebar_label: "Rebranding an Existing Site",
-        //         custom_edit_url:
-        //             "https://github.com/microsoft/fast/blob/master/examples/site-rebrand-tutorial/README.md",
-        //     },
-        // },
     ];
 
     for (const file of mergeDocs) {
@@ -353,54 +349,8 @@ async function buildAPIMarkdown() {
     }
 }
 
-async function copyImages() {
-    // const images = [
-    //     {
-    //         src: path.resolve(root, "examples/site-rebrand-tutorial/website.png"),
-    //         dest: path.resolve(
-    //             staticOutputDir,
-    //             "examples/site-rebrand-tutorial/website.png"
-    //         ),
-    //     },
-    //     {
-    //         src: path.resolve(root, "examples/site-rebrand-tutorial/site-structure.png"),
-    //         dest: path.resolve(
-    //             staticOutputDir,
-    //             "examples/site-rebrand-tutorial/site-structure.png"
-    //         ),
-    //     },
-    //     {
-    //         src: path.resolve(
-    //             root,
-    //             "examples/site-rebrand-tutorial/example-controls.png"
-    //         ),
-    //         dest: path.resolve(
-    //             staticOutputDir,
-    //             "examples/site-rebrand-tutorial/example-controls.png"
-    //         ),
-    //     },
-    //     {
-    //         src: path.resolve(root, "examples/site-rebrand-tutorial/side-by-side.png"),
-    //         dest: path.resolve(
-    //             staticOutputDir,
-    //             "examples/site-rebrand-tutorial/side-by-side.png"
-    //         ),
-    //     },
-    //     {
-    //         src: path.resolve(root, "examples/site-rebrand-tutorial/design-panel.png"),
-    //         dest: path.resolve(
-    //             staticOutputDir,
-    //             "examples/site-rebrand-tutorial/design-panel.png"
-    //         ),
-    //     },
-    // ];
-    // for (const img of images) {
-    //     await safeCopy(img.src, img.dest);
-    // }
-}
-
 async function main() {
-    await Promise.all([copyArticleMarkdown(), copyImages(), buildAPIMarkdown()]);
+    await Promise.all([copyArticleMarkdown(), buildAPIMarkdown()]);
 }
 
 main();

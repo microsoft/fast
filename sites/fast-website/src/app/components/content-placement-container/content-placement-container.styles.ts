@@ -129,6 +129,44 @@ export const ContentPlacementContainerStyles = css`
         padding-bottom: 94px;
     }
 
+    :host([section="designSystem"]) {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .fast-design-system svg {
+        height: 40px;
+        width: 80px;
+        fill: white;
+        stroke: white;
+        margin: 15px 40px 15px;
+    }
+
+    .fast-design-system svg rect {
+        fill: white;
+        stroke: white;
+    }
+
+    .fast-design-system path {
+        fill: white;
+    }
+
+    .fast-design-system-link {
+        color: white;
+        text-decoration: none;
+        text-align: center;
+        border-radius: 3px;
+        font-size: var(--type-ramp-base-font-size);
+    }
+
+    .fast-design-system-link:hover,
+    .fast-design-system-link:focus {
+        background: rgba(0, 0, 0, 0.5);
+        text-decoration: underline;
+        text-decoration-color: var(--accent-foreground-rest);
+        text-decoration-thickness: 2px;
+    }
+
     @media screen and (max-width: 1330px) {
         :host([section="feature"]) {
             --flow: row;

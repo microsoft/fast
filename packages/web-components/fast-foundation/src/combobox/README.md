@@ -151,10 +151,10 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Fields
 
-| Name               | Privacy | Type                                                  | Default | Description                                                                       | Inherited From |
-| ------------------ | ------- | ----------------------------------------------------- | ------- | --------------------------------------------------------------------------------- | -------------- |
-| `ariaAutoComplete` | public  | `"inline" or "list" or "both" or "none" or undefined` |         | See https://www.w3.org/TR/wai-aria-1.2/#aria-autocomplete for more information. |                |
-| `ariaControls`     | public  | `string`                                              |         | See https://www.w3.org/TR/wai-aria-1.2/#aria-controls for more information.     |                |
+| Name               | Privacy | Type                                                       | Default | Description                                                                       | Inherited From |
+| ------------------ | ------- | ---------------------------------------------------------- | ------- | --------------------------------------------------------------------------------- | -------------- |
+| `ariaAutoComplete` | public  | `"inline" or "list" or "both" or "none" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#aria-autocomplete for more information. |                |
+| `ariaControls`     | public  | `string or null`                                           |         | See https://www.w3.org/TR/wai-aria-1.2/#aria-controls for more information.     |                |
 
 <hr/>
 

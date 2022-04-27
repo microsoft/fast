@@ -109,9 +109,9 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### Fields
 
-| Name           | Privacy | Type                             | Default | Description                                                          | Inherited From |
-| -------------- | ------- | -------------------------------- | ------- | -------------------------------------------------------------------- | -------------- |
-| `ariaExpanded` | public  | `"true" or "false" or undefined` |         | See https://www.w3.org/WAI/PF/aria/roles#link for more information |                |
+| Name           | Privacy | Type                                  | Default | Description                                                          | Inherited From |
+| -------------- | ------- | ------------------------------------- | ------- | -------------------------------------------------------------------- | -------------- |
+| `ariaExpanded` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/WAI/PF/aria/roles#link for more information |                |
 
 #### Attributes
 

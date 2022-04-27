@@ -1,8 +1,44 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 17 Apr 2022 07:11:18 GMT and should not be manually modified.
+This log was last generated on Wed, 27 Apr 2022 07:21:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.30.0
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Minor changes
+
+- update to typescript 4.6.2 and update ARIAMixin typings (chhol@microsoft.com)
+
+### Patches
+
+- fix disclosure connected callback not invoked (scomea@microsoft.com)
+- Bump @microsoft/fast-colors to v5.3.0 (chhol@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.4.0 (chhol@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.43.0 (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v1.10.0 (chhol@microsoft.com)
+
+## 2.29.1
+
+Thu, 21 Apr 2022 07:13:54 GMT
+
+### Patches
+
+- Added support for styling slider value on the track (47367562+bheston@users.noreply.github.com)
+
+## 2.29.0
+
+Wed, 20 Apr 2022 07:13:17 GMT
+
+### Minor changes
+
+- support custom row and col sizes on text area (chhol@microsoft.com)
+
+### Patches
+
+- fixes a rendering glitch which flasehes when intially expanding a group of tree items (chhol@microsoft.com)
 
 ## 2.28.1
 

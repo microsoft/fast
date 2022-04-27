@@ -225,5 +225,5 @@ In most cases, the template that `FASTElement` renders is determined by the `tem
 In addition to dynamic template selection during the `connectedCallback`, the `$fastController` property of `FASTElement` enables dynamically changing the template at any time through setting the controller's `template` property to any valid template.
 
 :::tip
-Check out [our Cheat Sheet](https://www.fast.design/docs/resources/cheat-sheet#bindings) for a quick guide on bindings.
+Check out [our Cheat Sheet](/docs/resources/cheat-sheet#bindings) for a quick guide on bindings.
 :::
