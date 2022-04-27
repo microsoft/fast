@@ -256,7 +256,7 @@ export class DelegatesARIAButton {
      * HTML Attribute: aria-expanded
      */
     @attr({ attribute: "aria-expanded" })
-    public ariaExpanded: "true" | "false" | undefined;
+    public ariaExpanded: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
@@ -265,7 +265,7 @@ export class DelegatesARIAButton {
      * HTML Attribute: aria-pressed
      */
     @attr({ attribute: "aria-pressed" })
-    public ariaPressed: "true" | "false" | "mixed" | undefined;
+    public ariaPressed: "true" | "false" | "mixed" | string | null;
 }
 
 /**

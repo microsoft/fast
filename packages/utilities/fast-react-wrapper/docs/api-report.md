@@ -17,12 +17,8 @@ export type FoundationElementRegistryElement<TRegistry> = TRegistry extends Foun
 // @public (undocumented)
 export function provideReactWrapper(React: any, designSystem?: DesignSystem): {
     wrap: {
-        <TRegistry extends FoundationElementRegistry<FoundationElementDefinition, any>, TEvents>(registry: TRegistry, config?: ReactWrapperConfig<TEvents> | undefined): Constructable<ReactModule.Component<ReactModule.PropsWithChildren<ReactModule.PropsWithRef<Partial<Pick<FoundationElementRegistryElement<TRegistry>, Exclude<keyof FoundationElementRegistryElement<TRegistry>, "style" | "children">>> & ReactEvents<TEvents> & ReactModule.HTMLAttributes<HTMLElement>> & {
-            style?: ReactModule.CSSProperties | undefined;
-        }>, {}, any>>;
-        <TElement extends HTMLElement, TEvents_1>(type: Constructable<TElement>, config?: ReactWrapperConfig<TEvents_1> | undefined): Constructable<ReactModule.Component<ReactModule.PropsWithChildren<ReactModule.PropsWithRef<Partial<Pick<TElement, Exclude<keyof TElement, "style" | "children">>> & ReactEvents<TEvents_1> & ReactModule.HTMLAttributes<HTMLElement>> & {
-            style?: ReactModule.CSSProperties | undefined;
-        }>, {}, any>>;
+        <TRegistry extends FoundationElementRegistry<FoundationElementDefinition, any>, TEvents>(registry: TRegistry, config?: ReactWrapperConfig<TEvents> | undefined): ReactWrapper<FoundationElementRegistryElement<TRegistry>, TEvents>;
+        <TElement extends HTMLElement, TEvents_1>(type: Constructable<TElement>, config?: ReactWrapperConfig<TEvents_1> | undefined): ReactWrapper<TElement, TEvents_1>;
     };
     registry: Registry;
 };

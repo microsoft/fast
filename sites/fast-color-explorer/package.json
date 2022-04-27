@@ -28,7 +28,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
-    "@microsoft/eslint-config-fast-dna": "^2.0.0",
+    "@microsoft/eslint-config-fast-dna": "^2.1.0",
     "@microsoft/site-utilities": "^0.9.0",
     "@types/node": "^15.0.1",
     "clean-webpack-plugin": "^1.0.0",
@@ -45,7 +45,7 @@
     "prettier": "2.0.2",
     "svg-inline-loader": "^0.8.2",
     "ts-loader": "^5.3.1",
-    "typescript": "^3.9.0",
+    "typescript": "^4.6.2",
     "webpack": "^4.44.0",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
@@ -54,10 +54,10 @@
   },
   "dependencies": {
     "@fluentui/svg-icons": "^1.1.0",
-    "@microsoft/fast-colors": "^5.2.0",
-    "@microsoft/fast-components": "^2.29.1",
-    "@microsoft/fast-element": "^1.9.0",
-    "@microsoft/fast-foundation": "^2.42.2",
-    "@microsoft/fast-web-utilities": "^5.3.0"
+    "@microsoft/fast-colors": "^5.3.0",
+    "@microsoft/fast-components": "^2.30.0",
+    "@microsoft/fast-element": "^1.10.0",
+    "@microsoft/fast-foundation": "^2.43.0",
+    "@microsoft/fast-web-utilities": "^5.4.0"
   }
 }

@@ -116,7 +116,8 @@
     ]
   },
   "resolutions": {
-    "@types/react": "*",
+    "@microsoft/fast-tooling": "^0.37.7",
+    "@types/react": "^16.14.0",
     "browserslist": "^4.16.5",
     "clean-css": "^4.2.3",
     "css-select": "^4.2.1",
@@ -134,7 +135,7 @@
     "node-notifier": "^9.0.0",
     "trim-newlines": "^4.0.2",
     "trim": "^0.0.3",
-    "typescript": "^3.9.0",
+    "typescript": "^4.6.2",
     "ua-parser-js": "^0.7.28",
     "ws": "^7.4.6",
     "xmlhttprequest-ssl": "^1.6.2"
@@ -162,7 +163,7 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^25.4.0",
     "ts-node": "^8.8.2",
-    "typescript": "^3.9.0",
+    "typescript": "^4.6.2",
     "yargs": "^16.2.0"
   },
   "dependencies": {

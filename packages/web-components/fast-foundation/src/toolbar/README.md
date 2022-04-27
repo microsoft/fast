@@ -120,10 +120,10 @@ export const myToolbar = Toolbar.compose({
 
 #### Fields
 
-| Name             | Privacy | Type     | Default | Description                                   | Inherited From |
-| ---------------- | ------- | -------- | ------- | --------------------------------------------- | -------------- |
-| `ariaLabelledby` | public  | `string` |         | The id of the element labeling the toolbar.   |                |
-| `ariaLabel`      | public  | `string` |         | The label surfaced to assistive technologies. |                |
+| Name             | Privacy | Type             | Default | Description                                   | Inherited From |
+| ---------------- | ------- | ---------------- | ------- | --------------------------------------------- | -------------- |
+| `ariaLabelledby` | public  | `string or null` |         | The id of the element labeling the toolbar.   |                |
+| `ariaLabel`      | public  | `string or null` |         | The label surfaced to assistive technologies. |                |
 
 #### Attributes
 
