@@ -3,6 +3,7 @@ id: button
 title: fast-button
 sidebar_label: button
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/button/README.md
+description: fast-button is a web component implementation of a button element.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#button):

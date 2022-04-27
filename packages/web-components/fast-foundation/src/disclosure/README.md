@@ -3,6 +3,7 @@ id: disclosure
 title: fast-disclosure
 sidebar_label: disclosure
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/disclosure/README.md
+description: fast-disclosure is a web component based on disclosure specification.
 ---
 
 A disclosure component is the implementation of native `details` and `summary` controls that toggles the visibility of the extra content. Visually, it would look like a button or hyperlink and beneath extra content. As defined by the W3C:

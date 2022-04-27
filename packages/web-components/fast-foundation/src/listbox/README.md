@@ -3,6 +3,7 @@ id: listbox
 title: fast-listbox
 sidebar_label: listbox
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/listbox/README.md
+description: fast-listbox is a web component implementation of a listbox.
 ---
 
 An implementation of a [listbox](https://www.w3.org/TR/wai-aria-practices-1.2/#Listbox). While any DOM content is permissible as a child of the listbox, only [`fast-option`](/docs/components/listbox-option) elements, `option` elements, and slotted items with `role="option"` will be treated as options and receive keyboard support.

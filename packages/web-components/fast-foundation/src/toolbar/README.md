@@ -3,6 +3,7 @@ id: toolbar
 title: fast-toolbar
 sidebar_label: toolbar
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/toolbar/README.md
+description: fast-toolbar is a web component implementation of a toolbar.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#toolbar):

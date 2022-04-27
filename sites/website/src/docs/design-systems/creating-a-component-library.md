@@ -3,6 +3,7 @@ id: creating-a-component-library
 title: Creating a Component Library
 sidebar_label: Creating a Component Library
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/creating-a-component-library.md
+description: Not only is FAST great for creating individual components, but it also shines when creating libraries or systems of components.
 ---
 
 Not only is FAST great for creating individual components, but it also shines when creating libraries or systems of components. FAST Foundation exposes several powerful abstractions in order to enable library authors to provide ergonomic APIs to application authors. These APIs ensure that app authors who consume your library have a consistent way to configure, augment, and override various details of the components. For example:

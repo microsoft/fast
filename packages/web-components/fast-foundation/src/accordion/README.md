@@ -3,6 +3,7 @@ id: accordion
 title: fast-accordion
 sidebar_label: accordion
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/accordion/README.md
+description: fast-accordion is a web component implementation of an accordion.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#accordion):
