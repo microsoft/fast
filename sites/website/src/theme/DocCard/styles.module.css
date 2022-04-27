@@ -9,7 +9,7 @@
   height: 11rem;
   color: var(--ifm-color-emphasis-800);
   --ifm-link-color: var(--ifm-color-emphasis-800);
-  --ifm-link-hover-color: var(--ifm-color-emphasis-800);
+  --ifm-link-hover-color: var(--ifm-color-primary);
   --ifm-link-hover-decoration: none;
 
   /* box-shadow: var(--ifm-global-shadow-lw); */
