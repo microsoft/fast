@@ -3,6 +3,7 @@ id: horizontal-scroll
 title: fast-horizontal-scroll
 sidebar_label: horizontal-scroll
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/horizontal-scroll/README.md
+description: fast-horizontal-scroll is a web component implementation of a content scroller.
 ---
 
 An implementation of a content scroller as a web-component.
