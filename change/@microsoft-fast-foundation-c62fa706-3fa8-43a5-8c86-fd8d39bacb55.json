@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "update displayed selected value in select component when an option changes",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}
