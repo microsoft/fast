@@ -167,6 +167,23 @@ export class TextArea extends FormAssociatedTextArea {
     public defaultSlottedNodes: Node[];
 
     /**
+     * Selects all the text in the text area
+     *
+     * @public
+     */
+    protected select(): void {
+        this.control.select();
+
+        /**
+         * The select event does not permeate the shadow DOM boundary.
+         * This fn effectively proxies the select event,
+         * emitting a `select` event whenever the internal
+         * control emits a `select` event
+         */
+        this.$emit("select");
+    }
+
+    /**
      * @internal
      */
     public handleTextInput = (): void => {
