@@ -32,6 +32,19 @@ export type SelectOptions = FoundationElementDefinition &
  * A Select Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#select | ARIA select }.
  *
+ * @slot start - Content which can be provided before the button content
+ * @slot end - Content which can be provided after the button content
+ * @slot button-container - The element representing the select button
+ * @slot selected-value - The selected value
+ * @slot indicator - The visual indicator for the expand/collapse state of the button
+ * @slot - The default slot for slotted options
+ * @csspart control - The element representing the select invoking element
+ * @csspart selected-value - The element wrapping the selected value
+ * @csspart indicator - The element wrapping the visual indicator
+ * @csspart listbox - The listbox element
+ * @fires input - Fires a custom 'input' event when the value updates
+ * @fires change - Fires a custom 'change' event when the value updates
+ *
  * @public
  */
 export class Select extends FormAssociatedSelect {
