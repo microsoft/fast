@@ -17,6 +17,8 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  * A Tree view Custom HTML Element.
  * Implements the {@link https://w3c.github.io/aria-practices/#TreeView | ARIA TreeView }.
  *
+ * @slot - The default slot for tree items
+ *
  * @public
  */
 export class TreeView extends FoundationElement {
