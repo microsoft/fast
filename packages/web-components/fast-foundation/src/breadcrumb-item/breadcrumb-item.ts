@@ -6,6 +6,12 @@ import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Breadcrumb Item configuration options
+ *
+ * @slot - The default slot for when no href is provided or for providing your own custom elements
+ * @slot separator - The slot for providing a custom separator
+ * @csspart listitem - The wrapping container for the item, represents a semantic listitem
+ * @csspart separator - The wrapping element for the separator
+ *
  * @public
  */
 export type BreadcrumbItemOptions = FoundationElementDefinition &
