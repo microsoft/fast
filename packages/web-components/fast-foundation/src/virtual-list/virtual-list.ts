@@ -1173,18 +1173,18 @@ export class VirtualList extends FoundationElement {
             return;
         }
 
-        const documentElement = document.documentElement;
-        let viewportRect = viewportEntry.boundingClientRect;
-        if (this.viewportElement === documentElement) {
-            viewportRect = new DOMRectReadOnly(
-                viewportRect.x + documentElement.scrollLeft,
-                viewportRect.y + documentElement.scrollTop,
-                viewportRect.width,
-                viewportRect.height
-            );
-        }
+        this.viewportRect =
+            this.viewportElement !== document.documentElement
+                ? viewportEntry.boundingClientRect
+                : new DOMRectReadOnly(
+                      viewportEntry.boundingClientRect.x +
+                          document.documentElement.scrollLeft,
+                      viewportEntry.boundingClientRect.y +
+                          document.documentElement.scrollTop,
+                      viewportEntry.boundingClientRect.width,
+                      viewportEntry.boundingClientRect.height
+                  );
         this.containerRect = containerEntry.boundingClientRect;
-        this.viewportRect = viewportRect;
 
         this.updateVisibleItems();
     };
