@@ -114,6 +114,21 @@ export const myToolbar = Toolbar.compose({
 | ------------- | ----------- | -------------- |
 | `orientation` | orientation |                |
 
+#### CSS Parts
+
+| Name                 | Description                                           |
+| -------------------- | ----------------------------------------------------- |
+| `positioning-region` | The element containing the items, start and end slots |
+
+#### Slots
+
+| Name    | Description                                            |
+| ------- | ------------------------------------------------------ |
+| `start` | Content which can be provided before the slotted items |
+| `end`   | Content which can be provided after the slotted items  |
+|         | The default slot for slotted items                     |
+| `label` | The toolbar label                                      |
+
 <hr/>
 
 ### class: `DelegatesARIAToolbar`

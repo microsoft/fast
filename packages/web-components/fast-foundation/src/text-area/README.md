@@ -90,6 +90,12 @@ This component is built with the expectation that focus is delegated to the inpu
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                                          | Inherited From |
+| -------- | ---- | -------------------------------------------------------------------- | -------------- |
+| `change` |      | Emits a custom 'change' event when the textarea emits a change event |                |
+
 #### Attributes
 
 | Name          | Field       | Inherited From |
@@ -106,6 +112,20 @@ This component is built with the expectation that focus is delegated to the inpu
 |               | cols        |                |
 |               | rows        |                |
 |               | spellcheck  |                |
+
+#### CSS Parts
+
+| Name      | Description                      |
+| --------- | -------------------------------- |
+| `label`   | The label                        |
+| `root`    | The element wrapping the control |
+| `control` | The textarea element             |
+
+#### Slots
+
+| Name | Description                    |
+| ---- | ------------------------------ |
+|      | The default slot for the label |
 
 <hr/>
 

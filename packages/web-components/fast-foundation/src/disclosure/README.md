@@ -84,12 +84,27 @@ export const myDisclosure = Disclosure.compose({
 | `templateChanged` | protected |                                                   |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |                                                   |            | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                      | Inherited From |
+| -------- | ---- | ------------------------------------------------ | -------------- |
+| `toggle` |      | fires a toggle event when the summary is toggled |                |
+
 #### Attributes
 
 | Name    | Field    | Inherited From |
 | ------- | -------- | -------------- |
 |         | expanded |                |
 | `title` | title    |                |
+
+#### Slots
+
+| Name    | Description                                              |
+| ------- | -------------------------------------------------------- |
+| `start` | Content which can be provided before the summary content |
+| `end`   | Content which can be provided after the summary content  |
+| `title` | The summary content                                      |
+|         | The default slot for the disclosure content              |
 
 <hr/>
 
