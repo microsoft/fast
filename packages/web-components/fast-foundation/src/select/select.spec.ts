@@ -1,10 +1,10 @@
 import { DOM } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
-import { fixture } from "../test-utilities/fixture";
-import { timeout } from "../test-utilities/timeout";
-import { Select, selectTemplate as template } from "./index";
+import { ListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
+import { fixture } from "../test-utilities/fixture.js";
+import { timeout } from "../test-utilities/timeout.js";
+import { Select, selectTemplate as template } from "./index.js";
 
 describe("Select", () => {
     const FASTSelect = Select.compose({
@@ -22,12 +22,15 @@ describe("Select", () => {
 
         const option1 = document.createElement("fast-option") as ListboxOption;
         option1.value = "one";
+        option1.textContent = "option one";
 
         const option2 = document.createElement("fast-option") as ListboxOption;
         option2.value = "two";
+        option2.textContent = "option two";
 
         const option3 = document.createElement("fast-option") as ListboxOption;
         option3.value = "three";
+        option3.textContent = "option three";
 
         element.appendChild(option1);
         element.appendChild(option2);
@@ -866,5 +869,49 @@ describe("Select", () => {
         expect(element.getAttribute("aria-controls")).to.be.empty;
 
         await disconnect();
+    });
+
+    describe("should update the `displayValue` when the selected option's content changes", () => {
+        it("via innerHTML", async () => {
+            const { connect, disconnect, element, option1 } = await setup();
+
+            await connect();
+
+            expect(element.displayValue).to.equal("option one");
+
+            option1.innerHTML = "new value";
+
+            expect(element.displayValue).to.equal("new value");
+
+            await disconnect();
+        });
+
+        it("via innerText", async () => {
+            const { connect, disconnect, element, option1 } = await setup();
+
+            await connect();
+
+            expect(element.displayValue).to.equal("option one");
+
+            option1.innerText = "new value";
+
+            expect(element.displayValue).to.equal("new value");
+
+            await disconnect();
+        });
+
+        it("via textContent", async () => {
+            const { connect, disconnect, element, option1 } = await setup();
+
+            await connect();
+
+            expect(element.displayValue).to.equal("option one");
+
+            option1.textContent = "new value";
+
+            expect(element.displayValue).to.equal("new value");
+
+            await disconnect();
+        });
     });
 });

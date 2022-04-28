@@ -1,6 +1,6 @@
 {
-  "type": "minor",
-  "comment": "update to typescript 4.6.2 and update ARIAMixin typings",
+  "type": "patch",
+  "comment": "fix keyboarding behavior for right and left arrow keys in Tree View",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",
   "dependentChangeType": "patch"

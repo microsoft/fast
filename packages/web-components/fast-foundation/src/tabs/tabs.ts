@@ -95,6 +95,9 @@ export class Tabs extends FoundationElement {
             this.$fastController.isConnected &&
             this.tabs.length <= this.tabpanels.length
         ) {
+            this.tabIds = this.getTabIds();
+            this.tabpanelIds = this.getTabPanelIds();
+
             this.setTabs();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
@@ -114,6 +117,9 @@ export class Tabs extends FoundationElement {
             this.$fastController.isConnected &&
             this.tabpanels.length <= this.tabs.length
         ) {
+            this.tabIds = this.getTabIds();
+            this.tabpanelIds = this.getTabPanelIds();
+
             this.setTabs();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
@@ -182,8 +188,7 @@ export class Tabs extends FoundationElement {
         const gridProperty: string = this.isHorizontal()
             ? gridHorizontalProperty
             : gridVerticalProperty;
-        this.tabIds = this.getTabIds();
-        this.tabpanelIds = this.getTabPanelIds();
+
         this.activeTabIndex = this.getActiveIndex();
         this.showActiveIndicator = false;
         this.tabs.forEach((tab: HTMLElement, index: number) => {
@@ -218,8 +223,6 @@ export class Tabs extends FoundationElement {
     };
 
     private setTabPanels = (): void => {
-        this.tabIds = this.getTabIds();
-        this.tabpanelIds = this.getTabPanelIds();
         this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
             const tabId: string = this.tabIds[index];
             const tabpanelId: string = this.tabpanelIds[index];
