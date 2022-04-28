@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix keyboarding behavior for right and left arrow keys in Tree View",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
