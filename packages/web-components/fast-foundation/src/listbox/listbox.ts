@@ -20,6 +20,8 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * A Listbox Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#listbox | ARIA listbox }.
  *
+ * @slot - The default slot for the listbox options
+ *
  * @public
  */
 export abstract class Listbox extends FoundationElement {

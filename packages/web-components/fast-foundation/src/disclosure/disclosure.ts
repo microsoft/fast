@@ -4,6 +4,12 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  * A Disclosure Custom HTML Element.
  * Based largely on the {@link https://w3c.github.io/aria-practices/#disclosure | disclosure element }.
  *
+ * @slot start - Content which can be provided before the summary content
+ * @slot end - Content which can be provided after the summary content
+ * @slot title - The summary content
+ * @slot - The default slot for the disclosure content
+ * @fires toggle - fires a toggle event when the summary is toggled
+ *
  * @public
  */
 export class Disclosure extends FoundationElement {

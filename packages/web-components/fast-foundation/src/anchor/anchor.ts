@@ -20,11 +20,11 @@ export type AnchorOptions = FoundationElementDefinition & StartEndOptions;
  * An Anchor Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element }.
  *
- * @slot start - Content which can be provided before the button content
- * @slot end - Content which can be provided after the button content
- * @slot - The default slot for accordion item content
+ * @slot start - Content which can be provided before the anchor content
+ * @slot end - Content which can be provided after the anchor content
+ * @slot - The default slot for anchor content
  * @csspart control - The anchor element
- * @csspart content - The button content
+ * @csspart content - The element wrapping anchor content
  *
  * @public
  */

@@ -31,6 +31,11 @@ export function isListboxOption(el: Element): el is ListboxOption {
  * An Option Custom HTML Element.
  * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#option | ARIA option }.
  *
+ * @slot start - Content which can be provided before the listbox option content
+ * @slot end - Content which can be provided after the listbox option content
+ * @slot - The default slot for listbox option content
+ * @csspart content - Wraps the listbox option content
+ *
  * @public
  */
 export class ListboxOption extends FoundationElement {
