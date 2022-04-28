@@ -1,10 +1,10 @@
 import { attr, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
-import { StartEnd } from "../patterns/start-end.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
@@ -192,11 +192,11 @@ export class ListboxOption extends FoundationElement {
     }
 
     public get label() {
-        return this.value ?? this.textContent ?? "";
+        return this.value ?? this.text;
     }
 
     public get text(): string {
-        return this.textContent as string;
+        return this.textContent?.replace(/\s+/g, " ").trim() ?? "";
     }
 
     public set value(next: string) {
@@ -213,7 +213,7 @@ export class ListboxOption extends FoundationElement {
 
     public get value(): string {
         Observable.track(this, "value");
-        return this._value ?? this.textContent ?? "";
+        return this._value ?? this.text;
     }
 
     public get form(): HTMLFormElement | null {
