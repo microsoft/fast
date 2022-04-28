@@ -125,6 +125,13 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `templateChanged`    | protected |                                                                            |                                             | `void` | FoundationElement |
 | `stylesChanged`      | protected |                                                                            |                                             | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                          | Inherited From |
+| -------- | ---- | ---------------------------------------------------- | -------------- |
+| `input`  |      | Fires a custom 'input' event when the value updates  |                |
+| `change` |      | Fires a custom 'change' event when the value updates |                |
+
 #### Attributes
 
 | Name       | Field             | Inherited From |
@@ -132,6 +139,26 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `open`     | open              |                |
 | `position` | positionAttribute |                |
 |            | multiple          | Listbox        |
+
+#### CSS Parts
+
+| Name             | Description                                          |
+| ---------------- | ---------------------------------------------------- |
+| `control`        | The element representing the select invoking element |
+| `selected-value` | The element wrapping the selected value              |
+| `indicator`      | The element wrapping the visual indicator            |
+| `listbox`        | The listbox element                                  |
+
+#### Slots
+
+| Name               | Description                                                      |
+| ------------------ | ---------------------------------------------------------------- |
+| `start`            | Content which can be provided before the button content          |
+| `end`              | Content which can be provided after the button content           |
+| `button-container` | The element representing the select button                       |
+| `selected-value`   | The selected value                                               |
+| `indicator`        | The visual indicator for the expand/collapse state of the button |
+|                    | The default slot for slotted options                             |
 
 <hr/>
 

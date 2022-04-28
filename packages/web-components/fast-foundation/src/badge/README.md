@@ -90,6 +90,18 @@ export const myBadge = Badge.compose({
 | `color` | color    |                |
 |         | circular |                |
 
+#### CSS Parts
+
+| Name      | Description                                                      |
+| --------- | ---------------------------------------------------------------- |
+| `control` | The element representing the badge, which wraps the default slot |
+
+#### Slots
+
+| Name | Description                    |
+| ---- | ------------------------------ |
+|      | The default slot for the badge |
+
 <hr/>
 
 
