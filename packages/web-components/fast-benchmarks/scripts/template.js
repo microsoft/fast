@@ -73,7 +73,6 @@ async function generateHtmlTemplates(
     benchFile = "index"
 ) {
     const compiledJsBench = `../benchmarks/${library}/${benchmark}/${benchFile}.js`;
-    console.log("compiledJsBench", compiledJsBench, fileName);
     // any operation listed under 'src' folder is eligible
     return new Promise((resolve, reject) => {
         readdir("src", async (err, files) => {
