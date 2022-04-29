@@ -13,11 +13,11 @@ import {
 import {
     Attribute,
     DefaultTreeCommentNode,
-    DefaultTreeDocumentFragment,
     DefaultTreeElement,
     DefaultTreeNode,
     DefaultTreeParentNode,
     DefaultTreeTextNode,
+    parse,
     parseFragment,
 } from "parse5";
 import { AttributeBindingOp, Op, OpType } from "./op-codes.js";
@@ -44,7 +44,12 @@ declare module "parse5" {
  * @param visitor - callbacks to be invoked during node traversal
  */
 function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visitor) {
-    if (visitor.visit) {
+    // Templates parsed with `parse()` are parsed as full documents and will contain
+    // html, body tags whether the template contains them or not. Skip over visiting and
+    // leaving these elements if there is no source-code location, because that indicates
+    // they are not in the template string.
+    const shouldVisit = (node as DefaultTreeElement).sourceCodeLocation !== null;
+    if (visitor.visit && shouldVisit) {
         visitor.visit(node);
     }
 
@@ -59,7 +64,7 @@ function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visito
         traverse((node as any).content, visitor);
     }
 
-    if (visitor.leave) {
+    if (visitor.leave && shouldVisit) {
         visitor.leave(node);
     }
 }
@@ -88,8 +93,8 @@ function isElementNode(node: DefaultTreeNode): node is DefaultTreeElement {
     return (node as DefaultTreeElement).tagName !== undefined;
 }
 
-function isDocumentFragment(node: any): node is DefaultTreeDocumentFragment {
-    return node.nodeName === "#document-fragment";
+function isDefaultTreeParentNode(node: any): node is DefaultTreeParentNode {
+    return Array.isArray(node.childNodes);
 }
 
 function firstElementChild(node: DefaultTreeParentNode): DefaultTreeElement | null {
@@ -142,16 +147,18 @@ export function parseStringToOpCodes(
      */
     forCustomElement = false
 ): Op[] {
-    const nodeTree = parseFragment(templateString, { sourceCodeLocationInfo: true });
+    const nodeTree = (forCustomElement ? parseFragment : parse)(templateString, {
+        sourceCodeLocationInfo: true,
+    });
 
-    if (!isDocumentFragment(nodeTree)) {
+    if (!isDefaultTreeParentNode(nodeTree)) {
         // I'm not sure when exactly this is encountered but the type system seems to say it's possible.
         throw new Error(`Error parsing template`);
     }
 
     // TypeScript gets confused about what 'nodeTree' is.
     // Creating a new var clears that up.
-    let tree: DefaultTreeParentNode = nodeTree;
+    let tree = nodeTree as DefaultTreeParentNode;
 
     /**
      * Tracks the offset location in the source template string where the last
