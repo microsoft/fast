@@ -95,6 +95,7 @@ export const updateComplete = () => new Promise(r => requestAnimationFrame(r));
 declare global {
     interface Window {
         gc: () => void;
+        usedJSHeapSize: number;
     }
     interface Performance {
         memory: {

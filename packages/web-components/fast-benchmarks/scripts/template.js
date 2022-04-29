@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "fs/promises";
+import { readdir, readFileSync } from "fs";
 import { exec } from "child_process";
-import { dirname, join, resolve } from "path";
+import { basename, dirname, extname, join, resolve } from "path";
 
 /**
  * Creates a dist folder to hold the generated config file.
@@ -40,67 +41,95 @@ async function generateTsConfig({ library, benchmark }) {
 /**
  * Generates the html template for benchmark, inject compiled js script in header, spit out output in dist
  */
-async function generateHtmlTemplate(
-    { library, benchmark },
-    fileName,
-    benchFile = "index"
-) {
-    const compiledUtils = "../utils/index.js";
-    const compiledJsBench = `../benchmarks/${library}/${benchmark}/${benchFile}.js`;
-    //TODO: think about the directory for file output (prob where the benchmark themselves are defined), that means think about the path for utils.js
+
+export function getTestName(filename) {
+    const extension = extname(filename);
+    const res = basename(filename, extension);
+    return res;
+}
+
+async function generateHtmlTemplate(operationFile, compiledJsBench, fileName) {
+    const name = getTestName(operationFile);
+    const benchScript = readFileSync(`./src/${operationFile}`, "utf8");
     const defaultHtml = `<!DOCTYPE html>
     <html>
-    <head>
-    </head>
+    <head></head>
     <body>
     <div id="container"></div>
     <script type="module" src="${compiledJsBench}"></script>
     <script type="module">
-            import {
-                destroy,
-                measureMemory,
-                getTestStartName,
-                updateComplete,
-            } from "${compiledUtils}";
-            (async () => {
-                const container = document.getElementById("container");
-                const create = () => {
-                    const el = document.createElement("x-app");
-                    return container.appendChild(el);
-                };
-                const render = async () => {
-                    // can change to main dir file name
-                    const test = "create10k";
-                    const start = getTestStartName(test);
-                    performance.mark(start);
-                    create();
-                    await updateComplete();
-                    performance.measure(test, start);
-                    destroy(container);
-                };
-                await render();
-                measureMemory();
-                const update = async () => {
-                    let el = create();
-                    const test = "update10th";
-                    const start = getTestStartName(test);
-                    performance.mark(start);
-                    for (let i = 0; i < el.items.length; i += 10) {
-                        el.items[i].label += "!!!";
-                    }
-                    await updateComplete();
-                    performance.measure(test, start);
-                    destroy(container);
-                };
-                await update();
-                measureMemory();
-            })();
-        </script>
+        const test = "${name}"
+        ${benchScript}
+    </script>
     </body>
     </html>`;
     // generate html template of all default suite for benchmark
-    // const configName = `${library}_${benchmark}`;
-    return await writeConfig(fileName, defaultHtml, ".html", "dist");
+    const path = await writeConfig(fileName + "-" + name, defaultHtml, ".html", "dist");
+    return { name, path };
+}
+async function generateHtmlTemplates(
+    { library, benchmark, operations },
+    fileName,
+    benchFile = "index"
+) {
+    const compiledJsBench = `../benchmarks/${library}/${benchmark}/${benchFile}.js`;
+    console.log("compiledJsBench", compiledJsBench, fileName);
+    // any operation listed under 'src' folder is eligible
+    return new Promise((resolve, reject) => {
+        readdir("src", async (err, files) => {
+            //handling error
+            if (err) reject("Unable to scan directory: " + err);
+
+            const operationProps = { names: [], htmlPaths: [] };
+
+            // handle if specific operations are passed in
+            if (operations) {
+                const fileNames = files.map(f => getTestName(f));
+                const match = operations.some(f => fileNames.includes(f));
+                if (!match) {
+                    reject(
+                        "The operation name you passed does not exist, please check spelling or make sure you added the operation test under /src folder."
+                    );
+                }
+                for (let i = 0; i < files.length; i++) {
+                    const operationFile = files[i];
+                    const operationName = getTestName(operationFile);
+
+                    if (operations.includes(operationName)) {
+                        const { name, path } = await generateHtmlTemplate(
+                            operationFile,
+                            compiledJsBench,
+                            fileName
+                        );
+                        operationProps.names.push(name);
+                        operationProps.htmlPaths.push(path);
+                    }
+                }
+            } else {
+                // run all possible operations
+                // TODO: reduce dup code
+                for (let i = 0; i < files.length; i++) {
+                    const operationFile = files[i];
+                    const { name, path } = await generateHtmlTemplate(
+                        operationFile,
+                        compiledJsBench,
+                        fileName
+                    );
+                    operationProps.names.push(name);
+                    operationProps.htmlPaths.push(path);
+                }
+            }
+
+            resolve(operationProps);
+        });
+    }).catch(error => {
+        console.log("error", error);
+        if (error) {
+            throw new Error(error);
+        } else {
+            return error;
+        }
+    });
 }
 
 /**
@@ -123,100 +152,122 @@ async function getLocalGitBranchName() {
 
 /**
  * Generates the benchmarks array expected by the tachometer config file.
- * @returns {ConfigFile["benchmarks"], []} an array of benchmarks
+ * @returns {{operationName: ConfigFile["benchmarks"]}, {}} returns benchmarkHash, where operation name is key and benchmarks array is value
  */
 
 async function generateBenchmarks(
-    { library, benchmark, versions, memory },
-    htmlPath,
+    { library, benchmark, versions },
+    operationProps,
     localProps
 ) {
-    const MEMORY_METRIC = "memory";
-    const isMemoryBench = benchmark.toLowerCase() === MEMORY_METRIC || memory;
+    const tachoData = {};
+    operationProps.names.forEach((operation, idx) => {
+        /** @type {ConfigFile["benchmarks"]} */
 
-    const measurement = isMemoryBench
-        ? [
-              {
-                  name: "usedJSHeapSize",
-                  mode: "expression",
-                  expression: "window.usedJSHeapSize",
-              },
-          ]
-        : [
-              {
-                  mode: "performance",
-                  entryName: "create10k",
-              },
-              {
-                  mode: "performance",
-                  entryName: "update10th",
-              },
-          ];
+        const benchmarks = [];
+        const browser = {
+            name: "chrome",
+            headless: true,
+            addArguments: ["--js-flags=--expose-gc", "--enable-precise-memory-info"],
+        };
+        const measurement = [
+            {
+                name: "usedJSHeapSize",
+                mode: "expression",
+                expression: "window.usedJSHeapSize",
+            },
+            {
+                mode: "performance",
+                entryName: operation,
+            },
+        ];
 
-    const browser = {
-        name: "chrome",
-        headless: true,
-    };
+        versions.forEach(version => {
+            const isLocalBranch = localProps.branchName && version === LOCAL;
+            const isBranch = isLocalBranch || version === MASTER;
+            const url =
+                isLocalBranch && localProps.operationProps.htmlPaths
+                    ? localProps.operationProps.htmlPaths[idx]
+                    : operationProps.htmlPaths[idx];
 
-    if (isMemoryBench)
-        browser.addArguments = ["--js-flags=--expose-gc", "--enable-precise-memory-info"];
-
-    /** @type {ConfigFile["benchmarks"]} */
-    const benchmarks = [];
-    versions.forEach(version => {
-        const isLocalBranch = localProps.branchName && version === LOCAL;
-        const isBranch = isLocalBranch || version === MASTER;
-        const url = isLocalBranch && localProps.htmlPath ? localProps.htmlPath : htmlPath;
-
-        const bench = { url, browser, name: benchmark, measurement };
-        const dep = `@microsoft/${library}`;
-        if (isBranch) {
-            const ref = isLocalBranch ? localProps.branchName : MASTER;
-            bench.packageVersions = {
-                label: version,
-                dependencies: {
-                    [dep]: {
-                        kind: "git",
-                        repo: "https://github.com/microsoft/fast.git",
-                        ref,
-                        subdir: `packages/web-components/${library}`,
-                        setupCommands: [
-                            "yarn install",
-                            `yarn --cwd ./packages/web-components/${library} build`,
-                        ],
+            // TODO: the name can be extracted out from benchmark array and added to the tacho config prop
+            const bench = {
+                url,
+                browser,
+                name: `${benchmark}-${operation}`,
+                measurement,
+            };
+            const dep = `@microsoft/${library}`;
+            if (isBranch) {
+                const ref = isLocalBranch ? localProps.branchName : MASTER;
+                bench.packageVersions = {
+                    label: version,
+                    dependencies: {
+                        [dep]: {
+                            kind: "git",
+                            repo: "https://github.com/microsoft/fast.git",
+                            ref,
+                            subdir: `packages/web-components/${library}`,
+                            setupCommands: [
+                                "yarn install",
+                                `yarn --cwd ./packages/web-components/${library} build`,
+                            ],
+                        },
                     },
-                },
-            };
-        } else {
-            bench.packageVersions = {
-                label: version,
-                dependencies: { [dep]: version },
-            };
-        }
-        benchmarks.push(bench);
+                };
+            } else {
+                bench.packageVersions = {
+                    label: version,
+                    dependencies: { [dep]: version },
+                };
+            }
+            benchmarks.push(bench);
+        });
+        tachoData[operation] = benchmarks;
     });
-    return benchmarks;
+
+    return tachoData;
 }
 
 /**
  * Generate tachometer config file
- * @returns {string} path location of newly generated config json file
+ * @param {string} fileName
+ * @param {{operationName: ConfigFile["benchmarks"]}, {}} benchmarksHash
+ * @returns {string[]} array of the paths' location of newly generated config json file
  */
-async function generateConfig(fileName, benchmarks) {
+async function generateConfig(fileName, benchmarksHash) {
     try {
         const TACH_SCHEMA =
             "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json";
 
         const defaultBenchOptions = {
             // Tachometer default is 50, but locally let's only do 10
-            sampleSize: 30,
+            sampleSize: 20,
             // Tachometer default is 3 minutes, but let's shrink it to 1 here to save some
-            timeout: 1,
+            timeout: 0,
         };
 
-        /** @type {ConfigFile} */
-        const config = { $schema: TACH_SCHEMA, ...defaultBenchOptions, benchmarks };
-        return await writeConfig(fileName + ".config", config, ".json", "dist");
+        // TODO: add name here
+        const pathsPromises = [];
+        for (const benchmark in benchmarksHash) {
+            const config = {
+                $schema: TACH_SCHEMA,
+                ...defaultBenchOptions,
+                // name: `${benchmark}-${operation}`,
+                benchmarks: benchmarksHash[benchmark],
+            };
+
+            const path = await writeConfig(
+                `${fileName}-${benchmark}` + ".config",
+                config,
+                ".json",
+                "dist"
+            );
+
+            pathsPromises.push(path);
+        }
+        /** @type {ConfigFile[]} promises resolves to array of config file paths*/
+        return await Promise.all(pathsPromises);
     } catch (error) {
         console.log("error", error);
     }
@@ -235,26 +286,32 @@ const MASTER = "master";
 export async function generateTemplates(options) {
     try {
         const tsConfigPath = await generateTsConfig(options);
+        const fileName = `${options.library}_${options.benchmark}`;
 
         //special handling if 'local' version was passed in as an option
-        const localProps = { branchName: null, htmlPath: null };
-        // let localBranchName, localBenchFilePath;
+        const localProps = { branchName: "", operationProps: {} };
         if (options.versions.includes(LOCAL)) {
             localProps.branchName = await getLocalGitBranchName();
             // check if user passed in localBenchFile for different implementation of local
             if (options.localBenchFile)
-                localProps.htmlPath = await generateHtmlTemplate(
+                localProps.operationProps = await generateHtmlTemplates(
                     options,
+                    `${fileName}_${LOCAL}`,
                     options.localBenchFile
                 );
         }
 
-        const fileName = `${options.library}_${options.benchmark}`;
-        const htmlPath = await generateHtmlTemplate(options, fileName);
-        const benchmarks = await generateBenchmarks(options, htmlPath, localProps);
-        const tachoConfigPath = await generateConfig(fileName, benchmarks);
-
-        return { tsConfigPath, tachoConfigPath };
+        const operationProps = await generateHtmlTemplates(options, fileName);
+        const benchmarksHash = await generateBenchmarks(
+            options,
+            operationProps,
+            localProps
+        );
+        const tachoConfigPaths = await generateConfig(fileName, benchmarksHash);
+        return {
+            tsConfigPath,
+            tachoConfigPaths,
+        };
     } catch (error) {
         console.error(error);
     }
