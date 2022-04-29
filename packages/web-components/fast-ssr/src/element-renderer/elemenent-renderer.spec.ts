@@ -4,6 +4,7 @@ import { expect, test } from '@playwright/test';
 import { FASTElementRenderer } from "./element-renderer.js";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utils.js";
+import { timeStamp } from "console";
 
 
 @customElement({
@@ -11,7 +12,15 @@ import { consolidate } from "../test-utils.js";
     styles: css`:host { display: block; }${css`:host { color: red; }`}
     `
 })
-class StyledElement extends FASTElement {}
+export class StyledElement extends FASTElement {}
+
+@customElement({
+    name: "host-binding-element",
+    template: html`
+        <template attr="attr" ?bool-attr="${() => true}"></template>
+    `
+})
+export class HostBindingElement extends FASTElement {}
 test.describe("FASTElementRenderer", () => {
     test.describe("should have a 'matchesClass' method", () => {
         test("that returns true when invoked with a class that extends FASTElement ",  () => {
@@ -36,4 +45,14 @@ test.describe("FASTElementRenderer", () => {
             expect(result).toBe(`<styled-element><template shadowroot=\"open\"><fast-style style-id="fast-style-0" css=":host { display: block; }\"></fast-style><fast-style style-id=\"fast-style-1\" css=\":host { color: red; }"></fast-style></template></styled-element>`);
         });
     });
+
+    test("should render attributes on the root of a template element to the host element", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = consolidate(templateRenderer.render(html`
+            <host-binding-element></host-binding-element>
+        `, defaultRenderInfo));
+        expect(result).toBe(`
+            <host-binding-element attr="attr" bool-attr><template shadowroot=\"open\"></template></host-binding-element>
+        `);
+    })
 });
