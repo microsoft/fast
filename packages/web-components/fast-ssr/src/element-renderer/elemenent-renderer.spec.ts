@@ -1,19 +1,20 @@
 import "../dom-shim.js";
-import { FASTElement, customElement, css, html } from "@microsoft/fast-element";
+import { FASTElement, customElement, css, html, attr } from "@microsoft/fast-element";
 import { expect, test } from '@playwright/test';
 import { FASTElementRenderer } from "./element-renderer.js";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utils.js";
-import { timeStamp } from "console";
 
 
+@customElement({
+    name: "bare-element",
+})
+export class BareElement extends FASTElement {}
 @customElement({
     name: "styled-element",
     styles: css`:host { display: block; }${css`:host { color: red; }`}
     `
 })
-export class StyledElement extends FASTElement {}
-
 @customElement({
     name: "host-binding-element",
     template: html`
@@ -54,5 +55,36 @@ test.describe("FASTElementRenderer", () => {
         expect(result).toBe(`
             <host-binding-element attr="attr" bool-attr><template shadowroot=\"open\"></template></host-binding-element>
         `);
+    });
+
+    test.describe("rendering an element with attributes", () => {
+        test("should not render the attribute when binding evaluates null", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = consolidate(templateRenderer.render(html`
+                <bare-element attr="${x => null}"></bare-element>
+            `, defaultRenderInfo));
+            expect(result).toBe(`
+                <bare-element><template shadowroot=\"open\"></template></bare-element>
+            `);
+        });
+        test("should not render the attribute when the binding evaluates undefined", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = consolidate(templateRenderer.render(html`
+                <bare-element attr="${x => undefined}"></bare-element>
+            `, defaultRenderInfo));
+            expect(result).toBe(`
+                <bare-element><template shadowroot=\"open\"></template></bare-element>
+            `);
+        });
+
+        test("should render an attribute with no value when a boolean attr evaluates true", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = consolidate(templateRenderer.render(html`
+                <bare-element ?attr="${x => true}"></bare-element>
+            `, defaultRenderInfo));
+            expect(result).toBe(`
+                <bare-element attr=""><template shadowroot=\"open\"></template></bare-element>
+            `);
+        });
     })
 });
