@@ -54,18 +54,19 @@ import { fastTreeView } from "./tree-view/index.js";
 // Don't delete these. They're needed so that API-extractor doesn't add import types
 // with improper pathing
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { Anchor } from "./anchor/index.js";
-import type { Button } from "./button/index.js";
-import type { Card } from "./card/index.js";
+import type { Anchor } from "@microsoft/fast-foundation";
+import type { Button } from "@microsoft/fast-foundation";
+import type { Card } from "@microsoft/fast-foundation";
 import type { DesignSystemProvider } from "./design-system-provider/index.js";
-import type { Disclosure } from "./disclosure/index.js";
-import type { HorizontalScroll } from "./horizontal-scroll/index.js";
-import type { Listbox } from "./listbox/index.js";
-import type { Search } from "./search/index.js";
-import type { SliderLabel } from "./slider-label/index.js";
-import type { TextArea } from "./text-area/index.js";
-import type { TextField } from "./text-field/index.js";
-import type { Toolbar } from "./toolbar/index.js";
+import type { Disclosure } from "@microsoft/fast-foundation";
+import type { HorizontalScroll } from "@microsoft/fast-foundation";
+import type { Listbox } from "@microsoft/fast-foundation";
+import type { ListboxElement } from "@microsoft/fast-foundation";
+import type { Search } from "@microsoft/fast-foundation";
+import type { SliderLabel } from "@microsoft/fast-foundation";
+import type { TextArea } from "@microsoft/fast-foundation";
+import type { TextField } from "@microsoft/fast-foundation";
+import type { Toolbar } from "@microsoft/fast-foundation";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 // When adding new components, make sure to add the component to the `allComponents` object
