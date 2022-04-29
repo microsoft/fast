@@ -202,6 +202,23 @@ export class TextField extends FormAssociatedTextField {
     }
 
     /**
+     * Selects all the text in the text field
+     *
+     * @public
+     */
+    protected select(): void {
+        this.control.select();
+
+        /**
+         * The select event does not permeate the shadow DOM boundary.
+         * This fn effectively proxies the select event,
+         * emitting a `select` event whenever the internal
+         * control emits a `select` event
+         */
+        this.$emit("select");
+    }
+
+    /**
      * Handles the internal control's `input` event
      * @internal
      */
