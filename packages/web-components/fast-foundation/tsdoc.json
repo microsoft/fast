@@ -3,10 +3,6 @@
   "extends": ["@microsoft/api-extractor/extends/tsdoc-base.json"],
   "tagDefinitions": [
     {
-      "tagName": "@test",
-      "syntaxKind": "block"
-    },
-    {
       "tagName": "@slot",
       "syntaxKind": "block",
       "allowMultiple": true
