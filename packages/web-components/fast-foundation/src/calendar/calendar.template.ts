@@ -8,7 +8,7 @@ import {
     when,
 } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import { DataGrid, DataGridCell, DataGridRow } from "../data-grid/index.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { ElementDefinitionContext } from "../design-system/registration-context.js";
@@ -252,7 +252,7 @@ export const calendarTemplate: FoundationElementTemplate<
     }-${today.getDate()}-${today.getFullYear()}`;
     return html<Calendar>`
         <template>
-            ${startTemplate}
+            ${startSlotTemplate(context, definition)}
             ${definition.title instanceof Function
                 ? definition.title(context, definition)
                 : definition.title ?? ""}
@@ -262,7 +262,7 @@ export const calendarTemplate: FoundationElementTemplate<
                 interactiveCalendarGridTemplate(context, todayString)
             )}
             ${when(x => x.readonly === true, noninteractiveCalendarTemplate(todayString))}
-            ${endTemplate}
+            ${endSlotTemplate(context, definition)}
         </template>
     `;
 };
