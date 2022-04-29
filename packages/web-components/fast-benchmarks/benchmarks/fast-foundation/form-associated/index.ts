@@ -7,7 +7,7 @@ import {
     repeat,
 } from "@microsoft/fast-element";
 import { FormAssociated, FoundationElement } from "@microsoft/fast-foundation";
-import { _random, adjectives, colours, nouns } from "../../../utils/constants.js";
+import { _random, adjectives, colours, nouns } from "../../../utils/index.js";
 
 const itemCount = 250;
 let id = 0;

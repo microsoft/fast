@@ -1,13 +1,3 @@
-declare global {
-    interface Window {
-        usedJSHeapSize: any;
-        gc: any;
-    }
-    interface Performance {
-        memory: any;
-    }
-}
-
 function measureMemory() {
     if (window && performance && performance.memory) {
         // Report results in MBs\

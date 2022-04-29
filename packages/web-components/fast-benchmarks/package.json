@@ -2,6 +2,7 @@
     "name": "fast-benchmarks",
     "version": "1.0.0",
     "description": "",
+    "type": "module",
     "scripts": {
         "build": "tsc && tsc --build",
         "benchmark": "node scripts/index.js",

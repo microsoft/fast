@@ -112,3 +112,7 @@ example:
 `yarn run benchmark --library=fast-element --benchmark=binding --versions=1.9.0 local`
 `yarn run benchmark --library=fast-element --benchmark=binding --versions=1.9.0 master`
 `yarn run benchmark --library=fast-foundation --benchmark=form-associated -v 2.34.0 2.42.1`
+
+`yarn run benchmark --library=fast-element --benchmark=test --versions=1.9.0 local`
+
+-   this should run all default test suite
