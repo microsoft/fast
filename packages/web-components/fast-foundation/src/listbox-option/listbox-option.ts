@@ -199,13 +199,14 @@ export class ListboxOption extends FoundationElement {
         return this.textContent?.replace(/\s+/g, " ").trim() ?? "";
     }
 
-    public set value(next: string) {
-        this._value = next;
+    public set value(next: string | unknown) {
+        const newValue = `${next ?? ""}`;
+        this._value = newValue;
 
         this.dirtyValue = true;
 
         if (this.proxy instanceof HTMLOptionElement) {
-            this.proxy.value = next;
+            this.proxy.value = newValue;
         }
 
         Observable.notify(this, "value");

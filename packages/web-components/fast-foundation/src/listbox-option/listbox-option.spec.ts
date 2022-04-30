@@ -133,4 +133,18 @@ describe("ListboxOption", () => {
 
         await disconnect();
     });
+
+    it("should return the value as a string", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.value = 12345 as any;
+
+        expect(element.value).to.equal("12345");
+
+        expect(typeof element.value).to.equal("string");
+
+        await disconnect();
+    });
 });
