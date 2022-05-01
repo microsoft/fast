@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "trim extra spaces from the text property for listbox-option",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}
