@@ -4,9 +4,9 @@
 
 ```ts
 
-import { AttributeConfiguration } from '@microsoft/fast-element';
+import type { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
-import { CaptureType } from '@microsoft/fast-element';
+import type { CaptureType } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
@@ -15,7 +15,7 @@ import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
-import { PartialFASTElementDefinition } from '@microsoft/fast-element';
+import type { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
@@ -26,7 +26,7 @@ export class Accordion extends FoundationElement {
     // @internal (undocumented)
     accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
     expandmode: AccordionExpandMode;
-    }
+}
 
 // @public
 export enum AccordionExpandMode {
@@ -122,7 +122,7 @@ export class AnchoredRegion extends FoundationElement {
     verticalViewportLock: boolean;
     viewport: string;
     viewportElement: HTMLElement | null;
-    }
+}
 
 // @public
 export interface AnchoredRegionConfig {
@@ -229,7 +229,7 @@ export class BaseProgress extends FoundationElement {
     // @internal
     percentComplete: number;
     value: number | null;
-    }
+}
 
 // @public
 export class Breadcrumb extends FoundationElement {
@@ -284,7 +284,7 @@ export class Button extends FormAssociatedButton {
     formnovalidate: boolean;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
     type: "submit" | "reset" | "button";
-    }
+}
 
 // @internal
 export interface Button extends StartEnd, DelegatesARIAButton {
@@ -320,7 +320,7 @@ export class Calendar extends FoundationElement {
     weekdayFormat: WeekdayFormat;
     year: number;
     yearFormat: YearFormat;
-    }
+}
 
 // @public
 export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate<CalendarDateInfo>;
@@ -405,7 +405,7 @@ export class Checkbox extends FormAssociatedCheckbox {
     // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     readOnly: boolean;
-    }
+}
 
 // @public
 export type CheckboxOptions = FoundationElementDefinition & {
@@ -490,7 +490,7 @@ export class Combobox extends FormAssociatedCombobox {
     slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void;
     get value(): string;
     set value(next: string);
-    }
+}
 
 // @internal
 export interface Combobox extends StartEnd, DelegatesARIACombobox {
@@ -649,7 +649,7 @@ export class DataGrid extends FoundationElement {
     rowElementTag: string;
     rowItemTemplate: ViewTemplate;
     rowsData: object[];
-    }
+}
 
 // @public
 export class DataGridCell extends FoundationElement {
@@ -667,7 +667,7 @@ export class DataGridCell extends FoundationElement {
     // (undocumented)
     handleKeydown(e: KeyboardEvent): void;
     rowData: object | null;
-    }
+}
 
 // @public
 export const dataGridCellTemplate: FoundationElementTemplate<ViewTemplate<DataGridCell>>;
@@ -715,7 +715,7 @@ export class DataGridRow extends FoundationElement {
     rowType: DataGridRowTypes | "default" | "header" | "sticky-header";
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
-    }
+}
 
 // @public
 export const dataGridRowTemplate: FoundationElementTemplate<ViewTemplate<DataGridRow>>;
@@ -1004,7 +1004,7 @@ export class Dialog extends FoundationElement {
     modal: boolean;
     show(): void;
     trapFocus: boolean;
-    }
+}
 
 // @public
 export const dialogTemplate: FoundationElementTemplate<ViewTemplate<Dialog>>;
@@ -1323,7 +1323,7 @@ export class HorizontalScroll extends FoundationElement {
     scrollToPrevious(): void;
     speed: number;
     view: HorizontalScrollView;
-    }
+}
 
 // @public
 export type HorizontalScrollOptions = FoundationElementDefinition & StartEndOptions & {
@@ -1548,7 +1548,7 @@ export class ListboxOption extends FoundationElement {
     set value(next: string);
     // (undocumented)
     get value(): string;
-    }
+}
 
 // @internal (undocumented)
 export interface ListboxOption extends StartEnd, DelegatesARIAListboxOption {
@@ -1603,7 +1603,7 @@ export class Menu extends FoundationElement {
     readonly isNestedMenu: () => boolean;
     // @internal (undocumented)
     items: HTMLSlotElement;
-    }
+}
 
 // @beta
 export type menuConfigs = "bottom" | "bottom-fill" | "tallest" | "tallest-fill" | "top" | "top-fill";
@@ -1641,7 +1641,7 @@ export class MenuItem extends FoundationElement {
     submenuLoaded: () => void;
     // @internal
     submenuRegion: AnchoredRegion;
-    }
+}
 
 // @internal
 export interface MenuItem extends StartEnd {
@@ -1725,6 +1725,7 @@ export class NumberField extends FormAssociatedNumberField {
     minlength: number;
     placeholder: string;
     readOnly: boolean;
+    protected select(): void;
     size: number;
     step: number;
     stepDown(): void;
@@ -1830,7 +1831,7 @@ export class Picker extends FormAssociatedPicker {
     // @internal
     showNoOptions: boolean;
     suggestionsAvailableText: string;
-    }
+}
 
 // @alpha
 export class PickerList extends FoundationElement {
@@ -1877,7 +1878,7 @@ export class PickerMenu extends FoundationElement {
     // @internal
     optionElements: HTMLElement[];
     suggestionsAvailableText: string;
-    }
+}
 
 // @alpha
 export class PickerMenuOption extends FoundationElement {
@@ -1931,7 +1932,7 @@ export class PropertyStyleSheetBehavior implements Behavior {
     handleChange(source: FASTElement, key: string): void;
     // @internal
     unbind(source: typeof FASTElement & HTMLElement): void;
-    }
+}
 
 // @alpha
 export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
@@ -1955,7 +1956,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     keypressHandler: (e: KeyboardEvent) => boolean | void;
     name: string;
     readOnly: boolean;
-    }
+}
 
 // @public
 export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute">;
@@ -2127,7 +2128,7 @@ export class Search extends FormAssociatedSearch {
     root: HTMLDivElement;
     size: number;
     spellcheck: boolean;
-    }
+}
 
 // @internal
 export interface Search extends StartEnd, DelegatesARIASearch {
@@ -2193,7 +2194,7 @@ export class Select extends FormAssociatedSelect {
     slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void;
     get value(): string;
     set value(next: string);
-    }
+}
 
 // @internal (undocumented)
 export interface Select extends StartEnd, DelegatesARIASelect {
@@ -2413,7 +2414,7 @@ export class Switch extends FormAssociatedSwitch {
     // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     readOnly: boolean;
-    }
+}
 
 // @public
 export type SwitchOptions = FoundationElementDefinition & {
@@ -2463,7 +2464,7 @@ export class Tabs extends FoundationElement {
     tabs: HTMLElement[];
     // @internal (undocumented)
     tabsChanged(): void;
-    }
+}
 
 // @internal
 export interface Tabs extends StartEnd {
@@ -2511,8 +2512,9 @@ export class TextArea extends FormAssociatedTextArea {
     readOnly: boolean;
     resize: TextAreaResize | "none" | "both" | "horizontal" | "vertical";
     rows: number;
+    protected select(): void;
     spellcheck: boolean;
-    }
+}
 
 // @internal
 export interface TextArea extends DelegatesARIATextbox {
@@ -2552,10 +2554,11 @@ export class TextField extends FormAssociatedTextField {
     pattern: string;
     placeholder: string;
     readOnly: boolean;
+    protected select(): void;
     size: number;
     spellcheck: boolean;
     type: TextFieldType | "email" | "password" | "tel" | "text" | "url";
-    }
+}
 
 // @internal
 export interface TextField extends StartEnd, DelegatesARIATextbox {
@@ -2607,7 +2610,7 @@ export class Toolbar extends FoundationElement {
     protected slottedItemsChanged(): void;
     // @internal
     slottedLabel: HTMLElement[];
-    }
+}
 
 // @internal (undocumented)
 export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
@@ -2659,7 +2662,7 @@ export class Tooltip extends FoundationElement {
     // @internal
     viewportElement: HTMLElement | null;
     visible: boolean;
-    }
+}
 
 // @public
 export enum TooltipPosition {
@@ -2684,7 +2687,6 @@ export const tooltipTemplate: FoundationElementTemplate<ViewTemplate<Tooltip>>;
 
 // @public
 type Transformer_2<K> = (instance: Resolved<K>) => Resolved<K>;
-
 export { Transformer_2 as Transformer }
 
 // Warning: (ae-forgotten-export) The symbol "transientDecorator" needs to be exported by the entry point index.d.ts
@@ -2725,7 +2727,7 @@ export class TreeItem extends FoundationElement {
     // @internal (undocumented)
     renderCollapsedChildren: boolean;
     selected: boolean;
-    }
+}
 
 // @internal
 export interface TreeItem extends StartEnd {
@@ -2782,7 +2784,6 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // @public
 export type YearFormat = "2-digit" | "numeric";
-
 
 // Warnings were encountered during analysis:
 //

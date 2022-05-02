@@ -105,6 +105,21 @@ This component is built with the expectation that focus is delegated to the butt
 | `formtarget`  | formtarget     |                |
 | `type`        | type           |                |
 
+#### CSS Parts
+
+| Name      | Description                         |
+| --------- | ----------------------------------- |
+| `control` | The button element                  |
+| `content` | The element wrapping button content |
+
+#### Slots
+
+| Name    | Description                                             |
+| ------- | ------------------------------------------------------- |
+| `start` | Content which can be provided before the button content |
+| `end`   | Content which can be provided after the button content  |
+|         | The default slot for button content                     |
+
 <hr/>
 
 ### class: `DelegatesARIAButton`

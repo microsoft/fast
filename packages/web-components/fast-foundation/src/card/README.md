@@ -74,6 +74,12 @@ export const myCard = Card.compose({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Slots
+
+| Name | Description                           |
+| ---- | ------------------------------------- |
+|      | The default slot for the card content |
+
 <hr/>
 
 

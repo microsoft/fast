@@ -141,6 +141,20 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 |      | max    |                |
 |      | paused |                |
 
+#### CSS Parts
+
+| Name            | Description                     |
+| --------------- | ------------------------------- |
+| `progress`      | Represents the progress element |
+| `determinate`   | The determinate indicator       |
+| `indeterminate` | The indeterminate indicator     |
+
+#### Slots
+
+| Name            | Description                                   |
+| --------------- | --------------------------------------------- |
+| `indeterminate` | The slot for a custom indeterminate indicator |
+
 <hr/>
 
 

@@ -16,6 +16,13 @@ export type CheckboxOptions = FoundationElementDefinition & {
  * A Checkbox Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#checkbox | ARIA checkbox }.
  *
+ * @slot checked-indicator - The checked indicator
+ * @slot indeterminate-indicator - The indeterminate indicator
+ * @slot - The default slot for the label
+ * @csspart control - The element representing the visual checkbox control
+ * @csspart label - The label
+ * @fires change - Emits a custom change event when the checked state changes
+ *
  * @public
  */
 export class Checkbox extends FormAssociatedCheckbox {

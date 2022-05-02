@@ -88,10 +88,17 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name              | Privacy   | Description                            | Parameters | Return | Inherited From    |
+| ----------------- | --------- | -------------------------------------- | ---------- | ------ | ----------------- |
+| `select`          | public    | Selects all the text in the text field |            | `void` |                   |
+| `templateChanged` | protected |                                        |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |                                        |            | `void` | FoundationElement |
+
+#### Events
+
+| Name     | Type | Description                                              | Inherited From |
+| -------- | ---- | -------------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the value has changed |                |
 
 #### Attributes
 
@@ -107,6 +114,22 @@ This component is built with the expectation that focus is delegated to the inpu
 | `pattern`     | pattern     |                |
 |               | size        |                |
 |               | spellcheck  |                |
+
+#### CSS Parts
+
+| Name      | Description                                                     |
+| --------- | --------------------------------------------------------------- |
+| `label`   | The label                                                       |
+| `root`    | The element wrapping the control, including start and end slots |
+| `control` | The text field element                                          |
+
+#### Slots
+
+| Name    | Description                                                 |
+| ------- | ----------------------------------------------------------- |
+| `start` | Content which can be provided before the number field input |
+| `end`   | Content which can be provided after the number field input  |
+|         | The default slot for the label                              |
 
 <hr/>
 

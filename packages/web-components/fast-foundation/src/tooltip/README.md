@@ -78,6 +78,12 @@ export const myTooltip = Tooltip.compose({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name      | Type | Description                                                                          | Inherited From |
+| --------- | ---- | ------------------------------------------------------------------------------------ | -------------- |
+| `dismiss` |      | Fires a custom 'dismiss' event when the tooltip is visible and escape key is pressed |                |
+
 #### Attributes
 
 | Name                       | Field                  | Inherited From |
@@ -89,6 +95,18 @@ export const myTooltip = Tooltip.compose({
 | `auto-update-mode`         | autoUpdateMode         |                |
 | `horizontal-viewport-lock` | horizontalViewportLock |                |
 | `vertical-viewport-lock`   | verticalViewportLock   |                |
+
+#### CSS Parts
+
+| Name      | Description         |
+| --------- | ------------------- |
+| `tooltip` | The tooltip element |
+
+#### Slots
+
+| Name | Description                              |
+| ---- | ---------------------------------------- |
+|      | The default slot for the tooltip content |
 
 <hr/>
 
