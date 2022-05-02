@@ -18,6 +18,8 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  * A Menu Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#menu | ARIA menu }.
  *
+ * @slot - The default slot for the menu items
+ *
  * @public
  */
 export class Menu extends FoundationElement {

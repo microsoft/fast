@@ -97,6 +97,20 @@ export const myOption = ListboxOption.compose({
 | `selected` | selectedAttribute |                |
 | `value`    | initialValue      |                |
 
+#### CSS Parts
+
+| Name      | Description                      |
+| --------- | -------------------------------- |
+| `content` | Wraps the listbox option content |
+
+#### Slots
+
+| Name    | Description                                                     |
+| ------- | --------------------------------------------------------------- |
+| `start` | Content which can be provided before the listbox option content |
+| `end`   | Content which can be provided after the listbox option content  |
+|         | The default slot for listbox option content                     |
+
 <hr/>
 
 ### class: `DelegatesARIAListboxOption`

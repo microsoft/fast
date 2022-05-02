@@ -152,6 +152,12 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | ---- | -------- | -------------- |
 |      | disabled |                |
 
+#### Slots
+
+| Name | Description                              |
+| ---- | ---------------------------------------- |
+|      | The default slot for the listbox options |
+
 <hr/>
 
 ### class: `DelegatesARIAListbox`
