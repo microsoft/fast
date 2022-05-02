@@ -74,6 +74,10 @@ interface Dimension {
 /**
  * An anchored region Custom HTML Element.
  *
+ * @slot - The default slot for the content
+ * @fires loaded - Fires a custom 'loaded' event when the region is loaded and visible
+ * @fires positionchange - Fires a custom 'positionchange' event when the position has changed
+ *
  * @public
  */
 export class AnchoredRegion extends FoundationElement {

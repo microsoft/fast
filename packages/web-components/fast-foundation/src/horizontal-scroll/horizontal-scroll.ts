@@ -50,6 +50,19 @@ export type HorizontalScrollOptions = FoundationElementDefinition &
 
 /**
  * A HorizontalScroll Custom HTML Element
+ *
+ * @slot start - Content which can be provided before the scroll area
+ * @slot end - Content which can be provided after the scroll area
+ * @csspart scroll-area - Wraps the entire scrollable region
+ * @csspart scroll-view - The visible scroll area
+ * @csspart content-container - The container for the content
+ * @csspart scroll-prev - The previous flipper container
+ * @csspart scroll-action-previous - The element wrapping the previous flipper
+ * @csspart scroll-next - The next flipper container
+ * @csspart scroll-action-next - The element wrapping the next flipper
+ * @fires scrollstart - Fires a custom 'scrollstart' event when scrolling
+ * @fires scrollend - Fires a custom 'scrollend' event when scrolling stops
+ *
  * @public
  */
 export class HorizontalScroll extends FoundationElement {

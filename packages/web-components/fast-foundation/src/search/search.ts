@@ -17,6 +17,16 @@ export type SearchOptions = FoundationElementDefinition & StartEndOptions;
  * A Search Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search | <input type="search" /> element }.
  *
+ * @slot start - Content which can be provided before the search input
+ * @slot end - Content which can be provided after the search clear button
+ * @slot - The default slot for the label
+ * @slot close-button - The clear button
+ * @slot close-glyph - The clear glyph
+ * @csspart label - The label
+ * @csspart root - The element wrapping the control, including start and end slots
+ * @csspart control - The element representing the input
+ * @csspart clear-button - The button to clear the input
+ *
  * @public
  */
 export class Search extends FormAssociatedSearch {

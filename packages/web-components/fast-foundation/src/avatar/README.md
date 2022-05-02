@@ -158,6 +158,23 @@ This component is built with the expectation that focus is delegated to the anch
 | `link`  | link  |                |
 | `shape` | shape |                |
 
+#### CSS Parts
+
+| Name        | Description                           |
+| ----------- | ------------------------------------- |
+| `backplate` | The wrapping container for the avatar |
+| `link`      | The avatar link                       |
+| `media`     | The media slot                        |
+| `content`   | The default slot                      |
+
+#### Slots
+
+| Name    | Description                                                   |
+| ------- | ------------------------------------------------------------- |
+| `media` | Used for media such as an image                               |
+|         | The default slot for avatar text, commonly a name or initials |
+| `badge` | Used to provide a badge, such as a status badge               |
+
 <hr/>
 
 
