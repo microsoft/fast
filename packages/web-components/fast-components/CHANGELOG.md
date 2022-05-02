@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 28 Apr 2022 07:12:47 GMT and should not be manually modified.
+This log was last generated on Sun, 01 May 2022 07:12:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.30.2
+
+Sun, 01 May 2022 07:12:05 GMT
+
+### Patches
+
+- ensure that tabs and tabpanels without ids stay in sync (chhol@microsoft.com)
 
 ## 2.30.1
 

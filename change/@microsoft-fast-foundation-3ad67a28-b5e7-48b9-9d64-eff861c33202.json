@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "ensure that tabs and tabpanels without ids stay in sync",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}
