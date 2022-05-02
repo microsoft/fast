@@ -10,6 +10,8 @@ export type SkeletonShape = "rect" | "circle";
 /**
  * A Skeleton Custom HTML Element.
  *
+ * @slot - The default slot
+ *
  * @public
  */
 export class Skeleton extends FoundationElement {

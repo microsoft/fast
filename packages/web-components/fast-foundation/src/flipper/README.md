@@ -104,6 +104,12 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 | `templateChanged` | protected |                                                                                                                                |                            | `void` | FoundationElement |
 | `stylesChanged`   | protected |                                                                                                                                |                            | `void` | FoundationElement |
 
+#### Events
+
+| Name    | Type | Description                                                                                                                    | Inherited From |
+| ------- | ---- | ------------------------------------------------------------------------------------------------------------------------------ | -------------- |
+| `click` |      | Fires a custom 'click' event when Enter or Space is invoked via keyboard and the flipper is exposed to assistive technologies. |                |
+
 #### Attributes
 
 | Name          | Field        | Inherited From |
@@ -111,6 +117,20 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 |               | disabled     |                |
 | `aria-hidden` | hiddenFromAT |                |
 | `direction`   | direction    |                |
+
+#### CSS Parts
+
+| Name       | Description                        |
+| ---------- | ---------------------------------- |
+| `next`     | Wraps the next flipper content     |
+| `previous` | Wraps the previous flipper content |
+
+#### Slots
+
+| Name       | Description                  |
+| ---------- | ---------------------------- |
+| `next`     | The next flipper content     |
+| `previous` | The previous flipper content |
 
 <hr/>
 

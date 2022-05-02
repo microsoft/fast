@@ -156,6 +156,12 @@ export const mySliderLabel = SliderLabel.compose({
 | `templateChanged`                | protected |                                             |                        | `void` | FoundationElement |
 | `stylesChanged`                  | protected |                                             |                        | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                                 | Inherited From |
+| -------- | ---- | ----------------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the slider value changes |                |
+
 #### Attributes
 
 | Name          | Field       | Inherited From |
@@ -166,6 +172,24 @@ export const mySliderLabel = SliderLabel.compose({
 |               | step        |                |
 | `orientation` | orientation |                |
 | `mode`        | mode        |                |
+
+#### CSS Parts
+
+| Name                 | Description                                                     |
+| -------------------- | --------------------------------------------------------------- |
+| `positioning-region` | The region used to position the elements of the slider          |
+| `track-container`    | The region containing the track elements                        |
+| `track-start`        | The element wrapping the track start slot                       |
+| `thumb-container`    | The thumb container element which is programatically positioned |
+
+#### Slots
+
+| Name          | Description                      |
+| ------------- | -------------------------------- |
+| `track`       | The track of the slider          |
+| `track-start` | The track-start visual indicator |
+| `thumb`       | The slider thumb                 |
+|               | The default slot for labels      |
 
 <hr/>
 
@@ -204,6 +228,18 @@ export const mySliderLabel = SliderLabel.compose({
 | `position`  | position |                |
 | `hide-mark` | hideMark |                |
 | `disabled`  | disabled |                |
+
+#### CSS Parts
+
+| Name   | Description                                  |
+| ------ | -------------------------------------------- |
+| `root` | The element wrapping the label mark and text |
+
+#### Slots
+
+| Name | Description                            |
+| ---- | -------------------------------------- |
+|      | The default slot for the label content |
 
 <hr/>
 

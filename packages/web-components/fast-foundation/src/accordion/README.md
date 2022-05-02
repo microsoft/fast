@@ -127,11 +127,23 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                                | Inherited From |
+| -------- | ---- | ---------------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the active item changes |                |
+
 #### Attributes
 
 | Name          | Field      | Inherited From |
 | ------------- | ---------- | -------------- |
 | `expand-mode` | expandmode |                |
+
+#### CSS Parts
+
+| Name   | Description                      |
+| ------ | -------------------------------- |
+| `item` | The slot for the accordion items |
 
 <hr/>
 
@@ -163,6 +175,12 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                              | Inherited From |
+| -------- | ---- | -------------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the button is invoked |                |
+
 #### Attributes
 
 | Name            | Field        | Inherited From |
@@ -170,6 +188,29 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | `heading-level` | headinglevel |                |
 |                 | expanded     |                |
 | `id`            | id           |                |
+
+#### CSS Parts
+
+| Name              | Description                                              |
+| ----------------- | -------------------------------------------------------- |
+| `heading`         | Wraps the button                                         |
+| `button`          | The button which serves to invoke the item               |
+| `heading-content` | Wraps the slot for the heading content within the button |
+| `icon`            | The icon container                                       |
+| `expanded-icon`   | The expanded icon slot                                   |
+| `collapsed-icon`  | The collapsed icon                                       |
+| `region`          | The wrapper for the accordion item content               |
+
+#### Slots
+
+| Name             | Description                                                                      |
+| ---------------- | -------------------------------------------------------------------------------- |
+| `start`          | Content which can be provided between the heading and the icon                   |
+| `end`            | Content which can be provided between the start slot and icon                    |
+| `heading`        | Content which serves as the accordion item heading and text of the expand button |
+|                  | The default slot for accordion item content                                      |
+| `expanded-icon`  | The expanded icon                                                                |
+| `collapsed-icon` | The collapsed icon                                                               |
 
 <hr/>
 
