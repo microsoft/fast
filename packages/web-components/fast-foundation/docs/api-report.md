@@ -1518,6 +1518,9 @@ export class ListboxOption extends FoundationElement {
     constructor(text?: string, value?: string, defaultSelected?: boolean, selected?: boolean);
     checked?: boolean;
     protected checkedChanged(prev: boolean | unknown, next?: boolean): void;
+    content: Node[];
+    // @internal
+    protected contentChanged(prev: undefined | Node[], next: Node[]): void;
     defaultSelected: boolean;
     // (undocumented)
     protected defaultSelectedChanged(): void;
@@ -1722,6 +1725,7 @@ export class NumberField extends FormAssociatedNumberField {
     minlength: number;
     placeholder: string;
     readOnly: boolean;
+    protected select(): void;
     size: number;
     step: number;
     stepDown(): void;
@@ -2152,7 +2156,9 @@ export class Select extends FormAssociatedSelect {
     control: HTMLElement;
     // @internal
     disabledChanged(prev: boolean, next: boolean): void;
-    displayValue: string;
+    // (undocumented)
+    disconnectedCallback(): void;
+    get displayValue(): string;
     // @internal
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal
@@ -2506,6 +2512,7 @@ export class TextArea extends FormAssociatedTextArea {
     readOnly: boolean;
     resize: TextAreaResize | "none" | "both" | "horizontal" | "vertical";
     rows: number;
+    protected select(): void;
     spellcheck: boolean;
     }
 
@@ -2547,6 +2554,7 @@ export class TextField extends FormAssociatedTextField {
     pattern: string;
     placeholder: string;
     readOnly: boolean;
+    protected select(): void;
     size: number;
     spellcheck: boolean;
     type: TextFieldType | "email" | "password" | "tel" | "text" | "url";

@@ -1,8 +1,16 @@
 # Change Log - @microsoft/eslint-config-fast-dna
 
-This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
+This log was last generated on Wed, 27 Apr 2022 07:21:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.1.0
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Minor changes
+
+- update to typescript 4.6.2 and update ARIAMixin typings (chhol@microsoft.com)
 
 ## 2.0.0
 

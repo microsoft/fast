@@ -1,5 +1,5 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
+import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import {
     ArrowKeys,
     keyEnd,
@@ -13,8 +13,8 @@ import {
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import type { ListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
 import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedSelect } from "./select.form-associated.js";
 import { SelectPosition } from "./select.options.js";
@@ -149,6 +149,7 @@ export class Select extends FormAssociatedSelect {
             this._value = next;
             super.valueChanged(prev, next);
             Observable.notify(this, "value");
+            this.updateDisplayValue();
         }
     }
 
@@ -161,10 +162,7 @@ export class Select extends FormAssociatedSelect {
      */
     private updateValue(shouldEmit?: boolean) {
         if (this.$fastController.isConnected) {
-            this.value = this.firstSelectedOption ? this.firstSelectedOption.value : "";
-            this.displayValue = this.firstSelectedOption
-                ? this.firstSelectedOption.textContent || this.firstSelectedOption.value
-                : this.value;
+            this.value = this.firstSelectedOption?.value ?? "";
         }
 
         if (shouldEmit) {
@@ -267,8 +265,10 @@ export class Select extends FormAssociatedSelect {
      *
      * @public
      */
-    @observable
-    public displayValue: string = "";
+    public get displayValue(): string {
+        Observable.track(this, "displayValue");
+        return this.firstSelectedOption?.text ?? "";
+    }
 
     /**
      * Synchronize the `aria-disabled` property when the `disabled` property changes.
@@ -529,6 +529,13 @@ export class Select extends FormAssociatedSelect {
     public connectedCallback() {
         super.connectedCallback();
         this.forcedPosition = !!this.positionAttribute;
+
+        this.addEventListener("contentchange", this.updateDisplayValue);
+    }
+
+    public disconnectedCallback() {
+        this.removeEventListener("contentchange", this.updateDisplayValue);
+        super.disconnectedCallback();
     }
 
     /**
@@ -545,6 +552,16 @@ export class Select extends FormAssociatedSelect {
 
         if (this.proxy) {
             this.proxy.size = next;
+        }
+    }
+
+    /**
+     *
+     * @internal
+     */
+    private updateDisplayValue(): void {
+        if (this.collapsible) {
+            Observable.notify(this, "displayValue");
         }
     }
 }
