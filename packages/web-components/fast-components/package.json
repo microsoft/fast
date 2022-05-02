@@ -60,7 +60,7 @@
     "test": "yarn eslint && yarn test-chrome:verbose && yarn validate-component-definitions && yarn doc:ci"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "7.8.1",
+    "@microsoft/api-extractor": "7.23.0",
     "@storybook/addons": "6.3.3",
     "@storybook/html": "6.3.3",
     "@storybook/theming": "6.3.3",

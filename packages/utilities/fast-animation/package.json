@@ -70,7 +70,7 @@
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
-    "@microsoft/api-extractor": "7.8.1",
+    "@microsoft/api-extractor": "7.23.0",
     "@microsoft/eslint-config-fast-dna": "^2.1.0",
     "@types/jest": "^27.0.0",
     "@types/node": "^15.0.1",
