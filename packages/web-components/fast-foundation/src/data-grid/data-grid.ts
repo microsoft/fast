@@ -96,6 +96,7 @@ export interface ColumnDefinition {
 /**
  * A Data Grid Custom HTML Element.
  *
+ * @slot - The default slot for custom row elements
  * @public
  */
 export class DataGrid extends FoundationElement {

@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add slots and events documentation",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
