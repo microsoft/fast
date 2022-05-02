@@ -8,7 +8,7 @@ import { Constructable } from '@microsoft/fast-element';
 import { DesignSystem } from '@microsoft/fast-foundation';
 import { FoundationElementDefinition } from '@microsoft/fast-foundation';
 import { FoundationElementRegistry } from '@microsoft/fast-foundation';
-import ReactModule from 'react';
+import type ReactModule from 'react';
 import { Registry } from '@microsoft/fast-foundation';
 
 // @public
@@ -47,7 +47,6 @@ export type ReactWrapperConfig<TEvents> = {
 export type ReactWrapperProps<TElement extends HTMLElement, TEvents> = ReactModule.PropsWithChildren<ReactModule.PropsWithRef<Partial<Omit<TElement, "children" | "style">> & ReactEvents<TEvents> & ReactModule.HTMLAttributes<HTMLElement>> & {
     style?: ReactModule.CSSProperties;
 }>;
-
 
 // (No @packageDocumentation comment for this package)
 
