@@ -49,6 +49,19 @@ test.describe("TemplateRenderer", () => {
 
             expect(consolidate(result)).toBe(`<template name="bar" id="bat"></template>`);
         });
+        test("should render a template element with a boolean attribute binding", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<template ?true=${x => true} ?false=${x => false}></template>`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe(`<template true></template>`);
+        });
+        test("should render a template element with a classList property binding", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<template :classList=${x => "a b"}></template>`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe(`<template class="a b"></template>`);
+        });
+
         test("should render a template element with both static and dynamic attributes", () => {
             const { templateRenderer, defaultRenderInfo} = fastSSR();
             const result = templateRenderer.render(html`<template id="bar" name=${x => "foo"}></template>`, defaultRenderInfo)
