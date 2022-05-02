@@ -82,7 +82,7 @@ async function generateHtmlTemplates(
             const operationProps = { names: [], htmlPaths: [] };
 
             // handle if specific operations are passed in
-            if (operations) {
+            if (operations.length > 0) {
                 const fileNames = files.map(f => getTestName(f));
                 const match = operations.some(f => fileNames.includes(f));
                 if (!match) {
