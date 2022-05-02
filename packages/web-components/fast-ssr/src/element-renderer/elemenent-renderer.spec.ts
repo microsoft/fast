@@ -15,6 +15,7 @@ export class BareElement extends FASTElement {}
     styles: css`:host { display: block; }${css`:host { color: red; }`}
     `
 })
+export class StyledElement extends FASTElement {}
 @customElement({
     name: "host-binding-element",
     template: html`
@@ -83,7 +84,7 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element ?attr="${x => true}"></bare-element>
             `, defaultRenderInfo));
             expect(result).toBe(`
-                <bare-element attr=""><template shadowroot=\"open\"></template></bare-element>
+                <bare-element  attr><template shadowroot=\"open\"></template></bare-element>
             `);
         });
     })

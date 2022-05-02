@@ -203,6 +203,13 @@ export class TemplateRenderer
                                 case Aspect.tokenList:
                                     instance.setAttribute("class", result);
                                     break;
+                                case Aspect.booleanAttribute: {
+                                    if (result) {
+                                        instance.setAttribute(target, "");
+                                    }
+                                    break;
+                                }
+
                                 default:
                                     instance.setAttribute(target, result);
                                     break;
