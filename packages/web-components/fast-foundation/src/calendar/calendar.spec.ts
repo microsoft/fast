@@ -29,7 +29,7 @@ const FASTDataGrid = DataGrid.compose({
 });
 
 /**
- * initialization of the custome <fast-calendar/> element
+ * initialization of the custom <fast-calendar/> element
  */
 const FASTCalendar = Calendar.compose({
     baseName: "calendar",
