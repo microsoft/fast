@@ -1545,7 +1545,7 @@ export class ListboxOption extends FoundationElement {
     protected selectedChanged(): void;
     // (undocumented)
     get text(): string;
-    set value(next: string);
+    set value(next: string | unknown);
     // (undocumented)
     get value(): string;
 }
@@ -2163,6 +2163,8 @@ export class Select extends FormAssociatedSelect {
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal
     formResetCallback(): void;
+    // @internal @override
+    handleChange(source: any, propertyName: string): void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     // @internal

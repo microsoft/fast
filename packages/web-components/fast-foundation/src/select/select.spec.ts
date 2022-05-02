@@ -214,6 +214,34 @@ describe("Select", () => {
         await disconnect();
     });
 
+    it("should update the value when the selected option's value changes", async () => {
+        const { element, connect, disconnect, option1 } = await setup();
+
+        await connect();
+
+        expect(element.value).to.equal("one");
+
+        option1.value = "new value";
+
+        expect(element.value).to.equal("new value");
+
+        await disconnect();
+    });
+
+    it("should return the value as a string", async () => {
+        const { element, connect, disconnect, option1 } = await setup();
+
+        await connect();
+
+        option1.value = 12345 as any;
+
+        expect(element.value).to.equal("12345");
+
+        expect(typeof element.value).to.equal("string");
+
+        await disconnect();
+    });
+
     it("should update the aria-expanded attribute when opened", async () => {
         const { element, connect, disconnect } = await setup();
 

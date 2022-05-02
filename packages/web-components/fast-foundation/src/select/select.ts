@@ -1,5 +1,5 @@
-import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
 import {
     ArrowKeys,
     keyEnd,
@@ -13,8 +13,8 @@ import {
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import type { ListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";
-import { StartEnd } from "../patterns/start-end.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedSelect } from "./select.form-associated.js";
 import { SelectPosition } from "./select.options.js";
@@ -363,6 +363,22 @@ export class Select extends FormAssociatedSelect {
     }
 
     /**
+     * Updates the value when an option's value changes.
+     *
+     * @param source - the source object
+     * @param propertyName - the property to evaluate
+     *
+     * @internal
+     * @override
+     */
+    public handleChange(source: any, propertyName: string) {
+        super.handleChange(source, propertyName);
+        if (propertyName === "value") {
+            this.updateValue();
+        }
+    }
+
+    /**
      * Synchronize the form-associated proxy and updates the value property of the element.
      *
      * @param prev - the previous collection of slotted option elements
@@ -371,7 +387,17 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     public slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void {
+        this.options.forEach(o => {
+            const notifier = Observable.getNotifier(o);
+            notifier.unsubscribe(this, "value");
+        });
+
         super.slottedOptionsChanged(prev, next);
+
+        this.options.forEach(o => {
+            const notifier = Observable.getNotifier(o);
+            notifier.subscribe(this, "value");
+        });
         this.setProxyOptions();
         this.updateValue();
     }
