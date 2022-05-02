@@ -50,7 +50,7 @@ export type MenuItemOptions = FoundationElementDefinition &
  * @csspart input-container - The element representing the visual checked or radio indicator
  * @csspart checkbox - The element wrapping the `menuitemcheckbox` indicator
  * @csspart radio - The element wrapping the `menuitemradio` indicator
- * @scspart content - The element wrapping the menu item content
+ * @csspart content - The element wrapping the menu item content
  * @csspart expand-collapse-glyph-container - The element wrapping the expand collapse element
  * @csspart expand-collapse - The expand/collapse element
  * @csspart submenu-region - The container for the submenu, used for positioning

@@ -221,6 +221,7 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `input-container`                 | The element representing the visual checked or radio indicator |
 | `checkbox`                        | The element wrapping the \`menuitemcheckbox\` indicator        |
 | `radio`                           | The element wrapping the \`menuitemradio\` indicator           |
+| `content`                         | The element wrapping the menu item content                     |
 | `expand-collapse-glyph-container` | The element wrapping the expand collapse element               |
 | `expand-collapse`                 | The expand/collapse element                                    |
 | `submenu-region`                  | The container for the submenu, used for positioning            |

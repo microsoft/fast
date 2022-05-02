@@ -27,8 +27,8 @@ export type AccordionItemOptions = FoundationElementDefinition &
  * @slot end - Content which can be provided between the start slot and icon
  * @slot heading - Content which serves as the accordion item heading and text of the expand button
  * @slot - The default slot for accordion item content
- * @slot - expanded-icon - The expanded icon
- * @slot - collapsed-icon - The collapsed icon
+ * @slot expanded-icon - The expanded icon
+ * @slot collapsed-icon - The collapsed icon
  * @fires change - Fires a custom 'change' event when the button is invoked
  * @csspart heading - Wraps the button
  * @csspart button - The button which serves to invoke the item
