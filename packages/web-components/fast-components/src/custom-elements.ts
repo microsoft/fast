@@ -71,6 +71,21 @@ import { fastTooltip } from "./tooltip/index.js";
 import { fastTreeItem } from "./tree-item/index.js";
 import { fastTreeView } from "./tree-view/index.js";
 
+// Don't delete these. They're needed so that API-extractor doesn't add import types
+// with improper paths
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import type { Anchor } from "./anchor/index.js";
+import type { Button } from "./button/index.js";
+import type { Card } from "./card/index.js";
+import type { DesignSystemProvider } from "./design-system-provider/index.js";
+import type { Disclosure } from "./disclosure/index.js";
+import type { HorizontalScroll } from "./horizontal-scroll/index.js";
+import type { Listbox } from "./listbox/index.js";
+import type { Search } from "./search/index.js";
+import type { SliderLabel } from "./slider-label/index.js";
+import type { TextArea } from "./text-area/index.js";
+import type { TextField } from "./text-field/index.js";
+import type { Toolbar } from "./toolbar/index.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 // When adding new components, make sure to add the component to the `allComponents` object

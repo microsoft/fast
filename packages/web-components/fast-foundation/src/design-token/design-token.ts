@@ -78,7 +78,7 @@ export interface DesignToken<
 }
 
 /**
- * A {@link (DesignToken:interface)} that emits a CSS custom property.
+ * A {@link (DesignToken#interface)} that emits a CSS custom property.
  * @public
  */
 export interface CSSDesignToken<
@@ -95,7 +95,7 @@ export interface CSSDesignToken<
           } & Record<PropertyKey, any>)
 > extends DesignToken<T>, CSSDirective {
     /**
-     * The {@link (DesignToken:interface)} formatted as a CSS custom property if the token is
+     * The {@link (DesignToken#interface)} formatted as a CSS custom property if the token is
      * configured to write a CSS custom property.
      */
     readonly cssCustomProperty: string;
@@ -126,7 +126,7 @@ export interface DesignTokenSubscriber<T extends DesignToken<any>> {
 }
 
 /**
- * Implementation of {@link (DesignToken:interface)}
+ * Implementation of {@link (DesignToken#interface)}
  */
 class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     implements DesignToken<T> {
@@ -859,7 +859,7 @@ function create<T>(nameOrConfig: string | DesignTokenConfiguration): any {
 }
 /* eslint-enable @typescript-eslint/no-unused-vars */
 /**
- * Factory object for creating {@link (DesignToken:interface)} instances.
+ * Factory object for creating {@link (DesignToken#interface)} instances.
  * @public
  */
 export const DesignToken = Object.freeze({
@@ -914,7 +914,7 @@ export const DesignToken = Object.freeze({
     /**
      * Registers and element or document as a DesignToken root.
      * {@link CSSDesignToken | CSSDesignTokens} with default values assigned via
-     * {@link (DesignToken:interface).withDefault} will emit CSS custom properties to all
+     * {@link (DesignToken#interface).withDefault} will emit CSS custom properties to all
      * registered roots.
      * @param target - The root to register
      */
