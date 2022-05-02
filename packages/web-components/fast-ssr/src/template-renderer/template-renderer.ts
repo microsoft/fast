@@ -7,12 +7,16 @@ import {
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { Op, OpType } from "../template-parser/op-codes.js";
+import { AttributeBindingOp, Op, OpType } from "../template-parser/op-codes.js";
 import {
     parseStringToOpCodes,
     parseTemplateToOpCodes,
 } from "../template-parser/template-parser.js";
 import { ViewBehaviorFactoryRenderer } from "./directives.js";
+
+function getLast<T>(arr: T[]): T | undefined {
+    return arr[arr.length - 1];
+}
 
 export type ComponentDOMEmissionMode = "shadow" | "light";
 export interface TemplateRendererConfiguration {
@@ -181,70 +185,32 @@ export class TemplateRenderer
                 }
 
                 case OpType.attributeBinding: {
-                    const { aspect, target, binding } = code;
+                    const { aspect, binding } = code;
                     // Don't emit anything for events or directives without bindings
                     if (aspect === Aspect.event) {
                         break;
                     }
 
-                    let result = binding(source, context);
-
-                    if (code.useCustomElementInstance) {
-                        const instance =
-                            renderInfo.customElementInstanceStack[
-                                renderInfo.customElementInstanceStack.length - 1
-                            ];
-
-                        if (instance) {
-                            switch (aspect) {
-                                case Aspect.property:
-                                    instance.setProperty(target, result);
-                                    break;
-                                case Aspect.tokenList:
-                                    instance.setAttribute("class", result);
-                                    break;
-                                case Aspect.booleanAttribute: {
-                                    if (result) {
-                                        instance.setAttribute(target, "");
-                                    }
-                                    break;
-                                }
-
-                                default:
-                                    if (result !== undefined && result !== null) {
-                                        instance.setAttribute(target, result);
-                                    }
-                                    break;
-                            }
+                    const result = binding(source, context);
+                    switch (aspect) {
+                        case Aspect.property:
+                        case Aspect.tokenList:
+                            yield* this.renderProperty(code, result, renderInfo);
+                            break;
+                        case Aspect.booleanAttribute: {
+                            yield* this.renderBooleanAttribute(code, result, renderInfo);
+                            break;
                         }
-                    } else {
-                        // Only yield attributes as strings for native elements.
-                        // All custom-element attributes are emitted in the
-                        // OpType.customElementAttributes case
-                        switch (aspect) {
-                            case Aspect.booleanAttribute:
-                                if (!!result) {
-                                    result = "";
-                                    yield target;
-                                }
-                                break;
-                            case Aspect.attribute:
-                                if (result !== null && result !== undefined) {
-                                    yield `${target}="${result}"`;
-                                }
-                                break;
-                            case Aspect.tokenList:
-                            case Aspect.property:
-                                if (
-                                    code.target === "classList" ||
-                                    code.target === "className"
-                                ) {
-                                    yield `class="${result}"`;
-                                }
-                                break;
-                        }
+
+                        case Aspect.attribute:
+                            yield* this.renderAttribute(code, result, renderInfo);
+                            break;
+
+                        default:
+                            throw new Error(
+                                `Unknown aspect type '${aspect}' encountered for '${code.target}' binding.`
+                            );
                     }
-
                     break;
                 }
 
@@ -278,6 +244,78 @@ export class TemplateRenderer
     ): void {
         for (const renderer of renderers) {
             this.viewBehaviorFactoryRenderers.set(renderer.matcher, renderer);
+        }
+    }
+
+    /**
+     * Renders an attribute binding
+     */
+    private *renderAttribute(
+        code: AttributeBindingOp,
+        value: any,
+        renderInfo: RenderInfo
+    ) {
+        if (value !== null && value !== undefined) {
+            const { target } = code;
+            if (code.useCustomElementInstance) {
+                const instance = getLast(renderInfo.customElementInstanceStack);
+
+                if (instance) {
+                    instance.setAttribute(target, value);
+                }
+            } else {
+                yield `${target}="${value}"`;
+            }
+        }
+    }
+
+    /**
+     * Renders a property or tokenList binding
+     */
+    private *renderProperty(
+        code: AttributeBindingOp,
+        value: any,
+        renderInfo: RenderInfo
+    ) {
+        const { target } = code;
+        if (code.useCustomElementInstance) {
+            const instance = getLast(renderInfo.customElementInstanceStack);
+
+            if (instance) {
+                switch (code.aspect) {
+                    case Aspect.property:
+                        instance.setProperty(target, value);
+                        break;
+                    case Aspect.tokenList:
+                        instance.setAttribute("class", value);
+                        break;
+                }
+            }
+        } else if (target === "classList" || target === "className") {
+            yield `class="${value}"`;
+        }
+    }
+
+    /**
+     * Renders a boolean attribute binding
+     */
+    private *renderBooleanAttribute(
+        code: AttributeBindingOp,
+        value: unknown,
+        renderInfo: RenderInfo
+    ) {
+        if (value) {
+            const { target } = code;
+
+            if (code.useCustomElementInstance) {
+                const instance = getLast(renderInfo.customElementInstanceStack);
+
+                if (instance) {
+                    instance.setAttribute(target, "");
+                }
+            } else {
+                yield target;
+            }
         }
     }
 }
