@@ -211,7 +211,9 @@ export class TemplateRenderer
                                 }
 
                                 default:
-                                    instance.setAttribute(target, result);
+                                    if (result !== undefined && result !== null) {
+                                        instance.setAttribute(target, result);
+                                    }
                                     break;
                             }
                         }

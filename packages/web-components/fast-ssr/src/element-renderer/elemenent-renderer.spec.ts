@@ -65,7 +65,7 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element attr="${x => null}"></bare-element>
             `, defaultRenderInfo));
             expect(result).toBe(`
-                <bare-element><template shadowroot=\"open\"></template></bare-element>
+                <bare-element ><template shadowroot=\"open\"></template></bare-element>
             `);
         });
         test("should not render the attribute when the binding evaluates undefined", () => {
@@ -74,7 +74,7 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element attr="${x => undefined}"></bare-element>
             `, defaultRenderInfo));
             expect(result).toBe(`
-                <bare-element><template shadowroot=\"open\"></template></bare-element>
+                <bare-element ><template shadowroot=\"open\"></template></bare-element>
             `);
         });
 
