@@ -2,6 +2,8 @@ import { mkdir, writeFile } from "fs/promises";
 import { readdir, readFileSync } from "fs";
 import { exec } from "child_process";
 import { basename, dirname, extname, join, resolve } from "path";
+import chalk from "chalk";
+const errMessage = chalk.hex("#ffb638");
 
 /**
  * Creates a dist folder to hold the generated config file.
@@ -122,9 +124,8 @@ async function generateHtmlTemplates(
             resolve(operationProps);
         });
     }).catch(error => {
-        console.log("error", error);
         if (error) {
-            throw new Error(error);
+            console.log(errMessage(error));
         } else {
             return error;
         }
@@ -164,17 +165,12 @@ async function generateBenchmarks(
         /** @type {ConfigFile["benchmarks"]} */
 
         const benchmarks = [];
+        const memoryBenchmarks = [];
         const browser = {
             name: "chrome",
             headless: true,
-            addArguments: ["--js-flags=--expose-gc", "--enable-precise-memory-info"],
         };
         const measurement = [
-            {
-                name: "usedJSHeapSize",
-                mode: "expression",
-                expression: "window.usedJSHeapSize",
-            },
             {
                 mode: "performance",
                 entryName: operation,
@@ -189,11 +185,11 @@ async function generateBenchmarks(
                     ? localProps.operationProps.htmlPaths[idx]
                     : operationProps.htmlPaths[idx];
 
-            // TODO: the name can be extracted out from benchmark array and added to the tacho config prop
+            const name = `${benchmark}-${operation}`;
             const bench = {
                 url,
                 browser,
-                name: `${benchmark}-${operation}`,
+                name,
                 measurement,
             };
             const dep = `@microsoft/${library}`;
@@ -220,8 +216,28 @@ async function generateBenchmarks(
                     dependencies: { [dep]: version },
                 };
             }
+
+            //adjust some settings to also report memory benchmark results
+            const memoryBench = JSON.parse(JSON.stringify(bench));
+            const memoryMeasurement = [
+                {
+                    name: "usedJSHeapSize",
+                    mode: "expression",
+                    expression: "window.usedJSHeapSize",
+                },
+            ];
+            memoryBench.name = `${name}-memory`;
+            memoryBench.measurement = memoryMeasurement;
+            memoryBench.browser.addArguments = [
+                "--js-flags=--expose-gc",
+                "--enable-precise-memory-info",
+            ];
+            memoryBenchmarks.push(memoryBench);
+
             benchmarks.push(bench);
         });
+
+        tachoData[`${operation}-memory`] = memoryBenchmarks;
         tachoData[operation] = benchmarks;
     });
 
@@ -268,7 +284,7 @@ async function generateConfig(fileName, benchmarksHash) {
         /** @type {ConfigFile[]} promises resolves to array of config file paths*/
         return await Promise.all(pathsPromises);
     } catch (error) {
-        console.log("error", error);
+        console.log(errMessage(error));
     }
 }
 
@@ -312,6 +328,6 @@ export async function generateTemplates(options) {
             tachoConfigPaths,
         };
     } catch (error) {
-        console.error(error);
+        console.log(errMessage(error));
     }
 }

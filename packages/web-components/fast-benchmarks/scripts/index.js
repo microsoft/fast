@@ -1,7 +1,9 @@
 import { exec } from "child_process";
+import chalk from "chalk";
 import { program } from "commander";
 import { spawn } from "cross-spawn";
 import { generateTemplates } from "./template.js";
+const errMessage = chalk.hex("#ffb638");
 
 program
     .option("-l, --library <name>", "run benchmarks in <name> library")
@@ -89,8 +91,10 @@ async function runBenchmark(configPaths) {
             });
         }).catch(error => {
             if (error.command) {
-                throw new Error(
-                    `failed at ${error.command}: Make sure your local branch is pushed to git to use the 'local' keyword in versions.`
+                console.log(
+                    errMessage(
+                        `Make sure your local branch is pushed to git to use the 'local' keyword in versions: failed at ${error.command}:`
+                    )
                 );
             } else {
                 return error;
