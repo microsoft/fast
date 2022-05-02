@@ -1,8 +1,30 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 27 Apr 2022 07:21:09 GMT and should not be manually modified.
+This log was last generated on Sun, 01 May 2022 07:12:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.45.0
+
+Sun, 01 May 2022 07:12:05 GMT
+
+### Minor changes
+
+- add select method to number field, text field, and text area components (chhol@microsoft.com)
+
+### Patches
+
+- ensure that tabs and tabpanels without ids stay in sync (chhol@microsoft.com)
+- trim extra spaces from the text property for listbox-option (john.kreitlow@microsoft.com)
+- fix keyboarding behavior for right and left arrow keys in Tree View (chhol@microsoft.com)
+
+## 2.44.0
+
+Thu, 28 Apr 2022 07:12:47 GMT
+
+### Minor changes
+
+- update displayed selected value in select component when an option changes (john.kreitlow@microsoft.com)
 
 ## 2.43.0
 
