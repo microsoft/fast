@@ -20,6 +20,12 @@ export type FlipperOptions = FoundationElementDefinition & {
  * A Flipper Custom HTML Element.
  * Flippers are a form of button that implies directional content navigation, such as in a carousel.
  *
+ * @slot next - The next flipper content
+ * @slot previous - The previous flipper content
+ * @csspart next - Wraps the next flipper content
+ * @csspart previous - Wraps the previous flipper content
+ * @fires click - Fires a custom 'click' event when Enter or Space is invoked via keyboard and the flipper is exposed to assistive technologies.
+ *
  * @public
  */
 export class Flipper extends FoundationElement {
@@ -63,7 +69,7 @@ export class Flipper extends FoundationElement {
         if (!this.hiddenFromAT) {
             const key = e.key;
 
-            if (key === "Enter") {
+            if (key === "Enter" || key === "Space") {
                 this.$emit("click", e);
             }
 

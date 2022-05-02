@@ -51,6 +51,16 @@ export type SliderOptions = FoundationElementDefinition & {
  * A Slider Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#slider | ARIA slider }.
  *
+ * @slot track - The track of the slider
+ * @slot track-start - The track-start visual indicator
+ * @slot thumb - The slider thumb
+ * @slot - The default slot for labels
+ * @csspart positioning-region - The region used to position the elements of the slider
+ * @csspart track-container - The region containing the track elements
+ * @csspart track-start - The element wrapping the track start slot
+ * @csspart thumb-container - The thumb container element which is programatically positioned
+ * @fires change - Fires a custom 'change' event when the slider value changes
+ *
  * @public
  */
 export class Slider extends FormAssociatedSlider implements SliderConfiguration {

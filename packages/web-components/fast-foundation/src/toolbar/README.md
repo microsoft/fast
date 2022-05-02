@@ -116,16 +116,31 @@ export const myToolbar = Toolbar.compose({
 | ------------- | ----------- | -------------- |
 | `orientation` | orientation |                |
 
+#### CSS Parts
+
+| Name                 | Description                                           |
+| -------------------- | ----------------------------------------------------- |
+| `positioning-region` | The element containing the items, start and end slots |
+
+#### Slots
+
+| Name    | Description                                            |
+| ------- | ------------------------------------------------------ |
+| `start` | Content which can be provided before the slotted items |
+| `end`   | Content which can be provided after the slotted items  |
+|         | The default slot for slotted items                     |
+| `label` | The toolbar label                                      |
+
 <hr/>
 
 ### class: `DelegatesARIAToolbar`
 
 #### Fields
 
-| Name             | Privacy | Type     | Default | Description                                   | Inherited From |
-| ---------------- | ------- | -------- | ------- | --------------------------------------------- | -------------- |
-| `ariaLabelledby` | public  | `string` |         | The id of the element labeling the toolbar.   |                |
-| `ariaLabel`      | public  | `string` |         | The label surfaced to assistive technologies. |                |
+| Name             | Privacy | Type             | Default | Description                                   | Inherited From |
+| ---------------- | ------- | ---------------- | ------- | --------------------------------------------- | -------------- |
+| `ariaLabelledby` | public  | `string or null` |         | The id of the element labeling the toolbar.   |                |
+| `ariaLabel`      | public  | `string or null` |         | The label surfaced to assistive technologies. |                |
 
 #### Attributes
 

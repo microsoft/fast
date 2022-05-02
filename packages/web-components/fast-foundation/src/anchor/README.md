@@ -103,15 +103,30 @@ This component is built with the expectation that focus is delegated to the anch
 | `target`         | target         |                |
 | `type`           | type           |                |
 
+#### CSS Parts
+
+| Name      | Description                         |
+| --------- | ----------------------------------- |
+| `control` | The anchor element                  |
+| `content` | The element wrapping anchor content |
+
+#### Slots
+
+| Name    | Description                                             |
+| ------- | ------------------------------------------------------- |
+| `start` | Content which can be provided before the anchor content |
+| `end`   | Content which can be provided after the anchor content  |
+|         | The default slot for anchor content                     |
+
 <hr/>
 
 ### class: `DelegatesARIALink`
 
 #### Fields
 
-| Name           | Privacy | Type                             | Default | Description                                                          | Inherited From |
-| -------------- | ------- | -------------------------------- | ------- | -------------------------------------------------------------------- | -------------- |
-| `ariaExpanded` | public  | `"true" or "false" or undefined` |         | See https://www.w3.org/WAI/PF/aria/roles#link for more information |                |
+| Name           | Privacy | Type                                  | Default | Description                                                          | Inherited From |
+| -------------- | ------- | ------------------------------------- | ------- | -------------------------------------------------------------------- | -------------- |
+| `ariaExpanded` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/WAI/PF/aria/roles#link for more information |                |
 
 #### Attributes
 

@@ -135,6 +135,12 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `templateChanged`    | protected |                                                                            |            | `void` | FoundationElement |
 | `stylesChanged`      | protected |                                                                            |            | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                          | Inherited From |
+| -------- | ---- | ---------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the value updates |                |
+
 #### Attributes
 
 | Name           | Field             | Inherited From |
@@ -145,16 +151,35 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `position`     | positionAttribute |                |
 |                | disabled          | Listbox        |
 
+#### CSS Parts
+
+| Name             | Description                                                            |
+| ---------------- | ---------------------------------------------------------------------- |
+| `control`        | The wrapper element containing the input area, including start and end |
+| `selected-value` | The input element representing the selected value                      |
+| `indicator`      | The element wrapping the indicator slot                                |
+| `listbox`        | The wrapper for the listbox slotted options                            |
+
+#### Slots
+
+| Name        | Description                                                 |
+| ----------- | ----------------------------------------------------------- |
+| `start`     | Content which can be provided before the input              |
+| `end`       | Content which can be provided after the input               |
+| `control`   | Used to replace the input element representing the combobox |
+| `indicator` | The visual indicator representing the expanded state        |
+|             | The default slot for the options                            |
+
 <hr/>
 
 ### class: `DelegatesARIACombobox`
 
 #### Fields
 
-| Name               | Privacy | Type                                                  | Default | Description                                                                       | Inherited From |
-| ------------------ | ------- | ----------------------------------------------------- | ------- | --------------------------------------------------------------------------------- | -------------- |
-| `ariaAutoComplete` | public  | `"inline" or "list" or "both" or "none" or undefined` |         | See https://www.w3.org/TR/wai-aria-1.2/#aria-autocomplete for more information. |                |
-| `ariaControls`     | public  | `string`                                              |         | See https://www.w3.org/TR/wai-aria-1.2/#aria-controls for more information.     |                |
+| Name               | Privacy | Type                                                       | Default | Description                                                                       | Inherited From |
+| ------------------ | ------- | ---------------------------------------------------------- | ------- | --------------------------------------------------------------------------------- | -------------- |
+| `ariaAutoComplete` | public  | `"inline" or "list" or "both" or "none" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#aria-autocomplete for more information. |                |
+| `ariaControls`     | public  | `string or null`                                           |         | See https://www.w3.org/TR/wai-aria-1.2/#aria-controls for more information.     |                |
 
 <hr/>
 

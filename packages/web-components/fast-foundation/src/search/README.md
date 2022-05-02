@@ -107,6 +107,25 @@ This component is built with the expectation that focus is delegated to the inpu
 |               | size        |                |
 |               | spellcheck  |                |
 
+#### CSS Parts
+
+| Name           | Description                                                     |
+| -------------- | --------------------------------------------------------------- |
+| `label`        | The label                                                       |
+| `root`         | The element wrapping the control, including start and end slots |
+| `control`      | The element representing the input                              |
+| `clear-button` | The button to clear the input                                   |
+
+#### Slots
+
+| Name           | Description                                                 |
+| -------------- | ----------------------------------------------------------- |
+| `start`        | Content which can be provided before the search input       |
+| `end`          | Content which can be provided after the search clear button |
+|                | The default slot for the label                              |
+| `close-button` | The clear button                                            |
+| `close-glyph`  | The clear glyph                                             |
+
 <hr/>
 
 ### class: `DelegatesARIASearch`

@@ -78,7 +78,7 @@ This component is built with the expectation that focus is delegated to the butt
 | `formnovalidate`        | public  | `boolean`                                    |         | See [`<button>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) for more details.                                                       |                      |
 | `formtarget`            | public  | `"_self" or "_blank" or "_parent" or "_top"` |         | See [`<button>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) for more details.                                                       |                      |
 | `type`                  | public  | `"submit" or "reset" or "button"`            |         | The button type.                                                                                                                                                                    |                      |
-| `defaultSlottedContent` | public  | `HTMLElement[]`                              |         | Default slotted content                                                                                                                                                             |                      |
+| `defaultSlottedContent` | public  | `HTMLElement[]`                              |         |  Default slotted content                                                                                                                                                            |                      |
 | `control`               | public  | `HTMLButtonElement`                          |         |                                                                                                                                                                                     |                      |
 | `proxy`                 |         |                                              |         |                                                                                                                                                                                     | FormAssociatedButton |
 | `$presentation`         | public  | `ComponentPresentation or null`              |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement    |
@@ -105,16 +105,31 @@ This component is built with the expectation that focus is delegated to the butt
 | `formtarget`  | formtarget     |                |
 | `type`        | type           |                |
 
+#### CSS Parts
+
+| Name      | Description                         |
+| --------- | ----------------------------------- |
+| `control` | The button element                  |
+| `content` | The element wrapping button content |
+
+#### Slots
+
+| Name    | Description                                             |
+| ------- | ------------------------------------------------------- |
+| `start` | Content which can be provided before the button content |
+| `end`   | Content which can be provided after the button content  |
+|         | The default slot for button content                     |
+
 <hr/>
 
 ### class: `DelegatesARIAButton`
 
 #### Fields
 
-| Name           | Privacy | Type                                        | Default | Description                                                            | Inherited From |
-| -------------- | ------- | ------------------------------------------- | ------- | ---------------------------------------------------------------------- | -------------- |
-| `ariaExpanded` | public  | `"true" or "false" or undefined`            |         | See https://www.w3.org/WAI/PF/aria/roles#button for more information |                |
-| `ariaPressed`  | public  | `"true" or "false" or "mixed" or undefined` |         | See https://www.w3.org/WAI/PF/aria/roles#button for more information |                |
+| Name           | Privacy | Type                                             | Default | Description                                                            | Inherited From |
+| -------------- | ------- | ------------------------------------------------ | ------- | ---------------------------------------------------------------------- | -------------- |
+| `ariaExpanded` | public  | `"true" or "false" or string or null`            |         | See https://www.w3.org/WAI/PF/aria/roles#button for more information |                |
+| `ariaPressed`  | public  | `"true" or "false" or "mixed" or string or null` |         | See https://www.w3.org/WAI/PF/aria/roles#button for more information |                |
 
 #### Attributes
 

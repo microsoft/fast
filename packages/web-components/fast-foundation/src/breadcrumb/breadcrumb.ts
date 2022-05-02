@@ -4,6 +4,8 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Breadcrumb Custom HTML Element.
+ * @slot - The default slot for the breadcrumb items
+ * @csspart list - The element wrapping the slotted items
  *
  * @public
  */

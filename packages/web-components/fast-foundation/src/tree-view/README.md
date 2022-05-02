@@ -108,7 +108,7 @@ export const myTreeView = TreeView.compose({
 
 | Name                   | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | ---------------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `renderCollapsedNodes` | public  | `boolean`                             |         | /\*\*    When true, the control will be appear expanded by user interaction.                                                                                                        |                   |
+| `renderCollapsedNodes` | public  | `boolean`                             |         | /\*\*   When true, the control will be appear expanded by user interaction.                                                                                                         |                   |
 | `currentSelected`      | public  | `HTMLElement or TreeItem or null`     |         | The currently selected tree item                                                                                                                                                    |                   |
 | `$presentation`        | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
 | `template`             | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
@@ -126,6 +126,12 @@ export const myTreeView = TreeView.compose({
 | Name                     | Field                | Inherited From |
 | ------------------------ | -------------------- | -------------- |
 | `render-collapsed-nodes` | renderCollapsedNodes |                |
+
+#### Slots
+
+| Name | Description                     |
+| ---- | ------------------------------- |
+|      | The default slot for tree items |
 
 <hr/>
 
