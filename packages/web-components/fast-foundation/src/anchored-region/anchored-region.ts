@@ -1026,7 +1026,9 @@ export class AnchoredRegion extends FoundationElement {
         switch (this.horizontalScaling) {
             case "anchor":
             case "fill":
-                nextRegionWidth = nextPositionerDimension.width;
+                nextRegionWidth = this.horizontalViewportLock
+                    ? this.viewportRect.width
+                    : nextPositionerDimension.width;
                 this.regionWidth = `${nextRegionWidth}px`;
                 break;
 
@@ -1135,7 +1137,9 @@ export class AnchoredRegion extends FoundationElement {
         switch (this.verticalScaling) {
             case "anchor":
             case "fill":
-                nextRegionHeight = nextPositionerDimension.height;
+                nextRegionHeight = this.verticalViewportLock
+                    ? this.viewportRect.height
+                    : nextPositionerDimension.height;
                 this.regionHeight = `${nextRegionHeight}px`;
                 break;
 
