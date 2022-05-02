@@ -192,36 +192,29 @@ export class TemplateRenderer
                     }
 
                     const result = binding(source, context);
-                    switch (aspect) {
-                        case Aspect.property:
-                        case Aspect.tokenList:
-                            yield* this.renderProperty(code, result, renderInfo);
-                            break;
-                        case Aspect.booleanAttribute: {
-                            yield* this.renderBooleanAttribute(code, result, renderInfo);
-                            break;
-                        }
+                    const renderer = this.getAttributeBindingRenderer(code);
 
-                        case Aspect.attribute:
-                            yield* this.renderAttribute(code, result, renderInfo);
-                            break;
-
-                        default:
-                            throw new Error(
-                                `Unknown aspect type '${aspect}' encountered for '${code.target}' binding.`
-                            );
+                    if (renderer) {
+                        yield* renderer(code, result, renderInfo);
                     }
+
                     break;
                 }
 
                 case OpType.templateElementOpen:
                     yield "<template";
                     for (const [name, value] of code.staticAttributes) {
-                        yield ` ${name}="${value}"`;
+                        yield ` ${TemplateRenderer.formatAttribute(name, value)}`;
                     }
 
                     for (const attr of code.dynamicAttributes) {
-                        yield ` ${attr.target}="${attr.binding(source, context)}"`;
+                        const renderer = this.getAttributeBindingRenderer(attr);
+
+                        if (renderer) {
+                            const result = attr.binding(source, context);
+                            yield " ";
+                            yield* renderer(attr, result, renderInfo);
+                        }
                     }
                     yield ">";
                     break;
@@ -247,10 +240,31 @@ export class TemplateRenderer
         }
     }
 
+    private getAttributeBindingRenderer(code: AttributeBindingOp) {
+        switch (code.aspect) {
+            case Aspect.booleanAttribute:
+                return TemplateRenderer.renderBooleanAttribute;
+            case Aspect.property:
+            case Aspect.tokenList:
+                return TemplateRenderer.renderProperty;
+            case Aspect.attribute:
+                return TemplateRenderer.renderAttribute;
+        }
+    }
+
+    /**
+     * Format attribute key/value pair into a HTML attribute string.
+     * @param name
+     * @param value
+     */
+    private static formatAttribute(name: string, value: string) {
+        return value === "" ? name : `${name}="${value}"`;
+    }
+
     /**
      * Renders an attribute binding
      */
-    private *renderAttribute(
+    private static *renderAttribute(
         code: AttributeBindingOp,
         value: any,
         renderInfo: RenderInfo
@@ -264,7 +278,7 @@ export class TemplateRenderer
                     instance.setAttribute(target, value);
                 }
             } else {
-                yield `${target}="${value}"`;
+                yield TemplateRenderer.formatAttribute(target, value);
             }
         }
     }
@@ -272,7 +286,7 @@ export class TemplateRenderer
     /**
      * Renders a property or tokenList binding
      */
-    private *renderProperty(
+    private static *renderProperty(
         code: AttributeBindingOp,
         value: any,
         renderInfo: RenderInfo
@@ -292,29 +306,30 @@ export class TemplateRenderer
                 }
             }
         } else if (target === "classList" || target === "className") {
-            yield `class="${value}"`;
+            yield TemplateRenderer.formatAttribute("class", value);
         }
     }
 
     /**
      * Renders a boolean attribute binding
      */
-    private *renderBooleanAttribute(
+    private static *renderBooleanAttribute(
         code: AttributeBindingOp,
         value: unknown,
         renderInfo: RenderInfo
     ) {
         if (value) {
+            const value = "";
             const { target } = code;
 
             if (code.useCustomElementInstance) {
                 const instance = getLast(renderInfo.customElementInstanceStack);
 
                 if (instance) {
-                    instance.setAttribute(target, "");
+                    instance.setAttribute(target, value);
                 }
             } else {
-                yield target;
+                yield TemplateRenderer.formatAttribute(target, value);
             }
         }
     }

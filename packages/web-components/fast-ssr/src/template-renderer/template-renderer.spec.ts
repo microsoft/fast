@@ -53,7 +53,7 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer, defaultRenderInfo} = fastSSR();
             const result = templateRenderer.render(html`<template ?true=${x => true} ?false=${x => false}></template>`, defaultRenderInfo)
 
-            expect(consolidate(result)).toBe(`<template true></template>`);
+            expect(consolidate(result)).toBe(`<template true ></template>`);
         });
         test("should render a template element with a classList property binding", () => {
             const { templateRenderer, defaultRenderInfo} = fastSSR();
