@@ -14,7 +14,7 @@ import {
     const createDelete = async () => {
         const start = getTestStartName(test);
         performance.mark(start);
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 5; i++) {
             create();
             destroy(container);
         }

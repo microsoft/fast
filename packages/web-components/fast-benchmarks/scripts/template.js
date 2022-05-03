@@ -84,7 +84,7 @@ async function generateHtmlTemplates(
             const operationProps = { names: [], htmlPaths: [] };
 
             // handle if specific operations are passed in
-            if (operations.length > 0) {
+            if (operations?.length > 0) {
                 const fileNames = files.map(f => getTestName(f));
                 const match = operations.some(f => fileNames.includes(f));
                 if (!match) {
@@ -154,10 +154,18 @@ async function getLocalGitBranchName() {
  * Generates the benchmarks array expected by the tachometer config file.
  * @returns {{operationName: ConfigFile["benchmarks"]}, {}} returns benchmarkHash, where operation name is key and benchmarks array is value
  */
+const FAST_ELEMENT = "fast-element";
 const FAST_FOUNDATION = "fast-foundation";
+const FAST_COMPONENTS = "fast-components";
 const libraryDependencies = {
-    FAST_FOUNDATION: {
+    [FAST_FOUNDATION]: {
         "@microsoft/fast-element": "1.9.0",
+        "@microsoft/fast-web-utilities": "5.2.0",
+    },
+    [FAST_COMPONENTS]: {
+        "@microsoft/fast-colors": "5.2.0",
+        "@microsoft/fast-element": "1.9.0",
+        "@microsoft/fast-foundation": "2.41.1",
         "@microsoft/fast-web-utilities": "5.2.0",
     },
 };
@@ -225,10 +233,10 @@ async function generateBenchmarks(
             }
 
             // add fast-foundation manually, need to find a way to extract and add dynamically
-            if (library === FAST_FOUNDATION) {
+            if (library !== FAST_ELEMENT) {
                 bench.packageVersions.dependencies = {
                     ...bench.packageVersions.dependencies,
-                    ...libraryDependencies.FAST_FOUNDATION,
+                    ...libraryDependencies[library],
                 };
             }
 
