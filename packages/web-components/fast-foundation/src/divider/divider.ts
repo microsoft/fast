@@ -16,7 +16,6 @@ export class Divider extends FoundationElement {
      * The role of the element.
      *
      * @public
-     * @defaultValue - {@link DividerRole.separator}
      * @remarks
      * HTML Attribute: role
      */
