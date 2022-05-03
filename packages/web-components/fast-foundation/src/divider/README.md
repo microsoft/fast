@@ -44,6 +44,16 @@ export const myDivider = Divider.compose({
 
 
 
+### Variables
+
+| Name          | Description   | Type                                                                                                                                                                                                                                 |
+| ------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `DividerRole` | Divider roles | `{     /**      * The divider semantically separates content      */     separator: "separator",      /**      * The divider has no semantic value and is for visual presentation only.      */     presentation: "presentation", }` |
+
+<hr/>
+
+
+
 ### class: `Divider`
 
 #### Superclass
@@ -54,13 +64,13 @@ export const myDivider = Divider.compose({
 
 #### Fields
 
-| Name            | Privacy | Type                                           | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | ---------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `role`          | public  | `DividerRole or "separator" or "presentation"` |         | The role of the element.                                                                                                                                                            |                   |
-| `orientation`   | public  | `Orientation`                                  |         | The orientation of the divider.                                                                                                                                                     |                   |
-| `$presentation` | public  | `ComponentPresentation or null`                |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null`          |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`                |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `role`          | public  | `DividerRole`                         |         | The role of the element.                                                                                                                                                            |                   |
+| `orientation`   | public  | `Orientation`                         |         | The orientation of the divider.                                                                                                                                                     |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 

@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "convert enums to const objects and add supported typings",
+  "packageName": "@microsoft/fast-components",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}

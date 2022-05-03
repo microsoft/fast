@@ -171,6 +171,16 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 
 
+### Variables
+
+| Name           | Description       | Type                                                                                                                                                                                                                                                                                                          |
+| -------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `MenuItemRole` | Menu items roles. | `{     /**      * The menu item has a "menuitem" role      */     menuitem: "menuitem",      /**      * The menu item has a "menuitemcheckbox" role      */     menuitemcheckbox: "menuitemcheckbox",      /**      * The menu item has a "menuitemradio" role      */     menuitemradio: "menuitemradio", }` |
+
+<hr/>
+
+
+
 ### class: `MenuItem`
 
 #### Superclass
@@ -181,15 +191,15 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 #### Fields
 
-| Name            | Privacy | Type                                                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | --------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `disabled`      | public  | `boolean`                                                             |         | The disabled state of the element.                                                                                                                                                  |                   |
-| `expanded`      | public  | `boolean`                                                             |         | The expanded state of the element.                                                                                                                                                  |                   |
-| `role`          | public  | `MenuItemRole or "menuitem" or "menuitemcheckbox" or "menuitemradio"` |         | The role of the element.                                                                                                                                                            |                   |
-| `checked`       | public  | `boolean`                                                             |         | The checked value of the element.                                                                                                                                                   |                   |
-| `$presentation` | public  | `ComponentPresentation or null`                                       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null`                                 |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`                                       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `disabled`      | public  | `boolean`                             |         | The disabled state of the element.                                                                                                                                                  |                   |
+| `expanded`      | public  | `boolean`                             |         | The expanded state of the element.                                                                                                                                                  |                   |
+| `role`          | public  | `MenuItemRole`                        |         | The role of the element.                                                                                                                                                            |                   |
+| `checked`       | public  | `boolean`                             |         | The checked value of the element.                                                                                                                                                   |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
