@@ -69,7 +69,7 @@ for(var i = 0, modulesLength = modules.length; i < modulesLength; i++)
                 }
                 if(dec.type)
                 {
-                    dec.type.text =  replaceJSDOCLinksWithMDLinks(fixTagsInText(dec.type.text.replaceAll(LF, ' ')));
+                    dec.type.text =  replaceJSDOCLinksWithMDLinks(fixTagsInText(removeCommentBlocks(dec.type.text.replaceAll(LF, ' '))));
                 }
                 dec.members?.forEach(member=>{
                     if(member.description)
@@ -216,7 +216,24 @@ function replaceJSDOCLinksWithMDLinks(text)
         {
             text = text.replace(jsdocLink, "[" + linkParts[1].trim() + "](" + linkParts[0].trim() + ")");
         }
-        startIndex = text.indexOf('{@link',endIndex);
+        startIndex = text.indexOf('{@link');
+    }
+    return text;
+}
+
+function removeCommentBlocks(text)
+{
+    let startIndex = text.indexOf('/*');
+    if(startIndex < 0) return text;
+
+    while(startIndex>=0)
+    {
+        let endIndex = text.indexOf("*/", startIndex);
+        if(endIndex < 0) return text;
+
+        const commentBlock = text.slice(startIndex, endIndex + 2);
+        text = text.replace(commentBlock, "");
+        startIndex = text.indexOf('/*');
     }
     return text;
 }
