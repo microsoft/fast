@@ -3,6 +3,7 @@ id: menu
 title: fast-menu
 sidebar_label: menu
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/menu/README.md
+description: fast-menu is a web component widget that offers a list of choices to the user, such as a set of actions or functions.
 ---
 
 As defined by the W3C:

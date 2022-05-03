@@ -3,6 +3,7 @@ id: design-tokens
 title: Design Tokens
 sidebar_label: Design Tokens
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/design-tokens.md
+description: The FAST Design Token implementation is designed to provide first-class support for Design Tokens and make setting, getting, and using Design Tokens simple.
 ---
 
 The FAST Design Token implementation is designed to provide first-class support for Design Tokens and make setting, getting, and using Design Tokens simple.

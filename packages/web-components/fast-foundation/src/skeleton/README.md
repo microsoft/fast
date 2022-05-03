@@ -3,6 +3,7 @@ id: skeleton
 title: fast-skeleton
 sidebar_label: skeleton
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/skeleton/README.md
+description: fast-skeleton is a web component implemention of a skeleton.
 ---
 
 The `skeleton` component is used as a visual placeholder for an element while it is in a loading state and usually presents itself as a simplified wireframe-like version of the UI it is representing.
