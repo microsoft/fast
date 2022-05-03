@@ -54,10 +54,14 @@ class PartNameDirective implements HTMLDirective {
     }
 }
 
+export interface AnatomyConstructor<T extends Anatomy> {
+    new (context: AnatomyContext): T;
+}
+
 export class Anatomy<TComponent = FASTElement, TPartNames extends string = string> {
     private _internals: AnatomyInternals;
 
-    protected get internals(): AnatomyInternals {
+    protected get internals(): AnatomyInternals<TPartNames> {
         return this._internals;
     }
 

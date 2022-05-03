@@ -5,7 +5,12 @@ import {
     TemplateValue,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import type { Anatomy, AnatomyContext, AnatomyContributor } from "./anatomy.js";
+import type {
+    Anatomy,
+    AnatomyConstructor,
+    AnatomyContext,
+    AnatomyContributor,
+} from "./anatomy.js";
 
 type ExtractComponentType<Type> = Type extends Anatomy<infer TComponent>
     ? TComponent
@@ -28,10 +33,10 @@ interface InternalAnatomyContext<
     contributors: AnatomyContributor<TComponent>[];
 }
 
-export class TemplateBuilder<TAnatomyType extends Constructable<Anatomy>> {
-    private _anatomy: InstanceType<TAnatomyType> | null = null;
+export class TemplateBuilder<TAnatomy extends Anatomy> {
+    private _anatomy: TAnatomy | null = null;
     private _evaluatePartName: (
-        input: ExtractPartNames<InstanceType<TAnatomyType>>
+        input: ExtractPartNames<TAnatomy>
     ) => string | null = name => name;
     private _context: InternalAnatomyContext = {
         contributors: [],
@@ -65,11 +70,9 @@ export class TemplateBuilder<TAnatomyType extends Constructable<Anatomy>> {
         },
     };
 
-    public constructor(private readonly AnatomyType: TAnatomyType) {}
+    public constructor(private readonly AnatomyType: AnatomyConstructor<TAnatomy>) {}
 
-    public parts(
-        options: CSSPartOptions<ExtractPartNames<InstanceType<TAnatomyType>>>
-    ): this {
+    public parts(options: CSSPartOptions<ExtractPartNames<TAnatomy>>): this {
         if (options === true) {
             this._evaluatePartName = name => name;
         } else if (options === false) {
@@ -88,12 +91,12 @@ export class TemplateBuilder<TAnatomyType extends Constructable<Anatomy>> {
         return this;
     }
 
-    public anatomy(callback: (a: InstanceType<TAnatomyType>) => void): this {
+    public anatomy(callback: (a: TAnatomy) => void): this {
         this._anatomy = this._context.evaluateAnatomy(this.AnatomyType, callback);
         return this;
     }
 
-    public build(): ViewTemplate<ExtractComponentType<InstanceType<TAnatomyType>>> {
+    public build(): ViewTemplate<ExtractComponentType<TAnatomy>> {
         if (this._anatomy === null) {
             throw new Error("No anatomy defined.");
         }
@@ -107,8 +110,6 @@ export class TemplateBuilder<TAnatomyType extends Constructable<Anatomy>> {
     }
 }
 
-export function build<T extends Constructable<Anatomy>>(
-    AnatomyType: T
-): TemplateBuilder<T> {
+export function build<T extends Anatomy>(AnatomyType: AnatomyConstructor<T>) {
     return new TemplateBuilder<T>(AnatomyType);
 }
