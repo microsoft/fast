@@ -20,16 +20,17 @@ export class AccordionAnatomy extends Anatomy<Accordion> {
     }
 }
 
+// default
 export function foundationAccordionTemplate(): ViewTemplate<Accordion> {
     return build(AccordionAnatomy)
         .anatomy(x => x.defaultSlot())
         .build();
 }
 
-// example
+// custom
 const customTemplate = build(AccordionAnatomy)
-    .anatomy(x => {
-        x.html`before default slot ${x => x.accordionItems}`.defaultSlot()
+    .anatomy(accordion => {
+        accordion.html`before default slot ${x => x.accordionItems}`.defaultSlot()
             .html`after default slot`;
     })
     .build();

@@ -1,5 +1,4 @@
 import {
-    Constructable,
     FASTElement,
     htmlDirective,
     HTMLDirective,
@@ -18,20 +17,20 @@ export interface AnatomyContext<
 > {
     html(strings: TemplateStringsArray, ...values: TemplateValue<TComponent>[]): void;
     addContributor(contributor: AnatomyContributor<TComponent>): void;
-    evaluatePartName(name: TPartNames): string | null;
-    evaluateAnatomy<K extends Constructable<Anatomy>>(
-        AnatomyType: K,
-        callback: (a: InstanceType<K>) => void
-    ): InstanceType<K>;
+    evaluatePart(name: TPartNames): string | null;
+    evaluateAnatomy<T extends Anatomy>(
+        AnatomyType: AnatomyConstructor<T>,
+        callback: (a: T) => void
+    ): T;
 }
 
 export interface AnatomyInternals<TPartNames extends string = string> {
     part(name: TPartNames): HTMLDirective;
     slot(options: Partial<SlotOptions>, ...slotBehaviors: TemplateValue<any>[]): void;
-    evaluateAnatomy<K extends Constructable<Anatomy>>(
-        AnatomyType: K,
-        callback: (a: InstanceType<K>) => void
-    ): InstanceType<K>;
+    evaluateAnatomy<T extends Anatomy>(
+        AnatomyType: AnatomyConstructor<T>,
+        callback: (a: T) => void
+    ): T;
 }
 
 export interface AnatomyValidator {
@@ -48,7 +47,7 @@ class PartNameDirective implements HTMLDirective {
     constructor(private context: AnatomyContext, private originalName: string) {}
 
     createHTML(): string {
-        const result = this.context.evaluatePartName(this.originalName);
+        const result = this.context.evaluatePart(this.originalName);
 
         return result ? ` name="${result}" ` : "";
     }
@@ -70,10 +69,10 @@ export class Anatomy<TComponent = FASTElement, TPartNames extends string = strin
             part(name: TPartNames): HTMLDirective {
                 return new PartNameDirective(context, name);
             },
-            evaluateAnatomy<K extends Constructable<Anatomy>>(
-                AnatomyType: K,
-                callback: (a: InstanceType<K>) => void
-            ): InstanceType<K> {
+            evaluateAnatomy<T extends Anatomy>(
+                AnatomyType: AnatomyConstructor<T>,
+                callback: (a: T) => void
+            ): T {
                 return context.evaluateAnatomy(AnatomyType, callback);
             },
             slot(options: Partial<SlotOptions>, ...slotBehaviors: TemplateValue<any>[]) {

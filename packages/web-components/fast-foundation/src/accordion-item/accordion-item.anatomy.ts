@@ -46,8 +46,6 @@ export class AccordionItemAnatomy extends Anatomy<AccordionItem, AccordionItemPa
 }
 
 class AccordionItemHeadingAnatomy extends Anatomy<AccordionItem, AccordionItemParts> {
-    private hasIconSection = false;
-
     protected openCallback(): void {
         const { part } = this.internals;
 
@@ -83,55 +81,48 @@ class AccordionItemHeadingAnatomy extends Anatomy<AccordionItem, AccordionItemPa
 
     startSlot(options?: Partial<SlotOptions>) {
         this.internals.slot(Object.assign({ name: "start" }, options), ref("start"));
-
         return this;
     }
 
     endSlot(options?: Partial<SlotOptions>) {
         this.internals.slot(Object.assign({ name: "end" }, options), ref("end"));
-
         return this;
     }
 
-    expandedIcon(options?: Partial<SlotOptions>) {
-        const { part, slot } = this.internals;
-
-        this.ensureIconSection();
-
-        slot(Object.assign({ name: "expanded-icon" }, options), part("expanded-icon"));
-
-        return this;
-    }
-
-    collapsedIcon(options?: Partial<SlotOptions>) {
-        const { part, slot } = this.internals;
-
-        this.ensureIconSection();
-
-        slot(Object.assign({ name: "collapsed-icon" }, options), part("collapsed-icon"));
-
+    icons(callback: (a: AccordionIconAnatomy) => void) {
+        this.internals.evaluateAnatomy(AccordionIconAnatomy, callback);
         return this;
     }
 
     protected closeCallback(): void {
-        if (this.hasIconSection) {
-            this.html`</span>`;
-        }
-
         this.html`</div>`;
-    }
-
-    private ensureIconSection() {
-        const { part } = this.internals;
-
-        if (!this.hasIconSection) {
-            this.hasIconSection = true;
-            this.html`<span class="icon" ${part("icon")} aria-hidden="true">`;
-        }
     }
 }
 
-// default template
+class AccordionIconAnatomy extends Anatomy<AccordionItem, AccordionItemParts> {
+    protected openCallback(): void {
+        const { part } = this.internals;
+        this.html`<span class="icon" ${part("icon")} aria-hidden="true">`;
+    }
+
+    expanded(options?: Partial<SlotOptions>) {
+        const { part, slot } = this.internals;
+        slot(Object.assign({ name: "expanded-icon" }, options), part("expanded-icon"));
+        return this;
+    }
+
+    collapsed(options?: Partial<SlotOptions>) {
+        const { part, slot } = this.internals;
+        slot(Object.assign({ name: "collapsed-icon" }, options), part("collapsed-icon"));
+        return this;
+    }
+
+    protected closeCallback(): void {
+        this.html`</span>`;
+    }
+}
+
+// default
 export function foundationAccordionItemTemplate() {
     return build(AccordionItemAnatomy)
         .anatomy(item =>
@@ -141,15 +132,18 @@ export function foundationAccordionItemTemplate() {
                         .button()
                         .startSlot()
                         .endSlot()
-                        .expandedIcon({ fallback: "icon here" })
-                        .collapsedIcon({ fallback: "icon here" })
+                        .icons(icons =>
+                            icons
+                                .expanded({ fallback: "icon..." })
+                                .collapsed({ fallback: "icon..." })
+                        )
                 )
                 .defaultSlot()
         )
         .build();
 }
 
-// custom adjustment
+// custom
 const customTemplate = build(AccordionItemAnatomy)
     .parts({
         button: "control",

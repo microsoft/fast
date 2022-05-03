@@ -1,10 +1,4 @@
-import {
-    Constructable,
-    FASTElement,
-    html,
-    TemplateValue,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import { FASTElement, html, TemplateValue, ViewTemplate } from "@microsoft/fast-element";
 import type {
     Anatomy,
     AnatomyConstructor,
@@ -40,11 +34,11 @@ export class TemplateBuilder<TAnatomy extends Anatomy> {
     ) => string | null = name => name;
     private _context: InternalAnatomyContext = {
         contributors: [],
-        evaluateAnatomy<K extends Constructable<Anatomy>>(
-            AnatomyType: K,
-            callback: (a: InstanceType<K>) => void
-        ): InstanceType<K> {
-            const anatomy = new AnatomyType(this) as InstanceType<K>;
+        evaluateAnatomy<T extends Anatomy>(
+            AnatomyType: AnatomyConstructor<T>,
+            callback: (a: T) => void
+        ): T {
+            const anatomy = new AnatomyType(this);
 
             anatomy["openCallback"]();
             callback(anatomy);
@@ -63,7 +57,7 @@ export class TemplateBuilder<TAnatomy extends Anatomy> {
         addContributor(contributor) {
             this.contributors.push(contributor);
         },
-        evaluatePartName: name => this._evaluatePartName(name as any),
+        evaluatePart: name => this._evaluatePartName(name as any),
         html(strings: TemplateStringsArray, ...values: TemplateValue<any>[]): void {
             this.addContributor({ strings, values });
             return this;
