@@ -84,8 +84,7 @@ export class TextField extends FormAssociatedTextField {
      * HTML Attribute: type
      */
     @attr
-    public type: TextFieldType | "email" | "password" | "tel" | "text" | "url" =
-        TextFieldType.text;
+    public type: TextFieldType = TextFieldType.text;
     private typeChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.type = this.type;

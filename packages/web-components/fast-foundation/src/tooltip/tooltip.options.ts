@@ -74,3 +74,10 @@ export const TooltipPosition = {
      */
     bottomEnd: "bottom-end",
 } as const;
+
+/**
+ * The possible tooltip positions
+ *
+ * @public
+ */
+export type TooltipPosition = typeof TooltipPosition[keyof typeof TooltipPosition];

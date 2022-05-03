@@ -32,6 +32,12 @@ export const TabsOrientation = {
 } as const;
 
 /**
+ * The types for the Tabs component
+ * @public
+ */
+export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientation];
+
+/**
  * A Tabs Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#tablist | ARIA tablist }.
  *
