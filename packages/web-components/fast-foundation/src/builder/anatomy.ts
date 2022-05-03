@@ -17,17 +17,20 @@ export interface AnatomyContext<
 > {
     html(strings: TemplateStringsArray, ...values: TemplateValue<TComponent>[]): void;
     addContributor(contributor: AnatomyContributor<TComponent>): void;
-    evaluatePart(name: TPartNames): string | null;
-    evaluateAnatomy<T extends Anatomy>(
+    evaluatePartName(name: TPartNames): string | null;
+    anatomy<T extends Anatomy>(
         AnatomyType: AnatomyConstructor<T>,
         callback: (a: T) => void
     ): T;
 }
 
-export interface AnatomyInternals<TPartNames extends string = string> {
+export interface AnatomyInternals<
+    TComponent = FASTElement,
+    TPartNames extends string = string
+> {
     part(name: TPartNames): HTMLDirective;
     slot(options: Partial<SlotOptions>, ...slotBehaviors: TemplateValue<any>[]): void;
-    evaluateAnatomy<T extends Anatomy>(
+    anatomy<T extends Anatomy>(
         AnatomyType: AnatomyConstructor<T>,
         callback: (a: T) => void
     ): T;
@@ -47,7 +50,7 @@ class PartNameDirective implements HTMLDirective {
     constructor(private context: AnatomyContext, private originalName: string) {}
 
     createHTML(): string {
-        const result = this.context.evaluatePart(this.originalName);
+        const result = this.context.evaluatePartName(this.originalName);
 
         return result ? ` name="${result}" ` : "";
     }
@@ -58,22 +61,22 @@ export interface AnatomyConstructor<T extends Anatomy> {
 }
 
 export class Anatomy<TComponent = FASTElement, TPartNames extends string = string> {
-    private _internals: AnatomyInternals;
+    private _internals: AnatomyInternals<TComponent, TPartNames>;
 
-    protected get internals(): AnatomyInternals<TPartNames> {
+    protected get internals(): AnatomyInternals<TComponent, TPartNames> {
         return this._internals;
     }
 
-    constructor(private readonly context: AnatomyContext) {
+    constructor(private readonly context: AnatomyContext<TComponent, TPartNames>) {
         this._internals = {
             part(name: TPartNames): HTMLDirective {
                 return new PartNameDirective(context, name);
             },
-            evaluateAnatomy<T extends Anatomy>(
+            anatomy<T extends Anatomy>(
                 AnatomyType: AnatomyConstructor<T>,
                 callback: (a: T) => void
             ): T {
-                return context.evaluateAnatomy(AnatomyType, callback);
+                return context.anatomy(AnatomyType, callback);
             },
             slot(options: Partial<SlotOptions>, ...slotBehaviors: TemplateValue<any>[]) {
                 const firstArgIsBehavior = !!HTMLDirective.getForInstance(options);
@@ -110,7 +113,6 @@ export class Anatomy<TComponent = FASTElement, TPartNames extends string = strin
         return this;
     }
 
-    protected openCallback() {}
-    protected closeCallback() {}
-    protected validateCallback(validator: AnatomyValidator) {}
+    protected begin() {}
+    protected end(validator: AnatomyValidator) {}
 }

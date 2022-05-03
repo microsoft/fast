@@ -15,12 +15,12 @@ type AccordionItemParts =
     | "collapsed-icon";
 
 export class AccordionItemAnatomy extends Anatomy<AccordionItem, AccordionItemParts> {
-    protected openCallback() {
+    protected begin() {
         this.html`<template class="${x => (x.expanded ? "expanded" : "")}">`;
     }
 
     heading(callback: (a: AccordionItemHeadingAnatomy) => void) {
-        this.internals.evaluateAnatomy(AccordionItemHeadingAnatomy, callback);
+        this.internals.anatomy(AccordionItemHeadingAnatomy, callback);
         return this;
     }
 
@@ -40,13 +40,13 @@ export class AccordionItemAnatomy extends Anatomy<AccordionItem, AccordionItemPa
         `;
     }
 
-    protected closeCallback(): void {
+    protected end(): void {
         this.html`</template>`;
     }
 }
 
 class AccordionItemHeadingAnatomy extends Anatomy<AccordionItem, AccordionItemParts> {
-    protected openCallback(): void {
+    protected begin(): void {
         const { part } = this.internals;
 
         this.html`
@@ -90,17 +90,17 @@ class AccordionItemHeadingAnatomy extends Anatomy<AccordionItem, AccordionItemPa
     }
 
     icons(callback: (a: AccordionIconAnatomy) => void) {
-        this.internals.evaluateAnatomy(AccordionIconAnatomy, callback);
+        this.internals.anatomy(AccordionIconAnatomy, callback);
         return this;
     }
 
-    protected closeCallback(): void {
+    protected end(): void {
         this.html`</div>`;
     }
 }
 
 class AccordionIconAnatomy extends Anatomy<AccordionItem, AccordionItemParts> {
-    protected openCallback(): void {
+    protected begin(): void {
         const { part } = this.internals;
         this.html`<span class="icon" ${part("icon")} aria-hidden="true">`;
     }
@@ -117,7 +117,7 @@ class AccordionIconAnatomy extends Anatomy<AccordionItem, AccordionItemParts> {
         return this;
     }
 
-    protected closeCallback(): void {
+    protected end(): void {
         this.html`</span>`;
     }
 }

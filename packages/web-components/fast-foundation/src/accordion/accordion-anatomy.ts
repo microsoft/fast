@@ -12,7 +12,7 @@ export class AccordionAnatomy extends Anatomy<Accordion> {
         return this;
     }
 
-    protected validateCallback(validator: AnatomyValidator): void {
+    protected end(validator: AnatomyValidator): void {
         validator.assert(
             this.hasDefaultSlot,
             "A default slot is required in order to place items inside of an accordion."

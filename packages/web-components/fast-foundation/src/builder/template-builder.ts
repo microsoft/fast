@@ -34,17 +34,15 @@ export class TemplateBuilder<TAnatomy extends Anatomy> {
     ) => string | null = name => name;
     private _context: InternalAnatomyContext = {
         contributors: [],
-        evaluateAnatomy<T extends Anatomy>(
+        anatomy<T extends Anatomy>(
             AnatomyType: AnatomyConstructor<T>,
             callback: (a: T) => void
         ): T {
             const anatomy = new AnatomyType(this);
 
-            anatomy["openCallback"]();
+            anatomy["begin"]();
             callback(anatomy);
-            anatomy["closeCallback"]();
-
-            anatomy["validateCallback"]({
+            anatomy["end"]({
                 assert(condition: boolean, message: string) {
                     if (!condition) {
                         throw new Error(message);
@@ -57,7 +55,7 @@ export class TemplateBuilder<TAnatomy extends Anatomy> {
         addContributor(contributor) {
             this.contributors.push(contributor);
         },
-        evaluatePart: name => this._evaluatePartName(name as any),
+        evaluatePartName: name => this._evaluatePartName(name as any),
         html(strings: TemplateStringsArray, ...values: TemplateValue<any>[]): void {
             this.addContributor({ strings, values });
             return this;
@@ -86,7 +84,7 @@ export class TemplateBuilder<TAnatomy extends Anatomy> {
     }
 
     public anatomy(callback: (a: TAnatomy) => void): this {
-        this._anatomy = this._context.evaluateAnatomy(this.AnatomyType, callback);
+        this._anatomy = this._context.anatomy(this.AnatomyType, callback);
         return this;
     }
 
