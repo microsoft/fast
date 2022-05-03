@@ -18,6 +18,8 @@ import { FASTElementDefinition } from '@microsoft/fast-element';
 import { HostBehavior } from '@microsoft/fast-element';
 import { HostController } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
+import type { PartialFASTElementDefinition } from '@microsoft/fast-element';
+import { Splice } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
@@ -2914,7 +2916,7 @@ export class VirtualListItem extends FoundationElement {
     // (undocumented)
     loadMode: VirtualListItemLoadMode;
     sizeMap: SizeMap[];
-    }
+}
 
 // @public
 export type VirtualListItemLoadMode = "immediate" | "manual" | "idle";
