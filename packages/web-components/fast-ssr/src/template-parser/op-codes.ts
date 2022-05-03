@@ -83,7 +83,7 @@ export type TemplateElementOpenOp = {
     staticAttributes: Map<string, string>;
     // We need dynamic attributes here so we can emit the `<template`, all attributes, and then `>`
     // from one operation
-    dynamicAttributes: Pick<AttributeBindingOp, "binding" | "target" | "aspect">[];
+    dynamicAttributes: AttributeBindingOp[];
 };
 
 /**
