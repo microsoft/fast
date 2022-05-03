@@ -28,3 +28,9 @@ export const TextFieldType = {
      */
     url: "url",
 } as const;
+
+/**
+ * Types for the text field sub-types
+ * @public
+ */
+export type TextFieldType = typeof TextFieldType[keyof typeof TextFieldType];

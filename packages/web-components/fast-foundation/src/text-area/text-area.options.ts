@@ -23,3 +23,9 @@ export const TextAreaResize = {
      */
     vertical: "vertical",
 } as const;
+
+/**
+ * Types for the Text Area resize mode
+ * @public
+ */
+export type TextAreaResize = typeof TextAreaResize[keyof typeof TextAreaResize];

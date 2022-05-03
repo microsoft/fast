@@ -107,8 +107,7 @@ export class MenuItem extends FoundationElement {
      * HTML Attribute: role
      */
     @attr
-    public role: MenuItemRole | "menuitem" | "menuitemcheckbox" | "menuitemradio" =
-        MenuItemRole.menuitem;
+    public role: MenuItemRole = MenuItemRole.menuitem;
 
     /**
      * The checked value of the element.

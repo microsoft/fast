@@ -21,7 +21,7 @@ export class Divider extends FoundationElement {
      * HTML Attribute: role
      */
     @attr
-    public role: DividerRole | "separator" | "presentation" = DividerRole.separator;
+    public role: DividerRole = DividerRole.separator;
 
     /**
      * The orientation of the divider.

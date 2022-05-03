@@ -26,6 +26,12 @@ export const AccordionExpandMode = {
 } as const;
 
 /**
+ * Type for the {@link Accordion} Expand Mode
+ * @public
+ */
+export type AccordionExpandMode = typeof AccordionExpandMode[keyof typeof AccordionExpandMode];
+
+/**
  * An Accordion Custom HTML Element
  * Implements {@link https://www.w3.org/TR/wai-aria-practices-1.1/#accordion | ARIA Accordion}.
  *
@@ -46,7 +52,7 @@ export class Accordion extends FoundationElement {
      * HTML attribute: expand-mode
      */
     @attr({ attribute: "expand-mode" })
-    public expandmode: keyof typeof AccordionExpandMode = AccordionExpandMode.multi;
+    public expandmode: AccordionExpandMode = AccordionExpandMode.multi;
 
     /**
      * @internal

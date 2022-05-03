@@ -1756,12 +1756,13 @@ export const sliderLabelStyles: FoundationElementTemplate<ElementStyles>;
 export const sliderStyles: FoundationElementTemplate<ElementStyles, SliderOptions>;
 
 // @public
-export enum StandardLuminance {
-    // (undocumented)
-    DarkMode = 0.23,
-    // (undocumented)
-    LightMode = 1
-}
+export const StandardLuminance: {
+    readonly LightMode: 1;
+    readonly DarkMode: 0.23;
+};
+
+// @public
+export type StandardLuminance = typeof StandardLuminance[keyof typeof StandardLuminance];
 
 // @public (undocumented)
 export const strokeWidth: CSSDesignToken<number>;

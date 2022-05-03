@@ -13,3 +13,9 @@ export const DividerRole = {
      */
     presentation: "presentation",
 } as const;
+
+/**
+ * The types for Divider roles
+ * @public
+ */
+export type DividerRole = typeof DividerRole[keyof typeof DividerRole];

@@ -20,9 +20,17 @@ export const MenuItemRole = {
 } as const;
 
 /**
+ * The types for menu item roles
+ * @public
+ */
+export type MenuItemRole = typeof MenuItemRole[keyof typeof MenuItemRole];
+
+/**
  * @internal
  */
-export const roleForMenuItem: typeof MenuItemRole = {
+export const roleForMenuItem: {
+    [value in keyof typeof MenuItemRole]: typeof MenuItemRole[value];
+} = {
     [MenuItemRole.menuitem]: "menuitem",
     [MenuItemRole.menuitemcheckbox]: "menuitemcheckbox",
     [MenuItemRole.menuitemradio]: "menuitemradio",

@@ -51,8 +51,7 @@ export class DataGridCell extends FoundationElement {
      * HTML Attribute: cell-type
      */
     @attr({ attribute: "cell-type" })
-    public cellType: DataGridCellTypes | "default" | "columnheader" | "rowheader" =
-        DataGridCellTypes.default;
+    public cellType: DataGridCellTypes = DataGridCellTypes.default;
     private cellTypeChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateCellView();
