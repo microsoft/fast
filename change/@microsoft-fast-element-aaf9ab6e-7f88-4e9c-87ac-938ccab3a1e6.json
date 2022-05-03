@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Upgraded api-extractor",
-  "packageName": "@microsoft/fast-element",
-  "email": "44823142+williamw2@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

@@ -2,6 +2,67 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 03 May 2022 07:15:44 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.0",
+      "version": "2.46.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "add initial jsdocs for foundation elements",
+            "author": "chhol@microsoft.com",
+            "commit": "8327524eaf8175c89c435275974243ab09f3afed",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Update to resolve console warnings during doc build-out",
+            "author": "16669785+awentzel@users.noreply.github.com",
+            "commit": "069cd9621f3125c724ccbcd5b87294ff54739861",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "reflect option value changes in select",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "472d0b6cf9dcc6662e8d69c16689c073d34b9ca4",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix: selectedIndex property ignores disabled options in listbox and select",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "9c36455b834421930e930ca24da9bd3c066cb7b8",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "viewport lock + fill behavior",
+            "author": "scomea@microsoft.com",
+            "commit": "2a5734222653656a7a5050be6f086add956d6376",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Upgraded api-extractor",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "2341496a6fafe3051dc50333c21ca652026f725b",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.1",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "2341496a6fafe3051dc50333c21ca652026f725b",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "add slots and events documentation",
+            "author": "scomea@microsoft.com",
+            "commit": "bd6e458d5bbca8838ae4e555e2b32f28d1b310c4",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 01 May 2022 07:12:05 GMT",
       "tag": "@microsoft/fast-foundation_v2.45.0",
       "version": "2.45.0",

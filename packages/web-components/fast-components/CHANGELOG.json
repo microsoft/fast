@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Tue, 03 May 2022 07:15:44 GMT",
+      "tag": "@microsoft/fast-components_v2.30.3",
+      "version": "2.30.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "viewport lock + fill behavior",
+            "author": "scomea@microsoft.com",
+            "commit": "2a5734222653656a7a5050be6f086add956d6376",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Upgraded api-extractor",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "2341496a6fafe3051dc50333c21ca652026f725b",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "add initial jsdocs for fast-components",
+            "author": "chhol@microsoft.com",
+            "commit": "8327524eaf8175c89c435275974243ab09f3afed",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Update to resolve console warnings during doc build-out",
+            "author": "16669785+awentzel@users.noreply.github.com",
+            "commit": "069cd9621f3125c724ccbcd5b87294ff54739861",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 01 May 2022 07:12:05 GMT",
       "tag": "@microsoft/fast-components_v2.30.2",
       "version": "2.30.2",

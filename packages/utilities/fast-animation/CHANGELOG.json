@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-animation",
   "entries": [
     {
+      "date": "Tue, 03 May 2022 07:15:44 GMT",
+      "tag": "@microsoft/fast-animation_v4.2.1",
+      "version": "4.2.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Upgraded api-extractor",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "2341496a6fafe3051dc50333c21ca652026f725b",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 27 Apr 2022 07:21:09 GMT",
       "tag": "@microsoft/fast-animation_v4.2.0",
       "version": "4.2.0",

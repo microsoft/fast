@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "viewport lock + fill behavior",
-  "packageName": "@microsoft/fast-components",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}

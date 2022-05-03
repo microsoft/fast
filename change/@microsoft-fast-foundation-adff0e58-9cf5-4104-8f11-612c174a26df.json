@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: selectedIndex property ignores disabled options in listbox and select",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}

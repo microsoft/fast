@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 01 May 2022 07:12:05 GMT and should not be manually modified.
+This log was last generated on Tue, 03 May 2022 07:15:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.0
+
+Tue, 03 May 2022 07:15:44 GMT
+
+### Minor changes
+
+- add slots and events documentation (scomea@microsoft.com)
+
+### Patches
+
+- reflect option value changes in select (john.kreitlow@microsoft.com)
+- fix: selectedIndex property ignores disabled options in listbox and select (john.kreitlow@microsoft.com)
+- viewport lock + fill behavior (scomea@microsoft.com)
+- Upgraded api-extractor (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.10.1 (44823142+williamw2@users.noreply.github.com)
 
 ## 2.45.0
 

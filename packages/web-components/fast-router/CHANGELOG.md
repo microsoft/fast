@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Wed, 27 Apr 2022 07:21:09 GMT and should not be manually modified.
+This log was last generated on Tue, 03 May 2022 07:15:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.1
+
+Tue, 03 May 2022 07:15:44 GMT
+
+### Patches
+
+- Upgraded api-extractor (44823142+williamw2@users.noreply.github.com)
 
 ## 0.4.0
 

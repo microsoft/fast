@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "add initial jsdocs for foundation elements",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "none"
-}
