@@ -23,9 +23,9 @@ import { FormAssociatedSlider } from "./slider.form-associated.js";
  * The selection modes of a {@link @microsoft/fast-foundation#(Slider:class)}.
  * @public
  */
-export enum SliderMode {
-    singleValue = "single-value",
-}
+export const SliderMode = {
+    singleValue: "single-value",
+} as const;
 
 /**
  * The configuration structure of {@link @microsoft/fast-foundation#(Slider:class)}.

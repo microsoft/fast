@@ -2,24 +2,24 @@
  * Resize mode for a TextArea
  * @public
  */
-export enum TextAreaResize {
+export const TextAreaResize = {
     /**
      * No resize.
      */
-    none = "none",
+    none: "none",
 
     /**
      * Resize vertically and horizontally.
      */
-    both = "both",
+    both: "both",
 
     /**
      * Resize horizontally.
      */
-    horizontal = "horizontal",
+    horizontal: "horizontal",
 
     /**
      * Resize vertically.
      */
-    vertical = "vertical",
-}
+    vertical: "vertical",
+} as const;

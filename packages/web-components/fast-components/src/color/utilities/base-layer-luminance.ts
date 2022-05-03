@@ -9,7 +9,7 @@ export function baseLayerLuminanceSwatch(luminance: number) {
  *
  * @public
  */
-export enum StandardLuminance {
-    LightMode = 1,
-    DarkMode = 0.23,
-}
+export const StandardLuminance = {
+    LightMode: 1,
+    DarkMode: 0.23,
+} as const;
