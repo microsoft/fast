@@ -154,7 +154,13 @@ async function getLocalGitBranchName() {
  * Generates the benchmarks array expected by the tachometer config file.
  * @returns {{operationName: ConfigFile["benchmarks"]}, {}} returns benchmarkHash, where operation name is key and benchmarks array is value
  */
-
+const FAST_FOUNDATION = "fast-foundation";
+const libraryDependencies = {
+    FAST_FOUNDATION: {
+        "@microsoft/fast-element": "1.9.0",
+        "@microsoft/fast-web-utilities": "5.2.0",
+    },
+};
 async function generateBenchmarks(
     { library, benchmark, versions },
     operationProps,
@@ -193,6 +199,7 @@ async function generateBenchmarks(
                 measurement,
             };
             const dep = `@microsoft/${library}`;
+
             if (isBranch) {
                 const ref = isLocalBranch ? localProps.branchName : MASTER;
                 bench.packageVersions = {
@@ -217,7 +224,15 @@ async function generateBenchmarks(
                 };
             }
 
-            //adjust some settings to also report memory benchmark results
+            // add fast-foundation manually, need to find a way to extract and add dynamically
+            if (library === FAST_FOUNDATION) {
+                bench.packageVersions.dependencies = {
+                    ...bench.packageVersions.dependencies,
+                    ...libraryDependencies.FAST_FOUNDATION,
+                };
+            }
+
+            //adjust some settings to separately report memory benchmark results
             const memoryBench = JSON.parse(JSON.stringify(bench));
             const memoryMeasurement = [
                 {
@@ -262,13 +277,11 @@ async function generateConfig(fileName, benchmarksHash) {
             timeout: 0,
         };
 
-        // TODO: add name here
         const pathsPromises = [];
         for (const benchmark in benchmarksHash) {
             const config = {
                 $schema: TACH_SCHEMA,
                 ...defaultBenchOptions,
-                // name: `${benchmark}-${operation}`,
                 benchmarks: benchmarksHash[benchmark],
             };
 
