@@ -2,29 +2,29 @@
  * Text field sub-types
  * @public
  */
-export enum TextFieldType {
+export const TextFieldType = {
     /**
      * An email TextField
      */
-    email = "email",
+    email: "email",
 
     /**
      * A password TextField
      */
-    password = "password",
+    password: "password",
 
     /**
      * A telephone TextField
      */
-    tel = "tel",
+    tel: "tel",
 
     /**
      * A text TextField
      */
-    text = "text",
+    text: "text",
 
     /**
      * A URL TextField
      */
-    url = "url",
-}
+    url: "url",
+} as const;

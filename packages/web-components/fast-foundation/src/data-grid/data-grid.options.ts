@@ -4,30 +4,30 @@
  *
  * @public
  */
-export enum GenerateHeaderOptions {
-    none = "none",
-    default = "default",
-    sticky = "sticky",
-}
+export const GenerateHeaderOptions = {
+    none: "none",
+    default: "default",
+    sticky: "sticky",
+} as const;
 
 /**
  * Enumerates possible cell types.
  *
  * @public
  */
-export enum DataGridCellTypes {
-    default = "default",
-    columnHeader = "columnheader",
-    rowHeader = "rowheader",
-}
+export const DataGridCellTypes = {
+    default: "default",
+    columnHeader: "columnheader",
+    rowHeader: "rowheader",
+} as const;
 
 /**
  * Enumerates possible row types
  *
  * @public
  */
-export enum DataGridRowTypes {
-    default = "default",
-    header = "header",
-    stickyHeader = "sticky-header",
-}
+export const DataGridRowTypes = {
+    default: "default",
+    header: "header",
+    stickyHeader: "sticky-header",
+} as const;
