@@ -2,6 +2,8 @@ import { mkdir, writeFile } from "fs/promises";
 import { readdir, readFileSync } from "fs";
 import { exec } from "child_process";
 import { basename, dirname, extname, join, resolve } from "path";
+import chalk from "chalk";
+const errMessage = chalk.hex("#ffb638");
 
 /**
  * Creates a dist folder to hold the generated config file.
@@ -82,7 +84,7 @@ async function generateHtmlTemplates(
             const operationProps = { names: [], htmlPaths: [] };
 
             // handle if specific operations are passed in
-            if (operations.length > 0) {
+            if (operations?.length > 0) {
                 const fileNames = files.map(f => getTestName(f));
                 const match = operations.some(f => fileNames.includes(f));
                 if (!match) {
@@ -122,9 +124,8 @@ async function generateHtmlTemplates(
             resolve(operationProps);
         });
     }).catch(error => {
-        console.log("error", error);
         if (error) {
-            throw new Error(error);
+            console.log(errMessage(error));
         } else {
             return error;
         }
@@ -153,7 +154,21 @@ async function getLocalGitBranchName() {
  * Generates the benchmarks array expected by the tachometer config file.
  * @returns {{operationName: ConfigFile["benchmarks"]}, {}} returns benchmarkHash, where operation name is key and benchmarks array is value
  */
-
+const FAST_ELEMENT = "fast-element";
+const FAST_FOUNDATION = "fast-foundation";
+const FAST_COMPONENTS = "fast-components";
+const libraryDependencies = {
+    [FAST_FOUNDATION]: {
+        "@microsoft/fast-element": "1.9.0",
+        "@microsoft/fast-web-utilities": "5.2.0",
+    },
+    [FAST_COMPONENTS]: {
+        "@microsoft/fast-colors": "5.2.0",
+        "@microsoft/fast-element": "1.9.0",
+        "@microsoft/fast-foundation": "2.41.1",
+        "@microsoft/fast-web-utilities": "5.2.0",
+    },
+};
 async function generateBenchmarks(
     { library, benchmark, versions },
     operationProps,
@@ -164,17 +179,12 @@ async function generateBenchmarks(
         /** @type {ConfigFile["benchmarks"]} */
 
         const benchmarks = [];
+        const memoryBenchmarks = [];
         const browser = {
             name: "chrome",
             headless: true,
-            addArguments: ["--js-flags=--expose-gc", "--enable-precise-memory-info"],
         };
         const measurement = [
-            {
-                name: "usedJSHeapSize",
-                mode: "expression",
-                expression: "window.usedJSHeapSize",
-            },
             {
                 mode: "performance",
                 entryName: operation,
@@ -189,14 +199,15 @@ async function generateBenchmarks(
                     ? localProps.operationProps.htmlPaths[idx]
                     : operationProps.htmlPaths[idx];
 
-            // TODO: the name can be extracted out from benchmark array and added to the tacho config prop
+            const name = `${benchmark}-${operation}`;
             const bench = {
                 url,
                 browser,
-                name: `${benchmark}-${operation}`,
+                name,
                 measurement,
             };
             const dep = `@microsoft/${library}`;
+
             if (isBranch) {
                 const ref = isLocalBranch ? localProps.branchName : MASTER;
                 bench.packageVersions = {
@@ -220,8 +231,36 @@ async function generateBenchmarks(
                     dependencies: { [dep]: version },
                 };
             }
+
+            // add fast-foundation manually, need to find a way to extract and add dynamically
+            if (library !== FAST_ELEMENT) {
+                bench.packageVersions.dependencies = {
+                    ...bench.packageVersions.dependencies,
+                    ...libraryDependencies[library],
+                };
+            }
+
+            //adjust some settings to separately report memory benchmark results
+            const memoryBench = JSON.parse(JSON.stringify(bench));
+            const memoryMeasurement = [
+                {
+                    name: "usedJSHeapSize",
+                    mode: "expression",
+                    expression: "window.usedJSHeapSize",
+                },
+            ];
+            memoryBench.name = `${name}-memory`;
+            memoryBench.measurement = memoryMeasurement;
+            memoryBench.browser.addArguments = [
+                "--js-flags=--expose-gc",
+                "--enable-precise-memory-info",
+            ];
+            memoryBenchmarks.push(memoryBench);
+
             benchmarks.push(bench);
         });
+
+        tachoData[`${operation}-memory`] = memoryBenchmarks;
         tachoData[operation] = benchmarks;
     });
 
@@ -246,13 +285,11 @@ async function generateConfig(fileName, benchmarksHash) {
             timeout: 0,
         };
 
-        // TODO: add name here
         const pathsPromises = [];
         for (const benchmark in benchmarksHash) {
             const config = {
                 $schema: TACH_SCHEMA,
                 ...defaultBenchOptions,
-                // name: `${benchmark}-${operation}`,
                 benchmarks: benchmarksHash[benchmark],
             };
 
@@ -268,7 +305,7 @@ async function generateConfig(fileName, benchmarksHash) {
         /** @type {ConfigFile[]} promises resolves to array of config file paths*/
         return await Promise.all(pathsPromises);
     } catch (error) {
-        console.log("error", error);
+        console.log(errMessage(error));
     }
 }
 
@@ -312,6 +349,6 @@ export async function generateTemplates(options) {
             tachoConfigPaths,
         };
     } catch (error) {
-        console.error(error);
+        console.log(errMessage(error));
     }
 }
