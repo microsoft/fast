@@ -61,6 +61,7 @@ export const myOption = ListboxOption.compose({
 | Name                | Privacy   | Type                                  | Default                                                                                                                                                 | Description                                                                                                                                                                          | Inherited From    |
 | ------------------- | --------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `checked`           | public    | `boolean or undefined`                |                                                                                                                                                         | The checked state is used when the parent listbox is in multiple selection mode. To avoid accessibility conflicts, the checked state should not be present in single selection mode. |                   |
+| `content`           | public    | `Node[]`                              |                                                                                                                                                         | The default slotted content.                                                                                                                                                         |                   |
 | `defaultSelected`   | public    | `boolean`                             | `false`                                                                                                                                                 | The defaultSelected state of the option.                                                                                                                                             |                   |
 | `disabled`          | public    | `boolean`                             |                                                                                                                                                         | The disabled state of the option.                                                                                                                                                    |                   |
 | `selectedAttribute` | public    | `boolean`                             |                                                                                                                                                         | The selected attribute value. This sets the initial selected value.                                                                                                                  |                   |
@@ -96,6 +97,20 @@ export const myOption = ListboxOption.compose({
 |            | disabled          |                |
 | `selected` | selectedAttribute |                |
 | `value`    | initialValue      |                |
+
+#### CSS Parts
+
+| Name      | Description                      |
+| --------- | -------------------------------- |
+| `content` | Wraps the listbox option content |
+
+#### Slots
+
+| Name    | Description                                                     |
+| ------- | --------------------------------------------------------------- |
+| `start` | Content which can be provided before the listbox option content |
+| `end`   | Content which can be provided after the listbox option content  |
+|         | The default slot for listbox option content                     |
 
 <hr/>
 

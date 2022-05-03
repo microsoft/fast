@@ -2,6 +2,66 @@
   "name": "@microsoft/fast-component-explorer",
   "entries": [
     {
+      "date": "Tue, 03 May 2022 07:15:44 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "2341496a6fafe3051dc50333c21ca652026f725b",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 01 May 2022 07:12:05 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "chhol@microsoft.com",
+            "commit": "46f935158aca1a4b28c0d9b4e74c083b31a40fdb",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 28 Apr 2022 07:12:47 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "26474a333da31741df31e5acd86139ba0e9244ad",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 27 Apr 2022 07:21:09 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 24 Apr 2022 07:13:26 GMT",
       "tag": "@microsoft/fast-component-explorer_v0.17.2",
       "version": "0.17.2",

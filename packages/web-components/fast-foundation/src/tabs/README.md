@@ -134,6 +134,12 @@ export const myTabs = Tabs.compose({
 | `templateChanged` | protected |                                |                      | `void` | FoundationElement |
 | `stylesChanged`   | protected |                                |                      | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                                                       | Inherited From |
+| -------- | ---- | --------------------------------------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when a tab is clicked or during keyboard navigation |                |
+
 #### Attributes
 
 | Name          | Field           | Inherited From |
@@ -141,6 +147,24 @@ export const myTabs = Tabs.compose({
 | `orientation` | orientation     |                |
 | `activeid`    | activeid        |                |
 |               | activeindicator |                |
+
+#### CSS Parts
+
+| Name              | Description                       |
+| ----------------- | --------------------------------- |
+| `tablist`         | The element wrapping for the tabs |
+| `tab`             | The tab slot                      |
+| `activeIndicator` | The visual indicator              |
+| `tabpanel`        | The tabpanel slot                 |
+
+#### Slots
+
+| Name       | Description                                              |
+| ---------- | -------------------------------------------------------- |
+| `start`    | Content which can be provided before the tablist element |
+| `end`      | Content which can be provided after the tablist element  |
+| `tab`      | The slot for tabs                                        |
+| `tabpanel` | The slot for tabpanels                                   |
 
 <hr/>
 
@@ -168,6 +192,12 @@ export const myTabs = Tabs.compose({
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Slots
+
+| Name | Description                               |
+| ---- | ----------------------------------------- |
+|      | The default slot for the tabpanel content |
 
 <hr/>
 
@@ -202,6 +232,12 @@ export const myTabs = Tabs.compose({
 | Name | Field    | Inherited From |
 | ---- | -------- | -------------- |
 |      | disabled |                |
+
+#### Slots
+
+| Name | Description                          |
+| ---- | ------------------------------------ |
+|      | The default slot for the tab content |
 
 <hr/>
 

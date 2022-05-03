@@ -38,6 +38,8 @@ const defaultHeaderCellContentsTemplate: ViewTemplate<DataGridCell> = html`
 /**
  * A Data Grid Cell Custom HTML Element.
  *
+ * @fires cell-focused - Fires a custom 'cell-focused' event when focus is on the cell or its contents
+ * @slot - The default slot for cell contents.  The "cell contents template" renders here.
  * @public
  */
 export class DataGridCell extends FoundationElement {

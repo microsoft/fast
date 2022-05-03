@@ -97,11 +97,35 @@ export const mySwitch = Switch.compose<SwitchOptions>({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                                | Inherited From |
+| -------- | ---- | ---------------------------------------------------------- | -------------- |
+| `change` |      | Emits a custom change event when the checked state changes |                |
+
 #### Attributes
 
 | Name       | Field    | Inherited From |
 | ---------- | -------- | -------------- |
 | `readonly` | readOnly |                |
+
+#### CSS Parts
+
+| Name                | Description                                                    |
+| ------------------- | -------------------------------------------------------------- |
+| `label`             | The label                                                      |
+| `switch`            | The element representing the switch, which wraps the indicator |
+| `status-message`    | The wrapper for the status messages                            |
+| `checked-message`   | The checked message                                            |
+| `unchecked-message` | The unchecked message                                          |
+
+#### Slots
+
+| Name                | Description                            |
+| ------------------- | -------------------------------------- |
+|                     | The deafult slot for the label         |
+| `checked-message`   | The message when in a checked state    |
+| `unchecked-message` | The message when in an unchecked state |
 
 <hr/>
 

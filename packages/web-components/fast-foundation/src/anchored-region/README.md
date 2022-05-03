@@ -119,6 +119,13 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name             | Type | Description                                                         | Inherited From |
+| ---------------- | ---- | ------------------------------------------------------------------- | -------------- |
+| `loaded`         |      | Fires a custom 'loaded' event when the region is loaded and visible |                |
+| `positionchange` |      | Fires a custom 'positionchange' event when the position has changed |                |
+
 #### Attributes
 
 | Name                          | Field                     | Inherited From |
@@ -139,6 +146,12 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | `vertical-scaling`            | verticalScaling           |                |
 | `fixed-placement`             | fixedPlacement            |                |
 | `auto-update-mode`            | autoUpdateMode            |                |
+
+#### Slots
+
+| Name | Description                      |
+| ---- | -------------------------------- |
+|      | The default slot for the content |
 
 <hr/>
 

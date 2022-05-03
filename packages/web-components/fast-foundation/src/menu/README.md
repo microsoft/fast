@@ -162,6 +162,12 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `templateChanged`      | protected |                                     |            | `void` | FoundationElement |
 | `stylesChanged`        | protected |                                     |            | `void` | FoundationElement |
 
+#### Slots
+
+| Name | Description                         |
+| ---- | ----------------------------------- |
+|      | The default slot for the menu items |
+
 <hr/>
 
 
@@ -193,6 +199,13 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name              | Type | Description                                                                                                                              | Inherited From |
+| ----------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `expanded-change` |      | Fires a custom 'expanded-change' event when the expanded state changes                                                                   |                |
+| `change`          |      | Fires a custom 'change' event when a non-submenu item with a role of \`menuitemcheckbox\`, \`menuitemradio\`, or \`menuitem\` is invoked |                |
+
 #### Attributes
 
 | Name   | Field    | Inherited From |
@@ -201,6 +214,30 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 |        | expanded |                |
 | `role` | role     |                |
 |        | checked  |                |
+
+#### CSS Parts
+
+| Name                              | Description                                                    |
+| --------------------------------- | -------------------------------------------------------------- |
+| `input-container`                 | The element representing the visual checked or radio indicator |
+| `checkbox`                        | The element wrapping the \`menuitemcheckbox\` indicator        |
+| `radio`                           | The element wrapping the \`menuitemradio\` indicator           |
+| `content`                         | The element wrapping the menu item content                     |
+| `expand-collapse-glyph-container` | The element wrapping the expand collapse element               |
+| `expand-collapse`                 | The expand/collapse element                                    |
+| `submenu-region`                  | The container for the submenu, used for positioning            |
+
+#### Slots
+
+| Name                        | Description                                                |
+| --------------------------- | ---------------------------------------------------------- |
+| `checked-indicator`         | The checked indicator                                      |
+| `radio-indicator`           | The radio indicator                                        |
+| `start`                     | Content which can be provided before the menu item content |
+| `end`                       | Content which can be provided after the menu item content  |
+|                             | The default slot for menu item content                     |
+| `expand-collapse-indicator` | The expand/collapse indicator                              |
+| `submenu`                   | Used to nest menu's within menu items                      |
 
 <hr/>
 

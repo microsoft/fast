@@ -86,6 +86,12 @@ export const myRadioGroup = RadioGroup.compose({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                          | Inherited From |
+| -------- | ---- | ---------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the value changes |                |
+
 #### Attributes
 
 | Name          | Field       | Inherited From |
@@ -95,6 +101,19 @@ export const myRadioGroup = RadioGroup.compose({
 | `name`        | name        |                |
 | `value`       | value       |                |
 | `orientation` | orientation |                |
+
+#### CSS Parts
+
+| Name                 | Description                                      |
+| -------------------- | ------------------------------------------------ |
+| `positioning-region` | The positioning region for laying out the radios |
+
+#### Slots
+
+| Name    | Description                        |
+| ------- | ---------------------------------- |
+| `label` | The slot for the label             |
+|         | The default slot for radio buttons |
 
 <hr/>
 

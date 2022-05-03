@@ -175,6 +175,12 @@ export const mySkeleton = Skeleton.compose({
 | `pattern` | pattern |                |
 |           | shimmer |                |
 
+#### Slots
+
+| Name | Description      |
+| ---- | ---------------- |
+|      | The default slot |
+
 <hr/>
 
 

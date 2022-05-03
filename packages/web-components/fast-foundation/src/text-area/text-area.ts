@@ -10,6 +10,12 @@ export { TextAreaResize };
  * A Text Area Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea | <textarea> element }.
  *
+ * @slot - The default slot for the label
+ * @csspart label - The label
+ * @csspart root - The element wrapping the control
+ * @csspart control - The textarea element
+ * @fires change - Emits a custom 'change' event when the textarea emits a change event
+ *
  * @public
  */
 export class TextArea extends FormAssociatedTextArea {
@@ -165,6 +171,23 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @observable
     public defaultSlottedNodes: Node[];
+
+    /**
+     * Selects all the text in the text area
+     *
+     * @public
+     */
+    protected select(): void {
+        this.control.select();
+
+        /**
+         * The select event does not permeate the shadow DOM boundary.
+         * This fn effectively proxies the select event,
+         * emitting a `select` event whenever the internal
+         * control emits a `select` event
+         */
+        this.$emit("select");
+    }
 
     /**
      * @internal

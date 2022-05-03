@@ -112,8 +112,16 @@ This component is built with the expectation that focus is delegated to the inpu
 | ----------------- | --------- | ----------------------------------------- | ---------- | ------ | ----------------- |
 | `stepUp`          | public    | Increments the value using the step value |            | `void` |                   |
 | `stepDown`        | public    | Decrements the value using the step value |            | `void` |                   |
+| `select`          | public    | Selects all the text in the number field  |            | `void` |                   |
 | `templateChanged` | protected |                                           |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |                                           |            | `void` | FoundationElement |
+
+#### Events
+
+| Name     | Type | Description                                              | Inherited From |
+| -------- | ---- | -------------------------------------------------------- | -------------- |
+| `input`  |      | Fires a custom 'input' event when the value has changed  |                |
+| `change` |      | Fires a custom 'change' event when the value has changed |                |
 
 #### Attributes
 
@@ -130,6 +138,27 @@ This component is built with the expectation that focus is delegated to the inpu
 |               | step        |                |
 |               | max         |                |
 |               | min         |                |
+
+#### CSS Parts
+
+| Name        | Description                                                     |
+| ----------- | --------------------------------------------------------------- |
+| `label`     | The label                                                       |
+| `root`      | The element wrapping the control, including start and end slots |
+| `control`   | The element representing the input                              |
+| `controls`  | The step up and step down controls                              |
+| `step-up`   | The step up control                                             |
+| `step-down` | The step down control                                           |
+
+#### Slots
+
+| Name              | Description                                                 |
+| ----------------- | ----------------------------------------------------------- |
+| `start`           | Content which can be provided before the number field input |
+| `end`             | Content which can be provided after the number field input  |
+|                   | The default slot for the label                              |
+| `step-up-glyph`   | The glyph for the step up control                           |
+| `step-down-glyph` | The glyph for the step down control                         |
 
 <hr/>
 

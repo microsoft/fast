@@ -18,6 +18,12 @@ export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
  * A Button Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element }.
  *
+ * @slot start - Content which can be provided before the button content
+ * @slot end - Content which can be provided after the button content
+ * @slot - The default slot for button content
+ * @csspart control - The button element
+ * @csspart content - The element wrapping button content
+ *
  * @public
  */
 export class Button extends FormAssociatedButton {

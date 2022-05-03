@@ -124,6 +124,18 @@ This component is built with the expectation that focus is delegated to the anch
 | `templateChanged`               | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`                 | protected |             |            | `void` | FoundationElement |
 
+#### CSS Parts
+
+| Name   | Description                            |
+| ------ | -------------------------------------- |
+| `list` | The element wrapping the slotted items |
+
+#### Slots
+
+| Name | Description                               |
+| ---- | ----------------------------------------- |
+|      | The default slot for the breadcrumb items |
+
 <hr/>
 
 

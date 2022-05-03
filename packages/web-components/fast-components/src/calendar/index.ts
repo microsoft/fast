@@ -7,7 +7,7 @@ import { CalendarStyles as styles } from "./calendar.styles.js";
 
 /**
  * The FAST Calendar Element. Implements {@link @microsoft/fast-foundation#Calendar},
- * {@link @microsoft/fast-foundation#CalendarTemplate}
+ * {@link @microsoft/fast-foundation#calendarTemplate}
  *
  *
  * @public

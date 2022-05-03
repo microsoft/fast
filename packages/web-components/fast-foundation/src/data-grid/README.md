@@ -126,12 +126,24 @@ export const myDataGrid = DataGrid.compose({
 | `templateChanged` | protected |             |                    | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |                    | `void` | FoundationElement |
 
+#### Events
+
+| Name           | Type | Description                                                                   | Inherited From |
+| -------------- | ---- | ----------------------------------------------------------------------------- | -------------- |
+| `cell-focused` |      | Fires a custom 'cell-focused' event when focus is on the cell or its contents |                |
+
 #### Attributes
 
 | Name          | Field      | Inherited From |
 | ------------- | ---------- | -------------- |
 | `cell-type`   | cellType   |                |
 | `grid-column` | gridColumn |                |
+
+#### Slots
+
+| Name | Description                                                                     |
+| ---- | ------------------------------------------------------------------------------- |
+|      | The default slot for cell contents.  The "cell contents template" renders here. |
 
 <hr/>
 
@@ -170,12 +182,24 @@ export const myDataGrid = DataGrid.compose({
 | `templateChanged` | protected |             |                    | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |                    | `void` | FoundationElement |
 
+#### Events
+
+| Name          | Type | Description                                                                                                | Inherited From |
+| ------------- | ---- | ---------------------------------------------------------------------------------------------------------- | -------------- |
+| `row-focused` |      | Fires a custom 'row-focused' event when focus is on an element (usually a cell or its contents) in the row |                |
+
 #### Attributes
 
 | Name                    | Field               | Inherited From |
 | ----------------------- | ------------------- | -------------- |
 | `grid-template-columns` | gridTemplateColumns |                |
 | `row-type`              | rowType             |                |
+
+#### Slots
+
+| Name | Description                               |
+| ---- | ----------------------------------------- |
+|      | The default slot for custom cell elements |
 
 <hr/>
 
@@ -228,6 +252,12 @@ export const myDataGrid = DataGrid.compose({
 | `no-tabbing`            | noTabbing           |                |
 | `generate-header`       | generateHeader      |                |
 | `grid-template-columns` | gridTemplateColumns |                |
+
+#### Slots
+
+| Name | Description                              |
+| ---- | ---------------------------------------- |
+|      | The default slot for custom row elements |
 
 <hr/>
 

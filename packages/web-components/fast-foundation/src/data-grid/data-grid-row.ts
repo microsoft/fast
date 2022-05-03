@@ -20,6 +20,8 @@ import { DataGridRowTypes } from "./data-grid.options.js";
 /**
  * A Data Grid Row Custom HTML Element.
  *
+ * @fires row-focused - Fires a custom 'row-focused' event when focus is on an element (usually a cell or its contents) in the row
+ * @slot - The default slot for custom cell elements
  * @public
  */
 export class DataGridRow extends FoundationElement {

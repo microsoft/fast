@@ -35,6 +35,16 @@ export enum TabsOrientation {
  * A Tabs Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#tablist | ARIA tablist }.
  *
+ * @slot start - Content which can be provided before the tablist element
+ * @slot end - Content which can be provided after the tablist element
+ * @slot tab - The slot for tabs
+ * @slot tabpanel - The slot for tabpanels
+ * @csspart tablist - The element wrapping for the tabs
+ * @csspart tab - The tab slot
+ * @csspart activeIndicator - The visual indicator
+ * @csspart tabpanel - The tabpanel slot
+ * @fires change - Fires a custom 'change' event when a tab is clicked or during keyboard navigation
+ *
  * @public
  */
 export class Tabs extends FoundationElement {
@@ -95,6 +105,9 @@ export class Tabs extends FoundationElement {
             this.$fastController.isConnected &&
             this.tabs.length <= this.tabpanels.length
         ) {
+            this.tabIds = this.getTabIds();
+            this.tabpanelIds = this.getTabPanelIds();
+
             this.setTabs();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
@@ -114,6 +127,9 @@ export class Tabs extends FoundationElement {
             this.$fastController.isConnected &&
             this.tabpanels.length <= this.tabs.length
         ) {
+            this.tabIds = this.getTabIds();
+            this.tabpanelIds = this.getTabPanelIds();
+
             this.setTabs();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
@@ -182,8 +198,7 @@ export class Tabs extends FoundationElement {
         const gridProperty: string = this.isHorizontal()
             ? gridHorizontalProperty
             : gridVerticalProperty;
-        this.tabIds = this.getTabIds();
-        this.tabpanelIds = this.getTabPanelIds();
+
         this.activeTabIndex = this.getActiveIndex();
         this.showActiveIndicator = false;
         this.tabs.forEach((tab: HTMLElement, index: number) => {
@@ -218,8 +233,6 @@ export class Tabs extends FoundationElement {
     };
 
     private setTabPanels = (): void => {
-        this.tabIds = this.getTabIds();
-        this.tabpanelIds = this.getTabPanelIds();
         this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
             const tabId: string = this.tabIds[index];
             const tabpanelId: string = this.tabpanelIds[index];

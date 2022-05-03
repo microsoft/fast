@@ -84,6 +84,13 @@ export const myDialog = Dialog.compose({
 | `templateChanged` | protected |                                |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |                                |            | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                                     | Inherited From |
+| -------- | ---- | --------------------------------------------------------------- | -------------- |
+| `cancel` |      | Fires a custom 'cancel' event when the modal overlay is clicked |                |
+| `close`  |      | Fires a custom 'close' event when the dialog is hidden          |                |
+
 #### Attributes
 
 | Name               | Field           | Inherited From |
@@ -94,6 +101,20 @@ export const myDialog = Dialog.compose({
 | `aria-describedby` | ariaDescribedby |                |
 | `aria-labelledby`  | ariaLabelledby  |                |
 | `aria-label`       | ariaLabel       |                |
+
+#### CSS Parts
+
+| Name                 | Description                                                                 |
+| -------------------- | --------------------------------------------------------------------------- |
+| `positioning-region` | A wrapping element used to center the dialog and position the modal overlay |
+| `overlay`            | The modal dialog overlay                                                    |
+| `control`            | The dialog element                                                          |
+
+#### Slots
+
+| Name | Description                             |
+| ---- | --------------------------------------- |
+|      | The default slot for the dialog content |
 
 <hr/>
 

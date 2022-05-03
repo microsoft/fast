@@ -128,6 +128,12 @@ export const myTreeView = TreeView.compose({
 | ------------------------ | -------------------- | -------------- |
 | `render-collapsed-nodes` | renderCollapsedNodes |                |
 
+#### Slots
+
+| Name | Description                     |
+| ---- | ------------------------------- |
+|      | The default slot for tree items |
+
 <hr/>
 
 
