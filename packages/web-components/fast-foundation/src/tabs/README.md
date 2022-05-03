@@ -168,6 +168,14 @@ export const myTabs = Tabs.compose({
 
 <hr/>
 
+### Variables
+
+| Name              | Description                                                              | Type                                                          |
+| ----------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------- |
+| `TabsOrientation` | The orientation of the @microsoft/fast-foundation#(Tabs:class) component | `{     vertical: "vertical",     horizontal: "horizontal", }` |
+
+<hr/>
+
 
 
 ### class: `TabPanel`

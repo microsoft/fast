@@ -195,7 +195,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition | "above" | "below";
+    public positionAttribute: SelectPosition;
 
     /**
      * Indicates the initial state of the position attribute.
@@ -210,7 +210,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @observable
-    public position: SelectPosition | "above" | "below" = SelectPosition.below;
+    public position: SelectPosition = SelectPosition.below;
     protected positionChanged() {
         this.positionAttribute = this.position;
         this.setPositioning();

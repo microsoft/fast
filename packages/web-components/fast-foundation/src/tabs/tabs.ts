@@ -26,10 +26,16 @@ export type TabsOptions = FoundationElementDefinition & StartEndOptions;
  * The orientation of the {@link @microsoft/fast-foundation#(Tabs:class)} component
  * @public
  */
-export enum TabsOrientation {
-    vertical = "vertical",
-    horizontal = "horizontal",
-}
+export const TabsOrientation = {
+    vertical: "vertical",
+    horizontal: "horizontal",
+} as const;
+
+/**
+ * The types for the Tabs component
+ * @public
+ */
+export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientation];
 
 /**
  * A Tabs Custom HTML Element.

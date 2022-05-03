@@ -57,7 +57,7 @@ export class Flipper extends FoundationElement {
      * HTML Attribute: direction
      */
     @attr
-    public direction: FlipperDirection | "next" | "previous" = FlipperDirection.next;
+    public direction: FlipperDirection = FlipperDirection.next;
 
     /**
      * Simulate a click event when the flipper has focus and the user hits enter or space keys

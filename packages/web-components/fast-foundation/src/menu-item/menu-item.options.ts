@@ -2,27 +2,35 @@
  * Menu items roles.
  * @public
  */
-export enum MenuItemRole {
+export const MenuItemRole = {
     /**
      * The menu item has a "menuitem" role
      */
-    menuitem = "menuitem",
+    menuitem: "menuitem",
 
     /**
      * The menu item has a "menuitemcheckbox" role
      */
-    menuitemcheckbox = "menuitemcheckbox",
+    menuitemcheckbox: "menuitemcheckbox",
 
     /**
      * The menu item has a "menuitemradio" role
      */
-    menuitemradio = "menuitemradio",
-}
+    menuitemradio: "menuitemradio",
+} as const;
+
+/**
+ * The types for menu item roles
+ * @public
+ */
+export type MenuItemRole = typeof MenuItemRole[keyof typeof MenuItemRole];
 
 /**
  * @internal
  */
-export const roleForMenuItem: { [value in MenuItemRole]: keyof typeof MenuItemRole } = {
+export const roleForMenuItem: {
+    [value in keyof typeof MenuItemRole]: typeof MenuItemRole[value];
+} = {
     [MenuItemRole.menuitem]: "menuitem",
     [MenuItemRole.menuitemcheckbox]: "menuitemcheckbox",
     [MenuItemRole.menuitemradio]: "menuitemradio",
