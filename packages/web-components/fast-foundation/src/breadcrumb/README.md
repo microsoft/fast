@@ -3,6 +3,7 @@ id: breadcrumb
 title: fast-breadcrumb
 sidebar_label: breadcrumb
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/breadcrumb/README.md
+description: fast-breadcrumb is a web component used as a navigational aid.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#breadcrumb):
