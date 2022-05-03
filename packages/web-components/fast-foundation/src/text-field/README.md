@@ -63,22 +63,7 @@ This component is built with the expectation that focus is delegated to the inpu
 
 | Name            | Description          | Type                                                                                                                                                                                                                                                                                                                        |
 | --------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `TextFieldType` | Text field sub-types | `{
-    /**      * An email TextField      */
-    email: "email",
-
-    /**      * A password TextField      */
-    password: "password",
-
-    /**      * A telephone TextField      */
-    tel: "tel",
-
-    /**      * A text TextField      */
-    text: "text",
-
-    /**      * A URL TextField      */
-    url: "url",
-}` |
+| `TextFieldType` | Text field sub-types | `{     /**      * An email TextField      */     email: "email",      /**      * A password TextField      */     password: "password",      /**      * A telephone TextField      */     tel: "tel",      /**      * A text TextField      */     text: "text",      /**      * A URL TextField      */     url: "url", }` |
 
 <hr/>
 
@@ -100,7 +85,7 @@ This component is built with the expectation that focus is delegated to the inpu
 | `autofocus`     | public  | `boolean`                             |         | Indicates that this element should get focus after the page finishes loading. See [autofocus HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus) for more information. |                         |
 | `placeholder`   | public  | `string`                              |         | Sets the placeholder value of the element, generally used to provide a hint to the user.                                                                                                                                    |                         |
 | `type`          | public  | `TextFieldType`                       |         | Allows setting a type or mode of text.                                                                                                                                                                                      |                         |
-| `list`          | public  | `string`                              |         | Allows associating a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.                              |                         |
+| `list`          | public  | `string`                              |         | Allows associating a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) to the element by https://developer.mozilla.org/en-US/docs/Web/API/Element/id.                                      |                         |
 | `maxlength`     | public  | `number`                              |         | The maximum number of characters a user can enter.                                                                                                                                                                          |                         |
 | `minlength`     | public  | `number`                              |         | The minimum number of characters a user can enter.                                                                                                                                                                          |                         |
 | `pattern`       | public  | `string`                              |         | A regular expression that the value must match to pass validation.                                                                                                                                                          |                         |

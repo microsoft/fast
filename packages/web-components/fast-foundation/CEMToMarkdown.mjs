@@ -67,6 +67,10 @@ for(var i = 0, modulesLength = modules.length; i < modulesLength; i++)
                 {
                     dec.default = replaceJSDOCLinksWithMDLinks(fixTagsInText(dec.default.replaceAll(LF, ' ')));
                 }
+                if(dec.type)
+                {
+                    dec.type.text =  replaceJSDOCLinksWithMDLinks(fixTagsInText(dec.type.text.replaceAll(LF, ' ')));
+                }
                 dec.members?.forEach(member=>{
                     if(member.description)
                     {
@@ -197,18 +201,22 @@ function replaceJSDOCLinksWithMDLinks(text)
     let startIndex = text.indexOf('{@link');
     if(startIndex < 0) return text;
 
-    let endIndex = text.indexOf("}", startIndex);
-    if(endIndex < 0) return text;
-
-    const jsdocLink = text.slice(startIndex, endIndex + 1);
-    let linkParts = jsdocLink.replace("{@link ", "").replace("}", "").split('|');
-    if(linkParts.length === 1)
+    while(startIndex>=0)
     {
-        return text.replace(jsdocLink, linkParts[0]);
-    }
-    else
-    {
-        return text.replace(jsdocLink, "[" + linkParts[1].trim() + "](" + linkParts[0].trim() + ")");
-    }
+        let endIndex = text.indexOf("}", startIndex);
+        if(endIndex < 0) return text;
 
+        const jsdocLink = text.slice(startIndex, endIndex + 1);
+        let linkParts = jsdocLink.replace("{@link ", "").replace("}", "").split('|');
+        if(linkParts.length === 1)
+        {
+            text = text.replace(jsdocLink, linkParts[0]);
+        }
+        else
+        {
+            text = text.replace(jsdocLink, "[" + linkParts[1].trim() + "](" + linkParts[0].trim() + ")");
+        }
+        startIndex = text.indexOf('{@link',endIndex);
+    }
+    return text;
 }

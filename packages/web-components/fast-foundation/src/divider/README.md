@@ -48,13 +48,7 @@ export const myDivider = Divider.compose({
 
 | Name          | Description   | Type                                                                                                                                                                                                                                 |
 | ------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `DividerRole` | Divider roles | `{
-    /**      * The divider semantically separates content      */
-    separator: "separator",
-
-    /**      * The divider has no semantic value and is for visual presentation only.      */
-    presentation: "presentation",
-}` |
+| `DividerRole` | Divider roles | `{     /**      * The divider semantically separates content      */     separator: "separator",      /**      * The divider has no semantic value and is for visual presentation only.      */     presentation: "presentation", }` |
 
 <hr/>
 

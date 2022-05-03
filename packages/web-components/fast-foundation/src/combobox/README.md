@@ -91,12 +91,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 | Name                   | Description                       | Type                                                                              |
 | ---------------------- | --------------------------------- | --------------------------------------------------------------------------------- |
-| `ComboboxAutocomplete` | Autocomplete values for combobox. | `{
-    inline: "inline",
-    list: "list",
-    both: "both",
-    none: "none",
-}` |
+| `ComboboxAutocomplete` | Autocomplete values for combobox. | `{     inline: "inline",     list: "list",     both: "both",     none: "none", }` |
 
 <hr/>
 

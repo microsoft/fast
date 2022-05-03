@@ -207,21 +207,9 @@ export const myDataGrid = DataGrid.compose({
 
 | Name                    | Description                                                                                             | Type                                                                                        |
 | ----------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `GenerateHeaderOptions` | Enumerates the data grid auto generated header options default option generates a non-sticky header row | `{
-    none: "none",
-    default: "default",
-    sticky: "sticky",
-}`                       |
-| `DataGridCellTypes`     | Enumerates possible data grid cell types.                                                               | `{
-    default: "default",
-    columnHeader: "columnheader",
-    rowHeader: "rowheader",
-}` |
-| `DataGridRowTypes`      | Enumerates possible data grid row types                                                                 | `{
-    default: "default",
-    header: "header",
-    stickyHeader: "sticky-header",
-}`      |
+| `GenerateHeaderOptions` | Enumerates the data grid auto generated header options default option generates a non-sticky header row | `{     none: "none",     default: "default",     sticky: "sticky", }`                       |
+| `DataGridCellTypes`     | Enumerates possible data grid cell types.                                                               | `{     default: "default",     columnHeader: "columnheader",     rowHeader: "rowheader", }` |
+| `DataGridRowTypes`      | Enumerates possible data grid row types                                                                 | `{     default: "default",     header: "header",     stickyHeader: "sticky-header", }`      |
 
 <hr/>
 

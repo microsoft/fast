@@ -81,10 +81,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 | Name             | Description                                                   | Type                                          |
 | ---------------- | ------------------------------------------------------------- | --------------------------------------------- |
-| `SelectPosition` | Positioning directions for the listbox when a select is open. | `{
-    above: "above",
-    below: "below",
-}` |
+| `SelectPosition` | Positioning directions for the listbox when a select is open. | `{     above: "above",     below: "below", }` |
 
 <hr/>
 
