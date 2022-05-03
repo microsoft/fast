@@ -197,9 +197,7 @@ export const mySliderLabel = SliderLabel.compose({
 
 | Name         | Description                                                         | Type                                   |
 | ------------ | ------------------------------------------------------------------- | -------------------------------------- |
-| `SliderMode` | The selection modes of a @microsoft/fast-foundation#(Slider:class). | `{
-    singleValue: "single-value",
-}` |
+| `SliderMode` | The selection modes of a @microsoft/fast-foundation#(Slider:class). | `{     singleValue: "single-value", }` |
 
 <hr/>
 

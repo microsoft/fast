@@ -171,10 +171,7 @@ export const myTabs = Tabs.compose({
 
 | Name              | Description                                                              | Type                                                          |
 | ----------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------- |
-| `TabsOrientation` | The orientation of the @microsoft/fast-foundation#(Tabs:class) component | `{
-    vertical: "vertical",
-    horizontal: "horizontal",
-}` |
+| `TabsOrientation` | The orientation of the @microsoft/fast-foundation#(Tabs:class) component | `{     vertical: "vertical",     horizontal: "horizontal", }` |
 
 <hr/>
 
