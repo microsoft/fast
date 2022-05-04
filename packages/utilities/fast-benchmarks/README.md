@@ -1,36 +1,237 @@
 # FAST Benchmarks
-This is small utility library for creating and running benchmark tests for FAST scenarios.
 
-## Usage
-### Adding a Benchmark
-To add a benchmark, create a new directory in `/benchmarks/` to hold your benchmark, eg `/benchmark/my-benchmark/`. Next, create an `index.ts` file and optionally an `index.html` file.
+This is utility library for creating and running benchmark tests for FAST libraries.
 
-#### index.ts
-This file sets up the benchmark scenario and should export an instance of `Benchmark` as the **default export**:
+Benchmarks from this library are run with the [polymer/tachometer](https://github.com/Polymer/tachometer) package.
 
-```ts
-export default new Benchmark(() => /* do something */);
+### Install
+
+```bash
+$ yarn install
 ```
 
-> Benchmark is in the global scope, so there is no need to import it.
+### Adding a Benchmark
 
-#### index.html
-Optionally, an index.html file can be used to inject HTML into the benchmark scenario. This should contain only the desired HTML for the scenario; the `html`, `body`, `head`, and `doctype` will be added automatically.
+To add a benchmark, navigate to`/benchmarks` and create a new directory under an existing FAST library folder with the name of your benchmark.
 
-#### Establishing a Baseline
-To gauge the impact of code changes, a baseline must first be established to determine if changes result in positive or negative change. After adding the necessary benchmarking scenario, you can create a baseline by running `yarn start -b` or `yarn start --baseline`.
+Next, create an `index.ts` file under `/my-benchmark`.
 
-#### Running all Benchmarks
-To run all benchmarks against the established baseline, run `yarn start -a` or `yarn start --all`
+```text
+benchmarks/
+└─ fast-element/
+   └─ my-benchmark/
+      └─ index.ts
+```
 
-#### Running a single Benchmark
-To run a single benchmark, supply the name of the directory for the benchmark to the name argument: `yarn start -n my-benchmark` or `yarn start --name=my-benchmark`.
+You can use the below template to get started, make sure a custom element named `x-app` is available when you are finished (the scripts will look for `x-app` when compiling the benchmark).
 
-### Results
+#### index.ts
 
-|metric|description|
-|------|-----------|
-|hz change|The change in operations per second between the baseline and the benchmark.|
-|hz percentage change|The change in operations per second between the baseline and the benchmark, expressed as a percentage.|
-|mean change|The change in the average number of seconds the benchmark took.|
-|mean percentage change|The change in the average number of seconds the benchmark took, expressed as a percentage.|
+```ts
+import {
+    attr,
+    customElement,
+    FASTElement,
+    html,
+    observable,
+    repeat,
+} from "@microsoft/fast-element";
+import { data, RandomItem } from "../../../utils/index.js";
+
+@customElement({
+    name: "x-item",
+    template: html`
+        <span>${x => x.value}</span>
+    `,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+})
+export class XItem extends FASTElement {
+    @attr value: string = "";
+}
+
+const template = html<XApp>`
+    <div>
+        ${repeat(
+            x => x.items,
+            html`
+                <x-item :value=${x => x.label}>${x => x.label}</x-item>
+            `
+        )}
+    </div>
+`;
+
+@customElement({
+    name: "x-app",
+    template,
+})
+class XApp extends FASTElement {
+    @observable items: RandomItem[] = data;
+}
+```
+
+There is a utility folder called `./utils`, where you have access to the `data` variable, this is an array of RandomItem objects.
+
+For more details on what the data encompasses, reference below in [utils.ts](#utils.ts).
+
+By default, there are 10k RandomItems generated, you can change this value in the [utils.ts](#utils.ts) as well.
+
+#### utils.ts
+
+```ts
+...
+const itemCount = 10000;
+class RandomItem {
+    label: string;
+    ...
+}
+export const data: RandomItem[] = generateData(itemCount);
+...
+```
+
+### Running a Benchmark
+
+To run a benchmark, supply all the options listed below in [Arguments](#arguments).
+
+### Arguments
+
+| Argument               | Example                                                      | Description                                                                                                                                                                                                                                                                                          | Required |
+| ---------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `--library/-l`         | `--library=fast-element`                                     | The Fast library you want to run benchmarks in                                                                                                                                                                                                                                                       | Yes      |
+| `--benchmark/-b`       | `--benchmark=test`                                           | Benchmark name                                                                                                                                                                                                                                                                                       | Yes      |
+| `--versions/-v`        | `--versions 1.9.0 master local` `--versions=1.9.0`           | `master` and `local` are special keywords that can be used. Or supply versions of the library, check available [versions](#library-versions). Multiple options have to be **delimited by spaces**, to include the `local` version, check details in [Running local version](#running-local-version). | Yes      |
+| `--localBenchFile/-lb` | `--localBenchFile=index2`                                    | Name of the local benchmark file **don't include the extension** This option is only turned on if you've supplied 'local' as one of the versions AND you want to add different implementation for the same benchmark test, check details in [Running local version](#running-local-version).         | No       |
+| `--operations/-o`      | `--operations=create10k` `--operations create10k update10th` | Defaults to run all possible operations if this argument is not supplied. Name of operations to run benchmarks against, **don't include the extension**. Delimited by spaces                                                                                                                         | No       |
+
+> Note: Running all possible operations will take an extremely long time. During local development, it is recommend to run one operation at a time to get faster results.
+
+_examples_:
+
+`yarn run benchmark --library=fast-element --benchmark=my-benchmark --versions 1.9.0 local --localBenchFile=index2`
+
+`yarn run benchmark --library=fast-element --benchmark=my-benchmark --versions 1.8.0 1.9.0 --operations=create10k`
+
+`yarn run benchmark --library=fast-element --benchmark=my-benchmark --versions 1.9.0 local master`
+
+`yarn run benchmark --library=fast-foundation --benchmark=form-associated -v 2.34.0 2.42.1`
+
+#### Library versions
+
+-   [fast-element](https://www.npmjs.com/package/@microsoft/fast-element)
+-   [fast-foundation](https://www.npmjs.com/package/@microsoft/fast-foundation)
+
+### Running local version
+
+> Currently, only @microsoft/fast-element library has been tested with local version support.
+
+If you want to test your local implementation against master or existing versions, follow these steps.
+
+1. Create Symlink to local build of `@microsoft/fast-element`. Follow local build process for `@microsoft/fast-element`
+    - Navigate to `fast-element` folder (../packages/web-components/fast-element)
+    - Make sure build is up-to-date by running `yarn install`
+    - Navigate back to `fast-benchmarks` folder (../packages/utilities/fast-benchmarks)
+    - Go to `package.json` and add local file path to the dependencies
+
+#### package.json
+
+```json
+...
+  "dependencies": {
+        "@microsoft/fast-element": "file:../../web-components/fast-element",
+        "tachometer": "^0.5.10"
+    }
+...
+```
+
+2. [Create local implementation file](#create-local-implementation-file)
+
+3. Run the benchmark
+
+-   Pass in the `local` keyword in the `--versions` argument
+-   Pass in the name of your local file in the `--localBenchFile` arugment
+-   example: `yarn run benchmark --library=fast-element --benchmark=my-benchmark --versions 1.9.0 local --localBenchFile=local`
+
+#### Create local implementation file
+
+Create an `local.ts` file under `/my-benchmark` (the name of this file can be anything) with a different implementation from `index.ts`.
+
+```text
+benchmarks/
+└─ fast-element/
+   └─ my-benchmark/
+      └─ index.ts
+      └─ local.ts
+```
+
+### Running tachometer config file manually
+
+To run tachometer manually, you have to generate a tachometer config json file.
+
+Follow the tachometer defined [schema](#https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json) and generate a `tachometer.json` in `/fast-element/my-benchmark/`
+
+tachometer.json
+
+```json
+{
+    "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
+    "timeout": 0,
+    "benchmarks": [
+        {
+            "name": "my-benchmark",
+            "browser": {
+                "name": "chrome",
+                "headless": true,
+                "addArguments": ["--js-flags=--expose-gc", "--enable-precise-memory-info"]
+            },
+            "measurement": [
+                {
+                    "name": "usedJSHeapSize",
+                    "mode": "expression",
+                    "expression": "window.usedJSHeapSize"
+                }
+            ],
+
+            "expand": [
+                {
+                    "name": "previous-version",
+                    "url": "benchmarks/my-library/my-benchmark/index.html",
+                    "packageVersions": {
+                        "label": "1.4.0",
+                        "dependencies": {
+                            "my-library": "1.0.0"
+                        }
+                    }
+                },
+                {
+                    "name": "local-version",
+                    "url": "benchmarks/my-library/my-benchmark/index2.html",
+                    "packageVersions": {
+                        "label": "local",
+                        "dependencies": {
+                            "@microsoft/my-library": {
+                                "kind": "git",
+                                "repo": "https://github.com/microsoft/fast.git",
+                                "ref": "my-local-branch",
+                                "subdir": "packages/web-components/my-library",
+                                "setupCommands": [
+                                    "yarn install",
+                                    "yarn --cwd ./packages/web-components/my-library build"
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
+```
+
+To run the benchmark, run the command `npx tach --config benchmarks/fast-element/my-benchmark/tachometer.json`
+
+### Future iterations
+
+Currently, @microsoft/fast-foundation dependencies are hard-coded into the tachometer config file. There are plans to update this.
+
+> Note: only @microsoft/fast-element and @microsoft/fast-foundation are supported
