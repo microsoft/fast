@@ -15,7 +15,7 @@
     "@microsoft/fast-colors": "^5.0.12",
     "@microsoft/fast-element": "latest",
     "@microsoft/fast-foundation": "latest",
-    "tslib": "^1.11.1"
+    "tslib": "^2.4.0"
   },
   "devDependencies": {
     "http-server": "^14.1.0",

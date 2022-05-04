@@ -41,6 +41,7 @@ import { Disclosure as Disclosure_2 } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
 import { ElementDefinitionContext } from '@microsoft/fast-foundation';
 import { ElementStyles } from '@microsoft/fast-element';
+import { ExecutionContext } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Flipper } from '@microsoft/fast-foundation';
 import { FlipperOptions } from '@microsoft/fast-foundation';
@@ -171,18 +172,18 @@ export const ActionsStyles: ElementStyles;
 export const allComponents: {
     fastAccordion: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Accordion, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Accordion, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Accordion, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Accordion, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, Accordion>;
     fastAccordionItem: (overrideDefinition?: OverrideFoundationElementDefinition<AccordionItemOptions> | undefined) => FoundationElementRegistry<AccordionItemOptions, Constructable<FoundationElement>>;
     fastAnchor: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
     baseClass: typeof Anchor_2;
-    template: FoundationElementTemplate<ViewTemplate<Anchor_2, any>, AnchorOptions>;
+    template: FoundationElementTemplate<ViewTemplate<Anchor_2, any, ExecutionContext<any>>, AnchorOptions>;
     styles: FoundationElementTemplate<ElementStyles, AnchorOptions>;
     shadowOptions: {
     delegatesFocus: true;
@@ -190,7 +191,7 @@ export const allComponents: {
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
     baseClass: typeof Anchor_2;
-    template: FoundationElementTemplate<ViewTemplate<Anchor_2, any>, AnchorOptions>;
+    template: FoundationElementTemplate<ViewTemplate<Anchor_2, any, ExecutionContext<any>>, AnchorOptions>;
     styles: FoundationElementTemplate<ElementStyles, AnchorOptions>;
     shadowOptions: {
     delegatesFocus: true;
@@ -198,37 +199,37 @@ export const allComponents: {
     }, Anchor>;
     fastAnchoredRegion: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<AnchoredRegion, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<AnchoredRegion, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<AnchoredRegion, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<AnchoredRegion, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, AnchoredRegion>;
     fastAvatar: (overrideDefinition?: OverrideFoundationElementDefinition<AvatarOptions> | undefined) => FoundationElementRegistry<AvatarOptions, Constructable<FoundationElement>>;
     fastBadge: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Badge, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Badge, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Badge, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Badge, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, Badge>;
     fastBreadcrumb: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Breadcrumb, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Breadcrumb, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Breadcrumb, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Breadcrumb, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, Breadcrumb>;
     fastBreadcrumbItem: (overrideDefinition?: OverrideFoundationElementDefinition<BreadcrumbItemOptions> | undefined) => FoundationElementRegistry<BreadcrumbItemOptions, Constructable<FoundationElement>>;
     fastButton: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
     baseClass: typeof Button_2;
-    template: FoundationElementTemplate<ViewTemplate<Button_2, any>, ButtonOptions>;
+    template: FoundationElementTemplate<ViewTemplate<Button_2, any, ExecutionContext<any>>, ButtonOptions>;
     styles: FoundationElementTemplate<ElementStyles, ButtonOptions>;
     shadowOptions: {
     delegatesFocus: true;
@@ -236,7 +237,7 @@ export const allComponents: {
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
     baseClass: typeof Button_2;
-    template: FoundationElementTemplate<ViewTemplate<Button_2, any>, ButtonOptions>;
+    template: FoundationElementTemplate<ViewTemplate<Button_2, any, ExecutionContext<any>>, ButtonOptions>;
     styles: FoundationElementTemplate<ElementStyles, ButtonOptions>;
     shadowOptions: {
     delegatesFocus: true;
@@ -244,83 +245,83 @@ export const allComponents: {
     }, Button>;
     fastCalendar: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Calendar, any>, CalendarOptions>;
+    template: FoundationElementTemplate<ViewTemplate<Calendar, any, ExecutionContext<any>>, CalendarOptions>;
     styles: ElementStyles;
-    title: ViewTemplate<Calendar, any>;
+    title: ViewTemplate<Calendar, any, ExecutionContext<any>>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Calendar, any>, CalendarOptions>;
+    template: FoundationElementTemplate<ViewTemplate<Calendar, any, ExecutionContext<any>>, CalendarOptions>;
     styles: ElementStyles;
-    title: ViewTemplate<Calendar, any>;
+    title: ViewTemplate<Calendar, any, ExecutionContext<any>>;
     }, Calendar>;
     fastCard: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
     baseClass: typeof Card_2;
-    template: FoundationElementTemplate<ViewTemplate<Card_2, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Card_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
     baseClass: typeof Card_2;
-    template: FoundationElementTemplate<ViewTemplate<Card_2, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Card_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, Card>;
     fastCheckbox: (overrideDefinition?: OverrideFoundationElementDefinition<CheckboxOptions> | undefined) => FoundationElementRegistry<CheckboxOptions, Constructable<FoundationElement>>;
     fastCombobox: (overrideDefinition?: OverrideFoundationElementDefinition<ComboboxOptions> | undefined) => FoundationElementRegistry<ComboboxOptions, Constructable<FoundationElement>>;
     fastDataGrid: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<DataGrid, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<DataGrid, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<DataGrid, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<DataGrid, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, DataGrid>;
     fastDataGridCell: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<DataGridCell, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<DataGridCell, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<DataGridCell, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<DataGridCell, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, DataGridCell>;
     fastDataGridRow: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<DataGridRow, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<DataGridRow, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<DataGridRow, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<DataGridRow, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, DataGridRow>;
     fastDesignSystemProvider: (overrideDefinition?: OverrideFoundationElementDefinition<FoundationElementDefinition> | undefined) => FoundationElementRegistry<FoundationElementDefinition, typeof DesignSystemProvider>;
     fastDialog: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Dialog, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Dialog, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Dialog, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Dialog, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, Dialog>;
     fastDisclosure: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
     baseClass: typeof Disclosure_2;
-    template: FoundationElementTemplate<ViewTemplate<Disclosure_2, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Disclosure_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
     baseClass: typeof Disclosure_2;
-    template: FoundationElementTemplate<ViewTemplate<Disclosure_2, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Disclosure_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, Disclosure>;
     fastDivider: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Divider, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Divider, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Divider, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Divider, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, Divider>;
     fastFlipper: (overrideDefinition?: OverrideFoundationElementDefinition<FlipperOptions> | undefined) => FoundationElementRegistry<FlipperOptions, Constructable<FoundationElement>>;
@@ -328,79 +329,79 @@ export const allComponents: {
     fastListbox: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
     baseClass: typeof ListboxElement;
-    template: FoundationElementTemplate<ViewTemplate<ListboxElement, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<ListboxElement, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
     baseClass: typeof ListboxElement;
-    template: FoundationElementTemplate<ViewTemplate<ListboxElement, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<ListboxElement, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, Listbox>;
     fastOption: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<ListboxOption, any>, ListboxOptionOptions>;
+    template: FoundationElementTemplate<ViewTemplate<ListboxOption, any, ExecutionContext<any>>, ListboxOptionOptions>;
     styles: FoundationElementTemplate<ElementStyles, ListboxOptionOptions>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<ListboxOption, any>, ListboxOptionOptions>;
+    template: FoundationElementTemplate<ViewTemplate<ListboxOption, any, ExecutionContext<any>>, ListboxOptionOptions>;
     styles: FoundationElementTemplate<ElementStyles, ListboxOptionOptions>;
     }, ListboxOption>;
     fastMenu: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Menu, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Menu, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Menu, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Menu, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, Menu>;
     fastMenuItem: (overrideDefinition?: OverrideFoundationElementDefinition<MenuItemOptions> | undefined) => FoundationElementRegistry<MenuItemOptions, Constructable<FoundationElement>>;
     fastNumberField: (overrideDefinition?: OverrideFoundationElementDefinition<NumberFieldOptions> | undefined) => FoundationElementRegistry<NumberFieldOptions, Constructable<FoundationElement>>;
     fastPicker: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Picker, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Picker, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     shadowOptions: {};
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Picker, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Picker, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     shadowOptions: {};
     }, Picker>;
     fastPickerList: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<PickerList, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<PickerList, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<PickerList, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<PickerList, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, PickerList>;
     fastPickerListItem: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<PickerListItem, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<PickerListItem, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<PickerListItem, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<PickerListItem, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, PickerListItem>;
     fastPickerMenu: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<PickerMenu, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<PickerMenu, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<PickerMenu, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<PickerMenu, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, PickerMenu>;
     fastPickerMenuOption: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<PickerMenuOption, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<PickerMenuOption, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<PickerMenuOption, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<PickerMenuOption, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, PickerMenuOption>;
     fastProgress: (overrideDefinition?: OverrideFoundationElementDefinition<ProgressOptions> | undefined) => FoundationElementRegistry<ProgressOptions, Constructable<FoundationElement>>;
@@ -408,17 +409,17 @@ export const allComponents: {
     fastRadio: (overrideDefinition?: OverrideFoundationElementDefinition<RadioOptions> | undefined) => FoundationElementRegistry<RadioOptions, Constructable<FoundationElement>>;
     fastRadioGroup: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<RadioGroup, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<RadioGroup, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<RadioGroup, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<RadioGroup, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, RadioGroup>;
     fastSearch: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
     baseClass: typeof Search_2;
-    template: FoundationElementTemplate<ViewTemplate<Search_2, any>, SearchOptions>;
+    template: FoundationElementTemplate<ViewTemplate<Search_2, any, ExecutionContext<any>>, SearchOptions>;
     styles: FoundationElementTemplate<ElementStyles, TextFieldOptions>;
     shadowOptions: {
     delegatesFocus: true;
@@ -426,7 +427,7 @@ export const allComponents: {
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
     baseClass: typeof Search_2;
-    template: FoundationElementTemplate<ViewTemplate<Search_2, any>, SearchOptions>;
+    template: FoundationElementTemplate<ViewTemplate<Search_2, any, ExecutionContext<any>>, SearchOptions>;
     styles: FoundationElementTemplate<ElementStyles, TextFieldOptions>;
     shadowOptions: {
     delegatesFocus: true;
@@ -435,57 +436,57 @@ export const allComponents: {
     fastSelect: (overrideDefinition?: OverrideFoundationElementDefinition<SelectOptions> | undefined) => FoundationElementRegistry<SelectOptions, Constructable<FoundationElement>>;
     fastSkeleton: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Skeleton, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Skeleton, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Skeleton, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Skeleton, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, Skeleton>;
     fastSlider: (overrideDefinition?: OverrideFoundationElementDefinition<SliderOptions> | undefined) => FoundationElementRegistry<SliderOptions, Constructable<FoundationElement>>;
     fastSliderLabel: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
     baseClass: typeof SliderLabel_2;
-    template: FoundationElementTemplate<ViewTemplate<SliderLabel_2, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<SliderLabel_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
     baseClass: typeof SliderLabel_2;
-    template: FoundationElementTemplate<ViewTemplate<SliderLabel_2, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<SliderLabel_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, SliderLabel>;
     fastSwitch: (overrideDefinition?: OverrideFoundationElementDefinition<SwitchOptions> | undefined) => FoundationElementRegistry<SwitchOptions, Constructable<FoundationElement>>;
     fastTabs: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Tabs, any>, TabsOptions>;
+    template: FoundationElementTemplate<ViewTemplate<Tabs, any, ExecutionContext<any>>, TabsOptions>;
     styles: FoundationElementTemplate<ElementStyles, TabsOptions>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Tabs, any>, TabsOptions>;
+    template: FoundationElementTemplate<ViewTemplate<Tabs, any, ExecutionContext<any>>, TabsOptions>;
     styles: FoundationElementTemplate<ElementStyles, TabsOptions>;
     }, Tabs>;
     fastTab: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Tab, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Tab, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Tab, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Tab, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, Tab>;
     fastTabPanel: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<TabPanel, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<TabPanel, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<TabPanel, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<TabPanel, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, TabPanel>;
     fastTextArea: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
     baseClass: typeof TextArea_2;
-    template: FoundationElementTemplate<ViewTemplate<TextArea_2, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<TextArea_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     shadowOptions: {
     delegatesFocus: true;
@@ -493,7 +494,7 @@ export const allComponents: {
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
     baseClass: typeof TextArea_2;
-    template: FoundationElementTemplate<ViewTemplate<TextArea_2, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<TextArea_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     shadowOptions: {
     delegatesFocus: true;
@@ -502,7 +503,7 @@ export const allComponents: {
     fastTextField: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
     baseClass: typeof TextField_2;
-    template: FoundationElementTemplate<ViewTemplate<TextField_2, any>, TextFieldOptions>;
+    template: FoundationElementTemplate<ViewTemplate<TextField_2, any, ExecutionContext<any>>, TextFieldOptions>;
     styles: FoundationElementTemplate<ElementStyles, TextFieldOptions>;
     shadowOptions: {
     delegatesFocus: true;
@@ -510,7 +511,7 @@ export const allComponents: {
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
     baseClass: typeof TextField_2;
-    template: FoundationElementTemplate<ViewTemplate<TextField_2, any>, TextFieldOptions>;
+    template: FoundationElementTemplate<ViewTemplate<TextField_2, any, ExecutionContext<any>>, TextFieldOptions>;
     styles: FoundationElementTemplate<ElementStyles, TextFieldOptions>;
     shadowOptions: {
     delegatesFocus: true;
@@ -520,7 +521,7 @@ export const allComponents: {
     fastToolbar: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
     baseClass: typeof Toolbar_2;
-    template: FoundationElementTemplate<ViewTemplate<Toolbar_2, any>, ToolbarOptions>;
+    template: FoundationElementTemplate<ViewTemplate<Toolbar_2, any, ExecutionContext<any>>, ToolbarOptions>;
     styles: FoundationElementTemplate<ElementStyles, ToolbarOptions>;
     shadowOptions: {
     delegatesFocus: true;
@@ -528,7 +529,7 @@ export const allComponents: {
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
     baseClass: typeof Toolbar_2;
-    template: FoundationElementTemplate<ViewTemplate<Toolbar_2, any>, ToolbarOptions>;
+    template: FoundationElementTemplate<ViewTemplate<Toolbar_2, any, ExecutionContext<any>>, ToolbarOptions>;
     styles: FoundationElementTemplate<ElementStyles, ToolbarOptions>;
     shadowOptions: {
     delegatesFocus: true;
@@ -536,11 +537,11 @@ export const allComponents: {
     }, Toolbar>;
     fastTreeView: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<TreeView, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<TreeView, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<TreeView, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<TreeView, any, ExecutionContext<any>>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, TreeView>;
     fastTreeItem: (overrideDefinition?: OverrideFoundationElementDefinition<TreeItemOptions> | undefined) => FoundationElementRegistry<TreeItemOptions, Constructable<FoundationElement>>;
@@ -755,7 +756,7 @@ export class DesignSystemProvider extends FoundationElement {
 export const designSystemProviderStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public
-export const designSystemProviderTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<any, any>;
+export const designSystemProviderTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<any, any, ExecutionContext<any>>;
 
 // @public (undocumented)
 export const designUnit: CSSDesignToken<number>;
@@ -812,11 +813,11 @@ export const dividerStyles: FoundationElementTemplate<ElementStyles>;
 // @public
 export const fastAccordion: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Accordion, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Accordion, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Accordion, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Accordion, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof Accordion>;
 
@@ -827,7 +828,7 @@ export const fastAccordionItem: (overrideDefinition?: OverrideFoundationElementD
 export const fastAnchor: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
 baseClass: typeof Anchor_2;
-template: FoundationElementTemplate<ViewTemplate<Anchor_2, any>, AnchorOptions>;
+template: FoundationElementTemplate<ViewTemplate<Anchor_2, any, ExecutionContext<any>>, AnchorOptions>;
 styles: FoundationElementTemplate<ElementStyles, AnchorOptions>;
 shadowOptions: {
 delegatesFocus: true;
@@ -835,7 +836,7 @@ delegatesFocus: true;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
 baseClass: typeof Anchor_2;
-template: FoundationElementTemplate<ViewTemplate<Anchor_2, any>, AnchorOptions>;
+template: FoundationElementTemplate<ViewTemplate<Anchor_2, any, ExecutionContext<any>>, AnchorOptions>;
 styles: FoundationElementTemplate<ElementStyles, AnchorOptions>;
 shadowOptions: {
 delegatesFocus: true;
@@ -845,11 +846,11 @@ delegatesFocus: true;
 // @beta
 export const fastAnchoredRegion: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<AnchoredRegion, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<AnchoredRegion, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<AnchoredRegion, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<AnchoredRegion, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof AnchoredRegion>;
 
@@ -859,22 +860,22 @@ export const fastAvatar: (overrideDefinition?: OverrideFoundationElementDefiniti
 // @public
 export const fastBadge: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Badge, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Badge, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Badge, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Badge, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof Badge>;
 
 // @public
 export const fastBreadcrumb: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Breadcrumb, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Breadcrumb, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Breadcrumb, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Breadcrumb, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof Breadcrumb>;
 
@@ -887,7 +888,7 @@ export const fastBreadcrumbItem: (overrideDefinition?: OverrideFoundationElement
 export const fastButton: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
 baseClass: typeof Button_2;
-template: FoundationElementTemplate<ViewTemplate<Button_2, any>, ButtonOptions>;
+template: FoundationElementTemplate<ViewTemplate<Button_2, any, ExecutionContext<any>>, ButtonOptions>;
 styles: FoundationElementTemplate<ElementStyles, ButtonOptions>;
 shadowOptions: {
 delegatesFocus: true;
@@ -895,7 +896,7 @@ delegatesFocus: true;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
 baseClass: typeof Button_2;
-template: FoundationElementTemplate<ViewTemplate<Button_2, any>, ButtonOptions>;
+template: FoundationElementTemplate<ViewTemplate<Button_2, any, ExecutionContext<any>>, ButtonOptions>;
 styles: FoundationElementTemplate<ElementStyles, ButtonOptions>;
 shadowOptions: {
 delegatesFocus: true;
@@ -905,14 +906,14 @@ delegatesFocus: true;
 // @public
 export const fastCalendar: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Calendar, any>, CalendarOptions>;
+template: FoundationElementTemplate<ViewTemplate<Calendar, any, ExecutionContext<any>>, CalendarOptions>;
 styles: ElementStyles;
-title: ViewTemplate<Calendar, any>;
+title: ViewTemplate<Calendar, any, ExecutionContext<any>>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Calendar, any>, CalendarOptions>;
+template: FoundationElementTemplate<ViewTemplate<Calendar, any, ExecutionContext<any>>, CalendarOptions>;
 styles: ElementStyles;
-title: ViewTemplate<Calendar, any>;
+title: ViewTemplate<Calendar, any, ExecutionContext<any>>;
 }, typeof Calendar>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
@@ -921,12 +922,12 @@ title: ViewTemplate<Calendar, any>;
 export const fastCard: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
 baseClass: typeof Card_2;
-template: FoundationElementTemplate<ViewTemplate<Card_2, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Card_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
 baseClass: typeof Card_2;
-template: FoundationElementTemplate<ViewTemplate<Card_2, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Card_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof Card>;
 
@@ -939,33 +940,33 @@ export const fastCombobox: (overrideDefinition?: OverrideFoundationElementDefini
 // @public
 export const fastDataGrid: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<DataGrid, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<DataGrid, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<DataGrid, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<DataGrid, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof DataGrid>;
 
 // @public
 export const fastDataGridCell: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<DataGridCell, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<DataGridCell, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<DataGridCell, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<DataGridCell, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof DataGridCell>;
 
 // @public
 export const fastDataGridRow: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<DataGridRow, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<DataGridRow, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<DataGridRow, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<DataGridRow, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof DataGridRow>;
 
@@ -977,11 +978,11 @@ export const fastDesignSystemProvider: (overrideDefinition?: OverrideFoundationE
 // @public
 export const fastDialog: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Dialog, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Dialog, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Dialog, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Dialog, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof Dialog>;
 
@@ -991,23 +992,23 @@ styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 export const fastDisclosure: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
 baseClass: typeof Disclosure_2;
-template: FoundationElementTemplate<ViewTemplate<Disclosure_2, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Disclosure_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
 baseClass: typeof Disclosure_2;
-template: FoundationElementTemplate<ViewTemplate<Disclosure_2, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Disclosure_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof Disclosure>;
 
 // @public
 export const fastDivider: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Divider, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Divider, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Divider, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Divider, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof Divider>;
 
@@ -1021,23 +1022,23 @@ export const fastHorizontalScroll: (overrideDefinition?: OverrideFoundationEleme
 export const fastListbox: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
 baseClass: typeof ListboxElement;
-template: FoundationElementTemplate<ViewTemplate<ListboxElement, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<ListboxElement, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
 baseClass: typeof ListboxElement;
-template: FoundationElementTemplate<ViewTemplate<ListboxElement, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<ListboxElement, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof Listbox>;
 
 // @public
 export const fastMenu: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Menu, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Menu, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Menu, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Menu, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof Menu>;
 
@@ -1050,23 +1051,23 @@ export const fastNumberField: (overrideDefinition?: OverrideFoundationElementDef
 // @public
 export const fastOption: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<ListboxOption, any>, ListboxOptionOptions>;
+template: FoundationElementTemplate<ViewTemplate<ListboxOption, any, ExecutionContext<any>>, ListboxOptionOptions>;
 styles: FoundationElementTemplate<ElementStyles, ListboxOptionOptions>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<ListboxOption, any>, ListboxOptionOptions>;
+template: FoundationElementTemplate<ViewTemplate<ListboxOption, any, ExecutionContext<any>>, ListboxOptionOptions>;
 styles: FoundationElementTemplate<ElementStyles, ListboxOptionOptions>;
 }, typeof ListboxOption>;
 
 // @alpha
 export const fastPicker: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Picker, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Picker, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 shadowOptions: {};
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Picker, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Picker, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 shadowOptions: {};
 }, typeof Picker>;
@@ -1074,44 +1075,44 @@ shadowOptions: {};
 // @alpha
 export const fastPickerList: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<PickerList, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<PickerList, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<PickerList, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<PickerList, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof PickerList>;
 
 // @alpha
 export const fastPickerListItem: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<PickerListItem, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<PickerListItem, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<PickerListItem, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<PickerListItem, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof PickerListItem>;
 
 // @alpha
 export const fastPickerMenu: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<PickerMenu, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<PickerMenu, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<PickerMenu, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<PickerMenu, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof PickerMenu>;
 
 // @alpha
 export const fastPickerMenuOption: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<PickerMenuOption, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<PickerMenuOption, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<PickerMenuOption, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<PickerMenuOption, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof PickerMenuOption>;
 
@@ -1127,11 +1128,11 @@ export const fastRadio: (overrideDefinition?: OverrideFoundationElementDefinitio
 // @public
 export const fastRadioGroup: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<RadioGroup, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<RadioGroup, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<RadioGroup, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<RadioGroup, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof RadioGroup>;
 
@@ -1141,7 +1142,7 @@ styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 export const fastSearch: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
 baseClass: typeof Search_2;
-template: FoundationElementTemplate<ViewTemplate<Search_2, any>, SearchOptions>;
+template: FoundationElementTemplate<ViewTemplate<Search_2, any, ExecutionContext<any>>, SearchOptions>;
 styles: FoundationElementTemplate<ElementStyles, TextFieldOptions>;
 shadowOptions: {
 delegatesFocus: true;
@@ -1149,7 +1150,7 @@ delegatesFocus: true;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
 baseClass: typeof Search_2;
-template: FoundationElementTemplate<ViewTemplate<Search_2, any>, SearchOptions>;
+template: FoundationElementTemplate<ViewTemplate<Search_2, any, ExecutionContext<any>>, SearchOptions>;
 styles: FoundationElementTemplate<ElementStyles, TextFieldOptions>;
 shadowOptions: {
 delegatesFocus: true;
@@ -1162,11 +1163,11 @@ export const fastSelect: (overrideDefinition?: OverrideFoundationElementDefiniti
 // @public
 export const fastSkeleton: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Skeleton, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Skeleton, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Skeleton, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Skeleton, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof Skeleton>;
 
@@ -1179,12 +1180,12 @@ export const fastSlider: (overrideDefinition?: OverrideFoundationElementDefiniti
 export const fastSliderLabel: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
 baseClass: typeof SliderLabel_2;
-template: FoundationElementTemplate<ViewTemplate<SliderLabel_2, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<SliderLabel_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
 baseClass: typeof SliderLabel_2;
-template: FoundationElementTemplate<ViewTemplate<SliderLabel_2, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<SliderLabel_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof SliderLabel>;
 
@@ -1194,33 +1195,33 @@ export const fastSwitch: (overrideDefinition?: OverrideFoundationElementDefiniti
 // @public
 export const fastTab: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Tab, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Tab, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Tab, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Tab, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof Tab>;
 
 // @public
 export const fastTabPanel: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<TabPanel, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<TabPanel, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<TabPanel, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<TabPanel, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof TabPanel>;
 
 // @public
 export const fastTabs: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Tabs, any>, TabsOptions>;
+template: FoundationElementTemplate<ViewTemplate<Tabs, any, ExecutionContext<any>>, TabsOptions>;
 styles: FoundationElementTemplate<ElementStyles, TabsOptions>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Tabs, any>, TabsOptions>;
+template: FoundationElementTemplate<ViewTemplate<Tabs, any, ExecutionContext<any>>, TabsOptions>;
 styles: FoundationElementTemplate<ElementStyles, TabsOptions>;
 }, typeof Tabs>;
 
@@ -1230,7 +1231,7 @@ styles: FoundationElementTemplate<ElementStyles, TabsOptions>;
 export const fastTextArea: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
 baseClass: typeof TextArea_2;
-template: FoundationElementTemplate<ViewTemplate<TextArea_2, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<TextArea_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 shadowOptions: {
 delegatesFocus: true;
@@ -1238,7 +1239,7 @@ delegatesFocus: true;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
 baseClass: typeof TextArea_2;
-template: FoundationElementTemplate<ViewTemplate<TextArea_2, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<TextArea_2, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 shadowOptions: {
 delegatesFocus: true;
@@ -1251,7 +1252,7 @@ delegatesFocus: true;
 export const fastTextField: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
 baseClass: typeof TextField_2;
-template: FoundationElementTemplate<ViewTemplate<TextField_2, any>, TextFieldOptions>;
+template: FoundationElementTemplate<ViewTemplate<TextField_2, any, ExecutionContext<any>>, TextFieldOptions>;
 styles: FoundationElementTemplate<ElementStyles, TextFieldOptions>;
 shadowOptions: {
 delegatesFocus: true;
@@ -1259,7 +1260,7 @@ delegatesFocus: true;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
 baseClass: typeof TextField_2;
-template: FoundationElementTemplate<ViewTemplate<TextField_2, any>, TextFieldOptions>;
+template: FoundationElementTemplate<ViewTemplate<TextField_2, any, ExecutionContext<any>>, TextFieldOptions>;
 styles: FoundationElementTemplate<ElementStyles, TextFieldOptions>;
 shadowOptions: {
 delegatesFocus: true;
@@ -1272,7 +1273,7 @@ delegatesFocus: true;
 export const fastToolbar: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
 baseClass: typeof Toolbar_2;
-template: FoundationElementTemplate<ViewTemplate<Toolbar_2, any>, ToolbarOptions>;
+template: FoundationElementTemplate<ViewTemplate<Toolbar_2, any, ExecutionContext<any>>, ToolbarOptions>;
 styles: FoundationElementTemplate<ElementStyles, ToolbarOptions>;
 shadowOptions: {
 delegatesFocus: true;
@@ -1280,7 +1281,7 @@ delegatesFocus: true;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
 baseClass: typeof Toolbar_2;
-template: FoundationElementTemplate<ViewTemplate<Toolbar_2, any>, ToolbarOptions>;
+template: FoundationElementTemplate<ViewTemplate<Toolbar_2, any, ExecutionContext<any>>, ToolbarOptions>;
 styles: FoundationElementTemplate<ElementStyles, ToolbarOptions>;
 shadowOptions: {
 delegatesFocus: true;
@@ -1296,11 +1297,11 @@ export const fastTreeItem: (overrideDefinition?: OverrideFoundationElementDefini
 // @public
 export const fastTreeView: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<TreeView, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<TreeView, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<TreeView, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<TreeView, any, ExecutionContext<any>>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof TreeView>;
 
@@ -1375,7 +1376,7 @@ export const horizontalScrollStyles: FoundationElementTemplate<ElementStyles, Ho
 export const horizontalSliderLabelStyles: ElementStyles;
 
 // @public
-export const imgTemplate: ViewTemplate<Avatar, any>;
+export const imgTemplate: ViewTemplate<Avatar, any, ExecutionContext<any>>;
 
 // @public (undocumented)
 export interface InteractiveColorRecipe {

@@ -98,7 +98,7 @@
     "@microsoft/fast-element": "^1.10.1",
     "@microsoft/fast-web-utilities": "^5.4.0",
     "tabbable": "^5.2.0",
-    "tslib": "^1.13.0"
+    "tslib": "^2.4.0"
   },
   "customElements": "dist/custom-elements.json"
 }
