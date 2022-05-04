@@ -67,11 +67,7 @@ for (var i = 0, modulesLength = modules.length; i < modulesLength; i++) {
                     );
                 }
                 if (dec.type) {
-                    dec.type.text = replaceJSDOCLinksWithMDLinks(
-                        fixTagsInText(
-                            removeCommentBlocks(dec.type.text.replaceAll(LF, " "))
-                        )
-                    );
+                    dec.type.text = cleanUpVariableTypes(dec.type.text);
                 }
                 dec.members?.forEach(member => {
                     if (member.description) {
@@ -226,21 +222,12 @@ function replaceJSDOCLinksWithMDLinks(text) {
     return text;
 }
 
-function removeCommentBlocks(text) {
-    let startIndex = text.indexOf("/*");
-    if (startIndex < 0) {
-        return text;
-    }
-
-    while (startIndex >= 0) {
-        let endIndex = text.indexOf("*/", startIndex);
-        if (endIndex < 0) {
-            return text;
-        }
-
-        const commentBlock = text.slice(startIndex, endIndex + 2);
-        text = text.replace(commentBlock, "");
-        startIndex = text.indexOf("/*");
-    }
-    return text.replace(/ +/g, " "); // Remove extra spaces
+function cleanUpVariableTypes(text) {
+    // Remove block comments
+    text = text.replace(/\/\*(.|\s)*?\*\//gm, "");
+    // Remove inline comments, line breaks, and extra spaces
+    return text
+        .replace(/\/\/.*$/gm, "")
+        .replaceAll(LF, " ")
+        .replace(/ +/g, " ");
 }
