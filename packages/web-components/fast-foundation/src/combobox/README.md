@@ -121,8 +121,8 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `open`              | public    | `boolean`                             | `false` | The open attribute.                                                                                                                                                                 |                        |
 | `options`           | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                | Listbox                |
 | `placeholder`       | public    | `string`                              |         | Sets the placeholder value of the element, generally used to provide a hint to the user.                                                                                            |                        |
-| `positionAttribute` | public    | `SelectPosition`                      |         | The placement for the listbox when the combobox is open.                                                                                                                            |                        |
-| `position`          | public    | `SelectPosition`                      |         | The current state of the calculated position of the listbox.                                                                                                                        |                        |
+| `positionAttribute` | public    | `SelectPosition or undefined`         |         | The placement for the listbox when the combobox is open.                                                                                                                            |                        |
+| `position`          | public    | `SelectPosition or undefined`         |         | The current state of the calculated position of the listbox.                                                                                                                        |                        |
 | `value`             | public    |                                       |         | The value property.                                                                                                                                                                 |                        |
 | `proxy`             |           |                                       |         |                                                                                                                                                                                     | FormAssociatedCombobox |
 | `length`            | public    | `number`                              |         | The number of options.                                                                                                                                                              | Listbox                |
@@ -136,15 +136,15 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Methods
 
-| Name                 | Privacy   | Description                                                                | Parameters | Return | Inherited From    |
-| -------------------- | --------- | -------------------------------------------------------------------------- | ---------- | ------ | ----------------- |
-| `positionChanged`    | protected |                                                                            |            |        |                   |
-| `filterOptions`      | public    | Filter available options by text value.                                    |            | `void` |                   |
-| `setPositioning`     | public    | Calculate and apply listbox positioning based on available viewport space. | `force`    | `void` |                   |
-| `selectFirstOption`  | public    | Moves focus to the first selectable option.                                |            | `void` | Listbox           |
-| `setSelectedOptions` | public    | Sets an option as selected and gives it focus.                             |            |        | Listbox           |
-| `templateChanged`    | protected |                                                                            |            | `void` | FoundationElement |
-| `stylesChanged`      | protected |                                                                            |            | `void` | FoundationElement |
+| Name                 | Privacy   | Description                                                                | Parameters                                                             | Return | Inherited From    |
+| -------------------- | --------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------ | ----------------- |
+| `positionChanged`    | protected |                                                                            | `prev: SelectPosition or undefined, next: SelectPosition or undefined` | `void` |                   |
+| `filterOptions`      | public    | Filter available options by text value.                                    |                                                                        | `void` |                   |
+| `setPositioning`     | public    | Calculate and apply listbox positioning based on available viewport space. | `force`                                                                | `void` |                   |
+| `selectFirstOption`  | public    | Moves focus to the first selectable option.                                |                                                                        | `void` | Listbox           |
+| `setSelectedOptions` | public    | Sets an option as selected and gives it focus.                             |                                                                        |        | Listbox           |
+| `templateChanged`    | protected |                                                                            |                                                                        | `void` | FoundationElement |
+| `stylesChanged`      | protected |                                                                            |                                                                        | `void` | FoundationElement |
 
 #### Events
 

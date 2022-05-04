@@ -1,11 +1,11 @@
-import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
-import { DelegatesARIAListbox } from "../listbox/listbox.js";
 import type { ListboxOption } from "../listbox-option/listbox-option.js";
-import { StartEnd } from "../patterns/start-end.js";
+import { DelegatesARIAListbox } from "../listbox/listbox.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd } from "../patterns/start-end.js";
 import { SelectPosition } from "../select/select.options.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedCombobox } from "./combobox.form-associated.js";
@@ -209,7 +209,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition;
+    public positionAttribute?: SelectPosition;
 
     /**
      * The current state of the calculated position of the listbox.
@@ -217,9 +217,12 @@ export class Combobox extends FormAssociatedCombobox {
      * @public
      */
     @observable
-    public position: SelectPosition = SelectPosition.below;
-    protected positionChanged() {
-        this.positionAttribute = this.position;
+    public position?: SelectPosition;
+    protected positionChanged(
+        prev: SelectPosition | undefined,
+        next: SelectPosition | undefined
+    ): void {
+        this.positionAttribute = next;
         this.setPositioning();
     }
 
