@@ -108,7 +108,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | ------------------- | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
 | `open`              | public    | `boolean`                             | `false` | The open attribute.                                                                                                                                                                 |                      |
 | `value`             | public    |                                       |         | The value property.                                                                                                                                                                 |                      |
-| `positionAttribute` | public    | `SelectPosition`                      |         | Reflects the placement for the listbox when the select is open.                                                                                                                     |                      |
+| `positionAttribute` | public    | `SelectPosition or undefined`         |         | Reflects the placement for the listbox when the select is open.                                                                                                                     |                      |
 | `position`          | public    | `SelectPosition or undefined`         |         | Holds the current state for the calculated position of the listbox.                                                                                                                 |                      |
 | `displayValue`      | public    | `string`                              |         | The value displayed on the button.                                                                                                                                                  |                      |
 | `proxy`             |           |                                       |         |                                                                                                                                                                                     | FormAssociatedSelect |
@@ -126,15 +126,15 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Methods
 
-| Name                 | Privacy   | Description                                                                | Parameters                                                | Return | Inherited From    |
-| -------------------- | --------- | -------------------------------------------------------------------------- | --------------------------------------------------------- | ------ | ----------------- |
-| `positionChanged`    | protected |                                                                            | `prev: SelectPosition or undefined, next: SelectPosition` | `void` |                   |
-| `setPositioning`     | public    | Calculate and apply listbox positioning based on available viewport space. |                                                           | `void` |                   |
-| `multipleChanged`    | public    | Sets the multiple property on the proxy element.                           | `prev: boolean or undefined, next: boolean`               |        |                   |
-| `setSelectedOptions` | public    | Sets an option as selected and gives it focus.                             |                                                           |        | Listbox           |
-| `selectFirstOption`  | public    | Moves focus to the first selectable option.                                |                                                           | `void` | Listbox           |
-| `templateChanged`    | protected |                                                                            |                                                           | `void` | FoundationElement |
-| `stylesChanged`      | protected |                                                                            |                                                           | `void` | FoundationElement |
+| Name                 | Privacy   | Description                                                                | Parameters                                                             | Return | Inherited From    |
+| -------------------- | --------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------ | ----------------- |
+| `positionChanged`    | protected |                                                                            | `prev: SelectPosition or undefined, next: SelectPosition or undefined` | `void` |                   |
+| `setPositioning`     | public    | Calculate and apply listbox positioning based on available viewport space. |                                                                        | `void` |                   |
+| `multipleChanged`    | public    | Sets the multiple property on the proxy element.                           | `prev: boolean or undefined, next: boolean`                            |        |                   |
+| `setSelectedOptions` | public    | Sets an option as selected and gives it focus.                             |                                                                        |        | Listbox           |
+| `selectFirstOption`  | public    | Moves focus to the first selectable option.                                |                                                                        | `void` | Listbox           |
+| `templateChanged`    | protected |                                                                            |                                                                        | `void` | FoundationElement |
+| `stylesChanged`      | protected |                                                                            |                                                                        | `void` | FoundationElement |
 
 #### Events
 

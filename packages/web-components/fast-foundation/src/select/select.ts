@@ -195,7 +195,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition;
+    public positionAttribute?: SelectPosition;
 
     /**
      * Indicates the initial state of the position attribute.
@@ -213,7 +213,7 @@ export class Select extends FormAssociatedSelect {
     public position?: SelectPosition;
     protected positionChanged(
         prev: SelectPosition | undefined,
-        next: SelectPosition
+        next: SelectPosition | undefined
     ): void {
         this.positionAttribute = next;
         this.setPositioning();

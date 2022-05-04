@@ -209,7 +209,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition;
+    public positionAttribute?: SelectPosition;
 
     /**
      * The current state of the calculated position of the listbox.
@@ -220,7 +220,7 @@ export class Combobox extends FormAssociatedCombobox {
     public position?: SelectPosition;
     protected positionChanged(
         prev: SelectPosition | undefined,
-        next: SelectPosition
+        next: SelectPosition | undefined
     ): void {
         this.positionAttribute = next;
         this.setPositioning();

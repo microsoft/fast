@@ -477,9 +477,9 @@ export class Combobox extends FormAssociatedCombobox {
     // @internal
     protected placeholderChanged(): void;
     position?: SelectPosition;
-    positionAttribute: SelectPosition;
+    positionAttribute?: SelectPosition;
     // (undocumented)
-    protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition): void;
+    protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition | undefined): void;
     // @internal
     selectedIndexChanged(prev: number | undefined, next: number): void;
     // @internal
@@ -2189,9 +2189,9 @@ export class Select extends FormAssociatedSelect {
     // @internal
     protected openChanged(prev: boolean | undefined, next: boolean): void;
     position?: SelectPosition;
-    positionAttribute: SelectPosition;
+    positionAttribute?: SelectPosition;
     // (undocumented)
-    protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition): void;
+    protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition | undefined): void;
     // @internal
     selectedIndexChanged(prev: number | undefined, next: number): void;
     // @internal @override
