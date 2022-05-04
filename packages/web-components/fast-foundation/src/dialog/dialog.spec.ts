@@ -274,6 +274,7 @@ describe("Dialog", () => {
 
         it("should fire a 'cancel' event when its overlay is clicked", async () => {
             const { element, connect, disconnect } = await setup();
+            element.modal = true;
 
             await connect();
 
