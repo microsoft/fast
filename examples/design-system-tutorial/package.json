@@ -13,8 +13,8 @@
   "dependencies": {
     "@microsoft/fast-colors": "^5.3.0",
     "@microsoft/fast-element": "^1.10.1",
-    "@microsoft/fast-foundation": "^2.46.0",
-    "@microsoft/fast-components": "^2.30.3",
+    "@microsoft/fast-foundation": "^2.46.1",
+    "@microsoft/fast-components": "^2.30.4",
     "tslib": "^1.11.1"
   },
   "devDependencies": {

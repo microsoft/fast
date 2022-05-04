@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 04 May 2022 07:14:00 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.1",
+      "version": "2.46.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "update markdown files",
+            "author": "steph@huynhicode.dev",
+            "commit": "c49a98f7f1bd8e167b0b7a96a181990f9a675f34",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.1",
+            "author": "steph@huynhicode.dev",
+            "commit": "c49a98f7f1bd8e167b0b7a96a181990f9a675f34",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "convert enums to const objects and add supported typings",
+            "author": "chhol@microsoft.com",
+            "commit": "d39284193f6d476b5b40b0fad75d3dbd836d55da",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 03 May 2022 07:15:44 GMT",
       "tag": "@microsoft/fast-foundation_v2.46.0",
       "version": "2.46.0",

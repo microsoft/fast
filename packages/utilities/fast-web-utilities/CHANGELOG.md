@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-web-utilities
 
-This log was last generated on Wed, 27 Apr 2022 07:21:09 GMT and should not be manually modified.
+This log was last generated on Wed, 04 May 2022 07:14:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 5.4.1
+
+Wed, 04 May 2022 07:14:00 GMT
+
+### Patches
+
+- convert orientation enum to const object with corresponding type (chhol@microsoft.com)
 
 ## 5.4.0
 
