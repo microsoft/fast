@@ -196,30 +196,15 @@ function fixTagsInText(text) {
 }
 
 function replaceJSDOCLinksWithMDLinks(text) {
-    let startIndex = text.indexOf("{@link");
-    if (startIndex < 0) {
-        return text;
-    }
-
-    while (startIndex >= 0) {
-        let endIndex = text.indexOf("}", startIndex);
-        if (endIndex < 0) {
-            return text;
-        }
-
-        const jsdocLink = text.slice(startIndex, endIndex + 1);
-        let linkParts = jsdocLink.replace("{@link ", "").replace("}", "").split("|");
-        if (linkParts.length === 1) {
-            text = text.replace(jsdocLink, linkParts[0]);
-        } else {
-            text = text.replace(
-                jsdocLink,
-                "[" + linkParts[1].trim() + "](" + linkParts[0].trim() + ")"
-            );
-        }
-        startIndex = text.indexOf("{@link");
-    }
-    return text;
+    // Replace jsdoc links with markdown links
+    // [TEXT]{@link URL} => [TEXT](URL)
+    // {@link URL} => URL
+    // {@link URL TEXT} => [TEXT](URL)
+    // {@link URL | TEXT} => [TEXT](URL)
+    return text
+        .replace(/\[(.*)\]\{@link (\S*)\}/gm, "[$1]($2)")
+        .replace(/\{@link (\S*)\}/gm, "$1")
+        .replace(/\{@link (\S*)\s*\|?\s*([^}]+?)\s*\}/gm, "[$2]($1)");
 }
 
 function cleanUpVariableTypes(text) {
