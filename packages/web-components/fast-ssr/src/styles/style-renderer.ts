@@ -1,4 +1,4 @@
-import { ComposableStyles, ElementStyles } from "@microsoft/fast-element";
+import { ComposableStyles } from "@microsoft/fast-element";
 import { fastStyleTagName } from "./fast-style.js";
 function collectStyles(style: ComposableStyles): string {
     let content: string = "";
@@ -19,7 +19,15 @@ function collectStyles(style: ComposableStyles): string {
     return content;
 }
 
+/**
+ * A renderer for {@link @microsoft/fast-element#ComposableStyles}
+ * @beta
+ */
 export interface StyleRenderer {
+    /**
+     * Renders composable styles to a string.
+     * @param styles - The styles to render.
+     */
     render(styles: ComposableStyles): string;
 }
 

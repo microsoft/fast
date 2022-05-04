@@ -16,7 +16,9 @@
   },
   "scripts": {
     "clean": "tsc -b --clean src",
-    "build": "tsc -b src",
+    "build": "tsc -b src && yarn doc",
+    "doc": "api-extractor run --local",
+    "doc:ci": "api-extractor run",
     "prepare": "yarn run clean && yarn run build",
     "build-server": "tsc -b server",
     "eslint": "eslint . --ext .ts",
@@ -31,9 +33,12 @@
   },
   "description": "A package for rendering FAST components outside the browser.",
   "main": "./dist/esm/exports.js",
-  "types": "./dist/dts/exports.d.ts",
+  "types": "./dist/fast-ssr.d.ts",
   "exports": {
-    "." : "./dist/esm/exports.js",
+    "." : {
+      "default": "./dist/esm/exports.js",
+      "types": "./dist/fast-ssr.d.ts"
+    },
     "./install-dom-shim": "./dist/esm/dom-shim.js"
   },
   "private": true,
@@ -44,6 +49,7 @@
     "tslib": "^2.4.0"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "7.23.0",
     "@playwright/test": "^1.20.1",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.17",

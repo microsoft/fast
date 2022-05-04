@@ -5,6 +5,12 @@ import { TemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
 import { FASTSSRStyleStrategy } from "./style-strategy.js";
 
+/**
+ * An {@link @lit-labs/ssr#ElementRenderer} implementation designed to render components
+ * built with FAST.
+ *
+ * @beta
+ */
 export abstract class FASTElementRenderer extends ElementRenderer {
     /**
      * The element instance represented by the {@link FASTElementRenderer}.
