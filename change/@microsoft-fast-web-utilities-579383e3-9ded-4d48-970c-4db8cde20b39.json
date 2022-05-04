@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "convert orientation enum to const object with corresponding type",
-  "packageName": "@microsoft/fast-web-utilities",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

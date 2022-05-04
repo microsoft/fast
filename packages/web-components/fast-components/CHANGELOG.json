@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 04 May 2022 07:14:00 GMT",
+      "tag": "@microsoft/fast-components_v2.30.4",
+      "version": "2.30.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "convert enums to const objects and add supported typings",
+            "author": "chhol@microsoft.com",
+            "commit": "d39284193f6d476b5b40b0fad75d3dbd836d55da",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "update markdown files",
+            "author": "steph@huynhicode.dev",
+            "commit": "c49a98f7f1bd8e167b0b7a96a181990f9a675f34",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.1",
+            "author": "steph@huynhicode.dev",
+            "commit": "c49a98f7f1bd8e167b0b7a96a181990f9a675f34",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.46.1",
+            "author": "chhol@microsoft.com",
+            "commit": "d39284193f6d476b5b40b0fad75d3dbd836d55da",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 03 May 2022 07:15:44 GMT",
       "tag": "@microsoft/fast-components_v2.30.3",
       "version": "2.30.3",

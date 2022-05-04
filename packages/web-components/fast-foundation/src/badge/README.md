@@ -3,6 +3,7 @@ id: badge
 title: fast-badge
 sidebar_label: badge
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/badge/README.md
+description: fast-badge is a web component used to highlight an item and attract attention or flag status.
 ---
 
 The `fast-badge` component is used to highlight an item and attract attention or flag status.

@@ -3,6 +3,7 @@ id: tabs
 title: fast-tabs
 sidebar_label: tabs
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/tabs/README.md
+description: fast-tabs is a web component implementation of a tab.
 ---
 
 *Tabs* are a set of layered sections of content that display one panel of content at a time. Each tab panel has an associated tab element, that when activated, displays the panel. The list of tab elements is arranged along one edge of the currently displayed panel.
