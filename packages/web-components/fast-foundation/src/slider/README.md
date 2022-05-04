@@ -3,6 +3,7 @@ id: slider
 title: fast-slider
 sidebar_label: slider
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/slider/README.md
+description: fast-slider is an implementation of a range slider as a form-connected web component.
 ---
 
 An implementation of a [range slider](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/range) as a form-connected web-component. Note that if the slider is in vertical orientation by default the component will get a height using the css var `--fast-slider-height`, by default that equates to `(10px * var(--thumb-size))` or 160px. Inline styles will override that height.
@@ -156,6 +157,12 @@ export const mySliderLabel = SliderLabel.compose({
 | `templateChanged`                | protected |                                             |                        | `void` | FoundationElement |
 | `stylesChanged`                  | protected |                                             |                        | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                                 | Inherited From |
+| -------- | ---- | ----------------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the slider value changes |                |
+
 #### Attributes
 
 | Name          | Field       | Inherited From |
@@ -166,6 +173,32 @@ export const mySliderLabel = SliderLabel.compose({
 |               | step        |                |
 | `orientation` | orientation |                |
 | `mode`        | mode        |                |
+
+#### CSS Parts
+
+| Name                 | Description                                                     |
+| -------------------- | --------------------------------------------------------------- |
+| `positioning-region` | The region used to position the elements of the slider          |
+| `track-container`    | The region containing the track elements                        |
+| `track-start`        | The element wrapping the track start slot                       |
+| `thumb-container`    | The thumb container element which is programatically positioned |
+
+#### Slots
+
+| Name          | Description                      |
+| ------------- | -------------------------------- |
+| `track`       | The track of the slider          |
+| `track-start` | The track-start visual indicator |
+| `thumb`       | The slider thumb                 |
+|               | The default slot for labels      |
+
+<hr/>
+
+### Variables
+
+| Name         | Description                                                         | Type                                   |
+| ------------ | ------------------------------------------------------------------- | -------------------------------------- |
+| `SliderMode` | The selection modes of a @microsoft/fast-foundation#(Slider:class). | `{     singleValue: "single-value", }` |
 
 <hr/>
 
@@ -204,6 +237,18 @@ export const mySliderLabel = SliderLabel.compose({
 | `position`  | position |                |
 | `hide-mark` | hideMark |                |
 | `disabled`  | disabled |                |
+
+#### CSS Parts
+
+| Name   | Description                                  |
+| ------ | -------------------------------------------- |
+| `root` | The element wrapping the label mark and text |
+
+#### Slots
+
+| Name | Description                            |
+| ---- | -------------------------------------- |
+|      | The default slot for the label content |
 
 <hr/>
 

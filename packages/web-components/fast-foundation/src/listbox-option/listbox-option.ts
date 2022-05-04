@@ -31,6 +31,11 @@ export function isListboxOption(el: Element): el is ListboxOption {
  * An Option Custom HTML Element.
  * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#option | ARIA option }.
  *
+ * @slot start - Content which can be provided before the listbox option content
+ * @slot end - Content which can be provided after the listbox option content
+ * @slot - The default slot for listbox option content
+ * @csspart content - Wraps the listbox option content
+ *
  * @public
  */
 export class ListboxOption extends FoundationElement {
@@ -199,13 +204,14 @@ export class ListboxOption extends FoundationElement {
         return this.textContent?.replace(/\s+/g, " ").trim() ?? "";
     }
 
-    public set value(next: string) {
-        this._value = next;
+    public set value(next: string | unknown) {
+        const newValue = `${next ?? ""}`;
+        this._value = newValue;
 
         this.dirtyValue = true;
 
         if (this.proxy instanceof HTMLOptionElement) {
-            this.proxy.value = next;
+            this.proxy.value = newValue;
         }
 
         Observable.notify(this, "value");

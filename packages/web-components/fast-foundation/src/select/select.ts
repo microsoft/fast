@@ -1,5 +1,5 @@
-import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
 import {
     ArrowKeys,
     keyEnd,
@@ -13,8 +13,8 @@ import {
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import type { ListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";
-import { StartEnd } from "../patterns/start-end.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedSelect } from "./select.form-associated.js";
 import { SelectPosition } from "./select.options.js";
@@ -31,6 +31,19 @@ export type SelectOptions = FoundationElementDefinition &
 /**
  * A Select Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#select | ARIA select }.
+ *
+ * @slot start - Content which can be provided before the button content
+ * @slot end - Content which can be provided after the button content
+ * @slot button-container - The element representing the select button
+ * @slot selected-value - The selected value
+ * @slot indicator - The visual indicator for the expand/collapse state of the button
+ * @slot - The default slot for slotted options
+ * @csspart control - The element representing the select invoking element
+ * @csspart selected-value - The element wrapping the selected value
+ * @csspart indicator - The element wrapping the visual indicator
+ * @csspart listbox - The listbox element
+ * @fires input - Fires a custom 'input' event when the value updates
+ * @fires change - Fires a custom 'change' event when the value updates
  *
  * @public
  */
@@ -121,28 +134,17 @@ export class Select extends FormAssociatedSelect {
     public set value(next: string) {
         const prev = `${this._value}`;
 
-        if (this.options?.length) {
-            const selectedIndex = this.options.findIndex(el => el.value === next);
-
-            const prevSelectedOption = this.options[this.selectedIndex];
-            const nextSelectedOption = this.options[selectedIndex];
-
-            const prevSelectedValue = prevSelectedOption
-                ? prevSelectedOption.value
-                : null;
-
-            const nextSelectedValue = nextSelectedOption
-                ? nextSelectedOption.value
-                : null;
+        if (this._options?.length) {
+            const selectedIndex = this._options.findIndex(el => el.value === next);
+            const prevSelectedValue = this._options[this.selectedIndex]?.value ?? null;
+            const nextSelectedValue = this._options[selectedIndex]?.value ?? null;
 
             if (selectedIndex === -1 || prevSelectedValue !== nextSelectedValue) {
                 next = "";
                 this.selectedIndex = selectedIndex;
             }
 
-            if (this.firstSelectedOption) {
-                next = this.firstSelectedOption.value;
-            }
+            next = this.firstSelectedOption?.value ?? next;
         }
 
         if (prev !== next) {
@@ -193,7 +195,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition | "above" | "below";
+    public positionAttribute: SelectPosition;
 
     /**
      * Indicates the initial state of the position attribute.
@@ -208,7 +210,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @observable
-    public position: SelectPosition | "above" | "below" = SelectPosition.below;
+    public position: SelectPosition = SelectPosition.below;
     protected positionChanged() {
         this.positionAttribute = this.position;
         this.setPositioning();
@@ -361,6 +363,22 @@ export class Select extends FormAssociatedSelect {
     }
 
     /**
+     * Updates the value when an option's value changes.
+     *
+     * @param source - the source object
+     * @param propertyName - the property to evaluate
+     *
+     * @internal
+     * @override
+     */
+    public handleChange(source: any, propertyName: string) {
+        super.handleChange(source, propertyName);
+        if (propertyName === "value") {
+            this.updateValue();
+        }
+    }
+
+    /**
      * Synchronize the form-associated proxy and updates the value property of the element.
      *
      * @param prev - the previous collection of slotted option elements
@@ -369,7 +387,17 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     public slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void {
+        this.options.forEach(o => {
+            const notifier = Observable.getNotifier(o);
+            notifier.unsubscribe(this, "value");
+        });
+
         super.slottedOptionsChanged(prev, next);
+
+        this.options.forEach(o => {
+            const notifier = Observable.getNotifier(o);
+            notifier.subscribe(this, "value");
+        });
         this.setProxyOptions();
         this.updateValue();
     }

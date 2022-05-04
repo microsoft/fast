@@ -3,6 +3,7 @@ id: toolbar
 title: fast-toolbar
 sidebar_label: toolbar
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/toolbar/README.md
+description: fast-toolbar is a web component implementation of a toolbar.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#toolbar):
@@ -113,6 +114,21 @@ export const myToolbar = Toolbar.compose({
 | Name          | Field       | Inherited From |
 | ------------- | ----------- | -------------- |
 | `orientation` | orientation |                |
+
+#### CSS Parts
+
+| Name                 | Description                                           |
+| -------------------- | ----------------------------------------------------- |
+| `positioning-region` | The element containing the items, start and end slots |
+
+#### Slots
+
+| Name    | Description                                            |
+| ------- | ------------------------------------------------------ |
+| `start` | Content which can be provided before the slotted items |
+| `end`   | Content which can be provided after the slotted items  |
+|         | The default slot for slotted items                     |
+| `label` | The toolbar label                                      |
 
 <hr/>
 

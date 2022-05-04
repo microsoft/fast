@@ -15,7 +15,8 @@
     "build": "docusaurus build",
     "prestart": "yarn prebuild",
     "serve": "docusaurus serve",
-    "start": "docusaurus start"
+    "start": "docusaurus start",
+    "swizzle": "docusaurus swizzle"
   },
   "browserslist": {
     "production": [

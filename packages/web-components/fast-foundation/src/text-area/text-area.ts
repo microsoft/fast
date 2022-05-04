@@ -10,6 +10,12 @@ export { TextAreaResize };
  * A Text Area Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea | <textarea> element }.
  *
+ * @slot - The default slot for the label
+ * @csspart label - The label
+ * @csspart root - The element wrapping the control
+ * @csspart control - The textarea element
+ * @fires change - Emits a custom 'change' event when the textarea emits a change event
+ *
  * @public
  */
 export class TextArea extends FormAssociatedTextArea {
@@ -34,8 +40,7 @@ export class TextArea extends FormAssociatedTextArea {
      * HTML Attribute: resize
      */
     @attr
-    public resize: TextAreaResize | "none" | "both" | "horizontal" | "vertical" =
-        TextAreaResize.none;
+    public resize: TextAreaResize = TextAreaResize.none;
 
     /**
      * A reference to the internal textarea element

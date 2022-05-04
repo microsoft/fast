@@ -3,6 +3,7 @@ id: horizontal-scroll
 title: fast-horizontal-scroll
 sidebar_label: horizontal-scroll
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/horizontal-scroll/README.md
+description: fast-horizontal-scroll is a web component implementation of a content scroller.
 ---
 
 An implementation of a content scroller as a web-component.
@@ -168,6 +169,13 @@ export const myHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptio
 | `templateChanged`    | protected |                                                                  |                                                | `void` | FoundationElement |
 | `stylesChanged`      | protected |                                                                  |                                                | `void` | FoundationElement |
 
+#### Events
+
+| Name          | Type | Description                                           | Inherited From |
+| ------------- | ---- | ----------------------------------------------------- | -------------- |
+| `scrollstart` |      | Fires a custom 'scrollstart' event when scrolling     |                |
+| `scrollend`   |      | Fires a custom 'scrollend' event when scrolling stops |                |
+
 #### Attributes
 
 | Name                      | Field                | Inherited From |
@@ -177,6 +185,25 @@ export const myHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptio
 | `easing`                  | easing               |                |
 | `flippers-hidden-from-at` | flippersHiddenFromAT |                |
 | `view`                    | view                 |                |
+
+#### CSS Parts
+
+| Name                     | Description                               |
+| ------------------------ | ----------------------------------------- |
+| `scroll-area`            | Wraps the entire scrollable region        |
+| `scroll-view`            | The visible scroll area                   |
+| `content-container`      | The container for the content             |
+| `scroll-prev`            | The previous flipper container            |
+| `scroll-action-previous` | The element wrapping the previous flipper |
+| `scroll-next`            | The next flipper container                |
+| `scroll-action-next`     | The element wrapping the next flipper     |
+
+#### Slots
+
+| Name    | Description                                          |
+| ------- | ---------------------------------------------------- |
+| `start` | Content which can be provided before the scroll area |
+| `end`   | Content which can be provided after the scroll area  |
 
 <hr/>
 

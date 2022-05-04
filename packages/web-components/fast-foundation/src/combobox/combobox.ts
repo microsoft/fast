@@ -24,6 +24,17 @@ export type ComboboxOptions = FoundationElementDefinition &
  * A Combobox Custom HTML Element.
  * Implements the {@link https://w3c.github.io/aria-practices/#combobox | ARIA combobox }.
  *
+ * @slot start - Content which can be provided before the input
+ * @slot end - Content which can be provided after the input
+ * @slot control - Used to replace the input element representing the combobox
+ * @slot indicator - The visual indicator representing the expanded state
+ * @slot - The default slot for the options
+ * @csspart control - The wrapper element containing the input area, including start and end
+ * @csspart selected-value - The input element representing the selected value
+ * @csspart indicator - The element wrapping the indicator slot
+ * @csspart listbox - The wrapper for the listbox slotted options
+ * @fires change - Fires a custom 'change' event when the value updates
+ *
  * @public
  */
 export class Combobox extends FormAssociatedCombobox {
@@ -42,7 +53,7 @@ export class Combobox extends FormAssociatedCombobox {
      * HTML Attribute: autocomplete
      */
     @attr({ attribute: "autocomplete", mode: "fromView" })
-    autocomplete: ComboboxAutocomplete | "inline" | "list" | "both" | "none" | undefined;
+    autocomplete: ComboboxAutocomplete | undefined;
 
     /**
      * Reference to the internal text input element.

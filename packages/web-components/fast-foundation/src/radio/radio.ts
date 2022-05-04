@@ -24,6 +24,12 @@ export type RadioOptions = FoundationElementDefinition & {
  * A Radio Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#radio | ARIA radio }.
  *
+ * @slot checked-indicator - The checked indicator
+ * @slot - The default slot for the label
+ * @csspart control - The element representing the visual radio control
+ * @csspart label - The label
+ * @fires change - Emits a custom change event when the checked state changes
+ *
  * @public
  */
 export class Radio extends FormAssociatedRadio implements RadioControl {

@@ -10,7 +10,7 @@ describe("Select", () => {
     const FASTSelect = Select.compose({
         baseName: "select",
         template
-    })
+    });
 
     const FASTOption = ListboxOption.compose({
         baseName: "option",
@@ -192,6 +192,52 @@ describe("Select", () => {
         element.value = "two";
 
         expect(element.value).to.equal("two");
+
+        await disconnect();
+    });
+
+    it("should select the next selectable option when the value is set to match a disabled option", async () => {
+        const { element, connect, disconnect, option2 } = await setup();
+
+        option2.disabled = true;
+
+        await connect();
+
+        expect(element.value).to.equal("one");
+        expect(element.selectedIndex).to.equal(0);
+
+        element.value = "two";
+
+        expect(element.value).to.equal("three");
+        expect(element.selectedIndex).to.equal(2);
+
+        await disconnect();
+    });
+
+    it("should update the value when the selected option's value changes", async () => {
+        const { element, connect, disconnect, option1 } = await setup();
+
+        await connect();
+
+        expect(element.value).to.equal("one");
+
+        option1.value = "new value";
+
+        expect(element.value).to.equal("new value");
+
+        await disconnect();
+    });
+
+    it("should return the value as a string", async () => {
+        const { element, connect, disconnect, option1 } = await setup();
+
+        await connect();
+
+        option1.value = 12345 as any;
+
+        expect(element.value).to.equal("12345");
+
+        expect(typeof element.value).to.equal("string");
 
         await disconnect();
     });

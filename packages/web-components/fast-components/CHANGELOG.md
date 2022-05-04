@@ -1,8 +1,25 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 01 May 2022 07:12:05 GMT and should not be manually modified.
+This log was last generated on Wed, 04 May 2022 07:14:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.30.4
+
+Wed, 04 May 2022 07:14:00 GMT
+
+### Patches
+
+- convert enums to const objects and add supported typings (chhol@microsoft.com)
+
+## 2.30.3
+
+Tue, 03 May 2022 07:15:44 GMT
+
+### Patches
+
+- viewport lock + fill behavior (scomea@microsoft.com)
+- Upgraded api-extractor (44823142+williamw2@users.noreply.github.com)
 
 ## 2.30.2
 

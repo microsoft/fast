@@ -3,6 +3,7 @@ id: accordion
 title: fast-accordion
 sidebar_label: accordion
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/accordion/README.md
+description: fast-accordion is a web component implementation of an accordion.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#accordion):
@@ -127,11 +128,31 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                                | Inherited From |
+| -------- | ---- | ---------------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the active item changes |                |
+
 #### Attributes
 
 | Name          | Field      | Inherited From |
 | ------------- | ---------- | -------------- |
 | `expand-mode` | expandmode |                |
+
+#### CSS Parts
+
+| Name   | Description                      |
+| ------ | -------------------------------- |
+| `item` | The slot for the accordion items |
+
+<hr/>
+
+### Variables
+
+| Name                  | Description               | Type                                                                                                                                                                                                                                                                                                             |
+| --------------------- | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AccordionExpandMode` | Expand mode for Accordion | `{     /**      * Designates only a single @microsoft/fast-foundation#(AccordionItem:class)  can be open a time.      */     single: "single",      /**      * Designates multiple [AccordionItems](@microsoft/fast-foundation#(AccordionItem:class)) can be open simultaneously.      */     multi: "multi", }` |
 
 <hr/>
 
@@ -163,6 +184,12 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                              | Inherited From |
+| -------- | ---- | -------------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the button is invoked |                |
+
 #### Attributes
 
 | Name            | Field        | Inherited From |
@@ -170,6 +197,29 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | `heading-level` | headinglevel |                |
 |                 | expanded     |                |
 | `id`            | id           |                |
+
+#### CSS Parts
+
+| Name              | Description                                              |
+| ----------------- | -------------------------------------------------------- |
+| `heading`         | Wraps the button                                         |
+| `button`          | The button which serves to invoke the item               |
+| `heading-content` | Wraps the slot for the heading content within the button |
+| `icon`            | The icon container                                       |
+| `expanded-icon`   | The expanded icon slot                                   |
+| `collapsed-icon`  | The collapsed icon                                       |
+| `region`          | The wrapper for the accordion item content               |
+
+#### Slots
+
+| Name             | Description                                                                      |
+| ---------------- | -------------------------------------------------------------------------------- |
+| `start`          | Content which can be provided between the heading and the icon                   |
+| `end`            | Content which can be provided between the start slot and icon                    |
+| `heading`        | Content which serves as the accordion item heading and text of the expand button |
+|                  | The default slot for accordion item content                                      |
+| `expanded-icon`  | The expanded icon                                                                |
+| `collapsed-icon` | The collapsed icon                                                               |
 
 <hr/>
 

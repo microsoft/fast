@@ -3,6 +3,7 @@ id: anchored-region
 title: fast-anchored-region
 sidebar_label: anchored-region
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/anchored-region/README.md
+description: fast-anchored-region is a container web component in which the contents of the anchored region can be positioned relative to another "anchor" element.
 ---
 
 An *anchored region* is a container component which enables authors to create layouts where the contents of the anchored region can be positioned relative to another "anchor" element.  Additionally, the *anchored region* can react to the available space between the anchor and a parent ["viewport"](https://developer.mozilla.org/en-US/docs/Glossary/viewport) element such that the region is placed on the side of the anchor with the most available space, or even resize itself based on that space.
@@ -118,6 +119,13 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name             | Type | Description                                                         | Inherited From |
+| ---------------- | ---- | ------------------------------------------------------------------- | -------------- |
+| `loaded`         |      | Fires a custom 'loaded' event when the region is loaded and visible |                |
+| `positionchange` |      | Fires a custom 'positionchange' event when the position has changed |                |
+
 #### Attributes
 
 | Name                          | Field                     | Inherited From |
@@ -138,6 +146,12 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | `vertical-scaling`            | verticalScaling           |                |
 | `fixed-placement`             | fixedPlacement            |                |
 | `auto-update-mode`            | autoUpdateMode            |                |
+
+#### Slots
+
+| Name | Description                      |
+| ---- | -------------------------------- |
+|      | The default slot for the content |
 
 <hr/>
 

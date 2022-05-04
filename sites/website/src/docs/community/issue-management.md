@@ -3,7 +3,9 @@ id: issue-management
 title: Issue Management
 sidebar_label: Issue Management
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/community/issue-management.md
+description: Managing a popular GitHub repo with a small team requires a good balance between creating new features, handling investigations, and fixing bugs.
 ---
+
 Managing a popular GitHub repo with a small team is not an easy task. It requires a good balance between creating new features while handling many investigations and bug fixes associated with existing ones.
 
 During the last couple of years the amount of incoming issues has been constantly growing. While this is a sign of a healthy framework and ecosystem surrounding it, it's becoming harder to react to all those issues.

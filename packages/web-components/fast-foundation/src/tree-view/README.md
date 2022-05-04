@@ -3,6 +3,7 @@ id: tree-view
 title: fast-tree-view
 sidebar_label: tree-view
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/tree-view/README.md
+description: fast-tree-view is a web component implementation of a tree-item.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria/#tree):
@@ -126,6 +127,12 @@ export const myTreeView = TreeView.compose({
 | Name                     | Field                | Inherited From |
 | ------------------------ | -------------------- | -------------- |
 | `render-collapsed-nodes` | renderCollapsedNodes |                |
+
+#### Slots
+
+| Name | Description                     |
+| ---- | ------------------------------- |
+|      | The default slot for tree items |
 
 <hr/>
 

@@ -16,12 +16,11 @@ export class Divider extends FoundationElement {
      * The role of the element.
      *
      * @public
-     * @defaultValue - {@link DividerRole.separator}
      * @remarks
      * HTML Attribute: role
      */
     @attr
-    public role: DividerRole | "separator" | "presentation" = DividerRole.separator;
+    public role: DividerRole = DividerRole.separator;
 
     /**
      * The orientation of the divider.
