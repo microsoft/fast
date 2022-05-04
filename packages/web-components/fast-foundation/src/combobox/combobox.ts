@@ -281,6 +281,7 @@ export class Combobox extends FormAssociatedCombobox {
 
             this.selectedOptions = [captured];
             this.control.value = captured.text;
+            this.clearSelectionRange();
             this.updateValue(true);
         }
 
@@ -433,8 +434,7 @@ export class Combobox extends FormAssociatedCombobox {
                 }
 
                 this.open = false;
-                const controlValueLength = this.control.value.length;
-                this.control.setSelectionRange(controlValueLength, controlValueLength);
+                this.clearSelectionRange();
                 break;
             }
 
@@ -666,6 +666,14 @@ export class Combobox extends FormAssociatedCombobox {
         if (shouldEmit) {
             this.$emit("change");
         }
+    }
+
+    /**
+     * @internal
+     */
+    private clearSelectionRange() {
+        const controlValueLength = this.control.value.length;
+        this.control.setSelectionRange(controlValueLength, controlValueLength);
     }
 }
 
