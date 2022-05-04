@@ -173,9 +173,9 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 ### Variables
 
-| Name           | Description       | Type                                                                                                                           |
-| -------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `MenuItemRole` | Menu items roles. | `{          menuitem: "menuitem",           menuitemcheckbox: "menuitemcheckbox",           menuitemradio: "menuitemradio", }` |
+| Name           | Description       | Type                                                                                              |
+| -------------- | ----------------- | ------------------------------------------------------------------------------------------------- |
+| `MenuItemRole` | Menu items roles. | `{ menuitem: "menuitem", menuitemcheckbox: "menuitemcheckbox", menuitemradio: "menuitemradio", }` |
 
 <hr/>
 

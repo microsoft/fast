@@ -56,9 +56,9 @@ This component is built with the expectation that focus is delegated to the inpu
 
 ### Variables
 
-| Name             | Description                | Type                                                                                                                     |
-| ---------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `TextAreaResize` | Resize mode for a TextArea | `{          none: "none",           both: "both",           horizontal: "horizontal",           vertical: "vertical", }` |
+| Name             | Description                | Type                                                                              |
+| ---------------- | -------------------------- | --------------------------------------------------------------------------------- |
+| `TextAreaResize` | Resize mode for a TextArea | `{ none: "none", both: "both", horizontal: "horizontal", vertical: "vertical", }` |
 
 <hr/>
 

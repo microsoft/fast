@@ -149,9 +149,9 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 ### Variables
 
-| Name                  | Description               | Type                                                       |
-| --------------------- | ------------------------- | ---------------------------------------------------------- |
-| `AccordionExpandMode` | Expand mode for Accordion | `{          single: "single",           multi: "multi", }` |
+| Name                  | Description               | Type                                    |
+| --------------------- | ------------------------- | --------------------------------------- |
+| `AccordionExpandMode` | Expand mode for Accordion | `{ single: "single", multi: "multi", }` |
 
 <hr/>
 

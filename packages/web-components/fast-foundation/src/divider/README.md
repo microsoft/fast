@@ -46,9 +46,9 @@ export const myDivider = Divider.compose({
 
 ### Variables
 
-| Name          | Description   | Type                                                                           |
-| ------------- | ------------- | ------------------------------------------------------------------------------ |
-| `DividerRole` | Divider roles | `{          separator: "separator",           presentation: "presentation", }` |
+| Name          | Description   | Type                                                        |
+| ------------- | ------------- | ----------------------------------------------------------- |
+| `DividerRole` | Divider roles | `{ separator: "separator", presentation: "presentation", }` |
 
 <hr/>
 
