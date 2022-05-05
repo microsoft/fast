@@ -1,3 +1,6 @@
+// import "../index.spec.js";
+
+
 function importAll(r: __WebpackModuleApi.RequireContext): void {
     r.keys().forEach(r);
 }

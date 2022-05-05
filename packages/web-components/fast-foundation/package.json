@@ -20,8 +20,14 @@
   "unpkg": "dist/fast-foundation.min.js",
   "type": "module",
   "exports": {
-    "." : "./dist/esm/index.js",
-    "./testing": "./dist/esm/testing/exports.js"
+    "." : {
+      "types": "./dist/fast-foundation.d.ts",
+      "default": "./dist/esm/index.js"
+    },
+    "./testing": {
+      "types": "./dist/dts/testing/exports.d.ts",
+      "default": "./dist/esm/testing/exports.js"
+    }
   },
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
@@ -95,7 +101,7 @@
     "ts-loader": "^7.0.2",
     "ts-node": "^8.9.1",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^4.6.2",
+    "typescript": "^4.7.0-beta",
     "webpack": "^4.44.0"
   },
   "dependencies": {

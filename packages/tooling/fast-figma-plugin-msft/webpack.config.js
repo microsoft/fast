@@ -12,7 +12,7 @@ module.exports = (env, args) => {
     const isProduction = args.mode === "production";
 
     return {
-        devtool: isProduction ? "none" : "inline-source-map",
+        devtool: isProduction ? undefined : "inline-source-map",
         entry: {
             main: path.resolve(appDir, "main.ts"),
             ui: path.resolve(appDir, "ui.tsx"),
@@ -60,7 +60,7 @@ module.exports = (env, args) => {
                 inlineSource: "(js)$",
                 template: path.resolve(appDir, "index.html"),
             }),
-            new HtmlWebpackInlineSourcePlugin(),
+            new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin),
             new BundleAnalyzerPlugin({
                 // Remove this to inspect bundle sizes.
                 analyzerMode: "disabled",

@@ -1721,7 +1721,7 @@ export class ContainerImpl implements Container {
             }
         }
 
-        throw new Error(`Unable to resolve key: ${key}`);
+        throw new Error(`Unable to resolve key: ${String(key)}`);
     }
 
     public getAll<K extends Key>(

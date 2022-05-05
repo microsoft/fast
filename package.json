@@ -136,7 +136,7 @@
     "node-gyp": "^9.0.0",
     "trim-newlines": "^4.0.2",
     "trim": "^0.0.3",
-    "typescript": "^4.6.2",
+    "typescript": "^4.7.0-beta",
     "ua-parser-js": "^0.7.28",
     "ws": "^7.4.6",
     "xmlhttprequest-ssl": "^1.6.2"
@@ -164,7 +164,7 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^25.4.0",
     "ts-node": "^8.8.2",
-    "typescript": "^4.6.2",
+    "typescript": "^4.7.0-beta",
     "yargs": "^16.2.0"
   },
   "dependencies": {

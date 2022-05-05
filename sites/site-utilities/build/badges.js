@@ -59,7 +59,16 @@ const formats = {
     "@microsoft/fast-foundation",
 ].map(p => {
     try {
-        const { name, version: message } = require(`${p}/package.json`);
+        const entry = require.resolve(p).toString();
+        let dir = path.parse(entry).dir;
+
+        while (!fs.existsSync(path.resolve(dir, "package.json"))) {
+            dir = path.parse(dir).dir;
+        }
+
+        const { name, version: message } = JSON.parse(
+            fs.readFileSync(path.resolve(dir, "package.json"))
+        );
         const packageName = name.split("/").pop();
         formats[`${encodeURIComponent(packageName)}.svg`] = {
             label: "npm package",
@@ -72,6 +81,7 @@ const formats = {
 
 Object.entries(formats).forEach(async ([filename, format]) => {
     const svg = makeBadge(format);
+
     try {
         await fs.outputFile(`${staticsAssetsDir}/badges/${filename}`, svg);
     } catch (err) {

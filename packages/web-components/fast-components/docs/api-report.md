@@ -545,7 +545,7 @@ export const allComponents: {
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, TreeView>;
     fastTreeItem: (overrideDefinition?: OverrideFoundationElementDefinition<TreeItemOptions> | undefined) => FoundationElementRegistry<TreeItemOptions, Constructable<FoundationElement>>;
-    register(container?: Container | undefined, ...rest: any[]): void;
+    register(container?: Container, ...rest: any[]): void;
 };
 
 // @public
