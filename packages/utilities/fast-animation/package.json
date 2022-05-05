@@ -15,6 +15,7 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "main": "dist/index.js",
+  "types": "dist/fast-animation-public.d.ts",
   "scripts": {
     "build": "tsc -p ./lib/tsconfig.json && yarn doc",
     "build:app": "webpack --mode=production",

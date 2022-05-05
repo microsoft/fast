@@ -17,7 +17,7 @@
   },
   "main": "dist/esm/index.js",
   "type": "module",
-  "types": "dist/fast-react-wrapper.d.ts",
+  "types": "dist/fast-react-wrapper-public.d.ts",
   "unpkg": "dist/fast-react-wrapper.min.js",
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",

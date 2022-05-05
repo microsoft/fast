@@ -5,7 +5,6 @@
   "dtsRollup": {
     "enabled": true,
     "untrimmedFilePath": "./dist/fast-ssr.d.ts",
-    "betaTrimmedFilePath": "./dist/fast-ssr.d.ts",
-    "omitTrimmingComments": true
+    "betaTrimmedFilePath": "./dist/fast-ssr-beta.d.ts"
   }
 }

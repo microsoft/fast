@@ -16,7 +16,7 @@
   },
   "main": "dist/esm/index.js",
   "type": "module",
-  "types": "dist/fast-element.d.ts",
+  "types": "dist/fast-element-public.d.ts",
   "unpkg": "dist/fast-element.min.js",
   "sideEffects": [
     "./dist/esm/debug.js",

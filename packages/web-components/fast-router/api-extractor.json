@@ -5,8 +5,7 @@
   "dtsRollup": {
     "enabled": true,
     "untrimmedFilePath": "./dist/fast-router.d.ts",
-    "publicTrimmedFilePath": "./dist/fast-router-public.d.ts",
-    "omitTrimmingComments": true
+    "publicTrimmedFilePath": "./dist/fast-router-public.d.ts"
   },
   "messages": {
       "extractorMessageReporting": {

@@ -4,8 +4,7 @@
   "dtsRollup": {
     "enabled": true,
     "untrimmedFilePath": "./dist/fast-foundation.d.ts",
-    "publicTrimmedFilePath": "./dist/fast-foundation-public.d.ts",
-    "omitTrimmingComments": true
+    "publicTrimmedFilePath": "./dist/fast-foundation-public.d.ts"
   },
   "messages": {
       "extractorMessageReporting": {

@@ -16,7 +16,7 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "main": "dist/esm/index.js",
-  "types": "dist/fast-router.d.ts",
+  "types": "dist/fast-router-public.d.ts",
   "type": "module",
   "unpkg": "dist/fast-router.min.js",
   "scripts": {

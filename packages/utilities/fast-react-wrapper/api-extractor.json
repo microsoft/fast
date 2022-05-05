@@ -4,8 +4,7 @@
   "dtsRollup": {
     "enabled": true,
     "untrimmedFilePath": "./dist/fast-react-wrapper.d.ts",
-    "publicTrimmedFilePath": "./dist/fast-react-wrapper-public.d.ts",
-    "omitTrimmingComments": true
+    "publicTrimmedFilePath": "./dist/fast-react-wrapper-public.d.ts"
   },
   "messages": {
       "extractorMessageReporting": {

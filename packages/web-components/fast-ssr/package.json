@@ -33,7 +33,7 @@
   },
   "description": "A package for rendering FAST components outside the browser.",
   "main": "./dist/esm/exports.js",
-  "types": "./dist/fast-ssr.d.ts",
+  "types": "./dist/fast-ssr-beta.d.ts",
   "exports": {
     "." : {
       "default": "./dist/esm/exports.js",

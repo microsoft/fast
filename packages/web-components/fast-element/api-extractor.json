@@ -4,7 +4,6 @@
   "dtsRollup": {
     "enabled": true,
     "untrimmedFilePath": "./dist/fast-element.d.ts",
-    "publicTrimmedFilePath": "./dist/fast-element-public.d.ts",
-    "omitTrimmingComments": true
+    "publicTrimmedFilePath": "./dist/fast-element-public.d.ts"
   }
 }
