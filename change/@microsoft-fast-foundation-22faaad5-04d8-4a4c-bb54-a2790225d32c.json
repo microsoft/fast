@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix positioning of select dropdown",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "abris96@gmail.com",
-  "dependentChangeType": "patch"
-}
