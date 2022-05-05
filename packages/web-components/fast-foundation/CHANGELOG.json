@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 05 May 2022 07:11:41 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.2",
+      "version": "2.46.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix positioning of select dropdown",
+            "author": "abris96@gmail.com",
+            "commit": "10169e77fc1ee328c0e94e082e120e8d1c4171b5",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "reset selection range when selecting option with cursor",
+            "author": "abris96@gmail.com",
+            "commit": "5b82a4b2aa6cf4d59bd4bb6a893764d3386dbf5d",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 04 May 2022 07:14:00 GMT",
       "tag": "@microsoft/fast-foundation_v2.46.1",
       "version": "2.46.1",
