@@ -104,7 +104,6 @@ This component is built with the expectation that focus is delegated to the inpu
 | `readOnlyChanged`    | protected |                                        |            | `void` |                   |
 | `autofocusChanged`   | protected |                                        |            | `void` |                   |
 | `placeholderChanged` | protected |                                        |            | `void` |                   |
-| `typeChanged`        | protected |                                        |            | `void` |                   |
 | `listChanged`        | protected |                                        |            | `void` |                   |
 | `maxlengthChanged`   | protected |                                        |            | `void` |                   |
 | `minlengthChanged`   | protected |                                        |            | `void` |                   |
