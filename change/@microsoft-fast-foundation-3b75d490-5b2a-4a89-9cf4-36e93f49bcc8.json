@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "point to trimmed d.ts files to ensure only public API's are exposed",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}
