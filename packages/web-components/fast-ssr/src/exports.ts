@@ -7,19 +7,14 @@ import {
 } from "@microsoft/fast-element";
 import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
 import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
-import {
-    FASTStyleStyleRenderer,
-    StyleElementStyleRenderer,
-    StyleRenderer,
-} from "./styles/style-renderer.js";
+import { StyleElementStyleRenderer, StyleRenderer } from "./styles/style-renderer.js";
 import { defaultViewBehaviorFactoryRenderers } from "./template-renderer/directives.js";
 import {
+    ComponentDOMEmissionMode,
     TemplateRenderer,
-    TemplateRendererConfiguration,
 } from "./template-renderer/template-renderer.js";
 import { SSRView } from "./view.js";
 
-export type Configuration = TemplateRendererConfiguration;
 Compiler.setDefaultStrategy(
     (
         html: string | HTMLTemplateElement,
@@ -40,8 +35,6 @@ DOM.setUpdateMode(false);
 
 /**
  * Factory for creating SSR rendering assets.
- * @param config - FAST SSR configuration
- *
  * @example
  * ```ts
  * import "@microsoft/install-dom-shim";
@@ -51,20 +44,18 @@ DOM.setUpdateMode(false);
  *
  * const streamableSSRResult = templateRenderer.render(html`...`, defaultRenderInfo);
  * ```
+ *
+ * @beta
  */
-export default function (
-    config?: Configuration
-): {
+export default function fastSSR(): {
     templateRenderer: TemplateRenderer;
     elementRenderer: typeof FASTElementRenderer;
     defaultRenderInfo: RenderInfo;
 } {
-    const templateRenderer = new TemplateRenderer(config);
+    const templateRenderer = new TemplateRenderer();
     const elementRenderer = class extends FASTElementRenderer {
         protected templateRenderer: TemplateRenderer = templateRenderer;
-        protected styleRenderer: StyleRenderer = config?.useFASTStyle
-            ? new FASTStyleStyleRenderer()
-            : new StyleElementStyleRenderer();
+        protected styleRenderer = new StyleElementStyleRenderer();
     };
 
     templateRenderer.withViewBehaviorFactoryRenderers(
@@ -81,3 +72,10 @@ export default function (
         },
     };
 }
+
+export type {
+    TemplateRenderer,
+    FASTElementRenderer,
+    StyleRenderer,
+    ComponentDOMEmissionMode,
+};
