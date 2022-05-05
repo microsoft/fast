@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 04 May 2022 07:14:00 GMT and should not be manually modified.
+This log was last generated on Thu, 05 May 2022 07:11:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.2
+
+Thu, 05 May 2022 07:11:41 GMT
+
+### Patches
+
+- fix positioning of select dropdown (abris96@gmail.com)
+- reset selection range when selecting option with cursor (abris96@gmail.com)
 
 ## 2.46.1
 

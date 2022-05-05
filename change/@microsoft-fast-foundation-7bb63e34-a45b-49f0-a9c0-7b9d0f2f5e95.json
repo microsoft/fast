@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "reset selection range when selecting option with cursor",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "abris96@gmail.com",
-  "dependentChangeType": "patch"
-}

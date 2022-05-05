@@ -1,8 +1,16 @@
 # Change Log - @microsoft/site-utilities
 
-This log was last generated on Tue, 03 May 2022 07:15:44 GMT and should not be manually modified.
+This log was last generated on Thu, 05 May 2022 07:11:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.0
+
+Thu, 05 May 2022 07:11:41 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.30.5 (abris96@gmail.com)
 
 ## 0.9.0
 
