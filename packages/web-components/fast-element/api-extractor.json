@@ -1,4 +1,8 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
-  "extends": "../../../api-extractor.json"
+  "extends": "../../../api-extractor.json",
+  "dtsRollup": {
+    "enabled": true,
+    "publicTrimmedFilePath": "./dist/fast-element.d.ts"
+  }
 }
