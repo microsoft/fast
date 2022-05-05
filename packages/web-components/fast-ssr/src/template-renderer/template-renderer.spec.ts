@@ -23,10 +23,10 @@ test.describe("TemplateRenderer", () => {
         });
     });
 
-    test.describe("should allow configuration", () => {
+    test.describe.skip("should allow configuration", () => {
         test("that emits to light DOM", () => {
-            const instance = new TemplateRenderer({componentDOMEmissionMode: "light"});
-            expect(instance.componentDOMEmissionMode).toBe("light")
+            const instance = new TemplateRenderer(/* Re-implement w/ light mode emission is finished {componentDOMEmissionMode: "light"} */);
+            expect(instance.componentDOMEmissionMode).toBe("light");
         });
     });
 

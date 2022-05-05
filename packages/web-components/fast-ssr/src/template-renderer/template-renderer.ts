@@ -18,44 +18,32 @@ function getLast<T>(arr: T[]): T | undefined {
     return arr[arr.length - 1];
 }
 
-export type ComponentDOMEmissionMode = "shadow" | "light";
-export interface TemplateRendererConfiguration {
-    /**
-     * Controls whether the template renderer should emit component template code to the component's shadow DOM or to its light DOM.
-     * @default "shadow"
-     */
-    componentDOMEmissionMode?: ComponentDOMEmissionMode;
+/**
+ * The mode for which a component's internals should be rendered.
+ * @beta
+ */
+export type ComponentDOMEmissionMode = "shadow";
 
-    /**
-     * Controls whether the template renderer should emit FASTStyle elements for stylesheets.
-     * Using FASTStyle can help reduce the SSR payload by only emitting stylesheet content once,
-     * and leveraging a Custom Element to map those stylesheets back to FAST element's on the client.
-     * @default false
-     */
-    useFASTStyle?: boolean;
-}
-
-export class TemplateRenderer
-    implements Readonly<Required<TemplateRendererConfiguration>> {
+/**
+ * A class designed to render HTML templates. The renderer supports
+ * rendering {@link @microsoft/fast-element#ViewTemplate} instances as well
+ * as arbitrary HTML strings.
+ *
+ * @beta
+ */
+export class TemplateRenderer {
     private viewBehaviorFactoryRenderers: Map<
         any,
         ViewBehaviorFactoryRenderer<any>
     > = new Map();
+
     /**
-     * {@inheritDoc TemplateRendererConfiguration.componentDOMEmissionMode}
+     * Controls how the {@link TemplateRenderer} will emit component DOM internals.
      */
     public readonly componentDOMEmissionMode: ComponentDOMEmissionMode = "shadow";
 
-    /** {@inheritdoc TemplateRendererConfiguration.useFASTStyle} */
-    public readonly useFASTStyle: boolean = false;
-    constructor(config?: TemplateRendererConfiguration) {
-        if (config) {
-            Object.assign(this, config);
-        }
-    }
-
     /**
-     *
+     * Renders a {@link @microsoft/fast-element#ViewTemplate} or HTML string.
      * @param template - The template to render.
      * @param renderInfo - Information about the rendering context.
      * @param source - Any source data to render the template and evaluate bindings with.
@@ -76,10 +64,11 @@ export class TemplateRenderer
 
     /**
      * Render a set of op codes.
+     * @param codes - the op codes to render.
+     * @param renderInfo - renderInfo context.
+     * @param source - source data.
+     *
      * @internal
-     * @param codes
-     * @param renderInfo
-     * @param source
      */
     public *renderOpCodes(
         codes: Op[],
@@ -95,10 +84,15 @@ export class TemplateRenderer
                 case OpType.viewBehaviorFactory: {
                     const factory = code.factory as ViewBehaviorFactory & Aspected;
                     const ctor = factory.constructor;
-                    if (this.viewBehaviorFactoryRenderers.has(ctor)) {
-                        yield* this.viewBehaviorFactoryRenderers
-                            .get(ctor)!
-                            .render(factory, renderInfo, source, this, context);
+                    const renderer = this.viewBehaviorFactoryRenderers.get(ctor);
+                    if (renderer) {
+                        yield* renderer.render(
+                            factory,
+                            renderInfo,
+                            source,
+                            this,
+                            context
+                        );
                     } else if (factory.aspectType && factory.binding) {
                         const result = factory.binding(source, context);
 
@@ -231,6 +225,8 @@ export class TemplateRenderer
     /**
      * Registers DirectiveRenderers to use when rendering templates.
      * @param renderers - The directive renderers to register
+     *
+     * @internal
      */
     public withViewBehaviorFactoryRenderers(
         ...renderers: ViewBehaviorFactoryRenderer<any>[]
@@ -254,8 +250,8 @@ export class TemplateRenderer
 
     /**
      * Format attribute key/value pair into a HTML attribute string.
-     * @param name
-     * @param value
+     * @param name - the attribute name.
+     * @param value - the attribute value.
      */
     private static formatAttribute(name: string, value: string) {
         return value === "" ? name : `${name}="${value}"`;
