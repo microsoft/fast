@@ -2666,6 +2666,8 @@ export class TextArea extends FormAssociatedTextArea {
     name: string;
     placeholder: string;
     readOnly: boolean;
+    // (undocumented)
+    protected readOnlyChanged(): void;
     resize: TextAreaResize;
     rows: number;
     protected select(): void;
@@ -2734,6 +2736,8 @@ export class TextField extends FormAssociatedTextField {
     // (undocumented)
     protected sizeChanged(): void;
     spellcheck: boolean;
+    // (undocumented)
+    protected spellcheckChanged(): void;
     type: TextFieldType;
 }
 

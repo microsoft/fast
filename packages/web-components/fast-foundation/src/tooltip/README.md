@@ -88,7 +88,6 @@ export const myTooltip = Tooltip.compose({
 | ------------------------ | --------- | ----------- | ------------------------------- | ------ | ----------------- |
 | `visibleChanged`         | protected |             |                                 | `void` |                   |
 | `anchorChanged`          | protected |             |                                 | `void` |                   |
-| `positionChanged`        | protected |             |                                 | `void` |                   |
 | `anchorElementChanged`   | protected |             | `oldValue: HTMLElement or null` | `void` |                   |
 | `viewportElementChanged` | protected |             |                                 | `void` |                   |
 | `templateChanged`        | protected |             |                                 | `void` | FoundationElement |
