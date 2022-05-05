@@ -62,9 +62,9 @@ This component is built with the expectation that focus is delegated to the inpu
 
 ### Variables
 
-| Name            | Description          | Type                                                                                                                                                                                                                                                                                                                        |
-| --------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `TextFieldType` | Text field sub-types | `{     /**      * An email TextField      */     email: "email",      /**      * A password TextField      */     password: "password",      /**      * A telephone TextField      */     tel: "tel",      /**      * A text TextField      */     text: "text",      /**      * A URL TextField      */     url: "url", }` |
+| Name            | Description          | Type                                                                              |
+| --------------- | -------------------- | --------------------------------------------------------------------------------- |
+| `TextFieldType` | Text field sub-types | `{ email: "email", password: "password", tel: "tel", text: "text", url: "url", }` |
 
 <hr/>
 

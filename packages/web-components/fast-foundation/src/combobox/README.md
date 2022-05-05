@@ -90,9 +90,9 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 ### Variables
 
-| Name                   | Description                       | Type                                                                              |
-| ---------------------- | --------------------------------- | --------------------------------------------------------------------------------- |
-| `ComboboxAutocomplete` | Autocomplete values for combobox. | `{     inline: "inline",     list: "list",     both: "both",     none: "none", }` |
+| Name                   | Description                       | Type                                                              |
+| ---------------------- | --------------------------------- | ----------------------------------------------------------------- |
+| `ComboboxAutocomplete` | Autocomplete values for combobox. | `{ inline: "inline", list: "list", both: "both", none: "none", }` |
 
 <hr/>
 

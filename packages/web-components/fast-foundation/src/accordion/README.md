@@ -150,9 +150,9 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 ### Variables
 
-| Name                  | Description               | Type                                                                                                                                                                                                                                                                                                             |
-| --------------------- | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `AccordionExpandMode` | Expand mode for Accordion | `{     /**      * Designates only a single @microsoft/fast-foundation#(AccordionItem:class)  can be open a time.      */     single: "single",      /**      * Designates multiple [AccordionItems](@microsoft/fast-foundation#(AccordionItem:class)) can be open simultaneously.      */     multi: "multi", }` |
+| Name                  | Description               | Type                                    |
+| --------------------- | ------------------------- | --------------------------------------- |
+| `AccordionExpandMode` | Expand mode for Accordion | `{ single: "single", multi: "multi", }` |
 
 <hr/>
 

@@ -80,9 +80,9 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 
 ### Variables
 
-| Name               | Description                        | Type                                              |
-| ------------------ | ---------------------------------- | ------------------------------------------------- |
-| `FlipperDirection` | The direction options for flipper. | `{     next: "next",     previous: "previous", }` |
+| Name               | Description                        | Type                                      |
+| ------------------ | ---------------------------------- | ----------------------------------------- |
+| `FlipperDirection` | The direction options for flipper. | `{ next: "next", previous: "previous", }` |
 
 <hr/>
 
