@@ -161,7 +161,6 @@ export const myDataGrid = DataGrid.compose({
 
 #### Fields
 
-<<<<<<< HEAD
 | Name                     | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | ------------------------ | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | `gridTemplateColumns`    | public  | `string`                              |         | String that gets applied to the the css gridTemplateColumns attribute for the row                                                                                                   |                   |
@@ -174,30 +173,12 @@ export const myDataGrid = DataGrid.compose({
 | `$presentation`          | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
 | `template`               | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
 | `styles`                 | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
-=======
-| Name                     | Privacy | Type                                                           | Default | Description                                                                                                                                                                         | Inherited From    |
-| ------------------------ | ------- | -------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `gridTemplateColumns`    | public  | `string`                                                       |         | String that gets applied to the the css gridTemplateColumns attribute for the row                                                                                                   |                   |
-| `rowType`                | public  | `DataGridRowTypes or "default" or "header" or "sticky-header"` |         | The type of row                                                                                                                                                                     |                   |
-| `rowData`                | public  | `object or null`                                               | `null`  | The base data for this row                                                                                                                                                          |                   |
-| `columnDefinitions`      | public  | `ColumnDefinition[] or null`                                   | `null`  | The column definitions of the row                                                                                                                                                   |                   |
-| `cellItemTemplate`       | public  | `ItemViewTemplate or undefined`                                |         | The template used to render cells in generated rows.                                                                                                                                |                   |
-| `headerCellItemTemplate` | public  | `ItemViewTemplate or undefined`                                |         | The template used to render header cells in generated rows.                                                                                                                         |                   |
-| `rowIndex`               | public  | `number`                                                       |         | The index of the row in the parent grid. This is typically set programmatically by the parent grid.                                                                                 |                   |
-| `$presentation`          | public  | `ComponentPresentation or null`                                |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`               | public  | `ElementViewTemplate or void or null`                          |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`                 | public  | `ElementStyles or void or null`                                |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
->>>>>>> fixes build-break caused by rebase
 
 #### Methods
 
 | Name                         | Privacy   | Description | Parameters         | Return | Inherited From    |
 | ---------------------------- | --------- | ----------- | ------------------ | ------ | ----------------- |
 | `gridTemplateColumnsChanged` | protected |             |                    | `void` |                   |
-<<<<<<< HEAD
-=======
-| `rowTypeChanged`             | protected |             |                    | `void` |                   |
->>>>>>> feat: update private change handlers to protected (#5872)
 | `rowDataChanged`             | protected |             |                    | `void` |                   |
 | `handleFocusout`             | public    |             | `e: FocusEvent`    | `void` |                   |
 | `handleCellFocus`            | public    |             | `e: Event`         | `void` |                   |
@@ -256,7 +237,6 @@ export const myDataGrid = DataGrid.compose({
 
 #### Fields
 
-<<<<<<< HEAD
 | Name                     | Privacy | Type                                  | Default | Description                                                                                                                                                                                                                                             | Inherited From    |
 | ------------------------ | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | `noTabbing`              | public  | `boolean`                             | `false` | When true the component will not add itself to the tab queue. Default is false.                                                                                                                                                                         |                   |
@@ -273,34 +253,12 @@ export const myDataGrid = DataGrid.compose({
 | `$presentation`          | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                                                                 | FoundationElement |
 | `template`               | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                                                              | FoundationElement |
 | `styles`                 | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                                                                     | FoundationElement |
-=======
-| Name                     | Privacy | Type                                                       | Default | Description                                                                                                                                                                                                                                             | Inherited From    |
-| ------------------------ | ------- | ---------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `noTabbing`              | public  | `boolean`                                                  | `false` | When true the component will not add itself to the tab queue. Default is false.                                                                                                                                                                         |                   |
-| `generateHeader`         | public  | `GenerateHeaderOptions or "none" or "default" or "sticky"` |         | Whether the grid should automatically generate a header row and its type                                                                                                                                                                                |                   |
-| `gridTemplateColumns`    | public  | `string`                                                   |         | String that gets applied to the the css gridTemplateColumns attribute of child rows                                                                                                                                                                     |                   |
-| `rowsData`               | public  | `object[]`                                                 | `[]`    | The data being displayed in the grid                                                                                                                                                                                                                    |                   |
-| `columnDefinitions`      | public  | `ColumnDefinition[] or null`                               | `null`  | The column definitions of the grid                                                                                                                                                                                                                      |                   |
-| `rowItemTemplate`        | public  | `ItemViewTemplate`                                         |         | The template to use for the programmatic generation of rows                                                                                                                                                                                             |                   |
-| `cellItemTemplate`       | public  | `ItemViewTemplate or undefined`                            |         | The template used to render cells in generated rows.                                                                                                                                                                                                    |                   |
-| `headerCellItemTemplate` | public  | `ItemViewTemplate or undefined`                            |         | The template used to render header cells in generated rows.                                                                                                                                                                                             |                   |
-| `focusRowIndex`          | public  | `number`                                                   | `0`     | The index of the row that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified row.       |                   |
-| `focusColumnIndex`       | public  | `number`                                                   | `0`     | The index of the column that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified column. |                   |
-| `rowElementTag`          | public  | `string`                                                   |         | Set by the component templates.                                                                                                                                                                                                                         |                   |
-| `$presentation`          | public  | `ComponentPresentation or null`                            |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                                                                 | FoundationElement |
-| `template`               | public  | `ElementViewTemplate or void or null`                      |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                                                              | FoundationElement |
-| `styles`                 | public  | `ElementStyles or void or null`                            |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                                                                     | FoundationElement |
->>>>>>> fixes build-break caused by rebase
 
 #### Methods
 
 | Name                         | Privacy   | Description | Parameters | Return | Inherited From    |
 | ---------------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
 | `noTabbingChanged`           | protected |             |            | `void` |                   |
-<<<<<<< HEAD
-=======
-| `generateHeaderChanged`      | protected |             |            | `void` |                   |
->>>>>>> feat: update private change handlers to protected (#5872)
 | `gridTemplateColumnsChanged` | protected |             |            | `void` |                   |
 | `rowsDataChanged`            | protected |             |            | `void` |                   |
 | `columnDefinitionsChanged`   | protected |             |            | `void` |                   |

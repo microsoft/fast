@@ -162,14 +162,8 @@ export class DataGrid extends FoundationElement {
      * HTML Attribute: generate-header
      */
     @attr({ attribute: "generate-header" })
-<<<<<<< HEAD
     public generateHeader: GenerateHeaderOptions = GenerateHeaderOptions.default;
     private generateHeaderChanged(): void {
-=======
-    public generateHeader: GenerateHeaderOptions | "none" | "default" | "sticky" =
-        GenerateHeaderOptions.default;
-    protected generateHeaderChanged(): void {
->>>>>>> feat: update private change handlers to protected (#5872)
         if (this.$fastController.isConnected) {
             this.toggleGeneratedHeader();
         }
