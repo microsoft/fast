@@ -5,6 +5,7 @@ import {
     TemplateValue,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { TemplateBuilder } from "./template-builder.js";
 
 export interface AnatomyContributor<TComponent> {
     strings: TemplateStringsArray;
@@ -115,4 +116,10 @@ export class Anatomy<TComponent = FASTElement, TPartNames extends string = strin
 
     protected begin() {}
     protected end(validator: AnatomyValidator) {}
+
+    public static define<This extends AnatomyConstructor<Anatomy>>(
+        this: This
+    ): TemplateBuilder<InstanceType<This>> {
+        return new TemplateBuilder(this as any);
+    }
 }

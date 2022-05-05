@@ -1,6 +1,5 @@
 import { elements, slotted, ViewTemplate } from "@microsoft/fast-element";
 import { Anatomy, AnatomyValidator } from "../builder/anatomy.js";
-import { build } from "../builder/template-builder.js";
 import type { Accordion } from "./accordion.js";
 
 export class AccordionAnatomy extends Anatomy<Accordion> {
@@ -22,13 +21,13 @@ export class AccordionAnatomy extends Anatomy<Accordion> {
 
 // default
 export function foundationAccordionTemplate(): ViewTemplate<Accordion> {
-    return build(AccordionAnatomy)
+    return AccordionAnatomy.define()
         .anatomy(x => x.defaultSlot())
         .build();
 }
 
 // custom
-const customTemplate = build(AccordionAnatomy)
+const customTemplate = AccordionAnatomy.define()
     .anatomy(accordion => {
         accordion.html`before default slot ${x => x.accordionItems}`.defaultSlot()
             .html`after default slot`;

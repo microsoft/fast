@@ -101,7 +101,3 @@ export class TemplateBuilder<TAnatomy extends Anatomy> {
         return html((strings as unknown) as TemplateStringsArray, values);
     }
 }
-
-export function build<T extends Anatomy>(AnatomyType: AnatomyConstructor<T>) {
-    return new TemplateBuilder<T>(AnatomyType);
-}

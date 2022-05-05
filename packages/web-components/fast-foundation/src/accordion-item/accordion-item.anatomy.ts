@@ -1,6 +1,5 @@
 import { ref } from "@microsoft/fast-element";
 import { Anatomy, SlotOptions } from "../builder/anatomy.js";
-import { build } from "../builder/template-builder.js";
 import type { AccordionItem } from "./accordion-item.js";
 
 type AccordionItemParts =
@@ -124,27 +123,25 @@ class AccordionIconAnatomy extends Anatomy<AccordionItem, AccordionItemParts> {
 
 // default
 export function foundationAccordionItemTemplate() {
-    return build(AccordionItemAnatomy)
+    return AccordionItemAnatomy.define()
         .anatomy(item =>
-            item
-                .heading(heading =>
-                    heading
-                        .button()
-                        .startSlot()
-                        .endSlot()
-                        .icons(icons =>
-                            icons
-                                .expanded({ fallback: "icon..." })
-                                .collapsed({ fallback: "icon..." })
-                        )
-                )
-                .defaultSlot()
+            item.heading(heading =>
+                heading
+                    .button()
+                    .startSlot()
+                    .endSlot()
+                    .icons(icons =>
+                        icons
+                            .expanded({ fallback: "icon..." })
+                            .collapsed({ fallback: "icon..." })
+                    )
+            )
         )
         .build();
 }
 
 // custom
-const customTemplate = build(AccordionItemAnatomy)
+const customTemplate = AccordionItemAnatomy.define()
     .parts({
         button: "control",
         region: "content",
