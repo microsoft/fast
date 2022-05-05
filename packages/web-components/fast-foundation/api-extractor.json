@@ -3,7 +3,9 @@
   "extends": "../../../api-extractor.json",
   "dtsRollup": {
     "enabled": true,
-    "publicTrimmedFilePath": "./dist/fast-foundation.d.ts"
+    "untrimmedFilePath": "./dist/fast-foundation.d.ts",
+    "publicTrimmedFilePath": "./dist/fast-foundation-public.d.ts",
+    "omitTrimmingComments": true
   },
   "messages": {
       "extractorMessageReporting": {

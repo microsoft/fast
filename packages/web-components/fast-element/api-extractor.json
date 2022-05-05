@@ -3,6 +3,8 @@
   "extends": "../../../api-extractor.json",
   "dtsRollup": {
     "enabled": true,
-    "publicTrimmedFilePath": "./dist/fast-element.d.ts"
+    "untrimmedFilePath": "./dist/fast-element.d.ts",
+    "publicTrimmedFilePath": "./dist/fast-element-public.d.ts",
+    "omitTrimmingComments": true
   }
 }

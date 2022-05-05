@@ -3,7 +3,9 @@
   "extends": "../../../api-extractor.json",
   "dtsRollup": {
     "enabled": true,
-    "publicTrimmedFilePath": "./dist/fast-react-wrapper.d.ts"
+    "untrimmedFilePath": "./dist/fast-react-wrapper.d.ts",
+    "publicTrimmedFilePath": "./dist/fast-react-wrapper-public.d.ts",
+    "omitTrimmingComments": true
   },
   "messages": {
       "extractorMessageReporting": {

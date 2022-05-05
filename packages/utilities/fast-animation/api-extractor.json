@@ -4,6 +4,7 @@
     "mainEntryPointFilePath": "dist/index.d.ts",
     "dtsRollup": {
         "enabled": true,
-        "publicTrimmedFilePath": "./dist/fast-animation.d.ts"
+        "untrimmedFilePath": "./dist/fast-animation.d.ts",
+        "publicTrimmedFilePath": "./dist/fast-animation-public.d.ts"
     }
 }

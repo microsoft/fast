@@ -4,7 +4,9 @@
   "mainEntryPointFilePath": "dist/dts/index.d.ts",
   "dtsRollup": {
     "enabled": true,
-    "publicTrimmedFilePath": "./dist/fast-router.d.ts"
+    "untrimmedFilePath": "./dist/fast-router.d.ts",
+    "publicTrimmedFilePath": "./dist/fast-router-public.d.ts",
+    "omitTrimmingComments": true
   },
   "messages": {
       "extractorMessageReporting": {
