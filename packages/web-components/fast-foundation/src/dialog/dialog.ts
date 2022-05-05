@@ -1,7 +1,7 @@
 import { attr, DOM, Notifier, Observable } from "@microsoft/fast-element";
 import { keyEscape, keyTab } from "@microsoft/fast-web-utilities";
-import { FocusableElement, isTabbable, tabbable } from "tabbable";
-import { FoundationElement } from "../foundation-element";
+import { FocusableElement, tabbable } from "tabbable";
+import { FoundationElement } from "../foundation-element/index.js";
 
 /**
  * A Switch Custom HTML Element.
@@ -194,7 +194,7 @@ export class Dialog extends FoundationElement {
             return;
         }
 
-        const bounds: (HTMLElement | SVGElement)[] = this.getTabQueueBounds();
+        const bounds: FocusableElement[] = this.getTabQueueBounds();
 
         if (bounds.length === 0) {
             return;

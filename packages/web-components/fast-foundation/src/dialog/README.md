@@ -57,9 +57,9 @@ export const myDialog = Dialog.compose({
 
 #### Superclass
 
-| Name                | Module                  | Package |
-| ------------------- | ----------------------- | ------- |
-| `FoundationElement` | /src/foundation-element |         |
+| Name                | Module                           | Package |
+| ------------------- | -------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/index.js |         |
 
 #### Fields
 
