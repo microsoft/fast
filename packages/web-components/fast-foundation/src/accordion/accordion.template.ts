@@ -10,9 +10,9 @@ import type { Accordion } from "./accordion.js";
 export const accordionTemplate: FoundationElementTemplate<ViewTemplate<Accordion>> = (
     context,
     definition
-) => /* TODO: deprecate slot name `item` to only support default slot https://github.com/microsoft/fast/issues/5515 */ html`
+) => html`
     <template>
         <slot ${slotted({ property: "accordionItems", filter: elements() })}></slot>
-        <slot name="item" part="item" ${slotted("accordionItems")}></slot>
+        <slot ${slotted("accordionItems")}></slot>
     </template>
 `;
