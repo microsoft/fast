@@ -71,11 +71,15 @@ class XApp extends FASTElement {
 }
 ```
 
+#### Option to customize utils
+
 There is a utility folder called `./utils`, where you have access to the `data` variable, this is an array of RandomItem objects.
 
 For more details on what the data encompasses, reference below in [utils.ts](#utils.ts).
 
 By default, there are 10k RandomItems generated, you can change this value in the [utils.ts](#utils.ts) as well.
+
+If you are ok with these default values, you can ignore this section.
 
 #### utils.ts
 
@@ -103,6 +107,7 @@ To run a benchmark, supply all the options listed below in [Arguments](#argument
 | `--versions/-v`        | `--versions 1.9.0 master local` `--versions=1.9.0`           | `master` and `local` are special keywords that can be used. Or supply versions of the library, check available [versions](#library-versions). Multiple options have to be **delimited by spaces**, to include the `local` version, check details in [Running local version](#running-local-version). | Yes      |
 | `--localBenchFile/-lb` | `--localBenchFile=index2`                                    | Name of the local benchmark file **don't include the extension** This option is only turned on if you've supplied 'local' as one of the versions AND you want to add different implementation for the same benchmark test, check details in [Running local version](#running-local-version).         | No       |
 | `--operations/-o`      | `--operations=create10k` `--operations create10k update10th` | Defaults to run all possible operations if this argument is not supplied. Name of operations to run benchmarks against, **don't include the extension**. Delimited by spaces                                                                                                                         | No       |
+| `--memory/-m`          | `-memory`                                                    | Display only memory performance results                                                                                                                                                                                                                                                              | No       |
 
 > Note: Running all possible operations will take an extremely long time. During local development, it is recommend to run one operation at a time to get faster results.
 
@@ -115,6 +120,8 @@ _examples_:
 `yarn run benchmark --library=fast-element --benchmark=my-benchmark --versions 1.9.0 local master`
 
 `yarn run benchmark --library=fast-foundation --benchmark=form-associated -v 2.34.0 2.42.1`
+
+`yarn run benchmark --library=fast-foundation --benchmark=form-associated -v 2.34.0 2.42.1 --operations=createDelete5x -m`
 
 #### Library versions
 
@@ -143,6 +150,8 @@ If you want to test your local implementation against master or existing version
     }
 ...
 ```
+
+> There is an [open issue](https://github.com/Polymer/tachometer/issues/215) around local dependencies and when they are resolved. For now, you would have to symlink locally.
 
 2. [Create local implementation file](#create-local-implementation-file)
 

@@ -6,7 +6,7 @@ import {
     observable,
     repeat,
 } from "@microsoft/fast-element";
-import { FormAssociated, FoundationElement } from "@microsoft/fast-foundation";
+import { FormAssociated } from "@microsoft/fast-foundation";
 import { data, RandomItem } from "../../../utils/index.js";
 
 /* eslint-disable @typescript-eslint/naming-convention */

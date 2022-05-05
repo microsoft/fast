@@ -170,7 +170,7 @@ const libraryDependencies = {
     },
 };
 async function generateBenchmarks(
-    { library, benchmark, versions },
+    { library, benchmark, versions, memory },
     operationProps,
     localProps
 ) {
@@ -257,11 +257,11 @@ async function generateBenchmarks(
             ];
             memoryBenchmarks.push(memoryBench);
 
-            benchmarks.push(bench);
+            if (!memory) benchmarks.push(bench);
         });
 
         tachoData[`${operation}-memory`] = memoryBenchmarks;
-        tachoData[operation] = benchmarks;
+        if (!memory) tachoData[operation] = benchmarks;
     });
 
     return tachoData;
@@ -280,9 +280,10 @@ async function generateConfig(fileName, benchmarksHash) {
 
         const defaultBenchOptions = {
             // Tachometer default is 50, but locally let's only do 10
-            sampleSize: 20,
+            sampleSize: 30,
             // Tachometer default is 3 minutes, but let's shrink it to 1 here to save some
-            timeout: 0,
+            timeout: 1,
+            autoSampleConditions: ["0%", "10%"],
         };
 
         const pathsPromises = [];

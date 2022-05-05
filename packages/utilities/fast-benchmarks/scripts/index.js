@@ -8,7 +8,7 @@ const errMessage = chalk.hex("#ffb638");
 program
     .option("-l, --library <name>", "run benchmarks in <name> library")
     .option("-b, --benchmark <name>", "run the benchmark: <name>")
-    // .option("-m, --memory", "check memory metrics")
+    .option("-m, --memory", "only display memory consumption results")
     .option(
         "-v, --versions [versions...]",
         "specify available versions, you can also use 'local' or 'master' that would point to github branches"
@@ -74,10 +74,10 @@ async function buildBenchmark(configPath) {
  * @returns {Promise}
  */
 async function runBenchmark(configPaths) {
-    // can be run synchronously
-    configPaths.forEach(configPath => {
-        // for (let configPath of configPaths) {
-        return new Promise((resolve, reject) => {
+    const promises = [];
+    for (let i = 0; i < configPaths.length; i++) {
+        const configPath = configPaths[i];
+        const res = new Promise((resolve, reject) => {
             const args = ["tach", "--config", configPath];
             const child = spawn("npx", args, { stdio: "inherit" });
             child.on("close", code => {
@@ -100,7 +100,9 @@ async function runBenchmark(configPaths) {
                 return error;
             }
         });
-    });
+        promises.push(res);
+    }
+    return await Promise.all(promises);
 }
 
 const run = async () => {
