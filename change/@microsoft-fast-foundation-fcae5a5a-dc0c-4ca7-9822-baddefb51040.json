@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "remove code flagged for deprecation from previous major version",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}
