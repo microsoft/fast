@@ -52,7 +52,7 @@ export const progressRingTemplate: FoundationElementTemplate<
         ${when(
             x => typeof x.value !== "number",
             html<BaseProgress>`
-                <slot name="indeterminate" slot="indeterminate">
+                <slot name="indeterminate">
                     ${definition.indeterminateIndicator || ""}
                 </slot>
             `

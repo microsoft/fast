@@ -34,7 +34,7 @@ export const progressTemplate: FoundationElementTemplate<
             x => typeof x.value !== "number",
             html<BaseProgress>`
                 <div class="progress" part="progress" slot="indeterminate">
-                    <slot class="indeterminate" name="indeterminate">
+                    <slot name="indeterminate">
                         ${defintion.indeterminateIndicator1 || ""}
                         ${defintion.indeterminateIndicator2 || ""}
                     </slot>
