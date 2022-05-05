@@ -97,7 +97,7 @@
   "dependencies": {
     "@microsoft/fast-element": "^1.10.1",
     "@microsoft/fast-web-utilities": "^5.4.1",
-    "tabbable": "^5.2.0",
+    "tabbable": "^5.3.1",
     "tslib": "^1.13.0"
   },
   "customElements": "dist/custom-elements.json"
