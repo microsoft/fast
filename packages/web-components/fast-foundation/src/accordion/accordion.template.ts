@@ -13,6 +13,5 @@ export const accordionTemplate: FoundationElementTemplate<ViewTemplate<Accordion
 ) => html`
     <template>
         <slot ${slotted({ property: "accordionItems", filter: elements() })}></slot>
-        <slot ${slotted("accordionItems")}></slot>
     </template>
 `;
