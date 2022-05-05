@@ -213,6 +213,5 @@ function cleanUpVariableTypes(text) {
     // Remove inline comments, line breaks, and extra spaces
     return text
         .replace(/\/\/.*$/gm, "")
-        .replaceAll(LF, " ")
-        .replace(/ +/g, " ");
+        .replace(/\s+/gm, " ");
 }
