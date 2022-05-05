@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "remove unnecessary dependency on @types/ie11 package",
+  "packageName": "@microsoft/fast-element",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}
