@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "update api extractor to 7.23.1 to ensure we can support TS 4.7 internal API changes",
-  "packageName": "@microsoft/fast-components",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "none"
-}

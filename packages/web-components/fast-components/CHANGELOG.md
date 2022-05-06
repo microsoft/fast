@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 05 May 2022 07:11:41 GMT and should not be manually modified.
+This log was last generated on Fri, 06 May 2022 20:58:02 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.30.6
+
+Fri, 06 May 2022 20:58:02 GMT
+
+### Patches
+
+- Cleanup some visual state bugs (47367562+bheston@users.noreply.github.com)
 
 ## 2.30.5
 

@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Fri, 06 May 2022 20:58:02 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.3.4",
+      "version": "0.3.4",
+      "comments": {
+        "none": [
+          {
+            "comment": "update api extractor to 7.23.1 to ensure we can support TS 4.7 internal API changes",
+            "author": "chhol@microsoft.com",
+            "commit": "fbc6a7fb670453322c93f8f12a223febad86f735",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 05 May 2022 07:11:41 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.3.4",
       "version": "0.3.4",

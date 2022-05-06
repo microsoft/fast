@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Fri, 06 May 2022 20:58:02 GMT",
+      "tag": "@microsoft/fast-components_v2.30.6",
+      "version": "2.30.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Cleanup some visual state bugs",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "3e8294d6a5c8ca34fbf0a10c06504a66e3f2309d",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "update api extractor to 7.23.1 to ensure we can support TS 4.7 internal API changes",
+            "author": "chhol@microsoft.com",
+            "commit": "fbc6a7fb670453322c93f8f12a223febad86f735",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.1",
+            "author": "chhol@microsoft.com",
+            "commit": "fbc6a7fb670453322c93f8f12a223febad86f735",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.46.2",
+            "author": "chhol@microsoft.com",
+            "commit": "fbc6a7fb670453322c93f8f12a223febad86f735",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 05 May 2022 07:11:41 GMT",
       "tag": "@microsoft/fast-components_v2.30.5",
       "version": "2.30.5",
