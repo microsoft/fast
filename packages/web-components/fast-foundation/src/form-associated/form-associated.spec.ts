@@ -308,7 +308,7 @@ describe("FormAssociated:", () => {
 
             form.reset();
 
-            assert(element.value === "");
+            assert((element as TestElement).value === "");
             expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
@@ -334,7 +334,7 @@ describe("FormAssociated:", () => {
 
             form.reset();
 
-            assert(element.value === "attr-value");
+            assert((element as TestElement).value === "attr-value");
             expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
@@ -358,12 +358,12 @@ describe("FormAssociated:", () => {
 
             form.reset();
 
-            assert(element.value === "attr-value");
+            assert((element as TestElement).value === "attr-value");
             expect(element.currentValue).to.equal(element.value);
 
             element.setAttribute("value", "new-attr-value");
 
-            assert(element.value === "new-attr-value");
+            assert((element as TestElement).value === "new-attr-value");
             expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
