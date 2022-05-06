@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "adds missing types for chai-spies",
+  "packageName": "@microsoft/fast-element",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}

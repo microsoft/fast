@@ -1,9 +1,0 @@
-{
-  "colors": true,
-  "recursive": true,
-  "timeout": 5000,
-  "require": [
-    "./__test__/server.mjs",
-    "./__test__/harness.mjs"
-  ]
-}
