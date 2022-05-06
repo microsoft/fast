@@ -74,10 +74,7 @@ export class TemplateBuilder<TAnatomy extends Anatomy> {
         } else if (Array.isArray(options)) {
             this._evaluatePartName = name => (options.includes(name) ? name : null);
         } else {
-            this._evaluatePartName = name => {
-                const mappedValue = options[name];
-                return mappedValue ?? name;
-            };
+            this._evaluatePartName = name => options[name] ?? name;
         }
 
         return this;

@@ -25,7 +25,6 @@ export class AccordionItemAnatomy extends Anatomy<AccordionItem, AccordionItemPa
 
     defaultSlot() {
         const { part } = this.internals;
-
         return this.html`
             <div
                 class="region"
@@ -47,7 +46,6 @@ export class AccordionItemAnatomy extends Anatomy<AccordionItem, AccordionItemPa
 class AccordionItemHeadingAnatomy extends Anatomy<AccordionItem, AccordionItemParts> {
     protected begin(): void {
         const { part } = this.internals;
-
         this.html`
             <div class="heading"
                 ${part("heading")}
@@ -58,9 +56,7 @@ class AccordionItemHeadingAnatomy extends Anatomy<AccordionItem, AccordionItemPa
     }
 
     button(options?: Partial<SlotOptions>) {
-        const { part } = this.internals;
-        const slot = Object.assign({ name: "button", fallback: "" }, options);
-
+        const { part, slot } = this.internals;
         return this.html`
             <button
                 class="button"
@@ -72,20 +68,23 @@ class AccordionItemHeadingAnatomy extends Anatomy<AccordionItem, AccordionItemPa
                 @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
                 >
                 <span class="heading-content" ${part("heading-content")}>
-                    <slot name="${slot.name}">${slot.fallback}</slot>
+                    ${slot(Object.assign({ name: "button", fallback: "" }, options))}
                 </span>
             </button>
         `;
     }
 
     startSlot(options?: Partial<SlotOptions>) {
-        this.internals.slot(Object.assign({ name: "start" }, options), ref("start"));
-        return this;
+        const { slot } = this.internals;
+        return this.html`${slot(
+            Object.assign({ name: "start" }, options),
+            ref("start")
+        )}`;
     }
 
     endSlot(options?: Partial<SlotOptions>) {
-        this.internals.slot(Object.assign({ name: "end" }, options), ref("end"));
-        return this;
+        const { slot } = this.internals;
+        return this.html`${slot(Object.assign({ name: "end" }, options), ref("end"))}`;
     }
 
     icons(callback: (a: AccordionIconAnatomy) => void) {
@@ -106,14 +105,18 @@ class AccordionIconAnatomy extends Anatomy<AccordionItem, AccordionItemParts> {
 
     expanded(options?: Partial<SlotOptions>) {
         const { part, slot } = this.internals;
-        slot(Object.assign({ name: "expanded-icon" }, options), part("expanded-icon"));
-        return this;
+        return this.html`${slot(
+            Object.assign({ name: "expanded-icon" }, options),
+            part("expanded-icon")
+        )}`;
     }
 
     collapsed(options?: Partial<SlotOptions>) {
         const { part, slot } = this.internals;
-        slot(Object.assign({ name: "collapsed-icon" }, options), part("collapsed-icon"));
-        return this;
+        return this.html`${slot(
+            Object.assign({ name: "collapsed-icon" }, options),
+            part("collapsed-icon")
+        )}`;
     }
 
     protected end(): void {

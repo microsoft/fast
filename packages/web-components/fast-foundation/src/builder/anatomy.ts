@@ -1,4 +1,5 @@
 import {
+    AddViewBehaviorFactory,
     FASTElement,
     htmlDirective,
     HTMLDirective,
@@ -30,7 +31,10 @@ export interface AnatomyInternals<
     TPartNames extends string = string
 > {
     part(name: TPartNames): HTMLDirective;
-    slot(options: Partial<SlotOptions>, ...slotBehaviors: TemplateValue<any>[]): void;
+    slot(
+        options: Partial<SlotOptions>,
+        ...slotBehaviors: TemplateValue<any>[]
+    ): HTMLDirective;
     anatomy<T extends Anatomy>(
         AnatomyType: AnatomyConstructor<T>,
         callback: (a: T) => void
@@ -52,8 +56,37 @@ class PartNameDirective implements HTMLDirective {
 
     createHTML(): string {
         const result = this.context.evaluatePartName(this.originalName);
-
         return result ? ` name="${result}" ` : "";
+    }
+}
+
+@htmlDirective()
+class SlotDirective implements HTMLDirective {
+    constructor(
+        private options: Partial<SlotOptions>,
+        private slotDirectives: TemplateValue<any>[]
+    ) {}
+
+    createHTML(add: AddViewBehaviorFactory): string {
+        let html = "";
+
+        if (this.options.name) {
+            html += `<slot name="${this.options.name}"`;
+        } else {
+            html += `<slot`;
+        }
+
+        for (const behavior of this.slotDirectives) {
+            html += ` ` + (behavior as HTMLDirective).createHTML(add);
+        }
+
+        if (this.options.fallback) {
+            html += `>${this.options.fallback}</slot>`;
+        } else {
+            html += `></slot>`;
+        }
+
+        return html;
     }
 }
 
@@ -79,32 +112,20 @@ export class Anatomy<TComponent = FASTElement, TPartNames extends string = strin
             ): T {
                 return context.anatomy(AnatomyType, callback);
             },
-            slot(options: Partial<SlotOptions>, ...slotBehaviors: TemplateValue<any>[]) {
-                const firstArgIsBehavior = !!HTMLDirective.getForInstance(options);
-
+            slot(
+                options: Partial<SlotOptions>,
+                ...slotDirectives: TemplateValue<any>[]
+            ): HTMLDirective {
+                const firstArgIsBehavior = !!HTMLDirective.getForInstance(this.options);
                 const normalized = firstArgIsBehavior
                     ? { name: "", fallback: "" }
-                    : Object.assign({ name: "", fallback: "" }, options);
-
-                if (normalized.name) {
-                    context.html`<slot name="${normalized.name}"`;
-                } else {
-                    context.html`<slot`;
-                }
+                    : Object.assign({ name: "", fallback: "" }, this.options);
 
                 if (firstArgIsBehavior) {
-                    context.html` ${options}`;
+                    slotDirectives.unshift(options);
                 }
 
-                for (const behavior of slotBehaviors) {
-                    context.html` ${behavior}`;
-                }
-
-                if (normalized.fallback) {
-                    context.html`>${normalized.fallback}</slot>`;
-                } else {
-                    context.html`></slot>`;
-                }
+                return new SlotDirective(normalized, slotDirectives);
             },
         };
     }

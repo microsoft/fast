@@ -6,9 +6,11 @@ export class AccordionAnatomy extends Anatomy<Accordion> {
     private hasDefaultSlot = false;
 
     defaultSlot(): this {
+        const { slot } = this.internals;
         this.hasDefaultSlot = true;
-        this.internals.slot(slotted({ property: "accordionItems", filter: elements() }));
-        return this;
+        return this.html`${slot(
+            slotted({ property: "accordionItems", filter: elements() })
+        )}`;
     }
 
     protected end(validator: AnatomyValidator): void {
