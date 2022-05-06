@@ -162,7 +162,7 @@ export class Button extends FormAssociatedButton {
         super.connectedCallback();
 
         this.proxy.setAttribute("type", this.type);
-        this.handleUnsupportedDelegatesFocus();
+        // this.handleUnsupportedDelegatesFocus();
 
         const elements = Array.from(this.control?.children) as HTMLSpanElement[];
         if (elements) {
@@ -235,18 +235,18 @@ export class Button extends FormAssociatedButton {
      * This check works for Chrome, Edge Chromium, FireFox, and Safari
      * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
      */
-    private handleUnsupportedDelegatesFocus = () => {
-        // Check to see if delegatesFocus is supported
-        if (
-            window.ShadowRoot &&
-            !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
-            this.$fastController.definition.shadowOptions?.delegatesFocus
-        ) {
-            this.focus = () => {
-                this.control.focus();
-            };
-        }
-    };
+    // private handleUnsupportedDelegatesFocus = () => {
+    //     // Check to see if delegatesFocus is supported
+    //     if (
+    //         window.ShadowRoot &&
+    //         !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
+    //         this.$fastController.definition.shadowOptions?.delegatesFocus
+    //     ) {
+    //         this.focus = () => {
+    //             this.control.focus();
+    //         };
+    //     }
+    // };
 }
 
 /**

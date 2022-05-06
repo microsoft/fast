@@ -1,14 +1,11 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
-import { isFocusable } from "tabbable";
-import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
-import { applyMixins } from "../utilities/apply-mixins.js";
-import { getDirection } from "../utilities/direction.js";
+import { FocusableElement, isFocusable, tabbable } from "tabbable";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
+import { applyMixins } from "../utilities/apply-mixins";
+import { getDirection } from "../utilities/direction";
 
 /**
  * Toolbar configuration options
@@ -93,7 +90,7 @@ export class Toolbar extends FoundationElement {
      *
      * @internal
      */
-    private focusableElements: HTMLElement[];
+    private focusableElements: FocusableElement[];
 
     /**
      * The orientation of the toolbar.
@@ -237,19 +234,12 @@ export class Toolbar extends FoundationElement {
             Toolbar.reduceFocusableItems,
             []
         );
+        // this.focusableElements = tabbable(this, {
+        //     getShadowRoot: () => {
+        //         return undefined;
+        //     },
+        // });
         this.setFocusableElements();
-    }
-
-    /**
-     * Set the activeIndex and focus the corresponding control.
-     *
-     * @param activeIndex - The new index to set
-     * @internal
-     */
-    private setFocusedElement(activeIndex: number = this.activeIndex): void {
-        this.activeIndex = activeIndex;
-        this.setFocusableElements();
-        this.focusableElements[this.activeIndex]?.focus();
     }
 
     /**
@@ -288,6 +278,18 @@ export class Toolbar extends FoundationElement {
         }
 
         return elements;
+    }
+
+    /**
+     * Set the activeIndex and focus the corresponding control.
+     *
+     * @param activeIndex - The new index to set
+     * @internal
+     */
+    private setFocusedElement(activeIndex: number = this.activeIndex): void {
+        this.activeIndex = activeIndex;
+        this.setFocusableElements();
+        this.focusableElements[this.activeIndex]?.focus();
     }
 
     /**
