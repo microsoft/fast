@@ -30,7 +30,6 @@ export class Menu extends FoundationMenu {
  */
 export const fastMenu = Menu.compose({
     baseName: "menu",
-    baseClass: FoundationMenu,
     template,
     styles,
 });
