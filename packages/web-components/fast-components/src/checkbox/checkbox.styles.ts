@@ -43,131 +43,129 @@ export const checkboxStyles: FoundationElementTemplate<ElementStyles, CheckboxOp
     definition
 ) =>
     css`
-    ${display("inline-flex")} :host {
-        align-items: center;
-        outline: none;
-        margin: calc(${designUnit} * 1px) 0;
-        /* Chromium likes to select label text or the default slot when the checkbox is
-            clicked. Maybe there is a better solution here? */
-        user-select: none;
-    }
+        ${display("inline-flex")} :host {
+            align-items: center;
+            outline: none;
+            margin: calc(${designUnit} * 1px) 0;
+            /* Chromium likes to select label text or the default slot when the checkbox is
+                clicked. Maybe there is a better solution here? */
+            user-select: none;
+        }
 
-    .control {
-        position: relative;
-        width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        box-sizing: border-box;
-        border-radius: calc(${controlCornerRadius} * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
-        background: ${neutralFillInputRest};
-        outline: none;
-        cursor: pointer;
-    }
+        .control {
+            position: relative;
+            width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
+            height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
+            box-sizing: border-box;
+            border-radius: calc(${controlCornerRadius} * 1px);
+            border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
+            background: ${neutralFillInputRest};
+            outline: none;
+            cursor: pointer;
+        }
 
-    .label {
-        font-family: ${bodyFont};
-        color: ${neutralForegroundRest};
-        /* Need to discuss with Brian how HorizontalSpacingNumber can work.
-            https://github.com/microsoft/fast/issues/2766 */
-        padding-inline-start: calc(${designUnit} * 2px + 2px);
-        margin-inline-end: calc(${designUnit} * 2px + 2px);
-        cursor: pointer;
-        font-size: ${typeRampBaseFontSize};
-        line-height: ${typeRampBaseLineHeight};
-    }
+        .label {
+            font-family: ${bodyFont};
+            color: ${neutralForegroundRest};
+            padding-inline-start: calc(${designUnit} * 2px + 2px);
+            margin-inline-end: calc(${designUnit} * 2px + 2px);
+            cursor: pointer;
+            font-size: ${typeRampBaseFontSize};
+            line-height: ${typeRampBaseLineHeight};
+        }
 
-    .label__hidden {
-        display: none;
-        visibility: hidden;
-    }
+        .label__hidden {
+            display: none;
+            visibility: hidden;
+        }
 
-    .checked-indicator {
-        width: 100%;
-        height: 100%;
-        display: block;
-        fill: ${foregroundOnAccentRest};
-        opacity: 0;
-        pointer-events: none;
-    }
+        .checked-indicator {
+            width: 100%;
+            height: 100%;
+            display: block;
+            fill: ${foregroundOnAccentRest};
+            opacity: 0;
+            pointer-events: none;
+        }
 
-    .indeterminate-indicator {
-        border-radius: calc(${controlCornerRadius} * 1px);
-        background: ${foregroundOnAccentRest};
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 50%;
-        height: 50%;
-        transform: translate(-50%, -50%);
-        opacity: 0;
-    }
+        .indeterminate-indicator {
+            border-radius: calc(${controlCornerRadius} * 1px);
+            background: ${foregroundOnAccentRest};
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+        }
 
-    :host(:not([disabled])) .control:hover {
-        background: ${neutralFillInputHover};
-        border-color: ${neutralStrokeHover};
-    }
+        :host(:not([disabled])) .control:hover {
+            background: ${neutralFillInputHover};
+            border-color: ${neutralStrokeHover};
+        }
 
-    :host(:not([disabled])) .control:active {
-        background: ${neutralFillInputActive};
-        border-color: ${neutralStrokeActive};
-    }
+        :host(:not([disabled])) .control:active {
+            background: ${neutralFillInputActive};
+            border-color: ${neutralStrokeActive};
+        }
 
-    :host(:${focusVisible}) .control {
-        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
-    }
+        :host(:${focusVisible}) .control {
+            box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
+        }
 
-    :host([aria-checked="true"]) .control {
-        background: ${accentFillRest};
-        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
-    }
+        :host([aria-checked="true"]) .control {
+            background: ${accentFillRest};
+            border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
+        }
 
-    :host([aria-checked="true"]:not([disabled])) .control:hover {
-        background: ${accentFillHover};
-        border: calc(${strokeWidth} * 1px) solid ${accentFillHover};
-    }
+        :host([aria-checked="true"]:not([disabled])) .control:hover {
+            background: ${accentFillHover};
+            border: calc(${strokeWidth} * 1px) solid ${accentFillHover};
+        }
 
-    :host([aria-checked="true"]:not([disabled])) .control:hover .checked-indicator {
-        fill: ${foregroundOnAccentHover};
-    }
+        :host([aria-checked="true"]:not([disabled])) .control:hover .checked-indicator {
+            fill: ${foregroundOnAccentHover};
+        }
 
-    :host([aria-checked="true"]:not([disabled])) .control:hover .indeterminate-indicator {
-        background: ${foregroundOnAccentHover};
-    }
+        :host([aria-checked="true"]:not([disabled])) .control:hover .indeterminate-indicator {
+            background: ${foregroundOnAccentHover};
+        }
 
-    :host([aria-checked="true"]:not([disabled])) .control:active {
-        background: ${accentFillActive};
-        border: calc(${strokeWidth} * 1px) solid ${accentFillActive};
-    }
+        :host([aria-checked="true"]:not([disabled])) .control:active {
+            background: ${accentFillActive};
+            border: calc(${strokeWidth} * 1px) solid ${accentFillActive};
+        }
 
-    :host([aria-checked="true"]:not([disabled])) .control:active .checked-indicator {
-        fill: ${foregroundOnAccentActive};
-    }
+        :host([aria-checked="true"]:not([disabled])) .control:active .checked-indicator {
+            fill: ${foregroundOnAccentActive};
+        }
 
-    :host([aria-checked="true"]:not([disabled])) .control:active .indeterminate-indicator {
-        background: ${foregroundOnAccentActive};
-    }
+        :host([aria-checked="true"]:not([disabled])) .control:active .indeterminate-indicator {
+            background: ${foregroundOnAccentActive};
+        }
 
-    :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
-        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
-    }
+        :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
+            box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
+        }
 
 
-    :host([disabled]) .label,
-    :host([readonly]) .label,
-    :host([readonly]) .control,
-    :host([disabled]) .control {
-        cursor: ${disabledCursor};
-    }
+        :host([disabled]) .label,
+        :host([readonly]) .label,
+        :host([readonly]) .control,
+        :host([disabled]) .control {
+            cursor: ${disabledCursor};
+        }
 
-    :host([aria-checked="true"]:not(.indeterminate)) .checked-indicator,
-    :host(.indeterminate) .indeterminate-indicator {
-        opacity: 1;
-    }
+        :host([aria-checked="true"]:not(.indeterminate)) .checked-indicator,
+        :host(.indeterminate) .indeterminate-indicator {
+            opacity: 1;
+        }
 
-    :host([disabled]) {
-        opacity: ${disabledOpacity};
-    }
-`.withBehaviors(
+        :host([disabled]) {
+            opacity: ${disabledOpacity};
+        }
+    `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
             .control {

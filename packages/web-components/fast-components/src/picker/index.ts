@@ -1,15 +1,17 @@
 import {
+    FoundationElementDefinition,
+    PickerMenu as FoundationPickerMenu,
     Picker,
     PickerList,
     PickerListItem,
     pickerListItemTemplate,
     pickerListTemplate,
-    PickerMenu,
     PickerMenuOption,
     pickerMenuOptionTemplate,
     pickerMenuTemplate,
     pickerTemplate,
 } from "@microsoft/fast-foundation";
+import { fillColor, neutralLayerFloating } from "../design-tokens.js";
 import { pickerStyles } from "./picker.styles.js";
 import { pickerMenuStyles } from "./picker-menu.styles.js";
 import { pickerMenuOptionStyles } from "./picker-menu-option.styles.js";
@@ -39,6 +41,20 @@ export const fastPicker = Picker.compose({
 export { Picker };
 
 /**
+ * @public
+ */
+export class PickerMenu extends FoundationPickerMenu {
+    /**
+     * @public
+     */
+    public connectedCallback(): void {
+        fillColor.setValueFor(this, neutralLayerFloating);
+
+        super.connectedCallback();
+    }
+}
+
+/**
  * Component that displays the list of available picker options
  *
  *
@@ -46,8 +62,9 @@ export { Picker };
  * @remarks
  * HTML Element: \<fast-picker-menu\>
  */
-export const fastPickerMenu = PickerMenu.compose({
+export const fastPickerMenu = PickerMenu.compose<FoundationElementDefinition>({
     baseName: "picker-menu",
+    baseClass: FoundationPickerMenu,
     template: pickerMenuTemplate,
     styles: pickerMenuStyles,
 });

@@ -53,7 +53,7 @@ import { HorizontalScrollOptions } from '@microsoft/fast-foundation';
 import { ListboxElement } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
 import { ListboxOptionOptions } from '@microsoft/fast-foundation';
-import { Menu } from '@microsoft/fast-foundation';
+import { Menu as Menu_2 } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
 import { MenuItemOptions } from '@microsoft/fast-foundation';
 import { NumberField as NumberField_2 } from '@microsoft/fast-foundation';
@@ -62,7 +62,7 @@ import { OverrideFoundationElementDefinition } from '@microsoft/fast-foundation'
 import { Picker } from '@microsoft/fast-foundation';
 import { PickerList } from '@microsoft/fast-foundation';
 import { PickerListItem } from '@microsoft/fast-foundation';
-import { PickerMenu } from '@microsoft/fast-foundation';
+import { PickerMenu as PickerMenu_2 } from '@microsoft/fast-foundation';
 import { PickerMenuOption } from '@microsoft/fast-foundation';
 import { ProgressOptions } from '@microsoft/fast-foundation';
 import { ProgressRingOptions } from '@microsoft/fast-foundation';
@@ -347,11 +347,11 @@ export const allComponents: {
     }, ListboxOption>;
     fastMenu: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Menu, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Menu_2, any>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }> | undefined) => FoundationElementRegistry<    {
     baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<Menu, any>, FoundationElementDefinition>;
+    template: FoundationElementTemplate<ViewTemplate<Menu_2, any>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, Menu>;
     fastMenuItem: (overrideDefinition?: OverrideFoundationElementDefinition<MenuItemOptions> | undefined) => FoundationElementRegistry<MenuItemOptions, Constructable<FoundationElement>>;
@@ -385,15 +385,7 @@ export const allComponents: {
     template: FoundationElementTemplate<ViewTemplate<PickerListItem, any>, FoundationElementDefinition>;
     styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
     }, PickerListItem>;
-    fastPickerMenu: (overrideDefinition?: OverrideFoundationElementDefinition<    {
-    baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<PickerMenu, any>, FoundationElementDefinition>;
-    styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
-    }> | undefined) => FoundationElementRegistry<    {
-    baseName: string;
-    template: FoundationElementTemplate<ViewTemplate<PickerMenu, any>, FoundationElementDefinition>;
-    styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
-    }, PickerMenu>;
+    fastPickerMenu: (overrideDefinition?: OverrideFoundationElementDefinition<FoundationElementDefinition> | undefined) => FoundationElementRegistry<FoundationElementDefinition, Constructable<FoundationElement>>;
     fastPickerMenuOption: (overrideDefinition?: OverrideFoundationElementDefinition<    {
     baseName: string;
     template: FoundationElementTemplate<ViewTemplate<PickerMenuOption, any>, FoundationElementDefinition>;
@@ -1033,11 +1025,11 @@ styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 // @public
 export const fastMenu: (overrideDefinition?: OverrideFoundationElementDefinition<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Menu, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Menu_2, any>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }> | undefined) => FoundationElementRegistry<    {
 baseName: string;
-template: FoundationElementTemplate<ViewTemplate<Menu, any>, FoundationElementDefinition>;
+template: FoundationElementTemplate<ViewTemplate<Menu_2, any>, FoundationElementDefinition>;
 styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof Menu>;
 
@@ -1094,15 +1086,7 @@ styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
 }, typeof PickerListItem>;
 
 // @alpha
-export const fastPickerMenu: (overrideDefinition?: OverrideFoundationElementDefinition<    {
-baseName: string;
-template: FoundationElementTemplate<ViewTemplate<PickerMenu, any>, FoundationElementDefinition>;
-styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
-}> | undefined) => FoundationElementRegistry<    {
-baseName: string;
-template: FoundationElementTemplate<ViewTemplate<PickerMenu, any>, FoundationElementDefinition>;
-styles: FoundationElementTemplate<ElementStyles, FoundationElementDefinition>;
-}, typeof PickerMenu>;
+export const fastPickerMenu: (overrideDefinition?: OverrideFoundationElementDefinition<FoundationElementDefinition> | undefined) => FoundationElementRegistry<FoundationElementDefinition, Constructable<FoundationElement>>;
 
 // @alpha
 export const fastPickerMenuOption: (overrideDefinition?: OverrideFoundationElementDefinition<    {
@@ -1407,7 +1391,11 @@ export { ListboxOption }
 // @public
 export const listboxStyles: FoundationElementTemplate<ElementStyles>;
 
-export { Menu }
+// @public (undocumented)
+export class Menu extends Menu_2 {
+    // @internal (undocumented)
+    connectedCallback(): void;
+}
 
 export { MenuItem }
 
@@ -1667,6 +1655,12 @@ export { Picker }
 // @public
 export const pickerListItemStyles: FoundationElementTemplate<ElementStyles>;
 
+// @public (undocumented)
+export class PickerMenu extends PickerMenu_2 {
+    // (undocumented)
+    connectedCallback(): void;
+}
+
 // @public
 export const pickerMenuOptionStyles: FoundationElementTemplate<ElementStyles>;
 
@@ -1717,6 +1711,8 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
 
 // @public
 export class Select extends Select_2 {
+    // @internal (undocumented)
+    connectedCallback(): void;
     // @internal (undocumented)
     protected listboxScrollWidthChanged(): void;
     // @internal
@@ -1934,11 +1930,11 @@ export const verticalSliderLabelStyles: ElementStyles;
 // dist/dts/custom-elements.d.ts:154:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
 // dist/dts/custom-elements.d.ts:194:5 - (ae-incompatible-release-tags) The symbol "fastDesignSystemProvider" is marked as @public, but its signature references "DesignSystemProvider" which is marked as @internal
 // dist/dts/custom-elements.d.ts:204:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
-// dist/dts/custom-elements.d.ts:316:5 - (ae-incompatible-release-tags) The symbol "fastSearch" is marked as @public, but its signature references "Search" which is marked as @internal
-// dist/dts/custom-elements.d.ts:344:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
-// dist/dts/custom-elements.d.ts:383:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
-// dist/dts/custom-elements.d.ts:400:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
-// dist/dts/custom-elements.d.ts:418:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
+// dist/dts/custom-elements.d.ts:308:5 - (ae-incompatible-release-tags) The symbol "fastSearch" is marked as @public, but its signature references "Search" which is marked as @internal
+// dist/dts/custom-elements.d.ts:336:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
+// dist/dts/custom-elements.d.ts:375:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
+// dist/dts/custom-elements.d.ts:392:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
+// dist/dts/custom-elements.d.ts:410:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
 
 // (No @packageDocumentation comment for this package)
 

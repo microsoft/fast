@@ -10,8 +10,8 @@ import {
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
+    focusStrokeWidth,
     neutralForegroundRest,
-    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens.js";
@@ -25,30 +25,30 @@ export const dataGridCellStyles: FoundationElementTemplate<ElementStyles> = (
     definition
 ) =>
     css`
-    :host {
-        padding: calc(${designUnit} * 1px) calc(${designUnit} * 3px);
-        color: ${neutralForegroundRest};
-        box-sizing: border-box;
-        font-family: ${bodyFont};
-        font-size: ${typeRampBaseFontSize};
-        line-height: ${typeRampBaseLineHeight};
-        font-weight: 400;
-        border: transparent calc(${strokeWidth} * 1px) solid;
-        overflow: hidden;
-        white-space: nowrap;
-        border-radius: calc(${controlCornerRadius} * 1px);
-    }
+        :host {
+            padding: calc(${designUnit} * 1px) calc(${designUnit} * 3px);
+            color: ${neutralForegroundRest};
+            box-sizing: border-box;
+            font-family: ${bodyFont};
+            font-size: ${typeRampBaseFontSize};
+            line-height: ${typeRampBaseLineHeight};
+            font-weight: 400;
+            border: transparent calc(${focusStrokeWidth} * 1px) solid;
+            overflow: hidden;
+            white-space: nowrap;
+            border-radius: calc(${controlCornerRadius} * 1px);
+        }
 
-    :host(.column-header) {
-        font-weight: 600;
-    }
+        :host(.column-header) {
+            font-weight: 600;
+        }
 
-    :host(:${focusVisible}) {
-        border: ${focusStrokeOuter} calc(${strokeWidth} * 1px) solid;
-        color: ${neutralForegroundRest};
-    }
-
-`.withBehaviors(
+        :host(:${focusVisible}) {
+            border: ${focusStrokeOuter} calc(${focusStrokeWidth} * 1px) solid;
+            outline: none;
+            color: ${neutralForegroundRest};
+        }
+    `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
         :host {

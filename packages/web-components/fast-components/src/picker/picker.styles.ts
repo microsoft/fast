@@ -3,7 +3,7 @@ import { FoundationElementTemplate } from "@microsoft/fast-foundation";
 import {
     bodyFont,
     designUnit,
-    neutralLayerFloating,
+    fillColor,
     typeRampBaseFontSize,
 } from "../design-tokens.js";
 import { heightNumber } from "../styles/index.js";
@@ -32,7 +32,7 @@ export const pickerStyles: FoundationElementTemplate<ElementStyles> = (
 
         .loading-display,
         .no-options-display {
-            background: ${neutralLayerFloating};
+            background: ${fillColor};
             width: 100%;
             min-height: calc(${heightNumber} * 1px);
             display: flex;

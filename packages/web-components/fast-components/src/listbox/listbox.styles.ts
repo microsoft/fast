@@ -14,9 +14,9 @@ import {
     controlCornerRadius,
     designUnit,
     disabledOpacity,
+    fillColor,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralLayerFloating,
     neutralStrokeRest,
     strokeWidth,
 } from "../design-tokens.js";
@@ -40,7 +40,7 @@ export const listboxStyles: FoundationElementTemplate<ElementStyles> = (
         ${!hostContext ? display("inline-flex") : ""}
 
         :host ${hostContext} {
-            background: ${neutralLayerFloating};
+            background: ${fillColor};
             border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
             border-radius: calc(${controlCornerRadius} * 1px);
             box-sizing: border-box;

@@ -43,7 +43,6 @@ export const badgeStyles: FoundationElementTemplate<ElementStyles> = (
         :host([circular]) .control {
             border-radius: 100px;
             padding: 0 calc(${designUnit} * 1px);
-            /* Need to work with Brian on width and height here */
             height: calc((${heightNumber} - (${designUnit} * 3)) * 1px);
             min-width: calc((${heightNumber} - (${designUnit} * 3)) * 1px);
             display: flex;

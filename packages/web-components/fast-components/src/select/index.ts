@@ -4,7 +4,11 @@ import {
     SelectOptions,
     selectTemplate as template,
 } from "@microsoft/fast-foundation";
-import { heightNumberAsToken } from "../design-tokens.js";
+import {
+    fillColor,
+    heightNumberAsToken,
+    neutralLayerFloating,
+} from "../design-tokens.js";
 import { selectStyles as styles } from "./select.styles.js";
 
 /**
@@ -18,6 +22,17 @@ export class Select extends FoundationSelect {
      * @internal
      */
     private computedStylesheet?: ElementStyles;
+
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        if (this.listbox) {
+            fillColor.setValueFor(this.listbox, neutralLayerFloating);
+        }
+    }
 
     /**
      * Returns the calculated max height for the listbox.

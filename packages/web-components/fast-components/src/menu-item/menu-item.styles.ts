@@ -17,11 +17,13 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     foregroundOnAccentRest,
+    neutralFillRest,
+    neutralFillStealthActive,
+    neutralFillStealthFocus,
+    neutralFillStealthHover,
     neutralFillStealthRest,
     neutralForegroundHint,
     neutralForegroundRest,
-    neutralLayer2,
-    neutralLayer3,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -37,256 +39,260 @@ export const menuItemStyles: FoundationElementTemplate<ElementStyles, MenuItemOp
     definition
 ) =>
     css`
-    ${display("grid")} :host {
-        contain: layout;
-        overflow: visible;
-        font-family: ${bodyFont};
-        outline: none;
-        box-sizing: border-box;
-        height: calc(${heightNumber} * 1px);
-        grid-template-columns: minmax(42px, auto) 1fr minmax(42px, auto);
-        grid-template-rows: auto;
-        justify-items: center;
-        align-items: center;
-        padding: 0;
-        margin: 0 calc(${designUnit} * 1px);
-        white-space: nowrap;
-        color: ${neutralForegroundRest};
-        fill: currentcolor;
-        cursor: pointer;
-        font-size: ${typeRampBaseFontSize};
-        line-height: ${typeRampBaseLineHeight};
-        border-radius: calc(${controlCornerRadius} * 1px);
-        border: calc(${focusStrokeWidth} * 1px) solid transparent;
-    }
+        ${display("grid")} :host {
+            contain: layout;
+            overflow: visible;
+            font-family: ${bodyFont};
+            outline: none;
+            box-sizing: border-box;
+            height: calc(${heightNumber} * 1px);
+            grid-template-columns: minmax(42px, auto) 1fr minmax(42px, auto);
+            grid-template-rows: auto;
+            justify-items: center;
+            align-items: center;
+            padding: 0;
+            margin: 0 calc(${designUnit} * 1px);
+            white-space: nowrap;
+            background: ${neutralFillStealthRest};
+            color: ${neutralForegroundRest};
+            fill: currentcolor;
+            cursor: pointer;
+            font-size: ${typeRampBaseFontSize};
+            line-height: ${typeRampBaseLineHeight};
+            border-radius: calc(${controlCornerRadius} * 1px);
+            border: calc(${focusStrokeWidth} * 1px) solid transparent;
+        }
 
-    :host(:hover) {
-        position: relative;
-        z-index: 1;
-    }
+        :host(:hover) {
+            position: relative;
+            z-index: 1;
+        }
 
-    :host(.indent-0) {
-        grid-template-columns: auto 1fr minmax(42px, auto);
-    }
-    :host(.indent-0) .content {
-        grid-column: 1;
-        grid-row: 1;
-        margin-inline-start: 10px;
-    }
-    :host(.indent-0) .expand-collapse-glyph-container {
-        grid-column: 5;
-        grid-row: 1;
-    }
-    :host(.indent-2) {
-        grid-template-columns: minmax(42px, auto) minmax(42px, auto) 1fr minmax(42px, auto) minmax(42px, auto);
-    }
-    :host(.indent-2) .content {
-        grid-column: 3;
-        grid-row: 1;
-        margin-inline-start: 10px;
-    }
-    :host(.indent-2) .expand-collapse-glyph-container {
-        grid-column: 5;
-        grid-row: 1;
-    }
-    :host(.indent-2) .start {
-        grid-column: 2;
-    }
-    :host(.indent-2) .end {
-        grid-column: 4;
-    }
+        :host(.indent-0) {
+            grid-template-columns: auto 1fr minmax(42px, auto);
+        }
+        :host(.indent-0) .content {
+            grid-column: 1;
+            grid-row: 1;
+            margin-inline-start: 10px;
+        }
+        :host(.indent-0) .expand-collapse-glyph-container {
+            grid-column: 5;
+            grid-row: 1;
+        }
+        :host(.indent-2) {
+            grid-template-columns: minmax(42px, auto) minmax(42px, auto) 1fr minmax(42px, auto) minmax(42px, auto);
+        }
+        :host(.indent-2) .content {
+            grid-column: 3;
+            grid-row: 1;
+            margin-inline-start: 10px;
+        }
+        :host(.indent-2) .expand-collapse-glyph-container {
+            grid-column: 5;
+            grid-row: 1;
+        }
+        :host(.indent-2) .start {
+            grid-column: 2;
+        }
+        :host(.indent-2) .end {
+            grid-column: 4;
+        }
 
-    :host(:${focusVisible}) {
-        border-color: ${focusStrokeOuter};
-        background: ${neutralLayer3};
-        color: ${neutralForegroundRest};
-    }
+        :host(:${focusVisible}) {
+            border-color: ${focusStrokeOuter};
+            background: ${neutralFillStealthFocus};
+            color: ${neutralForegroundRest};
+        }
 
-    :host(:hover) {
-        background: ${neutralLayer3};
-        color: ${neutralForegroundRest};
-    }
+        :host(:hover) {
+            background: ${neutralFillStealthHover};
+            color: ${neutralForegroundRest};
+        }
 
-    :host([aria-checked="true"]),
-    :host(:active),
-    :host(.expanded) {
-        background: ${neutralLayer2};
-        color: ${neutralForegroundRest};
-    }
+        :host(:active) {
+            background: ${neutralFillStealthActive};
+        }
 
-    :host([disabled]) {
-        cursor: ${disabledCursor};
-        opacity: ${disabledOpacity};
-    }
+        :host([aria-checked="true"]),
+        :host(.expanded) {
+            background: ${neutralFillRest};
+            color: ${neutralForegroundRest};
+        }
 
-    :host([disabled]:hover) {
-        color: ${neutralForegroundRest};
-        fill: currentcolor;
-        background: ${neutralFillStealthRest};
-    }
+        :host([disabled]) {
+            cursor: ${disabledCursor};
+            opacity: ${disabledOpacity};
+        }
 
-    :host([disabled]:hover) .start,
-    :host([disabled]:hover) .end,
-    :host([disabled]:hover)::slotted(svg) {
-        fill: ${neutralForegroundRest};
-    }
+        :host([disabled]:hover) {
+            color: ${neutralForegroundRest};
+            fill: currentcolor;
+            background: ${neutralFillStealthRest};
+        }
 
-    .expand-collapse-glyph {
-        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
-        width: 16px;
-        height: 16px;
-        fill: currentcolor;
-    }
+        :host([disabled]:hover) .start,
+        :host([disabled]:hover) .end,
+        :host([disabled]:hover)::slotted(svg) {
+            fill: ${neutralForegroundRest};
+        }
 
-    .content {
-        grid-column-start: 2;
-        justify-self: start;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+        .expand-collapse-glyph {
+            /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+            width: 16px;
+            height: 16px;
+            fill: currentcolor;
+        }
 
-    .start,
-    .end {
-        display: flex;
-        justify-content: center;
-    }
+        .content {
+            grid-column-start: 2;
+            justify-self: start;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-    ::slotted(svg) {
-        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
-        width: 16px;
-        height: 16px;
-    }
+        .start,
+        .end {
+            display: flex;
+            justify-content: center;
+        }
 
-    :host(:hover) .start,
-    :host(:hover) .end,
-    :host(:hover)::slotted(svg),
-    :host(:active) .start,
-    :host(:active) .end,
-    :host(:active)::slotted(svg) {
-        fill: ${neutralForegroundRest};
-    }
+        ::slotted(svg) {
+            /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+            width: 16px;
+            height: 16px;
+        }
 
-    :host(.indent-0[aria-haspopup="menu"]) {
-        display: grid;
-        grid-template-columns: minmax(42px, auto) auto 1fr minmax(42px, auto) minmax(42px, auto);
-        align-items: center;
-        min-height: 32px;
-    }
+        :host(:hover) .start,
+        :host(:hover) .end,
+        :host(:hover)::slotted(svg),
+        :host(:active) .start,
+        :host(:active) .end,
+        :host(:active)::slotted(svg) {
+            fill: ${neutralForegroundRest};
+        }
 
-    :host(.indent-1[aria-haspopup="menu"]),
-    :host(.indent-1[role="menuitemcheckbox"]),
-    :host(.indent-1[role="menuitemradio"]) {
-        display: grid;
-        grid-template-columns: minmax(42px, auto) auto 1fr minmax(42px, auto) minmax(42px, auto);
-        align-items: center;
-        min-height: 32px;
-    }
+        :host(.indent-0[aria-haspopup="menu"]) {
+            display: grid;
+            grid-template-columns: minmax(42px, auto) auto 1fr minmax(42px, auto) minmax(42px, auto);
+            align-items: center;
+            min-height: 32px;
+        }
 
-    :host(.indent-2:not([aria-haspopup="menu"])) .end {
-        grid-column: 5;
-    }
+        :host(.indent-1[aria-haspopup="menu"]),
+        :host(.indent-1[role="menuitemcheckbox"]),
+        :host(.indent-1[role="menuitemradio"]) {
+            display: grid;
+            grid-template-columns: minmax(42px, auto) auto 1fr minmax(42px, auto) minmax(42px, auto);
+            align-items: center;
+            min-height: 32px;
+        }
 
-    :host .input-container,
-    :host .expand-collapse-glyph-container {
-        display: none;
-    }
+        :host(.indent-2:not([aria-haspopup="menu"])) .end {
+            grid-column: 5;
+        }
 
-    :host([aria-haspopup="menu"]) .expand-collapse-glyph-container,
-    :host([role="menuitemcheckbox"]) .input-container,
-    :host([role="menuitemradio"]) .input-container {
-        display: grid;
-        margin-inline-end: 10px;
-    }
+        :host .input-container,
+        :host .expand-collapse-glyph-container {
+            display: none;
+        }
 
-    :host([aria-haspopup="menu"]) .content,
-    :host([role="menuitemcheckbox"]) .content,
-    :host([role="menuitemradio"]) .content {
-        grid-column-start: 3;
-    }
+        :host([aria-haspopup="menu"]) .expand-collapse-glyph-container,
+        :host([role="menuitemcheckbox"]) .input-container,
+        :host([role="menuitemradio"]) .input-container {
+            display: grid;
+            margin-inline-end: 10px;
+        }
 
-    :host([aria-haspopup="menu"].indent-0) .content {
-        grid-column-start: 1;
-    }
+        :host([aria-haspopup="menu"]) .content,
+        :host([role="menuitemcheckbox"]) .content,
+        :host([role="menuitemradio"]) .content {
+            grid-column-start: 3;
+        }
 
-    :host([aria-haspopup="menu"]) .end,
-    :host([role="menuitemcheckbox"]) .end,
-    :host([role="menuitemradio"]) .end {
-        grid-column-start: 4;
-    }
+        :host([aria-haspopup="menu"].indent-0) .content {
+            grid-column-start: 1;
+        }
 
-    :host .expand-collapse,
-    :host .checkbox,
-    :host .radio {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        width: 20px;
-        height: 20px;
-        box-sizing: border-box;
-        outline: none;
-        margin-inline-start: 10px;
-    }
+        :host([aria-haspopup="menu"]) .end,
+        :host([role="menuitemcheckbox"]) .end,
+        :host([role="menuitemradio"]) .end {
+            grid-column-start: 4;
+        }
 
-    :host .checkbox,
-    :host .radio {
-        border: calc(${strokeWidth} * 1px) solid ${neutralForegroundRest};
-    }
+        :host .expand-collapse,
+        :host .checkbox,
+        :host .radio {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 20px;
+            height: 20px;
+            box-sizing: border-box;
+            outline: none;
+            margin-inline-start: 10px;
+        }
 
-    :host([aria-checked="true"]) .checkbox,
-    :host([aria-checked="true"]) .radio {
-        background: ${accentFillRest};
-        border-color: ${accentFillRest};
-    }
+        :host .checkbox,
+        :host .radio {
+            border: calc(${strokeWidth} * 1px) solid ${neutralForegroundRest};
+        }
 
-    :host .checkbox {
-        border-radius: calc(${controlCornerRadius} * 1px);
-    }
+        :host([aria-checked="true"]) .checkbox,
+        :host([aria-checked="true"]) .radio {
+            background: ${accentFillRest};
+            border-color: ${accentFillRest};
+        }
 
-    :host .radio {
-        border-radius: 999px;
-    }
+        :host .checkbox {
+            border-radius: calc(${controlCornerRadius} * 1px);
+        }
 
-    :host .checkbox-indicator,
-    :host .radio-indicator,
-    :host .expand-collapse-indicator,
-    ::slotted([slot="checkbox-indicator"]),
-    ::slotted([slot="radio-indicator"]),
-    ::slotted([slot="expand-collapse-indicator"]) {
-        display: none;
-    }
+        :host .radio {
+            border-radius: 999px;
+        }
 
-    ::slotted([slot="end"]:not(svg)) {
-        margin-inline-end: 10px;
-        color: ${neutralForegroundHint}
-    }
+        :host .checkbox-indicator,
+        :host .radio-indicator,
+        :host .expand-collapse-indicator,
+        ::slotted([slot="checkbox-indicator"]),
+        ::slotted([slot="radio-indicator"]),
+        ::slotted([slot="expand-collapse-indicator"]) {
+            display: none;
+        }
 
-    :host([aria-checked="true"]) .checkbox-indicator,
-    :host([aria-checked="true"]) ::slotted([slot="checkbox-indicator"]) {
-        width: 100%;
-        height: 100%;
-        display: block;
-        fill: ${foregroundOnAccentRest};
-        pointer-events: none;
-    }
+        ::slotted([slot="end"]:not(svg)) {
+            margin-inline-end: 10px;
+            color: ${neutralForegroundHint}
+        }
 
-    :host([aria-checked="true"]) .radio-indicator {
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        right: 4px;
-        bottom: 4px;
-        border-radius: 999px;
-        display: block;
-        background: ${foregroundOnAccentRest};
-        pointer-events: none;
-    }
+        :host([aria-checked="true"]) .checkbox-indicator,
+        :host([aria-checked="true"]) ::slotted([slot="checkbox-indicator"]) {
+            width: 100%;
+            height: 100%;
+            display: block;
+            fill: ${foregroundOnAccentRest};
+            pointer-events: none;
+        }
 
-    :host([aria-checked="true"]) ::slotted([slot="radio-indicator"]) {
-        display: block;
-        pointer-events: none;
-    }
-`.withBehaviors(
+        :host([aria-checked="true"]) .radio-indicator {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border-radius: 999px;
+            display: block;
+            background: ${foregroundOnAccentRest};
+            pointer-events: none;
+        }
+
+        :host([aria-checked="true"]) ::slotted([slot="radio-indicator"]) {
+            display: block;
+            pointer-events: none;
+        }
+    `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
             :host {
