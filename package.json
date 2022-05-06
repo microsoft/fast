@@ -45,7 +45,7 @@
     "change": "beachball change",
     "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'yarn change' to generate a change file\"",
     "check": "beachball check ",
-    "publish": "beachball publish",
+    "publish": "beachball --no-publish --no-git-tags --prerelease-prefix beta",
     "publish-ci": "beachball publish -y --access public",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
