@@ -1,5 +1,5 @@
 import { RenderInfo } from "@lit-labs/ssr";
-import { getElementRenderer } from "@lit-labs/ssr/lib/element-renderer.js";
+import { ElementRenderer } from "@lit-labs/ssr/lib/element-renderer.js";
 import {
     Aspect,
     Aspected,
@@ -13,6 +13,34 @@ import {
     parseTemplateToOpCodes,
 } from "../template-parser/template-parser.js";
 import { ViewBehaviorFactoryRenderer } from "./directives.js";
+
+/**
+ * Ported from SSR proposal branch https://github.com/lit/lit/pull/2309/
+ * to support constructing ElementRenderer's with renderInfo
+ */
+function getElementRenderer(
+    renderInfo: RenderInfo,
+    tagName: string,
+    ceClass: typeof HTMLElement | undefined = customElements.get(tagName),
+    attributes: Map<string, string> = new Map()
+): ElementRenderer | undefined {
+    if (ceClass === undefined) {
+        console.warn(`Custom element ${tagName} was not registered.`);
+        return;
+    }
+    const { elementRenderers } = renderInfo;
+    // TODO(kschaaf): Should we implement a caching scheme, e.g. keyed off of
+    // ceClass's base class to prevent O(n) lookups for every element (probably
+    // not a concern for the small number of element renderers we'd expect)? Doing
+    // so would preclude having cross-cutting renderers to e.g. no-op render all
+    // custom elements with a `client-only` attribute, so punting for now.
+    for (const renderer of elementRenderers) {
+        if (renderer.matchesClass(ceClass, tagName, attributes)) {
+            return new (renderer as any)(tagName, renderInfo);
+        }
+    }
+    return undefined;
+}
 
 function getLast<T>(arr: T[]): T | undefined {
     return arr[arr.length - 1];
