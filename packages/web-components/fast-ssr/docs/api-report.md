@@ -19,7 +19,7 @@ export type ComponentDOMEmissionMode = "shadow";
 
 // @beta
 export abstract class FASTElementRenderer extends ElementRenderer {
-    constructor(tagName: string);
+    constructor(tagName: string, renderInfo: RenderInfo);
     attributeChangedCallback(name: string, old: string | null, value: string | null): void;
     connectedCallback(): void;
     readonly element: FASTElement;

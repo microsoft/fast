@@ -88,14 +88,17 @@ export abstract class FASTElementRenderer extends ElementRenderer {
      * Constructs a new {@link FASTElementRenderer}.
      * @param tagName - the tag-name of the element to create.
      */
-    constructor(tagName: string) {
+    constructor(tagName: string, private renderInfo: RenderInfo) {
         super(tagName);
-
         const ctor = customElements.get(this.tagName);
 
         if (ctor) {
             this.element = new ctor() as FASTElement;
             (this.element as any).tagName = tagName;
+            // Set the event target parent so events can bubble
+            // TODO (justinfagnani): make this the correct composed path
+            (this.element as any).__eventTargetParent =
+                renderInfo.customElementInstanceStack.at(-1)?.element;
         } else {
             throw new Error(
                 `FASTElementRenderer was unable to find a constructor for a custom element with the tag name '${tagName}'.`
@@ -107,7 +110,7 @@ export abstract class FASTElementRenderer extends ElementRenderer {
      * Renders the component internals to light DOM instead of shadow DOM.
      * @param renderInfo - information about the current rendering context.
      */
-    public *renderLight(renderInfo: RenderInfo): IterableIterator<string> {
+    public *renderLight(): IterableIterator<string> {
         // TODO - this will yield out the element's template using the template renderer, skipping any shadow-DOM specific emission.
         yield "";
     }
@@ -116,7 +119,7 @@ export abstract class FASTElementRenderer extends ElementRenderer {
      * Render the component internals to shadow DOM.
      * @param renderInfo - information about the current rendering context.
      */
-    public *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
+    public *renderShadow(): IterableIterator<string> {
         const view = this.element.$fastController.view;
         const styles = FASTSSRStyleStrategy.getStylesFor(this.element);
 
@@ -129,7 +132,7 @@ export abstract class FASTElementRenderer extends ElementRenderer {
         if (view !== null) {
             yield* this.templateRenderer.renderOpCodes(
                 (view as unknown as SSRView).codes,
-                renderInfo,
+                this.renderInfo,
                 this.element,
                 ExecutionContext.default
             );

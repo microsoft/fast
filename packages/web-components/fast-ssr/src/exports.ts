@@ -66,7 +66,7 @@ export default function fastSSR(): {
         templateRenderer,
         elementRenderer,
         defaultRenderInfo: {
-            elementRenderers: [elementRenderer],
+            elementRenderers: [elementRenderer as any],
             customElementHostStack: [],
             customElementInstanceStack: [],
         },
