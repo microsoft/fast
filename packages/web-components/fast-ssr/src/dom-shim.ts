@@ -1,5 +1,42 @@
 import { installWindowOnGlobal } from "@lit-labs/ssr/lib/dom-shim.js";
 
+/**
+ * SSR event proposal:
+ * https://github.com/lit/lit/pull/2309
+ */
+
+/**
+ * Extends EventTarget to have a parent reference and adds event propagation.
+ */
+class EventTargetWithParent extends EventTarget {
+    __eventTargetParent: EventTarget | undefined;
+
+    override dispatchEvent(event: Event): boolean {
+        // TODO (justinfagnani): This doesn't implement capture at all.
+        // To implement capture we'd need to patch addEventListener to track the
+        // capturing listeners separately, then call into a capture method here
+        // which would supercall before processing any capturing listeners.
+
+        // First dispatch the event on this instance
+        let canceled = super.dispatchEvent(event);
+
+        // Then conditionally bubble up. cancelBubble is true if a handler
+        // on this instance called event.stopPropagation()
+        if (!event.cancelBubble && this.__eventTargetParent !== undefined) {
+            canceled &&= this.__eventTargetParent.dispatchEvent(event);
+        }
+        return canceled;
+    }
+}
+
+class CustomEvent<T = any> extends Event {
+    detail: T;
+
+    constructor(type: string, init?: CustomEventInit<T>) {
+        super(type, init);
+        this.detail = init?.detail as T;
+    }
+}
 class DOMTokenList {
     #tokens = new Set<string>();
 
@@ -35,12 +72,14 @@ class DOMTokenList {
         yield* this.#tokens.values();
     }
 }
-class Node {
+class Node extends EventTargetWithParent {
     appendChild() {}
     removeChild() {}
 }
 
-class Element extends Node {}
+class Element extends Node {
+    readonly parentNode: Element | null = null;
+}
 
 abstract class HTMLElement extends Element {
     #attributes = new Map<string, string | DOMTokenList>();
@@ -88,7 +127,7 @@ abstract class HTMLElement extends Element {
     }
 
     public attachShadow(init: ShadowRootInit) {
-        const shadowRoot = ({ host: this } as unknown) as ShadowRoot;
+        const shadowRoot = { host: this } as unknown as ShadowRoot;
         if (init && init.mode === "open") {
             this.#shadowRoot = shadowRoot;
         }
@@ -142,6 +181,9 @@ class MediaQueryList {
     matches = false;
 }
 installWindowOnGlobal({
+    EventTarget: EventTargetWithParent,
+    CustomEvent,
+    Event,
     matchMedia: () => new MediaQueryList(),
     HTMLElement,
     Document,
