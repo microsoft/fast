@@ -222,9 +222,7 @@ export class Dialog extends FoundationElement {
 
     private getTabQueueBounds = (): FocusableElement[] => {
         return tabbable(this, {
-            getShadowRoot: () => {
-                return undefined;
-            },
+            getShadowRoot: true,
         });
     };
 
