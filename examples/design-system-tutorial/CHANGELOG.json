@@ -2,6 +2,21 @@
   "name": "fast-design-system-demo",
   "entries": [
     {
+      "date": "Sun, 08 May 2022 07:08:18 GMT",
+      "tag": "fast-design-system-demo_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.1",
+            "author": "chhol@microsoft.com",
+            "commit": "890ff058b8771c84a9e669b4e9202c43f4d3e7fc",
+            "package": "fast-design-system-demo"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 06 May 2022 20:58:02 GMT",
       "tag": "fast-design-system-demo_v1.0.0",
       "version": "1.0.0",
