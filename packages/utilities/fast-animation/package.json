@@ -97,7 +97,7 @@
     "style-loader": "^0.13.2",
     "ts-jest": "^27.0.0",
     "ts-loader": "^8.0.0",
-    "typescript": "^4.6.2",
+    "typescript": "4.7.0-beta",
     "webpack": "^4.44.0",
     "webpack-bundle-analyzer": "^3.5.2",
     "webpack-cli": "^3.2.1",
