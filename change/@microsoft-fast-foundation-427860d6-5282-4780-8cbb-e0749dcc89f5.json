@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "fix cra doc, remove eject recommendation",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "email not defined",
+  "dependentChangeType": "none"
+}
