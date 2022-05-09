@@ -20,7 +20,6 @@ npx create-react-app fast-app --template typescript
 
 > It is recommended to set up the create-react-app project with TypeScript.
 
-
 ## Configuring packages
 
 Next, we'll install the FAST packages, along with supporting libraries. To do that, run this command from your new project folder:
@@ -36,6 +35,7 @@ npm install --save @microsoft/fast-components @microsoft/fast-foundation @micros
 **Set the EXTEND_ESLINT environment variable in start, build, and test scripts**
 
 ```jsonc
+// package.json
 {
     //...
     "scripts": {
@@ -46,11 +46,13 @@ npm install --save @microsoft/fast-components @microsoft/fast-foundation @micros
     // ...
 }
 ```
+
 > The above will not work on Windows. You can adjust the scripts to use [cross-env](https://www.npmjs.com/package/cross-env) to add Windows support.
 
 **Override the `eslintConfig` field to turn off the 'no-unused-expressions' rule**
 
 ```jsonc
+// package.json
 {
     //..
     "eslintConfig": {
@@ -65,11 +67,14 @@ npm install --save @microsoft/fast-components @microsoft/fast-foundation @micros
 
 See [configuring eslint](https://create-react-app.dev/docs/setting-up-your-editor#experimental-extending-the-eslint-config) for more information.
 
+Next, be sure to update the TypeScript config file.
+
 **Set 'experimentalDecorators' to true in the `tsconfig.json` file**
 
-> When using decorators in a new create-react-app setup, you'll most likely see the warning `Support for the experimental syntax 'decorators-legacy' isn't currently enabled`. Configuring tsconfig will remove this warning.
+> When using decorators in a new create-react-app setup with TypeScript, you'll most likely see the warning `Support for the experimental syntax 'decorators-legacy' isn't currently enabled`. Configuring tsconfig will remove this warning.
 
 ```jsonc
+// tsconfig.json
 {
     "compilerOptions": {
     "experimentalDecorators": true,
@@ -254,6 +259,7 @@ function App() {
 
 export default App;
 ```
+
 > At this stage, you will get a warning `Property 'name-tag' does not exist on type 'JSX.IntrinsicElements'`. Adding `custom-elements.d.ts` in the following step will remove this warning.
 
 #### TypeScript and TSX support
