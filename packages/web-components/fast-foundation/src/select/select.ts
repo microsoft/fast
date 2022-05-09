@@ -1,7 +1,8 @@
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
 import {
-    ArrowKeys,
+    keyArrowDown,
+    keyArrowUp,
     keyEnd,
     keyEnter,
     keyEscape,
@@ -554,7 +555,7 @@ export class Select extends FormAssociatedSelect {
             this.indexWhenOpened = this.selectedIndex;
         }
 
-        return !(key in ArrowKeys);
+        return !(key === keyArrowDown || key === keyArrowUp);
     }
 
     public connectedCallback() {
