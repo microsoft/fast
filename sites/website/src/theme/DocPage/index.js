@@ -119,10 +119,7 @@ function DocPageContent({ currentDocRoute, versionMetadata, children, sidebarNam
                     <div
                         className={clsx(
                             "container padding-top--md padding-bottom--lg",
-                            styles.docItemWrapper,
-                            {
-                                [styles.docItemWrapperEnhanced]: hiddenSidebarContainer,
-                            }
+                            styles.docItemWrapperEnhanced
                         )}
                     >
                         <MDXProvider components={MDXComponents}>{children}</MDXProvider>

@@ -24,6 +24,15 @@
   display: none;
 }
 
+[class*='docItemContainer_'] {
+  max-width: calc(var(--ifm-container-width) + var(--doc-sidebar-width) + 150px);
+  flex-grow: 1;
+}
+
+[class*='container'] {
+  max-width: unset;
+}
+
 @media (min-width: 997px) {
   .docMainContainer {
     flex-grow: 1;
@@ -79,8 +88,6 @@
   }
 
   .docItemWrapperEnhanced {
-    max-width: calc(
-      var(--ifm-container-width) + var(--doc-sidebar-width)
-    ) !important;
+    padding: 1rem 4rem !important;
   }
 }
