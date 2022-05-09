@@ -126,9 +126,11 @@ module.exports = (env, args) => {
         devServer: {
             compress: false,
             historyApiFallback: true,
-            overlay: true,
             open: true,
             port: 7777,
+            client: {
+                overlay: true,
+            },
         },
     };
 };
