@@ -24,8 +24,8 @@ export abstract class FASTElementRenderer extends ElementRenderer {
     connectedCallback(): void;
     readonly element: FASTElement;
     static matchesClass(ctor: typeof HTMLElement): boolean;
-    renderLight(renderInfo: RenderInfo): IterableIterator<string>;
-    renderShadow(renderInfo: RenderInfo): IterableIterator<string>;
+    renderLight(): IterableIterator<string>;
+    renderShadow(): IterableIterator<string>;
     protected abstract styleRenderer: StyleRenderer;
     protected abstract templateRenderer: TemplateRenderer;
 }

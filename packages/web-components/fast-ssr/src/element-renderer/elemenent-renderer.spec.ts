@@ -23,6 +23,34 @@ export class StyledElement extends FASTElement {}
     `
 })
 export class HostBindingElement extends FASTElement {}
+
+@customElement("event-parent")
+class EventParent extends FASTElement {
+    public connectedCallback() {
+        super.connectedCallback();
+        this.addEventListener("test-event", (e: Event) => {
+            (e as CustomEvent<{resolved: boolean}>).detail.resolved = true;
+            e.stopPropagation();
+        })
+    }
+}
+
+
+@customElement("event-child")
+class EventChild extends FASTElement {
+    @attr
+    public resolved = false;
+    public connectedCallback() {
+        super.connectedCallback();
+        const e = new CustomEvent("test-event", {
+            bubbles: true,
+            detail: { resolved: this.resolved }
+        });
+
+        this.dispatchEvent(e);
+        this.resolved = e.detail.resolved;
+    }
+}
 test.describe("FASTElementRenderer", () => {
     test.describe("should have a 'matchesClass' method", () => {
         test("that returns true when invoked with a class that extends FASTElement ",  () => {
@@ -87,5 +115,15 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element  attr><template shadowroot=\"open\"></template></bare-element>
             `);
         });
-    })
+    });
+
+    test("events should propagate", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = consolidate(templateRenderer.render(html`
+            <event-parent><event-child></event-child></event-parent>
+        `, defaultRenderInfo));
+        expect(result).toBe(`
+            <event-parent><template shadowroot=\"open\"></template><event-child resolved="true"><template shadowroot=\"open\"></template></event-child></event-parent>
+        `);
+    });
 });
