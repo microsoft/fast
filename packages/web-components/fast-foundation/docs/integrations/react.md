@@ -18,9 +18,8 @@ With Node.js installed, you can use [create-react-app](https://reactjs.org/docs/
 npx create-react-app fast-app --template typescript
 ```
 
-:::note
-It is recommended to set up the create-react-app project with TypeScript.
-:::
+> It is recommended to set up the create-react-app project with TypeScript.
+
 
 ## Configuring packages
 
@@ -47,10 +46,7 @@ npm install --save @microsoft/fast-components @microsoft/fast-foundation @micros
     // ...
 }
 ```
-
-:::note
-The above will not work on Windows. You can adjust the scripts to use [cross-env](https://www.npmjs.com/package/cross-env) to add Windows support.
-:::
+> The above will not work on Windows. You can adjust the scripts to use [cross-env](https://www.npmjs.com/package/cross-env) to add Windows support.
 
 **Override the `eslintConfig` field to turn off the 'no-unused-expressions' rule**
 
@@ -71,9 +67,7 @@ See [configuring eslint](https://create-react-app.dev/docs/setting-up-your-edito
 
 **Set 'experimentalDecorators' to true in the `tsconfig.json` file**
 
-:::note
-When using decorators in a new create-react-app setup, you'll most likely see the warning `Support for the experimental syntax 'decorators-legacy' isn't currently enabled`. Configuring tsconfig will remove this warning.
-:::
+> When using decorators in a new create-react-app setup, you'll most likely see the warning `Support for the experimental syntax 'decorators-legacy' isn't currently enabled`. Configuring tsconfig will remove this warning.
 
 ```jsonc
 {
@@ -224,7 +218,7 @@ export const FastMenuItem = wrap(fastMenuItem(), {
 });
 ```
 
-### Working without the fast-react-wrapper
+## Working without the fast-react-wrapper
 
 The `@microsoft/fast-react-wrapper` library described above addresses all the challenges involved in using Web Components from React. We strongly recommend using this library for integration. However, if you cannot use this library or want to explore other options, follow the steps below.
 
@@ -260,10 +254,7 @@ function App() {
 
 export default App;
 ```
-
-:::note
-At this stage, you will get a warning `Property 'name-tag' does not exist on type 'JSX.IntrinsicElements'`. Adding `custom-elements.d.ts` in the following step will remove this warning.
-:::
+> At this stage, you will get a warning `Property 'name-tag' does not exist on type 'JSX.IntrinsicElements'`. Adding `custom-elements.d.ts` in the following step will remove this warning.
 
 #### TypeScript and TSX support
 
@@ -288,6 +279,8 @@ declare namespace JSX {
     }
 }
 ```
+
+> Note: The above example works with React version 18.0.0
 
 ## Additional Notes
 
