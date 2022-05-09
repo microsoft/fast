@@ -20,8 +20,14 @@
   "unpkg": "dist/fast-foundation.min.js",
   "type": "module",
   "exports": {
-    "." : "./dist/esm/index.js",
-    "./testing": "./dist/esm/testing/exports.js"
+    "." : {
+      "types": "./dist/fast-foundation.d.ts",
+      "default": "./dist/esm/index.js"
+    },
+    "./testing": {
+      "types": "./dist/dts/testing/exports.d.ts",
+      "default": "./dist/esm/testing/exports.js"
+    }
   },
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
