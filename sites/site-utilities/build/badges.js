@@ -1,6 +1,7 @@
 const fs = require("fs-extra");
 const path = require("path");
 const { makeBadge } = require("badge-maker");
+const { getPackageJsonDir } = require("../../../build/get-package-json");
 
 const siteUtilitiesDir = path.dirname(
     require.resolve("@microsoft/site-utilities/package.json")
@@ -59,12 +60,7 @@ const formats = {
     "@microsoft/fast-foundation",
 ].map(p => {
     try {
-        const entry = require.resolve(p).toString();
-        let dir = path.parse(entry).dir;
-
-        while (!fs.existsSync(path.resolve(dir, "package.json"))) {
-            dir = path.parse(dir).dir;
-        }
+        const dir = getPackageJsonDir(p);
 
         const { name, version: message } = JSON.parse(
             fs.readFileSync(path.resolve(dir, "package.json"))
