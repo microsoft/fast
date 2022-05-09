@@ -646,7 +646,7 @@ describe("Search", () => {
 
             form.reset();
 
-            assert(element.value === "");
+            assert((element as Search).value === "");
 
             await disconnect();
         });
@@ -669,7 +669,7 @@ describe("Search", () => {
 
             form.reset();
 
-            assert(element.value === "attr-value");
+            assert((element as Search).value === "attr-value");
 
             await disconnect();
         });
@@ -689,11 +689,11 @@ describe("Search", () => {
 
             form.reset();
 
-            assert(element.value === "attr-value");
+            assert((element as Search).value === "attr-value");
 
             element.setAttribute("value", "new-attr-value");
 
-            assert(element.value === "new-attr-value");
+            assert((element as Search).value === "new-attr-value");
             await disconnect();
         });
     });

@@ -2,6 +2,36 @@
   "name": "@microsoft/fast-color-explorer",
   "entries": [
     {
+      "date": "Sun, 08 May 2022 07:08:18 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.1",
+            "author": "chhol@microsoft.com",
+            "commit": "890ff058b8771c84a9e669b4e9202c43f4d3e7fc",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 06 May 2022 20:58:02 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.30.6",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "3e8294d6a5c8ca34fbf0a10c06504a66e3f2309d",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 05 May 2022 07:11:41 GMT",
       "tag": "@microsoft/fast-color-explorer_v1.6.19",
       "version": "1.6.19",
