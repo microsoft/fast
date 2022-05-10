@@ -2,8 +2,8 @@ import { DOM } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
 import { ListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
-import { fixture } from "../test-utilities/fixture.js";
-import { timeout } from "../test-utilities/timeout.js";
+import { fixture } from "../testing/fixture.js";
+import { timeout } from "../testing/timeout.js";
 import { Select, selectTemplate as template } from "./index.js";
 
 describe("Select", () => {

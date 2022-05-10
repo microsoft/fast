@@ -2,7 +2,7 @@ import { Constructable, DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { FoundationElement } from "..";
 import { Container, DI, Registration } from "../di";
-import { uniqueElementName } from "../test-utilities/fixture";
+import { uniqueElementName } from "../testing/fixture";
 import { DesignSystem, ElementDisambiguation } from "./design-system";
 import type { DesignSystemRegistrationContext } from "./registration-context";
 import { DesignToken } from "../design-token/design-token";

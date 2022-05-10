@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { MenuItem, menuItemTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { DOM } from "@microsoft/fast-element";
 import { MenuItemRole } from "./menu-item";
 import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";

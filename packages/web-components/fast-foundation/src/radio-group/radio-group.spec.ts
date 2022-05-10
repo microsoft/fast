@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
 import { RadioGroup, radioGroupTemplate as template } from "./index";
 import { Radio, radioTemplate as itemTemplate } from "../radio";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { DOM, html } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
@@ -320,7 +320,7 @@ describe("Radio Group", () => {
         element.appendChild(radio1);
         element.appendChild(radio2);
         element.appendChild(radio3);
-        
+
         await connect();
         await DOM.nextUpdate();
 
@@ -354,7 +354,7 @@ describe("Radio Group", () => {
         element.appendChild(radio1);
         element.appendChild(radio2);
         element.appendChild(radio3);
-        
+
         await connect();
         await DOM.nextUpdate();
 
@@ -389,7 +389,7 @@ describe("Radio Group", () => {
         element.appendChild(radio1);
         element.appendChild(radio2);
         element.appendChild(radio3);
-        
+
         await connect();
         await DOM.nextUpdate();
 

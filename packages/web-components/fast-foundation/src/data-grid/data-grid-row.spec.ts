@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { DOM } from "@microsoft/fast-element";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { ColumnDefinition, dataGridRowTemplate, DataGridCell, dataGridCellTemplate, DataGridRow } from "./index";
 import { newDataRow } from "./data-grid.spec";
 import { keyArrowLeft, keyArrowRight, keyEnd, keyHome } from "@microsoft/fast-web-utilities";

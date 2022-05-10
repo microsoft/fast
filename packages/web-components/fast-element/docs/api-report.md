@@ -32,13 +32,13 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
 
 // @public
 export const Aspect: Readonly<{
-    none: number;
-    attribute: number;
-    booleanAttribute: number;
-    property: number;
-    content: number;
-    tokenList: number;
-    event: number;
+    none: 0;
+    attribute: 1;
+    booleanAttribute: 2;
+    property: 3;
+    content: 4;
+    tokenList: 5;
+    event: 6;
     assign(directive: Aspected, value: string): void;
 }>;
 
@@ -283,7 +283,7 @@ export const DOM: Readonly<{
 }>;
 
 // @public
-export const elements: (selector?: string | undefined) => ElementsFilter;
+export const elements: (selector?: string) => ElementsFilter;
 
 // @public
 export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
@@ -359,7 +359,7 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
         new (): HTMLElement;
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-    define<TType extends Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition | undefined): TType;
+    define<TType extends Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): TType;
 };
 
 // @public
@@ -405,7 +405,7 @@ export interface HTMLDirective {
 export const HTMLDirective: Readonly<{
     getForInstance: (object: any) => HTMLDirectiveDefinition<Constructable<HTMLDirective>> | undefined;
     getByType: (key: Function) => HTMLDirectiveDefinition<Constructable<HTMLDirective>> | undefined;
-    define<TType extends Constructable<HTMLDirective>>(type: TType, options?: PartialHTMLDirectiveDefinition | undefined): TType;
+    define<TType extends Constructable<HTMLDirective>>(type: TType, options?: PartialHTMLDirectiveDefinition): TType;
 }>;
 
 // @public
@@ -512,7 +512,7 @@ export const Observable: Readonly<{
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors: (target: {}) => Accessor[];
-    binding<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn, ExecutionContext<any>>, initialSubscriber?: Subscriber | undefined, isVolatileBinding?: boolean): BindingObserver<TSource, TReturn, any>;
+    binding<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn, ExecutionContext<any>>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): BindingObserver<TSource, TReturn, any>;
     isVolatileBinding<TSource_1 = any, TReturn_1 = any>(binding: Binding<TSource_1, TReturn_1, ExecutionContext<any>>): boolean;
 }>;
 
