@@ -7,19 +7,19 @@
         "build": "tsc && tsc --build",
         "benchmark": "node scripts/index.js",
         "help": "node ./scripts/index.js --help",
-        "benchmark:binding": "tach --config benchmarks/fast-element/binding/tachometer.json",
-        "debug:binding": "tach --config fast-element/binding/tachometer.json --manual"
+        "benchmark:methods:append": "tach --config benchmarks/methods/append/tachometer.json",
+        "debug": "tach --config benchmarks/methods/append/tachometer.json --manual"
     },
     "author": "Microsoft",
     "license": "ISC",
     "dependencies": {
-        "@microsoft/fast-element": "file:../../web-components/fast-element",
+        "@microsoft/fast-element": "^1.9.0",
         "@microsoft/fast-foundation": "^2.45.0",
         "tachometer": "^0.5.10"
     },
     "devDependencies": {
         "chalk": "^5.0.1",
-        "chromedriver": "^99.0.0",
+        "chromedriver": "^101.0.0",
         "commander": "^9.2.0",
         "cross-spawn": "^7.0.3",
         "typescript": "^4.3.5"

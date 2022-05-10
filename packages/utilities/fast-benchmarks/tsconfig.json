@@ -16,5 +16,5 @@
         "experimentalDecorators": true,
         "skipLibCheck": true
     },
-    "include": ["utils/**/*.ts"]
+    "include": ["utils/**/*.ts", "benchmarks/methods/**/*.ts"]
 }
