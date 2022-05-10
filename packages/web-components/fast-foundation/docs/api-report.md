@@ -600,6 +600,12 @@ export function composedContains(reference: HTMLElement, test: HTMLElement): boo
 // @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
+// @public (undocumented)
+export interface ConstructableDesignTokenStrategy {
+    // (undocumented)
+    new (): DesignTokenStrategy;
+}
+
 // @alpha
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
@@ -1042,6 +1048,14 @@ export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
 export interface DesignTokenConfiguration {
     cssCustomPropertyName?: string | null;
     name: string;
+}
+
+// @public (undocumented)
+export interface DesignTokenStrategy {
+    // (undocumented)
+    contains(host: HTMLElement, target: HTMLElement): boolean;
+    // (undocumented)
+    findParent(target: HTMLElement): HTMLElement | null;
 }
 
 // @public
@@ -2999,8 +3013,7 @@ export type YearFormat = "2-digit" | "numeric";
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:99:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
-// dist/dts/design-token/design-token.d.ts:142:5 - (ae-forgotten-export) The symbol "ConstructableDesignTokenStrategy" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:105:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:513:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

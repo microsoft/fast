@@ -79,11 +79,17 @@ export interface DesignToken<
     unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
 }
 
+/**
+ * @public
+ */
 export interface DesignTokenStrategy {
     contains(host: HTMLElement, target: HTMLElement): boolean;
     findParent(target: HTMLElement): HTMLElement | null;
 }
 
+/**
+ * @public
+ */
 export interface ConstructableDesignTokenStrategy {
     new (): DesignTokenStrategy;
 }
@@ -111,7 +117,8 @@ class DefaultDesignTokenStrategyImpl implements DesignTokenStrategy {
     }
 }
 
-let DefaultDeignTokenStrategy: ConstructableDesignTokenStrategy = DefaultDesignTokenStrategyImpl;
+let DefaultDeignTokenStrategy: ConstructableDesignTokenStrategy =
+    DefaultDesignTokenStrategyImpl;
 /**
  * A {@link (DesignToken:interface)} that emits a CSS custom property.
  * @public
@@ -128,7 +135,8 @@ export interface CSSDesignToken<
         | ({
               createCSS?(): string;
           } & Record<PropertyKey, any>)
-> extends DesignToken<T>, CSSDirective {
+> extends DesignToken<T>,
+        CSSDirective {
     /**
      * The {@link (DesignToken:interface)} formatted as a CSS custom property if the token is
      * configured to write a CSS custom property.
@@ -164,7 +172,8 @@ export interface DesignTokenSubscriber<T extends DesignToken<any>> {
  * Implementation of {@link (DesignToken:interface)}
  */
 class DesignTokenImpl<T extends { createCSS?(): string }>
-    implements CSSDirective, DesignToken<T> {
+    implements CSSDirective, DesignToken<T>
+{
     public readonly name: string;
     public readonly cssCustomProperty: string | undefined;
     public readonly id: string;
@@ -342,8 +351,8 @@ class DesignTokenImpl<T extends { createCSS?(): string }>
      * @param token - the token to alias to
      */
     private alias(token: DesignToken<T>): DerivedDesignTokenValue<T> {
-        return (((target: HTMLElement) =>
-            token.getValueFor(target)) as unknown) as DerivedDesignTokenValue<T>;
+        return ((target: HTMLElement) =>
+            token.getValueFor(target)) as unknown as DerivedDesignTokenValue<T>;
     }
 }
 
@@ -417,10 +426,10 @@ class DesignTokenBindingObserver<T> {
         this.node.store.set(
             this.token,
 
-            (this.observer.observe(
+            this.observer.observe(
                 this.node.target,
                 ExecutionContext.default
-            ) as unknown) as StaticDesignTokenValue<T>
+            ) as unknown as StaticDesignTokenValue<T>
         );
     }
 }

@@ -18,6 +18,8 @@ export {
     CSSDesignToken,
     DesignTokenChangeRecord,
     DesignTokenSubscriber,
+    ConstructableDesignTokenStrategy,
+    DesignTokenStrategy,
 } from "./design-token/design-token.js";
 export {
     StaticDesignTokenValue,
