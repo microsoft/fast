@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 10 May 2022 07:11:04 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.3",
+      "version": "2.46.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "select ignores l&r arrow keys",
+            "author": "scomea@microsoft.com",
+            "commit": "4a3175e8585af03e97b388849f697f8ee5dbe424",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 08 May 2022 07:08:18 GMT",
       "tag": "@microsoft/fast-foundation_v2.46.2",
       "version": "2.46.2",
