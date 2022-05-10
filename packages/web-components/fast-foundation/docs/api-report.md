@@ -70,7 +70,7 @@ export const accordionItemTemplate: FoundationElementTemplate<ViewTemplate<Accor
 export const accordionTemplate: FoundationElementTemplate<ViewTemplate<Accordion>>;
 
 // @public
-export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnType<typeof DI.inject>;
+export const all: (key: any, searchAncestors?: boolean) => ReturnType<typeof DI.inject>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Anchor" because one of its declarations is marked as @internal
@@ -997,7 +997,7 @@ export interface DesignSystem {
 export const DesignSystem: Readonly<{
     tagFor(type: Constructable): string;
     responsibleFor(element: HTMLElement): DesignSystem;
-    getOrCreate(node?: Node | undefined): DesignSystem;
+    getOrCreate(node?: Node): DesignSystem;
 }>;
 
 // @public
@@ -1052,17 +1052,17 @@ export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignToken
 
 // @public
 export const DI: Readonly<{
-    createContainer(config?: Partial<ContainerConfiguration> | undefined): Container;
+    createContainer(config?: Partial<ContainerConfiguration>): Container;
     findResponsibleContainer(node: Node): Container;
     findParentContainer(node: Node): Container;
-    getOrCreateDOMContainer(node?: Node | undefined, config?: Partial<Omit<ContainerConfiguration, "parentLocator">> | undefined): Container;
+    getOrCreateDOMContainer(node?: Node, config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
     getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
     getDependencies(Type: Constructable | Injectable): Key[];
     defineProperty(target: {}, propertyName: string, key: Key, respectConnection?: boolean): void;
     createInterface<K extends Key>(nameConfigOrCallback?: string | InterfaceConfiguration | ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined, configuror?: ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined): InterfaceSymbol<K>;
-    inject(...dependencies: Key[]): (target: any, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
+    inject(...dependencies: Key[]): (target: any, key?: string | number, descriptor?: PropertyDescriptor | number) => void;
     transient<T extends Constructable<{}>>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
     singleton<T_1 extends Constructable<{}>>(target: T_1 & Partial<RegisterSelf<T_1>>, options?: SingletonOptions): T_1 & RegisterSelf<T_1>;
 }>;
@@ -1427,7 +1427,7 @@ export type HorizontalScrollView = "default" | "mobile";
 export function ignore(target: Injectable, property?: string | number, descriptor?: PropertyDescriptor | number): void;
 
 // @public
-export const inject: (...dependencies: Key[]) => (target: any, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
+export const inject: (...dependencies: Key[]) => (target: any, key?: string | number, descriptor?: PropertyDescriptor | number) => void;
 
 // @public
 export type Injectable<T = {}> = Constructable<T> & {

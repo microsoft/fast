@@ -1,7 +1,7 @@
 import { DOM } from "@microsoft/fast-element";
 import { keyArrowRight, Orientation } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { Toolbar, toolbarTemplate as template } from "./index";
 
 const FASTToolbar = Toolbar.compose({

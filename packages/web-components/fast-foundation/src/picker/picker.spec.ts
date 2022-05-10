@@ -11,7 +11,7 @@ import {
     pickerMenuTemplate,
     pickerTemplate,
 } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { fixture } from "../testing/fixture";
 import { DOM } from "@microsoft/fast-element";
 import {
     keyArrowDown,
