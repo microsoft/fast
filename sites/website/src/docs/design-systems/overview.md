@@ -4,6 +4,8 @@ title: What is a Design System?
 sidebar_label: Overview
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/overview.md
 description: A Design System can generally be thought of as a collection of resources for interactive media that promotes brand alignment.
+keywords:
+  - design systems
 ---
 
 A Design System can be generally thought of as a collection of interactive media resources that promotes brand alignment. While that definition is intentionally broad, in UI development, Design Systems manifest as component libraries surrounded by usage guidance and design principles.

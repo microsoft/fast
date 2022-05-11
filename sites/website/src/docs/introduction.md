@@ -3,6 +3,8 @@ id: introduction
 title: Introduction
 sidebar_label: Introduction
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/introduction.md
+keywords:
+  - web components
 ---
 
 Welcome to the FAST documentation! We're glad you're here and can't wait to show you around.

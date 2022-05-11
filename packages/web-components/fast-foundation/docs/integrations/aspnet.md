@@ -4,6 +4,8 @@ title: ASP.NET
 sidebar_label: ASP.NET
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/aspnet.md
 description: FAST works naturally with ASP.NET server-side development, by simply adding a script tag and using the custom HTML elements. Let's take a look at how to set things up.
+keywords:
+  - asp.net
 ---
 
 FAST works naturally with ASP.NET server-side development, by simply adding a script tag and using the custom HTML elements. Let's take a look at how to set things up.

@@ -4,6 +4,8 @@ title: FAQ
 sidebar_label: FAQ
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/faq.md
 description: A list of frequently asked questions.
+keywords:
+  - frequently asked questions
 ---
 
 ### Who is behind FAST?

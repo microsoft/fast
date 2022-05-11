@@ -4,6 +4,8 @@ title: Glossary
 sidebar_label: Glossary
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/glossary.md
 description: A glossary of terms.
+keywords:
+  - glossary of terms
 ---
 #### Design System
 

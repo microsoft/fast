@@ -4,6 +4,8 @@ title: Cheat Sheet
 sidebar_label: Cheat Sheet
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/cheat-sheet.md
 description: A quick reference guide to the documentation.
+keywords:
+  - cheat sheet
 ---
 # Cheat Sheet
 

@@ -4,6 +4,11 @@ title: Why Web Components?
 sidebar_label: Why Web Components?
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/why-web-components.md
 description: Performance, interoperability, and compatibility are a few reasons you might choose Web Components.
+keywords:
+  - web components
+  - performance
+  - interoperability
+  - compatibility
 ---
 
 ### You might choose Web Components for performance. 
