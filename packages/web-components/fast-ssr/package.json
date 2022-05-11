@@ -45,6 +45,7 @@
   "dependencies": {
     "@lit-labs/ssr": "^2.1.0",
     "@microsoft/fast-element": "^1.5.0",
+    "@microsoft/fast-foundation": "^2.46.2",
     "parse5": "^6.0.1",
     "tslib": "^2.4.0"
   },
