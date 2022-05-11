@@ -45,6 +45,10 @@ class XApp extends FASTElement {
             case "splice":
                 this.items.splice(this.items.length, 0, ...data);
                 break;
+            case "unshift":
+                data.unshift(...this.items);
+                this.items = data;
+                break;
         }
     }
 }

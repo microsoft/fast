@@ -1,7 +1,7 @@
 {
     "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
     "sampleSize": 40,
-    "timeout": 1,
+    "timeout": 0,
     "benchmarks": [
         {
             "browser": {
@@ -59,6 +59,16 @@
                 {
                     "name": "splice",
                     "url": "benchmarks/methods/append/index.html?method=splice",
+                    "packageVersions": {
+                        "label": "1.9.0",
+                        "dependencies": {
+                            "@microsoft/fast-element": "1.9.0"
+                        }
+                    }
+                },
+                {
+                    "name": "unshift",
+                    "url": "benchmarks/methods/append/index.html?method=unshift",
                     "packageVersions": {
                         "label": "1.9.0",
                         "dependencies": {
