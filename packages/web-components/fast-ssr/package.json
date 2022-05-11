@@ -6,10 +6,12 @@
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
   },
+  "homepage": "https://www.fast.design/",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "packages/web-components/fast-ssr"
   },
   "bugs": {
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
