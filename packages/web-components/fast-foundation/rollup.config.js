@@ -13,10 +13,36 @@ const parserOptions = {
     sourceType: "module",
 };
 
+const plugins = [
+    resolve(),
+    commonJS(),
+    typescript({
+        tsconfigOverride: {
+            compilerOptions: {
+                declaration: false,
+            },
+        },
+    }),
+    transformTaggedTemplate({
+        tagsToProcess: ["css"],
+        transformer: transformCSSFragment,
+        parserOptions,
+    }),
+    transformTaggedTemplate({
+        tagsToProcess: ["html"],
+        transformer: transformHTMLFragment,
+        parserOptions,
+    }),
+    filesize({
+        showMinifiedSize: false,
+        showBrotliSize: true,
+    }),
+];
+
 export default [
     {
         context: "this",
-        input: "src/index-rollup.ts",
+        input: "src/index.rollup.ts",
         output: [
             {
                 file: "dist/fast-foundation.js",
@@ -28,30 +54,22 @@ export default [
                 plugins: [terser()],
             },
         ],
-        plugins: [
-            resolve(),
-            commonJS(),
-            typescript({
-                tsconfigOverride: {
-                    compilerOptions: {
-                        declaration: false,
-                    },
-                },
-            }),
-            transformTaggedTemplate({
-                tagsToProcess: ["css"],
-                transformer: transformCSSFragment,
-                parserOptions,
-            }),
-            transformTaggedTemplate({
-                tagsToProcess: ["html"],
-                transformer: transformHTMLFragment,
-                parserOptions,
-            }),
-            filesize({
-                showMinifiedSize: false,
-                showBrotliSize: true,
-            }),
+        plugins,
+    },
+    {
+        context: "this",
+        input: "src/index.rollup.debug.ts",
+        output: [
+            {
+                file: "dist/fast-foundation.debug.js",
+                format: "esm",
+            },
+            {
+                file: "dist/fast-foundation.debug.min.js",
+                format: "esm",
+                plugins: [terser()],
+            },
         ],
+        plugins,
     },
 ];
