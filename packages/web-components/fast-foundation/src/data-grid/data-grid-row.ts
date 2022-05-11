@@ -20,6 +20,8 @@ import { DataGridRowTypes } from "./data-grid.options.js";
 /**
  * A Data Grid Row Custom HTML Element.
  *
+ * @fires row-focused - Fires a custom 'row-focused' event when focus is on an element (usually a cell or its contents) in the row
+ * @slot - The default slot for custom cell elements
  * @public
  */
 export class DataGridRow extends FoundationElement {
@@ -46,8 +48,7 @@ export class DataGridRow extends FoundationElement {
      * HTML Attribute: row-type
      */
     @attr({ attribute: "row-type" })
-    public rowType: DataGridRowTypes | "default" | "header" | "sticky-header" =
-        DataGridRowTypes.default;
+    public rowType: DataGridRowTypes = DataGridRowTypes.default;
     private rowTypeChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateItemTemplate();

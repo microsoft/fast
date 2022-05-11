@@ -1,16 +1,16 @@
 import { DOM } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
-import { fixture } from "../test-utilities/fixture";
-import { timeout } from "../test-utilities/timeout";
-import { Select, selectTemplate as template } from "./index";
+import { ListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
+import { fixture } from "../test-utilities/fixture.js";
+import { timeout } from "../test-utilities/timeout.js";
+import { Select, selectTemplate as template } from "./index.js";
 
 describe("Select", () => {
     const FASTSelect = Select.compose({
         baseName: "select",
         template
-    })
+    });
 
     const FASTOption = ListboxOption.compose({
         baseName: "option",
@@ -22,12 +22,15 @@ describe("Select", () => {
 
         const option1 = document.createElement("fast-option") as ListboxOption;
         option1.value = "one";
+        option1.textContent = "option one";
 
         const option2 = document.createElement("fast-option") as ListboxOption;
         option2.value = "two";
+        option2.textContent = "option two";
 
         const option3 = document.createElement("fast-option") as ListboxOption;
         option3.value = "three";
+        option3.textContent = "option three";
 
         element.appendChild(option1);
         element.appendChild(option2);
@@ -189,6 +192,52 @@ describe("Select", () => {
         element.value = "two";
 
         expect(element.value).to.equal("two");
+
+        await disconnect();
+    });
+
+    it("should select the next selectable option when the value is set to match a disabled option", async () => {
+        const { element, connect, disconnect, option2 } = await setup();
+
+        option2.disabled = true;
+
+        await connect();
+
+        expect(element.value).to.equal("one");
+        expect(element.selectedIndex).to.equal(0);
+
+        element.value = "two";
+
+        expect(element.value).to.equal("three");
+        expect(element.selectedIndex).to.equal(2);
+
+        await disconnect();
+    });
+
+    it("should update the value when the selected option's value changes", async () => {
+        const { element, connect, disconnect, option1 } = await setup();
+
+        await connect();
+
+        expect(element.value).to.equal("one");
+
+        option1.value = "new value";
+
+        expect(element.value).to.equal("new value");
+
+        await disconnect();
+    });
+
+    it("should return the value as a string", async () => {
+        const { element, connect, disconnect, option1 } = await setup();
+
+        await connect();
+
+        option1.value = 12345 as any;
+
+        expect(element.value).to.equal("12345");
+
+        expect(typeof element.value).to.equal("string");
 
         await disconnect();
     });
@@ -866,5 +915,49 @@ describe("Select", () => {
         expect(element.getAttribute("aria-controls")).to.be.empty;
 
         await disconnect();
+    });
+
+    describe("should update the `displayValue` when the selected option's content changes", () => {
+        it("via innerHTML", async () => {
+            const { connect, disconnect, element, option1 } = await setup();
+
+            await connect();
+
+            expect(element.displayValue).to.equal("option one");
+
+            option1.innerHTML = "new value";
+
+            expect(element.displayValue).to.equal("new value");
+
+            await disconnect();
+        });
+
+        it("via innerText", async () => {
+            const { connect, disconnect, element, option1 } = await setup();
+
+            await connect();
+
+            expect(element.displayValue).to.equal("option one");
+
+            option1.innerText = "new value";
+
+            expect(element.displayValue).to.equal("new value");
+
+            await disconnect();
+        });
+
+        it("via textContent", async () => {
+            const { connect, disconnect, element, option1 } = await setup();
+
+            await connect();
+
+            expect(element.displayValue).to.equal("option one");
+
+            option1.textContent = "new value";
+
+            expect(element.displayValue).to.equal("new value");
+
+            await disconnect();
+        });
     });
 });

@@ -37,5 +37,4 @@ jobs:
         coverageLocations: |
           ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
-          ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: true

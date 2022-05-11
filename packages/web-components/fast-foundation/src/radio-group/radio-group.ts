@@ -16,6 +16,11 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  * An Radio Group Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#radiogroup | ARIA radiogroup }.
  *
+ * @slot label - The slot for the label
+ * @slot - The default slot for radio buttons
+ * @csspart positioning-region - The positioning region for laying out the radios
+ * @fires change - Fires a custom 'change' event when the value changes
+ *
  * @public
  */
 export class RadioGroup extends FoundationElement {

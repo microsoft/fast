@@ -2,6 +2,247 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 10 May 2022 07:11:04 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.3",
+      "version": "2.46.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "select ignores l&r arrow keys",
+            "author": "scomea@microsoft.com",
+            "commit": "4a3175e8585af03e97b388849f697f8ee5dbe424",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 08 May 2022 07:08:18 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.2",
+      "version": "2.46.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix test typings that were throwing",
+            "author": "chhol@microsoft.com",
+            "commit": "890ff058b8771c84a9e669b4e9202c43f4d3e7fc",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 06 May 2022 20:58:02 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.2",
+      "version": "2.46.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "update api extractor to 7.23.1 to ensure we can support TS 4.7 internal API changes",
+            "author": "chhol@microsoft.com",
+            "commit": "fbc6a7fb670453322c93f8f12a223febad86f735",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Removed comment blocks from variable type markdown in README files",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "00f9a95e0f1be1b28a0f8b0584d1ef47ce08026e",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 05 May 2022 07:11:41 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.2",
+      "version": "2.46.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix positioning of select dropdown",
+            "author": "abris96@gmail.com",
+            "commit": "10169e77fc1ee328c0e94e082e120e8d1c4171b5",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "reset selection range when selecting option with cursor",
+            "author": "abris96@gmail.com",
+            "commit": "5b82a4b2aa6cf4d59bd4bb6a893764d3386dbf5d",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 04 May 2022 07:14:00 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.1",
+      "version": "2.46.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "update markdown files",
+            "author": "steph@huynhicode.dev",
+            "commit": "c49a98f7f1bd8e167b0b7a96a181990f9a675f34",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.1",
+            "author": "steph@huynhicode.dev",
+            "commit": "c49a98f7f1bd8e167b0b7a96a181990f9a675f34",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "convert enums to const objects and add supported typings",
+            "author": "chhol@microsoft.com",
+            "commit": "d39284193f6d476b5b40b0fad75d3dbd836d55da",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 03 May 2022 07:15:44 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.0",
+      "version": "2.46.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "add initial jsdocs for foundation elements",
+            "author": "chhol@microsoft.com",
+            "commit": "8327524eaf8175c89c435275974243ab09f3afed",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Update to resolve console warnings during doc build-out",
+            "author": "16669785+awentzel@users.noreply.github.com",
+            "commit": "069cd9621f3125c724ccbcd5b87294ff54739861",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "reflect option value changes in select",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "472d0b6cf9dcc6662e8d69c16689c073d34b9ca4",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix: selectedIndex property ignores disabled options in listbox and select",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "9c36455b834421930e930ca24da9bd3c066cb7b8",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "viewport lock + fill behavior",
+            "author": "scomea@microsoft.com",
+            "commit": "2a5734222653656a7a5050be6f086add956d6376",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Upgraded api-extractor",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "2341496a6fafe3051dc50333c21ca652026f725b",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.1",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "2341496a6fafe3051dc50333c21ca652026f725b",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "add slots and events documentation",
+            "author": "scomea@microsoft.com",
+            "commit": "bd6e458d5bbca8838ae4e555e2b32f28d1b310c4",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 01 May 2022 07:12:05 GMT",
+      "tag": "@microsoft/fast-foundation_v2.45.0",
+      "version": "2.45.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "ensure that tabs and tabpanels without ids stay in sync",
+            "author": "chhol@microsoft.com",
+            "commit": "46f935158aca1a4b28c0d9b4e74c083b31a40fdb",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "trim extra spaces from the text property for listbox-option",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "df1e9195f57710b2781602ee37d1ae8123614013",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix keyboarding behavior for right and left arrow keys in Tree View",
+            "author": "chhol@microsoft.com",
+            "commit": "5db724976b6e1678e74a6cd51a5324c2b6186bba",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "add select method to number field, text field, and text area components",
+            "author": "chhol@microsoft.com",
+            "commit": "575c89b2e98afbf91b08c1e18f2a080a0b779052",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 28 Apr 2022 07:12:47 GMT",
+      "tag": "@microsoft/fast-foundation_v2.44.0",
+      "version": "2.44.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "update displayed selected value in select component when an option changes",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "26474a333da31741df31e5acd86139ba0e9244ad",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 27 Apr 2022 07:21:09 GMT",
+      "tag": "@microsoft/fast-foundation_v2.43.0",
+      "version": "2.43.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "update to typescript 4.6.2 and update ARIAMixin typings",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.4.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 24 Apr 2022 07:13:26 GMT",
       "tag": "@microsoft/fast-foundation_v2.42.2",
       "version": "2.42.2",

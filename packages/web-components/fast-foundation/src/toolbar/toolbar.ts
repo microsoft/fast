@@ -47,6 +47,12 @@ const ToolbarArrowKeyMap = Object.freeze({
  * A Toolbar Custom HTML Element.
  * Implements the {@link https://w3c.github.io/aria-practices/#Toolbar|ARIA Toolbar}.
  *
+ * @slot start - Content which can be provided before the slotted items
+ * @slot end - Content which can be provided after the slotted items
+ * @slot - The default slot for slotted items
+ * @slot label - The toolbar label
+ * @csspart positioning-region - The element containing the items, start and end slots
+ *
  * @public
  */
 export class Toolbar extends FoundationElement {
@@ -315,7 +321,7 @@ export class DelegatesARIAToolbar {
      * HTML Attribute: aria-labelledby
      */
     @attr({ attribute: "aria-labelledby" })
-    public ariaLabelledby: string;
+    public ariaLabelledby: string | null;
 
     /**
      * The label surfaced to assistive technologies.
@@ -325,7 +331,7 @@ export class DelegatesARIAToolbar {
      * HTML Attribute: aria-label
      */
     @attr({ attribute: "aria-label" })
-    public ariaLabel: string;
+    public ariaLabel: string | null;
 }
 
 /**

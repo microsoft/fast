@@ -29,6 +29,18 @@ export type TreeItemOptions = FoundationElementDefinition &
 /**
  * A Tree item Custom HTML Element.
  *
+ * @slot start - Content which can be provided before the tree item content
+ * @slot end - Content which can be provided after the tree item content
+ * @slot - The default slot for tree item text content
+ * @slot item - The slot for tree items (fast tree items manage this assignment themselves)
+ * @slot expand-collapse-button - The expand/collapse button
+ * @csspart positioning-region - The element used to position the tree item content with exception of any child nodes
+ * @csspart content-region - The element containing the expand/collapse, start, and end slots
+ * @csspart items - The element wrapping any child items
+ * @csspart expand-collapse-button - The expand/collapse button
+ * @fires expanded-change - Fires a custom 'expanded-change' event when the expanded state changes
+ * @fires selected-change - Fires a custom 'selected-change' event when the selected state changes
+ *
  * @public
  */
 export class TreeItem extends FoundationElement {

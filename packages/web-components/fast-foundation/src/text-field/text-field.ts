@@ -21,6 +21,14 @@ export type TextFieldOptions = FoundationElementDefinition & StartEndOptions;
  * A Text Field Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text | <input type="text" /> element }.
  *
+ * @slot start - Content which can be provided before the number field input
+ * @slot end - Content which can be provided after the number field input
+ * @slot - The default slot for the label
+ * @csspart label - The label
+ * @csspart root - The element wrapping the control, including start and end slots
+ * @csspart control - The text field element
+ * @fires change - Fires a custom 'change' event when the value has changed
+ *
  * @public
  */
 export class TextField extends FormAssociatedTextField {
@@ -76,8 +84,7 @@ export class TextField extends FormAssociatedTextField {
      * HTML Attribute: type
      */
     @attr
-    public type: TextFieldType | "email" | "password" | "tel" | "text" | "url" =
-        TextFieldType.text;
+    public type: TextFieldType = TextFieldType.text;
     private typeChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.type = this.type;
@@ -199,6 +206,23 @@ export class TextField extends FormAssociatedTextField {
                 this.focus();
             });
         }
+    }
+
+    /**
+     * Selects all the text in the text field
+     *
+     * @public
+     */
+    protected select(): void {
+        this.control.select();
+
+        /**
+         * The select event does not permeate the shadow DOM boundary.
+         * This fn effectively proxies the select event,
+         * emitting a `select` event whenever the internal
+         * control emits a `select` event
+         */
+        this.$emit("select");
     }
 
     /**
