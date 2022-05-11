@@ -22,9 +22,9 @@
   "exports": {
     ".": {
       "types": "./dist/fast-element.d.ts",
-      "default": "./dist/esm/index.js",
       "production": "./dist/esm/index.js",
-      "development": "./dist/esm/index.debug.js"
+      "development": "./dist/esm/index.debug.js",
+      "default": "./dist/esm/index.js"
     },
     "./polyfills.js": {
       "types": "./dist/dts/polyfills.d.ts",
