@@ -1,26 +1,23 @@
-import commonJS from "rollup-plugin-commonjs";
 import filesize from "rollup-plugin-filesize";
-import resolve from "rollup-plugin-node-resolve";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { terser } from "rollup-plugin-terser";
 import transformTaggedTemplate from "rollup-plugin-transform-tagged-template";
-import typescript from "rollup-plugin-typescript2";
+import typescript from "@rollup/plugin-typescript";
 import {
     transformCSSFragment,
     transformHTMLFragment,
-} from "../../../build/transform-fragments";
+} from "../../../build/transform-fragments.js";
 
 const parserOptions = {
     sourceType: "module",
 };
 
 const plugins = [
-    resolve(),
-    commonJS(),
+    nodeResolve(),
     typescript({
-        tsconfigOverride: {
-            compilerOptions: {
-                declaration: false,
-            },
+        compilerOptions: {
+            declaration: false,
+            declarationDir: undefined,
         },
     }),
     transformTaggedTemplate({
