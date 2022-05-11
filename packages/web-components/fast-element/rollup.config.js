@@ -13,9 +13,35 @@ const parserOptions = {
     sourceType: "module",
 };
 
+const plugins = [
+    resolve(),
+    commonJS(),
+    typescript({
+        tsconfigOverride: {
+            compilerOptions: {
+                declaration: false,
+            },
+        },
+    }),
+    transformTaggedTemplate({
+        tagsToProcess: ["css"],
+        transformer: transformCSSFragment,
+        parserOptions,
+    }),
+    transformTaggedTemplate({
+        tagsToProcess: ["html"],
+        transformer: transformHTMLFragment,
+        parserOptions,
+    }),
+    filesize({
+        showMinifiedSize: false,
+        showBrotliSize: true,
+    }),
+];
+
 export default [
     {
-        input: "src/index.ts",
+        input: "src/index.rollup.ts",
         output: [
             {
                 file: "dist/fast-element.js",
@@ -27,30 +53,21 @@ export default [
                 plugins: [terser()],
             },
         ],
-        plugins: [
-            resolve(),
-            commonJS(),
-            typescript({
-                tsconfigOverride: {
-                    compilerOptions: {
-                        declaration: false,
-                    },
-                },
-            }),
-            transformTaggedTemplate({
-                tagsToProcess: ["css"],
-                transformer: transformCSSFragment,
-                parserOptions,
-            }),
-            transformTaggedTemplate({
-                tagsToProcess: ["html"],
-                transformer: transformHTMLFragment,
-                parserOptions,
-            }),
-            filesize({
-                showMinifiedSize: false,
-                showBrotliSize: true,
-            }),
+        plugins,
+    },
+    {
+        input: "src/index.rollup.debug.ts",
+        output: [
+            {
+                file: "dist/fast-element.debug.js",
+                format: "esm",
+            },
+            {
+                file: "dist/fast-element.debug.min.js",
+                format: "esm",
+                plugins: [terser()],
+            },
         ],
+        plugins,
     },
 ];

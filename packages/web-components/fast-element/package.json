@@ -6,10 +6,12 @@
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
   },
+  "homepage": "https://www.fast.design/",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "packages/web-components/fast-element"
   },
   "bugs": {
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
@@ -20,8 +22,17 @@
   "exports": {
     ".": {
       "types": "./dist/fast-element.d.ts",
-      "default": "./dist/esm/index.js"
-
+      "default": "./dist/esm/index.js",
+      "production": "./dist/esm/index.js",
+      "development": "./dist/esm/index.debug.js"
+    },
+    "./polyfills.js": {
+      "types": "./dist/dts/polyfills.d.ts",
+      "default": "./dist/esm/polyfills.js"
+    },
+    "./debug.js": {
+      "types": "./dist/dts/debug.d.ts",
+      "default": "./dist/esm/debug.js"
     }
   },
   "unpkg": "dist/fast-element.min.js",
