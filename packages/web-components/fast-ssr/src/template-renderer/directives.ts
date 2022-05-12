@@ -13,7 +13,9 @@ import {
 import { TemplateRenderer } from "./template-renderer.js";
 
 /**
- * Describes an implementation that can render a directive
+ * Describes an implementation that can render a directive.
+ *
+ * @public
  */
 export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
     render(
@@ -26,8 +28,8 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
     matcher: Constructable<T>;
 }
 
-export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirective> = Object.freeze(
-    {
+export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirective> =
+    Object.freeze({
         matcher: RepeatDirective,
         *render(
             directive: RepeatDirective,
@@ -64,31 +66,27 @@ export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirectiv
                 throw new Error("Unable to render Repeat Directive template");
             }
         },
-    }
-);
+    });
 
 function* noop() {
     yield "";
 }
-export const ChildrenDirectiveRenderer: ViewBehaviorFactoryRenderer<ChildrenDirective> = Object.freeze(
-    {
+export const ChildrenDirectiveRenderer: ViewBehaviorFactoryRenderer<ChildrenDirective> =
+    Object.freeze({
         matcher: ChildrenDirective,
         render: noop,
-    }
-);
+    });
 
-export const RefDirectiveRenderer: ViewBehaviorFactoryRenderer<RefDirective> = Object.freeze(
-    {
+export const RefDirectiveRenderer: ViewBehaviorFactoryRenderer<RefDirective> =
+    Object.freeze({
         matcher: RefDirective,
         render: noop,
-    }
-);
-export const SlottedDirectiveRenderer: ViewBehaviorFactoryRenderer<SlottedDirective> = Object.freeze(
-    {
+    });
+export const SlottedDirectiveRenderer: ViewBehaviorFactoryRenderer<SlottedDirective> =
+    Object.freeze({
         matcher: SlottedDirective,
         render: noop,
-    }
-);
+    });
 
 export const defaultViewBehaviorFactoryRenderers: ViewBehaviorFactoryRenderer<any>[] = [
     RepeatDirectiveRenderer,

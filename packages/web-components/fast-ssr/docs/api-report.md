@@ -51,10 +51,18 @@ export class TemplateRenderer {
     //
     // @internal
     renderOpCodes(codes: Op[], renderInfo: RenderInfo, source: unknown, context: ExecutionContext): IterableIterator<string>;
-    // Warning: (ae-forgotten-export) The symbol "ViewBehaviorFactoryRenderer" needs to be exported by the entry point exports.d.ts
-    //
     // @internal
     withViewBehaviorFactoryRenderers(...renderers: ViewBehaviorFactoryRenderer<any>[]): void;
+}
+
+// @public
+export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
+    // (undocumented)
+    matcher: Constructable<T>;
+    // Warning: (ae-incompatible-release-tags) The symbol "render" is marked as @public, but its signature references "TemplateRenderer" which is marked as @beta
+    //
+    // (undocumented)
+    render(behavior: T, renderInfo: RenderInfo, source: any, renderer: TemplateRenderer, context: ExecutionContext): IterableIterator<string>;
 }
 
 // (No @packageDocumentation comment for this package)
