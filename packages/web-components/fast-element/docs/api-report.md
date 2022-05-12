@@ -273,11 +273,6 @@ export type DefaultBindingOptions = {
 
 // @public
 export const DOM: Readonly<{
-    supportsAdoptedStyleSheets: boolean;
-    setUpdateMode: (isAsync: boolean) => void;
-    queueUpdate: (callable: Callable) => void;
-    nextUpdate(): Promise<void>;
-    processUpdates: () => void;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>;
@@ -304,6 +299,7 @@ export class ElementStyles {
     get strategy(): StyleStrategy;
     // @internal (undocumented)
     readonly styles: ReadonlyArray<ComposableStyles>;
+    static readonly supportsAdoptedStyleSheets: boolean;
     withBehaviors(...behaviors: Behavior<HTMLElement>[]): this;
     withStrategy(Strategy: ConstructibleStyleStrategy): this;
 }
@@ -775,6 +771,17 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
     // (undocumented)
     register(definition: TDefinition): boolean;
 }
+
+// @public
+export interface UpdateQueue {
+    enqueue(callable: Callable): void;
+    next(): Promise<void>;
+    process(): void;
+    setMode(isAsync: boolean): void;
+}
+
+// @public
+export const Updates: UpdateQueue;
 
 // @public
 export interface ValueConverter {

@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { bind, HTMLBindingDirective } from "./binding";
 import { ExecutionContext, observable } from "../observation/observable";
-import { DOM } from "../dom";
 import { html, ViewTemplate } from "./template";
 import { toHTML } from "../__test__/helpers";
 import { SyntheticView, HTMLView } from "./view";
+import { Updates } from "../observation/update-queue";
 
 describe("The HTML binding directive", () => {
     class Model {
@@ -61,7 +61,7 @@ describe("The HTML binding directive", () => {
 
             model.value = "This is another test, different from the first.";
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(node.textContent).to.equal(model.value);
         });
@@ -89,7 +89,7 @@ describe("The HTML binding directive", () => {
 
             model.value = "This is a test.";
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(toHTML(parentNode)).to.equal(model.value);
         });
@@ -105,7 +105,7 @@ describe("The HTML binding directive", () => {
 
             model.value = null;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(toHTML(parentNode)).to.equal("");
         });
@@ -121,7 +121,7 @@ describe("The HTML binding directive", () => {
 
             model.value = void 0;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(toHTML(parentNode)).to.equal("");
         });
@@ -138,7 +138,7 @@ describe("The HTML binding directive", () => {
             const newTemplate = html<Model>`This is a new template ${x => x.knownValue}`;
             model.value = newTemplate;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(toHTML(parentNode)).to.equal(`This is a new template value`);
         });
@@ -159,13 +159,13 @@ describe("The HTML binding directive", () => {
 
             model.value = "This is a test string.";
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(toHTML(parentNode)).to.equal(model.value);
 
             model.value = template;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             const newView = (node as any).$fastView as SyntheticView;
             const newCapturedTemplate = (node as any).$fastTemplate as ViewTemplate;
@@ -187,7 +187,7 @@ describe("The HTML binding directive", () => {
             model.value = template;
             model.forceComputedUpdate();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
         });
@@ -204,7 +204,7 @@ describe("The HTML binding directive", () => {
 
             model.knownValue = "a"
 
-            await DOM.nextUpdate()
+            await Updates.next()
 
             expect(toHTML(parentNode)).to.equal(`<a>Hi there!</a>`);
         })

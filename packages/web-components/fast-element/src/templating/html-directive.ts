@@ -115,8 +115,23 @@ const registry = createTypeRegistry<HTMLDirectiveDefinition>();
  * @public
  */
 export const HTMLDirective = Object.freeze({
+    /**
+     * Gets the directive definition associated with the instance.
+     * @param instance - The directive instance to retrieve the definition for.
+     */
     getForInstance: registry.getForInstance,
+
+    /**
+     * Gets the directive definition associated with the specified type.
+     * @param type - The directive type to retrieve the definition for.
+     */
     getByType: registry.getByType,
+
+    /**
+     * Defines an HTMLDirective based on the options.
+     * @param type - The type to define as a directive.
+     * @param options - Options that specify the directive's application.
+     */
     define<TType extends Constructable<HTMLDirective>>(
         type: TType,
         options?: PartialHTMLDirectiveDefinition
@@ -130,7 +145,7 @@ export const HTMLDirective = Object.freeze({
 
 /**
  * Decorator: Defines an HTMLDirective.
- * @param options - Provides options that specify the directives application.
+ * @param options - Provides options that specify the directive's application.
  * @public
  */
 export function htmlDirective(options?: PartialHTMLDirectiveDefinition) {

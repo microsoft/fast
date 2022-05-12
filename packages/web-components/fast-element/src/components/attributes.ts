@@ -1,7 +1,8 @@
 import { Accessor, Observable } from "../observation/observable.js";
-import { DOM } from "../dom.js";
 import type { Notifier } from "../observation/notifier.js";
 import { isString } from "../interfaces.js";
+import { Updates } from "../observation/update-queue.js";
+import { DOM } from "../templating/dom.js";
 
 /**
  * Represents objects that can convert values to and from
@@ -223,7 +224,7 @@ export class AttributeDefinition implements Accessor {
             return;
         }
 
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             guards.add(element);
 
             const latestValue = element[this.fieldName];
