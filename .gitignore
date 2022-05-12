@@ -70,7 +70,7 @@ sites/website/node_modules
 sites/website/i18n/
 
 # GitHub Actions Local Testing
-.github/workflows/testing/*.json
+# .github/workflows/testing/*.json
 
 # Ignore Build Artefacts
 bin/
