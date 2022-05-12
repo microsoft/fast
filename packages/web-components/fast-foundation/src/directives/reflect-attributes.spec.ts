@@ -1,4 +1,4 @@
-import { html, ref, customElement, DOM, FASTElement } from "@microsoft/fast-element";
+import { html, ref, customElement, FASTElement, Updates } from "@microsoft/fast-element";
 import { fixture, uniqueElementName } from "../testing/fixture";
 import { reflectAttributes } from "./reflect-attributes";
 import { expect } from "chai";
@@ -45,7 +45,7 @@ describe("reflectAttributes", () => {
 
         await connect();
         element.setAttribute("foo", "bar");
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.a.getAttribute("foo")).to.equal("bar");
         await disconnect();
@@ -56,7 +56,7 @@ describe("reflectAttributes", () => {
 
         await connect();
         element.setAttribute("bar", "bat");
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.a.getAttribute("bar")).to.equal("bat");
         expect(element.b.getAttribute("bar")).to.equal("bat");
@@ -69,10 +69,10 @@ describe("reflectAttributes", () => {
 
         await connect();
         element.setAttribute("foo", "bar");
-        await DOM.nextUpdate();
+        await Updates.next();
 
         element.removeAttribute("foo");
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.a.hasAttribute("foo")).to.equal(false);
 
@@ -84,10 +84,10 @@ describe("reflectAttributes", () => {
 
         await connect();
         element.setAttribute("bar", "bat");
-        await DOM.nextUpdate();
+        await Updates.next();
 
         element.removeAttribute("bar");
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.a.hasAttribute("bar")).to.equal(false);
         expect(element.b.hasAttribute("bar")).to.equal(false);
@@ -101,7 +101,7 @@ describe("reflectAttributes", () => {
         await connect();
         element.setAttribute("foo", "bar");
 
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(element.b.hasAttribute("foo")).to.equal(false);
 
         await disconnect();
@@ -112,7 +112,7 @@ describe("reflectAttributes", () => {
 
         await connect();
         element.setAttribute("bee", "bar");
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.a.hasAttribute("bee")).to.equal(false);
         expect(element.b.hasAttribute("bee")).to.equal(false);

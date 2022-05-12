@@ -1,4 +1,4 @@
-import { customElement, DOM, html } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { fixture } from "../testing/fixture";
 import { Calendar, calendarTemplate } from "./index";
@@ -54,7 +54,7 @@ async function setup(props?: {}) {
 
     await connect();
 
-    await DOM.nextUpdate();
+    await Updates.next();
 
     return { document, element, connect, disconnect };
 }
@@ -264,7 +264,7 @@ describe("Calendar", () => {
         it("Should be 31 days in January", async () => {
             const { element, disconnect } = await setup({month: 1, year: 2021});
 
-            await DOM.nextUpdate();
+            await Updates.next();
             const info = (element as Calendar).getMonthInfo();
             expect(info.length).to.equal(31);
 

@@ -1,12 +1,12 @@
 import {
     attr,
-    DOM,
     html,
     HTMLView,
     observable,
     ref,
     RepeatBehavior,
     RepeatDirective,
+    Updates,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
@@ -220,7 +220,7 @@ export class Picker extends FormAssociatedPicker {
     public showLoading: boolean = false;
     protected showLoadingChanged(): void {
         if (this.$fastController.isConnected) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 this.setFocusedOption(0);
             });
         }
@@ -359,7 +359,7 @@ export class Picker extends FormAssociatedPicker {
     public flyoutOpen: boolean = false;
     protected flyoutOpenChanged(): void {
         if (this.flyoutOpen) {
-            DOM.queueUpdate(this.setRegionProps);
+            Updates.enqueue(this.setRegionProps);
             this.$emit("menuopening", { bubbles: false });
         } else {
             this.$emit("menuclosing", { bubbles: false });
@@ -415,7 +415,7 @@ export class Picker extends FormAssociatedPicker {
     public showNoOptions: boolean = false;
     private showNoOptionsChanged(): void {
         if (this.$fastController.isConnected) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 this.setFocusedOption(0);
             });
         }
@@ -510,7 +510,7 @@ export class Picker extends FormAssociatedPicker {
 
         this.updateMenuConfig();
 
-        DOM.queueUpdate(() => this.initialize());
+        Updates.enqueue(() => this.initialize());
     }
 
     public disconnectedCallback() {
@@ -584,7 +584,7 @@ export class Picker extends FormAssociatedPicker {
 
         if (open && document.activeElement === this.inputElement) {
             this.flyoutOpen = open;
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 if (this.menuElement !== undefined) {
                     this.setFocusedOption(0);
                 } else {
@@ -745,7 +745,7 @@ export class Picker extends FormAssociatedPicker {
                     this.selection = this.selectedItems
                         .splice(currentFocusedItemIndex, 1)
                         .toString();
-                    DOM.queueUpdate(() => {
+                    Updates.enqueue(() => {
                         (selectedItems[
                             Math.min(selectedItems.length, currentFocusedItemIndex)
                         ] as HTMLElement).focus();
@@ -792,7 +792,7 @@ export class Picker extends FormAssociatedPicker {
 
         this.updateFilteredOptions();
 
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             this.checkMaxItems();
         });
         this.$emit("selectionchange", { bubbles: false });
@@ -802,7 +802,7 @@ export class Picker extends FormAssociatedPicker {
      * Anchored region is loaded, menu and options exist in the DOM.
      */
     public handleRegionLoaded(e: Event): void {
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             this.setFocusedOption(0);
             this.$emit("menuloaded", { bubbles: false });
         });
@@ -817,7 +817,7 @@ export class Picker extends FormAssociatedPicker {
         }
         if (this.region === null || this.region === undefined) {
             // TODO: limit this
-            DOM.queueUpdate(this.setRegionProps);
+            Updates.enqueue(this.setRegionProps);
             return;
         }
         this.region.anchorElement = this.inputElement;
@@ -864,7 +864,7 @@ export class Picker extends FormAssociatedPicker {
                 const newSelection: string[] = this.selectedItems.slice();
                 newSelection.splice(itemIndex, 1);
                 this.selection = newSelection.toString();
-                DOM.queueUpdate(() => this.incrementFocusedItem(0));
+                Updates.enqueue(() => this.incrementFocusedItem(0));
             }
             return false;
         }

@@ -1,4 +1,9 @@
-import { attr, DOM, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import {
+    attr,
+    observable,
+    SyntheticViewTemplate,
+    Updates,
+} from "@microsoft/fast-element";
 import {
     Direction,
     keyArrowLeft,
@@ -161,7 +166,7 @@ export class MenuItem extends FoundationElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             this.updateSubmenu();
         });
 

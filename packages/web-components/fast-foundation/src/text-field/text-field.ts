@@ -1,4 +1,9 @@
-import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    nullableNumberConverter,
+    observable,
+    Updates,
+} from "@microsoft/fast-element";
 import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
@@ -202,7 +207,7 @@ export class TextField extends FormAssociatedTextField {
         this.validate();
 
         if (this.autofocus) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 this.focus();
             });
         }

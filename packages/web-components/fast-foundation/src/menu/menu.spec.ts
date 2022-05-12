@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { Menu, menuTemplate as template } from "./index";
 import { MenuItem, menuItemTemplate as itemTemplate, MenuItemRole } from "../menu-item";
 import { fixture } from "../testing/fixture";
-import { DOM, html } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 
 const FASTMenu = Menu.compose({
@@ -67,7 +67,7 @@ describe("Menu", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         element.focus();
         expect(document.activeElement?.id).to.equal("id1");
@@ -79,7 +79,7 @@ describe("Menu", () => {
         const { element, connect, disconnect } = await fixture(FASTMenu());
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         element.focus();
         expect(document.activeElement?.id).to.equal("");
@@ -104,7 +104,7 @@ describe("Menu", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(document.getElementById("id1")?.getAttribute("tabindex")).to.equal("0");
 
@@ -121,7 +121,7 @@ describe("Menu", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(document.getElementById("not-an-item")?.hasAttribute("tabindex")).to.equal(false);
 
@@ -134,7 +134,7 @@ describe("Menu", () => {
         (menuItem1 as MenuItem).disabled = true;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(document.getElementById("id1")?.getAttribute("tabindex")).to.equal("0");
 
@@ -163,7 +163,7 @@ describe("Menu", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.querySelector("[role='menuitem']")?.getAttribute("tabindex")
@@ -192,7 +192,7 @@ describe("Menu", () => {
         menuItem3.setAttribute("role", "menuitemcheckbox");
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.querySelector("[role='menuitemcheckbox']")?.getAttribute("tabindex")
@@ -221,7 +221,7 @@ describe("Menu", () => {
         menuItem3.setAttribute("role", "menuitemradio");
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.querySelector("[role='menuitemradio']")?.getAttribute("tabindex")
@@ -240,7 +240,7 @@ describe("Menu", () => {
         hr.setAttribute("id", "hrid");
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(document.getElementById("hrid")?.className).to.not.contain("indent");
 
@@ -251,7 +251,7 @@ describe("Menu", () => {
         const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
 
@@ -269,7 +269,7 @@ describe("Menu", () => {
         element.insertBefore(anchor, menuItem2);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
 
@@ -284,7 +284,7 @@ describe("Menu", () => {
         (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
 
@@ -305,7 +305,7 @@ describe("Menu", () => {
         menuItem3.appendChild(startSlot);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
 
@@ -327,7 +327,7 @@ describe("Menu", () => {
         element.insertBefore(hiddenItem2, menuItem4);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
         (item1 as HTMLElement).focus();
@@ -373,7 +373,7 @@ describe("Menu", () => {
         element.insertBefore(notMenuItem2, menuItem4);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
         (item1 as HTMLElement).focus();
@@ -414,7 +414,7 @@ describe("Menu", () => {
         (menuItem3 as MenuItem).role = MenuItemRole.menuitemcheckbox;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
         const item2 = element.querySelector('[id="id2"]');
@@ -425,25 +425,25 @@ describe("Menu", () => {
         expect(item3?.getAttribute("aria-checked")).to.equal(null);
 
         (item1 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("true");
         expect(item2?.getAttribute("aria-checked")).to.equal(null);
         expect(item3?.getAttribute("aria-checked")).to.equal(null);
 
         (item2 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("true");
         expect(item2?.getAttribute("aria-checked")).to.equal("true");
         expect(item3?.getAttribute("aria-checked")).to.equal(null);
 
         (item3 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("true");
         expect(item2?.getAttribute("aria-checked")).to.equal("true");
         expect(item3?.getAttribute("aria-checked")).to.equal("true");
 
         (item3 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("true");
         expect(item2?.getAttribute("aria-checked")).to.equal("true");
         expect(item3?.getAttribute("aria-checked")).to.equal("false");
@@ -461,7 +461,7 @@ describe("Menu", () => {
         (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
         const item2 = element.querySelector('[id="id2"]');
@@ -472,19 +472,19 @@ describe("Menu", () => {
         expect(item3?.getAttribute("aria-checked")).to.equal(null);
 
         (item1 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("true");
         expect(item2?.getAttribute("aria-checked")).to.equal("false");
         expect(item3?.getAttribute("aria-checked")).to.equal("false");
 
         (item2 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("false");
         expect(item2?.getAttribute("aria-checked")).to.equal("true");
         expect(item3?.getAttribute("aria-checked")).to.equal("false");
 
         (item3 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("false");
         expect(item2?.getAttribute("aria-checked")).to.equal("false");
         expect(item3?.getAttribute("aria-checked")).to.equal("true");
@@ -507,7 +507,7 @@ describe("Menu", () => {
         separator.setAttribute("role", "separator");
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
         const item2 = element.querySelector('[id="id2"]');
@@ -520,21 +520,21 @@ describe("Menu", () => {
         expect(item4?.getAttribute("aria-checked")).to.equal(null);
 
         (item1 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("true");
         expect(item2?.getAttribute("aria-checked")).to.equal("false");
         expect(item3?.getAttribute("aria-checked")).to.equal(null);
         expect(item4?.getAttribute("aria-checked")).to.equal(null);
 
         (item2 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("false");
         expect(item2?.getAttribute("aria-checked")).to.equal("true");
         expect(item3?.getAttribute("aria-checked")).to.equal(null);
         expect(item4?.getAttribute("aria-checked")).to.equal(null);
 
         (item3 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("false");
         expect(item2?.getAttribute("aria-checked")).to.equal("true");
         expect(item3?.getAttribute("aria-checked")).to.equal("true");

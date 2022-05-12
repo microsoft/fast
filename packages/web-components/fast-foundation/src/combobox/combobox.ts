@@ -1,5 +1,5 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
+import { SyntheticViewTemplate, Updates } from "@microsoft/fast-element";
+import { attr, Observable, observable } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import type { ListboxOption } from "../listbox-option/listbox-option.js";
@@ -157,7 +157,7 @@ export class Combobox extends FormAssociatedCombobox {
             this.focusAndScrollOptionIntoView();
 
             // focus is directed to the element when `open` is changed programmatically
-            DOM.queueUpdate(() => this.focus());
+            Updates.enqueue(() => this.focus());
 
             return;
         }

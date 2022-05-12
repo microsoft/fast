@@ -1,5 +1,5 @@
-import { assert, expect } from "chai";
-import { css, DOM, customElement, html } from "@microsoft/fast-element";
+import { expect } from "chai";
+import { css, Updates } from "@microsoft/fast-element";
 import { fixture } from "../testing/fixture";
 import { Tab, tabTemplate } from "../tab";
 import { TabPanel, tabPanelTemplate } from "../tab-panel";
@@ -89,7 +89,7 @@ describe("Tabs", () => {
 
         element.orientation = TabsOrientation.vertical;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.classList.contains(TabsOrientation.vertical)).to.equal(true);
         await disconnect();
@@ -208,7 +208,7 @@ describe("Tabs", () => {
         element.appendChild(newPanel);
         element.insertBefore(newTab, element.querySelector("fast-tab-panel"));
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         tabId0 = element.querySelectorAll("fast-tab")[0]?.getAttribute("id");
         tabId1 = element.querySelectorAll("fast-tab")[1]?.getAttribute("id");
@@ -295,7 +295,7 @@ describe("Tabs", () => {
         element.appendChild(newPanel);
         element.insertBefore(newTab, element.querySelector("fast-tab-panel"));
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         tabpanelId0 = element.querySelectorAll("fast-tab-panel")[0]?.getAttribute("id");
         tabpanelId1 = element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("id");
@@ -383,7 +383,7 @@ describe("Tabs", () => {
                     .be.true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             tab2.click();
 
@@ -497,7 +497,7 @@ describe("Tabs", () => {
             element.activeid = "tab1";
             const tab3 = element.querySelectorAll("fast-tab")[2] as Tab;
             tab3.disabled = true;
-            await DOM.nextUpdate();
+            await Updates.next();
             tab3.click();
 
             expect(element.activeid).to.equal("tab1");
@@ -527,7 +527,7 @@ describe("Tabs", () => {
             element.activeid = "tab1";
             const tab3 = element.querySelectorAll("fast-tab")[2] as Tab;
             tab3.disabled = false;
-            await DOM.nextUpdate();
+            await Updates.next();
             tab3.click();
 
             expect(element.activeid).to.equal("tab3");

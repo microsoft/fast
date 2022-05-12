@@ -1,10 +1,10 @@
 import {
     attr,
-    DOM,
     ItemViewTemplate,
     observable,
     RepeatBehavior,
     RepeatDirective,
+    Updates,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
@@ -366,7 +366,7 @@ export class DataGrid extends FoundationElement {
             this.setAttribute("tabindex", "-1");
         }
 
-        DOM.queueUpdate(this.queueRowIndexUpdate);
+        Updates.enqueue(this.queueRowIndexUpdate);
     }
 
     /**
@@ -574,7 +574,7 @@ export class DataGrid extends FoundationElement {
         }
         if (this.pendingFocusUpdate === false) {
             this.pendingFocusUpdate = true;
-            DOM.queueUpdate(() => this.updateFocus());
+            Updates.enqueue(() => this.updateFocus());
         }
     }
 
@@ -637,7 +637,7 @@ export class DataGrid extends FoundationElement {
     private queueRowIndexUpdate = (): void => {
         if (!this.rowindexUpdateQueued) {
             this.rowindexUpdateQueued = true;
-            DOM.queueUpdate(this.updateRowIndexes);
+            Updates.enqueue(this.updateRowIndexes);
         }
     };
 

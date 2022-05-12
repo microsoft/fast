@@ -1,4 +1,9 @@
-import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    nullableNumberConverter,
+    observable,
+    Updates,
+} from "@microsoft/fast-element";
 import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
@@ -190,7 +195,7 @@ export class Search extends FormAssociatedSearch {
         this.validate();
 
         if (this.autofocus) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 this.focus();
             });
         }

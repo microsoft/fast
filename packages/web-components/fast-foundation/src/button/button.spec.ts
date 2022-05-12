@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { fixture } from "../testing/fixture";
 import { Button, buttonTemplate as template } from "./index";
 import { eventClick } from "@microsoft/fast-web-utilities";
@@ -530,7 +530,7 @@ describe("Button", () => {
                 element.click();
 
                 // Resolve false on the next update in case reset hasn't happened
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasSumbitted).to.equal(true);
@@ -556,7 +556,7 @@ describe("Button", () => {
                 element.click();
 
                 // Resolve false on the next update in case reset hasn't happened
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasReset).to.equal(true);
@@ -579,7 +579,7 @@ describe("Button", () => {
                 wasClicked = true;
             })
 
-            await DOM.nextUpdate();
+            await Updates.next();
             element.click()
 
             expect(wasClicked).to.equal(false);
@@ -601,7 +601,7 @@ describe("Button", () => {
                 wasClicked = true;
             })
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             const elements = element.shadowRoot?.querySelectorAll("span");
             if (elements) {
