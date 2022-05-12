@@ -48,7 +48,7 @@ jobs:
       - name: Prepare workspaces
         run: yarn prepare
   build_tests:
-    needs: prepare
+    needs: prepare_linux
     - name: Install playwright dependencies and browsers
       run: |
         yarn playwright install-deps
@@ -76,7 +76,7 @@ jobs:
       run: yarn test:validation
 
   build_benchmarks:
-    needs: prepare
+    needs: prepare_linux
     - name: install and build
       run: |
         cd packages/utilities/fast-benchmarks
