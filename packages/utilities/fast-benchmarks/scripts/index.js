@@ -78,12 +78,17 @@ async function runBenchmark(configPaths) {
     for (let i = 0; i < configPaths.length; i++) {
         const configPath = configPaths[i];
         const res = new Promise((resolve, reject) => {
-            const args = ["tach", "--config", configPath];
+            const args = [
+                "tach",
+                "--config",
+                configPath,
+                "--json-file results/result.json",
+            ];
             const child = spawn("npx", args, { stdio: "inherit" });
             child.on("close", code => {
                 if (code !== 0) {
                     reject({
-                        command: `npx tach --config ${configPath}`,
+                        command: `npx tach --config ${configPath} --json-file results/result.json`,
                     });
                     return;
                 }

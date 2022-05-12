@@ -12,44 +12,43 @@ on:
     - features/*
 
 jobs:
-  build_linux:
+  prepare_linux:
     runs-on: ubuntu-latest
-    env:
-      PLAYWRIGHT_BROWSERS_PATH: 0
-
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo '::set-output name=dir::$(yarn cache dir)'
 
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo '::set-output name=dir::$(yarn cache dir)'
+      - name: Set up node_modules cache
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
-    - name: Set up node_modules cache
-      uses: actions/cache@v2
-      id: yarn-cache
-      with:
-        path: |
-          ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          node_modules
-          */*/node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
+      - name: Install package dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
 
-    - name: Install package dependencies
-      run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
+      - name: Check for the presence of changed files inside ./change
+        run: yarn checkchange
 
-    - name: Check for the presence of changed files inside ./change
-      run: yarn checkchange
+      - name: Testing Prettier format
+        run: yarn format:check
 
-    - name: Testing Prettier format
-      run: yarn format:check
-
-    - name: Prepare workspaces
-      run: yarn prepare
-
+      - name: Prepare workspaces
+        run: yarn prepare
+  build_tests:
+    needs: prepare
+     env:
+      PLAYWRIGHT_BROWSERS_PATH: 0
     - name: Install playwright dependencies and browsers
       run: |
         yarn playwright install-deps
@@ -75,3 +74,18 @@ jobs:
 
     - name: Testing final validation
       run: yarn test:validation
+
+  build_benchmarks:
+    needs: prepare
+    - name: install and build
+      run: |
+        cd packages/utilities/fast-benchmarks
+        npm ci
+    - name: run a benchmark
+      run: |
+        npm run benchmark --library=fast-element --benchmark=test --versions 1.8.0 1.9.0 --operations=create10k
+    - name: report results
+      uses: actions/upload-artifact@v2
+      with:
+        name: results
+        path: benchmarks/results/result.json
