@@ -6,10 +6,12 @@
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
   },
+  "homepage": "https://www.fast.design/",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "packages/web-components/fast-element"
   },
   "bugs": {
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
@@ -20,8 +22,17 @@
   "exports": {
     ".": {
       "types": "./dist/fast-element.d.ts",
+      "production": "./dist/esm/index.js",
+      "development": "./dist/esm/index.debug.js",
       "default": "./dist/esm/index.js"
-
+    },
+    "./polyfills.js": {
+      "types": "./dist/dts/polyfills.d.ts",
+      "default": "./dist/esm/polyfills.js"
+    },
+    "./debug.js": {
+      "types": "./dist/dts/debug.d.ts",
+      "default": "./dist/esm/debug.js"
     }
   },
   "unpkg": "dist/fast-element.min.js",
@@ -83,11 +94,10 @@
     "karma-webpack": "^4.0.2",
     "mocha": "^7.1.2",
     "prettier": "2.0.2",
-    "rollup": "^2.7.6",
+    "rollup": "^2.71.1",
     "rollup-plugin-filesize": "^9.1.2",
-    "rollup-plugin-terser": "^5.3.0",
-    "rollup-plugin-transform-tagged-template": "^0.0.3",
-    "rollup-plugin-typescript2": "^0.27.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "@rollup/plugin-typescript": "^8.3.2",
     "source-map": "^0.7.3",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^7.0.2",

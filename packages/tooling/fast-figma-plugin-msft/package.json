@@ -15,7 +15,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "packages/tooling/fast-figma-plugin-msft"
   },
   "bugs": {
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
@@ -24,6 +25,7 @@
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
   },
+  "homepage": "https://www.fast.design/",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.12.13",
