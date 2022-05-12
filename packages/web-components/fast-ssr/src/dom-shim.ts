@@ -88,7 +88,7 @@ abstract class HTMLElement extends Element {
     }
 
     public attachShadow(init: ShadowRootInit) {
-        const shadowRoot = { host: this } as unknown as ShadowRoot;
+        const shadowRoot = ({ host: this } as unknown) as ShadowRoot;
         if (init && init.mode === "open") {
             this.#shadowRoot = shadowRoot;
         }

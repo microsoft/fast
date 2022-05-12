@@ -32,8 +32,10 @@ export type ComponentDOMEmissionMode = "shadow";
  * @beta
  */
 export class TemplateRenderer {
-    private viewBehaviorFactoryRenderers: Map<any, ViewBehaviorFactoryRenderer<any>> =
-        new Map();
+    private viewBehaviorFactoryRenderers: Map<
+        any,
+        ViewBehaviorFactoryRenderer<any>
+    > = new Map();
 
     /**
      * Controls how the {@link TemplateRenderer} will emit component DOM internals.
