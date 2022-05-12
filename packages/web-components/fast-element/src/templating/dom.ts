@@ -5,23 +5,23 @@ import { Updates } from "../observation/update-queue.js";
  * @public
  */
 export const DOM = Object.freeze({
-    // /**
-    //  * @deprecated
-    //  * Use Updates.enqueue.
-    //  */
-    // queueUpdate: Updates.enqueue,
+    /**
+     * @deprecated
+     * Use Updates.enqueue().
+     */
+    queueUpdate: Updates.enqueue,
 
-    // /**
-    //  * @deprecated
-    //  * Use Updates.next
-    //  */
-    // nextUpdate: Updates.next,
+    /**
+     * @deprecated
+     * Use Updates.next()
+     */
+    nextUpdate: Updates.next,
 
-    // /**
-    //  * @deprecated
-    //  * Use Updates.process
-    //  */
-    // processUpdates: Updates.process,
+    /**
+     * @deprecated
+     * Use Updates.process()
+     */
+    processUpdates: Updates.process,
 
     /**
      * Sets an attribute value on an element.

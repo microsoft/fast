@@ -273,6 +273,9 @@ export type DefaultBindingOptions = {
 
 // @public
 export const DOM: Readonly<{
+    queueUpdate: (callable: Callable) => void;
+    nextUpdate: () => Promise<void>;
+    processUpdates: () => void;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>;
