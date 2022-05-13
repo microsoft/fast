@@ -13,7 +13,7 @@ In order to both provide features and fixes to our community, while not creating
 
 ## Quarterly planning
 
-As mentioned in [Issue Management](/docs/community/issue-management/), feature teams engage in a quarterly planning exercise. During this exercise engineers look at the big picture and make plans to address broader "themes" that we see emerging which can't be handled week-to-week. The quarterly planning is then used to shape the weekly planning sessions that happen over the following three months. 
+As mentioned in [Issue Management](./issue-management.md), feature teams engage in a quarterly planning exercise. During this exercise engineers look at the big picture and make plans to address broader "themes" that we see emerging which can't be handled week-to-week. The quarterly planning is then used to shape the weekly planning sessions that happen over the following three months. 
 
 The process for identifying quarterly work consists of multiple phases. In each phase, we filter issues out until we end end up with the quarterly plan.
 
