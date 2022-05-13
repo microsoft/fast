@@ -56,7 +56,7 @@ When working with a tree-shaking supporting bundler such as Webpack or Rollup, y
 :::
 
 :::tip
-Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](/docs/integrations/introduction).
+Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](../integrations/introduction.md).
 :::
 
 ### From CDN
@@ -87,7 +87,7 @@ For simplicity, examples throughout the documentation will assume the library ha
 
 ## Add components
 
-With the components registered, add any component to the HTML. That's it! For a comprehensive list of all elements, see the [Components](/docs/components/accordion) section.
+With the components registered, add any component to the HTML. That's it! For a comprehensive list of all elements, see the [Components](./fast-accordion.mdx) section.
 
 ```html
 <!-- ... -->
