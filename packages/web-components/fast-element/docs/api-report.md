@@ -570,10 +570,8 @@ export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     unbind(): void;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ArrayItem" needs to be exported by the entry point index.d.ts
-//
 // @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>, templateOrTemplateBinding: SyntheticViewTemplate<ArrayItem<TArray>, TSource, RootContext> | Binding<TSource, SyntheticViewTemplate<ArrayItem<TArray>, TSource, RootContext>>, options?: {
+export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>, templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate, RootContext>, options?: {
     positioning: false;
 } | {
     recycle: true;
@@ -586,7 +584,7 @@ export function repeat<TSource = any, TArray extends ReadonlyArray<any> = Readon
 }): CaptureType<TSource>;
 
 // @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>, templateOrTemplateBinding: ChildViewTemplate<ArrayItem<TArray>, TSource> | Binding<TSource, ChildViewTemplate<ArrayItem<TArray>, TSource>>, options?: {
+export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>, templateOrTemplateBinding: ChildViewTemplate | Binding<TSource, ChildViewTemplate, ChildContext>, options?: {
     positioning: false;
 } | {
     recycle: true;
@@ -599,7 +597,7 @@ export function repeat<TSource = any, TArray extends ReadonlyArray<any> = Readon
 }): CaptureType<TSource>;
 
 // @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>, templateOrTemplateBinding: ItemViewTemplate<ArrayItem<TArray>, TSource> | Binding<TSource, ItemViewTemplate<ArrayItem<TArray>, TSource>>, options: {
+export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>, templateOrTemplateBinding: ItemViewTemplate | Binding<TSource, ItemViewTemplate, ItemContext>, options: {
     positioning: true;
 } | {
     positioning: true;

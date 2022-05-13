@@ -1,4 +1,4 @@
-import { ArrayItem, isFunction } from "../interfaces.js";
+import { isFunction } from "../interfaces.js";
 import type { Splice } from "../observation/array-change-records.js";
 import { enableArrayObservation } from "../observation/array-observer.js";
 import type { Behavior } from "../observation/behavior.js";
@@ -25,6 +25,7 @@ import type {
     ChildViewTemplate,
     ItemViewTemplate,
     SyntheticViewTemplate,
+    ViewTemplate,
 } from "./template.js";
 import { HTMLView, SyntheticView } from "./view.js";
 
@@ -369,12 +370,7 @@ export function repeat<
     TArray extends ReadonlyArray<any> = ReadonlyArray<any>
 >(
     itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>,
-    templateOrTemplateBinding:
-        | SyntheticViewTemplate<ArrayItem<TArray>, TSource, RootContext>
-        | Binding<
-              TSource,
-              SyntheticViewTemplate<ArrayItem<TArray>, TSource, RootContext>
-          >,
+    templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate, RootContext>,
     options?:
         | { positioning: false }
         | { recycle: true }
@@ -395,8 +391,8 @@ export function repeat<
 >(
     itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>,
     templateOrTemplateBinding:
-        | ChildViewTemplate<ArrayItem<TArray>, TSource>
-        | Binding<TSource, ChildViewTemplate<ArrayItem<TArray>, TSource>>,
+        | ChildViewTemplate
+        | Binding<TSource, ChildViewTemplate, ChildContext>,
     options?:
         | { positioning: false }
         | { recycle: true }
@@ -417,8 +413,8 @@ export function repeat<
 >(
     itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>,
     templateOrTemplateBinding:
-        | ItemViewTemplate<ArrayItem<TArray>, TSource>
-        | Binding<TSource, ItemViewTemplate<ArrayItem<TArray>, TSource>>,
+        | ItemViewTemplate
+        | Binding<TSource, ItemViewTemplate, ItemContext>,
     options:
         | { positioning: true }
         | { positioning: true; recycle: true }

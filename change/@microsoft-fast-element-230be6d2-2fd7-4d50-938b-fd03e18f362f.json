@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: enable safer type inference on the repeat helper",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
