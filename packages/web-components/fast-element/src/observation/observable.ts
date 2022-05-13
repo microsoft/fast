@@ -72,7 +72,7 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
      * @param context - The execution context to execute the binding within.
      * @returns The value of the binding.
      */
-    observe(source: TSource, context: ExecutionContext<TParent>): TReturn;
+    observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
 
     /**
      * Unsubscribe from all dependent observables of the binding.
@@ -100,7 +100,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         throw FAST.error(Message.needsArrayObservation);
     };
 
-    function getNotifier(source: any): Notifier {
+    function getNotifier<T extends Notifier = Notifier>(source: any): T {
         let found = source.$fastController ?? notifierLookup.get(source);
 
         if (found === void 0) {
@@ -191,7 +191,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             super(binding, initialSubscriber);
         }
 
-        public observe(source: TSource, context: ExecutionContext): TReturn {
+        public observe(source: TSource, context?: ExecutionContext): TReturn {
             if (this.needsRefresh && this.last !== null) {
                 this.disconnect();
             }
@@ -199,7 +199,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             const previousWatcher = watcher;
             watcher = this.needsRefresh ? this : void 0;
             this.needsRefresh = this.isVolatileBinding;
-            const result = this.binding(source, context);
+            const result = this.binding(source, context ?? ExecutionContext.default);
             watcher = previousWatcher;
 
             return result;

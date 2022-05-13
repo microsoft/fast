@@ -117,7 +117,7 @@ export type BindingMode = Record<number, BindingType>;
 // @public
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
     disconnect(): void;
-    observe(source: TSource, context: ExecutionContext<TParent>): TReturn;
+    observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
     records(): IterableIterator<ObservationRecord>;
 }
 
@@ -460,6 +460,10 @@ export interface ItemViewTemplate<TSource = any, TParent = any> {
 }
 
 // @public
+function length_2<T>(array: readonly T[]): number;
+export { length_2 as length }
+
+// @public
 export const Markup: Readonly<{
     interpolation: (id: string) => string;
     attribute: (id: string) => string;
@@ -506,7 +510,7 @@ export const nullableNumberConverter: ValueConverter;
 // @public
 export const Observable: Readonly<{
     setArrayObserverFactory(factory: (collection: any[]) => Notifier): void;
-    getNotifier: (source: any) => Notifier;
+    getNotifier: <T extends Notifier = Notifier>(source: any) => T;
     track(source: unknown, propertyName: string): void;
     trackVolatile(): void;
     notify(source: unknown, args: any): void;
