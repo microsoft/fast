@@ -48,4 +48,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: results
-        path: packages/utilities/fast-benchmarks/benchmarks/results/result.json
+        path: packages/utilities/fast-benchmarks/results/result.json
