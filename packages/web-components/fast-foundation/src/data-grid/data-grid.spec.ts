@@ -10,7 +10,7 @@ import {
 } from "./index";
 import type { ColumnDefinition } from "./data-grid";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 
 const FASTDataGridCell = DataGridCell.compose({
@@ -115,7 +115,7 @@ describe("Data grid", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const rows: Element[] = Array.from(element.querySelectorAll('[role="row"]'));
         expect(rows.length).to.equal(3);
@@ -196,7 +196,7 @@ describe("Data grid", () => {
 
         const rows: DataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(rows.length).to.equal(6);
         expect(rows[0].rowIndex).to.equal(0);
@@ -216,7 +216,7 @@ describe("Data grid", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const rows: Element[] = Array.from(element.querySelectorAll('[role="row"]'));
         expect(rows.length).to.equal(3);
@@ -254,7 +254,7 @@ describe("Data grid", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const rows: Element[] = Array.from(element.querySelectorAll('[role="row"]'));
         expect(rows.length).to.equal(3);
@@ -280,7 +280,7 @@ describe("Data grid", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const rows: Element[] = Array.from(element.querySelectorAll('[role="row"]'));
         expect(rows.length).to.equal(3);
@@ -291,15 +291,15 @@ describe("Data grid", () => {
         expect(document.activeElement?.textContent).to.contain("item1");
 
         element.focusRowIndex = 1;
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(document.activeElement?.textContent).to.contain("value 1-1");
 
         element.focusRowIndex = 2;
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(document.activeElement?.textContent).to.contain("value 1-2");
 
         element.focusRowIndex = 3;
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(document.activeElement?.textContent).to.contain("value 1-2");
 
         await disconnect();
@@ -312,7 +312,7 @@ describe("Data grid", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const rows: Element[] = Array.from(element.querySelectorAll('[role="row"]'));
         expect(rows.length).to.equal(3);
@@ -323,15 +323,15 @@ describe("Data grid", () => {
         expect(document.activeElement?.textContent).to.contain("item1");
 
         element.focusColumnIndex = 1;
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(document.activeElement?.textContent).to.contain("item2");
 
         element.focusColumnIndex = 6;
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(document.activeElement?.textContent).to.contain("item6");
 
         element.focusColumnIndex = 7;
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(document.activeElement?.textContent).to.contain("item6");
 
         await disconnect();
@@ -345,7 +345,7 @@ describe("Data grid", () => {
         row.appendChild(new DataGridCell());
         element.appendChild(row);
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(row.gridTemplateColumns).to.equal("1fr 1fr");
 

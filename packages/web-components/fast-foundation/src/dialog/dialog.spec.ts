@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { Dialog, dialogTemplate as template } from "./index";
 import { fixture } from "../testing/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { keyEscape } from "@microsoft/fast-web-utilities";
 
 const FASTDialog = Dialog.compose({
@@ -35,13 +35,13 @@ describe("Dialog", () => {
         element.hidden = true;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.hasAttribute("hidden")).to.equal(true);
 
         element.hidden = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.hasAttribute("hidden")).to.equal(false);
 
@@ -65,7 +65,7 @@ describe("Dialog", () => {
 
         element.modal = true;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.shadowRoot
@@ -75,7 +75,7 @@ describe("Dialog", () => {
 
         element.modal = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.shadowRoot
@@ -107,7 +107,7 @@ describe("Dialog", () => {
 
         element.modal = true;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.shadowRoot?.querySelector(".overlay")?.getAttribute("role")
@@ -134,7 +134,7 @@ describe("Dialog", () => {
         element.trapFocus = true;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.hasAttribute("trap-focus")).to.equal(true);
 
@@ -145,7 +145,7 @@ describe("Dialog", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.trapFocus).to.equal(true);
         expect(element.hasAttribute("trap-focus")).to.equal(true);
@@ -254,7 +254,7 @@ describe("Dialog", () => {
 
             element.modal = true;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             const overlay = element.shadowRoot!.querySelector(".overlay")! as HTMLElement;
 
@@ -264,7 +264,7 @@ describe("Dialog", () => {
                 overlay.click();
 
                 // Resolve false on the next update in case click hasn't happened
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasDismissed).to.equal(true);
@@ -286,7 +286,7 @@ describe("Dialog", () => {
                 overlay.click();
 
                 // Resolve false on the next update in case click hasn't happened
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasDismissed).to.equal(true);
@@ -312,7 +312,7 @@ describe("Dialog", () => {
                 button.click();
 
                 // Resolve false on the next update in case click hasn't happened
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasDismissed).to.equal(true);
@@ -335,7 +335,7 @@ describe("Dialog", () => {
                 document.dispatchEvent(event);
 
                 // Resolve false on the next update in case the event hasn't happened
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasDismissed).to.equal(true);

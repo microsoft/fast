@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { fixture } from "../testing/fixture";
 import { FlipperDirection } from "./flipper.options";
 import { Flipper, flipperTemplate as template } from "./index";
@@ -54,7 +54,7 @@ describe("Flipper", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-hidden")).to.equal("true");
 
@@ -77,7 +77,7 @@ describe("Flipper", () => {
         element.setAttribute("aria-hidden", "false");
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("tabindex")).to.equal("0");
 
@@ -116,7 +116,7 @@ describe("Flipper", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.shadowRoot?.querySelector("span")?.classList.contains("next")

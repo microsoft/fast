@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { TreeItem, treeItemTemplate as template } from "./index";
 import { fixture } from "../testing/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 
 const FASTTreeItem = TreeItem.compose({
     baseName: "tree-item",
@@ -34,7 +34,7 @@ describe("TreeItem", () => {
         element.expanded = true;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-expanded")).to.equal("true");
 
@@ -85,7 +85,7 @@ describe("TreeItem", () => {
 
         element.selected = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-selected")).to.equal("false");
 
@@ -125,7 +125,7 @@ describe("TreeItem", () => {
 
         element.disabled = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-disabled")).to.equal("false");
 
@@ -196,7 +196,7 @@ describe("TreeItem", () => {
         await connect();
 
         element.focus();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(element.hasAttribute("tabindex")).to.equal(true);
         expect(element.getAttribute("tabindex")).to.equal("0");
 
@@ -210,7 +210,7 @@ describe("TreeItem", () => {
         element.appendChild(nestedItem);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(element.shadowRoot?.querySelector(".expand-collapse-button")).to.exist;
 
         await disconnect();
@@ -223,7 +223,7 @@ describe("TreeItem", () => {
         element.appendChild(nestedItem);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         let button = element.shadowRoot?.querySelector(".expand-collapse-button");
 
@@ -240,7 +240,7 @@ describe("TreeItem", () => {
         element.expanded = true;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.shadowRoot?.querySelector(".items")?.getAttribute("role")
@@ -256,7 +256,7 @@ describe("TreeItem", () => {
         element.appendChild(nestedItem);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.shadowRoot?.querySelector(".items")).not.to.exist;
 
@@ -278,14 +278,14 @@ describe("TreeItem", () => {
             });
 
             await connect();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             let button = element.shadowRoot?.querySelector(
                 ".expand-collapse-button"
             ) as any;
             button?.click();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasClicked).to.equal(true);
 
@@ -299,21 +299,21 @@ describe("TreeItem", () => {
             element.appendChild(nestedItem);
 
             await connect();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             let button = element.shadowRoot?.querySelector(
                 ".expand-collapse-button"
             ) as any;
             button?.click();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.expanded).to.equal(true);
             expect(element.getAttribute("aria-expanded")).to.equal("true");
 
             button?.click();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.expanded).to.equal(false);
             expect(element.getAttribute("aria-expanded")).to.equal("false");
@@ -337,7 +337,7 @@ describe("TreeItem", () => {
             await connect();
 
             element.setAttribute("selected", "true");
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasSelected).to.equal(true);
 
@@ -352,11 +352,11 @@ describe("TreeItem", () => {
             element.disabled = true;
 
             await connect();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.click();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.selected).to.not.equal(true);
             expect(element.getAttribute("aria-selected")).to.equal(null);
@@ -374,7 +374,7 @@ describe("TreeItem", () => {
 
                 element.setAttribute("expanded", "true");
 
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasExpanded).to.equal(true);
@@ -392,7 +392,7 @@ describe("TreeItem", () => {
 
                 element.setAttribute("selected", "true");
 
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasSelected).to.equal(true);

@@ -1,6 +1,6 @@
 import { composedContains } from "./composed-contains";
 import { expect } from "chai";
-import { html, customElement, ref, FASTElement, observable, DOM } from "@microsoft/fast-element";
+import { html, customElement, ref, FASTElement, observable, Updates } from "@microsoft/fast-element";
 
 @customElement({
     name: "composed-contains-element",
@@ -46,7 +46,7 @@ describe("The composedContains function", () => {
             parent.appendChild(child);
             document.body.appendChild(parent);
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(composedContains(parent, child.root)).to.be.true;
         });
@@ -58,7 +58,7 @@ describe("The composedContains function", () => {
             document.body.appendChild(parent);
             document.body.appendChild(child);
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(composedContains(parent, child.root)).to.be.false;
         });

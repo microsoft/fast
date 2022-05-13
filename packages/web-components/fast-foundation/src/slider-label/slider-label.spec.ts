@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { SliderLabel, sliderLabelTemplate as template } from "../index";
 import { fixture } from "../testing/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { DOM, Updates } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
 const FASTSliderLabel = SliderLabel.compose({
@@ -50,7 +50,7 @@ describe("Slider label", () => {
 
         (element as SliderLabel).sliderOrientation = Orientation.vertical;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.classList.contains(`${Orientation.vertical}`)).to.equal(true);
         await disconnect();

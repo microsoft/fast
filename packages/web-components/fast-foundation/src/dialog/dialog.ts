@@ -1,4 +1,4 @@
-import { attr, DOM, Notifier, Observable } from "@microsoft/fast-element";
+import { attr, Notifier, Observable, Updates } from "@microsoft/fast-element";
 import { keyEscape, keyTab } from "@microsoft/fast-web-utilities";
 import { isTabbable } from "tabbable";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
@@ -268,7 +268,7 @@ export class Dialog extends FoundationElement {
             this.isTrappingFocus = true;
             // Add an event listener for focusin events if we are trapping focus
             document.addEventListener("focusin", this.handleDocumentFocus);
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 if (this.shouldForceFocus(document.activeElement)) {
                     this.focusFirstElement();
                 }

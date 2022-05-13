@@ -2,8 +2,8 @@ import { expect } from "chai";
 import { repeat, RepeatDirective, RepeatBehavior } from "./repeat";
 import { child, html } from "./template";
 import { ExecutionContext, observable } from "../observation/observable";
-import { DOM } from "../dom";
 import { toHTML } from "../__test__/helpers";
+import { Updates } from "../observation/update-queue";
 
 describe("The repeat", () => {
     function createLocation() {
@@ -132,13 +132,13 @@ describe("The repeat", () => {
 
                 data.items = [];
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 expect(toHTML(parent)).to.equal("");
 
                 data.items = createArray(size);
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 expect(toHTML(parent)).to.equal(
                     createOutput(size, void 0, void 0, input => `<div>${input}</div>`)
@@ -160,7 +160,7 @@ describe("The repeat", () => {
                 behavior.bind(vm, ExecutionContext.default);
                 vm.items.push({ name: "newitem" });
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 expect(toHTML(parent)).to.equal(`${createOutput(size)}newitem`);
             });
@@ -182,7 +182,7 @@ describe("The repeat", () => {
                 const index = size - 1;
                 vm.items.splice(index, 1);
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 expect(toHTML(parent)).to.equal(
                     `${createOutput(size, x => x !== index)}`
@@ -205,7 +205,7 @@ describe("The repeat", () => {
 
                 vm.items.splice(0, 1);
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 expect(toHTML(parent)).to.equal(`${createOutput(size, x => x !== 0)}`);
             });
@@ -227,7 +227,7 @@ describe("The repeat", () => {
                 const index = size - 1;
                 vm.items.splice(index, 1, { name: "newitem1" }, { name: "newitem2" });
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 expect(toHTML(parent)).to.equal(
                     `${createOutput(size, x => x !== index)}newitem1newitem2`
@@ -250,7 +250,7 @@ describe("The repeat", () => {
 
                 vm.items.splice(0, 1, { name: "newitem1" }, { name: "newitem2" });
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 expect(toHTML(parent)).to.equal(
                     `newitem1newitem2${createOutput(size, x => x !== 0)}`
@@ -275,7 +275,7 @@ describe("The repeat", () => {
 
                 vm.template = altItemTemplate;
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 expect(toHTML(parent)).to.equal(createOutput(size, () => true, "*"));
             });
@@ -326,7 +326,7 @@ describe("The repeat", () => {
                 vm.items.shift();
                 vm.items.unshift({ name: "shift" });
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 expect(toHTML(parent)).to.equal(
                     `shift${createOutput(size, index => index !== 0)}`
@@ -347,19 +347,19 @@ describe("The repeat", () => {
 
                 behavior.bind(vm, ExecutionContext.default);
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 behavior.unbind();
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 behavior.bind(vm, ExecutionContext.default);
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 vm.items.push({ name: "newitem" });
 
-                await DOM.nextUpdate();
+                await Updates.next();
 
                 expect(toHTML(parent)).to.equal(`${createOutput(size)}newitem`);
             });

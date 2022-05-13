@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { MenuItem, menuItemTemplate as template } from "./index";
 import { fixture } from "../testing/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { MenuItemRole } from "./menu-item";
 import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
 import { AnchoredRegion, anchoredRegionTemplate } from "../anchored-region";
@@ -129,19 +129,19 @@ describe("Menu item", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal(null);
 
         element.click();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("true");
 
         element.click();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("false");
 
@@ -154,19 +154,19 @@ describe("Menu item", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal(null);
 
         element.click();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("true");
 
         element.click();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("true");
 
@@ -186,7 +186,7 @@ describe("Menu item", () => {
                 wasClicked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.click();
 
@@ -210,7 +210,7 @@ describe("Menu item", () => {
                 wasInvoked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.dispatchEvent(event);
 
@@ -234,7 +234,7 @@ describe("Menu item", () => {
                 wasInvoked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.dispatchEvent(event);
 

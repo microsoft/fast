@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { Breadcrumb, breadcrumbTemplate as template } from "./index";
 import { fixture } from "../testing/fixture";
 import { BreadcrumbItem, breadcrumbItemTemplate } from "../breadcrumb-item";
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 
 const FASTBreadcrumb = Breadcrumb.compose({
     baseName: "breadcrumb",
@@ -105,7 +105,7 @@ describe("Breadcrumb", () => {
         (item4 as BreadcrumbItem).setAttribute("href", "#");
         element.appendChild(item4);
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.querySelectorAll("fast-breadcrumb-item")[2].hasAttribute("aria-current")
@@ -147,7 +147,7 @@ describe("Breadcrumb", () => {
         item4.appendChild(anchor4);
         element.appendChild(item4);
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.querySelectorAll("a[href]")[2].hasAttribute("aria-current")

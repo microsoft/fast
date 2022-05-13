@@ -1,5 +1,5 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
+import { SyntheticViewTemplate, Updates } from "@microsoft/fast-element";
+import { attr, Observable, observable, volatile } from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowUp,
@@ -81,7 +81,7 @@ export class Select extends FormAssociatedSelect {
             this.indexWhenOpened = this.selectedIndex;
 
             // focus is directed to the element when `open` is changed programmatically
-            DOM.queueUpdate(() => this.focus());
+            Updates.enqueue(() => this.focus());
 
             return;
         }

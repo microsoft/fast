@@ -1,4 +1,3 @@
-import { DOM } from "../dom.js";
 import { isString, Message } from "../interfaces.js";
 import {
     Binding,
@@ -7,6 +6,7 @@ import {
     Observable,
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
+import { DOM } from "./dom.js";
 import {
     AddViewBehaviorFactory,
     Aspect,

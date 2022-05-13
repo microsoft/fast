@@ -4,7 +4,6 @@ import {
     ComposableStyles,
     ElementStyles,
 } from "./element-styles";
-import { DOM } from "../dom";
 import { AddBehavior, cssDirective, CSSDirective } from "./css-directive";
 import { css } from "./css";
 import type { Behavior } from "../observation/behavior";
@@ -12,7 +11,7 @@ import { StyleElementStrategy } from "../polyfills";
 import type { StyleTarget } from "../interfaces";
 import { ExecutionContext } from "../observation/observable";
 
-if (DOM.supportsAdoptedStyleSheets) {
+if (ElementStyles.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStrategy", () => {
         context("when removing styles", () => {
             it("should remove an associated stylesheet", () => {
@@ -207,7 +206,7 @@ describe("ElementStyles", () => {
         expect(styles.styles).to.contain(existingStyles2);
     });
 
-    if (DOM.supportsAdoptedStyleSheets) {
+    if (ElementStyles.supportsAdoptedStyleSheets) {
         it("can create from a CSSStyleSheet", () => {
             const styleSheet = new CSSStyleSheet();
             const styles = new ElementStyles([styleSheet]);
@@ -267,7 +266,7 @@ describe("css", () => {
                 expect(styles.styles.includes(_styles)).to.equal(true)
             });
 
-            if (DOM.supportsAdoptedStyleSheets) {
+            if (ElementStyles.supportsAdoptedStyleSheets) {
                 it("when the result is a CSSStyleSheet", () => {
                     const _styles = new CSSStyleSheet();
 

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { fixture } from "../testing/fixture";
 import { DividerRole } from "./divider.options";
 import { Divider, dividerTemplate as template } from "./index";
@@ -28,7 +28,7 @@ describe("Divider", () => {
 
         element.role = DividerRole.presentation;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("role")).to.equal(`${DividerRole.presentation}`);
 
@@ -39,7 +39,7 @@ describe("Divider", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("role")).to.equal(`${DividerRole.separator}`);
 
@@ -59,7 +59,7 @@ describe("Divider", () => {
 
         element.orientation = Orientation.vertical;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-orientation")).to.equal(
             `${Orientation.vertical}`

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { fixture } from "../testing/fixture";
 import { ColumnDefinition, dataGridRowTemplate, DataGridCell, dataGridCellTemplate, DataGridRow } from "./index";
 import { newDataRow } from "./data-grid.spec";
@@ -103,14 +103,14 @@ describe("Data grid row", () => {
         expect(element.querySelectorAll(cellQueryString).length).to.equal(0);
 
         element.columnDefinitions = [{ columnDataKey: "item1" }];
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(element.querySelectorAll(cellQueryString).length).to.equal(1);
 
         element.columnDefinitions = [
             { columnDataKey: "item1" },
             { columnDataKey: "item2" },
         ];
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(element.querySelectorAll(cellQueryString).length).to.equal(2);
 
         await disconnect();

@@ -1,4 +1,4 @@
-import { attr, DOM, observable } from "@microsoft/fast-element";
+import { attr, observable, Updates } from "@microsoft/fast-element";
 import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { getDirection } from "../utilities/direction.js";
@@ -498,7 +498,7 @@ export class AnchoredRegion extends FoundationElement {
             this.pendingReset === false
         ) {
             this.setInitialState();
-            DOM.queueUpdate(() => this.reset());
+            Updates.enqueue(() => this.reset());
             this.pendingReset = true;
         }
     }

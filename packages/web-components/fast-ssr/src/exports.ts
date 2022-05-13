@@ -1,8 +1,8 @@
 import { RenderInfo } from "@lit-labs/ssr";
 import {
     Compiler,
-    DOM,
     ElementStyles,
+    Updates,
     ViewBehaviorFactory,
 } from "@microsoft/fast-element";
 import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
@@ -31,7 +31,7 @@ Compiler.setDefaultStrategy(
 );
 
 ElementStyles.setDefaultStrategy(FASTSSRStyleStrategy);
-DOM.setUpdateMode(false);
+Updates.setMode(false);
 
 /**
  * Factory for creating SSR rendering assets.

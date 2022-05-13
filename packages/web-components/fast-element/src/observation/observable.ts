@@ -1,6 +1,6 @@
-import { DOM } from "../dom.js";
 import { isFunction, isString, KernelServiceId, Message } from "../interfaces.js";
 import { FAST } from "../platform.js";
+import { Updates } from "./update-queue.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
 import type { Notifier, Subscriber } from "./notifier.js";
 
@@ -91,7 +91,7 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
  * @public
  */
 export const Observable = FAST.getById(KernelServiceId.observable, () => {
-    const queueUpdate = DOM.queueUpdate;
+    const queueUpdate = Updates.enqueue;
     const volatileRegex = /(:|&&|\|\||if)/;
     const notifierLookup = new WeakMap<any, Notifier>();
     const accessorLookup = new WeakMap<any, Accessor[]>();
