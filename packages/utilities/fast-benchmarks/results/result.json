@@ -1,0 +1,148 @@
+{
+  "benchmarks": [
+    {
+      "name": "my-benchmark-create10k-memory",
+      "bytesSent": 2401,
+      "version": "1.8.0",
+      "measurement": {
+        "name": "usedJSHeapSize",
+        "mode": "expression",
+        "expression": "window.usedJSHeapSize"
+      },
+      "browser": {
+        "name": "chrome",
+        "headless": true,
+        "windowSize": {
+          "width": 1024,
+          "height": 768
+        },
+        "addArguments": [
+          "--js-flags=--expose-gc",
+          "--enable-precise-memory-info"
+        ],
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/101.0.4951.64 Safari/537.36"
+      },
+      "mean": {
+        "low": 2.7866892314291776,
+        "high": 2.8001313019041576
+      },
+      "differences": [
+        null,
+        {
+          "absolute": {
+            "low": -0.007345460980733512,
+            "high": 0.010658794314069011
+          },
+          "percentChange": {
+            "low": -0.2631974983055886,
+            "high": 0.38188036964980393
+          }
+        }
+      ],
+      "samples": [
+        2.767952,
+        2.811212,
+        2.780592,
+        2.809356,
+        2.8125,
+        2.778092,
+        2.809876,
+        2.806332,
+        2.775108,
+        2.807104,
+        2.805,
+        2.760188,
+        2.808188,
+        2.763612,
+        2.791932,
+        2.785524,
+        2.781984,
+        2.773692,
+        2.808304,
+        2.797952,
+        2.80638,
+        2.774296,
+        2.81024,
+        2.81026,
+        2.813984,
+        2.797748,
+        2.810212,
+        2.76012,
+        2.805428,
+        2.77914
+      ]
+    },
+    {
+      "name": "my-benchmark-create10k-memory",
+      "bytesSent": 2401,
+      "version": "1.9.0",
+      "measurement": {
+        "name": "usedJSHeapSize",
+        "mode": "expression",
+        "expression": "window.usedJSHeapSize"
+      },
+      "browser": {
+        "name": "chrome",
+        "headless": true,
+        "windowSize": {
+          "width": 1024,
+          "height": 768
+        },
+        "addArguments": [
+          "--js-flags=--expose-gc",
+          "--enable-precise-memory-info"
+        ],
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/101.0.4951.64 Safari/537.36"
+      },
+      "mean": {
+        "low": 2.7857647781194856,
+        "high": 2.797742421880514
+      },
+      "differences": [
+        {
+          "absolute": {
+            "low": -0.010658794314069011,
+            "high": 0.007345460980733512
+          },
+          "percentChange": {
+            "low": -0.3814627184737777,
+            "high": 0.2628502334810434
+          }
+        },
+        null
+      ],
+      "samples": [
+        2.811064,
+        2.771416,
+        2.7817,
+        2.80706,
+        2.774384,
+        2.80832,
+        2.796264,
+        2.775908,
+        2.777844,
+        2.768756,
+        2.780036,
+        2.808944,
+        2.781292,
+        2.80128,
+        2.786056,
+        2.809692,
+        2.779256,
+        2.805824,
+        2.809712,
+        2.780912,
+        2.810528,
+        2.77798,
+        2.81316,
+        2.77976,
+        2.811532,
+        2.78086,
+        2.807056,
+        2.809916,
+        2.7672,
+        2.778896
+      ]
+    }
+  ]
+}

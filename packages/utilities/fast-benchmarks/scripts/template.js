@@ -282,7 +282,7 @@ async function generateConfig(fileName, benchmarksHash) {
             // Tachometer default is 50, but locally let's only do 10
             sampleSize: 30,
             // Tachometer default is 3 minutes, but let's shrink it to 1 here to save some
-            timeout: 1,
+            timeout: 0,
             autoSampleConditions: ["0%", "10%"],
         };
 

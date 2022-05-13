@@ -7,8 +7,9 @@
         "build": "tsc && tsc --build",
         "benchmark": "node scripts/index.js",
         "help": "node ./scripts/index.js --help",
-        "benchmark:binding": "tach --config benchmarks/fast-element/binding/tachometer.json",
-        "debug:binding": "tach --config fast-element/binding/tachometer.json --manual"
+        "benchmark:binding": "tach --config examples/fast-element/binding/tachometer.json",
+        "debug:binding": "tach --config fast-element/binding/tachometer.json --manual",
+        "benchmark:fast-element:create10k": "yarn run benchmark --library=fast-element --benchmark=my-benchmark --versions 1.8.0 1.9.0 --operations=createDelete5x -m"
     },
     "author": "Microsoft",
     "license": "ISC",
@@ -19,7 +20,7 @@
     },
     "devDependencies": {
         "chalk": "^5.0.1",
-        "chromedriver": "^99.0.0",
+        "chromedriver": "^101.0.0",
         "commander": "^9.2.0",
         "cross-spawn": "^7.0.3",
         "typescript": "^4.3.5"

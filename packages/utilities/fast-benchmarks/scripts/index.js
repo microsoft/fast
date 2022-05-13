@@ -82,13 +82,13 @@ async function runBenchmark(configPaths) {
                 "tach",
                 "--config",
                 configPath,
-                "--json-file results/result.json",
+                "--json-file=results/result.json",
             ];
             const child = spawn("npx", args, { stdio: "inherit" });
             child.on("close", code => {
                 if (code !== 0) {
                     reject({
-                        command: `npx tach --config ${configPath} --json-file results/result.json`,
+                        command: `npx tach --config ${configPath} --json-file=results/result.json`,
                     });
                     return;
                 }
