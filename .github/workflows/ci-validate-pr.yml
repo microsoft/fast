@@ -71,7 +71,7 @@ jobs:
 
   build_benchmarks:
     runs-on: ubuntu-latest
-    needs: prepare_linux
+    needs: prepare
     steps:
       - name: install and build
         run: |
