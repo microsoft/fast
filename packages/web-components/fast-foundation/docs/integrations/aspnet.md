@@ -58,13 +58,13 @@ node_modules/@microsoft/fast-components/dist/fast-components.min.js
 
 Copy this to your `wwwroot/js` folder and reference it with a script tag as described above.
 
-Should you wish to go one step further and leverage a client-side bundler, such as Webpack, there is some additional setup to integrate with ASP.NET that is beyond the scope of this tutorial. Basic Webpack instructions for FAST can be found [here](./webpack). The most important detail with respect to FAST is that you'll want to install a few more packages. Use the following command if this is your preferred setup:
+Should you wish to go one step further and leverage a client-side bundler, such as Webpack, there is some additional setup to integrate with ASP.NET that is beyond the scope of this tutorial. Basic Webpack instructions for FAST can be found [here](./webpack.md). The most important detail with respect to FAST is that you'll want to install a few more packages. Use the following command if this is your preferred setup:
 
 ```shell
 npm install --save @microsoft/fast-components @microsoft/fast-element
 ```
 
-In this case, because Webpack can tree-shake unused components, you'll also want to be sure to register the components you want to use somewhere in your own JavaScript code. See [our Webpack guide](./webpack) for an example.
+In this case, because Webpack can tree-shake unused components, you'll also want to be sure to register the components you want to use somewhere in your own JavaScript code. See [our Webpack guide](./webpack.md) for an example.
 
 ## Using the components
 
