@@ -80,3 +80,20 @@ jobs:
 
       - name: Testing final validation
         run: yarn test:validation
+
+  build_benchmarks:
+    runs-on: ubuntu-latest
+    needs: prepare_linux
+    steps:
+      - name: install and build
+        run: |
+          cd packages/utilities/fast-benchmarks
+          npm ci
+      - name: run a benchmark
+        run: |
+          npm run benchmark --library=fast-element --benchmark=test --versions 1.8.0 1.9.0 --operations=create10k
+      - name: report results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results
+          path: benchmarks/results/result.json
