@@ -7,7 +7,7 @@ import { FAST } from "../platform.js";
  */
 export interface UpdateQueue {
     /**
-     * Schedules DOM update work in the next async batch.
+     * Schedules DOM update work in the next batch.
      * @param callable - The callable function or object to queue.
      */
     enqueue(callable: Callable): void;
@@ -21,18 +21,18 @@ export interface UpdateQueue {
      * Immediately processes all work previously scheduled
      * through enqueue.
      * @remarks
-     * This also forces nextUpdate promises
+     * This also forces next() promises
      * to resolve.
      */
     process(): void;
 
     /**
-     * Sets the update mode used by queueUpdate.
+     * Sets the update mode used by enqueue.
      * @param isAsync - Indicates whether DOM updates should be asynchronous.
      * @remarks
      * By default, the update mode is asynchronous, since that provides the best
-     * performance in the browser. Passing false to setUpdateMode will instead cause
-     * the queue to be immediately processed for each call to queueUpdate. However,
+     * performance in the browser. Passing false to setMode will instead cause
+     * the queue to be immediately processed for each call to enqueue. However,
      * ordering will still be preserved so that nested tasks do not run until
      * after parent tasks complete.
      */
@@ -77,8 +77,8 @@ export const Updates: UpdateQueue = FAST.getById(KernelServiceId.updateQueue, ()
             tryRunTask(tasks[index]);
             index++;
 
-            // Prevent leaking memory for long chains of recursive calls to `DOM.queueUpdate`.
-            // If we call `DOM.queueUpdate` within a task scheduled by `DOM.queueUpdate`, the queue will
+            // Prevent leaking memory for long chains of recursive calls to `enqueue`.
+            // If we call `enqueue` within a task scheduled by `enqueue`, the queue will
             // grow, but to avoid an O(n) walk for every task we execute, we don't
             // shift tasks off the queue after they have been executed.
             // Instead, we periodically shift 1024 tasks off the queue.
