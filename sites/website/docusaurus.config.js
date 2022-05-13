@@ -74,10 +74,6 @@ module.exports = {
                     title: "Docs",
                     items: [
                         {
-                            label: "FAST Components",
-                            to: "docs/components/getting-started",
-                        },
-                        {
                             label: "FAST Element",
                             to: "docs/fast-element/getting-started",
                         },
@@ -110,7 +106,7 @@ module.exports = {
                     ],
                 },
                 {
-                    title: " ",
+                    title: "Legal",
                     items: [
                         {
                             label: "License",
