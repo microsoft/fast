@@ -236,7 +236,7 @@ export const FastMenuItem = wrap(
 ### create-react-app
 
 FAST makes use of decorators to define components. At this time, `create-react-app` [does not support decorators](https://create-react-app.dev/docs/can-i-use-decorators/). This won't be a problem when using components *imported* from FAST because they have already been transpiled by TypeScript - but to *create* components in a `create-react-app` application you'll need to do one of the following:
-- [Define components without decorators](https://fast.design/docs/fast-element/defining-elements#working-without-decorators)
+- [Define components without decorators](../fast-element/defining-elements.md#working-without-decorators)
 - [Eject](https://create-react-app.dev/docs/available-scripts#npm-run-eject)`create-react-app` and change Babel to support decorators 
 - Use an intermediary like [react-app-rewired](https://www.npmjs.com/package/react-app-rewired)
 
