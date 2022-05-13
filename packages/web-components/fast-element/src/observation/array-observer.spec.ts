@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { Observable } from "./observable";
 import { enableArrayObservation, length } from "./array-observer";
 import { SubscriberSet } from "./notifier";
-import { DOM } from "../dom";
+import { Updates } from "./update-queue";
 
 describe("The ArrayObserver", () => {
     it("can be retrieved through Observable.getNotifier()", () => {
@@ -113,7 +113,7 @@ describe("The array length observer", () => {
 
         instance.items.push(6);
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(changed).to.be.true;
         expect(observer.observe(instance)).to.equal(6);
@@ -138,7 +138,7 @@ describe("The array length observer", () => {
 
         instance.items.splice(2, 1, 6);
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(changed).to.be.false;
         expect(observer.observe(instance)).to.equal(5);
