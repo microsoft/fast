@@ -82,7 +82,7 @@ const result = templateRenderer.render("<!DOCTYPE HTML><html><body><my-element><
 ```
 
 #### Rendering Templates with Bindings
-A template can be rendered with arbitrary source data by providing that source as the third argument to `.render()`. When done so, bindings are invoked with that source data:
+A template can be rendered with arbitrary source data by providing that source as the third argument to `.render()`. When doing so, bindings are invoked with that source data:
 
 ```ts
 const result = templateRenderer.render(html`
