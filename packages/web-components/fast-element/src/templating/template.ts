@@ -122,7 +122,7 @@ export class ViewTemplate<
 
     /**
      * Used for TypeScript purposes only.
-     * Do not sure.
+     * Do not use.
      */
     type: any;
 
