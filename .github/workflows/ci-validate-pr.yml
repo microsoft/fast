@@ -1,6 +1,16 @@
 name: Validate PRs
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - master
+      - releases/*
+      - users/*
+  pull_request:
+    branches:
+      - master
+      - releases/*
+      - features/*
 
 jobs:
   prepare:
