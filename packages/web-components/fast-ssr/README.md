@@ -117,7 +117,7 @@ const result = templateRenderer.render(html`
 > Unsupported directives are no-ops. To understand more about why, see the [Design Philosophy.](#design-philosophy)
 
 ### Configuring the RenderInfo Object
-`TemplateRenderer.render()` must be invoked with a `RenderInfo` object. It's purpose is to provide different element renderers to the process, as well as metadata about the rendering process. It can be used to render custom elements from different templating libraries in the same process. A pre-generated object is created for you by the factory function, but you can also easily construct your own: 
+`TemplateRenderer.render()` must be invoked with a `RenderInfo` object. Its purpose is to provide different element renderers to the process, as well as metadata about the rendering process. It can be used to render custom elements from different templating libraries in the same process. A pre-generated object is created for you by the factory function, but you can also easily construct your own: 
 
 ```js
 const { templateRenderer, elementRenderer } = fastSSR();
