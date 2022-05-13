@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { DOM } from "./dom";
+import { Updates } from "./update-queue";
 
 const waitMilliseconds = 100;
 const maxRecursion = 10;
@@ -24,12 +24,12 @@ function watchSetTimeoutForErrors<TError = any>() {
     };
 }
 
-describe("The DOM facade", () => {
+describe("The UpdateQueue", () => {
     context("when updating DOM asynchronously", () => {
         it("calls task in a future turn", done => {
             let called = false;
 
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 called = true;
                 done();
             });
@@ -40,7 +40,7 @@ describe("The DOM facade", () => {
         it("calls task.call method in a future turn", done => {
             let called = false;
 
-            DOM.queueUpdate({
+            Updates.enqueue({
                 call: () => {
                     called = true;
                     done();
@@ -53,13 +53,13 @@ describe("The DOM facade", () => {
         it("calls multiple tasks in order", done => {
             const calls:number[] = [];
 
-            DOM.queueUpdate(() =>  {
+            Updates.enqueue(() =>  {
                 calls.push(0);
             });
-            DOM.queueUpdate(() =>  {
+            Updates.enqueue(() =>  {
                 calls.push(1);
             });
-            DOM.queueUpdate(() =>  {
+            Updates.enqueue(() =>  {
                 calls.push(2);
             });
 
@@ -74,30 +74,30 @@ describe("The DOM facade", () => {
         it("calls tasks in breadth-first order", done => {
             let calls: number[] = [];
 
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(0);
 
-                DOM.queueUpdate(() => {
+                Updates.enqueue(() => {
                     calls.push(2);
 
-                    DOM.queueUpdate(() => {
+                    Updates.enqueue(() => {
                         calls.push(5);
                     });
 
-                    DOM.queueUpdate(() => {
+                    Updates.enqueue(() => {
                         calls.push(6);
                     });
                 });
 
-                DOM.queueUpdate(() => {
+                Updates.enqueue(() => {
                     calls.push(3);
                 });
             });
 
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(1);
 
-                DOM.queueUpdate(() => {
+                Updates.enqueue(() => {
                     calls.push(4);
                 });
             });
@@ -121,7 +121,7 @@ describe("The DOM facade", () => {
             const newList: number[] = [];
             for (var i=0; i < target; i++) {
                 (function(i) {
-                    DOM.queueUpdate(() => {
+                    Updates.enqueue(() => {
                         newList.push(i);
                     });
                 })(i);
@@ -144,7 +144,7 @@ describe("The DOM facade", () => {
             const newList: number[] = [];
             for (var i=0; i<target; i++) {
                 (function(i) {
-                    DOM.queueUpdate(() => {
+                    Updates.enqueue(() => {
                         newList.push(i);
                     });
                 })(i);
@@ -159,11 +159,11 @@ describe("The DOM facade", () => {
         it("can schedule tasks recursively", done => {
             const steps: number[] = [];
 
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 steps.push(0);
-                DOM.queueUpdate(() => {
+                Updates.enqueue(() => {
                     steps.push(2);
-                    DOM.queueUpdate(() => {
+                    Updates.enqueue(() => {
                         steps.push(4);
                     });
                     steps.push(3);
@@ -181,11 +181,11 @@ describe("The DOM facade", () => {
             let recurseCount = 0;
             function go() {
                 if (++recurseCount < maxRecursion) {
-                    DOM.queueUpdate(go);
+                    Updates.enqueue(go);
                 }
             }
 
-            DOM.queueUpdate(go);
+            Updates.enqueue(go);
 
             setTimeout(() => {
                 expect(recurseCount).to.equal(maxRecursion);
@@ -201,19 +201,19 @@ describe("The DOM facade", () => {
             function go1() {
                 calls.push(recurseCount1 * 2);
                 if (++recurseCount1 < maxRecursion) {
-                    DOM.queueUpdate(go1);
+                    Updates.enqueue(go1);
                 }
             }
 
             function go2() {
                 calls.push(recurseCount2 * 2 + 1);
                 if (++recurseCount2 < maxRecursion) {
-                    DOM.queueUpdate(go2);
+                    Updates.enqueue(go2);
                 }
             }
 
-            DOM.queueUpdate(go1);
-            DOM.queueUpdate(go2);
+            Updates.enqueue(go1);
+            Updates.enqueue(go2);
 
             setTimeout(function () {
                 expect(calls.length).to.equal(maxRecursion * 2);
@@ -228,17 +228,17 @@ describe("The DOM facade", () => {
             const calls: number[] = [];
             const dispose = watchSetTimeoutForErrors<number>();
 
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(0);
                 throw 0;
             });
 
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(1);
                 throw 1;
             });
 
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(2);
                 throw 2;
             });
@@ -257,25 +257,25 @@ describe("The DOM facade", () => {
             const calls: number[] = [];
             const dispose = watchSetTimeoutForErrors<number>();
 
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(0);
             });
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(1);
                 throw 1;
             });
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(2);
             });
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(3);
                 throw 3;
             });
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(4);
                 throw 4;
             });
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(5);
             });
 
@@ -292,8 +292,8 @@ describe("The DOM facade", () => {
         it("executes tasks scheduled by another task that later throws an error", done => {
             const dispose = watchSetTimeoutForErrors<number>();
 
-            DOM.queueUpdate(() => {
-                DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
+                Updates.enqueue(() => {
                     throw 1;
                 });
 
@@ -311,33 +311,33 @@ describe("The DOM facade", () => {
             const calls: number[] = [];
             const dispose = watchSetTimeoutForErrors<number>();
 
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(0);
 
-                DOM.queueUpdate(() => {
+                Updates.enqueue(() => {
                     calls.push(2);
 
-                    DOM.queueUpdate(() => {
+                    Updates.enqueue(() => {
                         calls.push(5);
                         throw 5;
                     });
 
-                    DOM.queueUpdate(() => {
+                    Updates.enqueue(() => {
                         calls.push(6);
                     });
                 });
 
-                DOM.queueUpdate(() => {
+                Updates.enqueue(() => {
                     calls.push(3);
                 });
 
                 throw 0;
             });
 
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 calls.push(1);
 
-                DOM.queueUpdate(() => {
+                Updates.enqueue(() => {
                     calls.push(4);
                     throw 4;
                 });
@@ -359,12 +359,12 @@ describe("The DOM facade", () => {
 
             function go() {
                 if (++recursionCount < maxRecursion) {
-                    DOM.queueUpdate(go);
+                    Updates.enqueue(go);
                     throw recursionCount - 1;
                 }
             }
 
-            DOM.queueUpdate(go);
+            Updates.enqueue(go);
 
             setTimeout(function () {
                 const errors = dispose();
@@ -390,28 +390,28 @@ describe("The DOM facade", () => {
             function go1() {
                 calls.push(recurseCount1 * 3);
                 if (++recurseCount1 < maxRecursion) {
-                    DOM.queueUpdate(go1);
+                    Updates.enqueue(go1);
                 }
             }
 
             function go2() {
                 calls.push(recurseCount2 * 3 + 1);
                 if (++recurseCount2 < maxRecursion) {
-                    DOM.queueUpdate(go2);
+                    Updates.enqueue(go2);
                 }
             }
 
             function go3() {
                 calls.push(recurseCount3 * 3 + 2);
                 if (++recurseCount3 < maxRecursion) {
-                    DOM.queueUpdate(go3);
+                    Updates.enqueue(go3);
                     throw recurseCount3 - 1;
                 }
             }
 
-            DOM.queueUpdate(go1);
-            DOM.queueUpdate(go2);
-            DOM.queueUpdate(go3);
+            Updates.enqueue(go1);
+            Updates.enqueue(go2);
+            Updates.enqueue(go3);
 
             setTimeout(function () {
                 const errors = dispose();
@@ -433,17 +433,17 @@ describe("The DOM facade", () => {
 
     context("when updating DOM synchronously", () => {
         beforeEach(() => {
-            DOM.setUpdateMode(false);
+            Updates.setMode(false);
         });
 
         afterEach(() => {
-            DOM.setUpdateMode(true);
+            Updates.setMode(true);
         });
 
         it("calls task immediately", () => {
             let called = false;
 
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 called = true;
             });
 
@@ -453,7 +453,7 @@ describe("The DOM facade", () => {
         it("calls task.call method immediately", () => {
             let called = false;
 
-            DOM.queueUpdate({
+            Updates.enqueue({
                 call: () => {
                     called = true;
                 }
@@ -465,13 +465,13 @@ describe("The DOM facade", () => {
         it("calls multiple tasks in order", () => {
             const calls:number[] = [];
 
-            DOM.queueUpdate(() =>  {
+            Updates.enqueue(() =>  {
                 calls.push(0);
             });
-            DOM.queueUpdate(() =>  {
+            Updates.enqueue(() =>  {
                 calls.push(1);
             });
-            DOM.queueUpdate(() =>  {
+            Updates.enqueue(() =>  {
                 calls.push(2);
             });
 
@@ -481,11 +481,11 @@ describe("The DOM facade", () => {
         it("can schedule tasks recursively", () => {
             const steps: number[] = [];
 
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 steps.push(0);
-                DOM.queueUpdate(() => {
+                Updates.enqueue(() => {
                     steps.push(2);
-                    DOM.queueUpdate(() => {
+                    Updates.enqueue(() => {
                         steps.push(4);
                     });
                     steps.push(3);
@@ -500,11 +500,11 @@ describe("The DOM facade", () => {
             let recurseCount = 0;
             function go() {
                 if (++recurseCount < maxRecursion) {
-                    DOM.queueUpdate(go);
+                    Updates.enqueue(go);
                 }
             }
 
-            DOM.queueUpdate(go);
+            Updates.enqueue(go);
 
             expect(recurseCount).to.equal(maxRecursion);
         });
@@ -514,7 +514,7 @@ describe("The DOM facade", () => {
             let caught: any;
 
             try {
-                DOM.queueUpdate(() => {
+                Updates.enqueue(() => {
                     calls.push(0);
                     throw 0;
                 });

@@ -2,7 +2,7 @@ import { assert, expect } from "chai";
 import { RadioGroup, radioGroupTemplate as template } from "./index";
 import { Radio, radioTemplate as itemTemplate } from "../radio";
 import { fixture } from "../testing/fixture";
-import { DOM, html } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
 const FASTRadioGroup = RadioGroup.compose({
@@ -107,7 +107,7 @@ describe("Radio Group", () => {
 
         element.disabled = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-disabled")).to.equal("false");
 
@@ -129,7 +129,7 @@ describe("Radio Group", () => {
         element.disabled = true;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect((element.querySelector(".one") as Radio).disabled).to.equal(true);
         expect((element.querySelector(".two") as Radio).disabled).to.equal(true);
@@ -159,7 +159,7 @@ describe("Radio Group", () => {
 
         element.readOnly = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-readonly")).to.equal("false");
 
@@ -181,7 +181,7 @@ describe("Radio Group", () => {
         element.readOnly = true;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect((element.querySelector(".one") as Radio).readOnly).to.equal(true);
         expect((element.querySelector(".two") as Radio).readOnly).to.equal(true);
@@ -222,7 +222,7 @@ describe("Radio Group", () => {
         element.appendChild(radio3);
 
         await connect()
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.querySelectorAll("fast-radio")[2].getAttribute("tabindex")
@@ -253,7 +253,7 @@ describe("Radio Group", () => {
         element.appendChild(radio3);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.querySelectorAll("fast-radio")[0].getAttribute("tabindex")
@@ -287,7 +287,7 @@ describe("Radio Group", () => {
         element.appendChild(radio3);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect((element.querySelectorAll("fast-radio")[2] as Radio).checked).to.equal(
             true
@@ -322,7 +322,7 @@ describe("Radio Group", () => {
         element.appendChild(radio3);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const radios: NodeList = element.querySelectorAll("fast-radio");
         expect((radios[2] as HTMLInputElement).checked).to.equal(true);
@@ -356,7 +356,7 @@ describe("Radio Group", () => {
         element.appendChild(radio3);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const radios: NodeList = element.querySelectorAll("fast-radio");
         expect((radios[1] as HTMLInputElement).checked).to.equal(true);
@@ -391,7 +391,7 @@ describe("Radio Group", () => {
         element.appendChild(radio3);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect((element.querySelectorAll("fast-radio")[0] as Radio).checked).to.equal(
             false

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { DOM } from "../dom";
+import { ElementStyles } from "../index.debug";
 import type { Behavior } from "../observation/behavior";
 import { Observable } from "../observation/observable";
 import { css } from "../styles/css";
@@ -194,7 +194,7 @@ describe("The Controller", () => {
             expect(toHTML(element)).to.equal("b");
         });
 
-        if (DOM.supportsAdoptedStyleSheets) {
+        if (ElementStyles.supportsAdoptedStyleSheets) {
             it("sets no styles when none are provided", () => {
                 const { shadowRoot, controller } = createController();
 
@@ -289,7 +289,7 @@ describe("The Controller", () => {
             expect(toHTML(element)).to.equal("b");
         });
 
-        if (DOM.supportsAdoptedStyleSheets) {
+        if (ElementStyles.supportsAdoptedStyleSheets) {
             it("can dynamically change the styles", () => {
                 const { shadowRoot, controller } = createController({ styles: stylesA });
 

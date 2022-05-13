@@ -1,4 +1,4 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
 import { Direction, keyEscape } from "@microsoft/fast-web-utilities";
 import type {
     AnchoredRegion,
@@ -567,7 +567,7 @@ export class Tooltip extends FoundationElement {
         this.currentDirection = getDirection(this);
         this.tooltipVisible = true;
         document.addEventListener("keydown", this.handleDocumentKeydown);
-        DOM.queueUpdate(this.setRegionProps);
+        Updates.enqueue(this.setRegionProps);
     };
 
     /**

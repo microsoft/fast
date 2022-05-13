@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { slotted, SlottedDirective } from "./slotted";
 import { ExecutionContext, observable } from "../observation/observable";
 import { elements } from "./node-observation";
-import { DOM } from "../dom";
+import { Updates } from "../observation/update-queue";
 
 describe("The slotted", () => {
     context("template function", () => {
@@ -92,7 +92,7 @@ describe("The slotted", () => {
 
             const updatedChildren = children.concat(createAndAppendChildren(host));
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(model.nodes).members(updatedChildren);
         });
@@ -112,7 +112,7 @@ describe("The slotted", () => {
 
             const updatedChildren = children.concat(createAndAppendChildren(host));
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(model.nodes).members(updatedChildren.filter(elements("foo-bar")));
         });
@@ -133,7 +133,7 @@ describe("The slotted", () => {
 
             host.appendChild(document.createElement("div"));
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(model.nodes).members([]);
         });

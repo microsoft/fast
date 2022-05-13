@@ -1,4 +1,4 @@
-import { DOM } from "../dom.js";
+import { Updates } from "./update-queue.js";
 import { Splice } from "./array-change-records.js";
 import { SubscriberSet } from "./notifier.js";
 import type { Notifier } from "./notifier.js";
@@ -55,7 +55,7 @@ class ArrayObserver extends SubscriberSet {
     private enqueue(): void {
         if (this.needsQueue) {
             this.needsQueue = false;
-            DOM.queueUpdate(this);
+            Updates.enqueue(this);
         }
     }
 }

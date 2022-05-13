@@ -1,5 +1,4 @@
-import { DOM } from "@microsoft/fast-element";
-import { customElement } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { keyArrowRight, Orientation } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
 import { fixture } from "../testing/fixture";
@@ -115,7 +114,7 @@ describe("Toolbar", () => {
     element.appendChild(startButton1);
     element.appendChild(startButton2);
 
-    await DOM.nextUpdate();
+    await Updates.next();
 
     element.focus();
 
@@ -147,7 +146,7 @@ describe("Toolbar", () => {
     element.appendChild(endButton1);
     element.appendChild(endButton2);
 
-    await DOM.nextUpdate();
+    await Updates.next();
 
     element.focus();
 

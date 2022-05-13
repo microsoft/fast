@@ -1,9 +1,4 @@
-export * from "./platform.js";
-export * from "./templating/template.js";
-export * from "./components/fast-element.js";
-export * from "./components/fast-definitions.js";
-export * from "./components/attributes.js";
-export * from "./components/controller.js";
+// Kernel
 export type {
     Callable,
     Constructable,
@@ -14,16 +9,25 @@ export type {
     TrustedTypes,
     TrustedTypesPolicy,
 } from "./interfaces.js";
-export * from "./templating/compiler.js";
-export * from "./styles/element-styles.js";
-export * from "./styles/css.js";
-export * from "./styles/css-directive.js";
+export * from "./platform.js";
+
+// Observation
 export * from "./observation/observable.js";
 export * from "./observation/notifier.js";
 export * from "./observation/array-change-records.js";
 export * from "./observation/array-observer.js";
-export * from "./dom.js";
+export * from "./observation/update-queue.js";
 export type { Behavior } from "./observation/behavior.js";
+
+// Styles
+export * from "./styles/element-styles.js";
+export * from "./styles/css.js";
+export * from "./styles/css-directive.js";
+
+// Templating
+export * from "./templating/dom.js";
+export * from "./templating/template.js";
+export * from "./templating/compiler.js";
 export { Markup, Parser } from "./templating/markup.js";
 export {
     bind,
@@ -43,3 +47,9 @@ export * from "./templating/slotted.js";
 export * from "./templating/children.js";
 export * from "./templating/view.js";
 export * from "./templating/node-observation.js";
+
+// Components
+export * from "./components/fast-element.js";
+export * from "./components/fast-definitions.js";
+export * from "./components/attributes.js";
+export * from "./components/controller.js";

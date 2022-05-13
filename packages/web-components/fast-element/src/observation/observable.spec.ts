@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { DOM } from "../dom";
+import { Updates } from "./update-queue";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier";
 import { ExecutionContext, Observable, observable, volatile } from "./observable";
 
@@ -151,7 +151,7 @@ describe("The Observable", () => {
             expect(wasNotified).to.be.false;
             model.child = new ChildModel();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -175,7 +175,7 @@ describe("The Observable", () => {
             expect(wasNotified).to.be.false;
             model.child.value = "something completely different";
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -199,7 +199,7 @@ describe("The Observable", () => {
             model.child.value = "something completely different";
             observer.disconnect();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(called).to.be.false;
 
@@ -208,7 +208,7 @@ describe("The Observable", () => {
 
             model.child.value = "another completely different thing";
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(called).to.be.true;
         });
@@ -231,7 +231,7 @@ describe("The Observable", () => {
             expect(wasNotified).to.be.false;
             model.child.value = "something completely different";
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -242,7 +242,7 @@ describe("The Observable", () => {
             wasNotified = false;
             model.child2.value = "another thing";
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -253,7 +253,7 @@ describe("The Observable", () => {
             wasNotified = false;
             model.child = new ChildModel();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -264,7 +264,7 @@ describe("The Observable", () => {
             wasNotified = false;
             model.child2 = new ChildModel();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -289,7 +289,7 @@ describe("The Observable", () => {
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -299,7 +299,7 @@ describe("The Observable", () => {
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -324,7 +324,7 @@ describe("The Observable", () => {
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -334,7 +334,7 @@ describe("The Observable", () => {
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -365,7 +365,7 @@ describe("The Observable", () => {
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -375,7 +375,7 @@ describe("The Observable", () => {
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -400,7 +400,7 @@ describe("The Observable", () => {
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -410,7 +410,7 @@ describe("The Observable", () => {
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -435,7 +435,7 @@ describe("The Observable", () => {
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -445,7 +445,7 @@ describe("The Observable", () => {
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -470,7 +470,7 @@ describe("The Observable", () => {
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -480,7 +480,7 @@ describe("The Observable", () => {
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -507,7 +507,7 @@ describe("The Observable", () => {
             expect(wasNotified).to.be.false;
             model.decrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -517,7 +517,7 @@ describe("The Observable", () => {
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -549,7 +549,7 @@ describe("The Observable", () => {
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -559,7 +559,7 @@ describe("The Observable", () => {
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
@@ -585,7 +585,7 @@ describe("The Observable", () => {
             model.value++;
             observer.disconnect();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasCalled).to.equal(false);
         });

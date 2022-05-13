@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import { DOM } from "../dom";
 import { customElement, FASTElement } from "../components/fast-element";
 import { Markup } from './markup';
 import { ExecutionContext } from "../observation/observable";
@@ -10,6 +9,7 @@ import { Compiler } from "./compiler";
 import type { HTMLDirective, ViewBehaviorFactory } from "./html-directive";
 import { html } from "./template";
 import type { StyleTarget } from "../interfaces";
+import { ElementStyles } from "../index.debug";
 
 /**
  * Used to satisfy TS by exposing some internal properties of the
@@ -381,7 +381,7 @@ describe("The template compiler", () => {
 
     context("when compiling hosts", () => {});
 
-    if (DOM.supportsAdoptedStyleSheets) {
+    if (ElementStyles.supportsAdoptedStyleSheets) {
         it("handles templates with adoptedStyleSheets", () => {
             const name = uniqueElementName();
 

@@ -1,9 +1,9 @@
 import {
     attr,
     booleanConverter,
-    DOM,
     emptyArray,
     observable,
+    Updates,
 } from "@microsoft/fast-element";
 import type { Constructable, FASTElement } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
@@ -393,7 +393,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
                 this.proxy.disabled = this.disabled;
             }
 
-            DOM.queueUpdate(() => this.classList.toggle("disabled", this.disabled));
+            Updates.enqueue(() => this.classList.toggle("disabled", this.disabled));
         }
 
         /**
@@ -445,7 +445,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
                 this.proxy.required = this.required;
             }
 
-            DOM.queueUpdate(() => this.classList.toggle("required", this.required));
+            Updates.enqueue(() => this.classList.toggle("required", this.required));
             this.validate();
         }
 

@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import { DOM } from "../dom";
 import { FASTElementDefinition } from "./fast-definitions";
 import { ElementStyles } from "../styles/element-styles";
 
@@ -71,7 +70,7 @@ describe("FASTElementDefinition", () => {
             expect(def.styles!.styles).to.contain(existingStyles2);
         });
 
-        if (DOM.supportsAdoptedStyleSheets) {
+        if (ElementStyles.supportsAdoptedStyleSheets) {
             it("can accept a CSSStyleSheet", () => {
                 const styles = new CSSStyleSheet();
                 const options = {

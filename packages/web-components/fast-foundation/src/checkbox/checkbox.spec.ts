@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
 import { Checkbox, checkboxTemplate as template } from "./index";
 import { fixture } from "../testing/fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
 
 const FASTCheckbox = Checkbox.compose({
@@ -37,7 +37,7 @@ describe("Checkbox", () => {
 
         element.checked = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("false");
 
@@ -77,7 +77,7 @@ describe("Checkbox", () => {
 
         element.required = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-required")).to.equal("false");
 
@@ -105,7 +105,7 @@ describe("Checkbox", () => {
 
         element.disabled = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-disabled")).to.equal("false");
 
@@ -133,7 +133,7 @@ describe("Checkbox", () => {
 
         element.readOnly = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-readonly")).to.equal("false");
 
@@ -283,7 +283,7 @@ describe("Checkbox", () => {
 
                 element.click();
 
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasClicked).to.equal(true);
@@ -306,7 +306,7 @@ describe("Checkbox", () => {
                 element.dispatchEvent(event);
 
                 // Resolve false on the next update in case the event hasn't happened
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasInvoked).to.equal(true);

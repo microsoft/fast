@@ -120,6 +120,13 @@ export class ElementStyles {
     public static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void {
         DefaultStyleStrategy = Strategy;
     }
+
+    /**
+     * Indicates whether the DOM supports the adoptedStyleSheets feature.
+     */
+    public static readonly supportsAdoptedStyleSheets =
+        Array.isArray((document as any).adoptedStyleSheets) &&
+        "replace" in CSSStyleSheet.prototype;
 }
 
 /**

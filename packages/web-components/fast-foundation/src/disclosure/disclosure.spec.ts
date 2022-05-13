@@ -1,4 +1,4 @@
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { fixture } from "../testing/fixture";
 import { Disclosure, disclosureTemplate as template } from "./index";
@@ -19,7 +19,7 @@ describe("Disclosure", () => {
         const { element, connect, disconnect } = await createDisclosure();
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.expanded).to.equal(false);
 
@@ -33,7 +33,7 @@ describe("Disclosure", () => {
 
         element.expanded = true;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.expanded).to.equal(true);
 
@@ -47,7 +47,7 @@ describe("Disclosure", () => {
 
         element.expanded = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.expanded).to.equal(false);
 
@@ -63,7 +63,7 @@ describe("Disclosure", () => {
 
         element.summary = summary;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.shadowRoot?.querySelector("slot[name='summary']")?.innerHTML).to.equal(summary);
 
@@ -77,7 +77,7 @@ describe("Disclosure", () => {
 
             element.toggle();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.expanded).to.equal(true);
 
@@ -91,13 +91,13 @@ describe("Disclosure", () => {
 
             element.show();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.expanded).to.equal(true);
 
             element.hide();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.expanded).to.equal(false);
 

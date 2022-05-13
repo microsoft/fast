@@ -43,8 +43,22 @@ const registry = createTypeRegistry<CSSDirectiveDefinition>();
  * @public
  */
 export const CSSDirective = Object.freeze({
+    /**
+     * Gets the directive definition associated with the instance.
+     * @param instance - The directive instance to retrieve the definition for.
+     */
     getForInstance: registry.getForInstance,
+
+    /**
+     * Gets the directive definition associated with the specified type.
+     * @param type - The directive type to retrieve the definition for.
+     */
     getByType: registry.getByType,
+
+    /**
+     * Defines a CSSDirective.
+     * @param type - The type to define as a directive.
+     */
     define<TType extends Constructable<CSSDirective>>(type): TType {
         registry.register({ type });
         return type;
