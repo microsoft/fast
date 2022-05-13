@@ -2,6 +2,57 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 10 May 2022 07:11:04 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.3",
+      "version": "2.46.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "select ignores l&r arrow keys",
+            "author": "scomea@microsoft.com",
+            "commit": "4a3175e8585af03e97b388849f697f8ee5dbe424",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 08 May 2022 07:08:18 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.2",
+      "version": "2.46.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix test typings that were throwing",
+            "author": "chhol@microsoft.com",
+            "commit": "890ff058b8771c84a9e669b4e9202c43f4d3e7fc",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 06 May 2022 20:58:02 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.2",
+      "version": "2.46.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "update api extractor to 7.23.1 to ensure we can support TS 4.7 internal API changes",
+            "author": "chhol@microsoft.com",
+            "commit": "fbc6a7fb670453322c93f8f12a223febad86f735",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Removed comment blocks from variable type markdown in README files",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "00f9a95e0f1be1b28a0f8b0584d1ef47ce08026e",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 05 May 2022 07:11:41 GMT",
       "tag": "@microsoft/fast-foundation_v2.46.2",
       "version": "2.46.2",

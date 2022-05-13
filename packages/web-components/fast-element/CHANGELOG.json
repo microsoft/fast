@@ -2,6 +2,36 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Sun, 08 May 2022 07:08:18 GMT",
+      "tag": "@microsoft/fast-element_v1.10.1",
+      "version": "1.10.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "adds missing types for chai-spies",
+            "author": "chhol@microsoft.com",
+            "commit": "890ff058b8771c84a9e669b4e9202c43f4d3e7fc",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 06 May 2022 20:58:02 GMT",
+      "tag": "@microsoft/fast-element_v1.10.1",
+      "version": "1.10.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "update api extractor to 7.23.1 to ensure we can support TS 4.7 internal API changes",
+            "author": "chhol@microsoft.com",
+            "commit": "fbc6a7fb670453322c93f8f12a223febad86f735",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 04 May 2022 07:14:00 GMT",
       "tag": "@microsoft/fast-element_v1.10.1",
       "version": "1.10.1",

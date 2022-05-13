@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 05 May 2022 07:11:41 GMT and should not be manually modified.
+This log was last generated on Tue, 10 May 2022 07:11:04 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.3
+
+Tue, 10 May 2022 07:11:04 GMT
+
+### Patches
+
+- select ignores l&r arrow keys (scomea@microsoft.com)
 
 ## 2.46.2
 

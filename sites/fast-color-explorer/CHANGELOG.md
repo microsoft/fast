@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-color-explorer
 
-This log was last generated on Thu, 05 May 2022 07:11:41 GMT and should not be manually modified.
+This log was last generated on Tue, 10 May 2022 07:11:04 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.19
+
+Tue, 10 May 2022 07:11:04 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.3 (scomea@microsoft.com)
 
 ## 1.6.19
 

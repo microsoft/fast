@@ -96,8 +96,8 @@ When working across feature branches, you'll need to target the branch using the
 ```json
 {
   "type": "minor",
-  "comment": "add fancy new feature for components",
-  "packageName": "@microsoft/fast-components",
+  "comment": "add fancy new feature for foundation",
+  "packageName": "@microsoft/fast-foundation",
   "email": "name@example.com",
   "dependentChangeType": "minor",
   "date": "2021-03-01T19:10:06.323Z"
