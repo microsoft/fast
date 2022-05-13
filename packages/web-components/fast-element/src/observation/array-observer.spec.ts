@@ -1,7 +1,8 @@
 import { expect } from "chai";
 import { Observable } from "./observable";
-import { enableArrayObservation } from "./array-observer";
+import { enableArrayObservation, length } from "./array-observer";
 import { SubscriberSet } from "./notifier";
+import { DOM } from "../dom";
 
 describe("The ArrayObserver", () => {
     it("can be retrieved through Observable.getNotifier()", () => {
@@ -52,5 +53,96 @@ describe("The ArrayObserver", () => {
 
         expect(notifier).to.be.instanceOf(SubscriberSet);
         expect(keys).eql(["0", "1", "2"])
+    });
+});
+
+describe("The array length observer", () => {
+    class Model {
+        items: any[];
+    }
+
+    it("returns zero length if the array is undefined", async () => {
+        const instance = new Model();
+        const observer = Observable.binding<Model>(x => length(x.items));
+
+        const value = observer.observe(instance)
+
+        expect(value).to.equal(0);
+
+        observer.disconnect();
+    });
+
+    it("returns zero length if the array is null", async () => {
+        const instance = new Model();
+        instance.items = null as any;
+        const observer = Observable.binding<Model>(x => length(x.items));
+
+        const value = observer.observe(instance)
+
+        expect(value).to.equal(0);
+
+        observer.disconnect();
+    });
+
+    it("returns length of an array", async () => {
+        const instance = new Model();
+        instance.items = [1,2,3,4,5];
+        const observer = Observable.binding<Model>(x => length(x.items));
+
+        const value = observer.observe(instance)
+
+        expect(value).to.equal(5);
+
+        observer.disconnect();
+    });
+
+    it("notifies when the array length changes", async () => {
+        const instance = new Model();
+        instance.items = [1,2,3,4,5];
+
+        let changed = false;
+        const observer = Observable.binding<Model>(x => length(x.items), {
+            handleChange() {
+                changed = true;
+            }
+        });
+
+        const value = observer.observe(instance)
+
+        expect(value).to.equal(5);
+
+        instance.items.push(6);
+
+        await DOM.nextUpdate();
+
+        expect(changed).to.be.true;
+        expect(observer.observe(instance)).to.equal(6);
+
+        observer.disconnect();
+    });
+
+    it("does not notify on changes that don't change the length", async () => {
+        const instance = new Model();
+        instance.items = [1,2,3,4,5];
+
+        let changed = false;
+        const observer = Observable.binding<Model>(x => length(x.items), {
+            handleChange() {
+                changed = true;
+            }
+        });
+
+        const value = observer.observe(instance);
+
+        expect(value).to.equal(5);
+
+        instance.items.splice(2, 1, 6);
+
+        await DOM.nextUpdate();
+
+        expect(changed).to.be.false;
+        expect(observer.observe(instance)).to.equal(5);
+
+        observer.disconnect();
     });
 });
