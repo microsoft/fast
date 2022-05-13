@@ -1,7 +1,7 @@
 {
     "name": "fast-benchmarks",
     "version": "1.0.0",
-    "description": "utility library benchmarking",
+    "description": "utility library benchmarking for FAST libraries",
     "type": "module",
     "scripts": {
         "build": "tsc && tsc --build",
