@@ -1,16 +1,6 @@
 name: Validate PRs
 
-on:
-  push:
-    branches:
-    - master
-    - releases/*
-    - users/*
-  pull_request:
-    branches:
-    - master
-    - releases/*
-    - features/*
+on: workflow_dispatch
 
 jobs:
   prepare:
@@ -93,7 +83,7 @@ jobs:
         run: |
           npm run benchmark --library=fast-element --benchmark=test --versions 1.8.0 1.9.0 --operations=create10k
       - name: report results
-        uses: actions/upload-artifact@v2
+        uses: andrewiggins/tachometer-reporter-action@v2
         with:
           name: results
           path: benchmarks/results/result.json
