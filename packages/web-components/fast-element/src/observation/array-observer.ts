@@ -1,6 +1,6 @@
 import { Updates } from "./update-queue.js";
 import { Splice } from "./array-change-records.js";
-import { SubscriberSet } from "./notifier.js";
+import { Subscriber, SubscriberSet } from "./notifier.js";
 import type { Notifier } from "./notifier.js";
 import { Observable } from "./observable.js";
 
@@ -11,10 +11,18 @@ function setNonEnumerable(target: any, property: string, value: any): void {
     });
 }
 
+interface LengthSubscriber extends Subscriber {
+    length: number;
+}
+
 class ArrayObserver extends SubscriberSet {
     private oldCollection: any[] | undefined = void 0;
     private splices: Splice[] | undefined = void 0;
     private needsQueue: boolean = true;
+
+    /** @internal */
+    public lengthSubscriber: LengthSubscriber | undefined = void 0;
+
     call: () => void = this.flush;
 
     constructor(subject: any[]) {
@@ -227,4 +235,40 @@ export function enableArrayObservation(): void {
             },
         });
     }
+}
+
+/**
+ * Enables observing the length of an array.
+ * @param array - The array to observe the length of.
+ * @returns The length of the array.
+ * @public
+ */
+export function length<T>(array: readonly T[]): number {
+    if (!array) {
+        return 0;
+    }
+
+    let arrayObserver = (array as any).$fastController as ArrayObserver;
+    if (arrayObserver === void 0) {
+        enableArrayObservation();
+        arrayObserver = Observable.getNotifier<ArrayObserver>(array);
+    }
+
+    let lengthSubscriber = arrayObserver.lengthSubscriber;
+    if (lengthSubscriber === void 0) {
+        arrayObserver.lengthSubscriber = lengthSubscriber = {
+            length: array.length,
+            handleChange() {
+                if (this.length !== array.length) {
+                    this.length = array.length;
+                    Observable.notify(lengthSubscriber, "length");
+                }
+            },
+        };
+
+        arrayObserver.subscribe(lengthSubscriber);
+    }
+
+    Observable.track(lengthSubscriber, "length");
+    return array.length;
 }
