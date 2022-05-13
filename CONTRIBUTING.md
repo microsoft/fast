@@ -81,7 +81,7 @@ Packages are located within the `packages` folder of the repository. Each packag
 If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch (typically from master) or use the *merge* button provided by GitHub.
 
 :::note
-For additional details on branch management read the [branch guide](/docs/community/branch-guide) documentation.
+For additional details on branch management read the [branch guide](../community/branch-guide.md) documentation.
 :::
 
 #### Change Files
@@ -207,7 +207,7 @@ The amount of time can vary but at least 3 days during the typical working week 
 
 ## Stability policy
 
-An essential consideration in every pull request is its impact on the system. To manage impacts, we work collectively to ensure that we do not introduce unnecessary breaking changes, performance or functional regressions, or negative impacts on usability for users or supported partners. To learn more about our approaches to planning and releases, see [our release planning document](/docs/community/release-planning).
+An essential consideration in every pull request is its impact on the system. To manage impacts, we work collectively to ensure that we do not introduce unnecessary breaking changes, performance or functional regressions, or negative impacts on usability for users or supported partners. To learn more about our approaches to planning and releases, see [our release planning document](../community/release-planning.md).
 
 ## Developer's Certificate of Origin 1.1
 
