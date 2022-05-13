@@ -5,6 +5,7 @@ on:
     branches:
     - master
     - releases/*
+    - users/*
   pull_request:
     branches:
     - master
