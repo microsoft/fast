@@ -35,7 +35,7 @@ import "@microsoft/fast-ssr/install-dom-shim";
 Alternatively, a full DOM implementation such as [`jsdom`](https://github.com/jsdom/jsdom) or [`happy-dom`](https://github.com/capricorn86/happy-dom) can be used.
 
 ### Construct the Renderer
-Import the renderer factory and construct a `TemplateRenderer`. You will also need a `RenderInfo` object and a default is provided, more on this [here](#configuring-the-renderinfo-object).
+Import the renderer factory and construct a `TemplateRenderer`. You will also need a `RenderInfo` object. A default is provided, more on this [here](#configuring-the-renderinfo-object).
 ```js
 import fastSSR from "@microsoft/fast-ssr";
 
