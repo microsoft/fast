@@ -3,20 +3,17 @@ name: Validate PRs
 on:
   push:
     branches:
-      - master
-      - releases/*
-      - users/*
+    - master
+    - releases/*
   pull_request:
     branches:
-      - master
-      - releases/*
-      - features/*
+    - master
+    - releases/*
+    - features/*
 
 jobs:
-  prepare:
+  build_linux:
     runs-on: ubuntu-latest
-    env:
-      PLAYWRIGHT_BROWSERS_PATH: 0
 
     steps:
     - uses: actions/checkout@v2
@@ -28,16 +25,16 @@ jobs:
       run: echo '::set-output name=dir::$(yarn cache dir)'
 
     - name: Set up node_modules cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       id: yarn-cache
       with:
         path: |
           ${{ steps.yarn-cache-dir-path.outputs.dir }}
           node_modules
           */*/node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-yarn_cache-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-          ${{ runner.os }}-yarn-
+          ${{ runner.os }}-yarn_cache-
 
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
@@ -50,50 +47,23 @@ jobs:
 
     - name: Prepare workspaces
       run: yarn prepare
-      
-  build_linux:
-    runs-on: ubuntu-latest
-    needs: prepare
-    steps:
-      - name: Install playwright dependencies and browsers
-        run: |
-          yarn playwright install-deps
-          yarn playwright install
 
-      - name: Testing unit tests
-        run: yarn lerna run test --stream
+    - name: Testing unit tests
+      run: yarn lerna run test --stream
 
-      - name: Collect and upload code coverage to Code Climate
-        uses: paambaati/codeclimate-action@v2.7.5
-        env:
-          CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          coverageCommand: yarn lerna run coverage
-          coverageLocations: |
-            ${{github.workspace}}/packages/tooling/fast-figma-plugin-msft/coverage/lcov.info:lcov
-            ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
-            ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
-            ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
-            ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
-          debug: false
+    - name: Collect and upload code coverage to Code Climate
+      uses: paambaati/codeclimate-action@v2.7.5
+      env:
+        CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        coverageCommand: yarn lerna run coverage
+        coverageLocations: |
+          ${{github.workspace}}/packages/tooling/fast-figma-plugin-msft/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
+        debug: false
 
-      - name: Testing final validation
-        run: yarn test:validation
-
-  build_benchmarks:
-    runs-on: ubuntu-latest
-    needs: prepare_linux
-    steps:
-      - name: install and build
-        run: |
-          cd packages/utilities/fast-benchmarks
-          npm ci
-      - name: run a benchmark
-        run: |
-          npm run benchmark --library=fast-element --benchmark=test --versions 1.8.0 1.9.0 --operations=create10k
-      - name: report results
-        uses: andrewiggins/tachometer-reporter-action@v2
-        with:
-          name: results
-          path: benchmarks/results/result.json
+    - name: Testing final validation
+      run: yarn test:validation
