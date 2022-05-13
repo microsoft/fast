@@ -1,16 +1,6 @@
 name: Validate PRs
 
-on:
-  push:
-    branches:
-    - master
-    - releases/*
-    - users/*
-  pull_request:
-    branches:
-    - master
-    - releases/*
-    - features/*
+on: [push]
 
 jobs:
   build_linux:
