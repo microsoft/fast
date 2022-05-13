@@ -101,15 +101,15 @@ flowchart
 We hope you're excited by the possibilities that FAST presents. But, you may be wondering where to start. Here are a few statements that describe various members of our community. We recommend that you pick the statement you most identify with and follow the links where they lead. You can always come back and explore another topic at any time.
 
 * "I just want ready-made components!"
-  * [Jump to the component docs.](/docs/components/getting-started)
+  * [Jump to the component docs.](./components/getting-started.md)
 * "I want to build my own design system."
-  * [Jump to the design system docs.](/docs/design-systems/overview)
+  * [Jump to the design system docs.](./design-systems/overview.md)
 * "I want to build my own components."
-  * [Jump to the fast-element docs.](/docs/fast-element/getting-started)
+  * [Jump to the fast-element docs.](./fast-element/getting-started.md)
 * "I need to integrate FAST with another framework or build system."
-  * [Jump to the integration docs.](/docs/integrations/introduction)
+  * [Jump to the integration docs.](./integrations/introduction.md)
 * "I want to look at a quick reference."
-  * [Jump to the Cheat Sheet](/docs/resources/cheat-sheet)
+  * [Jump to the Cheat Sheet](./resources/cheat-sheet.md)
 
 ## Joining the community
 
