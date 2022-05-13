@@ -25,7 +25,7 @@ At this time, `fast-element` has a focus that's a bit different from the typical
 "Web Components" is an umbrella term that refers to a collection of web standards focused on enabling the creation of custom HTML elements. Some of the standards that are under the umbrella include the ability to define new HTML tags, plug into a standard component lifecycle, encapsulate HTML rendering and CSS, parameterize CSS, skin components, and more. Each of these platform features is defined by the W3C and has shipped in every major browsers today.
 
 ### Why should I choose Web Components over [other JavaScript framework]?
-Great question! Check out [why you might choose Web Components](/docs/resources/why-web-components) for your project.
+Great question! Check out [why you might choose Web Components](./why-web-components.md) for your project.
 
 ### Are Web Components "done"?
 
