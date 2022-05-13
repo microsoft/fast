@@ -42,6 +42,7 @@ jobs:
 
     - name: run a benchmark
       run: |
+        cd packages/utilities/fast-benchmarks
         npm run benchmark --library=fast-element --benchmark=test --versions 1.8.0 1.9.0 --operations=create10k
     - name: report results
       uses: actions/upload-artifact@v2
