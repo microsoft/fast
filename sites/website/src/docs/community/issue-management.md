@@ -77,7 +77,7 @@ For some feature requests and bug reports, depending on the user involvement, we
 
 ## Releases
 
-Once a PR for a `minor` or `patch` change is merged to master it will be published in the next release. Releases are published Sunday through Thursday evenings (Pacific). To learn more about our release process and planning, please see [Release Planning](./release-planning).
+Once a PR for a `minor` or `patch` change is merged to master it will be published in the next release. Releases are published Sunday through Thursday evenings (Pacific). To learn more about our release process and planning, please see [Release Planning](./release-planning.md).
 
 ## Cleanup
 
