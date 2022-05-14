@@ -576,7 +576,7 @@ describe("TextArea", () => {
 
             form.reset();
 
-            assert(element.value === "");
+            assert((element as TextArea).value === "");
 
             await disconnect();
         });
@@ -600,7 +600,7 @@ describe("TextArea", () => {
 
             form.reset();
 
-            assert(element.value === "attr-value");
+            assert((element as TextArea).value === "attr-value");
 
             await disconnect();
         });
@@ -622,11 +622,11 @@ describe("TextArea", () => {
 
             form.reset();
 
-            assert(element.value === "attr-value");
+            assert((element as TextArea).value === "attr-value");
 
             element.setAttribute("value", "new-attr-value");
 
-            assert(element.value === "new-attr-value");
+            assert((element as TextArea).value === "new-attr-value");
 
             await disconnect();
         });

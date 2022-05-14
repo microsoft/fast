@@ -3,6 +3,7 @@ id: anchor
 title: fast-anchor
 sidebar_label: anchor
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/anchor/README.md
+description: fast-anchor is a web component implementation of an anchor element.
 ---
 
 As defined by the W3C:
@@ -102,6 +103,21 @@ This component is built with the expectation that focus is delegated to the anch
 | `rel`            | rel            |                |
 | `target`         | target         |                |
 | `type`           | type           |                |
+
+#### CSS Parts
+
+| Name      | Description                         |
+| --------- | ----------------------------------- |
+| `control` | The anchor element                  |
+| `content` | The element wrapping anchor content |
+
+#### Slots
+
+| Name    | Description                                             |
+| ------- | ------------------------------------------------------- |
+| `start` | Content which can be provided before the anchor content |
+| `end`   | Content which can be provided after the anchor content  |
+|         | The default slot for anchor content                     |
 
 <hr/>
 

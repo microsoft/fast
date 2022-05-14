@@ -3,6 +3,7 @@ id: card
 title: fast-card
 sidebar_label: card
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/card/README.md
+description: fast-card is a web component visual container without semantics that takes children.
 ---
 
 The `fast-card` component is a visual container without semantics that takes children. Cards are snapshots of content that are typically used in a group to present collections of related information.
@@ -73,6 +74,12 @@ export const myCard = Card.compose({
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Slots
+
+| Name | Description                           |
+| ---- | ------------------------------------- |
+|      | The default slot for the card content |
 
 <hr/>
 

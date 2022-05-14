@@ -1,8 +1,71 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 27 Apr 2022 07:21:09 GMT and should not be manually modified.
+This log was last generated on Tue, 10 May 2022 07:11:04 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.3
+
+Tue, 10 May 2022 07:11:04 GMT
+
+### Patches
+
+- select ignores l&r arrow keys (scomea@microsoft.com)
+
+## 2.46.2
+
+Thu, 05 May 2022 07:11:41 GMT
+
+### Patches
+
+- fix positioning of select dropdown (abris96@gmail.com)
+- reset selection range when selecting option with cursor (abris96@gmail.com)
+
+## 2.46.1
+
+Wed, 04 May 2022 07:14:00 GMT
+
+### Patches
+
+- convert enums to const objects and add supported typings (chhol@microsoft.com)
+
+## 2.46.0
+
+Tue, 03 May 2022 07:15:44 GMT
+
+### Minor changes
+
+- add slots and events documentation (scomea@microsoft.com)
+
+### Patches
+
+- reflect option value changes in select (john.kreitlow@microsoft.com)
+- fix: selectedIndex property ignores disabled options in listbox and select (john.kreitlow@microsoft.com)
+- viewport lock + fill behavior (scomea@microsoft.com)
+- Upgraded api-extractor (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.10.1 (44823142+williamw2@users.noreply.github.com)
+
+## 2.45.0
+
+Sun, 01 May 2022 07:12:05 GMT
+
+### Minor changes
+
+- add select method to number field, text field, and text area components (chhol@microsoft.com)
+
+### Patches
+
+- ensure that tabs and tabpanels without ids stay in sync (chhol@microsoft.com)
+- trim extra spaces from the text property for listbox-option (john.kreitlow@microsoft.com)
+- fix keyboarding behavior for right and left arrow keys in Tree View (chhol@microsoft.com)
+
+## 2.44.0
+
+Thu, 28 Apr 2022 07:12:47 GMT
+
+### Minor changes
+
+- update displayed selected value in select component when an option changes (john.kreitlow@microsoft.com)
 
 ## 2.43.0
 

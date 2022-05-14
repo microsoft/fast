@@ -25,6 +25,7 @@ module.exports = {
         colorMode: {
             defaultMode: "dark",
         },
+        hideableSidebar: true,
         navbar: {
             logo: {
                 alt: `Line drawing of a small moon orbiting around a planet with the words FAST next to it`,

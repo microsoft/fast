@@ -12,9 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "@microsoft/fast-colors": "^5.3.0",
-    "@microsoft/fast-element": "^1.10.0",
-    "@microsoft/fast-foundation": "^2.43.0",
-    "@microsoft/fast-components": "^2.30.0",
+    "@microsoft/fast-element": "^1.10.1",
+    "@microsoft/fast-foundation": "^2.46.3",
+    "@microsoft/fast-components": "^2.30.6",
     "tslib": "^1.11.1"
   },
   "devDependencies": {

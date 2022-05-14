@@ -3,6 +3,7 @@ id: menu
 title: fast-menu
 sidebar_label: menu
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/menu/README.md
+description: fast-menu is a web component widget that offers a list of choices to the user, such as a set of actions or functions.
 ---
 
 As defined by the W3C:
@@ -161,6 +162,22 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `templateChanged`      | protected |                                     |            | `void` | FoundationElement |
 | `stylesChanged`        | protected |                                     |            | `void` | FoundationElement |
 
+#### Slots
+
+| Name | Description                         |
+| ---- | ----------------------------------- |
+|      | The default slot for the menu items |
+
+<hr/>
+
+
+
+### Variables
+
+| Name           | Description       | Type                                                                                              |
+| -------------- | ----------------- | ------------------------------------------------------------------------------------------------- |
+| `MenuItemRole` | Menu items roles. | `{ menuitem: "menuitem", menuitemcheckbox: "menuitemcheckbox", menuitemradio: "menuitemradio", }` |
+
 <hr/>
 
 
@@ -175,15 +192,15 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 #### Fields
 
-| Name            | Privacy | Type                                                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | --------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `disabled`      | public  | `boolean`                                                             |         | The disabled state of the element.                                                                                                                                                  |                   |
-| `expanded`      | public  | `boolean`                                                             |         | The expanded state of the element.                                                                                                                                                  |                   |
-| `role`          | public  | `MenuItemRole or "menuitem" or "menuitemcheckbox" or "menuitemradio"` |         | The role of the element.                                                                                                                                                            |                   |
-| `checked`       | public  | `boolean`                                                             |         | The checked value of the element.                                                                                                                                                   |                   |
-| `$presentation` | public  | `ComponentPresentation or null`                                       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null`                                 |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`                                       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `disabled`      | public  | `boolean`                             |         | The disabled state of the element.                                                                                                                                                  |                   |
+| `expanded`      | public  | `boolean`                             |         | The expanded state of the element.                                                                                                                                                  |                   |
+| `role`          | public  | `MenuItemRole`                        |         | The role of the element.                                                                                                                                                            |                   |
+| `checked`       | public  | `boolean`                             |         | The checked value of the element.                                                                                                                                                   |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -191,6 +208,13 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Events
+
+| Name              | Type | Description                                                                                                                              | Inherited From |
+| ----------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `expanded-change` |      | Fires a custom 'expanded-change' event when the expanded state changes                                                                   |                |
+| `change`          |      | Fires a custom 'change' event when a non-submenu item with a role of \`menuitemcheckbox\`, \`menuitemradio\`, or \`menuitem\` is invoked |                |
 
 #### Attributes
 
@@ -200,6 +224,30 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 |        | expanded |                |
 | `role` | role     |                |
 |        | checked  |                |
+
+#### CSS Parts
+
+| Name                              | Description                                                    |
+| --------------------------------- | -------------------------------------------------------------- |
+| `input-container`                 | The element representing the visual checked or radio indicator |
+| `checkbox`                        | The element wrapping the \`menuitemcheckbox\` indicator        |
+| `radio`                           | The element wrapping the \`menuitemradio\` indicator           |
+| `content`                         | The element wrapping the menu item content                     |
+| `expand-collapse-glyph-container` | The element wrapping the expand collapse element               |
+| `expand-collapse`                 | The expand/collapse element                                    |
+| `submenu-region`                  | The container for the submenu, used for positioning            |
+
+#### Slots
+
+| Name                        | Description                                                |
+| --------------------------- | ---------------------------------------------------------- |
+| `checked-indicator`         | The checked indicator                                      |
+| `radio-indicator`           | The radio indicator                                        |
+| `start`                     | Content which can be provided before the menu item content |
+| `end`                       | Content which can be provided after the menu item content  |
+|                             | The default slot for menu item content                     |
+| `expand-collapse-indicator` | The expand/collapse indicator                              |
+| `submenu`                   | Used to nest menu's within menu items                      |
 
 <hr/>
 

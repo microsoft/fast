@@ -3,6 +3,7 @@ id: avatar
 title: fast-avatar
 sidebar_label: avatar
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/avatar/README.md
+description: fast-avatar is a web component used to graphically represent a user or an object.
 ---
 
 The `fast-avatar` component is used to graphically represent a user or an object.
@@ -157,6 +158,23 @@ This component is built with the expectation that focus is delegated to the anch
 | `color` | color |                |
 | `link`  | link  |                |
 | `shape` | shape |                |
+
+#### CSS Parts
+
+| Name        | Description                           |
+| ----------- | ------------------------------------- |
+| `backplate` | The wrapping container for the avatar |
+| `link`      | The avatar link                       |
+| `media`     | The media slot                        |
+| `content`   | The default slot                      |
+
+#### Slots
+
+| Name    | Description                                                   |
+| ------- | ------------------------------------------------------------- |
+| `media` | Used for media such as an image                               |
+|         | The default slot for avatar text, commonly a name or initials |
+| `badge` | Used to provide a badge, such as a status badge               |
 
 <hr/>
 

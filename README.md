@@ -34,7 +34,6 @@ FAST is a collection of technologies built on Web Components and modern Web Stan
 
 * Create reusable UI components based on web component standards.
 * Use our standard library of pre-built web components in your apps.
-* Choose between two *adaptive* design systems: Fluent Design and FAST Frame.
 * Build your own design system without re-implementing component logic.
 * Integrate with any front-end framework or build system.
 
@@ -58,13 +57,6 @@ The `@microsoft/fast-foundation` package is a library of Web Component classes, 
 
 This package does not export Web Components registered as [custom elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) - it exports parts and pieces intended to be *composed* into Web Components, allowing you to implement your own design language by simply applying CSS styles and behaviors without having to write all the JavaScript that's involved in building production-quality component implementations.
 
-### `@microsoft/fast-components`
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
-
-`@microsoft/fast-components` is a library of Web Components that *composes* the exports of `@microsoft/fast-foundation` with stylesheets aligning to the FAST Frame design system. This composition step registers a custom element. See the [quick start](https://fast.design/docs/components/getting-started) to get started using the components.
-
 ### `@fluentui/web-components`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -74,16 +66,10 @@ This package does not export Web Components registered as [custom elements](http
 
 The source for `@fluentui/web-components` is hosted in [the Fluent UI monorepo](https://github.com/microsoft/fluentui/tree/master/packages/web-components).
 
-### Component Explorer
-
-Launch our [Component Explorer](https://explore.fast.design) to experience our [FAST Components](https://www.npmjs.com/package/@microsoft/fast-components) and development tools.
-
 ## Getting Started
 
 We hope you're excited by the possibilities that FAST presents. But, you may be wondering where to start. Here are a few statements that describe various members of our community. We recommend that you pick the statement you most identify with and follow the links where they lead. You can always come back and explore another topic at any time.
 
-* "I just want ready-made components!"
-  * [Jump to the component docs.](https://fast.design/docs/components/getting-started)
 * "I want to build my own design system."
   * [Jump to the design system docs.](https://fast.design/docs/design-systems/overview)
 * "I want to build my own components."

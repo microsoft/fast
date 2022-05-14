@@ -3,6 +3,7 @@ id: radio-group
 title: fast-radio-group
 sidebar_label: radio-group
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/radio-group/README.md
+description: fast-radio-group is a web component implementation of a radio-group.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#radiobutton):
@@ -85,6 +86,12 @@ export const myRadioGroup = RadioGroup.compose({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                          | Inherited From |
+| -------- | ---- | ---------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the value changes |                |
+
 #### Attributes
 
 | Name          | Field       | Inherited From |
@@ -94,6 +101,19 @@ export const myRadioGroup = RadioGroup.compose({
 | `name`        | name        |                |
 | `value`       | value       |                |
 | `orientation` | orientation |                |
+
+#### CSS Parts
+
+| Name                 | Description                                      |
+| -------------------- | ------------------------------------------------ |
+| `positioning-region` | The positioning region for laying out the radios |
+
+#### Slots
+
+| Name    | Description                        |
+| ------- | ---------------------------------- |
+| `label` | The slot for the label             |
+|         | The default slot for radio buttons |
 
 <hr/>
 

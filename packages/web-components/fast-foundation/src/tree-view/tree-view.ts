@@ -17,6 +17,8 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  * A Tree view Custom HTML Element.
  * Implements the {@link https://w3c.github.io/aria-practices/#TreeView | ARIA TreeView }.
  *
+ * @slot - The default slot for tree items
+ *
  * @public
  */
 export class TreeView extends FoundationElement {
@@ -147,16 +149,32 @@ export class TreeView extends FoundationElement {
             case keyArrowLeft:
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     const item = e.target as HTMLElement;
-                    if (item instanceof TreeItem && item.childItemLength() > 0) {
+
+                    if (
+                        item instanceof TreeItem &&
+                        item.childItemLength() > 0 &&
+                        item.expanded
+                    ) {
                         item.expanded = false;
+                    } else if (
+                        item instanceof TreeItem &&
+                        item.parentElement instanceof TreeItem
+                    ) {
+                        TreeItem.focusItem(item.parentElement);
                     }
                 }
                 return false;
             case keyArrowRight:
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     const item = e.target as HTMLElement;
-                    if (item instanceof TreeItem && item.childItemLength() > 0) {
+                    if (
+                        item instanceof TreeItem &&
+                        item.childItemLength() > 0 &&
+                        !item.expanded
+                    ) {
                         item.expanded = true;
+                    } else if (item instanceof TreeItem && item.childItemLength() > 0) {
+                        this.focusNextNode(1, e.target as TreeItem);
                     }
                 }
                 return;

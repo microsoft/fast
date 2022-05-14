@@ -3,6 +3,7 @@ id: button
 title: fast-button
 sidebar_label: button
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/button/README.md
+description: fast-button is a web component implementation of a button element.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#button):
@@ -104,6 +105,21 @@ This component is built with the expectation that focus is delegated to the butt
 |               | formnovalidate |                |
 | `formtarget`  | formtarget     |                |
 | `type`        | type           |                |
+
+#### CSS Parts
+
+| Name      | Description                         |
+| --------- | ----------------------------------- |
+| `control` | The button element                  |
+| `content` | The element wrapping button content |
+
+#### Slots
+
+| Name    | Description                                             |
+| ------- | ------------------------------------------------------- |
+| `start` | Content which can be provided before the button content |
+| `end`   | Content which can be provided after the button content  |
+|         | The default slot for button content                     |
 
 <hr/>
 
