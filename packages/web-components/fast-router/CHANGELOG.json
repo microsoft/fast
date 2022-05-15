@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Sun, 15 May 2022 07:08:25 GMT",
+      "tag": "@microsoft/fast-router_v0.4.1",
+      "version": "0.4.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix url path for npm version badge on README.md",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f43629c7b3065a95ec05bf6186c851496d5320ec",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 08 May 2022 07:08:18 GMT",
       "tag": "@microsoft/fast-router_v0.4.1",
       "version": "0.4.1",

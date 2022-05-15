@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "fix url path for npm version badge on README.md",
-  "packageName": "@microsoft/fast-router",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
