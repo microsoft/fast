@@ -217,7 +217,7 @@ export class ListboxOption extends FoundationElement {
         Observable.notify(this, "value");
     }
 
-    public get value(): string {
+    public get value(): string | unknown {
         Observable.track(this, "value");
         return this._value ?? this.text;
     }
