@@ -13,9 +13,19 @@ import {
 import { TemplateRenderer } from "./template-renderer.js";
 
 /**
- * Describes an implementation that can render a directive
+ * Describes an implementation that can render a directive.
+ *
+ * @beta
  */
 export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
+    /**
+     * Renders a ViewBehaviorFactory
+     * @param behavior - The behavior to render
+     * @param renderInfo - The current RenderInfo context
+     * @param source - Source data
+     * @param renderer - The current TemplateRenderer
+     * @param context - The ExecutionContext
+     */
     render(
         behavior: T,
         renderInfo: RenderInfo,
@@ -23,6 +33,10 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
         renderer: TemplateRenderer,
         context: ExecutionContext
     ): IterableIterator<string>;
+
+    /**
+     * The behavior constructor to use this renderer for.
+     */
     matcher: Constructable<T>;
 }
 
