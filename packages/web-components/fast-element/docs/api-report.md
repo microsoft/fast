@@ -44,11 +44,16 @@ export const Aspect: Readonly<{
 
 // @public
 export interface Aspected {
-    aspectType: number;
+    aspectType: AspectType;
     binding?: Binding;
     sourceAspect: string;
     targetAspect: string;
 }
+
+// @public
+export type AspectType = Exclude<{
+    [K in keyof typeof Aspect]: typeof Aspect[K] extends number ? typeof Aspect[K] : never;
+}[keyof typeof Aspect], typeof Aspect.none>;
 
 // @public
 export function attr(config?: DecoratorAttributeConfiguration): (target: {}, property: string) => void;
@@ -92,27 +97,33 @@ export interface Behavior<TSource = any, TParent = any, TContext extends Executi
     unbind(source: TSource, context: TContext): void;
 }
 
-// @alpha (undocumented)
-export function bind<T = any>(binding: Binding<T>, config?: BindingConfig<T> | DefaultBindingOptions): CaptureType<T>;
+// @public
+export function bind<T = any>(binding: Binding<T>, config?: BindingConfig | DefaultBindingOptions): CaptureType<T>;
 
 // @public
 export type Binding<TSource = any, TReturn = any, TContext extends ExecutionContext = ExecutionContext> = (source: TSource, context: TContext) => TReturn;
 
-// @alpha (undocumented)
-export type BindingBehaviorFactory = {
-    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
-};
-
-// @alpha (undocumented)
+// @public
 export interface BindingConfig<T = any> {
-    // (undocumented)
     mode: BindingMode;
-    // (undocumented)
-    options: any;
+    options: T;
 }
 
-// @alpha (undocumented)
-export type BindingMode = Record<number, BindingType>;
+// @public
+export const BindingConfig: Readonly<{
+    define<T>(mode: BindingMode, defaultOptions: T): BindingConfig<T> & BindingConfigResolver<T>;
+}>;
+
+// @public
+export type BindingConfigResolver<T> = (options: T) => BindingConfig<T>;
+
+// @public
+export type BindingMode = Record<AspectType, (directive: HTMLBindingDirective) => Pick<ViewBehaviorFactory, "createBehavior">>;
+
+// @public
+export const BindingMode: Readonly<{
+    define(UpdateType: typeof UpdateBinding, EventType?: typeof EventBinding): BindingMode;
+}>;
 
 // @public
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
@@ -120,11 +131,6 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any> ex
     observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
     records(): IterableIterator<ObservationRecord>;
 }
-
-// Warning: (ae-forgotten-export) The symbol "HTMLBindingDirective" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export type BindingType = (directive: HTMLBindingDirective) => BindingBehaviorFactory;
 
 // @public
 export const booleanConverter: ValueConverter;
@@ -136,6 +142,15 @@ export type Callable = typeof Function.prototype.call | {
 
 // @public
 export interface CaptureType<TSource> {
+}
+
+// @public
+export class ChangeBinding extends UpdateBinding {
+    constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget);
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    // @internal (undocumented)
+    handleChange(binding: Binding, observer: BindingObserver): void;
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
 }
 
 // @public
@@ -266,10 +281,8 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
-// @alpha (undocumented)
-export type DefaultBindingOptions = {
-    capture?: boolean;
-};
+// @public
+export type DefaultBindingOptions = AddEventListenerOptions;
 
 // @public
 export const DOM: Readonly<{
@@ -327,6 +340,18 @@ export const emptyArray: readonly never[];
 
 // @public
 export function enableArrayObservation(): void;
+
+// @public
+export class EventBinding {
+    constructor(directive: HTMLBindingDirective);
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
+    // (undocumented)
+    readonly directive: HTMLBindingDirective;
+    // @internal (undocumented)
+    handleEvent(event: Event): void;
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+}
 
 // @public
 export const ExecutionContext: Readonly<{
@@ -394,6 +419,24 @@ export interface FASTGlobal {
 
 // @public
 export function html<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent, TContext>[]): ViewTemplate<TSource, TParent>;
+
+// @public
+export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, Aspected {
+    constructor(binding: Binding, mode: BindingMode, options: any);
+    aspectType: AspectType;
+    // (undocumented)
+    binding: Binding;
+    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
+    createHTML(add: AddViewBehaviorFactory): string;
+    id: string;
+    // (undocumented)
+    mode: BindingMode;
+    nodeId: string;
+    // (undocumented)
+    options: any;
+    sourceAspect: string;
+    targetAspect: string;
+}
 
 // @public
 export interface HTMLDirective {
@@ -528,13 +571,16 @@ export interface ObservationRecord {
     propertySource: any;
 }
 
-// Warning: (ae-forgotten-export) The symbol "BindingConfigResolver" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export const onChange: BindingConfig<DefaultBindingOptions> & BindingConfigResolver<DefaultBindingOptions>;
+// @public
+export const onChange: BindingConfig<AddEventListenerOptions> & BindingConfigResolver<AddEventListenerOptions>;
 
-// @alpha (undocumented)
-export const oneTime: BindingConfig<DefaultBindingOptions> & BindingConfigResolver<DefaultBindingOptions>;
+// @public
+export const oneTime: BindingConfig<AddEventListenerOptions> & BindingConfigResolver<AddEventListenerOptions>;
+
+// @public
+export class OneTimeBinding extends UpdateBinding {
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+}
 
 // @public
 export const Parser: Readonly<{
@@ -647,6 +693,16 @@ export interface RootContext {
     readonly event: Event;
     eventDetail<TDetail = any>(): TDetail;
     eventTarget<TTarget extends EventTarget = EventTarget>(): TTarget;
+}
+
+// @public
+export const signal: <T = any>(options: string | Binding<T, any, ExecutionContext<any>>) => BindingConfig<string | Binding<T, any, ExecutionContext<any>>>;
+
+// @public
+export class SignalBinding extends UpdateBinding {
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    static send(signal: string): void;
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
 }
 
 // @public
@@ -778,6 +834,18 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
 }
 
 // @public
+export class UpdateBinding implements ViewBehavior {
+    constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget);
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
+    // (undocumented)
+    readonly directive: HTMLBindingDirective;
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    // (undocumented)
+    protected updateTarget: UpdateTarget;
+}
+
+// @public
 export interface UpdateQueue {
     enqueue(callable: Callable): void;
     next(): Promise<void>;
@@ -787,6 +855,14 @@ export interface UpdateQueue {
 
 // @public
 export const Updates: UpdateQueue;
+
+// @public
+export type UpdateTarget = (this: UpdateTargetThis, target: Node, aspect: string, value: any, source: any, context: ExecutionContext) => void;
+
+// @public
+export interface UpdateTargetThis {
+    directive: HTMLBindingDirective;
+}
 
 // @public
 export interface ValueConverter {
