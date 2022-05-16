@@ -59,17 +59,12 @@ export const BindingMode = Object.freeze({
         EventType: typeof EventBinding = EventBinding
     ): BindingMode {
         return Object.freeze({
-            [Aspect.attribute]: d => new UpdateType(d, DOM.setAttribute),
-            [Aspect.booleanAttribute]: d => new UpdateType(d, DOM.setBooleanAttribute),
-            [Aspect.property]: d => new UpdateType(d, (t, a, v) => (t[a] = v)),
-            [Aspect.content]: d =>
-                new (createContentBinding(UpdateType))(d, updateContentTarget),
-            [Aspect.tokenList]: d => new UpdateType(d, updateTokenListTarget),
-            [Aspect.event]: EventType
-                ? d => new EventType(d)
-                : () => {
-                      throw new Error();
-                  },
+            [1]: d => new UpdateType(d, DOM.setAttribute),
+            [2]: d => new UpdateType(d, DOM.setBooleanAttribute),
+            [3]: d => new UpdateType(d, (t, a, v) => (t[a] = v)),
+            [4]: d => new (createContentBinding(UpdateType))(d, updateContentTarget),
+            [5]: d => new UpdateType(d, updateTokenListTarget),
+            [6]: d => new EventType(d),
         });
     },
 });
