@@ -17,7 +17,6 @@ jobs:
             - uses: actions/checkout@v2
               with:
                   fetch-depth: 0
-
             - name: Get yarn cache directory path
               id: yarn-cache-dir-path
               run: echo '::set-output name=dir::$(yarn cache dir)'
@@ -35,13 +34,6 @@ jobs:
                       ${{ runner.os }}-yarn-
             - name: Install package dependencies
               run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
-
-            - name: Check for the presence of changed files inside ./change
-              run: yarn checkchange
-
-            - name: Testing Prettier format
-              run: yarn format:check
-
             - name: Prepare workspaces
               run: yarn prepare
 
@@ -54,10 +46,12 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                   node-version: "16.x"
+            - run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
             # Run benchmarks. Ensure each job's results file has a unique name
             - name: Run tachometer
               run: |
                   cd packages/utilities/fast-benchmarks
+                  yarn install
                   yarn run benchmark:fast-element:create10k
 
             # Upload this benchmarks results
@@ -79,6 +73,7 @@ jobs:
             - name: Run tachometer and generate results file
               run: |
                   cd packages/utilities/fast-benchmarks
+                  yarn install
                   yarn run benchmark:fast-element:update10th
 
             # Upload this benchmarks results
