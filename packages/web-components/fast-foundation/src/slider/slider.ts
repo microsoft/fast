@@ -315,6 +315,10 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     }
 
     protected keypressHandler = (e: KeyboardEvent) => {
+        if(this.readOnly) {
+            return;
+        }
+        
         if (e.key === keyHome) {
             e.preventDefault();
             this.value = `${this.min}`;
