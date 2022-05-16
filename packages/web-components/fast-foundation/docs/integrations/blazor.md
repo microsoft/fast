@@ -59,7 +59,9 @@ node_modules/@fluentui/web-components/dist/web-components.min.js
 Copy this to your `wwwroot/script` folder and reference it with a script tag as described above.
 
 :::note
+
 If you are setting up Fluent UI Web Components on a Blazor Server project, you will need to escape the `@` character by repeating it in the source link. For more information check out the [Razor Pages syntax documentation](https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-6.0).
+
 :::
 
 ### Using the FluentUI Web Components
@@ -81,9 +83,11 @@ Here's a small example of a `FluentCard` with a `FluentButton` that uses the Flu
 </FluentCard>
 ```
 
-> :bulb: **Tip**
-> 
-> You can add `@using Microsoft.Fast.Components.FluentUI` to the namespace collection in `_Imports.razor`, so that you can avoid repeating it in every single razor page.
+:::tip
+ 
+You can add `@using Microsoft.Fast.Components.FluentUI` to the namespace collection in `_Imports.razor`, so that you can avoid repeating it in every single razor page.
+ 
+:::
 
 If you are using the .NET CLI, you can run your project with the following command from the project folder:
 
@@ -162,9 +166,11 @@ As can be seen in the code above (with the `ref4.Element`), it is posible to app
 
 For Design Tokens that work with a color value, it is needed to add the `ToColor()` extension method on the string value. This converts the string into a RGB value that the Design Token can operate with. Internally we are using the `System.Drawing.Color` struct for this and this means you can use all the available methods, operators, etc from that namespace in your code too.
 
-> :notebook: **Note**
-> 
-> The Design Tokens are manipulated through JavaScript interop working with an `ElementReference`. There is no JavaScript element until after the component is rendered. This means you can only work with the Design Tokens from code after the component has been rendered in `OnAfterRenderAsync` and not in any earlier lifecycle methods. 
+:::important
+
+The Design Tokens are manipulated through JavaScript interop working with an `ElementReference`. There is no JavaScript element until after the component is rendered. This means you can only work with the Design Tokens from code after the component has been rendered in `OnAfterRenderAsync` and not in any earlier lifecycle methods. 
+
+:::
 
 #### Option 2: Using Design Tokens as components
 The Design Tokens can also be used as components in a `.razor` page directely. It looks like this:
@@ -185,9 +191,11 @@ The Design Tokens can also be used as components in a `.razor` page directely. I
 
 To make this work, a link needs to be created between the Design Token component and its child components. This is done with the `BackReference="@context"` construct. 
 
-> :notebook: **Note**
-> 
-> Only one Design Token component at a time can be used this way. If you need to set more tokens, use the code approach as described in Option 1 above.
+:::note
+ 
+Only one Design Token component at a time can be used this way. If you need to set more tokens, use the code approach as described in Option 1 above.
+
+:::
 
 
 #### Option 3: Using the `<FluentDesignSystemProvider>`
@@ -212,7 +220,9 @@ Here's an example of changing the "accent base color" and switching the system i
 ```
 
 :::note
+
 Provider token attributes can be changed on-the-fly like any other Blazor component attribute.
+
 :::
 
 #### Colors for integration with specific Microsoft products
