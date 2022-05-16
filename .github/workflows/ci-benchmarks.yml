@@ -54,12 +54,12 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                 node-version: '16.x'
-            - run: npm ci
+            - run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
             # Run benchmarks. Ensure each job's results file has a unique name
             - name: Run tachometer
               run: |
                   cd packages/utilities/fast-benchmarks
-                  npm run benchmark:fast-element:create10k
+                  yarn run benchmark:fast-element:create10k
 
             # Upload this benchmarks results
             - name: Upload results
@@ -77,11 +77,11 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                 node-version: '16.x'
-            - run: npm ci
+            - run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
             - name: Run tachometer and generate results file
               run: |
                   cd packages/utilities/fast-benchmarks
-                  npm run benchmark:fast-element:update10th
+                  yarn run benchmark:fast-element:update10th
 
             # Upload this benchmarks results
             - name: Upload results
