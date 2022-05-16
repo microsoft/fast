@@ -122,7 +122,12 @@ export const BindingConfig: Readonly<{
 }>;
 
 // @alpha (undocumented)
-export type BindingMode = Record<AspectType, BindingType>;
+export type BindingConfigResolver<T> = (options: T) => BindingConfig<T>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "BindingMode" is marked as @alpha, but its signature references "HTMLBindingDirective" which is marked as @internal
+//
+// @alpha (undocumented)
+export type BindingMode = Record<AspectType, (directive: HTMLBindingDirective) => BindingBehaviorFactory>;
 
 // @alpha (undocumented)
 export const BindingMode: Readonly<{
@@ -136,11 +141,6 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any> ex
     records(): IterableIterator<ObservationRecord>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "HTMLBindingDirective" needs to be exported by the entry point index.d.ts
-//
-// @alpha (undocumented)
-export type BindingType = (directive: HTMLBindingDirective) => BindingBehaviorFactory;
-
 // @public
 export const booleanConverter: ValueConverter;
 
@@ -151,6 +151,18 @@ export type Callable = typeof Function.prototype.call | {
 
 // @public
 export interface CaptureType<TSource> {
+}
+
+// @alpha (undocumented)
+export class ChangeBinding extends UpdateBinding {
+    // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @alpha, but its signature references "HTMLBindingDirective" which is marked as @internal
+    constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget);
+    // (undocumented)
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    // @internal (undocumented)
+    handleChange(binding: Binding, observer: BindingObserver): void;
+    // (undocumented)
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
 }
 
 // @public
@@ -343,6 +355,28 @@ export const emptyArray: readonly never[];
 // @public
 export function enableArrayObservation(): void;
 
+// @alpha (undocumented)
+export class EventBinding {
+    // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @alpha, but its signature references "HTMLBindingDirective" which is marked as @internal
+    constructor(directive: HTMLBindingDirective);
+    // (undocumented)
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    // (undocumented)
+    createBehavior(): ViewBehavior;
+    // Warning: (ae-incompatible-release-tags) The symbol "directive" is marked as @alpha, but its signature references "HTMLBindingDirective" which is marked as @internal
+    //
+    // (undocumented)
+    readonly directive: HTMLBindingDirective;
+    // (undocumented)
+    handleEvent(event: Event): void;
+    // Warning: (ae-forgotten-export) The symbol "FASTEventSource" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    protected removeEventListener(target: FASTEventSource): void;
+    // (undocumented)
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+}
+
 // @public
 export const ExecutionContext: Readonly<{
     default: RootContext;
@@ -409,6 +443,33 @@ export interface FASTGlobal {
 
 // @public
 export function html<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent, TContext>[]): ViewTemplate<TSource, TParent>;
+
+// Warning: (ae-internal-missing-underscore) The name "HTMLBindingDirective" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, Aspected {
+    constructor(binding: Binding, mode: BindingMode, options: any);
+    // (undocumented)
+    aspectType: AspectType;
+    // (undocumented)
+    binding: Binding;
+    // (undocumented)
+    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
+    // (undocumented)
+    createHTML(add: AddViewBehaviorFactory): string;
+    // (undocumented)
+    id: string;
+    // (undocumented)
+    mode: BindingMode;
+    // (undocumented)
+    nodeId: string;
+    // (undocumented)
+    options: any;
+    // (undocumented)
+    sourceAspect: string;
+    // (undocumented)
+    targetAspect: string;
+}
 
 // @public
 export interface HTMLDirective {
@@ -549,6 +610,18 @@ export const onChange: BindingConfig<DefaultBindingOptions> & BindingConfigResol
 // @alpha (undocumented)
 export const oneTime: BindingConfig<DefaultBindingOptions> & BindingConfigResolver<DefaultBindingOptions>;
 
+// @alpha (undocumented)
+export class OneTimeBinding extends UpdateBinding {
+    // (undocumented)
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+}
+
+// @alpha (undocumented)
+export class OneTimeEventBinding extends EventBinding {
+    // (undocumented)
+    handleEvent(event: Event): void;
+}
+
 // @public
 export const Parser: Readonly<{
     parse(value: string, factories: Record<string, ViewBehaviorFactory>): (string | ViewBehaviorFactory)[] | null;
@@ -660,6 +733,20 @@ export interface RootContext {
     readonly event: Event;
     eventDetail<TDetail = any>(): TDetail;
     eventTarget<TTarget extends EventTarget = EventTarget>(): TTarget;
+}
+
+// @alpha (undocumented)
+export function sendSignal(signal: string): void;
+
+// @alpha (undocumented)
+export const signal: <T = any>(options: string | Binding<T, any, ExecutionContext<any>>) => BindingConfig<T>;
+
+// @alpha (undocumented)
+export class SignalBinding extends UpdateBinding {
+    // (undocumented)
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    // (undocumented)
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
 }
 
 // @public
@@ -790,6 +877,24 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
     register(definition: TDefinition): boolean;
 }
 
+// @alpha (undocumented)
+export class UpdateBinding {
+    // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @alpha, but its signature references "HTMLBindingDirective" which is marked as @internal
+    constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget);
+    // (undocumented)
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    // (undocumented)
+    createBehavior(): ViewBehavior;
+    // Warning: (ae-incompatible-release-tags) The symbol "directive" is marked as @alpha, but its signature references "HTMLBindingDirective" which is marked as @internal
+    //
+    // (undocumented)
+    readonly directive: HTMLBindingDirective;
+    // (undocumented)
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    // (undocumented)
+    protected updateTarget: UpdateTarget;
+}
+
 // @public
 export interface UpdateQueue {
     enqueue(callable: Callable): void;
@@ -800,6 +905,17 @@ export interface UpdateQueue {
 
 // @public
 export const Updates: UpdateQueue;
+
+// @alpha (undocumented)
+export type UpdateTarget = (this: UpdateTargetThis, target: any, aspect: string, value: any, source: any, context: ExecutionContext) => void;
+
+// @alpha (undocumented)
+export interface UpdateTargetThis {
+    // Warning: (ae-incompatible-release-tags) The symbol "directive" is marked as @alpha, but its signature references "HTMLBindingDirective" which is marked as @internal
+    //
+    // (undocumented)
+    directive: HTMLBindingDirective;
+}
 
 // @public
 export interface ValueConverter {
@@ -849,12 +965,6 @@ export function volatile(target: {}, name: string | Accessor, descriptor: Proper
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
-
-// Warnings were encountered during analysis:
-//
-// dist/dts/templating/binding.d.ts:22:5 - (ae-forgotten-export) The symbol "UpdateBinding" needs to be exported by the entry point index.d.ts
-// dist/dts/templating/binding.d.ts:22:5 - (ae-forgotten-export) The symbol "EventBinding" needs to be exported by the entry point index.d.ts
-// dist/dts/templating/binding.d.ts:39:5 - (ae-forgotten-export) The symbol "BindingConfigResolver" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -39,23 +39,10 @@ const createInnerHTMLBinding = globalThis.TrustedHTML
 /**
  * @alpha
  */
-export type BindingBehaviorFactory = {
-    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
-};
-
-/**
- * @alpha
- */
-export type BindingType = (directive: HTMLBindingDirective) => BindingBehaviorFactory;
-
-function createType(bindingType: typeof UpdateBinding, updateTarget: UpdateTarget) {
-    return directive => new bindingType(directive, updateTarget);
-}
-
-/**
- * @alpha
- */
-export type BindingMode = Record<AspectType, BindingType>;
+export type BindingMode = Record<
+    AspectType,
+    (directive: HTMLBindingDirective) => Pick<ViewBehaviorFactory, "createBehavior">
+>;
 
 /**
  * @alpha
@@ -66,16 +53,14 @@ export const BindingMode = Object.freeze({
         eventType?: typeof EventBinding
     ): BindingMode {
         return Object.freeze({
-            [Aspect.attribute]: createType(updateType, DOM.setAttribute),
-            [Aspect.booleanAttribute]: createType(updateType, DOM.setBooleanAttribute),
-            [Aspect.property]: createType(updateType, (t, a, v) => (t[a] = v)),
-            [Aspect.content]: createType(
-                createContentBinding(updateType),
-                updateContentTarget
-            ),
-            [Aspect.tokenList]: createType(updateType, updateTokenListTarget),
+            [Aspect.attribute]: d => new updateType(d, DOM.setAttribute),
+            [Aspect.booleanAttribute]: d => new updateType(d, DOM.setBooleanAttribute),
+            [Aspect.property]: d => new updateType(d, (t, a, v) => (t[a] = v)),
+            [Aspect.content]: d =>
+                new (createContentBinding(updateType))(d, updateContentTarget),
+            [Aspect.tokenList]: d => new updateType(d, updateTokenListTarget),
             [Aspect.event]: eventType
-                ? directive => new eventType(directive)
+                ? d => new eventType(d)
                 : () => {
                       throw new Error();
                   },
@@ -120,11 +105,17 @@ export const BindingConfig = Object.freeze({
     },
 });
 
-interface UpdateTargetThis {
+/**
+ * @alpha
+ */
+export interface UpdateTargetThis {
     directive: HTMLBindingDirective;
 }
 
-type UpdateTarget = (
+/**
+ * @alpha
+ */
+export type UpdateTarget = (
     this: UpdateTargetThis,
     target,
     aspect: string,
@@ -133,7 +124,10 @@ type UpdateTarget = (
     context: ExecutionContext
 ) => void;
 
-class UpdateBinding {
+/**
+ * @alpha
+ */
+export class UpdateBinding implements ViewBehavior {
     constructor(
         public readonly directive: HTMLBindingDirective,
         protected updateTarget: UpdateTarget
@@ -298,12 +292,14 @@ function updateTokenListTarget(
     }
 }
 
-class OneTimeBinding extends UpdateBinding {
+/**
+ * @alpha
+ */
+export class OneTimeBinding extends UpdateBinding {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const directive = this.directive;
-        const target = targets[directive.nodeId];
         this.updateTarget(
-            target,
+            targets[directive.nodeId],
             directive.targetAspect,
             directive.binding(source, context),
             source,
@@ -324,7 +320,10 @@ export function sendSignal(signal: string): void {
     }
 }
 
-class SignalBinding extends UpdateBinding {
+/**
+ * @alpha
+ */
+export class SignalBinding extends UpdateBinding {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const directive = this.directive;
         const target = targets[directive.nodeId];
@@ -375,7 +374,10 @@ class SignalBinding extends UpdateBinding {
     }
 }
 
-class ChangeBinding extends UpdateBinding {
+/**
+ * @alpha
+ */
+export class ChangeBinding extends UpdateBinding {
     private isBindingVolatile: boolean;
 
     constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget) {
@@ -436,7 +438,10 @@ type FASTEventSource = Node & {
     $fastContext: ExecutionContext | null;
 };
 
-class EventBinding {
+/**
+ * @alpha
+ */
+export class EventBinding {
     constructor(public readonly directive: HTMLBindingDirective) {}
 
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
@@ -480,7 +485,10 @@ class EventBinding {
     }
 }
 
-class OneTimeEventBinding extends EventBinding {
+/**
+ * @alpha
+ */
+export class OneTimeEventBinding extends EventBinding {
     handleEvent(event: Event): void {
         super.handleEvent(event);
         this.removeEventListener(event.currentTarget as FASTEventSource);
@@ -524,11 +532,11 @@ export const signal = <T = any>(options: string | Binding<T>): BindingConfig<T> 
 };
 
 /**
- * @internal
+ * @alpha
  */
 export class HTMLBindingDirective
     implements HTMLDirective, ViewBehaviorFactory, Aspected {
-    private factory: BindingBehaviorFactory | null = null;
+    private factory: Pick<ViewBehaviorFactory, "createBehavior"> | null = null;
 
     id: string;
     nodeId: string;

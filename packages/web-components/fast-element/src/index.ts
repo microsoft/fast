@@ -29,16 +29,7 @@ export * from "./templating/dom.js";
 export * from "./templating/template.js";
 export * from "./templating/compiler.js";
 export { Markup, Parser } from "./templating/markup.js";
-export {
-    bind,
-    oneTime,
-    onChange,
-    BindingConfig,
-    BindingMode,
-    BindingType,
-    BindingBehaviorFactory,
-    DefaultBindingOptions,
-} from "./templating/binding.js";
+export * from "./templating/binding.js";
 export * from "./templating/html-directive.js";
 export * from "./templating/ref.js";
 export * from "./templating/when.js";
