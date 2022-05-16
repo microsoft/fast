@@ -54,7 +54,6 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                   node-version: "16.x"
-            - run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
             # Run benchmarks. Ensure each job's results file has a unique name
             - name: Run tachometer
               run: |
@@ -77,7 +76,6 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                   node-version: "16.x"
-            - run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
             - name: Run tachometer and generate results file
               run: |
                   cd packages/utilities/fast-benchmarks
