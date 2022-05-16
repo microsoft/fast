@@ -13,7 +13,7 @@ import { data, RandomItem } from "../../../utils/index.js";
     name: "x-item",
     template: html<XItem>`
         <div @click="${x => x.onClick}" class="item">
-            ${x => x.value}
+            ${(x: XItem) => x.value}
         </div>
     `,
     styles: css`
@@ -36,7 +36,7 @@ class XItem extends FASTElement {
             ${repeat(
                 x => x.items,
                 html`
-                    <x-item :value="${x => x.label}"></x-item>
+                    <x-item :value="${(x: RandomItem) => x.label}"></x-item>
                 `
             )}
         </div>

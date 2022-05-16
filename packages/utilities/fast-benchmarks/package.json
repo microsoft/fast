@@ -1,27 +1,28 @@
 {
     "name": "fast-benchmarks",
     "version": "1.0.0",
-    "description": "",
+    "description": "utility library benchmarking for FAST libraries",
     "type": "module",
     "scripts": {
         "build": "tsc && tsc --build",
         "benchmark": "node scripts/index.js",
         "help": "node ./scripts/index.js --help",
-        "benchmark:binding": "tach --config benchmarks/fast-element/binding/tachometer.json",
-        "debug:binding": "tach --config fast-element/binding/tachometer.json --manual"
+        "benchmark:binding": "tach --config examples/fast-element/binding/tachometer.json",
+        "debug:binding": "tach --config fast-element/binding/tachometer.json --manual",
+        "benchmark:fast-element:create10k": "yarn run benchmark --library=fast-element --benchmark=test --versions 1.6.0 1.10.1 --operations=create10k",
+        "benchmark:fast-element:update10th": "yarn run benchmark --library=fast-element --benchmark=test --versions 1.6.0 1.10.1 --operations=update10th"
     },
     "author": "Microsoft",
     "license": "ISC",
     "dependencies": {
-        "@microsoft/fast-element": "file:../../web-components/fast-element",
-        "@microsoft/fast-foundation": "^2.45.0",
+        "@microsoft/fast-element": "1.10.1",
         "tachometer": "^0.5.10"
     },
     "devDependencies": {
         "chalk": "^5.0.1",
-        "chromedriver": "^99.0.0",
+        "chromedriver": "^101.0.0",
         "commander": "^9.2.0",
         "cross-spawn": "^7.0.3",
-        "typescript": "^4.3.5"
+        "typescript": "^4.6.2"
     }
 }
