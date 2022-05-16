@@ -45,7 +45,7 @@ jobs:
         cd packages/utilities/fast-benchmarks
         npm run benchmark:fast-element:create10k
     - name: report results
-      uses: actions/upload-artifact@v2
+      uses: andrewiggins/tachometer-reporter-action@v2
       with:
         name: results
         path: packages/utilities/fast-benchmarks/results/result.json
