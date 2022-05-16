@@ -163,37 +163,37 @@ export const Aspect = Object.freeze({
     /**
      * Not aspected.
      */
-    none: 0,
+    none: 0 as const,
 
     /**
      * An attribute.
      */
-    attribute: 1,
+    attribute: 1 as const,
 
     /**
      * A boolean attribute.
      */
-    booleanAttribute: 2,
+    booleanAttribute: 2 as const,
 
     /**
      * A property.
      */
-    property: 3,
+    property: 3 as const,
 
     /**
      * Content
      */
-    content: 4,
+    content: 4 as const,
 
     /**
      * A token list.
      */
-    tokenList: 5,
+    tokenList: 5 as const,
 
     /**
      * An event.
      */
-    event: 6,
+    event: 6 as const,
 
     /**
      *
@@ -244,6 +244,19 @@ export const Aspect = Object.freeze({
 });
 
 /**
+ * Valid aspect type values.
+ * @public
+ */
+export type AspectType = Exclude<
+    {
+        [K in keyof typeof Aspect]: typeof Aspect[K] extends number
+            ? typeof Aspect[K]
+            : never;
+    }[keyof typeof Aspect],
+    typeof Aspect.none
+>;
+
+/**
  * Represents something that applies to a specific aspect of the DOM.
  * @public
  */
@@ -261,7 +274,7 @@ export interface Aspected {
     /**
      * The type of aspect to target.
      */
-    aspectType: number;
+    aspectType: AspectType;
 
     /**
      * A binding if one is associated with the aspect.
