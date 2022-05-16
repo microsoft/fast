@@ -11,6 +11,7 @@ import {
     AddViewBehaviorFactory,
     Aspect,
     Aspected,
+    AspectType,
     HTMLDirective,
     ViewBehavior,
     ViewBehaviorFactory,
@@ -44,7 +45,7 @@ export const notSupportedBindingType: BindingType = () => {
 /**
  * @alpha
  */
-export type BindingMode = Record<number, BindingType>;
+export type BindingMode = Record<AspectType, BindingType>;
 
 /**
  * @alpha
@@ -518,11 +519,9 @@ export class HTMLBindingDirective
     nodeId: string;
     sourceAspect: string;
     targetAspect: string;
-    aspectType: number;
+    aspectType: AspectType = Aspect.content;
 
-    constructor(public binding: Binding, public mode: BindingMode, public options: any) {
-        this.aspectType = Aspect.content;
-    }
+    constructor(public binding: Binding, public mode: BindingMode, public options: any) {}
 
     createHTML(add: AddViewBehaviorFactory): string {
         return Markup.interpolation(add(this));

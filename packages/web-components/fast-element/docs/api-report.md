@@ -44,11 +44,16 @@ export const Aspect: Readonly<{
 
 // @public
 export interface Aspected {
-    aspectType: number;
+    aspectType: AspectType;
     binding?: Binding;
     sourceAspect: string;
     targetAspect: string;
 }
+
+// @public
+export type AspectType = Exclude<{
+    [K in keyof typeof Aspect]: typeof Aspect[K] extends number ? typeof Aspect[K] : never;
+}[keyof typeof Aspect], typeof Aspect.none>;
 
 // @public
 export function attr(config?: DecoratorAttributeConfiguration): (target: {}, property: string) => void;
@@ -112,7 +117,7 @@ export interface BindingConfig<T = any> {
 }
 
 // @alpha (undocumented)
-export type BindingMode = Record<number, BindingType>;
+export type BindingMode = Record<AspectType, BindingType>;
 
 // @public
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
