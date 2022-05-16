@@ -3633,23 +3633,10 @@
     "@microsoft/fast-jss-utilities" "^4.8.0"
     "@microsoft/fast-web-utilities" "^4.6.0"
 
-"@microsoft/fast-element@^1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-1.10.0.tgz#a14d498e98a8fc6a80efab0013577db0f7ba4aae"
-  integrity sha512-z68APaW2CehGoL3iktXl9H/Pkn0PB6HLsG1sN0/2fS0XpBFjT3+teWdmTEs92FmSXdOeE2MzSy8nvPmJ9sy3xQ==
-
-"@microsoft/fast-element@file:packages/web-components/fast-element":
-  version "1.9.0"
-
-"@microsoft/fast-foundation@^2.45.0":
-  version "2.45.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-foundation/-/fast-foundation-2.45.0.tgz#49b859f4a74827e9754bce1bbb8e12bc80bc48ef"
-  integrity sha512-j8qQ6yW64pCH9seijG9HoOP9i5n9e3xZMOOczgAdOqurxUaEAqmxp1Rbf7MH89kA87LO5MygP22PKWFDtHD1+g==
-  dependencies:
-    "@microsoft/fast-element" "^1.10.0"
-    "@microsoft/fast-web-utilities" "^5.4.0"
-    tabbable "^5.2.0"
-    tslib "^1.13.0"
+"@microsoft/fast-element@1.10.1":
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-1.10.1.tgz#2ca442a4a8d15f3fd796795a370e3a1bc9bd2738"
+  integrity sha512-cq+vBBa8JCuAhsFEwHM9386YolYu9pNb1sBodp69RqWuaU56ElC60dC3aQWuOKqAMNoQqtCHPh0RQTvVBegSyw==
 
 "@microsoft/fast-jss-manager-react@^4.8.0":
   version "4.8.0"
@@ -3741,13 +3728,6 @@
   integrity sha512-P3xeyUwQ9nPkFrgAdmkOzaXxIq8YqMU5K+LXcoHgJddJCBCKfGWW9OZQOTigLddItTyVyfO8qsJpDQb1TskKHA==
   dependencies:
     exenv-es6 "^1.0.0"
-
-"@microsoft/fast-web-utilities@^5.4.0":
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-web-utilities/-/fast-web-utilities-5.4.0.tgz#bb9bc548ae39224c550d2637d1d33fd9ffc6db79"
-  integrity sha512-bXgwsqbj2vNs34rTPdeSomiKG/Enotill+2ImOoF7MOU+GasQGpL1ksEUYSou616327Rh9wVMqRE6EGiSSMFwQ==
-  dependencies:
-    exenv-es6 "^1.1.1"
 
 "@microsoft/tsdoc-config@^0.13.4":
   version "0.13.9"
@@ -24947,7 +24927,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.8.3, typescript@^3.9.0, typescript@^4.3.5, typescript@~3.7.2, "typescript@~3.9.0 || ~4.3.5", typescript@~4.3.2, typescript@~4.5.2:
+typescript@^3.8.3, typescript@^3.9.0, typescript@^4.6.2, typescript@~3.7.2, "typescript@~3.9.0 || ~4.3.5", typescript@~4.3.2, typescript@~4.5.2:
   version "3.9.7"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.7.tgz#98d600a5ebdc38f40cb277522f12dc800e9e25fa"
   integrity sha512-BLbiRkiBzAwsjut4x/dsibSTB6yWpwT5qWmC2OfuCg3GgVQCSgMs4vEctYPhsaGtd0AeuuHMkjZ2h2WG8MSzRw==

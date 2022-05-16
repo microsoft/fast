@@ -15,8 +15,7 @@
     "author": "Microsoft",
     "license": "ISC",
     "dependencies": {
-        "@microsoft/fast-element": "file:../../web-components/fast-element",
-        "@microsoft/fast-foundation": "^2.45.0",
+        "@microsoft/fast-element": "1.10.1",
         "tachometer": "^0.5.10"
     },
     "devDependencies": {
@@ -24,6 +23,6 @@
         "chromedriver": "^101.0.0",
         "commander": "^9.2.0",
         "cross-spawn": "^7.0.3",
-        "typescript": "^4.3.5"
+        "typescript": "^4.6.2"
     }
 }
