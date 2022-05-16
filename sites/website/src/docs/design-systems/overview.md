@@ -3,9 +3,10 @@ id: overview
 title: What is a Design System?
 sidebar_label: Overview
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/overview.md
+description: A Design System can generally be thought of as a collection of resources for interactive media that promotes brand alignment.
 ---
 
-A Design System can generally be thought of as a collection of resources for interactive media that promotes brand alignment. While that definition is intentionally broad, in UI development, Design Systems generally manifest as component libraries surrounded by usage guidance and design principles.
+A Design System can be generally thought of as a collection of interactive media resources that promotes brand alignment. While that definition is intentionally broad, in UI development, Design Systems manifest as component libraries surrounded by usage guidance and design principles.
 
 ## How does FAST facilitate development of design systems?
 
@@ -17,7 +18,7 @@ FAST helps by both providing a highly configurable design system that you can dr
 
 ### Design Tokens
 
-Design Tokens are powerful tools that are used to express design abstractions like color, typography, spacing units, and other design-led values. FAST exposes powerful tools for creating and using Design Tokens for your Design System. Both FAST Frame and the Fluent UI Web Components leverage FAST's design tokens extensively. FAST Frame's use of design tokens is so extensive that you might be able to create your own design system simply by modifying the existing tokens. Of course, you can always create your own tokens and even base your tokens on compositions of existing tokens. To learn more [see our documentation on design tokens](/docs/design-systems/design-tokens).
+Design Tokens are powerful tools that are used to express design abstractions like color, typography, spacing units, and other design-led values. FAST exposes powerful tools for creating and using Design Tokens for your Design System. FAST Frame leverages FAST's design tokens extensively. FAST Frame's use of design tokens is so extensive that you might be able to create your own design system simply by modifying the existing tokens. Of course, you can always create your own tokens and even base your tokens on compositions of existing tokens. To learn more [see our documentation on design tokens](/docs/design-systems/design-tokens).
 
 ## Your own design system based on FAST components
 

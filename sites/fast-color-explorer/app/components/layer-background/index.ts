@@ -1,6 +1,7 @@
 import {
     baseLayerLuminance,
     fillColor,
+    neutralForegroundRest,
     neutralLayer1,
     neutralLayer2,
     neutralLayer3,
@@ -8,7 +9,7 @@ import {
     neutralPalette,
     Swatch,
 } from "@microsoft/fast-components";
-import { attr, css, html, ViewTemplate } from "@microsoft/fast-element";
+import { attr, css, html, nullableNumberConverter } from "@microsoft/fast-element";
 import {
     DesignToken,
     DesignTokenChangeRecord,
@@ -16,19 +17,17 @@ import {
     FoundationElement,
 } from "@microsoft/fast-foundation";
 
-class LayerBackground extends FoundationElement {
-    @attr({ attribute: "base-layer-luminance" })
+export class LayerBackground extends FoundationElement {
+    @attr({ attribute: "base-layer-luminance", converter: nullableNumberConverter })
     public baseLayerLuminance: number;
-
-    @attr({ attribute: "background-layer-recipe" })
-    public backgroundLayerRecipe: string;
-
-    private baseLayerLuminanceChanged(): void {
+    private baseLayerLuminanceChanged(prev: number, next: number): void {
         baseLayerLuminance.setValueFor(this, this.baseLayerLuminance);
         this.updateBackgroundColor();
     }
 
-    private backgroundLayerRecipeChanged(): void {
+    @attr({ attribute: "background-layer-recipe" })
+    public backgroundLayerRecipe: string = "L1";
+    private backgroundLayerRecipeChanged(prev: string, next: string): void {
         this.updateBackgroundColor();
     }
 
@@ -38,8 +37,6 @@ class LayerBackground extends FoundationElement {
         }
 
         if (this.backgroundLayerRecipe !== undefined) {
-            const palette = neutralPalette.getValueFor(this);
-            const lum = baseLayerLuminance.getValueFor(this);
             let swatch: Swatch | null = null;
             switch (this.backgroundLayerRecipe) {
                 case "L1":
@@ -84,6 +81,7 @@ export const layerBackgroundTemplate = html`
 export const layerBackgroundStyles = css`
     ${display("block")} :host {
         background: ${fillColor};
+        color: ${neutralForegroundRest};
     }
 `;
 

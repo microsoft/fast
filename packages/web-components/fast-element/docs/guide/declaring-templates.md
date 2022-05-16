@@ -3,6 +3,7 @@ id: declaring-templates
 title: Declaring Templates
 sidebar_label: Declaring Templates
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/guide/declaring-templates.md
+description: While you can create and update nodes in the Shadow DOM manually, FASTElement provides a streamlined templating system for the most common rendering scenarios.
 ---
 
 ## Basic templates
@@ -225,5 +226,5 @@ In most cases, the template that `FASTElement` renders is determined by the `tem
 In addition to dynamic template selection during the `connectedCallback`, the `$fastController` property of `FASTElement` enables dynamically changing the template at any time through setting the controller's `template` property to any valid template.
 
 :::tip
-Check out [our Cheat Sheet](https://www.fast.design/docs/resources/cheat-sheet#bindings) for a quick guide on bindings.
+Check out [our Cheat Sheet](/docs/resources/cheat-sheet#bindings) for a quick guide on bindings.
 :::

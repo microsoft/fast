@@ -1,9 +1,9 @@
-import { DOM } from "../dom";
-import { calcSplices, newSplice, projectArraySplices } from "./array-change-records";
-import type { Splice } from "./array-change-records";
-import { SubscriberSet } from "./notifier";
-import type { Notifier } from "./notifier";
-import { Observable } from "./observable";
+import { DOM } from "../dom.js";
+import { calcSplices, newSplice, projectArraySplices } from "./array-change-records.js";
+import type { Splice } from "./array-change-records.js";
+import { SubscriberSet } from "./notifier.js";
+import type { Notifier } from "./notifier.js";
+import { Observable } from "./observable.js";
 
 let arrayObservationEnabled = false;
 
@@ -34,7 +34,11 @@ class ArrayObserver extends SubscriberSet {
 
     constructor(source: any[]) {
         super(source);
-        (source as any).$fastController = this;
+
+        Reflect.defineProperty(source, "$fastController", {
+            value: this,
+            enumerable: false,
+        });
     }
 
     public addSplice(splice: Splice): void {
@@ -110,16 +114,28 @@ export function enableArrayObservation(): void {
         }
     );
 
-    const arrayProto = Array.prototype;
-    const pop = arrayProto.pop;
-    const push = arrayProto.push;
-    const reverse = arrayProto.reverse;
-    const shift = arrayProto.shift;
-    const sort = arrayProto.sort;
-    const splice = arrayProto.splice;
-    const unshift = arrayProto.unshift;
+    const proto = Array.prototype;
 
-    arrayProto.pop = function () {
+    // Don't patch Array if it has already been patched
+    // by another copy of fast-element.
+    if ((proto as any).$fastPatch) {
+        return;
+    }
+
+    Reflect.defineProperty(proto, "$fastPatch", {
+        value: 1,
+        enumerable: false,
+    });
+
+    const pop = proto.pop;
+    const push = proto.push;
+    const reverse = proto.reverse;
+    const shift = proto.shift;
+    const sort = proto.sort;
+    const splice = proto.splice;
+    const unshift = proto.unshift;
+
+    proto.pop = function () {
         const notEmpty = this.length > 0;
         const methodCallResult = pop.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
@@ -131,7 +147,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.push = function () {
+    proto.push = function () {
         const methodCallResult = push.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -147,7 +163,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.reverse = function () {
+    proto.reverse = function () {
         let oldArray;
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -165,7 +181,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.shift = function () {
+    proto.shift = function () {
         const notEmpty = this.length > 0;
         const methodCallResult = shift.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
@@ -177,7 +193,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.sort = function () {
+    proto.sort = function () {
         let oldArray;
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -195,7 +211,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.splice = function () {
+    proto.splice = function () {
         const methodCallResult = splice.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -215,7 +231,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.unshift = function () {
+    proto.unshift = function () {
         const methodCallResult = unshift.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
 

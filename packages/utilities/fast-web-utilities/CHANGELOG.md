@@ -1,8 +1,48 @@
 # Change Log - @microsoft/fast-web-utilities
 
-This log was last generated on Tue, 25 Jan 2022 07:11:53 GMT and should not be manually modified.
+This log was last generated on Wed, 04 May 2022 07:14:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 5.4.1
+
+Wed, 04 May 2022 07:14:00 GMT
+
+### Patches
+
+- convert orientation enum to const object with corresponding type (chhol@microsoft.com)
+
+## 5.4.0
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Minor changes
+
+- update to typescript 4.6.2 and update ARIAMixin typings (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/eslint-config-fast-dna to v2.1.0 (chhol@microsoft.com)
+
+## 5.3.0
+
+Sun, 17 Apr 2022 07:11:18 GMT
+
+### Minor changes
+
+- Instead of matchAll, used regex replace for pascalCase and added number to add to spinalCase (74849806+wannieman98@users.noreply.github.com)
+
+## 5.2.0
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Minor changes
+
+- Declare package as using ES modules (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- update exenv-es6 to 1.1.0 to ensure we lock to es module support (chhol@microsoft.com)
 
 ## 5.1.0
 

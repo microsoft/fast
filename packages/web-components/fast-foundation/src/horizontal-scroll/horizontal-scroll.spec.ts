@@ -57,7 +57,9 @@ const cardTemplate: string = `<div class="card" style="width: ${cardWidth}px; he
  */
 const getCards = (cnt: number): string => new Array(cnt).fill(cardTemplate).reduce((s, c) => s += c, '');
 
-async function setup() {
+async function setup(options: {
+    width?: number
+} = {}) {
     const { element, connect, disconnect }:
         {
             element: HorizontalScroll & HTMLElement;
@@ -68,7 +70,7 @@ async function setup() {
     // Removing animated scroll so that tests don't have to wait on DOM updates
     element.speed = 0;
 
-    element.setAttribute("style", `width: ${horizontalScrollWidth}px;`);
+    element.setAttribute("style", `width: ${options && options.width ? options.width : horizontalScrollWidth}px;`);
     element.innerHTML = getCards(8);
 
     await connect();
@@ -174,6 +176,33 @@ describe("HorizontalScroll", () => {
 
             await disconnect();
         });
+
+        it("should disable the next flipper when it's scrolled back from the end and scrolled forward", async () => {
+            const { element, disconnect } = await setup();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
+
+            expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
+
+            element.scrollToPrevious();
+            await DOM.nextUpdate();
+
+            expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
+
+            expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
+
+            await disconnect();
+        })
     });
 
     describe("Scrolling", () => {
@@ -254,5 +283,25 @@ describe("HorizontalScroll", () => {
             await disconnect();
         });
 
+        it("should scroll to previous when only 2 items wide", async () => {
+            const { element, disconnect } = await setup({width: cardSpace * 2});
+
+            element.scrollToNext();
+
+            await DOM.nextUpdate();
+
+            const firstXPos: number | null = getXPosition(element);
+            expect(firstXPos).to.not.null;
+            expect(firstXPos).to.gte(cardSpace);
+
+            element.scrollToPrevious();
+
+            await DOM.nextUpdate();
+
+            const secondXPosition: number | null = getXPosition(element);
+            expect(secondXPosition).to.equal(0);
+
+            await disconnect();
+        });
     });
 });

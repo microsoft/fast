@@ -3,13 +3,14 @@ id: release-planning
 title: Release Planning
 sidebar_label: Release Planning
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/community/release-planning.md
+description: In order to both provide features and fixes to our community, FAST has adopted the following release planning process and policies.
 ---
 
 In order to both provide features and fixes to our community, while not creating unnecessary breaking changes or churn, FAST has adopted the following release planning process and policies.
 
 ## Quarterly planning
 
-As mentioned in [Issue Management](https://www.fast.design/docs/engineering/issue-management), feature teams engage in a quarterly planning exercise. During this exercise engineers look at the big picture and make plans to address broader "themes" that we see emerging which can't be handled week-to-week. The quarterly planning is then used to shape the weekly planning sessions that happen over the following three months. 
+As mentioned in [Issue Management](/docs/community/issue-management/), feature teams engage in a quarterly planning exercise. During this exercise engineers look at the big picture and make plans to address broader "themes" that we see emerging which can't be handled week-to-week. The quarterly planning is then used to shape the weekly planning sessions that happen over the following three months. 
 
 The process for identifying quarterly work consists of multiple phases. In each phase, we filter issues out until we end end up with the quarterly plan.
 

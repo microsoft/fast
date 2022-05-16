@@ -1,2 +1,2 @@
-export * from "./aria-global";
-export * from "./start-end";
+export * from "./aria-global.js";
+export * from "./start-end.js";

@@ -1,8 +1,11 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
 
 /**
  * check if the item is a tree item
@@ -26,6 +29,18 @@ export type TreeItemOptions = FoundationElementDefinition &
 /**
  * A Tree item Custom HTML Element.
  *
+ * @slot start - Content which can be provided before the tree item content
+ * @slot end - Content which can be provided after the tree item content
+ * @slot - The default slot for tree item text content
+ * @slot item - The slot for tree items (fast tree items manage this assignment themselves)
+ * @slot expand-collapse-button - The expand/collapse button
+ * @csspart positioning-region - The element used to position the tree item content with exception of any child nodes
+ * @csspart content-region - The element containing the expand/collapse, start, and end slots
+ * @csspart items - The element wrapping any child items
+ * @csspart expand-collapse-button - The expand/collapse button
+ * @fires expanded-change - Fires a custom 'expanded-change' event when the expanded state changes
+ * @fires selected-change - Fires a custom 'selected-change' event when the selected state changes
+ *
  * @public
  */
 export class TreeItem extends FoundationElement {
@@ -37,6 +52,11 @@ export class TreeItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public expanded: boolean = false;
+    private expandedChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.$emit("expanded-change", this);
+        }
+    }
 
     /**
      * When true, the control will appear selected by user interaction.
@@ -46,6 +66,11 @@ export class TreeItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public selected: boolean;
+    private selectedChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.$emit("selected-change", this);
+        }
+    }
 
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
@@ -56,17 +81,37 @@ export class TreeItem extends FoundationElement {
     @attr({ mode: "boolean" })
     public disabled: boolean;
 
+    /**
+     *  Reference to the expand/collapse button
+     *
+     * @internal
+     */
     public expandCollapseButton: HTMLDivElement;
 
+    /**
+     * Whether the item is focusable
+     *
+     * @internal
+     */
     @observable
     public focusable: boolean = false;
 
+    /**
+     *
+     *
+     * @internal
+     */
     @observable
     public childItems: HTMLElement[];
 
+    /**
+     * The slotted child tree items
+     *
+     * @internal
+     */
     @observable
     public items: HTMLElement[];
-    private itemsChanged(oldValue, newValue): void {
+    private itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this.items.forEach((node: HTMLElement) => {
                 if (isTreeItemElement(node)) {
@@ -78,16 +123,25 @@ export class TreeItem extends FoundationElement {
     }
 
     /**
+     * Indicates if the tree item is nested
+     *
      * @internal
      */
     @observable
     public nested: boolean;
 
+    /**
+     *
+     *
+     * @internal
+     */
     @observable
     public renderCollapsedChildren: boolean;
 
     /**
      * Places document focus on a tree item
+     *
+     * @public
      * @param el - the element to focus
      */
     public static focusItem(el: HTMLElement) {
@@ -95,27 +149,49 @@ export class TreeItem extends FoundationElement {
         el.focus();
     }
 
+    /**
+     * Whether the tree is nested
+     *
+     * @public
+     */
+    public readonly isNestedItem = (): boolean => {
+        return isTreeItemElement(this.parentElement as Element);
+    };
+
+    /**
+     * Handle expand button click
+     *
+     * @internal
+     */
     public handleExpandCollapseButtonClick = (e: MouseEvent): void => {
-        if (!this.disabled) {
-            e.preventDefault();
-            this.setExpanded(!this.expanded);
+        if (!this.disabled && !e.defaultPrevented) {
+            this.expanded = !this.expanded;
         }
     };
 
-    public handleClick = (e: MouseEvent): void | boolean => {
-        if (!e.defaultPrevented) {
-            const target = e.composedPath();
-            const clickedTreeItem = target.find(
-                (t: EventTarget) => t instanceof HTMLElement && isTreeItemElement(t)
-            );
-            if ((clickedTreeItem as any) === this) {
-                this.handleSelected();
-            }
-            // do not prevent default as it completely eats the click
-            return true;
-        }
+    /**
+     * Handle focus events
+     *
+     * @internal
+     */
+    public handleFocus = (e: FocusEvent): void => {
+        this.setAttribute("tabindex", "0");
     };
 
+    /**
+     * Handle blur events
+     *
+     * @internal
+     */
+    public handleBlur = (e: FocusEvent): void => {
+        this.setAttribute("tabindex", "-1");
+    };
+
+    /**
+     * Gets number of children
+     *
+     * @internal
+     */
     public childItemLength(): number {
         const treeChildren: HTMLElement[] = this.childItems.filter(
             (item: HTMLElement) => {
@@ -123,25 +199,6 @@ export class TreeItem extends FoundationElement {
             }
         );
         return treeChildren ? treeChildren.length : 0;
-    }
-
-    public readonly isNestedItem = (): boolean => {
-        return isTreeItemElement(this.parentElement as Element);
-    };
-
-    private handleSelected(e?: Event): void {
-        if (e?.defaultPrevented) {
-            return;
-        }
-        e?.preventDefault();
-        if (!this.disabled) {
-            this.$emit("selected-change", e);
-        }
-    }
-
-    private setExpanded(expanded: boolean): void {
-        this.expanded = expanded;
-        this.$emit("expanded-change", this);
     }
 }
 

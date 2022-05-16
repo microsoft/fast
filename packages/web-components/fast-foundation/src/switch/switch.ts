@@ -1,7 +1,7 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
-import { keySpace, keyEnter } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { FormAssociatedSwitch } from "./switch.form-associated";
+import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { FormAssociatedSwitch } from "./switch.form-associated.js";
 
 /**
  * Switch configuration options
@@ -14,6 +14,16 @@ export type SwitchOptions = FoundationElementDefinition & {
 /**
  * A Switch Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#switch | ARIA switch }.
+ *
+ * @slot - The deafult slot for the label
+ * @slot checked-message - The message when in a checked state
+ * @slot unchecked-message - The message when in an unchecked state
+ * @csspart label - The label
+ * @csspart switch - The element representing the switch, which wraps the indicator
+ * @csspart status-message - The wrapper for the status messages
+ * @csspart checked-message - The checked message
+ * @csspart unchecked-message - The unchecked message
+ * @fires change - Emits a custom change event when the checked state changes
  *
  * @public
  */

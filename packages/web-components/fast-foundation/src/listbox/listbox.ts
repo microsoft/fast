@@ -11,14 +11,16 @@ import {
     keyTab,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
-import { applyMixins } from "../utilities/apply-mixins";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option.js";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * A Listbox Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#listbox | ARIA listbox }.
+ *
+ * @slot - The default slot for the listbox options
  *
  * @public
  */
@@ -97,17 +99,6 @@ export abstract class Listbox extends FoundationElement {
     public disabled: boolean;
 
     /**
-     * Indicates if the listbox is in multi-selection mode.
-     *
-     * @remarks
-     * HTML Attribute: `multiple`
-     *
-     * @public
-     */
-    @attr({ mode: "boolean" })
-    public multiple: boolean;
-
-    /**
      * The index of the selected option.
      *
      * @public
@@ -138,7 +129,7 @@ export abstract class Listbox extends FoundationElement {
      * @public
      */
     public static slottedOptionFilter = (n: HTMLElement) =>
-        isListboxOption(n) && !n.disabled && !n.hidden;
+        isListboxOption(n) && !n.hidden;
 
     /**
      * The default slotted elements.
@@ -431,7 +422,7 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     public multipleChanged(prev: boolean | undefined, next: boolean): void {
-        this.ariaMultiSelectable = next ? "true" : undefined;
+        this.ariaMultiSelectable = next ? "true" : null;
     }
 
     /**
@@ -532,18 +523,7 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     protected setDefaultSelectedOption() {
-        if (this.$fastController.isConnected) {
-            const selectedIndex = this.options?.findIndex(
-                el => el.getAttribute("selected") !== null
-            );
-
-            if (selectedIndex !== -1) {
-                this.selectedIndex = selectedIndex;
-                return;
-            }
-
-            this.selectedIndex = 0;
-        }
+        this.selectedIndex = this.options?.findIndex(el => el.defaultSelected) ?? -1;
     }
 
     /**
@@ -552,7 +532,7 @@ export abstract class Listbox extends FoundationElement {
      * @public
      */
     protected setSelectedOptions() {
-        if (this.options?.length && !this.disabled) {
+        if (this.options?.length) {
             this.selectedOptions = [this.options[this.selectedIndex]];
             this.ariaActiveDescendant = this.firstSelectedOption?.id ?? "";
             this.focusAndScrollOptionIntoView();
@@ -627,7 +607,7 @@ export class DelegatesARIAListbox {
      * HTML Attribute: `aria-activedescendant`
      */
     @observable
-    public ariaActiveDescendant: string;
+    public ariaActiveDescendant: string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#listbox} for more information
@@ -636,7 +616,7 @@ export class DelegatesARIAListbox {
      * HTML Attribute: `aria-disabled`
      */
     @observable
-    public ariaDisabled: "true" | "false";
+    public ariaDisabled: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#listbox} for more information
@@ -645,7 +625,7 @@ export class DelegatesARIAListbox {
      * HTML Attribute: `aria-expanded`
      */
     @observable
-    public ariaExpanded: "true" | "false" | undefined;
+    public ariaExpanded: "true" | "false" | string | null;
 
     /**
      * See {@link https://w3c.github.io/aria/#listbox} for more information
@@ -654,7 +634,7 @@ export class DelegatesARIAListbox {
      * HTML Attribute: `aria-multiselectable`
      */
     @observable
-    public ariaMultiSelectable: "true" | "false" | undefined;
+    public ariaMultiSelectable: "true" | "false" | string | null;
 }
 
 /**

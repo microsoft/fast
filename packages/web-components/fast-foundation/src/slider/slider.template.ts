@@ -1,8 +1,8 @@
 import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { Slider, SliderOptions } from "./slider";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { Slider, SliderOptions } from "./slider.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Slider:class)} component.
@@ -29,6 +29,9 @@ export const sliderTemplate: FoundationElementTemplate<
         <div part="positioning-region" class="positioning-region">
             <div ${ref("track")} part="track-container" class="track">
                 <slot name="track"></slot>
+                <div part="track-start" class="track-start" style="${x => x.position}">
+                    <slot name="track-start"></slot>
+                </div>
             </div>
             <slot></slot>
             <div

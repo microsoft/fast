@@ -1,7 +1,7 @@
-import { _interpolationEnd, _interpolationStart, DOM } from "../dom";
-import type { Binding, ExecutionContext } from "../observation/observable";
-import { HTMLBindingDirective } from "./binding";
-import type { HTMLDirective, NodeBehaviorFactory } from "./html-directive";
+import { _interpolationEnd, _interpolationStart, DOM } from "../dom.js";
+import type { Binding, ExecutionContext } from "../observation/observable.js";
+import { HTMLBindingDirective } from "./binding.js";
+import type { HTMLDirective, NodeBehaviorFactory } from "./html-directive.js";
 
 type InlineDirective = HTMLDirective & {
     targetName?: string;
@@ -32,6 +32,7 @@ class CompilationContext {
     }
 
     public release(): void {
+        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
         sharedContext = this;
     }
 

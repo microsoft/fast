@@ -1,8 +1,8 @@
-import { html } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ListboxOption, ListboxOptionOptions } from "./listbox-option";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { ListboxOption, ListboxOptionOptions } from "./listbox-option.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(ListboxOption:class)} component.
@@ -26,7 +26,7 @@ export const listboxOptionTemplate: FoundationElementTemplate<
     >
         ${startSlotTemplate(context, definition)}
         <span class="content" part="content">
-            <slot></slot>
+            <slot ${slotted("content")}></slot>
         </span>
         ${endSlotTemplate(context, definition)}
     </template>

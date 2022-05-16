@@ -3,11 +3,11 @@ import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
     StartEndOptions,
-} from "../patterns/index";
-import { applyMixins } from "../utilities/index";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { FormAssociatedTextField } from "./text-field.form-associated";
-import { TextFieldType } from "./text-field.options";
+} from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { FormAssociatedTextField } from "./text-field.form-associated.js";
+import { TextFieldType } from "./text-field.options.js";
 
 export { TextFieldType };
 
@@ -20,6 +20,14 @@ export type TextFieldOptions = FoundationElementDefinition & StartEndOptions;
 /**
  * A Text Field Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text | <input type="text" /> element }.
+ *
+ * @slot start - Content which can be provided before the number field input
+ * @slot end - Content which can be provided after the number field input
+ * @slot - The default slot for the label
+ * @csspart label - The label
+ * @csspart root - The element wrapping the control, including start and end slots
+ * @csspart control - The text field element
+ * @fires change - Fires a custom 'change' event when the value has changed
  *
  * @public
  */
@@ -198,6 +206,23 @@ export class TextField extends FormAssociatedTextField {
                 this.focus();
             });
         }
+    }
+
+    /**
+     * Selects all the text in the text field
+     *
+     * @public
+     */
+    protected select(): void {
+        this.control.select();
+
+        /**
+         * The select event does not permeate the shadow DOM boundary.
+         * This fn effectively proxies the select event,
+         * emitting a `select` event whenever the internal
+         * control emits a `select` event
+         */
+        this.$emit("select");
     }
 
     /**

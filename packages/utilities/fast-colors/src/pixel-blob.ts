@@ -1,4 +1,4 @@
-import { ColorRGBA64 } from "./color-rgba-64";
+import { ColorRGBA64 } from "./color-rgba-64.js";
 
 /**
  * Represents a blob of pixel data.

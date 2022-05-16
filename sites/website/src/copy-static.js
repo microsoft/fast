@@ -1,5 +1,3 @@
-// FIXME: #3298 Merge fast-website and website projects to replace temporary build/copy script
-
 const path = require("path");
 const copy = require("../../../build/copy");
 
@@ -8,7 +6,6 @@ function getPackageDir(pkg) {
 }
 
 const outputPath = path.resolve(__dirname, "../static");
-
 const homepageDir = getPackageDir("@microsoft/fast-website");
 const utilitiesDir = getPackageDir("@microsoft/site-utilities");
 const fastComponentsDir = getPackageDir("@microsoft/fast-components");
@@ -32,5 +29,6 @@ const utilitiesAssets = path.resolve(utilitiesDir, "statics/assets");
         verbose: true,
         up: true,
     });
+
     await copy([`${utilitiesAssets}/badges/*.svg`], `${outputPath}/badges`);
 })();

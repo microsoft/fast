@@ -1,11 +1,18 @@
 import { attr, DOM, Notifier, Observable } from "@microsoft/fast-element";
 import { keyEscape, keyTab } from "@microsoft/fast-web-utilities";
 import { isTabbable } from "tabbable";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Switch Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#dialog | ARIA dialog }.
+ *
+ * @slot - The default slot for the dialog content
+ * @csspart positioning-region - A wrapping element used to center the dialog and position the modal overlay
+ * @csspart overlay - The modal dialog overlay
+ * @csspart control - The dialog element
+ * @fires cancel - Fires a custom 'cancel' event when the modal overlay is clicked
+ * @fires close - Fires a custom 'close' event when the dialog is hidden
  *
  * @public
  */
@@ -96,6 +103,8 @@ export class Dialog extends FoundationElement {
      */
     public dismiss(): void {
         this.$emit("dismiss");
+        // implement `<dialog>` interface
+        this.$emit("cancel");
     }
 
     /**
@@ -114,6 +123,8 @@ export class Dialog extends FoundationElement {
      */
     public hide(): void {
         this.hidden = true;
+        // implement `<dialog>` interface
+        this.$emit("close");
     }
 
     /**
@@ -280,7 +291,7 @@ export class Dialog extends FoundationElement {
     private static reduceTabbableItems(
         elements: HTMLElement[],
         element: FoundationElement & HTMLElement
-    ) {
+    ): HTMLElement[] {
         if (element.getAttribute("tabindex") === "-1") {
             return elements;
         }

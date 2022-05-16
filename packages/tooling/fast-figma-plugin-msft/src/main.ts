@@ -1,86 +1,71 @@
-import { PluginNode } from "./core/node";
 import {
-    cornerRadiusRecipe,
-    fillRecipes,
-    RecipeStore,
-    strokeRecipes,
-    textFillRecipes,
-} from "./core/recipes";
-import { FigmaController } from "./figma/controller";
-import { RecipeDefinition, RecipeTypes } from "./core/recipe-registry";
-import { UIMessage } from "./core/messaging";
+    deserializeUINodes,
+    FigmaController,
+    PluginUISerializableNodeData,
+} from "./figma/controller";
 
 const controller = new FigmaController();
 
-function registerColorRecipe(type: RecipeTypes, recipes: RecipeStore): void {
-    Object.keys(recipes).forEach((key: string) => {
-        const recipe = recipes[key];
+// Ignore invisible nodes for performance, which means if someone turns them back to visible they may need to run the plugin again.
+figma.skipInvisibleInstanceChildren = true;
 
-        const definition: RecipeDefinition = {
-            id: key,
-            name: recipe.name,
-            type,
-            evaluate: (node: PluginNode): string => {
-                const parent = node.parent();
-                const backgroundColor = parent
-                    ? parent.getEffectiveBackgroundColor()
-                    : node.getEffectiveBackgroundColor();
-
-                return recipe.resolver({
-                    ...node.designSystem,
-                    backgroundColor: backgroundColor.toStringHexRGB(),
-                } as any);
-            },
-        };
-
-        controller.recipeRegistry.register(definition);
-    });
-}
-
-/**
- * Register recipe types
- */
-registerColorRecipe(RecipeTypes.backgroundFills, fillRecipes);
-registerColorRecipe(RecipeTypes.foregroundFills, textFillRecipes);
-registerColorRecipe(RecipeTypes.strokeFills, strokeRecipes);
-
-Object.keys(cornerRadiusRecipe).forEach(key => {
-    const recipe = cornerRadiusRecipe[key];
-
-    const definition: RecipeDefinition = {
-        id: key,
-        name: recipe.name,
-        type: RecipeTypes.cornerRadius,
-        evaluate: (): number => {
-            return recipe.resolver({} as any);
-        },
-    };
-
-    controller.recipeRegistry.register(definition);
-});
-/**
- * Show UI on plugin launch
- */
 figma.showUI(__html__, {
     height: 600,
     width: 356,
 });
 
 /**
- * If plugin is launched and no editable node is selected, all editing UI should be disabled
- * If node is editable, fields should be enabled. If there is a current selection then the
- *    the UI should be set to that by default
+ * Displays a notification when running a function that takes some time.
+ * @param callback The function to call
  */
-figma.on("selectionchange", () => {
-    controller.setSelectedNodes(
-        figma.currentPage.selection.map((node: BaseNode): string => node.id)
-    );
-});
+function notifyProcessing(callback: () => void) {
+    const notify = figma.notify("Processing design tokens", { timeout: Infinity });
 
-figma.ui.onmessage = (message: UIMessage): void => {
-    controller.handleMessage(message);
+    setTimeout(() => {
+        try {
+            callback();
+        } catch (e) {
+            console.error(e);
+            figma.notify(e.message, { error: true });
+        }
+
+        notify.cancel();
+    }, 0);
+}
+
+function handleSelection() {
+    const nodes: readonly BaseNode[] = figma.currentPage.selection.length
+        ? figma.currentPage.selection
+        : Object.freeze([figma.currentPage]);
+
+    notifyProcessing(() =>
+        controller.setSelectedNodes(nodes.map((node: BaseNode): string => node.id))
+    );
+}
+
+let lastSelectionTimeout: number = Number.NaN;
+
+/**
+ * Avoid extra processing when the selection is still changing.
+ */
+function debounceSelection() {
+    if (!Number.isNaN(lastSelectionTimeout)) {
+        clearTimeout(lastSelectionTimeout);
+    }
+
+    lastSelectionTimeout = setTimeout(() => {
+        lastSelectionTimeout = Number.NaN;
+        handleSelection();
+    }, 1000);
+}
+
+figma.on("selectionchange", debounceSelection);
+
+figma.ui.onmessage = (nodes: PluginUISerializableNodeData[]): void => {
+    notifyProcessing(() => {
+        const pluginNodes = deserializeUINodes(nodes);
+        controller.handleMessage(pluginNodes);
+    });
 };
 
-controller.setSelectedNodes(
-    figma.currentPage.selection.map((node: BaseNode): string => node.id)
-);
+handleSelection();

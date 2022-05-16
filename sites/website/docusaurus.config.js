@@ -16,9 +16,16 @@ module.exports = {
     themes: [require.resolve("@docusaurus/theme-live-codeblock")],
     staticDirectories: ["static"],
     themeConfig: {
+        algolia: {
+            appId: "PG0CVQLQ81",
+            apiKey: "396cf95de6551ef90bde2de3142e158a",
+            indexName: "FAST",
+            contextualSearch: true,
+        },
         colorMode: {
             defaultMode: "dark",
         },
+        hideableSidebar: true,
         navbar: {
             logo: {
                 alt: `Line drawing of a small moon orbiting around a planet with the words FAST next to it`,
@@ -33,6 +40,12 @@ module.exports = {
                 }),
             },
             items: [
+                {
+                    type: "doc",
+                    docId: "introduction",
+                    label: "Docs",
+                    position: "left",
+                },
                 {
                     href: "https://www.fast.design",
                     label: "Home",
@@ -128,8 +141,9 @@ module.exports = {
             {
                 docs: {
                     sidebarPath: require.resolve("./sidebars.js"),
-                    showLastUpdateTime: true,
-                    editUrl: "https://github.com/microsoft/fast",
+                    // Refer to https://github.com/microsoft/fast/issues/5865 effects of using true
+                    showLastUpdateTime: false,
+                    remarkPlugins: [require("mdx-mermaid")],
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css"),

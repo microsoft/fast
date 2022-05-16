@@ -3,6 +3,7 @@ id: tabs
 title: fast-tabs
 sidebar_label: tabs
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/tabs/README.md
+description: fast-tabs is a web component implementation of a tab.
 ---
 
 *Tabs* are a set of layered sections of content that display one panel of content at a time. Each tab panel has an associated tab element, that when activated, displays the panel. The list of tab elements is arranged along one edge of the currently displayed panel.
@@ -100,6 +101,154 @@ export const myTabs = Tabs.compose({
     styles,
 });
 ```
+
+## API
+
+
+
+### class: `Tabs`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name              | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| ----------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `orientation`     | public  | `TabsOrientation`                     |         | The orientation                                                                                                                                                                     |                   |
+| `activeid`        | public  | `string`                              |         | The id of the active tab                                                                                                                                                            |                   |
+| `activeindicator` | public  | `boolean`                             | `true`  | Whether or not to show the active indicator                                                                                                                                         |                   |
+| `activetab`       | public  | `HTMLElement`                         |         | A reference to the active tab                                                                                                                                                       |                   |
+| `$presentation`   | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`        | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`          | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description                    | Parameters           | Return | Inherited From    |
+| ----------------- | --------- | ------------------------------ | -------------------- | ------ | ----------------- |
+| `adjust`          | public    | The adjust method for FASTTabs | `adjustment: number` | `void` |                   |
+| `templateChanged` | protected |                                |                      | `void` | FoundationElement |
+| `stylesChanged`   | protected |                                |                      | `void` | FoundationElement |
+
+#### Events
+
+| Name     | Type | Description                                                                       | Inherited From |
+| -------- | ---- | --------------------------------------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when a tab is clicked or during keyboard navigation |                |
+
+#### Attributes
+
+| Name          | Field           | Inherited From |
+| ------------- | --------------- | -------------- |
+| `orientation` | orientation     |                |
+| `activeid`    | activeid        |                |
+|               | activeindicator |                |
+
+#### CSS Parts
+
+| Name              | Description                       |
+| ----------------- | --------------------------------- |
+| `tablist`         | The element wrapping for the tabs |
+| `tab`             | The tab slot                      |
+| `activeIndicator` | The visual indicator              |
+| `tabpanel`        | The tabpanel slot                 |
+
+#### Slots
+
+| Name       | Description                                              |
+| ---------- | -------------------------------------------------------- |
+| `start`    | Content which can be provided before the tablist element |
+| `end`      | Content which can be provided after the tablist element  |
+| `tab`      | The slot for tabs                                        |
+| `tabpanel` | The slot for tabpanels                                   |
+
+<hr/>
+
+### Variables
+
+| Name              | Description                                                              | Type                                                  |
+| ----------------- | ------------------------------------------------------------------------ | ----------------------------------------------------- |
+| `TabsOrientation` | The orientation of the @microsoft/fast-foundation#(Tabs:class) component | `{ vertical: "vertical", horizontal: "horizontal", }` |
+
+<hr/>
+
+
+
+### class: `TabPanel`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Slots
+
+| Name | Description                               |
+| ---- | ----------------------------------------- |
+|      | The default slot for the tabpanel content |
+
+<hr/>
+
+
+
+### class: `Tab`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                 | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `disabled`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [disabled HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) for more information. |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                     | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                  | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.         | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name | Field    | Inherited From |
+| ---- | -------- | -------------- |
+|      | disabled |                |
+
+#### Slots
+
+| Name | Description                          |
+| ---- | ------------------------------------ |
+|      | The default slot for the tab content |
+
+<hr/>
+
 
 ## Additional resources
 

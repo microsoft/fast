@@ -1,11 +1,14 @@
 import { attr, observable } from "@microsoft/fast-element";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
 import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
     StartEndOptions,
-} from "../patterns/index";
-import { applyMixins } from "../utilities/apply-mixins";
+} from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Anchor configuration options
@@ -16,6 +19,12 @@ export type AnchorOptions = FoundationElementDefinition & StartEndOptions;
 /**
  * An Anchor Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element }.
+ *
+ * @slot start - Content which can be provided before the anchor content
+ * @slot end - Content which can be provided after the anchor content
+ * @slot - The default slot for anchor content
+ * @csspart control - The anchor element
+ * @csspart content - The element wrapping anchor content
  *
  * @public
  */
@@ -146,8 +155,8 @@ export class DelegatesARIALink {
      * @remarks
      * HTML Attribute: aria-expanded
      */
-    @attr({ attribute: "aria-expanded", mode: "fromView" })
-    public ariaExpanded: "true" | "false" | undefined;
+    @attr({ attribute: "aria-expanded" })
+    public ariaExpanded: "true" | "false" | string | null;
 }
 
 /**

@@ -3,6 +3,7 @@ id: toolbar
 title: fast-toolbar
 sidebar_label: toolbar
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/toolbar/README.md
+description: fast-toolbar is a web component implementation of a toolbar.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#toolbar):
@@ -77,6 +78,78 @@ export const myToolbar = Toolbar.compose({
     },
 });
 ```
+
+## API
+
+
+
+### class: `Toolbar`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `activeIndex`   |         |                                       |         |                                                                                                                                                                                     |                   |
+| `orientation`   | public  | `Orientation`                         |         | The orientation of the toolbar.                                                                                                                                                     |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name                  | Privacy   | Description | Parameters | Return | Inherited From    |
+| --------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `slottedItemsChanged` | protected |             |            | `void` |                   |
+| `templateChanged`     | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`       | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `orientation` | orientation |                |
+
+#### CSS Parts
+
+| Name                 | Description                                           |
+| -------------------- | ----------------------------------------------------- |
+| `positioning-region` | The element containing the items, start and end slots |
+
+#### Slots
+
+| Name    | Description                                            |
+| ------- | ------------------------------------------------------ |
+| `start` | Content which can be provided before the slotted items |
+| `end`   | Content which can be provided after the slotted items  |
+|         | The default slot for slotted items                     |
+| `label` | The toolbar label                                      |
+
+<hr/>
+
+### class: `DelegatesARIAToolbar`
+
+#### Fields
+
+| Name             | Privacy | Type             | Default | Description                                   | Inherited From |
+| ---------------- | ------- | ---------------- | ------- | --------------------------------------------- | -------------- |
+| `ariaLabelledby` | public  | `string or null` |         | The id of the element labeling the toolbar.   |                |
+| `ariaLabel`      | public  | `string or null` |         | The label surfaced to assistive technologies. |                |
+
+#### Attributes
+
+| Name              | Field          | Inherited From |
+| ----------------- | -------------- | -------------- |
+| `aria-labelledby` | ariaLabelledby |                |
+| `aria-label`      | ariaLabel      |                |
+
+<hr/>
+
 
 ## Additional resources
 

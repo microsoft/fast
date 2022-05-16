@@ -1,11 +1,11 @@
 import { attr, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { ARIAGlobalStatesAndProperties } from "../patterns";
-import { StartEnd } from "../patterns/start-end";
-import type { StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Listbox option configuration options
@@ -30,6 +30,11 @@ export function isListboxOption(el: Element): el is ListboxOption {
 /**
  * An Option Custom HTML Element.
  * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#option | ARIA option }.
+ *
+ * @slot start - Content which can be provided before the listbox option content
+ * @slot end - Content which can be provided after the listbox option content
+ * @slot - The default slot for listbox option content
+ * @csspart content - Wraps the listbox option content
  *
  * @public
  */
@@ -68,7 +73,30 @@ export class ListboxOption extends FoundationElement {
             return;
         }
 
-        this.ariaChecked = undefined;
+        this.ariaChecked = null;
+    }
+
+    /**
+     * The default slotted content.
+     *
+     * @public
+     */
+    @observable
+    public content: Node[];
+
+    /**
+     * Updates the proxy's text content when the default slot changes.
+     * @param prev - the previous content value
+     * @param next - the current content value
+     *
+     * @internal
+     */
+    protected contentChanged(prev: undefined | Node[], next: Node[]): void {
+        if (this.proxy instanceof HTMLOptionElement) {
+            this.proxy.textContent = this.textContent;
+        }
+
+        this.$emit("contentchange", null, { bubbles: true });
     }
 
     /**
@@ -101,7 +129,7 @@ export class ListboxOption extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public disabled: boolean;
-    protected disabledChanged(prev, next): void {
+    protected disabledChanged(prev: boolean, next: boolean): void {
         this.ariaDisabled = this.disabled ? "true" : "false";
 
         if (this.proxy instanceof HTMLOptionElement) {
@@ -169,20 +197,21 @@ export class ListboxOption extends FoundationElement {
     }
 
     public get label() {
-        return this.value ?? this.textContent ?? "";
+        return this.value ?? this.text;
     }
 
     public get text(): string {
-        return this.textContent as string;
+        return this.textContent?.replace(/\s+/g, " ").trim() ?? "";
     }
 
-    public set value(next: string) {
-        this._value = next;
+    public set value(next: string | unknown) {
+        const newValue = `${next ?? ""}`;
+        this._value = newValue;
 
         this.dirtyValue = true;
 
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.value = next;
+        if (this.proxy instanceof HTMLOptionElement) {
+            this.proxy.value = newValue;
         }
 
         Observable.notify(this, "value");
@@ -190,7 +219,7 @@ export class ListboxOption extends FoundationElement {
 
     public get value(): string {
         Observable.track(this, "value");
-        return this._value ?? this.textContent ?? "";
+        return this._value ?? this.text;
     }
 
     public get form(): HTMLFormElement | null {
@@ -244,7 +273,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-checked`
      */
     @observable
-    public ariaChecked: "true" | "false" | undefined;
+    public ariaChecked: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -253,7 +282,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-posinset`
      */
     @observable
-    ariaPosInSet: string;
+    ariaPosInSet: string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -262,7 +291,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-selected`
      */
     @observable
-    ariaSelected: "true" | "false" | undefined;
+    ariaSelected: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -271,7 +300,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-setsize`
      */
     @observable
-    ariaSetSize: string;
+    ariaSetSize: string | null;
 }
 
 /**

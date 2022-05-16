@@ -1,5 +1,5 @@
 import { attr } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A structure representing skeleton shapes
@@ -9,6 +9,8 @@ export type SkeletonShape = "rect" | "circle";
 
 /**
  * A Skeleton Custom HTML Element.
+ *
+ * @slot - The default slot
  *
  * @public
  */

@@ -7,12 +7,21 @@ module.exports = {
         {
             type: "category",
             label: "Using the Components",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "components/getting-started",
                 "design-systems/fast-frame",
                 {
                     type: "category",
                     label: "Components",
+                    customProps: {
+                        description: "A comprehensive list of FAST elements.",
+                    },
+                    link: {
+                        type: "generated-index",
+                    },
                     items: [
                         "components/accordion",
                         "components/anchor",
@@ -54,6 +63,9 @@ module.exports = {
         {
             type: "category",
             label: "Building Components",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "fast-element/getting-started",
                 "fast-element/defining-elements",
@@ -68,6 +80,9 @@ module.exports = {
         {
             type: "category",
             label: "Creating Design Systems",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "design-systems/overview",
                 "design-systems/creating-a-component-library",
@@ -80,11 +95,17 @@ module.exports = {
         {
             type: "category",
             label: "Apps and Experiences",
+            link: {
+                type: "generated-index",
+            },
             items: ["apps-and-experiences/dependency-injection"],
         },
         {
             type: "category",
             label: "Integrations",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "integrations/introduction",
                 "integrations/angular",
@@ -100,6 +121,9 @@ module.exports = {
         {
             type: "category",
             label: "Tools",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "tools/component-explorer",
                 "tools/vscode",
@@ -109,25 +133,74 @@ module.exports = {
         {
             type: "category",
             label: "API Reference",
+            link: {
+                type: "generated-index",
+            },
             items: [
-                "api/fast-animation",
-                "api/fast-colors",
-                "api/fast-components",
-                "api/fast-element",
-                "api/fast-foundation",
+                {
+                    type: "doc",
+                    id: "api/fast-animation",
+                    customProps: {
+                        description:
+                            "Exlore the classes and functions of fast-animation.",
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-colors",
+                    customProps: {
+                        description:
+                            "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-colors.",
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-components",
+                    customProps: {
+                        description:
+                            "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-components.",
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-element",
+                    customProps: {
+                        description:
+                            "Explore the classes, functions, interfaces, variables, and type aliases of fast-element.",
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-foundation",
+                    customProps: {
+                        description:
+                            "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-foundation.",
+                    },
+                },
             ],
         },
         {
             type: "category",
             label: "Community Contribution",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "community/join",
                 "community/code-of-conduct",
                 "community/contributor-guide",
+                "community/branch-guide",
                 "community/writing-documentation",
                 {
                     type: "category",
                     label: "Engineering Process",
+                    customProps: {
+                        description:
+                            "Our issue management and release planning processes.",
+                    },
+                    link: {
+                        type: "generated-index",
+                    },
                     items: ["community/issue-management", "community/release-planning"],
                 },
             ],
@@ -135,6 +208,9 @@ module.exports = {
         {
             type: "category",
             label: "Resources",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "resources/why-web-components",
                 "resources/license",

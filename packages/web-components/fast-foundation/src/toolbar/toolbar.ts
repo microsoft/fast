@@ -1,11 +1,14 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
 import { isFocusable } from "tabbable";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
-import { getDirection } from "../utilities/direction";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
+import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { getDirection } from "../utilities/direction.js";
 
 /**
  * Toolbar configuration options
@@ -43,6 +46,12 @@ const ToolbarArrowKeyMap = Object.freeze({
 /**
  * A Toolbar Custom HTML Element.
  * Implements the {@link https://w3c.github.io/aria-practices/#Toolbar|ARIA Toolbar}.
+ *
+ * @slot start - Content which can be provided before the slotted items
+ * @slot end - Content which can be provided after the slotted items
+ * @slot - The default slot for slotted items
+ * @slot label - The toolbar label
+ * @csspart positioning-region - The element containing the items, start and end slots
  *
  * @public
  */
@@ -137,6 +146,17 @@ export class Toolbar extends FoundationElement {
     public connectedCallback() {
         super.connectedCallback();
         this.direction = getDirection(this);
+        this.start.addEventListener("slotchange", this.startEndSlotChange);
+        this.end.addEventListener("slotchange", this.startEndSlotChange);
+    }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback() {
+        super.disconnectedCallback();
+        this.start.removeEventListener("slotchange", this.startEndSlotChange);
+        this.end.removeEventListener("slotchange", this.startEndSlotChange);
     }
 
     /**
@@ -243,7 +263,7 @@ export class Toolbar extends FoundationElement {
     private static reduceFocusableItems(
         elements: HTMLElement[],
         element: FASTElement & HTMLElement
-    ) {
+    ): HTMLElement[] {
         const isRoleRadio = element.getAttribute("role") === "radio";
         const isFocusableFastElement =
             element.$fastController?.definition.shadowOptions?.delegatesFocus;
@@ -280,6 +300,12 @@ export class Toolbar extends FoundationElement {
             });
         }
     }
+
+    private startEndSlotChange = (): void => {
+        if (this.$fastController.isConnected) {
+            this.reduceFocusableElements();
+        }
+    };
 }
 
 /**
@@ -295,7 +321,7 @@ export class DelegatesARIAToolbar {
      * HTML Attribute: aria-labelledby
      */
     @attr({ attribute: "aria-labelledby" })
-    public ariaLabelledby: string;
+    public ariaLabelledby: string | null;
 
     /**
      * The label surfaced to assistive technologies.
@@ -305,7 +331,7 @@ export class DelegatesARIAToolbar {
      * HTML Attribute: aria-label
      */
     @attr({ attribute: "aria-label" })
-    public ariaLabel: string;
+    public ariaLabel: string | null;
 }
 
 /**

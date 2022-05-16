@@ -3,6 +3,7 @@ id: listbox
 title: fast-listbox
 sidebar_label: listbox
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/listbox/README.md
+description: fast-listbox is a web component implementation of a listbox.
 ---
 
 An implementation of a [listbox](https://www.w3.org/TR/wai-aria-practices-1.2/#Listbox). While any DOM content is permissible as a child of the listbox, only [`fast-option`](/docs/components/listbox-option) elements, `option` elements, and slotted items with `role="option"` will be treated as options and receive keyboard support.
@@ -54,6 +55,125 @@ export const myListbox = Listbox.compose({
 ### Option
 
 See [listbox-option](/docs/components/listbox-option) for more information.
+
+## API
+
+
+
+### class: `ListboxElement`
+
+#### Superclass
+
+| Name      | Module                  | Package |
+| --------- | ----------------------- | ------- |
+| `Listbox` | /src/listbox/listbox.js |         |
+
+#### Static Fields
+
+| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
+| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
+| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | Listbox        |
+
+#### Fields
+
+| Name               | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| ------------------ | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `multiple`         | public    | `boolean`                             |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                |                   |
+| `size`             | public    | `number`                              |         | The maximum number of options to display.                                                                                                                                           |                   |
+| `length`           | public    | `number`                              |         | The number of options.                                                                                                                                                              | Listbox           |
+| `options`          | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                | Listbox           |
+| `typeAheadExpired` | protected |                                       |         |                                                                                                                                                                                     | Listbox           |
+| `disabled`         | public    | `boolean`                             |         | The disabled state of the listbox.                                                                                                                                                  | Listbox           |
+| `selectedIndex`    | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   | Listbox           |
+| `selectedOptions`  | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               | Listbox           |
+| `$presentation`    | public    | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`         | public    | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`           | public    | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name                 | Privacy   | Description                                    | Parameters | Return | Inherited From    |
+| -------------------- | --------- | ---------------------------------------------- | ---------- | ------ | ----------------- |
+| `setSelectedOptions` | public    | Sets an option as selected and gives it focus. |            |        | Listbox           |
+| `selectFirstOption`  | public    | Moves focus to the first selectable option.    |            | `void` | Listbox           |
+| `templateChanged`    | protected |                                                |            | `void` | FoundationElement |
+| `stylesChanged`      | protected |                                                |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name | Field    | Inherited From |
+| ---- | -------- | -------------- |
+|      | multiple | Listbox        |
+|      | multiple | Listbox        |
+
+<hr/>
+
+
+
+### class: `Listbox`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Static Fields
+
+| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
+| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
+| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. |                |
+
+#### Fields
+
+| Name               | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| ------------------ | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `length`           | public    | `number`                              |         | The number of options.                                                                                                                                                              |                   |
+| `options`          | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                |                   |
+| `typeAheadExpired` | protected |                                       |         |                                                                                                                                                                                     |                   |
+| `disabled`         | public    | `boolean`                             |         | The disabled state of the listbox.                                                                                                                                                  |                   |
+| `selectedIndex`    | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   |                   |
+| `selectedOptions`  | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               |                   |
+| `$presentation`    | public    | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`         | public    | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`           | public    | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name                 | Privacy   | Description                                    | Parameters | Return | Inherited From    |
+| -------------------- | --------- | ---------------------------------------------- | ---------- | ------ | ----------------- |
+| `selectFirstOption`  | public    | Moves focus to the first selectable option.    |            | `void` |                   |
+| `setSelectedOptions` | public    | Sets an option as selected and gives it focus. |            |        |                   |
+| `templateChanged`    | protected |                                                |            | `void` | FoundationElement |
+| `stylesChanged`      | protected |                                                |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name | Field    | Inherited From |
+| ---- | -------- | -------------- |
+|      | disabled |                |
+
+#### Slots
+
+| Name | Description                              |
+| ---- | ---------------------------------------- |
+|      | The default slot for the listbox options |
+
+<hr/>
+
+### class: `DelegatesARIAListbox`
+
+#### Fields
+
+| Name                   | Privacy | Type                                  | Default | Description                                                            | Inherited From |
+| ---------------------- | ------- | ------------------------------------- | ------- | ---------------------------------------------------------------------- | -------------- |
+| `ariaActiveDescendant` | public  | `string or null`                      |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
+| `ariaDisabled`         | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
+| `ariaExpanded`         | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
+| `ariaMultiSelectable`  | public  | `"true" or "false" or string or null` |         | See https://w3c.github.io/aria/#listbox for more information          |                |
+
+<hr/>
+
 
 ## Additional resources
 

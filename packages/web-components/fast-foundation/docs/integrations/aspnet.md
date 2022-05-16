@@ -3,6 +3,7 @@ id: aspnet
 title: ASP.NET
 sidebar_label: ASP.NET
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/aspnet.md
+description: FAST works naturally with ASP.NET server-side development, by simply adding a script tag and using the custom HTML elements. Let's take a look at how to set things up.
 ---
 
 FAST works naturally with ASP.NET server-side development, by simply adding a script tag and using the custom HTML elements. Let's take a look at how to set things up.
@@ -35,7 +36,11 @@ The markup above always references the latest release of the components. When de
 <script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-components@2.16.0/dist/fast-components.min.js"></script>
 ```
 
-The best place to put this is typically in your `_Layout.cshtml` file in the script section at the bottom of the `<body>`.
+The best place to put this is typically in your `_Layout.cshtml` file in the script section at the bottom of the `<body>`. Be sure to use double `@` if you are placing this script in any of the files with `cshtml` extension as compiler will treat it with Razor directive:
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@@microsoft/fast-components/dist/fast-components.min.js"></script>
+```
 
 If you wish to leverage NPM instead, run the following command:
 

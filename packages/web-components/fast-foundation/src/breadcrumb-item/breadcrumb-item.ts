@@ -1,11 +1,17 @@
 import { observable, SyntheticViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { Anchor, DelegatesARIALink } from "../anchor";
-import { StartEnd, StartEndOptions } from "../patterns/index";
-import { applyMixins } from "../utilities/apply-mixins";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { Anchor, DelegatesARIALink } from "../anchor/anchor.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Breadcrumb Item configuration options
+ *
+ * @slot - The default slot for when no href is provided or for providing your own custom elements
+ * @slot separator - The slot for providing a custom separator
+ * @csspart listitem - The wrapping container for the item, represents a semantic listitem
+ * @csspart separator - The wrapping element for the separator
+ *
  * @public
  */
 export type BreadcrumbItemOptions = FoundationElementDefinition &

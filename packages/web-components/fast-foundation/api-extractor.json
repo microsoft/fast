@@ -1,27 +1,11 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
-
-  "mainEntryPointFilePath": "dist/dts/index.d.ts",
-
-  "apiReport": {
-      "enabled": true,
-      "reportFolder": "docs",
-      "reportFileName": "api-report.md"
-  },
-
-  "docModel": {
-      "enabled": true,
-      "apiJsonFilePath": "dist/fast-foundation.api.json"
-  },
-
-  "dtsRollup": {
-      "enabled": true
-  },
+  "extends": "../../../api-extractor.json",
   "messages": {
       "extractorMessageReporting": {
         "ae-different-release-tags": {
             "logLevel": "none",
-            "addToApiReportFile": true 
+            "addToApiReportFile": true
         }
       }
     }

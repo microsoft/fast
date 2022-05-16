@@ -6,13 +6,16 @@ import {
     keyEnter,
     keySpace,
 } from "@microsoft/fast-web-utilities";
-import type { AnchoredRegion } from "../anchored-region";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
-import type { Menu } from "../menu/menu";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
-import { getDirection } from "../utilities/";
-import { applyMixins } from "../utilities/apply-mixins";
-import { MenuItemRole, roleForMenuItem } from "./menu-item.options";
+import type { AnchoredRegion } from "../anchored-region/anchored-region.js";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
+import type { Menu } from "../menu/menu.js";
+import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { getDirection } from "../utilities/direction.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { MenuItemRole, roleForMenuItem } from "./menu-item.options.js";
 
 export { MenuItemRole, roleForMenuItem };
 
@@ -36,6 +39,23 @@ export type MenuItemOptions = FoundationElementDefinition &
 /**
  * A Switch Custom HTML Element.
  * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#menuitem | ARIA menuitem }, {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemcheckbox | ARIA menuitemcheckbox}, or {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemradio | ARIA menuitemradio }.
+ *
+ * @slot checked-indicator - The checked indicator
+ * @slot radio-indicator - The radio indicator
+ * @slot start - Content which can be provided before the menu item content
+ * @slot end - Content which can be provided after the menu item content
+ * @slot - The default slot for menu item content
+ * @slot expand-collapse-indicator - The expand/collapse indicator
+ * @slot submenu - Used to nest menu's within menu items
+ * @csspart input-container - The element representing the visual checked or radio indicator
+ * @csspart checkbox - The element wrapping the `menuitemcheckbox` indicator
+ * @csspart radio - The element wrapping the `menuitemradio` indicator
+ * @csspart content - The element wrapping the menu item content
+ * @csspart expand-collapse-glyph-container - The element wrapping the expand collapse element
+ * @csspart expand-collapse - The expand/collapse element
+ * @csspart submenu-region - The container for the submenu, used for positioning
+ * @fires expanded-change - Fires a custom 'expanded-change' event when the expanded state changes
+ * @fires change - Fires a custom 'change' event when a non-submenu item with a role of `menuitemcheckbox`, `menuitemradio`, or `menuitem` is invoked
  *
  * @public
  */
@@ -98,7 +118,7 @@ export class MenuItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public checked: boolean;
-    private checkedChanged(oldValue, newValue): void {
+    private checkedChanged(oldValue: boolean, newValue: boolean): void {
         if (this.$fastController.isConnected) {
             this.$emit("change");
         }
@@ -306,7 +326,7 @@ export class MenuItem extends FoundationElement {
      * get an array of valid DOM children
      */
     private domChildren(): Element[] {
-        return Array.from(this.children);
+        return Array.from(this.children).filter(child => !child.hasAttribute("hidden"));
     }
 }
 

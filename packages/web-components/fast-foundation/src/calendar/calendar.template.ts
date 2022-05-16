@@ -1,10 +1,10 @@
 import { html, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
-import { DataGrid, DataGridCell, DataGridRow } from "../data-grid";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
-import type { Calendar, CalendarDateInfo, CalendarOptions } from "./calendar";
+import { endTemplate, startTemplate } from "../patterns/start-end.js";
+import { DataGrid, DataGridCell, DataGridRow } from "../data-grid/index.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { ElementDefinitionContext } from "../design-system/registration-context.js";
+import type { Calendar, CalendarDateInfo, CalendarOptions } from "./calendar.js";
 
 /**
  * A basic Calendar title template that includes the month and year
@@ -33,7 +33,9 @@ export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
  * @returns - The weekday labels template
  * @public
  */
-export const calendarWeekdayTemplate: (context) => ViewTemplate = context => {
+export const calendarWeekdayTemplate: (
+    context: ElementDefinitionContext
+) => ViewTemplate = context => {
     const cellTag = context.tagFor(DataGridCell);
     return html`
         <${cellTag}

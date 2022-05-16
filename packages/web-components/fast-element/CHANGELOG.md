@@ -1,8 +1,56 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Sun, 23 Jan 2022 07:13:56 GMT and should not be manually modified.
+This log was last generated on Tue, 03 May 2022 07:15:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.10.1
+
+Tue, 03 May 2022 07:15:44 GMT
+
+### Patches
+
+- Upgraded api-extractor (44823142+williamw2@users.noreply.github.com)
+
+## 1.10.0
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Minor changes
+
+- update to typescript 4.6.2 and update ARIAMixin typings (chhol@microsoft.com)
+
+## 1.9.0
+
+Wed, 06 Apr 2022 07:12:42 GMT
+
+### Minor changes
+
+- convert fast-element to type:module (nicholasrice@users.noreply.github.com)
+
+## 1.8.0
+
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Minor changes
+
+- feat: enable multiple fast-element instances in browser at once (roeisenb@microsoft.com)
+
+## 1.7.2
+
+Fri, 25 Feb 2022 17:09:32 GMT
+
+### Patches
+
+- fix: defend against for/in use on arrays (roeisenb@microsoft.com)
+
+## 1.7.1
+
+Thu, 24 Feb 2022 22:21:55 GMT
+
+### Patches
+
+- fix: prevent duplicative array observation patch (roeisenb@microsoft.com)
 
 ## 1.7.0
 

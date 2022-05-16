@@ -3,9 +3,12 @@ import {
     nullableNumberConverter,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
+import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Accordion Item configuration options
@@ -19,6 +22,22 @@ export type AccordionItemOptions = FoundationElementDefinition &
 
 /**
  * An individual item in an {@link @microsoft/fast-foundation#(Accordion:class) }.
+ *
+ * @slot start - Content which can be provided between the heading and the icon
+ * @slot end - Content which can be provided between the start slot and icon
+ * @slot heading - Content which serves as the accordion item heading and text of the expand button
+ * @slot - The default slot for accordion item content
+ * @slot expanded-icon - The expanded icon
+ * @slot collapsed-icon - The collapsed icon
+ * @fires change - Fires a custom 'change' event when the button is invoked
+ * @csspart heading - Wraps the button
+ * @csspart button - The button which serves to invoke the item
+ * @csspart heading-content - Wraps the slot for the heading content within the button
+ * @csspart icon - The icon container
+ * @csspart expanded-icon - The expanded icon slot
+ * @csspart collapsed-icon - The collapsed icon
+ * @csspart region - The wrapper for the accordion item content
+ *
  * @public
  */
 export class AccordionItem extends FoundationElement {

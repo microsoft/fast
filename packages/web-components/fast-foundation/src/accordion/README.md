@@ -3,6 +3,7 @@ id: accordion
 title: fast-accordion
 sidebar_label: accordion
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/accordion/README.md
+description: fast-accordion is a web component implementation of an accordion.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#accordion):
@@ -98,6 +99,130 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
     expandedIcon: `...default expanded icon...`,
 });
 ```
+
+## API
+
+
+
+### class: `Accordion`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `expandmode`    | public  | `AccordionExpandMode`                 |         | Controls the expand mode of the Accordion, either allowing single or multiple item expansion.                                                                                       |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Events
+
+| Name     | Type | Description                                                | Inherited From |
+| -------- | ---- | ---------------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the active item changes |                |
+
+#### Attributes
+
+| Name          | Field      | Inherited From |
+| ------------- | ---------- | -------------- |
+| `expand-mode` | expandmode |                |
+
+#### CSS Parts
+
+| Name   | Description                      |
+| ------ | -------------------------------- |
+| `item` | The slot for the accordion items |
+
+<hr/>
+
+### Variables
+
+| Name                  | Description               | Type                                    |
+| --------------------- | ------------------------- | --------------------------------------- |
+| `AccordionExpandMode` | Expand mode for Accordion | `{ single: "single", multi: "multi", }` |
+
+<hr/>
+
+
+
+### class: `AccordionItem`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `headinglevel`  | public  | `1 or 2 or 3 or 4 or 5 or 6`          | `2`     | Configures the [level](https://www.w3.org/TR/wai-aria-1.1/#aria-level) of the heading element.                                                                                  |                   |
+| `expanded`      | public  | `boolean`                             | `false` | Expands or collapses the item.                                                                                                                                                      |                   |
+| `id`            | public  | `string`                              |         | The item ID                                                                                                                                                                         |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Events
+
+| Name     | Type | Description                                              | Inherited From |
+| -------- | ---- | -------------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the button is invoked |                |
+
+#### Attributes
+
+| Name            | Field        | Inherited From |
+| --------------- | ------------ | -------------- |
+| `heading-level` | headinglevel |                |
+|                 | expanded     |                |
+| `id`            | id           |                |
+
+#### CSS Parts
+
+| Name              | Description                                              |
+| ----------------- | -------------------------------------------------------- |
+| `heading`         | Wraps the button                                         |
+| `button`          | The button which serves to invoke the item               |
+| `heading-content` | Wraps the slot for the heading content within the button |
+| `icon`            | The icon container                                       |
+| `expanded-icon`   | The expanded icon slot                                   |
+| `collapsed-icon`  | The collapsed icon                                       |
+| `region`          | The wrapper for the accordion item content               |
+
+#### Slots
+
+| Name             | Description                                                                      |
+| ---------------- | -------------------------------------------------------------------------------- |
+| `start`          | Content which can be provided between the heading and the icon                   |
+| `end`            | Content which can be provided between the start slot and icon                    |
+| `heading`        | Content which serves as the accordion item heading and text of the expand button |
+|                  | The default slot for accordion item content                                      |
+| `expanded-icon`  | The expanded icon                                                                |
+| `collapsed-icon` | The collapsed icon                                                               |
+
+<hr/>
+
 
 ## Additional resources
 

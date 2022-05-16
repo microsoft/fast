@@ -3,6 +3,7 @@ id: blazor
 title: Blazor
 sidebar_label: Blazor
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/blazor.md
+description: FAST works seamlessly with Blazor, including integration with Blazor's binding engine and components. Let's take a look at how to set things up.
 ---
 
 FAST works seamlessly with Blazor, including integration with Blazor's binding engine and components. Let's take a look at how to set things up.
@@ -58,7 +59,7 @@ node_modules/@fluentui/web-components/dist/web-components.min.js
 Copy this to your `wwwroot/script` folder and reference it with a script tag as described above.
 
 :::note
-If you are setting up Fluent UI Web Components on a Blazor Server project, you will need to escape the `@` character by repeating it in the source link. For more information check out the [Razor Pages syntax documentation](/aspnet/core/mvc/views/razor).
+If you are setting up Fluent UI Web Components on a Blazor Server project, you will need to escape the `@` character by repeating it in the source link. For more information check out the [Razor Pages syntax documentation](https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-6.0).
 :::
 
 ### Using the FluentUI Web Components
@@ -109,7 +110,7 @@ The Fluent UI Web Components are built on FAST's Adaptive UI technology, which e
 ```
 
 :::note
-Provider token attributes can be changed on-th-fly like any other Blazor component attribute.
+Provider token attributes can be changed on-the-fly like any other Blazor component attribute.
 :::
 
 If you are attempting to configure the components for integration into a specific Microsoft product, the following table provides `AccentBaseColor` values you can use:
@@ -158,7 +159,7 @@ node_modules/@microsoft/fast-components/dist/fast-components.min.js
 Copy this to your `wwwroot/script` folder and reference it with a script tag as described above.
 
 :::note
-If you are setting up Fluent UI Web Components on a Blazor Server project, you will need to escape the `@` character by repeating it in the source link. For more information check out the [Razor Pages syntax documentation](/aspnet/core/mvc/views/razor).
+If you are setting up Fluent UI Web Components on a Blazor Server project, you will need to escape the `@` character by repeating it in the source link. For more information check out the [Razor Pages syntax documentation](https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-6.0).
 :::
 
 ### Using the FAST Web Components

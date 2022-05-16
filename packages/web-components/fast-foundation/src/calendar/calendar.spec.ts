@@ -29,14 +29,14 @@ const FASTDataGrid = DataGrid.compose({
 });
 
 /**
- * initialization of the custome <fast-calendar/> element
+ * initialization of the custom <fast-calendar/> element
  */
 const FASTCalendar = Calendar.compose({
     baseName: "calendar",
     template: calendarTemplate
 })
 
-async function setup(props?) {
+async function setup(props?: {}) {
     const { document, element, connect, disconnect }: {
         document: Document,
         element: HTMLElement & Calendar,

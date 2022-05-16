@@ -6,3 +6,5 @@ dist
 coverage
 # don't lint www
 www
+# don't lint test files
+__test__

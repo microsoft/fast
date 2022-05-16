@@ -5,12 +5,12 @@ import {
     rgbToHSL,
     rgbToLAB,
     rgbToLCH,
-} from "./color-converters";
-import { ColorHSL } from "./color-hsl";
-import { ColorLAB } from "./color-lab";
-import { ColorLCH } from "./color-lch";
-import { ColorRGBA64 } from "./color-rgba-64";
-import { clamp } from "./math-utilities";
+} from "./color-converters.js";
+import { ColorHSL } from "./color-hsl.js";
+import { ColorLAB } from "./color-lab.js";
+import { ColorLCH } from "./color-lch.js";
+import { ColorRGBA64 } from "./color-rgba-64.js";
+import { clamp } from "./math-utilities.js";
 
 /**
  * Saturate a color using LCH color space

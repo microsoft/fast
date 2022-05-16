@@ -1,9 +1,9 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import { Listbox } from "../listbox/listbox";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { Combobox, ComboboxOptions } from "./combobox";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import { Listbox } from "../listbox/listbox.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { Combobox, ComboboxOptions } from "./combobox.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Combobox:class)} component.
@@ -18,6 +18,7 @@ export const comboboxTemplate: FoundationElementTemplate<
         autocomplete="${x => x.autocomplete}"
         class="${x => (x.open ? "open" : "")} ${x =>
             x.disabled ? "disabled" : ""} ${x => x.position}"
+        ?open="${x => x.open}"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
@@ -55,6 +56,7 @@ export const comboboxTemplate: FoundationElementTemplate<
         </div>
         <div
             class="listbox"
+            id="${x => x.listboxId}"
             part="listbox"
             role="listbox"
             ?disabled="${x => x.disabled}"

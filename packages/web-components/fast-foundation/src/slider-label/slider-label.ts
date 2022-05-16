@@ -1,8 +1,8 @@
 import { attr, Notifier, Observable, observable } from "@microsoft/fast-element";
 import { Direction, Orientation } from "@microsoft/fast-web-utilities";
-import type { SliderConfiguration } from "../slider/index";
-import { convertPixelToPercent } from "../slider/slider-utilities";
-import { FoundationElement } from "../foundation-element";
+import type { SliderConfiguration } from "../slider/slider.js";
+import { convertPixelToPercent } from "../slider/slider-utilities.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 const defaultConfig: SliderConfiguration = {
     min: 0,
@@ -14,6 +14,9 @@ const defaultConfig: SliderConfiguration = {
 
 /**
  * A label element intended to be used with the {@link @microsoft/fast-foundation#(Slider:class)} component.
+ *
+ * @slot - The default slot for the label content
+ * @csspart root - The element wrapping the label mark and text
  *
  * @public
  */

@@ -1,7 +1,7 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { FormAssociatedRadio } from "./radio.form-associated";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { FormAssociatedRadio } from "./radio.form-associated.js";
 
 /**
  * A structure representing a {@link @microsoft/fast-foundation#(Radio:class)} element
@@ -23,6 +23,12 @@ export type RadioOptions = FoundationElementDefinition & {
 /**
  * A Radio Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#radio | ARIA radio }.
+ *
+ * @slot checked-indicator - The checked indicator
+ * @slot - The default slot for the label
+ * @csspart control - The element representing the visual radio control
+ * @csspart label - The label
+ * @fires change - Emits a custom change event when the checked state changes
  *
  * @public
  */

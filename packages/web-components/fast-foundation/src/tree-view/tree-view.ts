@@ -10,233 +10,319 @@ import {
     keyEnter,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import { isTreeItemElement, TreeItem } from "../tree-item";
-import { FoundationElement } from "../foundation-element";
+import { isTreeItemElement, TreeItem } from "../tree-item/tree-item.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Tree view Custom HTML Element.
  * Implements the {@link https://w3c.github.io/aria-practices/#TreeView | ARIA TreeView }.
  *
+ * @slot - The default slot for tree items
+ *
  * @public
  */
 export class TreeView extends FoundationElement {
-    public treeView: HTMLElement;
-
+    /**
+   /**
+    * When true, the control will be appear expanded by user interaction.
+    * @public
+    * @remarks
+    * HTML Attribute: render-collapsed-nodes
+    */
     @attr({ attribute: "render-collapsed-nodes" })
     public renderCollapsedNodes: boolean;
 
+    /**
+     * The currently selected tree item
+     * @public
+     */
     @observable
     public currentSelected: HTMLElement | TreeItem | null;
 
-    @observable
-    private nested: boolean;
-
+    /**
+     *  Slotted children
+     *
+     * @internal
+     */
     @observable slottedTreeItems: HTMLElement[];
-    private slottedTreeItemsChanged(oldValue, newValue): void {
+    private slottedTreeItemsChanged(): void {
         if (this.$fastController.isConnected) {
-            // filter the tree items until that's done for us in the framework
-            this.resetItems();
-            this.treeItems = this.getVisibleNodes();
+            // update for slotted children change
             this.setItems();
-
-            // check if any tree items have nested items
-            // if they do, apply the nested attribute
-            if (this.checkForNestedItems()) {
-                this.slottedTreeItems.forEach(node => {
-                    if (isTreeItemElement(node)) {
-                        (node as TreeItem).nested = true;
-                    }
-                });
-            }
         }
     }
 
-    private checkForNestedItems(): boolean {
-        return this.slottedTreeItems.some((node: HTMLElement) => {
-            return isTreeItemElement(node) && node.querySelector("[role='treeitem']");
-        });
-    }
+    /**
+     * The tree item that is designated to be in the tab queue.
+     *
+     * @internal
+     */
+    public currentFocused: HTMLElement | TreeItem | null = null;
 
-    public currentFocused: HTMLElement | TreeItem | null;
+    /**
+     * Handle focus events
+     *
+     * @internal
+     */
+    public handleFocus = (e: FocusEvent): void => {
+        if (this.slottedTreeItems.length < 1) {
+            // no child items, nothing to do
+            return;
+        }
 
-    private treeItems: HTMLElement[];
+        if (e.target === this) {
+            if (this.currentFocused === null) {
+                this.currentFocused = this.getValidFocusableItem();
+            }
 
+            if (this.currentFocused !== null) {
+                TreeItem.focusItem(this.currentFocused);
+            }
+
+            return;
+        }
+
+        if (this.contains(e.target as Node)) {
+            this.setAttribute("tabindex", "-1");
+            this.currentFocused = e.target as HTMLElement;
+        }
+    };
+
+    /**
+     * Handle blur events
+     *
+     * @internal
+     */
     public handleBlur = (e: FocusEvent): void => {
-        const { relatedTarget, target } = e;
         if (
-            target instanceof HTMLElement &&
-            (relatedTarget === null || !this.contains(relatedTarget as Node))
+            e.target instanceof HTMLElement &&
+            (e.relatedTarget === null || !this.contains(e.relatedTarget as Node))
         ) {
             this.setAttribute("tabindex", "0");
         }
     };
 
-    public handleFocus = (e: FocusEvent): void => {
-        const { relatedTarget, target } = e;
+    /**
+     * ref to the tree item
+     *
+     * @internal
+     */
+    public treeView: HTMLElement;
 
-        if (
-            target instanceof HTMLElement &&
-            (relatedTarget === null || !this.contains(relatedTarget as Node))
-        ) {
-            const treeView = this as HTMLElement;
-            if (target === this && this.currentFocused instanceof TreeItem) {
-                TreeItem.focusItem(this.currentFocused);
-                this.currentFocused.setAttribute("tabindex", "0");
-            }
-            treeView.setAttribute("tabindex", "-1");
-        }
-    };
+    private nested: boolean;
 
     public connectedCallback(): void {
         super.connectedCallback();
-        this.treeItems = this.getVisibleNodes();
-
+        this.setAttribute("tabindex", "0");
         DOM.queueUpdate(() => {
-            //only supporting single select
-            const node: HTMLElement | null = this.treeView.querySelector(
-                "[aria-selected='true']"
-            );
-            if (node) {
-                this.currentSelected = node;
-            }
+            this.setItems();
         });
     }
 
-    public handleKeyDown = (e: KeyboardEvent): void | boolean => {
-        if (!this.treeItems) {
+    /**
+     * KeyDown handler
+     *
+     *  @internal
+     */
+    public handleKeyDown = (e: KeyboardEvent): boolean | void => {
+        if (e.defaultPrevented) {
+            return;
+        }
+
+        if (this.slottedTreeItems.length < 1) {
             return true;
         }
 
+        const treeItems: HTMLElement[] | void = this.getVisibleNodes();
+
         switch (e.key) {
             case keyHome:
-                if (this.treeItems && this.treeItems.length) {
-                    TreeItem.focusItem(this.treeItems[0]);
-                    this.treeItems[0].setAttribute("tabindex", "0");
+                if (treeItems.length) {
+                    TreeItem.focusItem(treeItems[0]);
                 }
-                break;
+                return;
             case keyEnd:
-                if (this.treeItems && this.treeItems.length) {
-                    TreeItem.focusItem(this.treeItems[this.treeItems.length - 1]);
-                    this.treeItems[this.treeItems.length - 1].setAttribute(
-                        "tabindex",
-                        "0"
-                    );
+                if (treeItems.length) {
+                    TreeItem.focusItem(treeItems[treeItems.length - 1]);
                 }
-                break;
+                return;
             case keyArrowLeft:
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     const item = e.target as HTMLElement;
-                    if (item instanceof TreeItem && item.childItemLength() > 0) {
+
+                    if (
+                        item instanceof TreeItem &&
+                        item.childItemLength() > 0 &&
+                        item.expanded
+                    ) {
                         item.expanded = false;
+                    } else if (
+                        item instanceof TreeItem &&
+                        item.parentElement instanceof TreeItem
+                    ) {
+                        TreeItem.focusItem(item.parentElement);
                     }
                 }
-                break;
+                return false;
             case keyArrowRight:
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     const item = e.target as HTMLElement;
-                    if (item instanceof TreeItem && item.childItemLength() > 0) {
+                    if (
+                        item instanceof TreeItem &&
+                        item.childItemLength() > 0 &&
+                        !item.expanded
+                    ) {
                         item.expanded = true;
+                    } else if (item instanceof TreeItem && item.childItemLength() > 0) {
+                        this.focusNextNode(1, e.target as TreeItem);
                     }
                 }
-                break;
+                return;
             case keyArrowDown:
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     this.focusNextNode(1, e.target as TreeItem);
                 }
-                break;
+                return;
             case keyArrowUp:
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     this.focusNextNode(-1, e.target as TreeItem);
                 }
-                break;
+                return;
             case keyEnter:
                 // In single-select trees where selection does not follow focus (see note below),
                 // the default action is typically to select the focused node.
-                this.handleSelected(e.target as TreeItem);
-                break;
-            default:
-                return true;
+                this.handleClick(e as Event);
+                return;
         }
+
+        // don't prevent default if we took no action
+        return true;
     };
 
+    /**
+     * Handles click events bubbling up
+     *
+     *  @internal
+     */
+    public handleClick(e: Event): boolean | void {
+        if (e.defaultPrevented) {
+            // handled, do nothing
+            return;
+        }
+
+        if (!(e.target instanceof Element) || !isTreeItemElement(e.target as Element)) {
+            // not a tree item, ignore
+            return true;
+        }
+
+        const item: TreeItem = e.target as TreeItem;
+
+        if (!item.disabled) {
+            item.selected = !item.selected;
+        }
+
+        return;
+    }
+
+    /**
+     * Handles the selected-changed events bubbling up
+     * from child tree items
+     *
+     *  @internal
+     */
+    public handleSelectedChange = (e: Event): boolean | void => {
+        if (e.defaultPrevented) {
+            return;
+        }
+
+        if (!(e.target instanceof Element) || !isTreeItemElement(e.target as Element)) {
+            return true;
+        }
+
+        const item: TreeItem = e.target as TreeItem;
+
+        if (item.selected) {
+            if (this.currentSelected && this.currentSelected !== item) {
+                (this.currentSelected as TreeItem).selected = false;
+            }
+            // new selected item
+            this.currentSelected = item;
+        } else if (!item.selected && this.currentSelected === item) {
+            // selected item deselected
+            this.currentSelected = null;
+        }
+
+        return;
+    };
+
+    /**
+     * Move focus to a tree item based on its offset from the provided item
+     */
     private focusNextNode(delta: number, item: TreeItem): void {
         const visibleNodes: HTMLElement[] | void = this.getVisibleNodes();
         if (!visibleNodes) {
             return;
         }
 
-        const index = visibleNodes.indexOf(item);
-        const lastItem = visibleNodes[index];
-        if (delta < 0 && index > 0) {
-            lastItem.setAttribute("tabindex", "-1");
-        } else if (delta > 0 && index < visibleNodes.length - 1) {
-            lastItem.setAttribute("tabindex", "-1");
-        }
         const focusItem = visibleNodes[visibleNodes.indexOf(item) + delta];
         if (isHTMLElement(focusItem)) {
             TreeItem.focusItem(focusItem);
-            focusItem.setAttribute("tabindex", "0");
-            this.currentFocused = focusItem;
         }
     }
 
+    /**
+     * Updates the tree view when slottedTreeItems changes
+     */
     private setItems = (): void => {
-        let focusIndex = this.treeItems.findIndex(this.isSelectedElement);
+        // force single selection
+        // defaults to first one found
+        const selectedItem: HTMLElement | null = this.treeView.querySelector(
+            "[aria-selected='true']"
+        );
+        this.currentSelected = selectedItem;
+
+        // invalidate the current focused item if it is no longer valid
+        if (this.currentFocused === null || !this.contains(this.currentFocused)) {
+            this.currentFocused = this.getValidFocusableItem();
+        }
+
+        // toggle properties on child elements
+        this.nested = this.checkForNestedItems();
+
+        const treeItems: HTMLElement[] | void = this.getVisibleNodes();
+        treeItems.forEach(node => {
+            if (isTreeItemElement(node)) {
+                (node as TreeItem).nested = this.nested;
+            }
+        });
+    };
+
+    /**
+     * checks if there are any nested tree items
+     */
+    private getValidFocusableItem(): null | HTMLElement | TreeItem {
+        const treeItems: HTMLElement[] | void = this.getVisibleNodes();
+        // default to selected element if there is one
+        let focusIndex = treeItems.findIndex(this.isSelectedElement);
         if (focusIndex === -1) {
-            focusIndex = this.treeItems.findIndex(this.isFocusableElement);
+            // otherwise first focusable tree item
+            focusIndex = treeItems.findIndex(this.isFocusableElement);
+        }
+        if (focusIndex !== -1) {
+            return treeItems[focusIndex];
         }
 
-        for (let item: number = 0; item < this.treeItems.length; item++) {
-            if (item === focusIndex) {
-                this.treeItems[item].setAttribute("tabindex", "0");
-                this.currentFocused = this.treeItems[item];
-            }
-            this.treeItems[item].addEventListener(
-                "selected-change",
-                this.handleItemSelected
-            );
-        }
-    };
-
-    private resetItems = (): void => {
-        for (let item: number = 0; item < this.treeItems.length; item++) {
-            this.treeItems[item].removeEventListener(
-                "selected-change",
-                this.handleItemSelected
-            );
-        }
-    };
-
-    private handleSelected(item: TreeItem): void {
-        if (this.currentSelected !== item) {
-            item.setAttribute("tabindex", "0");
-            if (this.currentSelected instanceof TreeItem && this.currentFocused) {
-                if (!item.disabled) {
-                    this.currentSelected.selected = false;
-                }
-                this.currentFocused.setAttribute("tabindex", "-1");
-            }
-            if (!this.currentSelected) {
-                this.slottedTreeItems.forEach((item: HTMLElement) => {
-                    if (item instanceof TreeItem) {
-                        item.setAttribute("tabindex", "-1");
-                    }
-                });
-            }
-            if (!item.disabled) {
-                item.selected = true;
-                this.currentSelected = item;
-            }
-            this.currentFocused = item;
-        }
+        return null;
     }
 
-    private handleItemSelected = (e: CustomEvent): void => {
-        const newSelection: TreeItem = e.target as TreeItem;
-        if (newSelection !== this.currentSelected) {
-            this.handleSelected(newSelection);
-        }
-    };
+    /**
+     * checks if there are any nested tree items
+     */
+    private checkForNestedItems(): boolean {
+        return this.slottedTreeItems.some((node: HTMLElement) => {
+            return isTreeItemElement(node) && node.querySelector("[role='treeitem']");
+        });
+    }
 
     /**
      * check if the item is focusable

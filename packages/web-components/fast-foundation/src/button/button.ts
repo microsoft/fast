@@ -3,10 +3,10 @@ import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
     StartEndOptions,
-} from "../patterns/index";
-import { applyMixins } from "../utilities/apply-mixins";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { FormAssociatedButton } from "./button.form-associated";
+} from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { FormAssociatedButton } from "./button.form-associated.js";
 
 /**
  * Button configuration options
@@ -17,6 +17,12 @@ export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
 /**
  * A Button Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element }.
+ *
+ * @slot start - Content which can be provided before the button content
+ * @slot end - Content which can be provided after the button content
+ * @slot - The default slot for button content
+ * @csspart control - The button element
+ * @csspart content - The element wrapping button content
  *
  * @public
  */
@@ -255,8 +261,8 @@ export class DelegatesARIAButton {
      * @remarks
      * HTML Attribute: aria-expanded
      */
-    @attr({ attribute: "aria-expanded", mode: "fromView" })
-    public ariaExpanded: "true" | "false" | undefined;
+    @attr({ attribute: "aria-expanded" })
+    public ariaExpanded: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
@@ -264,8 +270,8 @@ export class DelegatesARIAButton {
      * @remarks
      * HTML Attribute: aria-pressed
      */
-    @attr({ attribute: "aria-pressed", mode: "fromView" })
-    public ariaPressed: "true" | "false" | "mixed" | undefined;
+    @attr({ attribute: "aria-pressed" })
+    public ariaPressed: "true" | "false" | "mixed" | string | null;
 }
 
 /**

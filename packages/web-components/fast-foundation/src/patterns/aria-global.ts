@@ -19,8 +19,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-atomic
      */
-    @attr({ attribute: "aria-atomic", mode: "fromView" })
-    public ariaAtomic: "true" | "false";
+    @attr({ attribute: "aria-atomic" })
+    public ariaAtomic: "true" | "false" | string | null;
 
     /**
      * Indicates an element is being modified and that assistive technologies MAY want to wait
@@ -31,8 +31,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-busy
      */
-    @attr({ attribute: "aria-busy", mode: "fromView" })
-    public ariaBusy: "true" | "false";
+    @attr({ attribute: "aria-busy" })
+    public ariaBusy: "true" | "false" | string | null;
 
     /**
      * Identifies the element (or elements) whose contents or presence are controlled by the current element.
@@ -42,8 +42,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-controls
      */
-    @attr({ attribute: "aria-controls", mode: "fromView" })
-    public ariaControls: string;
+    @attr({ attribute: "aria-controls" })
+    public ariaControls: string | null;
 
     /**
      * Indicates the element that represents the current item within a container or set of related elements.
@@ -53,7 +53,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-current
      */
-    @attr({ attribute: "aria-current", mode: "fromView" })
+    @attr({ attribute: "aria-current" })
     public ariaCurrent:
         | "page"
         | "step"
@@ -62,7 +62,8 @@ export class ARIAGlobalStatesAndProperties {
         | "time"
         | "true"
         | "false"
-        | string;
+        | string
+        | null;
 
     /**
      * Identifies the element (or elements) that describes the object.
@@ -72,8 +73,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-describedby
      */
-    @attr({ attribute: "aria-describedby", mode: "fromView" })
-    public ariaDescribedby: string;
+    @attr({ attribute: "aria-describedby" })
+    public ariaDescribedby: string | null;
 
     /**
      * Identifies the element that provides a detailed, extended description for the object.
@@ -83,8 +84,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-details
      */
-    @attr({ attribute: "aria-details", mode: "fromView" })
-    public ariaDetails: string;
+    @attr({ attribute: "aria-details" })
+    public ariaDetails: string | null;
 
     /**
      * Indicates that the element is perceivable but disabled, so it is not editable or otherwise operable.
@@ -94,8 +95,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-disabled
      */
-    @attr({ attribute: "aria-disabled", mode: "fromView" })
-    public ariaDisabled: "true" | "false";
+    @attr({ attribute: "aria-disabled" })
+    public ariaDisabled: "true" | "false" | string | null;
 
     /**
      * Identifies the element that provides an error message for the object.
@@ -105,8 +106,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-errormessage
      */
-    @attr({ attribute: "aria-errormessage", mode: "fromView" })
-    public ariaErrormessage: string;
+    @attr({ attribute: "aria-errormessage" })
+    public ariaErrormessage: string | null;
 
     /**
      * Identifies the next element (or elements) in an alternate reading order of content which, at the user's discretion,
@@ -117,8 +118,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-flowto
      */
-    @attr({ attribute: "aria-flowto", mode: "fromView" })
-    public ariaFlowto: string;
+    @attr({ attribute: "aria-flowto" })
+    public ariaFlowto: string | null;
 
     /**
      * Indicates the availability and type of interactive popup element,
@@ -129,7 +130,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-haspopup
      */
-    @attr({ attribute: "aria-haspopup", mode: "fromView" })
+    @attr({ attribute: "aria-haspopup" })
     public ariaHaspopup:
         | "false"
         | "true"
@@ -137,7 +138,9 @@ export class ARIAGlobalStatesAndProperties {
         | "listbox"
         | "tree"
         | "grid"
-        | "dialog";
+        | "dialog"
+        | string
+        | null;
 
     /**
      * Indicates whether the element is exposed to an accessibility API
@@ -147,8 +150,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-hidden
      */
-    @attr({ attribute: "aria-hidden", mode: "fromView" })
-    public ariaHidden: "false" | "true" | undefined;
+    @attr({ attribute: "aria-hidden" })
+    public ariaHidden: "false" | "true" | string | null;
 
     /**
      * Indicates the entered value does not conform to the format expected by the application.
@@ -158,8 +161,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-invalid
      */
-    @attr({ attribute: "aria-invalid", mode: "fromView" })
-    public ariaInvalid: "false" | "true" | "grammar" | "spelling";
+    @attr({ attribute: "aria-invalid" })
+    public ariaInvalid: "false" | "true" | "grammar" | "spelling" | string | null;
 
     /**
      * Indicates keyboard shortcuts that an author has implemented to activate or give focus to an element.
@@ -169,8 +172,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-keyshortcuts
      */
-    @attr({ attribute: "aria-keyshortcuts", mode: "fromView" })
-    public ariaKeyshortcuts: string;
+    @attr({ attribute: "aria-keyshortcuts" })
+    public ariaKeyshortcuts: string | null;
 
     /**
      * Defines a string value that labels the current element.
@@ -180,8 +183,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-label
      */
-    @attr({ attribute: "aria-label", mode: "fromView" })
-    public ariaLabel: string;
+    @attr({ attribute: "aria-label" })
+    public ariaLabel: string | null;
 
     /**
      * Identifies the element (or elements) that labels the current element.
@@ -191,8 +194,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-labelledby
      */
-    @attr({ attribute: "aria-labelledby", mode: "fromView" })
-    public ariaLabelledby: string;
+    @attr({ attribute: "aria-labelledby" })
+    public ariaLabelledby: string | null;
 
     /**
      * Indicates that an element will be updated, and describes the types of updates the user agents,
@@ -203,8 +206,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-live
      */
-    @attr({ attribute: "aria-live", mode: "fromView" })
-    public ariaLive: "assertive" | "off" | "polite";
+    @attr({ attribute: "aria-live" })
+    public ariaLive: "assertive" | "off" | "polite" | string | null;
 
     /**
      * Identifies an element (or elements) in order to define a visual,
@@ -216,8 +219,8 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-owns
      */
-    @attr({ attribute: "aria-owns", mode: "fromView" })
-    public ariaOwns: string;
+    @attr({ attribute: "aria-owns" })
+    public ariaOwns: string | null;
 
     /**
      * Indicates what notifications the user agent will trigger when the accessibility tree within a live region is modified.
@@ -227,8 +230,15 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-relevant
      */
-    @attr({ attribute: "aria-relevant", mode: "fromView" })
-    public ariaRelevant: "additions" | "additions text" | "all" | "removals" | "text";
+    @attr({ attribute: "aria-relevant" })
+    public ariaRelevant:
+        | "additions"
+        | "additions text"
+        | "all"
+        | "removals"
+        | "text"
+        | string
+        | null;
 
     /**
      * Defines a human-readable, author-localized description for the role of an element.
@@ -238,6 +248,6 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-roledescription
      */
-    @attr({ attribute: "aria-roledescription", mode: "fromView" })
-    public ariaRoledescription: string;
+    @attr({ attribute: "aria-roledescription" })
+    public ariaRoledescription: string | null;
 }

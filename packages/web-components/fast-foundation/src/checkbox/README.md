@@ -3,6 +3,7 @@ id: checkbox
 title: fast-checkbox
 sidebar_label: checkbox
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/checkbox/README.md
+description: fast-checkbox is a form-connected web component implementation of a checkbox.
 ---
 
 An implementation of a [checkbox](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/checkbox) as a form-connected web-component.
@@ -70,6 +71,66 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
     indeterminateIndicator: `...default indeterminate indicator...`,
 });
 ```
+
+## API
+
+
+
+### class: `Checkbox`
+
+#### Superclass
+
+| Name                     | Module                                    | Package |
+| ------------------------ | ----------------------------------------- | ------- |
+| `FormAssociatedCheckbox` | /src/checkbox/checkbox.form-associated.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                 | Inherited From         |
+| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `readOnly`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                        |
+| `indeterminate` | public  | `boolean`                             | `false` | The indeterminate state of the control                                                                                                                                                      |                        |
+| `proxy`         |         |                                       |         |                                                                                                                                                                                             | FormAssociatedCheckbox |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                     | FoundationElement      |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                  | FoundationElement      |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.         | FoundationElement      |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Events
+
+| Name     | Type | Description                                                | Inherited From |
+| -------- | ---- | ---------------------------------------------------------- | -------------- |
+| `change` |      | Emits a custom change event when the checked state changes |                |
+
+#### Attributes
+
+| Name       | Field    | Inherited From |
+| ---------- | -------- | -------------- |
+| `readonly` | readOnly |                |
+
+#### CSS Parts
+
+| Name      | Description                                          |
+| --------- | ---------------------------------------------------- |
+| `control` | The element representing the visual checkbox control |
+| `label`   | The label                                            |
+
+#### Slots
+
+| Name                      | Description                    |
+| ------------------------- | ------------------------------ |
+| `checked-indicator`       | The checked indicator          |
+| `indeterminate-indicator` | The indeterminate indicator    |
+|                           | The default slot for the label |
+
+<hr/>
+
 
 ## Additional resources
 

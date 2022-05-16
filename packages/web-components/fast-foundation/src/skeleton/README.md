@@ -3,6 +3,7 @@ id: skeleton
 title: fast-skeleton
 sidebar_label: skeleton
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/skeleton/README.md
+description: fast-skeleton is a web component implemention of a skeleton.
 ---
 
 The `skeleton` component is used as a visual placeholder for an element while it is in a loading state and usually presents itself as a simplified wireframe-like version of the UI it is representing.
@@ -133,6 +134,55 @@ export const mySkeleton = Skeleton.compose({
     styles,
 });
 ```
+
+## API
+
+
+
+### class: `Skeleton`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default  | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `fill`          | public  | `string`                              |          | Indicates the Skeleton should have a filled style.                                                                                                                                  |                   |
+| `shape`         | public  | `SkeletonShape`                       | `"rect"` | Indicates what the shape of the Skeleton should be.                                                                                                                                 |                   |
+| `pattern`       | public  | `string`                              |          | Indicates that the component can accept a pattern URL.                                                                                                                              |                   |
+| `shimmer`       | public  | `boolean`                             |          | Indicates that the component has an activated shimmer effect                                                                                                                        |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name      | Field   | Inherited From |
+| --------- | ------- | -------------- |
+| `fill`    | fill    |                |
+| `shape`   | shape   |                |
+| `pattern` | pattern |                |
+|           | shimmer |                |
+
+#### Slots
+
+| Name | Description      |
+| ---- | ---------------- |
+|      | The default slot |
+
+<hr/>
+
 
 ## Additional resources
 

@@ -1,8 +1,28 @@
 # Change Log - @microsoft/fast-colors
 
-This log was last generated on Wed, 09 Feb 2022 07:14:00 GMT and should not be manually modified.
+This log was last generated on Wed, 27 Apr 2022 07:21:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 5.3.0
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Minor changes
+
+- update to typescript 4.6.2 and update ARIAMixin typings (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/eslint-config-fast-dna to v2.1.0 (chhol@microsoft.com)
+
+## 5.2.0
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Minor changes
+
+- Convert package to type:module (nicholasrice@users.noreply.github.com)
 
 ## 5.1.5
 

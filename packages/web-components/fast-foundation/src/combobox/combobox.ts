@@ -1,15 +1,15 @@
-import { attr, Observable, observable } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { DelegatesARIAListbox } from "../listbox";
-import type { ListboxOption } from "../listbox-option/listbox-option";
-import { StartEnd } from "../patterns/start-end";
-import type { StartEndOptions } from "../patterns/start-end";
-import { SelectPosition } from "../select/select.options";
-import { applyMixins } from "../utilities/apply-mixins";
-import { FormAssociatedCombobox } from "./combobox.form-associated";
-import { ComboboxAutocomplete } from "./combobox.options";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import type { ListboxOption } from "../listbox-option/listbox-option.js";
+import { DelegatesARIAListbox } from "../listbox/listbox.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd } from "../patterns/start-end.js";
+import { SelectPosition } from "../select/select.options.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { FormAssociatedCombobox } from "./combobox.form-associated.js";
+import { ComboboxAutocomplete } from "./combobox.options.js";
 
 /**
  * Combobox configuration options
@@ -23,6 +23,17 @@ export type ComboboxOptions = FoundationElementDefinition &
 /**
  * A Combobox Custom HTML Element.
  * Implements the {@link https://w3c.github.io/aria-practices/#combobox | ARIA combobox }.
+ *
+ * @slot start - Content which can be provided before the input
+ * @slot end - Content which can be provided after the input
+ * @slot control - Used to replace the input element representing the combobox
+ * @slot indicator - The visual indicator representing the expanded state
+ * @slot - The default slot for the options
+ * @csspart control - The wrapper element containing the input area, including start and end
+ * @csspart selected-value - The input element representing the selected value
+ * @csspart indicator - The element wrapping the indicator slot
+ * @csspart listbox - The wrapper for the listbox slotted options
+ * @fires change - Fires a custom 'change' event when the value updates
  *
  * @public
  */
@@ -105,7 +116,7 @@ export class Combobox extends FormAssociatedCombobox {
     }
 
     /**
-     * The unique id of the internal listbox.
+     * The unique id for the internal listbox element.
      *
      * @internal
      */
@@ -118,11 +129,6 @@ export class Combobox extends FormAssociatedCombobox {
      */
     @observable
     public maxHeight: number = 0;
-    private maxHeightChanged(): void {
-        if (this.listbox) {
-            this.listbox.style.setProperty("--max-height", `${this.maxHeight}px`);
-        }
-    }
 
     /**
      * The open attribute.
@@ -133,13 +139,26 @@ export class Combobox extends FormAssociatedCombobox {
      */
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;
+
+    /**
+     * Sets focus and synchronize ARIA attributes when the open property changes.
+     *
+     * @param prev - the previous open value
+     * @param next - the current open value
+     *
+     * @internal
+     */
     protected openChanged() {
         if (this.open) {
-            this.ariaControls = this.listbox.id;
+            this.ariaControls = this.listboxId;
             this.ariaExpanded = "true";
 
             this.setPositioning();
             this.focusAndScrollOptionIntoView();
+
+            // focus is directed to the element when `open` is changed programmatically
+            DOM.queueUpdate(() => this.focus());
+
             return;
         }
 
@@ -190,7 +209,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition;
+    public positionAttribute?: SelectPosition;
 
     /**
      * The current state of the calculated position of the listbox.
@@ -198,7 +217,14 @@ export class Combobox extends FormAssociatedCombobox {
      * @public
      */
     @observable
-    public position: SelectPosition = SelectPosition.below;
+    public position?: SelectPosition;
+    protected positionChanged(
+        prev: SelectPosition | undefined,
+        next: SelectPosition | undefined
+    ): void {
+        this.positionAttribute = next;
+        this.setPositioning();
+    }
 
     /**
      * The value property.
@@ -258,6 +284,7 @@ export class Combobox extends FormAssociatedCombobox {
 
             this.selectedOptions = [captured];
             this.control.value = captured.text;
+            this.clearSelectionRange();
             this.updateValue(true);
         }
 
@@ -275,10 +302,6 @@ export class Combobox extends FormAssociatedCombobox {
         this.forcedPosition = !!this.positionAttribute;
         if (this.value) {
             this.initialValue = this.value;
-        }
-
-        if (!this.listbox.id) {
-            this.listbox.id = uniqueId("listbox-");
         }
     }
 
@@ -336,7 +359,7 @@ export class Combobox extends FormAssociatedCombobox {
             this.control.focus();
             if (this.firstSelectedOption) {
                 requestAnimationFrame(() => {
-                    this.firstSelectedOption.scrollIntoView({ block: "nearest" });
+                    this.firstSelectedOption?.scrollIntoView({ block: "nearest" });
                 });
             }
         }
@@ -414,8 +437,7 @@ export class Combobox extends FormAssociatedCombobox {
                 }
 
                 this.open = false;
-                const controlValueLength = this.control.value.length;
-                this.control.setSelectionRange(controlValueLength, controlValueLength);
+                this.clearSelectionRange();
                 break;
             }
 
@@ -502,11 +524,12 @@ export class Combobox extends FormAssociatedCombobox {
     /**
      * Ensure that the selectedIndex is within the current allowable filtered range.
      *
+     * @param prev - the previous selected index value
+     * @param next - the current selected index value
+     *
      * @internal
-     * @remarks
-     * Overrides: `Listbox.selectedIndexChanged`
      */
-    public selectedIndexChanged(prev: number, next: number): void {
+    public selectedIndexChanged(prev: number | undefined, next: number): void {
         if (this.$fastController.isConnected) {
             next = limit(-1, this.options.length - 1, next);
 
@@ -600,11 +623,17 @@ export class Combobox extends FormAssociatedCombobox {
     /**
      * Ensure that the entire list of options is used when setting the selected property.
      *
+     * @param prev - the previous list of selected options
+     * @param next - the current list of selected options
+     *
      * @internal
      * @remarks
      * Overrides: `Listbox.selectedOptionsChanged`
      */
-    public selectedOptionsChanged(prev, next): void {
+    public selectedOptionsChanged(
+        prev: ListboxOption[] | undefined,
+        next: ListboxOption[]
+    ): void {
         if (this.$fastController.isConnected) {
             this._options.forEach(o => {
                 o.selected = next.includes(o);
@@ -620,12 +649,16 @@ export class Combobox extends FormAssociatedCombobox {
      *
      * @internal
      */
-    public slottedOptionsChanged(prev, next): void {
+    public slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void {
         super.slottedOptionsChanged(prev, next);
         this.updateValue();
     }
 
     /**
+     * Sets the value and to match the first selected option.
+     *
+     * @param shouldEmit - if true, the change event will be emitted
+     *
      * @internal
      */
     private updateValue(shouldEmit?: boolean) {
@@ -636,6 +669,14 @@ export class Combobox extends FormAssociatedCombobox {
         if (shouldEmit) {
             this.$emit("change");
         }
+    }
+
+    /**
+     * @internal
+     */
+    private clearSelectionRange() {
+        const controlValueLength = this.control.value.length;
+        this.control.setSelectionRange(controlValueLength, controlValueLength);
     }
 }
 
@@ -653,7 +694,7 @@ export class DelegatesARIACombobox {
      * HTML Attribute: `aria-autocomplete`
      */
     @observable
-    public ariaAutoComplete: "inline" | "list" | "both" | "none" | undefined;
+    public ariaAutoComplete: "inline" | "list" | "both" | "none" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#aria-controls} for more information.
@@ -663,7 +704,7 @@ export class DelegatesARIACombobox {
      * HTML Attribute: `aria-controls`
      */
     @observable
-    public ariaControls: string;
+    public ariaControls: string | null;
 }
 
 /**

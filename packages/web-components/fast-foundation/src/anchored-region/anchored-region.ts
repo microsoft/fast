@@ -1,38 +1,38 @@
 import { attr, DOM, observable } from "@microsoft/fast-element";
 import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import { getDirection } from "../utilities/direction";
-import { IntersectionService } from "../utilities/intersection-service";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { getDirection } from "../utilities/direction.js";
+import { IntersectionService } from "../utilities/intersection-service.js";
 import type {
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
-} from "../utilities/resize-observer";
+} from "../utilities/resize-observer.js";
 
 /**
  * Defines the base behavior of an anchored region on a particular axis
  *
- * @beta
+ * @public
  */
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 
 /**
  * Defines the scaling behavior of an anchored region on a particular axis
  *
- * @beta
+ * @public
  */
 export type AxisScalingMode = "anchor" | "fill" | "content";
 
 /**
  * Defines the horizontal positioning options for an anchored region
  *
- * @beta
+ * @public
  */
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "center" | "unset";
 
 /**
  * Defines the vertical positioning options for an anchored region
  *
- * @beta
+ * @public
  */
 export type VerticalPosition = "top" | "bottom" | "center" | "unset";
 
@@ -46,7 +46,7 @@ export type VerticalPosition = "top" | "bottom" | "center" | "unset";
  * - the viewport resizes
  * - any scroll event in the document
  *
- * @beta
+ * @public
  */
 export type AutoUpdateMode = "anchor" | "auto";
 
@@ -54,7 +54,7 @@ export type AutoUpdateMode = "anchor" | "auto";
  * Describes the possible positions of the region relative
  * to its anchor. Depending on the axis start = left/top, end = right/bottom
  *
- * @beta
+ * @public
  */
 export type AnchoredRegionPositionLabel =
     | "start"
@@ -74,13 +74,17 @@ interface Dimension {
 /**
  * An anchored region Custom HTML Element.
  *
- * @beta
+ * @slot - The default slot for the content
+ * @fires loaded - Fires a custom 'loaded' event when the region is loaded and visible
+ * @fires positionchange - Fires a custom 'positionchange' event when the position has changed
+ *
+ * @public
  */
 export class AnchoredRegion extends FoundationElement {
     /**
      * The HTML ID of the anchor element this region is positioned relative to
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: anchor
      */
@@ -95,7 +99,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * The HTML ID of the viewport element this region is positioned relative to
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: anchor
      */
@@ -113,7 +117,7 @@ export class AnchoredRegion extends FoundationElement {
      * 'dynamic' decides placement based on available space
      * 'uncontrolled' does not control placement on the horizontal axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: horizontal-positioning-mode
      */
@@ -126,7 +130,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * The default horizontal position of the region relative to the anchor element
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: horizontal-default-position
      */
@@ -139,7 +143,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * Whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: horizontal-viewport-lock
      */
@@ -152,7 +156,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * Whether the region overlaps the anchor on the horizontal axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: horizontal-inset
      */
@@ -166,7 +170,7 @@ export class AnchoredRegion extends FoundationElement {
      * How narrow the space allocated to the default position has to be before the widest area
      * is selected for layout
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: horizontal-threshold
      */
@@ -179,7 +183,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * Defines how the width of the region is calculated
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: horizontal-scaling
      */
@@ -195,7 +199,7 @@ export class AnchoredRegion extends FoundationElement {
      * 'dynamic' decides placement based on available space
      * 'uncontrolled' does not control placement on the vertical axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: vertical-positioning-mode
      */
@@ -208,7 +212,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * The default vertical position of the region relative to the anchor element
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: vertical-default-position
      */
@@ -221,7 +225,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * Whether the region remains in the viewport (ie. detaches from the anchor) on the vertical axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: vertical-viewport-lock
      */
@@ -234,7 +238,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * Whether the region overlaps the anchor on the vertical axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: vertical-inset
      */
@@ -248,7 +252,7 @@ export class AnchoredRegion extends FoundationElement {
      * How short the space allocated to the default position has to be before the tallest area
      * is selected for layout
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: vertical-threshold
      */
@@ -261,7 +265,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * Defines how the height of the region is calculated
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: vertical-scaling
      */
@@ -276,7 +280,7 @@ export class AnchoredRegion extends FoundationElement {
      * Otherwise the region uses "position: absolute".
      * Fixed placement allows the region to break out of parent containers,
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: fixed-placement
      */
@@ -292,9 +296,9 @@ export class AnchoredRegion extends FoundationElement {
     }
 
     /**
+     * Defines what triggers the anchored region to revaluate positioning
      *
-     *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: auto-update-mode
      */
@@ -321,7 +325,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * The HTML element being used as the anchor
      *
-     * @beta
+     * @public
      */
     @observable
     public anchorElement: HTMLElement | null = null;
@@ -332,7 +336,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * The HTML element being used as the viewport
      *
-     * @beta
+     * @public
      */
     @observable
     public viewportElement: HTMLElement | null = null;
@@ -1022,7 +1026,9 @@ export class AnchoredRegion extends FoundationElement {
         switch (this.horizontalScaling) {
             case "anchor":
             case "fill":
-                nextRegionWidth = nextPositionerDimension.width;
+                nextRegionWidth = this.horizontalViewportLock
+                    ? this.viewportRect.width
+                    : nextPositionerDimension.width;
                 this.regionWidth = `${nextRegionWidth}px`;
                 break;
 
@@ -1131,7 +1137,9 @@ export class AnchoredRegion extends FoundationElement {
         switch (this.verticalScaling) {
             case "anchor":
             case "fill":
-                nextRegionHeight = nextPositionerDimension.height;
+                nextRegionHeight = this.verticalViewportLock
+                    ? this.viewportRect.height
+                    : nextPositionerDimension.height;
                 this.regionHeight = `${nextRegionHeight}px`;
                 break;
 
