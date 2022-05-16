@@ -8,7 +8,10 @@ import {
 import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
 import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
 import { StyleElementStyleRenderer, StyleRenderer } from "./styles/style-renderer.js";
-import { defaultViewBehaviorFactoryRenderers } from "./template-renderer/directives.js";
+import {
+    defaultViewBehaviorFactoryRenderers,
+    ViewBehaviorFactoryRenderer,
+} from "./template-renderer/directives.js";
 import {
     ComponentDOMEmissionMode,
     TemplateRenderer,
@@ -74,8 +77,9 @@ export default function fastSSR(): {
 }
 
 export type {
-    TemplateRenderer,
+    ComponentDOMEmissionMode,
     FASTElementRenderer,
     StyleRenderer,
-    ComponentDOMEmissionMode,
+    TemplateRenderer,
+    ViewBehaviorFactoryRenderer,
 };
