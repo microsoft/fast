@@ -52,13 +52,13 @@ jobs:
     steps:
       # Run benchmarks. Ensure each job's results file has a unique name
       - name: Run tachometer
-      - run: |
+        run: |
         cd packages/utilities/fast-benchmarks
         npm run benchmark:fast-element:create10k
 
       # Upload this benchmarks results
       - name: Upload results
-      - uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: results
           path: bench_1.json
@@ -69,13 +69,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run tachometer and generate results file
-      - run: |
+        run: |
         cd packages/utilities/fast-benchmarks
         npm run benchmark:fast-element:update10th
 
       # Upload this benchmarks results
       - name: Upload results
-      - uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: results
           path: bench_1.json
