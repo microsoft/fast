@@ -23,6 +23,19 @@ import type { SyntheticView } from "./view.js";
 
 // TODO: Fix the code docs in this file.
 
+declare class TrustedHTML {}
+const createInnerHTMLBinding = globalThis.TrustedHTML
+    ? (binding: Binding) => (s, c) => {
+          const value = binding(s, c);
+
+          if (value instanceof TrustedHTML) {
+              return value;
+          }
+
+          throw FAST.error(Message.bindingInnerHTMLRequiresTrustedTypes);
+      }
+    : (binding: Binding) => binding;
+
 /**
  * @alpha
  */
@@ -35,12 +48,9 @@ export type BindingBehaviorFactory = {
  */
 export type BindingType = (directive: HTMLBindingDirective) => BindingBehaviorFactory;
 
-/**
- * @alpha
- */
-export const notSupportedBindingType: BindingType = () => {
-    throw new Error();
-};
+function createType(bindingType: typeof UpdateBinding, updateTarget: UpdateTarget) {
+    return directive => new bindingType(directive, updateTarget);
+}
 
 /**
  * @alpha
@@ -50,10 +60,65 @@ export type BindingMode = Record<AspectType, BindingType>;
 /**
  * @alpha
  */
+export const BindingMode = Object.freeze({
+    define(
+        updateType: typeof UpdateBinding,
+        eventType?: typeof EventBinding
+    ): BindingMode {
+        return Object.freeze({
+            [Aspect.attribute]: createType(updateType, DOM.setAttribute),
+            [Aspect.booleanAttribute]: createType(updateType, DOM.setBooleanAttribute),
+            [Aspect.property]: createType(updateType, (t, a, v) => (t[a] = v)),
+            [Aspect.content]: createType(
+                createContentBinding(updateType),
+                updateContentTarget
+            ),
+            [Aspect.tokenList]: createType(updateType, updateTokenListTarget),
+            [Aspect.event]: eventType
+                ? directive => new eventType(directive)
+                : () => {
+                      throw new Error();
+                  },
+        });
+    },
+});
+
+/**
+ * @alpha
+ */
 export interface BindingConfig<T = any> {
     mode: BindingMode;
     options: any;
 }
+
+/**
+ * @alpha
+ */
+export type BindingConfigResolver<T> = (options: T) => BindingConfig<T>;
+
+/**
+ * @alpha
+ */
+export const BindingConfig = Object.freeze({
+    define<T>(
+        mode: BindingMode,
+        defaultOptions: T
+    ): BindingConfig<T> & BindingConfigResolver<T> {
+        const config: BindingConfig<T> & BindingConfigResolver<T> = (
+            options: T
+        ): BindingConfig<T> => {
+            return {
+                mode: config.mode,
+                options: Object.assign({}, defaultOptions, options),
+            };
+        };
+
+        config.options = defaultOptions;
+        config.mode = mode;
+
+        return config;
+    },
+});
 
 interface UpdateTargetThis {
     directive: HTMLBindingDirective;
@@ -68,8 +133,11 @@ type UpdateTarget = (
     context: ExecutionContext
 ) => void;
 
-class BindingBase {
-    constructor(public readonly directive: HTMLBindingDirective) {}
+class UpdateBinding {
+    constructor(
+        public readonly directive: HTMLBindingDirective,
+        protected updateTarget: UpdateTarget
+    ) {}
 
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {}
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {}
@@ -79,10 +147,8 @@ class BindingBase {
     }
 }
 
-function createContentBinding(
-    BaseType: typeof TargetUpdateBinding
-): typeof TargetUpdateBinding {
-    return class extends BaseType {
+function createContentBinding(Type: typeof UpdateBinding): typeof UpdateBinding {
+    return class extends Type {
         unbind(
             source: any,
             context: ExecutionContext,
@@ -100,6 +166,16 @@ function createContentBinding(
         }
     };
 }
+
+type ComposableView = SyntheticView & {
+    isComposed?: boolean;
+    needsBindOnly?: boolean;
+};
+
+type ContentTarget = Node & {
+    $fastView?: ComposableView;
+    $fastTemplate?: { create(): SyntheticView };
+};
 
 function updateContentTarget(
     target: ContentTarget,
@@ -222,57 +298,13 @@ function updateTokenListTarget(
     }
 }
 
-type BindingConfigResolver<T> = (options: T) => BindingConfig<T>;
-
-class TargetUpdateBinding extends BindingBase {
-    constructor(directive: HTMLBindingDirective, protected updateTarget: UpdateTarget) {
-        super(directive);
-    }
-
-    static createBindingConfig<T>(
-        defaultOptions: T,
-        eventType?: BindingType
-    ): BindingConfig<T> & BindingConfigResolver<T> {
-        const config: BindingConfig<T> & BindingConfigResolver<T> = (
-            options: T
-        ): BindingConfig<T> => {
-            return {
-                mode: config.mode,
-                options: Object.assign({}, defaultOptions, options),
-            };
-        };
-
-        config.options = defaultOptions;
-        config.mode = this.createBindingMode(eventType);
-
-        return config;
-    }
-
-    static createBindingMode(
-        eventType: BindingType = notSupportedBindingType
-    ): BindingMode {
-        return Object.freeze({
-            [Aspect.attribute]: this.createType(DOM.setAttribute),
-            [Aspect.booleanAttribute]: this.createType(DOM.setBooleanAttribute),
-            [Aspect.property]: this.createType((t, a, v) => (t[a] = v)),
-            [Aspect.content]: createContentBinding(this).createType(updateContentTarget),
-            [Aspect.tokenList]: this.createType(updateTokenListTarget),
-            [Aspect.event]: eventType,
-        });
-    }
-
-    private static createType(updateTarget: UpdateTarget) {
-        return directive => new this(directive, updateTarget);
-    }
-}
-
-class OneTimeBinding extends TargetUpdateBinding {
+class OneTimeBinding extends UpdateBinding {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const directive = this.directive;
         const target = targets[directive.nodeId];
         this.updateTarget(
             target,
-            directive.targetAspect!,
+            directive.targetAspect,
             directive.binding(source, context),
             source,
             context
@@ -292,7 +324,7 @@ export function sendSignal(signal: string): void {
     }
 }
 
-class OnSignalBinding extends TargetUpdateBinding {
+class SignalBinding extends UpdateBinding {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const directive = this.directive;
         const target = targets[directive.nodeId];
@@ -343,7 +375,7 @@ class OnSignalBinding extends TargetUpdateBinding {
     }
 }
 
-class OnChangeBinding extends TargetUpdateBinding {
+class ChangeBinding extends UpdateBinding {
     private isBindingVolatile: boolean;
 
     constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget) {
@@ -399,22 +431,14 @@ class OnChangeBinding extends TargetUpdateBinding {
     }
 }
 
-type ComposableView = SyntheticView & {
-    isComposed?: boolean;
-    needsBindOnly?: boolean;
-};
-
-type ContentTarget = Node & {
-    $fastView?: ComposableView;
-    $fastTemplate?: { create(): SyntheticView };
-};
-
 type FASTEventSource = Node & {
     $fastSource: any;
     $fastContext: ExecutionContext | null;
 };
 
-class EventListener extends BindingBase {
+class EventBinding {
+    constructor(public readonly directive: HTMLBindingDirective) {}
+
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const directive = this.directive;
         const target = targets[directive.nodeId] as FASTEventSource;
@@ -450,9 +474,13 @@ class EventListener extends BindingBase {
             event.preventDefault();
         }
     }
+
+    createBehavior(): ViewBehavior {
+        return this;
+    }
 }
 
-class OneTimeEventListener extends EventListener {
+class OneTimeEventBinding extends EventBinding {
     handleEvent(event: Event): void {
         super.handleEvent(event);
         this.removeEventListener(event.currentTarget as FASTEventSource);
@@ -473,20 +501,20 @@ const defaultBindingOptions: DefaultBindingOptions = {
 /**
  * @alpha
  */
-export const onChange = OnChangeBinding.createBindingConfig(
-    defaultBindingOptions,
-    directive => new EventListener(directive)
+export const onChange = BindingConfig.define(
+    BindingMode.define(ChangeBinding, EventBinding),
+    defaultBindingOptions
 );
 
 /**
  * @alpha
  */
-export const oneTime = OneTimeBinding.createBindingConfig(
-    defaultBindingOptions,
-    directive => new OneTimeEventListener(directive)
+export const oneTime = BindingConfig.define(
+    BindingMode.define(OneTimeBinding, OneTimeEventBinding),
+    defaultBindingOptions
 );
 
-const signalMode: BindingMode = OnSignalBinding.createBindingMode();
+const signalMode: BindingMode = BindingMode.define(SignalBinding);
 
 /**
  * @alpha
@@ -494,19 +522,6 @@ const signalMode: BindingMode = OnSignalBinding.createBindingMode();
 export const signal = <T = any>(options: string | Binding<T>): BindingConfig<T> => {
     return { mode: signalMode, options };
 };
-
-declare class TrustedHTML {}
-const createInnerHTMLBinding = globalThis.TrustedHTML
-    ? (binding: Binding) => (s, c) => {
-          const value = binding(s, c);
-
-          if (value instanceof TrustedHTML) {
-              return value;
-          }
-
-          throw FAST.error(Message.bindingInnerHTMLRequiresTrustedTypes);
-      }
-    : (binding: Binding) => binding;
 
 /**
  * @internal

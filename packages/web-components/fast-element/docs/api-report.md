@@ -117,7 +117,17 @@ export interface BindingConfig<T = any> {
 }
 
 // @alpha (undocumented)
+export const BindingConfig: Readonly<{
+    define<T>(mode: BindingMode, defaultOptions: T): BindingConfig<T> & BindingConfigResolver<T>;
+}>;
+
+// @alpha (undocumented)
 export type BindingMode = Record<AspectType, BindingType>;
+
+// @alpha (undocumented)
+export const BindingMode: Readonly<{
+    define(updateType: typeof UpdateBinding, eventType?: typeof EventBinding): BindingMode;
+}>;
 
 // @public
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
@@ -533,8 +543,6 @@ export interface ObservationRecord {
     propertySource: any;
 }
 
-// Warning: (ae-forgotten-export) The symbol "BindingConfigResolver" needs to be exported by the entry point index.d.ts
-//
 // @alpha (undocumented)
 export const onChange: BindingConfig<DefaultBindingOptions> & BindingConfigResolver<DefaultBindingOptions>;
 
@@ -841,6 +849,12 @@ export function volatile(target: {}, name: string | Accessor, descriptor: Proper
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
+
+// Warnings were encountered during analysis:
+//
+// dist/dts/templating/binding.d.ts:22:5 - (ae-forgotten-export) The symbol "UpdateBinding" needs to be exported by the entry point index.d.ts
+// dist/dts/templating/binding.d.ts:22:5 - (ae-forgotten-export) The symbol "EventBinding" needs to be exported by the entry point index.d.ts
+// dist/dts/templating/binding.d.ts:39:5 - (ae-forgotten-export) The symbol "BindingConfigResolver" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
