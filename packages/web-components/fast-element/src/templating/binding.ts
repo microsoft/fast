@@ -56,7 +56,7 @@ export const BindingMode = Object.freeze({
      */
     define(
         UpdateType: typeof UpdateBinding,
-        EventType?: typeof EventBinding
+        EventType: typeof EventBinding = EventBinding
     ): BindingMode {
         return Object.freeze({
             [Aspect.attribute]: d => new UpdateType(d, DOM.setAttribute),
@@ -609,7 +609,7 @@ export type DefaultBindingOptions = AddEventListenerOptions;
  * @public
  */
 export const onChange = BindingConfig.define(
-    BindingMode.define(ChangeBinding, EventBinding),
+    BindingMode.define(ChangeBinding),
     {} as DefaultBindingOptions
 );
 
@@ -617,10 +617,9 @@ export const onChange = BindingConfig.define(
  * The default onTime binding configuration.
  * @public
  */
-export const oneTime = BindingConfig.define(
-    BindingMode.define(OneTimeBinding, EventBinding),
-    { once: true } as DefaultBindingOptions
-);
+export const oneTime = BindingConfig.define(BindingMode.define(OneTimeBinding), {
+    once: true,
+} as DefaultBindingOptions);
 
 const signalMode: BindingMode = BindingMode.define(SignalBinding);
 
