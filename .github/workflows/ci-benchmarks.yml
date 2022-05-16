@@ -54,6 +54,7 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                 node-version: '16.x'
+            - run: npm ci
             # Run benchmarks. Ensure each job's results file has a unique name
             - name: Run tachometer
               run: |
@@ -76,6 +77,7 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                 node-version: '16.x'
+            - run: npm ci
             - name: Run tachometer and generate results file
               run: |
                   cd packages/utilities/fast-benchmarks
