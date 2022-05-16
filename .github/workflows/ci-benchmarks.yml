@@ -1,0 +1,99 @@
+name: Fast Element benchmark jobs
+
+on: [pull_request, push]
+
+jobs:
+  # If you'd like a message to appear in existing results comment that the
+  # benchmarks are current running and the shown results are out of date, run a
+  # job before the benchmarks with the initialize option set to true.
+  setup:
+    name: Setup Tachometer Reporting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize tachometer comment
+        uses: andrewiggins/tachometer-reporter-action@v2
+        with:
+          initialize: true
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo '::set-output name=dir::$(yarn cache dir)'
+
+      - name: Set up node_modules cache
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install package dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
+
+      - name: Check for the presence of changed files inside ./change
+        run: yarn checkchange
+
+      - name: Testing Prettier format
+        run: yarn format:check
+
+      - name: Prepare workspaces
+        run: yarn prepare
+
+  create10k:
+    name: Run create 10k items benchmark
+    needs: [setup]
+    runs-on: ubuntu-latest
+    steps:
+      # Run benchmarks. Ensure each job's results file has a unique name
+      - name: Run tachometer
+      - run: |
+        cd packages/utilities/fast-benchmarks
+        npm run benchmark:fast-element:create10k
+
+      # Upload this benchmarks results
+      - name: Upload results
+      - uses: actions/upload-artifact@v2
+        with:
+          name: results
+          path: bench_1.json
+
+  update10th:
+    name: Run update 10th element benchmark
+    needs: [setup]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run tachometer and generate results file
+      - run: |
+        cd packages/utilities/fast-benchmarks
+        npm run benchmark:fast-element:update10th
+
+      # Upload this benchmarks results
+      - name: Upload results
+      - uses: actions/upload-artifact@v2
+        with:
+          name: results
+          path: bench_1.json
+
+  report_results:
+    name: Report Results
+    needs: [bench_1, bench_2]
+    runs-on: ubuntu-latest
+    steps:
+      # Download the results artifact
+      - uses: actions/download-artifact@v2
+        with:
+          name: results
+          path: packages/utilities/fast-benchmarks/results
+
+      # Read all the results and post comment
+      - name: Report Tachometer Result
+        uses: andrewiggins/tachometer-reporter-action@v2
+        with:
+          name: results
+          path: packages/utilities/fast-benchmarks/results/*

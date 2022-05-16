@@ -9,7 +9,8 @@
         "help": "node ./scripts/index.js --help",
         "benchmark:binding": "tach --config examples/fast-element/binding/tachometer.json",
         "debug:binding": "tach --config fast-element/binding/tachometer.json --manual",
-        "benchmark:fast-element:create10k": "yarn run benchmark --library=fast-element --benchmark=my-benchmark --versions 1.8.0 1.9.0 --operations=createDelete5x -m"
+        "benchmark:fast-element:create10k": "yarn run benchmark --library=fast-element --benchmark=test --versions 1.8.0 1.9.0 --operations=create10k",
+        "benchmark:fast-element:update10th": "yarn run benchmark --library=fast-element --benchmark=test --versions 1.8.0 1.9.0 --operations=update10th"
     },
     "author": "Microsoft",
     "license": "ISC",

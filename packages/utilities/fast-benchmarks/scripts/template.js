@@ -287,6 +287,7 @@ async function generateConfig(fileName, benchmarksHash) {
         };
 
         const pathsPromises = [];
+        const pathNames = [];
         for (const benchmark in benchmarksHash) {
             const config = {
                 $schema: TACH_SCHEMA,
@@ -294,17 +295,14 @@ async function generateConfig(fileName, benchmarksHash) {
                 benchmarks: benchmarksHash[benchmark],
             };
 
-            const path = await writeConfig(
-                `${fileName}-${benchmark}` + ".config",
-                config,
-                ".json",
-                "dist"
-            );
+            const name = `${fileName}-${benchmark}`;
+            const path = await writeConfig(`${name}.config`, config, ".json", "dist");
 
+            pathNames.push(name);
             pathsPromises.push(path);
         }
         /** @type {ConfigFile[]} promises resolves to array of config file paths*/
-        return await Promise.all(pathsPromises);
+        return [await Promise.all(pathsPromises), pathNames];
     } catch (error) {
         console.log(errMessage(error));
     }
@@ -344,10 +342,14 @@ export async function generateTemplates(options) {
             operationProps,
             localProps
         );
-        const tachoConfigPaths = await generateConfig(fileName, benchmarksHash);
+        const [tachoConfigPaths, pathNames] = await generateConfig(
+            fileName,
+            benchmarksHash
+        );
         return {
             tsConfigPath,
             tachoConfigPaths,
+            pathNames,
         };
     } catch (error) {
         console.log(errMessage(error));
