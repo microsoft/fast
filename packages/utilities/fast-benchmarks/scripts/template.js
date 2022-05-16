@@ -179,15 +179,21 @@ async function generateBenchmarks(
         /** @type {ConfigFile["benchmarks"]} */
 
         const benchmarks = [];
-        const memoryBenchmarks = [];
+        // const memoryBenchmarks = [];
         const browser = {
             name: "chrome",
             headless: true,
+            addArguments: ["--js-flags=--expose-gc", "--enable-precise-memory-info"],
         };
         const measurement = [
             {
                 mode: "performance",
                 entryName: operation,
+            },
+            {
+                name: "usedJSHeapSize",
+                mode: "expression",
+                expression: "window.usedJSHeapSize",
             },
         ];
 
@@ -241,26 +247,26 @@ async function generateBenchmarks(
             }
 
             //adjust some settings to separately report memory benchmark results
-            const memoryBench = JSON.parse(JSON.stringify(bench));
-            const memoryMeasurement = [
-                {
-                    name: "usedJSHeapSize",
-                    mode: "expression",
-                    expression: "window.usedJSHeapSize",
-                },
-            ];
-            memoryBench.name = `${name}-memory`;
-            memoryBench.measurement = memoryMeasurement;
-            memoryBench.browser.addArguments = [
-                "--js-flags=--expose-gc",
-                "--enable-precise-memory-info",
-            ];
-            memoryBenchmarks.push(memoryBench);
+            // const memoryBench = JSON.parse(JSON.stringify(bench));
+            // const memoryMeasurement = [
+            //     {
+            //         name: "usedJSHeapSize",
+            //         mode: "expression",
+            //         expression: "window.usedJSHeapSize",
+            //     },
+            // ];
+            // memoryBench.name = `${name}-memory`;
+            // memoryBench.measurement = memoryMeasurement;
+            // memoryBench.browser.addArguments = [
+            //     "--js-flags=--expose-gc",
+            //     "--enable-precise-memory-info",
+            // ];
+            // memoryBenchmarks.push(memoryBench);
 
-            if (!memory) benchmarks.push(bench);
+            // if (!memory) benchmarks.push(bench);
         });
 
-        tachoData[`${operation}-memory`] = memoryBenchmarks;
+        // tachoData[`${operation}-memory`] = memoryBenchmarks;
         if (!memory) tachoData[operation] = benchmarks;
     });
 

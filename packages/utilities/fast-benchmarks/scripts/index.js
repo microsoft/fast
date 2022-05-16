@@ -90,7 +90,7 @@ async function runBenchmark(configPaths, pathNames) {
             child.on("close", code => {
                 if (code !== 0) {
                     reject({
-                        command: `npx tach --config ${configPath} --json-file=results/${pathName}.json`,
+                        command: `npx tach --config ${configPath} --json-file=results/${options.benchmark}/${pathName}.json`,
                     });
                     return;
                 }
