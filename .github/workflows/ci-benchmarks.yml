@@ -1,6 +1,6 @@
 name: Fast Element benchmark jobs
 
-on: [pull_request, push]
+on: [pull_request]
 
 jobs:
     # If you'd like a message to appear in existing results comment that the
@@ -53,7 +53,7 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
               with:
-                node-version: '16.x'
+                  node-version: "16.x"
             - run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
             # Run benchmarks. Ensure each job's results file has a unique name
             - name: Run tachometer
@@ -76,7 +76,7 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
               with:
-                node-version: '16.x'
+                  node-version: "16.x"
             - run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
             - name: Run tachometer and generate results file
               run: |
@@ -106,4 +106,4 @@ jobs:
               uses: andrewiggins/tachometer-reporter-action@v2
               with:
                   name: results
-                  path: packages/utilities/fast-benchmarks/results/*
+                  path: packages/utilities/fast-benchmarks/results/*.json

@@ -263,13 +263,12 @@ async function generateBenchmarks(
             // ];
             // memoryBenchmarks.push(memoryBench);
 
-            // if (!memory) benchmarks.push(bench);
+            if (!memory) benchmarks.push(bench);
         });
 
         // tachoData[`${operation}-memory`] = memoryBenchmarks;
         if (!memory) tachoData[operation] = benchmarks;
     });
-
     return tachoData;
 }
 
