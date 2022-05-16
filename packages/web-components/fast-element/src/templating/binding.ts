@@ -87,7 +87,7 @@ export interface BindingConfig<T = any> {
     /**
      * Options to be supplied to the binding behaviors.
      */
-    options: any;
+    options: T;
 }
 
 /**
@@ -629,29 +629,65 @@ const signalMode: BindingMode = BindingMode.define(SignalBinding);
  * @returns A binding configuration.
  * @public
  */
-export const signal = <T = any>(options: string | Binding<T>): BindingConfig<T> => {
+export const signal = <T = any>(
+    options: string | Binding<T>
+): BindingConfig<string | Binding<T>> => {
     return { mode: signalMode, options };
 };
 
 /**
- * @internal
+ * A directive that applies bindings.
+ * @public
  */
 export class HTMLBindingDirective
     implements HTMLDirective, ViewBehaviorFactory, Aspected {
     private factory: Pick<ViewBehaviorFactory, "createBehavior"> | null = null;
 
+    /**
+     * The unique id of the factory.
+     */
     id: string;
+
+    /**
+     * The structural id of the DOM node to which the created behavior will apply.
+     */
     nodeId: string;
+
+    /**
+     * The original source aspect exactly as represented in markup.
+     */
     sourceAspect: string;
+
+    /**
+     * The evaluated target aspect, determined after processing the source.
+     */
     targetAspect: string;
+
+    /**
+     * The type of aspect to target.
+     */
     aspectType: AspectType = Aspect.content;
 
+    /**
+     * Creates an instance of HTMLBindingDirective.
+     * @param binding - The binding to apply.
+     * @param mode - The binding mode to use when applying the binding.
+     * @param options - The options to configure the binding with.
+     */
     constructor(public binding: Binding, public mode: BindingMode, public options: any) {}
 
+    /**
+     * Creates HTML to be used within a template.
+     * @param add - Can be used to add  behavior factories to a template.
+     */
     createHTML(add: AddViewBehaviorFactory): string {
         return Markup.interpolation(add(this));
     }
 
+    /**
+     * Creates a behavior.
+     * @param targets - The targets available for behaviors to be attached to.
+     */
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
         if (this.factory == null) {
             if (this.targetAspect === "innerHTML") {
@@ -676,7 +712,7 @@ HTMLDirective.define(HTMLBindingDirective, { aspected: true });
  */
 export function bind<T = any>(
     binding: Binding<T>,
-    config: BindingConfig<T> | DefaultBindingOptions = onChange
+    config: BindingConfig | DefaultBindingOptions = onChange
 ): CaptureType<T> {
     if (!("mode" in config)) {
         config = onChange(config);

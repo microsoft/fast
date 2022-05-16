@@ -98,7 +98,7 @@ export interface Behavior<TSource = any, TParent = any, TContext extends Executi
 }
 
 // @public
-export function bind<T = any>(binding: Binding<T>, config?: BindingConfig<T> | DefaultBindingOptions): CaptureType<T>;
+export function bind<T = any>(binding: Binding<T>, config?: BindingConfig | DefaultBindingOptions): CaptureType<T>;
 
 // @public
 export type Binding<TSource = any, TReturn = any, TContext extends ExecutionContext = ExecutionContext> = (source: TSource, context: TContext) => TReturn;
@@ -106,7 +106,7 @@ export type Binding<TSource = any, TReturn = any, TContext extends ExecutionCont
 // @public
 export interface BindingConfig<T = any> {
     mode: BindingMode;
-    options: any;
+    options: T;
 }
 
 // @public
@@ -117,8 +117,6 @@ export const BindingConfig: Readonly<{
 // @public
 export type BindingConfigResolver<T> = (options: T) => BindingConfig<T>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "BindingMode" is marked as @public, but its signature references "HTMLBindingDirective" which is marked as @internal
-//
 // @public
 export type BindingMode = Record<AspectType, (directive: HTMLBindingDirective) => Pick<ViewBehaviorFactory, "createBehavior">>;
 
@@ -148,7 +146,6 @@ export interface CaptureType<TSource> {
 
 // @public
 export class ChangeBinding extends UpdateBinding {
-    // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @public, but its signature references "HTMLBindingDirective" which is marked as @internal
     constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget);
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
     // @internal (undocumented)
@@ -346,12 +343,9 @@ export function enableArrayObservation(): void;
 
 // @public
 export class EventBinding {
-    // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @public, but its signature references "HTMLBindingDirective" which is marked as @internal
     constructor(directive: HTMLBindingDirective);
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
-    // Warning: (ae-incompatible-release-tags) The symbol "directive" is marked as @public, but its signature references "HTMLBindingDirective" which is marked as @internal
-    //
     // (undocumented)
     readonly directive: HTMLBindingDirective;
     // @internal (undocumented)
@@ -426,30 +420,21 @@ export interface FASTGlobal {
 // @public
 export function html<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent, TContext>[]): ViewTemplate<TSource, TParent>;
 
-// Warning: (ae-internal-missing-underscore) The name "HTMLBindingDirective" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
+// @public
 export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, Aspected {
     constructor(binding: Binding, mode: BindingMode, options: any);
-    // (undocumented)
     aspectType: AspectType;
     // (undocumented)
     binding: Binding;
-    // (undocumented)
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
-    // (undocumented)
     createHTML(add: AddViewBehaviorFactory): string;
-    // (undocumented)
     id: string;
     // (undocumented)
     mode: BindingMode;
-    // (undocumented)
     nodeId: string;
     // (undocumented)
     options: any;
-    // (undocumented)
     sourceAspect: string;
-    // (undocumented)
     targetAspect: string;
 }
 
@@ -711,7 +696,7 @@ export interface RootContext {
 }
 
 // @public
-export const signal: <T = any>(options: string | Binding<T, any, ExecutionContext<any>>) => BindingConfig<T>;
+export const signal: <T = any>(options: string | Binding<T, any, ExecutionContext<any>>) => BindingConfig<string | Binding<T, any, ExecutionContext<any>>>;
 
 // @public
 export class SignalBinding extends UpdateBinding {
@@ -850,12 +835,9 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
 
 // @public
 export class UpdateBinding implements ViewBehavior {
-    // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @public, but its signature references "HTMLBindingDirective" which is marked as @internal
     constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget);
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
-    // Warning: (ae-incompatible-release-tags) The symbol "directive" is marked as @public, but its signature references "HTMLBindingDirective" which is marked as @internal
-    //
     // (undocumented)
     readonly directive: HTMLBindingDirective;
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
@@ -879,7 +861,6 @@ export type UpdateTarget = (this: UpdateTargetThis, target: Node, aspect: string
 
 // @public
 export interface UpdateTargetThis {
-    // Warning: (ae-incompatible-release-tags) The symbol "directive" is marked as @public, but its signature references "HTMLBindingDirective" which is marked as @internal
     directive: HTMLBindingDirective;
 }
 
