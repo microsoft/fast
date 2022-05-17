@@ -112,7 +112,7 @@ The Fluent UI Web Components are built on FAST's Adaptive UI technology, which e
 ```
 
 :::note
-Provider token attributes can be changed on-th-fly like any other Blazor component attribute.
+Provider token attributes can be changed on-the-fly like any other Blazor component attribute.
 :::
 
 If you are attempting to configure the components for integration into a specific Microsoft product, the following table provides `AccentBaseColor` values you can use:
