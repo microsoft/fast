@@ -17,9 +17,14 @@ describe("The HTML binding directive", () => {
         @observable value: any = null;
         @observable private trigger = 0;
         @observable knownValue = "value";
+        actionInvokeCount = 0;
 
         forceComputedUpdate() {
             this.trigger++;
+        }
+
+        invokeAction() {
+            this.actionInvokeCount++;
         }
 
         get computedValue() {
@@ -50,6 +55,23 @@ describe("The HTML binding directive", () => {
         if (sourceAspect) {
             Aspect.assign(directive, sourceAspect);
         }
+
+        const node = document.createElement("div");
+        const targets = { r: node };
+
+        const behavior = directive.createBehavior(targets);
+        const parentNode = document.createElement("div");
+
+        parentNode.appendChild(node);
+
+        return { directive, behavior, node, parentNode, targets };
+    }
+
+    function eventBinding(config: BindingConfig, sourceAspect: string) {
+        const directive = bind<Model>(x => x.invokeAction(), config) as HTMLBindingDirective;
+        directive.nodeId = 'r';
+
+        Aspect.assign(directive, sourceAspect);
 
         const node = document.createElement("div");
         const targets = { r: node };
@@ -304,7 +326,7 @@ describe("The HTML binding directive", () => {
             getValue(node: HTMLElement) {
                 return node.hasAttribute("test-boolean-attribute");
             },
-            setValue(node: HTMLElement, value: boolean) {
+            setValue(node: HTMLElement, value: any) {
                 DOM.setBooleanAttribute(node, "test-boolean-attribute", value);
             }
         },
@@ -496,12 +518,29 @@ describe("The HTML binding directive", () => {
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
 
-                aspectScenario.setValue(node, aspectScenario.newValue as boolean);
+                aspectScenario.setValue(node, aspectScenario.newValue);
                 node.dispatchEvent(new CustomEvent("change"));
 
                 await Updates.next();
 
                 expect(model.value).to.equal(aspectScenario.newValue);
+            });
+
+            it(`updates the model when a change event fires for the ${aspectScenario.name} with conversion`, async () => {
+                const fromView = value => "fixed value";
+                const { behavior, node, targets } = bindingWithConfig(twoWay({ fromView }), aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+
+                aspectScenario.setValue(node, aspectScenario.newValue);
+                node.dispatchEvent(new CustomEvent("change"));
+
+                await Updates.next();
+
+                expect(model.value).to.equal("fixed value");
             });
 
             it(`updates the model when a configured event fires for the ${aspectScenario.name}`, async () => {
@@ -513,7 +552,7 @@ describe("The HTML binding directive", () => {
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
 
-                aspectScenario.setValue(node, aspectScenario.newValue as boolean);
+                aspectScenario.setValue(node, aspectScenario.newValue);
                 node.dispatchEvent(new CustomEvent(changeEvent));
 
                 await Updates.next();
@@ -536,5 +575,62 @@ describe("The HTML binding directive", () => {
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
             });
         }
+    });
+
+    context("when binding events", () => {
+        it("does not invoke the method on bind", () => {
+            const { behavior, targets } = eventBinding(onChange, "@my-event");
+            const model = new Model("Test value.");
+
+            behavior.bind(model, ExecutionContext.default, targets);
+            expect(model.actionInvokeCount).to.equal(0);
+        });
+
+        it("invokes the method each time the event is raised", () => {
+            const { behavior, node, targets } = eventBinding(onChange, "@my-event");
+            const model = new Model("Test value.");
+
+            behavior.bind(model, ExecutionContext.default, targets);
+            expect(model.actionInvokeCount).to.equal(0);
+
+            node.dispatchEvent(new CustomEvent("my-event"));
+            expect(model.actionInvokeCount).to.equal(1);
+
+            node.dispatchEvent(new CustomEvent("my-event"));
+            expect(model.actionInvokeCount).to.equal(2);
+
+            node.dispatchEvent(new CustomEvent("my-event"));
+            expect(model.actionInvokeCount).to.equal(3);
+        });
+
+        it("invokes the method one time for a one time event", () => {
+            const { behavior, node, targets } = eventBinding(oneTime, "@my-event");
+            const model = new Model("Test value.");
+
+            behavior.bind(model, ExecutionContext.default, targets);
+            expect(model.actionInvokeCount).to.equal(0);
+
+            node.dispatchEvent(new CustomEvent("my-event"));
+            expect(model.actionInvokeCount).to.equal(1);
+
+            node.dispatchEvent(new CustomEvent("my-event"));
+            expect(model.actionInvokeCount).to.equal(1);
+        });
+
+        it("does not invoke the method after unbind", () => {
+            const { behavior, node, targets } = eventBinding(onChange, "@my-event");
+            const model = new Model("Test value.");
+
+            behavior.bind(model, ExecutionContext.default, targets);
+            expect(model.actionInvokeCount).to.equal(0);
+
+            node.dispatchEvent(new CustomEvent("my-event"));
+            expect(model.actionInvokeCount).to.equal(1);
+
+            behavior.unbind(model, ExecutionContext.default, targets);
+
+            node.dispatchEvent(new CustomEvent("my-event"));
+            expect(model.actionInvokeCount).to.equal(1);
+        });
     });
 });
