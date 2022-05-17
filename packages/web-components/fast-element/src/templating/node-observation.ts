@@ -51,6 +51,8 @@ export const elements = (selector?: string): ElementsFilter =>
 export abstract class NodeObservationDirective<
     T extends NodeBehaviorOptions
 > extends StatelessAttachedAttributeDirective<T> {
+    private sourceProperty = `${this.id}-s`;
+
     /**
      * Bind this behavior to the source.
      * @param source - The source to bind to.
@@ -59,7 +61,7 @@ export abstract class NodeObservationDirective<
      */
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const target = targets[this.nodeId] as any;
-        target.$fastSource = source;
+        target[this.sourceProperty] = source;
         this.updateTarget(source, this.computeNodes(target));
         this.observe(target);
     }
@@ -74,7 +76,16 @@ export abstract class NodeObservationDirective<
         const target = targets[this.nodeId] as any;
         this.updateTarget(source, emptyArray);
         this.disconnect(target);
-        target.$fastSource = null;
+        target[this.sourceProperty] = null;
+    }
+
+    /**
+     * Gets the data source for the target.
+     * @param target - The target to get the source for.
+     * @returns The source.
+     */
+    protected getSource(target: Node) {
+        return target[this.sourceProperty];
     }
 
     /**

@@ -45,8 +45,7 @@ export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveO
     /** @internal */
     handleEvent(event: Event): void {
         const target = event.currentTarget as any;
-        const source = target.$fastSource;
-        this.updateTarget(source, this.computeNodes(target));
+        this.updateTarget(this.getSource(target), this.computeNodes(target));
     }
 }
 

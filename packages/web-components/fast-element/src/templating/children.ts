@@ -45,6 +45,8 @@ export type ChildrenDirectiveOptions<T = any> =
 export class ChildrenDirective extends NodeObservationDirective<
     ChildrenDirectiveOptions
 > {
+    private observerProperty = `${this.id}-o`;
+
     /**
      * Creates an instance of ChildrenDirective.
      * @param options - The options to use in configuring the child observation behavior.
@@ -60,8 +62,9 @@ export class ChildrenDirective extends NodeObservationDirective<
      */
     observe(target: any): void {
         const observer =
-            target[this.id] ?? (target[this.id] = new MutationObserver(this.handleEvent));
-        observer.$fastTarget = target;
+            target[this.observerProperty] ??
+            (target[this.observerProperty] = new MutationObserver(this.handleEvent));
+        observer.target = target;
         observer.observe(target, this.options);
     }
 
@@ -70,8 +73,8 @@ export class ChildrenDirective extends NodeObservationDirective<
      * @param target - The target to unobserve.
      */
     disconnect(target: any): void {
-        const observer = target[this.id];
-        observer.$fastTarget = null;
+        const observer = target[this.observerProperty];
+        observer.target = null;
         observer.disconnect();
     }
 
@@ -88,9 +91,8 @@ export class ChildrenDirective extends NodeObservationDirective<
     }
 
     private handleEvent = (mutations: MutationRecord[], observer: any): void => {
-        const target = observer.$fastTarget;
-        const source = target.$fastSource;
-        this.updateTarget(source, this.computeNodes(target));
+        const target = observer.target;
+        this.updateTarget(this.getSource(target), this.computeNodes(target));
     };
 }
 

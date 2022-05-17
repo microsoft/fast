@@ -148,6 +148,7 @@ export interface CaptureType<TSource> {
 export class ChangeBinding extends UpdateBinding {
     constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget);
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    protected getObserver(target: Node): BindingObserver;
     // @internal (undocumented)
     handleChange(binding: Binding, observer: BindingObserver): void;
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
@@ -283,6 +284,12 @@ export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "prop
 
 // @public
 export type DefaultBindingOptions = AddEventListenerOptions;
+
+// @public
+export type DefaultTwoWayBindingOptions = DefaultBindingOptions & {
+    changeEvent?: string;
+    fromView?: (value: any) => any;
+};
 
 // @public
 export const DOM: Readonly<{
@@ -533,6 +540,7 @@ export abstract class NodeObservationDirective<T extends NodeBehaviorOptions> ex
     protected computeNodes(target: any): Node[];
     protected abstract disconnect(target: any): void;
     protected abstract getNodes(target: any): Node[];
+    protected getSource(target: Node): any;
     protected abstract observe(target: any): void;
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
     protected updateTarget(source: any, value: ReadonlyArray<any>): void;
@@ -812,6 +820,23 @@ export type TrustedTypes = {
 export type TrustedTypesPolicy = {
     createHTML(html: string): string;
 };
+
+// @public
+export const twoWay: BindingConfig<DefaultTwoWayBindingOptions> & BindingConfigResolver<DefaultTwoWayBindingOptions>;
+
+// @public
+export class TwoWayBinding extends ChangeBinding {
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    static configure(settings: TwoWaySettings): void;
+    // @internal (undocumented)
+    handleEvent(event: Event): void;
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+}
+
+// @public
+export interface TwoWaySettings {
+    determineChangeEvent(directive: HTMLBindingDirective, target: HTMLElement): string;
+}
 
 // Warning: (ae-internal-missing-underscore) The name "TypeDefinition" should be prefixed with an underscore because the declaration is marked as @internal
 //
