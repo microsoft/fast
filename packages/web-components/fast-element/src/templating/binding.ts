@@ -4,6 +4,7 @@ import {
     BindingObserver,
     ExecutionContext,
     Observable,
+    ObservationRecord,
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { DOM } from "./dom.js";
@@ -303,7 +304,7 @@ function updateTokenListTarget(
     value: any
 ): void {
     const directive = this.directive;
-    const lookup = `${directive.id}-token-list`;
+    const lookup = `${directive.id}-t`;
     const state: TokenListState =
         target[lookup] ?? (target[lookup] = { c: 0, v: Object.create(null) });
     const versions = state.v;
@@ -373,6 +374,8 @@ const signals: Record<string, undefined | Function | Function[]> = Object.create
  * @public
  */
 export class SignalBinding extends UpdateBinding {
+    private handlerProperty = `${this.directive.id}-h`;
+
     /**
      * Bind this behavior to the source.
      * @param source - The source to bind to.
@@ -383,7 +386,7 @@ export class SignalBinding extends UpdateBinding {
         const directive = this.directive;
         const target = targets[directive.nodeId];
         const signal = this.getSignal(source, context);
-        const handler = (target[directive.id] = () => {
+        const handler = (target[this.handlerProperty] = () => {
             this.updateTarget(
                 target,
                 directive.targetAspect!,
@@ -419,7 +422,7 @@ export class SignalBinding extends UpdateBinding {
         if (found && Array.isArray(found)) {
             const directive = this.directive;
             const target = targets[directive.nodeId];
-            const handler = target[directive.id];
+            const handler = target[this.handlerProperty];
             const index = found.indexOf(handler);
             if (index !== -1) {
                 found.splice(index, 1);
@@ -453,6 +456,7 @@ export class SignalBinding extends UpdateBinding {
  */
 export class ChangeBinding extends UpdateBinding {
     private isBindingVolatile: boolean;
+    private observerProperty: string;
 
     /**
      * Creates an instance of ChangeBinding.
@@ -462,6 +466,23 @@ export class ChangeBinding extends UpdateBinding {
     constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget) {
         super(directive, updateTarget);
         this.isBindingVolatile = Observable.isVolatileBinding(directive.binding);
+        this.observerProperty = `${directive.id}-o`;
+    }
+
+    /**
+     * Returns the binding observer used to update the node.
+     * @param target - The target node.
+     * @returns A BindingObserver.
+     */
+    protected getObserver(target: Node): BindingObserver {
+        return (
+            target[this.observerProperty] ??
+            (target[this.observerProperty] = Observable.binding(
+                this.directive.binding,
+                this,
+                this.isBindingVolatile
+            ))
+        );
     }
 
     /**
@@ -473,13 +494,7 @@ export class ChangeBinding extends UpdateBinding {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const directive = this.directive;
         const target = targets[directive.nodeId];
-        const observer: BindingObserver =
-            target[directive.id] ??
-            (target[directive.id] = Observable.binding(
-                directive.binding,
-                this,
-                this.isBindingVolatile
-            ));
+        const observer = this.getObserver(target);
 
         (observer as any).target = target;
         (observer as any).source = source;
@@ -487,7 +502,7 @@ export class ChangeBinding extends UpdateBinding {
 
         this.updateTarget(
             target,
-            directive.targetAspect!,
+            directive.targetAspect,
             observer.observe(source, context),
             source,
             context
@@ -502,11 +517,11 @@ export class ChangeBinding extends UpdateBinding {
      */
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const target = targets[this.directive.nodeId];
-        const observer = target[this.directive.id];
+        const observer = this.getObserver(target);
         observer.disconnect();
-        observer.target = null;
-        observer.source = null;
-        observer.context = null;
+        (observer as any).target = null;
+        (observer as any).source = null;
+        (observer as any).context = null;
     }
 
     /** @internal */
@@ -516,7 +531,7 @@ export class ChangeBinding extends UpdateBinding {
         const context = (observer as any).context;
         this.updateTarget(
             target,
-            this.directive.targetAspect!,
+            this.directive.targetAspect,
             observer.observe(source, context!),
             source,
             context
@@ -524,21 +539,22 @@ export class ChangeBinding extends UpdateBinding {
     }
 }
 
-type FASTEventSource = Node & {
-    $fastSource: any;
-    $fastContext: ExecutionContext | null;
-};
-
 /**
  * A binding behavior for handling events.
  * @public
  */
 export class EventBinding {
+    private contextProperty: string;
+    private sourceProperty: string;
+
     /**
      * Creates an instance of EventBinding.
      * @param directive - The directive that has the configuration for this behavior.
      */
-    constructor(public readonly directive: HTMLBindingDirective) {}
+    constructor(public readonly directive: HTMLBindingDirective) {
+        this.sourceProperty = `${directive.id}-s`;
+        this.contextProperty = `${directive.id}-c`;
+    }
 
     /**
      * Bind this behavior to the source.
@@ -548,9 +564,9 @@ export class EventBinding {
      */
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const directive = this.directive;
-        const target = targets[directive.nodeId] as FASTEventSource;
-        target.$fastSource = source;
-        target.$fastContext = context;
+        const target = targets[directive.nodeId];
+        target[this.sourceProperty] = source;
+        target[this.contextProperty] = context;
         target.addEventListener(directive.targetAspect, this, directive.options);
     }
 
@@ -561,13 +577,10 @@ export class EventBinding {
      * @param targets - The targets that behaviors in a view can attach to.
      */
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.directive.nodeId] as FASTEventSource;
-        target.$fastSource = target.$fastContext = null;
-        target.removeEventListener(
-            this.directive.targetAspect,
-            this,
-            this.directive.options
-        );
+        const directive = this.directive;
+        const target = targets[directive.nodeId];
+        target[this.sourceProperty] = target[this.contextProperty] = null;
+        target.removeEventListener(directive.targetAspect, this, directive.options);
     }
 
     /**
@@ -582,14 +595,115 @@ export class EventBinding {
      * @internal
      */
     handleEvent(event: Event): void {
-        const target = event.currentTarget as FASTEventSource;
+        const target = event.currentTarget!;
+
         ExecutionContext.setEvent(event);
-        const result = this.directive.binding(target.$fastSource, target.$fastContext!);
+        const result = this.directive.binding(
+            target[this.sourceProperty],
+            target[this.contextProperty]
+        );
         ExecutionContext.setEvent(null);
 
         if (result !== true) {
             event.preventDefault();
         }
+    }
+}
+
+/**
+ * The settings required to enable two-way binding.
+ * @public
+ */
+export interface TwoWaySettings {
+    /**
+     * Determines which event to listen to, to detect changes in the view.
+     * @param directive - The directive to determine the change event for.
+     * @param target - The target element to determine the change event for.
+     */
+    determineChangeEvent(directive: HTMLBindingDirective, target: HTMLElement): string;
+}
+
+let twoWaySettings: TwoWaySettings = {
+    determineChangeEvent() {
+        return "change";
+    },
+};
+
+/**
+ * A binding behavior for bindings that update in two directions.
+ * @public
+ */
+export class TwoWayBinding extends ChangeBinding {
+    private changeEvent: string;
+
+    /**
+     * Bind this behavior to the source.
+     * @param source - The source to bind to.
+     * @param context - The execution context that the binding is operating within.
+     * @param targets - The targets that behaviors in a view can attach to.
+     */
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
+        super.bind(source, context, targets);
+
+        const directive = this.directive;
+        const target = targets[directive.nodeId] as HTMLElement;
+
+        if (!this.changeEvent) {
+            this.changeEvent =
+                directive.options.changeEvent ??
+                twoWaySettings.determineChangeEvent(directive, target);
+        }
+
+        target.addEventListener(this.changeEvent, this);
+    }
+
+    /**
+     * Unbinds this behavior from the source.
+     * @param source - The source to unbind from.
+     * @param context - The execution context that the binding is operating within.
+     * @param targets - The targets that behaviors in a view can attach to.
+     */
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
+        super.unbind(source, context, targets);
+        (targets[this.directive.nodeId] as HTMLElement).removeEventListener(
+            this.changeEvent,
+            this
+        );
+    }
+
+    /** @internal */
+    public handleEvent(event: Event): void {
+        const directive = this.directive;
+        const target = event.currentTarget as HTMLElement;
+
+        let value;
+
+        switch (directive.aspectType) {
+            case 1:
+                value = target.getAttribute(directive.targetAspect);
+                break;
+            case 2:
+                value = target.hasAttribute(directive.targetAspect);
+                break;
+            case 4:
+                value = target.innerText;
+                break;
+            default:
+                value = target[directive.targetAspect];
+                break;
+        }
+
+        const observer = this.getObserver(target);
+        const last = (observer as any).last as ObservationRecord; // using internal API!!!
+        last.propertySource[last.propertyName] = directive.options.fromView(value);
+    }
+
+    /**
+     * Configures two-way binding.
+     * @param settings - The settings to use for the two-way binding system.
+     */
+    public static configure(settings: TwoWaySettings) {
+        twoWaySettings = settings;
     }
 }
 
@@ -607,6 +721,23 @@ export const onChange = BindingConfig.define(
     BindingMode.define(ChangeBinding),
     {} as DefaultBindingOptions
 );
+
+/**
+ * The default twoWay binding options.
+ * @public
+ */
+export type DefaultTwoWayBindingOptions = DefaultBindingOptions & {
+    changeEvent?: string;
+    fromView?: (value: any) => any;
+};
+
+/**
+ * The default twoWay binding configuration.
+ * @public
+ */
+export const twoWay = BindingConfig.define(BindingMode.define(TwoWayBinding), {
+    fromView: v => v,
+} as DefaultTwoWayBindingOptions);
 
 /**
  * The default onTime binding configuration.
