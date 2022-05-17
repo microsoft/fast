@@ -40,7 +40,6 @@
         "url": "https://github.com/Microsoft/fast/issues/new/choose"
     },
     "scripts": {
-        "benchmarks": "cd packages/utilities/fast-benchmarks && yarn run benchmarks",
         "bump": "beachball bump",
         "change": "beachball change",
         "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'yarn change' to generate a change file\"",
@@ -67,9 +66,6 @@
             "pre-commit": "lint-staged"
         }
     },
-    "pre-commit": [
-        "benchmarks"
-    ],
     "jest": {
         "collectCoverage": true,
         "collectCoverageFrom": [
@@ -162,7 +158,6 @@
         "lint-staged": "^10.1.2",
         "markdown-it": "^12.3.2",
         "prettier": "2.0.2",
-        "pre-commit": "1.2.2",
         "rimraf": "^3.0.2",
         "ts-jest": "^25.4.0",
         "ts-node": "^8.8.2",
