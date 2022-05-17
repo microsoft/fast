@@ -1,11 +1,17 @@
 name: Fast Element benchmark jobs
 
-on: [pull_request]
+on: 
+  pull_request:
+    branches:
+    - master
+    - releases/*
+    - features/*
+    - users/*
+  push:
+    paths:
+      - 'packages/web-components/fast-element/**'
 
 jobs:
-    # If you'd like a message to appear in existing results comment that the
-    # benchmarks are current running and the shown results are out of date, run a
-    # job before the benchmarks with the initialize option set to true.
     setup:
         name: Setup Tachometer Reporting
         runs-on: ubuntu-latest
@@ -37,8 +43,8 @@ jobs:
             - name: Prepare workspaces
               run: yarn prepare
 
-    create10k:
-        name: Run create 10k items benchmark
+    test:
+        name: Run all operations for test benchmark
         needs: [setup]
         runs-on: ubuntu-latest
         steps:
@@ -47,53 +53,48 @@ jobs:
               with:
                   node-version: "16.x"
             - run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
-            # Run benchmarks. Ensure each job's results file has a unique name
             - name: Run tachometer
               run: |
                   cd packages/utilities/fast-benchmarks
                   yarn install
-                  yarn run benchmark:fast-element:create10k
+                  yarn run benchmark:fast-element:test
 
-            # Upload this benchmarks results
             - name: Upload results
               uses: actions/upload-artifact@v2
               with:
                   name: results
-                  path: packages/utilities/fast-benchmarks/results/fast-element_test-create10k.json
+                  path: packages/utilities/fast-benchmarks/results/fast-element_test.json
 
-    update10th:
-        name: Run update 10th element benchmark
-        needs: [setup]
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v1
-              with:
-                  node-version: "16.x"
-            - name: Run tachometer and generate results file
-              run: |
-                  cd packages/utilities/fast-benchmarks
-                  yarn install
-                  yarn run benchmark:fast-element:update10th
+    # update10th:
+    #     name: Run update 10th element benchmark
+    #     needs: [setup]
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - uses: actions/checkout@v2
+    #         - uses: actions/setup-node@v1
+    #           with:
+    #               node-version: "16.x"
+    #         - name: Run tachometer and generate results file
+    #           run: |
+    #               cd packages/utilities/fast-benchmarks
+    #               yarn install
+    #               yarn run benchmark:fast-element:update10th
 
-            # Upload this benchmarks results
-            - name: Upload results
-              uses: actions/upload-artifact@v2
-              with:
-                  name: results
-                  path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
+    #         - name: Upload results
+    #           uses: actions/upload-artifact@v2
+    #           with:
+    #               name: results
+    #               path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
 
     report_results:
         name: Report Results
-        needs: [create10k, update10th]
+        needs: [test, update10th]
         runs-on: ubuntu-latest
         steps:
-            # Download the results artifact
             - uses: actions/download-artifact@v2
               with:
                   name: results
                   path: packages/utilities/fast-benchmarks/results
-
             # Read all the results and post comment
             - name: Report Tachometer Result
               uses: andrewiggins/tachometer-reporter-action@v2
