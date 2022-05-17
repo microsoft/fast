@@ -148,6 +148,7 @@ export interface CaptureType<TSource> {
 export class ChangeBinding extends UpdateBinding {
     constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget);
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    protected getObserver(target: Node): BindingObserver;
     // @internal (undocumented)
     handleChange(binding: Binding, observer: BindingObserver): void;
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
