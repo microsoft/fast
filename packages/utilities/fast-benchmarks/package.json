@@ -9,7 +9,7 @@
         "help": "node ./scripts/index.js --help",
         "benchmark:binding": "tach --config examples/fast-element/binding/tachometer.json",
         "debug:binding": "tach --config fast-element/binding/tachometer.json --manual",
-        "benchmark:fast-element:test": "yarn run benchmark --library=fast-element --benchmark=test --versions local latest --localBenchFile=index2"
+        "benchmark:fast-element:test": "yarn run benchmark --library=fast-element --benchmark=test --versions local latest --localBenchFile=index2 --operations=create10k"
     },
     "author": "Microsoft",
     "license": "ISC",
