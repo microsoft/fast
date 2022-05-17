@@ -1,13 +1,14 @@
 import { expect } from "chai";
-import { bind, BindingConfig, BindingMode, HTMLBindingDirective, onChange, oneTime, signal, SignalBinding } from "./binding";
+import { bind, BindingConfig, BindingMode, HTMLBindingDirective, onChange, oneTime, signal, SignalBinding, twoWay } from "./binding";
 import { ExecutionContext, observable } from "../observation/observable";
 import { html, ViewTemplate } from "./template";
 import { toHTML } from "../__test__/helpers";
 import { SyntheticView, HTMLView } from "./view";
 import { Updates } from "../observation/update-queue";
-import { Aspect, AspectType } from "./html-directive";
+import { Aspect } from "./html-directive";
+import { DOM } from "./dom";
 
-describe.only("The HTML binding directive", () => {
+describe("The HTML binding directive", () => {
     class Model {
         constructor(value: any) {
             this.value = value;
@@ -278,6 +279,9 @@ describe.only("The HTML binding directive", () => {
             newValue: "This is another test",
             getValue(node: HTMLElement) {
                 return node.textContent;
+            },
+            setValue(node: HTMLElement, value: any) {
+                node.textContent = value;
             }
         },
         {
@@ -287,6 +291,9 @@ describe.only("The HTML binding directive", () => {
             newValue: "This is another test",
             getValue(node: HTMLElement) {
                 return node.getAttribute("test-attribute");
+            },
+            setValue(node: HTMLElement, value: any) {
+                DOM.setAttribute(node, "test-attribute", value);
             }
         },
         {
@@ -296,6 +303,9 @@ describe.only("The HTML binding directive", () => {
             newValue: false,
             getValue(node: HTMLElement) {
                 return node.hasAttribute("test-boolean-attribute");
+            },
+            setValue(node: HTMLElement, value: boolean) {
+                DOM.setBooleanAttribute(node, "test-boolean-attribute", value);
             }
         },
         {
@@ -305,6 +315,9 @@ describe.only("The HTML binding directive", () => {
             newValue: "This is another test",
             getValue(node: HTMLElement) {
                 return (node as any).testProperty;
+            },
+            setValue(node: HTMLElement, value: any) {
+                (node as any).testProperty = value;
             }
         },
     ];
@@ -442,6 +455,82 @@ describe.only("The HTML binding directive", () => {
                 model.value = aspectScenario.newValue;
                 SignalBinding.send(signalName);
 
+                await Updates.next();
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+            });
+        }
+    });
+
+    context("when binding two-way", () => {
+        for (const aspectScenario of aspectScenarios) {
+            it(`sets the initial value of the ${aspectScenario.name} binding`, () => {
+                const { behavior, node, targets } = bindingWithConfig(twoWay, aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+            });
+
+            it(`updates the ${aspectScenario.name} when the model changes`, async () => {
+                const { behavior, node, targets } = bindingWithConfig(twoWay, aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+
+                model.value = aspectScenario.newValue;
+
+                await Updates.next();
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+            });
+
+            it(`updates the model when a change event fires for the ${aspectScenario.name}`, async () => {
+                const { behavior, node, targets } = bindingWithConfig(twoWay, aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+
+                aspectScenario.setValue(node, aspectScenario.newValue as boolean);
+                node.dispatchEvent(new CustomEvent("change"));
+
+                await Updates.next();
+
+                expect(model.value).to.equal(aspectScenario.newValue);
+            });
+
+            it(`updates the model when a configured event fires for the ${aspectScenario.name}`, async () => {
+                const changeEvent = "foo";
+                const { behavior, node, targets } = bindingWithConfig(twoWay({changeEvent}), aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+
+                aspectScenario.setValue(node, aspectScenario.newValue as boolean);
+                node.dispatchEvent(new CustomEvent(changeEvent));
+
+                await Updates.next();
+
+                expect(model.value).to.equal(aspectScenario.newValue);
+            });
+
+            it(`doesn't update the ${aspectScenario.name} after unbind`, async () => {
+                const { behavior, node, targets } = bindingWithConfig(twoWay, aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+
+                behavior.unbind(model, ExecutionContext.default, targets);
+                model.value = aspectScenario.newValue;
                 await Updates.next();
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);

@@ -670,6 +670,9 @@ export class TwoWayBinding extends ChangeBinding {
             case 2:
                 value = target.hasAttribute(directive.targetAspect);
                 break;
+            case 4:
+                value = target.innerText;
+                break;
             default:
                 value = target[directive.targetAspect];
                 break;
