@@ -304,7 +304,7 @@ function updateTokenListTarget(
     value: any
 ): void {
     const directive = this.directive;
-    const lookup = `${directive.id}-token-list`;
+    const lookup = `${directive.id}-t`;
     const state: TokenListState =
         target[lookup] ?? (target[lookup] = { c: 0, v: Object.create(null) });
     const versions = state.v;
@@ -374,6 +374,8 @@ const signals: Record<string, undefined | Function | Function[]> = Object.create
  * @public
  */
 export class SignalBinding extends UpdateBinding {
+    private handlerProperty = `${this.directive.id}-h`;
+
     /**
      * Bind this behavior to the source.
      * @param source - The source to bind to.
@@ -384,7 +386,7 @@ export class SignalBinding extends UpdateBinding {
         const directive = this.directive;
         const target = targets[directive.nodeId];
         const signal = this.getSignal(source, context);
-        const handler = (target[directive.id] = () => {
+        const handler = (target[this.handlerProperty] = () => {
             this.updateTarget(
                 target,
                 directive.targetAspect!,
@@ -420,7 +422,7 @@ export class SignalBinding extends UpdateBinding {
         if (found && Array.isArray(found)) {
             const directive = this.directive;
             const target = targets[directive.nodeId];
-            const handler = target[directive.id];
+            const handler = target[this.handlerProperty];
             const index = found.indexOf(handler);
             if (index !== -1) {
                 found.splice(index, 1);
