@@ -1,12 +1,13 @@
 import { expect } from "chai";
-import { bind, HTMLBindingDirective } from "./binding";
+import { bind, BindingConfig, BindingMode, HTMLBindingDirective, onChange, oneTime, signal, SignalBinding } from "./binding";
 import { ExecutionContext, observable } from "../observation/observable";
 import { html, ViewTemplate } from "./template";
 import { toHTML } from "../__test__/helpers";
 import { SyntheticView, HTMLView } from "./view";
 import { Updates } from "../observation/update-queue";
+import { Aspect, AspectType } from "./html-directive";
 
-describe("The HTML binding directive", () => {
+describe.only("The HTML binding directive", () => {
     class Model {
         constructor(value: any) {
             this.value = value;
@@ -31,6 +32,25 @@ describe("The HTML binding directive", () => {
         directive.nodeId = 'r';
 
         const node = document.createTextNode(" ");
+        const targets = { r: node };
+
+        const behavior = directive.createBehavior(targets);
+        const parentNode = document.createElement("div");
+
+        parentNode.appendChild(node);
+
+        return { directive, behavior, node, parentNode, targets };
+    }
+
+    function bindingWithConfig(config: BindingConfig, sourceAspect?: string) {
+        const directive = bind<Model>(x => x.value, config) as HTMLBindingDirective;
+        directive.nodeId = 'r';
+
+        if (sourceAspect) {
+            Aspect.assign(directive, sourceAspect);
+        }
+
+        const node = document.createElement("div");
         const targets = { r: node };
 
         const behavior = directive.createBehavior(targets);
@@ -248,5 +268,184 @@ describe("The HTML binding directive", () => {
             expect(newView.source).to.equal(model);
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
         });
+    });
+
+    const aspectScenarios = [
+        {
+            name: "content",
+            sourceAspect: "",
+            originalValue: "This is a test",
+            newValue: "This is another test",
+            getValue(node: HTMLElement) {
+                return node.textContent;
+            }
+        },
+        {
+            name: "attribute",
+            sourceAspect: "test-attribute",
+            originalValue: "This is a test",
+            newValue: "This is another test",
+            getValue(node: HTMLElement) {
+                return node.getAttribute("test-attribute");
+            }
+        },
+        {
+            name: "boolean attribute",
+            sourceAspect: "?test-boolean-attribute",
+            originalValue: true,
+            newValue: false,
+            getValue(node: HTMLElement) {
+                return node.hasAttribute("test-boolean-attribute");
+            }
+        },
+        {
+            name: "property",
+            sourceAspect: ":testProperty",
+            originalValue: "This is a test",
+            newValue: "This is another test",
+            getValue(node: HTMLElement) {
+                return (node as any).testProperty;
+            }
+        },
+    ];
+
+    context("when binding on-change", () => {
+        for (const aspectScenario of aspectScenarios) {
+            it(`sets the initial value of a ${aspectScenario.name} binding`, () => {
+                const { behavior, node, targets } = bindingWithConfig(onChange, aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+            });
+
+            it(`updates the ${aspectScenario.name} when the model changes`, async () => {
+                const { behavior, node, targets } = bindingWithConfig(onChange, aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+
+                model.value = aspectScenario.newValue;
+
+                await Updates.next();
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+            });
+
+            it(`doesn't update the ${aspectScenario.name} after unbind`, async () => {
+                const { behavior, node, targets } = bindingWithConfig(onChange, aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+
+                behavior.unbind(model, ExecutionContext.default, targets) ;
+                model.value = aspectScenario.newValue;
+
+                await Updates.next();
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+            });
+        }
+    });
+
+    context("when binding one-time", () => {
+        for (const aspectScenario of aspectScenarios) {
+            it(`sets the initial value of a ${aspectScenario.name} binding`, () => {
+                const { behavior, node, targets } = bindingWithConfig(oneTime, aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+            });
+
+            it(`does not update the ${aspectScenario.name} after the initial set`, async () => {
+                const { behavior, node, targets } = bindingWithConfig(oneTime, aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+
+                model.value = aspectScenario.newValue;
+
+                await Updates.next();
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+            });
+
+            it(`doesn't update the ${aspectScenario.name} after unbind`, async () => {
+                const { behavior, node, targets } = bindingWithConfig(oneTime, aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+
+                behavior.unbind(model, ExecutionContext.default, targets);
+                model.value = aspectScenario.newValue;
+                await Updates.next();
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+            });
+        }
+    });
+
+    context("when binding with a signal", () => {
+        for (const aspectScenario of aspectScenarios) {
+            it(`sets the initial value of the ${aspectScenario.name} binding`, () => {
+                const { behavior, node, targets } = bindingWithConfig(signal("test-signal"), aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+            });
+
+            it(`updates the ${aspectScenario.name} only when the signal is sent`, async () => {
+                const signalName = "test-signal";
+                const { behavior, node, targets } = bindingWithConfig(signal(signalName), aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+
+                model.value = aspectScenario.newValue;
+
+                await Updates.next();
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+
+                SignalBinding.send(signalName);
+
+                await Updates.next();
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+            });
+
+            it(`doesn't respond to signals for a ${aspectScenario.name} binding after unbind`, async () => {
+                const signalName = "test-signal";
+                const { behavior, node, targets } = bindingWithConfig(signal(signalName), aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+
+                behavior.bind(model, ExecutionContext.default, targets);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+
+                behavior.unbind(model, ExecutionContext.default, targets);
+                model.value = aspectScenario.newValue;
+                SignalBinding.send(signalName);
+
+                await Updates.next();
+
+                expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+            });
+        }
     });
 });
