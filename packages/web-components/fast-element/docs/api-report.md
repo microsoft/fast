@@ -285,6 +285,12 @@ export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "prop
 export type DefaultBindingOptions = AddEventListenerOptions;
 
 // @public
+export type DefaultTwoWayBindingOptions = DefaultBindingOptions & {
+    changeEvent?: string;
+    fromView?: (value: any) => any;
+};
+
+// @public
 export const DOM: Readonly<{
     queueUpdate: (callable: Callable) => void;
     nextUpdate: () => Promise<void>;
@@ -812,6 +818,23 @@ export type TrustedTypes = {
 export type TrustedTypesPolicy = {
     createHTML(html: string): string;
 };
+
+// @public
+export const twoWay: BindingConfig<DefaultTwoWayBindingOptions> & BindingConfigResolver<DefaultTwoWayBindingOptions>;
+
+// @public
+export class TwoWayBinding extends ChangeBinding {
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    static configure(settings: TwoWaySettings): void;
+    // @internal (undocumented)
+    handleEvent(event: Event): void;
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+}
+
+// @public
+export interface TwoWaySettings {
+    determineChangeEvent(directive: HTMLBindingDirective, target: HTMLElement): string;
+}
 
 // Warning: (ae-internal-missing-underscore) The name "TypeDefinition" should be prefixed with an underscore because the declaration is marked as @internal
 //
