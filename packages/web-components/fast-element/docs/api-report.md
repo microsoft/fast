@@ -540,6 +540,7 @@ export abstract class NodeObservationDirective<T extends NodeBehaviorOptions> ex
     protected computeNodes(target: any): Node[];
     protected abstract disconnect(target: any): void;
     protected abstract getNodes(target: any): Node[];
+    protected getSource(target: Node): any;
     protected abstract observe(target: any): void;
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
     protected updateTarget(source: any, value: ReadonlyArray<any>): void;
