@@ -36,7 +36,7 @@ jobs:
             - uses: actions/download-artifact@v2
               with:
                   name: Get results folder
-                  path: packages/utilities/fast-benchmarks/results
+                  path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
             - name: Report Tachometer Result
               uses: andrewiggins/tachometer-reporter-action@v2
               with:
