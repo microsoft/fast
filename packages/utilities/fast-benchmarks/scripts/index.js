@@ -78,6 +78,8 @@ async function runBenchmark(configPaths, pathNames) {
     for (let i = 0; i < configPaths.length; i++) {
         const configPath = configPaths[i];
         const pathName = pathNames[i];
+
+        console.log("path name", pathName);
         const res = new Promise((resolve, reject) => {
             const args = [
                 "tach",
