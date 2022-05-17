@@ -591,6 +591,10 @@ export class EventBinding {
         if (result !== true) {
             event.preventDefault();
         }
+
+        if (this.directive.options.once) {
+            target.$fastSource = target.$fastContext = null;
+        }
     }
 }
 
