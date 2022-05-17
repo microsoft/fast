@@ -33,9 +33,9 @@ jobs:
               run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
             - name: Prepare workspaces
               run: yarn prepare
-            - uses: actions/download-artifact@v2
+            - uses: actions/upload-artifact@v3
               with:
-                  name: Get results folder
+                  name: Upload results folder
                   path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
             - name: Report Tachometer Result
               uses: andrewiggins/tachometer-reporter-action@v2
