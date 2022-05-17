@@ -40,5 +40,5 @@ jobs:
             - name: Report Tachometer Result
               uses: andrewiggins/tachometer-reporter-action@v2
               with:
-                  name: results
-                  path: packages/utilities/fast-benchmarks/results/*.json
+                  report-id: results
+                  path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
