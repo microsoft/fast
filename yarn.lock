@@ -3633,8 +3633,10 @@
     "@microsoft/fast-jss-utilities" "^4.8.0"
     "@microsoft/fast-web-utilities" "^4.6.0"
 
-"@microsoft/fast-element@file:packages/web-components/fast-element":
-  version "1.9.0"
+"@microsoft/fast-element@1.10.1":
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-1.10.1.tgz#2ca442a4a8d15f3fd796795a370e3a1bc9bd2738"
+  integrity sha512-cq+vBBa8JCuAhsFEwHM9386YolYu9pNb1sBodp69RqWuaU56ElC60dC3aQWuOKqAMNoQqtCHPh0RQTvVBegSyw==
 
 "@microsoft/fast-jss-manager-react@^4.8.0":
   version "4.8.0"
