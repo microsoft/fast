@@ -1,15 +1,6 @@
 name: Fast Element benchmark jobs
 
-on: 
-  pull_request:
-    branches:
-    - master
-    - releases/*
-    - features/*
-    - users/*
-  push:
-    paths:
-      - 'packages/web-components/fast-element/**'
+on: [pull_request]
 
 jobs:
     setup:
