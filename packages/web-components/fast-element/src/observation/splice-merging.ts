@@ -1,4 +1,5 @@
 import { emptyArray } from "../platform.js";
+import type { ArrayObserver } from "./array-observer.js";
 import { Splice, SpliceStrategy } from "./splice.js";
 
 const enum Edit {
@@ -388,20 +389,50 @@ function project(array: unknown[], changes: Splice[]): Splice[] {
     return splices;
 }
 
-export const spliceMergingStrategy: SpliceStrategy = {
-    normalizeSplices(
-        previous: unknown[] | undefined,
-        current: unknown[],
-        changes: Splice[] | undefined
-    ): readonly Splice[] {
-        if (previous === void 0) {
-            if (changes === void 0) {
-                return emptyArray;
+export const spliceMergingStrategy: SpliceStrategy = Object.assign(
+    {},
+    SpliceStrategy.default,
+    {
+        normalize(
+            previous: unknown[] | undefined,
+            current: unknown[],
+            changes: Splice[] | undefined
+        ): readonly Splice[] {
+            if (previous === void 0) {
+                if (changes === void 0) {
+                    return emptyArray;
+                }
+
+                return changes.length > 1 ? project(current, changes) : changes;
             }
 
-            return changes.length > 1 ? project(current, changes) : changes;
-        }
+            return calc(current, 0, current.length, previous, 0, previous.length);
+        },
 
-        return calc(current, 0, current.length, previous, 0, previous.length);
-    },
-};
+        reverse(
+            array: any[],
+            observer: ArrayObserver,
+            reverse: typeof Array.prototype.reverse,
+            args: any[]
+        ): any {
+            observer.flush();
+            const oldArray = array.slice();
+            const result = reverse.apply(array, args);
+            observer.reset(oldArray);
+            return result;
+        },
+
+        sort(
+            array: any[],
+            observer: ArrayObserver,
+            sort: typeof Array.prototype.sort,
+            args: any[]
+        ): any[] {
+            observer.flush();
+            const oldArray = array.slice();
+            const result = sort.apply(array, args);
+            observer.reset(oldArray);
+            return result;
+        },
+    }
+);

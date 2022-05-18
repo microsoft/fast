@@ -16,7 +16,7 @@ function setNonEnumerable(target: any, property: string, value: any): void {
  * @public
  */
 export interface ArrayObserver extends SubscriberSet {
-    strategy: SpliceStrategy | null;
+    strategy: SpliceStrategy;
     addSplice(splice: Splice): void;
     reset(oldCollection: any[] | undefined): void;
     flush(): void;
@@ -26,7 +26,7 @@ interface LengthSubscriber extends Subscriber {
     length: number;
 }
 
-class DefaultArrayObserver extends SubscriberSet {
+class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
     private oldCollection: any[] | undefined = void 0;
     private splices: Splice[] | undefined = void 0;
     private needsQueue: boolean = true;
@@ -35,11 +35,11 @@ class DefaultArrayObserver extends SubscriberSet {
     /** @internal */
     public lengthSubscriber: LengthSubscriber | undefined = void 0;
 
-    public get strategy(): SpliceStrategy | null {
-        return this.spliceStrategy;
+    public get strategy(): SpliceStrategy {
+        return this.spliceStrategy ?? SpliceStrategy.default;
     }
 
-    public set strategy(value: SpliceStrategy | null) {
+    public set strategy(value: SpliceStrategy) {
         this.spliceStrategy = value;
     }
 
@@ -50,7 +50,7 @@ class DefaultArrayObserver extends SubscriberSet {
         setNonEnumerable(subject, "$fastController", this);
     }
 
-    public addSplice(splice: Splice): void {
+    public addSplice(splice: Splice) {
         if (this.splices === void 0) {
             this.splices = [splice];
         } else {
@@ -77,8 +77,7 @@ class DefaultArrayObserver extends SubscriberSet {
         this.splices = void 0;
         this.oldCollection = void 0;
 
-        const strategy = this.strategy ?? SpliceStrategy.default;
-        this.notify(strategy.normalizeSplices(oldCollection, this.subject, splices));
+        this.notify(this.strategy.normalize(oldCollection, this.subject, splices));
     }
 
     private enqueue(): void {
@@ -117,138 +116,21 @@ export function enableArrayObservation(): void {
     if (!(proto as any).$fastPatch) {
         setNonEnumerable(proto, "$fastPatch", 1);
 
-        const pop = proto.pop;
-        const push = proto.push;
-        const reverse = proto.reverse;
-        const shift = proto.shift;
-        const sort = proto.sort;
-        const splice = proto.splice;
-        const unshift = proto.unshift;
-        const adjustIndex = (changeRecord: Splice, array: any[]): Splice => {
-            let index = changeRecord.index;
-            const arrayLength = array.length;
-
-            if (index > arrayLength) {
-                index = arrayLength - changeRecord.addedCount;
-            } else if (index < 0) {
-                index =
-                    arrayLength +
-                    changeRecord.removed.length +
-                    index -
-                    changeRecord.addedCount;
-            }
-
-            changeRecord.index = index < 0 ? 0 : index;
-            return changeRecord;
-        };
-
-        Object.assign(proto, {
-            pop(...args) {
-                const notEmpty = this.length > 0;
-                const result = pop.apply(this, args);
+        [
+            proto.pop,
+            proto.push,
+            proto.reverse,
+            proto.shift,
+            proto.sort,
+            proto.splice,
+            proto.unshift,
+        ].forEach(method => {
+            proto[method.name] = function (...args) {
                 const o = this.$fastController as ArrayObserver;
-
-                if (o !== void 0 && notEmpty) {
-                    o.addSplice(new Splice(this.length, [result], 0));
-                }
-
-                return result;
-            },
-
-            push(...args) {
-                const result = push.apply(this, args);
-                const o = this.$fastController as ArrayObserver;
-
-                if (o !== void 0) {
-                    o.addSplice(
-                        adjustIndex(
-                            new Splice(this.length - args.length, [], args.length),
-                            this
-                        )
-                    );
-                }
-
-                return result;
-            },
-
-            reverse(...args) {
-                let oldArray;
-                const o = this.$fastController as ArrayObserver;
-
-                if (o !== void 0) {
-                    o.flush();
-                    oldArray = this.slice();
-                }
-
-                const result = reverse.apply(this, args);
-
-                if (o !== void 0) {
-                    o.reset(oldArray);
-                }
-
-                return result;
-            },
-
-            shift(...args) {
-                const notEmpty = this.length > 0;
-                const result = shift.apply(this, args);
-                const o = this.$fastController as ArrayObserver;
-
-                if (o !== void 0 && notEmpty) {
-                    o.addSplice(new Splice(0, [result], 0));
-                }
-
-                return result;
-            },
-
-            sort(...args) {
-                let oldArray;
-                const o = this.$fastController as ArrayObserver;
-
-                if (o !== void 0) {
-                    o.flush();
-                    oldArray = this.slice();
-                }
-
-                const result = sort.apply(this, args);
-
-                if (o !== void 0) {
-                    o.reset(oldArray);
-                }
-
-                return result;
-            },
-
-            splice(...args) {
-                const result = splice.apply(this, args);
-                const o = this.$fastController as ArrayObserver;
-
-                if (o !== void 0) {
-                    o.addSplice(
-                        adjustIndex(
-                            new Splice(
-                                +args[0],
-                                result,
-                                args.length > 2 ? args.length - 2 : 0
-                            ),
-                            this
-                        )
-                    );
-                }
-
-                return result;
-            },
-
-            unshift(...args) {
-                const result = unshift.apply(this, args);
-                const o = this.$fastController as ArrayObserver;
-
-                if (o !== void 0) {
-                    o.addSplice(adjustIndex(new Splice(0, [], args.length), this));
-                }
-
-                return result;
-            },
+                return o === void 0
+                    ? method.apply(this, args)
+                    : o.strategy[method.name](this, o, method, args);
+            };
         });
     }
 }

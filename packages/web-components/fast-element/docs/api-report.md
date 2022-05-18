@@ -39,7 +39,7 @@ export interface ArrayObserver extends SubscriberSet {
     // (undocumented)
     reset(oldCollection: any[] | undefined): void;
     // (undocumented)
-    strategy: SpliceStrategy | null;
+    strategy: SpliceStrategy;
 }
 
 // @public
@@ -745,21 +745,35 @@ export interface SlottedDirectiveOptions<T = any> extends NodeBehaviorOptions<T>
 
 // @public
 export class Splice {
-    constructor(
-    index: number,
-    removed: any[],
-    addedCount: number);
-    addedCount: number;
-    index: number;
-    removed: any[];
+    constructor(index: number, removed: any[], addedCount: number);
     // (undocumented)
+    addedCount: number;
+    adjustTo(array: any[]): this;
+    // (undocumented)
+    index: number;
+    // (undocumented)
+    removed: any[];
     reset?: boolean;
 }
 
 // @public (undocumented)
 export interface SpliceStrategy {
     // (undocumented)
-    normalizeSplices(previous: unknown[] | undefined, current: unknown[], changes: Splice[] | undefined): readonly Splice[];
+    normalize(previous: unknown[] | undefined, current: unknown[], changes: Splice[] | undefined): readonly Splice[];
+    // (undocumented)
+    pop(array: any[], observer: ArrayObserver, pop: typeof Array.prototype.pop, args: any[]): any;
+    // (undocumented)
+    push(array: any[], observer: ArrayObserver, push: typeof Array.prototype.push, args: any[]): any;
+    // (undocumented)
+    reverse(array: any[], observer: ArrayObserver, reverse: typeof Array.prototype.reverse, args: any[]): any;
+    // (undocumented)
+    shift(array: any[], observer: ArrayObserver, shift: typeof Array.prototype.shift, args: any[]): any;
+    // (undocumented)
+    sort(array: any[], observer: ArrayObserver, sort: typeof Array.prototype.sort, args: any[]): any[];
+    // (undocumented)
+    splice(array: any[], observer: ArrayObserver, splice: typeof Array.prototype.splice, args: any[]): any;
+    // (undocumented)
+    unshift(array: any[], observer: ArrayObserver, unshift: typeof Array.prototype.unshift, args: any[]): any[];
 }
 
 // @public (undocumented)
