@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "remove deprecated keycodes and add additional keys",
+  "packageName": "@microsoft/fast-web-utilities",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
