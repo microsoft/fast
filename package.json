@@ -65,7 +65,7 @@
     "husky": {
         "hooks": {
             "pre-commit": "lint-staged",
-            "post-commit": "benchmark"
+            "pre-push": "benchmark"
         }
     },
     "jest": {
