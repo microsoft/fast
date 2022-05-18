@@ -1,6 +1,6 @@
 import { emptyArray } from "../platform.js";
 import type { ArrayObserver } from "./array-observer.js";
-import { Splice, SpliceStrategy } from "./splice.js";
+import { Splice, SpliceStrategy, SpliceStrategySupport } from "./splice.js";
 
 const enum Edit {
     leave = 0,
@@ -396,6 +396,8 @@ function project(array: unknown[], changes: Splice[]): Splice[] {
  */
 export const mergeSpliceStrategy: SpliceStrategy = Object.freeze(
     Object.assign({}, SpliceStrategy.default, {
+        support: SpliceStrategySupport.optimized,
+
         normalize(
             previous: unknown[] | undefined,
             current: unknown[],
@@ -446,6 +448,8 @@ export const mergeSpliceStrategy: SpliceStrategy = Object.freeze(
  * @public
  */
 export const resetSpliceStrategy: SpliceStrategy = Object.freeze({
+    support: SpliceStrategySupport.reset,
+
     normalize(
         previous: unknown[] | undefined,
         current: unknown[],

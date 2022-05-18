@@ -52,10 +52,43 @@ export class Splice {
 }
 
 /**
+ * Indicates what level of feature support the splice
+ * strategy provides.
+ * @public
+ */
+export const SpliceStrategySupport = Object.freeze({
+    /**
+     * Only supports resets.
+     */
+    reset: 1,
+    /**
+     * Supports tracking splices and resets.
+     */
+    splice: 2,
+    /**
+     * Supports tracking splices and resets, while applying some form
+     * of optimization, such as merging, to the splices.
+     */
+    optimized: 3,
+} as const);
+
+/**
+ * Indicates what level of feature support the splice
+ * strategy provides.
+ * @public
+ */
+export type SpliceStrategySupport = typeof SpliceStrategySupport[keyof typeof SpliceStrategySupport];
+
+/**
  * An approach to tracking changes in an array.
  * @public
  */
 export interface SpliceStrategy {
+    /**
+     * The level of feature support the splice strategy provides.
+     */
+    readonly support: SpliceStrategySupport;
+
     /**
      * Normalizes the splices before delivery to array change subscribers.
      * @param previous - The previous version of the array if a reset has taken place.
@@ -172,6 +205,8 @@ reset.reset = true;
 const resetSplices = [reset];
 
 const defaultSpliceStrategy: SpliceStrategy = Object.freeze({
+    support: SpliceStrategySupport.splice,
+
     normalize(
         previous: unknown[] | undefined,
         current: unknown[],
