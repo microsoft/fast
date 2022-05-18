@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Handle disabled and hidden items in toolbar",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "20542556+mollykreis@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
