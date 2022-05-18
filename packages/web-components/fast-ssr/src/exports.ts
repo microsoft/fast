@@ -1,11 +1,11 @@
-import { RenderInfo } from "@lit-labs/ssr";
 import {
     Compiler,
     ElementStyles,
     Updates,
     ViewBehaviorFactory,
 } from "@microsoft/fast-element";
-import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
+import { RenderInfo } from "./render-info.js";
+import { FASTElementRenderer } from "./element-renderer/fast-element-renderer.js";
 import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
 import { StyleElementStyleRenderer, StyleRenderer } from "./styles/style-renderer.js";
 import {
@@ -17,6 +17,10 @@ import {
     TemplateRenderer,
 } from "./template-renderer/template-renderer.js";
 import { SSRView } from "./view.js";
+import {
+    ConstructableElementRenderer,
+    ElementRenderer,
+} from "./element-renderer/element-renderer.js";
 
 Compiler.setDefaultStrategy(
     (
@@ -78,8 +82,11 @@ export default function fastSSR(): {
 
 export type {
     ComponentDOMEmissionMode,
+    ElementRenderer,
     FASTElementRenderer,
     StyleRenderer,
     TemplateRenderer,
     ViewBehaviorFactoryRenderer,
+    RenderInfo,
+    ConstructableElementRenderer,
 };

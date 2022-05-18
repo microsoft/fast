@@ -1,4 +1,3 @@
-import { RenderInfo } from "@lit-labs/ssr";
 import {
     ChildrenDirective,
     Constructable,
@@ -10,6 +9,7 @@ import {
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { RenderInfo } from "../render-info.js";
 import { TemplateRenderer } from "./template-renderer.js";
 
 /**

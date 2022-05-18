@@ -38,10 +38,14 @@
   "types": "./dist/fast-ssr.d.ts",
   "exports": {
     "." : {
-      "default": "./dist/esm/exports.js",
-      "types": "./dist/fast-ssr.d.ts"
+      "types": "./dist/fast-ssr.d.ts",
+      "default": "./dist/esm/exports.js"
     },
-    "./install-dom-shim": "./dist/esm/dom-shim.js"
+    "./install-dom-shim": "./dist/esm/install-dom-shim.js",
+    "./dom-shim": {
+      "types": "./dist/dts/dom-shim.d.ts",
+      "default": "./dist/esm/dom-shim.js"
+    }
   },
   "private": true,
   "dependencies": {
