@@ -11,8 +11,7 @@
         "module": "ESNext",
         "types": [
             "mocha",
-            "webpack-env",
-            "web-ie11"
+            "webpack-env"
         ],
         "lib": [
             "DOM",

@@ -73,7 +73,6 @@
     "@types/karma": "^5.0.0",
     "@types/mocha": "^7.0.2",
     "@types/webpack-env": "^1.15.2",
-    "@types/web-ie11": "^0.0.0",
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",
     "esm": "^3.2.25",
