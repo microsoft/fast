@@ -43,7 +43,7 @@ jobs:
               uses: andrewiggins/tachometer-reporter-action@v2
               with:
                 report-id: localTest-create10k
-                path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.config.json
+                path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.json
                 pr-bench-name: users/wendy/local-build-actions
                 base-bench-name: master
             # - uses: actions/upload-artifact@v3
