@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "remove deprecated item slot name on accordion as it is the default slot",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
