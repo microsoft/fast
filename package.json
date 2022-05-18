@@ -64,8 +64,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged",
-            "pre-push": "benchmark"
+            "pre-commit": "npm run benchmark"
         }
     },
     "jest": {
