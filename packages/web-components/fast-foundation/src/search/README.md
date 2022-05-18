@@ -132,8 +132,8 @@ This component is built with the expectation that focus is delegated to the inpu
 | `start`        | Content which can be provided before the search input       |
 | `end`          | Content which can be provided after the search clear button |
 |                | The default slot for the label                              |
-| `close-button` | The clear button                                            |
-| `close-glyph`  | The clear glyph                                             |
+| `clear-button` | The clear button                                            |
+| `clear-glyph`  | The clear glyph                                             |
 
 <hr/>
 
