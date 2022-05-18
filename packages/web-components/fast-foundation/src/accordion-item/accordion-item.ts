@@ -34,8 +34,6 @@ export type AccordionItemOptions = FoundationElementDefinition &
  * @csspart button - The button which serves to invoke the item
  * @csspart heading-content - Wraps the slot for the heading content within the button
  * @csspart icon - The icon container
- * @csspart expanded-icon - The expanded icon slot
- * @csspart collapsed-icon - The collapsed icon
  * @csspart region - The wrapper for the accordion item content
  *
  * @public

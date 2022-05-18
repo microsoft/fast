@@ -35,10 +35,10 @@ export const accordionItemTemplate: FoundationElementTemplate<
             ${startSlotTemplate(context, definition)}
             ${endSlotTemplate(context, definition)}
             <span class="icon" part="icon" aria-hidden="true">
-                <slot name="expanded-icon" part="expanded-icon">
+                <slot name="expanded-icon">
                     ${definition.expandedIcon || ""}
                 </slot>
-                <slot name="collapsed-icon" part="collapsed-icon">
+                <slot name="collapsed-icon">
                     ${definition.collapsedIcon || ""}
                 </slot>
             <span>
