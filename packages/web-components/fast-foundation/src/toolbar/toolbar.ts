@@ -242,11 +242,7 @@ export class Toolbar extends FoundationElement {
         const adjustedActiveIndex = this.focusableElements.indexOf(
             previousFocusedElement
         );
-        if (adjustedActiveIndex === -1) {
-            this.activeIndex = 0;
-        } else {
-            this.activeIndex = adjustedActiveIndex;
-        }
+        this.activeIndex = Math.max(0, adjustedActiveIndex);
 
         this.setFocusableElements();
     }
