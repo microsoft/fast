@@ -37,9 +37,7 @@ jobs:
             - name: Benchmark local create10k
               run: |
                 cd packages/utilities/fast-benchmarks
-                npx tachometer \
-                  --config dist/fast-element_localTest-create10k.config.json \
-                  --json-file results/fast-element_localTest-create10k.config.json
+                yarn run benchmark:fast-element:test:local
 
             - name: Report localTest-create10k
               uses: andrewiggins/tachometer-reporter-action@v2
