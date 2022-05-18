@@ -16,9 +16,26 @@ function setNonEnumerable(target: any, property: string, value: any): void {
  * @public
  */
 export interface ArrayObserver extends SubscriberSet {
-    strategy: SpliceStrategy;
+    /**
+     * The strategy to use for tracking changes.
+     */
+    strategy: SpliceStrategy | null;
+
+    /**
+     * Adds a splice to the list of changes.
+     * @param splice - The splice to add.
+     */
     addSplice(splice: Splice): void;
+
+    /**
+     * Indicates that a reset change has occurred.
+     * @param oldCollection - The collection as it was before the reset.
+     */
     reset(oldCollection: any[] | undefined): void;
+
+    /**
+     * Flushes the changes to subscribers.
+     */
     flush(): void;
 }
 
@@ -35,11 +52,11 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
     /** @internal */
     public lengthSubscriber: LengthSubscriber | undefined = void 0;
 
-    public get strategy(): SpliceStrategy {
-        return this.spliceStrategy ?? SpliceStrategy.default;
+    public get strategy(): SpliceStrategy | null {
+        return this.spliceStrategy;
     }
 
-    public set strategy(value: SpliceStrategy) {
+    public set strategy(value: SpliceStrategy | null) {
         this.spliceStrategy = value;
     }
 
@@ -77,7 +94,13 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
         this.splices = void 0;
         this.oldCollection = void 0;
 
-        this.notify(this.strategy.normalize(oldCollection, this.subject, splices));
+        this.notify(
+            (this.spliceStrategy ?? SpliceStrategy.default).normalize(
+                oldCollection,
+                this.subject,
+                splices
+            )
+        );
     }
 
     private enqueue(): void {
@@ -129,7 +152,12 @@ export function enableArrayObservation(): void {
                 const o = this.$fastController as ArrayObserver;
                 return o === void 0
                     ? method.apply(this, args)
-                    : o.strategy[method.name](this, o, method, args);
+                    : (o.strategy ?? SpliceStrategy.default)[method.name](
+                          this,
+                          o,
+                          method,
+                          args
+                      );
             };
         });
     }

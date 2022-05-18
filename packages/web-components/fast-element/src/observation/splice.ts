@@ -51,48 +51,114 @@ export class Splice {
     }
 }
 
+/**
+ * An approach to tracking changes in an array.
+ * @public
+ */
 export interface SpliceStrategy {
+    /**
+     * Normalizes the splices before delivery to array change subscribers.
+     * @param previous - The previous version of the array if a reset has taken place.
+     * @param current - The current version of the array.
+     * @param changes - The set of changes tracked against the array.
+     */
     normalize(
         previous: unknown[] | undefined,
         current: unknown[],
         changes: Splice[] | undefined
     ): readonly Splice[];
+
+    /**
+     * Performs and tracks a pop operation on an array.
+     * @param array - The array to track the change for.
+     * @param observer - The observer to register the change with.
+     * @param pop - The operation to perform.
+     * @param args - The arguments for the operation.
+     */
     pop(
         array: any[],
         observer: ArrayObserver,
         pop: typeof Array.prototype.pop,
         args: any[]
     ): any;
+
+    /**
+     * Performs and tracks a push operation on an array.
+     * @param array - The array to track the change for.
+     * @param observer - The observer to register the change with.
+     * @param push - The operation to perform.
+     * @param args - The arguments for the operation.
+     */
     push(
         array: any[],
         observer: ArrayObserver,
         push: typeof Array.prototype.push,
         args: any[]
     ): any;
+
+    /**
+     * Performs and tracks a reverse operation on an array.
+     * @param array - The array to track the change for.
+     * @param observer - The observer to register the change with.
+     * @param reverse - The operation to perform.
+     * @param args - The arguments for the operation.
+     */
     reverse(
         array: any[],
         observer: ArrayObserver,
         reverse: typeof Array.prototype.reverse,
         args: any[]
     ): any;
+
+    /**
+     * Performs and tracks a shift operation on an array.
+     * @param array - The array to track the change for.
+     * @param observer - The observer to register the change with.
+     * @param shift - The operation to perform.
+     * @param args - The arguments for the operation.
+     */
     shift(
         array: any[],
         observer: ArrayObserver,
         shift: typeof Array.prototype.shift,
         args: any[]
     ): any;
+
+    /**
+     * Performs and tracks a sort operation on an array.
+     * @param array - The array to track the change for.
+     * @param observer - The observer to register the change with.
+     * @param sort - The operation to perform.
+     * @param args - The arguments for the operation.
+     */
     sort(
         array: any[],
         observer: ArrayObserver,
         sort: typeof Array.prototype.sort,
         args: any[]
     ): any[];
+
+    /**
+     * Performs and tracks a splice operation on an array.
+     * @param array - The array to track the change for.
+     * @param observer - The observer to register the change with.
+     * @param splice - The operation to perform.
+     * @param args - The arguments for the operation.
+     */
     splice(
         array: any[],
         observer: ArrayObserver,
         splice: typeof Array.prototype.splice,
         args: any[]
     ): any;
+
+    /**
+     * Performs and tracks an unshift operation on an array.
+     * @param array - The array to track the change for.
+     * @param observer - The observer to register the change with.
+     * @param unshift - The operation to perform.
+     * @param args - The arguments for the operation.
+     */
     unshift(
         array: any[],
         observer: ArrayObserver,
@@ -208,6 +274,18 @@ const defaultSpliceStrategy: SpliceStrategy = Object.freeze({
     },
 });
 
+/**
+ * Functionality related to tracking changes in arrays.
+ * @public
+ */
 export const SpliceStrategy = {
+    /**
+     * The default strategy for array change tracking.
+     */
     default: defaultSpliceStrategy,
+
+    /**
+     * A set of changes that represent a full array reset.
+     */
+    reset: resetSplices,
 };

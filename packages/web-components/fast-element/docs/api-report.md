@@ -32,14 +32,10 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
 
 // @public
 export interface ArrayObserver extends SubscriberSet {
-    // (undocumented)
     addSplice(splice: Splice): void;
-    // (undocumented)
     flush(): void;
-    // (undocumented)
     reset(oldCollection: any[] | undefined): void;
-    // (undocumented)
-    strategy: SpliceStrategy;
+    strategy: SpliceStrategy | null;
 }
 
 // @public
@@ -756,29 +752,22 @@ export class Splice {
     reset?: boolean;
 }
 
-// @public (undocumented)
+// @public
 export interface SpliceStrategy {
-    // (undocumented)
     normalize(previous: unknown[] | undefined, current: unknown[], changes: Splice[] | undefined): readonly Splice[];
-    // (undocumented)
     pop(array: any[], observer: ArrayObserver, pop: typeof Array.prototype.pop, args: any[]): any;
-    // (undocumented)
     push(array: any[], observer: ArrayObserver, push: typeof Array.prototype.push, args: any[]): any;
-    // (undocumented)
     reverse(array: any[], observer: ArrayObserver, reverse: typeof Array.prototype.reverse, args: any[]): any;
-    // (undocumented)
     shift(array: any[], observer: ArrayObserver, shift: typeof Array.prototype.shift, args: any[]): any;
-    // (undocumented)
     sort(array: any[], observer: ArrayObserver, sort: typeof Array.prototype.sort, args: any[]): any[];
-    // (undocumented)
     splice(array: any[], observer: ArrayObserver, splice: typeof Array.prototype.splice, args: any[]): any;
-    // (undocumented)
     unshift(array: any[], observer: ArrayObserver, unshift: typeof Array.prototype.unshift, args: any[]): any[];
 }
 
-// @public (undocumented)
+// @public
 export const SpliceStrategy: {
     default: SpliceStrategy;
+    reset: Splice[];
 };
 
 // @public
