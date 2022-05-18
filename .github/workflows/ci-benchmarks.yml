@@ -34,22 +34,36 @@ jobs:
             - name: Prepare workspaces
               run: yarn prepare
 
-            - uses: actions/upload-artifact@v3
-              with:
-                  name: Upload results folder
-                  path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
-            - name: Report Tachometer Result
-              uses: andrewiggins/tachometer-reporter-action@v2
-              with:
-                  report-id: results
-                  path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
+            - name: Benchmark local create10k
+              run: |
+                cd packages/utilities/fast-benchmarks
+                npx tachometer \
+                  --config dist/fast-element_localTest-create10k.config.json \
+                  --json-file results/fast-element_localTest-create10k.config.json
 
-            - uses: actions/upload-artifact@v3
-              with:
-                  name: Upload results folder
-                  path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.json
-            - name: Report Tachometer Result
+            - name: Report localTest-create10k
               uses: andrewiggins/tachometer-reporter-action@v2
               with:
-                  report-id: results-create-local
-                  path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.json
+                report-id: localTest-create10k
+                path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.config.json
+                pr-bench-name: users/wendy/local-build-actions
+                base-bench-name: master
+            # - uses: actions/upload-artifact@v3
+            #   with:
+            #       name: Upload results folder
+            #       path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
+            # - name: Report Tachometer Result
+            #   uses: andrewiggins/tachometer-reporter-action@v2
+            #   with:
+            #       report-id: results
+            #       path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
+
+            # - uses: actions/upload-artifact@v3
+            #   with:
+            #       name: Upload results folder
+            #       path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.json
+            # - name: Report Tachometer Result
+            #   uses: andrewiggins/tachometer-reporter-action@v2
+            #   with:
+            #       report-id: results-create-local
+            #       path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.json
