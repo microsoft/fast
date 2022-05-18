@@ -1,5 +1,4 @@
 import { isFunction } from "../interfaces.js";
-import { enableArrayObservation } from "../observation/array-observer.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
@@ -12,7 +11,7 @@ import {
     RootContext,
 } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
-import type { Splice } from "../observation/splice.js";
+import { ArrayObserver, Splice } from "../observation/arrays.js";
 import { Markup } from "./markup.js";
 import {
     AddViewBehaviorFactory,
@@ -336,7 +335,7 @@ export class RepeatDirective<TSource = any>
         public readonly templateBinding: Binding<TSource, SyntheticViewTemplate>,
         public readonly options: RepeatOptions
     ) {
-        enableArrayObservation();
+        ArrayObserver.enable();
         this.isItemsBindingVolatile = Observable.isVolatileBinding(itemsBinding);
         this.isTemplateBindingVolatile = Observable.isVolatileBinding(templateBinding);
     }

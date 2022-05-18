@@ -1,19 +1,19 @@
 import { expect } from "chai";
 import { Observable } from "./observable";
-import { enableArrayObservation, length } from "./array-observer";
+import { ArrayObserver, length } from "./arrays";
 import { SubscriberSet } from "./notifier";
 import { Updates } from "./update-queue";
 
 describe("The ArrayObserver", () => {
     it("can be retrieved through Observable.getNotifier()", () => {
-        enableArrayObservation();
+        ArrayObserver.enable();
         const array = [];
         const notifier = Observable.getNotifier(array);
         expect(notifier).to.be.instanceOf(SubscriberSet);
     });
 
     it("is the same instance for multiple calls to Observable.getNotifier() on the same array", () => {
-        enableArrayObservation();
+        ArrayObserver.enable();
         const array = [];
         const notifier = Observable.getNotifier(array);
         const notifier2 = Observable.getNotifier(array);
@@ -21,14 +21,14 @@ describe("The ArrayObserver", () => {
     });
 
     it("is different for different arrays", () => {
-        enableArrayObservation();
+        ArrayObserver.enable();
         const notifier = Observable.getNotifier([]);
         const notifier2 = Observable.getNotifier([]);
         expect(notifier).to.not.equal(notifier2);
     });
 
     it("doesn't affect for/in loops on arrays when enabled", () => {
-        enableArrayObservation();
+        ArrayObserver.enable();
 
         const array = [1, 2, 3];
         const keys: string[] = [];
@@ -41,7 +41,7 @@ describe("The ArrayObserver", () => {
     });
 
     it("doesn't affect for/in loops on arrays when the array is observed", () => {
-        enableArrayObservation();
+        ArrayObserver.enable();
 
         const array = [1, 2, 3];
         const keys: string[] = [];

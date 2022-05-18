@@ -40,6 +40,11 @@ export interface ArrayObserver extends SubscriberSet {
 }
 
 // @public
+export const ArrayObserver: Readonly<{
+    readonly enable: () => void;
+}>;
+
+// @public
 export const Aspect: Readonly<{
     readonly none: 0;
     readonly attribute: 1;
@@ -52,7 +57,7 @@ export const Aspect: Readonly<{
 }>;
 
 // @public
-export type Aspect = typeof Aspect[Exclude<keyof typeof Aspect, 'assign' | 'none'>];
+export type Aspect = typeof Aspect[Exclude<keyof typeof Aspect, "assign" | "none">];
 
 // @public
 export interface Aspected {
@@ -351,9 +356,6 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
 //
 // @internal
 export const emptyArray: readonly never[];
-
-// @public
-export function enableArrayObservation(): void;
 
 // @public
 export class EventBinding {
@@ -770,10 +772,10 @@ export interface SpliceStrategy {
 }
 
 // @public
-export const SpliceStrategy: {
-    default: SpliceStrategy;
-    reset: Splice[];
-};
+export const SpliceStrategy: Readonly<{
+    readonly reset: Splice[];
+    readonly setDefaultStrategy: (strategy: SpliceStrategy) => void;
+}>;
 
 // @public
 export const SpliceStrategySupport: Readonly<{
