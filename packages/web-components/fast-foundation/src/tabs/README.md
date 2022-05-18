@@ -153,9 +153,7 @@ export const myTabs = Tabs.compose({
 | Name              | Description                       |
 | ----------------- | --------------------------------- |
 | `tablist`         | The element wrapping for the tabs |
-| `tab`             | The tab slot                      |
 | `activeIndicator` | The visual indicator              |
-| `tabpanel`        | The tabpanel slot                 |
 
 #### Slots
 

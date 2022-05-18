@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "remove class and part names from slots in fast foundation templates",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
