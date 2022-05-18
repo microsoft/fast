@@ -26,13 +26,17 @@
       "development": "./dist/esm/index.debug.js",
       "default": "./dist/esm/index.js"
     },
-    "./polyfills.js": {
+    "./polyfills": {
       "types": "./dist/dts/polyfills.d.ts",
       "default": "./dist/esm/polyfills.js"
     },
-    "./debug.js": {
+    "./debug": {
       "types": "./dist/dts/debug.d.ts",
       "default": "./dist/esm/debug.js"
+    },
+    "./splice-strategies": {
+      "types": "./dist/dts/observation/splice-strategies.d.ts",
+      "default": "./dist/esm/observation/splice-strategies.js"
     }
   },
   "unpkg": "dist/fast-element.min.js",
