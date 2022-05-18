@@ -43,7 +43,7 @@ jobs:
             - name: Prepare workspaces
               run: yarn prepare
 
-    test:
+    update10th:
         name: Run all operations for test benchmark
         needs: [setup]
         runs-on: ubuntu-latest
@@ -63,32 +63,32 @@ jobs:
               uses: actions/upload-artifact@v2
               with:
                   name: results
-                  path: packages/utilities/fast-benchmarks/results/fast-element_test.json
+                  path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
 
-    # update10th:
-    #     name: Run update 10th element benchmark
-    #     needs: [setup]
-    #     runs-on: ubuntu-latest
-    #     steps:
-    #         - uses: actions/checkout@v2
-    #         - uses: actions/setup-node@v1
-    #           with:
-    #               node-version: "16.x"
-    #         - name: Run tachometer and generate results file
-    #           run: |
-    #               cd packages/utilities/fast-benchmarks
-    #               yarn install
-    #               yarn run benchmark:fast-element:update10th
+    testLocal:
+        name: Run create10k element benchmark
+        needs: [setup]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: "16.x"
+            - name: Run tachometer and generate results file
+              run: |
+                  cd packages/utilities/fast-benchmarks
+                  yarn install
+                  yarn run benchmark:fast-element:test:local
 
-    #         - name: Upload results
-    #           uses: actions/upload-artifact@v2
-    #           with:
-    #               name: results
-    #               path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
+            - name: Upload results
+              uses: actions/upload-artifact@v2
+              with:
+                  name: results
+                  path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.json
 
     report_results:
         name: Report Results
-        needs: [test, update10th]
+        needs: [testLocal, update10th]
         runs-on: ubuntu-latest
         steps:
             - uses: actions/download-artifact@v2
