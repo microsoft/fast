@@ -41,6 +41,7 @@
     },
     "scripts": {
         "bump": "beachball bump",
+        "benchmark": "cd packages/utilities/fast-benchmarks && yarn run benchmark:fast-element:test:local",
         "change": "beachball change",
         "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'yarn change' to generate a change file\"",
         "check": "beachball check ",
@@ -63,7 +64,8 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged"
+            "pre-commit": "lint-staged",
+            "post-commit": "benchmark"
         }
     },
     "jest": {
