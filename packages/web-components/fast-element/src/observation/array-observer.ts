@@ -12,6 +12,17 @@ function setNonEnumerable(target: any, property: string, value: any): void {
 }
 
 /**
+ * Observes array lengths.
+ * @public
+ */
+export interface LengthObserver extends Subscriber {
+    /**
+     * The length of the observed array.
+     */
+    length: number;
+}
+
+/**
  * An observer for arrays.
  * @public
  */
@@ -20,6 +31,11 @@ export interface ArrayObserver extends SubscriberSet {
      * The strategy to use for tracking changes.
      */
     strategy: SpliceStrategy | null;
+
+    /**
+     * The length observer for the array.
+     */
+    readonly lengthObserver: LengthObserver;
 
     /**
      * Adds a splice to the list of changes.
@@ -39,25 +55,40 @@ export interface ArrayObserver extends SubscriberSet {
     flush(): void;
 }
 
-interface LengthSubscriber extends Subscriber {
-    length: number;
-}
-
 class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
     private oldCollection: any[] | undefined = void 0;
     private splices: Splice[] | undefined = void 0;
     private needsQueue: boolean = true;
-    private spliceStrategy: SpliceStrategy | null = null;
-
-    /** @internal */
-    public lengthSubscriber: LengthSubscriber | undefined = void 0;
+    private _strategy: SpliceStrategy | null = null;
+    private _lengthObserver: LengthObserver | undefined = void 0;
 
     public get strategy(): SpliceStrategy | null {
-        return this.spliceStrategy;
+        return this._strategy;
     }
 
     public set strategy(value: SpliceStrategy | null) {
-        this.spliceStrategy = value;
+        this._strategy = value;
+    }
+
+    public get lengthObserver(): LengthObserver {
+        let observer = this._lengthObserver;
+
+        if (observer === void 0) {
+            const array = this.subject;
+            this._lengthObserver = observer = {
+                length: array.length,
+                handleChange() {
+                    if (this.length !== array.length) {
+                        this.length = array.length;
+                        Observable.notify(observer, "length");
+                    }
+                },
+            };
+
+            this.subscribe(observer);
+        }
+
+        return observer;
     }
 
     call: () => void = this.flush;
@@ -95,7 +126,7 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
         this.oldCollection = void 0;
 
         this.notify(
-            (this.spliceStrategy ?? SpliceStrategy.default).normalize(
+            (this._strategy ?? SpliceStrategy.default).normalize(
                 oldCollection,
                 this.subject,
                 splices
@@ -174,27 +205,12 @@ export function length<T>(array: readonly T[]): number {
         return 0;
     }
 
-    let arrayObserver = (array as any).$fastController as DefaultArrayObserver;
+    let arrayObserver = (array as any).$fastController as ArrayObserver;
     if (arrayObserver === void 0) {
         enableArrayObservation();
-        arrayObserver = Observable.getNotifier<DefaultArrayObserver>(array);
+        arrayObserver = Observable.getNotifier<ArrayObserver>(array);
     }
 
-    let lengthSubscriber = arrayObserver.lengthSubscriber; // using internal API
-    if (lengthSubscriber === void 0) {
-        arrayObserver.lengthSubscriber = lengthSubscriber = {
-            length: array.length,
-            handleChange() {
-                if (this.length !== array.length) {
-                    this.length = array.length;
-                    Observable.notify(lengthSubscriber, "length");
-                }
-            },
-        };
-
-        arrayObserver.subscribe(lengthSubscriber);
-    }
-
-    Observable.track(lengthSubscriber, "length");
+    Observable.track(arrayObserver.lengthObserver, "length");
     return array.length;
 }

@@ -34,6 +34,7 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
 export interface ArrayObserver extends SubscriberSet {
     addSplice(splice: Splice): void;
     flush(): void;
+    readonly lengthObserver: LengthObserver;
     reset(oldCollection: any[] | undefined): void;
     strategy: SpliceStrategy | null;
 }
@@ -519,6 +520,11 @@ export interface ItemViewTemplate<TSource = any, TParent = any> {
 // @public
 function length_2<T>(array: readonly T[]): number;
 export { length_2 as length }
+
+// @public
+export interface LengthObserver extends Subscriber {
+    length: number;
+}
 
 // @public
 export const Markup: Readonly<{
