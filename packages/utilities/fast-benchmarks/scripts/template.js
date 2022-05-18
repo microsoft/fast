@@ -225,7 +225,7 @@ async function generateBenchmarks(
                             ref,
                             subdir: `packages/web-components/${library}`,
                             setupCommands: [
-                                "yarn install",
+                                "yarn install --frozen-lockfile",
                                 `yarn --cwd ./packages/web-components/${library} build`,
                             ],
                         },
