@@ -31,6 +31,18 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
 }
 
 // @public
+export interface ArrayObserver extends SubscriberSet {
+    // (undocumented)
+    addSplice(splice: Splice): void;
+    // (undocumented)
+    flush(): void;
+    // (undocumented)
+    reset(oldCollection: any[] | undefined): void;
+    // (undocumented)
+    strategy: SpliceStrategy | null;
+}
+
+// @public
 export const Aspect: Readonly<{
     none: 0;
     attribute: 1;
@@ -739,10 +751,21 @@ export class Splice {
     addedCount: number);
     addedCount: number;
     index: number;
-    // (undocumented)
-    static normalize(previous: unknown[] | undefined, current: unknown[], changes: Splice[] | undefined): Splice[] | undefined;
     removed: any[];
+    // (undocumented)
+    reset?: boolean;
 }
+
+// @public (undocumented)
+export interface SpliceStrategy {
+    // (undocumented)
+    normalizeSplices(previous: unknown[] | undefined, current: unknown[], changes: Splice[] | undefined): readonly Splice[];
+}
+
+// @public (undocumented)
+export const SpliceStrategy: {
+    default: SpliceStrategy;
+};
 
 // @public
 export abstract class StatelessAttachedAttributeDirective<T> implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {

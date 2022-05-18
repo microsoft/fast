@@ -1,5 +1,5 @@
 import { Updates } from "./update-queue.js";
-import { Splice } from "./array-change-records.js";
+import { Splice, SpliceStrategy } from "./splice.js";
 import { Subscriber, SubscriberSet } from "./notifier.js";
 import type { Notifier } from "./notifier.js";
 import { Observable } from "./observable.js";
@@ -11,17 +11,37 @@ function setNonEnumerable(target: any, property: string, value: any): void {
     });
 }
 
+/**
+ * An observer for arrays.
+ * @public
+ */
+export interface ArrayObserver extends SubscriberSet {
+    strategy: SpliceStrategy | null;
+    addSplice(splice: Splice): void;
+    reset(oldCollection: any[] | undefined): void;
+    flush(): void;
+}
+
 interface LengthSubscriber extends Subscriber {
     length: number;
 }
 
-class ArrayObserver extends SubscriberSet {
+class DefaultArrayObserver extends SubscriberSet {
     private oldCollection: any[] | undefined = void 0;
     private splices: Splice[] | undefined = void 0;
     private needsQueue: boolean = true;
+    private spliceStrategy: SpliceStrategy | null = null;
 
     /** @internal */
     public lengthSubscriber: LengthSubscriber | undefined = void 0;
+
+    public get strategy(): SpliceStrategy | null {
+        return this.spliceStrategy;
+    }
+
+    public set strategy(value: SpliceStrategy | null) {
+        this.spliceStrategy = value;
+    }
 
     call: () => void = this.flush;
 
@@ -57,7 +77,8 @@ class ArrayObserver extends SubscriberSet {
         this.splices = void 0;
         this.oldCollection = void 0;
 
-        this.notify(Splice.normalize(oldCollection, this.subject, splices));
+        const strategy = this.strategy ?? SpliceStrategy.default;
+        this.notify(strategy.normalizeSplices(oldCollection, this.subject, splices));
     }
 
     private enqueue(): void {
@@ -88,7 +109,7 @@ export function enableArrayObservation(): void {
     enabled = true;
 
     Observable.setArrayObserverFactory(
-        (collection: any[]): Notifier => new ArrayObserver(collection)
+        (collection: any[]): Notifier => new DefaultArrayObserver(collection)
     );
 
     const proto = Array.prototype;
@@ -243,13 +264,13 @@ export function length<T>(array: readonly T[]): number {
         return 0;
     }
 
-    let arrayObserver = (array as any).$fastController as ArrayObserver;
+    let arrayObserver = (array as any).$fastController as DefaultArrayObserver;
     if (arrayObserver === void 0) {
         enableArrayObservation();
-        arrayObserver = Observable.getNotifier<ArrayObserver>(array);
+        arrayObserver = Observable.getNotifier<DefaultArrayObserver>(array);
     }
 
-    let lengthSubscriber = arrayObserver.lengthSubscriber;
+    let lengthSubscriber = arrayObserver.lengthSubscriber; // using internal API
     if (lengthSubscriber === void 0) {
         arrayObserver.lengthSubscriber = lengthSubscriber = {
             length: array.length,

@@ -1,5 +1,4 @@
 import { isFunction } from "../interfaces.js";
-import type { Splice } from "../observation/array-change-records.js";
 import { enableArrayObservation } from "../observation/array-observer.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
@@ -13,6 +12,7 @@ import {
     RootContext,
 } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
+import type { Splice } from "../observation/splice.js";
 import { Markup } from "./markup.js";
 import {
     AddViewBehaviorFactory,
@@ -162,6 +162,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
                 this.context!
             );
             this.refreshAllViews(true);
+        } else if (args[0].reset) {
+            this.refreshAllViews();
         } else {
             this.updateViews(args);
         }

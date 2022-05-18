@@ -1,4 +1,5 @@
 import { emptyArray } from "../platform.js";
+import { Splice, SpliceStrategy } from "./splice.js";
 
 const enum Edit {
     leave = 0,
@@ -162,51 +163,6 @@ function intersect(start1: number, end1: number, start2: number, end2: number): 
     }
 
     return end1 - start1; // Contained
-}
-
-/**
- * A splice map is a representation of how a previous array of items
- * was transformed into a new array of items. Conceptually it is a list of
- * tuples of
- *
- *   (index, removed, addedCount)
- *
- * which are kept in ascending index order of. The tuple represents that at
- * the |index|, |removed| sequence of items were removed, and counting forward
- * from |index|, |addedCount| items were added.
- * @public
- */
-export class Splice {
-    constructor(
-        /**
-         * The index that the splice occurs at.
-         */
-        public index: number,
-
-        /**
-         * The items that were removed.
-         */
-        public removed: any[],
-
-        /**
-         * The  number of items that were added.
-         */
-        public addedCount: number
-    ) {}
-
-    static normalize(
-        previous: unknown[] | undefined,
-        current: unknown[],
-        changes: Splice[] | undefined
-    ): Splice[] | undefined {
-        return previous === void 0
-            ? changes!.length > 1
-                ? /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-                  project(current, changes!)
-                : changes
-            : /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-              calc(current, 0, current.length, previous, 0, previous.length);
-    }
 }
 
 /**
@@ -431,3 +387,21 @@ function project(array: unknown[], changes: Splice[]): Splice[] {
 
     return splices;
 }
+
+export const spliceMergingStrategy: SpliceStrategy = {
+    normalizeSplices(
+        previous: unknown[] | undefined,
+        current: unknown[],
+        changes: Splice[] | undefined
+    ): readonly Splice[] {
+        if (previous === void 0) {
+            if (changes === void 0) {
+                return emptyArray;
+            }
+
+            return changes.length > 1 ? project(current, changes) : changes;
+        }
+
+        return calc(current, 0, current.length, previous, 0, previous.length);
+    },
+};
