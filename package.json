@@ -12,7 +12,6 @@
     "packages": [
       "packages/**/*",
       "sites/fast-color-explorer",
-      "sites/fast-component-explorer",
       "sites/site-utilities",
       "sites/fast-website",
       "sites/website",

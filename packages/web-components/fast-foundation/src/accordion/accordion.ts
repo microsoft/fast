@@ -13,17 +13,23 @@ import { AccordionItem } from "../accordion-item/accordion-item.js";
  * Expand mode for {@link Accordion}
  * @public
  */
-export enum AccordionExpandMode {
+export const AccordionExpandMode = {
     /**
      * Designates only a single {@link @microsoft/fast-foundation#(AccordionItem:class) } can be open a time.
      */
-    single = "single",
+    single: "single",
 
     /**
      * Designates multiple {@link @microsoft/fast-foundation#(AccordionItem:class) | AccordionItems} can be open simultaneously.
      */
-    multi = "multi",
-}
+    multi: "multi",
+} as const;
+
+/**
+ * Type for the {@link Accordion} Expand Mode
+ * @public
+ */
+export type AccordionExpandMode = typeof AccordionExpandMode[keyof typeof AccordionExpandMode];
 
 /**
  * An Accordion Custom HTML Element

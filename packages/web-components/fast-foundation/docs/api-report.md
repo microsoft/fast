@@ -29,10 +29,13 @@ export class Accordion extends FoundationElement {
 }
 
 // @public
-export enum AccordionExpandMode {
-    multi = "multi",
-    single = "single"
-}
+export const AccordionExpandMode: {
+    readonly single: "single";
+    readonly multi: "multi";
+};
+
+// @public
+export type AccordionExpandMode = typeof AccordionExpandMode[keyof typeof AccordionExpandMode];
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "AccordionItem" because one of its declarations is marked as @internal
@@ -436,7 +439,7 @@ export interface ColumnDefinition {
 //
 // @public
 export class Combobox extends FormAssociatedCombobox {
-    autocomplete: ComboboxAutocomplete | "inline" | "list" | "both" | "none" | undefined;
+    autocomplete: ComboboxAutocomplete | undefined;
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
@@ -473,10 +476,10 @@ export class Combobox extends FormAssociatedCombobox {
     placeholder: string;
     // @internal
     protected placeholderChanged(): void;
-    position: SelectPosition;
-    positionAttribute: SelectPosition;
+    position?: SelectPosition;
+    positionAttribute?: SelectPosition;
     // (undocumented)
-    protected positionChanged(): void;
+    protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition | undefined): void;
     // @internal
     selectedIndexChanged(prev: number | undefined, next: number): void;
     // @internal
@@ -497,16 +500,15 @@ export interface Combobox extends StartEnd, DelegatesARIACombobox {
 }
 
 // @public
-export enum ComboboxAutocomplete {
-    // (undocumented)
-    both = "both",
-    // (undocumented)
-    inline = "inline",
-    // (undocumented)
-    list = "list",
-    // (undocumented)
-    none = "none"
-}
+export const ComboboxAutocomplete: {
+    readonly inline: "inline";
+    readonly list: "list";
+    readonly both: "both";
+    readonly none: "none";
+};
+
+// @public
+export type ComboboxAutocomplete = typeof ComboboxAutocomplete[keyof typeof ComboboxAutocomplete];
 
 // @public
 export type ComboboxOptions = FoundationElementDefinition & StartEndOptions & {
@@ -632,7 +634,7 @@ export class DataGrid extends FoundationElement {
     focusColumnIndex: number;
     focusRowIndex: number;
     static generateColumns: (row: object) => ColumnDefinition[];
-    generateHeader: GenerateHeaderOptions | "none" | "default" | "sticky";
+    generateHeader: GenerateHeaderOptions;
     gridTemplateColumns: string;
     // @internal (undocumented)
     handleFocus(e: FocusEvent): void;
@@ -653,7 +655,7 @@ export class DataGrid extends FoundationElement {
 
 // @public
 export class DataGridCell extends FoundationElement {
-    cellType: DataGridCellTypes | "default" | "columnheader" | "rowheader";
+    cellType: DataGridCellTypes;
     columnDefinition: ColumnDefinition | null;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -673,14 +675,14 @@ export class DataGridCell extends FoundationElement {
 export const dataGridCellTemplate: FoundationElementTemplate<ViewTemplate<DataGridCell>>;
 
 // @public
-export enum DataGridCellTypes {
-    // (undocumented)
-    columnHeader = "columnheader",
-    // (undocumented)
-    default = "default",
-    // (undocumented)
-    rowHeader = "rowheader"
-}
+export const DataGridCellTypes: {
+    readonly default: "default";
+    readonly columnHeader: "columnheader";
+    readonly rowHeader: "rowheader";
+};
+
+// @public
+export type DataGridCellTypes = typeof DataGridCellTypes[keyof typeof DataGridCellTypes];
 
 // @public
 export class DataGridRow extends FoundationElement {
@@ -712,7 +714,7 @@ export class DataGridRow extends FoundationElement {
     isActiveRow: boolean;
     rowData: object | null;
     rowIndex: number;
-    rowType: DataGridRowTypes | "default" | "header" | "sticky-header";
+    rowType: DataGridRowTypes;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
 }
@@ -721,14 +723,14 @@ export class DataGridRow extends FoundationElement {
 export const dataGridRowTemplate: FoundationElementTemplate<ViewTemplate<DataGridRow>>;
 
 // @public
-export enum DataGridRowTypes {
-    // (undocumented)
-    default = "default",
-    // (undocumented)
-    header = "header",
-    // (undocumented)
-    stickyHeader = "sticky-header"
-}
+export const DataGridRowTypes: {
+    readonly default: "default";
+    readonly header: "header";
+    readonly stickyHeader: "sticky-header";
+};
+
+// @public
+export type DataGridRowTypes = typeof DataGridRowTypes[keyof typeof DataGridRowTypes];
 
 // @public
 export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>;
@@ -1038,14 +1040,17 @@ export function display(displayValue: CSSDisplayPropertyValue): string;
 // @public
 export class Divider extends FoundationElement {
     orientation: Orientation;
-    role: DividerRole | "separator" | "presentation";
+    role: DividerRole;
 }
 
 // @public
-export enum DividerRole {
-    presentation = "presentation",
-    separator = "separator"
-}
+export const DividerRole: {
+    readonly separator: "separator";
+    readonly presentation: "presentation";
+};
+
+// @public
+export type DividerRole = typeof DividerRole[keyof typeof DividerRole];
 
 // @public
 export const dividerTemplate: FoundationElementTemplate<ViewTemplate<Divider>>;
@@ -1116,19 +1121,20 @@ export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
 
 // @public
 export class Flipper extends FoundationElement {
-    direction: FlipperDirection | "next" | "previous";
+    direction: FlipperDirection;
     disabled: boolean;
     hiddenFromAT: boolean;
     keyupHandler(e: Event & KeyboardEvent): void;
 }
 
 // @public
-export enum FlipperDirection {
-    // (undocumented)
-    next = "next",
-    // (undocumented)
-    previous = "previous"
-}
+export const FlipperDirection: {
+    readonly next: "next";
+    readonly previous: "previous";
+};
+
+// @public
+export type FlipperDirection = typeof FlipperDirection[keyof typeof FlipperDirection];
 
 // @public
 export type FlipperOptions = FoundationElementDefinition & {
@@ -1280,14 +1286,14 @@ export class FoundationElementRegistry<TDefinition extends FoundationElementDefi
 export type FoundationElementTemplate<T, K extends FoundationElementDefinition = FoundationElementDefinition> = LazyFoundationOption<T, K>;
 
 // @public
-export enum GenerateHeaderOptions {
-    // (undocumented)
-    default = "default",
-    // (undocumented)
-    none = "none",
-    // (undocumented)
-    sticky = "sticky"
-}
+export const GenerateHeaderOptions: {
+    readonly none: "none";
+    readonly default: "default";
+    readonly sticky: "sticky";
+};
+
+// @public
+export type GenerateHeaderOptions = typeof GenerateHeaderOptions[keyof typeof GenerateHeaderOptions];
 
 // @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
@@ -1632,7 +1638,7 @@ export class MenuItem extends FoundationElement {
     handleMouseOver: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     hasSubmenu: boolean;
-    role: MenuItemRole | "menuitem" | "menuitemcheckbox" | "menuitemradio";
+    role: MenuItemRole;
     // @internal (undocumented)
     startColumnCount: MenuItemColumnCount;
     // @internal (undocumented)
@@ -1658,11 +1664,14 @@ export type MenuItemOptions = FoundationElementDefinition & StartEndOptions & {
 };
 
 // @public
-export enum MenuItemRole {
-    menuitem = "menuitem",
-    menuitemcheckbox = "menuitemcheckbox",
-    menuitemradio = "menuitemradio"
-}
+export const MenuItemRole: {
+    readonly menuitem: "menuitem";
+    readonly menuitemcheckbox: "menuitemcheckbox";
+    readonly menuitemradio: "menuitemradio";
+};
+
+// @public
+export type MenuItemRole = typeof MenuItemRole[keyof typeof MenuItemRole];
 
 // @public
 export const menuItemTemplate: FoundationElementTemplate<ViewTemplate<MenuItem>, MenuItemOptions>;
@@ -2094,7 +2103,7 @@ export const enum ResolverStrategy {
 //
 // @internal (undocumented)
 export const roleForMenuItem: {
-    [value in MenuItemRole]: keyof typeof MenuItemRole;
+    [value in keyof typeof MenuItemRole]: typeof MenuItemRole[value];
 };
 
 // @public
@@ -2179,10 +2188,10 @@ export class Select extends FormAssociatedSelect {
     open: boolean;
     // @internal
     protected openChanged(prev: boolean | undefined, next: boolean): void;
-    position: SelectPosition | "above" | "below";
-    positionAttribute: SelectPosition | "above" | "below";
+    position?: SelectPosition;
+    positionAttribute?: SelectPosition;
     // (undocumented)
-    protected positionChanged(): void;
+    protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition | undefined): void;
     // @internal
     selectedIndexChanged(prev: number | undefined, next: number): void;
     // @internal @override
@@ -2208,12 +2217,13 @@ export type SelectOptions = FoundationElementDefinition & StartEndOptions & {
 };
 
 // @public
-export enum SelectPosition {
-    // (undocumented)
-    above = "above",
-    // (undocumented)
-    below = "below"
-}
+export const SelectPosition: {
+    readonly above: "above";
+    readonly below: "below";
+};
+
+// @public
+export type SelectPosition = typeof SelectPosition[keyof typeof SelectPosition];
 
 // @public
 export const selectTemplate: FoundationElementTemplate<ViewTemplate<Select>, SelectOptions>;
@@ -2351,10 +2361,12 @@ export class SliderLabel extends FoundationElement {
 export const sliderLabelTemplate: FoundationElementTemplate<ViewTemplate<SliderLabel>>;
 
 // @public
-export enum SliderMode {
-    // (undocumented)
-    singleValue = "single-value"
-}
+export const SliderMode: {
+    readonly singleValue: "single-value";
+};
+
+// @public
+export type SliderMode = typeof SliderMode[keyof typeof SliderMode];
 
 // @public
 export type SliderOptions = FoundationElementDefinition & {
@@ -2476,12 +2488,13 @@ export interface Tabs extends StartEnd {
 export type TabsOptions = FoundationElementDefinition & StartEndOptions;
 
 // @public
-export enum TabsOrientation {
-    // (undocumented)
-    horizontal = "horizontal",
-    // (undocumented)
-    vertical = "vertical"
-}
+export const TabsOrientation: {
+    readonly vertical: "vertical";
+    readonly horizontal: "horizontal";
+};
+
+// @public
+export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientation];
 
 // @public
 export const tabsTemplate: FoundationElementTemplate<ViewTemplate<Tabs>, TabsOptions>;
@@ -2512,7 +2525,7 @@ export class TextArea extends FormAssociatedTextArea {
     name: string;
     placeholder: string;
     readOnly: boolean;
-    resize: TextAreaResize | "none" | "both" | "horizontal" | "vertical";
+    resize: TextAreaResize;
     rows: number;
     protected select(): void;
     spellcheck: boolean;
@@ -2523,12 +2536,15 @@ export interface TextArea extends DelegatesARIATextbox {
 }
 
 // @public
-export enum TextAreaResize {
-    both = "both",
-    horizontal = "horizontal",
-    none = "none",
-    vertical = "vertical"
-}
+export const TextAreaResize: {
+    readonly none: "none";
+    readonly both: "both";
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type TextAreaResize = typeof TextAreaResize[keyof typeof TextAreaResize];
 
 // @public
 export const textAreaTemplate: FoundationElementTemplate<ViewTemplate<TextArea>>;
@@ -2559,7 +2575,7 @@ export class TextField extends FormAssociatedTextField {
     protected select(): void;
     size: number;
     spellcheck: boolean;
-    type: TextFieldType | "email" | "password" | "tel" | "text" | "url";
+    type: TextFieldType;
 }
 
 // @internal
@@ -2573,13 +2589,16 @@ export type TextFieldOptions = FoundationElementDefinition & StartEndOptions;
 export const textFieldTemplate: FoundationElementTemplate<ViewTemplate<TextField>, TextFieldOptions>;
 
 // @public
-export enum TextFieldType {
-    email = "email",
-    password = "password",
-    tel = "tel",
-    text = "text",
-    url = "url"
-}
+export const TextFieldType: {
+    readonly email: "email";
+    readonly password: "password";
+    readonly tel: "tel";
+    readonly text: "text";
+    readonly url: "url";
+};
+
+// @public
+export type TextFieldType = typeof TextFieldType[keyof typeof TextFieldType];
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Toolbar" because one of its declarations is marked as @internal
@@ -2649,7 +2668,7 @@ export class Tooltip extends FoundationElement {
     // @internal (undocumented)
     horizontalScaling: AxisScalingMode;
     horizontalViewportLock: boolean;
-    position: TooltipPosition | "top" | "right" | "bottom" | "left" | "start" | "end" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-start" | "top-end" | "bottom-start" | "bottom-end";
+    position: TooltipPosition;
     // @internal
     region: AnchoredRegion;
     // @internal (undocumented)
@@ -2669,22 +2688,25 @@ export class Tooltip extends FoundationElement {
 }
 
 // @public
-export enum TooltipPosition {
-    bottom = "bottom",
-    bottomEnd = "bottom-end",
-    bottomLeft = "bottom-left",
-    bottomRight = "bottom-right",
-    bottomStart = "bottom-start",
-    end = "end",
-    left = "left",
-    right = "right",
-    start = "start",
-    top = "top",
-    topEnd = "top-end",
-    topLeft = "top-left",
-    topRight = "top-right",
-    topStart = "top-start"
-}
+export const TooltipPosition: {
+    readonly top: "top";
+    readonly right: "right";
+    readonly bottom: "bottom";
+    readonly left: "left";
+    readonly start: "start";
+    readonly end: "end";
+    readonly topLeft: "top-left";
+    readonly topRight: "top-right";
+    readonly bottomLeft: "bottom-left";
+    readonly bottomRight: "bottom-right";
+    readonly topStart: "top-start";
+    readonly topEnd: "top-end";
+    readonly bottomStart: "bottom-start";
+    readonly bottomEnd: "bottom-end";
+};
+
+// @public
+export type TooltipPosition = typeof TooltipPosition[keyof typeof TooltipPosition];
 
 // @public
 export const tooltipTemplate: FoundationElementTemplate<ViewTemplate<Tooltip>>;

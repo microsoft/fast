@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "reflect option value changes in select",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}

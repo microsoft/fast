@@ -1,7 +1,8 @@
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
 import {
-    ArrowKeys,
+    keyArrowDown,
+    keyArrowUp,
     keyEnd,
     keyEnter,
     keyEscape,
@@ -195,7 +196,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition | "above" | "below";
+    public positionAttribute?: SelectPosition;
 
     /**
      * Indicates the initial state of the position attribute.
@@ -210,9 +211,12 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @observable
-    public position: SelectPosition | "above" | "below" = SelectPosition.below;
-    protected positionChanged() {
-        this.positionAttribute = this.position;
+    public position?: SelectPosition;
+    protected positionChanged(
+        prev: SelectPosition | undefined,
+        next: SelectPosition | undefined
+    ): void {
+        this.positionAttribute = next;
         this.setPositioning();
     }
 
@@ -551,7 +555,7 @@ export class Select extends FormAssociatedSelect {
             this.indexWhenOpened = this.selectedIndex;
         }
 
-        return !(key in ArrowKeys);
+        return !(key === keyArrowDown || key === keyArrowUp);
     }
 
     public connectedCallback() {

@@ -2,6 +2,81 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Sun, 15 May 2022 07:08:25 GMT",
+      "tag": "@microsoft/fast-router_v0.4.1",
+      "version": "0.4.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix url path for npm version badge on README.md",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f43629c7b3065a95ec05bf6186c851496d5320ec",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 08 May 2022 07:08:18 GMT",
+      "tag": "@microsoft/fast-router_v0.4.1",
+      "version": "0.4.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.1",
+            "author": "chhol@microsoft.com",
+            "commit": "890ff058b8771c84a9e669b4e9202c43f4d3e7fc",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 06 May 2022 20:58:02 GMT",
+      "tag": "@microsoft/fast-router_v0.4.1",
+      "version": "0.4.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "update api extractor to 7.23.1 to ensure we can support TS 4.7 internal API changes",
+            "author": "chhol@microsoft.com",
+            "commit": "fbc6a7fb670453322c93f8f12a223febad86f735",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 04 May 2022 07:14:00 GMT",
+      "tag": "@microsoft/fast-router_v0.4.1",
+      "version": "0.4.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.1",
+            "author": "steph@huynhicode.dev",
+            "commit": "c49a98f7f1bd8e167b0b7a96a181990f9a675f34",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 03 May 2022 07:15:44 GMT",
+      "tag": "@microsoft/fast-router_v0.4.1",
+      "version": "0.4.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Upgraded api-extractor",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "2341496a6fafe3051dc50333c21ca652026f725b",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 27 Apr 2022 07:21:09 GMT",
       "tag": "@microsoft/fast-router_v0.4.0",
       "version": "0.4.0",

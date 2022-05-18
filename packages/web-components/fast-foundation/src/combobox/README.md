@@ -3,6 +3,7 @@ id: combobox
 title: fast-combobox
 sidebar_label: combobox
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/combobox/README.md
+description: fast-combobox is a web component implementation of a combobox.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#combobox):
@@ -87,6 +88,16 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 
 
+### Variables
+
+| Name                   | Description                       | Type                                                              |
+| ---------------------- | --------------------------------- | ----------------------------------------------------------------- |
+| `ComboboxAutocomplete` | Autocomplete values for combobox. | `{ inline: "inline", list: "list", both: "both", none: "none", }` |
+
+<hr/>
+
+
+
 ### class: `Combobox`
 
 #### Superclass
@@ -103,37 +114,37 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Fields
 
-| Name                | Privacy   | Type                                                                          | Default | Description                                                                                                                                                                         | Inherited From         |
-| ------------------- | --------- | ----------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `autocomplete`      | public    | `ComboboxAutocomplete or "inline" or "list" or "both" or "none" or undefined` |         | The autocomplete attribute.                                                                                                                                                         |                        |
-| `filteredOptions`   | public    | `ListboxOption[]`                                                             | `[]`    | The collection of currently filtered options.                                                                                                                                       |                        |
-| `open`              | public    | `boolean`                                                                     | `false` | The open attribute.                                                                                                                                                                 |                        |
-| `options`           | public    | `ListboxOption[]`                                                             |         | The list of options.                                                                                                                                                                | Listbox                |
-| `placeholder`       | public    | `string`                                                                      |         | Sets the placeholder value of the element, generally used to provide a hint to the user.                                                                                            |                        |
-| `positionAttribute` | public    | `SelectPosition`                                                              |         | The placement for the listbox when the combobox is open.                                                                                                                            |                        |
-| `position`          | public    | `SelectPosition`                                                              |         | The current state of the calculated position of the listbox.                                                                                                                        |                        |
-| `value`             | public    |                                                                               |         | The value property.                                                                                                                                                                 |                        |
-| `proxy`             |           |                                                                               |         |                                                                                                                                                                                     | FormAssociatedCombobox |
-| `length`            | public    | `number`                                                                      |         | The number of options.                                                                                                                                                              | Listbox                |
-| `typeAheadExpired`  | protected |                                                                               |         |                                                                                                                                                                                     | Listbox                |
-| `disabled`          | public    | `boolean`                                                                     |         | The disabled state of the listbox.                                                                                                                                                  | Listbox                |
-| `selectedIndex`     | public    | `number`                                                                      | `-1`    | The index of the selected option.                                                                                                                                                   | Listbox                |
-| `selectedOptions`   | public    | `ListboxOption[]`                                                             | `[]`    | A collection of the selected options.                                                                                                                                               | Listbox                |
-| `$presentation`     | public    | `ComponentPresentation or null`                                               |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement      |
-| `template`          | public    | `ElementViewTemplate or void or null`                                         |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement      |
-| `styles`            | public    | `ElementStyles or void or null`                                               |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement      |
+| Name                | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From         |
+| ------------------- | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `autocomplete`      | public    | `ComboboxAutocomplete or undefined`   |         | The autocomplete attribute.                                                                                                                                                         |                        |
+| `filteredOptions`   | public    | `ListboxOption[]`                     | `[]`    | The collection of currently filtered options.                                                                                                                                       |                        |
+| `open`              | public    | `boolean`                             | `false` | The open attribute.                                                                                                                                                                 |                        |
+| `options`           | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                | Listbox                |
+| `placeholder`       | public    | `string`                              |         | Sets the placeholder value of the element, generally used to provide a hint to the user.                                                                                            |                        |
+| `positionAttribute` | public    | `SelectPosition or undefined`         |         | The placement for the listbox when the combobox is open.                                                                                                                            |                        |
+| `position`          | public    | `SelectPosition or undefined`         |         | The current state of the calculated position of the listbox.                                                                                                                        |                        |
+| `value`             | public    |                                       |         | The value property.                                                                                                                                                                 |                        |
+| `proxy`             |           |                                       |         |                                                                                                                                                                                     | FormAssociatedCombobox |
+| `length`            | public    | `number`                              |         | The number of options.                                                                                                                                                              | Listbox                |
+| `typeAheadExpired`  | protected |                                       |         |                                                                                                                                                                                     | Listbox                |
+| `disabled`          | public    | `boolean`                             |         | The disabled state of the listbox.                                                                                                                                                  | Listbox                |
+| `selectedIndex`     | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   | Listbox                |
+| `selectedOptions`   | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               | Listbox                |
+| `$presentation`     | public    | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement      |
+| `template`          | public    | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement      |
+| `styles`            | public    | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement      |
 
 #### Methods
 
-| Name                 | Privacy   | Description                                                                | Parameters | Return | Inherited From    |
-| -------------------- | --------- | -------------------------------------------------------------------------- | ---------- | ------ | ----------------- |
-| `positionChanged`    | protected |                                                                            |            |        |                   |
-| `filterOptions`      | public    | Filter available options by text value.                                    |            | `void` |                   |
-| `setPositioning`     | public    | Calculate and apply listbox positioning based on available viewport space. | `force`    | `void` |                   |
-| `selectFirstOption`  | public    | Moves focus to the first selectable option.                                |            | `void` | Listbox           |
-| `setSelectedOptions` | public    | Sets an option as selected and gives it focus.                             |            |        | Listbox           |
-| `templateChanged`    | protected |                                                                            |            | `void` | FoundationElement |
-| `stylesChanged`      | protected |                                                                            |            | `void` | FoundationElement |
+| Name                 | Privacy   | Description                                                                | Parameters                                                             | Return | Inherited From    |
+| -------------------- | --------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------ | ----------------- |
+| `positionChanged`    | protected |                                                                            | `prev: SelectPosition or undefined, next: SelectPosition or undefined` | `void` |                   |
+| `filterOptions`      | public    | Filter available options by text value.                                    |                                                                        | `void` |                   |
+| `setPositioning`     | public    | Calculate and apply listbox positioning based on available viewport space. | `force`                                                                | `void` |                   |
+| `selectFirstOption`  | public    | Moves focus to the first selectable option.                                |                                                                        | `void` | Listbox           |
+| `setSelectedOptions` | public    | Sets an option as selected and gives it focus.                             |                                                                        |        | Listbox           |
+| `templateChanged`    | protected |                                                                            |                                                                        | `void` | FoundationElement |
+| `stylesChanged`      | protected |                                                                            |                                                                        | `void` | FoundationElement |
 
 #### Events
 

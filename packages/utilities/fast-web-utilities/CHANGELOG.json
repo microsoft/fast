@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-web-utilities",
   "entries": [
     {
+      "date": "Wed, 04 May 2022 07:14:00 GMT",
+      "tag": "@microsoft/fast-web-utilities_v5.4.1",
+      "version": "5.4.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "convert orientation enum to const object with corresponding type",
+            "author": "chhol@microsoft.com",
+            "commit": "d39284193f6d476b5b40b0fad75d3dbd836d55da",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 27 Apr 2022 07:21:09 GMT",
       "tag": "@microsoft/fast-web-utilities_v5.4.0",
       "version": "5.4.0",

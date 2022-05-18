@@ -3,6 +3,7 @@ id: number-field
 title: fast-number-field
 sidebar_label: number-field
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/number-field/README.md
+description: fast-number-field is a web component implementation of a text field number input.
 ---
 
 An implementation of a [text field](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/text) as a form-connected web-component. The `fast-number-field` supports two visual appearances, outline and filled, with the control defaulting to the outline appearance.
@@ -92,7 +93,7 @@ This component is built with the expectation that focus is delegated to the inpu
 | `autofocus`     | public  | `boolean`                             |         | Indicates that this element should get focus after the page finishes loading. See [autofocus HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus) for more information. |                           |
 | `hideStep`      | public  | `boolean`                             | `false` | When true, spin buttons will not be rendered                                                                                                                                                                                |                           |
 | `placeholder`   | public  | `string`                              |         | Sets the placeholder value of the element, generally used to provide a hint to the user.                                                                                                                                    |                           |
-| `list`          | public  | `string`                              |         | Allows associating a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.                              |                           |
+| `list`          | public  | `string`                              |         | Allows associating a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) to the element by https://developer.mozilla.org/en-US/docs/Web/API/Element/id.                                      |                           |
 | `maxlength`     | public  | `number`                              |         | The maximum number of characters a user can enter.                                                                                                                                                                          |                           |
 | `minlength`     | public  | `number`                              |         | The minimum number of characters a user can enter.                                                                                                                                                                          |                           |
 | `size`          | public  | `number`                              |         | Sets the width of the element to a specified number of characters.                                                                                                                                                          |                           |

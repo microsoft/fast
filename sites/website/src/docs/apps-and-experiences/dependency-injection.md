@@ -3,6 +3,7 @@ id: dependency-injection
 title: Dependency Injection
 sidebar_label: Dependency Injection
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/apps-and-experiences/dependency-injection.md
+description: FAST introduces the concept of a dependency injection container.
 ---
 
 An important principle of object oriented programming (OOP) is to favor a compositional approach to systems over an inheritance-based approach. In such systems complex problems are broken down into small, single-purpose objects that collaborate with one another. However, this approach is not a panacea, and introduces its own set of challenges:
