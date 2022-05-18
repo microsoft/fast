@@ -25,8 +25,8 @@ export type SearchOptions = FoundationElementDefinition & StartEndOptions;
  * @slot start - Content which can be provided before the search input
  * @slot end - Content which can be provided after the search clear button
  * @slot - The default slot for the label
- * @slot close-button - The clear button
- * @slot close-glyph - The clear glyph
+ * @slot clear-button - The clear button
+ * @slot clear-glyph - The clear glyph
  * @csspart label - The label
  * @csspart root - The element wrapping the control, including start and end slots
  * @csspart control - The element representing the input
