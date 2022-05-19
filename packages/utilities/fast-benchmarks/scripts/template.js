@@ -327,11 +327,11 @@ export async function generateTemplates(options) {
     try {
         const tsConfigPath = await generateTsConfig(options);
         const fileName = `${options.library}_${options.benchmark}`;
-
         //special handling if 'local' version was passed in as an option
         const localProps = { branchName: "", operationProps: {} };
         if (options.versions.includes(LOCAL)) {
-            localProps.branchName = await getLocalGitBranchName();
+            // localProps.branchName = await getLocalGitBranchName();
+            localProps.branchName = "users/wendy/local-build-actions";
             // check if user passed in localBenchFile for different implementation of local
             if (options.localBenchFile)
                 localProps.operationProps = await generateHtmlTemplates(
