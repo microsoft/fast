@@ -14,6 +14,10 @@ program
         "specify available versions, you can also use 'local' or 'master' that would point to github branches"
     )
     .option(
+        "-m, --methods [methods...]",
+        "specify different methods through url query params for one version you want to benchmark"
+    )
+    .option(
         "-lb, --localBenchFile <name>",
         "specify the html file you want your local version to use, only valid if 'local' is one of the versions you passed in"
     )
@@ -25,6 +29,7 @@ program
 
 const options = program.opts();
 
+console.log("options", options);
 /**
  * Check to see if we can reach the npm repository within a timeout
  *  @returns {Promise}
