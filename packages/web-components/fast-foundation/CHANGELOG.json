@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 19 May 2022 07:09:40 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.4",
+      "version": "2.46.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Handle disabled and hidden items in toolbar",
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "commit": "c429fa743a3f03fc4e90b31ae112c7a53d8426fe",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 15 May 2022 07:08:25 GMT",
       "tag": "@microsoft/fast-foundation_v2.46.3",
       "version": "2.46.3",
