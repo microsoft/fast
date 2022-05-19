@@ -15,7 +15,7 @@
     "author": "Microsoft",
     "license": "ISC",
     "dependencies": {
-        "@microsoft/fast-element": "file:../../web-components/fast-element",
+        "@microsoft/fast-element": "1.9.1",
         "tachometer": "^0.5.10"
     },
     "devDependencies": {

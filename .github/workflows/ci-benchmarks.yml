@@ -34,28 +34,6 @@ jobs:
             - name: Prepare workspaces
               run: yarn prepare
 
-    update10th:
-        name: Run all operations for test benchmark
-        needs: [setup]
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v1
-              with:
-                  node-version: "16.x"
-            - run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
-            - name: Run tachometer
-              run: |
-                  cd packages/utilities/fast-benchmarks
-                  yarn install
-                  yarn run benchmark:fast-element:test
-
-            - name: Upload results
-              uses: actions/upload-artifact@v2
-              with:
-                  name: results
-                  path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
-
     testLocal:
         name: Run create10k element benchmark
         needs: [setup]
@@ -68,18 +46,16 @@ jobs:
             - name: Run tachometer and generate results file
               run: |
                   cd packages/utilities/fast-benchmarks
-                  yarn install
-                  yarn run benchmark:fast-element:test:local
+                  yarn run benchmark --library=fast-element --benchmark=localTest --versions local 1.8.0 --operations=create10k
 
             - name: Upload results
               uses: actions/upload-artifact@v2
               with:
                   name: results
                   path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.json
-
     report_results:
         name: Report Results
-        needs: [testLocal, update10th]
+        needs: [testLocal]
         runs-on: ubuntu-latest
         steps:
             - uses: actions/download-artifact@v2
