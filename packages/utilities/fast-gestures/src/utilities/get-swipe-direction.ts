@@ -1,4 +1,4 @@
-import { PointerGesture } from "../pointer-gesture";
+import { PointerGesture } from "../pointer-gesture.js";
 
 export function getSwipeDirection(pointerGestureMove: PointerGesture): PointerGesture {
     switch (pointerGestureMove) {

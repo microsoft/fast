@@ -1,5 +1,5 @@
-import { PointerGesture } from "../pointer-gesture";
-import { PointerTranslationDirection } from "../pointer-translation-direction";
+import { PointerGesture } from "../pointer-gesture.js";
+import { PointerTranslationDirection } from "../pointer-translation-direction.js";
 
 function getCardinalPanDirection(directionIndex: number): PointerGesture {
     switch (directionIndex) {

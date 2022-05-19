@@ -1,5 +1,5 @@
-import { PointerCoordinateType } from "../pointer-coordinate-type";
-import { PointerTranslationDirection } from "../pointer-translation-direction";
+import { PointerCoordinateType } from "../pointer-coordinate-type.js";
+import { PointerTranslationDirection } from "../pointer-translation-direction.js";
 
 export interface PointerGestureOptions {
     swipeThresholdX?: number;

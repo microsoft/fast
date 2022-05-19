@@ -1,5 +1,5 @@
-import { PointerGesture } from "../pointer-gesture";
-import { PointerRotationDirection } from "../pointer-rotation-direction";
+import { PointerGesture } from "../pointer-gesture.js";
+import { PointerRotationDirection } from "../pointer-rotation-direction.js";
 
 export interface PointerInfo extends Partial<PointerEvent> {
     /**

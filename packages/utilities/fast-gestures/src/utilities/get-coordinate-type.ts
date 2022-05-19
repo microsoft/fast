@@ -1,7 +1,7 @@
-import { Point } from "../base/point";
-import { PointerCoordinateType } from "../pointer-coordinate-type";
+import { Point } from "../base/point.js";
+import { PointerCoordinateType } from "../pointer-coordinate-type.js";
 
-export function getCoordinateType(
+export function getPointerCoordinate(
     e: PointerEvent,
     coordinateType: PointerCoordinateType
 ): Point {

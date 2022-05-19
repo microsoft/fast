@@ -1,4 +1,4 @@
-import { getRotationAngle } from "./get-rotation-angle";
+import { getRotationAngle } from "./get-rotation-angle.js";
 
 describe("getRotationAngle", () => {
     test("should return rotation angle", () => {

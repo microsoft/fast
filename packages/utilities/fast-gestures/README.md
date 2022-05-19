@@ -9,7 +9,7 @@ The `fast-gestures` library enables input device independent gesture recognition
 
 ### From NPM
 
-To install the `fast-gestures` library, use either `npm` or `yarn` as follows:
+To install the `@microsft/fast-gestures` library, use either `npm` or `yarn` as follows:
 
 ```shell
 npm install --save @microsoft/fast-gestures
@@ -22,7 +22,7 @@ yarn add @microsoft/fast-gestures
 Within your JavaScript or TypeScript code, you can then import library APIs like this:
 
 ```ts
-import { Foo } from '@microsoft/fast-gestures';
+import { PointerGestureHandler } from '@microsoft/fast-gestures';
 ```
 
 :::tip
@@ -38,7 +38,7 @@ A pre-bundled script that contains all APIs needed to build with FAST Gestures i
 <html lang="en">
     <head>
         <script type="module">
-          import { Foo } from "https://unpkg.com/@microsoft/fast-gestures";
+          import { PointerGestureHandler } from "https://unpkg.com/@microsoft/fast-gestures";
 
           // your code here
         </script>

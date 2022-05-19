@@ -1,23 +1,23 @@
-import { Emitter } from "./base/event";
-import { DefaultDisposable, Disposable } from "./base/lifecycle";
-import { Point } from "./base/point";
-import { detectPointerGesture } from "./utilities/detect-pointer-gesture";
-import { getCoordinateType } from "./utilities/get-coordinate-type";
-import { getPinchDistance } from "./utilities/get-pinch-distance";
-import { getRotationAngle } from "./utilities/get-rotation-angle";
-import { getSwipeDirection } from "./utilities/get-swipe-direction";
-import { PointerGestureInfo } from "./interfaces/pointer-gesture-info";
-import { PointerGestureOptions } from "./interfaces/pointer-gesture-options";
-import { PointerInfo } from "./interfaces/pointer-info";
-import { PointerInfoInternal } from "./interfaces/pointer-info-internal";
-import { PointerGesture } from "./pointer-gesture";
-import { PointerTarget } from "./pointer-target";
-import { PointerGestureFeature } from "./pointer-gesture-feature";
-import { PointerCoordinateType } from "./pointer-coordinate-type";
-import { PointerEventType } from "./pointer-event-type";
-import { PointerInputType } from "./pointer-input-type";
-import { PointerTranslationDirection } from "./pointer-translation-direction";
-import { PointerRotationDirection } from "./pointer-rotation-direction";
+import { Emitter } from "./base/event.js";
+import { DefaultDisposable, Disposable } from "./base/lifecycle.js";
+import { Point } from "./base/point.js";
+import { detectPointerGesture } from "./utilities/detect-pointer-gesture.js";
+import { getPointerCoordinate } from "./utilities/get-coordinate-type.js";
+import { getPinchDistance } from "./utilities/get-pinch-distance.js";
+import { getRotationAngle } from "./utilities/get-rotation-angle.js";
+import { getSwipeDirection } from "./utilities/get-swipe-direction.js";
+import { PointerGestureInfo } from "./interfaces/pointer-gesture-info.js";
+import { PointerGestureOptions } from "./interfaces/pointer-gesture-options.js";
+import { PointerInfo } from "./interfaces/pointer-info.js";
+import { PointerInfoInternal } from "./interfaces/pointer-info-internal.js";
+import { PointerGesture } from "./pointer-gesture.js";
+import { PointerTarget } from "./pointer-target.js";
+import { PointerGestureFeature } from "./pointer-gesture-feature.js";
+import { PointerCoordinateType } from "./pointer-coordinate-type.js";
+import { PointerEventType } from "./pointer-event-type.js";
+import { PointerInputType } from "./pointer-input-type.js";
+import { PointerTranslationDirection } from "./pointer-translation-direction.js";
+import { PointerRotationDirection } from "./pointer-rotation-direction.js";
 
 /**
  * @public
@@ -244,7 +244,7 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
     }
 
     private addPointerInfo(e: PointerEvent): PointerInfoInternal {
-        const { x, y }: Point = getCoordinateType(e, this.options.coordinateType!);
+        const { x, y }: Point = getPointerCoordinate(e, this.options.coordinateType!);
         const pointerInfo: PointerInfoInternal = {
             pointerType: e.pointerType,
             eventType: e.type,
@@ -339,7 +339,7 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
             pointer = this._pointers.get(e.pointerId)!;
 
             const deltaT: number = e.timeStamp - pointer.lastUpdateTime;
-            const { x, y }: Point = getCoordinateType(e, this.options.coordinateType!);
+            const { x, y }: Point = getPointerCoordinate(e, this.options.coordinateType!);
 
             pointer.x = x;
             pointer.y = y;

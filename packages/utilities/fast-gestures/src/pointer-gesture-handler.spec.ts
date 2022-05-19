@@ -1,5 +1,5 @@
-import { PointerGesture } from "./pointer-gesture";
-import { PointerGestureHandler } from "./";
+import { PointerGesture } from "./pointer-gesture.js";
+import { PointerGestureHandler } from "./pointer-gesture-handler.js";
 
 describe("PointerGestureHandler", () => {
     document.body.innerHTML = "<div id='container'>" + "  <div id='child' />" + "</div>";

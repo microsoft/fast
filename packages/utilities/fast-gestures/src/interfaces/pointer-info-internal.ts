@@ -1,4 +1,4 @@
-import { PointerInfo } from "./pointer-info";
+import { PointerInfo } from "./pointer-info.js";
 
 export interface PointerInfoInternal extends PointerInfo {
     /**

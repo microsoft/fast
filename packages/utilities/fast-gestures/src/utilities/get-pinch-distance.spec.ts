@@ -1,4 +1,4 @@
-import { getPinchDistance } from "./get-pinch-distance";
+import { getPinchDistance } from "./get-pinch-distance.js";
 
 describe("getPinchDistance", () => {
     test("should return 0 pinch distance", () => {

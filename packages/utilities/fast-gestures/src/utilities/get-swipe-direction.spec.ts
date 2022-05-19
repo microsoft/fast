@@ -1,5 +1,5 @@
-import { PointerGesture } from "../pointer-gesture";
-import { getSwipeDirection } from "./get-swipe-direction";
+import { PointerGesture } from "../pointer-gesture.js";
+import { getSwipeDirection } from "./get-swipe-direction.js";
 
 describe("getSwipeDirection", () => {
     test("should return up swipe direction", () => {

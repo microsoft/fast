@@ -1,6 +1,6 @@
-import { PointerGesture } from "../pointer-gesture";
-import { PointerTranslationDirection } from "../pointer-translation-direction";
-import { detectPointerGesture } from "./detect-pointer-gesture";
+import { PointerGesture } from "../pointer-gesture.js";
+import { PointerTranslationDirection } from "../pointer-translation-direction.js";
+import { detectPointerGesture } from "./detect-pointer-gesture.js";
 
 describe("detectPointerGesture", () => {
     test("should detect right pan direction", () => {
