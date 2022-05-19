@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Observable } from "./observable";
-import { ArrayObserver, length } from "./arrays";
+import { ArrayObserver, length, Splice } from "./arrays";
 import { SubscriberSet } from "./notifier";
 import { Updates } from "./update-queue";
 
@@ -53,6 +53,288 @@ describe("The ArrayObserver", () => {
 
         expect(notifier).to.be.instanceOf(SubscriberSet);
         expect(keys).eql(["0", "1", "2"])
+    });
+
+    it("observes pops", async () => {
+        ArrayObserver.enable();
+        const array = ["foo", "bar", "hello", "world"];
+
+        array.pop();
+        expect(array).members(["foo", "bar", "hello"]);
+
+        Array.prototype.pop.call(array);
+        expect(array).members(["foo", "bar"]);
+
+        const observer = Observable.getNotifier<ArrayObserver>(array);
+        let changeArgs: Splice[] | null = null;
+
+        observer.subscribe({
+            handleChange(array, args) {
+                changeArgs = args;
+            }
+        });
+
+        array.pop();
+        expect(array).members(["foo"]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(0);
+        expect(changeArgs![0].removed).members(["bar"]);
+        expect(changeArgs![0].index).equal(1);
+
+        Array.prototype.pop.call(array);
+        expect(array).members([]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(0);
+        expect(changeArgs![0].removed).members(["foo"]);
+        expect(changeArgs![0].index).equal(0);
+    });
+
+    it("observes pushes", async () => {
+        ArrayObserver.enable();
+        const array: string[] = [];
+
+        array.push("foo");
+        expect(array).members(["foo"]);
+
+        Array.prototype.push.call(array, "bar");
+        expect(array).members(["foo", "bar"]);
+
+        const observer = Observable.getNotifier<ArrayObserver>(array);
+        let changeArgs: Splice[] | null = null;
+
+        observer.subscribe({
+            handleChange(array, args) {
+                changeArgs = args;
+            }
+        });
+
+        array.push("hello");
+        expect(array).members(["foo", "bar", "hello"]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(1);
+        expect(changeArgs![0].removed).members([]);
+        expect(changeArgs![0].index).equal(2);
+
+        Array.prototype.push.call(array, "world");
+        expect(array).members(["foo", "bar", "hello", "world"]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(1);
+        expect(changeArgs![0].removed).members([]);
+        expect(changeArgs![0].index).equal(3);
+    });
+
+    it("observes reverses", async () => {
+        ArrayObserver.enable();
+        const array = [1, 2, 3, 4];
+        array.reverse();
+
+        expect(array).members([4, 3, 2, 1]);
+
+        Array.prototype.reverse.call(array);
+        expect(array).members([1, 2, 3, 4]);
+
+        const observer = Observable.getNotifier<ArrayObserver>(array);
+        let changeArgs: Splice[] | null = null;
+
+        observer.subscribe({
+            handleChange(array, args) {
+                changeArgs = args;
+            }
+        });
+
+        array.reverse();
+        expect(array).members([4, 3, 2, 1]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(0);
+        expect(changeArgs![0].removed).members([]);
+        expect(changeArgs![0].index).equal(0);
+        expect(changeArgs![0].reset).equal(true);
+
+        Array.prototype.reverse.call(array);
+        expect(array).members([1, 2, 3, 4]);
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(0);
+        expect(changeArgs![0].removed).members([]);
+        expect(changeArgs![0].index).equal(0);
+        expect(changeArgs![0].reset).equal(true);
+    });
+
+    it("observes shifts", async () => {
+        ArrayObserver.enable();
+        const array = ["foo", "bar", "hello", "world"];
+
+        array.shift();
+        expect(array).members(["bar", "hello", "world"]);
+
+        Array.prototype.shift.call(array);
+        expect(array).members(["hello", "world"]);
+
+        const observer = Observable.getNotifier<ArrayObserver>(array);
+        let changeArgs: Splice[] | null = null;
+
+        observer.subscribe({
+            handleChange(array, args) {
+                changeArgs = args;
+            }
+        });
+
+        array.shift();
+        expect(array).members(["world"]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(0);
+        expect(changeArgs![0].removed).members(["hello"]);
+        expect(changeArgs![0].index).equal(0);
+
+        Array.prototype.shift.call(array);
+        expect(array).members([]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(0);
+        expect(changeArgs![0].removed).members(["world"]);
+        expect(changeArgs![0].index).equal(0);
+    });
+
+    it("observes sorts", async () => {
+        ArrayObserver.enable();
+        let array = [1, 2, 3, 4];
+
+        array.sort((a, b) => b - a);
+        expect(array).members([4, 3, 2, 1]);
+
+        Array.prototype.sort.call(array, (a, b) => a - b);
+        expect(array).members([1, 2, 3, 4]);
+
+        const observer = Observable.getNotifier<ArrayObserver>(array);
+        let changeArgs: Splice[] | null = null;
+
+        observer.subscribe({
+            handleChange(array, args) {
+                changeArgs = args;
+            }
+        });
+
+        array.sort((a, b) => b - a);
+        expect(array).members([4, 3, 2, 1]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(0);
+        expect(changeArgs![0].removed).members([]);
+        expect(changeArgs![0].index).equal(0);
+        expect(changeArgs![0].reset).equal(true);
+
+        Array.prototype.sort.call(array, (a, b) => a - b);
+        expect(array).members([1, 2, 3, 4]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(0);
+        expect(changeArgs![0].removed).members([]);
+        expect(changeArgs![0].index).equal(0);
+        expect(changeArgs![0].reset).equal(true);
+    });
+
+    it("observes splices", async () => {
+        ArrayObserver.enable();
+        let array: any[] = [1, 2, 3, 4];
+
+        array.splice(1, 1, 'hello');
+        expect(array).members([1, "hello", 3, 4])
+
+        Array.prototype.splice.call(array, 2, 1, "world");
+        expect(array).members([1, "hello", "world", 4]);
+
+        const observer = Observable.getNotifier<ArrayObserver>(array);
+        let changeArgs: Splice[] | null = null;
+
+        observer.subscribe({
+            handleChange(array, args) {
+                changeArgs = args;
+            }
+        });
+
+        array.splice(1, 1, "foo");
+        expect(array).members([1, "foo", "world", 4]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(1);
+        expect(changeArgs![0].removed).members(["hello"]);
+        expect(changeArgs![0].index).equal(1);
+
+        Array.prototype.splice.call(array, 2, 1, 'bar');
+        expect(array).members([1, "foo", "bar", 4]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(1);
+        expect(changeArgs![0].removed).members(["world"]);
+        expect(changeArgs![0].index).equal(2);
+    });
+
+    it("observes unshifts", async () => {
+        ArrayObserver.enable();
+        let array: string[] = [];
+
+        array.unshift("foo");
+        expect(array).members(["foo"])
+
+        Array.prototype.unshift.call(array, "bar");
+        expect(array).members(["bar", "foo"]);
+
+        const observer = Observable.getNotifier<ArrayObserver>(array);
+        let changeArgs: Splice[] | null = null;
+
+        observer.subscribe({
+            handleChange(array, args) {
+                changeArgs = args;
+            }
+        });
+
+        array.unshift("hello");
+        expect(array).members(["hello", "bar", "foo"]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(1);
+        expect(changeArgs![0].removed).members([]);
+        expect(changeArgs![0].index).equal(0);
+
+        Array.prototype.unshift.call(array, 'world');
+        expect(array).members(["world", "hello", "bar", "foo"]);
+
+        await Updates.next();
+
+        expect(changeArgs).length(1);
+        expect(changeArgs![0].addedCount).equal(1);
+        expect(changeArgs![0].removed).members([]);
+        expect(changeArgs![0].index).equal(0);
     });
 });
 

@@ -75,8 +75,7 @@ export const SpliceStrategySupport = Object.freeze({
 } as const);
 
 /**
- * Indicates what level of feature support the splice
- * strategy provides.
+ * The available values for SpliceStrategySupport.
  * @public
  */
 export type SpliceStrategySupport = typeof SpliceStrategySupport[keyof typeof SpliceStrategySupport];
