@@ -3,9 +3,9 @@ name: Fast Element benchmark jobs
 on: [pull_request]
 
 jobs:
-    name: Setup Tachometer Reporting
-    runs-on: ubuntu-latest
-    steps:
+    set_up:
+        runs-on: ubuntu-latest
+        steps:
         - name: Initialize tachometer comment
           uses: andrewiggins/tachometer-reporter-action@v2
           with:
