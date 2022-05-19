@@ -36,15 +36,15 @@ jobs:
         - name: Upload results
           uses: actions/upload-artifact@v2
           with:
-              name: results
+              name: results-create10k
               path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.json
         - uses: actions/download-artifact@v2
           with:
-              name: results
+              name: results-create10k
               path: packages/utilities/fast-benchmarks/results
         # Read all the results and post comment
         - name: Report Tachometer Result
           uses: andrewiggins/tachometer-reporter-action@v2
           with:
-              name: results
+              report-id: results-create10k
               path: packages/utilities/fast-benchmarks/results/*.json
