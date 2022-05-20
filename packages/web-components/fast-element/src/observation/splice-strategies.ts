@@ -1,4 +1,10 @@
 import { emptyArray } from "../platform.js";
+import {
+    ArrayObserver,
+    Splice,
+    SpliceStrategy,
+    SpliceStrategySupport,
+} from "./arrays.js";
 
 const enum Edit {
     leave = 0,
@@ -162,51 +168,6 @@ function intersect(start1: number, end1: number, start2: number, end2: number): 
     }
 
     return end1 - start1; // Contained
-}
-
-/**
- * A splice map is a representation of how a previous array of items
- * was transformed into a new array of items. Conceptually it is a list of
- * tuples of
- *
- *   (index, removed, addedCount)
- *
- * which are kept in ascending index order of. The tuple represents that at
- * the |index|, |removed| sequence of items were removed, and counting forward
- * from |index|, |addedCount| items were added.
- * @public
- */
-export class Splice {
-    constructor(
-        /**
-         * The index that the splice occurs at.
-         */
-        public index: number,
-
-        /**
-         * The items that were removed.
-         */
-        public removed: any[],
-
-        /**
-         * The  number of items that were added.
-         */
-        public addedCount: number
-    ) {}
-
-    static normalize(
-        previous: unknown[] | undefined,
-        current: unknown[],
-        changes: Splice[] | undefined
-    ): Splice[] | undefined {
-        return previous === void 0
-            ? changes!.length > 1
-                ? /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-                  project(current, changes!)
-                : changes
-            : /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-              calc(current, 0, current.length, previous, 0, previous.length);
-    }
 }
 
 /**
@@ -431,3 +392,219 @@ function project(array: unknown[], changes: Splice[]): Splice[] {
 
     return splices;
 }
+
+/**
+ * A SpliceStrategy that attempts to merge all splices into the minimal set of
+ * splices needed to represent the change from the old array to the new array.
+ * @public
+ */
+export const mergeSpliceStrategy: SpliceStrategy = Object.freeze({
+    support: SpliceStrategySupport.optimized,
+
+    normalize(
+        previous: unknown[] | undefined,
+        current: unknown[],
+        changes: Splice[] | undefined
+    ): readonly Splice[] {
+        if (previous === void 0) {
+            if (changes === void 0) {
+                return emptyArray;
+            }
+
+            return changes.length > 1 ? project(current, changes) : changes;
+        }
+
+        return calc(current, 0, current.length, previous, 0, previous.length);
+    },
+
+    pop(
+        array: any[],
+        observer: ArrayObserver,
+        pop: typeof Array.prototype.pop,
+        args: any[]
+    ) {
+        const notEmpty = array.length > 0;
+        const result = pop.apply(array, args);
+
+        if (notEmpty) {
+            observer.addSplice(new Splice(array.length, [result], 0));
+        }
+
+        return result;
+    },
+
+    push(
+        array: any[],
+        observer: ArrayObserver,
+        push: typeof Array.prototype.push,
+        args: any[]
+    ): any {
+        const result = push.apply(array, args);
+        observer.addSplice(
+            new Splice(array.length - args.length, [], args.length).adjustTo(array)
+        );
+        return result;
+    },
+
+    reverse(
+        array: any[],
+        observer: ArrayObserver,
+        reverse: typeof Array.prototype.reverse,
+        args: any[]
+    ): any {
+        observer.flush();
+        const oldArray = array.slice();
+        const result = reverse.apply(array, args);
+        observer.reset(oldArray);
+        return result;
+    },
+
+    shift(
+        array: any[],
+        observer: ArrayObserver,
+        shift: typeof Array.prototype.shift,
+        args: any[]
+    ): any {
+        const notEmpty = array.length > 0;
+        const result = shift.apply(array, args);
+
+        if (notEmpty) {
+            observer.addSplice(new Splice(0, [result], 0));
+        }
+
+        return result;
+    },
+
+    sort(
+        array: any[],
+        observer: ArrayObserver,
+        sort: typeof Array.prototype.sort,
+        args: any[]
+    ): any[] {
+        observer.flush();
+        const oldArray = array.slice();
+        const result = sort.apply(array, args);
+        observer.reset(oldArray);
+        return result;
+    },
+
+    splice(
+        array: any[],
+        observer: ArrayObserver,
+        splice: typeof Array.prototype.splice,
+        args: any[]
+    ): any {
+        const result = splice.apply(array, args);
+        observer.addSplice(
+            new Splice(+args[0], result, args.length > 2 ? args.length - 2 : 0).adjustTo(
+                array
+            )
+        );
+        return result;
+    },
+
+    unshift(
+        array: any[],
+        observer: ArrayObserver,
+        unshift: typeof Array.prototype.unshift,
+        args: any[]
+    ): any[] {
+        const result = unshift.apply(array, args);
+        observer.addSplice(new Splice(0, [], args.length).adjustTo(array));
+        return result;
+    },
+});
+
+/**
+ * A splice strategy that doesn't create splices, but instead
+ * tracks every change as a full array reset.
+ * @public
+ */
+export const resetSpliceStrategy: SpliceStrategy = Object.freeze({
+    support: SpliceStrategySupport.reset,
+
+    normalize(
+        previous: unknown[] | undefined,
+        current: unknown[],
+        changes: Splice[] | undefined
+    ): readonly Splice[] {
+        return SpliceStrategy.reset;
+    },
+
+    pop(
+        array: any[],
+        observer: ArrayObserver,
+        pop: typeof Array.prototype.pop,
+        args: any[]
+    ) {
+        const result = pop.apply(array, args);
+        observer.reset(array);
+        return result;
+    },
+
+    push(
+        array: any[],
+        observer: ArrayObserver,
+        push: typeof Array.prototype.push,
+        args: any[]
+    ): any {
+        const result = push.apply(array, args);
+        observer.reset(array);
+        return result;
+    },
+
+    reverse(
+        array: any[],
+        observer: ArrayObserver,
+        reverse: typeof Array.prototype.reverse,
+        args: any[]
+    ): any {
+        const result = reverse.apply(array, args);
+        observer.reset(array);
+        return result;
+    },
+
+    shift(
+        array: any[],
+        observer: ArrayObserver,
+        shift: typeof Array.prototype.shift,
+        args: any[]
+    ): any {
+        const result = shift.apply(array, args);
+        observer.reset(array);
+        return result;
+    },
+
+    sort(
+        array: any[],
+        observer: ArrayObserver,
+        sort: typeof Array.prototype.sort,
+        args: any[]
+    ): any[] {
+        const result = sort.apply(array, args);
+        observer.reset(array);
+        return result;
+    },
+
+    splice(
+        array: any[],
+        observer: ArrayObserver,
+        splice: typeof Array.prototype.splice,
+        args: any[]
+    ): any {
+        const result = splice.apply(array, args);
+        observer.reset(array);
+        return result;
+    },
+
+    unshift(
+        array: any[],
+        observer: ArrayObserver,
+        unshift: typeof Array.prototype.unshift,
+        args: any[]
+    ): any[] {
+        const result = unshift.apply(array, args);
+        observer.reset(array);
+        return result;
+    },
+});
