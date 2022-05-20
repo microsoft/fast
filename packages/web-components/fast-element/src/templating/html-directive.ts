@@ -241,20 +241,13 @@ export const Aspect = Object.freeze({
                 break;
         }
     },
-});
+} as const);
 
 /**
- * Valid aspect type values.
+ * The type of HTML aspect to target.
  * @public
  */
-export type AspectType = Exclude<
-    {
-        [K in keyof typeof Aspect]: typeof Aspect[K] extends number
-            ? typeof Aspect[K]
-            : never;
-    }[keyof typeof Aspect],
-    typeof Aspect.none
->;
+export type Aspect = typeof Aspect[Exclude<keyof typeof Aspect, "assign" | "none">];
 
 /**
  * Represents something that applies to a specific aspect of the DOM.
@@ -274,7 +267,7 @@ export interface Aspected {
     /**
      * The type of aspect to target.
      */
-    aspectType: AspectType;
+    aspectType: Aspect;
 
     /**
      * A binding if one is associated with the aspect.

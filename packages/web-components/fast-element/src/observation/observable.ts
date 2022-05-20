@@ -164,7 +164,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
                     callback.call(source, oldValue, newValue);
                 }
 
-                /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
                 getNotifier(source).notify(this.name);
             }
         }
@@ -219,7 +218,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             }
         }
 
-        /** @internal */
         public watch(propertySource: unknown, propertyName: string): void {
             const prev = this.last;
             const notifier = getNotifier(propertySource);
@@ -254,7 +252,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             this.last = current!;
         }
 
-        /** @internal */
         handleChange(): void {
             if (this.needsQueue) {
                 this.needsQueue = false;
@@ -262,7 +259,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             }
         }
 
-        /** @internal */
         call(): void {
             if (this.last !== null) {
                 this.needsQueue = true;
@@ -365,7 +361,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             initialSubscriber?: Subscriber,
             isVolatileBinding: boolean = this.isVolatileBinding(binding)
         ): BindingObserver<TSource, TReturn> {
-            /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
             return new BindingObserverImplementation(
                 binding,
                 initialSubscriber,

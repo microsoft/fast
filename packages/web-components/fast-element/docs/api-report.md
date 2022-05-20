@@ -31,29 +31,41 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
 }
 
 // @public
-export const Aspect: Readonly<{
-    none: 0;
-    attribute: 1;
-    booleanAttribute: 2;
-    property: 3;
-    content: 4;
-    tokenList: 5;
-    event: 6;
-    assign(directive: Aspected, value: string): void;
+export interface ArrayObserver extends SubscriberSet {
+    addSplice(splice: Splice): void;
+    flush(): void;
+    readonly lengthObserver: LengthObserver;
+    reset(oldCollection: any[] | undefined): void;
+    strategy: SpliceStrategy | null;
+}
+
+// @public
+export const ArrayObserver: Readonly<{
+    readonly enable: () => void;
 }>;
 
 // @public
+export const Aspect: Readonly<{
+    readonly none: 0;
+    readonly attribute: 1;
+    readonly booleanAttribute: 2;
+    readonly property: 3;
+    readonly content: 4;
+    readonly tokenList: 5;
+    readonly event: 6;
+    readonly assign: (directive: Aspected, value: string) => void;
+}>;
+
+// @public
+export type Aspect = typeof Aspect[Exclude<keyof typeof Aspect, "assign" | "none">];
+
+// @public
 export interface Aspected {
-    aspectType: AspectType;
+    aspectType: Aspect;
     binding?: Binding;
     sourceAspect: string;
     targetAspect: string;
 }
-
-// @public
-export type AspectType = Exclude<{
-    [K in keyof typeof Aspect]: typeof Aspect[K] extends number ? typeof Aspect[K] : never;
-}[keyof typeof Aspect], typeof Aspect.none>;
 
 // @public
 export function attr(config?: DecoratorAttributeConfiguration): (target: {}, property: string) => void;
@@ -118,7 +130,7 @@ export const BindingConfig: Readonly<{
 export type BindingConfigResolver<T> = (options: T) => BindingConfig<T>;
 
 // @public
-export type BindingMode = Record<AspectType, (directive: HTMLBindingDirective) => Pick<ViewBehaviorFactory, "createBehavior">>;
+export type BindingMode = Record<Aspect, (directive: HTMLBindingDirective) => Pick<ViewBehaviorFactory, "createBehavior">>;
 
 // @public
 export const BindingMode: Readonly<{
@@ -346,9 +358,6 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
 export const emptyArray: readonly never[];
 
 // @public
-export function enableArrayObservation(): void;
-
-// @public
 export class EventBinding {
     constructor(directive: HTMLBindingDirective);
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
@@ -430,7 +439,7 @@ export function html<TSource = any, TParent = any, TContext extends ExecutionCon
 // @public
 export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, Aspected {
     constructor(binding: Binding, mode: BindingMode, options: any);
-    aspectType: AspectType;
+    aspectType: Aspect;
     // (undocumented)
     binding: Binding;
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
@@ -511,6 +520,11 @@ export interface ItemViewTemplate<TSource = any, TParent = any> {
 // @public
 function length_2<T>(array: readonly T[]): number;
 export { length_2 as length }
+
+// @public
+export interface LengthObserver extends Subscriber {
+    length: number;
+}
 
 // @public
 export const Markup: Readonly<{
@@ -733,16 +747,45 @@ export interface SlottedDirectiveOptions<T = any> extends NodeBehaviorOptions<T>
 
 // @public
 export class Splice {
-    constructor(
-    index: number,
-    removed: any[],
-    addedCount: number);
+    constructor(index: number, removed: any[], addedCount: number);
+    // (undocumented)
     addedCount: number;
+    adjustTo(array: any[]): this;
+    // (undocumented)
     index: number;
     // (undocumented)
-    static normalize(previous: unknown[] | undefined, current: unknown[], changes: Splice[] | undefined): Splice[] | undefined;
     removed: any[];
+    reset?: boolean;
 }
+
+// @public
+export interface SpliceStrategy {
+    normalize(previous: unknown[] | undefined, current: unknown[], changes: Splice[] | undefined): readonly Splice[];
+    pop(array: any[], observer: ArrayObserver, pop: typeof Array.prototype.pop, args: any[]): any;
+    push(array: any[], observer: ArrayObserver, push: typeof Array.prototype.push, args: any[]): any;
+    reverse(array: any[], observer: ArrayObserver, reverse: typeof Array.prototype.reverse, args: any[]): any;
+    shift(array: any[], observer: ArrayObserver, shift: typeof Array.prototype.shift, args: any[]): any;
+    sort(array: any[], observer: ArrayObserver, sort: typeof Array.prototype.sort, args: any[]): any[];
+    splice(array: any[], observer: ArrayObserver, splice: typeof Array.prototype.splice, args: any[]): any;
+    readonly support: SpliceStrategySupport;
+    unshift(array: any[], observer: ArrayObserver, unshift: typeof Array.prototype.unshift, args: any[]): any[];
+}
+
+// @public
+export const SpliceStrategy: Readonly<{
+    readonly reset: Splice[];
+    readonly setDefaultStrategy: (strategy: SpliceStrategy) => void;
+}>;
+
+// @public
+export const SpliceStrategySupport: Readonly<{
+    readonly reset: 1;
+    readonly splice: 2;
+    readonly optimized: 3;
+}>;
+
+// @public
+export type SpliceStrategySupport = typeof SpliceStrategySupport[keyof typeof SpliceStrategySupport];
 
 // @public
 export abstract class StatelessAttachedAttributeDirective<T> implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {

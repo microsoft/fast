@@ -12,7 +12,6 @@ import {
     AddViewBehaviorFactory,
     Aspect,
     Aspected,
-    AspectType,
     HTMLDirective,
     ViewBehavior,
     ViewBehaviorFactory,
@@ -40,7 +39,7 @@ const createInnerHTMLBinding = globalThis.TrustedHTML
  * @public
  */
 export type BindingMode = Record<
-    AspectType,
+    Aspect,
     (directive: HTMLBindingDirective) => Pick<ViewBehaviorFactory, "createBehavior">
 >;
 
@@ -792,7 +791,7 @@ export class HTMLBindingDirective
     /**
      * The type of aspect to target.
      */
-    aspectType: AspectType = Aspect.content;
+    aspectType: Aspect = Aspect.content;
 
     /**
      * Creates an instance of HTMLBindingDirective.

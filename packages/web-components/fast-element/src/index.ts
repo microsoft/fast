@@ -14,8 +14,7 @@ export * from "./platform.js";
 // Observation
 export * from "./observation/observable.js";
 export * from "./observation/notifier.js";
-export * from "./observation/array-change-records.js";
-export * from "./observation/array-observer.js";
+export * from "./observation/arrays.js";
 export * from "./observation/update-queue.js";
 export type { Behavior } from "./observation/behavior.js";
 
