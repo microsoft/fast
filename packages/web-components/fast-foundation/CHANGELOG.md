@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 19 May 2022 07:09:40 GMT and should not be manually modified.
+This log was last generated on Sun, 22 May 2022 07:09:02 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.5
+
+Sun, 22 May 2022 07:09:02 GMT
+
+### Patches
+
+- disable keyboard controls for readonly sliders (burtonsmith@microsoft.com)
 
 ## 2.46.4
 

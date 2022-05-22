@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "disable keyboard controls for readonly sliders",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "burtonsmith@microsoft.com",
-  "dependentChangeType": "patch"
-}
