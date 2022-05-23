@@ -33,7 +33,7 @@
     "test-server": "node server/dist/server.js",
     "install-playwright-browsers": "yarn playwright install"
   },
-  "description": "A package for rendering FAST components outside the browser.",
+  "description": "A package for rendering FAST Web Components outside the browser.",
   "main": "./dist/esm/exports.js",
   "types": "./dist/fast-ssr.d.ts",
   "exports": {
@@ -47,7 +47,6 @@
       "default": "./dist/esm/dom-shim.js"
     }
   },
-  "private": true,
   "dependencies": {
     "@microsoft/fast-element": "^1.5.0",
     "parse5": "^6.0.1",
