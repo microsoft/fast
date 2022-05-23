@@ -3,49 +3,75 @@ name: Fast Element benchmark jobs
 on: [pull_request]
 
 jobs:
-    set_up:
+    # If you'd like a message to appear in existing results comment that the
+    # benchmarks are current running and the shown results are out of date, run a
+    # job before the benchmarks with the initialize option set to true.
+    setup:
+        name: Setup Tachometer Reporting
         runs-on: ubuntu-latest
         steps:
-        - name: Initialize tachometer comment
-          uses: andrewiggins/tachometer-reporter-action@v2
-          with:
-              initialize: true
-        - uses: actions/checkout@v2
-          with:
-              fetch-depth: 0
-        - name: Get yarn cache directory path
-          id: yarn-cache-dir-path
-          run: echo '::set-output name=dir::$(yarn cache dir)'
-        - name: Set up node_modules cache
-          uses: actions/cache@v2
-          id: yarn-cache
-          with:
-              path: |
-                  ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                  node_modules
-                  */*/node_modules
-              key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-              restore-keys: |
-                  ${{ runner.os }}-yarn-
-        - name: Install package dependencies
-          run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
-        - name: Run tachometer and generate results file
-          run: |
-              cd packages/utilities/fast-benchmarks
-              yarn install
-              yarn run benchmark --library=fast-element --benchmark=localTest --versions 1.4.0 1.9.0 --operations=create10k
-        - name: Upload results
-          uses: actions/upload-artifact@v2
-          with:
-              name: results-create10k
-              path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.json
-        - uses: actions/download-artifact@v2
-          with:
-              name: results-create10k
-              path: packages/utilities/fast-benchmarks/results
-        # Read all the results and post comment
-        - name: Report Tachometer Result
-          uses: andrewiggins/tachometer-reporter-action@v2
-          with:
-              report-id: results-create10k
-              path: packages/utilities/fast-benchmarks/results/*.json
+            - name: Initialize tachometer comment
+              uses: andrewiggins/tachometer-reporter-action@v2
+              with:
+                  initialize: true
+            - uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
+            - name: Get yarn cache directory path
+              id: yarn-cache-dir-path
+              run: echo '::set-output name=dir::$(yarn cache dir)'
+
+            - name: Set up node_modules cache
+              uses: actions/cache@v2
+              id: yarn-cache
+              with:
+                  path: |
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                      node_modules
+                      */*/node_modules
+                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-yarn-
+            - name: Install package dependencies
+              run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
+            - name: Prepare workspaces
+              run: yarn prepare
+
+    update10th:
+        name: Run update 10th element benchmark
+        needs: [setup]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: "16.x"
+            - name: Run tachometer and generate results file
+              run: |
+                  cd packages/utilities/fast-benchmarks
+                  yarn install
+                  yarn run benchmark:fast-element:test
+            # Upload this benchmarks results
+            - name: Upload results
+              uses: actions/upload-artifact@v2
+              with:
+                  name: results
+                  path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
+
+    report_results:
+        name: Report Results
+        needs: [update10th]
+        runs-on: ubuntu-latest
+        steps:
+            # Download the results artifact
+            - uses: actions/download-artifact@v2
+              with:
+                  name: results
+                  path: packages/utilities/fast-benchmarks/results
+
+            # Read all the results and post comment
+            - name: Report Tachometer Result
+              uses: andrewiggins/tachometer-reporter-action@v2
+              with:
+                  name: results
+                  path: packages/utilities/fast-benchmarks/results/*.json
