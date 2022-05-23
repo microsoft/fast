@@ -1,151 +1,179 @@
-import { installWindowOnGlobal } from "@lit-labs/ssr/lib/dom-shim.js";
+/**
+ * This file was heavily inspired by {@link https://github.com/lit/lit/tree/main/packages/labs/ssr} with some adjustments made.
+ * Please see {@link ../ACKNOWLEDGEMENTS.md}
+ */
 
-class DOMTokenList {
-    #tokens = new Set<string>();
+/**
+ * @beta
+ */
+export class Element {}
 
-    public add(value: string) {
-        this.#tokens.add(value);
-    }
-
-    public remove(value: string) {
-        this.#tokens.delete(value);
-    }
-
-    public contains(value: string) {
-        return this.#tokens.has(value);
-    }
-
-    public toggle(value: string, force?: boolean) {
-        const add = force === undefined ? !this.contains(value) : force;
-
-        if (add) {
-            this.add(value);
-            return true;
-        } else {
-            this.remove(value);
-            return false;
+/**
+ * @beta
+ */
+export abstract class HTMLElement extends Element {
+    private static attributes: WeakMap<HTMLElement, Map<string, string>> = new WeakMap();
+    private static getOrCreateAttributesForElement(element: HTMLElement) {
+        let attrs = HTMLElement.attributes.get(element);
+        if (!attrs) {
+            HTMLElement.attributes.set(element, (attrs = new Map()));
         }
+        return attrs;
     }
-
-    public toString() {
-        return Array.from(this.#tokens).join(" ");
+    get attributes() {
+        return Array.from(HTMLElement.getOrCreateAttributesForElement(this)).map(
+            ([name, value]) => ({
+                name,
+                value,
+            })
+        );
     }
-
-    *[Symbol.iterator]() {
-        yield* this.#tokens.values();
+    private _shadowRoot: null | ShadowRoot = null;
+    get shadowRoot() {
+        return this._shadowRoot;
     }
-}
-class Node {
-    appendChild() {}
-    removeChild() {}
-}
-
-class Element extends Node {}
-
-abstract class HTMLElement extends Element {
-    #attributes = new Map<string, string | DOMTokenList>();
-    #shadowRoot: null | ShadowRoot = null;
-
-    public readonly classList = new DOMTokenList();
-
-    public get attributes(): { name: string; value: string }[] {
-        return Array.from(this.#attributes).map(([name, value]) => {
-            if (typeof value === "string") {
-                return { name, value };
-            } else {
-                return { name, value: value.toString() };
-            }
-        });
-    }
-
-    public get shadowRoot() {
-        return this.#shadowRoot;
-    }
-
-    public abstract attributeChangedCallback?(
+    abstract attributeChangedCallback?(
         name: string,
         old: string | null,
         value: string | null
     ): void;
-
-    public setAttribute(name: string, value: string) {
-        let _value: string | DOMTokenList = value;
-        if (name === "class") {
-            _value = new DOMTokenList();
-            value.split(" ").forEach(className => {
-                (_value as DOMTokenList).add(className);
-            });
-        }
-        this.#attributes.set(name, _value);
+    setAttribute(name: string, value: string) {
+        HTMLElement.getOrCreateAttributesForElement(this).set(name, value);
     }
-
-    public removeAttribute(name: string) {
-        this.#attributes.delete(name);
+    removeAttribute(name: string) {
+        HTMLElement.getOrCreateAttributesForElement(this).delete(name);
     }
-
-    public hasAttribute(name: string) {
-        return this.#attributes.has(name);
+    hasAttribute(name: string) {
+        return HTMLElement.getOrCreateAttributesForElement(this).has(name);
     }
-
-    public attachShadow(init: ShadowRootInit) {
-        const shadowRoot = ({ host: this } as unknown) as ShadowRoot;
+    attachShadow(init: ShadowRootInit): ShadowRoot {
+        const shadowRoot = { host: this };
         if (init && init.mode === "open") {
-            this.#shadowRoot = shadowRoot;
+            this._shadowRoot = shadowRoot;
         }
         return shadowRoot;
     }
-
-    public getAttribute(name: string) {
-        const value = this.#attributes.get(name);
-        return value === undefined
-            ? null
-            : value instanceof DOMTokenList
-            ? value.toString()
-            : value;
+    getAttribute(name: string) {
+        const value = HTMLElement.getOrCreateAttributesForElement(this).get(name);
+        return value === undefined ? null : value;
     }
 }
 
-class Document {
-    head = new Node();
-    adoptedStyleSheets = [];
+/**
+ * @beta
+ */
+export interface CustomHTMLElement {
+    new (): HTMLElement;
+    observedAttributes?: string[];
+}
+
+/**
+ * @beta
+ */
+export class ShadowRoot {}
+
+/**
+ * @beta
+ */
+export class Document {
+    get adoptedStyleSheets() {
+        return [];
+    }
     createTreeWalker() {
         return {};
     }
     createTextNode() {
         return {};
     }
-    createElement(tagName: string) {
-        return { tagName };
+    createElement() {
+        return {};
     }
-    querySelector() {
-        return undefined;
-    }
-    addEventListener() {}
 }
 
-class CSSStyleDeclaration {
-    setProperty() {}
-}
-
-class CSSStyleSheet {
-    get cssRules() {
-        return [{ style: new CSSStyleDeclaration() }];
-    }
+/**
+ * @beta
+ */
+export class CSSStyleSheet {
     replace() {}
-    insertRule() {
-        return 0;
+}
+
+/**
+ * @beta
+ */
+export type CustomElementRegistration = {
+    ctor: { new (): HTMLElement };
+    observedAttributes: string[];
+};
+
+/**
+ * @beta
+ */
+export class CustomElementRegistry {
+    private __definitions = new Map<string, CustomElementRegistration>();
+
+    define(name: string, ctor: CustomHTMLElement) {
+        this.__definitions.set(name, {
+            ctor,
+            observedAttributes: (ctor as CustomHTMLElement).observedAttributes ?? [],
+        });
+    }
+
+    get(name: string) {
+        const definition = this.__definitions.get(name);
+        return definition && definition.ctor;
     }
 }
 
-class MediaQueryList {
-    addListener() {}
-    matches = false;
+/**
+ * @beta
+ */
+export class MutationObserver {
+    observe() {}
 }
-installWindowOnGlobal({
-    matchMedia: () => new MediaQueryList(),
-    HTMLElement,
-    Document,
-    document: new Document(),
-    Node,
-    CSSStyleSheet,
-});
+
+/**
+ * Creates a window object.
+ * @param props - Additional properties to expose on the window.
+ *
+ * @beta
+ */
+export function createWindow(
+    props: { [key: string]: unknown } = {}
+): { [key: string]: unknown } {
+    const window = {
+        Element,
+        HTMLElement,
+        Document,
+        CSSStyleSheet,
+        ShadowRoot,
+        CustomElementRegistry,
+        MutationObserver,
+
+        // Set below
+        window: undefined as unknown,
+        document: undefined as unknown,
+        customElements: undefined as unknown,
+
+        // User-provided globals
+        ...props,
+    };
+
+    window.window = window;
+    window.document = new window.Document();
+    window.customElements = new window.CustomElementRegistry();
+    return window;
+}
+
+/**
+ * Constructs a window object and installs it on the global, exposing properties directly on globalThis and globalthis.window
+ * @param props - Additional properties to expose on the window.
+ *
+ * @beta
+ */
+export function installWindowOnGlobal(props: { [key: string]: unknown } = {}) {
+    if (globalThis.window === undefined) {
+        const window = createWindow(props);
+        Object.assign(globalThis, window);
+        globalThis.window = globalThis as typeof globalThis & Window;
+    }
+}

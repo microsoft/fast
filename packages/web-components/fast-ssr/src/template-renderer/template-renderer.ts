@@ -1,5 +1,3 @@
-import { RenderInfo } from "@lit-labs/ssr";
-import { getElementRenderer } from "@lit-labs/ssr/lib/element-renderer.js";
 import {
     Aspect,
     Aspected,
@@ -7,6 +5,8 @@ import {
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { RenderInfo } from "../render-info.js";
+import { getElementRenderer } from "../element-renderer/element-renderer.js";
 import { AttributeBindingOp, Op, OpType } from "../template-parser/op-codes.js";
 import {
     parseStringToOpCodes,

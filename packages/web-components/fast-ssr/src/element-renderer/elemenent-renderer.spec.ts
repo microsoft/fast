@@ -1,7 +1,7 @@
-import "../dom-shim.js";
+import "../install-dom-shim.js";
 import { FASTElement, customElement, css, html, attr } from "@microsoft/fast-element";
 import { expect, test } from '@playwright/test';
-import { FASTElementRenderer } from "./element-renderer.js";
+import { FASTElementRenderer } from "./fast-element-renderer.js";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utils.js";
 

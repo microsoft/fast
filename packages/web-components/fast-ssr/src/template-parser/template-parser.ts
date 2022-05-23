@@ -1,6 +1,6 @@
 /**
- * This code is largely a fork of lit's rendering implementation: https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts
- * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
+ * This file was heavily inspired by {@link https://github.com/lit/lit/tree/main/packages/labs/ssr}, with adjustments to render parse FAST elements.
+ * Please see {@link ../ACKNOWLEDGEMENTS.md}
  */
 import {
     Aspect,

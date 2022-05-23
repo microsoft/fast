@@ -7,15 +7,36 @@
 import { Binding } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
-import { ElementRenderer } from '@lit-labs/ssr';
 import { ExecutionContext } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
-import { RenderInfo } from '@lit-labs/ssr';
 import { ViewBehaviorFactory } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // @beta
 export type ComponentDOMEmissionMode = "shadow";
+
+// @beta (undocumented)
+export type ConstructableElementRenderer = (new (tagName: string) => ElementRenderer) & typeof ElementRenderer;
+
+// @beta (undocumented)
+export abstract class ElementRenderer {
+    constructor(tagName: string);
+    // (undocumented)
+    abstract attributeChangedCallback(name: string, prev: string | null, next: string | null): void;
+    // (undocumented)
+    abstract connectedCallback(): void;
+    // (undocumented)
+    abstract readonly element?: HTMLElement;
+    // Warning: (ae-forgotten-export) The symbol "AttributesMap" needs to be exported by the entry point exports.d.ts
+    static matchesClass(ctor: typeof HTMLElement, tagName: string, attributes: AttributesMap): boolean;
+    renderAttributes(): IterableIterator<string>;
+    // (undocumented)
+    abstract renderShadow(renderInfo: RenderInfo): IterableIterator<string>;
+    setAttribute(name: string, value: string): void;
+    setProperty(name: string, value: unknown): void;
+    // (undocumented)
+    readonly tagName: string;
+}
 
 // @beta
 export abstract class FASTElementRenderer extends ElementRenderer {
@@ -37,6 +58,13 @@ function fastSSR(): {
     defaultRenderInfo: RenderInfo;
 };
 export default fastSSR;
+
+// @beta (undocumented)
+export type RenderInfo = {
+    elementRenderers: ConstructableElementRenderer[];
+    customElementInstanceStack: ElementRenderer[];
+    customElementHostStack: ElementRenderer[];
+};
 
 // @beta
 export interface StyleRenderer {
