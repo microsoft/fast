@@ -232,12 +232,13 @@ async function generateBenchmarks(
                 //     },
                 // };
 
-                // bench.packageVersions = {
-                //     label: version,
-                //     dependencies: {
-                //         [dep]: "1.9.1",
-                //     },
-                // };
+                bench.packageVersions = {
+                    label: version,
+                    dependencies: {
+                        [dep]:
+                            "file:/Users/wendy/code/fast/packages/web-components/fast-element",
+                    },
+                };
             } else {
                 bench.packageVersions = {
                     label: version,
