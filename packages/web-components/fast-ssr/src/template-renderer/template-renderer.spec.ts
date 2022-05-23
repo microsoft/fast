@@ -1,4 +1,4 @@
-import "../dom-shim.js";
+import "../install-dom-shim.js";
 import { child, children, customElement, ExecutionContext, FASTElement, html, item, ref, repeat, slotted, when } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";

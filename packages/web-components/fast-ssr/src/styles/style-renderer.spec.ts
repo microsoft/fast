@@ -1,4 +1,4 @@
-import "../dom-shim.js";
+import "../install-dom-shim.js";
 import { test, expect } from "@playwright/test";
 import { FASTStyleStyleRenderer } from "./style-renderer.js";
 import { css } from "@microsoft/fast-element";
