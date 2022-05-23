@@ -27,8 +27,9 @@ module.exports = {
         },
         docs: {
             sidebar: {
-                hideable: true,
-            },
+              hideable: true,
+              autoCollapseCategories: true,
+            }
         },
         navbar: {
             logo: {

@@ -140,23 +140,20 @@ export class Toolbar extends FoundationElement {
         return true;
     }
 
+    @observable
+    public childItems: Element[];
+    protected childItemsChanged(prev: undefined | Element[], next: Element[]): void {
+        if (this.$fastController.isConnected) {
+            this.reduceFocusableElements();
+        }
+    }
+
     /**
      * @internal
      */
     public connectedCallback() {
         super.connectedCallback();
         this.direction = getDirection(this);
-        this.start.addEventListener("slotchange", this.startEndSlotChange);
-        this.end.addEventListener("slotchange", this.startEndSlotChange);
-    }
-
-    /**
-     * @internal
-     */
-    public disconnectedCallback() {
-        super.disconnectedCallback();
-        this.start.removeEventListener("slotchange", this.startEndSlotChange);
-        this.end.removeEventListener("slotchange", this.startEndSlotChange);
     }
 
     /**
@@ -233,10 +230,20 @@ export class Toolbar extends FoundationElement {
      * @internal
      */
     protected reduceFocusableElements(): void {
+        const previousFocusedElement = this.focusableElements?.[this.activeIndex];
+
         this.focusableElements = this.allSlottedItems.reduce(
             Toolbar.reduceFocusableItems,
             []
         );
+
+        // If the previously active item is still focusable, adjust the active index to the
+        // index of that item.
+        const adjustedActiveIndex = this.focusableElements.indexOf(
+            previousFocusedElement
+        );
+        this.activeIndex = Math.max(0, adjustedActiveIndex);
+
         this.setFocusableElements();
     }
 
@@ -272,10 +279,12 @@ export class Toolbar extends FoundationElement {
         ).some(x => isFocusable(x));
 
         if (
-            isFocusable(element) ||
-            isRoleRadio ||
-            isFocusableFastElement ||
-            hasFocusableShadow
+            !element.hasAttribute("disabled") &&
+            !element.hasAttribute("hidden") &&
+            (isFocusable(element) ||
+                isRoleRadio ||
+                isFocusableFastElement ||
+                hasFocusableShadow)
         ) {
             elements.push(element);
             return elements;
@@ -300,12 +309,6 @@ export class Toolbar extends FoundationElement {
             });
         }
     }
-
-    private startEndSlotChange = (): void => {
-        if (this.$fastController.isConnected) {
-            this.reduceFocusableElements();
-        }
-    };
 }
 
 /**

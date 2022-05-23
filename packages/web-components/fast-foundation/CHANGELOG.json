@@ -2,6 +2,44 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 22 May 2022 07:09:02 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.5",
+      "version": "2.46.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "disable keyboard controls for readonly sliders",
+            "author": "burtonsmith@microsoft.com",
+            "commit": "3e3309619b1292242881016ba46a4ef720a41f80",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Update blazor.md",
+            "author": "vnbaaij@outlook.com",
+            "commit": "d1f012e9ce9e6f7d3a0a199cbb15baa917f583af",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 19 May 2022 07:09:40 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.4",
+      "version": "2.46.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Handle disabled and hidden items in toolbar",
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "commit": "c429fa743a3f03fc4e90b31ae112c7a53d8426fe",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 15 May 2022 07:08:25 GMT",
       "tag": "@microsoft/fast-foundation_v2.46.3",
       "version": "2.46.3",
