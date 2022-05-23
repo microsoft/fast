@@ -26,7 +26,9 @@
             "**/@types/node",
             "**/chai",
             "**/html-minifier-terser",
-            "**/react-syntax-highlighter"
+            "**/react-syntax-highlighter",
+            "**/tachometer",
+            "**/chromedriver"
         ]
     },
     "engines": {

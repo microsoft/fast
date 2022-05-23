@@ -216,29 +216,28 @@ async function generateBenchmarks(
 
             if (isBranch) {
                 const ref = isLocalBranch ? localProps.branchName : MASTER;
-                // bench.packageVersions = {
-                //     label: version,
-                //     dependencies: {
-                //         [dep]: {
-                //             kind: "git",
-                //             repo: "https://github.com/microsoft/fast.git",
-                //             ref,
-                //             subdir: `packages/web-components/${library}`,
-                //             setupCommands: [
-                //                 "yarn install --frozen-lockfile",
-                //                 `yarn --cwd ./packages/web-components/${library} build`,
-                //             ],
-                //         },
-                //     },
-                // };
-
                 bench.packageVersions = {
                     label: version,
                     dependencies: {
-                        [dep]:
-                            "file:/Users/wendy/code/fast/packages/web-components/fast-element",
+                        [dep]: {
+                            kind: "git",
+                            repo: "https://github.com/microsoft/fast.git",
+                            ref,
+                            subdir: `packages/web-components/${library}`,
+                            setupCommands: [
+                                "yarn install",
+                                `yarn --cwd ./packages/web-components/${library} build`,
+                            ],
+                        },
                     },
                 };
+
+                // bench.packageVersions = {
+                //     label: version,
+                //     dependencies: {
+                //         [dep]: "file:../../web-components/fast-element",
+                //     },
+                // };
             } else {
                 bench.packageVersions = {
                     label: version,

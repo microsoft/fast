@@ -1,8 +1,14 @@
 {
-    "name": "fast-benchmarks",
+    "name": "@microsoft/fast-benchmarks",
     "version": "1.0.0",
     "description": "utility library benchmarking for FAST libraries",
     "type": "module",
+    "private": true,
+    "author": {
+        "name": "Microsoft",
+        "url": "https://discord.gg/FcSNfg4"
+    },
+    "license": "MIT",
     "scripts": {
         "build": "tsc && tsc --build",
         "benchmark": "node scripts/index.js",
@@ -10,10 +16,9 @@
         "benchmarks": "yarn run benchmark --library=fast-element --benchmark=test --versions 1.6.0 1.10.1 --operations=update10th",
         "debug:binding": "tach --config fast-element/binding/tachometer.json --manual",
         "benchmark:fast-element:test": "yarn run benchmark --library=fast-element --benchmark=test --versions 1.6.0 1.10.1 --operations=update10th",
-        "benchmark:fast-element:test:local": "yarn run benchmark --library=fast-element --benchmark=localTest --versions local 1.10.1 --localBenchFile=index2 --operations=create10k"
+        "benchmark:fast-element:test:local": "yarn run benchmark --library=fast-element --benchmark=localTest --versions local 1.10.1 --localBenchFile=index2 --operations=create10k",
+        "link": "rm -f node_modules/@microsoft/fast-element && ln -s ../../web-components/fast-element node_modules/@microsoft/fast-element"
     },
-    "author": "Microsoft",
-    "license": "ISC",
     "dependencies": {
         "@microsoft/fast-element": "^1.9.0",
         "tachometer": "^0.5.10"
