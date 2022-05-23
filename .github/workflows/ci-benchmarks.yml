@@ -3,9 +3,6 @@ name: Fast Element benchmark jobs
 on: [pull_request]
 
 jobs:
-    # If you'd like a message to appear in existing results comment that the
-    # benchmarks are current running and the shown results are out of date, run a
-    # job before the benchmarks with the initialize option set to true.
     setup:
         name: Setup Tachometer Reporting
         runs-on: ubuntu-latest
