@@ -423,6 +423,11 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
         setNonEnumerable(subject, "$fastController", this);
     }
 
+    public subscribe(subscriber: Subscriber): void {
+        this.flush();
+        super.subscribe(subscriber);
+    }
+
     public addSplice(splice: Splice) {
         if (this.splices === void 0) {
             this.splices = [splice];

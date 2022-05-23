@@ -150,22 +150,22 @@ export class SubscriberSet implements Notifier {
      */
     public notify(args: any): void {
         const spillover = this.spillover;
-        const source = this.source;
+        const subject = this.subject;
 
         if (spillover === void 0) {
             const sub1 = this.sub1;
             const sub2 = this.sub2;
 
             if (sub1 !== void 0) {
-                sub1.handleChange(source, args);
+                sub1.handleChange(subject, args);
             }
 
             if (sub2 !== void 0) {
-                sub2.handleChange(source, args);
+                sub2.handleChange(subject, args);
             }
         } else {
             for (let i = 0, ii = spillover.length; i < ii; ++i) {
-                spillover[i].handleChange(source, args);
+                spillover[i].handleChange(subject, args);
             }
         }
     }
