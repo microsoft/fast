@@ -1,6 +1,6 @@
 # Adaptive UI
 
-Adaptive UI is a library for building highly-consistent design systems based around your visual decisions instead of a complex map of color swatches and tokens based on t-shirt sizes.
+Adaptive UI is a library for building highly-consistent design systems based around your visual decisions. This represents an evolution of many token implementations that provide end-result values without the means to track how they were derived or easily adjust them.
 
 This is a core feature of [FAST](https://fast.design) and is incorporated into the [Fluent UI Web Components](https://aka.ms/fluentwebcomponents) and other design systems.
 
@@ -44,6 +44,16 @@ To switch to dark mode:
 fillColor.withDefault("#232323");
 ```
 
+See more about the [adaptive color system](./src/color/README.md).
+
+## Road map
+
 The layer system for setting content area background colors and improved handling of light and dark mode is evolving and will be added soon.
 
-See more about the [adaptive color system](./src/color/README.md).
+The latest version of adaptive density, currently in RFC and PR, will come here soon as well.
+
+The color system is being updated to support opacity in colors, which will enable at least the neutral palette to overlay images or background blur effects like in Windows 11.
+
+### Further afield
+
+The fixed design tokens will evolve into a more configurable definition aligning with industry standards in design tokens.

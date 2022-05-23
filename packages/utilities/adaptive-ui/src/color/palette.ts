@@ -9,17 +9,24 @@ import { contrast, RelativeLuminance } from "./utilities/relative-luminance.js";
  *
  * @public
  */
-export enum PaletteDirectionValue {
+export const PaletteDirectionValue = Object.freeze({
     /**
      * Move darker, or up the Palette.
      */
-    darker = 1,
+    darker: 1,
 
     /**
      * Move lighter, or down the Palette.
      */
-    lighter = -1,
-}
+    lighter: -1,
+} as const);
+
+/**
+ * Directional values for navigating {@link Swatch}es in {@link Palette}.
+ *
+ * @public
+ */
+export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof PaletteDirectionValue];
 
 // I know we like to avoid enums so I tried to make it an object, but I'm not sure how to make this work with the type and function below.
 // export const PaletteDirectionValue = {

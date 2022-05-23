@@ -484,10 +484,13 @@ export interface Palette<T extends Swatch = Swatch> {
 export type PaletteDirection = PaletteDirectionValue | (() => PaletteDirectionValue);
 
 // @public
-export enum PaletteDirectionValue {
-    darker = 1,
-    lighter = -1
-}
+export const PaletteDirectionValue: Readonly<{
+    readonly darker: 1;
+    readonly lighter: -1;
+}>;
+
+// @public
+export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof PaletteDirectionValue];
 
 // @public
 export class PaletteRGB extends BasePalette<SwatchRGB> {
