@@ -48,7 +48,7 @@ const counterStyles = css`/* ... */`;
 const counterTemplate = html`<!-- ... -->`;
 ```
 
-However, a `FoundationElement` also supports a lazily-defined template and style type. This lazy option is a function invoked with [ElementDefinitionContext](../api/fast-foundation.elementdefinitioncontext.md) and [FoundationElementDefinition](../api/fast-foundation.foundationelementdefinition.md) options, providing opportunity to adjust the template or styles based on how the element or other elements are defined. Lazy template and style definitions provide incredible flexibility, and are what can allow application authors to re-name component tag names, override default slotted content, and communicate any component-specific configuration options. Here's how we would convert the previous standard templates and styles into lazy templates and styles:
+However, a `FoundationElement` also supports a lazily-defined template and style type. This lazy option is a function invoked with [ElementDefinitionContext](../api/fast-foundation.elementdefinitioncontext.md) and [FoundationElementDefinition](../api/fast-foundation.foundationelementdefinition.md) options, providing opportunity to adjust the template or styles based on how the element or other elements are defined. Lazy template and style definitions provide incredible flexibility and are what can allow application authors to re-name component tag names, override default slotted content, and communicate any component-specific configuration options. Here's how we would convert the previous standard templates and styles into lazy templates and styles:
 
 ```ts
 import { html, css  } from "@microsoft/fast-element";
@@ -210,7 +210,7 @@ export function provideSpecialDesignSystem(element?: HTMLElement): DesignSystem 
 }
 ```
 
-The underlying `DesignSystem.getOrCreate` API gets the design system directly attached to the provided element. If one does not exist, it creates one. By default, if no element is provided, the design system is created on the `document.body`. Using this function abstracts those details and provides a much improved set of ergonomics to those using your components, while also giving you the opportunity to bake in certain configuration yourself, such as defining the default element prefix.
+The underlying `DesignSystem.getOrCreate` API gets the design system directly attached to the provided element. If one does not exist, it creates one. By default, if no element is provided, the design system is created on the `document.body`. Using this function abstracts those details and provides a much-improved set of ergonomics to those using your components, while also giving you the opportunity to bake in certain configuration yourself, such as defining the default element prefix.
 
 Now consumers of your components can setup your design system in their application with the button component as follows:
 

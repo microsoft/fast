@@ -32,7 +32,7 @@ provideFASTDesignSystem()
 
 ### Add Element to HTML
 
-Once you've registered the components as shown above, they are now available for use in your document (or template). Just use the new elements like any other HTML element:
+Once you've registered the components, as shown above, they are now available for use in your document (or template). Just use the new elements like any other HTML element:
 
 ```html
 <fast-button>Click me!</fast-button>
@@ -58,7 +58,7 @@ FAST Frame components are highly configurable, so let’s look at some of the op
 
 ### Configuring the DesignSystem
 
-The `DesignSystem` is the entry-point for most component configuration. It can be used to control the options for which the custom element is defined in the browser, which template and stylesheet to use, and how to disambiguate custom elements that are defined for a single element tag name.
+The `DesignSystem` is the entry-point for most component configurations. It can be used to control the options for which the custom element is defined in the browser, which template and stylesheet to use, and how to disambiguate custom elements that are defined for a single element tag name.
 
 For all APIs described in this section, the configuration overrides apply to all components registered to the DesignSystem except when the option is explicitly provided [during component registration](./fast-frame.md#configuring-components-during-registration).
 
@@ -237,7 +237,7 @@ FAST exposes the following Design Tokens that can be used to configure component
 - `direction`: The primary document direction (LTR or RTL).
 - `disabledOpacity`: The opacity of disabled controls.
 - `strokeWidth`: Controls the width of the stroke of a component that has a stroke.
-- `focusStrokeWidth`: Controls with width of the stroke of a component that has a stroke when it has document focus.
+- `focusStrokeWidth`: Controls the width of the stroke of a component that has a stroke when it has document focus.
 
 ### Adaptive Color System
 
@@ -257,7 +257,7 @@ Recipes are currently used for color values, but they are not limited to that an
 
 #### Common functionality
 
-Most color recipes are based on a `palette`. Currently `fast-components` has built-in support for `accent` and `neutral` palettes.
+Most color recipes are based on a `palette`. Currently, `fast-components` has built-in support for `accent` and `neutral` palettes.
 
 Most color recipes take a `reference` `Swatch`. This is a core concept of Adaptive UI which allows the recipes to vary based on the containing component's color. For instance, supporting a button with consistent treatment between light and dark modes is done with a single recipe.
 
@@ -281,7 +281,7 @@ Relies on `textColor` and `contrastTarget` to find the closest colors from the s
 
 Stateful.
 
-Commonly for link text or icon. Also for smaller elements that might not show up well using `accentFill`, for instance if your accent color is dark purple and you support a dark mode interface.
+Commonly for link text or icon. Also for smaller elements that might not show up well using `accentFill`, for instance, if your accent color is dark purple and you support a dark mode interface.
 
 Like `accentFill` this relies on `textColor` and `contrastTarget` to find the closest colors from the supplied palette that can be used for component states.
 

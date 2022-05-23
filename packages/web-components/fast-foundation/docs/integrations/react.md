@@ -191,7 +191,7 @@ When using decorators in a create-react-app setup, you will most likely get this
 :::
 ### Wrapping VanillaJS Web Components
 
-If you have a component from a 3rd party library, not written with FAST, or a VanillaJS Web Component, you can wrap that as well. In this scenario you will have to provide some additional information, such as the element name and the list of properties that should be handled by the wrapper rather than React. Components created with libraries like `Lit` require the element name to be configured but not the properties, while some other libraries or hand-written components may also require the property list. This depends on how the component was defined. Below is an example of configuring both the name and the property list.
+If you have a component from a 3rd party library, not written with FAST, or a VanillaJS Web Component, you can wrap that as well. In this scenario, you will have to provide some additional information, such as the element name and the list of properties that should be handled by the wrapper rather than React. Components created with libraries like `Lit` require the element name to be configured but not the properties, while some other libraries or hand-written components may also require the property list. This depends on how the component was defined. Below is an example of configuring both the name and the property list.
 
 ```ts
 import { CoolComponent as _CoolComponent } from '@cool/component';

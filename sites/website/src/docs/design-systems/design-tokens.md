@@ -48,7 +48,7 @@ specialColor.setValueFor(descendent, "#F7F7F7");
 
 ## Setting a Default Value
 
-A default value can be set for a token, so that the default value is returned from `getValueFor()` in cases where no other token value is found for a node tree.
+A default value can be set for a token so that the default value is returned from `getValueFor()` in cases where no other token value is found for a node tree.
 
 ```ts
 specialColor.withDefault("#FFFFFF");

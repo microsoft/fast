@@ -25,7 +25,7 @@ One of FAST's driving principals is "strive to adopt open, web standards-based a
 
 To understand how FAST can help you, let's take a look at the **FAST tech stack from top to bottom**. 
 
-At the top of the stack, FAST provides a set of Web Components: **`@microsoft/fast-components`**. This library include a common set of components found in many websites and apps. 
+At the top of the stack, FAST provides a set of Web Components: **`@microsoft/fast-components`**. This library includes a common set of components found in many websites and apps.
 
 <div markdown="1" style={{ display:"flex", justifyContent:"center", marginBottom:"20px" }}>
 

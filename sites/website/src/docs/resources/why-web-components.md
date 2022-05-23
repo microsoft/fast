@@ -13,7 +13,7 @@ keywords:
 
 ### You might choose Web Components for performance. 
 
-Web Components have proven to be consistently faster than many popular JavaScript frameworks when it comes to both startup time and paint performance. They also use less memory and often result in significantly smaller bundle sizes when compared to their JavaScript coutnerparts. Standard benchmarks show our component implementation outperforming React, Angular 12, Vue 3.2 as well as many others.
+Web Components have proven to be consistently faster than many popular JavaScript frameworks when it comes to both startup time and paint performance. They also use less memory and often result in significantly smaller bundle sizes when compared to their JavaScript counterparts. Standard benchmarks show our component implementation outperforming React, Angular 12, Vue 3.2 as well as many others.
 
 ### You might use Web Components for their interoperability. 
 
@@ -35,4 +35,4 @@ By choosing web components, you enable your customers to choose their preferred 
 Most of the popular JavaScript frameworks require strong JavaScript skills and knowledge and often at least an intermediate proficiency for use. Web Components can be used without any knowledge of JavaScript whatsoever. Building around Web Components opens up opportunities for a broader range of customers with more diverse backgrounds.
 
 ### Who is using Web Components?
-Across the industry we see a pretty big adoption since January 2020. This includes not only heavy investment from Microsoft, but also from Google, Adobe, Salesforce, SAP, MIT, SpaceX, and many more. Curious who else is using Web Components? Check out the ever-growing list of companies [here](https://arewebcomponentsathingyet.com/).
+Across the industry, we see a pretty big adoption since January 2020. This includes not only heavy investment from Microsoft, but also from Google, Adobe, Salesforce, SAP, MIT, SpaceX, and many more. Curious who else is using Web Components? Check out the ever-growing list of companies [here](https://arewebcomponentsathingyet.com/).
