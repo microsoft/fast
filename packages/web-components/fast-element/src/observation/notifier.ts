@@ -49,39 +49,6 @@ export interface Notifier {
     unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
 }
 
-const spilloverMethods = {
-    subscribe(this: SubscriberSet, subscriber: Subscriber): void {
-        const spillover = (this as any).spillover as Subscriber[];
-        const index = spillover.indexOf(subscriber);
-
-        if (index === -1) {
-            spillover.push(subscriber);
-        }
-    },
-
-    unsubscribe(this: SubscriberSet, subscriber: Subscriber): void {
-        const spillover = (this as any).spillover as Subscriber[];
-        const index = spillover.indexOf(subscriber);
-
-        if (index !== -1) {
-            spillover.splice(index, 1);
-        }
-    },
-
-    notify(this: SubscriberSet, args: any): void {
-        const spillover = (this as any).spillover as Subscriber[];
-        const subject = this.subject;
-
-        for (let i = 0, ii = spillover.length; i < ii; ++i) {
-            spillover[i].handleChange(subject, args);
-        }
-    },
-
-    has(this: SubscriberSet, subscriber: Subscriber): boolean {
-        return ((this as any).spillover as Subscriber[]).indexOf(subscriber) !== -1;
-    },
-};
-
 /**
  * An implementation of {@link Notifier} that efficiently keeps track of
  * subscribers interested in a specific change notification on an
@@ -118,7 +85,9 @@ export class SubscriberSet implements Notifier {
      * @param subscriber - The subscriber to test for inclusion in this set.
      */
     public has(subscriber: Subscriber): boolean {
-        return this.sub1 === subscriber || this.sub2 === subscriber;
+        return this.spillover === void 0
+            ? this.sub1 === subscriber || this.sub2 === subscriber
+            : this.spillover.indexOf(subscriber) !== -1;
     }
 
     /**
@@ -126,24 +95,32 @@ export class SubscriberSet implements Notifier {
      * @param subscriber - The object that is subscribing for change notification.
      */
     public subscribe(subscriber: Subscriber): void {
-        if (this.has(subscriber)) {
-            return;
-        }
+        const spillover = this.spillover;
 
-        if (this.sub1 === void 0) {
-            this.sub1 = subscriber;
-            return;
-        }
+        if (spillover === void 0) {
+            if (this.has(subscriber)) {
+                return;
+            }
 
-        if (this.sub2 === void 0) {
-            this.sub2 = subscriber;
-            return;
-        }
+            if (this.sub1 === void 0) {
+                this.sub1 = subscriber;
+                return;
+            }
 
-        this.spillover = [this.sub1, this.sub2, subscriber];
-        Object.assign(this, spilloverMethods);
-        this.sub1 = void 0;
-        this.sub2 = void 0;
+            if (this.sub2 === void 0) {
+                this.sub2 = subscriber;
+                return;
+            }
+
+            this.spillover = [this.sub1, this.sub2, subscriber];
+            this.sub1 = void 0;
+            this.sub2 = void 0;
+        } else {
+            const index = spillover.indexOf(subscriber);
+            if (index === -1) {
+                spillover.push(subscriber);
+            }
+        }
     }
 
     /**
@@ -151,10 +128,19 @@ export class SubscriberSet implements Notifier {
      * @param subscriber - The object that is unsubscribing from change notification.
      */
     public unsubscribe(subscriber: Subscriber): void {
-        if (this.sub1 === subscriber) {
-            this.sub1 = void 0;
-        } else if (this.sub2 === subscriber) {
-            this.sub2 = void 0;
+        const spillover = this.spillover;
+
+        if (spillover === void 0) {
+            if (this.sub1 === subscriber) {
+                this.sub1 = void 0;
+            } else if (this.sub2 === subscriber) {
+                this.sub2 = void 0;
+            }
+        } else {
+            const index = spillover.indexOf(subscriber);
+            if (index !== -1) {
+                spillover.splice(index, 1);
+            }
         }
     }
 
@@ -163,12 +149,24 @@ export class SubscriberSet implements Notifier {
      * @param args - Data passed along to subscribers during notification.
      */
     public notify(args: any): void {
-        if (this.sub1 !== void 0) {
-            this.sub1.handleChange(this.subject, args);
-        }
+        const spillover = this.spillover;
+        const subject = this.subject;
 
-        if (this.sub2 !== void 0) {
-            this.sub2.handleChange(this.subject, args);
+        if (spillover === void 0) {
+            const sub1 = this.sub1;
+            const sub2 = this.sub2;
+
+            if (sub1 !== void 0) {
+                sub1.handleChange(subject, args);
+            }
+
+            if (sub2 !== void 0) {
+                sub2.handleChange(subject, args);
+            }
+        } else {
+            for (let i = 0, ii = spillover.length; i < ii; ++i) {
+                spillover[i].handleChange(subject, args);
+            }
         }
     }
 }

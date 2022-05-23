@@ -336,6 +336,24 @@ describe("The ArrayObserver", () => {
         expect(changeArgs![0].removed).members([]);
         expect(changeArgs![0].index).equal(0);
     });
+
+    it("should not deliver splices for changes prior to subscription", async () => {
+        ArrayObserver.enable();
+        const array = [1,2,3,4,5];
+        const observer = Observable.getNotifier(array);
+        let wasCalled = false;
+
+        array.push(6);
+        observer.subscribe({
+            handleChange() {
+                wasCalled = true;
+            }
+        });
+
+        await Updates.next();
+
+        expect(wasCalled).to.be.false;
+    })
 });
 
 describe("The array length observer", () => {
