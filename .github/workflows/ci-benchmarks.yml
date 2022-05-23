@@ -32,6 +32,7 @@ jobs:
         - name: Run tachometer and generate results file
           run: |
               cd packages/utilities/fast-benchmarks
+              yarn install
               yarn run benchmark --library=fast-element --benchmark=localTest --versions local 1.8.0 --operations=create10k --localBenchFile=index2
         - name: Upload results
           uses: actions/upload-artifact@v2
