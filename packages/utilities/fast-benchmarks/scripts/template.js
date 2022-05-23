@@ -231,13 +231,6 @@ async function generateBenchmarks(
                         },
                     },
                 };
-
-                // bench.packageVersions = {
-                //     label: version,
-                //     dependencies: {
-                //         [dep]: "file:../../web-components/fast-element",
-                //     },
-                // };
             } else {
                 bench.packageVersions = {
                     label: version,
@@ -253,27 +246,9 @@ async function generateBenchmarks(
                 };
             }
 
-            //adjust some settings to separately report memory benchmark results
-            // const memoryBench = JSON.parse(JSON.stringify(bench));
-            // const memoryMeasurement = [
-            //     {
-            //         name: "usedJSHeapSize",
-            //         mode: "expression",
-            //         expression: "window.usedJSHeapSize",
-            //     },
-            // ];
-            // memoryBench.name = `${name}-memory`;
-            // memoryBench.measurement = memoryMeasurement;
-            // memoryBench.browser.addArguments = [
-            //     "--js-flags=--expose-gc",
-            //     "--enable-precise-memory-info",
-            // ];
-            // memoryBenchmarks.push(memoryBench);
-
             if (!memory) benchmarks.push(bench);
         });
 
-        // tachoData[`${operation}-memory`] = memoryBenchmarks;
         if (!memory) tachoData[operation] = benchmarks;
     });
     return tachoData;
@@ -337,8 +312,7 @@ export async function generateTemplates(options) {
         //special handling if 'local' version was passed in as an option
         const localProps = { branchName: "", operationProps: {} };
         if (options.versions.includes(LOCAL)) {
-            // localProps.branchName = await getLocalGitBranchName();
-            localProps.branchName = "users/wendy/local-build-actions";
+            localProps.branchName = await getLocalGitBranchName();
             // check if user passed in localBenchFile for different implementation of local
             if (options.localBenchFile)
                 localProps.operationProps = await generateHtmlTemplates(

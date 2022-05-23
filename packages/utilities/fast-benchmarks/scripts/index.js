@@ -115,16 +115,13 @@ async function runBenchmark(configPaths, pathNames) {
 
 const run = async () => {
     try {
-        console.log("RUNNIN ");
         await checkNpmRegistryIsAvailable();
         const { tsConfigPath, tachoConfigPaths, pathNames } = await generateTemplates(
             options
         );
         await buildBenchmark(tsConfigPath);
-        console.log("RUNNIN 1 >>>>>>>>>");
 
         await runBenchmark(tachoConfigPaths, pathNames);
-        console.log("RUNNIN 2 >>>>>>>>>");
     } catch (error) {
         console.error("ERRROR", error);
         return error;
