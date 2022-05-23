@@ -232,12 +232,12 @@ async function generateBenchmarks(
                 //     },
                 // };
 
-                bench.packageVersions = {
-                    label: version,
-                    dependencies: {
-                        [dep]: "1.9.1",
-                    },
-                };
+                // bench.packageVersions = {
+                //     label: version,
+                //     dependencies: {
+                //         [dep]: "1.9.1",
+                //     },
+                // };
             } else {
                 bench.packageVersions = {
                     label: version,
