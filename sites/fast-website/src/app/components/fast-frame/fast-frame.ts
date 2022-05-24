@@ -25,6 +25,8 @@ import { ColorHSL, hslToRGB, parseColorHexRGB, rgbToHSL } from "@microsoft/fast-
 export const drawerBreakpoint: string = "660px";
 
 export class FastFrame extends FASTElement {
+    public exampleCheckbox: HTMLElement;
+
     @observable
     public preview: HTMLElement;
 
@@ -96,7 +98,16 @@ export class FastFrame extends FASTElement {
     public borderRadius: number = 3;
     borderRadiusChanged() {
         DOM.queueUpdate(() => {
+            const maxCheckboxRadius = 8;
+
             controlCornerRadius.setValueFor(this.preview, this.borderRadius);
+
+            // We don't want checkboxes to look like radios, this is a temporary fix to a longstanding problem
+            if (this.borderRadius > maxCheckboxRadius) {
+                controlCornerRadius.setValueFor(this.exampleCheckbox, 8);
+            } else {
+                controlCornerRadius.deleteValueFor(this.exampleCheckbox);
+            }
         });
     }
 

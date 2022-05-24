@@ -320,6 +320,7 @@ export const FastFrameTemplate = html<FastFrame>`
                             ></fast-switch>
                             <p>Toggle</p>
                             <fast-checkbox
+                                ${ref("exampleCheckbox")}
                                 tabindex="${x => x.setTabIndex()}"
                                 class="checkbox"
                                 aria-label="Example checkbox"
