@@ -134,11 +134,13 @@ export const myRadio = Radio.compose<RadioOptions>({
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `readOnlyChanged` | protected |             |            | `void` |                   |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name              | Privacy   | Description                       | Parameters         | Return            | Inherited From    |
+| ----------------- | --------- | --------------------------------- | ------------------ | ----------------- | ----------------- |
+| `readOnlyChanged` | protected |                                   |                    | `void`            |                   |
+| `keypressHandler` | public    | Handles key presses on the radio. | `e: KeyboardEvent` | `boolean or void` |                   |
+| `clickHandler`    | public    | Handles clicks on the radio.      | `e: MouseEvent`    | `boolean or void` |                   |
+| `templateChanged` | protected |                                   |                    | `void`            | FoundationElement |
+| `stylesChanged`   | protected |                                   |                    | `void`            | FoundationElement |
 
 #### Events
 

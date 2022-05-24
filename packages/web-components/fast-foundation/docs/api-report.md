@@ -2058,7 +2058,7 @@ export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputEl
 // @public
 export class Radio extends FormAssociatedRadio implements RadioControl {
     constructor();
-    // @internal (undocumented)
+    // @beta
     clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -2068,8 +2068,8 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     defaultSlottedNodes: Node[];
     // @internal
     initialValue: string;
-    // @internal (undocumented)
-    keypressHandler: (e: KeyboardEvent) => boolean | void;
+    // @beta
+    keypressHandler(e: KeyboardEvent): boolean | void;
     name: string;
     readOnly: boolean;
     // (undocumented)
