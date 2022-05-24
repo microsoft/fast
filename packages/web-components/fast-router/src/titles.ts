@@ -1,5 +1,5 @@
 /**
- * @alpha
+ * @beta
  */
 export interface TitleBuilder {
     joinTitles(parentTitle: string, childTitle: string): string;
@@ -7,7 +7,7 @@ export interface TitleBuilder {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class DefaultTitleBuilder implements TitleBuilder {
     public constructor(

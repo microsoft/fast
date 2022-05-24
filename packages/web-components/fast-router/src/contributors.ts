@@ -14,7 +14,7 @@ import { Router } from "./router.js";
 import { RouterExecutionContext } from "./view.js";
 
 /**
- * @alpha
+ * @beta
  */
 export type NavigationContributor<TSettings = any> = Partial<
     Record<Exclude<NavigationPhaseName, "commit">, NavigationPhaseHook<TSettings>>
@@ -23,7 +23,7 @@ export type NavigationContributor<TSettings = any> = Partial<
 };
 
 /**
- * @alpha
+ * @beta
  */
 export function isNavigationPhaseContributor<T extends NavigationPhaseName>(
     object: any,
@@ -33,7 +33,7 @@ export function isNavigationPhaseContributor<T extends NavigationPhaseName>(
 }
 
 /**
- * @alpha
+ * @beta
  */
 export type ContributorOptions = {
     lifecycle?: boolean;
@@ -97,7 +97,7 @@ class NavigationContributorBehavior implements Behavior {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export function navigationContributor(
     options?: ContributorOptions
