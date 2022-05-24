@@ -22,8 +22,8 @@ export const tabsTemplate: FoundationElementTemplate<ViewTemplate<Tabs>, TabsOpt
                 html<Tabs>`
                     <div
                         ${ref("activeIndicatorRef")}
-                        class="activeIndicator"
-                        part="activeIndicator"
+                        class="active-indicator"
+                        part="active-indicator"
                     ></div>
                 `
             )}
