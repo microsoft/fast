@@ -7,12 +7,12 @@ jobs:
         name: Setup Tachometer Reporting
         runs-on: ubuntu-latest
         steps:
+            - name: Get local branch name
+              run: echo running on branch ${GITHUB_REF##*/}
             - name: Initialize tachometer comment
               uses: andrewiggins/tachometer-reporter-action@v2
               with:
                   initialize: true
-            - name: Get local branch name
-              run: echo running on branch ${GITHUB_REF##*/}
             - uses: actions/checkout@v3
 
     update10th:
