@@ -42,7 +42,7 @@ jobs:
           - uses: actions/setup-node@v1
             with:
                 node-version: "16.x"
-        - name: Get local branch name
+          - name: Get local branch name
             run: echo running on branch ${GITHUB_REF##*/}
           - name: Run tachometer and generate results file
             run: |
