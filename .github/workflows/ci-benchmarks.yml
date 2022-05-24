@@ -7,34 +7,12 @@ jobs:
       name: Setup Tachometer Reporting
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v3
-        - name: Get local branch name
-          run: |
-            echo running on branch ${GITHUB_REF##*/}
-            echo log github branch ${GITHUB_HEAD_REF}
-
-    update10th:
-      name: Run update 10th element benchmark
-      needs: [setup]
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-        - uses: actions/setup-node@v1
+        - name: Initialize tachometer comment
+          uses: andrewiggins/tachometer-reporter-action@v2
           with:
-              node-version: "16.x"
-        - name: Run tachometer and generate results file
-          run: |
-              cd packages/utilities/fast-benchmarks
-              yarn install
-              yarn run benchmark:fast-element:test
-        # Upload this benchmarks results
-        - name: Upload results
-          uses: actions/upload-artifact@v2
-          with:
-              name: results
-              path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
+              initialize: true
     render:
-      name: Run create 10k element benchmark
+      name: Run render benchmarks
       needs: [setup]
       runs-on: ubuntu-latest
       steps:
@@ -42,8 +20,6 @@ jobs:
         - uses: actions/setup-node@v1
           with:
               node-version: "16.x"
-        - name: Get local branch name
-          run: echo running on branch ${{ github.ref_name }}
         - name: Run tachometer and generate results file
           run: |
               cd packages/utilities/fast-benchmarks
@@ -60,7 +36,7 @@ jobs:
                   packages/utilities/fast-benchmarks/results/fast-element_render-createDelete5x.json
     report_results:
       name: Report Results
-      needs: [update10th, render]
+      needs: [render]
       runs-on: ubuntu-latest
       steps:
           # Download the results artifact
