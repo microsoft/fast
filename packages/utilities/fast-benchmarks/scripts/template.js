@@ -170,7 +170,7 @@ const libraryDependencies = {
     },
 };
 async function generateBenchmarks(
-    { library, benchmark, versions, memory, methods },
+    { library, benchmark, versions, methods },
     operationProps,
     localProps
 ) {
@@ -179,7 +179,6 @@ async function generateBenchmarks(
         /** @type {ConfigFile["benchmarks"]} */
 
         const benchmarks = [];
-        // const memoryBenchmarks = [];
         const browser = {
             name: "chrome",
             headless: true,
@@ -246,31 +245,9 @@ async function generateBenchmarks(
                 };
             }
 
-            //adjust some settings to separately report memory benchmark results
-            // const memoryBench = JSON.parse(JSON.stringify(bench));
-            // const memoryMeasurement = [
-            //     {
-            //         name: "usedJSHeapSize",
-            //         mode: "expression",
-            //         expression: "window.usedJSHeapSize",
-            //     },
-            // ];
-            // memoryBench.name = `${name}-memory`;
-            // memoryBench.measurement = memoryMeasurement;
-            // memoryBench.browser.addArguments = [
-            //     "--js-flags=--expose-gc",
-            //     "--enable-precise-memory-info",
-            // ];
-            // memoryBenchmarks.push(memoryBench);
-
-            // if (!memory) benchmarks.push(bench);
-
-            //if specific methods are passed, handle that, make a bench obj
-
             if (methods.length > 0) {
                 methods.forEach(method => {
                     const fullUrl = `${url}?method=${method}`;
-                    console.log("fullUrl", fullUrl);
 
                     const bench = {
                         url: fullUrl,
@@ -284,9 +261,7 @@ async function generateBenchmarks(
                 benchmarks.push(bench);
             }
         });
-
-        // tachoData[`${operation}-memory`] = memoryBenchmarks;
-        if (!memory) tachoData[operation] = benchmarks;
+        tachoData[operation] = benchmarks;
     });
 
     return tachoData;

@@ -8,7 +8,6 @@ const errMessage = chalk.hex("#ffb638");
 program
     .option("-l, --library <name>", "run benchmarks in <name> library")
     .option("-b, --benchmark <name>", "run the benchmark: <name>")
-    .option("-m, --memory", "only display memory consumption results")
     .option(
         "-v, --versions [versions...]",
         "specify available versions, you can also use 'local' or 'master' that would point to github branches"
@@ -29,7 +28,6 @@ program
 
 const options = program.opts();
 
-console.log("options", options);
 /**
  * Check to see if we can reach the npm repository within a timeout
  *  @returns {Promise}
