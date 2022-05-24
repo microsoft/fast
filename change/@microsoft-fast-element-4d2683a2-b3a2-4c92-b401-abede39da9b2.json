@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix(fast-element): do not notify splices for changes pre-subscription",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

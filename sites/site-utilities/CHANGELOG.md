@@ -1,8 +1,16 @@
 # Change Log - @microsoft/site-utilities
 
-This log was last generated on Thu, 19 May 2022 07:09:40 GMT and should not be manually modified.
+This log was last generated on Tue, 24 May 2022 07:10:02 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.0
+
+Tue, 24 May 2022 07:10:02 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.6 (roeisenb@microsoft.com)
 
 ## 0.9.0
 
