@@ -151,8 +151,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
     /**
      * Handles changes in the array, its items, and the repeat template.
-     * @param source The source of the change.
-     * @param args The details about what was changed.
+     * @param source - The source of the change.
+     * @param args - The details about what was changed.
      */
     public handleChange(source: any, args: Splice[]): void {
         if (source === this.itemsBinding) {

@@ -350,9 +350,7 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
     type: "element";
 }
 
-// Warning: (ae-internal-missing-underscore) The name "emptyArray" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export const emptyArray: readonly never[];
 
 // @public

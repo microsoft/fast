@@ -7,7 +7,7 @@ interface _TextArea extends FormAssociated {}
 /**
  * A form-associated base class for the {@link @microsoft/fast-foundation#(TextArea:class)} component.
  *
- * @internal
+ * @beta
  */
 export class FormAssociatedTextArea extends FormAssociated(_TextArea) {
     proxy = document.createElement("textarea");
