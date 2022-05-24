@@ -316,7 +316,6 @@ export async function generateTemplates(options) {
                 ? options.branchName
                 : await getLocalGitBranchName();
 
-            console.log("branch name", localProps.branchName);
             // check if user passed in localBenchFile for different implementation of local
             if (options.localBenchFile)
                 localProps.operationProps = await generateHtmlTemplates(
