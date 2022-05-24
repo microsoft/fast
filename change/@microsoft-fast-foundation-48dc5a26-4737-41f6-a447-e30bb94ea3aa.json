@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "set default values for boolean attributes since we cannot enable strictPropertyInitialization",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
