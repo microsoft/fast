@@ -3,11 +3,11 @@ name: Fast Element benchmark jobs
 on: [pull_request]
 
 jobs:
-    env:
-      GITHUB_BRANCH: ${GITHUB_REF##*/}
     setup:
       name: Setup Tachometer Reporting
       runs-on: ubuntu-latest
+      env:
+          GITHUB_BRANCH: ${GITHUB_REF##*/}
       steps:
         - uses: actions/checkout@v3
         - name: Get local branch name
