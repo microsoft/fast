@@ -78,6 +78,8 @@ async function runBenchmark(configPaths, pathNames) {
     for (let i = 0; i < configPaths.length; i++) {
         const configPath = configPaths[i];
         const pathName = pathNames[i];
+
+        console.log("path name", pathName);
         const res = new Promise((resolve, reject) => {
             const args = [
                 "tach",
@@ -89,7 +91,7 @@ async function runBenchmark(configPaths, pathNames) {
             child.on("close", code => {
                 if (code !== 0) {
                     reject({
-                        command: `npx tach --config ${configPath} --json-file=results/${options.benchmark}/${pathName}.json`,
+                        command: `npx tach --config ${configPath} --json-file=results/${pathName}.json`,
                     });
                     return;
                 }
@@ -118,8 +120,10 @@ const run = async () => {
             options
         );
         await buildBenchmark(tsConfigPath);
+
         await runBenchmark(tachoConfigPaths, pathNames);
     } catch (error) {
+        console.error("ERRROR", error);
         return error;
     }
 };
