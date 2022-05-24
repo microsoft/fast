@@ -129,7 +129,6 @@ const run = async () => {
 
         await runBenchmark(tachoConfigPaths, pathNames);
     } catch (error) {
-        console.error("ERRROR", error);
         return error;
     }
 };
