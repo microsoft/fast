@@ -24,7 +24,7 @@ jobs:
           run: |
               cd packages/utilities/fast-benchmarks
               yarn install
-              yarn run benchmark --library=fast-element --benchmark=render --versions local latest --localBenchFile=index2 --branchName=${GITHUB_HEAD_REF} --operations=create10k
+              yarn run benchmark --library=fast-element --benchmark=render --versions latest local --localBenchFile=index2 --branchName=${GITHUB_HEAD_REF} --operations=create10k
         # Upload this benchmarks results
         - name: Upload results
           uses: actions/upload-artifact@v2
@@ -44,7 +44,7 @@ jobs:
           run: |
               cd packages/utilities/fast-benchmarks
               yarn install
-              yarn run benchmark --library=fast-element --benchmark=render --versions local latest --localBenchFile=index2 --branchName=${GITHUB_HEAD_REF} --operations=update10th
+              yarn run benchmark --library=fast-element --benchmark=render --versions latest local --localBenchFile=index2 --branchName=${GITHUB_HEAD_REF} --operations=update10th
         # Upload this benchmarks results
         - name: Upload results
           uses: actions/upload-artifact@v2
@@ -64,7 +64,7 @@ jobs:
           run: |
               cd packages/utilities/fast-benchmarks
               yarn install
-              yarn run benchmark --library=fast-element --benchmark=render --versions local latest --localBenchFile=index2 --branchName=${GITHUB_HEAD_REF} --operations=createDelete5x
+              yarn run benchmark --library=fast-element --benchmark=render --versions latest local --localBenchFile=index2 --branchName=${GITHUB_HEAD_REF} --operations=createDelete5x
         # Upload this benchmarks results
         - name: Upload results
           uses: actions/upload-artifact@v2
