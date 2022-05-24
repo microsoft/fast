@@ -5,7 +5,7 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
 /**
  * A List Picker Menu Custom HTML Element.
  *
- * @alpha
+ * @beta
  */
 export class PickerMenu extends FoundationElement {
     /**
@@ -47,7 +47,6 @@ export class PickerMenu extends FoundationElement {
      * Text to display to assistive technology when
      * suggestions are available
      *
-     * @alpha
      */
     @observable
     public suggestionsAvailableText: string;

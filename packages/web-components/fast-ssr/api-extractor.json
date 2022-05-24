@@ -4,6 +4,7 @@
   "mainEntryPointFilePath": "./dist/dts/exports.d.ts",
   "dtsRollup": {
     "enabled": true,
+    "untrimmedFilePath": "./dist/fast-ssr.untrimmed.d.ts",
     "betaTrimmedFilePath": "./dist/fast-ssr.d.ts"
   }
 }

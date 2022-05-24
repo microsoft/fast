@@ -26,7 +26,7 @@
       "types": "./dist/fast-foundation.d.ts",
       "default": "./dist/esm/index.js"
     },
-    "./testing": {
+    "./testing.js": {
       "types": "./dist/dts/testing/exports.d.ts",
       "default": "./dist/esm/testing/exports.js"
     }

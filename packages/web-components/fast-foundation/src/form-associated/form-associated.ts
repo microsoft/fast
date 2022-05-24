@@ -103,7 +103,7 @@ const InternalsMap = new WeakMap();
 /**
  * Base class for providing Custom Element Form Association.
  *
- * @alpha
+ * @beta
  */
 export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     dirtyValue: boolean;
@@ -132,7 +132,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
 /**
  * Base class for providing Custom Element Form Association with checkable features.
  *
- * @alpha
+ * @beta
  */
 export interface CheckableFormAssociated extends FormAssociated {
     currentChecked: boolean;
@@ -146,7 +146,7 @@ export interface CheckableFormAssociated extends FormAssociated {
 
 /**
  * Avaiable types for the `proxy` property.
- * @alpha
+ * @beta
  */
 export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
 
@@ -154,7 +154,7 @@ export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputEl
  * Identifies a class as having a proxy element and optional submethods related
  * to the proxy element.
  *
- * @alpha
+ * @beta
  */
 export interface FormAssociatedProxy {
     proxy: ProxyElement;
@@ -169,7 +169,7 @@ export interface FormAssociatedProxy {
 /**
  * Combined type to describe a Form-associated element.
  *
- * @alpha
+ * @beta
  */
 export type FormAssociatedElement = FormAssociated &
     FASTElement &
@@ -179,7 +179,7 @@ export type FormAssociatedElement = FormAssociated &
 /**
  * Combined type to describe a checkable Form-associated element.
  *
- * @alpha
+ * @beta
  */
 export type CheckableFormAssociatedElement = FormAssociatedElement &
     CheckableFormAssociated & { proxy: HTMLInputElement };
@@ -187,14 +187,14 @@ export type CheckableFormAssociatedElement = FormAssociatedElement &
 /**
  * Combined type to describe a Constructable Form-Associated type.
  *
- * @alpha
+ * @beta
  */
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
 /**
  * Base function for providing Custom Element Form Association.
  *
- * @alpha
+ * @beta
  */
 export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: T): T {
     const C = class extends BaseCtor {
@@ -202,7 +202,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * The proxy element - this element serves as the communication layer with the parent form
          * when form association is not supported by the browser.
          *
-         * @alpha
+         * @beta
          */
         public proxy: ProxyElement;
 
@@ -219,7 +219,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
         /**
          * Returns the validity state of the element
          *
-         * @alpha
+         * @beta
          */
         public get validity(): ValidityState {
             return this.elementInternals
@@ -231,7 +231,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * Retrieve a reference to the associated form.
          * Returns null if not associated to any form.
          *
-         * @alpha
+         * @beta
          */
         public get form(): HTMLFormElement | null {
             return this.elementInternals ? this.elementInternals.form : this.proxy.form;
@@ -241,7 +241,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * Retrieve the localized validation message,
          * or custom validation message if set.
          *
-         * @alpha
+         * @beta
          */
         public get validationMessage(): string {
             return this.elementInternals
@@ -683,7 +683,8 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
 }
 
 /**
- * @alpha
+ * Creates a checkable form associated component.
+ * @beta
  */
 export function CheckableFormAssociated<T extends ConstructableFormAssociated>(
     BaseCtor: T

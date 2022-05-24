@@ -430,10 +430,10 @@ export class Card extends FoundationElement {
 // @public
 export const cardTemplate: FoundationElementTemplate<ViewTemplate<Card>>;
 
-// @alpha (undocumented)
+// @beta
 export function CheckableFormAssociated<T extends ConstructableFormAssociated>(BaseCtor: T): T;
 
-// @alpha
+// @beta
 export interface CheckableFormAssociated extends FormAssociated {
     // (undocumented)
     checked: boolean;
@@ -451,7 +451,7 @@ export interface CheckableFormAssociated extends FormAssociated {
     dirtyChecked: boolean;
 }
 
-// @alpha
+// @beta
 export type CheckableFormAssociatedElement = FormAssociatedElement & CheckableFormAssociated & {
     proxy: HTMLInputElement;
 };
@@ -600,7 +600,7 @@ export function composedContains(reference: HTMLElement, test: HTMLElement): boo
 // @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
-// @alpha
+// @beta
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
 // @public
@@ -1249,12 +1249,12 @@ export const focusVisible: string;
 // @public
 export const forcedColorsStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
-// @alpha
+// @beta
 export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: T): T;
 
 // Warning: (ae-forgotten-export) The symbol "ElementInternals" needs to be exported by the entry point index.d.ts
 //
-// @alpha
+// @beta
 export interface FormAssociated extends Omit<ElementInternals_2, "labels"> {
     // (undocumented)
     attachProxy(): void;
@@ -1300,10 +1300,10 @@ export interface FormAssociated extends Omit<ElementInternals_2, "labels"> {
     valueChanged(previous: string, next: string): void;
 }
 
-// @alpha
+// @beta
 export type FormAssociatedElement = FormAssociated & FASTElement & HTMLElement & FormAssociatedProxy;
 
-// @alpha
+// @beta
 export interface FormAssociatedProxy {
     // (undocumented)
     disabledChanged?(previous: boolean, next: boolean): void;
@@ -1324,7 +1324,6 @@ export interface FormAssociatedProxy {
 // @public
 export class FoundationElement extends FASTElement {
     protected get $presentation(): ComponentPresentation | null;
-    // Warning: (ae-incompatible-release-tags) The symbol "compose" is marked as @public, but its signature references "FoundationElementRegistry" which is marked as @internal
     static compose<T extends FoundationElementDefinition = FoundationElementDefinition, K extends Constructable<FoundationElement> = Constructable<FoundationElement>>(this: K, elementDefinition: T): (overrideDefinition?: OverrideFoundationElementDefinition<T>) => FoundationElementRegistry<T, K>;
     connectedCallback(): void;
     styles: ElementStyles | void | null;
@@ -1347,9 +1346,7 @@ export interface FoundationElementDefinition {
     readonly template?: EagerOrLazyFoundationOption<ElementViewTemplate, this>;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "FoundationElementRegistry" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export class FoundationElementRegistry<TDefinition extends FoundationElementDefinition, TType> implements Registry {
     constructor(type: Constructable<FoundationElement>, elementDefinition: TDefinition, overrideDefinition: OverrideFoundationElementDefinition<TDefinition>);
     // (undocumented)
@@ -1661,7 +1658,6 @@ export abstract class MatchMediaBehavior implements Behavior {
 // @public
 export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
     constructor(query: MediaQueryList, styles: ElementStyles);
-    // @internal
     protected constructListener(source: typeof FASTElement): MediaQueryListListener;
     readonly query: MediaQueryList;
     readonly styles: ElementStyles;
@@ -1857,7 +1853,7 @@ export type ParentLocator = (owner: any) => Container | null;
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedPicker" needs to be exported by the entry point index.d.ts
 //
-// @alpha
+// @beta
 export class Picker extends FormAssociatedPicker {
     // @internal
     activeListItemTemplate?: ViewTemplate;
@@ -1950,11 +1946,11 @@ export class Picker extends FormAssociatedPicker {
     suggestionsAvailableText: string;
 }
 
-// @alpha
+// @beta
 export class PickerList extends FoundationElement {
 }
 
-// @alpha
+// @beta
 export class PickerListItem extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1970,17 +1966,17 @@ export class PickerListItem extends FoundationElement {
     value: string;
 }
 
-// Warning: (ae-incompatible-release-tags) The symbol "pickerListItemTemplate" is marked as @public, but its signature references "PickerListItem" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "pickerListItemTemplate" is marked as @public, but its signature references "PickerListItem" which is marked as @beta
 //
 // @public (undocumented)
 export const pickerListItemTemplate: FoundationElementTemplate<ViewTemplate<PickerListItem>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "pickerListTemplate" is marked as @public, but its signature references "PickerList" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "pickerListTemplate" is marked as @public, but its signature references "PickerList" which is marked as @beta
 //
 // @public (undocumented)
 export const pickerListTemplate: FoundationElementTemplate<ViewTemplate<PickerList>>;
 
-// @alpha
+// @beta
 export class PickerMenu extends FoundationElement {
     // @internal
     footerElements: HTMLElement[];
@@ -1999,7 +1995,7 @@ export class PickerMenu extends FoundationElement {
     suggestionsAvailableText: string;
 }
 
-// @alpha
+// @beta
 export class PickerMenuOption extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
@@ -2013,17 +2009,17 @@ export class PickerMenuOption extends FoundationElement {
     value: string;
 }
 
-// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuOptionTemplate" is marked as @public, but its signature references "PickerMenuOption" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuOptionTemplate" is marked as @public, but its signature references "PickerMenuOption" which is marked as @beta
 //
 // @public (undocumented)
 export const pickerMenuOptionTemplate: FoundationElementTemplate<ViewTemplate<PickerMenuOption>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuTemplate" is marked as @public, but its signature references "PickerMenu" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuTemplate" is marked as @public, but its signature references "PickerMenu" which is marked as @beta
 //
 // @public
 export const pickerMenuTemplate: FoundationElementTemplate<ViewTemplate<PickerMenu>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "pickerTemplate" is marked as @public, but its signature references "Picker" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "pickerTemplate" is marked as @public, but its signature references "Picker" which is marked as @beta
 //
 // @public
 export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>>;
@@ -2051,11 +2047,10 @@ export class PropertyStyleSheetBehavior implements Behavior {
     bind(elementInstance: FASTElement): void;
     // @internal
     handleChange(source: FASTElement, key: string): void;
-    // @internal
     unbind(source: typeof FASTElement & HTMLElement): void;
 }
 
-// @alpha
+// @beta
 export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedRadio" needs to be exported by the entry point index.d.ts
@@ -2063,7 +2058,7 @@ export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputEl
 // @public
 export class Radio extends FormAssociatedRadio implements RadioControl {
     constructor();
-    // @internal (undocumented)
+    // @beta
     clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -2073,8 +2068,8 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     defaultSlottedNodes: Node[];
     // @internal
     initialValue: string;
-    // @internal (undocumented)
-    keypressHandler: (e: KeyboardEvent) => boolean | void;
+    // @beta
+    keypressHandler(e: KeyboardEvent): boolean | void;
     name: string;
     readOnly: boolean;
     // (undocumented)

@@ -19,7 +19,7 @@ import { navigationContributor, NavigationContributor } from "./contributors.js"
 import { NavigationCommitPhase, NavigationPhase } from "./phases.js";
 
 /**
- * @alpha
+ * @beta
  */
 export interface NavigationCommand {
     createContributor(
@@ -29,7 +29,7 @@ export interface NavigationCommand {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export interface RenderCommand extends NavigationCommand {
     layout: Layout;
@@ -38,7 +38,7 @@ export interface RenderCommand extends NavigationCommand {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class Ignore implements NavigationCommand {
     public async createContributor() {
@@ -51,7 +51,7 @@ export class Ignore implements NavigationCommand {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class Redirect implements NavigationCommand {
     constructor(private redirect: string) {}
@@ -133,7 +133,7 @@ class RenderContributor {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class Render implements RenderCommand {
     private _layout: Layout | null = null;
