@@ -33,26 +33,6 @@ jobs:
               with:
                   name: results
                   path: packages/utilities/fast-benchmarks/results/fast-element_test-update10th.json
-    create10k:
-      name: Run create 10k element benchmark
-      needs: [setup]
-      runs-on: ubuntu-latest
-      steps:
-          - uses: actions/checkout@v2
-          - uses: actions/setup-node@v1
-            with:
-                node-version: "16.x"
-          - name: Run tachometer and generate results file
-            run: |
-                cd packages/utilities/fast-benchmarks
-                yarn install
-                yarn run benchmark:fast-element:test:local
-          # Upload this benchmarks results
-          - name: Upload results
-            uses: actions/upload-artifact@v2
-            with:
-                name: results
-                path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.json
     render:
       name: Run create 10k element benchmark
       needs: [setup]
@@ -62,11 +42,13 @@ jobs:
           - uses: actions/setup-node@v1
             with:
                 node-version: "16.x"
+        - name: Get local branch name
+            run: echo running on branch ${GITHUB_REF##*/}
           - name: Run tachometer and generate results file
             run: |
                 cd packages/utilities/fast-benchmarks
                 yarn install
-                yarn run benchmark:fast-element:render
+                yarn run benchmark --library=fast-element --benchmark=render --versions local latest --localBenchFile=index2 --branchName=${GITHUB_REF##*/}
           # Upload this benchmarks results
           - name: Upload results
             uses: actions/upload-artifact@v2
@@ -78,7 +60,7 @@ jobs:
                   packages/utilities/fast-benchmarks/results/fast-element_render-createDelete5x.json
     report_results:
         name: Report Results
-        needs: [update10th, create10k, render]
+        needs: [update10th, render]
         runs-on: ubuntu-latest
         steps:
             # Download the results artifact

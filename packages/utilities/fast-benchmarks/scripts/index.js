@@ -21,6 +21,10 @@ program
         "-o, --operations [versions...]",
         "specify the operations you want the benchmarks to run, if none are passed all available operations will be run"
     )
+    .option(
+        "-bn, --branchName <name>",
+        "specify the local git branch name you want to reference, this must be a branch that has been pushed to git"
+    )
     .parse(process.argv);
 
 const options = program.opts();
