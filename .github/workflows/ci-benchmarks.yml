@@ -53,10 +53,32 @@ jobs:
             with:
                 name: results
                 path: packages/utilities/fast-benchmarks/results/fast-element_localTest-create10k.json
-
+    render:
+      name: Run create 10k element benchmark
+      needs: [setup]
+      runs-on: ubuntu-latest
+      steps:
+          - uses: actions/checkout@v2
+          - uses: actions/setup-node@v1
+            with:
+                node-version: "16.x"
+          - name: Run tachometer and generate results file
+            run: |
+                cd packages/utilities/fast-benchmarks
+                yarn install
+                yarn run benchmark:fast-element:render
+          # Upload this benchmarks results
+          - name: Upload results
+            uses: actions/upload-artifact@v2
+            with:
+                name: results
+                path: |
+                  packages/utilities/fast-benchmarks/results/fast-element_render-update10th.json
+                  packages/utilities/fast-benchmarks/results/fast-element_render-create10k.json
+                  packages/utilities/fast-benchmarks/results/fast-element_render-createDelete5x.json
     report_results:
         name: Report Results
-        needs: [update10th, create10k]
+        needs: [update10th, create10k, render]
         runs-on: ubuntu-latest
         steps:
             # Download the results artifact

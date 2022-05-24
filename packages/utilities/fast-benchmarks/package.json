@@ -16,7 +16,7 @@
         "benchmarks": "yarn run benchmark --library=fast-element --benchmark=test --versions 1.6.0 1.10.1 --operations=update10th",
         "debug:binding": "tach --config fast-element/binding/tachometer.json --manual",
         "benchmark:fast-element:test": "yarn run benchmark --library=fast-element --benchmark=test --versions 1.6.0 1.10.1 --operations=update10th",
-        "benchmark:fast-element:test:local": "yarn run benchmark --library=fast-element --benchmark=localTest --versions local 1.10.1 --localBenchFile=index2 --operations=create10k",
+        "benchmark:fast-element:render": "yarn run benchmark --library=fast-element --benchmark=render --versions local latest --localBenchFile=index2",
         "link": "rm -f node_modules/@microsoft/fast-element && ln -s ../../web-components/fast-element node_modules/@microsoft/fast-element"
     },
     "dependencies": {

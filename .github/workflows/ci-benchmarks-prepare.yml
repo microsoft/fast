@@ -1,0 +1,12 @@
+name: Fast Element benchmark jobs
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v1
+      - name: Get local branch name
+        run: echo running on branch ${GITHUB_REF##*/}
