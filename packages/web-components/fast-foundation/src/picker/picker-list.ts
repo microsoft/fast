@@ -3,6 +3,6 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
 /**
  * A List Picker Menu Custom HTML Element.
  *
- * @alpha
+ * @beta
  */
 export class PickerList extends FoundationElement {}

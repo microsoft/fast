@@ -72,6 +72,40 @@ export const mySwitch = Switch.compose<SwitchOptions>({
 
 
 
+### class: `FormAssociatedSwitch`
+
+#### Superclass
+
+| Name      | Module                               | Package |
+| --------- | ------------------------------------ | ------- |
+| `_Switch` | src/switch/switch.form-associated.ts |         |
+
+#### Mixins
+
+| Name                      | Module                                  | Package |
+| ------------------------- | --------------------------------------- | ------- |
+| `CheckableFormAssociated` | /src/form-associated/form-associated.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `proxy`         |         |                                       |         |                                                                                                                                                                                     |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+<hr/>
+
+
+
 ### class: `Switch`
 
 #### Superclass

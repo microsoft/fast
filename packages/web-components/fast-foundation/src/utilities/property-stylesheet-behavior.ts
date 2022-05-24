@@ -37,7 +37,6 @@ export class PropertyStyleSheetBehavior implements Behavior {
     /**
      * Unbinds the behavior from the element.
      * @param source - The element for which the behavior is unbinding.
-     * @internal
      */
     public unbind(source: typeof FASTElement & HTMLElement) {
         Observable.getNotifier(source).unsubscribe(this, this.propertyName);

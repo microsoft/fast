@@ -73,7 +73,7 @@ function parseComplexParam(queryParams: Object, keys: string[], value: any): voi
 }
 
 /**
- * @alpha
+ * @beta
  */
 export const QueryString = Object.freeze({
     get current() {
