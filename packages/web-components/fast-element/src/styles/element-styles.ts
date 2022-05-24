@@ -41,7 +41,9 @@ export class ElementStyles {
     private targets: WeakSet<StyleTarget> = new WeakSet();
     private _strategy: StyleStrategy | null = null;
 
-    /** @internal */
+    /**
+     * The behaviors associated with this set of styles.
+     */
     public readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
 
     /**
@@ -59,10 +61,7 @@ export class ElementStyles {
      * Creates an instance of ElementStyles.
      * @param styles - The styles that will be associated with elements.
      */
-    public constructor(
-        /** @internal */
-        public readonly styles: ReadonlyArray<ComposableStyles>
-    ) {
+    public constructor(public readonly styles: ReadonlyArray<ComposableStyles>) {
         this.behaviors = styles
             .map((x: ComposableStyles) =>
                 x instanceof ElementStyles ? x.behaviors : null

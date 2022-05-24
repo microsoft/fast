@@ -318,11 +318,9 @@ export type ElementsFilter = (value: Node, index: number, array: Node[]) => bool
 
 // @public
 export class ElementStyles {
-    constructor(
-    styles: ReadonlyArray<ComposableStyles>);
+    constructor(styles: ReadonlyArray<ComposableStyles>);
     // @internal (undocumented)
     addStylesTo(target: StyleTarget): void;
-    // @internal (undocumented)
     readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
     // @internal (undocumented)
     isAttachedTo(target: StyleTarget): boolean;
@@ -330,7 +328,7 @@ export class ElementStyles {
     removeStylesFrom(target: StyleTarget): void;
     static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void;
     get strategy(): StyleStrategy;
-    // @internal (undocumented)
+    // (undocumented)
     readonly styles: ReadonlyArray<ComposableStyles>;
     static readonly supportsAdoptedStyleSheets: boolean;
     withBehaviors(...behaviors: Behavior<HTMLElement>[]): this;
