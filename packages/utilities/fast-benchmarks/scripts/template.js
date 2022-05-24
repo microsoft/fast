@@ -170,7 +170,7 @@ const libraryDependencies = {
     },
 };
 async function generateBenchmarks(
-    { library, benchmark, versions, memory },
+    { library, benchmark, versions, methods },
     operationProps,
     localProps
 ) {
@@ -179,7 +179,6 @@ async function generateBenchmarks(
         /** @type {ConfigFile["benchmarks"]} */
 
         const benchmarks = [];
-        // const memoryBenchmarks = [];
         const browser = {
             name: "chrome",
             headless: true,
@@ -246,10 +245,23 @@ async function generateBenchmarks(
                 };
             }
 
-            if (!memory) benchmarks.push(bench);
-        });
+            if (methods.length > 0) {
+                methods.forEach(method => {
+                    const fullUrl = `${url}?method=${method}`;
 
-        if (!memory) tachoData[operation] = benchmarks;
+                    const bench = {
+                        url: fullUrl,
+                        browser,
+                        name: `${name}-${method}`,
+                        measurement,
+                    };
+                    benchmarks.push(bench);
+                });
+            } else {
+                benchmarks.push(bench);
+            }
+        });
+        tachoData[operation] = benchmarks;
     });
     return tachoData;
 }
