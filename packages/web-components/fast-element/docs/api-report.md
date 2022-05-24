@@ -183,8 +183,6 @@ export interface ChildListDirectiveOptions<T = any> extends NodeBehaviorOptions<
 // @public
 export function children<T = any>(propertyOrOptions: (keyof T & string) | ChildListDirectiveOptions<keyof T & string>): CaptureType<T>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "ChildrenDirective" is marked as @public, but its signature references "NodeObservationDirective" which is marked as @internal
-//
 // @public
 export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> {
     constructor(options: ChildrenDirectiveOptions);
@@ -546,9 +544,7 @@ export interface NodeBehaviorOptions<T = any> {
     property: T;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "NodeObservationDirective" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export abstract class NodeObservationDirective<T extends NodeBehaviorOptions> extends StatelessAttachedAttributeDirective<T> {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
     protected computeNodes(target: any): Node[];
@@ -683,7 +679,6 @@ export function repeat<TSource = any, TArray extends ReadonlyArray<any> = Readon
 export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     constructor(location: Node, itemsBinding: Binding<TSource, any[]>, isItemsBindingVolatile: boolean, templateBinding: Binding<TSource, SyntheticViewTemplate>, isTemplateBindingVolatile: boolean, options: RepeatOptions);
     bind(source: TSource, context: ExecutionContext): void;
-    // @internal (undocumented)
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
 }
@@ -730,8 +725,6 @@ export class SignalBinding extends UpdateBinding {
 // @public
 export function slotted<T = any>(propertyOrOptions: (keyof T & string) | SlottedDirectiveOptions<keyof T & string>): CaptureType<T>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "SlottedDirective" is marked as @public, but its signature references "NodeObservationDirective" which is marked as @internal
-//
 // @public
 export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveOptions> {
     disconnect(target: EventSource): void;

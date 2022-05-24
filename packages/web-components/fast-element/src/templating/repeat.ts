@@ -149,7 +149,11 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         this.templateBindingObserver.disconnect();
     }
 
-    /** @internal */
+    /**
+     * Handles changes in the array, its items, and the repeat template.
+     * @param source The source of the change.
+     * @param args The details about what was changed.
+     */
     public handleChange(source: any, args: Splice[]): void {
         if (source === this.itemsBinding) {
             this.items = this.itemsBindingObserver.observe(this.source!, this.context!);
