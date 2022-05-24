@@ -11,9 +11,9 @@ jobs:
               uses: andrewiggins/tachometer-reporter-action@v2
               with:
                   initialize: true
-            - uses: actions/checkout@v3
             - name: Get local branch name
               run: echo running on branch ${GITHUB_REF##*/}
+            - uses: actions/checkout@v3
 
     update10th:
         name: Run update 10th element benchmark
