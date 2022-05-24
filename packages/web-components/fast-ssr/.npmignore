@@ -1,2 +1,9 @@
-test
 server
+temp
+src
+*.spec.js
+api-extractor.json
+.eslintrc.cjs
+.prettierignore
+playwright.config.cjs
+tsconfig.json
