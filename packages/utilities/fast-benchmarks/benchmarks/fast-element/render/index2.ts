@@ -8,34 +8,7 @@ import {
     oneTime,
     repeat,
 } from "@microsoft/fast-element";
-import { _random, adjectives, colours, nouns } from "../../../utils/index.js";
-import runBenchmark from "./shared.js";
-
-const itemCount = 250;
-let id = 0;
-export class RandomItem {
-    label: string;
-
-    constructor(public readonly id: number) {
-        this.label =
-            adjectives[_random(adjectives.length)] +
-            " " +
-            colours[_random(colours.length)] +
-            " " +
-            nouns[_random(nouns.length)];
-    }
-}
-
-function generateData(count: number) {
-    const data = [];
-
-    for (let i = 0; i < count; i++) {
-        data.push(new RandomItem(++id));
-    }
-
-    return data;
-}
-const data: RandomItem[] = generateData(itemCount);
+import { data, RandomItem } from "../../../utils/index.js";
 
 const xItemTemplate = html<XItem>`
     <div @click="${x => x.onClick}" class="item">
@@ -80,5 +53,3 @@ const xAppTemplate = html<XApp>`
 class XApp extends FASTElement {
     items: RandomItem[] = data;
 }
-
-runBenchmark();
