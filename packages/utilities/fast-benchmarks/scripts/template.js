@@ -170,7 +170,7 @@ const libraryDependencies = {
     },
 };
 async function generateBenchmarks(
-    { library, benchmark, versions, memory },
+    { library, benchmark, versions, methods },
     operationProps,
     localProps
 ) {
@@ -179,15 +179,20 @@ async function generateBenchmarks(
         /** @type {ConfigFile["benchmarks"]} */
 
         const benchmarks = [];
-        const memoryBenchmarks = [];
         const browser = {
             name: "chrome",
             headless: true,
+            addArguments: ["--js-flags=--expose-gc", "--enable-precise-memory-info"],
         };
         const measurement = [
             {
                 mode: "performance",
                 entryName: operation,
+            },
+            {
+                name: "usedJSHeapSize",
+                mode: "expression",
+                expression: "window.usedJSHeapSize",
             },
         ];
 
@@ -240,28 +245,23 @@ async function generateBenchmarks(
                 };
             }
 
-            //adjust some settings to separately report memory benchmark results
-            const memoryBench = JSON.parse(JSON.stringify(bench));
-            const memoryMeasurement = [
-                {
-                    name: "usedJSHeapSize",
-                    mode: "expression",
-                    expression: "window.usedJSHeapSize",
-                },
-            ];
-            memoryBench.name = `${name}-memory`;
-            memoryBench.measurement = memoryMeasurement;
-            memoryBench.browser.addArguments = [
-                "--js-flags=--expose-gc",
-                "--enable-precise-memory-info",
-            ];
-            memoryBenchmarks.push(memoryBench);
+            if (methods.length > 0) {
+                methods.forEach(method => {
+                    const fullUrl = `${url}?method=${method}`;
 
-            if (!memory) benchmarks.push(bench);
+                    const bench = {
+                        url: fullUrl,
+                        browser,
+                        name: `${name}-${method}`,
+                        measurement,
+                    };
+                    benchmarks.push(bench);
+                });
+            } else {
+                benchmarks.push(bench);
+            }
         });
-
-        tachoData[`${operation}-memory`] = memoryBenchmarks;
-        if (!memory) tachoData[operation] = benchmarks;
+        tachoData[operation] = benchmarks;
     });
 
     return tachoData;
@@ -282,7 +282,7 @@ async function generateConfig(fileName, benchmarksHash) {
             // Tachometer default is 50, but locally let's only do 10
             sampleSize: 30,
             // Tachometer default is 3 minutes, but let's shrink it to 1 here to save some
-            timeout: 1,
+            timeout: 0,
             autoSampleConditions: ["0%", "10%"],
         };
 
