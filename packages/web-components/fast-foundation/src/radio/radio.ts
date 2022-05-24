@@ -40,7 +40,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
      * HTML Attribute: readonly
      */
     @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean; // Map to proxy element
+    public readOnly: boolean = false; // Map to proxy element
     protected readOnlyChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;

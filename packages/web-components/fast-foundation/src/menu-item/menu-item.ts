@@ -73,7 +73,7 @@ export class MenuItem extends FoundationElement {
      * HTML Attribute: disabled
      */
     @attr({ mode: "boolean" })
-    public disabled: boolean;
+    public disabled: boolean = false;
 
     /**
      * The expanded state of the element.
@@ -83,7 +83,7 @@ export class MenuItem extends FoundationElement {
      * HTML Attribute: expanded
      */
     @attr({ mode: "boolean" })
-    public expanded: boolean;
+    public expanded: boolean = false;
     protected expandedChanged(oldValue: boolean): void {
         if (this.$fastController.isConnected) {
             if (this.submenu === undefined) {
@@ -122,7 +122,7 @@ export class MenuItem extends FoundationElement {
      * HTML Attribute: checked
      */
     @attr({ mode: "boolean" })
-    public checked: boolean;
+    public checked: boolean = false;
     protected checkedChanged(oldValue: boolean, newValue: boolean): void {
         if (this.$fastController.isConnected) {
             this.$emit("change");

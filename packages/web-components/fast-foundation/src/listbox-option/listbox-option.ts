@@ -128,7 +128,7 @@ export class ListboxOption extends FoundationElement {
      * HTML Attribute: disabled
      */
     @attr({ mode: "boolean" })
-    public disabled: boolean;
+    public disabled: boolean = false;
     protected disabledChanged(prev: boolean, next: boolean): void {
         this.ariaDisabled = this.disabled ? "true" : "false";
 
@@ -145,7 +145,7 @@ export class ListboxOption extends FoundationElement {
      * HTML Attribute: selected
      */
     @attr({ attribute: "selected", mode: "boolean" })
-    public selectedAttribute: boolean;
+    public selectedAttribute: boolean = false;
     protected selectedAttributeChanged(): void {
         this.defaultSelected = this.selectedAttribute;
 

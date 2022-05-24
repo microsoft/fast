@@ -30,7 +30,7 @@ export class TreeView extends FoundationElement {
     * HTML Attribute: render-collapsed-nodes
     */
     @attr({ attribute: "render-collapsed-nodes" })
-    public renderCollapsedNodes: boolean;
+    public renderCollapsedNodes: boolean = false;
 
     /**
      * The currently selected tree item

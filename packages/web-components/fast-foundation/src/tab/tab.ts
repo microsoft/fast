@@ -16,5 +16,5 @@ export class Tab extends FoundationElement {
      * HTML Attribute: disabled
      */
     @attr({ mode: "boolean" })
-    public disabled: boolean;
+    public disabled: boolean = false;
 }

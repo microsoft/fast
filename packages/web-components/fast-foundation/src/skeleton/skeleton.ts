@@ -50,5 +50,5 @@ export class Skeleton extends FoundationElement {
      * HTML Attribute: shimmer
      */
     @attr({ mode: "boolean" })
-    public shimmer: boolean;
+    public shimmer: boolean = false;
 }

@@ -26,7 +26,7 @@ export class TextArea extends FormAssociatedTextArea {
      * HTML Attribute: readonly
      */
     @attr({ mode: "boolean" })
-    public readOnly: boolean;
+    public readOnly: boolean = false;
     protected readOnlyChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.readOnly = this.readOnly;
@@ -55,7 +55,7 @@ export class TextArea extends FormAssociatedTextArea {
      * HTML Attribute: autofocus
      */
     @attr({ mode: "boolean" })
-    public autofocus: boolean;
+    public autofocus: boolean = false;
     protected autofocusChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.autofocus = this.autofocus;
@@ -158,7 +158,7 @@ export class TextArea extends FormAssociatedTextArea {
      * HTML Attribute: spellcheck
      */
     @attr({ mode: "boolean" })
-    public spellcheck: boolean;
+    public spellcheck: boolean = false;
     protected spellcheckChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.spellcheck = this.spellcheck;

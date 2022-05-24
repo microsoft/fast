@@ -35,7 +35,7 @@ export class Button extends FormAssociatedButton {
      * HTML Attribute: autofocus
      */
     @attr({ mode: "boolean" })
-    public autofocus: boolean;
+    public autofocus: boolean = false;
 
     /**
      * The id of a form to associate the element to.
@@ -100,7 +100,7 @@ export class Button extends FormAssociatedButton {
      * HTML Attribute: formnovalidate
      */
     @attr({ mode: "boolean" })
-    public formnovalidate: boolean;
+    public formnovalidate: boolean = false;
     protected formnovalidateChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.formNoValidate = this.formnovalidate;

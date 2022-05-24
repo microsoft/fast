@@ -63,7 +63,7 @@ export class SliderLabel extends FoundationElement {
      * HTML Attribute: disabled
      */
     @attr({ attribute: "disabled", mode: "boolean" })
-    public disabled: boolean; // Map to proxy element
+    public disabled: boolean = false; // Map to proxy element
 
     /**
      * @internal

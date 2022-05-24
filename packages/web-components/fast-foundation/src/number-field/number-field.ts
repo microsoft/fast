@@ -50,7 +50,7 @@ export class NumberField extends FormAssociatedNumberField {
      * HTML Attribute: readonly
      */
     @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean;
+    public readOnly: boolean = false;
 
     /**
      * Indicates that this element should get focus after the page finishes loading. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus | autofocus HTML attribute} for more information.
@@ -59,7 +59,7 @@ export class NumberField extends FormAssociatedNumberField {
      * HTML Attribute: autofocus
      */
     @attr({ mode: "boolean" })
-    public autofocus: boolean;
+    public autofocus: boolean = false;
 
     /**
      * When true, spin buttons will not be rendered

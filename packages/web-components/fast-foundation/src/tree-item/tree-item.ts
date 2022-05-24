@@ -65,7 +65,7 @@ export class TreeItem extends FoundationElement {
      * HTML Attribute: selected
      */
     @attr({ mode: "boolean" })
-    public selected: boolean;
+    public selected: boolean = false;
     protected selectedChanged(): void {
         if (this.$fastController.isConnected) {
             this.$emit("selected-change", this);
@@ -79,7 +79,7 @@ export class TreeItem extends FoundationElement {
      * HTML Attribute: disabled
      */
     @attr({ mode: "boolean" })
-    public disabled: boolean;
+    public disabled: boolean = false;
 
     /**
      *  Reference to the expand/collapse button

@@ -96,7 +96,7 @@ export abstract class Listbox extends FoundationElement {
      * HTML Attribute: `disabled`
      */
     @attr({ mode: "boolean" })
-    public disabled: boolean;
+    public disabled: boolean = false;
 
     /**
      * The index of the selected option.

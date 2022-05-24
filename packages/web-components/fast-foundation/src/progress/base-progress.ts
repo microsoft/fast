@@ -86,7 +86,7 @@ export class BaseProgress extends FoundationElement {
      * HTML Attribute: paused
      */
     @attr({ mode: "boolean" })
-    public paused: boolean;
+    public paused: boolean = false;
 
     /**
      * Indicates progress in %

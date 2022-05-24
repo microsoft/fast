@@ -38,7 +38,7 @@ export class Badge extends FoundationElement {
      * HTML Attribute: circular
      */
     @attr({ mode: "boolean" })
-    public circular: boolean;
+    public circular: boolean = false;
 
     public generateBadgeStyle = () => {
         if (!this.fill && !this.color) {

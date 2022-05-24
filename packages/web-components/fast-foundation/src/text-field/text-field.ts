@@ -44,7 +44,7 @@ export class TextField extends FormAssociatedTextField {
      * HTML Attribute: readonly
      */
     @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean;
+    public readOnly: boolean = false;
     protected readOnlyChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
@@ -59,7 +59,7 @@ export class TextField extends FormAssociatedTextField {
      * HTML Attribute: autofocus
      */
     @attr({ mode: "boolean" })
-    public autofocus: boolean;
+    public autofocus: boolean = false;
     protected autofocusChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.autofocus = this.autofocus;
@@ -178,7 +178,7 @@ export class TextField extends FormAssociatedTextField {
      * HTMLAttribute: size
      */
     @attr({ mode: "boolean" })
-    public spellcheck: boolean;
+    public spellcheck: boolean = false;
     protected spellcheckChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.spellcheck = this.spellcheck;
