@@ -84,7 +84,7 @@ async function generateHtmlTemplates(
             const operationProps = { names: [], htmlPaths: [] };
 
             // handle if specific operations are passed in
-            if (operations?.length > 0) {
+            if (operations) {
                 const fileNames = files.map(f => getTestName(f));
                 const match = operations.some(f => fileNames.includes(f));
                 if (!match) {
@@ -245,7 +245,7 @@ async function generateBenchmarks(
                 };
             }
 
-            if (methods.length > 0) {
+            if (methods) {
                 methods.forEach(method => {
                     const fullUrl = `${url}?method=${method}`;
 
