@@ -12,11 +12,14 @@ export class Element {}
  * @beta
  */
 export abstract class HTMLElement extends Element {
-    private static attributes: WeakMap<HTMLElement, Map<string, string>> = new WeakMap();
+    private static elementAttributes: WeakMap<
+        HTMLElement,
+        Map<string, string>
+    > = new WeakMap();
     private static getOrCreateAttributesForElement(element: HTMLElement) {
-        let attrs = HTMLElement.attributes.get(element);
+        let attrs = HTMLElement.elementAttributes.get(element);
         if (!attrs) {
-            HTMLElement.attributes.set(element, (attrs = new Map()));
+            HTMLElement.elementAttributes.set(element, (attrs = new Map()));
         }
         return attrs;
     }
