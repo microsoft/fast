@@ -24,6 +24,10 @@ program
         "-o, --operations [versions...]",
         "specify the operations you want the benchmarks to run, if none are passed all available operations will be run"
     )
+    .option(
+        "-bn, --branchName <name>",
+        "specify the local git branch name you want to reference, this must be a branch that has been pushed to git"
+    )
     .parse(process.argv);
 
 const options = program.opts();
@@ -76,17 +80,24 @@ async function buildBenchmark(configPath) {
  * @param {string} configPath
  * @returns {Promise}
  */
-async function runBenchmark(configPaths) {
+async function runBenchmark(configPaths, pathNames) {
     const promises = [];
     for (let i = 0; i < configPaths.length; i++) {
         const configPath = configPaths[i];
+        const pathName = pathNames[i];
+
         const res = new Promise((resolve, reject) => {
-            const args = ["tach", "--config", configPath];
+            const args = [
+                "tach",
+                "--config",
+                configPath,
+                `--json-file=results/${pathName}.json`,
+            ];
             const child = spawn("npx", args, { stdio: "inherit" });
             child.on("close", code => {
                 if (code !== 0) {
                     reject({
-                        command: `npx tach --config ${configPath}`,
+                        command: `npx tach --config ${configPath} --json-file=results/${pathName}.json`,
                     });
                     return;
                 }
@@ -111,10 +122,14 @@ async function runBenchmark(configPaths) {
 const run = async () => {
     try {
         await checkNpmRegistryIsAvailable();
-        const { tsConfigPath, tachoConfigPaths } = await generateTemplates(options);
+        const { tsConfigPath, tachoConfigPaths, pathNames } = await generateTemplates(
+            options
+        );
         await buildBenchmark(tsConfigPath);
-        await runBenchmark(tachoConfigPaths);
+
+        await runBenchmark(tachoConfigPaths, pathNames);
     } catch (error) {
+        console.error("ERRROR", error);
         return error;
     }
 };

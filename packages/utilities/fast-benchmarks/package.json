@@ -1,20 +1,23 @@
 {
-    "name": "fast-benchmarks",
+    "name": "@microsoft/fast-benchmarks",
     "version": "1.0.0",
-    "description": "",
+    "description": "utility library benchmarking for FAST libraries",
     "type": "module",
-    "scripts": {
-        "build": "tsc && tsc --build",
-        "benchmark": "node scripts/index.js",
-        "help": "node ./scripts/index.js --help",
-        "benchmark:methods:append": "tach --config benchmarks/methods/append/tachometer.json",
-        "debug": "tach --config benchmarks/methods/append/tachometer.json --manual"
+    "private": true,
+    "author": {
+        "name": "Microsoft",
+        "url": "https://discord.gg/FcSNfg4"
     },
-    "author": "Microsoft",
-    "license": "ISC",
+    "license": "MIT",
+    "scripts": {
+        "benchmark": "node scripts/index.js",
+        "build": "tsc && tsc -p tsconfig.json",
+        "help": "node ./scripts/index.js --help",
+        "debug:binding": "tach --config fast-element/binding/tachometer.json --manual",
+        "benchmark:fast-element:render": "yarn run benchmark --library=fast-element --benchmark=render --versions local latest --localBenchFile=index2"
+    },
     "dependencies": {
-        "@microsoft/fast-element": "^1.9.0",
-        "@microsoft/fast-foundation": "^2.45.0",
+        "@microsoft/fast-element": "^1.10.0",
         "tachometer": "^0.5.10"
     },
     "devDependencies": {
@@ -22,6 +25,6 @@
         "chromedriver": "^101.0.0",
         "commander": "^9.2.0",
         "cross-spawn": "^7.0.3",
-        "typescript": "^4.3.5"
+        "typescript": "^4.6.2"
     }
 }

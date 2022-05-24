@@ -84,7 +84,7 @@ async function generateHtmlTemplates(
             const operationProps = { names: [], htmlPaths: [] };
 
             // handle if specific operations are passed in
-            if (operations?.length > 0) {
+            if (operations) {
                 const fileNames = files.map(f => getTestName(f));
                 const match = operations.some(f => fileNames.includes(f));
                 if (!match) {
@@ -245,7 +245,7 @@ async function generateBenchmarks(
                 };
             }
 
-            if (methods.length > 0) {
+            if (methods) {
                 methods.forEach(method => {
                     const fullUrl = `${url}?method=${method}`;
 
@@ -263,7 +263,6 @@ async function generateBenchmarks(
         });
         tachoData[operation] = benchmarks;
     });
-
     return tachoData;
 }
 
@@ -287,6 +286,7 @@ async function generateConfig(fileName, benchmarksHash) {
         };
 
         const pathsPromises = [];
+        const pathNames = [];
         for (const benchmark in benchmarksHash) {
             const config = {
                 $schema: TACH_SCHEMA,
@@ -294,17 +294,14 @@ async function generateConfig(fileName, benchmarksHash) {
                 benchmarks: benchmarksHash[benchmark],
             };
 
-            const path = await writeConfig(
-                `${fileName}-${benchmark}` + ".config",
-                config,
-                ".json",
-                "dist"
-            );
+            const name = `${fileName}-${benchmark}`;
+            const path = await writeConfig(`${name}.config`, config, ".json", "dist");
 
+            pathNames.push(name);
             pathsPromises.push(path);
         }
         /** @type {ConfigFile[]} promises resolves to array of config file paths*/
-        return await Promise.all(pathsPromises);
+        return [await Promise.all(pathsPromises), pathNames];
     } catch (error) {
         console.log(errMessage(error));
     }
@@ -324,11 +321,13 @@ export async function generateTemplates(options) {
     try {
         const tsConfigPath = await generateTsConfig(options);
         const fileName = `${options.library}_${options.benchmark}`;
-
         //special handling if 'local' version was passed in as an option
         const localProps = { branchName: "", operationProps: {} };
         if (options.versions.includes(LOCAL)) {
-            localProps.branchName = await getLocalGitBranchName();
+            localProps.branchName = options.branchName
+                ? options.branchName
+                : await getLocalGitBranchName();
+
             // check if user passed in localBenchFile for different implementation of local
             if (options.localBenchFile)
                 localProps.operationProps = await generateHtmlTemplates(
@@ -344,10 +343,14 @@ export async function generateTemplates(options) {
             operationProps,
             localProps
         );
-        const tachoConfigPaths = await generateConfig(fileName, benchmarksHash);
+        const [tachoConfigPaths, pathNames] = await generateConfig(
+            fileName,
+            benchmarksHash
+        );
         return {
             tsConfigPath,
             tachoConfigPaths,
+            pathNames,
         };
     } catch (error) {
         console.log(errMessage(error));

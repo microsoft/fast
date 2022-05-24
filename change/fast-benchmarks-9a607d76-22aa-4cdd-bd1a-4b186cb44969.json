@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "run workflow on any push",
+  "packageName": "fast-benchmarks",
+  "email": "email not defined",
+  "dependentChangeType": "patch"
+}
