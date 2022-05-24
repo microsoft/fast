@@ -359,10 +359,10 @@ export class DataGrid extends FoundationElement {
     rowElementTag: string;
     rowItemTemplate: ViewTemplate;
     rowsData: object[];
-    selectableHeaderRow: boolean;
     get selectedRowIndexes(): number[];
     set selectedRowIndexes(next: number[]);
     selectionMode: DataGridSelectionMode;
+    unselectableRowIndexes: number[];
     }
 
 // @public

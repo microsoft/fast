@@ -245,14 +245,10 @@ export class FASTDataGrid extends FASTElement {
     public clickSelect: boolean = true;
 
     /**
-     * Determines if the header row is selectable
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: select-row-header
+     * Row indexes that are not selectable.
+     * Includes header rows.
      */
-    @attr({ attribute: "select-row-header", mode: "boolean" })
-    public selectableHeaderRow: boolean = false;
+    public unselectableRowIndexes: number[];
 
     /**
      * The initially selected grid elements.
@@ -499,7 +495,7 @@ export class FASTDataGrid extends FASTElement {
                 initialSelection.push(parseInt(element.trim()));
             });
 
-            this.selectedRowIndexes = initialSelection;
+            this.updateSelectedRows(initialSelection);
         }
 
         Updates.enqueue(this.queueRowIndexUpdate);
@@ -694,7 +690,7 @@ export class FASTDataGrid extends FASTElement {
                                 }
                             }
                         }
-                        this.selectedRowIndexes = newSelection;
+                        this.updateSelectedRows(newSelection);
                     } else if (e.detail.ctrlKey) {
                         if (
                             changeEventDetail.newValue &&
@@ -714,7 +710,7 @@ export class FASTDataGrid extends FASTElement {
                             this.lastNotShiftSelectedRowIndex = -1;
                         }
                         this.preShiftRowSelection = null;
-                        this.selectedRowIndexes = newSelection;
+                        this.updateSelectedRows(newSelection);
                     } else {
                         this.handleSingleRowSelection(changedRow, changeEventDetail);
                         this.preShiftRowSelection = null;
@@ -755,40 +751,52 @@ export class FASTDataGrid extends FASTElement {
         return pageSize;
     }
 
+    /**
+     * Validates that new selected rows are selectable and updates the selectedRowIndexes prop
+     */
+    private updateSelectedRows(newSelection: number[]): void {
+        if (!this.unselectableRowIndexes) {
+            this.selectedRowIndexes = newSelection;
+            return;
+        }
+
+        const validSelection: number[] = [];
+        newSelection.forEach(rowIndex => {
+            if (!this.unselectableRowIndexes.includes(rowIndex)) {
+                validSelection.push(rowIndex);
+            }
+        });
+        this.selectedRowIndexes = validSelection;
+    }
+
     private selectAllRows(): void {
         if (this.selectionMode !== "multi-row" || this.rowElements.length === 0) {
             return;
         }
-        const hasHeaderRow =
-            (this.rowElements[0] as DataGridRow).rowType === "header" ||
-            (this.rowElements[0] as DataGridRow).rowType === "sticky-header";
-        const selectableRowCount =
-            this.rowElements.length +
-            (hasHeaderRow && !this.selectableHeaderRow ? -1 : 0);
+
+        let selectableRowCount = this.rowElements.length;
+        if (this.unselectableRowIndexes) {
+            selectableRowCount = Math.max(
+                selectableRowCount - this.unselectableRowIndexes.length,
+                0
+            );
+        }
+
         if (this._selectedRowIndexes.length === selectableRowCount) {
             // deselect all if all are already selected
-            this.selectedRowIndexes = [];
+            this.updateSelectedRows([]);
             return;
         }
         const newSelection: number[] = [];
         this.rowElements.forEach(element => {
-            if (
-                (element as DataGridRow).rowType === "header" ||
-                (element as DataGridRow).rowType === "sticky-header"
-            ) {
-                if (this.selectableHeaderRow) {
-                    newSelection.push((element as DataGridRow).rowIndex);
-                }
-            } else {
-                newSelection.push((element as DataGridRow).rowIndex);
-            }
+            newSelection.push((element as DataGridRow).rowIndex);
         });
         this.lastNotShiftSelectedRowIndex = -1;
-        this.selectedRowIndexes = newSelection;
+        this.updateSelectedRows(newSelection);
     }
 
     private deselectAllRows(): void {
-        this.selectedRowIndexes = [];
+        this.updateSelectedRows([]);
         this.lastNotShiftSelectedRowIndex = -1;
     }
 
@@ -797,10 +805,10 @@ export class FASTDataGrid extends FASTElement {
         detail: DataGridRowSelectionChangedDetail
     ): void {
         if (detail.newValue) {
-            this.selectedRowIndexes = [changedRow.rowIndex];
+            this.updateSelectedRows([changedRow.rowIndex]);
             this.lastNotShiftSelectedRowIndex = changedRow.rowIndex;
         } else {
-            this.selectedRowIndexes = [];
+            this.updateSelectedRows([]);
             this.lastNotShiftSelectedRowIndex = -1;
         }
     }
@@ -938,17 +946,9 @@ export class FASTDataGrid extends FASTElement {
                 this.selectionMode === "single-row" ||
                 this.selectionMode === "multi-row"
             ) {
-                if (thisRow.rowType === "header" || thisRow.rowType === "sticky-header") {
-                    if (this.selectableHeaderRow) {
-                        thisRow.selected = this._selectedRowIndexes.includes(index)
-                            ? true
-                            : false;
-                    }
-                } else {
-                    thisRow.selected = this._selectedRowIndexes.includes(index)
-                        ? true
-                        : false;
-                }
+                thisRow.selected = this._selectedRowIndexes.includes(index)
+                    ? true
+                    : false;
             }
             if (this.columnDefinitionsStale) {
                 thisRow.columnDefinitions = this.columnDefinitions;
