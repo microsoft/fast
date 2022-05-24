@@ -8,8 +8,10 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3
-        - uses: nelonoel/branch-name@v1.0.1
-        - run: echo ${BRANCH_NAME}
+        - name: Get local branch name
+          run: |
+            echo running on branch ${GITHUB_REF##*/}
+            echo log github branch ${{ github.ref_name }}
 
     update10th:
       name: Run update 10th element benchmark
@@ -41,13 +43,12 @@ jobs:
           with:
               node-version: "16.x"
         - name: Get local branch name
-          uses: nelonoel/branch-name@v1.0.1
-
+          run: echo running on branch ${{ github.ref_name }}
         - name: Run tachometer and generate results file
           run: |
               cd packages/utilities/fast-benchmarks
               yarn install
-              yarn run benchmark --library=fast-element --benchmark=render --versions local latest --localBenchFile=index2 --branchName=${BRANCH_NAME}
+              yarn run benchmark --library=fast-element --benchmark=render --versions local latest --localBenchFile=index2 --branchName=${{ github.ref_name }}
         # Upload this benchmarks results
         - name: Upload results
           uses: actions/upload-artifact@v2
