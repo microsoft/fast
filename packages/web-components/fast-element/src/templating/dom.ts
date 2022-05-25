@@ -1,4 +1,5 @@
 import { Updates } from "../observation/update-queue.js";
+import type { Callable } from "../interfaces.js";
 
 /**
  * Common DOM APIs.
