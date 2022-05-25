@@ -16,7 +16,6 @@ export const switchTemplate: FoundationElementTemplate<
         aria-checked="${x => x.checked}"
         aria-disabled="${x => x.disabled}"
         aria-readonly="${x => x.readOnly}"
-        aria-required="${x => x.required}"
         tabindex="${x => (x.disabled ? null : 0)}"
         @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
