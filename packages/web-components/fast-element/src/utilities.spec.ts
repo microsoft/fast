@@ -1,10 +1,11 @@
-import { composedContains, composedParent, makeObservable } from "./utilities.js";
+import { composedContains, composedParent, makeObservable, watch } from "./utilities.js";
 import { expect } from "chai";
 import { Updates } from "./observation/update-queue.js";
 import { customElement, FASTElement } from "./components/fast-element.js";
 import { Observable, observable } from "./observation/observable.js";
 import { html } from "./templating/template.js";
 import { ref } from "./templating/ref.js";
+import { Splice } from "./observation/arrays.js";
 
 describe("The composedParent function", () => {
     it("returns the parent of an element, if it has one", () => {
@@ -80,6 +81,60 @@ describe("The composedContains function", () => {
         });
     });
 });
+
+function createComplexObject() {
+    return {
+        a: {
+            b: {
+                c: 1,
+                d: [
+                    {
+                        e: 2,
+                        f: 3
+                    },
+                    {
+                        g: 4,
+                        h: 5
+                    }
+                ]
+            },
+            i: {
+                j: {
+                    k: 6,
+                    l: [
+                        {
+                            m: 7,
+                            n: 8
+                        },
+                        {
+                            o: 9,
+                            p: 10
+                        }
+                    ]
+                },
+
+            }
+        },
+        q: {
+            r: {
+                s: 11,
+                t: [
+                    {
+                        u: 12,
+                        v: 13
+                    },
+                    {
+                        w: 14,
+                        x: 15
+                    }
+                ]
+            },
+            y: {
+                z: 16
+            }
+        }
+    };
+}
 
 describe("The makeObservable function", () => {
     it("makes all root properties on the object observable", () => {
@@ -167,60 +222,6 @@ describe("The makeObservable function", () => {
         expect(names).members(["a", "b", "c", "d", "e", "f"]);
     });
 
-    function createComplexObject() {
-        return {
-            a: {
-                b: {
-                    c: 1,
-                    d: [
-                        {
-                            e: 2,
-                            f: 3
-                        },
-                        {
-                            g: 4,
-                            h: 5
-                        }
-                    ]
-                },
-                i: {
-                    j: {
-                        k: 6,
-                        l: [
-                            {
-                                m: 7,
-                                n: 8
-                            },
-                            {
-                                o: 9,
-                                p: 10
-                            }
-                        ]
-                    },
-
-                }
-            },
-            q: {
-                r: {
-                    s: 11,
-                    t: [
-                        {
-                            u: 12,
-                            v: 13
-                        },
-                        {
-                            w: 14,
-                            x: 15
-                        }
-                    ]
-                },
-                y: {
-                    z: 16
-                }
-            }
-        };
-    }
-
     function subscribeToComplexObject(obj: ReturnType<typeof createComplexObject>) {
         const names: string[] = [];
         const subscriber = {
@@ -306,5 +307,188 @@ describe("The makeObservable function", () => {
 });
 
 describe("The watch function", () => {
+    it("can watch simple properties", () => {
+        const obj = makeObservable({
+            a: 1,
+            b: 2,
+            c: 3
+        });
 
+        const names: string[] = [];
+        watch(obj, (subject, propertyName) => {
+            names.push(propertyName);
+        });
+
+        obj.a = 2;
+        obj.b = 3;
+        obj.c = 4;
+
+        expect(names).members(["a", "b", "c"]);
+    });
+
+    it("can dispose the watcher for simple properties", () => {
+        const obj = makeObservable({
+            a: 1,
+            b: 2,
+            c: 3
+        });
+
+        const names: string[] = [];
+        const subscription = watch(obj, (subject, propertyName) => {
+            names.push(propertyName);
+        });
+
+        subscription.dispose();
+
+        obj.a = 2;
+        obj.b = 3;
+        obj.c = 4;
+
+        expect(names).members([]);
+    });
+
+    it("can watch array items", () => {
+        const array = makeObservable([
+            {
+                a: 1,
+                b: 2,
+                c: 3
+            },
+            {
+                d: 4,
+                e: 5,
+                f: 6
+            }
+        ]);
+
+        const names: string[] = [];
+        watch(array, (subject, propertyName) => {
+            names.push(propertyName);
+        });
+
+        array[0].a = 2;
+        array[0].b = 3;
+        array[0].c = 4;
+        array[1].d = 5;
+        array[1].e = 6;
+        array[1].f = 7;
+
+        expect(names).members(["a", "b", "c", "d", "e", "f"]);
+    });
+
+    it("can dispose the watcher for array items", () => {
+        const array = makeObservable([
+            {
+                a: 1,
+                b: 2,
+                c: 3
+            },
+            {
+                d: 4,
+                e: 5,
+                f: 6
+            }
+        ]);
+
+        const names: string[] = [];
+        const subscription = watch(array, (subject, propertyName) => {
+            names.push(propertyName);
+        });
+
+        subscription.dispose();
+
+        array[0].a = 2;
+        array[0].b = 3;
+        array[0].c = 4;
+        array[1].d = 5;
+        array[1].e = 6;
+        array[1].f = 7;
+
+        expect(names).members([]);
+    });
+
+    it("can watch arrays", async () => {
+        const array: any[] = makeObservable([
+            {
+                a: 1,
+                b: 2,
+                c: 3
+            }
+        ]);
+
+        const splices: string[] = [];
+        watch(array, (subject, args) => {
+            splices.push(...args);
+        });
+
+        array.push({
+            d: 4,
+            e: 5,
+            f: 6
+        });
+
+        await Updates.next();
+
+        expect(splices.length).equal(1);
+        expect(splices[0]).instanceOf(Splice);
+    });
+
+    it("can dispose the watcher for an array", async () => {
+        const array: any[] = makeObservable([
+            {
+                a: 1,
+                b: 2,
+                c: 3
+            }
+        ]);
+
+        const splices: string[] = [];
+        const subscription = watch(array, (subject, splice) => {
+            splices.push(splice);
+        });
+
+        subscription.dispose();
+
+        array.push({
+            d: 4,
+            e: 5,
+            f: 6
+        });
+
+        await Updates.next();
+
+        expect(splices.length).equal(0);
+    });
+
+    it("can deeply watch objects", () => {
+        const obj = makeObservable(createComplexObject(), true);
+
+        const names: string[] = [];
+        watch(obj, (subject, propertyName) => {
+            names.push(propertyName);
+        });
+
+        obj.a.b.d[0].e = 1000;
+        obj.a.i.j.l[1].p = 1000;
+        obj.q.y.z = 1000;
+
+        expect(names).members(["e", "p", "z"]);
+    });
+
+    it("can dispose a deep watcher", () => {
+        const obj = makeObservable(createComplexObject(), true);
+
+        const names: string[] = [];
+        const subscription = watch(obj, (subject, propertyName) => {
+            names.push(propertyName);
+        });
+
+        subscription.dispose();
+
+        obj.a.b.d[0].e = 1000;
+        obj.a.i.j.l[1].p = 1000;
+        obj.q.y.z = 1000;
+
+        expect(names).members([]);
+    });
 });
