@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { Updates } from "./update-queue";
-import { PropertyChangeNotifier, SubscriberSet } from "./notifier";
-import { ExecutionContext, Observable, observable, volatile } from "./observable";
+import { Updates } from "./update-queue.js";
+import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
+import { ExecutionContext, Observable, observable, volatile } from "./observable.js";
 
 describe("The Observable", () => {
     class Model {

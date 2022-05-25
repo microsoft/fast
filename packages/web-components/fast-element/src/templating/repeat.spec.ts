@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { repeat, RepeatDirective, RepeatBehavior } from "./repeat";
-import { child, html } from "./template";
-import { ExecutionContext, observable } from "../observation/observable";
-import { toHTML } from "../__test__/helpers";
-import { Updates } from "../observation/update-queue";
+import { repeat, RepeatDirective, RepeatBehavior } from "./repeat.js";
+import { child, html } from "./template.js";
+import { ExecutionContext, observable } from "../observation/observable.js";
+import { toHTML } from "../__test__/helpers.js";
+import { Updates } from "../observation/update-queue.js";
 
 describe("The repeat", () => {
     function createLocation() {

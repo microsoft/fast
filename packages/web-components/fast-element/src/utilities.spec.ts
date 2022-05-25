@@ -1,6 +1,22 @@
-import { composedContains } from "./composed-contains";
+import { composedContains, composedParent } from "./utilities.js";
 import { expect } from "chai";
-import { html, customElement, ref, FASTElement, observable, Updates } from "@microsoft/fast-element";
+import { Updates } from "./observation/update-queue.js";
+import { customElement, FASTElement } from "./components/fast-element.js";
+import { observable } from "./observation/observable.js";
+import { html } from "./templating/template.js";
+import { ref } from "./templating/ref.js";
+
+describe("The composedParent function", () => {
+    it("returns the parent of an element, if it has one", () => {
+        const parent = document.createElement("div");
+        const child = document.createElement("div");
+        parent.appendChild(child);
+
+        const found = composedParent(child);
+
+        expect(found).to.equal(parent);
+    });
+});
 
 @customElement({
     name: "composed-contains-element",

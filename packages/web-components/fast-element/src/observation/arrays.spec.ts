@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { Observable } from "./observable";
-import { ArrayObserver, length, Splice } from "./arrays";
-import { SubscriberSet } from "./notifier";
-import { Updates } from "./update-queue";
+import { Observable } from "./observable.js";
+import { ArrayObserver, length, Splice } from "./arrays.js";
+import { SubscriberSet } from "./notifier.js";
+import { Updates } from "./update-queue.js";
 
 describe("The ArrayObserver", () => {
     it("can be retrieved through Observable.getNotifier()", () => {

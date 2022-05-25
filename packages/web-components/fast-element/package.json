@@ -37,6 +37,10 @@
     "./splice-strategies.js": {
       "types": "./dist/dts/observation/splice-strategies.d.ts",
       "default": "./dist/esm/observation/splice-strategies.js"
+    },
+    "./utilities.js": {
+      "types": "./dist/dts/utilities.d.ts",
+      "default": "./dist/esm/utilities.js"
     }
   },
   "unpkg": "dist/fast-element.min.js",
