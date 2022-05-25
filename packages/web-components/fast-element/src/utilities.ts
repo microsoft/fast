@@ -1,141 +1,134 @@
+import { ArrayObserver } from "./index.debug.js";
 import { Disposable, isFunction } from "./interfaces.js";
 import type { Notifier, Subscriber } from "./observation/notifier.js";
 import { Observable } from "./observation/observable.js";
 
-/**
- * Options for converting plain JS objects into observable objects.
- * @public
- */
-export interface MakeObservableOptions {
-    /**
-     * Indicates whether or not to deeply convert the object,
-     * following properties, sub-objects, arrays, and their items.
-     */
-    deep?: boolean;
-
-    /**
-     * Subscribes to all changes in the object graph.
-     */
-    subscriber?: Subscriber | ((subject: any, args: any) => void);
+interface ObjectVisitor<TVisitorData> {
+    visitObject(object: any, data: TVisitorData): void;
+    visitArray(array: any[], data: TVisitorData): void;
+    visitProperty(object: any, key: PropertyKey, value: any, data: TVisitorData): void;
 }
 
-const defaultMakeObservableOptions: MakeObservableOptions = {};
-
-function eligibleForTraversal(value: any, traversed: any[]) {
-    return typeof value === "object" && traversed.indexOf(value) === -1;
+function shouldTraverse(value: any, traversed: WeakSet<any> | Set<any>) {
+    return (
+        value !== null &&
+        value !== void 0 &&
+        typeof value === "object" &&
+        !traversed.has(value)
+    );
 }
 
-function makeObservableProperty(
+function traverseObject<TVisitorData>(
     object: any,
-    propertyName: string,
-    options: MakeObservableOptions,
-    traversed: any[]
+    deep: boolean,
+    visitor: ObjectVisitor<TVisitorData>,
+    data: TVisitorData,
+    traversed: WeakSet<any> | Set<any>
 ): void {
-    const value = object[propertyName];
-    Observable.defineProperty(object, propertyName);
-    object[propertyName] = value;
-
-    if (options.deep && eligibleForTraversal(value, traversed)) {
-        visitObject(value, options, makeObservableProperty, traversed);
-    }
-}
-
-function visitObject(
-    object: any,
-    options: MakeObservableOptions,
-    propertyAction: (
-        object: any,
-        propertyName: string,
-        options: MakeObservableOptions,
-        traversed: any[]
-    ) => void,
-    traversed: any[],
-    notifiers?: Notifier[]
-): void {
-    if (object === null || object === void 0) {
+    if (!shouldTraverse(object, traversed)) {
         return;
     }
 
-    traversed.push(object);
+    traversed.add(object);
 
     if (Array.isArray(object)) {
+        visitor.visitArray(object, data);
+
         for (const item of object) {
-            if (eligibleForTraversal(item, traversed)) {
-                visitObject(item, options, propertyAction, traversed, notifiers);
-            }
+            traverseObject(item, deep, visitor, data, traversed);
         }
     } else {
+        visitor.visitObject(object, data);
+
         for (const key in object) {
-            propertyAction(object, key, options, traversed);
+            const value = object[key];
+            visitor.visitProperty(object, key, value, data);
+
+            if (deep) {
+                traverseObject(value, deep, visitor, data, traversed);
+            }
         }
     }
-
-    if (options.subscriber) {
-        const notifier = Observable.getNotifier(object);
-        notifier.subscribe(options.subscriber as Subscriber);
-        notifiers!.push(notifier);
-    }
 }
 
-function visitAndSubscribe(
-    object: any,
-    options: MakeObservableOptions,
-    propertyAction: (
-        object: any,
-        propertyName: string,
-        options: MakeObservableOptions,
-        traversed: any[]
-    ) => void
-) {
-    if (isFunction(options.subscriber)) {
-        options.subscriber = { handleChange: options.subscriber };
-    }
+const noop = () => void 0;
+const observed = new WeakSet<any>();
 
-    const notifiers: Notifier[] = [];
-    visitObject(object, options, propertyAction, [], notifiers);
+const makeObserverVisitor: ObjectVisitor<undefined> = {
+    visitObject: noop,
+    visitArray: noop,
+    visitProperty(object: any, propertyName: string, value: any): void {
+        Reflect.defineProperty(object, propertyName, {
+            enumerable: true,
+            get() {
+                Observable.track(object, propertyName);
+                return value;
+            },
+            set(newValue: any) {
+                if (value !== newValue) {
+                    value = newValue;
+                    Observable.notify(object, propertyName);
+                }
+            },
+        });
+    },
+};
 
-    return {
-        dispose() {
-            for (const n of notifiers) {
-                n.unsubscribe(options!.subscriber as Subscriber);
-            }
-        },
-    };
+interface WatchData {
+    notifiers: Notifier[];
+    subscriber: Subscriber;
 }
+
+function watchObject(object: any, data: WatchData) {
+    const notifier = Observable.getNotifier(object);
+    notifier.subscribe(data.subscriber);
+    data.notifiers.push(notifier);
+}
+
+const watchVisitor: ObjectVisitor<WatchData> = {
+    visitProperty: noop,
+    visitObject: watchObject,
+    visitArray: watchObject,
+};
 
 /**
  * Converts a plain object to an observable object.
  * @param object - The object to make observable.
- * @param options - Specifies how to convert the object.
- * @returns If a subscriber is passed, then a disposable object
- * is returned that enables unsubscribing from changes.
- * @public
+ * @param deep - Indicates whether or not to deeply convert the oject.
+ * @returns The converted object.
+ * @beta
  */
-export function makeObservable(
-    object: any,
-    options?: MakeObservableOptions
-): void | Disposable {
-    options = options
-        ? Object.assign({}, defaultMakeObservableOptions, options)
-        : defaultMakeObservableOptions;
-
-    if (options.subscriber) {
-        return visitAndSubscribe(object, options, makeObservableProperty);
-    }
-
-    visitObject(object, options, makeObservableProperty, []);
+export function makeObservable<T>(object: T, deep = false): T {
+    traverseObject(object, deep, makeObserverVisitor, void 0, observed);
+    return object;
 }
 
 /**
- * Deeply subscribes to existing observable objects.
- * @param object - The observable object to observe.
+ * Deeply subscribes to changes in existing observable objects.
+ * @param object - The observable object to watch.
  * @param subscriber - The handler to call when changes are made to the object.
+ * @returns A disposable that can be used to unsubscribe from change updates.
+ * @beta
  */
-export function deepObserve(
+export function watch(
     object: any,
-    subscriber?: Subscriber | ((subject: any, args: any) => void)
+    subscriber: Subscriber | ((subject: any, args: any) => void)
 ): Disposable {
-    return visitAndSubscribe(object, { deep: true, subscriber }, () => void 0);
+    const data: WatchData = {
+        notifiers: [],
+        subscriber: isFunction(subscriber) ? { handleChange: subscriber } : subscriber,
+    };
+
+    ArrayObserver.enable();
+    traverseObject(object, true, watchVisitor, data, new Set());
+
+    return {
+        dispose() {
+            for (const n of data.notifiers) {
+                n.unsubscribe(data.subscriber);
+            }
+        },
+    };
 }
 
 /**

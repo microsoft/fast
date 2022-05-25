@@ -138,7 +138,7 @@ export const BindingMode: Readonly<{
 }>;
 
 // @public
-export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
+export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier, Disposable {
     disconnect(): void;
     observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
     records(): IterableIterator<ObservationRecord>;
@@ -300,6 +300,11 @@ export type DefaultTwoWayBindingOptions = DefaultBindingOptions & {
     changeEvent?: string;
     fromView?: (value: any) => any;
 };
+
+// @public
+export interface Disposable {
+    dispose(): void;
+}
 
 // @public
 export const DOM: Readonly<{
@@ -826,7 +831,6 @@ export interface SubtreeDirectiveOptions<T = any> extends Omit<NodeBehaviorOptio
 
 // @public
 export interface SyntheticView<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>> extends View<TSource, TParent, TContext> {
-    dispose(): void;
     readonly firstChild: Node;
     insertBefore(node: Node): void;
     readonly lastChild: Node;
@@ -928,10 +932,9 @@ export interface ValueConverter {
 }
 
 // @public
-export interface View<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>> {
+export interface View<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>> extends Disposable {
     bind(source: TSource, context: TContext): void;
     readonly context: TContext | null;
-    dispose(): void;
     readonly source: TSource | null;
     unbind(): void;
 }
