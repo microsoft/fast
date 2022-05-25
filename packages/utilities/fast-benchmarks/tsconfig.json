@@ -1,15 +1,20 @@
 {
-    "extends": "../../../tsconfig.json",
     "compilerOptions": {
-        "rootDir": "./",
-        "declarationDir": "dist/",
-        "outDir": "dist/",
+        "composite": true,
+        "target": "es2019",
+        "module": "esnext",
+        "lib": ["es2020", "DOM", "DOM.Iterable"],
+        "declaration": true,
+        "strict": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
-        "importsNotUsedAsValues": "error",
-        "target": "es2015",
-        "module": "es6",
-        "importHelpers": true,
-        "types": ["node", "benchmark"]
+        "skipLibCheck": true
     },
-    "include": ["benchmarks"]
+    "include": ["utils/**/*.ts", "benchmarks/methods/**/*.ts"]
 }
