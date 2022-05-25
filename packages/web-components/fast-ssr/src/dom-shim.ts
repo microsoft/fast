@@ -6,7 +6,12 @@
 /**
  * @beta
  */
-export class Element {}
+export class Node {}
+
+/**
+ * @beta
+ */
+export class Element extends Node {}
 
 /**
  * @beta
@@ -144,6 +149,7 @@ export function createWindow(
     props: { [key: string]: unknown } = {}
 ): { [key: string]: unknown } {
     const window = {
+        Node,
         Element,
         HTMLElement,
         Document,
@@ -168,14 +174,13 @@ export function createWindow(
 }
 
 /**
- * Constructs a window object and installs it on the global, exposing properties directly on globalThis and globalthis.window
- * @param props - Additional properties to expose on the window.
+ * Installs a window object on the global, exposing properties directly on globalThis and globalthis.window
+ * @param window - The Window object to install
  *
  * @beta
  */
-export function installWindowOnGlobal(props: { [key: string]: unknown } = {}) {
+export function installWindowOnGlobal(window: { [key: string]: unknown }) {
     if (globalThis.window === undefined) {
-        const window = createWindow(props);
         Object.assign(globalThis, window);
         globalThis.window = globalThis as typeof globalThis & Window;
     }
