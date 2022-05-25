@@ -14,6 +14,16 @@ export type Constructable<T = {}> = {
 };
 
 /**
+ * Represents a resource that can be disposed.
+ */
+export interface Disposable {
+    /**
+     * Disposes the resource.
+     */
+    dispose(): void;
+}
+
+/**
  * Reverses all readonly members, making them mutable.
  * @internal
  */
