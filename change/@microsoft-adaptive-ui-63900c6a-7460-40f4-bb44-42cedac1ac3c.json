@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add adaptive-ui package",
+  "packageName": "@microsoft/adaptive-ui",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
