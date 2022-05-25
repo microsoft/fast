@@ -1,12 +1,21 @@
 {
   "name": "@microsoft/adaptive-ui",
-  "version": "0.1.0",
+  "version": "1.0.0-alpha",
   "description": "A collection of design utilities supporting basic styling and Adaptive UI",
   "type": "module",
-  "main": "./dist/esm/index.js",
+  "main": "dist/esm/index.js",
+  "types": "dist/adaptive-ui.d.ts",
+  "unpkg": "dist/esm/index.js",
+  "exports": {
+    "." : {
+      "types": "./dist/adaptive-ui.d.ts",
+      "default": "./dist/esm/index.js"
+    }
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/microsoft/fast.git"
+    "url": "git+https://github.com/microsoft/fast.git",
+    "directory": "packages/utilities/adaptive-ui"
   },
   "author": {
     "name": "Microsoft",

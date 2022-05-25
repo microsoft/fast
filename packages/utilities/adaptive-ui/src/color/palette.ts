@@ -35,14 +35,14 @@ export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof Pa
 // } as const;
 
 /**
- * Convenience type to allow a fixed {@link PaletteDirectionValue} or a function that resolves to one.
+ * Convenience type to allow a fixed {@link (PaletteDirectionValue:variable)} or a function that resolves to one.
  *
  * @public
  */
 export type PaletteDirection = PaletteDirectionValue | (() => PaletteDirectionValue);
 
 /**
- * Gets a fixed {@link PaletteDirectionValue} from {@link PaletteDirection} which may be a function that needs to be resolved.
+ * Gets a fixed {@link (PaletteDirectionValue:variable)} from {@link PaletteDirection} which may be a function that needs to be resolved.
  *
  * @param direction - A fixed palette direction value or a function that resolves to one
  * @returns A fixed palette direction value
