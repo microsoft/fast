@@ -1,4 +1,10 @@
-import { isFunction, isString, KernelServiceId, Message } from "../interfaces.js";
+import {
+    Disposable,
+    isFunction,
+    isString,
+    KernelServiceId,
+    Message,
+} from "../interfaces.js";
 import { FAST } from "../platform.js";
 import { Updates } from "./update-queue.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
@@ -65,7 +71,8 @@ interface SubscriptionRecord extends ObservationRecord {
  * @public
  */
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
-    extends Notifier {
+    extends Notifier,
+        Disposable {
     /**
      * Begins observing the binding for the source and returns the current value.
      * @param source - The source that the binding is based on.
@@ -173,6 +180,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         extends SubscriberSet
         implements BindingObserver<TSource, TReturn> {
         public needsRefresh: boolean = true;
+        dispose = this.disconnect;
         private needsQueue: boolean = true;
 
         private first: SubscriptionRecord = this as any;

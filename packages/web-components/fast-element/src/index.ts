@@ -2,6 +2,7 @@
 export type {
     Callable,
     Constructable,
+    Disposable,
     FASTGlobal,
     Mutable,
     StyleStrategy,

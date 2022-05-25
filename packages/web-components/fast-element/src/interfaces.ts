@@ -14,11 +14,12 @@ export type Constructable<T = {}> = {
 };
 
 /**
- * Represents a resource that can be disposed.
+ * Provides a mechanism for releasing resources.
+ * @public
  */
 export interface Disposable {
     /**
-     * Disposes the resource.
+     * Disposes the resources.
      */
     dispose(): void;
 }
