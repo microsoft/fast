@@ -56,20 +56,19 @@ const componentsAndTemplates: [typeof Foundation.FoundationElement, ViewTemplate
     [Foundation.TreeItem, Foundation.treeItemTemplate],
     [Foundation.TreeView, Foundation.treeViewTemplate]
 ];
-test.describe.only("install foundation tests", () => {
+test.describe("The foundation DOM shim", () => {
+    componentsAndTemplates.forEach(([ctor, template]) => {
+        const baseName = ctor.name.toLowerCase();
+        const prefix = "fast";
+        designSystem.withPrefix(prefix).register(ctor.compose({
+            baseName,
+            template
+        }));
 
-componentsAndTemplates.forEach(([ctor, template]) => {
-    const baseName = ctor.name.toLowerCase();
-    const prefix = "fast";
-    designSystem.withPrefix(prefix).register(ctor.compose({
-        baseName,
-        template
-    }));
-
-    test(`${ctor.name} should construct and connect`, () => {
-        const { templateRenderer, defaultRenderInfo } = fastSSR();
-        const templateString = `<${prefix}-${baseName}></${prefix}-${baseName}>`;
-        expect(() => templateRenderer.render(templateString, defaultRenderInfo)).not.toThrow();
+        test(`should support construction and connection of the ${ctor.name} component and template during SSR rendering`, () => {
+            const { templateRenderer, defaultRenderInfo } = fastSSR();
+            const templateString = `<${prefix}-${baseName}></${prefix}-${baseName}>`;
+            expect(() => templateRenderer.render(templateString, defaultRenderInfo)).not.toThrow();
+        });
     });
-})
 })
