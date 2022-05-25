@@ -369,7 +369,7 @@ describe("The array length observer", () => {
 
         expect(value).to.equal(0);
 
-        observer.disconnect();
+        observer.dispose();
     });
 
     it("returns zero length if the array is null", async () => {
@@ -381,7 +381,7 @@ describe("The array length observer", () => {
 
         expect(value).to.equal(0);
 
-        observer.disconnect();
+        observer.dispose();
     });
 
     it("returns length of an array", async () => {
@@ -393,7 +393,7 @@ describe("The array length observer", () => {
 
         expect(value).to.equal(5);
 
-        observer.disconnect();
+        observer.dispose();
     });
 
     it("notifies when the array length changes", async () => {
@@ -418,7 +418,7 @@ describe("The array length observer", () => {
         expect(changed).to.be.true;
         expect(observer.observe(instance)).to.equal(6);
 
-        observer.disconnect();
+        observer.dispose();
     });
 
     it("does not notify on changes that don't change the length", async () => {
@@ -443,6 +443,6 @@ describe("The array length observer", () => {
         expect(changed).to.be.false;
         expect(observer.observe(instance)).to.equal(5);
 
-        observer.disconnect();
+        observer.dispose();
     });
 });

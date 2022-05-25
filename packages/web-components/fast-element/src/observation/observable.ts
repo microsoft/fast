@@ -82,15 +82,20 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
     observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
 
     /**
-     * Unsubscribe from all dependent observables of the binding.
-     */
-    disconnect(): void;
-
-    /**
      * Gets {@link ObservationRecord|ObservationRecords} that the {@link BindingObserver}
      * is observing.
      */
     records(): IterableIterator<ObservationRecord>;
+
+    /**
+     * Sets the update mode used by the observer.
+     * @param isAsync - Indicates whether updates should be asynchronous.
+     * @remarks
+     * By default, the update mode is asynchronous, since that provides the best
+     * performance for template rendering scenarios. Passing false to setMode will
+     * instead cause the observer to notify subscribers immediately when changes occur.
+     */
+    setMode(isAsync: boolean): void;
 }
 
 /**
@@ -180,8 +185,8 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         extends SubscriberSet
         implements BindingObserver<TSource, TReturn> {
         public needsRefresh: boolean = true;
-        dispose = this.disconnect;
         private needsQueue: boolean = true;
+        private isAsync = true;
 
         private first: SubscriptionRecord = this as any;
         private last: SubscriptionRecord | null = null;
@@ -198,9 +203,13 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             super(binding, initialSubscriber);
         }
 
+        public setMode(isAsync: boolean): void {
+            this.isAsync = this.needsQueue = isAsync;
+        }
+
         public observe(source: TSource, context?: ExecutionContext): TReturn {
             if (this.needsRefresh && this.last !== null) {
-                this.disconnect();
+                this.dispose();
             }
 
             const previousWatcher = watcher;
@@ -212,7 +221,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             return result;
         }
 
-        public disconnect(): void {
+        public dispose(): void {
             if (this.last !== null) {
                 let current = this.first;
 
@@ -222,7 +231,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
                 }
 
                 this.last = null;
-                this.needsRefresh = this.needsQueue = true;
+                this.needsRefresh = this.needsQueue = this.isAsync;
             }
         }
 
@@ -264,12 +273,14 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             if (this.needsQueue) {
                 this.needsQueue = false;
                 queueUpdate(this);
+            } else if (!this.isAsync) {
+                this.call();
             }
         }
 
         call(): void {
             if (this.last !== null) {
-                this.needsQueue = true;
+                this.needsQueue = this.isAsync;
                 this.notify(this);
             }
         }

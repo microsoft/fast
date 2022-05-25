@@ -139,9 +139,9 @@ export const BindingMode: Readonly<{
 
 // @public
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier, Disposable {
-    disconnect(): void;
     observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
     records(): IterableIterator<ObservationRecord>;
+    setMode(isAsync: boolean): void;
 }
 
 // @public

@@ -197,7 +197,7 @@ describe("The Observable", () => {
 
             expect(called).to.be.false;
             model.child.value = "something completely different";
-            observer.disconnect();
+            observer.dispose();
 
             await Updates.next();
 
@@ -583,7 +583,7 @@ describe("The Observable", () => {
             expect(wasCalled).to.equal(false);
 
             model.value++;
-            observer.disconnect();
+            observer.dispose();
 
             await Updates.next();
 

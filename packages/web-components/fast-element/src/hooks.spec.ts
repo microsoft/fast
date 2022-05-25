@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { useState } from "./hooks";
+import { useEffect, useState } from "./hooks";
 import { Observable } from "./observation/observable";
 import { Updates } from "./observation/update-queue";
 
-describe.only("The useState hook", () => {
+describe("The useState hook", () => {
     it("can get and set the value", () => {
         const [get, set] = useState(1);
 
@@ -55,5 +55,43 @@ describe.only("The useState hook", () => {
         await Updates.next();
 
         expect(callCount).equals(2);
+    });
+});
+
+describe("The useEffect hook", () => {
+    it("responds to changes in state", () => {
+        const [get, set] = useState(0);
+        const values: number[] = [];
+
+        useEffect(() => {
+            values.push(get());
+        });
+
+        set(get() + 1);
+        set(get() + 1);
+        set(get() + 1);
+        set(get() + 1);
+        set(get() + 1);
+
+        expect(values).members([0, 1, 2, 3, 4, 5]);
+    });
+
+    it("can be disposed", () => {
+        const [get, set] = useState(0);
+        const values: number[] = [];
+
+        const observable = useEffect(() => {
+            values.push(get());
+        });
+
+        observable.dispose();
+
+        set(get() + 1);
+        set(get() + 1);
+        set(get() + 1);
+        set(get() + 1);
+        set(get() + 1);
+
+        expect(values).members([0]);
     });
 });

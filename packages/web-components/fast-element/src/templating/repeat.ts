@@ -145,8 +145,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         }
 
         this.unbindAllViews();
-        this.itemsBindingObserver.disconnect();
-        this.templateBindingObserver.disconnect();
+        this.itemsBindingObserver.dispose();
+        this.templateBindingObserver.dispose();
     }
 
     /**
