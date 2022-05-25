@@ -680,9 +680,6 @@ export interface CSSDesignToken<T extends string | number | boolean | BigInteger
 }
 
 // @public
-export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
-
-// @public
 export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // @public
@@ -1095,9 +1092,6 @@ export class Dialog extends FoundationElement {
 export const dialogTemplate: FoundationElementTemplate<ViewTemplate<Dialog>>;
 
 // @public
-export const disabledCursor = "not-allowed";
-
-// @public
 export class Disclosure extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1116,9 +1110,6 @@ export class Disclosure extends FoundationElement {
 
 // @public
 export const disclosureTemplate: FoundationElementTemplate<ViewTemplate<Disclosure>>;
-
-// @public
-export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
 export class Divider extends FoundationElement {
@@ -1242,9 +1233,6 @@ export const FlyoutPosTop: AnchoredRegionConfig;
 
 // @public
 export const FlyoutPosTopFill: AnchoredRegionConfig;
-
-// @public
-export const focusVisible: string;
 
 // @public
 export const forcedColorsStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
@@ -1377,9 +1365,6 @@ export type GenerateHeaderOptions = typeof GenerateHeaderOptions[keyof typeof Ge
 
 // @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
-
-// @public
-export const hidden = ":host([hidden]){display:none}";
 
 // @public
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "center" | "unset";
