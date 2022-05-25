@@ -14,6 +14,7 @@ export class MediaQueryList {
     matches = false;
 }
 
+/* eslint-disable-next-line */
 export interface CSSRule {}
 export class CSSStyleSheet extends MinimalCSSStyleSheet {
     public readonly cssRules: CSSRule[] = [];

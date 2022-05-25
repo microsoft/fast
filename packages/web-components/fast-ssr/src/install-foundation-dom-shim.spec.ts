@@ -1,4 +1,4 @@
-import "./uninstall-dom-shim.js";
+import "./test-utilities/uninstall-dom-shim.js";
 import "./install-foundation-dom-shim.js";
 import { ViewTemplate } from "@microsoft/fast-element";
 import * as Foundation  from "@microsoft/fast-foundation";

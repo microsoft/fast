@@ -3,7 +3,7 @@ import { FASTElement, customElement, css, html, attr } from "@microsoft/fast-ele
 import { expect, test } from '@playwright/test';
 import { FASTElementRenderer } from "./fast-element-renderer.js";
 import fastSSR from "../exports.js";
-import { consolidate } from "../test-utils.js";
+import { consolidate } from "../test-utilities/consolidate.js";
 
 
 @customElement({
