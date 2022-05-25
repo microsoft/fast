@@ -1,3 +1,5 @@
+import {jsdocLinkFix} from "./custom-elements-manifest-plugins.mjs";
+
 export default {
     /** Globs to analyze */
     globs: ['src/**/*.ts'],
@@ -9,4 +11,7 @@ export default {
     dev: false,
     /** Enable special handling for fast */
     fast: true,
+    plugins: [
+        jsdocLinkFix(),
+    ]
 }

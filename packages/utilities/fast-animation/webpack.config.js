@@ -28,7 +28,7 @@ module.exports = (env, args) => {
                     exclude: /\.(test|spec)/,
                     use: [
                         { loader: "babel-loader" },
-                        { loader: "awesome-typescript-loader" },
+                        { loader: "ts-loader" },
                         { loader: "eslint-loader" },
                     ],
                 },

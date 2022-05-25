@@ -1,11 +1,11 @@
-import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
-import { DelegatesARIAListbox } from "../listbox/listbox.js";
 import type { ListboxOption } from "../listbox-option/listbox-option.js";
-import { StartEnd } from "../patterns/start-end.js";
+import { DelegatesARIAListbox } from "../listbox/listbox.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd } from "../patterns/start-end.js";
 import { SelectPosition } from "../select/select.options.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedCombobox } from "./combobox.form-associated.js";
@@ -23,6 +23,17 @@ export type ComboboxOptions = FoundationElementDefinition &
 /**
  * A Combobox Custom HTML Element.
  * Implements the {@link https://w3c.github.io/aria-practices/#combobox | ARIA combobox }.
+ *
+ * @slot start - Content which can be provided before the input
+ * @slot end - Content which can be provided after the input
+ * @slot control - Used to replace the input element representing the combobox
+ * @slot indicator - The visual indicator representing the expanded state
+ * @slot - The default slot for the options
+ * @csspart control - The wrapper element containing the input area, including start and end
+ * @csspart selected-value - The input element representing the selected value
+ * @csspart indicator - The element wrapping the indicator slot
+ * @csspart listbox - The wrapper for the listbox slotted options
+ * @fires change - Fires a custom 'change' event when the value updates
  *
  * @public
  */
@@ -42,7 +53,7 @@ export class Combobox extends FormAssociatedCombobox {
      * HTML Attribute: autocomplete
      */
     @attr({ attribute: "autocomplete", mode: "fromView" })
-    autocomplete: ComboboxAutocomplete | "inline" | "list" | "both" | "none" | undefined;
+    autocomplete: ComboboxAutocomplete | undefined;
 
     /**
      * Reference to the internal text input element.
@@ -198,7 +209,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition;
+    public positionAttribute?: SelectPosition;
 
     /**
      * The current state of the calculated position of the listbox.
@@ -206,9 +217,12 @@ export class Combobox extends FormAssociatedCombobox {
      * @public
      */
     @observable
-    public position: SelectPosition = SelectPosition.below;
-    protected positionChanged() {
-        this.positionAttribute = this.position;
+    public position?: SelectPosition;
+    protected positionChanged(
+        prev: SelectPosition | undefined,
+        next: SelectPosition | undefined
+    ): void {
+        this.positionAttribute = next;
         this.setPositioning();
     }
 
@@ -270,6 +284,7 @@ export class Combobox extends FormAssociatedCombobox {
 
             this.selectedOptions = [captured];
             this.control.value = captured.text;
+            this.clearSelectionRange();
             this.updateValue(true);
         }
 
@@ -422,8 +437,7 @@ export class Combobox extends FormAssociatedCombobox {
                 }
 
                 this.open = false;
-                const controlValueLength = this.control.value.length;
-                this.control.setSelectionRange(controlValueLength, controlValueLength);
+                this.clearSelectionRange();
                 break;
             }
 
@@ -656,6 +670,14 @@ export class Combobox extends FormAssociatedCombobox {
             this.$emit("change");
         }
     }
+
+    /**
+     * @internal
+     */
+    private clearSelectionRange() {
+        const controlValueLength = this.control.value.length;
+        this.control.setSelectionRange(controlValueLength, controlValueLength);
+    }
 }
 
 /**
@@ -672,7 +694,7 @@ export class DelegatesARIACombobox {
      * HTML Attribute: `aria-autocomplete`
      */
     @observable
-    public ariaAutoComplete: "inline" | "list" | "both" | "none" | undefined;
+    public ariaAutoComplete: "inline" | "list" | "both" | "none" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#aria-controls} for more information.
@@ -682,7 +704,7 @@ export class DelegatesARIACombobox {
      * HTML Attribute: `aria-controls`
      */
     @observable
-    public ariaControls: string;
+    public ariaControls: string | null;
 }
 
 /**

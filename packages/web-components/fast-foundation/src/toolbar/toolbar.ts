@@ -47,6 +47,12 @@ const ToolbarArrowKeyMap = Object.freeze({
  * A Toolbar Custom HTML Element.
  * Implements the {@link https://w3c.github.io/aria-practices/#Toolbar|ARIA Toolbar}.
  *
+ * @slot start - Content which can be provided before the slotted items
+ * @slot end - Content which can be provided after the slotted items
+ * @slot - The default slot for slotted items
+ * @slot label - The toolbar label
+ * @csspart positioning-region - The element containing the items, start and end slots
+ *
  * @public
  */
 export class Toolbar extends FoundationElement {
@@ -134,23 +140,20 @@ export class Toolbar extends FoundationElement {
         return true;
     }
 
+    @observable
+    public childItems: Element[];
+    protected childItemsChanged(prev: undefined | Element[], next: Element[]): void {
+        if (this.$fastController.isConnected) {
+            this.reduceFocusableElements();
+        }
+    }
+
     /**
      * @internal
      */
     public connectedCallback() {
         super.connectedCallback();
         this.direction = getDirection(this);
-        this.start.addEventListener("slotchange", this.startEndSlotChange);
-        this.end.addEventListener("slotchange", this.startEndSlotChange);
-    }
-
-    /**
-     * @internal
-     */
-    public disconnectedCallback() {
-        super.disconnectedCallback();
-        this.start.removeEventListener("slotchange", this.startEndSlotChange);
-        this.end.removeEventListener("slotchange", this.startEndSlotChange);
     }
 
     /**
@@ -227,10 +230,20 @@ export class Toolbar extends FoundationElement {
      * @internal
      */
     protected reduceFocusableElements(): void {
+        const previousFocusedElement = this.focusableElements?.[this.activeIndex];
+
         this.focusableElements = this.allSlottedItems.reduce(
             Toolbar.reduceFocusableItems,
             []
         );
+
+        // If the previously active item is still focusable, adjust the active index to the
+        // index of that item.
+        const adjustedActiveIndex = this.focusableElements.indexOf(
+            previousFocusedElement
+        );
+        this.activeIndex = Math.max(0, adjustedActiveIndex);
+
         this.setFocusableElements();
     }
 
@@ -266,10 +279,12 @@ export class Toolbar extends FoundationElement {
         ).some(x => isFocusable(x));
 
         if (
-            isFocusable(element) ||
-            isRoleRadio ||
-            isFocusableFastElement ||
-            hasFocusableShadow
+            !element.hasAttribute("disabled") &&
+            !element.hasAttribute("hidden") &&
+            (isFocusable(element) ||
+                isRoleRadio ||
+                isFocusableFastElement ||
+                hasFocusableShadow)
         ) {
             elements.push(element);
             return elements;
@@ -294,12 +309,6 @@ export class Toolbar extends FoundationElement {
             });
         }
     }
-
-    private startEndSlotChange = (): void => {
-        if (this.$fastController.isConnected) {
-            this.reduceFocusableElements();
-        }
-    };
 }
 
 /**
@@ -315,7 +324,7 @@ export class DelegatesARIAToolbar {
      * HTML Attribute: aria-labelledby
      */
     @attr({ attribute: "aria-labelledby" })
-    public ariaLabelledby: string;
+    public ariaLabelledby: string | null;
 
     /**
      * The label surfaced to assistive technologies.
@@ -325,7 +334,7 @@ export class DelegatesARIAToolbar {
      * HTML Attribute: aria-label
      */
     @attr({ attribute: "aria-label" })
-    public ariaLabel: string;
+    public ariaLabel: string | null;
 }
 
 /**

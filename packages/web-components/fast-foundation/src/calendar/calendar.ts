@@ -69,6 +69,10 @@ export type CalendarOptions = FoundationElementDefinition &
 
 /**
  * Calendar component
+ *
+ * @slot - The default slot for calendar content
+ * @fires dateselected - Fires a custom 'dateselected' event when Enter is invoked via keyboard on a date
+ *
  * @public
  */
 export class Calendar extends FoundationElement {

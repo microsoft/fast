@@ -96,6 +96,7 @@ export interface ColumnDefinition {
 /**
  * A Data Grid Custom HTML Element.
  *
+ * @slot - The default slot for custom row elements
  * @public
  */
 export class DataGrid extends FoundationElement {
@@ -160,8 +161,7 @@ export class DataGrid extends FoundationElement {
      * HTML Attribute: generate-header
      */
     @attr({ attribute: "generate-header" })
-    public generateHeader: GenerateHeaderOptions | "none" | "default" | "sticky" =
-        GenerateHeaderOptions.default;
+    public generateHeader: GenerateHeaderOptions = GenerateHeaderOptions.default;
     private generateHeaderChanged(): void {
         if (this.$fastController.isConnected) {
             this.toggleGeneratedHeader();

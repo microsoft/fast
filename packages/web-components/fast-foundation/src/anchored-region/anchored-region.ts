@@ -74,6 +74,10 @@ interface Dimension {
 /**
  * An anchored region Custom HTML Element.
  *
+ * @slot - The default slot for the content
+ * @fires loaded - Fires a custom 'loaded' event when the region is loaded and visible
+ * @fires positionchange - Fires a custom 'positionchange' event when the position has changed
+ *
  * @public
  */
 export class AnchoredRegion extends FoundationElement {
@@ -1022,7 +1026,9 @@ export class AnchoredRegion extends FoundationElement {
         switch (this.horizontalScaling) {
             case "anchor":
             case "fill":
-                nextRegionWidth = nextPositionerDimension.width;
+                nextRegionWidth = this.horizontalViewportLock
+                    ? this.viewportRect.width
+                    : nextPositionerDimension.width;
                 this.regionWidth = `${nextRegionWidth}px`;
                 break;
 
@@ -1131,7 +1137,9 @@ export class AnchoredRegion extends FoundationElement {
         switch (this.verticalScaling) {
             case "anchor":
             case "fill":
-                nextRegionHeight = nextPositionerDimension.height;
+                nextRegionHeight = this.verticalViewportLock
+                    ? this.viewportRect.height
+                    : nextPositionerDimension.height;
                 this.regionHeight = `${nextRegionHeight}px`;
                 break;
 

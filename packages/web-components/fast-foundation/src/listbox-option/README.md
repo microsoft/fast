@@ -3,6 +3,7 @@ id: listbox-option
 title: fast-option
 sidebar_label: option
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/listbox-option/README.md
+description: fast-option is a web component implementation of an option.
 ---
 
 An implementation of an [option](https://w3c.github.io/aria/#option). To avoid namespace collisions with the [Option() constructor](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement/Option), the component class is `ListboxOption`, and our implementation is named `fast-option`.
@@ -60,6 +61,7 @@ export const myOption = ListboxOption.compose({
 | Name                | Privacy   | Type                                  | Default                                                                                                                                                 | Description                                                                                                                                                                          | Inherited From    |
 | ------------------- | --------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `checked`           | public    | `boolean or undefined`                |                                                                                                                                                         | The checked state is used when the parent listbox is in multiple selection mode. To avoid accessibility conflicts, the checked state should not be present in single selection mode. |                   |
+| `content`           | public    | `Node[]`                              |                                                                                                                                                         | The default slotted content.                                                                                                                                                         |                   |
 | `defaultSelected`   | public    | `boolean`                             | `false`                                                                                                                                                 | The defaultSelected state of the option.                                                                                                                                             |                   |
 | `disabled`          | public    | `boolean`                             |                                                                                                                                                         | The disabled state of the option.                                                                                                                                                    |                   |
 | `selectedAttribute` | public    | `boolean`                             |                                                                                                                                                         | The selected attribute value. This sets the initial selected value.                                                                                                                  |                   |
@@ -96,18 +98,32 @@ export const myOption = ListboxOption.compose({
 | `selected` | selectedAttribute |                |
 | `value`    | initialValue      |                |
 
+#### CSS Parts
+
+| Name      | Description                      |
+| --------- | -------------------------------- |
+| `content` | Wraps the listbox option content |
+
+#### Slots
+
+| Name    | Description                                                     |
+| ------- | --------------------------------------------------------------- |
+| `start` | Content which can be provided before the listbox option content |
+| `end`   | Content which can be provided after the listbox option content  |
+|         | The default slot for listbox option content                     |
+
 <hr/>
 
 ### class: `DelegatesARIAListboxOption`
 
 #### Fields
 
-| Name           | Privacy | Type                             | Default | Description                                                            | Inherited From |
-| -------------- | ------- | -------------------------------- | ------- | ---------------------------------------------------------------------- | -------------- |
-| `ariaChecked`  | public  | `"true" or "false" or undefined` |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
-| `ariaPosInSet` | public  | `string`                         |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
-| `ariaSelected` | public  | `"true" or "false" or undefined` |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
-| `ariaSetSize`  | public  | `string`                         |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
+| Name           | Privacy | Type                                  | Default | Description                                                            | Inherited From |
+| -------------- | ------- | ------------------------------------- | ------- | ---------------------------------------------------------------------- | -------------- |
+| `ariaChecked`  | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
+| `ariaPosInSet` | public  | `string or null`                      |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
+| `ariaSelected` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
+| `ariaSetSize`  | public  | `string or null`                      |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
 
 <hr/>
 

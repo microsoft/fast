@@ -3,6 +3,7 @@ id: radio
 title: fast-radio
 sidebar_label: radio
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/radio/README.md
+description: fast-radio is an implementation of a radio as a form-connected web component.
 ---
 
 An implementation of a [radio](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio) as a form-connected web-component.
@@ -104,11 +105,31 @@ export const myRadio = Radio.compose<RadioOptions>({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
+#### Events
+
+| Name     | Type | Description                                                | Inherited From |
+| -------- | ---- | ---------------------------------------------------------- | -------------- |
+| `change` |      | Emits a custom change event when the checked state changes |                |
+
 #### Attributes
 
 | Name       | Field    | Inherited From |
 | ---------- | -------- | -------------- |
 | `readonly` | readOnly |                |
+
+#### CSS Parts
+
+| Name      | Description                                       |
+| --------- | ------------------------------------------------- |
+| `control` | The element representing the visual radio control |
+| `label`   | The label                                         |
+
+#### Slots
+
+| Name                | Description                    |
+| ------------------- | ------------------------------ |
+| `checked-indicator` | The checked indicator          |
+|                     | The default slot for the label |
 
 <hr/>
 

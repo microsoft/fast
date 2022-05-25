@@ -816,7 +816,7 @@ describe("TextField", () => {
 
             form.reset();
 
-            assert(element.value === "");
+            assert((element as TextField).value === "");
 
             await disconnect();
         });
@@ -839,7 +839,7 @@ describe("TextField", () => {
 
             form.reset();
 
-            assert(element.value === "attr-value");
+            assert((element as TextField).value === "attr-value");
 
             await disconnect();
         });
@@ -859,11 +859,11 @@ describe("TextField", () => {
 
             form.reset();
 
-            assert(element.value === "attr-value");
+            assert((element as TextField).value === "attr-value");
 
             element.setAttribute("value", "new-attr-value");
 
-            assert(element.value === "new-attr-value");
+            assert((element as TextField).value === "new-attr-value");
             await disconnect();
         });
     });

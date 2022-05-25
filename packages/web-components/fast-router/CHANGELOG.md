@@ -1,8 +1,36 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Tue, 12 Apr 2022 07:13:35 GMT and should not be manually modified.
+This log was last generated on Tue, 24 May 2022 07:10:02 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.2
+
+Tue, 24 May 2022 07:10:02 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.10.2 (roeisenb@microsoft.com)
+
+## 0.4.1
+
+Tue, 03 May 2022 07:15:44 GMT
+
+### Patches
+
+- Upgraded api-extractor (44823142+williamw2@users.noreply.github.com)
+
+## 0.4.0
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Minor changes
+
+- update to typescript 4.6.2 and update ARIAMixin typings (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.10.0 (chhol@microsoft.com)
 
 ## 0.3.0
 
