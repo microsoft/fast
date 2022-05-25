@@ -122,6 +122,24 @@ describe("Switch", () => {
         await disconnect();
     });
 
+    it("should set the `aria-required` attribute equal to the `required` value", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.required = true;
+
+        await connect();
+
+        expect(element.getAttribute("aria-required")).to.equal("true");
+
+        element.required = false;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-required")).to.equal("false");
+
+        await disconnect();
+    });
+
     it("should set a tabindex of 0 on the element", async () => {
         const { element, connect, disconnect } = await setup();
 
