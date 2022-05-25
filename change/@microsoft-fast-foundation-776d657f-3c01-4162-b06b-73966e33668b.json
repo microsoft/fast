@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "add missing binding for required attribute in the switch template",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

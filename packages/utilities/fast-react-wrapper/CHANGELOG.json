@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Wed, 25 May 2022 07:09:21 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.3.8",
+      "version": "0.3.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.46.7",
+            "author": "chhol@microsoft.com",
+            "commit": "352e888d8e30f4c1174264d15139f2cffc06c81a",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 24 May 2022 07:10:02 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.3.7",
       "version": "0.3.7",

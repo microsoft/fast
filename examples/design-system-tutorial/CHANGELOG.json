@@ -2,6 +2,21 @@
   "name": "fast-design-system-demo",
   "entries": [
     {
+      "date": "Wed, 25 May 2022 07:09:21 GMT",
+      "tag": "fast-design-system-demo_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.46.7",
+            "author": "chhol@microsoft.com",
+            "commit": "352e888d8e30f4c1174264d15139f2cffc06c81a",
+            "package": "fast-design-system-demo"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 24 May 2022 07:10:02 GMT",
       "tag": "fast-design-system-demo_v1.0.0",
       "version": "1.0.0",

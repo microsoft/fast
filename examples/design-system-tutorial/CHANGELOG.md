@@ -1,8 +1,16 @@
 # Change Log - fast-design-system-demo
 
-This log was last generated on Tue, 24 May 2022 07:10:02 GMT and should not be manually modified.
+This log was last generated on Wed, 25 May 2022 07:09:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0
+
+Wed, 25 May 2022 07:09:21 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.7 (chhol@microsoft.com)
 
 ## 1.0.0
 

@@ -2,6 +2,21 @@
   "name": "@microsoft/site-utilities",
   "entries": [
     {
+      "date": "Wed, 25 May 2022 07:09:21 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.46.7",
+            "author": "chhol@microsoft.com",
+            "commit": "352e888d8e30f4c1174264d15139f2cffc06c81a",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 24 May 2022 07:10:02 GMT",
       "tag": "@microsoft/site-utilities_v0.9.0",
       "version": "0.9.0",

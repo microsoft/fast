@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 24 May 2022 07:10:02 GMT and should not be manually modified.
+This log was last generated on Wed, 25 May 2022 07:09:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.7
+
+Wed, 25 May 2022 07:09:21 GMT
+
+### Patches
+
+- add missing binding for required attribute in the switch template (chhol@microsoft.com)
 
 ## 2.46.6
 
