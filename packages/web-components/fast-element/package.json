@@ -41,6 +41,10 @@
     "./utilities.js": {
       "types": "./dist/dts/utilities.d.ts",
       "default": "./dist/esm/utilities.js"
+    },
+    "./hooks.js": {
+      "types": "./dist/dts/hooks.d.ts",
+      "default": "./dist/esm/hooks.js"
     }
   },
   "unpkg": "dist/fast-element.min.js",
