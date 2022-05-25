@@ -116,15 +116,15 @@ export const myTabs = Tabs.compose({
 
 #### Fields
 
-| Name              | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| ----------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `orientation`     | public  | `TabsOrientation`                     |         | The orientation                                                                                                                                                                     |                   |
-| `activeid`        | public  | `string`                              |         | The id of the active tab                                                                                                                                                            |                   |
-| `activeindicator` | public  | `boolean`                             | `true`  | Whether or not to show the active indicator                                                                                                                                         |                   |
-| `activetab`       | public  | `HTMLElement`                         |         | A reference to the active tab                                                                                                                                                       |                   |
-| `$presentation`   | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`        | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`          | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name                  | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `orientation`         | public  | `TabsOrientation`                     |         | The orientation                                                                                                                                                                     |                   |
+| `activeid`            | public  | `string`                              |         | The id of the active tab                                                                                                                                                            |                   |
+| `hideActiveIndicator` | public  | `boolean`                             | `false` | Whether or not to show the active indicator                                                                                                                                         |                   |
+| `activetab`           | public  | `HTMLElement`                         |         | A reference to the active tab                                                                                                                                                       |                   |
+| `$presentation`       | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`            | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`              | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -142,11 +142,11 @@ export const myTabs = Tabs.compose({
 
 #### Attributes
 
-| Name          | Field           | Inherited From |
-| ------------- | --------------- | -------------- |
-| `orientation` | orientation     |                |
-| `activeid`    | activeid        |                |
-|               | activeindicator |                |
+| Name                    | Field               | Inherited From |
+| ----------------------- | ------------------- | -------------- |
+| `orientation`           | orientation         |                |
+| `activeid`              | activeid            |                |
+| `hide-active-indicator` | hideActiveIndicator |                |
 
 #### CSS Parts
 
