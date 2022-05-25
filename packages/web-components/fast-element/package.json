@@ -71,7 +71,7 @@
     "test-firefox:verbose": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "7.23.1",
+    "@microsoft/api-extractor": "7.24.2",
     "@types/chai": "^4.2.11",
     "@types/chai-spies": "^1.0.3",
     "@types/karma": "^5.0.0",
@@ -107,7 +107,7 @@
     "ts-node": "^8.9.1",
     "tsconfig-paths": "^3.9.0",
     "tslib": "^2.4.0",
-    "typescript": "4.7.0-beta",
+    "typescript": "^4.7.0",
     "webpack": "^4.44.0"
   }
 }
