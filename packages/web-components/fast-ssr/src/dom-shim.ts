@@ -84,9 +84,7 @@ export class ShadowRoot {}
  * @beta
  */
 export class Document {
-    get adoptedStyleSheets() {
-        return [];
-    }
+    public adoptedStyleSheets: ReadonlyArray<CSSStyleSheet> = [];
     createTreeWalker() {
         return {};
     }

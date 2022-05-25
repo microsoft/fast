@@ -1,6 +1,6 @@
 import {
     createWindow as createMinimalWindow,
-    Document as MinimalDocument,
+    CSSStyleSheet as MinimalCSSStyleSheet,
 } from "./dom-shim.js";
 
 /**
@@ -14,10 +14,21 @@ export class MediaQueryList {
     matches = false;
 }
 
+export interface CSSRule {}
+export class CSSStyleSheet extends MinimalCSSStyleSheet {
+    public readonly cssRules: CSSRule[] = [];
+    insertRule(rule: CSSRule, index: number = 0) {
+        this.cssRules.splice(index, 0, rule);
+
+        return index;
+    }
+}
+
 export function createWindow(
     props: { [key: string]: unknown } = {}
 ): { [key: string]: unknown } {
     return createMinimalWindow({
+        CSSStyleSheet,
         MediaQueryList,
         matchMedia: () => new MediaQueryList(),
         ...props,
