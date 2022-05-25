@@ -679,7 +679,7 @@ export interface CSSDesignToken<T extends string | number | boolean | BigInteger
     readonly cssCustomProperty: string;
 }
 
-// @public
+// @public @deprecated
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
 // @public
@@ -1094,7 +1094,7 @@ export class Dialog extends FoundationElement {
 // @public
 export const dialogTemplate: FoundationElementTemplate<ViewTemplate<Dialog>>;
 
-// @public
+// @public @deprecated
 export const disabledCursor = "not-allowed";
 
 // @public
@@ -1117,7 +1117,7 @@ export class Disclosure extends FoundationElement {
 // @public
 export const disclosureTemplate: FoundationElementTemplate<ViewTemplate<Disclosure>>;
 
-// @public
+// @public @deprecated
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
@@ -1243,8 +1243,8 @@ export const FlyoutPosTop: AnchoredRegionConfig;
 // @public
 export const FlyoutPosTopFill: AnchoredRegionConfig;
 
-// @public
-export const focusVisible: string;
+// @public @deprecated
+export const focusVisible = "focus-visible";
 
 // @public
 export const forcedColorsStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
@@ -1378,7 +1378,7 @@ export type GenerateHeaderOptions = typeof GenerateHeaderOptions[keyof typeof Ge
 // @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
 
-// @public
+// @public @deprecated
 export const hidden = ":host([hidden]){display:none}";
 
 // @public
