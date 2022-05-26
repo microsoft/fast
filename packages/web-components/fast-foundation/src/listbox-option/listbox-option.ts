@@ -204,7 +204,7 @@ export class ListboxOption extends FoundationElement {
         return this.textContent?.replace(/\s+/g, " ").trim() ?? "";
     }
 
-    public set value(next: string | unknown) {
+    public set value(next: string) {
         const newValue = `${next ?? ""}`;
         this._value = newValue;
 
@@ -217,7 +217,7 @@ export class ListboxOption extends FoundationElement {
         Observable.notify(this, "value");
     }
 
-    public get value(): string | unknown {
+    public get value(): string {
         Observable.track(this, "value");
         return this._value ?? this.text;
     }

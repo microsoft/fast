@@ -1551,7 +1551,7 @@ export class ListboxOption extends FoundationElement {
     protected selectedChanged(): void;
     // (undocumented)
     get text(): string;
-    set value(next: string | unknown);
+    set value(next: string);
     // (undocumented)
     get value(): string;
 }
