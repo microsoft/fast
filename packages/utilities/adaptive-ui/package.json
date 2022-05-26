@@ -27,8 +27,8 @@
   },
   "homepage": "https://fast.design",
   "scripts": {
-    "build": "tsc -p ./tsconfig.build.json && yarn doc",
-    "build:tests": "tsc -p ./tsconfig.test.json",
+    "build": "tsc -p ./tsconfig.json && yarn doc",
+    "build:tests": "tsc -p ./tsconfig.json",
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
