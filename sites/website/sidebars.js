@@ -143,6 +143,7 @@ module.exports = {
                     customProps: {
                         description:
                             "Exlore the classes and functions of fast-animation.",
+                        keywords: ["fast-animation"],
                     },
                 },
                 {
@@ -151,6 +152,7 @@ module.exports = {
                     customProps: {
                         description:
                             "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-colors.",
+                        keywords: ["fast-colors"],
                     },
                 },
                 {
@@ -159,6 +161,7 @@ module.exports = {
                     customProps: {
                         description:
                             "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-components.",
+                        keywords: ["fast-components"],
                     },
                 },
                 {
@@ -167,6 +170,7 @@ module.exports = {
                     customProps: {
                         description:
                             "Explore the classes, functions, interfaces, variables, and type aliases of fast-element.",
+                        keywords: ["fast-element"],
                     },
                 },
                 {
@@ -175,6 +179,7 @@ module.exports = {
                     customProps: {
                         description:
                             "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-foundation.",
+                        keywords: ["fast-foundation"],
                     },
                 },
             ],

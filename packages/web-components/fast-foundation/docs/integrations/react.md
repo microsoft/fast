@@ -4,6 +4,8 @@ title: React
 sidebar_label: React
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/react.md
 description: FAST can be used in React applications. Let's take a look at how you can set up a project, starting from scratch.
+keywords:
+  - react
 ---
 
 FAST can be used in React applications. Let's take a look at how you can set up a project, starting from scratch.
@@ -189,7 +191,7 @@ When using decorators in a create-react-app setup, you will most likely get this
 :::
 ### Wrapping VanillaJS Web Components
 
-If you have a component from a 3rd party library, not written with FAST, or a VanillaJS Web Component, you can wrap that as well. In this scenario you will have to provide some additional information, such as the element name and the list of properties that should be handled by the wrapper rather than React. Components created with libraries like `Lit` require the element name to be configured but not the properties, while some other libraries or hand-written components may also require the property list. This depends on how the component was defined. Below is an example of configuring both the name and the property list.
+If you have a component from a 3rd party library, not written with FAST, or a VanillaJS Web Component, you can wrap that as well. In this scenario, you will have to provide some additional information, such as the element name and the list of properties that should be handled by the wrapper rather than React. Components created with libraries like `Lit` require the element name to be configured but not the properties, while some other libraries or hand-written components may also require the property list. This depends on how the component was defined. Below is an example of configuring both the name and the property list.
 
 ```ts
 import { CoolComponent as _CoolComponent } from '@cool/component';
@@ -234,7 +236,7 @@ export const FastMenuItem = wrap(
 ### create-react-app
 
 FAST makes use of decorators to define components. At this time, `create-react-app` [does not support decorators](https://create-react-app.dev/docs/can-i-use-decorators/). This won't be a problem when using components *imported* from FAST because they have already been transpiled by TypeScript - but to *create* components in a `create-react-app` application you'll need to do one of the following:
-- [Define components without decorators](https://fast.design/docs/fast-element/defining-elements#working-without-decorators)
+- [Define components without decorators](../fast-element/defining-elements.md#working-without-decorators)
 - [Eject](https://create-react-app.dev/docs/available-scripts#npm-run-eject)`create-react-app` and change Babel to support decorators 
 - Use an intermediary like [react-app-rewired](https://www.npmjs.com/package/react-app-rewired)
 

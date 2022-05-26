@@ -4,6 +4,9 @@ title: Creating a Component Library
 sidebar_label: Creating a Component Library
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/creating-a-component-library.md
 description: Not only is FAST great for creating individual components, but it also shines when creating libraries or systems of components.
+keywords:
+    - foundation components
+    - design systems
 ---
 
 Not only is FAST great for creating individual components, but it also shines when creating libraries or systems of components. FAST Foundation exposes several powerful abstractions in order to enable library authors to provide ergonomic APIs to application authors. These APIs ensure that app authors who consume your library have a consistent way to configure, augment, and override various details of the components. For example:
@@ -36,7 +39,7 @@ One important detail to note is that we do not use the `@customElement` decorato
 
 ### Define Templates and Styles 
 
-With our `Counter` component class written, we now need to define its templates and styles. There are two ways to accomplish this. Just like `FASTElement`, a component that extends `FoundationElement` can be used with the [`html`](/docs/fast-element/declaring-templates) and [`css`](/docs/fast-element/leveraging-css) tagged template literals. So, we could define our template and styles in the same fashion as any other component, like this:
+With our `Counter` component class written, we now need to define its templates and styles. There are two ways to accomplish this. Just like `FASTElement`, a component that extends `FoundationElement` can be used with the [`html`](../fast-element/declaring-templates.md) and [`css`](../fast-element/leveraging-css.md) tagged template literals. So, we could define our template and styles in the same fashion as any other component, like this:
 
 ```ts
 import { html, css  } from "@microsoft/fast-element";
@@ -45,7 +48,7 @@ const counterStyles = css`/* ... */`;
 const counterTemplate = html`<!-- ... -->`;
 ```
 
-However, a `FoundationElement` also supports a lazily-defined template and style type. This lazy option is a function invoked with [ElementDefinitionContext](/docs/api/fast-foundation.elementdefinitioncontext) and [FoundationElementDefinition](/docs/api/fast-foundation.foundationelementdefinition) options, providing opportunity to adjust the template or styles based on how the element or other elements are defined. Lazy template and style definitions provide incredible flexibility, and are what can allow application authors to re-name component tag names, override default slotted content, and communicate any component-specific configuration options. Here's how we would convert the previous standard templates and styles into lazy templates and styles:
+However, a `FoundationElement` also supports a lazily-defined template and style type. This lazy option is a function invoked with [ElementDefinitionContext](../api/fast-foundation.elementdefinitioncontext.md) and [FoundationElementDefinition](../api/fast-foundation.foundationelementdefinition.md) options, providing opportunity to adjust the template or styles based on how the element or other elements are defined. Lazy template and style definitions provide incredible flexibility and are what can allow application authors to re-name component tag names, override default slotted content, and communicate any component-specific configuration options. Here's how we would convert the previous standard templates and styles into lazy templates and styles:
 
 ```ts
 import { html, css  } from "@microsoft/fast-element";
@@ -195,7 +198,7 @@ export const buttonStyles = styles;
 
 As a practice, always be sure to export your styles independently as well. This enables the consumers of your components to build their own versions of your component, reusing and augmenting your styles as needed.
 
-When authoring your own styles, you'll also want to leverage design tokens. Please see [the design token documentation](/docs/design-systems/design-tokens) for how to create and use design tokens.
+When authoring your own styles, you'll also want to leverage design tokens. Please see [the design token documentation](./design-tokens.md) for how to create and use design tokens.
 
 ### Creating a design system provider function
 
@@ -207,7 +210,7 @@ export function provideSpecialDesignSystem(element?: HTMLElement): DesignSystem 
 }
 ```
 
-The underlying `DesignSystem.getOrCreate` API gets the design system directly attached to the provided element. If one does not exist, it creates one. By default, if no element is provided, the design system is created on the `document.body`. Using this function abstracts those details and provides a much improved set of ergonomics to those using your components, while also giving you the opportunity to bake in certain configuration yourself, such as defining the default element prefix.
+The underlying `DesignSystem.getOrCreate` API gets the design system directly attached to the provided element. If one does not exist, it creates one. By default, if no element is provided, the design system is created on the `document.body`. Using this function abstracts those details and provides a much-improved set of ergonomics to those using your components, while also giving you the opportunity to bake in certain configuration yourself, such as defining the default element prefix.
 
 Now consumers of your components can setup your design system in their application with the button component as follows:
 
