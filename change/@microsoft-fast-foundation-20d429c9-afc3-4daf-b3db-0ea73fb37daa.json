@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Revert \"fix: add missing required attribute binding to switch template (#6014)\"",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "burtonsmith@microsoft.com",
-  "dependentChangeType": "patch"
-}
