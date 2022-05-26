@@ -1,9 +1,6 @@
 # FAST Router
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-foundation.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-router)
-
-The `fast-router` package contains a history-based navigation and routing solution designed around web components. By using `fast-router`, you can create multi-page and full application experiences.
+The `@microsoft/fast-router` package contains a history-based navigation and routing solution designed around Web Components. By using `fast-router`, you can create multi-page and full application experiences. The router works with any Web Components, but has special support for Web Components built on FAST.
 
 ## Installation
 
@@ -27,35 +24,9 @@ import { FASTRouter } from '@microsoft/fast-router';
 
 Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](https://fast.design/docs/integrations/introduction).
 
-### From CDN
-
-A pre-bundled script that contains all APIs needed to use FAST Router and FAST Element is available on CDN. You can use this script by adding [`type="module"`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) to the script element and then importing from the CDN.
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <script type="module">
-          import { FASTRouter } from "https://cdn.jsdelivr.net/npm/@microsoft/fast-router/dist/fast-router.min.js";
-
-          // your code here
-        </script>
-    </head>
-    <!-- ... -->
-</html>
-```
-
-The markup above always references the latest release. When deploying to production, you will want to ship with a specific version. Here's an example of the markup for that:
-
-```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-router@0.2.11/dist/fast-router.min.js"></script>
-```
-
-:::note
-For simplicity, examples throughout the documentation will assume the library has been installed from NPM, but you can always replace the import location with the CDN URL.
-:::
-
 ## Configuration at a Glance
+
+The router is currently in `alpha` while we address a few bugs, finish up some final polish, and write the full documentation. Below is a quick sample of how to configure the router, to help get you going while we complete the full documentation.
 
 #### A Sample Route Configuration
 
