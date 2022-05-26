@@ -7,8 +7,10 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.12.13",
-    "@babel/preset-env": "^7.12.13",
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/runtime": "^7.18.3",
+    "@babel/plugin-transform-runtime": "^7.18.2",
     "@fluentui/svg-icons": "^1.1.139",
     "@microsoft/fast-components": "^2.30.6",
     "@microsoft/fast-element": "^1.10.1",
