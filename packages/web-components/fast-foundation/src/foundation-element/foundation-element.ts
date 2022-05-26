@@ -205,8 +205,7 @@ function resolveOption<T, K extends FoundationElementDefinition>(
 
 /**
  * Registry capable of defining presentation properties for a DOM Container hierarchy.
- *
- * @internal
+ * @public
  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export class FoundationElementRegistry<

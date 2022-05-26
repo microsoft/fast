@@ -8,14 +8,14 @@ import {
 import { isFASTElementHost, Router } from "./router.js";
 
 /**
- * @alpha
+ * @beta
  */
 export type RouterExecutionContext = ExecutionContext & {
     router: Router;
 };
 
 /**
- * @alpha
+ * @beta
  */
 export const RouterExecutionContext = Object.freeze({
     create(router: Router) {
@@ -28,7 +28,7 @@ export const RouterExecutionContext = Object.freeze({
 });
 
 /**
- * @alpha
+ * @beta
  */
 export interface RouteView {
     bind(
@@ -40,7 +40,7 @@ export interface RouteView {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export interface Transition {
     begin(host: HTMLElement, prev: RouteView | null, next: RouteView): Promise<void>;
@@ -49,7 +49,7 @@ export interface Transition {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export const Transition = Object.freeze({
     default: Object.freeze({
@@ -72,7 +72,7 @@ export const Transition = Object.freeze({
 });
 
 /**
- * @alpha
+ * @beta
  */
 export interface Layout {
     beforeCommit(routerElement: HTMLElement): Promise<void>;
@@ -80,7 +80,7 @@ export interface Layout {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class FASTElementLayout implements Layout {
     private styles: ElementStyles | null;
@@ -126,7 +126,7 @@ export class FASTElementLayout implements Layout {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export const Layout = Object.freeze({
     default: new FASTElementLayout(

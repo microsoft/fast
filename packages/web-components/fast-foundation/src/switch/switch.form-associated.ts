@@ -7,7 +7,7 @@ interface _Switch extends CheckableFormAssociated {}
 /**
  * A form-associated base class for the {@link @microsoft/fast-foundation#(Switch:class)} component.
  *
- * @internal
+ * @beta
  */
 export class FormAssociatedSwitch extends CheckableFormAssociated(_Switch) {
     proxy = document.createElement("input");

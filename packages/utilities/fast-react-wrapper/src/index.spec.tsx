@@ -1,7 +1,7 @@
 import { attr, customElement, DOM, FASTElement, html, nullableNumberConverter, observable, Updates } from '@microsoft/fast-element';
 import React from "react";
 import ReactDOM from "react-dom";
-import { uniqueElementName } from '@microsoft/fast-foundation/testing';
+import { uniqueElementName } from '@microsoft/fast-foundation/testing.js';
 import { expect } from "chai";
 import { DesignSystem, FoundationElement } from "@microsoft/fast-foundation";
 import { provideReactWrapper } from './index.js';

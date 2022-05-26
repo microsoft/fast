@@ -11,7 +11,7 @@ import { NavigationPhaseHook, NavigationPhaseName } from "./phases.js";
 import { DefaultRouteRecognizer, RouteRecognizer } from "./recognizer.js";
 
 /**
- * @alpha
+ * @beta
  */
 export abstract class RouterConfiguration<TSettings = any> {
     private isConfigured = false;

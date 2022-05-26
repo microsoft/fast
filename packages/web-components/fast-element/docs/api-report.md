@@ -183,8 +183,6 @@ export interface ChildListDirectiveOptions<T = any> extends NodeBehaviorOptions<
 // @public
 export function children<T = any>(propertyOrOptions: (keyof T & string) | ChildListDirectiveOptions<keyof T & string>): CaptureType<T>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "ChildrenDirective" is marked as @public, but its signature references "NodeObservationDirective" which is marked as @internal
-//
 // @public
 export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> {
     constructor(options: ChildrenDirectiveOptions);
@@ -320,11 +318,9 @@ export type ElementsFilter = (value: Node, index: number, array: Node[]) => bool
 
 // @public
 export class ElementStyles {
-    constructor(
-    styles: ReadonlyArray<ComposableStyles>);
+    constructor(styles: ReadonlyArray<ComposableStyles>);
     // @internal (undocumented)
     addStylesTo(target: StyleTarget): void;
-    // @internal (undocumented)
     readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
     // @internal (undocumented)
     isAttachedTo(target: StyleTarget): boolean;
@@ -332,7 +328,7 @@ export class ElementStyles {
     removeStylesFrom(target: StyleTarget): void;
     static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void;
     get strategy(): StyleStrategy;
-    // @internal (undocumented)
+    // (undocumented)
     readonly styles: ReadonlyArray<ComposableStyles>;
     static readonly supportsAdoptedStyleSheets: boolean;
     withBehaviors(...behaviors: Behavior<HTMLElement>[]): this;
@@ -352,9 +348,7 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
     type: "element";
 }
 
-// Warning: (ae-internal-missing-underscore) The name "emptyArray" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export const emptyArray: readonly never[];
 
 // @public
@@ -546,9 +540,7 @@ export interface NodeBehaviorOptions<T = any> {
     property: T;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "NodeObservationDirective" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export abstract class NodeObservationDirective<T extends NodeBehaviorOptions> extends StatelessAttachedAttributeDirective<T> {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
     protected computeNodes(target: any): Node[];
@@ -683,7 +675,6 @@ export function repeat<TSource = any, TArray extends ReadonlyArray<any> = Readon
 export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     constructor(location: Node, itemsBinding: Binding<TSource, any[]>, isItemsBindingVolatile: boolean, templateBinding: Binding<TSource, SyntheticViewTemplate>, isTemplateBindingVolatile: boolean, options: RepeatOptions);
     bind(source: TSource, context: ExecutionContext): void;
-    // @internal (undocumented)
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
 }
@@ -730,8 +721,6 @@ export class SignalBinding extends UpdateBinding {
 // @public
 export function slotted<T = any>(propertyOrOptions: (keyof T & string) | SlottedDirectiveOptions<keyof T & string>): CaptureType<T>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "SlottedDirective" is marked as @public, but its signature references "NodeObservationDirective" which is marked as @internal
-//
 // @public
 export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveOptions> {
     disconnect(target: EventSource): void;
