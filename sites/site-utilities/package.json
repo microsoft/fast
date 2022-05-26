@@ -38,6 +38,6 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@microsoft/fast-foundation": "^2.46.8"
+    "@microsoft/fast-foundation": "^2.46.2"
   }
 }
