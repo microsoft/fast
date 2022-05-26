@@ -27,9 +27,9 @@ module.exports = {
         },
         docs: {
             sidebar: {
-              hideable: true,
-              autoCollapseCategories: true,
-            }
+                hideable: true,
+                autoCollapseCategories: true,
+            },
         },
         navbar: {
             logo: {
@@ -49,6 +49,10 @@ module.exports = {
                     type: "doc",
                     docId: "introduction",
                     label: "Docs",
+                    position: "left",
+                },
+                {
+                    type: "docsVersionDropdown",
                     position: "left",
                 },
                 {
@@ -145,6 +149,15 @@ module.exports = {
                     // Refer to https://github.com/microsoft/fast/issues/5865 effects of using true
                     showLastUpdateTime: false,
                     remarkPlugins: [require("mdx-mermaid")],
+                    lastVersion: "current",
+                    versions: {
+                        current: {
+                            label: "current version",
+                        },
+                        legacy: {
+                            label: "legacy version",
+                        },
+                    },
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css"),
