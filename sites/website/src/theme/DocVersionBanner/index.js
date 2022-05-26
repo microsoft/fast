@@ -39,7 +39,7 @@ function UnmaintainedVersionLabel({ siteTitle, versionMetadata }) {
             }}
         >
             {
-                "This is documentation for {siteTitle} {versionLabel}, which is no longer actively maintained."
+                "This documentation refers to the {versionLabel} of FAST’s packages, which include versions below @microsoft/fast-element@2.0.0 and @microsoft/fast-foundation@3.0.0."
             }
         </Translate>
     );
