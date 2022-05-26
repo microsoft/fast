@@ -1,7 +1,7 @@
 import { DOM } from "../dom.js";
 import { calcSplices, newSplice, projectArraySplices } from "./array-change-records.js";
 import type { Splice } from "./array-change-records.js";
-import { SubscriberSet } from "./notifier.js";
+import { Subscriber, SubscriberSet } from "./notifier.js";
 import type { Notifier } from "./notifier.js";
 import { Observable } from "./observable.js";
 
@@ -39,6 +39,11 @@ class ArrayObserver extends SubscriberSet {
             value: this,
             enumerable: false,
         });
+    }
+
+    public subscribe(subscriber: Subscriber): void {
+        this.flush();
+        super.subscribe(subscriber);
     }
 
     public addSplice(splice: Splice): void {

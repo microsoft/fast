@@ -2,6 +2,119 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 26 May 2022 07:11:44 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.8",
+      "version": "2.46.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Revert \"fix: add missing required attribute binding to switch template (#6014)\"",
+            "author": "burtonsmith@microsoft.com",
+            "commit": "cbee01dd556ff6f32e1d35aef07eaad41e4eb44e",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 25 May 2022 07:09:21 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.7",
+      "version": "2.46.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add missing binding for required attribute in the switch template",
+            "author": "chhol@microsoft.com",
+            "commit": "352e888d8e30f4c1174264d15139f2cffc06c81a",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 24 May 2022 07:10:02 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.6",
+      "version": "2.46.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "476be7672653b2e63b9ab771949718aa8f43df0d",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 22 May 2022 07:09:02 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.5",
+      "version": "2.46.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "disable keyboard controls for readonly sliders",
+            "author": "burtonsmith@microsoft.com",
+            "commit": "3e3309619b1292242881016ba46a4ef720a41f80",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Update blazor.md",
+            "author": "vnbaaij@outlook.com",
+            "commit": "d1f012e9ce9e6f7d3a0a199cbb15baa917f583af",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 19 May 2022 07:09:40 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.4",
+      "version": "2.46.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Handle disabled and hidden items in toolbar",
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "commit": "c429fa743a3f03fc4e90b31ae112c7a53d8426fe",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 15 May 2022 07:08:25 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.3",
+      "version": "2.46.3",
+      "comments": {
+        "none": [
+          {
+            "comment": "Documentation updates on Blazor",
+            "author": "16669785+awentzel@users.noreply.github.com",
+            "commit": "529b74d8b42e66266769c5d58f3a24fc93c3d3ba",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 10 May 2022 07:11:04 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.3",
+      "version": "2.46.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "select ignores l&r arrow keys",
+            "author": "scomea@microsoft.com",
+            "commit": "4a3175e8585af03e97b388849f697f8ee5dbe424",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 08 May 2022 07:08:18 GMT",
       "tag": "@microsoft/fast-foundation_v2.46.2",
       "version": "2.46.2",

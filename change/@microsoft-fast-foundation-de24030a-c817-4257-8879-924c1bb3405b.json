@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "select ignores l&r arrow keys",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
