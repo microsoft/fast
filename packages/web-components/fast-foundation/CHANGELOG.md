@@ -1,8 +1,56 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 05 May 2022 07:11:41 GMT and should not be manually modified.
+This log was last generated on Thu, 26 May 2022 07:11:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.8
+
+Thu, 26 May 2022 07:11:44 GMT
+
+### Patches
+
+- Revert "fix: add missing required attribute binding to switch template (#6014)" (burtonsmith@microsoft.com)
+
+## 2.46.7
+
+Wed, 25 May 2022 07:09:21 GMT
+
+### Patches
+
+- add missing binding for required attribute in the switch template (chhol@microsoft.com)
+
+## 2.46.6
+
+Tue, 24 May 2022 07:10:02 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.10.2 (roeisenb@microsoft.com)
+
+## 2.46.5
+
+Sun, 22 May 2022 07:09:02 GMT
+
+### Patches
+
+- disable keyboard controls for readonly sliders (burtonsmith@microsoft.com)
+
+## 2.46.4
+
+Thu, 19 May 2022 07:09:40 GMT
+
+### Patches
+
+- Handle disabled and hidden items in toolbar (20542556+mollykreis@users.noreply.github.com)
+
+## 2.46.3
+
+Tue, 10 May 2022 07:11:04 GMT
+
+### Patches
+
+- select ignores l&r arrow keys (scomea@microsoft.com)
 
 ## 2.46.2
 
