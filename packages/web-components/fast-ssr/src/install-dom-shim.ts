@@ -1,3 +1,3 @@
-import { installWindowOnGlobal } from "./dom-shim.js";
+import { createWindow, installWindowOnGlobal } from "./dom-shim.js";
 
-installWindowOnGlobal();
+installWindowOnGlobal(createWindow());
