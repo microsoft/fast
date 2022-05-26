@@ -46,7 +46,9 @@ export const elements = (selector?: string): ElementsFilter =>
 
 /**
  * A base class for node observation.
- * @internal
+ * @public
+ * @remarks
+ * Internally used by the SlottedDirective and the ChildrenDirective.
  */
 export abstract class NodeObservationDirective<
     T extends NodeBehaviorOptions

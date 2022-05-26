@@ -10,7 +10,7 @@ import { childRouteParameter } from "./routes.js";
 import { Layout, RouterExecutionContext, RouteView, Transition } from "./view.js";
 
 /**
- * @alpha
+ * @beta
  */
 export interface RenderOperation {
     commit(): Promise<void>;
@@ -18,7 +18,7 @@ export interface RenderOperation {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export interface Router<TSettings = any> {
     readonly level: number;
@@ -73,7 +73,7 @@ function findParentRouterForElement(element: HTMLElement) {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export interface RouterElement extends HTMLElement {
     readonly [routerProperty]: Router;
@@ -83,7 +83,7 @@ export interface RouterElement extends HTMLElement {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export const Router = Object.freeze({
     getOrCreateFor(element: HTMLElement) {
@@ -151,14 +151,14 @@ export const Router = Object.freeze({
 });
 
 /**
- * @alpha
+ * @beta
  */
 export function isFASTElementHost(host: HTMLElement): host is HTMLElement & FASTElement {
     return host instanceof FASTElement;
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class DefaultRouter implements Router {
     private parentRouter: Router | null | undefined = void 0;

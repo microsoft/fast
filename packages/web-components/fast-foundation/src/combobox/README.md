@@ -88,6 +88,60 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 
 
+### class: `FormAssociatedCombobox`
+
+#### Superclass
+
+| Name        | Module                                   | Package |
+| ----------- | ---------------------------------------- | ------- |
+| `_Combobox` | src/combobox/combobox.form-associated.ts |         |
+
+#### Mixins
+
+| Name             | Module                                  | Package |
+| ---------------- | --------------------------------------- | ------- |
+| `FormAssociated` | /src/form-associated/form-associated.js |         |
+
+#### Static Fields
+
+| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
+| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
+| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | Listbox        |
+
+#### Fields
+
+| Name               | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| ------------------ | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `proxy`            |           |                                       |         |                                                                                                                                                                                     |                   |
+| `length`           | public    | `number`                              |         | The number of options.                                                                                                                                                              | Listbox           |
+| `options`          | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                | Listbox           |
+| `typeAheadExpired` | protected |                                       |         |                                                                                                                                                                                     | Listbox           |
+| `disabled`         | public    | `boolean`                             |         | The disabled state of the listbox.                                                                                                                                                  | Listbox           |
+| `selectedIndex`    | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   | Listbox           |
+| `selectedOptions`  | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               | Listbox           |
+| `$presentation`    | public    | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`         | public    | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`           | public    | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name                 | Privacy   | Description                                    | Parameters | Return | Inherited From    |
+| -------------------- | --------- | ---------------------------------------------- | ---------- | ------ | ----------------- |
+| `selectFirstOption`  | public    | Moves focus to the first selectable option.    |            | `void` | Listbox           |
+| `setSelectedOptions` | public    | Sets an option as selected and gives it focus. |            |        | Listbox           |
+| `templateChanged`    | protected |                                                |            | `void` | FoundationElement |
+| `stylesChanged`      | protected |                                                |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name | Field    | Inherited From |
+| ---- | -------- | -------------- |
+|      | disabled | Listbox        |
+
+<hr/>
+
+
+
 ### Variables
 
 | Name                   | Description                       | Type                                                              |

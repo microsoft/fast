@@ -68,13 +68,12 @@ export type menuConfigs =
  * A Picker Custom HTML Element.  This is an early "alpha" version of the component.
  * Developers should expect the api to evolve, breaking changes are possible.
  *
- * @alpha
+ * @beta
  */
 export class Picker extends FormAssociatedPicker {
     /**
      * Currently selected items. Comma delineated string ie. "apples,oranges".
      *
-     * @alpha
      * @remarks
      * HTML Attribute: selection
      */
@@ -93,7 +92,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Currently available options. Comma delineated string ie. "apples,oranges".
      *
-     * @alpha
      * @remarks
      * HTML Attribute: options
      */
@@ -109,7 +107,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Whether the component should remove an option from the list when it is in the selection
      *
-     * @alpha
      * @remarks
      * HTML Attribute: filter-selected
      */
@@ -119,7 +116,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Whether the component should remove options based on the current query
      *
-     * @alpha
      * @remarks
      * HTML Attribute: filter-query
      */
@@ -129,7 +125,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * The maximum number of items that can be selected.
      *
-     * @alpha
      * @remarks
      * HTML Attribute: max-selected
      */
@@ -139,7 +134,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * The text to present to assistive technolgies when no suggestions are available.
      *
-     * @alpha
      * @remarks
      * HTML Attribute: no-suggestions-text
      */
@@ -149,7 +143,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      *  The text to present to assistive technolgies when suggestions are available.
      *
-     * @alpha
      * @remarks
      * HTML Attribute: suggestions-available-text
      */
@@ -159,7 +152,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * The text to present to assistive technologies when suggestions are loading.
      *
-     * @alpha
      * @remarks
      * HTML Attribute: loading-text
      */
@@ -169,7 +161,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Applied to the aria-label attribute of the input element
      *
-     * @alpha
      * @remarks
      * HTML Attribute: label
      */
@@ -179,7 +170,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Applied to the aria-labelledby attribute of the input element
      *
-     * @alpha
      * @remarks
      * HTML Attribute: labelledby
      */
@@ -189,7 +179,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Applied to the placeholder attribute of the input element
      *
-     * @alpha
      * @remarks
      * HTML Attribute: placholder
      */
@@ -199,7 +188,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Controls menu placement
      *
-     * @alpha
      * @remarks
      * HTML Attribute: menu-placement
      */
@@ -214,7 +202,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Whether to display a loading state if the menu is opened.
      *
-     * @alpha
      */
     @observable
     public showLoading: boolean = false;
@@ -230,7 +217,6 @@ export class Picker extends FormAssociatedPicker {
      * Template used to generate selected items.
      * This is used in a repeat directive.
      *
-     * @alpha
      */
     @observable
     public listItemTemplate: ViewTemplate;
@@ -242,7 +228,6 @@ export class Picker extends FormAssociatedPicker {
      * Default template to use for selected items (usually specified in the component template).
      * This is used in a repeat directive.
      *
-     * @alpha
      */
     @observable
     public defaultListItemTemplate?: ViewTemplate;
@@ -262,7 +247,6 @@ export class Picker extends FormAssociatedPicker {
      * Template to use for available options.
      * This is used in a repeat directive.
      *
-     * @alpha
      */
     @observable
     public menuOptionTemplate: ViewTemplate;
@@ -274,7 +258,6 @@ export class Picker extends FormAssociatedPicker {
      * Default template to use for available options (usually specified in the template).
      * This is used in a repeat directive.
      *
-     * @alpha
      */
     @observable
     public defaultMenuOptionTemplate?: ViewTemplate;
@@ -293,7 +276,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      *  Template to use for the contents of a selected list item
      *
-     * @alpha
      */
     @observable
     public listItemContentsTemplate: ViewTemplate;
@@ -301,7 +283,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      *  Template to use for the contents of menu options
      *
-     * @alpha
      */
     @observable
     public menuOptionContentsTemplate: ViewTemplate;
@@ -309,7 +290,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      *  Current list of options in array form
      *
-     * @alpha
      */
     @observable
     public optionsList: string[] = [];
@@ -320,7 +300,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * The text value currently in the input field
      *
-     * @alpha
      */
     @observable
     public query: string;
@@ -432,7 +411,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      *  Reference to the placeholder element for the repeat directive
      *
-     * @alpha
      */
     public itemsPlaceholderElement: Node;
 

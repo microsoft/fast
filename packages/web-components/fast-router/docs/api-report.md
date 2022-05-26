@@ -19,13 +19,13 @@ import { ViewTemplate } from '@microsoft/fast-element';
 // @internal (undocumented)
 export const childRouteParameter = "fast-child-route";
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type CommandFallbackRouteDefinition<TSettings = any> = HasCommand & SupportsSettings<TSettings> & HasTitle;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type CommandRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> & HasCommand & HasTitle;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class ConfigurableRoute implements Route {
     constructor(path: string, name: string, caseSensitive: boolean);
     // (undocumented)
@@ -36,18 +36,18 @@ export class ConfigurableRoute implements Route {
     readonly path: string;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type ContributorOptions = {
     lifecycle?: boolean;
     parameters?: boolean;
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type ConverterObject = {
     convert: RouteParameterConverter;
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class DefaultLinkHandler implements LinkHandler {
     // (undocumented)
     connect(): void;
@@ -55,7 +55,7 @@ export class DefaultLinkHandler implements LinkHandler {
     disconnect(): void;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class DefaultNavigationProcess<TSettings> {
     // Warning: (ae-forgotten-export) The symbol "NavigationPhaseImpl" needs to be exported by the entry point index.d.ts
     //
@@ -65,7 +65,7 @@ export class DefaultNavigationProcess<TSettings> {
     run(router: Router, message: NavigationMessage): Promise<void>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class DefaultNavigationQueue implements NavigationQueue, NavigationHandler {
     // (undocumented)
     connect(): void;
@@ -79,7 +79,7 @@ export class DefaultNavigationQueue implements NavigationQueue, NavigationHandle
     receive(): Promise<NavigationMessage>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class DefaultRouter implements Router {
     constructor(host: HTMLElement);
     // (undocumented)
@@ -110,7 +110,7 @@ export class DefaultRouter implements Router {
     shouldRender(route: RecognizedRoute): boolean;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSettings> {
     // (undocumented)
     add(routeOrRoutes: Route | readonly Route[], settings?: TSettings): void;
@@ -120,16 +120,16 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
     recognize(path: string, converters?: Readonly<Record<string, RouteParameterConverter>>): Promise<RecognizedRoute<TSettings> | null>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type DefinitionCallback = () => Promise<FallbackRouteDefinition> | FallbackRouteDefinition;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type ElementFallbackRouteDefinition<TSettings = any> = LayoutAndTransitionRouteDefinition & HasElement & SupportsSettings<TSettings> & HasTitle;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type ElementRouteDefinition<TSettings = any> = NavigableRouteDefinition<TSettings> & HasElement;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class Endpoint<TSettings = any> {
     constructor(route: ConfigurableRoute, paramNames: readonly string[], paramTypes: readonly string[], settings: TSettings | null);
     // (undocumented)
@@ -144,13 +144,13 @@ export class Endpoint<TSettings = any> {
     readonly settings: TSettings | null;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type FallbackRouteDefinition<TSettings = any> = ElementFallbackRouteDefinition<TSettings> | TemplateFallbackRouteDefinition<TSettings> | Pick<RedirectRouteDefinition<TSettings>, "redirect"> | CommandFallbackRouteDefinition<TSettings>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type FASTElementConstructor = new () => FASTElement;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class FASTElementLayout implements Layout {
     constructor(template?: ViewTemplate | null, styles?: ComposableStyles | ComposableStyles[] | null, runBeforeCommit?: boolean);
     // (undocumented)
@@ -161,34 +161,34 @@ export class FASTElementLayout implements Layout {
 
 // Warning: (ae-forgotten-export) The symbol "FASTRouter_base" needs to be exported by the entry point index.d.ts
 //
-// @alpha (undocumented)
+// @beta (undocumented)
 export class FASTRouter extends FASTRouter_base {
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type HasCommand = {
     command: NavigationCommand;
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type HasElement = {
     element: string | FASTElementConstructor | HTMLElement | (() => Promise<string | FASTElementConstructor | HTMLElement>);
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type HasTemplate = {
     template: ViewTemplate | (() => Promise<ViewTemplate>);
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type HasTitle = {
     title?: string;
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type IgnorableRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class Ignore implements NavigationCommand {
     // (undocumented)
     createContributor(): Promise<{
@@ -196,13 +196,13 @@ export class Ignore implements NavigationCommand {
     }>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export function isFASTElementHost(host: HTMLElement): host is HTMLElement & FASTElement;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export function isNavigationPhaseContributor<T extends NavigationPhaseName>(object: any, phase: T): object is Record<T, NavigationPhaseHook>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface Layout {
     // (undocumented)
     afterCommit(routerElement: HTMLElement): Promise<void>;
@@ -210,18 +210,18 @@ export interface Layout {
     beforeCommit(routerElement: HTMLElement): Promise<void>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export const Layout: Readonly<{
     default: Readonly<Layout>;
 }>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type LayoutAndTransitionRouteDefinition = {
     layout?: Layout | ViewTemplate;
     transition?: Transition;
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface LinkHandler {
     // (undocumented)
     connect(): void;
@@ -229,59 +229,59 @@ export interface LinkHandler {
     disconnect(): void;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type MappableRouteDefinition<TSettings = any> = RenderableRouteDefinition<TSettings> | RedirectRouteDefinition<TSettings> | CommandRouteDefinition<TSettings> | ParentRouteDefinition<TSettings>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type NavigableRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> & LayoutAndTransitionRouteDefinition & HasTitle & {
     childRouters?: boolean;
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface NavigationCommand {
     // (undocumented)
     createContributor(router: Router, route: RecognizedRoute): Promise<NavigationContributor>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface NavigationCommitPhase<TSettings = any> extends Omit<NavigationPhase<TSettings>, "cancel" | "canceled" | "onCancel"> {
     // (undocumented)
     setTitle(title: string): any;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type NavigationCommitPhaseHook<TSettings = any> = (phase: NavigationCommitPhase<TSettings>) => Promise<any> | any;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type NavigationContributor<TSettings = any> = Partial<Record<Exclude<NavigationPhaseName, "commit">, NavigationPhaseHook<TSettings>>> & {
     commit?: NavigationCommitPhaseHook<TSettings>;
 };
 
 // Warning: (ae-forgotten-export) The symbol "NavigationContributorDirective" needs to be exported by the entry point index.d.ts
 //
-// @alpha (undocumented)
+// @beta (undocumented)
 export function navigationContributor(options?: ContributorOptions): NavigationContributorDirective;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface NavigationHandler {
     // (undocumented)
     enqueue(msg: NavigationMessage): void;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export const NavigationHandler: Readonly<{
     register(handler: NavigationHandler): void;
     unregister(handler: NavigationHandler): void;
 }>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class NavigationMessage {
     constructor(path: string);
     // (undocumented)
     path: string;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface NavigationPhase<TSettings = any> {
     // (undocumented)
     cancel(callback?: NavigationPhaseFollowupAction): void;
@@ -301,22 +301,22 @@ export interface NavigationPhase<TSettings = any> {
     readonly router: Router<TSettings>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type NavigationPhaseFollowupAction = () => Promise<any> | any;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type NavigationPhaseHook<TSettings = any> = (phase: NavigationPhase<TSettings>) => Promise<any> | any;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type NavigationPhaseName = "navigate" | "leave" | "construct" | "enter" | "commit";
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface NavigationProcess {
     // (undocumented)
     run(router: Router, message: NavigationMessage): Promise<void>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface NavigationQueue {
     // (undocumented)
     connect(): void;
@@ -326,18 +326,18 @@ export interface NavigationQueue {
     receive(): Promise<NavigationMessage>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type ParameterConverter = RouteParameterConverter | ConverterObject | Constructable<ConverterObject>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type ParentRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> & LayoutAndTransitionRouteDefinition & {
     children: MappableRouteDefinition<TSettings>[];
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type PathedRouteDefinition<TSettings = any> = SupportsSettings<TSettings> & Route;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export const QueryString: Readonly<{
     readonly current: string;
     build(params: Object, traditional?: boolean): string;
@@ -348,7 +348,7 @@ export const QueryString: Readonly<{
     parse(queryString: string): Readonly<Record<string, string>>;
 }>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class RecognizedRoute<TSettings = any> {
     constructor(endpoint: Endpoint<TSettings>, params: Readonly<Record<string, string | undefined>>, typedParams: Readonly<Record<string, any>>, queryParams: Readonly<Record<string, string>>);
     // (undocumented)
@@ -367,7 +367,7 @@ export class RecognizedRoute<TSettings = any> {
     readonly typedParams: Readonly<Record<string, any>>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class Redirect implements NavigationCommand {
     constructor(redirect: string);
     // (undocumented)
@@ -376,12 +376,12 @@ export class Redirect implements NavigationCommand {
     }>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type RedirectRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> & {
     redirect: string;
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class Render implements RenderCommand {
     constructor(owner: RouterConfiguration, createView: () => Promise<RouteView>);
     // Warning: (ae-forgotten-export) The symbol "RenderContributor" needs to be exported by the entry point index.d.ts
@@ -402,10 +402,10 @@ export class Render implements RenderCommand {
     set transition(value: Transition);
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type RenderableRouteDefinition<TSettings = any> = ElementRouteDefinition<TSettings> | TemplateRouteDefinition<TSettings>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface RenderCommand extends NavigationCommand {
     // (undocumented)
     createView(): Promise<RouteView>;
@@ -415,7 +415,7 @@ export interface RenderCommand extends NavigationCommand {
     transition: Transition;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface RenderOperation {
     // (undocumented)
     commit(): Promise<void>;
@@ -423,7 +423,7 @@ export interface RenderOperation {
     rollback(): Promise<void>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface Route {
     // (undocumented)
     readonly caseSensitive?: boolean;
@@ -433,7 +433,7 @@ export interface Route {
     readonly path: string;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export const Route: Readonly<{
     path: Readonly<{
         readonly current: string;
@@ -450,7 +450,7 @@ export const Route: Readonly<{
     }>;
 }>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export class RouteCollection<TSettings = any> {
     constructor(owner: RouterConfiguration);
     // (undocumented)
@@ -467,16 +467,16 @@ export class RouteCollection<TSettings = any> {
     recognize(path: string): Promise<RouteMatch<TSettings> | null>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type RouteMatch<TSettings = any> = {
     route: RecognizedRoute<TSettings>;
     command: NavigationCommand;
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type RouteParameterConverter = (value: string | undefined) => any | Promise<any>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface Router<TSettings = any> {
     // (undocumented)
     addContributor(contributor: NavigationContributor): void;
@@ -500,7 +500,7 @@ export interface Router<TSettings = any> {
     shouldRender(route: RecognizedRoute<TSettings>): boolean;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export const Router: Readonly<{
     getOrCreateFor(element: HTMLElement): Router<any> | DefaultRouter;
     find(element: HTMLElement): Router | null;
@@ -510,7 +510,7 @@ export const Router: Readonly<{
     }>(BaseType: TBase): new () => InstanceType<TBase> & RouterElement;
 }>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export abstract class RouterConfiguration<TSettings = any> {
     // (undocumented)
     protected cached(ElementType: new () => HTMLElement): () => Promise<HTMLElement>;
@@ -554,7 +554,7 @@ export abstract class RouterConfiguration<TSettings = any> {
     title: string;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface RouteRecognizer<TSettings> {
     // (undocumented)
     add(routeOrRoutes: Route | readonly Route[], settings?: TSettings): void;
@@ -566,7 +566,7 @@ export interface RouteRecognizer<TSettings> {
     recognize(path: string, converters?: Readonly<Record<string, RouteParameterConverter>>): Promise<RecognizedRoute<TSettings> | null>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface RouterElement extends HTMLElement {
     // Warning: (ae-forgotten-export) The symbol "routerProperty" needs to be exported by the entry point index.d.ts
     //
@@ -580,17 +580,17 @@ export interface RouterElement extends HTMLElement {
     disconnectedCallback(): any;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type RouterExecutionContext = ExecutionContext & {
     router: Router;
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export const RouterExecutionContext: Readonly<{
     create(router: Router): any;
 }>;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface RouteView {
     // (undocumented)
     appendTo(host: HTMLElement): void;
@@ -600,18 +600,18 @@ export interface RouteView {
     dispose(): void;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type SupportsSettings<TSettings = any> = {
     settings?: TSettings;
 };
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type TemplateFallbackRouteDefinition<TSettings = any> = LayoutAndTransitionRouteDefinition & HasTemplate & SupportsSettings<TSettings> & HasTitle;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export type TemplateRouteDefinition<TSettings = any> = NavigableRouteDefinition<TSettings> & HasTemplate;
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export interface Transition {
     // (undocumented)
     begin(host: HTMLElement, prev: RouteView | null, next: RouteView): Promise<void>;
@@ -621,7 +621,7 @@ export interface Transition {
     rollback(host: HTMLElement, prev: RouteView | null, next: RouteView): Promise<void>;
 }
 
-// @alpha (undocumented)
+// @beta (undocumented)
 export const Transition: Readonly<{
     default: Readonly<Transition>;
 }>;

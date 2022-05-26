@@ -52,7 +52,7 @@ if (FAST.error === void 0) {
  * @remarks
  * Typically returned by APIs that return arrays when there are
  * no actual items to return.
- * @internal
+ * @public
  */
 export const emptyArray = Object.freeze([]);
 

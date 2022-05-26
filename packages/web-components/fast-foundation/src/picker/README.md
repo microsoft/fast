@@ -175,6 +175,40 @@ export class FASTTextField extends TextField {}
 
 
 
+### class: `FormAssociatedPicker`
+
+#### Superclass
+
+| Name      | Module                               | Package |
+| --------- | ------------------------------------ | ------- |
+| `_Picker` | src/picker/picker.form-associated.ts |         |
+
+#### Mixins
+
+| Name             | Module                                  | Package |
+| ---------------- | --------------------------------------- | ------- |
+| `FormAssociated` | /src/form-associated/form-associated.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `proxy`         |         |                                       |         |                                                                                                                                                                                     |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+<hr/>
+
+
+
 ### class: `Picker`
 
 #### Superclass
