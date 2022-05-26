@@ -4,9 +4,11 @@ title: Dependency Injection
 sidebar_label: Dependency Injection
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/apps-and-experiences/dependency-injection.md
 description: FAST introduces the concept of a dependency injection container.
+keywords:
+    - dependency injection container
 ---
 
-An important principle of object oriented programming (OOP) is to favor a compositional approach to systems over an inheritance-based approach. In such systems complex problems are broken down into small, single-purpose objects that collaborate with one another. However, this approach is not a panacea, and introduces its own set of challenges:
+An important principle of object oriented programming (OOP) is to favor a compositional approach to systems over an inheritance-based approach. In such systems, complex problems are broken down into small, single-purpose objects that collaborate with one another. However, this approach is not a panacea, and introduces its own set of challenges:
 
 - How do we instantiate a set of collaborating objects, particularly when there is a complex arrangement of dependencies between the objects?
 - How do we avoid tight coupling between an object and the implementation details of its dependencies?
@@ -72,7 +74,7 @@ provideFASTDesignSystem()
 The container (and the Design System) has a `register` method that takes a variable number of `Registry` instances. The `Registration` object is a helper for creating registrations with various behaviors. Here is a summary of what's available on the `Registration` object:
 
 - `instance` - Configures an existing object instance. Every request with the key will return this exact instance.
-- `singleton` - Configures a class that is instantiated when the Key is first requested. All successive request with the same key will return the cached instance.
+- `singleton` - Configures a class that is instantiated when the Key is first requested. All successive requests with the same key will return the cached instance.
 - `transient` - Configures a class that is instantiated for each request with the Key. This means that each requestor gets a new instance.
 - `callback` - Configures a function callback. Every time the Key is requested, the callback will be run, allowing custom code to dynamically return values.
 - `cachedCallback` - Configures a function callback. The first time the Key is requested, the callback will be run to return a value. Successive calls return the cached value without invoking the callback again.

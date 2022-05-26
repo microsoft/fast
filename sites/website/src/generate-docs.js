@@ -121,6 +121,7 @@ async function copyArticleMarkdown() {
                     "https://github.com/microsoft/fast/edit/master/CODE_OF_CONDUCT.md",
                 description:
                     "In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to making participation in our project and our community a harassment-free experience for everyone.",
+                keywords: ["code of conduct"],
             },
         },
         {
@@ -133,6 +134,7 @@ async function copyArticleMarkdown() {
                 custom_edit_url:
                     "https://github.com/microsoft/fast/edit/master/CONTRIBUTING.md",
                 description: "Guide for contributing to FAST.",
+                keywords: ["contributing"],
             },
         },
         {
@@ -145,6 +147,7 @@ async function copyArticleMarkdown() {
                 custom_edit_url:
                     "https://github.com/microsoft/fast/blob/master/BRANCH_GUIDE.md",
                 desciption: "A branch guide for the FAST repository.",
+                keywords: ["branch guide"],
             },
         },
         {
@@ -156,6 +159,7 @@ async function copyArticleMarkdown() {
                 sidebar_label: "License",
                 custom_edit_url: "https://github.com/microsoft/fast/edit/master/LICENSE",
                 description: "MIT License",
+                keywords: ["mit license"],
             },
         },
         {
@@ -169,6 +173,7 @@ async function copyArticleMarkdown() {
                     "https://github.com/microsoft/fast/edit/master/SECURITY.md",
                 description:
                     "Microsoft takes the security of our software products and services seriously, which includes all source code repositories managed through our GitHub organizations.",
+                keywords: ["security"],
             },
         },
         {
@@ -182,6 +187,7 @@ async function copyArticleMarkdown() {
                     "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
                 description:
                     "There are many great open source projects that have inspired us and enabled us to build FAST.",
+                keywords: ["acknowlegements"],
             },
         },
         {
@@ -195,6 +201,7 @@ async function copyArticleMarkdown() {
                     "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/README.md",
                 description:
                     "The fast-element library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.",
+                keywords: ["fast-element", "web components"],
             },
         },
     ];

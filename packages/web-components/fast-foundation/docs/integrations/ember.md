@@ -4,6 +4,8 @@ title: Ember
 sidebar_label: Ember
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/ember.md
 description: FAST and Ember work great together. Let's take a look at how you can set up an Ember project, starting from scratch.
+keywords:
+  - ember
 ---
 
 FAST and Ember work great together. Let's take a look at how you can set up an Ember project, starting from scratch.

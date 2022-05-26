@@ -509,7 +509,7 @@ If using the `subtree` option for `children` then a `selector` is *required* in 
 
 ### The `slotted` directive
 
-Sometimes you may want references to all nodes that are assigned to a particular slot. To accomplish this, use the `slotted` directive. (For more on slots, see [Working with Shadow DOM](./working-with-shadow-dom).)
+Sometimes you may want references to all nodes that are assigned to a particular slot. To accomplish this, use the `slotted` directive. (For more on slots, see [Working with Shadow DOM](./working-with-shadow-dom.md).)
 
 ```ts
 import { FASTElement, customElement, html, slotted } from '@microsoft/fast-element';
