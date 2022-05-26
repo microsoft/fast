@@ -35,10 +35,6 @@ module.exports = {
                 ],
             },
             {
-                test: /\.js$/,
-                use: "babel-loader",
-            },
-            {
                 test: /\.css$/,
                 exclude: /node_modules/,
                 use: [
