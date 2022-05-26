@@ -54,11 +54,7 @@ const formats = {
     },
 };
 
-[
-    "@microsoft/fast-element",
-    "@microsoft/fast-components",
-    "@microsoft/fast-foundation",
-].map(p => {
+["@microsoft/fast-element", "@microsoft/fast-foundation"].map(p => {
     try {
         const dir = getPackageJsonDir(p);
 

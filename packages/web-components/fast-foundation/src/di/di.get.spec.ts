@@ -8,7 +8,7 @@ import {
     optional,
     Registration,
     singleton,
-} from "./di";
+} from "./di.js";
 
 describe("DI.get", function () {
     let container: Container;

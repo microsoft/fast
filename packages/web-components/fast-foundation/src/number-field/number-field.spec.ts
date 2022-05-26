@@ -1,7 +1,7 @@
 import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../testing/fixture";
-import { NumberField, numberFieldTemplate as template } from "./index";
+import { fixture } from "../testing/fixture.js";
+import { NumberField, numberFieldTemplate as template } from "./index.js";
 
 const FASTNumberField = NumberField.compose({
     baseName: "number-field",

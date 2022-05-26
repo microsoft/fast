@@ -1,11 +1,11 @@
 import { Constructable, DOM, Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { FoundationElement } from "..";
-import { Container, DI, Registration } from "../di";
-import { uniqueElementName } from "../testing/fixture";
-import { DesignSystem, ElementDisambiguation } from "./design-system";
-import type { DesignSystemRegistrationContext } from "./registration-context";
-import { DesignToken } from "../design-token/design-token";
+import { Container, DI, Registration } from "../di/di.js";
+import { uniqueElementName } from "../testing/fixture.js";
+import { DesignSystem, ElementDisambiguation } from "./design-system.js";
+import type { DesignSystemRegistrationContext } from "./registration-context.js";
+import { DesignToken } from "../design-token/design-token.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 describe("DesignSystem", () => {
     it("Should return the same instance for the same element", () => {

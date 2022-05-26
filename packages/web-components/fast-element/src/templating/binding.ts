@@ -517,7 +517,7 @@ export class ChangeBinding extends UpdateBinding {
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const target = targets[this.directive.nodeId];
         const observer = this.getObserver(target);
-        observer.disconnect();
+        observer.dispose();
         (observer as any).target = null;
         (observer as any).source = null;
         (observer as any).context = null;

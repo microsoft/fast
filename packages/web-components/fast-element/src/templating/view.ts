@@ -1,3 +1,4 @@
+import type { Disposable } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { ExecutionContext, RootContext } from "../observation/observable.js";
 import type {
@@ -14,7 +15,7 @@ export interface View<
     TSource = any,
     TParent = any,
     TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
-> {
+> extends Disposable {
     /**
      * The execution context the view is running within.
      */
@@ -36,12 +37,6 @@ export interface View<
      * Unbinds a view's behaviors from its binding source and context.
      */
     unbind(): void;
-
-    /**
-     * Removes the view and unbinds its behaviors, disposing of DOM nodes afterward.
-     * Once a view has been disposed, it cannot be inserted or bound again.
-     */
-    dispose(): void;
 }
 
 /**
@@ -87,12 +82,6 @@ export interface SyntheticView<
      * The nodes are not disposed and the view can later be re-inserted.
      */
     remove(): void;
-
-    /**
-     * Removes the view and unbinds its behaviors, disposing of DOM nodes afterward.
-     * Once a view has been disposed, it cannot be inserted or bound again.
-     */
-    dispose(): void;
 }
 
 function removeNodeSequence(firstNode: Node, lastNode: Node): void {

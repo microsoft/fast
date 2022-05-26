@@ -1,7 +1,7 @@
 import { css, Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../testing/fixture";
-import { HorizontalScroll, horizontalScrollTemplate as template } from "./index";
+import { fixture } from "../testing/fixture.js";
+import { HorizontalScroll, horizontalScrollTemplate as template } from "./index.js";
 
 const styles = css`
     :host {

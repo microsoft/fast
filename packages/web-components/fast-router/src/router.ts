@@ -1,4 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
+import { composedParent } from "@microsoft/fast-element/utilities";
 import { RenderCommand } from "./commands.js";
 import { RouterConfiguration } from "./configuration.js";
 import { NavigationContributor } from "./contributors.js";
@@ -40,25 +41,6 @@ export interface Router<TSettings = any> {
 }
 
 const routerProperty = "$router";
-
-// TODO: remove this from here and from fast-foundation
-// TODO: move this to fast-element so router and foundation can both use it
-function composedParent<T extends HTMLElement>(element: T): HTMLElement | null {
-    const parentNode = element.parentElement;
-
-    if (parentNode) {
-        return parentNode;
-    } else {
-        const rootNode = element.getRootNode();
-
-        if ((rootNode as ShadowRoot).host instanceof HTMLElement) {
-            // this is shadow-root
-            return (rootNode as ShadowRoot).host as HTMLElement;
-        }
-    }
-
-    return null;
-}
 
 function findParentRouterForElement(element: HTMLElement) {
     let parent: HTMLElement | null = element;

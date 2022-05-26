@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { css, Updates } from "@microsoft/fast-element";
-import { fixture } from "../testing/fixture";
-import { Tab, tabTemplate } from "../tab";
-import { TabPanel, tabPanelTemplate } from "../tab-panel";
-import { TabsOrientation, Tabs, tabsTemplate as template } from "./index";
+import { fixture } from "../testing/fixture.js";
+import { Tab, tabTemplate } from "../tab/index.js";
+import { TabPanel, tabPanelTemplate } from "../tab-panel/index.js";
+import { TabsOrientation, Tabs, tabsTemplate as template } from "./index.js";
 
 const FASTTab = Tab.compose({
     baseName: "tab",

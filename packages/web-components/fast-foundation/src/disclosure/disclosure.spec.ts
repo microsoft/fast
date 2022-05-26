@@ -1,7 +1,7 @@
 import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../testing/fixture";
-import { Disclosure, disclosureTemplate as template } from "./index";
+import { fixture } from "../testing/fixture.js";
+import { Disclosure, disclosureTemplate as template } from "./index.js";
 
 const FastDisclosure = Disclosure.compose({
     baseName: "disclosure",

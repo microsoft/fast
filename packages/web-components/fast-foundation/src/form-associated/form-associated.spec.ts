@@ -1,6 +1,6 @@
-import { FormAssociated, CheckableFormAssociated } from "./form-associated";
+import { FormAssociated, CheckableFormAssociated } from "./form-associated.js";
 import { assert, expect } from "chai";
-import { fixture } from "../testing/fixture";
+import { fixture } from "../testing/fixture.js";
 import { customElement, FASTElement, html, Updates } from "@microsoft/fast-element";
 
 const template = html`

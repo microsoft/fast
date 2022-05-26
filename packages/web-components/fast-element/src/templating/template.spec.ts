@@ -1,11 +1,10 @@
 import { expect } from "chai";
-import { html, ViewTemplate } from "./template";
-import { Markup, Parser } from "./markup";
-import { HTMLBindingDirective } from "./binding";
-import { Aspect, HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory } from "./html-directive";
-import { bind, ViewBehaviorTargets } from "..";
-import { Constructable, isString } from "../interfaces";
-import { ExecutionContext } from "../observation/observable";
+import { html, ViewTemplate } from "./template.js";
+import { Markup, Parser } from "./markup.js";
+import { bind, HTMLBindingDirective } from "./binding.js";
+import { Aspect, HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory, ViewBehaviorTargets } from "./html-directive.js";
+import { Constructable, isString } from "../interfaces.js";
+import { ExecutionContext } from "../observation/observable.js";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {

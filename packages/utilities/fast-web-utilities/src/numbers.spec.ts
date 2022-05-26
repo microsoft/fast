@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { inRange, limit, wrapInBounds } from "./numbers";
+import { inRange, limit, wrapInBounds } from "./numbers.js";
 
 describe("wrapInBounds", () => {
     it("should not throw if any parameters are null", () => {

@@ -7,8 +7,6 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.12.13",
-    "@babel/preset-env": "^7.12.13",
     "@fluentui/svg-icons": "^1.1.139",
     "@microsoft/fast-components": "^2.30.6",
     "@microsoft/fast-element": "^1.10.1",
@@ -16,7 +14,6 @@
     "@microsoft/fast-web-utilities": "^5.4.1",
     "@microsoft/site-utilities": "^0.9.0",
     "@rollup/plugin-alias": "^3.1.1",
-    "babel-loader": "^8.2.5",
     "clean-webpack-plugin": "^4.0.0",
     "ejs-loader": "^0.5.0",
     "html-webpack-plugin": "^5.5.0",

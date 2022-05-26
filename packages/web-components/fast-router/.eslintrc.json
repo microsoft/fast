@@ -12,10 +12,6 @@
                 },
                 "extendDefaults": true
             }
-        ],
-        "import/extensions": [
-            "error",
-            "always"
         ]
     }
 }

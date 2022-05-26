@@ -57,6 +57,7 @@
     "@microsoft/fast-components": "^2.30.6",
     "@microsoft/fast-element": "^1.10.1",
     "@microsoft/fast-foundation": "^2.46.2",
+    "@microsoft/fast-tooling": "^0.37.9",
     "@microsoft/fast-web-utilities": "^5.4.1"
   }
 }

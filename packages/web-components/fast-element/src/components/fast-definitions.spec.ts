@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { FASTElementDefinition } from "./fast-definitions";
-import { ElementStyles } from "../styles/element-styles";
+import { FASTElementDefinition } from "./fast-definitions.js";
+import { ElementStyles } from "../styles/element-styles.js";
 
 describe("FASTElementDefinition", () => {
     class MyElement extends HTMLElement {}

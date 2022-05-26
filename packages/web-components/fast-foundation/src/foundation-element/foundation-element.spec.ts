@@ -1,14 +1,14 @@
 import { css, customElement, html } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { DI } from "../di";
-import { fixture, uniqueElementName } from "../testing/fixture";
+import { DI } from "../di/di.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import {
     ComponentPresentation,
     DefaultComponentPresentation,
     DesignSystem,
     ElementDefinitionContext,
-} from "../design-system";
-import { FoundationElement, FoundationElementDefinition, OverrideFoundationElementDefinition } from "./foundation-element";
+} from "../design-system/index.js";
+import { FoundationElement, FoundationElementDefinition, OverrideFoundationElementDefinition } from "./foundation-element.js";
 
 const styles = css`
     :host {
