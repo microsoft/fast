@@ -156,7 +156,7 @@ module.exports = {
                     // The "lastVersion" plugin sets which version the /docs route refers to
                     // TODO: update lastVersion to "current" when ready for /docs route to be set to the current version (line 158)
                     lastVersion: "legacy",
-                    // TODO: Uncomment to begin displaying the doc versions dropdown and labels (lines 154-161)
+                    // TODO: Uncomment to begin displaying the doc versions dropdown and labels (lines 160-167)
                     // versions: {
                     //     current: {
                     //         label: "current version",
