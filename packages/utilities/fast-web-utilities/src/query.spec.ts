@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { parseQueryStringParams } from "./query";
+import { parseQueryStringParams } from "./query.js";
 
 describe("parseQueryStringParams", (): void => {
     it("basic query string", (): void => {

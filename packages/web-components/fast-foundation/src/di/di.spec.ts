@@ -9,7 +9,7 @@ import {
     ResolverStrategy,
     singleton,
     transient,
-} from "./di";
+} from "./di.js";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
 import { customElement, FASTElement, html, ref } from "@microsoft/fast-element";

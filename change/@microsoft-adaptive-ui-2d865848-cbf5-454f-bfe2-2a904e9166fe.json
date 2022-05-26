@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "chore: fix adaptive-ui build and test",
+  "packageName": "@microsoft/adaptive-ui",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "none"
+}

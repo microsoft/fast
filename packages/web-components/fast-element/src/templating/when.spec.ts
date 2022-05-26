@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { when } from "./when";
-import { html } from "./template";
-import { Binding, ExecutionContext } from "../observation/observable";
+import { when } from "./when.js";
+import { html } from "./template.js";
+import { Binding, ExecutionContext } from "../observation/observable.js";
 
 describe("The 'when' template function", () => {
     it("returns an expression", () => {

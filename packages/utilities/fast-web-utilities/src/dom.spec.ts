@@ -7,7 +7,7 @@ import {
     getDisplayedNodes,
     isHTMLElement,
     resetDocumentCache,
-} from "./dom";
+} from "./dom.js";
 
 chai.use(spies);
 

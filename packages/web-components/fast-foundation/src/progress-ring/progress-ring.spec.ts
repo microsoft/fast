@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { BaseProgress as Progress } from "../progress";
-import { progressRingTemplate as template } from "./index";
-import { fixture } from "../testing/fixture";
+import { BaseProgress as Progress } from "../progress/index.js";
+import { progressRingTemplate as template } from "./index.js";
+import { fixture } from "../testing/fixture.js";
 
 const FASTProgressRing = Progress.compose({
     baseName: "progress-ring",

@@ -7,7 +7,7 @@ import {
     observable,
     Updates,
 } from "@microsoft/fast-element";
-import { uniqueElementName, fixture } from "./fixture";
+import { uniqueElementName, fixture } from "./fixture.js";
 
 describe("The fixture helper", () => {
     const name = uniqueElementName();

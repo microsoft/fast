@@ -1,12 +1,12 @@
 import { expect } from "chai";
-import { bind, BindingConfig, BindingMode, HTMLBindingDirective, onChange, oneTime, signal, SignalBinding, twoWay } from "./binding";
-import { ExecutionContext, observable } from "../observation/observable";
-import { html, ViewTemplate } from "./template";
-import { toHTML } from "../__test__/helpers";
-import { SyntheticView, HTMLView } from "./view";
-import { Updates } from "../observation/update-queue";
-import { Aspect } from "./html-directive";
-import { DOM } from "./dom";
+import { bind, BindingConfig, BindingMode, HTMLBindingDirective, onChange, oneTime, signal, SignalBinding, twoWay } from "./binding.js";
+import { ExecutionContext, observable } from "../observation/observable.js";
+import { html, ViewTemplate } from "./template.js";
+import { toHTML } from "../__test__/helpers.js";
+import { SyntheticView, HTMLView } from "./view.js";
+import { Updates } from "../observation/update-queue.js";
+import { Aspect } from "./html-directive.js";
+import { DOM } from "./dom.js";
 
 describe("The HTML binding directive", () => {
     class Model {

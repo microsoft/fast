@@ -20,16 +20,6 @@
                 },
                 "extendDefaults": true
             }
-        ],
-        "import/extensions": [
-            "error",
-            "always",
-            {
-                "template": "never",
-                "form-associated": "never",
-                "options": "never",
-                "element": "never"
-            }
         ]
     }
 }

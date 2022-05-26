@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { children, ChildrenDirective } from "./children";
-import { ExecutionContext, observable } from "../observation/observable";
-import { elements } from "./node-observation";
-import { Updates } from "../observation/update-queue";
+import { children, ChildrenDirective } from "./children.js";
+import { ExecutionContext, observable } from "../observation/observable.js";
+import { elements } from "./node-observation.js";
+import { Updates } from "../observation/update-queue.js";
 
 describe("The children", () => {
     context("template function", () => {

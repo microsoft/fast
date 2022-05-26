@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { fixture } from "../testing/fixture";
+import { fixture } from "../testing/fixture.js";
 import {
     dataGridTemplate,
     DataGrid,
@@ -7,9 +7,9 @@ import {
     dataGridRowTemplate,
     DataGridCell,
     dataGridCellTemplate
-} from "./index";
-import type { ColumnDefinition } from "./data-grid";
-import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
+} from "./index.js";
+import type { ColumnDefinition } from "./data-grid.js";
+import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options.js";
 import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 

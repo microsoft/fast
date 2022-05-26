@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { Updates } from "@microsoft/fast-element";
-import { fixture } from "../testing/fixture";
-import { FlipperDirection } from "./flipper.options";
-import { Flipper, flipperTemplate as template } from "./index";
+import { fixture } from "../testing/fixture.js";
+import { FlipperDirection } from "./flipper.options.js";
+import { Flipper, flipperTemplate as template } from "./index.js";
 
 const FASTFlipper = Flipper.compose({
     baseName: "flipper",

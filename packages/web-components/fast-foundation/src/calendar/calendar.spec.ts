@@ -1,8 +1,8 @@
 import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../testing/fixture";
-import { Calendar, calendarTemplate } from "./index";
-import { DateFormatter } from "./date-formatter";
+import { fixture } from "../testing/fixture.js";
+import { Calendar, calendarTemplate } from "./index.js";
+import { DateFormatter } from "./date-formatter.js";
 import {
     dataGridTemplate,
     DataGrid,
@@ -10,7 +10,7 @@ import {
     DataGridRow,
     dataGridRowTemplate,
     dataGridCellTemplate
-} from "../data-grid/index";
+} from "../data-grid/index.js";
 
 
 const FASTDataGridCell = DataGridCell.compose({

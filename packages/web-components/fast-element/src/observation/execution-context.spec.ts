@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { ExecutionContext, ItemContext } from "./observable";
+import { ExecutionContext, ItemContext } from "./observable.js";
 
 describe("The ExecutionContext", () => {
     it("has a default", () => {

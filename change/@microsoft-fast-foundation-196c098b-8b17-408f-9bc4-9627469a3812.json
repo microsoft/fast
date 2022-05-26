@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "fix: update to latest fast-element and change exports",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}

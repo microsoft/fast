@@ -1,9 +1,9 @@
 import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
-import { fixture } from "../testing/fixture";
-import { Combobox, comboboxTemplate as template } from "./index";
+import { ListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
+import { fixture } from "../testing/fixture.js";
+import { Combobox, comboboxTemplate as template } from "./index.js";
 
 describe("Combobox", () => {
     const FASTCombobox = Combobox.compose({

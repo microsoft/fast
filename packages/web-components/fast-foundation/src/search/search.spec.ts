@@ -1,7 +1,7 @@
 import { expect, assert } from "chai";
-import { Button, buttonTemplate } from "../button";
-import { fixture } from "../testing/fixture";
-import { Search, searchTemplate as template } from "./index";
+import { Button, buttonTemplate } from "../button/index.js";
+import { fixture } from "../testing/fixture.js";
+import { Search, searchTemplate as template } from "./index.js";
 
 const FASTSearch = Search.compose({
     baseName: "search",

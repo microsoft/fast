@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { Anchor, anchorTemplate as template } from "./index";
-import { fixture } from "../testing/fixture";
+import { Anchor, anchorTemplate as template } from "./index.js";
+import { fixture } from "../testing/fixture.js";
 
 const FASTAnchor = Anchor.compose({
     baseName: "anchor",

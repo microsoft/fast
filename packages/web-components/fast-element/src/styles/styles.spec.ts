@@ -3,13 +3,13 @@ import {
     AdoptedStyleSheetsStrategy,
     ComposableStyles,
     ElementStyles,
-} from "./element-styles";
-import { AddBehavior, cssDirective, CSSDirective } from "./css-directive";
-import { css } from "./css";
-import type { Behavior } from "../observation/behavior";
-import { StyleElementStrategy } from "../polyfills";
-import type { StyleTarget } from "../interfaces";
-import { ExecutionContext } from "../observation/observable";
+} from "./element-styles.js";
+import { AddBehavior, cssDirective, CSSDirective } from "./css-directive.js";
+import { css } from "./css.js";
+import type { Behavior } from "../observation/behavior.js";
+import { StyleElementStrategy } from "../polyfills.js";
+import type { StyleTarget } from "../interfaces.js";
+import { ExecutionContext } from "../observation/observable.js";
 
 if (ElementStyles.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStrategy", () => {

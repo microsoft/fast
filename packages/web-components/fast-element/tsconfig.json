@@ -9,6 +9,7 @@
         "strictPropertyInitialization": false,
         "target": "es2015",
         "module": "ESNext",
+        "moduleResolution": "Node16",
         "types": [
             "mocha",
             "webpack-env"

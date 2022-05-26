@@ -9,6 +9,8 @@ import { Behavior } from '@microsoft/fast-element';
 import type { CaptureType } from '@microsoft/fast-element';
 import { ChildViewTemplate } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
+import { composedContains } from '@microsoft/fast-element/utilities';
+import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
@@ -594,11 +596,9 @@ export const ComponentPresentation: Readonly<{
     forTag(tagName: string, element: HTMLElement): ComponentPresentation | null;
 }>;
 
-// @public
-export function composedContains(reference: HTMLElement, test: HTMLElement): boolean;
+export { composedContains }
 
-// @public
-export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
+export { composedParent }
 
 // @beta
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;

@@ -10,8 +10,8 @@ import {
     pickerMenuOptionTemplate,
     pickerMenuTemplate,
     pickerTemplate,
-} from "./index";
-import { fixture } from "../testing/fixture";
+} from "./index.js";
+import { fixture } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 import {
     keyArrowLeft,

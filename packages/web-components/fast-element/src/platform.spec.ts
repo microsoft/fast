@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import type { FASTGlobal } from "./interfaces";
+import type { FASTGlobal } from "./interfaces.js";
 
 declare const FAST: FASTGlobal;
 

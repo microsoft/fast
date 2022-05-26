@@ -10,7 +10,7 @@ export const DOM = Object.freeze({
      * @deprecated
      * Use Updates.enqueue().
      */
-    queueUpdate: Updates.enqueue,
+    queueUpdate: Updates.enqueue as (callable: Callable) => void,
 
     /**
      * @deprecated

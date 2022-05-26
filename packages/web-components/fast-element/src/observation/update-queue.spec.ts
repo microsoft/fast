@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Updates } from "./update-queue";
+import { Updates } from "./update-queue.js";
 
 const waitMilliseconds = 100;
 const maxRecursion = 10;

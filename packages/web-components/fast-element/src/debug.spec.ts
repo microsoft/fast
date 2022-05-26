@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "./debug.js";
-import { FASTGlobal, Message } from "./interfaces";
+import { FASTGlobal, Message } from "./interfaces.js";
 
 declare const FAST: FASTGlobal;
 
