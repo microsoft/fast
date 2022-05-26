@@ -3,6 +3,7 @@ import {
     Binding,
     BindingObserver,
     CSSDirective,
+    Disposable,
     ExecutionContext,
     FASTElement,
     observable,
@@ -345,7 +346,7 @@ class CustomPropertyReflector {
  * A light wrapper around BindingObserver to handle value caching and
  * token notification
  */
-class DesignTokenBindingObserver<T> {
+class DesignTokenBindingObserver<T> implements Disposable {
     public readonly dependencies = new Set<DesignTokenImpl<any>>();
     private observer: BindingObserver<HTMLElement, DerivedDesignTokenValue<T>>;
     constructor(
@@ -366,8 +367,8 @@ class DesignTokenBindingObserver<T> {
         this.handleChange();
     }
 
-    public disconnect() {
-        this.observer.disconnect();
+    public dispose(): void {
+        this.observer.dispose();
     }
 
     /**
@@ -826,7 +827,7 @@ class DesignTokenNode implements Behavior, Subscriber {
      */
     private tearDownBindingObserver<T>(token: DesignTokenImpl<T>): boolean {
         if (this.bindingObservers.has(token)) {
-            this.bindingObservers.get(token)!.disconnect();
+            this.bindingObservers.get(token)!.dispose();
             this.bindingObservers.delete(token);
             return true;
         }

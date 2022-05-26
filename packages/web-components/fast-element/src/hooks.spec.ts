@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { useEffect, useState } from "./hooks";
-import { Observable } from "./observation/observable";
-import { Updates } from "./observation/update-queue";
+import { useEffect, useState } from "./hooks.js";
+import { Observable } from "./observation/observable.js";
+import { Updates } from "./observation/update-queue.js";
 
 describe("The useState hook", () => {
     it("can get and set the value", () => {

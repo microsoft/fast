@@ -594,12 +594,6 @@ export const ComponentPresentation: Readonly<{
     forTag(tagName: string, element: HTMLElement): ComponentPresentation | null;
 }>;
 
-// @public
-export function composedContains(reference: HTMLElement, test: HTMLElement): boolean;
-
-// @public
-export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
-
 // @beta
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
