@@ -10,10 +10,7 @@
     "generate:all": "yarn generate:badges && yarn generate:icons",
     "prepare": "yarn generate:badges",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
-    "test": "yarn eslint",
-    "eslint": "eslint . --ext .ts,.tsx",
-    "eslint:fix": "eslint . --ext .ts,.tsx --fix"
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
