@@ -8,9 +8,7 @@
     "generate:badges": "node ./build/badges.js",
     "generate:icons": "node ./build/icons.js",
     "generate:all": "yarn generate:badges && yarn generate:icons",
-    "prepare": "yarn generate:badges",
-    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different"
+    "prepare": "yarn generate:badges"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,7 +29,6 @@
     "eslint-config-prettier": "6.10.1",
     "favicons": "^6.2.2",
     "fs-extra": "^9.0.1",
-    "prettier": "^1.15.3",
     "rimraf": "^3.0.2"
   },
   "dependencies": {
