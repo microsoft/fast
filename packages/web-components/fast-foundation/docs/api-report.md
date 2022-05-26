@@ -1085,10 +1085,8 @@ export class Dialog extends FoundationElement {
     hidden: boolean;
     hide(): void;
     modal: boolean;
+    noFocusTrap: boolean;
     show(): void;
-    trapFocus: boolean;
-    // (undocumented)
-    protected trapFocusChanged: () => void;
 }
 
 // @public
