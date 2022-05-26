@@ -101,6 +101,12 @@ export class Document {
  */
 export class CSSStyleSheet {
     replace() {}
+    public readonly cssRules: CSSRule[] = [];
+    insertRule(rule: CSSRule, index: number = 0) {
+        this.cssRules.splice(index, 0, rule);
+
+        return index;
+    }
 }
 
 /**
@@ -138,6 +144,17 @@ export class MutationObserver {
 }
 
 /**
+ * Shim of MediaQueryList.
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList} */
+export class MediaQueryList {
+    /** No-op */
+    addListener() {}
+
+    /** Always false */
+    matches = false;
+}
+
+/**
  * Creates a window object.
  * @param props - Additional properties to expose on the window.
  *
@@ -155,6 +172,8 @@ export function createWindow(
         ShadowRoot,
         CustomElementRegistry,
         MutationObserver,
+        MediaQueryList,
+        matchMedia: () => new MediaQueryList(),
 
         // Set below
         window: undefined as unknown,

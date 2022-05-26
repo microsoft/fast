@@ -42,14 +42,9 @@
       "default": "./dist/esm/exports.js"
     },
     "./install-dom-shim": "./dist/esm/install-dom-shim.js",
-    "./install-foundation-dom-shim": "./dist/esm/install-foundation-dom-shim.js",
     "./dom-shim": {
       "types": "./dist/dts/dom-shim.d.ts",
       "default": "./dist/esm/dom-shim.js"
-    },
-    "./foundation-dom-shim": {
-      "types": "./dist/dts/foundation-dom-shim.d.ts",
-      "default": "./dist/esm/foundation-dom-shim.js"
     }
   },
   "dependencies": {
