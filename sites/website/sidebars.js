@@ -16,6 +16,9 @@ module.exports = {
                 {
                     type: "category",
                     label: "Components",
+                    customProps: {
+                        description: "A comprehensive list of FAST elements.",
+                    },
                     link: {
                         type: "generated-index",
                     },
@@ -134,11 +137,46 @@ module.exports = {
                 type: "generated-index",
             },
             items: [
-                "api/fast-animation",
-                "api/fast-colors",
-                "api/fast-components",
-                "api/fast-element",
-                "api/fast-foundation",
+                {
+                    type: "doc",
+                    id: "api/fast-animation",
+                    customProps: {
+                        description:
+                            "Exlore the classes and functions of fast-animation.",
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-colors",
+                    customProps: {
+                        description:
+                            "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-colors.",
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-components",
+                    customProps: {
+                        description:
+                            "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-components.",
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-element",
+                    customProps: {
+                        description:
+                            "Explore the classes, functions, interfaces, variables, and type aliases of fast-element.",
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-foundation",
+                    customProps: {
+                        description:
+                            "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-foundation.",
+                    },
+                },
             ],
         },
         {
@@ -151,10 +189,15 @@ module.exports = {
                 "community/join",
                 "community/code-of-conduct",
                 "community/contributor-guide",
+                "community/branch-guide",
                 "community/writing-documentation",
                 {
                     type: "category",
                     label: "Engineering Process",
+                    customProps: {
+                        description:
+                            "Our issue management and release planning processes.",
+                    },
                     link: {
                         type: "generated-index",
                     },

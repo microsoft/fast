@@ -1,8 +1,142 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 14 Apr 2022 07:12:36 GMT and should not be manually modified.
+This log was last generated on Thu, 26 May 2022 07:11:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.8
+
+Thu, 26 May 2022 07:11:44 GMT
+
+### Patches
+
+- Revert "fix: add missing required attribute binding to switch template (#6014)" (burtonsmith@microsoft.com)
+
+## 2.46.7
+
+Wed, 25 May 2022 07:09:21 GMT
+
+### Patches
+
+- add missing binding for required attribute in the switch template (chhol@microsoft.com)
+
+## 2.46.6
+
+Tue, 24 May 2022 07:10:02 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.10.2 (roeisenb@microsoft.com)
+
+## 2.46.5
+
+Sun, 22 May 2022 07:09:02 GMT
+
+### Patches
+
+- disable keyboard controls for readonly sliders (burtonsmith@microsoft.com)
+
+## 2.46.4
+
+Thu, 19 May 2022 07:09:40 GMT
+
+### Patches
+
+- Handle disabled and hidden items in toolbar (20542556+mollykreis@users.noreply.github.com)
+
+## 2.46.3
+
+Tue, 10 May 2022 07:11:04 GMT
+
+### Patches
+
+- select ignores l&r arrow keys (scomea@microsoft.com)
+
+## 2.46.2
+
+Thu, 05 May 2022 07:11:41 GMT
+
+### Patches
+
+- fix positioning of select dropdown (abris96@gmail.com)
+- reset selection range when selecting option with cursor (abris96@gmail.com)
+
+## 2.46.1
+
+Wed, 04 May 2022 07:14:00 GMT
+
+### Patches
+
+- convert enums to const objects and add supported typings (chhol@microsoft.com)
+
+## 2.46.0
+
+Tue, 03 May 2022 07:15:44 GMT
+
+### Minor changes
+
+- add slots and events documentation (scomea@microsoft.com)
+
+### Patches
+
+- reflect option value changes in select (john.kreitlow@microsoft.com)
+- fix: selectedIndex property ignores disabled options in listbox and select (john.kreitlow@microsoft.com)
+- viewport lock + fill behavior (scomea@microsoft.com)
+- Upgraded api-extractor (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.10.1 (44823142+williamw2@users.noreply.github.com)
+
+## 2.45.0
+
+Sun, 01 May 2022 07:12:05 GMT
+
+### Minor changes
+
+- add select method to number field, text field, and text area components (chhol@microsoft.com)
+
+### Patches
+
+- ensure that tabs and tabpanels without ids stay in sync (chhol@microsoft.com)
+- trim extra spaces from the text property for listbox-option (john.kreitlow@microsoft.com)
+- fix keyboarding behavior for right and left arrow keys in Tree View (chhol@microsoft.com)
+
+## 2.44.0
+
+Thu, 28 Apr 2022 07:12:47 GMT
+
+### Minor changes
+
+- update displayed selected value in select component when an option changes (john.kreitlow@microsoft.com)
+
+## 2.43.0
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Minor changes
+
+- update to typescript 4.6.2 and update ARIAMixin typings (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.4.0 (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v1.10.0 (chhol@microsoft.com)
+
+## 2.42.2
+
+Thu, 21 Apr 2022 07:13:54 GMT
+
+### Patches
+
+- Added support for styling slider value on the track (47367562+bheston@users.noreply.github.com)
+
+## 2.42.1
+
+Sun, 17 Apr 2022 07:11:18 GMT
+
+### Patches
+
+- fix: scrolling back from end and forward retains next flipper in horizontal-scroll (robarb@microsoft.com)
+- Ensured that tabs without an ID use a unique ID to prevent duplicate IDs when multiple tabs are on a page (chhol@microsoft.com)
+- Ensure the skeleton component's object element is not included in the accessibility tree (chhol@microsoft.com)
 
 ## 2.42.0
 

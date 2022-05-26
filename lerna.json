@@ -2,7 +2,6 @@
   "packages": [
     "packages/**/*",
     "sites/fast-color-explorer",
-    "sites/fast-component-explorer",
     "sites/fast-website"
   ],
   "version": "independent",

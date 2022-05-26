@@ -32,6 +32,7 @@ class CompilationContext {
     }
 
     public release(): void {
+        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
         sharedContext = this;
     }
 

@@ -1,8 +1,8 @@
 import { DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { listboxOptionTemplate } from "../listbox-option/listbox-option.template";
-import { fixture } from "../test-utilities/fixture";
-import { ListboxOption } from "./listbox-option";
+import { listboxOptionTemplate } from "../listbox-option/listbox-option.template.js";
+import { fixture } from "../test-utilities/fixture.js";
+import { ListboxOption } from "./listbox-option.js";
 
 describe("ListboxOption", () => {
     const FASTOption = ListboxOption.compose({
@@ -115,6 +115,35 @@ describe("ListboxOption", () => {
         expect(element.text).to.equal("hello");
 
         expect(element.value).to.equal("hello");
+
+        await disconnect();
+    });
+
+    it("should return the trimmed text content with the `text` property", async () => {
+        const { connect, element, disconnect } = await setup();
+
+        await connect();
+
+        element.textContent = `
+            hello
+            world
+        `;
+
+        expect(element.text).to.equal("hello world");
+
+        await disconnect();
+    });
+
+    it("should return the value as a string", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.value = 12345 as any;
+
+        expect(element.value).to.equal("12345");
+
+        expect(typeof element.value).to.equal("string");
 
         await disconnect();
     });

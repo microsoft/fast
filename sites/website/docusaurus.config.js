@@ -25,6 +25,12 @@ module.exports = {
         colorMode: {
             defaultMode: "dark",
         },
+        docs: {
+            sidebar: {
+              hideable: true,
+              autoCollapseCategories: true,
+            }
+        },
         navbar: {
             logo: {
                 alt: `Line drawing of a small moon orbiting around a planet with the words FAST next to it`,
@@ -140,7 +146,8 @@ module.exports = {
             {
                 docs: {
                     sidebarPath: require.resolve("./sidebars.js"),
-                    showLastUpdateTime: true,
+                    // Refer to https://github.com/microsoft/fast/issues/5865 effects of using true
+                    showLastUpdateTime: false,
                     remarkPlugins: [require("mdx-mermaid")],
                 },
                 theme: {

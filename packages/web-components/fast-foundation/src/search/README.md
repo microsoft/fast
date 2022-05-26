@@ -74,7 +74,7 @@ This component is built with the expectation that focus is delegated to the inpu
 | `readOnly`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information.                                 |                      |
 | `autofocus`     | public  | `boolean`                             |         | Indicates that this element should get focus after the page finishes loading. See [autofocus HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus) for more information. |                      |
 | `placeholder`   | public  | `string`                              |         | Sets the placeholder value of the element, generally used to provide a hint to the user.                                                                                                                                    |                      |
-| `list`          | public  | `string`                              |         | Allows associating a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.                              |                      |
+| `list`          | public  | `string`                              |         | Allows associating a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) to the element by https://developer.mozilla.org/en-US/docs/Web/API/Element/id.                                      |                      |
 | `maxlength`     | public  | `number`                              |         | The maximum number of characters a user can enter.                                                                                                                                                                          |                      |
 | `minlength`     | public  | `number`                              |         | The minimum number of characters a user can enter.                                                                                                                                                                          |                      |
 | `pattern`       | public  | `string`                              |         | A regular expression that the value must match to pass validation.                                                                                                                                                          |                      |
@@ -106,6 +106,25 @@ This component is built with the expectation that focus is delegated to the inpu
 | `pattern`     | pattern     |                |
 |               | size        |                |
 |               | spellcheck  |                |
+
+#### CSS Parts
+
+| Name           | Description                                                     |
+| -------------- | --------------------------------------------------------------- |
+| `label`        | The label                                                       |
+| `root`         | The element wrapping the control, including start and end slots |
+| `control`      | The element representing the input                              |
+| `clear-button` | The button to clear the input                                   |
+
+#### Slots
+
+| Name           | Description                                                 |
+| -------------- | ----------------------------------------------------------- |
+| `start`        | Content which can be provided before the search input       |
+| `end`          | Content which can be provided after the search clear button |
+|                | The default slot for the label                              |
+| `close-button` | The clear button                                            |
+| `close-glyph`  | The clear glyph                                             |
 
 <hr/>
 

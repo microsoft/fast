@@ -15,6 +15,9 @@ const defaultConfig: SliderConfiguration = {
 /**
  * A label element intended to be used with the {@link @microsoft/fast-foundation#(Slider:class)} component.
  *
+ * @slot - The default slot for the label content
+ * @csspart root - The element wrapping the label mark and text
+ *
  * @public
  */
 export class SliderLabel extends FoundationElement {

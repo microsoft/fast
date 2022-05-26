@@ -15,6 +15,10 @@ export { TooltipPosition };
 /**
  * An Tooltip Custom HTML Element.
  *
+ * @slot - The default slot for the tooltip content
+ * @csspart tooltip - The tooltip element
+ * @fires dismiss - Fires a custom 'dismiss' event when the tooltip is visible and escape key is pressed
+ *
  * @public
  */
 export class Tooltip extends FoundationElement {
@@ -69,22 +73,7 @@ export class Tooltip extends FoundationElement {
      * HTML Attribute: position
      */
     @attr
-    public position:
-        | TooltipPosition
-        | "top"
-        | "right"
-        | "bottom"
-        | "left"
-        | "start"
-        | "end"
-        | "top-left"
-        | "top-right"
-        | "bottom-left"
-        | "bottom-right"
-        | "top-start"
-        | "top-end"
-        | "bottom-start"
-        | "bottom-end";
+    public position: TooltipPosition;
     private positionChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.updateLayout();

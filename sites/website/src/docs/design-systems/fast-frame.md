@@ -3,6 +3,7 @@ id: fast-frame
 title: The FAST Frame Design System 
 sidebar_label: FAST Frame Design System
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/fast-frame.md
+description: A highly configurable Design System composed of Web Components, Design Tokens, stylesheets, and styling tools.
 ---
 
 FAST Frame ([`@microsoft/fast-components`](https://www.npmjs.com/package/@microsoft/fast-components)) is a highly configurable Design System composed of Web Components, Design Tokens, stylesheets, and styling tools. You can drop it into any app to start with a robust component library and an adaptive and accessible UI system immediately.

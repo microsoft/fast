@@ -419,7 +419,7 @@ export class ListboxElement extends Listbox {
      * @internal
      */
     public multipleChanged(prev: boolean | undefined, next: boolean): void {
-        this.ariaMultiSelectable = next ? "true" : undefined;
+        this.ariaMultiSelectable = next ? "true" : null;
         this.options?.forEach(o => {
             o.checked = next ? false : undefined;
         });

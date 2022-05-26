@@ -1,23 +1,23 @@
 /**
- * enum representing the different day formats
+ * A type representing the different day formats
  * @public
  */
 export type DayFormat = "2-digit" | "numeric";
 
 /**
- * enum representing the different weekday formats
+ * A type representing the different weekday formats
  * @public
  */
 export type WeekdayFormat = "long" | "narrow" | "short";
 
 /**
- * enum representing the different month formats
+ * A type representing the different month formats
  * @public
  */
 export type MonthFormat = "2-digit" | "long" | "narrow" | "numeric" | "short";
 
 /**
- * enum representing the different year formats
+ * A type representing the different year formats
  * @public
  */
 export type YearFormat = "2-digit" | "numeric";

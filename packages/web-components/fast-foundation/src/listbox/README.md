@@ -3,6 +3,7 @@ id: listbox
 title: fast-listbox
 sidebar_label: listbox
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/listbox/README.md
+description: fast-listbox is a web component implementation of a listbox.
 ---
 
 An implementation of a [listbox](https://www.w3.org/TR/wai-aria-practices-1.2/#Listbox). While any DOM content is permissible as a child of the listbox, only [`fast-option`](/docs/components/listbox-option) elements, `option` elements, and slotted items with `role="option"` will be treated as options and receive keyboard support.
@@ -152,18 +153,24 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | ---- | -------- | -------------- |
 |      | disabled |                |
 
+#### Slots
+
+| Name | Description                              |
+| ---- | ---------------------------------------- |
+|      | The default slot for the listbox options |
+
 <hr/>
 
 ### class: `DelegatesARIAListbox`
 
 #### Fields
 
-| Name                   | Privacy | Type                             | Default | Description                                                            | Inherited From |
-| ---------------------- | ------- | -------------------------------- | ------- | ---------------------------------------------------------------------- | -------------- |
-| `ariaActiveDescendant` | public  | `string`                         |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
-| `ariaDisabled`         | public  | `"true" or "false"`              |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
-| `ariaExpanded`         | public  | `"true" or "false" or undefined` |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
-| `ariaMultiSelectable`  | public  | `"true" or "false" or undefined` |         | See https://w3c.github.io/aria/#listbox for more information          |                |
+| Name                   | Privacy | Type                                  | Default | Description                                                            | Inherited From |
+| ---------------------- | ------- | ------------------------------------- | ------- | ---------------------------------------------------------------------- | -------------- |
+| `ariaActiveDescendant` | public  | `string or null`                      |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
+| `ariaDisabled`         | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
+| `ariaExpanded`         | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#listbox for more information |                |
+| `ariaMultiSelectable`  | public  | `"true" or "false" or string or null` |         | See https://w3c.github.io/aria/#listbox for more information          |                |
 
 <hr/>
 

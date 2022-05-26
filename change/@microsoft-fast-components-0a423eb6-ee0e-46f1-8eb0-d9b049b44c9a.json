@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Add story to apply text ellipsis on tree item",
-  "packageName": "@microsoft/fast-components",
-  "email": "fcollonval@gmail.com",
-  "dependentChangeType": "none"
-}
