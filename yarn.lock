@@ -3812,7 +3812,7 @@
     "@microsoft/fast-web-utilities" "^5.4.1"
     tslib "^1.13.0"
 
-"@microsoft/fast-tooling@^0.37.7":
+"@microsoft/fast-tooling@^0.37.7", "@microsoft/fast-tooling@^0.37.9":
   version "0.37.9"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.37.9.tgz#76454362f84e4ea82ec3f9f2aababae29c1b8936"
   integrity sha512-MGyrjs5d7GMuKM7/Cm8TcQT2FKWEMHaMxzGgUpDvLLoyWWM+Y2hqw0hW11NYg8l/+Q1LmiNZtvAJiAQGi/pIxQ==
