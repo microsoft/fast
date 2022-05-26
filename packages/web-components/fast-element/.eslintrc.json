@@ -1,15 +1,9 @@
 {
     "extends": ["@microsoft/eslint-config-fast-dna", "prettier"],
     "rules": {
-        "@typescript-eslint/class-name-casing": "off",
-        "@typescript-eslint/naming-convention": [
-            "error",
-            {
-                "selector": "typeLike",
-                "format": ["UPPER_CASE", "camelCase", "PascalCase"],
-                "leadingUnderscore": "allow"
-            }
-        ],
+        "max-classes-per-file": "off",
+        "no-case-declarations": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/ban-types": [
             "error",
             {

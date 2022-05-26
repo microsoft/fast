@@ -26,23 +26,23 @@
       "development": "./dist/esm/index.debug.js",
       "default": "./dist/esm/index.js"
     },
-    "./polyfills.js": {
+    "./polyfills": {
       "types": "./dist/dts/polyfills.d.ts",
       "default": "./dist/esm/polyfills.js"
     },
-    "./debug.js": {
+    "./debug": {
       "types": "./dist/dts/debug.d.ts",
       "default": "./dist/esm/debug.js"
     },
-    "./splice-strategies.js": {
+    "./splice-strategies": {
       "types": "./dist/dts/observation/splice-strategies.d.ts",
       "default": "./dist/esm/observation/splice-strategies.js"
     },
-    "./utilities.js": {
+    "./utilities": {
       "types": "./dist/dts/utilities.d.ts",
       "default": "./dist/esm/utilities.js"
     },
-    "./hooks.js": {
+    "./hooks": {
       "types": "./dist/dts/hooks.d.ts",
       "default": "./dist/esm/hooks.js"
     }
