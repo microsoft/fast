@@ -6,17 +6,25 @@
 /**
  * @beta
  */
-export class Element {}
+export class Node {}
+
+/**
+ * @beta
+ */
+export class Element extends Node {}
 
 /**
  * @beta
  */
 export abstract class HTMLElement extends Element {
-    private static attributes: WeakMap<HTMLElement, Map<string, string>> = new WeakMap();
+    private static elementAttributes: WeakMap<
+        HTMLElement,
+        Map<string, string>
+    > = new WeakMap();
     private static getOrCreateAttributesForElement(element: HTMLElement) {
-        let attrs = HTMLElement.attributes.get(element);
+        let attrs = HTMLElement.elementAttributes.get(element);
         if (!attrs) {
-            HTMLElement.attributes.set(element, (attrs = new Map()));
+            HTMLElement.elementAttributes.set(element, (attrs = new Map()));
         }
         return attrs;
     }
@@ -76,9 +84,7 @@ export class ShadowRoot {}
  * @beta
  */
 export class Document {
-    get adoptedStyleSheets() {
-        return [];
-    }
+    public adoptedStyleSheets: ReadonlyArray<CSSStyleSheet> = [];
     createTreeWalker() {
         return {};
     }
@@ -95,6 +101,12 @@ export class Document {
  */
 export class CSSStyleSheet {
     replace() {}
+    public readonly cssRules: CSSRule[] = [];
+    insertRule(rule: CSSRule, index: number = 0) {
+        this.cssRules.splice(index, 0, rule);
+
+        return index;
+    }
 }
 
 /**
@@ -132,6 +144,17 @@ export class MutationObserver {
 }
 
 /**
+ * Shim of MediaQueryList.
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList} */
+export class MediaQueryList {
+    /** No-op */
+    addListener() {}
+
+    /** Always false */
+    matches = false;
+}
+
+/**
  * Creates a window object.
  * @param props - Additional properties to expose on the window.
  *
@@ -141,6 +164,7 @@ export function createWindow(
     props: { [key: string]: unknown } = {}
 ): { [key: string]: unknown } {
     const window = {
+        Node,
         Element,
         HTMLElement,
         Document,
@@ -148,6 +172,8 @@ export function createWindow(
         ShadowRoot,
         CustomElementRegistry,
         MutationObserver,
+        MediaQueryList,
+        matchMedia: () => new MediaQueryList(),
 
         // Set below
         window: undefined as unknown,
@@ -165,14 +191,13 @@ export function createWindow(
 }
 
 /**
- * Constructs a window object and installs it on the global, exposing properties directly on globalThis and globalthis.window
- * @param props - Additional properties to expose on the window.
+ * Installs a window object on the global, exposing properties directly on globalThis and globalthis.window
+ * @param window - The Window object to install
  *
  * @beta
  */
-export function installWindowOnGlobal(props: { [key: string]: unknown } = {}) {
+export function installWindowOnGlobal(window: { [key: string]: unknown }) {
     if (globalThis.window === undefined) {
-        const window = createWindow(props);
         Object.assign(globalThis, window);
         globalThis.window = globalThis as typeof globalThis & Window;
     }
