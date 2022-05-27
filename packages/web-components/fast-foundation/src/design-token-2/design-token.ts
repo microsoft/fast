@@ -61,3 +61,32 @@ export interface DesignToken<
      */
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
+
+export class DesignTokenNode {
+    #parent: DesignTokenNode | null = null;
+    #children: Set<DesignTokenNode> = new Set();
+
+    public get parent() {
+        return this.#parent;
+    }
+
+    public get children(): DesignTokenNode[] {
+        return Array.from(this.#children);
+    }
+
+    public appendChild(child: DesignTokenNode) {
+        if (child.parent !== null) {
+            child.parent.removeChild(child);
+        }
+
+        child.#parent = this;
+        this.#children.add(child);
+    }
+
+    public removeChild(child: DesignTokenNode) {
+        if (child.parent === this) {
+            child.#parent = null;
+            this.#children.delete(child);
+        }
+    }
+}
