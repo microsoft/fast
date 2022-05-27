@@ -90,3 +90,45 @@ export class DesignTokenNode {
         }
     }
 }
+/**
+ * Implementation of {@link (DesignToken:interface)}
+ */
+class DesignTokenImpl<T> implements DesignToken<T> {
+    public readonly name: string;
+    public readonly default: StaticDesignTokenValue<T> | undefined;
+
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    public getValueFor(element: HTMLElement): StaticDesignTokenValue<T> {
+        throw new Error(
+            `Value could not be retrieved for token named "${this.name}". Ensure the value is set for ${element} or an ancestor of ${element}.`
+        );
+    }
+
+    public setValueFor(
+        element: HTMLElement,
+        value: DesignTokenValue<T> | DesignToken<T>
+    ): this {
+        return this;
+    }
+
+    public deleteValueFor(element: HTMLElement): this {
+        return this;
+    }
+
+    public withDefault(value: DesignTokenValue<T> | DesignToken<T>) {
+        return this;
+    }
+}
+
+/**
+ * Factory object for creating {@link (DesignToken:interface)} instances.
+ * @public
+ */
+export const DesignToken = Object.freeze({
+    create(name: string) {
+        return new DesignTokenImpl(name);
+    },
+});
