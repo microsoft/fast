@@ -6,20 +6,19 @@ import {
     updateComplete,
 } from "../utils/index.js";
 (async () => {
-    const test = "append";
+    const test = "clickTrigger10x";
     const container = document.getElementById("container");
     const el = document.createElement("x-app");
-    console.log("el", el, container);
     const create = async () => {
         return container.appendChild(el);
     };
-    const append = async () => {
+    const clickEvent = async () => {
         await create();
         const start = getTestStartName(test);
         const shadowRoot = el.shadowRoot;
         const button = shadowRoot.querySelector("button");
         performance.mark(start);
-        // click on button to append Data
+        // click on button to trigger event 10x
         for (let i = 0; i < 10; i++) {
             button.click();
         }
@@ -27,6 +26,6 @@ import {
         performance.measure(test, start);
         destroy(container);
     };
-    await append();
+    await clickEvent();
     measureMemory();
 })();

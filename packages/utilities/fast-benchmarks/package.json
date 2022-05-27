@@ -18,7 +18,7 @@
         "benchmark:fast-element:render": "yarn run benchmark --library=fast-element --benchmark=render --versions local latest --localBenchFile=index2"
     },
     "dependencies": {
-        "@microsoft/fast-element": "^1.10.0",
+        "@microsoft/fast-element": "file:../../web-components/fast-element",
         "tachometer": "^0.5.10"
     },
     "devDependencies": {

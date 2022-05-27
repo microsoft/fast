@@ -9,7 +9,7 @@ import {
 import { data, RandomItem } from "../../../utils/index.js";
 import { queryParams } from "../../../utils/query-params.js";
 
-const { method } = queryParams;
+const { method, ce } = queryParams;
 
 const templates = {
     repeat: html<XApp>`
@@ -35,6 +35,7 @@ const templates = {
     name: "x-app",
     template: html<XApp>`
         <div>
+            <button @click="${x => x.getClickEvent()}">Click Me</button>
             ${x => x.getTemplateByMethod()}
         </div>
     `,
@@ -45,5 +46,24 @@ class XApp extends FASTElement {
 
     getTemplateByMethod() {
         return templates[this.method] as ViewTemplate;
+    }
+
+    getClickEvent() {
+        switch (ce) {
+            case "inplace-replace":
+                this.inplaceReplace();
+                break;
+            case "inplace-reverse":
+                this.inplaceReverse();
+                break;
+        }
+    }
+
+    inplaceReplace() {
+        this.items.splice(0, 1, this.items[0]);
+    }
+
+    inplaceReverse() {
+        this.items.reverse();
     }
 }
