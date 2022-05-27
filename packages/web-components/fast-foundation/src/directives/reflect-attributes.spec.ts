@@ -1,6 +1,6 @@
 import { html, ref, customElement, FASTElement, Updates } from "@microsoft/fast-element";
-import { fixture, uniqueElementName } from "../testing/fixture";
-import { reflectAttributes } from "./reflect-attributes";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { reflectAttributes } from "./reflect-attributes.js";
 import { expect } from "chai";
 
 const template = html<AttributeReflectionTestElement>`

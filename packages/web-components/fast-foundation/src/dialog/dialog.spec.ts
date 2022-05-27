@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { Dialog, dialogTemplate as template } from "./index";
-import { fixture } from "../testing/fixture";
+import { Dialog, dialogTemplate as template } from "./index.js";
+import { fixture } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 import { keyEscape } from "@microsoft/fast-web-utilities";
 
@@ -128,27 +128,27 @@ describe("Dialog", () => {
         await disconnect();
     });
 
-    it("should add an attribute of `trap-focus` when trapFocus is true", async () => {
+    it("should add an attribute of `no-focus-trap` when noFocusTrap is true", async () => {
         const { element, connect, disconnect } = await setup();
 
-        element.trapFocus = true;
+        element.noFocusTrap = true;
 
         await connect();
         await Updates.next();
 
-        expect(element.hasAttribute("trap-focus")).to.equal(true);
+        expect(element.hasAttribute("no-focus-trap")).to.equal(true);
 
         await disconnect();
     });
 
-    it("should add a default attribute of `trap-focus` when trapFocus not defined", async () => {
+    it("should NOT add a default attribute of `no-focus-trap` when noFocusTrap not defined", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
         await Updates.next();
 
-        expect(element.trapFocus).to.equal(true);
-        expect(element.hasAttribute("trap-focus")).to.equal(true);
+        expect(element.noFocusTrap).to.equal(false);
+        expect(element.hasAttribute("no-focus-trap")).to.equal(false);
 
         await disconnect();
     });

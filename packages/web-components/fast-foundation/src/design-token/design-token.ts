@@ -3,14 +3,14 @@ import {
     Binding,
     BindingObserver,
     CSSDirective,
+    Disposable,
     ExecutionContext,
     FASTElement,
     observable,
     Observable,
     Subscriber,
 } from "@microsoft/fast-element";
-import { composedParent } from "../utilities/composed-parent.js";
-import { composedContains } from "../utilities/composed-contains.js";
+import { composedContains, composedParent } from "@microsoft/fast-element/utilities";
 import {
     PropertyTargetManager,
     RootStyleSheetTarget,
@@ -346,7 +346,7 @@ class CustomPropertyReflector {
  * A light wrapper around BindingObserver to handle value caching and
  * token notification
  */
-class DesignTokenBindingObserver<T> {
+class DesignTokenBindingObserver<T> implements Disposable {
     public readonly dependencies = new Set<DesignTokenImpl<any>>();
     private observer: BindingObserver<HTMLElement, DerivedDesignTokenValue<T>>;
     constructor(
@@ -367,8 +367,8 @@ class DesignTokenBindingObserver<T> {
         this.handleChange();
     }
 
-    public disconnect() {
-        this.observer.disconnect();
+    public dispose(): void {
+        this.observer.dispose();
     }
 
     /**
@@ -827,7 +827,7 @@ class DesignTokenNode implements Behavior, Subscriber {
      */
     private tearDownBindingObserver<T>(token: DesignTokenImpl<T>): boolean {
         if (this.bindingObservers.has(token)) {
-            this.bindingObservers.get(token)!.disconnect();
+            this.bindingObservers.get(token)!.dispose();
             this.bindingObservers.delete(token);
             return true;
         }

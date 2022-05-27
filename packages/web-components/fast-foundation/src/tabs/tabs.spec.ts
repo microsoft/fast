@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { css, Updates } from "@microsoft/fast-element";
-import { fixture } from "../testing/fixture";
-import { Tab, tabTemplate } from "../tab";
-import { TabPanel, tabPanelTemplate } from "../tab-panel";
-import { TabsOrientation, Tabs, tabsTemplate as template } from "./index";
+import { fixture } from "../testing/fixture.js";
+import { Tab, tabTemplate } from "../tab/index.js";
+import { TabPanel, tabPanelTemplate } from "../tab-panel/index.js";
+import { TabsOrientation, Tabs, tabsTemplate as template } from "./index.js";
 
 const FASTTab = Tab.compose({
     baseName: "tab",
@@ -95,22 +95,32 @@ describe("Tabs", () => {
         await disconnect();
     });
 
-    it("should set a property equal to activeIndicator when `activeIndicator` property is true", async () => {
+    it("should set a property equal to hideActiveIndicator when `hideActiveIndicator` property is true", async () => {
         const { element, connect, disconnect } = await setup();
-        element.setAttribute("activeIndicator", "false");
+        element.setAttribute("hide-active-indicator", "true");
 
         await connect();
 
-        expect(element.activeindicator).to.equal(false);
+        expect(element.hideActiveIndicator).to.equal(true);
 
         await disconnect();
     });
 
-    it("should render an internal element with a class of 'activeIndicator' when `activeIndicator` is true", async () => {
+    it("should set a default value of `hideActiveIndicator` to false", async () => {
         const { element, connect, disconnect } = await setup();
         await connect();
 
-        expect(element.shadowRoot?.querySelector(".activeIndicator")).to.exist;
+        expect(element.hideActiveIndicator).to.equal(false);
+        expect(element.hasAttribute("hide-active-indicator")).to.equal(false);
+
+        await disconnect();
+    });
+
+    it("should render an internal element with a class of 'active-indicator' when `hide-active-indicator` is false", async () => {
+        const { element, connect, disconnect } = await setup();
+        await connect();
+
+        expect(element.shadowRoot?.querySelector(".active-indicator")).to.exist;
 
         await disconnect();
     });

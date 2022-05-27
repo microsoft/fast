@@ -64,11 +64,11 @@
     "karma-mocha-reporter": "^2.2.5",
     "karma-source-map-support": "^1.4.0",
     "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^4.0.2",
+    "karma-webpack": "^5.0.0",
     "mocha": "^7.1.2",
     "prettier": "2.0.2",
     "ts-loader": "^4.0.1",
-    "typescript": "4.7.0-beta"
+    "typescript": "^4.7.0"
   },
   "dependencies": {
     "exenv-es6": "^1.1.1"

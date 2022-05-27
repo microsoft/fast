@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { DI, optional } from "./di";
+import { DI, optional } from "./di.js";
 
 describe("DI Exception", function () {
     it("No registration for interface", function () {

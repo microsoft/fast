@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { html, ViewTemplate } from "@microsoft/fast-element";
-import { fixture } from "../testing/fixture";
-import { dataGridCellTemplate, DataGridCell } from "./index";
-import { newDataRow } from "./data-grid.spec";
-import { DataGridCellTypes } from "./data-grid.options";
+import { fixture } from "../testing/fixture.js";
+import { dataGridCellTemplate, DataGridCell } from "./index.js";
+import { newDataRow } from "./data-grid.spec.js";
+import { DataGridCellTypes } from "./data-grid.options.js";
 
 
 const FASTDataGridCell = DataGridCell.compose({

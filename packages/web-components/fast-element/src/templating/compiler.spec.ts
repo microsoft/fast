@@ -1,15 +1,15 @@
 import { expect } from "chai";
-import { customElement, FASTElement } from "../components/fast-element";
-import { Markup } from './markup';
-import { ExecutionContext } from "../observation/observable";
-import { css } from "../styles/css";
-import { toHTML, uniqueElementName } from "../__test__/helpers";
-import { bind, HTMLBindingDirective } from "./binding";
-import { Compiler } from "./compiler";
-import type { HTMLDirective, ViewBehaviorFactory } from "./html-directive";
-import { html } from "./template";
-import type { StyleTarget } from "../interfaces";
-import { ElementStyles } from "../index.debug";
+import { customElement, FASTElement } from "../components/fast-element.js";
+import { Markup } from './markup.js';
+import { ExecutionContext } from "../observation/observable.js";
+import { css } from "../styles/css.js";
+import { toHTML, uniqueElementName } from "../__test__/helpers.js";
+import { bind, HTMLBindingDirective } from "./binding.js";
+import { Compiler } from "./compiler.js";
+import type { HTMLDirective, ViewBehaviorFactory } from "./html-directive.js";
+import { html } from "./template.js";
+import type { StyleTarget } from "../interfaces.js";
+import { ElementStyles } from "../index.debug.js";
 
 /**
  * Used to satisfy TS by exposing some internal properties of the

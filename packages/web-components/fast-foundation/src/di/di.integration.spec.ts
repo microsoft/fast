@@ -1,4 +1,4 @@
-import { DI, Container, inject, InterfaceSymbol, Registration, singleton } from "./di";
+import { DI, Container, inject, InterfaceSymbol, Registration, singleton } from "./di.js";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
 

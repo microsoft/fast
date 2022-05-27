@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { all, DI, Container, Registration } from "./di";
+import { all, DI, Container, Registration } from "./di.js";
 
 describe("Container#.getAll", function () {
     let container: Container;

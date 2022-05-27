@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { AnchoredRegion, anchoredRegionTemplate as template } from "./index";
-import { fixture } from "../testing/fixture";
+import { AnchoredRegion, anchoredRegionTemplate as template } from "./index.js";
+import { fixture } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 
 const FASTAnchoredRegion = AnchoredRegion.compose({

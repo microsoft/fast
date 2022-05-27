@@ -40,16 +40,16 @@ export class Dialog extends FoundationElement {
     public hidden: boolean = false;
 
     /**
-     * Indicates that the dialog should trap focus.
+     * Indicates that the dialog should not trap focus.
      *
      * @public
      * @defaultValue - true
      * @remarks
-     * HTML Attribute: trap-focus
+     * HTML Attribute: no-focus-trap
      */
-    @attr({ attribute: "trap-focus", mode: "boolean" })
-    public trapFocus: boolean = true;
-    protected trapFocusChanged = (): void => {
+    @attr({ attribute: "no-focus-trap", mode: "boolean" })
+    public noFocusTrap: boolean = false;
+    private noFocusTrapChanged = (): void => {
         if ((this as FoundationElement).$fastController.isConnected) {
             this.updateTrapFocus();
         }
@@ -190,7 +190,7 @@ export class Dialog extends FoundationElement {
     };
 
     private handleTabKeyDown = (e: KeyboardEvent): void => {
-        if (!this.trapFocus || this.hidden) {
+        if (this.noFocusTrap || this.hidden) {
             return;
         }
 
@@ -250,7 +250,7 @@ export class Dialog extends FoundationElement {
      * we should we be active trapping focus
      */
     private shouldTrapFocus = (): boolean => {
-        return this.trapFocus && !this.hidden;
+        return !this.noFocusTrap && !this.hidden;
     };
 
     /**

@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { slotted, SlottedDirective } from "./slotted";
-import { ExecutionContext, observable } from "../observation/observable";
-import { elements } from "./node-observation";
-import { Updates } from "../observation/update-queue";
+import { slotted, SlottedDirective } from "./slotted.js";
+import { ExecutionContext, observable } from "../observation/observable.js";
+import { elements } from "./node-observation.js";
+import { Updates } from "../observation/update-queue.js";
 
 describe("The slotted", () => {
     context("template function", () => {

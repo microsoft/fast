@@ -9,6 +9,8 @@ import { Behavior } from '@microsoft/fast-element';
 import type { CaptureType } from '@microsoft/fast-element';
 import { ChildViewTemplate } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
+import { composedContains } from '@microsoft/fast-element/utilities';
+import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
@@ -594,11 +596,9 @@ export const ComponentPresentation: Readonly<{
     forTag(tagName: string, element: HTMLElement): ComponentPresentation | null;
 }>;
 
-// @public
-export function composedContains(reference: HTMLElement, test: HTMLElement): boolean;
+export { composedContains }
 
-// @public
-export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
+export { composedParent }
 
 // @beta
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
@@ -679,7 +679,7 @@ export interface CSSDesignToken<T extends string | number | boolean | BigInteger
     readonly cssCustomProperty: string;
 }
 
-// @public
+// @public @deprecated
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
 // @public
@@ -1085,16 +1085,14 @@ export class Dialog extends FoundationElement {
     hidden: boolean;
     hide(): void;
     modal: boolean;
+    noFocusTrap: boolean;
     show(): void;
-    trapFocus: boolean;
-    // (undocumented)
-    protected trapFocusChanged: () => void;
 }
 
 // @public
 export const dialogTemplate: FoundationElementTemplate<ViewTemplate<Dialog>>;
 
-// @public
+// @public @deprecated
 export const disabledCursor = "not-allowed";
 
 // @public
@@ -1117,7 +1115,7 @@ export class Disclosure extends FoundationElement {
 // @public
 export const disclosureTemplate: FoundationElementTemplate<ViewTemplate<Disclosure>>;
 
-// @public
+// @public @deprecated
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
@@ -1243,8 +1241,8 @@ export const FlyoutPosTop: AnchoredRegionConfig;
 // @public
 export const FlyoutPosTopFill: AnchoredRegionConfig;
 
-// @public
-export const focusVisible: string;
+// @public @deprecated
+export const focusVisible = "focus-visible";
 
 // @public
 export const forcedColorsStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
@@ -1375,7 +1373,7 @@ export type GenerateHeaderOptions = typeof GenerateHeaderOptions[keyof typeof Ge
 // @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
 
-// @public
+// @public @deprecated
 export const hidden = ":host([hidden]){display:none}";
 
 // @public
@@ -2586,13 +2584,13 @@ export class Tabs extends FoundationElement {
     activeid: string;
     // @internal (undocumented)
     activeidChanged(oldValue: string, newValue: string): void;
-    activeindicator: boolean;
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
     adjust(adjustment: number): void;
     // @internal (undocumented)
     connectedCallback(): void;
+    hideActiveIndicator: boolean;
     orientation: TabsOrientation;
     // @internal (undocumented)
     orientationChanged(): void;
