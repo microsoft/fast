@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 29 May 2022 07:08:52 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.9",
+      "version": "2.46.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: fast-foundation - 'get' and 'set' accessor must have the same type (#5964)",
+            "author": "aagharat@dstworldwideservices.com",
+            "commit": "36a803c13f0d1ff9bf61d0769d1f2a142be01231",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "none": [
+          {
+            "comment": "docs: update angular.md for two-way binding errors",
+            "author": "roeisenb@microsoft.com",
+            "commit": "b3eec2f46380d0db7fb3656e16fde57198813f87",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "add md extensions to referenced links for integration guides",
+            "author": "steph@huynhicode.dev",
+            "commit": "283b4838d46ed83c70ff4ad91f7f72a4936d59bf",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.2",
+            "author": "steph@huynhicode.dev",
+            "commit": "283b4838d46ed83c70ff4ad91f7f72a4936d59bf",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 26 May 2022 07:11:44 GMT",
       "tag": "@microsoft/fast-foundation_v2.46.8",
       "version": "2.46.8",

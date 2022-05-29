@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 26 May 2022 07:11:44 GMT and should not be manually modified.
+This log was last generated on Sun, 29 May 2022 07:08:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.9
+
+Sun, 29 May 2022 07:08:52 GMT
+
+### Patches
+
+- fix: fast-foundation - 'get' and 'set' accessor must have the same type (#5964) (aagharat@dstworldwideservices.com)
 
 ## 2.46.8
 
