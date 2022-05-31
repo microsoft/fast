@@ -9,7 +9,7 @@
   "devDependencies": {
     "@fluentui/svg-icons": "^1.1.139",
     "@microsoft/fast-components": "^2.30.6",
-    "@microsoft/fast-element": "^1.10.2",
+    "@microsoft/fast-element": "^2.0.0-beta.1",
     "@microsoft/fast-foundation": "^2.46.9",
     "@microsoft/fast-web-utilities": "^5.4.1",
     "@microsoft/site-utilities": "^0.9.0",

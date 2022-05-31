@@ -52,10 +52,10 @@
     "tslib": "^2.4.0"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "^1.10.1"
+    "@microsoft/fast-element": "^2.0.0-beta.1"
   },
   "devDependencies": {
-    "@microsoft/fast-element": "^1.10.1",
+    "@microsoft/fast-element": "^2.0.0-beta.1",
     "@microsoft/fast-foundation": "^2.46.2",
     "@microsoft/api-extractor": "7.24.2",
     "@playwright/test": "^1.20.1",
