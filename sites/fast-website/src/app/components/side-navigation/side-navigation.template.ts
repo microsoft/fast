@@ -1,4 +1,4 @@
-import { html, item, repeat, when } from "@microsoft/fast-element";
+import { html, repeat, when } from "@microsoft/fast-element";
 import { SideNavigation } from "./side-navigation";
 
 export const SideNavigationTemplate = html<SideNavigation>`
@@ -29,7 +29,7 @@ export const SideNavigationTemplate = html<SideNavigation>`
             <div class="item-list">
                 ${repeat(
                     x => x.sectionArray,
-                    item`
+                    html`
                         <div
                             class="list-item scroll-indicator ${(x, c) =>
                                 c.parent.sectionArray[c.index].id ===
