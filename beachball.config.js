@@ -1,5 +1,4 @@
 module.exports = {
-    branch: "origin/features/fast-element-2",
     ignorePatterns: [
         ".ignore",
         ".github/",
