@@ -249,23 +249,3 @@ describe(`A PropertyChangeNotifier`, () => {
         });
     });
 });
-
-describe(`An array observer`, () => {
-    it("should not deliver splices for changes prior to subscription", async () => {
-        enableArrayObservation();
-        const array = [1,2,3,4,5];
-        const observer = Observable.getNotifier(array);
-        let wasCalled = false;
-
-        array.push(6);
-        observer.subscribe({
-            handleChange() {
-                wasCalled = true;
-            }
-        });
-
-        await DOM.nextUpdate();
-
-        expect(wasCalled).to.be.false;
-    })
-});

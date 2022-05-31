@@ -16,7 +16,7 @@ export interface ChildListDirectiveOptions<T = any>
  * @public
  */
 export interface SubtreeDirectiveOptions<T = any>
-    extends Omit<NodeBehaviorOptions<T>, "filter">,
+    extends NodeBehaviorOptions<T>,
         Omit<MutationObserverInit, "subtree" | "childList"> {
     /**
      * Indicates that child subtrees should be observed for changes.
@@ -83,7 +83,7 @@ export class ChildrenDirective extends NodeObservationDirective<
      * @param target - The target to get the node to.
      */
     getNodes(target: Element): Node[] {
-        if ("subtree" in this.options) {
+        if ("selector" in this.options) {
             return Array.from(target.querySelectorAll(this.options.selector));
         }
 
@@ -105,7 +105,7 @@ HTMLDirective.define(ChildrenDirective);
  * @public
  */
 export function children<T = any>(
-    propertyOrOptions: (keyof T & string) | ChildListDirectiveOptions<keyof T & string>
+    propertyOrOptions: (keyof T & string) | ChildrenDirectiveOptions<keyof T & string>
 ): CaptureType<T> {
     if (isString(propertyOrOptions)) {
         propertyOrOptions = {
@@ -113,7 +113,5 @@ export function children<T = any>(
         };
     }
 
-    return new ChildrenDirective(
-        propertyOrOptions as ChildListDirectiveOptions<keyof T & string>
-    );
+    return new ChildrenDirective(propertyOrOptions);
 }
