@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/adaptive-ui",
-  "version": "1.0.0-alpha",
+  "version": "1.0.0-alpha.1",
   "description": "A collection of design utilities supporting basic styling and Adaptive UI",
   "type": "module",
   "main": "dist/esm/index.js",
@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.3.0",
-    "@microsoft/fast-foundation": "^2.46.2"
+    "@microsoft/fast-foundation": "^3.0.0-alpha.1"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.24.2",
