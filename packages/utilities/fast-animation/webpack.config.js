@@ -19,7 +19,7 @@ module.exports = (env, args) => {
                 overlay: true,
             },
         },
-        devtool: isProduction ? "none" : "inline-source-map",
+        devtool: isProduction ? undefined : "inline-source-map",
         entry: appDir + "/app.tsx",
         mode: args.mode || "development",
         module: {
