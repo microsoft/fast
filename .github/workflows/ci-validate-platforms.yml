@@ -63,6 +63,11 @@ jobs:
       - name: Prepare workspaces
         run: yarn prepare
 
+      - name: Install playwright dependencies and browsers
+        run: |
+          yarn playwright install-deps
+          yarn playwright install
+
       - name: Run tests in changed packages
         if: ${{ github.event_name == 'pull_request' }}
         run: yarn lerna run test --stream --since=origin/master
