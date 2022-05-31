@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "add md extensions to referenced doc links for fast-element readme",
-  "packageName": "@microsoft/fast-element",
-  "email": "steph@huynhicode.dev",
-  "dependentChangeType": "none"
-}

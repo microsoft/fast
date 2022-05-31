@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: fast-foundation - 'get' and 'set' accessor must have the same type (#5964)",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "aagharat@dstworldwideservices.com",
-  "dependentChangeType": "patch"
-}
