@@ -22,7 +22,6 @@ export type AvatarOptions = FoundationElementDefinition & {
  * @slot badge - Used to provide a badge, such as a status badge
  * @csspart backplate - The wrapping container for the avatar
  * @csspart link - The avatar link
- * @csspart media - The media slot
  * @csspart content - The default slot
  *
  * @public

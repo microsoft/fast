@@ -165,7 +165,6 @@ This component is built with the expectation that focus is delegated to the anch
 | ----------- | ------------------------------------- |
 | `backplate` | The wrapping container for the avatar |
 | `link`      | The avatar link                       |
-| `media`     | The media slot                        |
 | `content`   | The default slot                      |
 
 #### Slots

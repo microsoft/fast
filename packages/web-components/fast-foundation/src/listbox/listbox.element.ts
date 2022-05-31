@@ -1,4 +1,9 @@
-import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    nullableNumberConverter,
+    observable,
+    Updates,
+} from "@microsoft/fast-element";
 import {
     inRange,
     keyArrowDown,
@@ -456,7 +461,7 @@ export class ListboxElement extends Listbox {
     protected sizeChanged(prev: number | unknown, next: number): void {
         const size = Math.max(0, parseInt(next?.toFixed() ?? "", 10));
         if (size !== next) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 this.size = size;
             });
         }

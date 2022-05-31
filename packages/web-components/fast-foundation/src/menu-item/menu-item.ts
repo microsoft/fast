@@ -1,4 +1,9 @@
-import { attr, DOM, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import {
+    attr,
+    observable,
+    SyntheticViewTemplate,
+    Updates,
+} from "@microsoft/fast-element";
 import {
     Direction,
     keyArrowLeft,
@@ -79,7 +84,7 @@ export class MenuItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public expanded: boolean;
-    private expandedChanged(oldValue: boolean): void {
+    protected expandedChanged(oldValue: boolean): void {
         if (this.$fastController.isConnected) {
             if (this.submenu === undefined) {
                 return;
@@ -118,7 +123,7 @@ export class MenuItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public checked: boolean;
-    private checkedChanged(oldValue: boolean, newValue: boolean): void {
+    protected checkedChanged(oldValue: boolean, newValue: boolean): void {
         if (this.$fastController.isConnected) {
             this.$emit("change");
         }
@@ -161,7 +166,7 @@ export class MenuItem extends FoundationElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             this.updateSubmenu();
         });
 

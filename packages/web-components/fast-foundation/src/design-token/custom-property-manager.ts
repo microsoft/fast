@@ -1,11 +1,11 @@
 import {
     Constructable,
     Controller,
-    DOM,
     ElementStyles,
     FASTElement,
     observable,
     Observable,
+    Updates,
 } from "@microsoft/fast-element";
 
 export const defaultElement = document.createElement("div");
@@ -23,10 +23,10 @@ abstract class QueuedStyleSheetTarget implements PropertyTarget {
     protected abstract target: PropertyTarget;
 
     public setProperty(name: string, value: string) {
-        DOM.queueUpdate(() => this.target.setProperty(name, value));
+        Updates.enqueue(() => this.target.setProperty(name, value));
     }
     public removeProperty(name: string) {
-        DOM.queueUpdate(() => this.target.removeProperty(name));
+        Updates.enqueue(() => this.target.removeProperty(name));
     }
 }
 /**
@@ -39,7 +39,7 @@ class ConstructableStyleSheetTarget extends QueuedStyleSheetTarget {
 
         const sheet = new CSSStyleSheet();
         this.target = (sheet.cssRules[sheet.insertRule(":host{}")] as CSSStyleRule).style;
-        source.$fastController.addStyles(ElementStyles.create([sheet]));
+        source.$fastController.addStyles(new ElementStyles([sheet]));
     }
 }
 
@@ -110,7 +110,7 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
     public setProperty(name: string, value: string) {
         this.store.set(name, value);
 
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             if (this.target !== null) {
                 this.target.setProperty(name, value);
             }
@@ -120,7 +120,7 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
     public removeProperty(name: string) {
         this.store.delete(name);
 
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             if (this.target !== null) {
                 this.target.removeProperty(name);
             }
@@ -158,11 +158,11 @@ class ElementStyleSheetTarget implements PropertyTarget {
     }
 
     setProperty(name: string, value: any) {
-        DOM.queueUpdate(() => this.target.setProperty(name, value));
+        Updates.enqueue(() => this.target.setProperty(name, value));
     }
 
     removeProperty(name: string) {
-        DOM.queueUpdate(() => this.target.removeProperty(name));
+        Updates.enqueue(() => this.target.removeProperty(name));
     }
 }
 
@@ -237,7 +237,7 @@ const propertyTargetCache: WeakMap<
 > = new WeakMap();
 // Use Constructable StyleSheets for FAST elements when supported, otherwise use
 // HTMLStyleElement instances
-const propertyTargetCtor: Constructable<PropertyTarget> = DOM.supportsAdoptedStyleSheets
+const propertyTargetCtor: Constructable<PropertyTarget> = ElementStyles.supportsAdoptedStyleSheets
     ? ConstructableStyleSheetTarget
     : StyleElementStyleSheetTarget;
 
@@ -258,7 +258,7 @@ export const PropertyTargetManager = Object.freeze({
         if (source === defaultElement) {
             target = new RootStyleSheetTarget();
         } else if (source instanceof Document) {
-            target = DOM.supportsAdoptedStyleSheets
+            target = ElementStyles.supportsAdoptedStyleSheets
                 ? new DocumentStyleSheetTarget()
                 : new HeadStyleElementStyleSheetTarget();
         } else if (isFastElement(source as HTMLElement)) {

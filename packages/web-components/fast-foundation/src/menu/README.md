@@ -155,12 +155,13 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 #### Methods
 
-| Name                   | Privacy   | Description                         | Parameters | Return | Inherited From    |
-| ---------------------- | --------- | ----------------------------------- | ---------- | ------ | ----------------- |
-| `focus`                | public    | Focuses the first item in the menu. |            | `void` |                   |
-| `collapseExpandedItem` | public    | Collapses any expanded menu items.  |            | `void` |                   |
-| `templateChanged`      | protected |                                     |            | `void` | FoundationElement |
-| `stylesChanged`        | protected |                                     |            | `void` | FoundationElement |
+| Name                   | Privacy   | Description                         | Parameters                                         | Return | Inherited From    |
+| ---------------------- | --------- | ----------------------------------- | -------------------------------------------------- | ------ | ----------------- |
+| `itemsChanged`         | protected |                                     | `oldValue: HTMLElement[], newValue: HTMLElement[]` | `void` |                   |
+| `focus`                | public    | Focuses the first item in the menu. |                                                    | `void` |                   |
+| `collapseExpandedItem` | public    | Collapses any expanded menu items.  |                                                    | `void` |                   |
+| `templateChanged`      | protected |                                     |                                                    | `void` | FoundationElement |
+| `stylesChanged`        | protected |                                     |                                                    | `void` | FoundationElement |
 
 #### Slots
 
@@ -204,10 +205,12 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name              | Privacy   | Description | Parameters                             | Return | Inherited From    |
+| ----------------- | --------- | ----------- | -------------------------------------- | ------ | ----------------- |
+| `expandedChanged` | protected |             | `oldValue: boolean`                    | `void` |                   |
+| `checkedChanged`  | protected |             | `oldValue: boolean, newValue: boolean` | `void` |                   |
+| `templateChanged` | protected |             |                                        | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |                                        | `void` | FoundationElement |
 
 #### Events
 

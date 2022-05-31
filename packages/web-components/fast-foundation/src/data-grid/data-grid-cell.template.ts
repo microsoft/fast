@@ -16,7 +16,7 @@ export const dataGridCellTemplate: FoundationElementTemplate<ViewTemplate<
             tabindex="-1"
             role="${x =>
                 !x.cellType || x.cellType === "default" ? "gridcell" : x.cellType}"
-            class="
+            :classList="
             ${x =>
                 x.cellType === "columnheader"
                     ? "column-header"

@@ -1,9 +1,9 @@
 import {
     attr,
-    DOM,
     nullableNumberConverter,
     observable,
     SyntheticViewTemplate,
+    Updates,
 } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
@@ -307,7 +307,7 @@ export class NumberField extends FormAssociatedNumberField {
         this.control.value = this.value;
 
         if (this.autofocus) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 this.focus();
             });
         }

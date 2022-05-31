@@ -5,7 +5,6 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const manifest = require("@microsoft/site-utilities/src/curated-html.json").join("");
 
 const appDir = path.resolve(__dirname, "./app");
@@ -14,7 +13,7 @@ const outDir = path.resolve(__dirname, "./www");
 module.exports = (env, args) => {
     const isProduction = args.mode === "production";
     return {
-        devtool: isProduction ? "none" : "inline-source-map",
+        devtool: isProduction ? undefined : "inline-source-map",
         entry: {
             main: path.resolve(appDir, "index.ts"),
             serviceWorker: path.resolve(appDir, "service-worker-registration.ts"),
@@ -74,9 +73,6 @@ module.exports = (env, args) => {
                     use: [
                         {
                             loader: MiniCssExtractPlugin.loader,
-                            options: {
-                                hmr: process.env.NODE_ENV === "development",
-                            },
                         },
                         {
                             loader: "css-loader",
@@ -130,9 +126,11 @@ module.exports = (env, args) => {
         devServer: {
             compress: false,
             historyApiFallback: true,
-            overlay: true,
             open: true,
             port: 7777,
+            client: {
+                overlay: true,
+            },
         },
     };
 };

@@ -1,4 +1,9 @@
-import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    nullableNumberConverter,
+    observable,
+    Updates,
+} from "@microsoft/fast-element";
 import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
@@ -20,8 +25,8 @@ export type SearchOptions = FoundationElementDefinition & StartEndOptions;
  * @slot start - Content which can be provided before the search input
  * @slot end - Content which can be provided after the search clear button
  * @slot - The default slot for the label
- * @slot close-button - The clear button
- * @slot close-glyph - The clear glyph
+ * @slot clear-button - The clear button
+ * @slot clear-glyph - The clear glyph
  * @csspart label - The label
  * @csspart root - The element wrapping the control, including start and end slots
  * @csspart control - The element representing the input
@@ -38,7 +43,7 @@ export class Search extends FormAssociatedSearch {
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
-    private readOnlyChanged(): void {
+    protected readOnlyChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
             this.validate();
@@ -53,7 +58,7 @@ export class Search extends FormAssociatedSearch {
      */
     @attr({ mode: "boolean" })
     public autofocus: boolean;
-    private autofocusChanged(): void {
+    protected autofocusChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.autofocus = this.autofocus;
             this.validate();
@@ -69,7 +74,7 @@ export class Search extends FormAssociatedSearch {
      */
     @attr
     public placeholder: string;
-    private placeholderChanged(): void {
+    protected placeholderChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.placeholder = this.placeholder;
         }
@@ -83,7 +88,7 @@ export class Search extends FormAssociatedSearch {
      */
     @attr
     public list: string;
-    private listChanged(): void {
+    protected listChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.setAttribute("list", this.list);
             this.validate();
@@ -98,7 +103,7 @@ export class Search extends FormAssociatedSearch {
      */
     @attr({ converter: nullableNumberConverter })
     public maxlength: number;
-    private maxlengthChanged(): void {
+    protected maxlengthChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.maxLength = this.maxlength;
             this.validate();
@@ -113,7 +118,7 @@ export class Search extends FormAssociatedSearch {
      */
     @attr({ converter: nullableNumberConverter })
     public minlength: number;
-    private minlengthChanged(): void {
+    protected minlengthChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.minLength = this.minlength;
             this.validate();
@@ -128,7 +133,7 @@ export class Search extends FormAssociatedSearch {
      */
     @attr
     public pattern: string;
-    private patternChanged(): void {
+    protected patternChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.pattern = this.pattern;
             this.validate();
@@ -143,7 +148,7 @@ export class Search extends FormAssociatedSearch {
      */
     @attr({ converter: nullableNumberConverter })
     public size: number;
-    private sizeChanged(): void {
+    protected sizeChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.size = this.size;
         }
@@ -157,7 +162,7 @@ export class Search extends FormAssociatedSearch {
      */
     @attr({ mode: "boolean" })
     public spellcheck: boolean;
-    private spellcheckChanged(): void {
+    protected spellcheckChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.spellcheck = this.spellcheck;
         }
@@ -190,7 +195,7 @@ export class Search extends FormAssociatedSearch {
         this.validate();
 
         if (this.autofocus) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 this.focus();
             });
         }

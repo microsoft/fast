@@ -1,9 +1,9 @@
 import {
     attr,
     booleanConverter,
-    DOM,
     nullableNumberConverter,
     observable,
+    Updates,
 } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
@@ -237,7 +237,7 @@ export class HorizontalScroll extends FoundationElement {
      */
     public scrollItemsChanged(previous: HTMLElement[], next: HTMLElement[]) {
         if (next && !this.updatingItems) {
-            DOM.queueUpdate(() => this.setStops());
+            Updates.enqueue(() => this.setStops());
         }
     }
 

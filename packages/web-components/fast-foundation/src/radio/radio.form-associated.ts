@@ -7,7 +7,7 @@ interface _Radio extends CheckableFormAssociated {}
 /**
  * A form-associated base class for the {@link @microsoft/fast-foundation#(Radio:class)} component.
  *
- * @internal
+ * @beta
  */
 export class FormAssociatedRadio extends CheckableFormAssociated(_Radio) {
     proxy = document.createElement("input");

@@ -67,8 +67,8 @@ export const myDisclosure = Disclosure.compose({
 
 | Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `expanded`      | public  | `boolean`                             |         | Determines if the element should show the extra content or not.                                                                                                                     |                   |
-| `title`         | public  | `string`                              |         | Invoker title                                                                                                                                                                       |                   |
+| `expanded`      | public  | `boolean`                             | `false` | Determines if the element should show the extra content or not.                                                                                                                     |                   |
+| `summary`       | public  | `string`                              |         | Invoker title                                                                                                                                                                       |                   |
 | `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
 | `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
 | `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
@@ -93,10 +93,10 @@ export const myDisclosure = Disclosure.compose({
 
 #### Attributes
 
-| Name    | Field    | Inherited From |
-| ------- | -------- | -------------- |
-|         | expanded |                |
-| `title` | title    |                |
+| Name      | Field    | Inherited From |
+| --------- | -------- | -------------- |
+|           | expanded |                |
+| `summary` | summary  |                |
 
 #### Slots
 

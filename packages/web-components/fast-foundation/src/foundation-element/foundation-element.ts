@@ -38,7 +38,7 @@ export interface FoundationElementDefinition {
     /**
      * The actual FAST base class of the component if different from the class used to compose.
      */
-    baseClass?: Constructable;
+    baseClass?: Constructable<HTMLElement>;
 
     /**
      * The template to render for the custom element.
@@ -205,8 +205,7 @@ function resolveOption<T, K extends FoundationElementDefinition>(
 
 /**
  * Registry capable of defining presentation properties for a DOM Container hierarchy.
- *
- * @internal
+ * @public
  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export class FoundationElementRegistry<

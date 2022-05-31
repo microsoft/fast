@@ -1,18 +1,32 @@
-import { DOM } from "../dom.js";
+import { isFunction } from "../interfaces.js";
+import type { Behavior } from "../observation/behavior.js";
+import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
     Binding,
     BindingObserver,
+    ChildContext,
     ExecutionContext,
+    ItemContext,
     Observable,
+    RootContext,
 } from "../observation/observable.js";
-import type { Notifier, Subscriber } from "../observation/notifier.js";
-import { enableArrayObservation } from "../observation/array-observer.js";
-import type { Splice } from "../observation/array-change-records.js";
-import type { Behavior } from "../observation/behavior.js";
 import { emptyArray } from "../platform.js";
-import { HTMLDirective } from "./html-directive.js";
+import { ArrayObserver, Splice } from "../observation/arrays.js";
+import { Markup } from "./markup.js";
+import {
+    AddViewBehaviorFactory,
+    HTMLDirective,
+    ViewBehaviorFactory,
+    ViewBehaviorTargets,
+} from "./html-directive.js";
+import type {
+    CaptureType,
+    ChildViewTemplate,
+    ItemViewTemplate,
+    SyntheticViewTemplate,
+    ViewTemplate,
+} from "./template.js";
 import { HTMLView, SyntheticView } from "./view.js";
-import type { CaptureType, SyntheticViewTemplate } from "./template.js";
 
 /**
  * Options for configuring repeat behavior.
@@ -39,7 +53,7 @@ function bindWithoutPositioning(
     view: SyntheticView,
     items: readonly any[],
     index: number,
-    context: ExecutionContext
+    context: ChildContext
 ): void {
     view.bind(items[index], context);
 }
@@ -48,12 +62,9 @@ function bindWithPositioning(
     view: SyntheticView,
     items: readonly any[],
     index: number,
-    context: ExecutionContext
+    context: ChildContext
 ): void {
-    const childContext = Object.create(context);
-    childContext.index = index;
-    childContext.length = items.length;
-    view.bind(items[index], childContext);
+    view.bind(items[index], context.createItemContext(index, items.length));
 }
 
 /**
@@ -68,8 +79,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     private items: readonly any[] | null = null;
     private itemsObserver: Notifier | null = null;
     private itemsBindingObserver: BindingObserver<TSource, any[]>;
-    private originalContext: ExecutionContext | undefined = void 0;
-    private childContext: ExecutionContext | undefined = void 0;
+    private context: ExecutionContext | undefined = void 0;
+    private childContext: ChildContext | undefined = void 0;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
 
     /**
@@ -112,16 +123,11 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
      */
     public bind(source: TSource, context: ExecutionContext): void {
         this.source = source;
-        this.originalContext = context;
-        this.childContext = Object.create(context);
-        this.childContext!.parent = source;
-        this.childContext!.parentContext = this.originalContext;
+        this.context = context;
+        this.childContext = context.createChildContext(source);
 
-        this.items = this.itemsBindingObserver.observe(source, this.originalContext);
-        this.template = this.templateBindingObserver.observe(
-            source,
-            this.originalContext
-        );
+        this.items = this.itemsBindingObserver.observe(source, this.context);
+        this.template = this.templateBindingObserver.observe(source, this.context);
         this.observeItems(true);
         this.refreshAllViews();
     }
@@ -139,25 +145,28 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         }
 
         this.unbindAllViews();
-        this.itemsBindingObserver.disconnect();
-        this.templateBindingObserver.disconnect();
+        this.itemsBindingObserver.dispose();
+        this.templateBindingObserver.dispose();
     }
 
-    /** @internal */
+    /**
+     * Handles changes in the array, its items, and the repeat template.
+     * @param source - The source of the change.
+     * @param args - The details about what was changed.
+     */
     public handleChange(source: any, args: Splice[]): void {
         if (source === this.itemsBinding) {
-            this.items = this.itemsBindingObserver.observe(
-                this.source!,
-                this.originalContext!
-            );
+            this.items = this.itemsBindingObserver.observe(this.source!, this.context!);
             this.observeItems();
             this.refreshAllViews();
         } else if (source === this.templateBinding) {
             this.template = this.templateBindingObserver.observe(
                 this.source!,
-                this.originalContext!
+                this.context!
             );
             this.refreshAllViews(true);
+        } else if (args[0].reset) {
+            this.refreshAllViews();
         } else {
             this.updateViews(args);
         }
@@ -183,8 +192,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     }
 
     private updateViews(splices: Splice[]): void {
-        const childContext = this.childContext!;
         const views = this.views;
+        const childContext = this.childContext!;
         const totalRemoved: SyntheticView[] = [];
         const bindView = this.bindView;
         let removeDelta = 0;
@@ -228,19 +237,17 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
         if (this.options.positioning) {
             for (let i = 0, ii = views.length; i < ii; ++i) {
-                const currentContext = views[i].context!;
-                currentContext.length = ii;
-                currentContext.index = i;
+                (views[i].context! as ItemContext).updatePosition(i, ii);
             }
         }
     }
 
     private refreshAllViews(templateChanged: boolean = false): void {
         const items = this.items!;
-        const childContext = this.childContext!;
         const template = this.template;
         const location = this.location;
         const bindView = this.bindView;
+        const childContext = this.childContext!;
         let itemsLength = items.length;
         let views = this.views;
         let viewsLength = views.length;
@@ -298,15 +305,28 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
  * A directive that configures list rendering.
  * @public
  */
-export class RepeatDirective<TSource = any> extends HTMLDirective {
+export class RepeatDirective<TSource = any>
+    implements HTMLDirective, ViewBehaviorFactory {
     private isItemsBindingVolatile: boolean;
     private isTemplateBindingVolatile: boolean;
+
+    /**
+     * The unique id of the factory.
+     */
+    id: string;
+
+    /**
+     * The structural id of the DOM node to which the created behavior will apply.
+     */
+    nodeId: string;
 
     /**
      * Creates a placeholder string based on the directive's index within the template.
      * @param index - The index of the directive within the template.
      */
-    public createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
+    public createHTML(add: AddViewBehaviorFactory): string {
+        return Markup.comment(add(this));
+    }
 
     /**
      * Creates an instance of RepeatDirective.
@@ -315,12 +335,11 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
      * @param options - Options used to turn on special repeat features.
      */
     public constructor(
-        private itemsBinding: Binding,
-        private templateBinding: Binding<TSource, SyntheticViewTemplate>,
-        private options: RepeatOptions
+        public readonly itemsBinding: Binding,
+        public readonly templateBinding: Binding<TSource, SyntheticViewTemplate>,
+        public readonly options: RepeatOptions
     ) {
-        super();
-        enableArrayObservation();
+        ArrayObserver.enable();
         this.isItemsBindingVolatile = Observable.isVolatileBinding(itemsBinding);
         this.isTemplateBindingVolatile = Observable.isVolatileBinding(templateBinding);
     }
@@ -329,9 +348,9 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
      * Creates a behavior for the provided target node.
      * @param target - The node instance to create the behavior for.
      */
-    public createBehavior(target: Node): RepeatBehavior<TSource> {
+    public createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource> {
         return new RepeatBehavior<TSource>(
-            target,
+            targets[this.nodeId],
             this.itemsBinding,
             this.isItemsBindingVolatile,
             this.templateBinding,
@@ -341,6 +360,8 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
     }
 }
 
+HTMLDirective.define(RepeatDirective);
+
 /**
  * A directive that enables list rendering.
  * @param itemsBinding - The array to render.
@@ -349,17 +370,69 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
  * @param options - Options used to turn on special repeat features.
  * @public
  */
-export function repeat<TSource = any, TItem = any>(
-    itemsBinding: Binding<TSource, readonly TItem[]>,
+export function repeat<
+    TSource = any,
+    TArray extends ReadonlyArray<any> = ReadonlyArray<any>
+>(
+    itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>,
+    templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate, RootContext>,
+    options?:
+        | { positioning: false }
+        | { recycle: true }
+        | { positioning: false; recycle: false }
+        | { positioning: false; recycle: true }
+): CaptureType<TSource>;
+/**
+ * A directive that enables list rendering.
+ * @param itemsBinding - The array to render.
+ * @param templateOrTemplateBinding - The template or a template binding used obtain a template
+ * to render for each item in the array.
+ * @param options - Options used to turn on special repeat features.
+ * @public
+ */
+export function repeat<
+    TSource = any,
+    TArray extends ReadonlyArray<any> = ReadonlyArray<any>
+>(
+    itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>,
     templateOrTemplateBinding:
-        | SyntheticViewTemplate
-        | Binding<TSource, SyntheticViewTemplate>,
+        | ChildViewTemplate
+        | Binding<TSource, ChildViewTemplate, ChildContext>,
+    options?:
+        | { positioning: false }
+        | { recycle: true }
+        | { positioning: false; recycle: false }
+        | { positioning: false; recycle: true }
+): CaptureType<TSource>;
+/**
+ * A directive that enables list rendering.
+ * @param itemsBinding - The array to render.
+ * @param templateOrTemplateBinding - The template or a template binding used obtain a template
+ * to render for each item in the array.
+ * @param options - Options used to turn on special repeat features.
+ * @public
+ */
+export function repeat<
+    TSource = any,
+    TArray extends ReadonlyArray<any> = ReadonlyArray<any>
+>(
+    itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>,
+    templateOrTemplateBinding:
+        | ItemViewTemplate
+        | Binding<TSource, ItemViewTemplate, ItemContext>,
+    options:
+        | { positioning: true }
+        | { positioning: true; recycle: true }
+        | { positioning: true; recycle: false }
+): CaptureType<TSource>;
+export function repeat(
+    itemsBinding: any,
+    templateOrTemplateBinding: any,
     options: RepeatOptions = defaultRepeatOptions
-): CaptureType<TSource> {
-    const templateBinding =
-        typeof templateOrTemplateBinding === "function"
-            ? templateOrTemplateBinding
-            : (): SyntheticViewTemplate => templateOrTemplateBinding;
+): any {
+    const templateBinding = isFunction(templateOrTemplateBinding)
+        ? templateOrTemplateBinding
+        : (): SyntheticViewTemplate => templateOrTemplateBinding;
 
-    return new RepeatDirective<TSource>(itemsBinding, templateBinding, options);
+    return new RepeatDirective(itemsBinding, templateBinding, options) as any;
 }

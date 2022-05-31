@@ -46,9 +46,7 @@ export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientatio
  * @slot tab - The slot for tabs
  * @slot tabpanel - The slot for tabpanels
  * @csspart tablist - The element wrapping for the tabs
- * @csspart tab - The tab slot
  * @csspart activeIndicator - The visual indicator
- * @csspart tabpanel - The tabpanel slot
  * @fires change - Fires a custom 'change' event when a tab is clicked or during keyboard navigation
  *
  * @public
@@ -148,8 +146,8 @@ export class Tabs extends FoundationElement {
      * @remarks
      * HTML Attribute: activeindicator
      */
-    @attr({ mode: "boolean" })
-    public activeindicator = true;
+    @attr({ attribute: "hide-active-indicator", mode: "boolean" })
+    public hideActiveIndicator = false;
 
     /**
      * @internal
@@ -211,7 +209,7 @@ export class Tabs extends FoundationElement {
             if (tab.slot === "tab") {
                 const isActiveTab =
                     this.activeTabIndex === index && this.isFocusableElement(tab);
-                if (this.activeindicator && this.isFocusableElement(tab)) {
+                if (!this.hideActiveIndicator && this.isFocusableElement(tab)) {
                     this.showActiveIndicator = true;
                 }
                 const tabId: string = this.tabIds[index];
@@ -323,7 +321,7 @@ export class Tabs extends FoundationElement {
         // Ignore if we click twice on the same tab
         if (
             this.showActiveIndicator &&
-            this.activeindicator &&
+            !this.hideActiveIndicator &&
             this.activeTabIndex !== this.prevActiveTabIndex
         ) {
             if (this.ticking) {

@@ -59,6 +59,40 @@ This component is built with the expectation that focus is delegated to the inpu
 
 
 
+### class: `FormAssociatedSearch`
+
+#### Superclass
+
+| Name      | Module                               | Package |
+| --------- | ------------------------------------ | ------- |
+| `_Search` | src/search/search.form-associated.ts |         |
+
+#### Mixins
+
+| Name             | Module                                  | Package |
+| ---------------- | --------------------------------------- | ------- |
+| `FormAssociated` | /src/form-associated/form-associated.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `proxy`         |         |                                       |         |                                                                                                                                                                                     |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+<hr/>
+
+
+
 ### class: `Search`
 
 #### Superclass
@@ -87,11 +121,20 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### Methods
 
-| Name               | Privacy   | Description                             | Parameters | Return | Inherited From    |
-| ------------------ | --------- | --------------------------------------- | ---------- | ------ | ----------------- |
-| `handleClearInput` | public    | Handles the control's clear value event |            | `void` |                   |
-| `templateChanged`  | protected |                                         |            | `void` | FoundationElement |
-| `stylesChanged`    | protected |                                         |            | `void` | FoundationElement |
+| Name                 | Privacy   | Description                             | Parameters | Return | Inherited From    |
+| -------------------- | --------- | --------------------------------------- | ---------- | ------ | ----------------- |
+| `readOnlyChanged`    | protected |                                         |            | `void` |                   |
+| `autofocusChanged`   | protected |                                         |            | `void` |                   |
+| `placeholderChanged` | protected |                                         |            | `void` |                   |
+| `listChanged`        | protected |                                         |            | `void` |                   |
+| `maxlengthChanged`   | protected |                                         |            | `void` |                   |
+| `minlengthChanged`   | protected |                                         |            | `void` |                   |
+| `patternChanged`     | protected |                                         |            | `void` |                   |
+| `sizeChanged`        | protected |                                         |            | `void` |                   |
+| `spellcheckChanged`  | protected |                                         |            | `void` |                   |
+| `handleClearInput`   | public    | Handles the control's clear value event |            | `void` |                   |
+| `templateChanged`    | protected |                                         |            | `void` | FoundationElement |
+| `stylesChanged`      | protected |                                         |            | `void` | FoundationElement |
 
 #### Attributes
 
@@ -123,8 +166,8 @@ This component is built with the expectation that focus is delegated to the inpu
 | `start`        | Content which can be provided before the search input       |
 | `end`          | Content which can be provided after the search clear button |
 |                | The default slot for the label                              |
-| `close-button` | The clear button                                            |
-| `close-glyph`  | The clear glyph                                             |
+| `clear-button` | The clear button                                            |
+| `clear-glyph`  | The clear glyph                                             |
 
 <hr/>
 

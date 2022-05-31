@@ -62,12 +62,13 @@ export class FASTTextField extends TextField {}
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters         | Return    | Inherited From    |
-| ----------------- | --------- | ----------- | ------------------ | --------- | ----------------- |
-| `handleKeyDown`   | public    |             | `e: KeyboardEvent` | `boolean` |                   |
-| `handleClick`     | public    |             | `e: MouseEvent`    | `boolean` |                   |
-| `templateChanged` | protected |             |                    | `void`    | FoundationElement |
-| `stylesChanged`   | protected |             |                    | `void`    | FoundationElement |
+| Name                      | Privacy   | Description | Parameters         | Return    | Inherited From    |
+| ------------------------- | --------- | ----------- | ------------------ | --------- | ----------------- |
+| `contentsTemplateChanged` | protected |             |                    | `void`    |                   |
+| `handleKeyDown`           | public    |             | `e: KeyboardEvent` | `boolean` |                   |
+| `handleClick`             | public    |             | `e: MouseEvent`    | `boolean` |                   |
+| `templateChanged`         | protected |             |                    | `void`    | FoundationElement |
+| `stylesChanged`           | protected |             |                    | `void`    | FoundationElement |
 
 #### Attributes
 
@@ -126,11 +127,12 @@ export class FASTTextField extends TextField {}
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters      | Return    | Inherited From    |
-| ----------------- | --------- | ----------- | --------------- | --------- | ----------------- |
-| `handleClick`     | public    |             | `e: MouseEvent` | `boolean` |                   |
-| `templateChanged` | protected |             |                 | `void`    | FoundationElement |
-| `stylesChanged`   | protected |             |                 | `void`    | FoundationElement |
+| Name                      | Privacy   | Description | Parameters      | Return    | Inherited From    |
+| ------------------------- | --------- | ----------- | --------------- | --------- | ----------------- |
+| `contentsTemplateChanged` | protected |             |                 | `void`    |                   |
+| `handleClick`             | public    |             | `e: MouseEvent` | `boolean` |                   |
+| `templateChanged`         | protected |             |                 | `void`    | FoundationElement |
+| `stylesChanged`           | protected |             |                 | `void`    | FoundationElement |
 
 #### Attributes
 
@@ -168,6 +170,40 @@ export class FASTTextField extends TextField {}
 | `footerElementsChanged` | public    |             |            | `void` |                   |
 | `templateChanged`       | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`         | protected |             |            | `void` | FoundationElement |
+
+<hr/>
+
+
+
+### class: `FormAssociatedPicker`
+
+#### Superclass
+
+| Name      | Module                               | Package |
+| --------- | ------------------------------------ | ------- |
+| `_Picker` | src/picker/picker.form-associated.ts |         |
+
+#### Mixins
+
+| Name             | Module                                  | Package |
+| ---------------- | --------------------------------------- | ------- |
+| `FormAssociated` | /src/form-associated/form-associated.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `proxy`         |         |                                       |         |                                                                                                                                                                                     |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
 <hr/>
 
@@ -214,18 +250,29 @@ export class FASTTextField extends TextField {}
 
 #### Methods
 
-| Name                    | Privacy   | Description                                                   | Parameters         | Return    | Inherited From    |
-| ----------------------- | --------- | ------------------------------------------------------------- | ------------------ | --------- | ----------------- |
-| `focus`                 | public    | Move focus to the input element                               |                    |           |                   |
-| `handleKeyDown`         | public    | Handle key down events.                                       | `e: KeyboardEvent` | `boolean` |                   |
-| `handleFocusIn`         | public    | Handle focus in events.                                       | `e: FocusEvent`    | `boolean` |                   |
-| `handleFocusOut`        | public    | Handle focus out events.                                      | `e: FocusEvent`    | `boolean` |                   |
-| `handleSelectionChange` | public    | The list of selected items has changed                        |                    | `void`    |                   |
-| `handleRegionLoaded`    | public    | Anchored region is loaded, menu and options exist in the DOM. | `e: Event`         | `void`    |                   |
-| `handleItemInvoke`      | public    | A list item has been invoked.                                 | `e: Event`         | `boolean` |                   |
-| `handleOptionInvoke`    | public    | A menu option has been invoked.                               | `e: Event`         | `boolean` |                   |
-| `templateChanged`       | protected |                                                               |                    | `void`    | FoundationElement |
-| `stylesChanged`         | protected |                                                               |                    | `void`    | FoundationElement |
+| Name                               | Privacy   | Description                                                   | Parameters         | Return    | Inherited From    |
+| ---------------------------------- | --------- | ------------------------------------------------------------- | ------------------ | --------- | ----------------- |
+| `selectionChanged`                 | protected |                                                               |                    | `void`    |                   |
+| `optionsChanged`                   | protected |                                                               |                    | `void`    |                   |
+| `menuPlacementChanged`             | protected |                                                               |                    | `void`    |                   |
+| `showLoadingChanged`               | protected |                                                               |                    | `void`    |                   |
+| `listItemTemplateChanged`          | protected |                                                               |                    | `void`    |                   |
+| `defaultListItemTemplateChanged`   | protected |                                                               |                    | `void`    |                   |
+| `menuOptionTemplateChanged`        | protected |                                                               |                    | `void`    |                   |
+| `defaultMenuOptionTemplateChanged` | protected |                                                               |                    | `void`    |                   |
+| `queryChanged`                     | protected |                                                               |                    | `void`    |                   |
+| `filteredOptionsListChanged`       | protected |                                                               |                    | `void`    |                   |
+| `flyoutOpenChanged`                | protected |                                                               |                    | `void`    |                   |
+| `focus`                            | public    | Move focus to the input element                               |                    |           |                   |
+| `handleKeyDown`                    | public    | Handle key down events.                                       | `e: KeyboardEvent` | `boolean` |                   |
+| `handleFocusIn`                    | public    | Handle focus in events.                                       | `e: FocusEvent`    | `boolean` |                   |
+| `handleFocusOut`                   | public    | Handle focus out events.                                      | `e: FocusEvent`    | `boolean` |                   |
+| `handleSelectionChange`            | public    | The list of selected items has changed                        |                    | `void`    |                   |
+| `handleRegionLoaded`               | public    | Anchored region is loaded, menu and options exist in the DOM. | `e: Event`         | `void`    |                   |
+| `handleItemInvoke`                 | public    | A list item has been invoked.                                 | `e: Event`         | `boolean` |                   |
+| `handleOptionInvoke`               | public    | A menu option has been invoked.                               | `e: Event`         | `boolean` |                   |
+| `templateChanged`                  | protected |                                                               |                    | `void`    | FoundationElement |
+| `stylesChanged`                    | protected |                                                               |                    | `void`    | FoundationElement |
 
 #### Attributes
 

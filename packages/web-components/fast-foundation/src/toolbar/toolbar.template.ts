@@ -12,7 +12,7 @@ import type { Toolbar, ToolbarOptions } from "./toolbar.js";
 export const toolbarTemplate: FoundationElementTemplate<
     ViewTemplate<Toolbar>,
     ToolbarOptions
-> = (context, definition) => html`
+> = (context, definition) => html<Toolbar>`
     <template
         aria-label="${x => x.ariaLabel}"
         aria-labelledby="${x => x.ariaLabelledby}"
@@ -25,7 +25,7 @@ export const toolbarTemplate: FoundationElementTemplate<
         ${children({
             property: "childItems",
             attributeFilter: ["disabled", "hidden"],
-            filter: elements(),
+            selector: "*",
             subtree: true,
         })}
     >

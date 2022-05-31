@@ -1,9 +1,9 @@
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
 import { ListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
-import { fixture } from "../test-utilities/fixture.js";
-import { timeout } from "../test-utilities/timeout.js";
+import { fixture } from "../testing/fixture.js";
+import { timeout } from "../testing/timeout.js";
 import { Select, selectTemplate as template } from "./index.js";
 
 describe("Select", () => {
@@ -60,7 +60,7 @@ describe("Select", () => {
 
         element.disabled = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-disabled")).to.equal("false");
 
@@ -249,7 +249,7 @@ describe("Select", () => {
 
         element.click();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-expanded")).to.equal("true");
 
@@ -287,7 +287,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -319,7 +319,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -347,7 +347,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -377,7 +377,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -529,7 +529,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.true;
@@ -559,7 +559,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.true;
@@ -589,7 +589,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.true;
@@ -615,7 +615,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.true;
@@ -804,7 +804,7 @@ describe("Select", () => {
 
                 element.value = "two";
             }),
-            DOM.nextUpdate().then(() => false),
+            Updates.next().then(() => false),
         ]);
 
         expect(wasChanged).to.be.false;
@@ -829,7 +829,7 @@ describe("Select", () => {
 
                 element.value = "two";
             }),
-            DOM.nextUpdate().then(() => false),
+            Updates.next().then(() => false),
         ]);
 
         expect(wasChanged).to.be.false;
@@ -872,19 +872,19 @@ describe("Select", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-activedescendant")).to.exist.and.equal(option1.id);
 
         element.selectNextOption();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-activedescendant")).to.equal(option2.id);
 
         element.selectNextOption();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-activedescendant")).to.equal(option3.id);
 
@@ -904,13 +904,13 @@ describe("Select", () => {
 
         element.open = true;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-controls")).to.equal(listboxId);
 
         element.open = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-controls")).to.be.empty;
 

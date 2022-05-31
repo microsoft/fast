@@ -19,7 +19,7 @@ export const disclosureTemplate: FoundationElementTemplate<ViewTemplate<Disclosu
             aria-expanded="${x => x.expanded}"
         >
             <slot name="start"></slot>
-            <slot name="title">${x => x.title}</slot>
+            <slot name="summary">${x => x.summary}</slot>
             <slot name="end"></slot>
         </summary>
         <div id="disclosure-content"><slot></slot></div>

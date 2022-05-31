@@ -1,8 +1,7 @@
 import { expect } from "chai";
-import { DOM } from "../dom";
-import { enableArrayObservation } from "./array-observer";
-import { PropertyChangeNotifier, SubscriberSet } from "./notifier";
-import { defaultExecutionContext, Observable, observable, volatile } from "./observable";
+import { Updates } from "./update-queue.js";
+import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
+import { ExecutionContext, Observable, observable, volatile } from "./observable.js";
 
 describe("The Observable", () => {
     class Model {
@@ -76,19 +75,11 @@ describe("The Observable", () => {
             expect(notifier).to.equal(notifier2);
         });
 
-        it("can get a notifier for an array", () => {
-            enableArrayObservation();
-            const array = [];
-            const notifier = Observable.getNotifier(array);
-            expect(notifier).to.be.instanceOf(SubscriberSet);
-        });
+        it("gets different notifiers for different objects", () => {
+            const notifier = Observable.getNotifier(new Model());
+            const notifier2 = Observable.getNotifier(new Model());
 
-        it("gets the same notifier for the same array", () => {
-            enableArrayObservation();
-            const array = [];
-            const notifier = Observable.getNotifier(array);
-            const notifier2 = Observable.getNotifier(array);
-            expect(notifier).to.equal(notifier2);
+            expect(notifier).to.not.equal(notifier2);
         });
 
         it("can notify a change on an object", () => {
@@ -154,17 +145,17 @@ describe("The Observable", () => {
             });
 
             const model = new Model();
-            let value = observer.observe(model, defaultExecutionContext);
+            let value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(model.child);
 
             expect(wasNotified).to.be.false;
             model.child = new ChildModel();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(model.child);
         });
 
@@ -178,17 +169,17 @@ describe("The Observable", () => {
             });
 
             const model = new Model();
-            let value = observer.observe(model, defaultExecutionContext);
+            let value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(model.child.value);
 
             expect(wasNotified).to.be.false;
             model.child.value = "something completely different";
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(model.child.value);
         });
         it("notifies on changes in a sub-property binding after disconnecting before notification has been processed", async () => {
@@ -201,23 +192,23 @@ describe("The Observable", () => {
             });
 
             const model = new Model();
-            let value = observer.observe(model, defaultExecutionContext);
+            let value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(model.child.value);
 
             expect(called).to.be.false;
             model.child.value = "something completely different";
-            observer.disconnect();
+            observer.dispose();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(called).to.be.false;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(model.child.value);
 
             model.child.value = "another completely different thing";
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(called).to.be.true;
         });
@@ -233,51 +224,51 @@ describe("The Observable", () => {
             });
 
             const model = new Model();
-            let value = observer.observe(model, defaultExecutionContext);
+            let value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(model.child.value + model.child2.value);
 
             // change child.value
             expect(wasNotified).to.be.false;
             model.child.value = "something completely different";
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(model.child.value + model.child2.value);
 
             // change child2.value
             wasNotified = false;
             model.child2.value = "another thing";
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(model.child.value + model.child2.value);
 
             // change child
             wasNotified = false;
             model.child = new ChildModel();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(model.child.value + model.child2.value);
 
             // change child 2
             wasNotified = false;
             model.child2 = new ChildModel();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(model.child.value + model.child2.value);
         });
 
@@ -292,27 +283,27 @@ describe("The Observable", () => {
             });
 
             const model = new Model();
-            let value = observer.observe(model, defaultExecutionContext);
+            let value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
         });
 
@@ -327,27 +318,27 @@ describe("The Observable", () => {
             });
 
             const model = new Model();
-            let value = observer.observe(model, defaultExecutionContext);
+            let value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
         });
 
@@ -368,27 +359,27 @@ describe("The Observable", () => {
             });
 
             const model = new Model();
-            let value = observer.observe(model, defaultExecutionContext);
+            let value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
         });
 
@@ -403,27 +394,27 @@ describe("The Observable", () => {
             });
 
             const model = new Model();
-            let value = observer.observe(model, defaultExecutionContext);
+            let value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
         });
 
@@ -438,27 +429,27 @@ describe("The Observable", () => {
             });
 
             const model = new Model();
-            let value = observer.observe(model, defaultExecutionContext);
+            let value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
         });
 
@@ -473,27 +464,27 @@ describe("The Observable", () => {
             });
 
             const model = new Model();
-            let value = observer.observe(model, defaultExecutionContext);
+            let value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
         });
 
@@ -510,27 +501,27 @@ describe("The Observable", () => {
             const model = new Model();
             model.incrementTrigger();
 
-            let value = observer.observe(model, defaultExecutionContext);
+            let value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             expect(wasNotified).to.be.false;
             model.decrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
         });
 
@@ -552,27 +543,27 @@ describe("The Observable", () => {
             });
 
             const model = new Model();
-            let value = observer.observe(model, defaultExecutionContext);
+            let value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             expect(wasNotified).to.be.false;
             model.incrementTrigger();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
 
             wasNotified = false;
             model.value = 20;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasNotified).to.be.true;
 
-            value = observer.observe(model, defaultExecutionContext);
+            value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(binding(model));
         });
 
@@ -587,14 +578,14 @@ describe("The Observable", () => {
 
             const model = new Model();
 
-            const value = observer.observe(model, defaultExecutionContext);
+            const value = observer.observe(model, ExecutionContext.default);
             expect(value).to.equal(model.value);
             expect(wasCalled).to.equal(false);
 
             model.value++;
-            observer.disconnect();
+            observer.dispose();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(wasCalled).to.equal(false);
         });
@@ -612,7 +603,7 @@ describe("The Observable", () => {
             }
 
             const bindingObserver = Observable.binding(binding);
-            bindingObserver.observe({}, defaultExecutionContext);
+            bindingObserver.observe({}, ExecutionContext.default);
 
             let i = 0;
             for (const record of bindingObserver.records()) {

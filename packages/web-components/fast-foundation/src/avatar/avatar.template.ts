@@ -23,9 +23,9 @@ export const avatarTemplate: FoundationElementTemplate<
             href="${x => (x.link ? x.link : void 0)}"
             style="${x => (x.color ? `color: var(--avatar-color-${x.color});` : void 0)}"
         >
-            <slot name="media" part="media">${definition.media || ""}</slot>
-            <slot class="content" part="content"><slot>
+            <slot name="media">${definition.media || ""}</slot>
+            <slot><slot>
         </a>
     </div>
-    <slot name="badge" part="badge"></slot>
+    <slot name="badge"></slot>
 `;

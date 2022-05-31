@@ -73,7 +73,7 @@ export const searchTemplate: FoundationElementTemplate<
                     aria-roledescription="${x => x.ariaRoledescription}"
                     ${ref("control")}
                 />
-                <slot name="close-button">
+                <slot name="clear-button">
                     <button
                         class="clear-button ${x =>
                             x.value ? "" : "clear-button__hidden"}"
@@ -81,7 +81,7 @@ export const searchTemplate: FoundationElementTemplate<
                         tabindex="-1"
                         @click=${x => x.handleClearInput()}
                     >
-                        <slot name="close-glyph">
+                        <slot name="clear-glyph">
                             <svg
                                 width="9"
                                 height="9"

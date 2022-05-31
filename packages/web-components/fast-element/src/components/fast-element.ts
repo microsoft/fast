@@ -1,3 +1,4 @@
+import type { Constructable } from "../interfaces.js";
 import { Controller } from "./controller.js";
 import {
     FASTElementDefinition,
@@ -8,7 +9,7 @@ import {
  * Represents a custom element based on the FASTElement infrastructure.
  * @public
  */
-export interface FASTElement {
+export interface FASTElement extends HTMLElement {
     /**
      * The underlying controller that handles the lifecycle and rendering of
      * this FASTElement.
@@ -54,14 +55,18 @@ export interface FASTElement {
      * This method is invoked by the platform whenever an observed
      * attribute of FASTElement has a value change.
      */
-    attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
+    attributeChangedCallback(
+        name: string,
+        oldValue: string | null,
+        newValue: string | null
+    ): void;
 }
 
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
 function createFASTElement<T extends typeof HTMLElement>(
     BaseType: T
 ): { new (): InstanceType<T> & FASTElement } {
-    return class extends (BaseType as any) implements FASTElement {
+    return class extends (BaseType as any) {
         public readonly $fastController!: Controller;
 
         public constructor() {
@@ -88,8 +93,8 @@ function createFASTElement<T extends typeof HTMLElement>(
 
         public attributeChangedCallback(
             name: string,
-            oldValue: string,
-            newValue: string
+            oldValue: string | null,
+            newValue: string | null
         ): void {
             this.$fastController.onAttributeChangedCallback(name, oldValue, newValue);
         }
@@ -117,7 +122,7 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
      * @param nameOrDef - The name of the element to define or a definition object
      * that describes the element to define.
      */
-    define<TType extends Function>(
+    define<TType extends Constructable<HTMLElement>>(
         type: TType,
         nameOrDef?: string | PartialFASTElementDefinition
     ): TType {
@@ -133,7 +138,7 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
  */
 export function customElement(nameOrDef: string | PartialFASTElementDefinition) {
     /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
-    return function (type: Function) {
+    return function (type: Constructable<HTMLElement>) {
         new FASTElementDefinition(type, nameOrDef).define();
     };
 }

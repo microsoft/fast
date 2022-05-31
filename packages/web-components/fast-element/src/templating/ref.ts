@@ -1,26 +1,28 @@
-import type { Behavior } from "../observation/behavior.js";
+import type { ExecutionContext } from "../observation/observable.js";
+import {
+    HTMLDirective,
+    StatelessAttachedAttributeDirective,
+    ViewBehaviorTargets,
+} from "./html-directive.js";
 import type { CaptureType } from "./template.js";
-import { AttachedBehaviorHTMLDirective } from "./html-directive.js";
 
 /**
  * The runtime behavior for template references.
  * @public
  */
-export class RefBehavior implements Behavior {
-    /**
-     * Creates an instance of RefBehavior.
-     * @param target - The element to reference.
-     * @param propertyName - The name of the property to assign the reference to.
-     */
-    public constructor(private target: HTMLElement, private propertyName: string) {}
-
+export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     /**
      * Bind this behavior to the source.
      * @param source - The source to bind to.
      * @param context - The execution context that the binding is operating within.
+     * @param targets - The targets that behaviors in a view can attach to.
      */
-    public bind(source: any): void {
-        source[this.propertyName] = this.target;
+    public bind(
+        source: any,
+        context: ExecutionContext,
+        targets: ViewBehaviorTargets
+    ): void {
+        source[this.options] = targets[this.nodeId];
     }
 
     /**
@@ -31,11 +33,12 @@ export class RefBehavior implements Behavior {
     public unbind(): void {}
 }
 
+HTMLDirective.define(RefDirective);
+
 /**
  * A directive that observes the updates a property with a reference to the element.
  * @param propertyName - The name of the property to assign the reference to.
  * @public
  */
-export function ref<T = any>(propertyName: keyof T & string): CaptureType<T> {
-    return new AttachedBehaviorHTMLDirective("fast-ref", RefBehavior, propertyName);
-}
+export const ref = <T = any>(propertyName: keyof T & string): CaptureType<T> =>
+    new RefDirective(propertyName);

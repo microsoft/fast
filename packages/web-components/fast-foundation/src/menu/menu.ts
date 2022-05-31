@@ -1,4 +1,4 @@
-import { DOM, observable } from "@microsoft/fast-element";
+import { observable, Updates } from "@microsoft/fast-element";
 import {
     isHTMLElement,
     keyArrowDown,
@@ -28,7 +28,7 @@ export class Menu extends FoundationElement {
      */
     @observable
     public items: HTMLSlotElement;
-    private itemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
+    protected itemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
         // only update children after the component is connected and
         // the setItems has run on connectedCallback
         // (menuItems is undefined until then)
@@ -54,7 +54,7 @@ export class Menu extends FoundationElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             // wait until children have had a chance to
             // connect before setting/checking their props/attributes
             this.setItems();

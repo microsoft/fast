@@ -10,20 +10,15 @@ import {
     pickerMenuOptionTemplate,
     pickerMenuTemplate,
     pickerTemplate,
-} from "./index";
-import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
+} from "./index.js";
+import { fixture } from "../testing/fixture.js";
+import { Updates } from "@microsoft/fast-element";
 import {
-    keyArrowDown,
     keyArrowLeft,
     keyArrowRight,
-    keyArrowUp,
     keyBackspace,
     keyDelete,
-    keyEnd,
     keyEnter,
-    keyEscape,
-    keyHome,
 } from "@microsoft/fast-web-utilities";
 
 const FASTPickerList = PickerList.compose({
@@ -180,7 +175,7 @@ describe("Picker", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.querySelectorAll("fast-picker-list-item").length).to.equal(3);
 
@@ -191,7 +186,7 @@ describe("Picker", () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         element.focus();
 
@@ -207,7 +202,7 @@ describe("Picker", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
         element.focus();
 
         expect(document.activeElement === element.inputElement).to.equal(true);
@@ -248,7 +243,7 @@ describe("Picker", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
         element.focus();
 
         let listItems: Element[] = Array.from(element.querySelectorAll("fast-picker-list-item"));
@@ -256,13 +251,13 @@ describe("Picker", () => {
         expect(element.selection).to.equal("apples,oranges,bananas");
 
         element.dispatchEvent(backEvent);
-        await DOM.nextUpdate();
+        await Updates.next();
         listItems = Array.from(element.querySelectorAll("fast-picker-list-item"));
         expect(listItems.length).to.equal(2);
         expect(element.selection).to.equal("apples,oranges");
 
         element.dispatchEvent(deleteEvent);
-        await DOM.nextUpdate();
+        await Updates.next();
         listItems = Array.from(element.querySelectorAll("fast-picker-list-item"));
         expect(listItems.length).to.equal(1);
         expect(element.selection).to.equal("apples");
@@ -274,7 +269,7 @@ describe("Picker", () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal("bottom");
         expect(element.menuConfig.verticalScaling).to.equal("fill");
@@ -287,42 +282,42 @@ describe("Picker", () => {
         element.menuPlacement = "top-fill";
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal("top");
         expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
         expect(element.menuConfig.verticalScaling).to.equal("fill");
 
         element.menuPlacement = "top";
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal("top");
         expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
         expect(element.menuConfig.verticalScaling).to.equal("content");
 
         element.menuPlacement = "bottom";
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal("bottom");
         expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
         expect(element.menuConfig.verticalScaling).to.equal("content");
 
         element.menuPlacement = "bottom-fill";
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal("bottom");
         expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
         expect(element.menuConfig.verticalScaling).to.equal("fill");
 
         element.menuPlacement = "tallest-fill";
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal(undefined);
         expect(element.menuConfig.verticalPositioningMode).to.equal("dynamic");
         expect(element.menuConfig.verticalScaling).to.equal("fill");
 
         element.menuPlacement = "tallest";
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal(undefined);
         expect(element.menuConfig.verticalPositioningMode).to.equal("dynamic");

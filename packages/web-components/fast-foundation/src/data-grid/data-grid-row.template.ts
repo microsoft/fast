@@ -1,13 +1,23 @@
-import { children, elements, html, slotted } from "@microsoft/fast-element";
+import {
+    children,
+    elements,
+    html,
+    item,
+    ItemViewTemplate,
+    slotted,
+} from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { ElementDefinitionContext } from "../design-system/registration-context.js";
 import type { DataGridRow } from "./data-grid-row.js";
 import { DataGridCell } from "./data-grid-cell.js";
+import type { ColumnDefinition } from "./data-grid.js";
 
-function createCellItemTemplate(context: ElementDefinitionContext): ViewTemplate {
+function createCellItemTemplate(
+    context: ElementDefinitionContext
+): ItemViewTemplate<ColumnDefinition, DataGridRow> {
     const cellTag = context.tagFor(DataGridCell);
-    return html`
+    return item<ColumnDefinition, DataGridRow>`
     <${cellTag}
         cell-type="${x => (x.isRowHeader ? "rowheader" : undefined)}"
         grid-column="${(x, c) => c.index + 1}"
@@ -17,9 +27,11 @@ function createCellItemTemplate(context: ElementDefinitionContext): ViewTemplate
 `;
 }
 
-function createHeaderCellItemTemplate(context: ElementDefinitionContext): ViewTemplate {
+function createHeaderCellItemTemplate(
+    context: ElementDefinitionContext
+): ItemViewTemplate<ColumnDefinition, DataGridRow> {
     const cellTag = context.tagFor(DataGridCell);
-    return html`
+    return item<ColumnDefinition, DataGridRow>`
     <${cellTag}
         cell-type="columnheader"
         grid-column="${(x, c) => c.index + 1}"
@@ -38,12 +50,12 @@ export const dataGridRowTemplate: FoundationElementTemplate<ViewTemplate<DataGri
     context,
     definition
 ) => {
-    const cellItemTemplate: ViewTemplate = createCellItemTemplate(context);
-    const headerCellItemTemplate: ViewTemplate = createHeaderCellItemTemplate(context);
+    const cellItemTemplate = createCellItemTemplate(context);
+    const headerCellItemTemplate = createHeaderCellItemTemplate(context);
     return html<DataGridRow>`
         <template
             role="row"
-            class="${x => (x.rowType !== "default" ? x.rowType : "")}"
+            :classList="${x => (x.rowType !== "default" ? x.rowType : "")}"
             :defaultCellItemTemplate="${cellItemTemplate}"
             :defaultHeaderCellItemTemplate="${headerCellItemTemplate}"
             ${children({

@@ -7,7 +7,7 @@ interface _Select extends FormAssociated {}
 /**
  * A form-associated base class for the {@link @microsoft/fast-foundation#(Select:class)} component.
  *
- * @internal
+ * @beta
  */
 export class FormAssociatedSelect extends FormAssociated(_Select) {
     proxy = document.createElement("select");

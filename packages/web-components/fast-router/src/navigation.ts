@@ -1,7 +1,7 @@
 import { Router } from "./router.js";
 
 /**
- * @alpha
+ * @beta
  */
 export interface Route {
     readonly path: string;
@@ -10,14 +10,14 @@ export interface Route {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class NavigationMessage {
     constructor(public path: string) {}
 }
 
 /**
- * @alpha
+ * @beta
  */
 export interface NavigationHandler {
     enqueue(msg: NavigationMessage): void;
@@ -26,7 +26,7 @@ export interface NavigationHandler {
 const handlers = new Set<NavigationHandler>();
 
 /**
- * @alpha
+ * @beta
  */
 export const NavigationHandler = Object.freeze({
     register(handler: NavigationHandler) {
@@ -39,7 +39,7 @@ export const NavigationHandler = Object.freeze({
 });
 
 /**
- * @alpha
+ * @beta
  */
 export interface NavigationQueue {
     connect(): void;
@@ -53,7 +53,7 @@ export interface NavigationQueue {
 const absoluteUrl = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
 
 /**
- * @alpha
+ * @beta
  */
 export const Route = Object.freeze({
     path: Object.freeze({
@@ -178,7 +178,7 @@ export const Route = Object.freeze({
 });
 
 /**
- * @alpha
+ * @beta
  */
 export class DefaultNavigationQueue implements NavigationQueue, NavigationHandler {
     private queue: NavigationMessage[] = [];

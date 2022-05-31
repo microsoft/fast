@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "`ElementViewTemplate`, `SyntheticViewTemplate`, and `ViewTemplate` - Added type parameters throughout. Logic to instantiate and apply behaviors moved out of the template and into the view where it can be lazily executed. Removed the ability of the `render` method to take a string id of the node to render to. You must provide a node.",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}

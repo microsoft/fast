@@ -7,13 +7,17 @@
 import type { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
 import type { CaptureType } from '@microsoft/fast-element';
+import { ChildViewTemplate } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
+import { composedContains } from '@microsoft/fast-element/utilities';
+import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
+import { ItemViewTemplate } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import type { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
@@ -68,7 +72,7 @@ export const accordionItemTemplate: FoundationElementTemplate<ViewTemplate<Accor
 export const accordionTemplate: FoundationElementTemplate<ViewTemplate<Accordion>>;
 
 // @public
-export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnType<typeof DI.inject>;
+export const all: (key: any, searchAncestors?: boolean) => ReturnType<typeof DI.inject>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Anchor" because one of its declarations is marked as @internal
@@ -99,32 +103,68 @@ export class AnchoredRegion extends FoundationElement {
     // @internal (undocumented)
     adoptedCallback(): void;
     anchor: string;
+    // (undocumented)
+    protected anchorChanged(): void;
     anchorElement: HTMLElement | null;
+    // (undocumented)
+    protected anchorElementChanged(): void;
     autoUpdateMode: AutoUpdateMode;
+    // (undocumented)
+    protected autoUpdateModeChanged(prevMode: AutoUpdateMode, newMode: AutoUpdateMode): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
     fixedPlacement: boolean;
+    // (undocumented)
+    protected fixedPlacementChanged(): void;
     horizontalDefaultPosition: HorizontalPosition;
+    // (undocumented)
+    protected horizontalDefaultPositionChanged(): void;
     horizontalInset: boolean;
+    // (undocumented)
+    protected horizontalInsetChanged(): void;
     horizontalPosition: AnchoredRegionPositionLabel | undefined;
     horizontalPositioningMode: AxisPositioningMode;
+    // (undocumented)
+    protected horizontalPositioningModeChanged(): void;
     horizontalScaling: AxisScalingMode;
+    // (undocumented)
+    protected horizontalScalingChanged(): void;
     horizontalThreshold: number;
+    // (undocumented)
+    protected horizontalThresholdChanged(): void;
     horizontalViewportLock: boolean;
+    // (undocumented)
+    protected horizontalViewportLockChanged(): void;
     // @internal
     initialLayoutComplete: boolean;
     update: () => void;
     verticalDefaultPosition: VerticalPosition;
+    // (undocumented)
+    protected verticalDefaultPositionChanged(): void;
     verticalInset: boolean;
+    // (undocumented)
+    protected verticalInsetChanged(): void;
     verticalPosition: AnchoredRegionPositionLabel | undefined;
     verticalPositioningMode: AxisPositioningMode;
+    // (undocumented)
+    protected verticalPositioningModeChanged(): void;
     verticalScaling: AxisScalingMode;
+    // (undocumented)
+    protected verticalScalingChanged(): void;
     verticalThreshold: number;
+    // (undocumented)
+    protected verticalThresholdChanged(): void;
     verticalViewportLock: boolean;
+    // (undocumented)
+    protected verticalViewportLockChanged(): void;
     viewport: string;
+    // (undocumented)
+    protected viewportChanged(): void;
     viewportElement: HTMLElement | null;
+    // (undocumented)
+    protected viewportElementChanged(): void;
 }
 
 // @public
@@ -227,11 +267,17 @@ export class BaseProgress extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
     max: number;
+    // (undocumented)
+    protected maxChanged(): void;
     min: number;
+    // (undocumented)
+    protected minChanged(): void;
     paused: boolean;
     // @internal
     percentComplete: number;
     value: number | null;
+    // (undocumented)
+    protected valueChanged(): void;
 }
 
 // @public
@@ -239,7 +285,7 @@ export class Breadcrumb extends FoundationElement {
     // @internal (undocumented)
     slottedBreadcrumbItems: HTMLElement[];
     // (undocumented)
-    slottedBreadcrumbItemsChanged(): void;
+    protected slottedBreadcrumbItemsChanged(): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -281,12 +327,24 @@ export class Button extends FormAssociatedButton {
     // @internal (undocumented)
     disconnectedCallback(): void;
     formaction: string;
+    // (undocumented)
+    protected formactionChanged(): void;
     formenctype: string;
+    // (undocumented)
+    protected formenctypeChanged(): void;
     formId: string;
     formmethod: string;
+    // (undocumented)
+    protected formmethodChanged(): void;
     formnovalidate: boolean;
+    // (undocumented)
+    protected formnovalidateChanged(): void;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
+    // (undocumented)
+    protected formtargetChanged(): void;
     type: "submit" | "reset" | "button";
+    // (undocumented)
+    protected typeChanged(previous: "submit" | "reset" | "button" | void, next: "submit" | "reset" | "button"): void;
 }
 
 // @internal
@@ -304,29 +362,36 @@ export class Calendar extends FoundationElement {
     dateFormatter: DateFormatter;
     dateInString(date: Date | string, datesString: string): boolean;
     dayFormat: DayFormat;
+    // (undocumented)
+    protected dayFormatChanged(): void;
     disabledDates: string;
     getDayClassNames(date: CalendarDateInfo, todayString?: string): string;
     getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[][];
     getMonthInfo(month?: number, year?: number): CalendarInfo;
-    getWeekdayText(): {
-        text: string;
-        abbr?: string;
-    }[];
+    getWeekdayText(): WeekdayText[];
     handleDateSelect(event: Event, day: CalendarDateInfo): void;
     handleKeydown(event: KeyboardEvent, date: CalendarDateInfo): boolean;
     locale: string;
+    // (undocumented)
+    protected localeChanged(): void;
     minWeeks: number;
     month: number;
     monthFormat: MonthFormat;
+    // (undocumented)
+    protected monthFormatChanged(): void;
     readonly: boolean;
     selectedDates: string;
     weekdayFormat: WeekdayFormat;
+    // (undocumented)
+    protected weekdayFormatChanged(): void;
     year: number;
     yearFormat: YearFormat;
+    // (undocumented)
+    protected yearFormatChanged(): void;
 }
 
 // @public
-export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate<CalendarDateInfo>;
+export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ItemViewTemplate<CalendarDateInfo>;
 
 // @public
 export type CalendarDateInfo = {
@@ -349,7 +414,7 @@ export type CalendarOptions = FoundationElementDefinition & StartEndOptions & {
 };
 
 // @public (undocumented)
-export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate;
+export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ChildViewTemplate;
 
 // @public
 export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>, CalendarOptions>;
@@ -358,7 +423,7 @@ export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>,
 export const CalendarTitleTemplate: ViewTemplate<Calendar>;
 
 // @public
-export const calendarWeekdayTemplate: (context: ElementDefinitionContext) => ViewTemplate;
+export const calendarWeekdayTemplate: (context: ElementDefinitionContext) => ItemViewTemplate;
 
 // @public
 export class Card extends FoundationElement {
@@ -367,10 +432,10 @@ export class Card extends FoundationElement {
 // @public
 export const cardTemplate: FoundationElementTemplate<ViewTemplate<Card>>;
 
-// @alpha (undocumented)
+// @beta
 export function CheckableFormAssociated<T extends ConstructableFormAssociated>(BaseCtor: T): T;
 
-// @alpha
+// @beta
 export interface CheckableFormAssociated extends FormAssociated {
     // (undocumented)
     checked: boolean;
@@ -388,7 +453,7 @@ export interface CheckableFormAssociated extends FormAssociated {
     dirtyChecked: boolean;
 }
 
-// @alpha
+// @beta
 export type CheckableFormAssociatedElement = FormAssociatedElement & CheckableFormAssociated & {
     proxy: HTMLInputElement;
 };
@@ -408,6 +473,8 @@ export class Checkbox extends FormAssociatedCheckbox {
     // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     readOnly: boolean;
+    // (undocumented)
+    protected readOnlyChanged(): void;
 }
 
 // @public
@@ -529,13 +596,11 @@ export const ComponentPresentation: Readonly<{
     forTag(tagName: string, element: HTMLElement): ComponentPresentation | null;
 }>;
 
-// @public
-export function composedContains(reference: HTMLElement, test: HTMLElement): boolean;
+export { composedContains }
 
-// @public
-export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
+export { composedParent }
 
-// @alpha
+// @beta
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
 // @public
@@ -614,7 +679,7 @@ export interface CSSDesignToken<T extends string | number | boolean | BigInteger
     readonly cssCustomProperty: string;
 }
 
-// @public
+// @public @deprecated
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
 // @public
@@ -623,12 +688,14 @@ export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaSt
 // @public
 export class DataGrid extends FoundationElement {
     constructor();
-    cellItemTemplate?: ViewTemplate;
+    cellItemTemplate?: ItemViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
+    // (undocumented)
+    protected columnDefinitionsChanged(): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultRowItemTemplate: ViewTemplate;
+    defaultRowItemTemplate: ItemViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     focusColumnIndex: number;
@@ -636,6 +703,8 @@ export class DataGrid extends FoundationElement {
     static generateColumns: (row: object) => ColumnDefinition[];
     generateHeader: GenerateHeaderOptions;
     gridTemplateColumns: string;
+    // (undocumented)
+    protected gridTemplateColumnsChanged(): void;
     // @internal (undocumented)
     handleFocus(e: FocusEvent): void;
     // @internal (undocumented)
@@ -644,24 +713,32 @@ export class DataGrid extends FoundationElement {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
-    headerCellItemTemplate?: ViewTemplate;
+    headerCellItemTemplate?: ItemViewTemplate;
     noTabbing: boolean;
+    // (undocumented)
+    protected noTabbingChanged(): void;
     // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
-    rowItemTemplate: ViewTemplate;
+    rowItemTemplate: ItemViewTemplate;
     rowsData: object[];
+    // (undocumented)
+    protected rowsDataChanged(): void;
 }
 
 // @public
 export class DataGridCell extends FoundationElement {
     cellType: DataGridCellTypes;
     columnDefinition: ColumnDefinition | null;
+    // (undocumented)
+    protected columnDefinitionChanged(oldValue: ColumnDefinition | null, newValue: ColumnDefinition | null): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
     gridColumn: string;
+    // (undocumented)
+    protected gridColumnChanged(): void;
     // (undocumented)
     handleFocusin(e: FocusEvent): void;
     // (undocumented)
@@ -687,32 +764,36 @@ export type DataGridCellTypes = typeof DataGridCellTypes[keyof typeof DataGridCe
 // @public
 export class DataGridRow extends FoundationElement {
     // @internal
-    activeCellItemTemplate?: ViewTemplate;
+    activeCellItemTemplate?: ItemViewTemplate;
     // @internal
     cellElements: HTMLElement[];
-    cellItemTemplate?: ViewTemplate;
+    cellItemTemplate?: ItemViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultCellItemTemplate?: ViewTemplate;
+    defaultCellItemTemplate?: ItemViewTemplate;
     // @internal
-    defaultHeaderCellItemTemplate?: ViewTemplate;
+    defaultHeaderCellItemTemplate?: ItemViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // @internal (undocumented)
     focusColumnIndex: number;
     gridTemplateColumns: string;
     // (undocumented)
+    protected gridTemplateColumnsChanged(): void;
+    // (undocumented)
     handleCellFocus(e: Event): void;
     // (undocumented)
     handleFocusout(e: FocusEvent): void;
     // (undocumented)
     handleKeydown(e: KeyboardEvent): void;
-    headerCellItemTemplate?: ViewTemplate;
+    headerCellItemTemplate?: ItemViewTemplate;
     // @internal
     isActiveRow: boolean;
     rowData: object | null;
+    // (undocumented)
+    protected rowDataChanged(): void;
     rowIndex: number;
     rowType: DataGridRowTypes;
     // @internal (undocumented)
@@ -916,14 +997,14 @@ export interface DesignSystem {
 export const DesignSystem: Readonly<{
     tagFor(type: Constructable): string;
     responsibleFor(element: HTMLElement): DesignSystem;
-    getOrCreate(node?: Node | undefined): DesignSystem;
+    getOrCreate(node?: Node): DesignSystem;
 }>;
 
 // @public
 export interface DesignSystemRegistrationContext {
     readonly elementPrefix: string;
     // @deprecated
-    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): void;
+    tryDefineElement(name: string, type: Constructable<HTMLElement>, callback: ElementDefinitionCallback): void;
     tryDefineElement(params: ElementDefinitionParams): void;
 }
 
@@ -971,17 +1052,17 @@ export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignToken
 
 // @public
 export const DI: Readonly<{
-    createContainer(config?: Partial<ContainerConfiguration> | undefined): Container;
+    createContainer(config?: Partial<ContainerConfiguration>): Container;
     findResponsibleContainer(node: Node): Container;
     findParentContainer(node: Node): Container;
-    getOrCreateDOMContainer(node?: Node | undefined, config?: Partial<Omit<ContainerConfiguration, "parentLocator">> | undefined): Container;
+    getOrCreateDOMContainer(node?: Node, config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
     getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
     getDependencies(Type: Constructable | Injectable): Key[];
     defineProperty(target: {}, propertyName: string, key: Key, respectConnection?: boolean): void;
     createInterface<K extends Key>(nameConfigOrCallback?: string | InterfaceConfiguration | ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined, configuror?: ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined): InterfaceSymbol<K>;
-    inject(...dependencies: Key[]): (target: any, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
+    inject(...dependencies: Key[]): (target: any, key?: string | number, descriptor?: PropertyDescriptor | number) => void;
     transient<T extends Constructable<{}>>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
     singleton<T_1 extends Constructable<{}>>(target: T_1 & Partial<RegisterSelf<T_1>>, options?: SingletonOptions): T_1 & RegisterSelf<T_1>;
 }>;
@@ -1004,14 +1085,14 @@ export class Dialog extends FoundationElement {
     hidden: boolean;
     hide(): void;
     modal: boolean;
+    noFocusTrap: boolean;
     show(): void;
-    trapFocus: boolean;
 }
 
 // @public
 export const dialogTemplate: FoundationElementTemplate<ViewTemplate<Dialog>>;
 
-// @public
+// @public @deprecated
 export const disabledCursor = "not-allowed";
 
 // @public
@@ -1027,14 +1108,14 @@ export class Disclosure extends FoundationElement {
     protected onToggle(): void;
     protected setup(): void;
     show(): void;
-    title: string;
+    summary: string;
     toggle(): void;
 }
 
 // @public
 export const disclosureTemplate: FoundationElementTemplate<ViewTemplate<Disclosure>>;
 
-// @public
+// @public @deprecated
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
@@ -1066,13 +1147,13 @@ export interface ElementDefinitionContext {
     readonly name: string;
     readonly shadowRootMode: ShadowRootMode | undefined;
     tagFor(type: Constructable): string;
-    readonly type: Constructable;
+    readonly type: Constructable<HTMLElement>;
     readonly willDefine: boolean;
 }
 
 // @public
 export interface ElementDefinitionParams extends Pick<ElementDefinitionContext, "name" | "type"> {
-    readonly baseClass?: Constructable;
+    readonly baseClass?: Constructable<HTMLElement>;
     callback: ElementDefinitionCallback;
 }
 
@@ -1095,9 +1176,6 @@ export type EndOptions = {
 
 // @public
 export const endSlotTemplate: (context: ElementDefinitionContext, definition: EndOptions) => ViewTemplate<StartEnd>;
-
-// @public @deprecated
-export const endTemplate: ViewTemplate<StartEnd>;
 
 // @public
 export interface Factory<T extends Constructable = any> {
@@ -1163,18 +1241,18 @@ export const FlyoutPosTop: AnchoredRegionConfig;
 // @public
 export const FlyoutPosTopFill: AnchoredRegionConfig;
 
-// @public
-export const focusVisible: string;
+// @public @deprecated
+export const focusVisible = "focus-visible";
 
 // @public
 export const forcedColorsStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
-// @alpha
+// @beta
 export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: T): T;
 
 // Warning: (ae-forgotten-export) The symbol "ElementInternals" needs to be exported by the entry point index.d.ts
 //
-// @alpha
+// @beta
 export interface FormAssociated extends Omit<ElementInternals_2, "labels"> {
     // (undocumented)
     attachProxy(): void;
@@ -1220,10 +1298,10 @@ export interface FormAssociated extends Omit<ElementInternals_2, "labels"> {
     valueChanged(previous: string, next: string): void;
 }
 
-// @alpha
+// @beta
 export type FormAssociatedElement = FormAssociated & FASTElement & HTMLElement & FormAssociatedProxy;
 
-// @alpha
+// @beta
 export interface FormAssociatedProxy {
     // (undocumented)
     disabledChanged?(previous: boolean, next: boolean): void;
@@ -1244,7 +1322,6 @@ export interface FormAssociatedProxy {
 // @public
 export class FoundationElement extends FASTElement {
     protected get $presentation(): ComponentPresentation | null;
-    // Warning: (ae-incompatible-release-tags) The symbol "compose" is marked as @public, but its signature references "FoundationElementRegistry" which is marked as @internal
     static compose<T extends FoundationElementDefinition = FoundationElementDefinition, K extends Constructable<FoundationElement> = Constructable<FoundationElement>>(this: K, elementDefinition: T): (overrideDefinition?: OverrideFoundationElementDefinition<T>) => FoundationElementRegistry<T, K>;
     connectedCallback(): void;
     styles: ElementStyles | void | null;
@@ -1258,7 +1335,7 @@ export class FoundationElement extends FASTElement {
 // @public
 export interface FoundationElementDefinition {
     readonly attributes?: EagerOrLazyFoundationOption<(AttributeConfiguration | string)[], this>;
-    baseClass?: Constructable;
+    baseClass?: Constructable<HTMLElement>;
     baseName: string;
     readonly elementOptions?: EagerOrLazyFoundationOption<ElementDefinitionOptions, this>;
     readonly shadowOptions?: EagerOrLazyFoundationOption<Partial<ShadowRootInit> | null, this>;
@@ -1267,9 +1344,7 @@ export interface FoundationElementDefinition {
     readonly template?: EagerOrLazyFoundationOption<ElementViewTemplate, this>;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "FoundationElementRegistry" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export class FoundationElementRegistry<TDefinition extends FoundationElementDefinition, TType> implements Registry {
     constructor(type: Constructable<FoundationElement>, elementDefinition: TDefinition, overrideDefinition: OverrideFoundationElementDefinition<TDefinition>);
     // (undocumented)
@@ -1298,7 +1373,7 @@ export type GenerateHeaderOptions = typeof GenerateHeaderOptions[keyof typeof Ge
 // @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
 
-// @public
+// @public @deprecated
 export const hidden = ":host([hidden]){display:none}";
 
 // @public
@@ -1347,7 +1422,7 @@ export type HorizontalScrollView = "default" | "mobile";
 export function ignore(target: Injectable, property?: string | number, descriptor?: PropertyDescriptor | number): void;
 
 // @public
-export const inject: (...dependencies: Key[]) => (target: any, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
+export const inject: (...dependencies: Key[]) => (target: any, key?: string | number, descriptor?: PropertyDescriptor | number) => void;
 
 // @public
 export type Injectable<T = {}> = Constructable<T> & {
@@ -1581,7 +1656,6 @@ export abstract class MatchMediaBehavior implements Behavior {
 // @public
 export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
     constructor(query: MediaQueryList, styles: ElementStyles);
-    // @internal
     protected constructListener(source: typeof FASTElement): MediaQueryListListener;
     readonly query: MediaQueryList;
     readonly styles: ElementStyles;
@@ -1609,6 +1683,8 @@ export class Menu extends FoundationElement {
     readonly isNestedMenu: () => boolean;
     // @internal (undocumented)
     items: HTMLSlotElement;
+    // (undocumented)
+    protected itemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
 }
 
 // @beta
@@ -1620,6 +1696,8 @@ export type menuConfigs = "bottom" | "bottom-fill" | "tallest" | "tallest-fill" 
 // @public
 export class MenuItem extends FoundationElement {
     checked: boolean;
+    // (undocumented)
+    protected checkedChanged(oldValue: boolean, newValue: boolean): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
@@ -1628,6 +1706,8 @@ export class MenuItem extends FoundationElement {
     // @internal (undocumented)
     disconnectedCallback(): void;
     expanded: boolean;
+    // (undocumented)
+    protected expandedChanged(oldValue: boolean): void;
     // @internal (undocumented)
     handleMenuItemClick: (e: MouseEvent) => boolean;
     // @internal (undocumented)
@@ -1771,7 +1851,7 @@ export type ParentLocator = (owner: any) => Container | null;
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedPicker" needs to be exported by the entry point index.d.ts
 //
-// @alpha
+// @beta
 export class Picker extends FormAssociatedPicker {
     // @internal
     activeListItemTemplate?: ViewTemplate;
@@ -1780,15 +1860,23 @@ export class Picker extends FormAssociatedPicker {
     // @internal (undocumented)
     connectedCallback(): void;
     defaultListItemTemplate?: ViewTemplate;
+    // (undocumented)
+    protected defaultListItemTemplateChanged(): void;
     defaultMenuOptionTemplate?: ViewTemplate;
+    // (undocumented)
+    protected defaultMenuOptionTemplateChanged(): void;
     // (undocumented)
     disconnectedCallback(): void;
     // @internal
     filteredOptionsList: string[];
+    // (undocumented)
+    protected filteredOptionsListChanged(): void;
     filterQuery: boolean;
     filterSelected: boolean;
     // @internal
     flyoutOpen: boolean;
+    // (undocumented)
+    protected flyoutOpenChanged(): void;
     // @public
     focus(): void;
     handleFocusIn(e: FocusEvent): boolean;
@@ -1807,6 +1895,8 @@ export class Picker extends FormAssociatedPicker {
     listElement: PickerList;
     listItemContentsTemplate: ViewTemplate;
     listItemTemplate: ViewTemplate;
+    // (undocumented)
+    protected listItemTemplateChanged(): void;
     loadingText: string;
     maxSelected: number | undefined;
     // @internal
@@ -1821,14 +1911,22 @@ export class Picker extends FormAssociatedPicker {
     menuId: string;
     menuOptionContentsTemplate: ViewTemplate;
     menuOptionTemplate: ViewTemplate;
+    // (undocumented)
+    protected menuOptionTemplateChanged(): void;
     menuPlacement: menuConfigs;
+    // (undocumented)
+    protected menuPlacementChanged(): void;
     // @internal
     menuTag: string;
     noSuggestionsText: string;
     options: string;
+    // (undocumented)
+    protected optionsChanged(): void;
     optionsList: string[];
     placeholder: string;
     query: string;
+    // (undocumented)
+    protected queryChanged(): void;
     // @internal
     region: AnchoredRegion;
     // @internal (undocumented)
@@ -1836,21 +1934,27 @@ export class Picker extends FormAssociatedPicker {
     // @internal
     selectedListTag: string;
     selection: string;
+    // (undocumented)
+    protected selectionChanged(): void;
     showLoading: boolean;
+    // (undocumented)
+    protected showLoadingChanged(): void;
     // @internal
     showNoOptions: boolean;
     suggestionsAvailableText: string;
 }
 
-// @alpha
+// @beta
 export class PickerList extends FoundationElement {
 }
 
-// @alpha
+// @beta
 export class PickerListItem extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
     contentsTemplate: ViewTemplate;
+    // (undocumented)
+    protected contentsTemplateChanged(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
@@ -1860,17 +1964,17 @@ export class PickerListItem extends FoundationElement {
     value: string;
 }
 
-// Warning: (ae-incompatible-release-tags) The symbol "pickerListItemTemplate" is marked as @public, but its signature references "PickerListItem" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "pickerListItemTemplate" is marked as @public, but its signature references "PickerListItem" which is marked as @beta
 //
 // @public (undocumented)
 export const pickerListItemTemplate: FoundationElementTemplate<ViewTemplate<PickerListItem>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "pickerListTemplate" is marked as @public, but its signature references "PickerList" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "pickerListTemplate" is marked as @public, but its signature references "PickerList" which is marked as @beta
 //
 // @public (undocumented)
 export const pickerListTemplate: FoundationElementTemplate<ViewTemplate<PickerList>>;
 
-// @alpha
+// @beta
 export class PickerMenu extends FoundationElement {
     // @internal
     footerElements: HTMLElement[];
@@ -1889,11 +1993,13 @@ export class PickerMenu extends FoundationElement {
     suggestionsAvailableText: string;
 }
 
-// @alpha
+// @beta
 export class PickerMenuOption extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
     contentsTemplate: ViewTemplate;
+    // (undocumented)
+    protected contentsTemplateChanged(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
@@ -1901,17 +2007,17 @@ export class PickerMenuOption extends FoundationElement {
     value: string;
 }
 
-// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuOptionTemplate" is marked as @public, but its signature references "PickerMenuOption" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuOptionTemplate" is marked as @public, but its signature references "PickerMenuOption" which is marked as @beta
 //
 // @public (undocumented)
 export const pickerMenuOptionTemplate: FoundationElementTemplate<ViewTemplate<PickerMenuOption>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuTemplate" is marked as @public, but its signature references "PickerMenu" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuTemplate" is marked as @public, but its signature references "PickerMenu" which is marked as @beta
 //
 // @public
 export const pickerMenuTemplate: FoundationElementTemplate<ViewTemplate<PickerMenu>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "pickerTemplate" is marked as @public, but its signature references "Picker" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "pickerTemplate" is marked as @public, but its signature references "Picker" which is marked as @beta
 //
 // @public
 export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>>;
@@ -1939,11 +2045,10 @@ export class PropertyStyleSheetBehavior implements Behavior {
     bind(elementInstance: FASTElement): void;
     // @internal
     handleChange(source: FASTElement, key: string): void;
-    // @internal
     unbind(source: typeof FASTElement & HTMLElement): void;
 }
 
-// @alpha
+// @beta
 export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedRadio" needs to be exported by the entry point index.d.ts
@@ -1951,7 +2056,7 @@ export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputEl
 // @public
 export class Radio extends FormAssociatedRadio implements RadioControl {
     constructor();
-    // @internal (undocumented)
+    // @beta
     clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1961,10 +2066,12 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     defaultSlottedNodes: Node[];
     // @internal
     initialValue: string;
-    // @internal (undocumented)
-    keypressHandler: (e: KeyboardEvent) => boolean | void;
+    // @beta
+    keypressHandler(e: KeyboardEvent): boolean | void;
     name: string;
     readOnly: boolean;
+    // (undocumented)
+    protected readOnlyChanged(): void;
 }
 
 // @public
@@ -1980,6 +2087,8 @@ export class RadioGroup extends FoundationElement {
     connectedCallback(): void;
     disabled: boolean;
     // (undocumented)
+    protected disabledChanged(): void;
+    // (undocumented)
     disconnectedCallback(): void;
     // @internal (undocumented)
     focusOutHandler: (e: FocusEvent) => boolean | void;
@@ -1990,8 +2099,12 @@ export class RadioGroup extends FoundationElement {
     protected nameChanged(): void;
     orientation: Orientation | "horizontal" | "vertical";
     readOnly: boolean;
+    // (undocumented)
+    protected readOnlyChanged(): void;
     // @internal (undocumented)
     slottedRadioButtons: HTMLElement[];
+    // (undocumented)
+    protected slottedRadioButtonsChanged(oldValue: unknown, newValue: HTMLElement[]): void;
     value: string;
     // (undocumented)
     protected valueChanged(): void;
@@ -2116,6 +2229,8 @@ export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | s
 // @public
 export class Search extends FormAssociatedSearch {
     autofocus: boolean;
+    // (undocumented)
+    protected autofocusChanged(): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
@@ -2128,15 +2243,31 @@ export class Search extends FormAssociatedSearch {
     // @internal
     handleTextInput(): void;
     list: string;
+    // (undocumented)
+    protected listChanged(): void;
     maxlength: number;
+    // (undocumented)
+    protected maxlengthChanged(): void;
     minlength: number;
+    // (undocumented)
+    protected minlengthChanged(): void;
     pattern: string;
+    // (undocumented)
+    protected patternChanged(): void;
     placeholder: string;
+    // (undocumented)
+    protected placeholderChanged(): void;
     readOnly: boolean;
+    // (undocumented)
+    protected readOnlyChanged(): void;
     // @internal
     root: HTMLDivElement;
     size: number;
+    // (undocumented)
+    protected sizeChanged(): void;
     spellcheck: boolean;
+    // (undocumented)
+    protected spellcheckChanged(): void;
 }
 
 // @internal
@@ -2292,6 +2423,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     // @internal (undocumented)
     position: string;
     readOnly: boolean;
+    // (undocumented)
+    protected readOnlyChanged(): void;
     step: number;
     // @internal (undocumented)
     stepMultiplier: number;
@@ -2341,6 +2474,8 @@ export class SliderLabel extends FoundationElement {
     handleChange(source: any, propertyName: string): void;
     hideMark: boolean;
     position: string;
+    // (undocumented)
+    protected positionChanged(): void;
     // @internal (undocumented)
     positionStyle: string;
     // @internal (undocumented)
@@ -2381,15 +2516,7 @@ export class StartEnd {
     // (undocumented)
     end: HTMLSlotElement;
     // (undocumented)
-    endContainer: HTMLSpanElement;
-    // (undocumented)
-    handleEndContentChange(): void;
-    // (undocumented)
-    handleStartContentChange(): void;
-    // (undocumented)
     start: HTMLSlotElement;
-    // (undocumented)
-    startContainer: HTMLSpanElement;
 }
 
 // @public
@@ -2402,9 +2529,6 @@ export type StartOptions = {
 
 // @public
 export const startSlotTemplate: (context: ElementDefinitionContext, definition: StartOptions) => ViewTemplate<StartEnd>;
-
-// @public @deprecated
-export const startTemplate: ViewTemplate<StartEnd>;
 
 // @public
 export type StaticDesignTokenValue<T> = T extends Function ? never : T;
@@ -2428,6 +2552,8 @@ export class Switch extends FormAssociatedSwitch {
     // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     readOnly: boolean;
+    // (undocumented)
+    protected readOnlyChanged(): void;
 }
 
 // @public
@@ -2458,13 +2584,13 @@ export class Tabs extends FoundationElement {
     activeid: string;
     // @internal (undocumented)
     activeidChanged(oldValue: string, newValue: string): void;
-    activeindicator: boolean;
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
     adjust(adjustment: number): void;
     // @internal (undocumented)
     connectedCallback(): void;
+    hideActiveIndicator: boolean;
     orientation: TabsOrientation;
     // @internal (undocumented)
     orientationChanged(): void;
@@ -2509,6 +2635,8 @@ export const tabTemplate: FoundationElementTemplate<ViewTemplate<Tab>>;
 // @public
 export class TextArea extends FormAssociatedTextArea {
     autofocus: boolean;
+    // (undocumented)
+    protected autofocusChanged(): void;
     cols: number;
     // @internal
     control: HTMLTextAreaElement;
@@ -2520,15 +2648,25 @@ export class TextArea extends FormAssociatedTextArea {
     // @internal (undocumented)
     handleTextInput: () => void;
     list: string;
+    // (undocumented)
+    protected listChanged(): void;
     maxlength: number;
+    // (undocumented)
+    protected maxlengthChanged(): void;
     minlength: number;
+    // (undocumented)
+    protected minlengthChanged(): void;
     name: string;
     placeholder: string;
     readOnly: boolean;
+    // (undocumented)
+    protected readOnlyChanged(): void;
     resize: TextAreaResize;
     rows: number;
     protected select(): void;
     spellcheck: boolean;
+    // (undocumented)
+    protected spellcheckChanged(): void;
 }
 
 // @internal
@@ -2556,6 +2694,8 @@ export const textAreaTemplate: FoundationElementTemplate<ViewTemplate<TextArea>>
 // @public
 export class TextField extends FormAssociatedTextField {
     autofocus: boolean;
+    // (undocumented)
+    protected autofocusChanged(): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
@@ -2567,14 +2707,30 @@ export class TextField extends FormAssociatedTextField {
     // @internal
     handleTextInput(): void;
     list: string;
+    // (undocumented)
+    protected listChanged(): void;
     maxlength: number;
+    // (undocumented)
+    protected maxlengthChanged(): void;
     minlength: number;
+    // (undocumented)
+    protected minlengthChanged(): void;
     pattern: string;
+    // (undocumented)
+    protected patternChanged(): void;
     placeholder: string;
+    // (undocumented)
+    protected placeholderChanged(): void;
     readOnly: boolean;
+    // (undocumented)
+    protected readOnlyChanged(): void;
     protected select(): void;
     size: number;
+    // (undocumented)
+    protected sizeChanged(): void;
     spellcheck: boolean;
+    // (undocumented)
+    protected spellcheckChanged(): void;
     type: TextFieldType;
 }
 
@@ -2648,7 +2804,11 @@ export const toolbarTemplate: FoundationElementTemplate<ViewTemplate<Toolbar>, T
 // @public
 export class Tooltip extends FoundationElement {
     anchor: string;
+    // (undocumented)
+    protected anchorChanged(): void;
     anchorElement: HTMLElement | null;
+    // (undocumented)
+    protected anchorElementChanged(oldValue: HTMLElement | null): void;
     autoUpdateMode: AutoUpdateMode;
     // (undocumented)
     connectedCallback(): void;
@@ -2684,7 +2844,11 @@ export class Tooltip extends FoundationElement {
     verticalViewportLock: boolean;
     // @internal
     viewportElement: HTMLElement | null;
+    // (undocumented)
+    protected viewportElementChanged(): void;
     visible: boolean;
+    // (undocumented)
+    protected visibleChanged(): void;
 }
 
 // @public
@@ -2736,6 +2900,8 @@ export class TreeItem extends FoundationElement {
     // @internal
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
+    // (undocumented)
+    protected expandedChanged(): void;
     // @internal
     focusable: boolean;
     static focusItem(el: HTMLElement): void;
@@ -2748,11 +2914,15 @@ export class TreeItem extends FoundationElement {
     readonly isNestedItem: () => boolean;
     // @internal
     items: HTMLElement[];
+    // (undocumented)
+    protected itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void;
     // @internal
     nested: boolean;
     // @internal (undocumented)
     renderCollapsedChildren: boolean;
     selected: boolean;
+    // (undocumented)
+    protected selectedChanged(): void;
 }
 
 // @internal
@@ -2787,6 +2957,8 @@ export class TreeView extends FoundationElement {
     renderCollapsedNodes: boolean;
     // @internal
     slottedTreeItems: HTMLElement[];
+    // (undocumented)
+    protected slottedTreeItemsChanged(): void;
     // @internal
     treeView: HTMLElement;
 }
@@ -2804,6 +2976,12 @@ export type VerticalPosition = "top" | "bottom" | "center" | "unset";
 
 // @public
 export type WeekdayFormat = "long" | "narrow" | "short";
+
+// @public
+export type WeekdayText = {
+    text: string;
+    abbr?: string;
+};
 
 // @public
 export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;

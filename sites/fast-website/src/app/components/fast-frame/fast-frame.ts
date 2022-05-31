@@ -1,9 +1,8 @@
-import { FASTElement, attr, observable, DOM } from "@microsoft/fast-element";
+import { FASTElement, attr, observable, Updates } from "@microsoft/fast-element";
 import {
     StandardLuminance,
     PaletteRGB,
     SwatchRGB,
-    neutralLayer1Recipe,
     baseLayerLuminance,
     neutralPalette,
     accentPalette,
@@ -13,10 +12,6 @@ import {
     baseHorizontalSpacingMultiplier,
     controlCornerRadius,
     strokeWidth,
-    neutralLayer1,
-    neutralLayer2,
-    neutralLayer2Recipe,
-    neutralLayerCardContainerRecipe,
     neutralLayerCardContainer,
 } from "@microsoft/fast-components";
 import { RadioGroup, Slider } from "@microsoft/fast-foundation";
@@ -38,7 +33,7 @@ export class FastFrame extends FASTElement {
     public baseLayerLuminance: number = StandardLuminance.DarkMode;
     baseLayerLuminanceChanged() {
         if (typeof this.baseLayerLuminance === "number") {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 baseLayerLuminance.setValueFor(this.preview, this.baseLayerLuminance);
             });
         }
@@ -68,7 +63,7 @@ export class FastFrame extends FASTElement {
     public neutralPalette: PaletteRGB;
     neutralPaletteChanged() {
         if (this.neutralPalette) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 neutralPalette.setValueFor(this.preview, this.neutralPalette);
             });
         }
@@ -78,7 +73,7 @@ export class FastFrame extends FASTElement {
     public accentPalette: PaletteRGB;
     accentPaletteChanged() {
         if (this.accentPalette) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 accentPalette.setValueFor(this.preview, this.accentPalette);
             });
         }
@@ -87,7 +82,7 @@ export class FastFrame extends FASTElement {
     @observable
     public density: number = 0;
     densityChanged() {
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             density.setValueFor(this.preview, this.density);
         });
     }
@@ -95,7 +90,7 @@ export class FastFrame extends FASTElement {
     @observable
     public borderRadius: number = 3;
     borderRadiusChanged() {
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             controlCornerRadius.setValueFor(this.preview, this.borderRadius);
         });
     }
@@ -103,7 +98,7 @@ export class FastFrame extends FASTElement {
     @observable
     public strokeWidth: number = 1;
     strokeWidthChanged() {
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             strokeWidth.setValueFor(this.preview, this.strokeWidth);
         });
     }

@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "chore: update package.json metadata",
+  "packageName": "@microsoft/fast-web-utilities",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "none"
+}

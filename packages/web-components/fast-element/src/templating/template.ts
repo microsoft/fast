@@ -1,25 +1,34 @@
-import { DOM } from "../dom.js";
-import type { Behavior } from "../observation/behavior.js";
-import { Binding, defaultExecutionContext } from "../observation/observable.js";
-import { compileTemplate } from "./compiler.js";
-import { ElementView, HTMLView, SyntheticView } from "./view.js";
+import { isFunction, isString } from "../interfaces.js";
 import {
+    Binding,
+    ChildContext,
+    ExecutionContext,
+    ItemContext,
+} from "../observation/observable.js";
+import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
+import { Compiler } from "./compiler.js";
+import {
+    AddViewBehaviorFactory,
+    Aspect,
+    Aspected,
     HTMLDirective,
-    NodeBehaviorFactory,
-    TargetedHTMLDirective,
+    HTMLDirectiveDefinition,
+    ViewBehaviorFactory,
 } from "./html-directive.js";
-import { HTMLBindingDirective } from "./binding.js";
+import { nextId } from "./markup.js";
+import type { ElementView, HTMLView, SyntheticView } from "./view.js";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.
  * @public
  */
-export interface ElementViewTemplate {
+export interface ElementViewTemplate<TSource = any, TParent = any> {
+    type: "element";
     /**
      * Creates an ElementView instance based on this template definition.
      * @param hostBindingTarget - The element that host behaviors will be bound to.
      */
-    create(hostBindingTarget: Element): ElementView;
+    create(hostBindingTarget: Element): ElementView<TSource, TParent>;
 
     /**
      * Creates an HTMLView from this template, binds it to the source, and then appends it to the host.
@@ -28,34 +37,94 @@ export interface ElementViewTemplate {
      * @param hostBindingTarget - An HTML element to target the host bindings at if different from the
      * host that the template is being attached to.
      */
-    render(source: any, host: Node, hostBindingTarget?: Element): HTMLView;
+    render(
+        source: TSource,
+        host: Node,
+        hostBindingTarget?: Element
+    ): ElementView<TSource, TParent>;
 }
 
 /**
  * A template capable of rendering views not specifically connected to custom elements.
  * @public
  */
-/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-export interface SyntheticViewTemplate<TSource = any, TParent = any> {
+export interface SyntheticViewTemplate<
+    TSource = any,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
+> {
+    type: "synthetic";
     /**
      * Creates a SyntheticView instance based on this template definition.
      */
-    create(): SyntheticView;
+    create(): SyntheticView<TSource, TParent, TContext>;
+}
+
+/**
+ * A template capable of rendering child views not specifically connected to custom elements.
+ * @public
+ */
+export interface ChildViewTemplate<TSource = any, TParent = any> {
+    type: "child";
+
+    /**
+     * Creates a SyntheticView instance based on this template definition.
+     */
+    create(): SyntheticView<TSource, TParent, ChildContext<TParent>>;
+}
+
+/**
+ * A template capable of rendering item views not specifically connected to custom elements.
+ * @public
+ */
+export interface ItemViewTemplate<TSource = any, TParent = any> {
+    type: "item";
+
+    /**
+     * Creates a SyntheticView instance based on this template definition.
+     */
+    create(): SyntheticView<TSource, TParent, ItemContext<TParent>>;
+}
+
+/**
+ * The result of a template compilation operation.
+ * @public
+ */
+export interface HTMLTemplateCompilationResult<
+    TSource = any,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
+> {
+    /**
+     * Creates a view instance.
+     * @param hostBindingTarget - The host binding target for the view.
+     */
+    createView(hostBindingTarget?: Element): HTMLView<TSource, TParent, TContext>;
 }
 
 /**
  * A template capable of creating HTMLView instances or rendering directly to DOM.
  * @public
  */
-/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-export class ViewTemplate<TSource = any, TParent = any>
-    implements ElementViewTemplate, SyntheticViewTemplate {
-    private behaviorCount: number = 0;
-    private hasHostBehaviors: boolean = false;
-    private fragment: DocumentFragment | null = null;
-    private targetOffset: number = 0;
-    private viewBehaviorFactories: NodeBehaviorFactory[] | null = null;
-    private hostBehaviorFactories: NodeBehaviorFactory[] | null = null;
+export class ViewTemplate<
+    TSource = any,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext
+>
+    implements
+        ElementViewTemplate<TSource, TParent>,
+        SyntheticViewTemplate<TSource, TParent, TContext> {
+    private result: HTMLTemplateCompilationResult<
+        TSource,
+        TParent,
+        TContext
+    > | null = null;
+
+    /**
+     * Used for TypeScript purposes only.
+     * Do not use.
+     */
+    type: any;
 
     /**
      * The html representing what this template will
@@ -66,89 +135,34 @@ export class ViewTemplate<TSource = any, TParent = any>
     /**
      * The directives that will be connected to placeholders in the html.
      */
-    public readonly directives: ReadonlyArray<HTMLDirective>;
+    public readonly factories: Record<string, ViewBehaviorFactory>;
 
     /**
      * Creates an instance of ViewTemplate.
      * @param html - The html representing what this template will instantiate, including placeholders for directives.
-     * @param directives - The directives that will be connected to placeholders in the html.
+     * @param factories - The directives that will be connected to placeholders in the html.
      */
     public constructor(
         html: string | HTMLTemplateElement,
-        directives: ReadonlyArray<HTMLDirective>
+        factories: Record<string, ViewBehaviorFactory>
     ) {
         this.html = html;
-        this.directives = directives;
+        this.factories = factories;
     }
 
     /**
      * Creates an HTMLView instance based on this template definition.
      * @param hostBindingTarget - The element that host behaviors will be bound to.
      */
-    public create(hostBindingTarget?: Element): HTMLView {
-        if (this.fragment === null) {
-            let template: HTMLTemplateElement;
-            const html = this.html;
-
-            if (typeof html === "string") {
-                template = document.createElement("template");
-                template.innerHTML = DOM.createHTML(html);
-
-                const fec = template.content.firstElementChild;
-
-                if (fec !== null && fec.tagName === "TEMPLATE") {
-                    template = fec as HTMLTemplateElement;
-                }
-            } else {
-                template = html;
-            }
-
-            const result = compileTemplate(template, this.directives);
-
-            this.fragment = result.fragment;
-            this.viewBehaviorFactories = result.viewBehaviorFactories;
-            this.hostBehaviorFactories = result.hostBehaviorFactories;
-            this.targetOffset = result.targetOffset;
-            this.behaviorCount =
-                this.viewBehaviorFactories.length + this.hostBehaviorFactories.length;
-            this.hasHostBehaviors = this.hostBehaviorFactories.length > 0;
+    public create(hostBindingTarget?: Element): HTMLView<TSource, TParent, TContext> {
+        if (this.result === null) {
+            this.result = Compiler.compile<TSource, TParent, TContext>(
+                this.html,
+                this.factories
+            );
         }
 
-        const fragment = this.fragment.cloneNode(true) as DocumentFragment;
-        const viewFactories = this.viewBehaviorFactories!;
-        const behaviors = new Array<Behavior>(this.behaviorCount);
-        const walker = DOM.createTemplateWalker(fragment);
-
-        let behaviorIndex = 0;
-        let targetIndex = this.targetOffset;
-        let node = walker.nextNode();
-
-        for (let ii = viewFactories.length; behaviorIndex < ii; ++behaviorIndex) {
-            const factory = viewFactories[behaviorIndex];
-            const factoryIndex = factory.targetIndex;
-
-            while (node !== null) {
-                if (targetIndex === factoryIndex) {
-                    behaviors[behaviorIndex] = factory.createBehavior(node);
-                    break;
-                } else {
-                    node = walker.nextNode();
-                    targetIndex++;
-                }
-            }
-        }
-
-        if (this.hasHostBehaviors) {
-            const hostFactories = this.hostBehaviorFactories!;
-
-            for (let i = 0, ii = hostFactories.length; i < ii; ++i, ++behaviorIndex) {
-                behaviors[behaviorIndex] = hostFactories[i].createBehavior(
-                    hostBindingTarget!
-                );
-            }
-        }
-
-        return new HTMLView(fragment, behaviors);
+        return this.result!.createView(hostBindingTarget);
     }
 
     /**
@@ -160,21 +174,13 @@ export class ViewTemplate<TSource = any, TParent = any>
      */
     public render(
         source: TSource,
-        host: Node | string,
-        hostBindingTarget?: Element
-    ): HTMLView {
-        if (typeof host === "string") {
-            host = document.getElementById(host)!;
-        }
-
-        if (hostBindingTarget === void 0) {
-            hostBindingTarget = host as Element;
-        }
-
-        const view = this.create(hostBindingTarget);
-        view.bind(source, defaultExecutionContext);
+        host: Node,
+        hostBindingTarget?: Element,
+        context?: TContext
+    ): HTMLView<TSource, TParent, TContext> {
+        const view = this.create(hostBindingTarget ?? (host as any));
+        view.bind(source, context ?? (ExecutionContext.default as TContext));
         view.appendTo(host);
-
         return view;
     }
 }
@@ -196,15 +202,27 @@ export interface CaptureType<TSource> {}
  * Represents the types of values that can be interpolated into a template.
  * @public
  */
-export type TemplateValue<TScope, TParent = any> =
-    | Binding<TScope, any, TParent>
-    | string
-    | number
-    | HTMLDirective
-    | CaptureType<TScope>;
+export type TemplateValue<
+    TSource,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
+> = Binding<TSource, any, TContext> | HTMLDirective | CaptureType<TSource>;
+
+function createAspectedHTML(
+    value: HTMLDirective & Aspected,
+    prevString: string,
+    add: AddViewBehaviorFactory
+): string {
+    const match = lastAttributeNameRegex.exec(prevString);
+    if (match !== null) {
+        Aspect.assign(value as Aspected, match[2]);
+    }
+
+    return value.createHTML(add);
+}
 
 /**
- * Transforms a template literal string into a renderable ViewTemplate.
+ * Transforms a template literal string into a ViewTemplate.
  * @param strings - The string fragments that are interpolated with the values.
  * @param values - The values that are interpolated with the string fragments.
  * @remarks
@@ -212,47 +230,96 @@ export type TemplateValue<TScope, TParent = any> =
  * other template instances, and Directive instances.
  * @public
  */
-export function html<TSource = any, TParent = any>(
+export function html<
+    TSource = any,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
+>(
     strings: TemplateStringsArray,
-    ...values: TemplateValue<TSource, TParent>[]
+    ...values: TemplateValue<TSource, TParent, TContext>[]
 ): ViewTemplate<TSource, TParent> {
-    const directives: HTMLDirective[] = [];
     let html = "";
+    const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
+    const add = (factory: ViewBehaviorFactory): string => {
+        const id = factory.id ?? (factory.id = nextId());
+        factories[id] = factory;
+        return id;
+    };
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         const currentString = strings[i];
-        let value = values[i];
+        const currentValue = values[i];
+        let definition: HTMLDirectiveDefinition | undefined;
 
         html += currentString;
 
-        if (value instanceof ViewTemplate) {
-            const template = value;
-            value = (): ViewTemplate => template;
-        }
-
-        if (typeof value === "function") {
-            value = new HTMLBindingDirective(value as Binding);
-        }
-
-        if (value instanceof TargetedHTMLDirective) {
+        if (isFunction(currentValue)) {
+            html += createAspectedHTML(
+                bind(currentValue) as HTMLBindingDirective,
+                currentString,
+                add
+            );
+        } else if (isString(currentValue)) {
             const match = lastAttributeNameRegex.exec(currentString);
             if (match !== null) {
-                value.targetName = match[2];
+                const directive = bind(
+                    () => currentValue,
+                    oneTime
+                ) as HTMLBindingDirective;
+                Aspect.assign(directive, match[2]);
+                html += directive.createHTML(add);
+            } else {
+                html += currentValue;
             }
-        }
-
-        if (value instanceof HTMLDirective) {
-            // Since not all values are directives, we can't use i
-            // as the index for the placeholder. Instead, we need to
-            // use directives.length to get the next index.
-            html += value.createPlaceholder(directives.length);
-            directives.push(value);
+        } else if ((definition = HTMLDirective.getForInstance(currentValue)) === void 0) {
+            html += createAspectedHTML(
+                bind(() => currentValue, oneTime) as HTMLBindingDirective,
+                currentString,
+                add
+            );
         } else {
-            html += value;
+            if (definition.aspected) {
+                html += createAspectedHTML(
+                    currentValue as HTMLDirective & Aspected,
+                    currentString,
+                    add
+                );
+            } else {
+                html += (currentValue as HTMLDirective).createHTML(add);
+            }
         }
     }
 
-    html += strings[strings.length - 1];
-
-    return new ViewTemplate(html, directives);
+    return new ViewTemplate<TSource, TParent, any>(
+        html + strings[strings.length - 1],
+        factories
+    );
 }
+
+/**
+ * Transforms a template literal string into a ChildViewTemplate.
+ * @param strings - The string fragments that are interpolated with the values.
+ * @param values - The values that are interpolated with the string fragments.
+ * @remarks
+ * The html helper supports interpolation of strings, numbers, binding expressions,
+ * other template instances, and Directive instances.
+ * @public
+ */
+export const child: <TChild = any, TParent = any>(
+    strings: TemplateStringsArray,
+    ...values: TemplateValue<TChild, TParent, ChildContext<TParent>>[]
+) => ChildViewTemplate<TChild, TParent> = html as any;
+
+/**
+ * Transforms a template literal string into an ItemViewTemplate.
+ * @param strings - The string fragments that are interpolated with the values.
+ * @param values - The values that are interpolated with the string fragments.
+ * @remarks
+ * The html helper supports interpolation of strings, numbers, binding expressions,
+ * other template instances, and Directive instances.
+ * @public
+ */
+export const item: <TItem = any, TParent = any>(
+    strings: TemplateStringsArray,
+    ...values: TemplateValue<TItem, TParent, ItemContext<TParent>>[]
+) => ItemViewTemplate<TItem, TParent> = html as any;

@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { Tab, tabTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { Tab, tabTemplate as template } from "./index.js";
+import { fixture } from "../testing/fixture.js";
 
 const FASTTab = Tab.compose({
     baseName: "tab",

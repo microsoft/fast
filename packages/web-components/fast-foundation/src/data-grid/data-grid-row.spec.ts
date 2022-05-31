@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
-import { fixture } from "../test-utilities/fixture";
-import { ColumnDefinition, dataGridRowTemplate, DataGridCell, dataGridCellTemplate, DataGridRow } from "./index";
-import { newDataRow } from "./data-grid.spec";
+import { Updates } from "@microsoft/fast-element";
+import { fixture } from "../testing/fixture.js";
+import { ColumnDefinition, dataGridRowTemplate, DataGridCell, dataGridCellTemplate, DataGridRow } from "./index.js";
+import { newDataRow } from "./data-grid.spec.js";
 import { keyArrowLeft, keyArrowRight, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 
 const FASTDataGridCell = DataGridCell.compose({
@@ -103,14 +103,14 @@ describe("Data grid row", () => {
         expect(element.querySelectorAll(cellQueryString).length).to.equal(0);
 
         element.columnDefinitions = [{ columnDataKey: "item1" }];
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(element.querySelectorAll(cellQueryString).length).to.equal(1);
 
         element.columnDefinitions = [
             { columnDataKey: "item1" },
             { columnDataKey: "item2" },
         ];
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(element.querySelectorAll(cellQueryString).length).to.equal(2);
 
         await disconnect();

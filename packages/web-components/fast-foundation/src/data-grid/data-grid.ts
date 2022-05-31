@@ -1,9 +1,10 @@
 import {
     attr,
-    DOM,
+    ItemViewTemplate,
     observable,
     RepeatBehavior,
     RepeatDirective,
+    Updates,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
@@ -137,7 +138,7 @@ export class DataGrid extends FoundationElement {
      */
     @attr({ attribute: "no-tabbing", mode: "boolean" })
     public noTabbing: boolean = false;
-    private noTabbingChanged(): void {
+    protected noTabbingChanged(): void {
         if (this.$fastController.isConnected) {
             if (this.noTabbing) {
                 this.setAttribute("tabIndex", "-1");
@@ -177,7 +178,7 @@ export class DataGrid extends FoundationElement {
      */
     @attr({ attribute: "grid-template-columns" })
     public gridTemplateColumns: string;
-    private gridTemplateColumnsChanged(): void {
+    protected gridTemplateColumnsChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateRowIndexes();
         }
@@ -190,7 +191,7 @@ export class DataGrid extends FoundationElement {
      */
     @observable
     public rowsData: object[] = [];
-    private rowsDataChanged(): void {
+    protected rowsDataChanged(): void {
         if (this.columnDefinitions === null && this.rowsData.length > 0) {
             this.columnDefinitions = DataGrid.generateColumns(this.rowsData[0]);
         }
@@ -206,7 +207,7 @@ export class DataGrid extends FoundationElement {
      */
     @observable
     public columnDefinitions: ColumnDefinition[] | null = null;
-    private columnDefinitionsChanged(): void {
+    protected columnDefinitionsChanged(): void {
         if (this.columnDefinitions === null) {
             this.generatedGridTemplateColumns = "";
             return;
@@ -226,7 +227,7 @@ export class DataGrid extends FoundationElement {
      * @public
      */
     @observable
-    public rowItemTemplate: ViewTemplate;
+    public rowItemTemplate: ItemViewTemplate;
 
     /**
      * The template used to render cells in generated rows.
@@ -234,7 +235,7 @@ export class DataGrid extends FoundationElement {
      * @public
      */
     @observable
-    public cellItemTemplate?: ViewTemplate;
+    public cellItemTemplate?: ItemViewTemplate;
 
     /**
      * The template used to render header cells in generated rows.
@@ -242,7 +243,7 @@ export class DataGrid extends FoundationElement {
      * @public
      */
     @observable
-    public headerCellItemTemplate?: ViewTemplate;
+    public headerCellItemTemplate?: ItemViewTemplate;
     private headerCellItemTemplateChanged(): void {
         if (this.$fastController.isConnected) {
             if (this.generatedHeader !== null) {
@@ -289,7 +290,7 @@ export class DataGrid extends FoundationElement {
      * @internal
      */
     @observable
-    public defaultRowItemTemplate: ViewTemplate;
+    public defaultRowItemTemplate: ItemViewTemplate;
 
     /**
      * Set by the component templates.
@@ -340,11 +341,14 @@ export class DataGrid extends FoundationElement {
 
         this.toggleGeneratedHeader();
 
-        this.rowsRepeatBehavior = new RepeatDirective(
+        const rowsRepeatDirective = new RepeatDirective(
             x => x.rowsData,
             x => x.rowItemTemplate,
             { positioning: true }
-        ).createBehavior(this.rowsPlaceholder);
+        );
+        this.rowsRepeatBehavior = rowsRepeatDirective.createBehavior({
+            [rowsRepeatDirective.nodeId]: this.rowsPlaceholder,
+        });
 
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
@@ -362,7 +366,7 @@ export class DataGrid extends FoundationElement {
             this.setAttribute("tabindex", "-1");
         }
 
-        DOM.queueUpdate(this.queueRowIndexUpdate);
+        Updates.enqueue(this.queueRowIndexUpdate);
     }
 
     /**
@@ -570,7 +574,7 @@ export class DataGrid extends FoundationElement {
         }
         if (this.pendingFocusUpdate === false) {
             this.pendingFocusUpdate = true;
-            DOM.queueUpdate(() => this.updateFocus());
+            Updates.enqueue(() => this.updateFocus());
         }
     }
 
@@ -633,7 +637,7 @@ export class DataGrid extends FoundationElement {
     private queueRowIndexUpdate = (): void => {
         if (!this.rowindexUpdateQueued) {
             this.rowindexUpdateQueued = true;
-            DOM.queueUpdate(this.updateRowIndexes);
+            Updates.enqueue(this.updateRowIndexes);
         }
     };
 
