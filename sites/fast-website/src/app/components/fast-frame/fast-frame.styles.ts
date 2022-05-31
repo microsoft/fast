@@ -227,6 +227,11 @@ export const FastFrameStyles = css`
             );"
     }
 
+    #saturation-slider::part(track-start),
+    #hue-slider::part(track-start) {
+        background: none;
+    }
+
     .responsive-expand-flipper {
         position: absolute;
         left: -30px;
