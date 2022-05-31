@@ -56,6 +56,9 @@ class XApp extends FASTElement {
             case "inplace-reverse":
                 this.inplaceReverse();
                 break;
+            case "append":
+                this.append();
+                break;
         }
     }
 
@@ -65,5 +68,9 @@ class XApp extends FASTElement {
 
     inplaceReverse() {
         this.items.reverse();
+    }
+
+    append() {
+        this.items.push(...data);
     }
 }
