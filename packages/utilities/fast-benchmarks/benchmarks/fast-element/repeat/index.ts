@@ -6,13 +6,13 @@ import {
     repeat,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { data, RandomItem } from "../../../utils/index.js";
+import { data, nestedData, NestedRandomData, RandomItem } from "../../../utils/index.js";
 import { queryParams } from "../../../utils/query-params.js";
 
 const { method, ce } = queryParams;
 
 const templates = {
-    repeat: html<XApp>`
+    repeatBasic: html<XApp>`
         ${repeat(
             x => x.items,
             html<RandomItem>`
@@ -20,11 +20,92 @@ const templates = {
             `
         )}
     `,
-    repeatNoRecycle: html<XApp>`
+    repeatNoRecycleBasic: html<XApp>`
         ${(repeat(
             x => x.items,
             html<RandomItem>`
                 <li>${x => x.label}</li>
+            `
+        ),
+        { recycle: false })}
+    `,
+    repeatNested: html<XApp>`
+        ${repeat(
+            x => x.nestedItems,
+            html<NestedRandomData>`
+                <li>
+                    ${x =>
+                        html`
+                            <b>ID: ${x.id}</b>
+                            <li>one: ${x.randomItem1.label}</li>
+                            <li>two: ${x.randomItem2.label}</li>
+                            <li>three: ${x.randomItem3.label}</li>
+                            <ul>
+                                ${repeat(
+                                    x => x.randomItemGroup1,
+                                    html<RandomItem>`
+                                        <li>${x => x.label}</li>
+                                    `
+                                )}
+                            </ul>
+                            <ul>
+                                ${repeat(
+                                    x => x.randomItemGroup2,
+                                    html<RandomItem>`
+                                        <li>${x => x.label}</li>
+                                    `
+                                )}
+                            </ul>
+                            <ol>
+                                ${repeat(
+                                    x => x.nestedGroup.randomItemGroup1,
+                                    html<RandomItem>`
+                                        <li>${x => x.label}</li>
+                                    `
+                                )}
+                            </ol>
+                        `}
+                </li>
+            `
+        )}
+    `,
+    repeatNoRecycleNested: html<XApp>`
+        ${(repeat(
+            x => x.nestedItems,
+            html<NestedRandomData>`
+                <li>
+                    ${x =>
+                        html`
+                            <b>ID: ${x.id}</b>
+                            <li>one: ${x.randomItem1.label}</li>
+                            <li>two: ${x.randomItem2.label}</li>
+                            <li>three: ${x.randomItem3.label}</li>
+                            <ul>
+                                ${repeat(
+                                    x => x.randomItemGroup1,
+                                    html<RandomItem>`
+                                        <li>${x => x.label}</li>
+                                    `
+                                )}
+                            </ul>
+                            <ul>
+                                ${repeat(
+                                    x => x.randomItemGroup2,
+                                    html<RandomItem>`
+                                        <li>${x => x.label}</li>
+                                    `
+                                )}
+                            </ul>
+                            <ol>
+                                ${repeat(
+                                    x => x.nestedGroup.randomItemGroup1,
+                                    html<RandomItem>`
+                                        <li>${x => x.label}</li>
+                                    `
+                                )}
+                            </ol>
+                        `}
+                </li>
             `
         ),
         { recycle: false })}
@@ -42,6 +123,7 @@ const templates = {
 })
 class XApp extends FASTElement {
     @observable items: RandomItem[] = data;
+    @observable nestedItems: NestedRandomData[] = nestedData;
     @observable method: string = <string>method;
 
     getTemplateByMethod() {
@@ -72,5 +154,14 @@ class XApp extends FASTElement {
 
     append() {
         this.items.push(...data);
+    }
+
+    combo() {
+        for (let i = 0; i < 5; i++) {
+            this.append();
+            this.inplaceReverse();
+            this.inplaceReplace();
+            this.items = [];
+        }
     }
 }
