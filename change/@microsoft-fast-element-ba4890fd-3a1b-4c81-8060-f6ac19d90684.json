@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "feat: add utilities and hooks, and change exports",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",

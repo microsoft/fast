@@ -1,5 +1,5 @@
 {
-  "type": "minor",
+  "type": "prerelease",
   "comment": "Adds Aspect as public export",
   "packageName": "@microsoft/fast-element",
   "email": "nicholasrice@users.noreply.github.com",

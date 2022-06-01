@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "Upgrade TypeScript",
   "packageName": "@microsoft/fast-router",
   "email": "nicholasrice@users.noreply.github.com",

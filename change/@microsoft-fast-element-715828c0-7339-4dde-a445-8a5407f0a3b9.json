@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "fix: prevent duplicative array observation patch",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",

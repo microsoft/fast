@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "fix: update fast-foundation to not use deprecated APIs",
   "packageName": "@microsoft/fast-foundation",
   "email": "roeisenb@microsoft.com",

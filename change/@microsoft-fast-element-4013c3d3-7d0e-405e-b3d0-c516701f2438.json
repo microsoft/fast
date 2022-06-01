@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "feat: aspected html directive exposes metadata",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",

@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "fix: update components to new CSSDirective API",
-  "packageName": "@microsoft/fast-components",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

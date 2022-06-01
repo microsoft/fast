@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "feat: officially expose testing helpers",
   "packageName": "@microsoft/fast-foundation",
   "email": "roeisenb@microsoft.com",

@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "Fixed an updated export from FAST element 2.0",
   "packageName": "@microsoft/fast-router",
   "email": "7559015+janechu@users.noreply.github.com",

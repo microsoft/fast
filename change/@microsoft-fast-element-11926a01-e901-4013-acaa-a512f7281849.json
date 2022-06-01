@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "allow null values in attributeChangedCallback",
   "packageName": "@microsoft/fast-element",
   "email": "nicholasrice@users.noreply.github.com",

@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "update the default value of dialog's modal attribute to false",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",

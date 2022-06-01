@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "fix: update foundation to new CSSDirective API",
   "packageName": "@microsoft/fast-foundation",
   "email": "roeisenb@microsoft.com",

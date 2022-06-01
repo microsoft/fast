@@ -1,5 +1,5 @@
 {
-  "type": "minor",
+  "type": "prerelease",
   "comment": "feat: add two-way binding",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",

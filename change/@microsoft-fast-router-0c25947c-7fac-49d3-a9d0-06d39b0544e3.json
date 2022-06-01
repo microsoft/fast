@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "fix: update router to new directive APIs.",
   "packageName": "@microsoft/fast-router",
   "email": "roeisenb@microsoft.com",

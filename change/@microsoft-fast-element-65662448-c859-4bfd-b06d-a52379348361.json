@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "fix(fast-element): do not notify splices for changes pre-subscription",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",

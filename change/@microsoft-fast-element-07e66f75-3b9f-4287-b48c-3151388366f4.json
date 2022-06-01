@@ -1,5 +1,5 @@
 {
-  "type": "minor",
+  "type": "prerelease",
   "comment": "feat: add warn/error message infrastructure",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",

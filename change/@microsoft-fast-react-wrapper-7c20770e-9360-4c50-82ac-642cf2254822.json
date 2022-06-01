@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "chore: remove rollup of react-wrapper",
   "packageName": "@microsoft/fast-react-wrapper",
   "email": "roeisenb@microsoft.com",

@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "`RefBehavior` has been replaced with `RefDirective`. The directive also implements `ViewBehavior` allowing a single directive instance to be shared across all template instances that use the ref.",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",

@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "chore: update imports to match latest fast-element exports",
   "packageName": "@microsoft/fast-foundation",
   "email": "roeisenb@microsoft.com",

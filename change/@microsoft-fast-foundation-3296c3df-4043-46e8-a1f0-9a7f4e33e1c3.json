@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "remove unnecessary DOM nodes from start/end slot templates",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",

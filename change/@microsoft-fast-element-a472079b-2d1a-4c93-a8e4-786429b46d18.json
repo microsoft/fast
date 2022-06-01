@@ -1,5 +1,5 @@
 {
-  "type": "minor",
+  "type": "prerelease",
   "comment": "feat: enable multiple instances of fast-element on a page at once",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",

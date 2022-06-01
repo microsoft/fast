@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "Adds DOM shim support for APIs in @microsoft/fast-foundation",
   "packageName": "@microsoft/fast-ssr",
   "email": "nicholasrice@users.noreply.github.com",

@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "fix: update templates to use classList and fix classList bug",
   "packageName": "@microsoft/fast-foundation",
   "email": "roeisenb@microsoft.com",
