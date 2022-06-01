@@ -3,5 +3,5 @@
   "comment": "Force version update",
   "packageName": "@microsoft/fast-foundation",
   "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
