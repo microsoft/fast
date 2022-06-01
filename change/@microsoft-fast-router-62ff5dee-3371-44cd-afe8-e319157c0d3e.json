@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "chore: configure fast-router for internals stripping",
   "packageName": "@microsoft/fast-router",
   "email": "roeisenb@microsoft.com",

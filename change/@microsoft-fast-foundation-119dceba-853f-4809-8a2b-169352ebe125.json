@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "fix incorrect and unsemantic slot names for search",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",

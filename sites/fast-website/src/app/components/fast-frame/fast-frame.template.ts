@@ -1,6 +1,6 @@
 import EyedropperIcon from "@fluentui/svg-icons/icons/eyedropper_20_filled.svg";
 import { ColorHSL, hslToRGB } from "@microsoft/fast-colors";
-import { child, html, ref, repeat, when } from "@microsoft/fast-element";
+import { html, ref, repeat, when } from "@microsoft/fast-element";
 import ContextIcon from "svg/icon-context.svg";
 import ContrastIcon from "svg/icon-contrast.svg";
 import DownloadIcon from "svg/icon-download.svg";
@@ -72,7 +72,7 @@ export const FastFrameTemplate = html<FastFrame>`
                                 ${repeat(
                                     x => x.previewNeutralPalette,
 
-                                    child<string>`
+                                    html<string>`
                                         <site-color-swatch
                                             tabindex="0"
                                             aria-label="neutral color ${x => x}"
@@ -108,7 +108,7 @@ export const FastFrameTemplate = html<FastFrame>`
                             >
                                 ${repeat(
                                     x => x.previewAccentPalette,
-                                    child<string>`
+                                    html<string>`
                                         <site-color-swatch
                                             tabindex="0"
                                             aria-label="accent color ${x => x}"

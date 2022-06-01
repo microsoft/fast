@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "feat: expose official Markup and Parser APIs",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",

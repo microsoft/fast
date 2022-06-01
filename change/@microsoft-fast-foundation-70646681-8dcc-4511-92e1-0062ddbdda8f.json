@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "change activeindicator attribute in tabs to hide-active-indicator to better support boolean attribute behavior",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",

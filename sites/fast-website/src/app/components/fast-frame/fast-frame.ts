@@ -1,4 +1,4 @@
-import { FASTElement, attr, observable, Updates } from "@microsoft/fast-element";
+import { FASTElement, attr, observable, DOM } from "@microsoft/fast-element";
 import {
     StandardLuminance,
     PaletteRGB,
@@ -33,7 +33,7 @@ export class FastFrame extends FASTElement {
     public baseLayerLuminance: number = StandardLuminance.DarkMode;
     baseLayerLuminanceChanged() {
         if (typeof this.baseLayerLuminance === "number") {
-            Updates.enqueue(() => {
+            DOM.queueUpdate(() => {
                 baseLayerLuminance.setValueFor(this.preview, this.baseLayerLuminance);
             });
         }
@@ -63,7 +63,7 @@ export class FastFrame extends FASTElement {
     public neutralPalette: PaletteRGB;
     neutralPaletteChanged() {
         if (this.neutralPalette) {
-            Updates.enqueue(() => {
+            DOM.queueUpdate(() => {
                 neutralPalette.setValueFor(this.preview, this.neutralPalette);
             });
         }
@@ -73,7 +73,7 @@ export class FastFrame extends FASTElement {
     public accentPalette: PaletteRGB;
     accentPaletteChanged() {
         if (this.accentPalette) {
-            Updates.enqueue(() => {
+            DOM.queueUpdate(() => {
                 accentPalette.setValueFor(this.preview, this.accentPalette);
             });
         }
@@ -82,7 +82,7 @@ export class FastFrame extends FASTElement {
     @observable
     public density: number = 0;
     densityChanged() {
-        Updates.enqueue(() => {
+        DOM.queueUpdate(() => {
             density.setValueFor(this.preview, this.density);
         });
     }
@@ -90,7 +90,7 @@ export class FastFrame extends FASTElement {
     @observable
     public borderRadius: number = 3;
     borderRadiusChanged() {
-        Updates.enqueue(() => {
+        DOM.queueUpdate(() => {
             controlCornerRadius.setValueFor(this.preview, this.borderRadius);
         });
     }
@@ -98,7 +98,7 @@ export class FastFrame extends FASTElement {
     @observable
     public strokeWidth: number = 1;
     strokeWidthChanged() {
-        Updates.enqueue(() => {
+        DOM.queueUpdate(() => {
             strokeWidth.setValueFor(this.preview, this.strokeWidth);
         });
     }

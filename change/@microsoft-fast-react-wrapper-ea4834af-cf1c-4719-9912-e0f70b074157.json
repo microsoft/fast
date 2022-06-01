@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "fix: update fast-react-wrapper to not use deprecated APIs",
   "packageName": "@microsoft/fast-react-wrapper",
   "email": "roeisenb@microsoft.com",

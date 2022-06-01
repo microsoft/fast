@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "fix: update React wrapper lib to use latest APIs",
+  "comment": "Set prerelease version",
   "packageName": "@microsoft/fast-react-wrapper",
-  "email": "roeisenb@microsoft.com",
+  "email": "nicholasrice@users.noreply.github.com",
   "dependentChangeType": "patch"
 }

@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "feat: handle existing shadow roots when upgrading",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",

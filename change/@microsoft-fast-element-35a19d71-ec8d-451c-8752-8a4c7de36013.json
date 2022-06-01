@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "feat: create unified API for parsing markers",
+  "comment": "Set prerelease version",
   "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
+  "email": "nicholasrice@users.noreply.github.com",
   "dependentChangeType": "patch"
 }

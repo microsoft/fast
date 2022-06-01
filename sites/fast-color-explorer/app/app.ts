@@ -17,7 +17,6 @@ import {
 } from "@microsoft/fast-components";
 import {
     attr,
-    child,
     css,
     customElement,
     FASTElement,
@@ -73,7 +72,7 @@ const sampleTemplate = html<App>`
 const colorBlockTemplate = html<App>`
     ${repeat(
         x => x.backgrounds(),
-        child<SwatchInfo, App>`
+        html<SwatchInfo, App>`
             <app-color-block
                 index="${(x, c) => x.index}"
                 component="${(x, c) => c.parent.componentType}"

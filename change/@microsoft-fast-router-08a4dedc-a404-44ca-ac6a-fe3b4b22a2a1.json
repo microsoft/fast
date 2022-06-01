@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "fix: update router to work with new template primitives",
   "packageName": "@microsoft/fast-router",
   "email": "roeisenb@microsoft.com",

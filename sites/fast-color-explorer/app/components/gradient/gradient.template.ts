@@ -1,6 +1,6 @@
 import { parseColor } from "@microsoft/fast-colors";
 import { isDark, SwatchRGB } from "@microsoft/fast-components";
-import { html, item, repeat } from "@microsoft/fast-element";
+import { html, repeat } from "@microsoft/fast-element";
 import { Gradient } from "./gradient";
 
 function getColor(background) {
@@ -13,7 +13,7 @@ export const gradientTemplate = html<Gradient>`
     <template>
         ${repeat(
             x => x.colors,
-            item<string, Gradient>`
+            html<string, Gradient>`
                 <a
                     class="${(x, c) =>
                         c.parent.markedColor !== undefined &&

@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "refactor: refine binding mode types",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",

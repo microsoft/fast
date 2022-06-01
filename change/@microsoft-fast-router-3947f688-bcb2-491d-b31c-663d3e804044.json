@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "fix: update router to new directive APIs.",
+  "comment": "Set prerelease version",
   "packageName": "@microsoft/fast-router",
-  "email": "roeisenb@microsoft.com",
+  "email": "nicholasrice@users.noreply.github.com",
   "dependentChangeType": "patch"
 }

@@ -1,5 +1,5 @@
 {
-  "type": "minor",
+  "type": "prerelease",
   "comment": "enumerate fast-element package as a ES module package",
   "packageName": "@microsoft/fast-element",
   "email": "nicholasrice@users.noreply.github.com",

@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "Renamed `Notifier#source` to `Notifier#subject` to align with other observable terminology and prevent name clashes with `BindingObserver` properties.",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",

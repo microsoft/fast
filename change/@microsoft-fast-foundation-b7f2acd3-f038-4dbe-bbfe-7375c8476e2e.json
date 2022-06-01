@@ -1,5 +1,5 @@
 {
-  "type": "minor",
+  "type": "prerelease",
   "comment": "update attribute and observable change handlers with internal logic to be protected instead of private",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",

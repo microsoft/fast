@@ -1,5 +1,5 @@
 {
-  "type": "major",
+  "type": "prerelease",
   "comment": "chore: fast-element package and build modernization",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
