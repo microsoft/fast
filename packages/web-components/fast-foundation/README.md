@@ -56,5 +56,3 @@ The markup above always references the latest release. When deploying to product
 :::note
 For simplicity, examples throughout the documentation will assume the library has been installed from NPM, but you can always replace the import location with the CDN URL.
 :::
-
-TEST
