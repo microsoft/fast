@@ -1,4 +1,5 @@
 module.exports = {
+    disallowedChangeTypes: ["major"],
     ignorePatterns: [
         ".ignore",
         ".github/",
