@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "update api extractor and typescript to use the latest versions",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "none"
-}

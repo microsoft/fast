@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Set prerelease version",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Set prerelease version",
-  "packageName": "@microsoft/fast-element",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

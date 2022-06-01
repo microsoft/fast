@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Upgrade TypeScript",
-  "packageName": "@microsoft/fast-colors",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

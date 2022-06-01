@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "`DOM` - Tree Walker methods are no longer used and are thus removed. The API for removing child nodes has been removed as well since it was only used in one place and could be inlined. The helper `createCustomAttributePlaceholder()` no longer requires an attribute name. It will be uniquely generated internally.",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

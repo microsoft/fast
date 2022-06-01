@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: merge bug related to moved APIs",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

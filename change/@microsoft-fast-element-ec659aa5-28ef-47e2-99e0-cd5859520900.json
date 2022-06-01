@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "chore: configure fast-element for internal stripping",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

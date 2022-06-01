@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "`Behavior` and `ViewBehavior` - `Behavior` now requires an `ExecutionContext` for `unbind`. Behaviors can be used for elements or views. `ViewBehavior` has been introduced for use exclusively with views, and provides some optimization opportunities.",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

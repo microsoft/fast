@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "`View` and `HTMLView` - Type parameters added to enable strongly typed views based on their data source. The constructor of `HTMLView` has a new signature based on changes to the compiler's output. Internals have been cleaned up and no longer rely on the Range type.",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

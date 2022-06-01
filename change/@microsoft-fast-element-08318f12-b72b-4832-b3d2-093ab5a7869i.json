@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Removed `AttachedBehaviorHTMLDirective` and `AttachedBehaviorType` since they are no longer used in the new directive/behavior architecture for ref, slotted, and children.",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

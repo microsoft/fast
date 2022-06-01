@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Updated to use the new FAST element 2.0 APIs for creating behaviors and creating element styles",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

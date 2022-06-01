@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "change trapFocus on dialog to noFocusTrap to better support boolean attributes",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

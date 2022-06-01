@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "chore: update package.json metadata",
-  "packageName": "@microsoft/eslint-config-fast-dna",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "none"
-}

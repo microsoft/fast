@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Removed `SlottedBehavior` and `ChildrenBehavior` have been replaced with `SlottedDirective` and `ChildrenDirective`. These directives allow a single directive instance to be shared across all template instances that use the ref.",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

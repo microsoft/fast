@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "chore: configure fast-ssr for internals stripping",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

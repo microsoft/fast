@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: defend against for/in use on arrays",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

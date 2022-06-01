@@ -1,13 +1,13 @@
 {
   "name": "@microsoft/adaptive-ui",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "description": "A collection of design utilities supporting basic styling and Adaptive UI",
   "type": "module",
   "main": "dist/esm/index.js",
   "types": "dist/adaptive-ui.d.ts",
   "unpkg": "dist/esm/index.js",
   "exports": {
-    "." : {
+    ".": {
       "types": "./dist/adaptive-ui.d.ts",
       "default": "./dist/esm/index.js"
     }
@@ -42,8 +42,8 @@
     "unit-tests:watch": "mocha --watch"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.3.0",
-    "@microsoft/fast-foundation": "3.0.0-alpha.0"
+    "@microsoft/fast-colors": "^5.3.1",
+    "@microsoft/fast-foundation": "3.0.0-alpha.1"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.24.2",
