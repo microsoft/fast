@@ -1,3 +1,5 @@
+import type { Subscriber } from "@microsoft/fast-element";
+
 export type DesignTokenValueType =
     | string
     | number
@@ -37,7 +39,7 @@ export type StaticDesignTokenValue<T> = T extends Function ? never : T;
  */
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
-export class DesignTokenNode {
+export class DesignTokenNode implements Subscriber {
     #parent: DesignTokenNode | null = null;
     #children: Set<DesignTokenNode> = new Set();
 
@@ -64,4 +66,11 @@ export class DesignTokenNode {
             this.#children.delete(child);
         }
     }
+
+    /**
+     * Invoked when design tokens change upstream.
+     *
+     * @internal
+     */
+    public handleChange(subject: any, args: any): void {}
 }
