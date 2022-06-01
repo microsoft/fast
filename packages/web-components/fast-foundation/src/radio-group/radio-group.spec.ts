@@ -299,6 +299,44 @@ describe("Radio Group", () => {
         await disconnect();
     });
 
+    it("should set a child radio with a matching `value` to `checked` when value changes", async () => {
+        const { element, connect, disconnect, parent } = await fixture([FASTRadioGroup(), FASTRadio()]);
+
+        element.value = "baz";
+
+        const radio1 = document.createElement("fast-radio") as Radio;
+        const radio2 = document.createElement("fast-radio") as Radio;
+        const radio3 = document.createElement("fast-radio") as Radio;
+
+        radio1.className = "one";
+        radio2.className = "two";
+        radio3.className = "three";
+
+        radio1.value = "foo";
+        radio2.value = "bar";
+        radio3.value = "baz";
+
+        element.appendChild(radio1);
+        element.appendChild(radio2);
+        element.appendChild(radio3);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        element.value = "foo";
+
+        await DOM.nextUpdate();
+
+        expect((element.querySelectorAll("fast-radio")[0] as Radio).checked).to.equal(
+            true
+        );
+        expect(
+            element.querySelectorAll("fast-radio")[0].getAttribute("aria-checked")
+        ).to.equal("true");
+
+        await disconnect();
+    });
+
     it("should mark the last radio defaulted to checked as checked, the rest should not be checked", async () => {
         const { element, connect, disconnect, parent } = await fixture([FASTRadioGroup(), FASTRadio()]);
 
