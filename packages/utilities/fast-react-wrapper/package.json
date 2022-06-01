@@ -83,7 +83,7 @@
   },
   "dependencies": {
     "@microsoft/fast-element": "^2.0.0-beta.0",
-    "@microsoft/fast-foundation": "^3.0.0-alpha.1"
+    "@microsoft/fast-foundation": "^3.0.0-alpha.0"
   },
   "peerDependencies": {
     "react": ">=16.9.0"
