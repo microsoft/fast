@@ -12,6 +12,7 @@ import { ComposableStyles } from '@microsoft/fast-element';
 import { composedContains } from '@microsoft/fast-element/utilities';
 import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
+import { Context } from '@microsoft/fast-element/context';
 import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -1052,13 +1053,11 @@ export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignToken
 
 // @public
 export const DI: Readonly<{
+    handlePropertyInjectionContextRequests(): void;
     createContainer(config?: Partial<ContainerConfiguration>): Container;
     findResponsibleContainer(node: Node): Container;
     findParentContainer(node: Node): Container;
     getOrCreateDOMContainer(node?: Node, config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
-    getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
-    getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
-    getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
     getDependencies(Type: Constructable | Injectable): Key[];
     defineProperty(target: {}, propertyName: string, key: Key, respectConnection?: boolean): void;
     createInterface<K extends Key>(nameConfigOrCallback?: string | InterfaceConfiguration | ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined, configuror?: ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined): InterfaceSymbol<K>;
@@ -1441,7 +1440,7 @@ export interface InterfaceConfiguration {
 }
 
 // @public
-export type InterfaceSymbol<K = any> = (target: any, property: string, index?: number) => void;
+export type InterfaceSymbol<T = any> = Readonly<Context<T>> & ((target: Constructable, property: string, index?: number) => void);
 
 // @public
 export function isListboxOption(el: Element): el is ListboxOption;
@@ -2992,7 +2991,7 @@ export type YearFormat = "2-digit" | "numeric";
 // Warnings were encountered during analysis:
 //
 // dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:513:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:500:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

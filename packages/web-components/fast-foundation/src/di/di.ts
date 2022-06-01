@@ -3,38 +3,19 @@
  * for the bulk of this code and many of the associated tests.
  */
 import { Constructable, emptyArray, FASTElement } from "@microsoft/fast-element";
+import { Context, ContextEvent, UnknownContext } from "@microsoft/fast-element/context";
+import { Metadata } from "@microsoft/fast-element/metadata";
 import type { Class } from "../interfaces.js";
 
-// Tiny polyfill for TypeScript's Reflect metadata API.
-const metadataByTarget = new Map<any, Map<any, any>>();
-
-if (!("metadata" in Reflect)) {
-    (Reflect as any).metadata = function (key: any, value: any) {
-        return function (target: any) {
-            (Reflect as any).defineMetadata(key, value, target);
-        };
-    };
-
-    (Reflect as any).defineMetadata = function (key: any, value: any, target: any) {
-        let metadata = metadataByTarget.get(target);
-
-        if (metadata === void 0) {
-            metadataByTarget.set(target, (metadata = new Map()));
-        }
-
-        metadata.set(key, value);
-    };
-
-    (Reflect as any).getOwnMetadata = function (key: any, target: any): any {
-        const metadata = metadataByTarget.get(target);
-
-        if (metadata !== void 0) {
-            return metadata.get(key);
-        }
-
-        return void 0;
-    };
-}
+/**
+ * A constant key that can be used to represent an interface to a dependency.
+ * The key can be used for context or DI but also doubles as a decorator for
+ * resolving the associated dependency.
+ * @public
+ */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+export type InterfaceSymbol<T = any> = Readonly<Context<T>> &
+    ((target: Constructable, property: string, index?: number) => void);
 
 /**
  * Represents a custom callback for resolving a request from the container.
@@ -50,19 +31,6 @@ export type ResolveCallback<T = any> = (
     requestor: Container,
     resolver: Resolver<T>
 ) => T;
-
-/**
- * A constant key that can be used to represent an interface to a registered dependency.
- * The key can be used in DI registrations but also doubles as a decorator for
- * resolving the associated, registered dependency.
- * @public
- */
-/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-export type InterfaceSymbol<K = any> = (
-    target: any,
-    property: string,
-    index?: number
-) => void;
 
 // This interface exists only to break a circular type referencing issue in the ServiceLocator interface.
 // Otherwise ServiceLocator references Resolver, which references Container, which extends ServiceLocator.
@@ -511,15 +479,6 @@ export interface InterfaceConfiguration {
 }
 
 const dependencyLookup = new Map<Constructable | Injectable, Key[]>();
-
-function getParamTypes(
-    key: string
-): (Type: Constructable | Injectable) => readonly Key[] | undefined {
-    return (Type: Constructable | Injectable) => {
-        return (Reflect as any).getOwnMetadata(key, Type);
-    };
-}
-
 let rootDOMContainer: Container | null = null;
 
 /**
@@ -527,6 +486,31 @@ let rootDOMContainer: Container | null = null;
  * @public
  */
 export const DI = Object.freeze({
+    /**
+     * Instructs the DI system to handle requests for W3C context that happen
+     * through property injection.
+     */
+    handlePropertyInjectionContextRequests() {
+        Context.setDefaultPropertyInjectionStrategy(
+            (object: Node, context: Context<unknown>) => {
+                let value;
+
+                try {
+                    const container: Container =
+                        object instanceof Node
+                            ? DI.findResponsibleContainer(object)
+                            : DI.getOrCreateDOMContainer();
+
+                    value = container.get(context) as any;
+                } catch {
+                    Context.request(object, context, (found: unknown) => (value = found));
+                }
+
+                return value ?? context.initialValue;
+            }
+        );
+    },
+
     /**
      * Creates a new dependency injection container.
      * @param config - The configuration for the container.
@@ -567,19 +551,11 @@ export const DI = Object.freeze({
      * does not itself host a container configured with responsibleForOwnerRequests.
      */
     findParentContainer(node: Node) {
-        const event = new CustomEvent<DOMParentLocatorEventDetail>(
-            DILocateParentEventType,
-            {
-                bubbles: true,
-                composed: true,
-                cancelable: true,
-                detail: { container: void 0 },
-            }
-        );
-
-        node.dispatchEvent(event);
-
-        return event.detail.container || DI.getOrCreateDOMContainer();
+        let container: Container | null = null;
+        Context.request(node, Container, (value: Container) => {
+            container = value;
+        });
+        return container ?? DI.getOrCreateDOMContainer();
     },
 
     /**
@@ -621,40 +597,6 @@ export const DI = Object.freeze({
     },
 
     /**
-     * Gets the "design:paramtypes" metadata for the specified type.
-     * @param Type - The type to get the metadata for.
-     * @returns The metadata array or undefined if no metadata is found.
-     */
-    getDesignParamtypes: getParamTypes("design:paramtypes"),
-
-    /**
-     * Gets the "di:paramtypes" metadata for the specified type.
-     * @param Type - The type to get the metadata for.
-     * @returns The metadata array or undefined if no metadata is found.
-     */
-    getAnnotationParamtypes: getParamTypes("di:paramtypes"),
-
-    /**
-     *
-     * @param Type - Gets the "di:paramtypes" metadata for the specified type. If none is found,
-     * an empty metadata array is created and added.
-     * @returns The metadata array.
-     */
-    getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[] {
-        let annotationParamtypes = this.getAnnotationParamtypes(Type);
-
-        if (annotationParamtypes === void 0) {
-            (Reflect as any).defineMetadata(
-                "di:paramtypes",
-                (annotationParamtypes = []),
-                Type
-            );
-        }
-
-        return annotationParamtypes;
-    },
-
-    /**
      * Gets the dependency keys representing what is needed to instantiate the specified type.
      * @param Type - The type to get the dependencies for.
      * @returns An array of dependency keys.
@@ -677,9 +619,9 @@ export const DI = Object.freeze({
 
             if (inject === void 0) {
                 // design:paramtypes is set by tsc when emitDecoratorMetadata is enabled.
-                const designParamtypes = DI.getDesignParamtypes(Type);
+                const designParamtypes = Metadata.getDesignParamtypes(Type);
                 // di:paramtypes is set by the parameter decorator from DI.createInterface or by @inject
-                const annotationParamtypes = DI.getAnnotationParamtypes(Type);
+                const annotationParamtypes = Metadata.getAnnotationParamtypes(Type);
                 if (designParamtypes === void 0) {
                     if (annotationParamtypes === void 0) {
                         // Only go up the prototype if neither static inject nor any of the paramtypes is defined, as
@@ -758,7 +700,7 @@ export const DI = Object.freeze({
 
                 if (value === void 0) {
                     const container: Container =
-                        this instanceof HTMLElement
+                        this instanceof Node
                             ? DI.findResponsibleContainer(this)
                             : DI.getOrCreateDOMContainer();
 
@@ -827,21 +769,23 @@ export const DI = Object.freeze({
             index: number
         ): void {
             if (target == null || new.target !== undefined) {
-                throw new Error(
-                    `No registration for interface: '${Interface.friendlyName}'`
-                );
+                throw new Error(`No registration for interface: '${Interface.name}'`);
             }
 
             if (property) {
                 DI.defineProperty(target, property, Interface, respectConnection);
             } else {
-                const annotationParamtypes = DI.getOrCreateAnnotationParamTypes(target);
+                const annotationParamtypes = Metadata.getOrCreateAnnotationParamTypes(
+                    target
+                );
                 annotationParamtypes[index] = Interface;
             }
         };
 
         Interface.$isInterface = true;
-        Interface.friendlyName = friendlyName == null ? "(anonymous)" : friendlyName;
+        Reflect.defineProperty(Interface, "name", {
+            value: friendlyName ?? defaultFriendlyName,
+        });
 
         if (configure != null) {
             Interface.register = function (container: Container, key?: Key): Resolver<K> {
@@ -850,7 +794,7 @@ export const DI = Object.freeze({
         }
 
         Interface.toString = function toString(): string {
-            return `InterfaceSymbol<${Interface.friendlyName}>`;
+            return `DIInterfaceSymbol<${Interface.name}>`;
         };
 
         return Interface;
@@ -880,7 +824,9 @@ export const DI = Object.freeze({
         ): void {
             if (typeof descriptor === "number") {
                 // It's a parameter decorator.
-                const annotationParamtypes = DI.getOrCreateAnnotationParamTypes(target);
+                const annotationParamtypes = Metadata.getOrCreateAnnotationParamTypes(
+                    target
+                );
                 const dep = dependencies[0];
                 if (dep !== void 0) {
                     annotationParamtypes[descriptor] = dep;
@@ -889,8 +835,8 @@ export const DI = Object.freeze({
                 DI.defineProperty(target, key as string, dependencies[0]);
             } else {
                 const annotationParamtypes = descriptor
-                    ? DI.getOrCreateAnnotationParamTypes(descriptor.value)
-                    : DI.getOrCreateAnnotationParamTypes(target);
+                    ? Metadata.getOrCreateAnnotationParamTypes(descriptor.value)
+                    : Metadata.getOrCreateAnnotationParamTypes(target);
                 let dep: Key;
                 for (let i = 0; i < dependencies.length; ++i) {
                     dep = dependencies[i];
@@ -1484,7 +1430,6 @@ const InstrinsicTypeNames = new Set<string>([
     "WeakSet",
 ]);
 
-const DILocateParentEventType = "__DI_LOCATE_PARENT__";
 const factories = new Map<Key, Factory>();
 
 /**
@@ -1521,15 +1466,12 @@ export class ContainerImpl implements Container {
         this.resolvers.set(Container, containerResolver);
 
         if (owner instanceof Node) {
-            owner.addEventListener(
-                DILocateParentEventType,
-                (e: CustomEvent<DOMParentLocatorEventDetail>) => {
-                    if (e.composedPath()[0] !== this.owner) {
-                        e.detail.container = this;
-                        e.stopImmediatePropagation();
-                    }
+            Context.handle(owner, (e: ContextEvent<UnknownContext>) => {
+                if (e.context === Container && e.composedPath()[0] !== this.owner) {
+                    e.stopImmediatePropagation();
+                    e.callback(this);
                 }
-            );
+            });
         }
     }
 
@@ -1835,9 +1777,7 @@ export class ContainerImpl implements Container {
 
             return registrationResolver as Resolver;
         } else if (keyAsValue.$isInterface) {
-            throw new Error(
-                `Attempted to jitRegister an interface: ${keyAsValue.friendlyName}`
-            );
+            throw new Error(`Attempted to jitRegister an interface: ${keyAsValue.name}`);
         } else {
             const resolver = this.config.defaultResolver(keyAsValue, handler);
             handler.resolvers.set(keyAsValue, resolver);
@@ -2022,12 +1962,6 @@ function buildAllResponse(
 }
 
 const defaultFriendlyName = "(anonymous)";
-
-// making this private because I think we may want to
-// refactor to use the new proposed community context standard
-interface DOMParentLocatorEventDetail {
-    container: Container | void;
-}
 
 function isObject<T extends object = Object | Function>(value: unknown): value is T {
     return (typeof value === "object" && value !== null) || typeof value === "function";
