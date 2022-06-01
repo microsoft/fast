@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 01 Jun 2022 17:53:14 GMT and should not be manually modified.
+This log was last generated on Wed, 01 Jun 2022 22:21:24 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.2
+
+Wed, 01 Jun 2022 22:21:24 GMT
+
+### Changes
+
+- Force version update (nicholasrice@users.noreply.github.com)
 
 ## 3.0.0-alpha.1
 
