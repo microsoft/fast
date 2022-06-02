@@ -126,6 +126,12 @@ class XApp extends FASTElement {
     @observable nestedItems: NestedRandomData[] = nestedData;
     @observable method: string = <string>method;
 
+    private isNested: boolean = false;
+    constructor() {
+        super();
+        this.isNested = this.method.toLowerCase().includes("nested");
+    }
+
     getTemplateByMethod() {
         return templates[this.method] as ViewTemplate;
     }
@@ -141,19 +147,48 @@ class XApp extends FASTElement {
             case "append":
                 this.append();
                 break;
+            case "combo":
+                this.combo();
+                break;
         }
     }
 
     inplaceReplace() {
-        this.items.splice(0, 1, this.items[0]);
+        if (this.isNested) {
+            this.nestedItems.forEach((item, index) => {
+                this.nestedItems.splice(index, 1, item[index] as NestedRandomData);
+            });
+        } else {
+            this.items.forEach((item, index) => {
+                this.items.splice(index, 1, item[index] as RandomItem);
+            });
+        }
     }
 
     inplaceReverse() {
-        this.items.reverse();
+        if (this.isNested) {
+            for (let i = 0; i < this.nestedItems.length / 2; i++) {
+                this.nestedItems.reverse();
+            }
+        } else {
+            for (let i = 0; i < this.items.length / 2; i++) {
+                this.items.reverse();
+            }
+        }
     }
 
     append() {
-        this.items.push(...data);
+        if (this.isNested) {
+            for (let i = 0; i < this.nestedItems.length / 2; i++) {
+                this.nestedItems.push(
+                    ...this.nestedItems.slice(0, this.nestedItems.length)
+                );
+            }
+        } else {
+            for (let i = 0; i < this.items.length / 2; i++) {
+                this.items.push(...this.items.slice(0, this.items.length));
+            }
+        }
     }
 
     combo() {
