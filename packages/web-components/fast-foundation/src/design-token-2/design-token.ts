@@ -39,10 +39,27 @@ export type StaticDesignTokenValue<T> = T extends Function ? never : T;
  */
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
-export class DesignTokenNode implements Subscriber {
+export class DesignTokenNode {
     #parent: DesignTokenNode | null = null;
     #children: Set<DesignTokenNode> = new Set();
     #values: Map<DesignToken<any>, DesignTokenValue<any>> = new Map();
+
+    /**
+     * Subscribed to the parent {@link DesignTokenNode} during appendChild() and
+     * unsubscribed during removeChild(). This handler is responsible for interpreting
+     * upstream token changes and notifying the node of relevant changes.
+     */
+    #parentSubscriber: Subscriber = {
+        handleChange: (parent: DesignTokenNode, tokens: DesignToken<any>[]): void => {
+            if (this.#values.size) {
+                tokens = tokens.filter(token => !this.#values.has(token));
+            }
+
+            if (tokens.length) {
+                Observable.getNotifier(this).notify(tokens);
+            }
+        },
+    };
 
     public get parent() {
         return this.#parent;
@@ -59,14 +76,14 @@ export class DesignTokenNode implements Subscriber {
 
         child.#parent = this;
         this.#children.add(child);
-        Observable.getNotifier(this).subscribe(child);
+        Observable.getNotifier(this).subscribe(child.#parentSubscriber);
     }
 
     public removeChild(child: DesignTokenNode) {
         if (child.parent === this) {
             child.#parent = null;
             this.#children.delete(child);
-            Observable.getNotifier(this).unsubscribe(child);
+            Observable.getNotifier(this).unsubscribe(child.#parentSubscriber);
         }
     }
 
@@ -74,23 +91,6 @@ export class DesignTokenNode implements Subscriber {
         this.#values.set(token, value);
 
         Observable.getNotifier(this).notify([token]);
-    }
-
-    /**
-     * Invoked when design tokens change upstream.
-     *
-     * @internal
-     */
-    public handleChange(source: DesignTokenNode, tokens: DesignToken<any>[]): void {
-        // If source !== this, it means the notification is coming from upstream. In that case,
-        // filter out any locally set tokens and notify.
-        if (source !== this) {
-            tokens = tokens.filter(token => !this.#values.has(token));
-
-            if (tokens.length) {
-                Observable.getNotifier(this).notify(tokens);
-            }
-        }
     }
 }
 

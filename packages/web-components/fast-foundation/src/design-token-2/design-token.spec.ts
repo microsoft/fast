@@ -120,55 +120,55 @@ describe.only("DesignTokenNode", () => {
                 expect(handleChange).to.have.been.called.with(node, [token]);
             });
         })
-    });
 
-    describe("should not notify subscribers", () => {
+        describe("should not notify subscribers", () => {
 
-        it("of child nodes if the child node does have the token set", () => {
-            const token = DesignToken.create<number>("");
-            const node = new DesignTokenNode();
-            const child = new DesignTokenNode();
-            node.appendChild(child);
-            child.setTokenValue(token, 11)
-            const handleChange = chai.spy(() => {})
-            const subscriber: Subscriber = { handleChange }
-            Observable.getNotifier(child).subscribe(subscriber);
+            it("of child nodes if the child node does have the token set", () => {
+                const token = DesignToken.create<number>("");
+                const node = new DesignTokenNode();
+                const child = new DesignTokenNode();
+                node.appendChild(child);
+                child.setTokenValue(token, 11)
+                const handleChange = chai.spy(() => {})
+                const subscriber: Subscriber = { handleChange }
+                Observable.getNotifier(child).subscribe(subscriber);
 
-            node.setTokenValue(token, 12);
+                node.setTokenValue(token, 12);
 
-            expect(handleChange).not.to.have.been.called;
-        });
-        it("of descendent nodes if the child node does have the token set", () => {
-            const token = DesignToken.create<number>("");
-            const node = new DesignTokenNode();
-            const child = new DesignTokenNode();
-            const descendent = new DesignTokenNode();
-            node.appendChild(child);
-            child.appendChild(descendent);
-            child.setTokenValue(token, 11)
-            const handleChange = chai.spy(() => {})
-            const subscriber: Subscriber = { handleChange }
-            Observable.getNotifier(descendent).subscribe(subscriber);
+                expect(handleChange).not.to.have.been.called;
+            });
+            it("of descendent nodes if the child node does have the token set", () => {
+                const token = DesignToken.create<number>("");
+                const node = new DesignTokenNode();
+                const child = new DesignTokenNode();
+                const descendent = new DesignTokenNode();
+                node.appendChild(child);
+                child.appendChild(descendent);
+                child.setTokenValue(token, 11)
+                const handleChange = chai.spy(() => {})
+                const subscriber: Subscriber = { handleChange }
+                Observable.getNotifier(descendent).subscribe(subscriber);
 
-            node.setTokenValue(token, 12);
+                node.setTokenValue(token, 12);
 
-            expect(handleChange).not.to.have.been.called;
-        });
-        it("of descendent nodes if the descendent node does have the token set", () => {
-            const token = DesignToken.create<number>("");
-            const node = new DesignTokenNode();
-            const child = new DesignTokenNode();
-            const descendent = new DesignTokenNode();
-            node.appendChild(child);
-            child.appendChild(descendent);
-            descendent.setTokenValue(token, 11)
-            const handleChange = chai.spy(() => {})
-            const subscriber: Subscriber = { handleChange }
-            Observable.getNotifier(descendent).subscribe(subscriber);
+                expect(handleChange).not.to.have.been.called;
+            });
+            it("of descendent nodes if the descendent node does have the token set", () => {
+                const token = DesignToken.create<number>("");
+                const node = new DesignTokenNode();
+                const child = new DesignTokenNode();
+                const descendent = new DesignTokenNode();
+                node.appendChild(child);
+                child.appendChild(descendent);
+                descendent.setTokenValue(token, 11)
+                const handleChange = chai.spy(() => {})
+                const subscriber: Subscriber = { handleChange }
+                Observable.getNotifier(descendent).subscribe(subscriber);
 
-            node.setTokenValue(token, 12);
+                node.setTokenValue(token, 12);
 
-            expect(handleChange).not.to.have.been.called;
+                expect(handleChange).not.to.have.been.called;
+            });
         });
     });
 });
