@@ -155,13 +155,13 @@ class XApp extends FASTElement {
 
     inplaceReplace() {
         if (this.isNested) {
-            this.nestedItems.forEach((item, index) => {
-                this.nestedItems.splice(index, 1, item[index] as NestedRandomData);
-            });
+            for (let i = 0; i < this.nestedItems.length; i++) {
+                this.nestedItems.splice(i, 1, this.nestedItems[i] as NestedRandomData);
+            }
         } else {
-            this.items.forEach((item, index) => {
-                this.items.splice(index, 1, item[index] as RandomItem);
-            });
+            for (let i = 0; i < this.items.length; i++) {
+                this.items.splice(i, 1, this.items[i] as RandomItem);
+            }
         }
     }
 
