@@ -5,7 +5,6 @@ import { DesignToken, DesignTokenNode } from "./design-token.js";
 
 chai.use(spies);
 
-
 describe.only("DesignTokenNode", () => {
     describe("appending a child", () => {
         it("should assign the `parent` property of the child to the caller", () => {
@@ -37,6 +36,23 @@ describe.only("DesignTokenNode", () => {
             expect(child.parent).to.equal(newParent);
             expect(parent.children.includes(child)).to.be.false;
             expect(newParent.children.includes(child)).to.be.true;
+        });
+
+        it("should notify for tokens set for the parent node", () => {
+            const tokenA = DesignToken.create<number>("a");
+            const tokenB = DesignToken.create<number>("b");
+            const parent = new DesignTokenNode();
+            const child = new DesignTokenNode();
+            const handleChange = chai.spy(() => {});
+            const subscriber = { handleChange };
+
+            parent.setTokenValue(tokenA, 11);
+            parent.setTokenValue(tokenB, 12);
+            Observable.getNotifier(child).subscribe(subscriber);
+            parent.appendChild(child);
+
+            expect(handleChange).to.have.been.called.once;
+            expect(handleChange).to.have.been.called.with(parent, [tokenA, tokenB]);
         });
     });
     describe("removing a child", () => {
@@ -71,6 +87,9 @@ describe.only("DesignTokenNode", () => {
             tangent.removeChild(child);
             expect(parent.children.includes(child)).to.be.true;
             expect(child.parent).to.equal(parent);
+        });
+        it.skip("should notify for tokens set for the parent node but not on the removed node", () => {
+            // Should this *really* notify?
         });
     });
 
@@ -238,4 +257,63 @@ describe.only("DesignTokenNode", () => {
             expect(node.getTokenValue(token)).to.equal(12);
         });
     })
+
+    describe("getAssignedTokensForNode", () => {
+        it("should return an empty set if no tokens are set for a node", () => {
+            const node = new DesignTokenNode();
+
+            expect(DesignTokenNode.getAssignedTokensForNode(node).length).to.equal(0);
+        });
+        it("should return an array that contains the tokens set for the node", () => {
+            const node = new DesignTokenNode();
+            const token = DesignToken.create<number>("token");
+            node.setTokenValue(token, 12);
+            const assigned = DesignTokenNode.getAssignedTokensForNode(node);
+
+            expect(assigned.includes(token)).to.be.true;
+            expect(assigned.length).to.equal(1);
+        });
+        it("should return an array that does not contain tokens set for ancestor nodes", () => {
+            const parent = new DesignTokenNode();
+            const node = new DesignTokenNode();
+            parent.appendChild(node);
+            const token = DesignToken.create<number>("token");
+            parent.setTokenValue(token, 12);
+            const assigned = DesignTokenNode.getAssignedTokensForNode(node);
+
+            expect(assigned.includes(token)).to.be.false;
+            expect(assigned.length).to.equal(0);
+        });
+    });
+    describe("getAssignedTokensForNodeTree", () => {
+        it("should return an empty set if no tokens are set for a node or it's ancestors", () => {
+            const node = new DesignTokenNode();
+            const parent = new DesignTokenNode();
+            parent.appendChild(node);
+
+            expect(DesignTokenNode.getAssignedTokensForNodeTree(node).length).to.equal(0);
+        });
+        it("should return an array that contains the tokens set for the node", () => {
+            const node = new DesignTokenNode();
+            const parent = new DesignTokenNode();
+            parent.appendChild(node);
+            const token = DesignToken.create<number>("token");
+            node.setTokenValue(token, 12);
+            const assigned = DesignTokenNode.getAssignedTokensForNodeTree(node);
+
+            expect(assigned.includes(token)).to.be.true;
+            expect(assigned.length).to.equal(1);
+        });
+        it("should return an array that does contains tokens set for ancestor nodes", () => {
+            const parent = new DesignTokenNode();
+            const node = new DesignTokenNode();
+            parent.appendChild(node);
+            const token = DesignToken.create<number>("token");
+            parent.setTokenValue(token, 12);
+            const assigned = DesignTokenNode.getAssignedTokensForNodeTree(node);
+
+            expect(assigned.includes(token)).to.be.true;
+            expect(assigned.length).to.equal(1);
+        });
+    });
 });

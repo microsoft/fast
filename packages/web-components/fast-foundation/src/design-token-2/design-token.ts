@@ -61,6 +61,38 @@ export class DesignTokenNode {
         },
     };
 
+    /**
+     * Retrieves the tokens assigned directly to a node.
+     * @param node - the node to retrieve assigned tokens for
+     * @returns
+     */
+    public static getAssignedTokensForNode(node: DesignTokenNode): DesignToken<any>[] {
+        return Array.from(node.#values.keys());
+    }
+
+    /**
+     * Retrieves the tokens assigned to the node and ancestor nodes.
+     * @param node - the node to compose assigned tokens for
+     */
+    public static getAssignedTokensForNodeTree(
+        node: DesignTokenNode
+    ): DesignToken<any>[] {
+        const tokens = new Set(DesignTokenNode.getAssignedTokensForNode(node));
+        let current = node.parent;
+
+        while (current !== null) {
+            const assignedTokens = DesignTokenNode.getAssignedTokensForNode(current);
+
+            for (const token of assignedTokens) {
+                tokens.add(token);
+            }
+
+            current = current.parent;
+        }
+
+        return Array.from(tokens);
+    }
+
     public get parent() {
         return this.#parent;
     }
@@ -77,6 +109,12 @@ export class DesignTokenNode {
         child.#parent = this;
         this.#children.add(child);
         Observable.getNotifier(this).subscribe(child.#parentSubscriber);
+
+        const tokens = DesignTokenNode.getAssignedTokensForNodeTree(this);
+
+        if (tokens.length) {
+            child.#parentSubscriber.handleChange(this, tokens);
+        }
     }
 
     public removeChild(child: DesignTokenNode) {
