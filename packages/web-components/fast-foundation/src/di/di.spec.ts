@@ -165,10 +165,10 @@ describe(`The DI object`, function () {
         }
     });
 
-    describe(`createInterface()`, function () {
+    describe(`createContext()`, function () {
         it(`returns a function that stringifies its default friendly name`, function () {
-            const sut = DI.createInterface();
-            const expected = "DIInterfaceSymbol<(anonymous)>";
+            const sut = DI.createContext();
+            const expected = "DIContext<(anonymous)>";
             expect(sut.toString()).equal(expected, `sut.toString() === '${expected}'`);
             expect(String(sut)).equal(expected, `String(sut) === '${expected}'`);
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -176,8 +176,8 @@ describe(`The DI object`, function () {
         });
 
         it(`returns a function that stringifies its configured friendly name`, function () {
-            const sut = DI.createInterface("IFoo");
-            const expected = "DIInterfaceSymbol<IFoo>";
+            const sut = DI.createContext("IFoo");
+            const expected = "DIContext<IFoo>";
             expect(sut.toString()).equal(expected, `sut.toString() === '${expected}'`);
             expect(String(sut)).equal(expected, `String(sut) === '${expected}'`);
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions

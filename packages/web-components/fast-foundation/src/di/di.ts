@@ -3,19 +3,14 @@
  * for the bulk of this code and many of the associated tests.
  */
 import { Constructable, emptyArray, FASTElement } from "@microsoft/fast-element";
-import { Context, ContextEvent, UnknownContext } from "@microsoft/fast-element/context";
+import {
+    Context,
+    ContextDecorator,
+    ContextEvent,
+    UnknownContext,
+} from "@microsoft/fast-element/context";
 import { Metadata } from "@microsoft/fast-element/metadata";
 import type { Class } from "../interfaces.js";
-
-/**
- * A constant key that can be used to represent an interface to a dependency.
- * The key can be used for context or DI but also doubles as a decorator for
- * resolving the associated dependency.
- * @public
- */
-/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-export type InterfaceSymbol<T = any> = Readonly<Context<T>> &
-    ((target: Constructable, property: string, index?: number) => void);
 
 /**
  * Represents a custom callback for resolving a request from the container.
@@ -339,13 +334,13 @@ export type RegisterSelf<T extends Constructable> = {
  * A key that is used to register dependencies with a dependency injection container.
  * @public
  */
-export type Key = PropertyKey | object | InterfaceSymbol | Constructable | Resolver;
+export type Key = PropertyKey | object | ContextDecorator | Constructable | Resolver;
 
 /**
  * Represents something resolved from a service locator.
  * @public
  */
-export type Resolved<K> = K extends InterfaceSymbol<infer T>
+export type Resolved<K> = K extends ContextDecorator<infer T>
     ? T
     : K extends Constructable
     ? InstanceType<K>
@@ -480,6 +475,63 @@ export interface InterfaceConfiguration {
 
 const dependencyLookup = new Map<Constructable | Injectable, Key[]>();
 let rootDOMContainer: Container | null = null;
+
+function createContext<K extends Key>(
+    nameConfigOrCallback?:
+        | string
+        | ((builder: ResolverBuilder<K>) => Resolver<K>)
+        | InterfaceConfiguration,
+    configuror?: (builder: ResolverBuilder<K>) => Resolver<K>
+): ContextDecorator<K> {
+    const configure =
+        typeof nameConfigOrCallback === "function" ? nameConfigOrCallback : configuror;
+    const friendlyName: string =
+        typeof nameConfigOrCallback === "string"
+            ? nameConfigOrCallback
+            : nameConfigOrCallback && "friendlyName" in nameConfigOrCallback
+            ? nameConfigOrCallback.friendlyName || defaultFriendlyName
+            : defaultFriendlyName;
+    const respectConnection: boolean =
+        typeof nameConfigOrCallback === "string"
+            ? false
+            : nameConfigOrCallback && "respectConnection" in nameConfigOrCallback
+            ? nameConfigOrCallback.respectConnection || false
+            : false;
+
+    const Interface = function (
+        target: Injectable<K>,
+        property: string,
+        index: number
+    ): void {
+        if (target == null || new.target !== undefined) {
+            throw new Error(`No registration for interface: '${Interface.name}'`);
+        }
+
+        if (property) {
+            DI.defineProperty(target, property, Interface, respectConnection);
+        } else {
+            const annotationParamtypes = Metadata.getOrCreateAnnotationParamTypes(target);
+            annotationParamtypes[index] = Interface;
+        }
+    };
+
+    Interface.$isInterface = true;
+    Reflect.defineProperty(Interface, "name", {
+        value: friendlyName ?? defaultFriendlyName,
+    });
+
+    if (configure != null) {
+        Interface.register = function (container: Container, key?: Key): Resolver<K> {
+            return configure(new ResolverBuilder(container, key ?? Interface));
+        };
+    }
+
+    Interface.toString = function toString(): string {
+        return `DIContext<${Interface.name}>`;
+    };
+
+    return Interface;
+}
 
 /**
  * The gateway to dependency injection APIs.
@@ -739,66 +791,13 @@ export const DI = Object.freeze({
      * The created key can be used as a property decorator or constructor parameter decorator,
      * in addition to its standard use in an inject array or through direct container APIs.
      */
-    createInterface<K extends Key>(
-        nameConfigOrCallback?:
-            | string
-            | ((builder: ResolverBuilder<K>) => Resolver<K>)
-            | InterfaceConfiguration,
-        configuror?: (builder: ResolverBuilder<K>) => Resolver<K>
-    ): InterfaceSymbol<K> {
-        const configure =
-            typeof nameConfigOrCallback === "function"
-                ? nameConfigOrCallback
-                : configuror;
-        const friendlyName: string =
-            typeof nameConfigOrCallback === "string"
-                ? nameConfigOrCallback
-                : nameConfigOrCallback && "friendlyName" in nameConfigOrCallback
-                ? nameConfigOrCallback.friendlyName || defaultFriendlyName
-                : defaultFriendlyName;
-        const respectConnection: boolean =
-            typeof nameConfigOrCallback === "string"
-                ? false
-                : nameConfigOrCallback && "respectConnection" in nameConfigOrCallback
-                ? nameConfigOrCallback.respectConnection || false
-                : false;
+    createContext,
 
-        const Interface = function (
-            target: Injectable<K>,
-            property: string,
-            index: number
-        ): void {
-            if (target == null || new.target !== undefined) {
-                throw new Error(`No registration for interface: '${Interface.name}'`);
-            }
-
-            if (property) {
-                DI.defineProperty(target, property, Interface, respectConnection);
-            } else {
-                const annotationParamtypes = Metadata.getOrCreateAnnotationParamTypes(
-                    target
-                );
-                annotationParamtypes[index] = Interface;
-            }
-        };
-
-        Interface.$isInterface = true;
-        Reflect.defineProperty(Interface, "name", {
-            value: friendlyName ?? defaultFriendlyName,
-        });
-
-        if (configure != null) {
-            Interface.register = function (container: Container, key?: Key): Resolver<K> {
-                return configure(new ResolverBuilder(container, key ?? Interface));
-            };
-        }
-
-        Interface.toString = function toString(): string {
-            return `DIInterfaceSymbol<${Interface.name}>`;
-        };
-
-        return Interface;
-    },
+    /**
+     * @deprecated
+     * Use DI.createContext instead.
+     */
+    createInterface: createContext,
 
     /**
      * A decorator that specifies what to inject into its target.
@@ -928,13 +927,13 @@ export const DI = Object.freeze({
  * The interface key that resolves the dependency injection container itself.
  * @public
  */
-export const Container = DI.createInterface<Container>("Container");
+export const Container = DI.createContext<Container>("Container");
 
 /**
  * The interface key that resolves the service locator itself.
  * @public
  */
-export const ServiceLocator = (Container as unknown) as InterfaceSymbol<ServiceLocator>;
+export const ServiceLocator = (Container as unknown) as ContextDecorator<ServiceLocator>;
 
 function createResolver(
     getter: (key: any, handler: Container, requestor: Container) => any
@@ -1150,7 +1149,7 @@ export const all = createAllResolver(
  * `singleton`, `transient` would also behave as you would expect, providing you a new instance each time.
  *
  * @param key - The key to lazily resolve.
- * see {@link DI.createInterface} on interactions with interfaces
+ * see {@link DI.createContext} on interactions with interfaces
  *
  * @public
  */
@@ -1182,7 +1181,7 @@ export const lazy = createResolver(
  * possibly `undefined`!
  *
  * @param key - The key to optionally resolve.
- * see {@link DI.createInterface} on interactions with interfaces
+ * see {@link DI.createContext} on interactions with interfaces
  *
  * @public
  */

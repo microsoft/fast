@@ -371,7 +371,7 @@ describe("DesignSystem", () => {
         class DefaultTest implements Test {}
         class AltTest implements Test {}
 
-        const Test = DI.createInterface<Test>(x => x.singleton(DefaultTest));
+        const Test = DI.createContext<Test>(x => x.singleton(DefaultTest));
 
         const host = document.createElement("div");
         DesignSystem.getOrCreate(host)

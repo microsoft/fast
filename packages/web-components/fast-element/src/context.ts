@@ -9,15 +9,6 @@ export type Context<T> = {
     initialValue?: T;
 };
 
-export type FASTContext<T> = Context<T> & {
-    request(
-        node: Node,
-        callback: ContextCallback<FASTContext<T>>,
-        multiple?: boolean
-    ): void;
-    handle(node: Node, callback: (event: ContextEvent<FASTContext<T>>) => void);
-};
-
 /**
  * A constant key that can be used to represent an interface to a dependency.
  * The key can be used for context or DI but also doubles as a decorator for
@@ -25,8 +16,21 @@ export type FASTContext<T> = Context<T> & {
  * @public
  */
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-export type InterfaceSymbol<T = any> = Readonly<Context<T>> &
+export type ContextDecorator<T = any> = Readonly<Context<T>> &
     ((target: Constructable, property: string, index?: number) => void);
+
+/**
+ * A Context object defines an optional initial value for a Context, as well as a name identifier for debugging purposes.
+ * The FASTContext can also be used as a decorator to declare context dependencies or as a key for DI.
+ */
+export type FASTContext<T> = ContextDecorator<T> & {
+    request(
+        node: Node,
+        callback: ContextCallback<FASTContext<T>>,
+        multiple?: boolean
+    ): void;
+    handle(node: Node, callback: (event: ContextEvent<FASTContext<T>>) => void);
+};
 
 const contextEventName = "context-request";
 
@@ -41,10 +45,7 @@ export const Context = Object.freeze({
      * Creates a W3C Community Protocol-based Context object to use in requesting/providing
      * context through the DOM.
      */
-    create<T = unknown>(
-        name: string,
-        initialValue?: T
-    ): InterfaceSymbol<T> & Readonly<FASTContext<T>> {
+    create<T = unknown>(name: string, initialValue?: T): FASTContext<T> {
         const Interface = function (
             target: Constructable<Node>,
             property: string,
@@ -84,7 +85,7 @@ export const Context = Object.freeze({
         };
 
         Interface.toString = function toString(): string {
-            return `ContextInterfaceSymbol<${Interface.name}>`;
+            return `Context<${Interface.name}>`;
         };
 
         return Interface;

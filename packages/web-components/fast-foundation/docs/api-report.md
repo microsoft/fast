@@ -12,7 +12,7 @@ import { ComposableStyles } from '@microsoft/fast-element';
 import { composedContains } from '@microsoft/fast-element/utilities';
 import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
-import { Context } from '@microsoft/fast-element/context';
+import { ContextDecorator } from '@microsoft/fast-element/context';
 import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -617,7 +617,7 @@ export interface Container extends ServiceLocator {
 }
 
 // @public
-export const Container: InterfaceSymbol<Container>;
+export const Container: ContextDecorator<Container>;
 
 // @public
 export interface ContainerConfiguration {
@@ -1060,7 +1060,8 @@ export const DI: Readonly<{
     getOrCreateDOMContainer(node?: Node, config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
     getDependencies(Type: Constructable | Injectable): Key[];
     defineProperty(target: {}, propertyName: string, key: Key, respectConnection?: boolean): void;
-    createInterface<K extends Key>(nameConfigOrCallback?: string | InterfaceConfiguration | ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined, configuror?: ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined): InterfaceSymbol<K>;
+    createContext: typeof createContext;
+    createInterface: typeof createContext;
     inject(...dependencies: Key[]): (target: any, key?: string | number, descriptor?: PropertyDescriptor | number) => void;
     transient<T extends Constructable<{}>>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
     singleton<T_1 extends Constructable<{}>>(target: T_1 & Partial<RegisterSelf<T_1>>, options?: SingletonOptions): T_1 & RegisterSelf<T_1>;
@@ -1440,16 +1441,13 @@ export interface InterfaceConfiguration {
 }
 
 // @public
-export type InterfaceSymbol<T = any> = Readonly<Context<T>> & ((target: Constructable, property: string, index?: number) => void);
-
-// @public
 export function isListboxOption(el: Element): el is ListboxOption;
 
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
 
 // @public
-export type Key = PropertyKey | object | InterfaceSymbol | Constructable | Resolver;
+export type Key = PropertyKey | object | ContextDecorator | Constructable | Resolver;
 
 // @public
 export const lazy: (key: any) => any;
@@ -2155,7 +2153,7 @@ export type ResolveCallback<T = any> = (handler: Container, requestor: Container
 // Warning: (ae-forgotten-export) The symbol "ResolverLike" needs to be exported by the entry point index.d.ts
 //
 // @public
-export type Resolved<K> = K extends InterfaceSymbol<infer T> ? T : K extends Constructable ? InstanceType<K> : K extends ResolverLike<any, infer T1> ? T1 extends Constructable ? InstanceType<T1> : T1 : K;
+export type Resolved<K> = K extends ContextDecorator<infer T> ? T : K extends Constructable ? InstanceType<K> : K extends ResolverLike<any, infer T1> ? T1 extends Constructable ? InstanceType<T1> : T1 : K;
 
 // @public
 export interface Resolver<K = any> extends ResolverLike<Container, K> {
@@ -2370,7 +2368,7 @@ export interface ServiceLocator {
 }
 
 // @public
-export const ServiceLocator: InterfaceSymbol<ServiceLocator>;
+export const ServiceLocator: ContextDecorator<ServiceLocator>;
 
 // Warning: (ae-forgotten-export) The symbol "singletonDecorator" needs to be exported by the entry point index.d.ts
 //
@@ -2991,7 +2989,8 @@ export type YearFormat = "2-digit" | "numeric";
 // Warnings were encountered during analysis:
 //
 // dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:500:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:433:5 - (ae-forgotten-export) The symbol "createContext" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:499:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
