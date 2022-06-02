@@ -77,7 +77,7 @@ export class DesignTokenNode {
      * Retrieves the tokens assigned to the node and ancestor nodes.
      * @param node - the node to compose assigned tokens for
      */
-    public static getAssignedTokensForNodeTree(
+    public static composeAssignedTokensForNode(
         node: DesignTokenNode
     ): DesignToken<any>[] {
         const tokens = new Set(DesignTokenNode.getAssignedTokensForNode(node));
@@ -113,7 +113,7 @@ export class DesignTokenNode {
         this.#children.add(child);
         Observable.getNotifier(this).subscribe(child.#parentSubscriber);
 
-        const tokens = DesignTokenNode.getAssignedTokensForNodeTree(this);
+        const tokens = DesignTokenNode.composeAssignedTokensForNode(this);
 
         if (tokens.length) {
             child.#parentSubscriber.handleChange(this, tokens);

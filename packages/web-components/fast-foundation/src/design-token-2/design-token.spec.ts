@@ -291,7 +291,7 @@ describe.only("DesignTokenNode", () => {
             const parent = new DesignTokenNode();
             parent.appendChild(node);
 
-            expect(DesignTokenNode.getAssignedTokensForNodeTree(node).length).to.equal(0);
+            expect(DesignTokenNode.composeAssignedTokensForNode(node).length).to.equal(0);
         });
         it("should return an array that contains the tokens set for the node", () => {
             const node = new DesignTokenNode();
@@ -299,7 +299,7 @@ describe.only("DesignTokenNode", () => {
             parent.appendChild(node);
             const token = DesignToken.create<number>("token");
             node.setTokenValue(token, 12);
-            const assigned = DesignTokenNode.getAssignedTokensForNodeTree(node);
+            const assigned = DesignTokenNode.composeAssignedTokensForNode(node);
 
             expect(assigned.includes(token)).to.be.true;
             expect(assigned.length).to.equal(1);
@@ -310,7 +310,7 @@ describe.only("DesignTokenNode", () => {
             parent.appendChild(node);
             const token = DesignToken.create<number>("token");
             parent.setTokenValue(token, 12);
-            const assigned = DesignTokenNode.getAssignedTokensForNodeTree(node);
+            const assigned = DesignTokenNode.composeAssignedTokensForNode(node);
 
             expect(assigned.includes(token)).to.be.true;
             expect(assigned.length).to.equal(1);
