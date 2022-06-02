@@ -1,4 +1,4 @@
-import { Observable, Subscriber } from "@microsoft/fast-element";
+import { Markup, Observable, Subscriber } from "@microsoft/fast-element";
 
 export type DesignTokenValueType =
     | string
@@ -10,7 +10,10 @@ export type DesignTokenValueType =
     | symbol
     | {};
 export interface DesignToken<T> {
-    id: symbol;
+    /**
+     * A unique string identifier
+     */
+    readonly id: string;
 }
 
 /**
@@ -132,25 +135,39 @@ export class DesignTokenNode {
     }
 
     public getTokenValue<T>(token: DesignToken<T>): StaticDesignTokenValue<T> {
-        const local = this.#values.get(token);
+        /* eslint-disable-next-line */
+        let node: DesignTokenNode | null = this;
+        let value;
 
-        if (local !== undefined) {
-            return local;
+        while (node !== null) {
+            if (node.#values.has(token)) {
+                value = node.#values.get(token)!;
+                break;
+            }
+
+            node = node.#parent;
         }
 
-        if (this.#parent) {
-            return this.#parent.getTokenValue(token);
+        if (value !== undefined) {
+            return value;
         } else {
             throw new Error(`No value set for token ${token} in node tree.`);
         }
     }
 }
 
+const nextId = (() => {
+    let i = 0;
+    return () => {
+        return (i++).toString();
+    };
+})();
+
 function create<T extends Function>(name: string): never;
 function create<T extends undefined | void>(name: string): never;
 function create<T>(name: string): DesignToken<T>;
 function create<T>(name: string): any {
-    return { id: Symbol(name) };
+    return { id: Markup.interpolation(nextId()) };
 }
 export const DesignToken = Object.freeze({
     create,
