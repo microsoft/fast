@@ -74,7 +74,7 @@ describe.only("DesignTokenNode", () => {
         });
     });
 
-    describe("setting a value", () => {
+    describe("setting a token value", () => {
         describe("should notify subscribers", () => {
             it("that the taken has changed for the node", () => {
                 const token = DesignToken.create<number>("");
@@ -171,4 +171,71 @@ describe.only("DesignTokenNode", () => {
             });
         });
     });
+
+    describe("getting a token value", () => {
+        it("should throw if no token value has been set for the token in a node tree", () => {
+            const token = DesignToken.create<number>("token");
+            const node = new DesignTokenNode();
+
+            expect(() => node.getTokenValue(token)).to.throw;
+        });
+        it("should not throw if the node has the token set to a value", () => {
+            const token = DesignToken.create<number>("token");
+            const node = new DesignTokenNode();
+            node.setTokenValue(token, 12);
+
+            expect(() => node.getTokenValue(token)).not.to.throw;
+        });
+        it("should not throw if the parent node has the token set to a value", () => {
+            const token = DesignToken.create<number>("token");
+            const node = new DesignTokenNode();
+            const parent = new DesignTokenNode();
+            parent.appendChild(node)
+
+            parent.setTokenValue(token, 12);
+
+            expect(() => node.getTokenValue(token)).not.to.throw;
+        });
+        it("should not throw if an ancestor node has the token set to a value", () => {
+            const token = DesignToken.create<number>("token");
+            const node = new DesignTokenNode();
+            const parent = new DesignTokenNode();
+            const ancestor = new DesignTokenNode();
+            parent.appendChild(node);
+            ancestor.appendChild(parent);
+            ancestor.setTokenValue(token, 12);
+
+            expect(() => node.getTokenValue(token)).not.to.throw;
+        });
+
+
+        it("should return the value set for a token", () => {
+            const token = DesignToken.create<number>("token");
+            const node = new DesignTokenNode();
+            node.setTokenValue(token, 12);
+
+            expect(node.getTokenValue(token)).to.equal(12)
+        });
+        it("should return the value set for the parent node if the value is not set for the token", () => {
+            const token = DesignToken.create<number>("token");
+            const node = new DesignTokenNode();
+            const parent = new DesignTokenNode();
+            parent.appendChild(node)
+
+            parent.setTokenValue(token, 12);
+
+            expect(node.getTokenValue(token)).to.equal(12);
+        });
+        it("should return the value set for the ancestor node if the value is not set for the token on the node or it's parent", () => {
+            const token = DesignToken.create<number>("token");
+            const node = new DesignTokenNode();
+            const parent = new DesignTokenNode();
+            const ancestor = new DesignTokenNode();
+            parent.appendChild(node);
+            ancestor.appendChild(parent);
+            ancestor.setTokenValue(token, 12);
+
+            expect(node.getTokenValue(token)).to.equal(12);
+        });
+    })
 });

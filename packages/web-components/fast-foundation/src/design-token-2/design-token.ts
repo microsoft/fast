@@ -42,7 +42,7 @@ export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignToken
 export class DesignTokenNode {
     #parent: DesignTokenNode | null = null;
     #children: Set<DesignTokenNode> = new Set();
-    #values: Map<DesignToken<any>, DesignTokenValue<any>> = new Map();
+    #values: Map<DesignToken<any>, StaticDesignTokenValue<any>> = new Map();
 
     /**
      * Subscribed to the parent {@link DesignTokenNode} during appendChild() and
@@ -91,6 +91,20 @@ export class DesignTokenNode {
         this.#values.set(token, value);
 
         Observable.getNotifier(this).notify([token]);
+    }
+
+    public getTokenValue<T>(token: DesignToken<T>): StaticDesignTokenValue<T> {
+        const local = this.#values.get(token);
+
+        if (local !== undefined) {
+            return local;
+        }
+
+        if (this.#parent) {
+            return this.#parent.getTokenValue(token);
+        } else {
+            throw new Error(`No value set for token ${token} in node tree.`);
+        }
     }
 }
 
