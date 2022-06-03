@@ -1,10 +1,4 @@
 /**
- * @license
- * Copyright 2020 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
-
-/**
  * Object storing  query params parsed into their likely intended types.
  *
  * Note this avoids using URLSearchParams for compatibility with IE11.

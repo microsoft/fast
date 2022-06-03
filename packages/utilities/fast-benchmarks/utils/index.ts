@@ -5,6 +5,7 @@ export const _random = (max: number) => {
 //generate 10k, pass this value in
 export const itemCount = 10000;
 let id = 0;
+let id2 = 0;
 
 export const adjectives = [
     "pretty",
@@ -75,6 +76,18 @@ export class RandomItem {
     }
 }
 
+export class NestedRandomData {
+    constructor(
+        public readonly id: number,
+        public readonly randomItem1: RandomItem,
+        public readonly randomItem2: RandomItem,
+        public readonly randomItem3: RandomItem,
+        public readonly randomItemGroup1: RandomItem[],
+        public readonly randomItemGroup2?: RandomItem[],
+        public readonly nestedGroup?: NestedRandomData
+    ) {}
+}
+
 function generateData(count: number) {
     const data = [];
 
@@ -84,7 +97,34 @@ function generateData(count: number) {
 
     return data;
 }
+
+function generateNestedData(count: number) {
+    const data = [];
+    for (let i = 0; i < count; i++) {
+        data.push(
+            new NestedRandomData(
+                ++id2,
+                new RandomItem(++id),
+                new RandomItem(++id),
+                new RandomItem(++id),
+                generateData(10),
+                generateData(itemCount / 2),
+                new NestedRandomData(
+                    ++id2,
+                    new RandomItem(++id),
+                    new RandomItem(++id),
+                    new RandomItem(++id),
+                    generateData(5)
+                )
+            )
+        );
+    }
+
+    return data;
+}
+
 export const data: RandomItem[] = generateData(itemCount);
+export const nestedData: NestedRandomData[] = generateNestedData(itemCount);
 
 export const destroy = (container: { innerHTML: string }) => {
     container.innerHTML = "";
