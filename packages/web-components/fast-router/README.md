@@ -1,6 +1,9 @@
 # FAST Router
 
-The `@microsoft/fast-router` package contains a history-based navigation and routing solution designed around Web Components. By using `fast-router`, you can create multi-page and full application experiences. The router works with any Web Components, but has special support for Web Components built on FAST.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-router.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-router)
+
+The `fast-router` package contains a history-based navigation and routing solution designed around web components. By using `fast-router`, you can create multi-page and full application experiences.
 
 ## Installation
 
@@ -19,7 +22,7 @@ yarn add @microsoft/fast-router
 Within your JavaScript or TypeScript code, you can then import library APIs like this:
 
 ```ts
-import { FASTRouter } from '@microsoft/fast-router';
+import { FASTRouter } from "@microsoft/fast-router";
 ```
 
 Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](https://fast.design/docs/integrations/introduction).
@@ -54,17 +57,17 @@ export class AppRouterConfiguration extends RouterConfiguration<RouteSettings> {
     this.routes.map(
       { path: '', redirect: 'home' },
       { path: 'home', title: 'Home', element: HomeScreen },
-      { 
-        path: 'account', 
-        layout: anonymousLayout, 
+      {
+        path: 'account',
+        layout: anonymousLayout,
         title: 'Account',
-        settings: { public: true }, 
+        settings: { public: true },
         children: [
           { path: "login", title: 'Login', element: AccountLogin, name: 'login' },
           { path: 'signup' title: 'Signup', element: AccountSignup },
           { path: 'confirm/{confirmation:Confirmation}', title: 'Confirm', element: ConfirmEmail },
           { path: 'settings', title: 'Settings', element: AccountSettings, layout: pageLayout, settings: { public: false } },
-        ] 
+        ]
       },
       { path: 'store', title: 'Store', element: StoreArea, childRouters: true },
       { path: 'not-found', title: 'Not Found', element: NotFound }
@@ -84,15 +87,15 @@ export class AppRouterConfiguration extends RouterConfiguration<RouteSettings> {
     this.contributors.push({
       navigate(phase) {
         const settings = phase.route.settings;
-  
+
         if (settings && settings.public) {
           return;
         }
-  
+
         if (Session.loggedIn) {
           return;
         }
-  
+
         phase.cancel(() => {
           Session.returnUrl = Route.path.current;
           Route.name.replace(phase.router, 'login');
@@ -106,9 +109,9 @@ export class AppRouterConfiguration extends RouterConfiguration<RouteSettings> {
 #### Using the Configuration with a Router
 
 ```ts
-import { FASTElement, customElement, html, css } from '@microsoft/fast-element';
-import { FASTRouter } from '@microsoft/fast-router';
-import { AppRouterConfiguration } from './routes';
+import { FASTElement, customElement, html, css } from "@microsoft/fast-element";
+import { FASTRouter } from "@microsoft/fast-router";
+import { AppRouterConfiguration } from "./routes";
 
 FASTRouter;
 
@@ -117,23 +120,24 @@ const template = html<MainApplication>`
 `;
 
 const styles = css`
-  :host {
-    contain: content;
-  }
+    :host {
+        contain: content;
+    }
 
-  :host, fast-router {  
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
+    :host,
+    fast-router {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
 `;
 
 @customElement({
-  name: 'main-application',
-  template,
-  styles
+    name: "main-application",
+    template,
+    styles,
 })
 export class MainApplication extends FASTElement {
-  routerConfiguration = new AppRouterConfiguration();
+    routerConfiguration = new AppRouterConfiguration();
 }
 ```

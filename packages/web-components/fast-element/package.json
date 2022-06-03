@@ -1,7 +1,8 @@
 {
   "name": "@microsoft/fast-element",
   "description": "A library for constructing Web Components",
-  "version": "1.10.1",
+  "sideEffects": false,
+  "version": "1.10.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"

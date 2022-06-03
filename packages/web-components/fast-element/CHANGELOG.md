@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Tue, 03 May 2022 07:15:44 GMT and should not be manually modified.
+This log was last generated on Tue, 24 May 2022 07:10:02 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.10.2
+
+Tue, 24 May 2022 07:10:02 GMT
+
+### Patches
+
+- fix(fast-element): do not notify splices for changes pre-subscription (roeisenb@microsoft.com)
 
 ## 1.10.1
 

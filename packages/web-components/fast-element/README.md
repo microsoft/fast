@@ -26,7 +26,7 @@ import { FASTElement } from '@microsoft/fast-element';
 ```
 
 :::tip
-Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](https://fast.design/docs/integrations/introduction).
+Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](../integrations/introduction.md).
 :::
 
 ### From CDN
@@ -58,5 +58,5 @@ For simplicity, examples throughout the documentation will assume the library ha
 :::
 
 :::tip
-Looking for a quick guide on building components?  Check out [our Cheat Sheet](https://www.fast.design/docs/resources/cheat-sheet#building-components).
+Looking for a quick guide on building components?  Check out [our Cheat Sheet](../resources/cheat-sheet.md#building-components).
 :::

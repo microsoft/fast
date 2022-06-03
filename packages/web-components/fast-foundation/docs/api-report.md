@@ -1626,7 +1626,7 @@ export class ListboxOption extends FoundationElement {
     protected selectedChanged(): void;
     // (undocumented)
     get text(): string;
-    set value(next: string | unknown);
+    set value(next: string);
     // (undocumented)
     get value(): string;
 }
@@ -2766,14 +2766,16 @@ export class Toolbar extends FoundationElement {
     set activeIndex(value: number);
     // @internal
     protected get allSlottedItems(): (HTMLElement | Node)[];
+    // (undocumented)
+    childItems: Element[];
+    // (undocumented)
+    protected childItemsChanged(prev: undefined | Element[], next: Element[]): void;
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
     direction: Direction;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
     // @internal
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal

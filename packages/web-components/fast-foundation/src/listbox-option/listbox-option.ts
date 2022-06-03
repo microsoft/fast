@@ -204,7 +204,7 @@ export class ListboxOption extends FoundationElement {
         return this.textContent?.replace(/\s+/g, " ").trim() ?? "";
     }
 
-    public set value(next: string | unknown) {
+    public set value(next: string) {
         const newValue = `${next ?? ""}`;
         this._value = newValue;
 

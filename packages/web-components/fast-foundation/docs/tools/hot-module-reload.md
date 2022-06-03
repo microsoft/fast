@@ -11,5 +11,5 @@ Hot Module Replacement (HMR) allows your web components to be updated as you dev
 To learn more about HMR for Web Components and to see how to setup HMR in your own FAST projects, [please see the Open Web Components HMR documentation](https://open-wc.org/docs/development/hot-module-replacement/).
 
 :::note
-HMR is limited in what it can update for a given component. So, full page refreshes are still needed in certain cases. Changes to constructor logic or adding new `@attr` properties are notable examples of HMR's update limitations. However, template and style changes should be handled automatically without needing a full refresh.
+HMR is limited in what it can update for a given component. So, full-page refreshes are still needed in certain cases. Changes to constructor logic or adding new `@attr` properties are notable examples of HMR's update limitations. However, template and style changes should be handled automatically without needing a full refresh.
 :::

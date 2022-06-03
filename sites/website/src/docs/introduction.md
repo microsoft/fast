@@ -3,6 +3,8 @@ id: introduction
 title: Introduction
 sidebar_label: Introduction
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/introduction.md
+keywords:
+  - web components
 ---
 
 Welcome to the FAST documentation! We're glad you're here and can't wait to show you around.
@@ -23,7 +25,7 @@ One of FAST's driving principals is "strive to adopt open, web standards-based a
 
 To understand how FAST can help you, let's take a look at the **FAST tech stack from top to bottom**. 
 
-At the top of the stack, FAST provides a set of Web Components: **`@microsoft/fast-components`**. This library include a common set of components found in many websites and apps. 
+At the top of the stack, FAST provides a set of Web Components: **`@microsoft/fast-components`**. This library includes a common set of components found in many websites and apps.
 
 <div markdown="1" style={{ display:"flex", justifyContent:"center", marginBottom:"20px" }}>
 
@@ -99,15 +101,15 @@ flowchart
 We hope you're excited by the possibilities that FAST presents. But, you may be wondering where to start. Here are a few statements that describe various members of our community. We recommend that you pick the statement you most identify with and follow the links where they lead. You can always come back and explore another topic at any time.
 
 * "I just want ready-made components!"
-  * [Jump to the component docs.](/docs/components/getting-started)
+  * [Jump to the component docs.](./components/getting-started.md)
 * "I want to build my own design system."
-  * [Jump to the design system docs.](/docs/design-systems/overview)
+  * [Jump to the design system docs.](./design-systems/overview.md)
 * "I want to build my own components."
-  * [Jump to the fast-element docs.](/docs/fast-element/getting-started)
+  * [Jump to the fast-element docs.](./fast-element/getting-started.md)
 * "I need to integrate FAST with another framework or build system."
-  * [Jump to the integration docs.](/docs/integrations/introduction)
+  * [Jump to the integration docs.](./integrations/introduction.md)
 * "I want to look at a quick reference."
-  * [Jump to the Cheat Sheet](/docs/resources/cheat-sheet)
+  * [Jump to the Cheat Sheet](./resources/cheat-sheet.md)
 
 ## Joining the community
 

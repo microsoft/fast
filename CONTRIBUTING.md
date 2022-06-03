@@ -23,7 +23,7 @@ yarn global add lerna
 ```
 
 :::important
-The above steps are a one-time setup for your machine and do not need to be repeated after the initial configuration.
+The above steps are a one-time set up for your machine and do not need to be repeated after the initial configuration.
 :::
 
 ### Cloning the repository
@@ -81,7 +81,7 @@ Packages are located within the `packages` folder of the repository. Each packag
 If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch (typically from master) or use the *merge* button provided by GitHub.
 
 :::note
-For additional details on branch management read the [branch guide](/docs/community/branch-guide) documentation.
+For additional details on branch management, read the [branch guide](../community/branch-guide.md) documentation.
 :::
 
 #### Change Files
@@ -104,12 +104,12 @@ When working across feature branches, you'll need to target the branch using the
 }
 ```
 
-Running `yarn change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utility looks to provide recent commit messages for use in the description. *For changes which do not affect the published package(s), please use "none" when selecting the change type*.
+Running `yarn change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utility looks to provide recent commit messages for use in the description. *For changes that do not affect the published package(s), please use "none" when selecting the change type*.
 
 More information on the change process and change types can be found on the [Beachball website](https://microsoft.github.io/beachball/cli/change.html#change).
 
 :::note
-If you are addressing multiple issues which are unrelated, consider either doing multiple pull requests, or generate separate change files to ensure accurate generation of changelogs and versioning of packages.
+If you are addressing multiple issues which are unrelated, consider either doing multiple pull requests, or generating separate change files to ensure accurate generation of changelogs and versioning of packages.
 :::
 
 :::note
@@ -151,7 +151,7 @@ When you submit a pull request, a CLA-bot automatically determines if you need t
 
 ## Guiding principle
 
-Owners, the steering committee, collaborators, code owners, and contributors work in concert with one another on behalf of the FAST community and prioritize the communities interests over their own.
+Owners, the steering committee, collaborators, code owners, and contributors work in concert with one another on behalf of the FAST community and prioritize the community's interests over their own.
 
 The development, release, and work management processes must reflect this principle. Accepting contributions to the project requires a review by collaborators.
 
@@ -163,7 +163,7 @@ The development, release, and work management processes must reflect this princi
 
 ### Steering committee
 
-*Steering committee* members are key *collaborators* who have demonstrated design or technical expertise critical to the driving the FAST project and community forward.
+*Steering committee* members are key *collaborators* who have demonstrated design or technical expertise critical to driving the FAST project and community forward.
 
 ### Collaborators
 
@@ -180,9 +180,9 @@ As subject matter experts, *code owners* approve pull requests on the packages t
 ### Nominations & appointments
 
 * To become a *contributor*, a community member must have a pull request approved and merged into the FAST project master branch.
-* To become a *collaborator*, a *contributor* will petition the *steering committee* who will approve or deny the request.
-* To become a *code owner*, a *collaborator* will be (a) nominated by a *steering committee* member or (b) petition the *steering committee* who will approve or deny the request.
-* To join the *steering committee*, a *collaborator* will be nominated by a *steering committee* member and the *steering committee* who will approve or deny the request.
+* To become a *collaborator*, a *contributor* will petition the *steering committee*, who will approve or deny the request.
+* To become a *code owner*, a *collaborator* will be (a) nominated by a *steering committee* member or (b) petition the *steering committee*, who will approve or deny the request.
+* To join the *steering committee*, a *collaborator* will be nominated by a *steering committee* member and the *steering committee*, who will approve or deny the request.
 
 ## Acceptance and consensus seeking process
 
@@ -192,12 +192,12 @@ All pull requests must be approved by an assigned *collaborator* before the pull
 
 1. Reviewing the pull request if they are not the creator of it
 2. Adding any additional reviewers to review at their discretion
-3. Ensuring the the pull request is given feedback in [a reasonable period of time](#response-time) from *collaborators* or *code owners* with the expertise to evaluate the changes
+3. Ensuring the pull request is given feedback in [a reasonable period of time](#response-time) from *collaborators* or *code owners* with the expertise to evaluate the changes
 4. Merging the pull request
 
 When a pull request : (a) has a significant impact on the project, (b) is inherently controversial, or (c) has not reached consensus with *collaborators*; add a "status:controversial" label to the pull request for the *steering committee* to review the pull request. Pull requests labeled with "status:controversial" are not approved until the *steering committee* reviews the issue and makes a decision.
 
-Additionally, *owners*, can temporarily enable [interaction limits](https://help.github.com/articles/limiting-interactions-with-your-repository/) to allow a "cool-down" period when hot topics become disruptive.
+Additionally, *owners* can temporarily enable [interaction limits](https://help.github.com/articles/limiting-interactions-with-your-repository/) to allow a "cool-down" period when hot topics become disruptive.
 
 Specific *collaborators* or *code owners* can be added to a pull request by including their user alias in the "Reviewers" section.
 
@@ -207,7 +207,7 @@ The amount of time can vary but at least 3 days during the typical working week 
 
 ## Stability policy
 
-An essential consideration in every pull request is its impact on the system. To manage impacts, we work collectively to ensure that we do not introduce unnecessary breaking changes, performance or functional regressions, or negative impacts on usability for users or supported partners. To learn more about our approaches to planning and releases, see [our release planning document](/docs/community/release-planning).
+An essential consideration in every pull request is its impact on the system. To manage impacts, we work collectively to ensure that we do not introduce unnecessary breaking changes, performance or functional regressions, or negative impacts on usability for users or supported partners. To learn more about our approaches to planning and releases, see [our release planning document](../community/release-planning.md).
 
 ## Developer's Certificate of Origin 1.1
 
@@ -215,7 +215,7 @@ By making a contribution to this project, I certify that:
 
 * a. The contribution was created in whole or in part by me and I have the right to submit it under the open source license indicated in the file; or
 * b. The contribution is based upon previous work that, to the best of my knowledge, is covered under an appropriate open source license and I have the right under that license to submit that work with modifications, whether created in whole or in part by me, under the same open source license (unless I am permitted to submit under a different license), as indicated in the file; or
-* c. The contribution was provided directly to me by some other person who certified (a), (b) or (c) and I have not modified it.
+* c. The contribution was provided directly to me by some other person who certified (a), (b), or (c) and I have not modified it.
 * d. I understand and agree that this project and the contribution are public and that a record of the contribution (including all personal information I submit with it, including my sign-off) is maintained indefinitely and may be redistributed consistent with this project or the open source license(s) involved.
 
 ## Resources
