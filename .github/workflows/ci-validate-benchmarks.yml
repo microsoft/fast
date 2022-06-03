@@ -1,0 +1,89 @@
+name: Validate Benchmarks
+
+on:
+  pull_request:
+    branches:
+      - master
+      - releases/*
+      - features/*
+
+jobs:
+  setup:
+    name: Setup Tachometer Reporting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize tachometer comment
+        uses: andrewiggins/tachometer-reporter-action@v2
+        with:
+            initialize: true
+  render_create10k:
+    name: Run rendering benchmark with create 10k elements operation
+    needs: [setup]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=render --versions latest local --localBenchFile=index2 --branchName=${GITHUB_HEAD_REF} --operations=create10k
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element_render-create10k.json
+  render_update10th:
+    name: Run rendering benchmark with update 10th operation
+    needs: [setup]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=render --versions latest local --localBenchFile=index2 --branchName=${GITHUB_HEAD_REF} --operations=update10th
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element_render-update10th.json
+  render_createDelete5x:
+    name: Run rendering benchmark with create and delete 5 times operation
+    needs: [setup]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=render --versions latest local --localBenchFile=index2 --branchName=${GITHUB_HEAD_REF} --operations=createDelete5x
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element_render-createDelete5x.json
+  report_results:
+    name: Report Results
+    needs: [render_create10k, render_update10th, render_createDelete5x]
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/download-artifact@v2
+          with:
+              name: results
+              path: packages/utilities/fast-benchmarks/results
+        - name: Report Tachometer Result
+          uses: andrewiggins/tachometer-reporter-action@v2
+          with:
+              name: results
+              path: packages/utilities/fast-benchmarks/results/*.json
