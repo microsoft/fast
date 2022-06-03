@@ -232,6 +232,20 @@ export interface Container extends ServiceLocator {
 }
 
 /**
+ * A Container that is associated with a specific Node in the DOM.
+ * @public
+ */
+export interface DOMContainer extends Container {
+    /**
+     * Instructs this particular Container to handle W3C Community Context requests
+     * that propagate to its associated DOM node.
+     * @param enable - true to enable context requests handling; false otherwise.
+     * @beta
+     */
+    handleContextRequests(enable: boolean): void;
+}
+
+/**
  * A utility class used that constructs and registers resolvers for a dependency
  * injection container. Supports a standard set of object lifetimes.
  * @public
@@ -474,7 +488,7 @@ export interface InterfaceConfiguration {
 }
 
 const dependencyLookup = new Map<Constructable | Injectable, Key[]>();
-let rootDOMContainer: Container | null = null;
+let rootDOMContainer: DOMContainer | null = null;
 
 function createContext<K extends Key>(
     nameConfigOrCallback?:
@@ -539,28 +553,14 @@ function createContext<K extends Key>(
  */
 export const DI = Object.freeze({
     /**
-     * Instructs the DI system to handle requests for W3C context that happen
-     * through property injection.
+     * Installs dependency injection as the default strategy for handling
+     * all calls to Context.request.
      */
-    handlePropertyInjectionContextRequests() {
-        Context.setDefaultPropertyInjectionStrategy(
-            (object: Node, context: Context<unknown>) => {
-                let value;
-
-                try {
-                    const container: Container =
-                        object instanceof Node
-                            ? DI.findResponsibleContainer(object)
-                            : DI.getOrCreateDOMContainer();
-
-                    value = container.get(context) as any;
-                } catch {
-                    Context.request(object, context, (found: unknown) => (value = found));
-                }
-
-                return value ?? context.initialValue;
-            }
-        );
+    installAsContextRequestStrategy() {
+        Context.setDefaultRequestStrategy((target, context, callback) => {
+            const container = DI.findResponsibleContainer(target);
+            callback(container.get(context) as any);
+        });
     },
 
     /**
@@ -578,42 +578,40 @@ export const DI = Object.freeze({
     /**
      * Finds the dependency injection container responsible for providing dependencies
      * to the specified node.
-     * @param node - The node to find the responsible container for.
+     * @param target - The node to find the responsible container for.
      * @returns The container responsible for providing dependencies to the node.
      * @remarks
      * This will be the same as the parent container if the specified node
      * does not itself host a container configured with responsibleForOwnerRequests.
      */
-    findResponsibleContainer(node: Node): Container {
-        const owned = (node as any).$$container$$ as ContainerImpl;
+    findResponsibleContainer(target: EventTarget): DOMContainer {
+        const owned = (target as any).$$container$$ as ContainerImpl;
 
         if (owned && owned.responsibleForOwnerRequests) {
             return owned;
         }
 
-        return DI.findParentContainer(node);
+        return DI.findParentContainer(target);
     },
 
     /**
      * Find the dependency injection container up the DOM tree from this node.
-     * @param node - The node to find the parent container for.
+     * @param target - The node to find the parent container for.
      * @returns The parent container of this node.
      * @remarks
      * This will be the same as the responsible container if the specified node
      * does not itself host a container configured with responsibleForOwnerRequests.
      */
-    findParentContainer(node: Node) {
-        let container: Container | null = null;
-        Context.request(node, Container, (value: Container) => {
-            container = value;
-        });
+    findParentContainer(target: EventTarget): DOMContainer {
+        let container!: DOMContainer;
+        Context.dispatch(target, DOMContainer, value => (container = value));
         return container ?? DI.getOrCreateDOMContainer();
     },
 
     /**
      * Returns a dependency injection container if one is explicitly owned by the specified
      * node. If one is not owned, then a new container is created and assigned to the node.
-     * @param node - The node to find or create the container for.
+     * @param target - The node to find or create the container for.
      * @param config - The configuration for the container if one needs to be created.
      * @returns The located or created container.
      * @remarks
@@ -622,14 +620,14 @@ export const DI = Object.freeze({
      * already exist.
      */
     getOrCreateDOMContainer(
-        node?: Node,
+        target?: EventTarget,
         config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
-    ): Container {
-        if (!node) {
+    ): DOMContainer {
+        if (!target) {
             return (
                 rootDOMContainer ||
                 (rootDOMContainer = new ContainerImpl(
-                    null,
+                    typeof window !== "undefined" ? window : globalThis,
                     Object.assign({}, ContainerConfiguration.default, config, {
                         parentLocator: () => null,
                     })
@@ -638,9 +636,9 @@ export const DI = Object.freeze({
         }
 
         return (
-            (node as any).$$container$$ ||
+            (target as any).$$container$$ ||
             new ContainerImpl(
-                node,
+                target,
                 Object.assign({}, ContainerConfiguration.default, config, {
                     parentLocator: DI.findParentContainer,
                 })
@@ -924,13 +922,18 @@ export const DI = Object.freeze({
 });
 
 /**
- * The interface key that resolves the dependency injection container itself.
+ * The key that resolves the dependency injection Container itself.
  * @public
  */
 export const Container = DI.createContext<Container>("Container");
 
 /**
- * The interface key that resolves the service locator itself.
+ * The key that resolves a DOMContainer itself.
+ */
+export const DOMContainer = (Container as unknown) as ContextDecorator<DOMContainer>;
+
+/**
+ * The key that resolves the ServiceLocator itself.
  * @public
  */
 export const ServiceLocator = (Container as unknown) as ContextDecorator<ServiceLocator>;
@@ -1434,11 +1437,12 @@ const factories = new Map<Key, Factory>();
 /**
  * @internal
  */
-export class ContainerImpl implements Container {
+export class ContainerImpl implements DOMContainer {
     private _parent: ContainerImpl | null | undefined = void 0;
     private registerDepth: number = 0;
     private resolvers: Map<Key, Resolver>;
     private context: any = null;
+    private isHandlingContextRequests = false;
 
     public get parent() {
         if (this._parent === void 0) {
@@ -1456,22 +1460,40 @@ export class ContainerImpl implements Container {
         return this.config.responsibleForOwnerRequests;
     }
 
-    constructor(protected owner: any, protected config: ContainerConfiguration) {
-        if (owner !== null) {
-            owner.$$container$$ = this;
-        }
-
+    constructor(
+        protected owner: EventTarget | null,
+        protected config: ContainerConfiguration
+    ) {
         this.resolvers = new Map();
         this.resolvers.set(Container, containerResolver);
 
-        if (owner instanceof Node) {
+        if (owner !== null) {
+            (owner as any).$$container$$ = this;
+
             Context.handle(owner, (e: ContextEvent<UnknownContext>) => {
-                if (e.context === Container && e.composedPath()[0] !== this.owner) {
+                if (this.isHandlingContextRequests) {
+                    try {
+                        const value = this.get(e.context);
+                        e.stopImmediatePropagation();
+                        e.callback(value);
+                    } catch {
+                        // Container failed to find the context, so we need to
+                        // let the event propagate.
+                        // TODO: Introduce a tryGet API to Container.
+                    }
+                } else if (
+                    e.context === Container &&
+                    e.composedPath()[0] !== this.owner
+                ) {
                     e.stopImmediatePropagation();
                     e.callback(this);
                 }
             });
         }
+    }
+
+    public handleContextRequests(enable: boolean): void {
+        this.isHandlingContextRequests = enable;
     }
 
     public registerWithContext(context: any, ...params: any[]): Container {

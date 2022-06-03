@@ -3,6 +3,7 @@ import { Metadata } from "./metadata.js";
 
 /**
  * A Context object defines an optional initial value for a Context, as well as a name identifier for debugging purposes.
+ * @public
  */
 export type Context<T> = {
     name: string;
@@ -13,7 +14,7 @@ export type Context<T> = {
  * A constant key that can be used to represent an interface to a dependency.
  * The key can be used for context or DI but also doubles as a decorator for
  * resolving the associated dependency.
- * @public
+ * @beta
  */
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export type ContextDecorator<T = any> = Readonly<Context<T>> &
@@ -22,25 +23,39 @@ export type ContextDecorator<T = any> = Readonly<Context<T>> &
 /**
  * A Context object defines an optional initial value for a Context, as well as a name identifier for debugging purposes.
  * The FASTContext can also be used as a decorator to declare context dependencies or as a key for DI.
+ * @beta
  */
 export type FASTContext<T> = ContextDecorator<T> & {
-    request(
-        node: Node,
-        callback: ContextCallback<FASTContext<T>>,
-        multiple?: boolean
-    ): void;
+    request(node: Node, callback: ContextCallback<T>, multiple?: boolean): void;
     handle(node: Node, callback: (event: ContextEvent<FASTContext<T>>) => void);
 };
 
-const contextEventName = "context-request";
+/**
+ * A strategy that controls how all Context.request API calls are handled.
+ * @remarks
+ * By default this is handled via Context.dispatch, which dispatched a ContextEvent.
+ * @beta
+ */
+export type FASTContextRequestStrategy = <T extends UnknownContext>(
+    target: EventTarget,
+    context: T,
+    callback: ContextCallback<ContextType<T>>,
+    multiple
+) => void;
 
-let getValueForInjectedProperty = function <T>(object: Node, context: Context<T>) {
-    let value;
-    Context.request(object, context, found => (value = found));
-    return value;
-};
+const contextEventType = "context-request";
+let requestStrategy: FASTContextRequestStrategy;
 
+/**
+ * Enables using the W3C Community Context protocol.
+ * @beta
+ */
 export const Context = Object.freeze({
+    /**
+     * The event type used for W3C Context Protocol requests.
+     */
+    eventType: contextEventType,
+
     /**
      * Creates a W3C Community Protocol-based Context object to use in requesting/providing
      * context through the DOM.
@@ -52,7 +67,7 @@ export const Context = Object.freeze({
             index: number
         ): void {
             if (target == null || new.target !== undefined) {
-                throw new Error(`No registration for interface: '${Interface.name}'`);
+                throw new Error(`No registration for context: '${Interface.name}'`);
             }
 
             if (property) {
@@ -63,25 +78,25 @@ export const Context = Object.freeze({
                 );
                 annotationParamtypes[index] = Interface;
             }
-        };
+        } as FASTContext<T>;
 
-        Interface.$isInterface = true;
-        Interface.initialValue = initialValue;
+        (Interface as any).$isInterface = true;
+        (Interface as any).initialValue = initialValue;
         Reflect.defineProperty(Interface, "name", { value: name });
 
         Interface.handle = function (
             node: Node,
             callback: (event: ContextEvent<FASTContext<T>>) => void
         ) {
-            Context.handle(node, callback);
+            Context.handle(node, callback, Interface);
         };
 
         Interface.request = function (
             node: Node,
-            callback: ContextCallback<FASTContext<T>>,
+            callback: ContextCallback<T>,
             multiple?: boolean
         ) {
-            Context.request(node, this, callback, multiple);
+            Context.request(node, Interface, callback, multiple);
         };
 
         Interface.toString = function toString(): string {
@@ -91,20 +106,42 @@ export const Context = Object.freeze({
         return Interface;
     },
 
+    setDefaultRequestStrategy(strategy: FASTContextRequestStrategy) {
+        requestStrategy = strategy;
+    },
+
     request<T extends UnknownContext>(
-        node: Node,
+        target: EventTarget,
         context: T,
         callback: ContextCallback<ContextType<T>>,
         multiple = false
     ) {
-        node.dispatchEvent(new ContextEvent(context, callback, multiple));
+        requestStrategy(target, context, callback, multiple);
+    },
+
+    dispatch<T extends UnknownContext>(
+        target: EventTarget,
+        context: T,
+        callback: ContextCallback<ContextType<T>>,
+        multiple = false
+    ) {
+        target.dispatchEvent(new ContextEvent(context, callback, multiple));
     },
 
     handle<T extends UnknownContext>(
-        node: Node,
-        callback: (event: ContextEvent<T>) => void
+        target: EventTarget,
+        callback: (event: ContextEvent<T>) => void,
+        context?: T
     ) {
-        node.addEventListener(contextEventName, callback);
+        if (context) {
+            target.addEventListener(contextEventType, (event: ContextEvent<T>) => {
+                if (event.context === context) {
+                    callback(event);
+                }
+            });
+        } else {
+            target.addEventListener(contextEventType, callback);
+        }
     },
 
     defineProperty<T extends UnknownContext>(
@@ -119,28 +156,26 @@ export const Context = Object.freeze({
                 let value = this[field];
 
                 if (value === void 0) {
-                    value = getValueForInjectedProperty(this, context);
+                    Context.request(this, context, found => (value = found));
                 }
 
                 return value ?? context.initialValue;
             },
         });
     },
-
-    setDefaultPropertyInjectionStrategy(
-        strategy: <T = unknown>(object: Node, context: Context<T>) => T
-    ) {
-        getValueForInjectedProperty = strategy;
-    },
 });
 
+Context.setDefaultRequestStrategy(Context.dispatch);
+
 /**
- * An unknown context typeU
+ * An unknown context type.
+ * @public
  */
 export type UnknownContext = Context<unknown>;
 
 /**
  * A helper type which can extract a Context value type from a Context type
+ * @public
  */
 export type ContextType<T extends UnknownContext> = T extends Context<infer Y>
     ? Y
@@ -149,6 +184,7 @@ export type ContextType<T extends UnknownContext> = T extends Context<infer Y>
 /**
  * A callback which is provided by a context requester and is called with the value satisfying the request.
  * This callback can be called multiple times by context providers as the requested value is changed.
+ * @public
  */
 export type ContextCallback<ValueType> = (value: ValueType, dispose?: () => void) => void;
 
@@ -161,6 +197,7 @@ export type ContextCallback<ValueType> = (value: ValueType, dispose?: () => void
  * If the requested context event contains a truthy `multiple` value, then a provider can call the callback
  * multiple times if the value is changed, if this is the case the provider should pass a `dispose`
  * method to the callback which requesters can invoke to indicate they no longer wish to receive these updates.
+ * @public
  */
 export class ContextEvent<T extends UnknownContext> extends Event {
     public constructor(
@@ -168,7 +205,7 @@ export class ContextEvent<T extends UnknownContext> extends Event {
         public readonly callback: ContextCallback<ContextType<T>>,
         public readonly multiple?: boolean
     ) {
-        super(contextEventName, { bubbles: true, composed: true });
+        super(contextEventType, { bubbles: true, composed: true });
     }
 }
 
@@ -178,6 +215,6 @@ declare global {
          * A 'context-request' event can be emitted by any element which desires
          * a context value to be injected by an external provider.
          */
-        [contextEventName]: ContextEvent<UnknownContext>;
+        [contextEventType]: ContextEvent<UnknownContext>;
     }
 }

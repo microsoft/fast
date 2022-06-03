@@ -634,8 +634,8 @@ export const ContainerConfiguration: Readonly<{
 // Warning: (ae-internal-missing-underscore) The name "ContainerImpl" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export class ContainerImpl implements Container {
-    constructor(owner: any, config: ContainerConfiguration);
+export class ContainerImpl implements DOMContainer {
+    constructor(owner: EventTarget | null, config: ContainerConfiguration);
     // (undocumented)
     protected config: ContainerConfiguration;
     // (undocumented)
@@ -651,9 +651,11 @@ export class ContainerImpl implements Container {
     // (undocumented)
     getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
     // (undocumented)
+    handleContextRequests(enable: boolean): void;
+    // (undocumented)
     has<K extends Key>(key: K, searchAncestors?: boolean): boolean;
     // (undocumented)
-    protected owner: any;
+    protected owner: EventTarget | null;
     // (undocumented)
     get parent(): ContainerImpl | null;
     // (undocumented)
@@ -1053,11 +1055,11 @@ export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignToken
 
 // @public
 export const DI: Readonly<{
-    handlePropertyInjectionContextRequests(): void;
+    installAsContextRequestStrategy(): void;
     createContainer(config?: Partial<ContainerConfiguration>): Container;
-    findResponsibleContainer(node: Node): Container;
-    findParentContainer(node: Node): Container;
-    getOrCreateDOMContainer(node?: Node, config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
+    findResponsibleContainer(target: EventTarget): DOMContainer;
+    findParentContainer(target: EventTarget): DOMContainer;
+    getOrCreateDOMContainer(target?: EventTarget, config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): DOMContainer;
     getDependencies(Type: Constructable | Injectable): Key[];
     defineProperty(target: {}, propertyName: string, key: Key, respectConnection?: boolean): void;
     createContext: typeof createContext;
@@ -1135,6 +1137,15 @@ export type DividerRole = typeof DividerRole[keyof typeof DividerRole];
 
 // @public
 export const dividerTemplate: FoundationElementTemplate<ViewTemplate<Divider>>;
+
+// @public
+export interface DOMContainer extends Container {
+    // @beta
+    handleContextRequests(enable: boolean): void;
+}
+
+// @public
+export const DOMContainer: ContextDecorator<DOMContainer>;
 
 // @public
 export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
@@ -2989,8 +3000,8 @@ export type YearFormat = "2-digit" | "numeric";
 // Warnings were encountered during analysis:
 //
 // dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:433:5 - (ae-forgotten-export) The symbol "createContext" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:499:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:446:5 - (ae-forgotten-export) The symbol "createContext" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:512:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
