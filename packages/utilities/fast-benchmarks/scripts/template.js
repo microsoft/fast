@@ -156,21 +156,14 @@ async function getLocalGitBranchName() {
  */
 const FAST_ELEMENT = "fast-element";
 const FAST_FOUNDATION = "fast-foundation";
-const FAST_COMPONENTS = "fast-components";
 const libraryDependencies = {
     [FAST_FOUNDATION]: {
         "@microsoft/fast-element": "1.9.0",
         "@microsoft/fast-web-utilities": "5.2.0",
     },
-    [FAST_COMPONENTS]: {
-        "@microsoft/fast-colors": "5.2.0",
-        "@microsoft/fast-element": "1.9.0",
-        "@microsoft/fast-foundation": "2.41.1",
-        "@microsoft/fast-web-utilities": "5.2.0",
-    },
 };
 async function generateBenchmarks(
-    { library, benchmark, versions, methods },
+    { library, benchmark, versions, methods, queryParam },
     operationProps,
     localProps
 ) {
@@ -247,14 +240,10 @@ async function generateBenchmarks(
 
             if (methods) {
                 methods.forEach(method => {
-                    const fullUrl = `${url}?method=${method}`;
-
-                    const bench = {
-                        url: fullUrl,
-                        browser,
-                        name: `${name}-${method}`,
-                        measurement,
-                    };
+                    const fullUrl = queryParam
+                        ? `${url}?method=${method}&${queryParam}`
+                        : `${url}?method=${method}`;
+                    bench.url = fullUrl;
                     benchmarks.push(bench);
                 });
             } else {
