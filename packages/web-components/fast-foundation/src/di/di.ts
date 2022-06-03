@@ -671,11 +671,11 @@ export const DI = Object.freeze({
 
             if (inject === void 0) {
                 // design:paramtypes is set by tsc when emitDecoratorMetadata is enabled.
-                const designParamtypes = Metadata.getDesignParamtypes(Type);
+                const designParamtypes = Metadata.getDesignParamTypes(Type);
                 // di:paramtypes is set by the parameter decorator from DI.createInterface or by @inject
-                const annotationParamtypes = Metadata.getAnnotationParamtypes(Type);
-                if (designParamtypes === void 0) {
-                    if (annotationParamtypes === void 0) {
+                const annotationParamtypes = Metadata.getAnnotationParamTypes(Type);
+                if (designParamtypes === emptyArray) {
+                    if (annotationParamtypes === emptyArray) {
                         // Only go up the prototype if neither static inject nor any of the paramtypes is defined, as
                         // there is no sound way to merge a type's deps with its prototype's deps
                         const Proto = Object.getPrototypeOf(Type);
@@ -690,7 +690,7 @@ export const DI = Object.freeze({
                         // No design:paramtypes so just use the di:paramtypes
                         dependencies = cloneArrayWithPossibleProps(annotationParamtypes);
                     }
-                } else if (annotationParamtypes === void 0) {
+                } else if (annotationParamtypes === emptyArray) {
                     // No di:paramtypes so just use the design:paramtypes
                     dependencies = cloneArrayWithPossibleProps(designParamtypes);
                 } else {
@@ -805,7 +805,7 @@ export const DI = Object.freeze({
      * @returns The decorator to be applied to the target class.
      * @remarks
      * The decorator can be used to decorate a class, listing all of the classes dependencies.
-     * Or it can be used to decorate a constructor paramter, indicating what to inject for that
+     * Or it can be used to decorate a constructor parameter, indicating what to inject for that
      * parameter.
      * Or it can be used for a web component property, indicating what that property should resolve to.
      */
