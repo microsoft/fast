@@ -1,4 +1,4 @@
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { keyArrowRight, Orientation } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
 import { fixture } from "../testing/fixture.js";
@@ -125,7 +125,7 @@ describe("Toolbar", () => {
     await connect();
 
     control1.disabled = true;
-    await DOM.nextUpdate();
+    await Updates.next();
 
     element.focus();
 
@@ -161,7 +161,7 @@ describe("Toolbar", () => {
     await connect();
 
     control1.hidden = true;
-    await DOM.nextUpdate();
+    await Updates.next();
 
     element.focus();
 
@@ -247,7 +247,7 @@ describe("Toolbar", () => {
     expect(document.activeElement).to.equal(control2);
 
     startButton.disabled = false;
-    await DOM.nextUpdate();
+    await Updates.next();
 
     pressRightArrowKey(element);
 
@@ -270,7 +270,7 @@ describe("Toolbar", () => {
     expect(document.activeElement).to.equal(control1);
 
     control1.disabled = true;
-    await DOM.nextUpdate();
+    await Updates.next();
 
     // re-focus the element because focus is lost when control1 became disabled
     element.focus();

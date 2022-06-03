@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "docs: update angular.md for two-way binding errors",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "none"
-}

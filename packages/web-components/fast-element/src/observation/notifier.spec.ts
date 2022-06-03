@@ -1,8 +1,5 @@
 import { expect } from "chai";
-import { DOM } from "../dom";
-import { enableArrayObservation } from "./array-observer";
-import { PropertyChangeNotifier, Subscriber, SubscriberSet } from "./notifier";
-import { Observable } from "./observable";
+import { PropertyChangeNotifier, Subscriber, SubscriberSet } from "./notifier.js";
 
 describe(`A SubscriberSet`, () => {
     const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -251,24 +248,4 @@ describe(`A PropertyChangeNotifier`, () => {
             });
         });
     });
-});
-
-describe(`An array observer`, () => {
-    it("should not deliver splices for changes prior to subscription", async () => {
-        enableArrayObservation();
-        const array = [1,2,3,4,5];
-        const observer = Observable.getNotifier(array);
-        let wasCalled = false;
-
-        array.push(6);
-        observer.subscribe({
-            handleChange() {
-                wasCalled = true;
-            }
-        });
-
-        await DOM.nextUpdate();
-
-        expect(wasCalled).to.be.false;
-    })
 });

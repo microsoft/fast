@@ -181,7 +181,7 @@ export interface ChildListDirectiveOptions<T = any> extends NodeBehaviorOptions<
 }
 
 // @public
-export function children<T = any>(propertyOrOptions: (keyof T & string) | ChildListDirectiveOptions<keyof T & string>): CaptureType<T>;
+export function children<T = any>(propertyOrOptions: (keyof T & string) | ChildrenDirectiveOptions<keyof T & string>): CaptureType<T>;
 
 // @public
 export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> {
@@ -824,7 +824,7 @@ export class SubscriberSet implements Notifier {
 }
 
 // @public
-export interface SubtreeDirectiveOptions<T = any> extends Omit<NodeBehaviorOptions<T>, "filter">, Omit<MutationObserverInit, "subtree" | "childList"> {
+export interface SubtreeDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, Omit<MutationObserverInit, "subtree" | "childList"> {
     selector: string;
     subtree: boolean;
 }

@@ -1,5 +1,5 @@
 import { Checkbox, RadioGroup } from "@microsoft/fast-components";
-import { child, html, repeat } from "@microsoft/fast-element";
+import { html, repeat } from "@microsoft/fast-element";
 import { ColorPicker } from "@microsoft/fast-tooling/dist/dts/web-components/color-picker/color-picker";
 import { ComponentTypes } from "../../app";
 import { ControlPane } from "./control-pane";

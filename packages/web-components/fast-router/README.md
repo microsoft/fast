@@ -1,9 +1,6 @@
 # FAST Router
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-router.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-router)
-
-The `fast-router` package contains a history-based navigation and routing solution designed around web components. By using `fast-router`, you can create multi-page and full application experiences.
+The `@microsoft/fast-router` package contains a history-based navigation and routing solution designed around Web Components. By using `fast-router`, you can create multi-page and full application experiences. The router works with any Web Components, but has special support for Web Components built on FAST.
 
 ## Installation
 
