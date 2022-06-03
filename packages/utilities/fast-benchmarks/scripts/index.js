@@ -8,6 +8,7 @@ const errMessage = chalk.hex("#ffb638");
 program
     .option("-l, --library <name>", "run benchmarks in <name> library")
     .option("-b, --benchmark <name>", "run the benchmark: <name>")
+    .option("-d, --debug", "turn on debug mode, will not run benchmarks")
     .option(
         "-v, --versions [versions...]",
         "specify available versions, you can also use 'local' or 'master' that would point to github branches"
@@ -16,6 +17,7 @@ program
         "-m, --methods [methods...]",
         "specify different methods through url query params for one version you want to benchmark"
     )
+    .option("-q, --queryParam <name>", "add query params you want to add to url")
     .option(
         "-lb, --localBenchFile <name>",
         "specify the html file you want your local version to use, only valid if 'local' is one of the versions you passed in"
@@ -87,17 +89,19 @@ async function runBenchmark(configPaths, pathNames) {
         const pathName = pathNames[i];
 
         const res = new Promise((resolve, reject) => {
-            const args = [
-                "tach",
-                "--config",
-                configPath,
-                `--json-file=results/${pathName}.json`,
-            ];
+            const args = ["tach", "--config", configPath];
+
+            if (options.debug) {
+                args.push("--manual");
+            } else {
+                args.push(`--json-file=results/${pathName}.json`);
+            }
+
             const child = spawn("npx", args, { stdio: "inherit" });
             child.on("close", code => {
                 if (code !== 0) {
                     reject({
-                        command: `npx tach --config ${configPath} --json-file=results/${pathName}.json`,
+                        command: `npx tach ${args.join("")}`,
                     });
                     return;
                 }
