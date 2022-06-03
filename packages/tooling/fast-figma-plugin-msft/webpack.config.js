@@ -15,7 +15,7 @@ module.exports = (env, args) => {
         devtool: isProduction ? undefined : "inline-source-map",
         entry: {
             main: path.resolve(appDir, "main.ts"),
-            ui: path.resolve(appDir, "ui.tsx"),
+            ui: path.resolve(appDir, "ui.ts"),
         },
         output: {
             path: outDir,
@@ -26,15 +26,8 @@ module.exports = (env, args) => {
         module: {
             rules: [
                 {
-                    test: /.tsx?$/,
-                    use: [
-                        {
-                            loader: "babel-loader",
-                        },
-                        {
-                            loader: "ts-loader",
-                        },
-                    ],
+                    test: /.ts$/,
+                    loader: "ts-loader",
                 },
                 {
                     test: /\.css$/,
@@ -67,7 +60,7 @@ module.exports = (env, args) => {
             }),
         ],
         resolve: {
-            extensions: [".js", ".jsx", ".svg", ".tsx", ".ts"],
+            extensions: [".js", ".svg", ".ts"],
         },
     };
 };

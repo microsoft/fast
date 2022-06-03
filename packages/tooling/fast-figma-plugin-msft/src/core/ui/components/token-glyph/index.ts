@@ -5,18 +5,22 @@ import {
     neutralForegroundHint,
 } from "@fluentui/web-components";
 
-const template = html`
+const template = html<TokenGlyph>`
     <template
-        class="${x => x.orientation} ${x => x.type} ${x =>
-            x.circular ? " circular" : ""} ${x =>
-            x.value === "none" ? "none" : ""} ${x =>
-            x.interactive ? "interactive" : ""} ${x => (x.selected ? "selected" : "")}"
+        class="${x => x.orientation}
+            ${x => x.type}
+            ${x => (x.circular ? " circular" : "")}
+            ${x => (x.value === "none" ? "none" : "")}
+            ${x => (x.interactive ? "interactive" : "")}
+            ${x => (x.selected ? "selected" : "")}"
         style="--swatch-value: ${x => (x.value === "none" ? "transparent" : x.value)}"
         tabindex="${x => (x.interactive ? "0" : null)}"
         role="${x => (x.interactive ? "button" : null)}"
         aria-selected="${x => x.selected}"
     >
-        <div class="swatch"></div>
+        <div class="${x => (x.type === TokenGlyphType.icon ? "icon" : "swatch")}">
+            ${x => x.icon || ""}
+        </div>
         <slot></slot>
     </template>
 `;
@@ -66,6 +70,13 @@ const styles = css`
         transform: rotate(45deg);
     }
 
+    .icon {
+        width: 28px;
+        height: 28px;
+        position: relative;
+        overflow: hidden;
+    }
+
     :host(.vertical) {
         flex-direction: column;
         padding: 8px;
@@ -107,25 +118,29 @@ const styles = css`
     }
 `;
 
-export enum SwatchType {
-    background = "background",
-    border = "border",
+export enum TokenGlyphType {
+    backgroundSwatch = "background",
+    borderSwatch = "border",
+    icon = "icon",
 }
 
 @customElement({
-    name: "td-swatch",
+    name: "td-token-glyph",
     template,
     styles,
 })
-export class Swatch extends FASTElement {
+export class TokenGlyph extends FASTElement {
     @attr
-    public type: SwatchType = SwatchType.background;
+    public type: TokenGlyphType = TokenGlyphType.backgroundSwatch;
 
     @attr({ mode: "boolean" })
     public circular: boolean = false;
 
     @attr
     public value: string | "none" = "none";
+
+    @attr
+    public icon?: string;
 
     @attr
     public orientation: "horizontal" | "vertical" = "vertical";
