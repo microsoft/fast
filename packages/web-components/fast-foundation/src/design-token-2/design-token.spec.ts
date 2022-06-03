@@ -52,7 +52,7 @@ describe.only("DesignTokenNode", () => {
             parent.appendChild(child);
 
             expect(handleChange).to.have.been.called.once;
-            expect(handleChange).to.have.been.called.with(parent, [tokenA, tokenB]);
+            expect(handleChange).to.have.been.called.with(child, {source: parent, tokens: [tokenA, tokenB]});
         });
     });
     describe("removing a child", () => {
@@ -95,7 +95,7 @@ describe.only("DesignTokenNode", () => {
 
     describe("setting a token value", () => {
         describe("should notify subscribers", () => {
-            it("that the taken has changed for the node", () => {
+            it("that the token has changed for the node", () => {
                 const token = DesignToken.create<number>("");
                 const node = new DesignTokenNode();
                 const handleChange = chai.spy(() => {})
@@ -105,7 +105,7 @@ describe.only("DesignTokenNode", () => {
                 node.setTokenValue(token, 12);
 
                 expect(handleChange).to.have.been.called.once;
-                expect(handleChange).to.have.been.called.with(node, [token]);
+                expect(handleChange).to.have.been.called.with(node, {source: node, tokens: [token]});
             });
 
             it("of child nodes if the child node does not have the token set", () => {
@@ -120,7 +120,7 @@ describe.only("DesignTokenNode", () => {
                 node.setTokenValue(token, 12);
 
                 expect(handleChange).to.have.been.called.once;
-                expect(handleChange).to.have.been.called.with(node, [token]);
+                expect(handleChange).to.have.been.called.with(child, {source: node, tokens: [token]});
             });
             it("of descendent nodes if the descendent node does not have the token set", () => {
                 const token = DesignToken.create<number>("");
@@ -136,7 +136,7 @@ describe.only("DesignTokenNode", () => {
                 node.setTokenValue(token, 12);
 
                 expect(handleChange).to.have.been.called.once;
-                expect(handleChange).to.have.been.called.with(node, [token]);
+                expect(handleChange).to.have.been.called.with(descendent, {source: node, tokens: [token]});
             });
         })
 

@@ -42,24 +42,50 @@ export type StaticDesignTokenValue<T> = T extends Function ? never : T;
  */
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
+class DynamicTokenValue<T> {
+    public readonly dependencies = new Set<DesignToken<any>>();
+    private static cache = new WeakMap<
+        DerivedDesignTokenValue<any>,
+        DynamicTokenValue<any>
+    >();
+    constructor(private readonly value: DerivedDesignTokenValue<T>) {}
+    public static getOrCreate<T>(
+        value: DerivedDesignTokenValue<T>
+    ): DynamicTokenValue<T> {
+        let v = DynamicTokenValue.cache.get(value);
+
+        if (v) {
+            return v;
+        }
+        v = new DynamicTokenValue(value);
+        DynamicTokenValue.cache.set(value, v);
+
+        return v;
+    }
+}
+
 export class DesignTokenNode {
-    #parent: DesignTokenNode | null = null;
-    #children: Set<DesignTokenNode> = new Set();
-    #values: Map<DesignToken<any>, StaticDesignTokenValue<any>> = new Map();
+    private _parent: DesignTokenNode | null = null;
+    private _children: Set<DesignTokenNode> = new Set();
+    private _values: Map<DesignToken<any>, StaticDesignTokenValue<any>> = new Map();
 
     /**
      * Subscribed to the parent {@link DesignTokenNode} during appendChild() and
      * unsubscribed during removeChild(). This handler is responsible for interpreting
      * upstream token changes and notifying the node of relevant changes.
      */
-    #parentSubscriber: Subscriber = {
-        handleChange: (parent: DesignTokenNode, tokens: DesignToken<any>[]): void => {
-            if (this.#values.size) {
-                tokens = tokens.filter(token => !this.#values.has(token));
+    private _parentSubscriber = {
+        handleChange: (
+            parent: DesignTokenNode,
+            args: { source: DesignTokenNode; tokens: DesignToken<any>[] }
+        ): void => {
+            let { tokens } = args;
+            if (this._values.size) {
+                tokens = tokens.filter(token => !this._values.has(token));
             }
 
             if (tokens.length) {
-                Observable.getNotifier(this).notify(tokens);
+                Observable.getNotifier(this).notify({ source: args.source, tokens });
             }
         },
     };
@@ -70,7 +96,7 @@ export class DesignTokenNode {
      * @returns
      */
     public static getAssignedTokensForNode(node: DesignTokenNode): DesignToken<any>[] {
-        return Array.from(node.#values.keys());
+        return Array.from(node._values.keys());
     }
 
     /**
@@ -97,11 +123,11 @@ export class DesignTokenNode {
     }
 
     public get parent() {
-        return this.#parent;
+        return this._parent;
     }
 
     public get children(): DesignTokenNode[] {
-        return Array.from(this.#children);
+        return Array.from(this._children);
     }
 
     public appendChild(child: DesignTokenNode) {
@@ -109,29 +135,29 @@ export class DesignTokenNode {
             child.parent.removeChild(child);
         }
 
-        child.#parent = this;
-        this.#children.add(child);
-        Observable.getNotifier(this).subscribe(child.#parentSubscriber);
+        child._parent = this;
+        this._children.add(child);
+        Observable.getNotifier(this).subscribe(child._parentSubscriber);
 
         const tokens = DesignTokenNode.composeAssignedTokensForNode(this);
 
         if (tokens.length) {
-            child.#parentSubscriber.handleChange(this, tokens);
+            child._parentSubscriber.handleChange(this, { source: this, tokens });
         }
     }
 
     public removeChild(child: DesignTokenNode) {
         if (child.parent === this) {
-            child.#parent = null;
-            this.#children.delete(child);
-            Observable.getNotifier(this).unsubscribe(child.#parentSubscriber);
+            child._parent = null;
+            this._children.delete(child);
+            Observable.getNotifier(this).unsubscribe(child._parentSubscriber);
         }
     }
 
     public setTokenValue<T>(token: DesignToken<T>, value: StaticDesignTokenValue<T>) {
-        this.#values.set(token, value);
+        this._values.set(token, value);
 
-        Observable.getNotifier(this).notify([token]);
+        Observable.getNotifier(this).notify({ source: this, tokens: [token] });
     }
 
     public getTokenValue<T>(token: DesignToken<T>): StaticDesignTokenValue<T> {
@@ -140,12 +166,12 @@ export class DesignTokenNode {
         let value;
 
         while (node !== null) {
-            if (node.#values.has(token)) {
-                value = node.#values.get(token)!;
+            if (node._values.has(token)) {
+                value = node._values.get(token)!;
                 break;
             }
 
-            node = node.#parent;
+            node = node._parent;
         }
 
         if (value !== undefined) {
