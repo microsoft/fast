@@ -487,9 +487,6 @@ export interface InterfaceConfiguration {
     respectConnection?: boolean;
 }
 
-const dependencyLookup = new Map<Constructable | Injectable, Key[]>();
-let rootDOMContainer: DOMContainer | null = null;
-
 function createContext<K extends Key>(
     nameConfigOrCallback?:
         | string
@@ -547,6 +544,10 @@ function createContext<K extends Key>(
     return Interface;
 }
 
+const dependencyLookup = new Map<Constructable | Injectable, Key[]>();
+let rootDOMContainer: DOMContainer | null = null;
+let nonRootDOMContainerCount = 0;
+
 /**
  * The gateway to dependency injection APIs.
  * @public
@@ -603,8 +604,24 @@ export const DI = Object.freeze({
      * does not itself host a container configured with responsibleForOwnerRequests.
      */
     findParentContainer(target: EventTarget): DOMContainer {
+        // NOTE: If there are no node-specific containers in existence other
+        // than the root, then we can bypass raising events and instead just grab
+        // the reference to the root container because we know it's the parent
+        // for this node.
+        if (nonRootDOMContainerCount < 1) {
+            return DI.getOrCreateDOMContainer();
+        }
+
+        // NOTE: If even one node-specific container has been created then we can
+        // no longer assume that the parent container for the target is the root
+        // and we must dispatch a context event in order to find the parent
+        // container in the DOM.
         let container!: DOMContainer;
         Context.dispatch(target, DOMContainer, value => (container = value));
+
+        // NOTE: If there are node-specific containers but there doesn't happen to
+        // be one that is a parent to the target node, then we still need to fall
+        // back to the root container.
         return container ?? DI.getOrCreateDOMContainer();
     },
 
@@ -635,15 +652,20 @@ export const DI = Object.freeze({
             );
         }
 
-        return (
-            (target as any).$$container$$ ||
-            new ContainerImpl(
+        let container = (target as any).$$container$$;
+
+        if (container === void 0) {
+            // NOTE: Creating a node-specific container de-optimizes container resolution.
+            nonRootDOMContainerCount++;
+            container = new ContainerImpl(
                 target,
                 Object.assign({}, ContainerConfiguration.default, config, {
                     parentLocator: DI.findParentContainer,
                 })
-            )
-        );
+            );
+        }
+
+        return container;
     },
 
     /**
@@ -929,6 +951,7 @@ export const Container = DI.createContext<Container>("Container");
 
 /**
  * The key that resolves a DOMContainer itself.
+ * @public
  */
 export const DOMContainer = (Container as unknown) as ContextDecorator<DOMContainer>;
 
