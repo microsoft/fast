@@ -70,27 +70,6 @@ export class DesignTokenNode {
     private _values: Map<DesignToken<any>, StaticDesignTokenValue<any>> = new Map();
 
     /**
-     * Subscribed to the parent {@link DesignTokenNode} during appendChild() and
-     * unsubscribed during removeChild(). This handler is responsible for interpreting
-     * upstream token changes and notifying the node of relevant changes.
-     */
-    private _parentSubscriber = {
-        handleChange: (
-            parent: DesignTokenNode,
-            args: { source: DesignTokenNode; tokens: DesignToken<any>[] }
-        ): void => {
-            let { tokens } = args;
-            if (this._values.size) {
-                tokens = tokens.filter(token => !this._values.has(token));
-            }
-
-            if (tokens.length) {
-                Observable.getNotifier(this).notify({ source: args.source, tokens });
-            }
-        },
-    };
-
-    /**
      * Retrieves the tokens assigned directly to a node.
      * @param node - the node to retrieve assigned tokens for
      * @returns
@@ -137,27 +116,19 @@ export class DesignTokenNode {
 
         child._parent = this;
         this._children.add(child);
-        Observable.getNotifier(this).subscribe(child._parentSubscriber);
-
-        const tokens = DesignTokenNode.composeAssignedTokensForNode(this);
-
-        if (tokens.length) {
-            child._parentSubscriber.handleChange(this, { source: this, tokens });
-        }
     }
 
     public removeChild(child: DesignTokenNode) {
         if (child.parent === this) {
             child._parent = null;
             this._children.delete(child);
-            Observable.getNotifier(this).unsubscribe(child._parentSubscriber);
         }
     }
 
     public setTokenValue<T>(token: DesignToken<T>, value: StaticDesignTokenValue<T>) {
         this._values.set(token, value);
 
-        Observable.getNotifier(this).notify({ source: this, tokens: [token] });
+        Observable.getNotifier(token).notify(this);
     }
 
     public getTokenValue<T>(token: DesignToken<T>): StaticDesignTokenValue<T> {
