@@ -93,6 +93,18 @@ describe.only("DesignTokenNode", () => {
         })
 
         describe("should not notify subscribers", () => {
+            it("when the value assigned is the same value", () => {
+                const token = DesignToken.create<number>("");
+                const node = new DesignTokenNode();
+                const handleChange = chai.spy(() => {})
+                const subscriber: Subscriber = { handleChange }
+                node.setTokenValue(token, 12);
+                Observable.getNotifier(token).subscribe(subscriber);
+
+                node.setTokenValue(token, 12);
+
+                expect(handleChange).not.to.have.been.called();
+            });
         });
     });
 

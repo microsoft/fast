@@ -64,6 +64,18 @@ class DynamicTokenValue<T> {
     }
 }
 
+interface DesignTokenChangeRecord<T> {
+    /**
+     * The token that changed
+     */
+    token: DesignToken<T>;
+
+    /**
+     * The token value
+     */
+    value: DesignTokenValue<T>;
+}
+
 export class DesignTokenNode {
     private _parent: DesignTokenNode | null = null;
     private _children: Set<DesignTokenNode> = new Set();
@@ -151,6 +163,11 @@ export class DesignTokenNode {
             throw new Error(`No value set for token ${token} in node tree.`);
         }
     }
+
+    /**
+     * Notifies the node that a token has changed for some ancestor.
+     */
+    private notify(records: DesignTokenChangeRecord<unknown>[]) {}
 }
 
 const nextId = (() => {
