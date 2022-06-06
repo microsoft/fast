@@ -71,9 +71,6 @@ describe.only("DesignTokenNode", () => {
             expect(parent.children.includes(child)).to.be.true;
             expect(child.parent).to.equal(parent);
         });
-        it.skip("should notify for tokens set for the parent node but not on the removed node", () => {
-            // Should this *really* notify?
-        });
     });
 
     describe("setting a token value", () => {

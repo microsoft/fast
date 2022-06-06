@@ -113,6 +113,16 @@ export class DesignTokenNode {
         return Array.from(tokens);
     }
 
+    /**
+     * Tests if a token is assigned to a node
+     * @param node - The node to test
+     * @param token  - The token to test
+     * @returns
+     */
+    public static isAssigned(node: DesignTokenNode, token: DesignToken<any>) {
+        return node._values.has(token);
+    }
+
     public get parent() {
         return this._parent;
     }
@@ -142,6 +152,7 @@ export class DesignTokenNode {
         this._values.set(token, value);
 
         if (prev !== value) {
+            this.children.forEach(child => child.notify([{ token, value }]));
             Observable.getNotifier(token).notify(this);
         }
     }
@@ -152,7 +163,7 @@ export class DesignTokenNode {
         let value;
 
         while (node !== null) {
-            if (node._values.has(token)) {
+            if (DesignTokenNode.isAssigned(node, token)) {
                 value = node._values.get(token)!;
                 break;
             }
@@ -170,7 +181,11 @@ export class DesignTokenNode {
     /**
      * Notifies the node that a token has changed for some ancestor.
      */
-    private notify(records: DesignTokenChangeRecord<unknown>[]) {}
+    private notify(records: DesignTokenChangeRecord<unknown>[]) {
+        records = records.filter(
+            record => !DesignTokenNode.isAssigned(this, record.token)
+        );
+    }
 }
 
 const nextId = (() => {
