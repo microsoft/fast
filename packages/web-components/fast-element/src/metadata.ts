@@ -32,6 +32,9 @@ if (!("metadata" in Reflect)) {
     };
 }
 
+/**
+ * Provides basic metadata capabilities used by Context and Dependency Injection.
+ */
 export const Metadata = Object.freeze({
     /**
      * Gets the "design:paramtypes" metadata for the specified type.
