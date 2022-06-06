@@ -3,5 +3,5 @@
   "comment": "feat: implement W3C WC community context protocol and integrate with DI",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
