@@ -17,7 +17,8 @@ export type Context<T> = {
  * @beta
  */
 export type ContextDecorator<T = any> = Readonly<Context<T>> &
-    ((target: Constructable, property: string, index?: number) => void);
+    PropertyDecorator &
+    ParameterDecorator;
 
 /**
  * A Context object defines an optional initial value for a Context, as well as a name identifier for debugging purposes.
