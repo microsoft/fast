@@ -19,7 +19,7 @@ const plugins = [
         parserOptions,
     }),
     transformTaggedTemplate({
-        tagsToProcess: ["html"],
+        tagsToProcess: ["child", "html", "item"],
         transformer: transformHTMLFragment,
         parserOptions,
     }),
