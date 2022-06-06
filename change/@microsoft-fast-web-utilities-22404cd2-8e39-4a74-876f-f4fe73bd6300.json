@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "chore: fix broken build",
-  "packageName": "@microsoft/fast-web-utilities",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "fix: update React wrapper lib to use latest APIs",
-  "packageName": "@microsoft/fast-react-wrapper",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

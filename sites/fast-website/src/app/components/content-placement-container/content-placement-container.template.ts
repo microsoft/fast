@@ -1,8 +1,8 @@
-import { child, html, repeat } from "@microsoft/fast-element";
+import { html, repeat } from "@microsoft/fast-element";
 import { ContentPlacementContainer } from "./content-placement-container";
 import { SiteContentPlacement } from "../content-placement";
 
-const template = child<SiteContentPlacement>`
+const template = html<SiteContentPlacement>`
     ${(x, c) => c.parent.selectTemplate()}
 `;
 

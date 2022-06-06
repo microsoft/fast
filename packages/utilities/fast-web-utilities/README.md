@@ -10,19 +10,21 @@ This package is a collection of utilities intended to be used for web projects.
 
 ### DOM utilities
 
-#### getKeyCode
+#### Keys
 
-The `getKeyCode` function gets the numeric key code associated with a keyboard event. This method is for use with DOM level 3 events that still use the deprecated keyCode property.
+Various keys are available to use with keyboard events.
 
 ```js
-import { getKeyCode } from "@microsoft/fast-web-utilities";
+import { keyEnter } from "@microsoft/fast-web-utilities";
 
 handleKeyPress = (e) => {
-    let keyCode = getKeyCode(e);
-
-    // Do something based on keyCode value
+    if (e.key === keyEnter) {
+        // Do something when the Enter key has been pressed
+    }
 }
 ```
+
+View our [available keys](https://github.com/microsoft/fast/blob/master/packages/utilities/fast-web-utilities/src/key-codes.ts) file for details.
 
 ### HTML utilities
 

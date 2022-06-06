@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "feat: add warn/error message infrastructure",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

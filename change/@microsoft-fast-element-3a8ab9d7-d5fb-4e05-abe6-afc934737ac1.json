@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "refactor: separate update queue from DOM and fix architectural layers",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

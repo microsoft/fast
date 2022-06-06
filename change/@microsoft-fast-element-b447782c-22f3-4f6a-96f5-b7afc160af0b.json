@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "feat: enable array length observation",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

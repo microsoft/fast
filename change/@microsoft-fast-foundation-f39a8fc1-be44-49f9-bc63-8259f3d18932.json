@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "rename title attribute on disclosure to summary",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

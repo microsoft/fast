@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "chore: update fast-react-wrapper to latest core APIs",
-  "packageName": "@microsoft/fast-react-wrapper",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

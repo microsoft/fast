@@ -3814,6 +3814,21 @@
     "@microsoft/fast-web-utilities" "^5.4.1"
     tslib "^1.13.0"
 
+"@microsoft/fast-element@^1.0.0", "@microsoft/fast-element@^1.10.1", "@microsoft/fast-element@^1.10.2", "@microsoft/fast-element@^1.5.1", "@microsoft/fast-element@^1.9.0":
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-1.10.2.tgz#34a2faa8a97608e1b7c8024b9aed3deddd5c6ad8"
+  integrity sha512-Nh80AEx/caDe4jhFYNT75sTG4k6MWy1N6XfgyhmejAX0ylivYy0M78WI2JgQOqi2ZRozCiNcpAPLVhYyAVN9sA==
+
+"@microsoft/fast-foundation@^2.0.0", "@microsoft/fast-foundation@^2.13.1", "@microsoft/fast-foundation@^2.42.0", "@microsoft/fast-foundation@^2.46.2":
+  version "2.46.9"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-foundation/-/fast-foundation-2.46.9.tgz#a4d4ce50861f71aaef5697746e87b8f66b280507"
+  integrity sha512-jgkVT7bAWIV844eDj3V9cmYFsRIcJ8vMuB4h2SlkJ9EmFbCfimvh6RyAhsHv+bC6QZSS0N0bpZHm5A5QsWgi3Q==
+  dependencies:
+    "@microsoft/fast-element" "^1.10.2"
+    "@microsoft/fast-web-utilities" "^5.4.1"
+    tabbable "^5.2.0"
+    tslib "^1.13.0"
+
 "@microsoft/fast-tooling@0.37.9", "@microsoft/fast-tooling@^0.37.7":
   version "0.37.9"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.37.9.tgz#76454362f84e4ea82ec3f9f2aababae29c1b8936"

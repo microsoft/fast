@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "feat: enable synchronous dom updates for SSR",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

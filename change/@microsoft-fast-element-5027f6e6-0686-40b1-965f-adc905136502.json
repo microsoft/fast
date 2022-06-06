@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "refactor: enable pluggable template compiler for SSR scenarios",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

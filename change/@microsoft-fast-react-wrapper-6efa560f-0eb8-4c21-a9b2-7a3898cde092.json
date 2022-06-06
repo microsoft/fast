@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "chore: various fixes for Node16 and package exports",
-  "packageName": "@microsoft/fast-react-wrapper",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "none"
-}

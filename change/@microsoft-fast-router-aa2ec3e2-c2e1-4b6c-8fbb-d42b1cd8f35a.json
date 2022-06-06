@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update the fast-router with the updates to fast-element 2.0 APIs",
-  "packageName": "@microsoft/fast-router",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "chore: fast-foundation package and build modernization",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

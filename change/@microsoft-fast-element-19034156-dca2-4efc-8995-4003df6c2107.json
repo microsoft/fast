@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "feat: add splice strategies for array observation",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

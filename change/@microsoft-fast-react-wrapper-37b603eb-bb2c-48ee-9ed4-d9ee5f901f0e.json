@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "test: updating to latest foundation helpers",
-  "packageName": "@microsoft/fast-react-wrapper",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "none"
-}
