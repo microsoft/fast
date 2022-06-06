@@ -524,15 +524,18 @@ function createContext<K extends Key>(
             const annotationParamtypes = Metadata.getOrCreateAnnotationParamTypes(target);
             annotationParamtypes[index] = Interface;
         }
-    };
+    } as ContextDecorator<K>;
 
-    Interface.$isInterface = true;
+    (Interface as any).$isInterface = true;
     Reflect.defineProperty(Interface, "name", {
         value: friendlyName ?? defaultFriendlyName,
     });
 
     if (configure != null) {
-        Interface.register = function (container: Container, key?: Key): Resolver<K> {
+        (Interface as any).register = function (
+            container: Container,
+            key?: Key
+        ): Resolver<K> {
             return configure(new ResolverBuilder(container, key ?? Interface));
         };
     }
