@@ -635,7 +635,7 @@ export const ContainerConfiguration: Readonly<{
 //
 // @internal (undocumented)
 export class ContainerImpl implements DOMContainer {
-    constructor(owner: EventTarget | null, config: ContainerConfiguration);
+    constructor(owner: any, config: ContainerConfiguration);
     // (undocumented)
     protected config: ContainerConfiguration;
     // (undocumented)
@@ -655,7 +655,7 @@ export class ContainerImpl implements DOMContainer {
     // (undocumented)
     has<K extends Key>(key: K, searchAncestors?: boolean): boolean;
     // (undocumented)
-    protected owner: EventTarget | null;
+    protected owner: any;
     // (undocumented)
     get parent(): ContainerImpl | null;
     // (undocumented)

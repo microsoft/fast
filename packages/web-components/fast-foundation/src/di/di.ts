@@ -647,7 +647,7 @@ export const DI = Object.freeze({
             return (
                 rootDOMContainer ||
                 (rootDOMContainer = new ContainerImpl(
-                    typeof window !== "undefined" ? window : globalThis,
+                    typeof window !== "undefined" ? window : null,
                     Object.assign({}, ContainerConfiguration.default, config, {
                         parentLocator: () => null,
                     })
@@ -1486,35 +1486,34 @@ export class ContainerImpl implements DOMContainer {
         return this.config.responsibleForOwnerRequests;
     }
 
-    constructor(
-        protected owner: EventTarget | null,
-        protected config: ContainerConfiguration
-    ) {
+    constructor(protected owner: any, protected config: ContainerConfiguration) {
         this.resolvers = new Map();
         this.resolvers.set(Container, containerResolver);
 
-        if (owner !== null) {
+        if (owner) {
             (owner as any).$$container$$ = this;
 
-            Context.handle(owner, (e: ContextEvent<UnknownContext>) => {
-                if (this.isHandlingContextRequests) {
-                    try {
-                        const value = this.get(e.context);
+            if ("addEventListener" in owner) {
+                Context.handle(owner, (e: ContextEvent<UnknownContext>) => {
+                    if (this.isHandlingContextRequests) {
+                        try {
+                            const value = this.get(e.context);
+                            e.stopImmediatePropagation();
+                            e.callback(value);
+                        } catch {
+                            // Container failed to find the context, so we need to
+                            // let the event propagate.
+                            // TODO: Introduce a tryGet API to Container.
+                        }
+                    } else if (
+                        e.context === Container &&
+                        e.composedPath()[0] !== this.owner
+                    ) {
                         e.stopImmediatePropagation();
-                        e.callback(value);
-                    } catch {
-                        // Container failed to find the context, so we need to
-                        // let the event propagate.
-                        // TODO: Introduce a tryGet API to Container.
+                        e.callback(this);
                     }
-                } else if (
-                    e.context === Container &&
-                    e.composedPath()[0] !== this.owner
-                ) {
-                    e.stopImmediatePropagation();
-                    e.callback(this);
-                }
-            });
+                });
+            }
         }
     }
 
