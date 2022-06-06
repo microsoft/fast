@@ -155,7 +155,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
      * @param args - The details about what was changed.
      */
     public handleChange(source: any, args: Splice[]): void {
-        if (source === this.itemsBinding) {
+        if (source === this.itemsBinding || source === this.items) {
             this.items = this.itemsBindingObserver.observe(this.source!, this.context!);
             this.observeItems();
             this.refreshAllViews();
@@ -252,13 +252,13 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         let views = this.views;
         let viewsLength = views.length;
 
-        if (itemsLength === 0 || templateChanged) {
+        if (itemsLength === 0 || templateChanged || !this.options.recycle) {
             // all views need to be removed
             HTMLView.disposeContiguousBatch(views);
             viewsLength = 0;
         }
 
-        if (viewsLength === 0) {
+        if (viewsLength === 0 || !this.options.recycle) {
             // all views need to be created
             this.views = views = new Array(itemsLength);
 
