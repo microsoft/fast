@@ -138,9 +138,12 @@ export class DesignTokenNode {
     }
 
     public setTokenValue<T>(token: DesignToken<T>, value: StaticDesignTokenValue<T>) {
+        const prev = this._values.get(token);
         this._values.set(token, value);
 
-        Observable.getNotifier(token).notify(this);
+        if (prev !== value) {
+            Observable.getNotifier(token).notify(this);
+        }
     }
 
     public getTokenValue<T>(token: DesignToken<T>): StaticDesignTokenValue<T> {
