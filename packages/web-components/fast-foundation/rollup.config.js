@@ -2,7 +2,6 @@ import filesize from "rollup-plugin-filesize";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { terser } from "rollup-plugin-terser";
 import transformTaggedTemplate from "rollup-plugin-transform-tagged-template";
-import typescript from "@rollup/plugin-typescript";
 import {
     transformCSSFragment,
     transformHTMLFragment,
@@ -14,12 +13,6 @@ const parserOptions = {
 
 const plugins = [
     nodeResolve(),
-    typescript({
-        compilerOptions: {
-            declaration: false,
-            declarationDir: undefined,
-        },
-    }),
     transformTaggedTemplate({
         tagsToProcess: ["css"],
         transformer: transformCSSFragment,
@@ -38,8 +31,7 @@ const plugins = [
 
 export default [
     {
-        context: "this",
-        input: "src/index.rollup.ts",
+        input: "dist/esm/index.rollup.js",
         output: [
             {
                 file: "dist/fast-foundation.js",
@@ -54,8 +46,7 @@ export default [
         plugins,
     },
     {
-        context: "this",
-        input: "src/index.rollup.debug.ts",
+        input: "dist/esm/index.rollup.debug.js",
         output: [
             {
                 file: "dist/fast-foundation.debug.js",
