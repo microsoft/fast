@@ -90,6 +90,22 @@ describe.only("DesignTokenNode", () => {
                 expect(handleChange).to.have.been.called.once;
                 expect(handleChange).to.have.been.called.with(token, node);
             });
+
+            it("that the token has changed for the node even if the value assigned is the upstream value", () => {
+                const token = DesignToken.create<number>("");
+                const node = new DesignTokenNode();
+                const parent = new DesignTokenNode();
+                parent.appendChild(node);
+                const handleChange = chai.spy(() => {});
+                const subscriber: Subscriber = { handleChange };
+                parent.setTokenValue(token, 12);
+                Observable.getNotifier(token).subscribe(subscriber);
+
+                node.setTokenValue(token, 12);
+
+                expect(handleChange).to.have.been.called.once;
+                expect(handleChange).to.have.been.called.with(token, node);
+            });
         })
 
         describe("should not notify subscribers", () => {
