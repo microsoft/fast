@@ -136,7 +136,6 @@ async function generateHtmlTemplates(
  * Get current local git branch name
  *  @returns {Promise}
  */
-//TODO: add in Documentation, 'local' & 'master' as one of the versions options only works in a git repo context
 async function getLocalGitBranchName() {
     return new Promise((resolve, reject) => {
         const res = exec("git branch --show-current");
@@ -190,8 +189,9 @@ async function generateBenchmarks(
         ];
 
         versions.forEach(version => {
+            const isPublishedVersion = version.includes(".");
             const isLocalBranch = localProps.branchName && version === LOCAL;
-            const isBranch = isLocalBranch || version === MASTER;
+            const isBranch = isLocalBranch || !isPublishedVersion;
             const url =
                 isLocalBranch && localProps.operationProps.htmlPaths
                     ? localProps.operationProps.htmlPaths[idx]
@@ -207,7 +207,7 @@ async function generateBenchmarks(
             const dep = `@microsoft/${library}`;
 
             if (isBranch) {
-                const ref = isLocalBranch ? localProps.branchName : MASTER;
+                const ref = isLocalBranch ? localProps.branchName : version;
                 bench.packageVersions = {
                     label: version,
                     dependencies: {
@@ -305,7 +305,6 @@ async function generateConfig(fileName, benchmarksHash) {
  * @returns {string} path location of newly generated config json file
  */
 const LOCAL = "local";
-const MASTER = "master";
 export async function generateTemplates(options) {
     try {
         const tsConfigPath = await generateTsConfig(options);

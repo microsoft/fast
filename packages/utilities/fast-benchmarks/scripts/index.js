@@ -11,7 +11,7 @@ program
     .option("-d, --debug", "turn on debug mode, will not run benchmarks")
     .option(
         "-v, --versions [versions...]",
-        "specify available versions, you can also use 'local' or 'master' that would point to github branches"
+        "specify available versions, you can also use names of github branches"
     )
     .option(
         "-m, --methods [methods...]",
