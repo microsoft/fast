@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { repeat, RepeatDirective, RepeatBehavior, RepeatOptions } from "./repeat.js";
-import { child, html, ItemViewTemplate, ViewTemplate } from "./template.js";
+import { child, html, ItemViewTemplate } from "./template.js";
 import { ExecutionContext, observable } from "../observation/observable.js";
 import { toHTML } from "../__test__/helpers.js";
 import { Updates } from "../observation/update-queue.js";
@@ -25,7 +25,7 @@ describe("The repeat", () => {
             );
             expect(directive).to.be.instanceOf(RepeatDirective);
         });
-        it("returns a RepeatDirective with recycle property set to false", () => {
+        it("returns a RepeatDirective with optional properties set to different values", () => {
             const directive = repeat(
                 () => [],
                 html`test` as ItemViewTemplate,
@@ -48,21 +48,6 @@ describe("The repeat", () => {
             const behavior = directive.createBehavior(targets);
 
             expect(behavior).to.be.instanceOf(RepeatBehavior);
-        });
-
-        it("creates a RepeatBehavior with recycle property set to false", () => {
-            const { targets, nodeId } = createLocation();
-            const directive = repeat(
-                () => [],
-                html`test2` as ItemViewTemplate, {positioning: true, recycle: false}
-            ) as RepeatDirective;
-            directive.nodeId = nodeId;
-
-            const behavior = directive.createBehavior(targets);
-
-            expect(behavior).to.be.instanceOf(RepeatBehavior);
-            expect(directive.options).to.deep.equal({positioning: true, recycle: false})
-
         });
     });
 
@@ -259,6 +244,29 @@ describe("The repeat", () => {
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior(targets);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, ExecutionContext.default);
+
+                const index = size - 1;
+                vm.items.splice(index, 1, { name: "newitem1" }, { name: "newitem2" });
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `${createOutput(size, x => x !== index)}newitem1newitem2`
+                );
+            });
+
+            it(`updates rendered HTML when a single item is replaced from the end of an array of size ${size} with recycle property set to false`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate as ItemViewTemplate,
+                    {positioning: true, recycle: false}
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
                 const behavior = directive.createBehavior(targets);
