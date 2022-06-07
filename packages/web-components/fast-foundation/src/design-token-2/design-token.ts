@@ -1,4 +1,4 @@
-import { Markup, Observable, Subscriber } from "@microsoft/fast-element";
+import { BindingObserver, Markup, Observable } from "@microsoft/fast-element";
 
 export type DesignTokenValueType =
     | string
@@ -42,25 +42,39 @@ export type StaticDesignTokenValue<T> = T extends Function ? never : T;
  */
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
-class DynamicTokenValue<T> {
+class DerivedValueEvaluator<T> {
+    private readonly binding: BindingObserver;
     public readonly dependencies = new Set<DesignToken<any>>();
     private static cache = new WeakMap<
         DerivedDesignTokenValue<any>,
-        DynamicTokenValue<any>
+        DerivedValueEvaluator<any>
     >();
-    constructor(private readonly value: DerivedDesignTokenValue<T>) {}
+
+    constructor(private readonly value: DerivedDesignTokenValue<T>) {
+        this.binding = Observable.binding(value);
+    }
+
     public static getOrCreate<T>(
         value: DerivedDesignTokenValue<T>
-    ): DynamicTokenValue<T> {
-        let v = DynamicTokenValue.cache.get(value);
+    ): DerivedValueEvaluator<T> {
+        let v = DerivedValueEvaluator.cache.get(value);
 
         if (v) {
             return v;
         }
-        v = new DynamicTokenValue(value);
-        DynamicTokenValue.cache.set(value, v);
+        v = new DerivedValueEvaluator(value);
+        DerivedValueEvaluator.cache.set(value, v);
 
         return v;
+    }
+
+    public evaluate(node: DesignTokenNode): StaticDesignTokenValue<T> {
+        const resolve = <T>(token: DesignToken<T>): StaticDesignTokenValue<T> => {
+            this.dependencies.add(token);
+            return node.getTokenValue(token);
+        };
+
+        return this.binding.observe(resolve);
     }
 }
 
@@ -79,7 +93,11 @@ interface DesignTokenChangeRecord<T> {
 export class DesignTokenNode {
     private _parent: DesignTokenNode | null = null;
     private _children: Set<DesignTokenNode> = new Set();
-    private _values: Map<DesignToken<any>, StaticDesignTokenValue<any>> = new Map();
+    private _values: Map<DesignToken<any>, DesignTokenValue<any>> = new Map();
+    private _derived: Map<
+        DesignToken<any>,
+        [DerivedDesignTokenValue<any>, StaticDesignTokenValue<any>]
+    > = new Map();
 
     /**
      * Retrieves the tokens assigned directly to a node.
@@ -114,6 +132,16 @@ export class DesignTokenNode {
     }
 
     /**
+     * Determines if a value is a { @DerivedDesignTokenValue }
+     * @param value - The value to test
+     */
+    private static isDerivedTokenValue<T>(
+        value: DesignTokenValue<T>
+    ): value is DerivedDesignTokenValue<T> {
+        return typeof value === "function";
+    }
+
+    /**
      * Tests if a token is assigned to a node
      * @param node - The node to test
      * @param token  - The token to test
@@ -121,6 +149,16 @@ export class DesignTokenNode {
      */
     public static isAssigned(node: DesignTokenNode, token: DesignToken<any>) {
         return node._values.has(token);
+    }
+
+    /**
+     * Determines if the node has a derived value for token
+     * @param node - The node to test
+     * @param token - The token to test
+     * @returns
+     */
+    public static isDerivedFor(node: DesignTokenNode, token: DesignToken<any>) {
+        return node._derived.has(token);
     }
 
     public get parent() {
@@ -147,12 +185,17 @@ export class DesignTokenNode {
         }
     }
 
-    public setTokenValue<T>(token: DesignToken<T>, value: StaticDesignTokenValue<T>) {
+    public setTokenValue<T>(token: DesignToken<T>, value: DesignTokenValue<T>) {
         const prev = this._values.get(token);
         this._values.set(token, value);
 
+        if (DesignTokenNode.isDerivedTokenValue(value)) {
+            const evaluator = DerivedValueEvaluator.getOrCreate(value);
+            const derivedValue = evaluator.evaluate(this);
+            this._derived.set(token, [value, derivedValue]);
+        }
+
         if (prev !== value) {
-            this.children.forEach(child => child.notify([{ token, value }]));
             Observable.getNotifier(token).notify(this);
         }
     }
@@ -163,8 +206,13 @@ export class DesignTokenNode {
         let value;
 
         while (node !== null) {
+            if (DesignTokenNode.isDerivedFor(node, token)) {
+                value = node._derived.get(token);
+                break;
+            }
+
             if (DesignTokenNode.isAssigned(node, token)) {
-                value = node._values.get(token)!;
+                value = node._values.get(token);
                 break;
             }
 
@@ -179,7 +227,7 @@ export class DesignTokenNode {
     }
 
     /**
-     * Notifies the node that a token has changed for some ancestor.
+     * Notifies the node that a token has changed for the context.
      */
     private notify(records: DesignTokenChangeRecord<unknown>[]) {
         records = records.filter(
