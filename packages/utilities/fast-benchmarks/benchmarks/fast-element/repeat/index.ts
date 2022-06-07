@@ -27,7 +27,7 @@ const templates = {
                 <li>${x => x.label}</li>
             `
         ),
-        { positioning: true, recycle: false })}
+        { recycle: false })}
     `,
     repeatNested: html<XApp>`
         ${repeat(
@@ -108,7 +108,7 @@ const templates = {
                 </li>
             `
         ),
-        { positioning: true, recycle: false })}
+        { recycle: false })}
     `,
 } as any;
 
