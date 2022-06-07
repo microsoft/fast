@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "when recycle prop is set to false, should hit refreshAllViews() instead of updateviews()",
+  "packageName": "@microsoft/fast-element",
+  "email": "email not defined",
+  "dependentChangeType": "patch"
+}
