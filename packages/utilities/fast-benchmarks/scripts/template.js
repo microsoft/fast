@@ -239,13 +239,16 @@ async function generateBenchmarks(
             }
 
             if (methods) {
-                methods.forEach(method => {
+                for (let i = 0; i < methods.length; i++) {
+                    const newBench = { ...bench };
+                    const method = methods[i];
                     const fullUrl = queryParam
                         ? `${url}?method=${method}&${queryParam}`
                         : `${url}?method=${method}`;
-                    bench.url = fullUrl;
-                    benchmarks.push(bench);
-                });
+                    newBench.url = fullUrl;
+                    newBench.name = `${benchmark}-${operation}-${method}`;
+                    benchmarks.push(newBench);
+                }
             } else {
                 benchmarks.push(bench);
             }

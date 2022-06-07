@@ -101,7 +101,7 @@ async function runBenchmark(configPaths, pathNames) {
             child.on("close", code => {
                 if (code !== 0) {
                     reject({
-                        command: `npx tach ${args.join("")}`,
+                        command: `npx ${args.join(" ")}`,
                     });
                     return;
                 }
