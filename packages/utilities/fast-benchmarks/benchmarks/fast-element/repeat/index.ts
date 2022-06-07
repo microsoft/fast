@@ -2,6 +2,7 @@ import {
     customElement,
     FASTElement,
     html,
+    ItemViewTemplate,
     observable,
     repeat,
     ViewTemplate,
@@ -21,13 +22,13 @@ const templates = {
         )}
     `,
     repeatNoRecycleBasic: html<XApp>`
-        ${(repeat(
+        ${repeat(
             x => x.items,
             html<RandomItem>`
                 <li>${x => x.label}</li>
-            `
-        ),
-        { recycle: false })}
+            ` as ItemViewTemplate,
+            { positioning: true, recycle: false }
+        )}
     `,
     repeatNested: html<XApp>`
         ${repeat(
@@ -70,7 +71,7 @@ const templates = {
         )}
     `,
     repeatNoRecycleNested: html<XApp>`
-        ${(repeat(
+        ${repeat(
             x => x.nestedItems,
             html<NestedRandomData>`
                 <li>
@@ -106,9 +107,9 @@ const templates = {
                             </ol>
                         `}
                 </li>
-            `
-        ),
-        { recycle: false })}
+            ` as ItemViewTemplate,
+            { positioning: true, recycle: false }
+        )}
     `,
 } as any;
 
@@ -180,13 +181,13 @@ class XApp extends FASTElement {
     append() {
         if (this.isNested) {
             for (let i = 0; i < this.nestedItems.length / 2; i++) {
-                this.nestedItems.push(
-                    ...this.nestedItems.slice(0, this.nestedItems.length)
-                );
+                this.nestedItems.push(...this.nestedItems);
+                this.nestedItems = [];
             }
         } else {
             for (let i = 0; i < this.items.length / 2; i++) {
-                this.items.push(...this.items.slice(0, this.items.length));
+                this.items.push(...this.items);
+                this.items = [];
             }
         }
     }
