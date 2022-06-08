@@ -166,7 +166,7 @@ public async Task OnClick()
 ```
 As can be seen in the code above (with the `ref4.Element`), it is posible to apply multiple tokens to the same component. 
 
-For Design Tokens that work with a color value, it is needed to add the `ToSwatch()` extension method on the string value or use one of the `Swatch` constructors. This to make sure the color is using a format that Design Tokens can handle. A `Swatch` has a lot of commonality with the `System.Drawing.Color` struct. Instead of the values of the components being between 0 and 255, in a `Swatch` they are expressed as a value between 0 and 1. 
+For Design Tokens that work with a color value, you must call the `ToSwatch()` extension method on a string value or use one of the `Swatch` constructors. This makes sure the color is using a format that Design Tokens can handle. A `Swatch` has a lot of commonality with the `System.Drawing.Color` struct. Instead of the values of the components being between 0 and 255, in a `Swatch` they are expressed as a value between 0 and 1. 
 
 
 
