@@ -2,8 +2,10 @@
 id: getting-started
 title: Getting Started with FAST Element
 sidebar_label: Getting Started
-custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/README.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/fast-element/getting-started.md
 description: The fast-element library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.
+keywords:
+   - getting started
 ---
 
 [![License: MIT](/badges/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
