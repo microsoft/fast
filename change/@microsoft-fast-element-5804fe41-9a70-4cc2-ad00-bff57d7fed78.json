@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: make SyntheticViewTemplate type a string so it is generally usable",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
