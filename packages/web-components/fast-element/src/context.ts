@@ -48,7 +48,7 @@ const contextEventType = "context-request";
 let requestStrategy: FASTContextRequestStrategy;
 
 /**
- * Enables using the W3C Community Context protocol.
+ * Enables using the {@link https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md | W3C Community Context protocol.}
  * @beta
  */
 export const Context = Object.freeze({
