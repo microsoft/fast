@@ -290,11 +290,7 @@ let defaultSpliceStrategy: SpliceStrategy = Object.freeze({
         args: any[]
     ): any {
         const result = splice.apply(array, args);
-        observer.addSplice(
-            new Splice(+args[0], result, args.length > 2 ? args.length - 2 : 0).adjustTo(
-                array
-            )
-        );
+        observer.reset(array);
         return result;
     },
 
