@@ -1,5 +1,4 @@
 import { BindingObserver, Markup, Observable } from "@microsoft/fast-element";
-import { eventLevelChange } from "@microsoft/fast-web-utilities";
 
 export type DesignTokenValueType =
     | string
@@ -51,7 +50,7 @@ class DerivedValueEvaluator<T> {
         DerivedValueEvaluator<any>
     >();
 
-    constructor(private readonly value: DerivedDesignTokenValue<T>) {
+    constructor(public readonly value: DerivedDesignTokenValue<T>) {
         this.binding = Observable.binding(value);
     }
 
@@ -79,18 +78,6 @@ class DerivedValueEvaluator<T> {
 
         return this.binding.observe(resolve);
     }
-}
-
-interface DesignTokenChangeRecord<T> {
-    /**
-     * The token that changed
-     */
-    token: DesignToken<T>;
-
-    /**
-     * The token value
-     */
-    value: DesignTokenValue<T>;
 }
 
 export class DesignTokenNode {
@@ -208,9 +195,10 @@ export class DesignTokenNode {
 
         if (DesignTokenNode.isDerivedTokenValue(value)) {
             DesignTokenNode.evaluateDerived(this, token, value);
+            this.notifyDerived(token, DerivedValueEvaluator.getOrCreate(value), this);
         } else if (prev !== value) {
             Observable.getNotifier(token).notify(this);
-            this.notifyStatic(token);
+            this.notifyStatic(token, this);
         }
     }
 
@@ -243,8 +231,8 @@ export class DesignTokenNode {
     /**
      * Notifies the node that a token has changed for the context.
      */
-    private notifyStatic<T>(token: DesignToken<T>, terminate = false) {
-        if (terminate && this._values.has(token)) {
+    private notifyStatic<T>(token: DesignToken<T>, originator: DesignTokenNode) {
+        if (this !== originator && DesignTokenNode.isAssigned(this, token)) {
             return;
         }
 
@@ -254,11 +242,53 @@ export class DesignTokenNode {
 
             if (evaluator.dependencies.has(token)) {
                 DesignTokenNode.evaluateDerived(this, _token, source);
-                this.notifyStatic(_token);
+                this.notifyDerived(_token, evaluator, originator);
             }
         }
 
-        this.children.forEach(child => child.notifyStatic(token, true));
+        this.children.forEach(child => child.notifyStatic(token, originator));
+    }
+
+    private notifyDerived<T>(
+        token: DesignToken<T>,
+        evaluator: DerivedValueEvaluator<T>,
+        originator: DesignTokenNode
+    ) {
+        if (this !== originator) {
+            if (DesignTokenNode.isAssigned(this, token)) {
+                return;
+            }
+
+            // If this is not the originator, check to see if this node
+            // has any dependencies of the token value. If so, we need to evaluate for this node
+            evaluator.dependencies.forEach(dep => {
+                if (DesignTokenNode.isAssigned(this, dep)) {
+                    DesignTokenNode.evaluateDerived(this, token, evaluator.value);
+                    this.notifyDerived(token, evaluator, this);
+                }
+            });
+        }
+
+        // For all derived tokens on the node,
+        // check if the fn has dependencies on the changed token.
+        // If it does, re-evaluate and notify for the dependee
+        for (const entry of this._derived) {
+            if (originator === this && entry[0] === token) {
+                // If this fn was just called by the node itself,
+                // skip the token that kicked off notification
+                continue;
+            }
+
+            const [_token, [source]] = entry;
+            const evaluator = DerivedValueEvaluator.getOrCreate(source);
+
+            if (evaluator.dependencies.has(token)) {
+                DesignTokenNode.evaluateDerived(this, _token, source);
+                this.notifyDerived(_token, evaluator, originator);
+            }
+        }
+
+        this.children.forEach(child => child.notifyDerived(token, evaluator, originator));
     }
 }
 
@@ -278,8 +308,3 @@ function create<T>(name: string): any {
 export const DesignToken = Object.freeze({
     create,
 });
-
-// When a token T is set for a node N is set to a value V
-// Determine if any other tokens on N depend on T. If so, we need to update the value in _derived and notify
-// For all descendants for which token T is not assigned:
-// If the descendent has a token that is a dependency of the V, evaluate the fn for that node, notify, and notify any subscribers
