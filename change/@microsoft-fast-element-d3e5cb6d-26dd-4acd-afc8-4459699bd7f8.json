@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: move optional bindings out of rollup and list as exports",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
