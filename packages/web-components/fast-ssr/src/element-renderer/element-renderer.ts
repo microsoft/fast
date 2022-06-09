@@ -10,25 +10,29 @@ type AttributesMap = Map<string, string>;
 /**
  * @beta
  */
-export type ConstructableElementRenderer = (new (tagName: string) => ElementRenderer) &
+export type ConstructableElementRenderer = (new (
+    tagName: string,
+    renderInfo: RenderInfo
+) => ElementRenderer) &
     typeof ElementRenderer;
 
 export const getElementRenderer = (
-    { elementRenderers }: RenderInfo,
+    renderInfo: RenderInfo,
     tagName: string,
     ceClass: typeof HTMLElement | undefined = customElements.get(tagName),
     attributes: AttributesMap = new Map()
 ): ElementRenderer => {
     if (ceClass === undefined) {
         console.warn(`Custom element ${tagName} was not registered.`);
-        return new FallbackRenderer(tagName);
-    }
-    for (const renderer of elementRenderers) {
-        if (renderer.matchesClass(ceClass, tagName, attributes)) {
-            return new renderer(tagName);
+    } else {
+        for (const renderer of renderInfo.elementRenderers) {
+            if (renderer.matchesClass(ceClass, tagName, attributes)) {
+                return new renderer(tagName, renderInfo);
+            }
         }
     }
-    return new FallbackRenderer(tagName);
+
+    return new FallbackRenderer(tagName, renderInfo);
 };
 
 /**
@@ -52,7 +56,7 @@ export abstract class ElementRenderer {
         return false;
     }
 
-    constructor(public readonly tagName: string) {}
+    constructor(public readonly tagName: string, renderInfo: RenderInfo) {}
 
     abstract connectedCallback(): void;
     abstract attributeChangedCallback(
@@ -88,7 +92,7 @@ export abstract class ElementRenderer {
      *
      * Default implementation serializes all attributes on the element instance.
      */
-    *renderAttributes(): IterableIterator<string> {
+    public *renderAttributes(): IterableIterator<string> {
         if (this.element !== undefined) {
             const { attributes } = this.element;
             for (

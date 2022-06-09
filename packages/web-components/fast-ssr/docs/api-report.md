@@ -16,11 +16,11 @@ import { ViewTemplate } from '@microsoft/fast-element';
 export type ComponentDOMEmissionMode = "shadow";
 
 // @beta (undocumented)
-export type ConstructableElementRenderer = (new (tagName: string) => ElementRenderer) & typeof ElementRenderer;
+export type ConstructableElementRenderer = (new (tagName: string, renderInfo: RenderInfo) => ElementRenderer) & typeof ElementRenderer;
 
 // @beta (undocumented)
 export abstract class ElementRenderer {
-    constructor(tagName: string);
+    constructor(tagName: string, renderInfo: RenderInfo);
     // (undocumented)
     abstract attributeChangedCallback(name: string, prev: string | null, next: string | null): void;
     // (undocumented)
@@ -40,7 +40,7 @@ export abstract class ElementRenderer {
 
 // @beta
 export abstract class FASTElementRenderer extends ElementRenderer {
-    constructor(tagName: string);
+    constructor(tagName: string, renderInfo: RenderInfo);
     attributeChangedCallback(name: string, old: string | null, value: string | null): void;
     connectedCallback(): void;
     readonly element: FASTElement;
