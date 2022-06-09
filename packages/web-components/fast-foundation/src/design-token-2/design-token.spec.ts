@@ -288,16 +288,21 @@ describe.only("DesignTokenNode", () => {
     it("should notify for a derived token at the node when a dependent token is changed for the node", () => {
         const tokenA = DesignToken.create<number>("a");
         const tokenB = DesignToken.create<number>("b");
+        const tokenC = DesignToken.create<number>("b");
         const node = new DesignTokenNode();
         const { subscriber, handleChange } = makeChangeHandler();
-        node.setTokenValue(tokenB, 12);
-        node.setTokenValue(tokenA, (resolve) => resolve(tokenB) * 2);
-        Observable.getNotifier(tokenA).subscribe(subscriber)
-        node.setTokenValue(tokenB, 13);
+        node.setTokenValue(tokenA, 12);
+        node.setTokenValue(tokenB, (resolve) => resolve(tokenA) * 2);
+        node.setTokenValue(tokenC, (resolve) => resolve(tokenB) * 2);
+        Observable.getNotifier(tokenB).subscribe(subscriber)
+        Observable.getNotifier(tokenC).subscribe(subscriber)
+        node.setTokenValue(tokenA, 13);
 
-        expect(handleChange).to.have.been.called.once;
-        expect(handleChange).to.have.been.called.with(node);
-        expect(node.getTokenValue(tokenA)).to.equal(26);
+        expect(handleChange).to.have.been.called.twice;
+        expect(handleChange).to.have.been.first.called.with(node, tokenB);
+        expect(handleChange).to.have.been.second.called.with(node, tokenC);
+        expect(node.getTokenValue(tokenB)).to.equal(26);
+        expect(node.getTokenValue(tokenC)).to.equal(52      );
     });
 
     it("should notify for a derived token at a child when a dependent token is changed on the ancestor", () => {

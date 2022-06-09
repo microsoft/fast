@@ -11,3 +11,37 @@ Observable.getNotifier(token).subscribe({
     }
 });
 ```
+
+## API
+
+
+
+### class: `DesignTokenNode`
+
+#### Fields
+
+| Name       | Privacy | Type                | Default | Description | Inherited From |
+| ---------- | ------- | ------------------- | ------- | ----------- | -------------- |
+| `parent`   | public  |                     |         |             |                |
+| `children` | public  | `DesignTokenNode[]` |         |             |                |
+
+#### Methods
+
+| Name            | Privacy | Description | Parameters                                          | Return                      | Inherited From |
+| --------------- | ------- | ----------- | --------------------------------------------------- | --------------------------- | -------------- |
+| `appendChild`   | public  |             | `child: DesignTokenNode`                            |                             |                |
+| `removeChild`   | public  |             | `child: DesignTokenNode`                            |                             |                |
+| `setTokenValue` | public  |             | `token: DesignToken<T>, value: DesignTokenValue<T>` |                             |                |
+| `getTokenValue` | public  |             | `token: DesignToken<T>`                             | `StaticDesignTokenValue<T>` |                |
+
+<hr/>
+
+### Variables
+
+| Name          | Description | Type |
+| ------------- | ----------- | ---- |
+| `DesignToken` |             |      |
+
+<hr/>
+
+
