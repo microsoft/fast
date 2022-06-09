@@ -88,7 +88,7 @@ export class NestedRandomData {
     ) {}
 }
 
-function generateData(count: number) {
+export function generateData(count: number) {
     const data = [];
 
     for (let i = 0; i < count; i++) {
@@ -98,7 +98,7 @@ function generateData(count: number) {
     return data;
 }
 
-function generateNestedData(count: number) {
+export function generateNestedData(count: number) {
     const data = [];
     for (let i = 0; i < count; i++) {
         data.push(

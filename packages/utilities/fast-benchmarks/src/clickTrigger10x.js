@@ -24,7 +24,7 @@ import {
         }
         await updateComplete();
         performance.measure(test, start);
-        destroy(container);
+        // destroy(container);
     };
     await clickEvent();
     measureMemory();

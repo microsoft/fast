@@ -7,10 +7,19 @@ import {
     repeat,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { data, nestedData, NestedRandomData, RandomItem } from "../../../utils/index.js";
+import {
+    generateData,
+    generateNestedData,
+    NestedRandomData,
+    RandomItem,
+} from "../../../utils/index.js";
 import { queryParams } from "../../../utils/query-params.js";
 
-const { method, ce } = queryParams;
+const { method, ce, itemCount: count = 10, loopCount = 1 } = queryParams;
+
+const itemCount = parseInt(count as string);
+// const data = generateData(itemCount);
+// const nestedData = generateNestedData(itemCount);
 
 const templates = {
     repeatBasic: html<XApp>`
@@ -32,7 +41,7 @@ const templates = {
     `,
     repeatNested: html<XApp>`
         ${repeat(
-            x => x.nestedItems,
+            x => x.items,
             html<NestedRandomData>`
                 <li>
                     ${x =>
@@ -72,7 +81,7 @@ const templates = {
     `,
     repeatNoRecycleNested: html<XApp>`
         ${repeat(
-            x => x.nestedItems,
+            x => x.items,
             html<NestedRandomData>`
                 <li>
                     ${x =>
@@ -123,14 +132,17 @@ const templates = {
     `,
 })
 class XApp extends FASTElement {
-    @observable items: RandomItem[] = data;
-    @observable nestedItems: NestedRandomData[] = nestedData;
+    @observable items: Array<RandomItem | NestedRandomData> = generateData(itemCount);
+    // @observable nestedItems: NestedRandomData[] = nestedData;
     @observable method: string = <string>method;
 
     private isNested: boolean = false;
     constructor() {
         super();
-        this.isNested = this.method.toLowerCase().includes("nested");
+        // this.isNested = this.method.toLowerCase().includes("nested");
+        // this.items = this.isNested
+        //     ? generateNestedData(itemCount)
+        //     : generateData(itemCount);
     }
 
     getTemplateByMethod() {
@@ -145,9 +157,9 @@ class XApp extends FASTElement {
             case "inplace-reverse":
                 this.inplaceReverse();
                 break;
-            case "append":
-                this.append();
-                break;
+            // case "append":
+            //     this.append();
+            //     break;
             case "combo":
                 this.combo();
                 break;
@@ -155,46 +167,40 @@ class XApp extends FASTElement {
     }
 
     inplaceReplace() {
-        if (this.isNested) {
-            for (let i = 0; i < this.nestedItems.length; i++) {
-                this.nestedItems.splice(i, 1, this.nestedItems[i] as NestedRandomData);
-            }
-        } else {
-            for (let i = 0; i < this.items.length; i++) {
-                this.items.splice(i, 1, this.items[i] as RandomItem);
-            }
+        // if (this.isNested) {
+        //     for (let i = 0; i < loopCount; i++) {
+        //         this.nestedItems.splice(i, 1, this.nestedItems[i] as NestedRandomData);
+        //     }
+        // } else {
+        // }
+        for (let i = 0; i < loopCount; i++) {
+            // const addOn = this.items[i] as RandomItem | NestedRandomData
+            this.items.splice(i, 1, this.items[i]);
         }
     }
 
     inplaceReverse() {
-        if (this.isNested) {
-            for (let i = 0; i < this.nestedItems.length / 2; i++) {
-                this.nestedItems.reverse();
-            }
-        } else {
-            for (let i = 0; i < this.items.length / 2; i++) {
-                this.items.reverse();
-            }
+        // if (this.isNested) {
+        //     for (let i = 0; i < loopCount; i++) {
+        //         this.nestedItems.reverse();
+        //     }
+        // } else {
+        // }
+        for (let i = 0; i < loopCount; i++) {
+            this.items.reverse();
         }
     }
 
-    append() {
-        if (this.isNested) {
-            for (let i = 0; i < this.nestedItems.length / 2; i++) {
-                this.nestedItems.push(...this.nestedItems);
-                this.nestedItems = [];
-            }
-        } else {
-            for (let i = 0; i < this.items.length / 2; i++) {
-                this.items.push(...this.items);
-                this.items = [];
-            }
-        }
-    }
+    // append() {
+    //     for (let i = 0; i < loopCount; i++) {
+    //         this.items.push(...(this.items as RandomItem[] | NestedRandomData[]));
+    //         this.items = [];
+    //     }
+    // }
 
     combo() {
         for (let i = 0; i < 5; i++) {
-            this.append();
+            // this.append();
             this.inplaceReverse();
             this.inplaceReplace();
             this.items = [];

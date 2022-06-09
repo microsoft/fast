@@ -17,7 +17,7 @@ program
         "-m, --methods [methods...]",
         "specify different methods through url query params for one version you want to benchmark"
     )
-    .option("-q, --queryParam <name>", "add query params you want to add to url")
+    .option("-q, --queryParam [queries...]", "add query params you want to add to url")
     .option(
         "-lb, --localBenchFile <name>",
         "specify the html file you want your local version to use, only valid if 'local' is one of the versions you passed in"
@@ -33,7 +33,6 @@ program
     .parse(process.argv);
 
 const options = program.opts();
-
 /**
  * Check to see if we can reach the npm repository within a timeout
  *  @returns {Promise}

@@ -243,7 +243,7 @@ async function generateBenchmarks(
                     const newBench = { ...bench };
                     const method = methods[i];
                     const fullUrl = queryParam
-                        ? `${url}?method=${method}&${queryParam}`
+                        ? `${url}?method=${method}&${queryParam.join("&")}`
                         : `${url}?method=${method}`;
                     newBench.url = fullUrl;
                     newBench.name = `${benchmark}-${operation}-${method}`;
