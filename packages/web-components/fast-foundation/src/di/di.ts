@@ -1503,7 +1503,7 @@ export class ContainerImpl implements DOMContainer {
                         } catch {
                             // Container failed to find the context, so we need to
                             // let the event propagate.
-                            // TODO: Introduce a tryGet API to Container.
+                            // TODO: Introduce a tryGet API to Container. Issue #4582
                         }
                     } else if (
                         e.context === Container &&
