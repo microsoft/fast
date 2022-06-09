@@ -45,6 +45,14 @@
     "./hooks": {
       "types": "./dist/dts/hooks.d.ts",
       "default": "./dist/esm/hooks.js"
+    },
+    "./context": {
+      "types": "./dist/dts/context.d.ts",
+      "default": "./dist/esm/context.js"
+    },
+    "./metadata": {
+      "types": "./dist/dts/metadata.d.ts",
+      "default": "./dist/esm/metadata.js"
     }
   },
   "unpkg": "dist/fast-element.min.js",
