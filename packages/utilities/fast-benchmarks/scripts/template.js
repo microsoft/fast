@@ -189,7 +189,7 @@ async function generateBenchmarks(
         ];
 
         versions.forEach(version => {
-            const isPublishedVersion = version.includes(".");
+            const isPublishedVersion = version.includes(".") || version === LATEST;
             const isLocalBranch = localProps.branchName && version === LOCAL;
             const isBranch = isLocalBranch || !isPublishedVersion;
             const url =
@@ -308,6 +308,7 @@ async function generateConfig(fileName, benchmarksHash) {
  * @returns {string} path location of newly generated config json file
  */
 const LOCAL = "local";
+const LATEST = "latest";
 export async function generateTemplates(options) {
     try {
         const tsConfigPath = await generateTsConfig(options);

@@ -23,7 +23,7 @@ program
         "specify the html file you want your local version to use, only valid if 'local' is one of the versions you passed in"
     )
     .option(
-        "-o, --operations [versions...]",
+        "-o, --operations [operations...]",
         "specify the operations you want the benchmarks to run, if none are passed all available operations will be run"
     )
     .option(
