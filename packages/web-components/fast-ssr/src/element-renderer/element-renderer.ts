@@ -2,8 +2,10 @@
  * This file was ported from {@link https://github.com/lit/lit/tree/main/packages/labs/ssr}.
  * Please see {@link ../ACKNOWLEDGEMENTS.md}
  */
+import { observable } from "@microsoft/fast-element";
 import { RenderInfo } from "../render-info.js";
 import { escapeHtml } from "../escape-html.js";
+import e from "express";
 
 type AttributesMap = Map<string, string>;
 
@@ -39,7 +41,35 @@ export const getElementRenderer = (
  * @beta
  */
 export abstract class ElementRenderer {
+    @observable
     abstract readonly element?: HTMLElement;
+    elementChanged() {
+        if (this.element) {
+            const dispatch = this.element.dispatchEvent;
+            Reflect.defineProperty(this.element, "dispatchEvent", {
+                value: (event: Event) => {
+                    let canceled = dispatch.call(this.element, event);
+
+                    if (event.bubbles && !canceled) {
+                        const index = this.renderInfo.customElementHostStack.indexOf(
+                            this
+                        );
+                        const parent = this.renderInfo.customElementInstanceStack.at(
+                            index - 1
+                        );
+
+                        if (parent) {
+                            canceled = parent.dispatchEvent(event);
+                        } else {
+                            // emit on window
+                        }
+                    }
+
+                    return canceled;
+                },
+            });
+        }
+    }
 
     /**
      * Should return true when the renderer should handle rendering for a custom element ctor or tag name.
@@ -56,7 +86,10 @@ export abstract class ElementRenderer {
         return false;
     }
 
-    constructor(public readonly tagName: string, renderInfo: RenderInfo) {}
+    constructor(
+        public readonly tagName: string,
+        private readonly renderInfo: RenderInfo
+    ) {}
 
     abstract connectedCallback(): void;
     abstract attributeChangedCallback(
@@ -64,6 +97,10 @@ export abstract class ElementRenderer {
         prev: string | null,
         next: string | null
     ): void;
+
+    public dispatchEvent(event: Event): boolean {
+        return this.element?.dispatchEvent(event) || false;
+    }
 
     /**
      * Sets a property for the element if it exists.

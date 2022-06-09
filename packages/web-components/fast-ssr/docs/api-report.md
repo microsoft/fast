@@ -27,6 +27,8 @@ export abstract class ElementRenderer {
     abstract connectedCallback(): void;
     // (undocumented)
     abstract readonly element?: HTMLElement;
+    // (undocumented)
+    elementChanged(): void;
     // Warning: (ae-forgotten-export) The symbol "AttributesMap" needs to be exported by the entry point exports.d.ts
     static matchesClass(ctor: typeof HTMLElement, tagName: string, attributes: AttributesMap): boolean;
     renderAttributes(): IterableIterator<string>;
