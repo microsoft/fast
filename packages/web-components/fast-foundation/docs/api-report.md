@@ -1408,6 +1408,7 @@ export class HorizontalScroll extends FoundationElement {
     scrolled(): void;
     // @internal
     scrollingChanged(prev: unknown, next: boolean): void;
+    scrollInView(item: HTMLElement | number, padding?: number, rightPadding?: number): void;
     scrollItems: HTMLElement[];
     scrollItemsChanged(previous: HTMLElement[], next: HTMLElement[]): void;
     scrollToNext(): void;
