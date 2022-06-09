@@ -6,7 +6,7 @@
 /**
  * @beta
  */
-export class Node {}
+export class Node extends EventTarget {}
 
 /**
  * @beta
