@@ -34,9 +34,17 @@
       "types": "./dist/dts/debug.d.ts",
       "default": "./dist/esm/debug.js"
     },
-    "./splice-strategies": {
+    "./observation/splice-strategies": {
       "types": "./dist/dts/observation/splice-strategies.d.ts",
       "default": "./dist/esm/observation/splice-strategies.js"
+    },
+    "./binding/two-way": {
+      "types": "./dist/dts/templating/binding-two-way.d.ts",
+      "default": "./dist/esm/templating/binding-two-way.js"
+    },
+    "./binding/signal": {
+      "types": "./dist/dts/templating/binding-signal.d.ts",
+      "default": "./dist/esm/templating/binding-signal.js"
     },
     "./utilities": {
       "types": "./dist/dts/utilities.d.ts",
