@@ -87,5 +87,14 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element  attr><template shadowroot=\"open\"></template></bare-element>
             `);
         });
+    });
+
+    test.describe("emitting events", () => {
+        test("An element dispatching an event should get it's own handler fired", () => {})
+        test("An ancestor with a handler should get it's handler invoked if the event bubbles", () => {})
+        test("Should bubble events to the document", () => {})
+        test("Should bubble events to the window", () => {})
+        test("Should not bubble an event that returns false from a handler", () => {})
+        test("Should not bubble an event that returns invokes event.stopPropagation()", () => {})
     })
 });
