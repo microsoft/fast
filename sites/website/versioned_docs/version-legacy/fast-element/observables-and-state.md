@@ -2,8 +2,10 @@
 id: observables-and-state
 title: Observables and State
 sidebar_label: Observables and State
-custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/guide/observables-and-state.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/fast-element/observables-and-state.md
 description: To enable binding tracking and change notification, properties must be decorated with either @attr or @observable.
+keywords:
+  - observables and state
 ---
 
 ## Reactivity
