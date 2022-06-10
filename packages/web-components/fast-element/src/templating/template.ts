@@ -23,7 +23,12 @@ import type { ElementView, HTMLView, SyntheticView } from "./view.js";
  * @public
  */
 export interface ElementViewTemplate<TSource = any, TParent = any> {
+    /**
+     * Used for TypeScript purposes only.
+     * Do not use.
+     */
     type: "element";
+
     /**
      * Creates an ElementView instance based on this template definition.
      * @param hostBindingTarget - The element that host behaviors will be bound to.
@@ -53,7 +58,12 @@ export interface SyntheticViewTemplate<
     TParent = any,
     TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
 > {
-    type: "synthetic";
+    /**
+     * Used for TypeScript purposes only.
+     * Do not use.
+     */
+    type: string;
+
     /**
      * Creates a SyntheticView instance based on this template definition.
      */
@@ -65,6 +75,10 @@ export interface SyntheticViewTemplate<
  * @public
  */
 export interface ChildViewTemplate<TSource = any, TParent = any> {
+    /**
+     * Used for TypeScript purposes only.
+     * Do not use.
+     */
     type: "child";
 
     /**
@@ -78,6 +92,10 @@ export interface ChildViewTemplate<TSource = any, TParent = any> {
  * @public
  */
 export interface ItemViewTemplate<TSource = any, TParent = any> {
+    /**
+     * Used for TypeScript purposes only.
+     * Do not use.
+     */
     type: "item";
 
     /**
