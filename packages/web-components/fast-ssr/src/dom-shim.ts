@@ -96,6 +96,17 @@ export class Document {
     }
 }
 
+class CustomEvent<T = any> extends Event {
+    public detail: T | null = null;
+    constructor(type: string, init?: CustomEventInit<T>) {
+        super(type, init);
+
+        if (init && "detail" in init) {
+            this.detail = init.detail as T;
+        }
+    }
+}
+
 /**
  * @beta
  */
@@ -168,6 +179,7 @@ export function createWindow(
         Element,
         HTMLElement,
         Document,
+        CustomEvent,
         CSSStyleSheet,
         ShadowRoot,
         CustomElementRegistry,
