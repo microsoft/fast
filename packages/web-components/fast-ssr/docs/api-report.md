@@ -26,6 +26,8 @@ export abstract class ElementRenderer {
     // (undocumented)
     abstract connectedCallback(): void;
     // (undocumented)
+    dispatchEvent(event: Event): boolean;
+    // (undocumented)
     abstract readonly element?: HTMLElement;
     // (undocumented)
     elementChanged(): void;

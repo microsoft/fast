@@ -1,9 +1,10 @@
 import "../install-dom-shim.js";
-import { FASTElement, customElement, css, html, attr } from "@microsoft/fast-element";
+import { FASTElement, customElement, css, html, attr, observable } from "@microsoft/fast-element";
 import { expect, test } from '@playwright/test';
 import { FASTElementRenderer } from "./fast-element-renderer.js";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
+import exp from "constants";
 
 
 @customElement({
@@ -23,6 +24,34 @@ export class StyledElement extends FASTElement {}
     `
 })
 export class HostBindingElement extends FASTElement {}
+
+@customElement("test-event-dispatch")
+class TestEventDispatch extends FASTElement {
+    @attr({attribute: "event-detail"})
+    eventDetail: string = "";
+
+    connectedCallback(): void {
+        super.connectedCallback();
+        const e = new CustomEvent<{ data: string }>("test-event", {bubbles: true, detail: { data: ""}})
+        this.dispatchEvent(e);
+
+        this.eventDetail = e.detail.data || "";
+    }
+}
+
+@customElement("test-event-listener")
+class TestEventListener extends FASTElement {
+    @attr
+    data: string = "default"
+
+    connectedCallback() {
+        super.connectedCallback();
+        this.addEventListener("test-event", (e: Event) => {
+            ( e as CustomEvent<{ data: string }> ).detail.data = this.data;
+        })
+    }
+}
+
 test.describe("FASTElementRenderer", () => {
     test.describe("should have a 'matchesClass' method", () => {
         test("that returns true when invoked with a class that extends FASTElement ",  () => {
@@ -90,11 +119,16 @@ test.describe("FASTElementRenderer", () => {
     });
 
     test.describe("emitting events", () => {
-        test("An element dispatching an event should get it's own handler fired", () => {})
-        test("An ancestor with a handler should get it's handler invoked if the event bubbles", () => {})
-        test("Should bubble events to the document", () => {})
-        test("Should bubble events to the window", () => {})
-        test("Should not bubble an event that returns false from a handler", () => {})
-        test("Should not bubble an event that returns invokes event.stopPropagation()", () => {})
+        test("An element dispatching an event should get it's own handler fired", () => {});
+        test("An ancestor with a handler should get it's handler invoked if the event bubbles", () => {
+            const { templateRenderer, defaultRenderInfo } = fastSSR();
+
+            const result = consolidate(templateRenderer.render(html`<test-event-listener><test-event-dispatch></test-event-dispatch></test-event-listener>`, defaultRenderInfo));
+            expect(result).toBe(`<test-event-listener data="default"><test-event-dispatch event-detail="test"></test-event-dispatch></test-event-listener>`)
+        });
+        test("Should bubble events to the document", () => {});
+        test("Should bubble events to the window", () => {});
+        test("Should not bubble an event that returns false from a handler", () => {});
+        test("Should not bubble an event that returns invokes event.stopPropagation()", () => {});
     })
 });

@@ -41,6 +41,7 @@ export const getElementRenderer = (
  * @beta
  */
 export abstract class ElementRenderer {
+    private parent: ElementRenderer | null = null;
     @observable
     abstract readonly element?: HTMLElement;
     elementChanged() {
@@ -50,16 +51,9 @@ export abstract class ElementRenderer {
                 value: (event: Event) => {
                     let canceled = dispatch.call(this.element, event);
 
-                    if (event.bubbles && !canceled) {
-                        const index = this.renderInfo.customElementHostStack.indexOf(
-                            this
-                        );
-                        const parent = this.renderInfo.customElementInstanceStack.at(
-                            index - 1
-                        );
-
-                        if (parent) {
-                            canceled = parent.dispatchEvent(event);
+                    if (event.bubbles && !event.cancelBubble) {
+                        if (this.parent) {
+                            canceled = this.parent.dispatchEvent(event);
                         } else {
                             // emit on window
                         }
@@ -89,7 +83,9 @@ export abstract class ElementRenderer {
     constructor(
         public readonly tagName: string,
         private readonly renderInfo: RenderInfo
-    ) {}
+    ) {
+        this.parent = renderInfo.customElementInstanceStack.at(-1) || null;
+    }
 
     abstract connectedCallback(): void;
     abstract attributeChangedCallback(
