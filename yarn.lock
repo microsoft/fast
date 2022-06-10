@@ -3849,13 +3849,6 @@
   dependencies:
     exenv-es6 "^1.0.0"
 
-"@microsoft/fast-web-utilities@^5.3.0", "@microsoft/fast-web-utilities@^5.4.1":
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-web-utilities/-/fast-web-utilities-5.4.1.tgz#8e3082ee2ff2b5467f17e7cb1fb01b0e4906b71f"
-  integrity sha512-ReWYncndjV3c8D8iq9tp7NcFNc1vbVHvcBFPME2nNFKNbS1XCesYZGlIlf3ot5EmuOXPlrzUHOWzQ2vFpIkqDg==
-  dependencies:
-    exenv-es6 "^1.1.1"
-
 "@microsoft/tsdoc-config@^0.13.4":
   version "0.13.9"
   resolved "https://registry.yarnpkg.com/@microsoft/tsdoc-config/-/tsdoc-config-0.13.9.tgz#d8c8e8ab79ca11dc14838090c463905ae4c1a22d"
