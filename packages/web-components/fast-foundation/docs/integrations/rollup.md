@@ -3,12 +3,12 @@ id: rollup
 title: Rollup
 sidebar_label: Rollup
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/rollup.md
-description: FAST works great with TypeScript and Rollup, using a fairly standard setup. Let's take a look at how you can set up a TypeScript+Rollup project, starting from scratch.
+description: FAST works great with TypeScript and Rollup, using a fairly standard setup. Let's take a look at how you can set up a FAST+TypeScript+Rollup project, starting from scratch.
 keywords:
   - rollup
 ---
 
-FAST works great with TypeScript and Rollup, using a fairly standard setup. Let's take a look at how you can set up a TypeScript+Rollup project, starting from scratch.
+FAST works great with TypeScript and Rollup, using a fairly standard setup. Let's take a look at how you can set up a FAST+TypeScript+Rollup project, starting from scratch.
 
 ## Setting up the package
 
