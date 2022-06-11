@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { repeat, RepeatDirective, RepeatBehavior } from "./repeat.js";
-import { child, html } from "./template.js";
+import { html } from "./template.js";
 import { ExecutionContext, observable } from "../observation/observable.js";
 import { toHTML } from "../__test__/helpers.js";
 import { Updates } from "../observation/update-queue.js";
@@ -286,7 +286,7 @@ describe("The repeat", () => {
                 const deepItemTemplate = html<Item>`
                     parent-${x => x.name}${repeat(
                         x => x.items!,
-                        child<Item>`child-${x => x.name}root-${(x, c) => c.parentContext.parent.name}`
+                        html<Item>`child-${x => x.name}root-${(x, c) => c.parentContext.parent.name}`
                     )}
                 `;
 
