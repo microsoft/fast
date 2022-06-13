@@ -78,13 +78,14 @@ describe("The repeat", () => {
             size: number,
             filter: (index: number) => boolean = () => true,
             prefix = "",
-            wrapper = input => input
+            wrapper = input => input,
+            fromIndex: number = 0
         ) {
             let output = "";
-
+            const delta = fromIndex > 0 ? fromIndex : 0
             for (let i = 0; i < size; ++i) {
                 if (filter(i)) {
-                    output += wrapper(`${prefix}item${i + 1}`);
+                    output += wrapper(`${prefix}item${i + 1 + delta}`);
                 }
             }
 
@@ -97,6 +98,21 @@ describe("The repeat", () => {
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     itemTemplate
+                ) as RepeatDirective;
+                const behavior = directive.createBehavior(location);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, defaultExecutionContext);
+
+                expect(toHTML(parent)).to.equal(createOutput(size));
+            });
+
+            it(`renders a template for each item in array of size ${size} with recycle property set to false`, () => {
+                const { parent, location } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate,
+                    {positioning: true, recycle: false}
                 ) as RepeatDirective;
                 const behavior = directive.createBehavior(location);
                 const vm = new ViewModel(size);
@@ -222,6 +238,28 @@ describe("The repeat", () => {
                     `${createOutput(size, x => x !== index)}newitem1newitem2`
                 );
             });
+
+            it(`updates rendered HTML when a single item is replaced from the end of an array of size ${size} with recycle property set to false`, async () => {
+                const { parent, location } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate,
+                    {positioning: true, recycle: false}
+                ) as RepeatDirective;
+                const behavior = directive.createBehavior(location);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, defaultExecutionContext);
+
+                const index = size - 1;
+                vm.items.splice(index, 1, { name: "newitem1" }, { name: "newitem2" });
+
+                await DOM.nextUpdate();
+
+                expect(toHTML(parent)).to.equal(
+                    `${createOutput(size, x => x !== index)}newitem1newitem2`
+                );
+            });
         });
 
         oneThroughTen.forEach(size => {
@@ -246,6 +284,43 @@ describe("The repeat", () => {
             });
         });
 
+        oneThroughTen.forEach(size => {
+            it(`updates rendered HTML when a single item is spliced from the middle of an array of size ${size}`, async () => {
+                const { parent, location } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                const behavior = directive.createBehavior(location);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, defaultExecutionContext);
+
+                const mid = Math.floor(vm.items.length/2)
+                vm.items.splice(mid, 1, { name: "newitem1" });
+                await DOM.nextUpdate();
+                expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1${createOutput(vm.items.slice(mid +1).length , void 0, void 0, void 0, mid +1 ) }`);
+            });
+
+            it(`updates rendered HTML when a single item is spliced from the middle of an array of size ${size} with recycle property set to false`, async () => {
+                const { parent, location } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate,
+                    {positioning: true, recycle: false}
+                ) as RepeatDirective;
+
+                const behavior = directive.createBehavior(location);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, defaultExecutionContext);
+
+                const mid = Math.floor(vm.items.length/2)
+                vm.items.splice(mid, 1, { name: "newitem1" });
+                await DOM.nextUpdate();
+                expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1${createOutput(vm.items.slice(mid +1).length , void 0, void 0, void 0, mid +1 ) }`);
+            });
+        });
         oneThroughTen.forEach(size => {
             it(`updates all when the template changes for an array of size ${size}`, async () => {
                 const { parent, location } = createLocation();
