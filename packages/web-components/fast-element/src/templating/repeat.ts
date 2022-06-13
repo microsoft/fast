@@ -252,7 +252,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         let views = this.views;
         let viewsLength = views.length;
 
-        if (itemsLength === 0 || templateChanged) {
+        if (itemsLength === 0 || templateChanged || !this.options.recycle) {
             // all views need to be removed
             HTMLView.disposeContiguousBatch(views);
             viewsLength = 0;
