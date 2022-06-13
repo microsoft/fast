@@ -262,13 +262,18 @@ export async function generateBenchmarks(
 
                     if (customQueryParams) {
                         const queryParamsObj = JSON.parse(customQueryParams);
+                        console.log("queryParamsobj", queryParamsObj);
                         queryParamsObj[method]?.forEach(queryParams => {
-                            const queryParamsStr = queryParams.join("&");
-                            const newBench = { ...bench };
-                            const fullUrl = `${url}?method=${method}&${queryParamsStr}`;
-                            newBench.url = fullUrl;
-                            newBench.name = `${benchmark}-${method}-${queryParamsStr}`;
-                            benchmarks.push(newBench);
+                            const clickEvent = queryParams[0];
+                            // only generate benchmarks for the ce user passed in
+                            if (clickEvent === queryParam[0]) {
+                                const queryParamsStr = queryParams.join("&");
+                                const newBench = { ...bench };
+                                const fullUrl = `${url}?method=${method}&${queryParamsStr}`;
+                                newBench.url = fullUrl;
+                                newBench.name = `${benchmark}-${method}-${queryParamsStr}`;
+                                benchmarks.push(newBench);
+                            }
                         });
                     } else {
                         const newBench = { ...bench };
