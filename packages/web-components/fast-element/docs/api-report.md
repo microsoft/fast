@@ -393,6 +393,7 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
     define<TType extends Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): TType;
+    metadata<TType_1 extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType_1, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType_1>;
 };
 
 // @public
@@ -489,13 +490,12 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
 }
 
 // @public
-function length_2<T>(array: readonly T[]): number;
-export { length_2 as length }
-
-// @public
 export interface LengthObserver extends Subscriber {
     length: number;
 }
+
+// @public
+export function lengthOf<T>(array: readonly T[]): number;
 
 // @public
 export const Markup: Readonly<{
