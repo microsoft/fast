@@ -514,13 +514,12 @@ export interface ItemViewTemplate<TSource = any, TParent = any> {
 }
 
 // @public
-function length_2<T>(array: readonly T[]): number;
-export { length_2 as length }
-
-// @public
 export interface LengthObserver extends Subscriber {
     length: number;
 }
+
+// @public
+export function lengthOf<T>(array: readonly T[]): number;
 
 // @public
 export const Markup: Readonly<{
