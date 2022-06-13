@@ -1,11 +1,4 @@
-import {
-    children,
-    elements,
-    html,
-    item,
-    ItemViewTemplate,
-    slotted,
-} from "@microsoft/fast-element";
+import { children, elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { ElementDefinitionContext } from "../design-system/registration-context.js";
@@ -15,9 +8,9 @@ import type { ColumnDefinition } from "./data-grid.js";
 
 function createCellItemTemplate(
     context: ElementDefinitionContext
-): ItemViewTemplate<ColumnDefinition, DataGridRow> {
+): ViewTemplate<ColumnDefinition, DataGridRow> {
     const cellTag = context.tagFor(DataGridCell);
-    return item<ColumnDefinition, DataGridRow>`
+    return html<ColumnDefinition, DataGridRow>`
     <${cellTag}
         cell-type="${x => (x.isRowHeader ? "rowheader" : undefined)}"
         grid-column="${(x, c) => c.index + 1}"
@@ -29,9 +22,9 @@ function createCellItemTemplate(
 
 function createHeaderCellItemTemplate(
     context: ElementDefinitionContext
-): ItemViewTemplate<ColumnDefinition, DataGridRow> {
+): ViewTemplate<ColumnDefinition, DataGridRow> {
     const cellTag = context.tagFor(DataGridCell);
-    return item<ColumnDefinition, DataGridRow>`
+    return html<ColumnDefinition, DataGridRow>`
     <${cellTag}
         cell-type="columnheader"
         grid-column="${(x, c) => c.index + 1}"

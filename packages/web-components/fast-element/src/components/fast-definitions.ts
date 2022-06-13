@@ -170,6 +170,8 @@ export class FASTElementDefinition<
     /**
      * Defines a custom element based on this definition.
      * @param registry - The element registry to define the element in.
+     * @remarks
+     * This operation is idempotent per registry.
      */
     public define(registry: CustomElementRegistry = customElements): this {
         const type = this.type;
