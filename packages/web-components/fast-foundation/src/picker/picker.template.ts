@@ -1,11 +1,4 @@
-import {
-    child,
-    ChildViewTemplate,
-    html,
-    ref,
-    ViewTemplate,
-    when,
-} from "@microsoft/fast-element";
+import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region/anchored-region.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { ElementDefinitionContext } from "../design-system/registration-context.js";
@@ -15,11 +8,9 @@ import { PickerMenuOption } from "./picker-menu-option.js";
 import { PickerList } from "./picker-list.js";
 import { PickerListItem } from "./picker-list-item.js";
 
-function createDefaultListItemTemplate(
-    context: ElementDefinitionContext
-): ChildViewTemplate {
+function createDefaultListItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const pickerListItemTag: string = context.tagFor(PickerListItem);
-    return child`
+    return html`
     <${pickerListItemTag}
         value="${x => x}"
         :contentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"
@@ -30,9 +21,9 @@ function createDefaultListItemTemplate(
 
 function createDefaultMenuOptionTemplate(
     context: ElementDefinitionContext
-): ChildViewTemplate {
+): ViewTemplate {
     const pickerMenuOptionTag: string = context.tagFor(PickerMenuOption);
-    return child`
+    return html`
     <${pickerMenuOptionTag}
         value="${x => x}"
         :contentsTemplate="${(x, c) => c.parent.menuOptionContentsTemplate}"

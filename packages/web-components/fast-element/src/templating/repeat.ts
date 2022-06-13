@@ -4,11 +4,8 @@ import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
     Binding,
     BindingObserver,
-    ChildContext,
     ExecutionContext,
-    ItemContext,
     Observable,
-    RootContext,
 } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
 import { ArrayObserver, Splice } from "../observation/arrays.js";
@@ -19,13 +16,7 @@ import {
     ViewBehaviorFactory,
     ViewBehaviorTargets,
 } from "./html-directive.js";
-import type {
-    CaptureType,
-    ChildViewTemplate,
-    ItemViewTemplate,
-    SyntheticViewTemplate,
-    ViewTemplate,
-} from "./template.js";
+import type { CaptureType, SyntheticViewTemplate, ViewTemplate } from "./template.js";
 import { HTMLView, SyntheticView } from "./view.js";
 
 /**
@@ -53,7 +44,7 @@ function bindWithoutPositioning(
     view: SyntheticView,
     items: readonly any[],
     index: number,
-    context: ChildContext
+    context: ExecutionContext
 ): void {
     view.bind(items[index], context);
 }
@@ -62,7 +53,7 @@ function bindWithPositioning(
     view: SyntheticView,
     items: readonly any[],
     index: number,
-    context: ChildContext
+    context: ExecutionContext
 ): void {
     view.bind(items[index], context.createItemContext(index, items.length));
 }
@@ -80,7 +71,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     private itemsObserver: Notifier | null = null;
     private itemsBindingObserver: BindingObserver<TSource, any[]>;
     private context: ExecutionContext | undefined = void 0;
-    private childContext: ChildContext | undefined = void 0;
+    private childContext: ExecutionContext | undefined = void 0;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
 
     /**
@@ -237,7 +228,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
         if (this.options.positioning) {
             for (let i = 0, ii = views.length; i < ii; ++i) {
-                (views[i].context! as ItemContext).updatePosition(i, ii);
+                views[i].context!.updatePosition(i, ii);
             }
         }
     }
@@ -375,61 +366,9 @@ export function repeat<
     TArray extends ReadonlyArray<any> = ReadonlyArray<any>
 >(
     itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>,
-    templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate, RootContext>,
-    options?:
-        | { positioning: false }
-        | { recycle: true }
-        | { positioning: false; recycle: false }
-        | { positioning: false; recycle: true }
-): CaptureType<TSource>;
-/**
- * A directive that enables list rendering.
- * @param itemsBinding - The array to render.
- * @param templateOrTemplateBinding - The template or a template binding used obtain a template
- * to render for each item in the array.
- * @param options - Options used to turn on special repeat features.
- * @public
- */
-export function repeat<
-    TSource = any,
-    TArray extends ReadonlyArray<any> = ReadonlyArray<any>
->(
-    itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>,
-    templateOrTemplateBinding:
-        | ChildViewTemplate
-        | Binding<TSource, ChildViewTemplate, ChildContext>,
-    options?:
-        | { positioning: false }
-        | { recycle: true }
-        | { positioning: false; recycle: false }
-        | { positioning: false; recycle: true }
-): CaptureType<TSource>;
-/**
- * A directive that enables list rendering.
- * @param itemsBinding - The array to render.
- * @param templateOrTemplateBinding - The template or a template binding used obtain a template
- * to render for each item in the array.
- * @param options - Options used to turn on special repeat features.
- * @public
- */
-export function repeat<
-    TSource = any,
-    TArray extends ReadonlyArray<any> = ReadonlyArray<any>
->(
-    itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>,
-    templateOrTemplateBinding:
-        | ItemViewTemplate
-        | Binding<TSource, ItemViewTemplate, ItemContext>,
-    options:
-        | { positioning: true }
-        | { positioning: true; recycle: true }
-        | { positioning: true; recycle: false }
-): CaptureType<TSource>;
-export function repeat(
-    itemsBinding: any,
-    templateOrTemplateBinding: any,
+    templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate>,
     options: RepeatOptions = defaultRepeatOptions
-): any {
+): CaptureType<TSource> {
     const templateBinding = isFunction(templateOrTemplateBinding)
         ? templateOrTemplateBinding
         : (): SyntheticViewTemplate => templateOrTemplateBinding;
