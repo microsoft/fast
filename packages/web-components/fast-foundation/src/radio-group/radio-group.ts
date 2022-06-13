@@ -95,7 +95,7 @@ export class RadioGroup extends FoundationElement {
     protected valueChanged(): void {
         if (this.slottedRadioButtons) {
             this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
-                if (radio.getAttribute("value") === this.value) {
+                if (radio.value === this.value) {
                     radio.checked = true;
                     this.selectedRadio = radio;
                 }
