@@ -27,6 +27,7 @@ export type ContextDecorator<T = any> = Readonly<Context<T>> &
  */
 export type FASTContext<T> = ContextDecorator<T> & {
     get(target: EventTarget): T;
+    provide(target: EventTarget, value: T): void;
     request(target: EventTarget, callback: ContextCallback<T>, multiple?: boolean): void;
     handle(target: EventTarget, callback: (event: ContextEvent<FASTContext<T>>) => void);
 };
@@ -89,6 +90,9 @@ export const Context = Object.freeze({
             target: EventTarget,
             callback: (event: ContextEvent<FASTContext<T>>) => void
         ) => Context.handle(target, callback, Interface);
+
+        Interface.provide = (target: EventTarget, value: T) =>
+            Context.provide(target, Interface, value);
 
         Interface.get = (target: EventTarget) => Context.get(target, Interface);
 
@@ -165,6 +169,21 @@ export const Context = Object.freeze({
         multiple = false
     ) {
         target.dispatchEvent(new ContextEvent(context, callback, multiple));
+    },
+
+    provide<T extends UnknownContext>(
+        target: EventTarget,
+        context: T,
+        value: ContextType<T>
+    ) {
+        this.handle(
+            target,
+            (event: ContextEvent<T>) => {
+                event.stopImmediatePropagation();
+                event.callback(value);
+            },
+            context
+        );
     },
 
     /**
