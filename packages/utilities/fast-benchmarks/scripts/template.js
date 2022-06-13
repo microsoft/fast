@@ -261,7 +261,6 @@ export async function generateBenchmarks(
 
                     if (customQueryParams) {
                         const queryParamsObj = JSON.parse(customQueryParams);
-                        console.log("queryParamsobj", queryParamsObj);
                         queryParamsObj[method]?.forEach(queryParams => {
                             const clickEvent = queryParams[0];
                             // only generate benchmarks for the ce user passed in
