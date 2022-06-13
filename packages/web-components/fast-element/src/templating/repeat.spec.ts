@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { repeat, RepeatDirective, RepeatBehavior, RepeatOptions } from "./repeat.js";
-import { child, html, ItemViewTemplate } from "./template.js";
+import { html } from "./template.js";
 import { ExecutionContext, observable } from "../observation/observable.js";
 import { toHTML } from "../__test__/helpers.js";
 import { Updates } from "../observation/update-queue.js";
@@ -28,7 +28,7 @@ describe("The repeat", () => {
         it("returns a RepeatDirective with optional properties set to different values", () => {
             const directive = repeat(
                 () => [],
-                html`test` as ItemViewTemplate,
+                html`test`,
                 {positioning: true, recycle: false}
             ) as RepeatDirective;
             expect(directive).to.be.instanceOf(RepeatDirective);
@@ -126,7 +126,7 @@ describe("The repeat", () => {
                 const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    itemTemplate as ItemViewTemplate,
+                    itemTemplate,
                     {positioning: true, recycle: false}
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
@@ -265,7 +265,7 @@ describe("The repeat", () => {
                 const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    itemTemplate as ItemViewTemplate,
+                    itemTemplate,
                     {positioning: true, recycle: false}
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
@@ -308,7 +308,7 @@ describe("The repeat", () => {
                 const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    itemTemplate as ItemViewTemplate,
+                    itemTemplate,
                     {positioning: true, recycle: false}
                 ) as RepeatDirective;
 
@@ -377,7 +377,7 @@ describe("The repeat", () => {
                 const deepItemTemplate = html<Item>`
                     parent-${x => x.name}${repeat(
                         x => x.items!,
-                        child<Item>`child-${x => x.name}root-${(x, c) => c.parentContext.parent.name}`
+                        html<Item>`child-${x => x.name}root-${(x, c) => c.parentContext.parent.name}`
                     )}
                 `;
 

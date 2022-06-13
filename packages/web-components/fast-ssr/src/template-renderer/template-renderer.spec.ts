@@ -1,5 +1,5 @@
 import "../install-dom-shim.js";
-import { child, children, customElement, ExecutionContext, FASTElement, html, item, ref, repeat, slotted, when } from "@microsoft/fast-element";
+import { children, customElement, ExecutionContext, FASTElement, html, ref, repeat, slotted, when } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
@@ -260,7 +260,7 @@ test.describe("TemplateRenderer", () => {
                 data: ["foo", "bar", "bat"]
             };
             const ctx = ExecutionContext.default;
-            consolidate(templateRenderer.render(html<typeof source>`${repeat(x => x.data, child<string>`${(x, c) => {
+            consolidate(templateRenderer.render(html<typeof source>`${repeat(x => x.data, html<string>`${(x, c) => {
                 expect(c.parent).toBe(source);
                 expect(c.parentContext).toBe(ctx)
             }}`)}`, defaultRenderInfo, source, ctx))
@@ -272,7 +272,7 @@ test.describe("TemplateRenderer", () => {
                 data: ["foo", "bar", "bat"]
             };
             let i = 0;
-            consolidate(templateRenderer.render(html<typeof source>`${repeat(x => x.data, item<string>`${(x, c) => {
+            consolidate(templateRenderer.render(html<typeof source>`${repeat(x => x.data, html<string>`${(x, c) => {
                 expect(c.index).toBe(i);
                 i++;
                 expect(c.length).toBe(c.parent.data.length)

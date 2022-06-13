@@ -1,6 +1,5 @@
 import {
     attr,
-    ItemViewTemplate,
     observable,
     RepeatBehavior,
     RepeatDirective,
@@ -227,7 +226,7 @@ export class DataGrid extends FoundationElement {
      * @public
      */
     @observable
-    public rowItemTemplate: ItemViewTemplate;
+    public rowItemTemplate: ViewTemplate;
 
     /**
      * The template used to render cells in generated rows.
@@ -235,7 +234,7 @@ export class DataGrid extends FoundationElement {
      * @public
      */
     @observable
-    public cellItemTemplate?: ItemViewTemplate;
+    public cellItemTemplate?: ViewTemplate;
 
     /**
      * The template used to render header cells in generated rows.
@@ -243,7 +242,7 @@ export class DataGrid extends FoundationElement {
      * @public
      */
     @observable
-    public headerCellItemTemplate?: ItemViewTemplate;
+    public headerCellItemTemplate?: ViewTemplate;
     private headerCellItemTemplateChanged(): void {
         if (this.$fastController.isConnected) {
             if (this.generatedHeader !== null) {
@@ -290,7 +289,7 @@ export class DataGrid extends FoundationElement {
      * @internal
      */
     @observable
-    public defaultRowItemTemplate: ItemViewTemplate;
+    public defaultRowItemTemplate: ViewTemplate;
 
     /**
      * Set by the component templates.
