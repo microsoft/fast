@@ -28,7 +28,7 @@ describe("The repeat", () => {
         it("returns a RepeatDirective with optional properties set to different values", () => {
             const directive = repeat(
                 () => [],
-                html`test` as ItemViewTemplate,
+                html`test`,
                 {positioning: true, recycle: false}
             ) as RepeatDirective;
             expect(directive).to.be.instanceOf(RepeatDirective);
@@ -126,7 +126,7 @@ describe("The repeat", () => {
                 const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    itemTemplate as ItemViewTemplate,
+                    itemTemplate,
                     {positioning: true, recycle: false}
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
@@ -265,7 +265,7 @@ describe("The repeat", () => {
                 const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    itemTemplate as ItemViewTemplate,
+                    itemTemplate,
                     {positioning: true, recycle: false}
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
@@ -308,7 +308,7 @@ describe("The repeat", () => {
                 const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
-                    itemTemplate as ItemViewTemplate,
+                    itemTemplate,
                     {positioning: true, recycle: false}
                 ) as RepeatDirective;
 
