@@ -5,7 +5,6 @@ import { FASTElementRenderer } from "./fast-element-renderer.js";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
 
-
 @customElement({
     name: "bare-element",
 })
@@ -163,8 +162,24 @@ test.describe("FASTElementRenderer", () => {
             const result = consolidate(templateRenderer.render(html`<test-event-listener data="bubble-success"><test-event-dispatch></test-event-dispatch></test-event-listener>`, defaultRenderInfo));
             expect(result).toBe(`<test-event-listener  data=\"bubble-success\"><template shadowroot=\"open\"></template><test-event-dispatch event-detail=\"bubble-success\"><template shadowroot=\"open\"></template></test-event-dispatch></test-event-listener>`)
         });
-        test("Should bubble events to the document", () => {});
-        test("Should bubble events to the window", () => {});
+        test("Should bubble events to the document", () => {
+            document.addEventListener("test-event", (e) => {
+                (e as any).detail.data = "document-success";
+            });
+            const { templateRenderer, defaultRenderInfo } = fastSSR();
+
+            const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`, defaultRenderInfo));
+            expect(result).toBe(`<test-event-dispatch data=\"document-success\"><template shadowroot=\"open\"></template</test-event-dispatch>`);
+        });
+        test("Should bubble events to the window", () => {
+            window.addEventListener("test-event", (e) => {
+                (e as any).detail.data = "window-success";
+            });
+            const { templateRenderer, defaultRenderInfo } = fastSSR();
+
+            const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`, defaultRenderInfo));
+            expect(result).toBe(`<test-event-dispatch data=\"window-success\"><template shadowroot=\"open\"></template</test-event-dispatch>`);
+        });
         test("Should not bubble an event that invokes event.stopImmediatePropagation()", () => {
             const { templateRenderer, defaultRenderInfo } = fastSSR();
 
