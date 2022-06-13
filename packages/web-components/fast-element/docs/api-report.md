@@ -397,6 +397,7 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
     define<TType extends Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): TType;
+    metadata<TType_1 extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType_1, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType_1>;
 };
 
 // @public
