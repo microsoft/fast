@@ -5,6 +5,7 @@
 import { observable } from "@microsoft/fast-element";
 import { RenderInfo } from "../render-info.js";
 import { escapeHtml } from "../escape-html.js";
+import { Document } from "../dom-shim.js";
 
 type AttributesMap = Map<string, string>;
 
@@ -53,8 +54,11 @@ export abstract class ElementRenderer {
                     if (event.bubbles && !event.cancelBubble) {
                         if (this.parent) {
                             canceled = this.parent.dispatchEvent(event);
-                        } else {
-                            // emit on window
+                        } else if (document instanceof Document) {
+                            // Only emit on document if the document is an instance of the DOM shim's document.
+                            // Otherwise, the Document implementation should have it's own implementation for bubbling events
+                            // to the document and window
+                            canceled = document.dispatchEvent(event);
                         }
                     }
 

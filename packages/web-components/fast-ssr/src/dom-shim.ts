@@ -83,7 +83,7 @@ export class ShadowRoot {}
 /**
  * @beta
  */
-export class Document {
+export class Document extends Node {
     public adoptedStyleSheets: ReadonlyArray<CSSStyleSheet> = [];
     createTreeWalker() {
         return {};
@@ -93,6 +93,16 @@ export class Document {
     }
     createElement() {
         return {};
+    }
+
+    public dispatchEvent(event: Event): boolean {
+        let canceled = super.dispatchEvent(event);
+
+        if (!event.cancelBubble) {
+            canceled = window.dispatchEvent(event);
+        }
+
+        return canceled;
     }
 }
 
@@ -174,31 +184,48 @@ export class MediaQueryList {
 export function createWindow(
     props: { [key: string]: unknown } = {}
 ): { [key: string]: unknown } {
-    const window = {
-        Node,
-        Element,
-        HTMLElement,
-        Document,
-        CustomEvent,
-        CSSStyleSheet,
-        ShadowRoot,
-        CustomElementRegistry,
-        MutationObserver,
-        MediaQueryList,
-        matchMedia: () => new MediaQueryList(),
+    class Window extends EventTarget {
+        public Node = Node;
+        public Element = Element;
+        public HTMLElement = HTMLElement;
+        public Document = Document;
+        public CustomEvent = CustomEvent;
+        public CSSStyleSheet = CSSStyleSheet;
+        public ShadowRoot = ShadowRoot;
+        public CustomElementRegistry = CustomElementRegistry;
+        public MutationObserver = MutationObserver;
+        public MediaQueryList = MediaQueryList;
+        public matchMedia = () => new MediaQueryList();
 
-        // Set below
-        window: undefined as unknown,
-        document: undefined as unknown,
-        customElements: undefined as unknown,
+        // Defined in constructor
+        public window: unknown;
+        public document: unknown;
+        public customElements: unknown;
+        public dispatchEvent: any;
+        public addEventListener: any;
+        public removeEventListener: any;
 
-        // User-provided globals
-        ...props,
-    };
+        constructor(props: { [key: string]: unknown }) {
+            super();
 
-    window.window = window;
-    window.document = new window.Document();
-    window.customElements = new window.CustomElementRegistry();
+            /**
+             * Methods of EventTarget must be assigned explicitly, otherwise they get omitted
+             * when the window is merged into the `globalThis` in {@link installWindowOnGlobal}.
+             */
+            this.dispatchEvent = EventTarget.prototype.dispatchEvent.bind(this);
+            this.addEventListener = EventTarget.prototype.addEventListener.bind(this);
+            this.removeEventListener = EventTarget.prototype.removeEventListener.bind(
+                this
+            );
+
+            Object.assign(this, props);
+            this.window = this;
+            this.document = new this.Document();
+            this.customElements = new this.CustomElementRegistry();
+        }
+    }
+    const window = new Window(props) as any;
+
     return window;
 }
 

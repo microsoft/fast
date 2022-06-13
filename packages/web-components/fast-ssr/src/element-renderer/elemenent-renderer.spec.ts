@@ -169,7 +169,7 @@ test.describe("FASTElementRenderer", () => {
             const { templateRenderer, defaultRenderInfo } = fastSSR();
 
             const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`, defaultRenderInfo));
-            expect(result).toBe(`<test-event-dispatch data=\"document-success\"><template shadowroot=\"open\"></template</test-event-dispatch>`);
+            expect(result).toBe(`<test-event-dispatch event-detail=\"document-success\"><template shadowroot=\"open\"></template></test-event-dispatch>`);
         });
         test("Should bubble events to the window", () => {
             window.addEventListener("test-event", (e) => {
@@ -178,7 +178,7 @@ test.describe("FASTElementRenderer", () => {
             const { templateRenderer, defaultRenderInfo } = fastSSR();
 
             const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`, defaultRenderInfo));
-            expect(result).toBe(`<test-event-dispatch data=\"window-success\"><template shadowroot=\"open\"></template</test-event-dispatch>`);
+            expect(result).toBe(`<test-event-dispatch event-detail=\"window-success\"><template shadowroot=\"open\"></template></test-event-dispatch>`);
         });
         test("Should not bubble an event that invokes event.stopImmediatePropagation()", () => {
             const { templateRenderer, defaultRenderInfo } = fastSSR();
