@@ -321,11 +321,11 @@ describe("Radio Group", () => {
         element.appendChild(radio3);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         element.value = "foo";
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect((element.querySelectorAll("fast-radio")[0] as Radio).checked).to.equal(
             true
