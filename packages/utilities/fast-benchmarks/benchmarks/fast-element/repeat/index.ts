@@ -5,7 +5,6 @@ import {
     ItemViewTemplate,
     observable,
     repeat,
-    ViewTemplate,
 } from "@microsoft/fast-element";
 import {
     generateData,
@@ -15,11 +14,21 @@ import {
 } from "../../../utils/index.js";
 import { queryParams } from "../../../utils/query-params.js";
 
-const { method, ce, itemCount: count = 10, loopCount = 1 } = queryParams;
+const {
+    method,
+    ce,
+    itemCount: count = 10,
+    loopCount: count2 = 1,
+    deleteCount: count3 = 1,
+    addCount: count4 = 1,
+    startIndex: count5 = 0,
+} = queryParams;
 
 const itemCount = parseInt(count as string);
-// const data = generateData(itemCount);
-// const nestedData = generateNestedData(itemCount);
+const loopCount = parseInt(count2 as string);
+const deleteCount = parseInt(count3 as string);
+const addCount = parseInt(count4 as string);
+const startIndex = parseInt(count5 as string);
 
 const templates = {
     repeatBasic: html<XApp>`
@@ -30,7 +39,7 @@ const templates = {
             `
         )}
     `,
-    repeatNoRecycleBasic: html<XApp>`
+    repeatBasicNoRecycle: html<XApp>`
         ${repeat(
             x => x.items,
             html<RandomItem>`
@@ -79,7 +88,7 @@ const templates = {
             `
         )}
     `,
-    repeatNoRecycleNested: html<XApp>`
+    repeatNestedNoRecycle: html<XApp>`
         ${repeat(
             x => x.items,
             html<NestedRandomData>`
@@ -132,77 +141,104 @@ const templates = {
     `,
 })
 class XApp extends FASTElement {
-    @observable items: Array<RandomItem | NestedRandomData> = generateData(itemCount);
-    // @observable nestedItems: NestedRandomData[] = nestedData;
+    @observable items: Array<RandomItem | NestedRandomData> = [];
     @observable method: string = <string>method;
 
     private isNested: boolean = false;
     constructor() {
         super();
-        // this.isNested = this.method.toLowerCase().includes("nested");
-        // this.items = this.isNested
-        //     ? generateNestedData(itemCount)
-        //     : generateData(itemCount);
+        this.isNested = this.method.toLowerCase().includes("nested");
+        this.items = this.isNested
+            ? generateNestedData(itemCount)
+            : generateData(itemCount);
     }
 
     getTemplateByMethod() {
-        return templates[this.method] as ViewTemplate;
+        return templates[this.method];
     }
 
     getClickEvent() {
         switch (ce) {
-            case "inplace-replace":
-                this.inplaceReplace();
+            case "splice":
+                this.splice();
                 break;
-            case "inplace-reverse":
-                this.inplaceReverse();
+            case "reverse":
+                this.reverse();
                 break;
-            // case "append":
-            //     this.append();
-            //     break;
+            case "push":
+                this.push();
+                break;
+            case "unshift":
+                this.unshift();
+                break;
+            case "shift":
+                this.shift();
+                break;
+            case "sort":
+                this.sort();
+                break;
+            case "filter":
+                this.filter();
+                break;
             case "combo":
                 this.combo();
                 break;
+            default:
+                this.push();
+                break;
         }
     }
 
-    inplaceReplace() {
-        // if (this.isNested) {
-        //     for (let i = 0; i < loopCount; i++) {
-        //         this.nestedItems.splice(i, 1, this.nestedItems[i] as NestedRandomData);
-        //     }
-        // } else {
-        // }
-        for (let i = 0; i < loopCount; i++) {
-            // const addOn = this.items[i] as RandomItem | NestedRandomData
-            this.items.splice(i, 1, this.items[i]);
+    splice() {
+        const otherData: Array<RandomItem | NestedRandomData> = generateData(addCount);
+        for (let i = startIndex; i < loopCount; i++) {
+            this.items.splice(i, deleteCount, ...otherData);
         }
     }
 
-    inplaceReverse() {
-        // if (this.isNested) {
-        //     for (let i = 0; i < loopCount; i++) {
-        //         this.nestedItems.reverse();
-        //     }
-        // } else {
-        // }
-        for (let i = 0; i < loopCount; i++) {
+    reverse() {
+        for (let i = startIndex; i <= loopCount; i++) {
             this.items.reverse();
         }
     }
 
-    // append() {
-    //     for (let i = 0; i < loopCount; i++) {
-    //         this.items.push(...(this.items as RandomItem[] | NestedRandomData[]));
-    //         this.items = [];
-    //     }
-    // }
+    push() {
+        const otherData: Array<RandomItem | NestedRandomData> = generateData(addCount);
+        for (let i = startIndex; i < loopCount; i++) {
+            this.items.push(...otherData);
+        }
+    }
+
+    unshift() {
+        const otherData: Array<RandomItem | NestedRandomData> = generateData(addCount);
+        for (let i = startIndex; i < loopCount; i++) {
+            this.items.unshift(...otherData);
+        }
+    }
+
+    shift() {
+        for (let i = startIndex; i <= loopCount; i++) {
+            this.items.shift();
+        }
+    }
+
+    sort() {
+        for (let i = startIndex; i < loopCount; i++) {
+            this.items.sort();
+        }
+    }
+
+    filter() {
+        for (let i = startIndex; i < loopCount - 1; i++) {
+            this.items = this.items.filter(item => item !== this.items[0]);
+        }
+    }
 
     combo() {
-        for (let i = 0; i < 5; i++) {
-            // this.append();
-            this.inplaceReverse();
-            this.inplaceReplace();
+        for (let i = startIndex; i < loopCount; i++) {
+            this.push();
+            this.reverse();
+            this.splice();
             this.items = [];
         }
     }

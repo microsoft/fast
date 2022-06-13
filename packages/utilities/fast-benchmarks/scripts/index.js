@@ -30,6 +30,10 @@ program
         "-bn, --branchName <name>",
         "specify the local git branch name you want to reference, this must be a branch that has been pushed to git"
     )
+    .option(
+        "-s, --script",
+        "specify if you want to run the benchmarks with a special json script"
+    )
     .parse(process.argv);
 
 const options = program.opts();

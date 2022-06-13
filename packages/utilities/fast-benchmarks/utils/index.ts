@@ -2,7 +2,6 @@ export const _random = (max: number) => {
     return Math.round(Math.random() * 1000) % max;
 };
 
-//generate 10k, pass this value in
 export const itemCount = 10000;
 let id = 0;
 let id2 = 0;

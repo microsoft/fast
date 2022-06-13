@@ -1,8 +1,9 @@
 import { mkdir, writeFile } from "fs/promises";
 import { readdir, readFileSync } from "fs";
-import { exec } from "child_process";
+import { exec, execFile } from "child_process";
 import { basename, dirname, extname, join, resolve } from "path";
 import chalk from "chalk";
+import { spawn } from "cross-spawn";
 const errMessage = chalk.hex("#ffb638");
 
 /**
@@ -108,7 +109,6 @@ async function generateHtmlTemplates(
                 }
             } else {
                 // run all possible operations
-                // TODO: reduce dup code
                 for (let i = 0; i < files.length; i++) {
                     const operationFile = files[i];
                     const { name, path } = await generateHtmlTemplate(
@@ -150,6 +150,23 @@ async function getLocalGitBranchName() {
 }
 
 /**
+ * Get script data
+ *  @returns {JSON String}
+ */
+async function runCustomScript({ library, benchmark }) {
+    return new Promise((resolve, reject) => {
+        const args = [`./benchmarks/${library}/${benchmark}/script.js`];
+        const child = execFile("node", args);
+
+        child.stdout.on("data", data => {
+            data ? resolve(data) : reject("Error in running custom script.");
+        });
+    }).catch(error => {
+        return error;
+    });
+}
+
+/**
  * Generates the benchmarks array expected by the tachometer config file.
  * @returns {{operationName: ConfigFile["benchmarks"]}, {}} returns benchmarkHash, where operation name is key and benchmarks array is value
  */
@@ -157,14 +174,15 @@ const FAST_ELEMENT = "fast-element";
 const FAST_FOUNDATION = "fast-foundation";
 const libraryDependencies = {
     [FAST_FOUNDATION]: {
-        "@microsoft/fast-element": "1.9.0",
-        "@microsoft/fast-web-utilities": "5.2.0",
+        "@microsoft/fast-element": "latest",
+        "@microsoft/fast-web-utilities": "latest",
     },
 };
-async function generateBenchmarks(
+export async function generateBenchmarks(
     { library, benchmark, versions, methods, queryParam },
     operationProps,
-    localProps
+    localProps,
+    customQueryParams
 ) {
     const tachoData = {};
     operationProps.names.forEach((operation, idx) => {
@@ -240,14 +258,27 @@ async function generateBenchmarks(
 
             if (methods) {
                 for (let i = 0; i < methods.length; i++) {
-                    const newBench = { ...bench };
                     const method = methods[i];
-                    const fullUrl = queryParam
-                        ? `${url}?method=${method}&${queryParam.join("&")}`
-                        : `${url}?method=${method}`;
-                    newBench.url = fullUrl;
-                    newBench.name = `${benchmark}-${operation}-${method}`;
-                    benchmarks.push(newBench);
+
+                    if (customQueryParams) {
+                        const queryParamsObj = JSON.parse(customQueryParams);
+                        queryParamsObj[method]?.forEach(queryParams => {
+                            const queryParamsStr = queryParams.join("&");
+                            const newBench = { ...bench };
+                            const fullUrl = `${url}?method=${method}&${queryParamsStr}`;
+                            newBench.url = fullUrl;
+                            newBench.name = `${benchmark}-${method}-${queryParamsStr}`;
+                            benchmarks.push(newBench);
+                        });
+                    } else {
+                        const newBench = { ...bench };
+                        const fullUrl = queryParam
+                            ? `${url}?method=${method}&${queryParam.join("&")}`
+                            : `${url}?method=${method}`;
+                        newBench.url = fullUrl;
+                        newBench.name = `${benchmark}-${operation}-${method}`;
+                        benchmarks.push(newBench);
+                    }
                 }
             } else {
                 benchmarks.push(bench);
@@ -329,10 +360,12 @@ export async function generateTemplates(options) {
         }
 
         const operationProps = await generateHtmlTemplates(options, fileName);
+        const customQueryParams = options.script && (await runCustomScript(options));
         const benchmarksHash = await generateBenchmarks(
             options,
             operationProps,
-            localProps
+            localProps,
+            customQueryParams
         );
         const [tachoConfigPaths, pathNames] = await generateConfig(
             fileName,

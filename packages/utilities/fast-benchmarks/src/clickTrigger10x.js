@@ -19,12 +19,12 @@ import {
         const button = shadowRoot.querySelector("button");
         performance.mark(start);
         // click on button to trigger event 10x
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 1; i++) {
             button.click();
         }
         await updateComplete();
         performance.measure(test, start);
-        // destroy(container);
+        destroy(container);
     };
     await clickEvent();
     measureMemory();
