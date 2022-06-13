@@ -270,7 +270,7 @@ export async function generateBenchmarks(
                                 const newBench = { ...bench };
                                 const fullUrl = `${url}?method=${method}&${queryParamsStr}`;
                                 newBench.url = fullUrl;
-                                newBench.name = `${benchmark}-${method}-${queryParamsStr}`;
+                                newBench.name = `${benchmark}-${method}-${clickEvent}`;
                                 benchmarks.push(newBench);
                             }
                         });
@@ -346,7 +346,7 @@ export async function generateTemplates(options) {
     try {
         const tsConfigPath = await generateTsConfig(options);
         const fileName = options.queryParam
-            ? `${options.library}_${options.benchmark}_${options.queryParam}`
+            ? `${options.library}_${options.benchmark}_${options.queryParam[0]}`
             : `${options.library}_${options.benchmark}`;
         // special handling if 'local' version was passed in as an option
         const localProps = { branchName: "", operationProps: {} };
