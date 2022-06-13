@@ -3,5 +3,5 @@
   "comment": "feat: ergo improvements to context, array length, and metadata",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
