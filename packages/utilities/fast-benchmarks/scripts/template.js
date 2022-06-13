@@ -31,7 +31,10 @@ async function writeConfig(name, config, ext = JSON_EXT, dest = ROOT_DIR) {
     await writeFile(configPath, str, "utf8");
     return isRootDir ? join(process.cwd(), configName) : join(dest, configName);
 }
-// create tsconfig.{my-library}.json file and add include path to it
+
+/**
+ * Create tsconfig.{my-library}.json file and add include path to it
+ */
 async function generateTsConfig({ library, benchmark }) {
     const tsConfig = {
         extends: "./tsconfig.json",
@@ -78,11 +81,10 @@ async function generateHtmlTemplates(
     // any operation listed under 'src' folder is eligible
     return new Promise((resolve, reject) => {
         readdir("src", async (err, files) => {
-            //handling error
+            // handling error
             if (err) reject("Unable to scan directory: " + err);
 
             const operationProps = { names: [], htmlPaths: [] };
-
             // handle if specific operations are passed in
             if (operations) {
                 const fileNames = files.map(f => getTestName(f));
@@ -258,7 +260,6 @@ export async function generateBenchmarks(
             if (methods) {
                 for (let i = 0; i < methods.length; i++) {
                     const method = methods[i];
-
                     if (customQueryParams) {
                         const queryParamsObj = JSON.parse(customQueryParams);
                         queryParamsObj[method]?.forEach(queryParams => {
@@ -319,7 +320,6 @@ async function generateConfig(fileName, benchmarksHash) {
                 ...defaultBenchOptions,
                 benchmarks: benchmarksHash[benchmark],
             };
-
             const name = `${fileName}-${benchmark}`;
             const path = await writeConfig(`${name}.config`, config, ".json", "dist");
 
@@ -345,8 +345,10 @@ const LOCAL = "local";
 export async function generateTemplates(options) {
     try {
         const tsConfigPath = await generateTsConfig(options);
-        const fileName = `${options.library}_${options.benchmark}`;
-        //special handling if 'local' version was passed in as an option
+        const fileName = options.queryParam
+            ? `${options.library}_${options.benchmark}_${options.queryParam}`
+            : `${options.library}_${options.benchmark}`;
+        // special handling if 'local' version was passed in as an option
         const localProps = { branchName: "", operationProps: {} };
         if (options.versions.includes(LOCAL)) {
             localProps.branchName = options.branchName
