@@ -3,6 +3,8 @@
  * Please see {@link ../ACKNOWLEDGEMENTS.md}
  */
 
+import { shouldBubble } from "./event-utilities.js";
+
 /**
  * @beta
  */
@@ -98,7 +100,7 @@ export class Document extends Node {
     public dispatchEvent(event: Event): boolean {
         let canceled = super.dispatchEvent(event);
 
-        if (!event.cancelBubble) {
+        if (shouldBubble(event)) {
             canceled = window.dispatchEvent(event);
         }
 

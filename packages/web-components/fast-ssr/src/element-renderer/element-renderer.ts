@@ -6,6 +6,7 @@ import { observable } from "@microsoft/fast-element";
 import { RenderInfo } from "../render-info.js";
 import { escapeHtml } from "../escape-html.js";
 import { Document } from "../dom-shim.js";
+import { shouldBubble } from "../event-utilities.js";
 
 type AttributesMap = Map<string, string>;
 
@@ -51,7 +52,7 @@ export abstract class ElementRenderer {
                 value: (event: Event) => {
                     let canceled = dispatch.call(this.element, event);
 
-                    if (event.bubbles && !event.cancelBubble) {
+                    if (shouldBubble(event)) {
                         if (this.parent) {
                             canceled = this.parent.dispatchEvent(event);
                         } else if (document instanceof Document) {
