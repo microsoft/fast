@@ -18,7 +18,7 @@ import {
         const shadowRoot = el.shadowRoot;
         const button = shadowRoot.querySelector("button");
         performance.mark(start);
-        // click on button to trigger event 10x
+        // click on button to trigger event
         for (let i = 0; i < 1; i++) {
             button.click();
         }

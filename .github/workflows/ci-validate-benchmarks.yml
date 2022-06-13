@@ -29,7 +29,7 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=render --versions latest local --localBenchFile=index2 --branchName=${GITHUB_HEAD_REF} --operations=create10k
+            yarn run benchmark --library=fast-element --benchmark=render --versions master ${GITHUB_HEAD_REF} --operations=create10k
       - name: Upload results
         uses: actions/upload-artifact@v2
         with:
@@ -48,7 +48,7 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=render --versions latest local --localBenchFile=index2 --branchName=${GITHUB_HEAD_REF} --operations=update10th
+            yarn run benchmark --library=fast-element --benchmark=render --versions master ${GITHUB_HEAD_REF} --operations=update10th
       - name: Upload results
         uses: actions/upload-artifact@v2
         with:
@@ -67,7 +67,7 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=render --versions latest local --localBenchFile=index2 --branchName=${GITHUB_HEAD_REF} --operations=createDelete5x
+            yarn run benchmark --library=fast-element --benchmark=render --versions master ${GITHUB_HEAD_REF} --operations=createDelete5x
       - name: Upload results
         uses: actions/upload-artifact@v2
         with:
@@ -86,7 +86,7 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=repeat --versions latest local --branchName=${GITHUB_HEAD_REF} ---methods repeatBasic repeatNoRecycleBasic --operations=clickTrigger10x --queryParam=ce=reverse -s
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} ---methods repeatBasic repeatNoRecycleBasic --operations=clickTrigger10x --queryParam=ce=reverse -s
       - name: Upload results
         uses: actions/upload-artifact@v2
         with:
@@ -94,7 +94,7 @@ jobs:
             path: packages/utilities/fast-benchmarks/results/fast-element_render-createDelete5x.json
   report_results:
     name: Report Results
-    needs: [render_create10k, render_update10th, render_createDelete5x]
+    needs: [render_create10k, render_update10th, render_createDelete5x, repeat_reverse]
     runs-on: ubuntu-latest
     steps:
         - uses: actions/download-artifact@v2

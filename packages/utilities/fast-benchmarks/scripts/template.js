@@ -3,7 +3,6 @@ import { readdir, readFileSync } from "fs";
 import { exec, execFile } from "child_process";
 import { basename, dirname, extname, join, resolve } from "path";
 import chalk from "chalk";
-import { spawn } from "cross-spawn";
 const errMessage = chalk.hex("#ffb638");
 
 /**

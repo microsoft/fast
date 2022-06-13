@@ -106,7 +106,7 @@ export interface DesignSystem {
 
 let rootDesignSystem: DesignSystem | null = null;
 
-const designSystemKey = DI.createInterface<DesignSystem>(x =>
+const designSystemKey = DI.createContext<DesignSystem>(x =>
     x.cachedCallback(handler => {
         if (rootDesignSystem === null) {
             rootDesignSystem = new DefaultDesignSystem(null, handler);
