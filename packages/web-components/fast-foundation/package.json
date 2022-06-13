@@ -18,12 +18,12 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "main": "dist/esm/index.js",
-  "types": "dist/fast-foundation.d.ts",
+  "types": "dist/dts/index.d.ts",
   "unpkg": "dist/fast-foundation.min.js",
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/fast-foundation.d.ts",
+      "types": "./dist/dts/index.d.ts",
       "default": "./dist/esm/index.js"
     },
     "./testing": {
