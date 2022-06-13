@@ -5,7 +5,6 @@
 import { observable } from "@microsoft/fast-element";
 import { RenderInfo } from "../render-info.js";
 import { escapeHtml } from "../escape-html.js";
-import e from "express";
 
 type AttributesMap = Map<string, string>;
 
