@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { TabPanel, tabPanelTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { TabPanel, tabPanelTemplate as template } from "./index.js";
+import { fixture } from "../testing/fixture.js";
 
 const FASTTabPanel = TabPanel.compose({
     baseName: "tab-panel",

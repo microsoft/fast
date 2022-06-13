@@ -9,10 +9,12 @@ import {
     ResolverStrategy,
     singleton,
     transient,
-} from "./di";
+} from "./di.js";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
 import { customElement, FASTElement, html, ref } from "@microsoft/fast-element";
+import { Context } from "@microsoft/fast-element/context";
+import { uniqueElementName } from "../testing/exports.js";
 
 chai.use(spies);
 
@@ -36,6 +38,94 @@ describe(`The DI object`, function () {
                 DI.createContainer(),
                 `DI.createContainer()`
             );
+        });
+    });
+
+    describe("installAsContextRequestStrategy", () => {
+        it(`causes DI to handle Context.request`, () => {
+            const value = "hello world";
+            const TestContext = Context.create<string>("TestContext");
+            const parent = document.createElement("div");
+            const child = document.createElement("div");
+            parent.append(child);
+
+            DI.installAsContextRequestStrategy();
+            DI.getOrCreateDOMContainer().register(
+                Registration.instance(TestContext, value)
+            );
+
+            let capture;
+
+            Context.request(parent, TestContext, response => {
+                capture = response;
+            });
+
+            expect(capture).equal(value);
+
+            Context.setDefaultRequestStrategy(Context.dispatch);
+        });
+
+        it(`causes DI to handle Context.get`, () => {
+            const value = "hello world";
+            const TestContext = Context.create<string>("TestContext");
+            const parent = document.createElement("div");
+            const child = document.createElement("div");
+            parent.append(child);
+
+            DI.installAsContextRequestStrategy();
+            DI.getOrCreateDOMContainer().register(
+                Registration.instance(TestContext, value)
+            );
+
+            let capture = Context.get(child, TestContext);
+
+            expect(capture).equal(value);
+
+            Context.setDefaultRequestStrategy(Context.dispatch);
+        });
+
+        it(`causes DI to handle Context.defineProperty`, () => {
+            const value = "hello world";
+            const TestContext = Context.create<string>("TestContext");
+            const parent = document.createElement("div");
+            const child = document.createElement("div");
+            parent.append(child);
+
+            DI.installAsContextRequestStrategy();
+            DI.getOrCreateDOMContainer().register(
+                Registration.instance(TestContext, value)
+            );
+
+            Context.defineProperty(child, "test", TestContext);
+
+            expect((child as any).test).equal(value);
+
+            Context.setDefaultRequestStrategy(Context.dispatch);
+        });
+
+        it(`causes DI to handle Context decorators`, () => {
+            const value = "hello world";
+            const TestContext = Context.create<string>("TestContext");
+            const elementName = uniqueElementName();
+
+            class TestElement extends HTMLElement {
+                @TestContext test: string;
+            }
+
+            customElements.define(elementName, TestElement);
+
+            const parent = document.createElement("div");
+            const child = document.createElement(elementName) as TestElement;
+            parent.append(child);
+
+            DI.installAsContextRequestStrategy();
+            DI.getOrCreateDOMContainer().register(
+                Registration.instance(TestContext, value)
+            );
+
+            expect(child.test).equal(value);
+
+            Context.setDefaultRequestStrategy(Context.dispatch);
         });
     });
 
@@ -165,10 +255,10 @@ describe(`The DI object`, function () {
         }
     });
 
-    describe(`createInterface()`, function () {
+    describe(`createContext()`, function () {
         it(`returns a function that stringifies its default friendly name`, function () {
-            const sut = DI.createInterface();
-            const expected = "InterfaceSymbol<(anonymous)>";
+            const sut = DI.createContext();
+            const expected = "DIContext<(anonymous)>";
             expect(sut.toString()).equal(expected, `sut.toString() === '${expected}'`);
             expect(String(sut)).equal(expected, `String(sut) === '${expected}'`);
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -176,8 +266,8 @@ describe(`The DI object`, function () {
         });
 
         it(`returns a function that stringifies its configured friendly name`, function () {
-            const sut = DI.createInterface("IFoo");
-            const expected = "InterfaceSymbol<IFoo>";
+            const sut = DI.createContext("IFoo");
+            const expected = "DIContext<IFoo>";
             expect(sut.toString()).equal(expected, `sut.toString() === '${expected}'`);
             expect(String(sut)).equal(expected, `String(sut) === '${expected}'`);
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions

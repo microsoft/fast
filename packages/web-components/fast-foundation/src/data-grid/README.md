@@ -118,13 +118,15 @@ export const myDataGrid = DataGrid.compose({
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters         | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ------------------ | ------ | ----------------- |
-| `handleFocusin`   | public    |             | `e: FocusEvent`    | `void` |                   |
-| `handleFocusout`  | public    |             | `e: FocusEvent`    | `void` |                   |
-| `handleKeydown`   | public    |             | `e: KeyboardEvent` | `void` |                   |
-| `templateChanged` | protected |             |                    | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |                    | `void` | FoundationElement |
+| Name                      | Privacy   | Description | Parameters                                                               | Return | Inherited From    |
+| ------------------------- | --------- | ----------- | ------------------------------------------------------------------------ | ------ | ----------------- |
+| `gridColumnChanged`       | protected |             |                                                                          | `void` |                   |
+| `columnDefinitionChanged` | protected |             | `oldValue: ColumnDefinition or null, newValue: ColumnDefinition or null` | `void` |                   |
+| `handleFocusin`           | public    |             | `e: FocusEvent`                                                          | `void` |                   |
+| `handleFocusout`          | public    |             | `e: FocusEvent`                                                          | `void` |                   |
+| `handleKeydown`           | public    |             | `e: KeyboardEvent`                                                       | `void` |                   |
+| `templateChanged`         | protected |             |                                                                          | `void` | FoundationElement |
+| `stylesChanged`           | protected |             |                                                                          | `void` | FoundationElement |
 
 #### Events
 
@@ -174,13 +176,15 @@ export const myDataGrid = DataGrid.compose({
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters         | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ------------------ | ------ | ----------------- |
-| `handleFocusout`  | public    |             | `e: FocusEvent`    | `void` |                   |
-| `handleCellFocus` | public    |             | `e: Event`         | `void` |                   |
-| `handleKeydown`   | public    |             | `e: KeyboardEvent` | `void` |                   |
-| `templateChanged` | protected |             |                    | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |                    | `void` | FoundationElement |
+| Name                         | Privacy   | Description | Parameters         | Return | Inherited From    |
+| ---------------------------- | --------- | ----------- | ------------------ | ------ | ----------------- |
+| `gridTemplateColumnsChanged` | protected |             |                    | `void` |                   |
+| `rowDataChanged`             | protected |             |                    | `void` |                   |
+| `handleFocusout`             | public    |             | `e: FocusEvent`    | `void` |                   |
+| `handleCellFocus`            | public    |             | `e: Event`         | `void` |                   |
+| `handleKeydown`              | public    |             | `e: KeyboardEvent` | `void` |                   |
+| `templateChanged`            | protected |             |                    | `void` | FoundationElement |
+| `stylesChanged`              | protected |             |                    | `void` | FoundationElement |
 
 #### Events
 
@@ -252,10 +256,14 @@ export const myDataGrid = DataGrid.compose({
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name                         | Privacy   | Description | Parameters | Return | Inherited From    |
+| ---------------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `noTabbingChanged`           | protected |             |            | `void` |                   |
+| `gridTemplateColumnsChanged` | protected |             |            | `void` |                   |
+| `rowsDataChanged`            | protected |             |            | `void` |                   |
+| `columnDefinitionsChanged`   | protected |             |            | `void` |                   |
+| `templateChanged`            | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`              | protected |             |            | `void` | FoundationElement |
 
 #### Attributes
 

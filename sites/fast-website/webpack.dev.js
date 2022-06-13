@@ -1,13 +1,15 @@
-const merge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const baseConfig = require("./webpack.common");
 
 module.exports = merge(baseConfig, {
     devServer: {
-        contentBase: "./src/public",
+        static: {
+            directory: "./src/public",
+        },
         open: true,
         port: 7700,
-        disableHostCheck: true,
+        allowedHosts: "all",
     },
     mode: "development",
     output: {

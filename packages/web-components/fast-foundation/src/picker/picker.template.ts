@@ -44,10 +44,8 @@ export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>> = (
     const pickerMenuTag: string = context.tagFor(PickerMenu);
     const pickerListTag: string = context.tagFor(PickerList);
     const progressRingTag: string = context.tagFor(PickerList);
-    const defaultListItemTemplate: ViewTemplate = createDefaultListItemTemplate(context);
-    const defaultMenuOptionTemplate: ViewTemplate = createDefaultMenuOptionTemplate(
-        context
-    );
+    const defaultListItemTemplate = createDefaultListItemTemplate(context);
+    const defaultMenuOptionTemplate = createDefaultMenuOptionTemplate(context);
     return html<Picker>`
         <template
             :selectedListTag="${() => pickerListTag}"

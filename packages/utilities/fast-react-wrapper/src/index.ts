@@ -120,7 +120,7 @@ function getTagName<TElement, TEvents>(
 ) {
     if (!config.name) {
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        const definition = FASTElementDefinition.forType(type)!;
+        const definition = FASTElementDefinition.getByType(type)!;
 
         if (definition) {
             config.name = definition.name;

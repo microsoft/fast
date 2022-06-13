@@ -1,10 +1,15 @@
 import { html, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import { DataGrid, DataGridCell, DataGridRow } from "../data-grid/index.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { ElementDefinitionContext } from "../design-system/registration-context.js";
-import type { Calendar, CalendarDateInfo, CalendarOptions } from "./calendar.js";
+import type {
+    Calendar,
+    CalendarDateInfo,
+    CalendarOptions,
+    WeekdayText,
+} from "./calendar.js";
 
 /**
  * A basic Calendar title template that includes the month and year
@@ -37,7 +42,7 @@ export const calendarWeekdayTemplate: (
     context: ElementDefinitionContext
 ) => ViewTemplate = context => {
     const cellTag = context.tagFor(DataGridCell);
-    return html`
+    return html<WeekdayText>`
         <${cellTag}
             class="week-day"
             part="week-day"
@@ -134,7 +139,7 @@ export const interactiveCalendarGridTemplate: (
     const gridTag: string = context.tagFor(DataGrid);
     const rowTag: string = context.tagFor(DataGridRow);
 
-    return html`
+    return html<Calendar>`
     <${gridTag} class="days interact" part="days" generate-header="none">
         <${rowTag}
             class="week-days"
@@ -162,25 +167,25 @@ export const interactiveCalendarGridTemplate: (
 export const noninteractiveCalendarTemplate: (todayString: string) => ViewTemplate = (
     todayString: string
 ) => {
-    return html`
+    return html<Calendar>`
         <div class="days" part="days">
             <div class="week-days" part="week-days">
                 ${repeat(
                     x => x.getWeekdayText(),
-                    html`
+                    html<WeekdayText>`
                         <div class="week-day" part="week-day" abbr="${x => x.abbr}">
                             ${x => x.text}
                         </div>
                     `
                 )}
             </div>
-            ${repeat(
+            ${repeat<Calendar>(
                 x => x.getDays(),
-                html`
+                html<CalendarDateInfo[]>`
                     <div class="week">
                         ${repeat(
                             x => x,
-                            html`
+                            html<CalendarDateInfo>`
                                 <div
                                     class="${(x, c) =>
                                         c.parentContext.parent.getDayClassNames(
@@ -237,9 +242,9 @@ export const calendarTemplate: FoundationElementTemplate<
     const todayString: string = `${
         today.getMonth() + 1
     }-${today.getDate()}-${today.getFullYear()}`;
-    return html`
+    return html<Calendar>`
         <template>
-            ${startTemplate}
+            ${startSlotTemplate(context, definition)}
             ${definition.title instanceof Function
                 ? definition.title(context, definition)
                 : definition.title ?? ""}
@@ -249,7 +254,7 @@ export const calendarTemplate: FoundationElementTemplate<
                 interactiveCalendarGridTemplate(context, todayString)
             )}
             ${when(x => x.readonly === true, noninteractiveCalendarTemplate(todayString))}
-            ${endTemplate}
+            ${endSlotTemplate(context, definition)}
         </template>
     `;
 };

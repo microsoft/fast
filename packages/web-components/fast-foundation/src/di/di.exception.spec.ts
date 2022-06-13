@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { DI, optional } from "./di";
+import { DI, optional } from "./di.js";
 
 describe("DI Exception", function () {
     it("No registration for interface", function () {
@@ -7,7 +7,7 @@ describe("DI Exception", function () {
 
         interface Foo {}
 
-        const Foo = DI.createInterface<Foo>("Foo");
+        const Foo = DI.createContext<Foo>("Foo");
 
         class Bar {
             public constructor(@Foo public readonly foo: Foo) {}
@@ -24,7 +24,7 @@ describe("DI Exception", function () {
             parent: Foo | null;
         }
 
-        const Foo = DI.createInterface<Foo>("IFoo", x => x.singleton(FooImpl));
+        const Foo = DI.createContext<Foo>("IFoo", x => x.singleton(FooImpl));
 
         class FooImpl {
             public constructor(@optional(Foo) public parent: Foo) {}

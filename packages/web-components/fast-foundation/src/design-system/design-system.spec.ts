@@ -1,11 +1,11 @@
-import { Constructable, DOM } from "@microsoft/fast-element";
+import { Constructable, DOM, Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { FoundationElement } from "..";
-import { Container, DI, Registration } from "../di";
-import { uniqueElementName } from "../test-utilities/fixture";
-import { DesignSystem, ElementDisambiguation } from "./design-system";
-import type { DesignSystemRegistrationContext } from "./registration-context";
-import { DesignToken } from "../design-token/design-token";
+import { Container, DI, Registration } from "../di/di.js";
+import { uniqueElementName } from "../testing/fixture.js";
+import { DesignSystem, ElementDisambiguation } from "./design-system.js";
+import type { DesignSystemRegistrationContext } from "./registration-context.js";
+import { DesignToken } from "../design-token/design-token.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 describe("DesignSystem", () => {
     it("Should return the same instance for the same element", () => {
@@ -371,7 +371,7 @@ describe("DesignSystem", () => {
         class DefaultTest implements Test {}
         class AltTest implements Test {}
 
-        const Test = DI.createInterface<Test>(x => x.singleton(DefaultTest));
+        const Test = DI.createContext<Test>(x => x.singleton(DefaultTest));
 
         const host = document.createElement("div");
         DesignSystem.getOrCreate(host)
@@ -395,11 +395,11 @@ describe("DesignSystem", () => {
             });
 
 
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("12");
 
         DesignToken.unregisterRoot();
-        await DOM.nextUpdate();
+        await Updates.next();
     });
 
     it("should provide a way to specify the DesignToken root", async () => {
@@ -414,12 +414,12 @@ describe("DesignSystem", () => {
             });
 
 
-        await DOM.nextUpdate();
+        await Updates.next();
         const value = host.style.getPropertyValue(token.cssCustomProperty)
         expect(value).to.equal("12");
         expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
         DesignToken.unregisterRoot(host);
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
     });
     it("should provide a way to disable DesignToken root registration", async () => {
@@ -433,7 +433,7 @@ describe("DesignSystem", () => {
             });
 
 
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
     });
 });

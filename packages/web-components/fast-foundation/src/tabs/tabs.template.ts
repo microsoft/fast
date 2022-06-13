@@ -15,22 +15,22 @@ export const tabsTemplate: FoundationElementTemplate<ViewTemplate<Tabs>, TabsOpt
     <template class="${x => x.orientation}">
         ${startSlotTemplate(context, definition)}
         <div class="tablist" part="tablist" role="tablist">
-            <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>
+            <slot name="tab" ${slotted("tabs")}></slot>
 
             ${when(
                 x => x.showActiveIndicator,
                 html<Tabs>`
                     <div
                         ${ref("activeIndicatorRef")}
-                        class="activeIndicator"
-                        part="activeIndicator"
+                        class="active-indicator"
+                        part="active-indicator"
                     ></div>
                 `
             )}
         </div>
         ${endSlotTemplate(context, definition)}
         <div class="tabpanel">
-            <slot name="tabpanel" part="tabpanel" ${slotted("tabpanels")}></slot>
+            <slot name="tabpanel" ${slotted("tabpanels")}></slot>
         </div>
     </template>
 `;

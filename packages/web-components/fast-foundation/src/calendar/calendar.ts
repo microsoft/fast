@@ -53,6 +53,12 @@ export type CalendarDateInfo = {
 };
 
 /**
+ * Calendar weekday text.
+ * @public
+ */
+export type WeekdayText = { text: string; abbr?: string };
+
+/**
  * Calendar configuration options
  * @public
  */
@@ -95,7 +101,7 @@ export class Calendar extends FoundationElement {
      */
     @attr
     public locale: string = "en-US";
-    private localeChanged(): void {
+    protected localeChanged(): void {
         this.dateFormatter.locale = this.locale;
     }
 
@@ -119,7 +125,7 @@ export class Calendar extends FoundationElement {
      */
     @attr({ attribute: "day-format", mode: "fromView" })
     public dayFormat: DayFormat = "numeric";
-    private dayFormatChanged(): void {
+    protected dayFormatChanged(): void {
         this.dateFormatter.dayFormat = this.dayFormat;
     }
 
@@ -129,7 +135,7 @@ export class Calendar extends FoundationElement {
      */
     @attr({ attribute: "weekday-format", mode: "fromView" })
     public weekdayFormat: WeekdayFormat = "short";
-    private weekdayFormatChanged(): void {
+    protected weekdayFormatChanged(): void {
         this.dateFormatter.weekdayFormat = this.weekdayFormat;
     }
 
@@ -139,7 +145,7 @@ export class Calendar extends FoundationElement {
      */
     @attr({ attribute: "month-format", mode: "fromView" })
     public monthFormat: MonthFormat = "long";
-    private monthFormatChanged(): void {
+    protected monthFormatChanged(): void {
         this.dateFormatter.monthFormat = this.monthFormat;
     }
 
@@ -149,7 +155,7 @@ export class Calendar extends FoundationElement {
      */
     @attr({ attribute: "year-format", mode: "fromView" })
     public yearFormat: YearFormat = "numeric";
-    private yearFormatChanged(): void {
+    protected yearFormatChanged(): void {
         this.dateFormatter.yearFormat = this.yearFormat;
     }
 
@@ -318,7 +324,7 @@ export class Calendar extends FoundationElement {
      * @returns An array of weekday text and full text if abbreviated
      * @public
      */
-    public getWeekdayText(): { text: string; abbr?: string }[] {
+    public getWeekdayText(): WeekdayText[] {
         const weekdayText: {
             text: string;
             abbr?: string;

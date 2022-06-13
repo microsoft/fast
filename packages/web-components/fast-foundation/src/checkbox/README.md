@@ -76,6 +76,40 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
 
 
 
+### class: `FormAssociatedCheckbox`
+
+#### Superclass
+
+| Name        | Module                                   | Package |
+| ----------- | ---------------------------------------- | ------- |
+| `_Checkbox` | src/checkbox/checkbox.form-associated.ts |         |
+
+#### Mixins
+
+| Name                      | Module                                  | Package |
+| ------------------------- | --------------------------------------- | ------- |
+| `CheckableFormAssociated` | /src/form-associated/form-associated.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `proxy`         |         |                                       |         |                                                                                                                                                                                     |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+<hr/>
+
+
+
 ### class: `Checkbox`
 
 #### Superclass
@@ -99,6 +133,7 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
 
 | Name              | Privacy   | Description | Parameters | Return | Inherited From    |
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `readOnlyChanged` | protected |             |            | `void` |                   |
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 

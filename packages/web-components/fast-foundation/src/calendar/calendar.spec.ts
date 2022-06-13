@@ -1,8 +1,8 @@
-import { customElement, DOM, html } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../test-utilities/fixture";
-import { Calendar, calendarTemplate } from "./index";
-import { DateFormatter } from "./date-formatter";
+import { fixture } from "../testing/fixture.js";
+import { Calendar, calendarTemplate } from "./index.js";
+import { DateFormatter } from "./date-formatter.js";
 import {
     dataGridTemplate,
     DataGrid,
@@ -10,7 +10,7 @@ import {
     DataGridRow,
     dataGridRowTemplate,
     dataGridCellTemplate
-} from "../data-grid/index";
+} from "../data-grid/index.js";
 
 
 const FASTDataGridCell = DataGridCell.compose({
@@ -54,7 +54,7 @@ async function setup(props?: {}) {
 
     await connect();
 
-    await DOM.nextUpdate();
+    await Updates.next();
 
     return { document, element, connect, disconnect };
 }
@@ -264,7 +264,7 @@ describe("Calendar", () => {
         it("Should be 31 days in January", async () => {
             const { element, disconnect } = await setup({month: 1, year: 2021});
 
-            await DOM.nextUpdate();
+            await Updates.next();
             const info = (element as Calendar).getMonthInfo();
             expect(info.length).to.equal(31);
 

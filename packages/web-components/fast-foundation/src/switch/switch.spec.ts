@@ -1,7 +1,7 @@
 import { expect, assert } from "chai";
-import { Switch, switchTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { Switch, switchTemplate as template } from "./index.js";
+import { fixture } from "../testing/fixture.js";
+import { Updates } from "@microsoft/fast-element";
 import { keySpace, keyEnter } from "@microsoft/fast-web-utilities";
 
 const FASTSwitch = Switch.compose({
@@ -37,7 +37,7 @@ describe("Switch", () => {
 
         element.checked = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("false");
 
@@ -77,7 +77,7 @@ describe("Switch", () => {
 
         element.disabled = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-disabled")).to.equal("false");
 
@@ -105,7 +105,7 @@ describe("Switch", () => {
 
         element.readOnly = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-readonly")).to.equal("false");
 
@@ -233,7 +233,7 @@ describe("Switch", () => {
                 wasClicked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.click();
 
@@ -257,7 +257,7 @@ describe("Switch", () => {
                 wasInvoked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.dispatchEvent(event);
 
@@ -281,7 +281,7 @@ describe("Switch", () => {
                 wasInvoked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.dispatchEvent(event);
 

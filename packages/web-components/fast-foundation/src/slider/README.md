@@ -121,6 +121,40 @@ export const mySliderLabel = SliderLabel.compose({
 
 
 
+### class: `FormAssociatedSlider`
+
+#### Superclass
+
+| Name      | Module                               | Package |
+| --------- | ------------------------------------ | ------- |
+| `_Slider` | src/slider/slider.form-associated.ts |         |
+
+#### Mixins
+
+| Name             | Module                                  | Package |
+| ---------------- | --------------------------------------- | ------- |
+| `FormAssociated` | /src/form-associated/form-associated.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `proxy`         |         |                                       |         |                                                                                                                                                                                     |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+<hr/>
+
+
+
 ### class: `Slider`
 
 #### Superclass
@@ -151,6 +185,7 @@ export const mySliderLabel = SliderLabel.compose({
 
 | Name                             | Privacy   | Description                                 | Parameters             | Return | Inherited From    |
 | -------------------------------- | --------- | ------------------------------------------- | ---------------------- | ------ | ----------------- |
+| `readOnlyChanged`                | protected |                                             |                        | `void` |                   |
 | `increment`                      | public    | Increment the value by the step             |                        | `void` |                   |
 | `decrement`                      | public    | Decrement the value by the step             |                        | `void` |                   |
 | `setThumbPositionForOrientation` | public    | Places the thumb based on the current value | `direction: Direction` | `void` |                   |
@@ -227,6 +262,7 @@ export const mySliderLabel = SliderLabel.compose({
 
 | Name              | Privacy   | Description | Parameters | Return | Inherited From    |
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `positionChanged` | protected |             |            | `void` |                   |
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 

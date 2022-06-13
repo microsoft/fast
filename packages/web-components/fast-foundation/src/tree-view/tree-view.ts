@@ -1,4 +1,4 @@
-import { attr, DOM, observable } from "@microsoft/fast-element";
+import { attr, observable, Updates } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
     isHTMLElement,
@@ -44,8 +44,9 @@ export class TreeView extends FoundationElement {
      *
      * @internal
      */
-    @observable slottedTreeItems: HTMLElement[];
-    private slottedTreeItemsChanged(): void {
+    @observable
+    public slottedTreeItems: HTMLElement[];
+    protected slottedTreeItemsChanged(): void {
         if (this.$fastController.isConnected) {
             // update for slotted children change
             this.setItems();
@@ -114,7 +115,7 @@ export class TreeView extends FoundationElement {
     public connectedCallback(): void {
         super.connectedCallback();
         this.setAttribute("tabindex", "0");
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             this.setItems();
         });
     }

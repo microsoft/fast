@@ -206,8 +206,6 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | `button`          | The button which serves to invoke the item               |
 | `heading-content` | Wraps the slot for the heading content within the button |
 | `icon`            | The icon container                                       |
-| `expanded-icon`   | The expanded icon slot                                   |
-| `collapsed-icon`  | The collapsed icon                                       |
 | `region`          | The wrapper for the accordion item content               |
 
 #### Slots

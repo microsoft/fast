@@ -1,4 +1,10 @@
-import { Behavior, DOM, HTMLDirective } from "@microsoft/fast-element";
+import {
+    AddViewBehaviorFactory,
+    Behavior,
+    HTMLDirective,
+    Markup,
+    ViewBehaviorTargets,
+} from "@microsoft/fast-element";
 import {
     NavigationCommitPhaseHook,
     NavigationPhaseHook,
@@ -8,7 +14,7 @@ import { Router } from "./router.js";
 import { RouterExecutionContext } from "./view.js";
 
 /**
- * @alpha
+ * @beta
  */
 export type NavigationContributor<TSettings = any> = Partial<
     Record<Exclude<NavigationPhaseName, "commit">, NavigationPhaseHook<TSettings>>
@@ -17,7 +23,7 @@ export type NavigationContributor<TSettings = any> = Partial<
 };
 
 /**
- * @alpha
+ * @beta
  */
 export function isNavigationPhaseContributor<T extends NavigationPhaseName>(
     object: any,
@@ -27,7 +33,7 @@ export function isNavigationPhaseContributor<T extends NavigationPhaseName>(
 }
 
 /**
- * @alpha
+ * @beta
  */
 export type ContributorOptions = {
     lifecycle?: boolean;
@@ -39,19 +45,25 @@ const defaultOptions: ContributorOptions = {
     parameters: true,
 };
 
-class NavigationContributorDirective extends HTMLDirective {
-    constructor(private options: Required<ContributorOptions>) {
-        super();
+class NavigationContributorDirective implements HTMLDirective {
+    id: string;
+    nodeId: string;
+
+    constructor(private options: Required<ContributorOptions>) {}
+
+    createHTML(add: AddViewBehaviorFactory) {
+        return Markup.attribute(add(this));
     }
 
-    createPlaceholder(index: number) {
-        return DOM.createCustomAttributePlaceholder("fast-navigation-contributor", index);
-    }
-
-    createBehavior(target: HTMLElement) {
-        return new NavigationContributorBehavior(target, this.options);
+    createBehavior(targets: ViewBehaviorTargets) {
+        return new NavigationContributorBehavior(
+            targets[this.nodeId] as HTMLElement & NavigationContributor,
+            this.options
+        );
     }
 }
+
+HTMLDirective.define(NavigationContributorDirective);
 
 class NavigationContributorBehavior implements Behavior {
     private router: Router | null = null;
@@ -85,9 +97,11 @@ class NavigationContributorBehavior implements Behavior {
 }
 
 /**
- * @alpha
+ * @beta
  */
-export function navigationContributor(options?: ContributorOptions): HTMLDirective {
+export function navigationContributor(
+    options?: ContributorOptions
+): NavigationContributorDirective {
     return new NavigationContributorDirective(
         Object.assign({}, defaultOptions, options) as Required<ContributorOptions>
     );

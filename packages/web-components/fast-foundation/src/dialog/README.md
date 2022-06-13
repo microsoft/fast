@@ -65,9 +65,9 @@ export const myDialog = Dialog.compose({
 
 | Name              | Privacy | Type                                  | Default | Description                                                                                                                                                                                                   | Inherited From    |
 | ----------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `modal`           | public  | `boolean`                             | `true`  | Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal overlay.  Clicks on the overlay will cause the dialog to emit a "dismiss" event. |                   |
+| `modal`           | public  | `boolean`                             | `false` | Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal overlay.  Clicks on the overlay will cause the dialog to emit a "dismiss" event. |                   |
 | `hidden`          | public  | `boolean`                             | `false` | The hidden state of the element.                                                                                                                                                                              |                   |
-| `trapFocus`       | public  | `boolean`                             | `true`  | Indicates that the dialog should trap focus.                                                                                                                                                                  |                   |
+| `noFocusTrap`     | public  | `boolean`                             | `false` | Indicates that the dialog should not trap focus.                                                                                                                                                              |                   |
 | `ariaDescribedby` | public  | `string`                              |         | The id of the element describing the dialog.                                                                                                                                                                  |                   |
 | `ariaLabelledby`  | public  | `string`                              |         | The id of the element labeling the dialog.                                                                                                                                                                    |                   |
 | `ariaLabel`       | public  | `string`                              |         | The label surfaced to assistive technologies.                                                                                                                                                                 |                   |
@@ -97,7 +97,7 @@ export const myDialog = Dialog.compose({
 | ------------------ | --------------- | -------------- |
 |                    | modal           |                |
 |                    | hidden          |                |
-| `trap-focus`       | trapFocus       |                |
+| `no-focus-trap`    | noFocusTrap     |                |
 | `aria-describedby` | ariaDescribedby |                |
 | `aria-labelledby`  | ariaLabelledby  |                |
 | `aria-label`       | ariaLabel       |                |

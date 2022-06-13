@@ -1,9 +1,8 @@
 import { expect } from "chai";
-import { Accordion, accordionTemplate as template } from "./index";
-import { AccordionItem, accordionItemTemplate as itemTemplate } from "../accordion-item";
-import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
-import { AccordionExpandMode } from "./accordion";
+import { Accordion, accordionTemplate as template, AccordionExpandMode } from "./index.js";
+import { AccordionItem, accordionItemTemplate as itemTemplate } from "../accordion-item/index.js";
+import { fixture } from "../testing/fixture.js";
+import { Updates } from "@microsoft/fast-element";
 
 const FASTAccordion = Accordion.compose({
     baseName: "accordion",
@@ -36,7 +35,7 @@ describe("Accordion", () => {
         element.expandmode = AccordionExpandMode.multi;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("expand-mode")).to.equal(AccordionExpandMode.multi);
 
@@ -49,7 +48,7 @@ describe("Accordion", () => {
         element.expandmode = AccordionExpandMode.single;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("expand-mode")).to.equal(AccordionExpandMode.single);
 
@@ -60,7 +59,7 @@ describe("Accordion", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect((element as Accordion).expandmode).to.equal(AccordionExpandMode.multi);
         expect(element.getAttribute("expand-mode")).to.equal(AccordionExpandMode.multi);

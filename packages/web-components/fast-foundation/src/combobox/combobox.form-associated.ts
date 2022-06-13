@@ -7,7 +7,7 @@ interface _Combobox extends FormAssociated {}
 /**
  * A form-associated base class for the {@link (Combobox:class)} component.
  *
- * @internal
+ * @beta
  */
 export class FormAssociatedCombobox extends FormAssociated(_Combobox) {
     proxy = document.createElement("input");

@@ -1,16 +1,18 @@
 {
   "name": "@microsoft/fast-web-utilities",
   "description": "FAST web utilities",
-  "version": "5.4.1",
+  "version": "6.0.0",
   "sideEffects": false,
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
   },
+  "homepage": "https://www.fast.design/",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "packages/utilities/fast-web-utilities"
   },
   "bugs": {
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
@@ -62,11 +64,11 @@
     "karma-mocha-reporter": "^2.2.5",
     "karma-source-map-support": "^1.4.0",
     "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^4.0.2",
+    "karma-webpack": "^5.0.0",
     "mocha": "^7.1.2",
     "prettier": "2.0.2",
     "ts-loader": "^4.0.1",
-    "typescript": "^4.6.2"
+    "typescript": "^4.7.0"
   },
   "dependencies": {
     "exenv-es6": "^1.1.1"

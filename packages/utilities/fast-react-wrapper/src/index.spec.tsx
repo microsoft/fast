@@ -1,10 +1,10 @@
-import { attr, customElement, DOM, FASTElement, html, nullableNumberConverter, observable } from '@microsoft/fast-element';
+import { attr, customElement, DOM, FASTElement, html, nullableNumberConverter, observable, Updates } from '@microsoft/fast-element';
 import React from "react";
 import ReactDOM from "react-dom";
-import { uniqueElementName } from '@microsoft/fast-foundation/dist/esm/test-utilities/fixture';
+import { uniqueElementName } from '@microsoft/fast-foundation/testing';
 import { expect } from "chai";
 import { DesignSystem, FoundationElement } from "@microsoft/fast-foundation";
-import { provideReactWrapper } from './index';
+import { provideReactWrapper } from './index.js';
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 type CustomElementProperties = {
@@ -298,7 +298,7 @@ for (const scenario of scenarios) {
         rnum: 5,
       });
 
-      await DOM.nextUpdate();
+      await Updates.next();
 
       const firstEl = el;
       expect(el.rbool).equal(true);
@@ -315,7 +315,7 @@ for (const scenario of scenarios) {
         rnum: 10,
       });
 
-      await DOM.nextUpdate();
+      await Updates.next();
 
       expect(firstEl).equal(el);
       expect(el.rbool).equal(false);

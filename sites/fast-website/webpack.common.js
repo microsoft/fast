@@ -35,17 +35,13 @@ module.exports = {
                 ],
             },
             {
-                test: /\.js$/,
-                use: "babel-loader",
-            },
-            {
                 test: /\.css$/,
                 exclude: /node_modules/,
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            hmr: process.env.NODE_ENV === "development",
+                            esModule: false,
                         },
                     },
                     {
@@ -55,14 +51,7 @@ module.exports = {
             },
             {
                 test: /\.svg$/,
-                use: [
-                    {
-                        loader: "svg-inline-loader",
-                        options: {
-                            removeSVGTagAttrs: false,
-                        },
-                    },
-                ],
+                type: "asset/resource",
             },
             {
                 test: /\.ejs$/,

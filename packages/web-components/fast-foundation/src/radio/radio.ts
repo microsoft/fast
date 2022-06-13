@@ -41,7 +41,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
-    private readOnlyChanged(): void {
+    protected readOnlyChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
@@ -124,9 +124,10 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     }
 
     /**
-     * @internal
+     * Handles key presses on the radio.
+     * @beta
      */
-    public keypressHandler = (e: KeyboardEvent): boolean | void => {
+    public keypressHandler(e: KeyboardEvent): boolean | void {
         switch (e.key) {
             case keySpace:
                 if (!this.checked && !this.readOnly) {
@@ -136,10 +137,11 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
         }
 
         return true;
-    };
+    }
 
     /**
-     * @internal
+     * Handles clicks on the radio.
+     * @beta
      */
     public clickHandler(e: MouseEvent): boolean | void {
         if (!this.disabled && !this.readOnly && !this.checked) {

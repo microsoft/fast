@@ -2,7 +2,7 @@
 id: blazor
 title: Blazor
 sidebar_label: Blazor
-custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/blazor.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/integrations/blazor.md
 description: FAST works seamlessly with Blazor, including integration with Blazor's binding engine and components. Let's take a look at how to set things up.
 keywords:
   - blazor
@@ -143,7 +143,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
 		await BaseLayerLuminance.SetValueFor(ref1!.Element, (float)0.15);
 
 		//Set to Excel color
-		await AccentBaseColor.SetValueFor(ref2!.Element, "#185ABD".ToColor());
+		await AccentBaseColor.SetValueFor(ref2!.Element, "#185ABD".ToSwatch());
 
 		//Set the font
 		await BodyFont.SetValueFor(ref3!.Element, "Comic Sans MS");
@@ -166,7 +166,9 @@ public async Task OnClick()
 ```
 As can be seen in the code above (with the `ref4.Element`), it is posible to apply multiple tokens to the same component. 
 
-For Design Tokens that work with a color value, it is needed to add the `ToColor()` extension method on the string value. This converts the string into a RGB value that the Design Token can operate with. Internally we are using the `System.Drawing.Color` struct for this and this means you can use all the available methods, operators, etc from that namespace in your code too.
+For Design Tokens that work with a color value, you must call the `ToSwatch()` extension method on a string value or use one of the `Swatch` constructors. This makes sure the color is using a format that Design Tokens can handle. A `Swatch` has a lot of commonality with the `System.Drawing.Color` struct. Instead of the values of the components being between 0 and 255, in a `Swatch` they are expressed as a value between 0 and 1. 
+
+
 
 :::important
 

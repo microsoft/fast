@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { all, DI, Container, Registration } from "./di";
+import { all, DI, Container, Registration } from "./di.js";
 
 describe("Container#.getAll", function () {
     let container: Container;
@@ -43,7 +43,7 @@ describe("Container#.getAll", function () {
             id: number;
         }
 
-        const IAttrPattern = DI.createInterface<IAttrPattern>("IAttrPattern");
+        const IAttrPattern = DI.createContext<IAttrPattern>("IAttrPattern");
         // eslint-disable
         for (const searchAncestors of [true, false])
             for (const regInChild of [true, false])

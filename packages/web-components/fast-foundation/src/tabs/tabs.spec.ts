@@ -1,9 +1,9 @@
-import { assert, expect } from "chai";
-import { css, DOM, customElement, html } from "@microsoft/fast-element";
-import { fixture } from "../test-utilities/fixture";
-import { Tab, tabTemplate } from "../tab";
-import { TabPanel, tabPanelTemplate } from "../tab-panel";
-import { TabsOrientation, Tabs, tabsTemplate as template } from "./index";
+import { expect } from "chai";
+import { css, Updates } from "@microsoft/fast-element";
+import { fixture } from "../testing/fixture.js";
+import { Tab, tabTemplate } from "../tab/index.js";
+import { TabPanel, tabPanelTemplate } from "../tab-panel/index.js";
+import { TabsOrientation, Tabs, tabsTemplate as template } from "./index.js";
 
 const FASTTab = Tab.compose({
     baseName: "tab",
@@ -89,28 +89,38 @@ describe("Tabs", () => {
 
         element.orientation = TabsOrientation.vertical;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.classList.contains(TabsOrientation.vertical)).to.equal(true);
         await disconnect();
     });
 
-    it("should set a property equal to activeIndicator when `activeIndicator` property is true", async () => {
+    it("should set a property equal to hideActiveIndicator when `hideActiveIndicator` property is true", async () => {
         const { element, connect, disconnect } = await setup();
-        element.setAttribute("activeIndicator", "false");
+        element.setAttribute("hide-active-indicator", "true");
 
         await connect();
 
-        expect(element.activeindicator).to.equal(false);
+        expect(element.hideActiveIndicator).to.equal(true);
 
         await disconnect();
     });
 
-    it("should render an internal element with a class of 'activeIndicator' when `activeIndicator` is true", async () => {
+    it("should set a default value of `hideActiveIndicator` to false", async () => {
         const { element, connect, disconnect } = await setup();
         await connect();
 
-        expect(element.shadowRoot?.querySelector(".activeIndicator")).to.exist;
+        expect(element.hideActiveIndicator).to.equal(false);
+        expect(element.hasAttribute("hide-active-indicator")).to.equal(false);
+
+        await disconnect();
+    });
+
+    it("should render an internal element with a class of 'active-indicator' when `hide-active-indicator` is false", async () => {
+        const { element, connect, disconnect } = await setup();
+        await connect();
+
+        expect(element.shadowRoot?.querySelector(".active-indicator")).to.exist;
 
         await disconnect();
     });
@@ -208,7 +218,7 @@ describe("Tabs", () => {
         element.appendChild(newPanel);
         element.insertBefore(newTab, element.querySelector("fast-tab-panel"));
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         tabId0 = element.querySelectorAll("fast-tab")[0]?.getAttribute("id");
         tabId1 = element.querySelectorAll("fast-tab")[1]?.getAttribute("id");
@@ -295,7 +305,7 @@ describe("Tabs", () => {
         element.appendChild(newPanel);
         element.insertBefore(newTab, element.querySelector("fast-tab-panel"));
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         tabpanelId0 = element.querySelectorAll("fast-tab-panel")[0]?.getAttribute("id");
         tabpanelId1 = element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("id");
@@ -383,7 +393,7 @@ describe("Tabs", () => {
                     .be.true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             tab2.click();
 
@@ -497,7 +507,7 @@ describe("Tabs", () => {
             element.activeid = "tab1";
             const tab3 = element.querySelectorAll("fast-tab")[2] as Tab;
             tab3.disabled = true;
-            await DOM.nextUpdate();
+            await Updates.next();
             tab3.click();
 
             expect(element.activeid).to.equal("tab1");
@@ -527,7 +537,7 @@ describe("Tabs", () => {
             element.activeid = "tab1";
             const tab3 = element.querySelectorAll("fast-tab")[2] as Tab;
             tab3.disabled = false;
-            await DOM.nextUpdate();
+            await Updates.next();
             tab3.click();
 
             expect(element.activeid).to.equal("tab3");

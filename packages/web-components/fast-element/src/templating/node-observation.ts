@@ -1,6 +1,9 @@
-import type { Behavior } from "../observation/behavior.js";
-import { Accessor, Observable } from "../observation/observable.js";
+import type { ExecutionContext } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
+import {
+    StatelessAttachedAttributeDirective,
+    ViewBehaviorTargets,
+} from "./html-directive.js";
 
 /**
  * Options for configuring node observation behavior.
@@ -29,101 +32,105 @@ export interface NodeBehaviorOptions<T = any> {
  */
 export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
 
+const selectElements = (value: Node): boolean => value.nodeType === 1;
+
 /**
  * Creates a function that can be used to filter a Node array, selecting only elements.
  * @param selector - An optional selector to restrict the filter to.
  * @public
  */
-export function elements(selector?: string): ElementsFilter {
-    if (selector) {
-        return function (value: Node, index: number, array: Node[]): boolean {
-            return value.nodeType === 1 && (value as HTMLElement).matches(selector);
-        };
-    }
-
-    return function (value: Node, index: number, array: Node[]): boolean {
-        return value.nodeType === 1;
-    };
-}
+export const elements = (selector?: string): ElementsFilter =>
+    selector
+        ? value => value.nodeType === 1 && (value as HTMLElement).matches(selector)
+        : selectElements;
 
 /**
  * A base class for node observation.
- * @internal
+ * @public
+ * @remarks
+ * Internally used by the SlottedDirective and the ChildrenDirective.
  */
-export abstract class NodeObservationBehavior<T extends NodeBehaviorOptions>
-    implements Behavior {
-    private source: any = null;
-    private shouldUpdate!: boolean;
-
-    /**
-     * Creates an instance of NodeObservationBehavior.
-     * @param target - The target to assign the nodes property on.
-     * @param options - The options to use in configuring node observation.
-     */
-    constructor(protected target: HTMLElement, protected options: T) {}
-
-    /**
-     * Begins observation of the nodes.
-     */
-    public abstract observe(): void;
-
-    /**
-     * Disconnects observation of the nodes.
-     */
-    public abstract disconnect(): void;
-
-    /**
-     * Retrieves the nodes that should be assigned to the target.
-     */
-    protected abstract getNodes(): Node[];
+export abstract class NodeObservationDirective<
+    T extends NodeBehaviorOptions
+> extends StatelessAttachedAttributeDirective<T> {
+    private sourceProperty = `${this.id}-s`;
 
     /**
      * Bind this behavior to the source.
      * @param source - The source to bind to.
      * @param context - The execution context that the binding is operating within.
+     * @param targets - The targets that behaviors in a view can attach to.
      */
-    public bind(source: any): void {
-        const name = this.options.property;
-        this.shouldUpdate = Observable.getAccessors(source).some(
-            (x: Accessor) => x.name === name
-        );
-        this.source = source;
-        this.updateTarget(this.computeNodes());
-
-        if (this.shouldUpdate) {
-            this.observe();
-        }
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
+        const target = targets[this.nodeId] as any;
+        target[this.sourceProperty] = source;
+        this.updateTarget(source, this.computeNodes(target));
+        this.observe(target);
     }
 
     /**
      * Unbinds this behavior from the source.
      * @param source - The source to unbind from.
+     * @param context - The execution context that the binding is operating within.
+     * @param targets - The targets that behaviors in a view can attach to.
      */
-    public unbind(): void {
-        this.updateTarget(emptyArray);
-        this.source = null;
-
-        if (this.shouldUpdate) {
-            this.disconnect();
-        }
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
+        const target = targets[this.nodeId] as any;
+        this.updateTarget(source, emptyArray);
+        this.disconnect(target);
+        target[this.sourceProperty] = null;
     }
 
-    /** @internal */
-    public handleEvent(): void {
-        this.updateTarget(this.computeNodes());
+    /**
+     * Gets the data source for the target.
+     * @param target - The target to get the source for.
+     * @returns The source.
+     */
+    protected getSource(target: Node) {
+        return target[this.sourceProperty];
     }
 
-    private computeNodes(): Node[] {
-        let nodes = this.getNodes();
+    /**
+     * Updates the source property with the computed nodes.
+     * @param source - The source object to assign the nodes property to.
+     * @param value - The nodes to assign to the source object property.
+     */
+    protected updateTarget(source: any, value: ReadonlyArray<any>): void {
+        source[this.options.property] = value;
+    }
 
-        if (this.options.filter !== void 0) {
+    /**
+     * Computes the set of nodes that should be assigned to the source property.
+     * @param target - The target to compute the nodes for.
+     * @returns The computed nodes.
+     * @remarks
+     * Applies filters if provided.
+     */
+    protected computeNodes(target: any): Node[] {
+        let nodes = this.getNodes(target);
+
+        if ("filter" in this.options) {
             nodes = nodes.filter(this.options.filter!);
         }
 
         return nodes;
     }
 
-    private updateTarget(value: ReadonlyArray<any>): void {
-        this.source[this.options.property] = value;
-    }
+    /**
+     * Begins observation of the nodes.
+     * @param target - The target to observe.
+     */
+    protected abstract observe(target: any): void;
+
+    /**
+     * Disconnects observation of the nodes.
+     * @param target - The target to unobserve.
+     */
+    protected abstract disconnect(target: any): void;
+
+    /**
+     * Retrieves the raw nodes that should be assigned to the source property.
+     * @param target - The target to get the node to.
+     */
+    protected abstract getNodes(target: any): Node[];
 }

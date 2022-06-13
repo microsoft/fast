@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-colors",
   "entries": [
     {
+      "date": "Wed, 01 Jun 2022 17:53:14 GMT",
+      "tag": "@microsoft/fast-colors_v5.3.1",
+      "version": "5.3.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "update api extractor and typescript to use the latest versions",
+            "author": "chhol@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-colors"
+          },
+          {
+            "comment": "chore: update package.json metadata",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-colors"
+          },
+          {
+            "comment": "Bump @microsoft/eslint-config-fast-dna to v2.1.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-colors"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Upgrade TypeScript",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-colors"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 27 Apr 2022 07:21:09 GMT",
       "tag": "@microsoft/fast-colors_v5.3.0",
       "version": "5.3.0",

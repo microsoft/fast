@@ -1,5 +1,3 @@
-import { $global } from "@microsoft/fast-element";
-
 /**
  *  A service to batch intersection event callbacks so multiple elements can share a single observer
  *
@@ -55,7 +53,7 @@ export class IntersectionService {
      * initialize intersection detector
      */
     private initializeIntersectionDetector = (): void => {
-        if (!$global.IntersectionObserver) {
+        if (!globalThis.IntersectionObserver) {
             //intersection observer not supported
             return;
         }

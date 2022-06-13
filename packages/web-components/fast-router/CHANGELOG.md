@@ -1,8 +1,25 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Tue, 24 May 2022 07:10:02 GMT and should not be manually modified.
+This log was last generated on Wed, 01 Jun 2022 17:53:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.1
+
+Wed, 01 Jun 2022 17:53:14 GMT
+
+### Changes
+
+- fix: update router to work with new template primitives (roeisenb@microsoft.com)
+- fix: update router to new directive APIs. (roeisenb@microsoft.com)
+- chore: remove rollup of router (roeisenb@microsoft.com)
+- Upgrade TypeScript (nicholasrice@users.noreply.github.com)
+- Set prerelease version (nicholasrice@users.noreply.github.com)
+- chore: configure fast-router for internals stripping (roeisenb@microsoft.com)
+- refactor: new design for execution context (roeisenb@microsoft.com)
+- Update the fast-router with the updates to fast-element 2.0 APIs (7559015+janechu@users.noreply.github.com)
+- fix: update to latest fast-element utilities (roeisenb@microsoft.com)
+- Fixed an updated export from FAST element 2.0 (7559015+janechu@users.noreply.github.com)
 
 ## 0.4.2
 

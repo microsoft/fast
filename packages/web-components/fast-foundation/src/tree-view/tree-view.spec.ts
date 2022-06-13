@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { TreeView, treeViewTemplate as template } from "./index";
-import { TreeItem, treeItemTemplate as itemTemplate } from "../tree-item";
-import { fixture } from "../test-utilities/fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { TreeView, treeViewTemplate as template } from "./index.js";
+import { TreeItem, treeItemTemplate as itemTemplate } from "../tree-item/index.js";
+import { fixture } from "../testing/fixture.js";
+import { Updates } from "@microsoft/fast-element";
 
 const FASTTreeView = TreeView.compose({
     baseName: "tree-view",
@@ -46,7 +46,7 @@ describe("TreeView", () => {
         item1.appendChild(nestedItem);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(item1.classList.contains("nested")).to.equal(true);
         expect(item2.classList.contains("nested")).to.equal(true);
@@ -66,12 +66,12 @@ describe("TreeView", () => {
         element.appendChild(item3);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         item3.click();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(item3.getAttribute("aria-selected")).to.equal("true");
 
@@ -89,14 +89,14 @@ describe("TreeView", () => {
         element.appendChild(item3);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         item3.click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item3.getAttribute("aria-selected")).to.equal("true");
 
         item2.click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item3.getAttribute("aria-selected")).to.equal("false");
         expect(item2.getAttribute("aria-selected")).to.equal("true");
 
@@ -114,14 +114,14 @@ describe("TreeView", () => {
         element.appendChild(item3);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         item3.click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item3.getAttribute("aria-selected")).to.equal("true");
 
         item3.click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item3.getAttribute("aria-selected")).to.equal("false");
 
         await disconnect();

@@ -1,10 +1,9 @@
 import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
-import { fixture } from "../test-utilities/fixture";
-import { tooltipTemplate as template, Tooltip } from "./index";
-import { TooltipPosition } from "./tooltip";
-import { AnchoredRegion, anchoredRegionTemplate } from '../anchored-region';
-import { contentRect } from "../utilities/resize-observer";
+import { Updates } from "@microsoft/fast-element";
+import { fixture } from "../testing/fixture.js";
+import { tooltipTemplate as template, Tooltip } from "./index.js";
+import { TooltipPosition } from "./tooltip.js";
+import { AnchoredRegion, anchoredRegionTemplate } from '../anchored-region/index.js';
 
 const FASTTooltip = Tooltip.compose({
     baseName: "tooltip",
@@ -41,7 +40,7 @@ describe("Tooltip", () => {
         tooltip.delay = 0;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(tooltip.tooltipVisible).to.equal(false);
         expect(tooltip.shadowRoot?.querySelector("fast-anchored-region")).to.equal(null);
@@ -57,7 +56,7 @@ describe("Tooltip", () => {
         tooltip.delay = 0;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(tooltip.tooltipVisible).to.equal(true);
         expect(tooltip.shadowRoot?.querySelector("fast-anchored-region")).not.to.equal(
@@ -75,7 +74,7 @@ describe("Tooltip", () => {
         tooltip.delay = 0;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(tooltip.tooltipVisible).to.equal(false);
         expect(tooltip.shadowRoot?.querySelector("fast-anchored-region")).to.equal(null);
