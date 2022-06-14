@@ -15,8 +15,8 @@ import {
 import { queryParams } from "../../../utils/query-params.js";
 
 const {
+    template,
     method,
-    ce,
     itemCount: count = 10,
     loopCount: count2 = 1,
     deleteCount: count3 = 1,
@@ -31,7 +31,7 @@ const addCount = parseInt(count4 as string);
 const startIndex = parseInt(count5 as string);
 
 const templates = {
-    repeatBasic: html<XApp>`
+    basic: html<XApp>`
         ${repeat(
             x => x.items,
             html<RandomItem>`
@@ -39,7 +39,7 @@ const templates = {
             `
         )}
     `,
-    repeatBasicNoRecycle: html<XApp>`
+    basicNoRecycle: html<XApp>`
         ${repeat(
             x => x.items,
             html<RandomItem>`
@@ -48,7 +48,7 @@ const templates = {
             { positioning: true, recycle: false }
         )}
     `,
-    repeatNested: html<XApp>`
+    nested: html<XApp>`
         ${repeat(
             x => x.items,
             html<NestedRandomData>`
@@ -88,7 +88,7 @@ const templates = {
             `
         )}
     `,
-    repeatNestedNoRecycle: html<XApp>`
+    nestedNoRecycle: html<XApp>`
         ${repeat(
             x => x.items,
             html<NestedRandomData>`
@@ -136,29 +136,29 @@ const templates = {
     template: html<XApp>`
         <div>
             <button @click="${x => x.getClickEvent()}">Click Me</button>
-            ${x => x.getTemplateByMethod()}
+            ${x => x.getTemplateType()}
         </div>
     `,
 })
 class XApp extends FASTElement {
     @observable items: Array<RandomItem | NestedRandomData> = [];
-    @observable method: string = <string>method;
+    @observable template: string = <string>template;
 
     private isNested: boolean = false;
     constructor() {
         super();
-        this.isNested = this.method.toLowerCase().includes("nested");
+        this.isNested = this.template.toLowerCase().includes("nested");
         this.items = this.isNested
             ? generateNestedData(itemCount)
             : generateData(itemCount);
     }
 
-    getTemplateByMethod() {
-        return templates[this.method];
+    getTemplateType() {
+        return templates[this.template];
     }
 
     getClickEvent() {
-        switch (ce) {
+        switch (method) {
             case "splice":
                 this.splice();
                 break;

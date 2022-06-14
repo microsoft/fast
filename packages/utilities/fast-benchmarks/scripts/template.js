@@ -72,16 +72,17 @@ async function generateHtmlTemplate(operationFile, compiledJsBench, fileName) {
     const path = await writeConfig(fileName + "-" + name, defaultHtml, ".html", "dist");
     return { name, path };
 }
+
+const DEFAULT_BENCH_FILE = "index";
 async function generateHtmlTemplates(
     { library, benchmark, operations },
     fileName,
-    benchFile = "index"
+    benchFile = DEFAULT_BENCH_FILE
 ) {
     const compiledJsBench = `../benchmarks/${library}/${benchmark}/${benchFile}.js`;
     // any operation listed under 'src' folder is eligible
     return new Promise((resolve, reject) => {
         readdir("src", async (err, files) => {
-            // handling error
             if (err) reject("Unable to scan directory: " + err);
 
             const operationProps = { names: [], htmlPaths: [] };
@@ -180,7 +181,7 @@ const libraryDependencies = {
     },
 };
 export async function generateBenchmarks(
-    { library, benchmark, versions, methods, queryParam },
+    { library, benchmark, versions, templates, method, queryParam },
     operationProps,
     localProps,
     customQueryParams
@@ -249,7 +250,7 @@ export async function generateBenchmarks(
                 };
             }
 
-            // add fast-foundation manually, need to find a way to extract and add dynamically
+            // add fast-foundation manually, TODO: need to find a way to extract and add dynamically
             if (library !== FAST_ELEMENT) {
                 bench.packageVersions.dependencies = {
                     ...bench.packageVersions.dependencies,
@@ -257,30 +258,35 @@ export async function generateBenchmarks(
                 };
             }
 
-            if (methods) {
-                for (let i = 0; i < methods.length; i++) {
-                    const method = methods[i];
+            if (method) {
+                for (let i = 0; i < templates.length; i++) {
+                    const template = templates[i];
                     if (customQueryParams) {
                         const queryParamsObj = JSON.parse(customQueryParams);
-                        queryParamsObj[method]?.forEach(queryParams => {
+                        queryParamsObj[template]?.forEach(queryParams => {
                             const clickEvent = queryParams[0];
                             // only generate benchmarks for the ce user passed in
-                            if (clickEvent === queryParam[0]) {
-                                const queryParamsStr = queryParams.join("&");
+                            if (clickEvent === method) {
+                                const queryStr = queryParams.join("&");
                                 const newBench = { ...bench };
-                                const fullUrl = `${url}?method=${method}&${queryParamsStr}`;
+                                const fullUrl = `${url}?template=${template}&method=${method}&${queryStr}`;
                                 newBench.url = fullUrl;
-                                newBench.name = `${benchmark}-${method}-${clickEvent}`;
+                                newBench.name = queryParam
+                                    ? `${benchmark}-${template}-${method}-${queryStr}`
+                                    : `${benchmark}-${template}-${method}`;
                                 benchmarks.push(newBench);
                             }
                         });
                     } else {
                         const newBench = { ...bench };
+                        const queryStr = queryParam.join("&");
                         const fullUrl = queryParam
-                            ? `${url}?method=${method}&${queryParam.join("&")}`
-                            : `${url}?method=${method}`;
+                            ? `${url}?template=${template}&method=${method}&${queryStr}`
+                            : `${url}?template=${template}&method=${method}`;
                         newBench.url = fullUrl;
-                        newBench.name = `${benchmark}-${operation}-${method}`;
+                        newBench.name = queryParam
+                            ? `${benchmark}-${template}-${method}-${queryStr}`
+                            : `${benchmark}-${template}-${method}`;
                         benchmarks.push(newBench);
                     }
                 }
@@ -323,6 +329,7 @@ async function generateConfig(fileName, benchmarksHash) {
             const name = `${fileName}-${benchmark}`;
             const path = await writeConfig(`${name}.config`, config, ".json", "dist");
 
+            console.log(fileName, "b", benchmark, "name", name);
             pathNames.push(name);
             pathsPromises.push(path);
         }
@@ -345,8 +352,8 @@ const LOCAL = "local";
 export async function generateTemplates(options) {
     try {
         const tsConfigPath = await generateTsConfig(options);
-        const fileName = options.queryParam
-            ? `${options.library}_${options.benchmark}_${options.queryParam[0]}`
+        const fileName = options.method
+            ? `${options.library}_${options.benchmark}_${options.method}`
             : `${options.library}_${options.benchmark}`;
         // special handling if 'local' version was passed in as an option
         const localProps = { branchName: "", operationProps: {} };

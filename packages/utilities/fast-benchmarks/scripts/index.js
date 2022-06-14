@@ -14,8 +14,12 @@ program
         "specify available versions, you can also use names of github branches"
     )
     .option(
-        "-m, --methods [methods...]",
-        "specify different methods through url query params for one version you want to benchmark"
+        "-t, --templates [templates...]",
+        "specify different templates you want to benchmark"
+    )
+    .option(
+        "-m, --method <name>",
+        "specify a single method you want to benchmark"
     )
     .option("-q, --queryParam [queries...]", "add query params you want to add to url")
     .option(
