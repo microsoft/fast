@@ -2,8 +2,10 @@
 id: acknowledgements
 title: Acknowledgements
 sidebar_label: Acknowledgements
-custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/resources/acknowledgements.md
 description: There are many great open source projects that have inspired us and enabled us to build FAST.
+keywords:
+  - acknowledgements
 ---
 
 There are many great open source projects that have inspired us and enabled us to build FAST. Below are a few that stand out.

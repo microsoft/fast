@@ -2,8 +2,10 @@
 id: angular
 title: Angular
 sidebar_label: Angular
-custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/angular.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/integrations/angular.md
 description: FAST integrates nicely with Angular. Let's take a look at how you can set up an Angular project, starting from scratch.
+keywords:
+  - angular
 ---
 
 FAST integrates nicely with Angular. Let's take a look at how you can set up an Angular project, starting from scratch.
