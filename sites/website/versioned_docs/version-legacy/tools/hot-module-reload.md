@@ -2,8 +2,10 @@
 id: hot-module-reload
 title: Hot Module Reload
 sidebar_label: Hot Module Reload
-custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/tools/hot-module-reload.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/tools/hot-module-reload.md
 description: Hot Module Replacement (HMR) allows your web components to be updated as you develop, without needing a full refresh of the browser.
+keywords:
+  - hot module reload
 ---
 
 Hot Module Replacement (HMR) allows your web components to be updated as you develop, without needing a full refresh of the browser. The [Open Web Components](https://open-wc.org/) project maintains a number of tools and libraries for working with Web Components, including a plugin for enabling HMR with FAST Web Components.
