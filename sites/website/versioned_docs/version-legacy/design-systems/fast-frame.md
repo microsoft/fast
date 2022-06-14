@@ -2,7 +2,7 @@
 id: fast-frame
 title: The FAST Frame Design System 
 sidebar_label: FAST Frame Design System
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/fast-frame.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/design-systems/fast-frame.md
 description: A highly configurable Design System composed of Web Components, Design Tokens, stylesheets, and styling tools.
 keywords:
     - fast frame design system

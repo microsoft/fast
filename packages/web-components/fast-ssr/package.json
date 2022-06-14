@@ -35,10 +35,10 @@
   },
   "description": "A package for rendering FAST Web Components outside the browser.",
   "main": "./dist/esm/exports.js",
-  "types": "./dist/fast-ssr.d.ts",
+  "types": "./dist/dts/exports.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/fast-ssr.d.ts",
+      "types": "./dist/dts/exports.d.ts",
       "default": "./dist/esm/exports.js"
     },
     "./install-dom-shim": "./dist/esm/install-dom-shim.js",

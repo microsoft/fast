@@ -1,9 +1,9 @@
 import {
     attr,
-    ItemViewTemplate,
     observable,
     RepeatBehavior,
     RepeatDirective,
+    ViewTemplate,
 } from "@microsoft/fast-element";
 import {
     eventFocusOut,
@@ -83,7 +83,7 @@ export class DataGridRow extends FoundationElement {
      * @public
      */
     @observable
-    public cellItemTemplate?: ItemViewTemplate;
+    public cellItemTemplate?: ViewTemplate;
     private cellItemTemplateChanged(): void {
         this.updateItemTemplate();
     }
@@ -94,7 +94,7 @@ export class DataGridRow extends FoundationElement {
      * @public
      */
     @observable
-    public headerCellItemTemplate?: ItemViewTemplate;
+    public headerCellItemTemplate?: ViewTemplate;
     private headerCellItemTemplateChanged(): void {
         this.updateItemTemplate();
     }
@@ -122,7 +122,7 @@ export class DataGridRow extends FoundationElement {
      * @internal
      */
     @observable
-    public activeCellItemTemplate?: ItemViewTemplate;
+    public activeCellItemTemplate?: ViewTemplate;
 
     /**
      * The default cell item template.  Set by the component templates.
@@ -130,7 +130,7 @@ export class DataGridRow extends FoundationElement {
      * @internal
      */
     @observable
-    public defaultCellItemTemplate?: ItemViewTemplate;
+    public defaultCellItemTemplate?: ViewTemplate;
 
     /**
      * The default header cell item template.  Set by the component templates.
@@ -138,7 +138,7 @@ export class DataGridRow extends FoundationElement {
      * @internal
      */
     @observable
-    public defaultHeaderCellItemTemplate?: ItemViewTemplate;
+    public defaultHeaderCellItemTemplate?: ViewTemplate;
 
     /**
      * Children that are cells

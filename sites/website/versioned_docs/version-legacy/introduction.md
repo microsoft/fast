@@ -2,8 +2,9 @@
 id: introduction
 title: Introduction
 sidebar_label: Introduction
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/introduction.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/introduction.md
 keywords:
+  - introduction
   - web components
 ---
 
