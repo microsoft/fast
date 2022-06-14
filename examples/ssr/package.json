@@ -1,0 +1,31 @@
+
+{
+  "name": "fast-ssr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/main.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+  },
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "homepage": "https://www.fast.design/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "examples/ssr"
+  },
+  "dependencies": {
+    "@microsoft/fast-element": "^2.0.0-beta.1",
+    "@microsoft/fast-ssr": "1.0.0-beta.2",
+    "express": "^4.18.1",
+    "tslib": "^2.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.3"
+  }
+}
