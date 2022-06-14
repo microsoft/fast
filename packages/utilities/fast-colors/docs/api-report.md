@@ -74,6 +74,9 @@ export interface CenteredRescaleConfig {
 export function clamp(i: number, min: number, max: number): number;
 
 // @public
+export function clampToAngleDegrees(theta: number, min: number, max: number): number;
+
+// @public
 export enum ColorBlendMode {
     // (undocumented)
     Burn = 0,
@@ -107,6 +110,32 @@ export class ColorHSL {
     // (undocumented)
     readonly l: number;
     roundToPrecision(precision: number): ColorHSL;
+    // (undocumented)
+    readonly s: number;
+    toObject(): {
+        h: number;
+        s: number;
+        l: number;
+    };
+}
+
+// @public
+export class ColorHSLUV {
+    constructor(hue: number, sat: number, lum: number);
+    clamp(): ColorHSLUV;
+    equalValue(rhs: ColorHSLUV): boolean;
+    static fromObject(data: {
+        h: number;
+        s: number;
+        l: number;
+    }): ColorHSLUV | null;
+    // (undocumented)
+    readonly h: number;
+    // (undocumented)
+    readonly l: number;
+    // (undocumented)
+    static m: number[][];
+    roundToPrecision(precision: number): ColorHSLUV;
     // (undocumented)
     readonly s: number;
     toObject(): {
@@ -203,6 +232,56 @@ export class ColorLCH {
         c: number;
         h: number;
     };
+}
+
+// @public
+export class ColorLCHUV {
+    constructor(l: number, c: number, h: number);
+    // (undocumented)
+    readonly c: number;
+    clamp(): ColorLCHUV;
+    equalValue(rhs: ColorLCHUV): boolean;
+    static fromObject(data: {
+        l: number;
+        c: number;
+        h: number;
+    }): ColorLCHUV | null;
+    // (undocumented)
+    readonly h: number;
+    // (undocumented)
+    readonly l: number;
+    roundToPrecision(precision: number): ColorLCHUV;
+    toObject(): {
+        l: number;
+        c: number;
+        h: number;
+    };
+}
+
+// @public
+export class ColorLUV {
+    constructor(l: number, u: number, v: number);
+    equalValue(rhs: ColorLUV): boolean;
+    static fromObject(data: {
+        l: number;
+        u: number;
+        v: number;
+    }): ColorLUV | null;
+    // (undocumented)
+    readonly l: number;
+    roundToPrecision(precision: number): ColorLUV;
+    toObject(): {
+        l: number;
+        u: number;
+        v: number;
+    };
+    // (undocumented)
+    readonly u: number;
+    static readonly uPrimeR: number;
+    // (undocumented)
+    readonly v: number;
+    // (undocumented)
+    static readonly vPrimeR: number;
 }
 
 // @public
@@ -339,7 +418,7 @@ export class ComponentStateColorPalette {
     static readonly defaultPaletteConfig: ComponentStateColorPaletteConfig;
     // (undocumented)
     palette: ColorRGBA64[];
-    }
+}
 
 // @public
 export interface ComponentStateColorPaletteConfig {
@@ -387,6 +466,9 @@ export function generateScaledPalettes(input: ColorRGBA64, shortPaletteLength?: 
 };
 
 // @public
+export function getForegroundColor(input: ColorRGBA64, dark?: ColorRGBA64, light?: ColorRGBA64): ColorRGBA64;
+
+// @public
 export function getHexStringForByte(i: number): string;
 
 // @public
@@ -420,6 +502,12 @@ export class Histogram {
 
 // @public
 export function hslToRGB(hsl: ColorHSL, alpha?: number): ColorRGBA64;
+
+// @public
+export function hsluvToLCH(hsluv: ColorHSLUV): ColorLCHUV;
+
+// @public
+export function hsluvToRGB(hsluv: ColorHSLUV, alpha?: number): ColorRGBA64;
 
 // @public
 export function hsvToRGB(hsv: ColorHSV, alpha?: number): ColorRGBA64;
@@ -497,6 +585,15 @@ export function lchToLAB(lch: ColorLCH): ColorLAB;
 export function lchToRGB(lch: ColorLCH, alpha?: number): ColorRGBA64;
 
 // @public
+export function lchuvToHSLUV(lch: ColorLCHUV): ColorHSLUV;
+
+// @public
+export function lchuvToLUV(lch: ColorLCHUV): ColorLUV;
+
+// @public
+export function lchuvToRGB(lch: ColorLCHUV, alpha?: number): ColorRGBA64;
+
+// @public
 export function lerp(i: number, min: number, max: number): number;
 
 // @public
@@ -510,6 +607,15 @@ export function lightenViaLAB(input: ColorRGBA64, amount: number, darkenConstant
 
 // @public
 export function loadImageData(source: string): Promise<ImageData>;
+
+// @public
+export function luvToLCHUV(luv: ColorLUV): ColorLCHUV;
+
+// @public
+export function luvToRGB(luv: ColorLUV, alpha?: number): ColorRGBA64;
+
+// @public
+export function luvToXYZ(luv: ColorLUV): ColorXYZ;
 
 // @public
 export function matchLightnessIndex(input: ColorRGBA64, reference: ColorRGBA64[]): number;
@@ -661,10 +767,19 @@ export function quantizeHistogram(histogram: Histogram, config?: QuantizeConfig)
 export function radiansToDegrees(i: number): number;
 
 // @public
+export function reduceAngleDegrees(theta: number): number;
+
+// @public
+export function reducePrecisionSmall(i: number, digits: number): number;
+
+// @public
 export function rescale(input: ColorRGBA64[], targetSize: number, preserveInputColors: boolean): ColorRGBA64[];
 
 // @public
 export function rgbToHSL(rgb: ColorRGBA64): ColorHSL;
+
+// @public
+export function rgbToHSLUV(rgb: ColorRGBA64): ColorHSLUV;
 
 // @public
 export function rgbToHSV(rgb: ColorRGBA64): ColorHSV;
@@ -676,7 +791,13 @@ export function rgbToLAB(rgb: ColorRGBA64): ColorLAB;
 export function rgbToLCH(rgb: ColorRGBA64): ColorLCH;
 
 // @public
+export function rgbToLCHUV(rgb: ColorRGBA64): ColorLCHUV;
+
+// @public
 export function rgbToLinearLuminance(rgb: ColorRGBA64): number;
+
+// @public
+export function rgbToLUV(rgb: ColorRGBA64): ColorLUV;
 
 // @public
 export function rgbToRelativeLuminance(rgb: ColorRGBA64): number;
@@ -700,8 +821,10 @@ export function temperatureToRGB(tempKelvin: number, alpha?: number): ColorRGBA6
 export function xyzToLAB(xyz: ColorXYZ): ColorLAB;
 
 // @public
-export function xyzToRGB(xyz: ColorXYZ, alpha?: number): ColorRGBA64;
+export function xyzToLUV(xyz: ColorXYZ): ColorLUV;
 
+// @public
+export function xyzToRGB(xyz: ColorXYZ, alpha?: number): ColorRGBA64;
 
 // (No @packageDocumentation comment for this package)
 

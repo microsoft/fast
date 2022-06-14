@@ -2,9 +2,16 @@ import { ColorHSL } from "./color-hsl.js";
 import { ColorHSV } from "./color-hsv.js";
 import { ColorLAB } from "./color-lab.js";
 import { ColorLCH } from "./color-lch.js";
+import { ColorLCHUV } from "./color-lchuv.js";
+import { ColorHSLUV } from "./color-hsluv.js";
+import { ColorLUV } from "./color-luv.js";
 import { ColorRGBA64 } from "./color-rgba-64.js";
 import { ColorXYZ } from "./color-xyz.js";
-import { degreesToRadians, radiansToDegrees } from "./math-utilities.js";
+import {
+    degreesToRadians,
+    radiansToDegrees,
+    reduceAngleDegrees,
+} from "./math-utilities.js";
 
 // All hue values are in degrees rather than radians or normalized
 // All conversions use the D65 2 degree white point for XYZ
@@ -519,6 +526,306 @@ export function rgbToLCH(rgb: ColorRGBA64): ColorLCH {
  */
 export function lchToRGB(lch: ColorLCH, alpha: number = 1): ColorRGBA64 {
     return labToRGB(lchToLAB(lch), alpha);
+}
+
+/**
+ * Convert a {@link @microsoft/fast-colors#ColorLCH} to a {@link @microsoft/fast-colors#ColorLUV}
+ * @param lch - the color to convert
+ *
+ * @public
+ */
+export function lchuvToLUV(lch: ColorLCHUV): ColorLUV {
+    const hueRadians: number = degreesToRadians(lch.h);
+    const u: number = Math.cos(hueRadians) * lch.c;
+    const v: number = Math.sin(hueRadians) * lch.c;
+
+    return new ColorLUV(lch.l, u, v);
+}
+
+/**
+ * Convert a {@link @microsoft/fast-colors#ColorLUV} to a {@link @microsoft/fast-colors#ColorLCHUV}
+ * Like any conversion from a cylindrical coordinate system this uses atan2 and so has a discontinuity
+ * when both luv.u and luv.v are very near 0. Any input with both luv.u and luv.v near 0 is assumed
+ * to have an output hue of 0.
+ * @param luv - the color to convert
+ * @returns
+ *
+ * @public
+ */
+export function luvToLCHUV(luv: ColorLUV): ColorLCHUV {
+    const c: number = Math.sqrt(luv.u * luv.u + luv.v * luv.v);
+    let h: number = 0;
+    // Deal with the discontinuity if both v and u are very near 0
+    // if both are then h should just stay 0
+    if (Math.abs(luv.v) > 0.0001 || Math.abs(luv.u) > 0.0001) {
+        const hueRadians: number = Math.atan2(luv.v, luv.u);
+        h = reduceAngleDegrees(radiansToDegrees(hueRadians));
+    }
+    return new ColorLCHUV(luv.l, c, h);
+}
+
+/**
+ * Convert a {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorLCHUV}
+ * @param rgb - the color to convert. the alpha value is ignored.
+ * @returns
+ *
+ * @public
+ */
+export function rgbToLCHUV(rgb: ColorRGBA64): ColorLCHUV {
+    return luvToLCHUV(rgbToLUV(rgb));
+}
+
+/**
+ * Convert a {@link @microsoft/fast-colors#ColorLCHUV} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * @param lch - the color to convert
+ * @param alpha - the alpha value of the output
+ *
+ * @public
+ */
+export function lchuvToRGB(lch: ColorLCHUV, alpha: number = 1): ColorRGBA64 {
+    return luvToRGB(lchuvToLUV(lch), alpha);
+}
+
+/**
+ * Convert a {@link @microsoft/fast-colors#ColorXYZ} to a {@link @microsoft/fast-colors#ColorLUV}
+ * @param xyz - the color to convert
+ *
+ * @public
+ */
+export function xyzToLUV(xyz: ColorXYZ): ColorLUV {
+    const yR: number = xyz.y / ColorXYZ.whitePoint.y;
+    const uPrime: number = (4 * xyz.x) / (xyz.x + 15 * xyz.y + 3 * xyz.z);
+    const vPrime: number = (9 * xyz.y) / (xyz.x + 15 * xyz.y + 3 * xyz.z);
+
+    if (isNaN(uPrime) || isNaN(vPrime)) {
+        return new ColorLUV(0, 0, 0);
+    }
+
+    let l: number = 0;
+    if (xyz.y > ColorLAB.epsilon) {
+        l = 116 * Math.pow(yR, 1 / 3) - 16;
+    } else {
+        l = ColorLAB.kappa * yR;
+    }
+    if (Math.abs(l) < 0.00001) {
+        return new ColorLUV(0, 0, 0);
+    }
+
+    const u: number = 13 * l * (uPrime - ColorLUV.uPrimeR);
+    const v: number = 13 * l * (vPrime - ColorLUV.vPrimeR);
+
+    return new ColorLUV(l, u, v);
+}
+
+/**
+ * Convert a {@link @microsoft/fast-colors#ColorLUV} to a {@link @microsoft/fast-colors#ColorXYZ}
+ * @param luv - the color to convert
+ *
+ * @public
+ */
+export function luvToXYZ(luv: ColorLUV): ColorXYZ {
+    if (Math.abs(luv.l) < 0.00001) {
+        return new ColorXYZ(0, 0, 0);
+    }
+    let y: number = 0;
+    if (luv.l > ColorLAB.kappa * ColorLAB.epsilon) {
+        y = Math.pow((luv.l + 16) / 116, 3);
+    } else {
+        y = luv.l / ColorLAB.kappa;
+    }
+
+    const a: number =
+        (1 / 3) * ((52 * luv.l) / (luv.u + 13 * luv.l * ColorLUV.uPrimeR) - 1);
+    const b: number = -5 * y;
+    const c: number = -1 / 3;
+    const d: number = y * ((39 * luv.l) / (luv.v + 13 * luv.l * ColorLUV.vPrimeR) - 5);
+
+    const x: number = (d - b) / (a - c);
+    const z: number = x * a + b;
+
+    if (isNaN(x) || isNaN(z)) {
+        return new ColorXYZ(0, 0, 0);
+    }
+
+    return new ColorXYZ(x, y, z);
+}
+
+/**
+ * Convert a {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorLUV}
+ * @param rgb - the color to convert. the alpha value is ignored.
+ *
+ * @public
+ */
+export function rgbToLUV(rgb: ColorRGBA64): ColorLUV {
+    return xyzToLUV(rgbToXYZ(rgb));
+}
+
+/**
+ * Convert a {@link @microsoft/fast-colors#ColorLUV} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * @param luv - the color to convert
+ * @param alpha - the alpha value of the output
+ *
+ * @public
+ */
+export function luvToRGB(luv: ColorLUV, alpha: number = 1): ColorRGBA64 {
+    return xyzToRGB(luvToXYZ(luv), alpha);
+}
+
+/**
+ * Helper function used in converting ColorHSLUV
+ * Based on https://github.com/hsluv/hsluv-csharp/blob/master/Hsluv/Hsluv.cs
+ */
+function getBounds(l: number): number[][] {
+    const retVal: number[][] = [];
+
+    const sub1: number = Math.pow(l + 16, 3) / 1560896;
+    const sub2: number = sub1 > ColorLAB.epsilon ? sub1 : l / ColorLAB.kappa;
+
+    // This would probably be easier expressed as a matrix operation. Think about it.
+    for (let c: number = 0; c < 3; ++c) {
+        const m1: number = ColorHSLUV.m[c][0];
+        const m2: number = ColorHSLUV.m[c][1];
+        const m3: number = ColorHSLUV.m[c][2];
+
+        for (let t: number = 0; t < 2; ++t) {
+            const top1: number = (284517 * m1 - 94839 * m3) * sub2;
+            const top2: number =
+                (838422 * m3 + 769860 * m2 + 731718 * m1) * l * sub2 - 769860 * t * l;
+            const bottom: number = (632260 * m3 - 126452 * m2) * sub2 + 126452 * t;
+
+            retVal.push([top1 / bottom, top2 / bottom]);
+        }
+    }
+
+    return retVal;
+}
+
+/**
+ * Helper function used in converting ColorHSLUV
+ * Based on https://github.com/hsluv/hsluv-csharp/blob/master/Hsluv/Hsluv.cs
+ */
+function lengthOfRayUntilIntersect(
+    theta: number,
+    line0: number,
+    line1: number
+): number | null {
+    const length: number = line1 / (Math.sin(theta) - line0 * Math.cos(theta));
+
+    if (length < 0) {
+        return null;
+    }
+    return length;
+}
+
+/**
+ * Helper function used in converting ColorHSLUV
+ * Based on https://github.com/hsluv/hsluv-csharp/blob/master/Hsluv/Hsluv.cs
+ */
+function maxChromaForLH(l: number, h: number): number {
+    const hueRadians: number = degreesToRadians(h);
+
+    const bounds: number[][] = getBounds(l);
+    let minLength: number = Number.MAX_VALUE;
+
+    for (let i: number = 0; i < bounds.length; i++) {
+        const length: number | null = lengthOfRayUntilIntersect(
+            hueRadians,
+            bounds[i][0],
+            bounds[i][1]
+        );
+        if (length !== null) {
+            minLength = Math.min(minLength, length);
+        }
+    }
+
+    return minLength;
+}
+
+/**
+ * Convert a  {@link @microsoft/fast-colors#ColorLCHUV} to a {@link @microsoft/fast-colors#ColorHSLUV}
+ * Based on https://github.com/hsluv/hsluv-csharp/blob/master/Hsluv/Hsluv.cs
+ * Conversions to and from HSLUV are rather lossy. At best 4 digits of precision are retained in a round trip
+ * @param lch - the color to convert
+ *
+ * @public
+ */
+export function lchuvToHSLUV(lch: ColorLCHUV): ColorHSLUV {
+    if (lch.l > 99.999) {
+        return new ColorHSLUV(lch.h, 0, 100);
+    }
+    if (lch.l < 0.0001) {
+        return new ColorHSLUV(lch.h, 0, 0);
+    }
+    const max: number = maxChromaForLH(lch.l, lch.h);
+    const s: number = (lch.c / max) * 100;
+    if (isNaN(s)) {
+        return new ColorHSLUV(0, 0, 0);
+    }
+    return new ColorHSLUV(lch.h, s, lch.l);
+}
+
+/**
+ * Convert a  {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorHSLUV}
+ * Conversions to and from HSLUV are rather lossy. At best 4 digits of precision are retained in a round trip
+ * @param rgb - the alpha value is ignored
+ *
+ * @public
+ */
+export function rgbToHSLUV(rgb: ColorRGBA64): ColorHSLUV {
+    return lchuvToHSLUV(rgbToLCHUV(rgb));
+}
+
+/**
+ * Convert a {@link @microsoft/fast-colors#ColorHSLUV} to a {@link @microsoft/fast-colors#ColorLCHUV}
+ * Conversions to and from HSLUV are rather lossy. At best 4 digits of precision are retained in a round trip
+ * @param hsluv - the color to convert
+ *
+ * @public
+ */
+export function hsluvToLCH(hsluv: ColorHSLUV): ColorLCHUV {
+    if (hsluv.l > 99.999) {
+        return new ColorLCHUV(100, 0, hsluv.h);
+    }
+    if (hsluv.l < 0.0001) {
+        return new ColorLCHUV(0, 0, hsluv.h);
+    }
+    const max: number = maxChromaForLH(hsluv.l, hsluv.h);
+    const c: number = (max / 100) * hsluv.s;
+    return new ColorLCHUV(hsluv.l, c, hsluv.h);
+}
+
+/**
+ * Convert a {@link @microsoft/fast-colors#ColorHSLUV} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * @param luv - the color to convert
+ * @param alpha - the alpha value of the output
+ *
+ * @public
+ */
+export function hsluvToRGB(hsluv: ColorHSLUV, alpha: number = 1): ColorRGBA64 {
+    return lchuvToRGB(hsluvToLCH(hsluv), alpha);
+}
+
+/**
+ * Checks whether input has better contrast with dark or light and returns the color it has better contrast with
+ * @param input - the color to check
+ * @param dark - defaults to black
+ * @param light - defaults to white
+ *
+ * @public
+ */
+export function getForegroundColor(
+    input: ColorRGBA64,
+    dark: ColorRGBA64 = new ColorRGBA64(0, 0, 0, 1),
+    light: ColorRGBA64 = new ColorRGBA64(1, 1, 1, 1)
+): ColorRGBA64 {
+    const darkContrast: number = contrastRatio(input, dark);
+    const lightContrast: number = contrastRatio(input, light);
+
+    if (lightContrast >= darkContrast) {
+        return light;
+    } else {
+        return dark;
+    }
 }
 
 /**

@@ -130,8 +130,9 @@ export function lerpAnglesInRadians(i: number, min: number, max: number): number
  *
  * Will return infinity if i*10^(precision) overflows number
  * note that floating point rounding rules come into play here
- * so values that end up rounding on a .5 round to the nearest
- * even not always up so 2.5 rounds to 2
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round
+ * The way Math.round works in Javascript is signifigantly different than
+ * for other languages.
  * @param i - the number to round
  * @param precision - the precision to round to
  *
@@ -140,4 +141,59 @@ export function lerpAnglesInRadians(i: number, min: number, max: number): number
 export function roundToPrecisionSmall(i: number, precision: number): number {
     const factor: number = Math.pow(10, precision);
     return Math.round(i * factor) / factor;
+}
+
+/**
+ * Will fail if i*10^(precision) overflows number
+ * Returns the input i trucated to digits number of digits right of the decimal
+ * eg: reducePrecisionSmall(3.14159,4) returns 3.1415
+ * @param i - the number to truncate
+ * @param digits - number of digits right of the decimal to truncate at
+ *
+ * @public
+ */
+export function reducePrecisionSmall(i: number, digits: number): number {
+    const factor: number = Math.pow(10, digits);
+    i = Math.trunc(i * factor);
+    return i / factor;
+}
+
+/**
+ * Converts the input value into the equivalant angle in the range [0,360)
+ * eg: reduceAngleDegrees(385) returns 25
+ * @param theta - input angle in degrees
+ *
+ * @public
+ */
+export function reduceAngleDegrees(theta: number): number {
+    if (theta >= 0 && theta <= 360) {
+        return theta;
+    }
+    theta = theta % 360;
+    if (theta < 0) {
+        theta += 360;
+    }
+    return theta;
+}
+
+/**
+ * Reduces the input angle, min and max with reduceAngleDegrees then clamps theta
+ * to the range [min,max]
+ * @param theta - the angle to clamp in degrees, this is reduced before use
+ * @param min - the min output angle in degrees, this is reduced before use
+ * @param max - the max output angle in degrees, this is reduced before use
+ *
+ * @public
+ */
+export function clampToAngleDegrees(theta: number, min: number, max: number): number {
+    const reducedAngle: number = reduceAngleDegrees(theta);
+    const reducedMin: number = reduceAngleDegrees(min);
+    const reducedMax: number = reduceAngleDegrees(max);
+    if (reducedAngle < reducedMin) {
+        return reducedMin;
+    }
+    if (reducedAngle > reducedMax) {
+        return reducedMax;
+    }
+    return reducedAngle;
 }

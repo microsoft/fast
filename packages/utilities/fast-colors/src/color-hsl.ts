@@ -6,6 +6,12 @@ import { roundToPrecisionSmall } from "./math-utilities.js";
  * @public
  */
 export class ColorHSL {
+    public constructor(hue: number, sat: number, lum: number) {
+        this.h = hue;
+        this.s = sat;
+        this.l = lum;
+    }
+
     /**
      * Construct a {@link ColorHSL} from a config object.
      */
@@ -14,12 +20,6 @@ export class ColorHSL {
             return new ColorHSL(data.h, data.s, data.l);
         }
         return null;
-    }
-
-    constructor(hue: number, sat: number, lum: number) {
-        this.h = hue;
-        this.s = sat;
-        this.l = lum;
     }
 
     public readonly h: number;
