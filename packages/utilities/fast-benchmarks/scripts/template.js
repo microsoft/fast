@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from "fs/promises";
 import { readdir, readFileSync } from "fs";
-import { exec } from "child_process";
+import { exec, execFile } from "child_process";
 import { basename, dirname, extname, join, resolve } from "path";
 import chalk from "chalk";
 const errMessage = chalk.hex("#ffb638");
@@ -31,7 +31,10 @@ async function writeConfig(name, config, ext = JSON_EXT, dest = ROOT_DIR) {
     await writeFile(configPath, str, "utf8");
     return isRootDir ? join(process.cwd(), configName) : join(dest, configName);
 }
-// create tsconfig.{my-library}.json file and add include path to it
+
+/**
+ * Create tsconfig.{my-library}.json file and add include path to it
+ */
 async function generateTsConfig({ library, benchmark }) {
     const tsConfig = {
         extends: "./tsconfig.json",
@@ -69,20 +72,20 @@ async function generateHtmlTemplate(operationFile, compiledJsBench, fileName) {
     const path = await writeConfig(fileName + "-" + name, defaultHtml, ".html", "dist");
     return { name, path };
 }
+
+const DEFAULT_BENCH_FILE = "index";
 async function generateHtmlTemplates(
     { library, benchmark, operations },
     fileName,
-    benchFile = "index"
+    benchFile = DEFAULT_BENCH_FILE
 ) {
     const compiledJsBench = `../benchmarks/${library}/${benchmark}/${benchFile}.js`;
     // any operation listed under 'src' folder is eligible
     return new Promise((resolve, reject) => {
         readdir("src", async (err, files) => {
-            //handling error
             if (err) reject("Unable to scan directory: " + err);
 
             const operationProps = { names: [], htmlPaths: [] };
-
             // handle if specific operations are passed in
             if (operations) {
                 const fileNames = files.map(f => getTestName(f));
@@ -108,7 +111,6 @@ async function generateHtmlTemplates(
                 }
             } else {
                 // run all possible operations
-                // TODO: reduce dup code
                 for (let i = 0; i < files.length; i++) {
                     const operationFile = files[i];
                     const { name, path } = await generateHtmlTemplate(
@@ -150,6 +152,44 @@ async function getLocalGitBranchName() {
 }
 
 /**
+ * Get script data
+ *  @returns {JSON String}
+ */
+async function runCustomScript({ library, benchmark }) {
+    return new Promise((resolve, reject) => {
+        const args = [`./benchmarks/${library}/${benchmark}/script.js`];
+        const child = execFile("node", args);
+
+        child.stdout.on("data", data => {
+            data ? resolve(data) : reject("Error in running custom script.");
+        });
+    }).catch(error => {
+        return error;
+    });
+}
+
+function generateBenchmark(
+    benchmarks,
+    name,
+    newBench,
+    url,
+    template,
+    method,
+    queryParams
+) {
+    const queryStr = queryParams.join("&");
+    const fullUrl = queryParams
+        ? `${url}?template=${template}&method=${method}&${queryStr}`
+        : `${url}?template=${template}&method=${method}`;
+    newBench.url = fullUrl;
+    newBench.name = queryParams
+        ? `${name}-${template}-${method}-${queryStr}`
+        : `${name}-${template}-${method}`;
+    benchmarks.push(newBench);
+    return benchmarks;
+}
+
+/**
  * Generates the benchmarks array expected by the tachometer config file.
  * @returns {{operationName: ConfigFile["benchmarks"]}, {}} returns benchmarkHash, where operation name is key and benchmarks array is value
  */
@@ -157,19 +197,20 @@ const FAST_ELEMENT = "fast-element";
 const FAST_FOUNDATION = "fast-foundation";
 const libraryDependencies = {
     [FAST_FOUNDATION]: {
-        "@microsoft/fast-element": "1.9.0",
-        "@microsoft/fast-web-utilities": "5.2.0",
+        "@microsoft/fast-element": "latest",
+        "@microsoft/fast-web-utilities": "latest",
     },
 };
-async function generateBenchmarks(
-    { library, benchmark, versions, methods, queryParam },
+export async function generateBenchmarks(
+    { library, benchmark, versions, templates, method, queryParam },
     operationProps,
-    localProps
+    localProps,
+    customQueryParams
 ) {
     const tachoData = {};
     operationProps.names.forEach((operation, idx) => {
         /** @type {ConfigFile["benchmarks"]} */
-
+        let benchmarkName = operation;
         const benchmarks = [];
         const browser = {
             name: "chrome",
@@ -189,7 +230,7 @@ async function generateBenchmarks(
         ];
 
         versions.forEach(version => {
-            const isPublishedVersion = version.includes(".") || version === LATEST;
+            const isPublishedVersion = version.includes(".");
             const isLocalBranch = localProps.branchName && version === LOCAL;
             const isBranch = isLocalBranch || !isPublishedVersion;
             const url =
@@ -230,7 +271,7 @@ async function generateBenchmarks(
                 };
             }
 
-            // add fast-foundation manually, need to find a way to extract and add dynamically
+            // add fast-foundation manually, TODO: need to find a way to extract and add dynamically
             if (library !== FAST_ELEMENT) {
                 bench.packageVersions.dependencies = {
                     ...bench.packageVersions.dependencies,
@@ -238,22 +279,44 @@ async function generateBenchmarks(
                 };
             }
 
-            if (methods) {
-                for (let i = 0; i < methods.length; i++) {
-                    const newBench = { ...bench };
-                    const method = methods[i];
-                    const fullUrl = queryParam
-                        ? `${url}?method=${method}&${queryParam}`
-                        : `${url}?method=${method}`;
-                    newBench.url = fullUrl;
-                    newBench.name = `${benchmark}-${operation}-${method}`;
-                    benchmarks.push(newBench);
+            if (method) {
+                for (let i = 0; i < templates.length; i++) {
+                    const template = templates[i];
+                    benchmarkName = `${templates}-${method}_${operation}`;
+                    if (customQueryParams) {
+                        const queryParams = JSON.parse(customQueryParams);
+                        queryParams[template]?.forEach(queries => {
+                            const clickEvent = queries[0];
+                            if (clickEvent === method) {
+                                generateBenchmark(
+                                    benchmarks,
+                                    benchmark,
+                                    { ...bench },
+                                    url,
+                                    template,
+                                    method,
+                                    queries
+                                );
+                            }
+                        });
+                    } else {
+                        benchmarkName = `${method}_${operation}`;
+                        generateBenchmark(
+                            benchmarks,
+                            benchmark,
+                            { ...bench },
+                            url,
+                            template,
+                            method,
+                            queryParam
+                        );
+                    }
                 }
             } else {
                 benchmarks.push(bench);
             }
         });
-        tachoData[operation] = benchmarks;
+        tachoData[benchmarkName] = benchmarks;
     });
     return tachoData;
 }
@@ -285,7 +348,6 @@ async function generateConfig(fileName, benchmarksHash) {
                 ...defaultBenchOptions,
                 benchmarks: benchmarksHash[benchmark],
             };
-
             const name = `${fileName}-${benchmark}`;
             const path = await writeConfig(`${name}.config`, config, ".json", "dist");
 
@@ -308,12 +370,11 @@ async function generateConfig(fileName, benchmarksHash) {
  * @returns {string} path location of newly generated config json file
  */
 const LOCAL = "local";
-const LATEST = "latest";
 export async function generateTemplates(options) {
     try {
         const tsConfigPath = await generateTsConfig(options);
-        const fileName = `${options.library}_${options.benchmark}`;
-        //special handling if 'local' version was passed in as an option
+        const fileName = `${options.library}-${options.benchmark}`;
+        // special handling if 'local' version was passed in as an option
         const localProps = { branchName: "", operationProps: {} };
         if (options.versions.includes(LOCAL)) {
             localProps.branchName = options.branchName
@@ -330,10 +391,12 @@ export async function generateTemplates(options) {
         }
 
         const operationProps = await generateHtmlTemplates(options, fileName);
+        const customQueryParams = options.script && (await runCustomScript(options));
         const benchmarksHash = await generateBenchmarks(
             options,
             operationProps,
-            localProps
+            localProps,
+            customQueryParams
         );
         const [tachoConfigPaths, pathNames] = await generateConfig(
             fileName,

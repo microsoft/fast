@@ -2,7 +2,6 @@ export const _random = (max: number) => {
     return Math.round(Math.random() * 1000) % max;
 };
 
-//generate 1k, pass this value in
 export const itemCount = 1000;
 let id = 0;
 let id2 = 0;
@@ -88,7 +87,7 @@ export class NestedRandomData {
     ) {}
 }
 
-function generateData(count: number) {
+export function generateData(count: number) {
     const data = [];
 
     for (let i = 0; i < count; i++) {
@@ -98,7 +97,7 @@ function generateData(count: number) {
     return data;
 }
 
-function generateNestedData(count: number) {
+export function generateNestedData(count: number) {
     const data = [];
     for (let i = 0; i < count; i++) {
         data.push(

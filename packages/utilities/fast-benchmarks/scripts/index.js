@@ -14,10 +14,14 @@ program
         "specify available versions, you can also use names of github branches"
     )
     .option(
-        "-m, --methods [methods...]",
-        "specify different methods through url query params for one version you want to benchmark"
+        "-t, --templates [templates...]",
+        "specify different templates you want to benchmark"
     )
-    .option("-q, --queryParam <name>", "add query params you want to add to url")
+    .option(
+        "-m, --method <name>",
+        "specify a single method you want to benchmark"
+    )
+    .option("-q, --queryParam [queries...]", "add query params you want to add to url")
     .option(
         "-lb, --localBenchFile <name>",
         "specify the html file you want your local version to use, only valid if 'local' is one of the versions you passed in"
@@ -30,10 +34,13 @@ program
         "-bn, --branchName <name>",
         "specify the local git branch name you want to reference, this must be a branch that has been pushed to git"
     )
+    .option(
+        "-s, --script",
+        "specify if you want to run the benchmarks with a special json script"
+    )
     .parse(process.argv);
 
 const options = program.opts();
-
 /**
  * Check to see if we can reach the npm repository within a timeout
  *  @returns {Promise}
