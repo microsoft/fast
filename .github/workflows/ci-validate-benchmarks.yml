@@ -74,7 +74,7 @@ jobs:
             name: results
             path: packages/utilities/fast-benchmarks/results/fast-element_render-createDelete5x.json
   repeat_reverse:
-    name: Run repeat benchmark with basic template, reverse operation
+    name: Run repeat benchmark with nested template, reverse method
     needs: [setup]
     runs-on: ubuntu-latest
     steps:
@@ -86,15 +86,72 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --methods repeatBasic repeatNoRecycleBasic --operations=clickTrigger10x --queryParam ce=reverse loopCount=1 itemCount=500
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=reverse --operations=clickTrigger10x --queryParam loopCount=10 itemCount=100
       - name: Upload results
         uses: actions/upload-artifact@v2
         with:
             name: results
-            path: packages/utilities/fast-benchmarks/results/fast-element_repeat_ce=reverse-clickTrigger10x.json
+            path: packages/utilities/fast-benchmarks/results/fast-element-repeat-reverse_clickTrigger10x.json
+  repeat_push:
+    name: Run repeat benchmark with nested template, push method
+    needs: [setup]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=push --operations=clickTrigger10x --queryParam loopCount=10 itemCount=100
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element-repeat-push_clickTrigger10x.json
+  repeat_unshift:
+    name: Run repeat benchmark with nested template, unshift method
+    needs: [setup]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=unshift --operations=clickTrigger10x --queryParam loopCount=10 itemCount=100
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element-repeat-unshift_clickTrigger10x.json
+  repeat_shift:
+    name: Run repeat benchmark with nested template, shift method
+    needs: [setup]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=shift --operations=clickTrigger10x --queryParam loopCount=10 itemCount=100
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element-repeat-shift_clickTrigger10x.json
   report_results:
     name: Report Results
-    needs: [render_create10k, render_update10th, render_createDelete5x, repeat_reverse]
+    needs: [render_create10k, render_update10th, render_createDelete5x, repeat_reverse, repeat_push, repeat_unshift, repeat_shift]
     runs-on: ubuntu-latest
     steps:
         - uses: actions/download-artifact@v2
@@ -106,5 +163,3 @@ jobs:
           with:
               name: results
               path: packages/utilities/fast-benchmarks/results/*.json
-              pr-bench-name: ${GITHUB_HEAD_REF}
-              base-bench-name: master

@@ -16,8 +16,7 @@
         "debug:binding": "tach --config fast-element/binding/tachometer.json --manual",
         "benchmark:fast-element:example": "yarn run benchmark --library=fast-element --benchmark=render --versions 1.9.0 latest --operations=update10th",
         "benchmark:fast-element:render": "yarn run benchmark --library=fast-element --benchmark=render --versions local latest --localBenchFile=index2",
-        "benchmark:fast-element:repeat": "yarn run benchmark --library=fast-element --benchmark=repeat --versions local master --branchName=users/wendy/repeat-1 --operations=clickTrigger10x --methods=repeatNested --queryParam=ce=inplace-replace",
-        "benchmark:fast-element:repeat-base": "yarn run benchmark --library=fast-element --benchmark=repeat --versions master local --methods repeatBasic repeatNoRecycleBasic --operations=clickTrigger10x --queryParam=ce=reverse -s"
+        "benchmark:fast-element:repeat-base": "yarn run benchmark --library=fast-element --benchmark=repeat --versions master local --templates basic basicNoRecycle --method=reverse --operations=clickTrigger10x -s"
     },
     "dependencies": {
         "@microsoft/fast-element": "2.0.0-beta.1",

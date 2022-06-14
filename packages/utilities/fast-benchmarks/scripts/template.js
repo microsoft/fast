@@ -168,6 +168,27 @@ async function runCustomScript({ library, benchmark }) {
     });
 }
 
+function generateBenchmark(
+    benchmarks,
+    name,
+    newBench,
+    url,
+    template,
+    method,
+    queryParams
+) {
+    const queryStr = queryParams.join("&");
+    const fullUrl = queryParams
+        ? `${url}?template=${template}&method=${method}&${queryStr}`
+        : `${url}?template=${template}&method=${method}`;
+    newBench.url = fullUrl;
+    newBench.name = queryParams
+        ? `${name}-${template}-${method}-${queryStr}`
+        : `${name}-${template}-${method}`;
+    benchmarks.push(newBench);
+    return benchmarks;
+}
+
 /**
  * Generates the benchmarks array expected by the tachometer config file.
  * @returns {{operationName: ConfigFile["benchmarks"]}, {}} returns benchmarkHash, where operation name is key and benchmarks array is value
@@ -189,7 +210,7 @@ export async function generateBenchmarks(
     const tachoData = {};
     operationProps.names.forEach((operation, idx) => {
         /** @type {ConfigFile["benchmarks"]} */
-
+        let benchmarkName = operation;
         const benchmarks = [];
         const browser = {
             name: "chrome",
@@ -261,40 +282,41 @@ export async function generateBenchmarks(
             if (method) {
                 for (let i = 0; i < templates.length; i++) {
                     const template = templates[i];
+                    benchmarkName = `${templates}-${method}_${operation}`;
                     if (customQueryParams) {
-                        const queryParamsObj = JSON.parse(customQueryParams);
-                        queryParamsObj[template]?.forEach(queryParams => {
-                            const clickEvent = queryParams[0];
-                            // only generate benchmarks for the ce user passed in
+                        const queryParams = JSON.parse(customQueryParams);
+                        queryParams[template]?.forEach(queries => {
+                            const clickEvent = queries[0];
                             if (clickEvent === method) {
-                                const queryStr = queryParams.join("&");
-                                const newBench = { ...bench };
-                                const fullUrl = `${url}?template=${template}&method=${method}&${queryStr}`;
-                                newBench.url = fullUrl;
-                                newBench.name = queryParam
-                                    ? `${benchmark}-${template}-${method}-${queryStr}`
-                                    : `${benchmark}-${template}-${method}`;
-                                benchmarks.push(newBench);
+                                generateBenchmark(
+                                    benchmarks,
+                                    benchmark,
+                                    { ...bench },
+                                    url,
+                                    template,
+                                    method,
+                                    queries
+                                );
                             }
                         });
                     } else {
-                        const newBench = { ...bench };
-                        const queryStr = queryParam.join("&");
-                        const fullUrl = queryParam
-                            ? `${url}?template=${template}&method=${method}&${queryStr}`
-                            : `${url}?template=${template}&method=${method}`;
-                        newBench.url = fullUrl;
-                        newBench.name = queryParam
-                            ? `${benchmark}-${template}-${method}-${queryStr}`
-                            : `${benchmark}-${template}-${method}`;
-                        benchmarks.push(newBench);
+                        benchmarkName = `${method}_${operation}`;
+                        generateBenchmark(
+                            benchmarks,
+                            benchmark,
+                            { ...bench },
+                            url,
+                            template,
+                            method,
+                            queryParam
+                        );
                     }
                 }
             } else {
                 benchmarks.push(bench);
             }
         });
-        tachoData[operation] = benchmarks;
+        tachoData[benchmarkName] = benchmarks;
     });
     return tachoData;
 }
@@ -329,7 +351,6 @@ async function generateConfig(fileName, benchmarksHash) {
             const name = `${fileName}-${benchmark}`;
             const path = await writeConfig(`${name}.config`, config, ".json", "dist");
 
-            console.log(fileName, "b", benchmark, "name", name);
             pathNames.push(name);
             pathsPromises.push(path);
         }
@@ -352,9 +373,7 @@ const LOCAL = "local";
 export async function generateTemplates(options) {
     try {
         const tsConfigPath = await generateTsConfig(options);
-        const fileName = options.method
-            ? `${options.library}_${options.benchmark}_${options.method}`
-            : `${options.library}_${options.benchmark}`;
+        const fileName = `${options.library}-${options.benchmark}`;
         // special handling if 'local' version was passed in as an option
         const localProps = { branchName: "", operationProps: {} };
         if (options.versions.includes(LOCAL)) {
