@@ -2,7 +2,6 @@ import {
     ChildrenDirective,
     Constructable,
     ExecutionContext,
-    ItemContext,
     RefDirective,
     RepeatDirective,
     SlottedDirective,
@@ -58,7 +57,7 @@ export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirectiv
                 if (directive.options.positioning) {
                     for (let i = 0, length = items.length; i < length; i++) {
                         // Match fast-element repeater item context code.
-                        const ctx: ItemContext = childContext.createItemContext(
+                        const ctx: ExecutionContext = childContext.createItemContext(
                             i,
                             length
                         );

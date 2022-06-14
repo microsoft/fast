@@ -68,6 +68,20 @@ describe("Context", () => {
             expect(capture).equal(value);
         });
 
+        it(`returns a context that can be used to provide a value`, () => {
+            const value = "hello world";
+            const TestContext = Context.create("TestContext");
+            const parent = document.createElement("div");
+            const child = document.createElement("div");
+            parent.append(child);
+
+            TestContext.provide(parent, value);
+
+            const capture = TestContext.get(child);
+
+            expect(capture).equal(value);
+        });
+
         it(`returns a context that can be used as a decorator`, () => {
             const value = "hello world";
             const TestContext = Context.create<string>("TestContext");
@@ -128,6 +142,22 @@ describe("Context", () => {
 
             let capture;
             Context.request(child, TestContext, response => capture = response);
+
+            expect(capture).equal(value);
+        });
+    });
+
+    describe(`provide()`, () => {
+        it(`configures a context value without callbacks`, () => {
+            const value = "hello world";
+            const TestContext = Context.create("TestContext");
+            const parent = document.createElement("div");
+            const child = document.createElement("div");
+            parent.append(child);
+
+            Context.provide(parent, TestContext, value);
+
+            let capture = Context.get(child, TestContext);
 
             expect(capture).equal(value);
         });

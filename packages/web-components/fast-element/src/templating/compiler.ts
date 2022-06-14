@@ -22,11 +22,8 @@ const next: NextNode = {
     node: null as ChildNode | null,
 };
 
-class CompilationContext<
-    TSource = any,
-    TParent = any,
-    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
-> implements TemplateCompilationResult<TSource, TParent, TContext> {
+class CompilationContext<TSource = any, TParent = any>
+    implements TemplateCompilationResult<TSource, TParent> {
     private proto: any = null;
     private nodeIds = new Set<string>();
     private descriptors: PropertyDescriptorMap = {};
@@ -52,7 +49,7 @@ class CompilationContext<
         this.factories.push(factory);
     }
 
-    public freeze(): TemplateCompilationResult<TSource, TParent, TContext> {
+    public freeze(): TemplateCompilationResult<TSource, TParent> {
         this.proto = Object.create(null, this.descriptors);
         return this;
     }
@@ -97,7 +94,7 @@ class CompilationContext<
         descriptors[targetId] = descriptor;
     }
 
-    public createView(hostBindingTarget?: Element): HTMLView<TSource, TParent, TContext> {
+    public createView(hostBindingTarget?: Element): HTMLView<TSource, TParent> {
         const fragment = this.fragment.cloneNode(true) as DocumentFragment;
         const targets = Object.create(this.proto);
 
@@ -303,14 +300,10 @@ export const Compiler = {
      * it is recommended that you clone the original and pass the clone to this API.
      * @public
      */
-    compile<
-        TSource = any,
-        TParent = any,
-        TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
-    >(
+    compile<TSource = any, TParent = any>(
         html: string | HTMLTemplateElement,
         directives: Record<string, ViewBehaviorFactory>
-    ): TemplateCompilationResult<TSource, TParent, TContext> {
+    ): TemplateCompilationResult<TSource, TParent> {
         let template: HTMLTemplateElement;
 
         if (isString(html)) {
@@ -328,10 +321,7 @@ export const Compiler = {
 
         // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
         const fragment = document.adoptNode(template.content);
-        const context = new CompilationContext<TSource, TParent, TContext>(
-            fragment,
-            directives
-        );
+        const context = new CompilationContext<TSource, TParent>(fragment, directives);
         compileAttributes(context, "", template, /* host */ "h", 0, true);
 
         if (

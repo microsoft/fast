@@ -1,6 +1,6 @@
 import type { Disposable } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
-import type { ExecutionContext, RootContext } from "../observation/observable.js";
+import type { ExecutionContext } from "../observation/observable.js";
 import type {
     ViewBehavior,
     ViewBehaviorFactory,
@@ -11,15 +11,11 @@ import type {
  * Represents a collection of DOM nodes which can be bound to a data source.
  * @public
  */
-export interface View<
-    TSource = any,
-    TParent = any,
-    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
-> extends Disposable {
+export interface View<TSource = any, TParent = any> extends Disposable {
     /**
      * The execution context the view is running within.
      */
-    readonly context: TContext | null;
+    readonly context: ExecutionContext<TParent> | null;
 
     /**
      * The data that the view is bound to.
@@ -31,7 +27,7 @@ export interface View<
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the view within.
      */
-    bind(source: TSource, context: TContext): void;
+    bind(source: TSource, context: ExecutionContext<TParent>): void;
 
     /**
      * Unbinds a view's behaviors from its binding source and context.
@@ -44,7 +40,7 @@ export interface View<
  * @public
  */
 export interface ElementView<TSource = any, TParent = any>
-    extends View<TSource, TParent, RootContext> {
+    extends View<TSource, TParent> {
     /**
      * Appends the view's DOM nodes to the referenced node.
      * @param node - The parent node to append the view's DOM nodes to.
@@ -56,11 +52,8 @@ export interface ElementView<TSource = any, TParent = any>
  * A view representing a range of DOM nodes which can be added/removed ad hoc.
  * @public
  */
-export interface SyntheticView<
-    TSource = any,
-    TParent = any,
-    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
-> extends View<TSource, TParent, TContext> {
+export interface SyntheticView<TSource = any, TParent = any>
+    extends View<TSource, TParent> {
     /**
      * The first DOM node in the range of nodes that make up the view.
      */
@@ -102,11 +95,8 @@ function removeNodeSequence(firstNode: Node, lastNode: Node): void {
  * The standard View implementation, which also implements ElementView and SyntheticView.
  * @public
  */
-export class HTMLView<
-    TSource = any,
-    TParent = any,
-    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
-> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent, TContext> {
+export class HTMLView<TSource = any, TParent = any>
+    implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent> {
     private behaviors: ViewBehavior[] | null = null;
 
     /**
@@ -117,7 +107,7 @@ export class HTMLView<
     /**
      * The execution context the view is running within.
      */
-    public context: TContext | null = null;
+    public context: ExecutionContext<TParent> | null = null;
 
     /**
      * The first DOM node in the range of nodes that make up the view.
@@ -207,7 +197,7 @@ export class HTMLView<
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the behaviors within.
      */
-    public bind(source: TSource, context: TContext): void {
+    public bind(source: TSource, context: ExecutionContext<TParent>): void {
         let behaviors = this.behaviors;
         const oldSource = this.source;
 
