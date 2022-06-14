@@ -92,6 +92,8 @@ jobs:
         with:
             name: results
             path: packages/utilities/fast-benchmarks/results/fast-element_repeat_ce=reverse-clickTrigger10x.json
+            pr-bench-name: ${GITHUB_HEAD_REF}
+            base-bench-name: master
   report_results:
     name: Report Results
     needs: [render_create10k, render_update10th, render_createDelete5x, repeat_reverse]
