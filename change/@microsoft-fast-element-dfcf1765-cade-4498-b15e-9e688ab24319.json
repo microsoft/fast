@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "doc: add note to FASTElement.metadata API",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
