@@ -114,7 +114,6 @@ module.exports = {
                 "integrations/blazor",
                 "integrations/ember",
                 "integrations/react",
-                "integrations/vite",
                 "integrations/vue",
                 "integrations/webpack",
             ],
