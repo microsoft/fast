@@ -177,7 +177,7 @@ function generateBenchmark(
     method,
     queryParams
 ) {
-    const queryStr = queryParams.join("&");
+    const queryStr = queryParams?.join("&");
     const fullUrl = queryParams
         ? `${url}?template=${template}&method=${method}&${queryStr}`
         : `${url}?template=${template}&method=${method}`;

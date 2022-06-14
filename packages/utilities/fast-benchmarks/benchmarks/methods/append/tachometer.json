@@ -12,7 +12,7 @@
             "measurement": [
                 {
                     "mode": "performance",
-                    "entryName": "append"
+                    "entryName": "clickTrigger10x"
                 }
             ],
             "expand": [
