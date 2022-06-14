@@ -3,10 +3,12 @@
   "name": "fast-ssr",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/main.js",
+  "main": "dist/exports.js",
   "type": "module",
   "private": true,
   "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json --watch"
   },
   "author": {
     "name": "Microsoft",
