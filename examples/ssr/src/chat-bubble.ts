@@ -7,6 +7,7 @@ import {
     observable,
     repeat,
 } from "@microsoft/fast-element";
+import { ChatMessage } from "./chat-provider.js";
 
 const template = html<ChatBubble>`
     ${repeat(
@@ -42,7 +43,7 @@ const styles = css`
     template,
     styles,
 })
-export class ChatBubble extends FASTElement {
+export class ChatBubble extends FASTElement implements ChatMessage {
     @attr
     author: "self" | string = "self";
 
