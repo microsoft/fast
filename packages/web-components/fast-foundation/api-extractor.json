@@ -2,6 +2,9 @@
   "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
   "extends": "../../../api-extractor.json",
   "mainEntryPointFilePath": "./dist/dts/index.d.ts",
+  "compiler": {
+    "tsconfigFilePath": "./tsconfig.build.json"
+  },
   "dtsRollup": {
     "enabled": true,
     "untrimmedFilePath": "./dist/fast-foundation.untrimmed.d.ts",
