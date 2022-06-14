@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
             name: results
-            path: packages/utilities/fast-benchmarks/results/fast-element_render-create10k.json
+            path: packages/utilities/fast-benchmarks/results/fast-element-render_create10k.json
   render_update10th:
     name: Run rendering benchmark with update 10th operation
     needs: [setup]
@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
             name: results
-            path: packages/utilities/fast-benchmarks/results/fast-element_render-update10th.json
+            path: packages/utilities/fast-benchmarks/results/fast-element-render_update10th.json
   render_createDelete5x:
     name: Run rendering benchmark with create and delete 5 times operation
     needs: [setup]
@@ -72,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
             name: results
-            path: packages/utilities/fast-benchmarks/results/fast-element_render-createDelete5x.json
+            path: packages/utilities/fast-benchmarks/results/fast-element-render_createDelete5x.json
   repeat_reverse:
     name: Run repeat benchmark with nested template, reverse method
     needs: [setup]
