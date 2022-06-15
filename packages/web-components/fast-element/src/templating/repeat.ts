@@ -222,7 +222,6 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
                 if (!location!.previousSibling?.isEqualNode(view.lastChild)) {
                     view.insertBefore(location);
                 }
-                view.insertBefore(location);
             }
         }
 

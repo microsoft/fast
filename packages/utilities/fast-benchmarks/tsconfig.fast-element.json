@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "utils/**/*.ts",
+    "benchmarks/fast-element/repeat/*.ts"
+  ]
+}
