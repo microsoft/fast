@@ -739,11 +739,6 @@ export function CheckableFormAssociated<T extends ConstructableFormAssociated>(
             }
 
             this.currentChecked = this.checked;
-
-            if (this.indeterminate) {
-                this.indeterminate = false;
-            }
-
             this.updateForm();
 
             if (this.proxy instanceof HTMLInputElement) {

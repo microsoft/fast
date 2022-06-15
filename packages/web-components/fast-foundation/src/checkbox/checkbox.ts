@@ -72,6 +72,9 @@ export class Checkbox extends FormAssociatedCheckbox {
     public keypressHandler = (e: KeyboardEvent): void => {
         switch (e.key) {
             case keySpace:
+                if (this.indeterminate) {
+                    this.indeterminate = false;
+                }
                 this.checked = !this.checked;
                 break;
         }
@@ -82,6 +85,9 @@ export class Checkbox extends FormAssociatedCheckbox {
      */
     public clickHandler = (e: MouseEvent): void => {
         if (!this.disabled && !this.readOnly) {
+            if (this.indeterminate) {
+                this.indeterminate = false;
+            }
             this.checked = !this.checked;
         }
     };
