@@ -14,11 +14,19 @@ export class Histogram {
      * @param pixelSkipping - CPU time increases linearly as pixelSkipping is reduced.
      * @param isHistogramPixelValid - isHistogramPixelValid is an optional predicate which can screen out unwanted pixels from the source data. EG: ignoring transparent pixels.
      */
-    constructor(
+    public constructor(
         source: PixelBlob,
         significantBits: number = 5,
         pixelSkipping: number = 5,
-        isHistogramPixelValid: ((pixel: number[]) => boolean) | null = null
+        isHistogramPixelValid:
+            | ((
+                  pixel: number[],
+                  width?: number,
+                  height?: number,
+                  x?: number,
+                  y?: number
+              ) => boolean)
+            | null = null
     ) {
         if (significantBits < 1 || significantBits > 8) {
             throw new Error("significantBits must be in the range [1,8]");
@@ -49,7 +57,7 @@ export class Histogram {
                 }
                 const rgba: number[] = source.getPixelRGBA(x, y);
                 if (isHistogramPixelValid !== null) {
-                    if (!isHistogramPixelValid(rgba)) {
+                    if (!isHistogramPixelValid(rgba, source.width, source.height, x, y)) {
                         continue;
                     }
                 }

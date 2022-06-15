@@ -20,4 +20,5 @@ export * from "./palette-extractor.js";
 export * from "./parse-color.js";
 export * from "./pixel-blob.js";
 export * from "./pixel-box.js";
+export * from "./rotate-hue.js";
 export { NamedColors } from "./named-colors.js";

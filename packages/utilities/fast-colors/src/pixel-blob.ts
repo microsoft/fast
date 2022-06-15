@@ -67,6 +67,56 @@ export function loadImageData(source: string): Promise<ImageData> {
 }
 
 /**
+ * Creates an HTMLImageElement and loads the source as its src using URL.createObjectURL. Then an HTMLCanvasElement is created and the image is copied into the canvas. The pixel data is then returned from the CanvasRenderingContext2D for that canvas.
+ * The temporary URL created is revoked when image.onload, image.onerror or image.onabort fires
+ *
+ * @public
+ */
+export async function loadImageDataFromFile(file: File): Promise<ImageData> {
+    return new Promise<ImageData>(
+        (
+            resolve: (value: ImageData | PromiseLike<ImageData>) => void,
+            reject: (reason?: any) => void
+        ): void => {
+            const url: string = URL.createObjectURL(file);
+            const image: HTMLImageElement = new Image();
+            image.onload = (e: Event): void => {
+                URL.revokeObjectURL(url);
+                const canvas: HTMLCanvasElement = document.createElement("canvas");
+                if (!canvas) {
+                    reject("Unable to create canvas");
+                    return;
+                }
+                canvas.width = image.naturalWidth;
+                canvas.height = image.naturalHeight;
+                const context: CanvasRenderingContext2D | null = canvas.getContext("2d");
+                if (!context) {
+                    reject("Unable to create context");
+                    return;
+                }
+                context.drawImage(image, 0, 0, canvas.width, canvas.height);
+                const imageData: ImageData = context.getImageData(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+                resolve(imageData);
+            };
+            image.onerror = (e: any): void => {
+                URL.revokeObjectURL(url);
+                reject(e);
+            };
+            image.onabort = (e: any): void => {
+                URL.revokeObjectURL(url);
+                reject(e);
+            };
+            image.src = url;
+        }
+    );
+}
+
+/**
  * A {@link PixelBlob} implementation from an {@link https://developer.mozilla.org/en-US/docs/Web/API/ImageData | ImageData} object.
  * @public
  * @privateRemarks
@@ -103,6 +153,72 @@ export class ImageDataPixelBlob implements PixelBlob {
             throw new Error("Requested pixel is outside of the image bounds");
         }
         const offset: number = (y * this.width + x) * 4;
+        return [
+            this.image.data[offset],
+            this.image.data[offset + 1],
+            this.image.data[offset + 2],
+            this.image.data[offset + 3],
+        ];
+    };
+}
+
+/**
+ * A {@link PixelBlob} implementation from an {@link https://developer.mozilla.org/en-US/docs/Web/API/ImageData | ImageData} object.
+ * It can restrict the blob to only access a rectangle within the source image
+ * @public
+ * @privateRemarks
+ * Note that this class and the function loadImageData are not covered by unit tests
+ * due to not being able to create a valid canvas rendering context or ImageData object
+ * in the unit test framework. ArrayPixelBlob is used instead in tests needing a PixelBlob.
+ */
+export class PartialImageDataPixelBlob implements PixelBlob {
+    public constructor(
+        image: ImageData,
+        private readonly originX: number,
+        private readonly originY: number,
+        public readonly width: number,
+        public readonly height: number
+    ) {
+        if (
+            originX < 0 ||
+            originX + width > image.width ||
+            originY < 0 ||
+            originY + height > image.height ||
+            width <= 0 ||
+            height <= 0
+        ) {
+            throw new Error(
+                "The rectangle specified must be non-empty and fit inside the bounds of the supplied image"
+            );
+        }
+
+        this.image = image;
+
+        this.width = width;
+        this.height = height;
+        this.totalPixels = this.width * this.height;
+    }
+
+    public readonly totalPixels: number;
+    private image: ImageData;
+
+    public getPixel = (x: number, y: number): ColorRGBA64 => {
+        const rgba: number[] = this.getPixelRGBA(x, y);
+        return new ColorRGBA64(
+            rgba[0] / 255,
+            rgba[1] / 255,
+            rgba[2] / 255,
+            rgba[3] / 255
+        );
+    };
+
+    public getPixelRGBA = (x: number, y: number): number[] => {
+        if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+            throw new Error("Requested pixel is outside of the image bounds");
+        }
+        const imageX: number = x + this.originX;
+        const imageY: number = y + this.originY;
+        const offset: number = (imageY * this.width + imageX) * 4;
         return [
             this.image.data[offset],
             this.image.data[offset + 1],

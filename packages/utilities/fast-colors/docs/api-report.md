@@ -71,6 +71,9 @@ export interface CenteredRescaleConfig {
 }
 
 // @public
+export function checkForGreyscale(color: ColorRGBA64, greyscaleCutoff?: number): boolean;
+
+// @public
 export function clamp(i: number, min: number, max: number): number;
 
 // @public
@@ -473,7 +476,7 @@ export function getHexStringForByte(i: number): string;
 
 // @public
 export class Histogram {
-    constructor(source: PixelBlob, significantBits?: number, pixelSkipping?: number, isHistogramPixelValid?: ((pixel: number[]) => boolean) | null);
+    constructor(source: PixelBlob, significantBits?: number, pixelSkipping?: number, isHistogramPixelValid?: ((pixel: number[], width?: number, height?: number, x?: number, y?: number) => boolean) | null);
     // (undocumented)
     readonly data: Uint32Array;
     // (undocumented)
@@ -526,9 +529,6 @@ export class ImageDataPixelBlob implements PixelBlob {
     // (undocumented)
     readonly width: number;
 }
-
-// @public
-export function insertIntoSortedList(list: PixelBox[], newItem: PixelBox, sortPriority: (box: PixelBox) => number): void;
 
 // @public
 export function interpolateByColorSpace(position: number, space: ColorInterpolationSpace, left: ColorRGBA64, right: ColorRGBA64): ColorRGBA64;
@@ -607,6 +607,9 @@ export function lightenViaLAB(input: ColorRGBA64, amount: number, darkenConstant
 
 // @public
 export function loadImageData(source: string): Promise<ImageData>;
+
+// @public
+export function loadImageDataFromFile(file: File): Promise<ImageData>;
 
 // @public
 export function luvToLCHUV(luv: ColorLUV): ColorLCHUV;
@@ -692,6 +695,21 @@ export function parseColorWebRGB(raw: string): ColorRGBA64 | null;
 export function parseColorWebRGBA(raw: string): ColorRGBA64 | null;
 
 // @public
+export class PartialImageDataPixelBlob implements PixelBlob {
+    constructor(image: ImageData, originX: number, originY: number, width: number, height: number);
+    // (undocumented)
+    getPixel: (x: number, y: number) => ColorRGBA64;
+    // (undocumented)
+    getPixelRGBA: (x: number, y: number) => number[];
+    // (undocumented)
+    readonly height: number;
+    // (undocumented)
+    readonly totalPixels: number;
+    // (undocumented)
+    readonly width: number;
+}
+
+// @public
 export interface PixelBlob {
     // (undocumented)
     getPixel(x: number, y: number): ColorRGBA64;
@@ -743,7 +761,7 @@ export function quantize(source: PixelBlob, config?: QuantizeConfig): QuantizedC
 export interface QuantizeConfig {
     fractionByPopulation: number;
     isBoxValid: ((box: PixelBox) => boolean) | null;
-    isHistogramPixelValid: ((pixel: number[]) => boolean) | null;
+    isHistogramPixelValid: ((pixel: number[], width?: number, height?: number, x?: number, y?: number) => boolean) | null;
     maxIterations: number;
     pixelSkipping: number;
     significantBits: number;
@@ -809,10 +827,42 @@ export function rgbToTemperature(rgb: ColorRGBA64): number;
 export function rgbToXYZ(rgb: ColorRGBA64): ColorXYZ;
 
 // @public
+export function rotateGreyscale(color: ColorRGBA64, greyscaleShift: number): ColorRGBA64;
+
+// @public
+export function rotateHue(color: ColorRGBA64, rotation: number, greyscaleCutoff?: number | null, greyscaleShift?: number | null): RotateHueOutput;
+
+// @public
+export interface RotateHueOutput {
+    // (undocumented)
+    isGreyscale: boolean;
+    // (undocumented)
+    outputColor: ColorRGBA64;
+}
+
+// @public
 export function roundToPrecisionSmall(i: number, precision: number): number;
 
 // @public
 export function saturateViaLCH(input: ColorRGBA64, saturation: number, saturationConstant?: number): ColorRGBA64;
+
+// @public
+export function sortCompareColorDescending(a: ColorRGBA64, b: ColorRGBA64): number;
+
+// @public
+export function sortComparePixelBoxCountTimesVolumeDescending(a: PixelBox, b: PixelBox): number;
+
+// @public
+export function sortComparePixelBoxDescending(a: PixelBox, b: PixelBox): number;
+
+// @public
+export function sortComparePixelBoxIgnoreVolumeDescending(a: PixelBox, b: PixelBox): number;
+
+// @public
+export function sortCompareQuantizedColorDescending(a: QuantizedColor, b: QuantizedColor): number;
+
+// @public
+export function sortCompareQuantizedColorIgnoreVolumeDescending(a: QuantizedColor, b: QuantizedColor): number;
 
 // @public
 export function temperatureToRGB(tempKelvin: number, alpha?: number): ColorRGBA64;

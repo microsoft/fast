@@ -2,42 +2,6 @@ import { Histogram } from "./histogram.js";
 import { ColorRGBA64 } from "./color-rgba-64.js";
 
 /**
- * Adds a newItem to an already sorted list without needing to do a full re-sort.
- * Higher sort priority puts the newItem closer to the start (index 0) of the list.
- *
- * @public
- */
-export function insertIntoSortedList(
-    list: PixelBox[],
-    newItem: PixelBox,
-    sortPriority: (box: PixelBox) => number
-): void {
-    if (list.length === 0) {
-        list.push(newItem);
-        return;
-    }
-    const newItemPriority: number = sortPriority(newItem);
-    // The new item being either first or last happens often enough that it is worth special casing
-    // In cases of a tie the new item should be inserted after existing items of the same priority
-    if (newItemPriority > sortPriority(list[0])) {
-        list.unshift(newItem);
-        return;
-    }
-    if (newItemPriority <= sortPriority(list[list.length - 1])) {
-        list.push(newItem);
-        return;
-    }
-    let newIndex: number = 0;
-    for (let i: number = 0; i < list.length; i++) {
-        if (newItemPriority > sortPriority(list[i])) {
-            newIndex = i;
-            break;
-        }
-    }
-    list.splice(newIndex, 0, newItem);
-}
-
-/**
  * Represents a range of colors in RGB color space.
  *
  * @public

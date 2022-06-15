@@ -1,6 +1,6 @@
 import { PixelBlob } from "./pixel-blob.js";
 import { Histogram } from "./histogram.js";
-import { insertIntoSortedList, PixelBox } from "./pixel-box.js";
+import { PixelBox } from "./pixel-box.js";
 import { ColorRGBA64 } from "./color-rgba-64.js";
 
 function countValidBoxes(
@@ -61,7 +61,15 @@ export interface QuantizeConfig {
     /**
      * This predicate can be used to exlude pixels from the histogram. It is passed numbers in the range [0,255] in rgba order. EG: Excluding colors too close to pure white or ones which are transparent.
      */
-    isHistogramPixelValid: ((pixel: number[]) => boolean) | null;
+    isHistogramPixelValid:
+        | ((
+              pixel: number[],
+              width?: number,
+              height?: number,
+              x?: number,
+              y?: number
+          ) => boolean)
+        | null;
     /**
      * If the quantization process goes on for more iterations than maxIterations it is aborted and the current results are returned. Only likely to happen in extreme edge cases with strange input.
      */
@@ -93,6 +101,171 @@ export const defaultQuantizeConfig: QuantizeConfig = {
     },
     maxIterations: 1000,
 };
+
+const sortEpsilon: number = 0.5 / 255;
+/**
+ * Defines a sorting order for colors to ensure consistent results accross platforms
+ * It sorts by r, then b then g then a and only returns 0 if all are within 0.5/255 of each other
+ * It is a compareFunction as defined for javascript Array.sort https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+ *
+ * @public
+ */
+export function sortCompareColorDescending(a: ColorRGBA64, b: ColorRGBA64): number {
+    if (Math.abs(a.r - b.r) <= sortEpsilon) {
+        if (Math.abs(a.g - b.g) <= sortEpsilon) {
+            if (Math.abs(a.b - b.b) <= sortEpsilon) {
+                if (Math.abs(a.a - b.a) <= sortEpsilon) {
+                    return 0;
+                } else {
+                    if (a.a < b.a) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+            } else {
+                if (a.b < b.b) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        } else {
+            if (a.g < b.g) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    } else {
+        if (a.r < b.r) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+}
+
+/**
+ * Defines a sorting order for pixel boxes to ensure consistent results accross platforms
+ * It sorts by Count then Color then Color
+ * It is a compareFunction as defined for javascript Array.sort https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+ *
+ * @public
+ */
+export function sortComparePixelBoxDescending(a: PixelBox, b: PixelBox): number {
+    if (a.pixelCount === b.pixelCount) {
+        if (a.colorVolume === b.colorVolume) {
+            return sortCompareColorDescending(a.averageColor, b.averageColor);
+        } else {
+            if (a.colorVolume < b.colorVolume) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    } else {
+        if (a.pixelCount < b.pixelCount) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+}
+
+/**
+ * Defines a sorting order for pixel boxes to ensure consistent results accross platforms
+ * It sorts by Count then Color only and ignores Volume
+ * It is a compareFunction as defined for javascript Array.sort https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+ *
+ * @public
+ */
+export function sortComparePixelBoxIgnoreVolumeDescending(
+    a: PixelBox,
+    b: PixelBox
+): number {
+    if (a.pixelCount === b.pixelCount) {
+        return sortCompareColorDescending(a.averageColor, b.averageColor);
+    } else {
+        if (a.pixelCount < b.pixelCount) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+}
+
+/**
+ * Defines a sorting order for pixel boxes to ensure consistent results accross platforms
+ * Sorts by Count*Color. If Count.Color is equal then defaults to sortComparePixelBoxDescending.
+ * It is a compareFunction as defined for javascript Array.sort https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+ *
+ * @public
+ */
+export function sortComparePixelBoxCountTimesVolumeDescending(
+    a: PixelBox,
+    b: PixelBox
+): number {
+    const aSortVal: number = a.pixelCount * a.colorVolume;
+    const bSortVal: number = b.pixelCount * b.colorVolume;
+
+    if (aSortVal === bSortVal) {
+        return sortComparePixelBoxDescending(a, b);
+    } else {
+        if (aSortVal < bSortVal) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+}
+
+/**
+ * Defines a sorting order for quantized colors to ensure consistent results accross platforms
+ * It sorts by Count then Volume then Color
+ * It is a compareFunction as defined for javascript Array.sort https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+ *
+ * @public
+ */
+export function sortCompareQuantizedColorDescending(
+    a: QuantizedColor,
+    b: QuantizedColor
+): number {
+    if (a.pixelCount === b.pixelCount) {
+        if (a.colorVolume === b.colorVolume) {
+            return sortCompareColorDescending(a.color, b.color);
+        } else if (a.colorVolume < b.colorVolume) {
+            return 1;
+        }
+        return -1;
+    }
+    if (a.pixelCount < b.pixelCount) {
+        return 1;
+    } else {
+        return -1;
+    }
+}
+
+/**
+ * Defines a sorting order for quantized colors to ensure consistent results accross platforms
+ * It sorts by Count then Color and ignores Volume
+ * It is a compareFunction as defined for javascript Array.sort https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+ *
+ * @public
+ */
+export function sortCompareQuantizedColorIgnoreVolumeDescending(
+    a: QuantizedColor,
+    b: QuantizedColor
+): number {
+    if (a.pixelCount === b.pixelCount) {
+        return sortCompareColorDescending(a.color, b.color);
+    }
+    if (a.pixelCount < b.pixelCount) {
+        return 1;
+    } else {
+        return -1;
+    }
+}
 
 /**
  * The data in the color histogram is reduced down to a small set of colors.
@@ -126,25 +299,24 @@ export function quantizeHistogram(
     const colorsByPopulation: number = Math.floor(
         config.targetPaletteSize * config.fractionByPopulation
     );
-    const popSort: (box: PixelBox) => number = (box: PixelBox): number => {
-        return box.pixelCount;
-    };
 
     let iterationCount: number = 0;
     while (iterationCount <= config.maxIterations) {
         if (queue.length > 0) {
+            if (queue.length > 1) {
+                queue.sort(sortComparePixelBoxDescending);
+            }
             const currentBox: PixelBox = queue.shift()!;
 
             const cutBoxes: [
                 PixelBox | null,
                 PixelBox | null
             ] = currentBox.modifiedMedianCut();
-
             if (cutBoxes[0] !== null) {
-                insertIntoSortedList(queue, cutBoxes[0], popSort);
+                queue.push(cutBoxes[0]);
             }
             if (cutBoxes[1] !== null) {
-                insertIntoSortedList(queue, cutBoxes[1], popSort);
+                queue.push(cutBoxes[1]);
             }
         }
 
@@ -157,36 +329,22 @@ export function quantizeHistogram(
     }
 
     if (count < config.targetPaletteSize) {
-        const popAndVolumeSort: (box: PixelBox) => number = (box: PixelBox): number => {
-            return box.pixelCount * box.colorVolume;
-        };
-
-        queue.sort((a: PixelBox, b: PixelBox) => {
-            const aSort: number = popAndVolumeSort(a);
-            const bSort: number = popAndVolumeSort(b);
-            if (aSort === bSort) {
-                return 0;
-            } else if (aSort > bSort) {
-                return -1;
-            }
-            return 1;
-        });
-
         iterationCount = 0;
         while (iterationCount <= config.maxIterations) {
             if (queue.length > 0) {
+                queue.sort(sortComparePixelBoxCountTimesVolumeDescending);
+
                 const currentBox: PixelBox = queue.shift()!;
 
                 const cutBoxes: [
                     PixelBox | null,
                     PixelBox | null
                 ] = currentBox.modifiedMedianCut();
-
                 if (cutBoxes[0] !== null) {
-                    insertIntoSortedList(queue, cutBoxes[0], popAndVolumeSort);
+                    queue.push(cutBoxes[0]);
                 }
                 if (cutBoxes[1] !== null) {
-                    insertIntoSortedList(queue, cutBoxes[1], popAndVolumeSort);
+                    queue.push(cutBoxes[1]);
                 }
             }
 
@@ -198,6 +356,8 @@ export function quantizeHistogram(
             iterationCount++;
         }
     }
+
+    queue.sort(sortComparePixelBoxDescending);
 
     const retVal: QuantizedColor[] = new Array(count);
     let index: number = 0;
