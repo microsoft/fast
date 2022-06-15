@@ -3,7 +3,7 @@
     "files.insertFinalNewline": false
   },
   "[markdown]": {
-    "editor.quickSuggestions": {
+    "editor.quickSuggestions": false,
       "comments": "off",
       "strings": "off",
       "other": "off"
