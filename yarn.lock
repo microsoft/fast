@@ -2289,26 +2289,10 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
-"@figma/plugin-typings@^1.47.0":
-  version "1.47.0"
-  resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.47.0.tgz#cc6345b1611a156228655c0869c87953cd1ec868"
-  integrity sha512-DwMHzjDvks2cRWOTz4JRXqh+PZ2YP71MAdegw6qTqjjpACIWQGfuiFPrO2duoqB8pY1mMZsBK8xqozF2LIr7Kw==
-
 "@fluentui/svg-icons@^1.1.0", "@fluentui/svg-icons@^1.1.139":
   version "1.1.167"
   resolved "https://registry.yarnpkg.com/@fluentui/svg-icons/-/svg-icons-1.1.167.tgz#b16f2be02061d438f520c8499ab184e700cfcfbf"
   integrity sha512-db/7i0cJ9DvlZC24h1feJp+oPQmlZ9xGS+8yLnzuEmWYtoaAEg8d0suiM54uUdQo4xyI6DN7ocIyJdNBebLX5Q==
-
-"@fluentui/web-components@^2.5.2":
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/@fluentui/web-components/-/web-components-2.5.2.tgz#8a92a7f5b977327c7d98db035f0065fea6daabea"
-  integrity sha512-htonAhoCMcw6LVZ3DkbExc2gZnDfaLsbsasmny6Cf9J0l5gD+Nwrvje3wq3k1S9gxyxwdGAW4nU9CY7Jz9CUlg==
-  dependencies:
-    "@microsoft/fast-colors" "^5.1.5"
-    "@microsoft/fast-element" "^1.9.0"
-    "@microsoft/fast-foundation" "^2.42.0"
-    "@microsoft/fast-web-utilities" "^5.3.0"
-    tslib "^1.13.0"
 
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   version "1.1.3"
@@ -3792,11 +3776,6 @@
     source-map "~0.6.1"
     typescript "~4.6.3"
 
-"@microsoft/fast-colors@5.1.5":
-  version "5.1.5"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-colors/-/fast-colors-5.1.5.tgz#3d7dacae85c263030c793ba457991d4cdcec7538"
-  integrity sha512-g8FByhbmRxibSpHkDE90CLCsh61HzH4ujPBG5N1zWXgM8LtzaF6OYBzfd8uGJ/md+SGeHf3aH9fcT8HTCbarXw==
-
 "@microsoft/fast-components@^2.30.6":
   version "2.30.6"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-components/-/fast-components-2.30.6.tgz#22449f41c300060831b3545c27906cea03a72476"
@@ -3819,27 +3798,12 @@
     "@microsoft/fast-web-utilities" "^5.4.1"
     tslib "^1.13.0"
 
-"@microsoft/fast-element@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-1.9.0.tgz#9d3bb5a029772c0e99c230acdcd6df9640a55715"
-  integrity sha512-VxDwoLEEQRRxXfLOB5Llzha9WWvjVJHZFHNE1mn2s1QV5IAkOhrYrhFe9vzv50eI6CqazChDyHDy1km3+rn0wg==
-
-"@microsoft/fast-element@^1.0.0", "@microsoft/fast-element@^1.10.1", "@microsoft/fast-element@^1.10.2", "@microsoft/fast-element@^1.5.1", "@microsoft/fast-element@^1.9.0":
+"@microsoft/fast-element@^1.0.0", "@microsoft/fast-element@^1.10.1", "@microsoft/fast-element@^1.10.2", "@microsoft/fast-element@^1.5.1":
   version "1.10.2"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-1.10.2.tgz#34a2faa8a97608e1b7c8024b9aed3deddd5c6ad8"
   integrity sha512-Nh80AEx/caDe4jhFYNT75sTG4k6MWy1N6XfgyhmejAX0ylivYy0M78WI2JgQOqi2ZRozCiNcpAPLVhYyAVN9sA==
 
-"@microsoft/fast-foundation@2.42.0":
-  version "2.42.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-foundation/-/fast-foundation-2.42.0.tgz#ad83d0c75a7e854bf9e123a452b98fedf9ab25cf"
-  integrity sha512-V/PtVUS8+6cYFGjFNNZBIDn0vogwrMEs5Wc/sRH9D7Bz5ghQdD69FX/2TiG9peH8U70TkdDgQ+rtDC+ZGoUtGA==
-  dependencies:
-    "@microsoft/fast-element" "^1.9.0"
-    "@microsoft/fast-web-utilities" "^5.2.0"
-    tabbable "^5.2.0"
-    tslib "^1.13.0"
-
-"@microsoft/fast-foundation@^2.0.0", "@microsoft/fast-foundation@^2.13.1", "@microsoft/fast-foundation@^2.42.0", "@microsoft/fast-foundation@^2.46.2":
+"@microsoft/fast-foundation@^2.0.0", "@microsoft/fast-foundation@^2.13.1", "@microsoft/fast-foundation@^2.46.2":
   version "2.46.9"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-foundation/-/fast-foundation-2.46.9.tgz#a4d4ce50861f71aaef5697746e87b8f66b280507"
   integrity sha512-jgkVT7bAWIV844eDj3V9cmYFsRIcJ8vMuB4h2SlkJ9EmFbCfimvh6RyAhsHv+bC6QZSS0N0bpZHm5A5QsWgi3Q==
@@ -3869,7 +3833,7 @@
   dependencies:
     exenv-es6 "^1.0.0"
 
-"@microsoft/fast-web-utilities@^5.2.0", "@microsoft/fast-web-utilities@^5.3.0", "@microsoft/fast-web-utilities@^5.4.1":
+"@microsoft/fast-web-utilities@^5.4.1":
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-web-utilities/-/fast-web-utilities-5.4.1.tgz#8e3082ee2ff2b5467f17e7cb1fb01b0e4906b71f"
   integrity sha512-ReWYncndjV3c8D8iq9tp7NcFNc1vbVHvcBFPME2nNFKNbS1XCesYZGlIlf3ot5EmuOXPlrzUHOWzQ2vFpIkqDg==
@@ -11597,15 +11561,6 @@ html-void-elements@^1.0.0:
   resolved "https://registry.yarnpkg.com/html-void-elements/-/html-void-elements-1.0.5.tgz#ce9159494e86d95e45795b166c2021c2cfca4483"
   integrity sha512-uE/TxKuyNIcx44cIWnjr/rfIATDH7ZaOMmstu0CwhFG1Dunhlp4OC6/NMbhiwoq5BpW0ubi303qnEk/PZj614w==
 
-html-webpack-inline-source-plugin@^1.0.0-beta.2:
-  version "1.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/html-webpack-inline-source-plugin/-/html-webpack-inline-source-plugin-1.0.0-beta.2.tgz#71a9234c170ef18df6e51f4594a09b540ff03111"
-  integrity sha512-ydsEKdp0tnbmnqRAH2WSSMXerCNYhjes5b79uvP2BU3p6cyk+6ucNMsw5b5xD1QxphgvBBA3QqVmdcpu8QLlRQ==
-  dependencies:
-    escape-string-regexp "^1.0.5"
-    slash "^1.0.0"
-    source-map-url "^0.4.0"
-
 html-webpack-plugin@^5.3.1, html-webpack-plugin@^5.5.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-5.5.0.tgz#c3911936f57681c1f9f4d8b68c158cd9dfe52f50"
@@ -17537,14 +17492,6 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-raw-loader@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-4.0.2.tgz#1aac6b7d1ad1501e66efdac1522c73e59a584eb6"
-  integrity sha512-ZnScIV3ag9A4wPX/ZayxL/jZH+euYb6FcUinPcgiQW0+UBtEv0O6Q3lGd3cqJ+GHH+rksEv3Pj99oxJ3u3VIKA==
-  dependencies:
-    loader-utils "^2.0.0"
-    schema-utils "^3.0.0"
-
 rc@^1.2.7, rc@^1.2.8:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
@@ -19083,11 +19030,6 @@ sitemap@^7.1.1:
     "@types/sax" "^1.2.1"
     arg "^5.0.0"
     sax "^1.2.4"
-
-slash@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
-  integrity sha1-xB8vbDn8FtHNF61LXYlhFK5HDVU=
 
 slash@^2.0.0:
   version "2.0.0"

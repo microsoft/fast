@@ -46,12 +46,7 @@
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.2"
   },
-  "peerDependencies": {
-    "@microsoft/fast-colors": "5.1.5",
-    "@microsoft/fast-element": "1.9.0",
-    "@microsoft/fast-foundation": "2.42.0"
-  },
   "dependencies": {
-    "@fluentui/web-components": "2.5.2"
+    "@fluentui/web-components": "^2.0.0"
   }
 }
