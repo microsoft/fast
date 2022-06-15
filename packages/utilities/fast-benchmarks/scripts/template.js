@@ -280,14 +280,15 @@ export async function generateBenchmarks(
             }
 
             if (method) {
+                benchmarkName = `${method}_${operation}`;
                 for (let i = 0; i < templates.length; i++) {
                     const template = templates[i];
-                    benchmarkName = `${templates}-${method}_${operation}`;
+                    // TODO: revist custom scripts, currently not very extensible
                     if (customQueryParams) {
                         const queryParams = JSON.parse(customQueryParams);
                         queryParams[template]?.forEach(queries => {
                             const clickEvent = queries[0];
-                            if (clickEvent === method) {
+                            if (clickEvent.includes(method)) {
                                 generateBenchmark(
                                     benchmarks,
                                     benchmark,
@@ -300,7 +301,6 @@ export async function generateBenchmarks(
                             }
                         });
                     } else {
-                        benchmarkName = `${method}_${operation}`;
                         generateBenchmark(
                             benchmarks,
                             benchmark,

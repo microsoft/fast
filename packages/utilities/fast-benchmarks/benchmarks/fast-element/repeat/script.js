@@ -1,13 +1,13 @@
 import baseJson from "./base.js";
 
 (() => {
-    const BASIC_TEMPLATES = ["repeatBasic", "repeatNoRecycleBasic"];
-    const NESTED_TEMPLATES = ["repeatNested", "repeatNoRecycleNested"];
+    const BASIC_TEMPLATES = ["basic", "basicNoRecycle"];
+    const NESTED_TEMPLATES = ["nested", "nestedNoRecycle"];
     const queryParams = {
-        repeatBasic: [],
-        repeatNoRecycleBasic: [],
-        repeatNested: [],
-        repeatNoRecycleNested: [],
+        basic: [],
+        basicNoRecycle: [],
+        nested: [],
+        nestedNoRecycle: [],
     };
     const addQueries = (source, dest) => {
         for (const clickEvent in source) {
