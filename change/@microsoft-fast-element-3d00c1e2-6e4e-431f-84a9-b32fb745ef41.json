@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "check if view already exists at location,,",
+  "packageName": "@microsoft/fast-element",
+  "email": "email not defined",
+  "dependentChangeType": "patch"
+}
