@@ -64,7 +64,7 @@
     "test-firefox": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage",
     "test-firefox:verbose": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
     "test-firefox:watch": "karma start karma.conf.cjs --browsers=FirefoxHeadless   --coverage --watch-extensions js",
-    "start": "start-storybook -p 6006",
+    "start": "yarn start:storybook",
     "start:storybook": "start-storybook -p 6006"
   },
   "devDependencies": {
