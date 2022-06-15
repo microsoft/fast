@@ -28,7 +28,31 @@ const { templateRenderer, defaultRenderInfo } = fastSSR();
 app.get("/", (req, res) => {
     const stream = templateRenderer.render(
         html`
-            <chat-list></chat-list>
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="UTF-8" />
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                    <meta
+                        name="viewport"
+                        content="width=device-width, initial-scale=1.0"
+                    />
+                    <title>SSR Example</title>
+                    <style>
+                        body,
+                        html {
+                            margin: 0;
+                        }
+
+                        chat-list {
+                            height: 100vh;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <chat-list></chat-list>
+                </body>
+            </html>
         `,
         defaultRenderInfo
     );

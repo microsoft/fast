@@ -20,14 +20,14 @@ const template = html<ChatBubble>`
 const styles = css`
     :host {
         display: block;
-        padding: 24px;
+        padding: 18px;
         border-radius: 12px;
-        margin: 24px 0;
+        margin: 18px 0;
     }
 
-    :host([author]) {
-        background: green;
-        color: #ffffff;
+    :host(:not([author="self"])) {
+        background: #e5e5e5;
+        color: #181818;
         margin-inline-end: 24px;
     }
 
@@ -35,6 +35,10 @@ const styles = css`
         background: #0078d4;
         color: #ffffff;
         margin-inline-start: 24px;
+    }
+
+    p {
+        margin: 0;
     }
 `;
 
