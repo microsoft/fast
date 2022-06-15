@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Wed, 01 Jun 2022 17:53:14 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Jun 2022 17:41:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.2
+
+Wed, 15 Jun 2022 17:41:10 GMT
+
+### Changes
+
+- chore: fix package.json type fields (roeisenb@microsoft.com)
 
 ## 1.0.0-alpha.1
 

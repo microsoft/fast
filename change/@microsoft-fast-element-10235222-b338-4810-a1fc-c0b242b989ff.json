@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "when recycle is set to false while itemBinding stays the same, views should be recreated",
-  "packageName": "@microsoft/fast-element",
-  "email": "wendy.hsu@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 01 Jun 2022 22:21:24 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Jun 2022 17:41:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.3
+
+Wed, 15 Jun 2022 17:41:10 GMT
+
+### Changes
+
+- chore: fix package.json type fields (roeisenb@microsoft.com)
+- only rollup foundation after compiling with tsc (863023+radium-v@users.noreply.github.com)
+- Compare radio value property instead of attribute when value changes (sknoslo@gmail.com)
+- feat: simplify execution context to align closer with v1 (roeisenb@microsoft.com)
+- feat: implement W3C WC community context protocol and integrate with DI (roeisenb@microsoft.com)
 
 ## 3.0.0-alpha.2
 
