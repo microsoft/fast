@@ -89,8 +89,8 @@ export abstract class FASTElementRenderer extends ElementRenderer {
      * Constructs a new {@link FASTElementRenderer}.
      * @param tagName - the tag-name of the element to create.
      */
-    constructor(tagName: string) {
-        super(tagName);
+    constructor(tagName: string, renderInfo: RenderInfo) {
+        super(tagName, renderInfo);
 
         const ctor = customElements.get(this.tagName);
 

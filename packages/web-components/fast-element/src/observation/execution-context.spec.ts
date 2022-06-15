@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { ExecutionContext, ItemContext } from "./observable.js";
+import { ExecutionContext } from "./observable.js";
 
 describe("The ExecutionContext", () => {
     it("has a default", () => {
@@ -114,7 +114,7 @@ describe("The ExecutionContext", () => {
             }
         ];
 
-        function assert(itemContext: ItemContext, scenario: typeof scenarios[0]) {
+        function assert(itemContext: ExecutionContext, scenario: typeof scenarios[0]) {
             expect(itemContext.index).equals(scenario.index);
             expect(itemContext.length).equals(scenario.length);
             expect(itemContext.isEven).equals(scenario.isEven);

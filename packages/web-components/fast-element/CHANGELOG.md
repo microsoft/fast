@@ -1,8 +1,22 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Wed, 01 Jun 2022 17:53:14 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Jun 2022 17:41:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.2
+
+Wed, 15 Jun 2022 17:41:10 GMT
+
+### Changes
+
+- doc: add note to FASTElement.metadata API (roeisenb@microsoft.com)
+- when recycle is set to false while itemBinding stays the same, views should be recreated (wendy.hsu@microsoft.com)
+- feat: simplify execution context to align closer with v1 (roeisenb@microsoft.com)
+- feat: ergo improvements to context, array length, and metadata (roeisenb@microsoft.com)
+- feat: move optional bindings out of rollup and list as exports (roeisenb@microsoft.com)
+- fix: make SyntheticViewTemplate type a string so it is generally usable (roeisenb@microsoft.com)
+- feat: implement W3C WC community context protocol and integrate with DI (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.1
 
