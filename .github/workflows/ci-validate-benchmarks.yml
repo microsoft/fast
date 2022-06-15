@@ -87,7 +87,7 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=reverse --operations=clickTrigger10x --queryParam loopCount=10 itemCount=200
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=reverse --operations=clickTrigger10x --queryParam loopCount=200 itemCount=200
       - name: Upload results
         uses: actions/upload-artifact@v2
         with:
@@ -106,7 +106,7 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=push --operations=clickTrigger10x --queryParam loopCount=10 itemCount=200
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=push --operations=clickTrigger10x --queryParam loopCount=200 itemCount=200
       - name: Upload results
         uses: actions/upload-artifact@v2
         with:
@@ -125,7 +125,7 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=unshift --operations=clickTrigger10x --queryParam loopCount=10 itemCount=200
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=unshift --operations=clickTrigger10x --queryParam loopCount=200 itemCount=200 addCount=1
       - name: Upload results
         uses: actions/upload-artifact@v2
         with:
@@ -144,14 +144,14 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=shift --operations=clickTrigger10x --queryParam loopCount=10 itemCount=200
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=shift --operations=clickTrigger10x --queryParam loopCount=200 itemCount=200
       - name: Upload results
         uses: actions/upload-artifact@v2
         with:
             name: results
             path: packages/utilities/fast-benchmarks/results/fast-element-repeat-shift_clickTrigger10x.json
   repeat_splice:
-      name: Run repeat benchmark with nested template, splice method
+      name: Run repeat benchmark with basic template, splice method
       needs: [setup]
       runs-on: ubuntu-latest
       steps:
@@ -163,12 +163,12 @@ jobs:
           run: |
               cd packages/utilities/fast-benchmarks
               yarn install
-              yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=splice --operations=clickTrigger10x --queryParam loopCount=10 itemCount=200 deleteCount=10 addCount=10
+              yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates basic --method=splice --operations=clickTrigger10x --queryParam loopCount=1000 itemCount=1000 deleteCount=10 addCount=10
         - name: Upload results
           uses: actions/upload-artifact@v2
           with:
               name: results
-              path: packages/utilities/fast-benchmarks/results/fast-element-repeat-shift_clickTrigger10x.json
+              path: packages/utilities/fast-benchmarks/results/fast-element-repeat-splice_clickTrigger10x.json
   report_results:
     name: Report Results
     needs: [render_create10k, render_update10th, render_createDelete5x, repeat_reverse, repeat_push, repeat_unshift, repeat_shift, repeat_splice]
