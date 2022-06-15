@@ -56,4 +56,10 @@ export class DefaultTodoList {
         // observable has changed whenever we splice the internal data structure.
         this.activeFilter !== "all" && Observable.notify(this, "_todos");
     }
+
+    constructor(todos?: Todo[]) {
+        if (todos) {
+            this._todos = this._todos.concat(todos);
+        }
+    }
 }

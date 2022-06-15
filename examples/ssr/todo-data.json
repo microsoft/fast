@@ -1,0 +1,14 @@
+[
+    {
+        "description": "pick up groceries",
+        "done": true
+    },
+    {
+        "description": "schedule baby-sitter",
+        "done": true
+    },
+    {
+        "description": "solve world hunger (tell no one)",
+        "done": false
+    }
+]

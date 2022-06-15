@@ -1,65 +1,39 @@
 import "@microsoft/fast-ssr/install-dom-shim";
-import { readFileSync } from "fs";
-import path from "path";
+import fs from "fs";
 import { html } from "@microsoft/fast-element";
-import { DI, Registration } from "@microsoft/fast-foundation";
 import fastSSR from "@microsoft/fast-ssr";
 import express from "express";
-import "fast-ssr";
-import { ChatProvider } from "fast-ssr";
-
-const messages = JSON.parse(
-    readFileSync(path.resolve("./message-data.json"), { encoding: "utf-8" }).toString()
-);
-class NodeJSMessageProvider {
-    messages = messages;
-    add(message) {
-        this.messages.push(message);
-    }
-}
-
-DI.getOrCreateDOMContainer().register(
-    Registration.singleton(ChatProvider, NodeJSMessageProvider)
-);
+import "fast-todo-app";
+import { DefaultTodoList, app as todoApp, TodoList } from "fast-todo-app";
 
 const app = express();
 const port = 8080;
 const { templateRenderer, defaultRenderInfo } = fastSSR();
-app.get("/", (req, res) => {
-    const stream = templateRenderer.render(
-        html`
-            <!DOCTYPE html>
-            <html lang="en">
-                <head>
-                    <meta charset="UTF-8" />
-                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                    <meta
-                        name="viewport"
-                        content="width=device-width, initial-scale=1.0"
-                    />
-                    <title>SSR Example</title>
-                    <style>
-                        body,
-                        html {
-                            margin: 0;
-                        }
+const todoData = JSON.parse(fs.readFileSync("./todo-data.json").toString());
 
-                        chat-list {
-                            height: 100vh;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <chat-list></chat-list>
-                </body>
-            </html>
-        `,
-        defaultRenderInfo
-    );
+/* eslint-disable-next-line */
+TodoList.provide(document, new DefaultTodoList(todoData));
+todoApp.define();
 
-    res.set({
-        "Content-Type": "text/html",
-    });
+app.use(express.static("./src"));
+
+const template = html`
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>SSR Example</title>
+        </head>
+        <body>
+            <todo-app></todo-app>
+        </body>
+    </html>
+`;
+
+app.get("/", async (req, res) => {
+    const stream = templateRenderer.render(template, defaultRenderInfo);
 
     for (const part of stream) {
         res.write(part);
