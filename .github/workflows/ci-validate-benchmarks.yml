@@ -6,7 +6,8 @@ on:
       - master
       - releases/*
       - features/*
-
+    paths:
+      - 'packages/web-components/fast-element/**'
 jobs:
   setup:
     name: Setup Tachometer Reporting
