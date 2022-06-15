@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "chore: fix package.json type fields",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}
