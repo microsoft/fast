@@ -4,10 +4,6 @@
   },
   "[markdown]": {
     "editor.quickSuggestions": false,
-      "comments": "off",
-      "strings": "off",
-      "other": "off"
-    },
     "editor.wordWrap": "off",
     "editor.wordWrapColumn": 90,
     "files.insertFinalNewline": false,
