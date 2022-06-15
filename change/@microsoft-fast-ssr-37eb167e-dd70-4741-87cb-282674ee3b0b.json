@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: simplify execution context to align closer with v1",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

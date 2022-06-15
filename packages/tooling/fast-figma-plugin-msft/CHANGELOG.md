@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-figma-plugin-msft
 
-This log was last generated on Wed, 01 Jun 2022 22:21:24 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Jun 2022 17:41:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.16
+
+Wed, 15 Jun 2022 17:41:10 GMT
+
+### Changes
+
+- Bump @microsoft/fast-react-wrapper to v1.0.0-alpha.3 (7559015+janechu@users.noreply.github.com)
 
 ## 0.8.16
 
