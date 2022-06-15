@@ -6,6 +6,7 @@
     "target": "es5",
     "baseUrl": ".",
     "declaration": true,
-    "outDir": "../dist"
+    "outDir": "../dist",
+    "types": ["jest", "webpack-env", "node"],
   }
 }
