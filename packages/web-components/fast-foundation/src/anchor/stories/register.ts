@@ -1,13 +1,9 @@
-import { css, ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
 import { DesignSystem } from "../../design-system/design-system.js";
-import type { FoundationElementTemplate } from "../../foundation-element/foundation-element.js";
 import { Anchor } from "../anchor.js";
 import { anchorTemplate as template } from "../anchor.template.js";
 
-const styles: FoundationElementTemplate<ElementStyles> = (context, definition) => css`
-    :host([hidden]) {
-        display: none;
-    }
+const styles = () => css`
     :host {
         --shadow-spread: calc((var(--focus-stroke-width) - var(--stroke-width)) * 1px);
         --base-size: calc((var(--base-height-multiplier)) * var(--design-unit) * 1px);
@@ -99,13 +95,15 @@ const styles: FoundationElementTemplate<ElementStyles> = (context, definition) =
     }
 `;
 
-const fastAnchor = Anchor.compose({
-    baseName: "anchor",
-    styles,
-    template,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
-});
-
-DesignSystem.getOrCreate(document.body).withPrefix("fast").register(fastAnchor());
+DesignSystem.getOrCreate(document.body)
+    .withPrefix("fast")
+    .register(
+        Anchor.compose({
+            baseName: "anchor",
+            shadowOptions: {
+                delegatesFocus: true,
+            },
+            styles,
+            template,
+        })()
+    );
