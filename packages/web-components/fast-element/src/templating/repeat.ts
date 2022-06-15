@@ -218,6 +218,10 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
                 views.splice(addIndex, 0, view);
                 bindView(view, items, addIndex, childContext);
+
+                if (!location!.previousSibling?.isEqualNode(view.lastChild)) {
+                    view.insertBefore(location);
+                }
                 view.insertBefore(location);
             }
         }
