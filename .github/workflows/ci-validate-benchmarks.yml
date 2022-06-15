@@ -150,7 +150,7 @@ jobs:
         with:
             name: results
             path: packages/utilities/fast-benchmarks/results/fast-element-repeat-shift_clickTrigger10x.json
-    repeat_splice:
+  repeat_splice:
       name: Run repeat benchmark with nested template, splice method
       needs: [setup]
       runs-on: ubuntu-latest
@@ -163,7 +163,7 @@ jobs:
           run: |
               cd packages/utilities/fast-benchmarks
               yarn install
-              yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=shift --operations=clickTrigger10x --queryParam loopCount=10 itemCount=200 deleteCount=10 addCount=10
+              yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=splice --operations=clickTrigger10x --queryParam loopCount=10 itemCount=200 deleteCount=10 addCount=10
         - name: Upload results
           uses: actions/upload-artifact@v2
           with:
