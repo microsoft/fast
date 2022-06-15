@@ -16,17 +16,21 @@ import { ViewTemplate } from '@microsoft/fast-element';
 export type ComponentDOMEmissionMode = "shadow";
 
 // @beta (undocumented)
-export type ConstructableElementRenderer = (new (tagName: string) => ElementRenderer) & typeof ElementRenderer;
+export type ConstructableElementRenderer = (new (tagName: string, renderInfo: RenderInfo) => ElementRenderer) & typeof ElementRenderer;
 
 // @beta (undocumented)
 export abstract class ElementRenderer {
-    constructor(tagName: string);
+    constructor(tagName: string, renderInfo: RenderInfo);
     // (undocumented)
     abstract attributeChangedCallback(name: string, prev: string | null, next: string | null): void;
     // (undocumented)
     abstract connectedCallback(): void;
     // (undocumented)
+    dispatchEvent(event: Event): boolean;
+    // (undocumented)
     abstract readonly element?: HTMLElement;
+    // (undocumented)
+    elementChanged(): void;
     // Warning: (ae-forgotten-export) The symbol "AttributesMap" needs to be exported by the entry point exports.d.ts
     static matchesClass(ctor: typeof HTMLElement, tagName: string, attributes: AttributesMap): boolean;
     renderAttributes(): IterableIterator<string>;
@@ -40,7 +44,7 @@ export abstract class ElementRenderer {
 
 // @beta
 export abstract class FASTElementRenderer extends ElementRenderer {
-    constructor(tagName: string);
+    constructor(tagName: string, renderInfo: RenderInfo);
     attributeChangedCallback(name: string, old: string | null, value: string | null): void;
     connectedCallback(): void;
     readonly element: FASTElement;
