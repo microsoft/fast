@@ -15,7 +15,7 @@ const todoData = JSON.parse(fs.readFileSync("./todo-data.json").toString());
 TodoList.provide(document, new DefaultTodoList(todoData));
 todoApp.define();
 
-app.use(express.static("./src"));
+app.use(express.static("./www"));
 
 const template = html`
     <!DOCTYPE html>
@@ -25,14 +25,23 @@ const template = html`
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>SSR Example</title>
-        </head>
         <body>
             <todo-app></todo-app>
+            <button id="hydrate">hydrate</button>
+            <script>
+                const scriptLoader = document.getElementById("hydrate");
+                scriptLoader.addEventListener("click", () => {
+                    const script = document.createElement("script");
+                    script.src = "/bundle.js";
+                    document.body.appendChild(script);
+                    scriptLoader.parentNode.removeChild(scriptLoader);
+                });
+            </script>
         </body>
     </html>
 `;
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
     const stream = templateRenderer.render(template, defaultRenderInfo);
 
     for (const part of stream) {
@@ -40,6 +49,10 @@ app.get("/", async (req, res) => {
     }
 
     res.end();
+});
+
+app.get("/todos", (req, res) => {
+    res.json(todoData);
 });
 
 app.listen(port, () => {

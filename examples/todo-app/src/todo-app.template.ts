@@ -27,7 +27,11 @@ export const template = html<TodoApp>`
             x => x.todos.filtered,
             html<Todo, TodoApp>`
                 <li class="todo">
-                    <input type="checkbox" :checked=${bind(x => x.done, twoWay)} />
+                    <input
+                        type="checkbox"
+                        :checked=${bind(x => x.done, twoWay)}
+                        ?checked=${x => x.done}
+                    />
                     <span class="description ${x => (x.done ? "done" : "")}">
                         ${x => x.description}
                     </span>
