@@ -13,6 +13,10 @@ import {
     accentFillFocus,
     accentFillHover,
     accentFillRest,
+    accentForegroundActive,
+    accentForegroundFocus,
+    accentForegroundHover,
+    accentForegroundRest,
     bodyFont,
     controlCornerRadius,
     density,
@@ -28,6 +32,7 @@ import {
     neutralFillHover,
     neutralFillRest,
     neutralFillStealthActive,
+    neutralFillStealthFocus,
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralForegroundActive,
@@ -61,13 +66,13 @@ export const BaseButtonStyles = (
             line-height: ${typeRampBaseLineHeight};
             height: calc(${heightNumber} * 1px);
             min-width: calc(${heightNumber} * 1px);
-            color: ${neutralForegroundRest};
             border-radius: calc(${controlCornerRadius} * 1px);
             fill: currentcolor;
             cursor: pointer;
         }
         :host .control {
             background: ${neutralFillRest};
+            color: ${neutralForegroundRest};
             border: calc(${strokeWidth} * 1px) solid transparent;
             flex-grow: 1;
             box-sizing: border-box;
@@ -78,7 +83,6 @@ export const BaseButtonStyles = (
             white-space: nowrap;
             outline: none;
             text-decoration: none;
-            color: inherit;
             border-radius: inherit;
             fill: inherit;
             cursor: inherit;
@@ -108,7 +112,7 @@ export const BaseButtonStyles = (
             background: ${neutralFillFocus};
             border-color: ${focusStrokeOuter} ;
             box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset ;
-            color: ${neutralForegroundHover};
+            color: ${neutralForegroundFocus};
         }
         .control::-moz-focus-inner {
             border: 0;
@@ -264,61 +268,35 @@ export const LightweightButtonStyles = (
 ) =>
     css`
         :host .control {
-            padding: 0;
-            height: initial;
-            background: transparent ;
-        }
-        :host .content {
-            position: relative;
+            background: ${neutralFillStealthRest};
+            color: ${accentForegroundRest};
         }
         :host .control${interactivitySelector}:hover {
-            background: transparent;
+            background: ${neutralFillStealthHover};
+            color: ${accentForegroundHover};
         }
         :host .control${interactivitySelector}:active {
-            background: transparent;
+            background: ${neutralFillStealthActive};
+            color: ${accentForegroundActive};
         }
         :host .control:${focusVisible} {
-            border-color: transparent ;
-            box-shadow: none ;
-        }
-        :host .content::before {
-            content: "";
-            display: block;
-            height: calc(${strokeWidth} * 1px);
-            position: absolute;
-            top: calc(1em + 3px);
-            width: 100%;
-            background: transparent;
-        }
-        :host .control${interactivitySelector}:hover .content::before {
-            background: ${neutralForegroundHover};
-        }
-        :host .control${interactivitySelector}:active .content::before {
-            background: transparent;
-        }
-        :host .control${interactivitySelector}:${focusVisible} .content::before {
-            background: ${neutralForegroundFocus};
-            height: calc(${strokeWidth} * 2px);
+            background: ${neutralFillStealthFocus};
+            color: ${accentForegroundFocus};
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
                 :host .control {
-                    border-color: ${SystemColors.ButtonFace} ;
+                    border-color: ${SystemColors.ButtonFace};
                     color: ${SystemColors.ButtonText};
                 }
                 :host .control${interactivitySelector}:hover,
                 :host .control${interactivitySelector}:active,
                 :host .control:${focusVisible} {
                     background: ${SystemColors.ButtonFace};
-                    border-color: ${SystemColors.ButtonFace} ;
+                    border-color: ${SystemColors.ButtonFace};
                     color: ${SystemColors.Highlight};
                     box-shadow: none;
-                }
-                :host .control${interactivitySelector}:hover .content::before,
-                :host .control${interactivitySelector}:active .content::before,
-                :host .control:not([disabled]):focus-visible .content::before  {
-                    background: ${SystemColors.Highlight};
                 }
             `
         )
@@ -343,8 +321,12 @@ export const OutlineButtonStyles = (
             border-color: ${strokeControlStrongHover};
         }
         :host .control${interactivitySelector}:active {
-            background: ${neutralFillActive};
+            background: transparent;
             border-color: ${strokeControlStrongActive};
+        }
+        :host .control:${focusVisible} {
+            background: transparent;
+            border-color: ${focusStrokeOuter};
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
@@ -353,7 +335,7 @@ export const OutlineButtonStyles = (
                     border-color: ${SystemColors.ButtonText};
                 }
                 :host .control${interactivitySelector}:hover {
-                    border-color: ${SystemColors.Highlight} ;
+                    border-color: ${SystemColors.Highlight};
                     color: ${SystemColors.Highlight};
                 }
                 :host .control${interactivitySelector}:${focusVisible} {
@@ -379,12 +361,14 @@ export const StealthButtonStyles = (
         :host .control {
             background: ${neutralFillStealthRest};
         }
-        :host .control${interactivitySelector}:hover,
-        :host .control${interactivitySelector}:${focusVisible} {
+        :host .control${interactivitySelector}:hover {
             background: ${neutralFillStealthHover};
         }
         :host .control${interactivitySelector}:active {
             background: ${neutralFillStealthActive};
+        }
+        :host .control:${focusVisible} {
+            background: ${neutralFillStealthFocus};
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
@@ -397,7 +381,7 @@ export const StealthButtonStyles = (
                 }
                 :host .control${interactivitySelector}:hover,
                 :host .control${interactivitySelector}:active,
-                :host .control${interactivitySelector}:${focusVisible}{
+                :host .control${interactivitySelector}:${focusVisible} {
                     border-color: ${SystemColors.Highlight} ;
                     box-shadow: none ;
                     background: ${SystemColors.Highlight};

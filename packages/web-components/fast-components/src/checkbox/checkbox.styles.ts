@@ -65,11 +65,11 @@ export const checkboxStyles: FoundationElementTemplate<ElementStyles, CheckboxOp
         outline: none;
         cursor: pointer;
     }
-    :host(:hover) .control {
+    :host(:enabled:hover) .control {
         background: ${neutralFillInputHover};
         border-color: ${strokeControlStrongHover};
     }
-    :host(:active) .control {
+    :host(:enabled:active) .control {
         background: ${neutralFillInputActive};
         border-color: ${strokeControlStrongActive};
     }
@@ -145,11 +145,11 @@ export const checkboxStyles: FoundationElementTemplate<ElementStyles, CheckboxOp
         background: ${neutralFillInputActive};
         border-color: ${strokeControlStrongRest};
     }
-    :host([aria-checked="true"].indeterminate:hover) .control {
+    :host([aria-checked="true"].indeterminate:enabled:hover) .control {
         background: ${neutralFillInputActive};
         border-color: ${strokeControlStrongHover};
     }
-    :host([aria-checked="true"].indeterminate:active) .control {
+    :host([aria-checked="true"].indeterminate:enabled:active) .control {
         background: ${neutralFillInputActive};
         border-color: ${strokeControlStrongActive};
     }

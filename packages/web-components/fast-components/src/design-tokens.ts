@@ -73,7 +73,7 @@ export const controlCornerRadius = create<number>("control-corner-radius").withD
 export const layerCornerRadius = create<number>("layer-corner-radius").withDefault(6);
 
 /** @public */
-export const strokeWidth = create<number>("stroke-width").withDefault(1);
+export const strokeWidth = create<number>("stroke-width").withDefault(2);
 /** @public */
 export const focusStrokeWidth = create<number>("focus-stroke-width").withDefault(3);
 
@@ -204,15 +204,15 @@ export const neutralFillRestDelta = createNonCss<number>(
 /** @public */
 export const neutralFillHoverDelta = createNonCss<number>(
     "neutral-fill-hover-delta"
-).withDefault(4);
+).withDefault(10);
 /** @public */
 export const neutralFillActiveDelta = createNonCss<number>(
     "neutral-fill-active-delta"
-).withDefault(10);
+).withDefault(4);
 /** @public */
 export const neutralFillFocusDelta = createNonCss<number>(
     "neutral-fill-focus-delta"
-).withDefault(5);
+).withDefault(7);
 
 /** @public */
 export const neutralFillInputRestDelta = createNonCss<number>(
@@ -242,11 +242,11 @@ export const neutralFillStealthHoverDelta = createNonCss<number>(
 /** @public */
 export const neutralFillStealthActiveDelta = createNonCss<number>(
     "neutral-fill-stealth-active-delta"
-).withDefault(10);
+).withDefault(2);
 /** @public */
 export const neutralFillStealthFocusDelta = createNonCss<number>(
     "neutral-fill-stealth-focus-delta"
-).withDefault(4);
+).withDefault(0);
 
 /** @public */
 export const neutralFillStrongRestDelta = createNonCss<number>(
@@ -268,32 +268,32 @@ export const neutralFillStrongFocusDelta = createNonCss<number>(
 /** @public */
 export const neutralFillLayerRestDelta = createNonCss<number>(
     "neutral-fill-layer-rest-delta"
-).withDefault(2);
+).withDefault(-2);
 /** @public */
 export const neutralFillLayerHoverDelta = createNonCss<number>(
     "neutral-fill-layer-hover-delta"
-).withDefault(2);
+).withDefault(-2);
 /** @public */
 export const neutralFillLayerActiveDelta = createNonCss<number>(
     "neutral-fill-layer-active-delta"
-).withDefault(2);
+).withDefault(-2);
 
 /** @public */
 export const neutralStrokeRestDelta = createNonCss<number>(
     "neutral-stroke-rest-delta"
-).withDefault(49);
+).withDefault(45);
 /** @public */
 export const neutralStrokeHoverDelta = createNonCss<number>(
     "neutral-stroke-hover-delta"
-).withDefault(49);
+).withDefault(50);
 /** @public */
 export const neutralStrokeActiveDelta = createNonCss<number>(
     "neutral-stroke-active-delta"
-).withDefault(90);
+).withDefault(40);
 /** @public */
 export const neutralStrokeFocusDelta = createNonCss<number>(
     "neutral-stroke-focus-delta"
-).withDefault(49);
+).withDefault(45);
 
 /** @public */
 export const neutralStrokeDividerRestDelta = createNonCss<number>(
@@ -831,7 +831,8 @@ export const neutralFillLayerRecipe = createNonCss<InteractiveColorRecipe>(
             neutralFillLayerRestDelta.getValueFor(element),
             neutralFillLayerHoverDelta.getValueFor(element),
             neutralFillLayerActiveDelta.getValueFor(element),
-            neutralFillLayerRestDelta.getValueFor(element)
+            neutralFillLayerRestDelta.getValueFor(element),
+            1
         ),
 });
 /** @public */
@@ -976,10 +977,10 @@ export const neutralForegroundRecipe = createNonCss<InteractiveColorRecipe>(
             neutralPalette.getValueFor(element),
             fillColor.getValueFor(element),
             10,
-            24,
-            24,
-            24,
-            24
+            0,
+            5,
+            -5,
+            0
         ),
 });
 

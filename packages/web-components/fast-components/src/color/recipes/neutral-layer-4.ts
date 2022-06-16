@@ -10,5 +10,5 @@ export function neutralLayer4(
     baseLayerLuminance: number,
     layerDelta: number
 ): Swatch {
-    return palette.get(neutralLayer1Index(palette, baseLayerLuminance) + layerDelta * 3);
+    return palette.get(neutralLayer1Index(palette, baseLayerLuminance) - layerDelta * 3);
 }

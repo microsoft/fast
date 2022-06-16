@@ -1,10 +1,11 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { display, FoundationElementTemplate } from "@microsoft/fast-foundation";
 import {
-    accentForegroundRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
+    neutralFillRest,
+    neutralForegroundRest,
     strokeWidth,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
@@ -29,15 +30,12 @@ export const badgeStyles: FoundationElementTemplate<ElementStyles> = (
 
         .control {
             border-radius: calc(${controlCornerRadius} * 1px);
-            padding: calc(((${designUnit} * 0.5) - ${strokeWidth}) * 1px)
-                calc((${designUnit} - ${strokeWidth}) * 1px);
-            color: ${accentForegroundRest};
+            padding: calc((${designUnit} - ${strokeWidth}) * 1px)
+                calc(((${designUnit} * 2) - ${strokeWidth}) * 1px);
+            background: ${neutralFillRest};
+            color: ${neutralForegroundRest};
             font-weight: 600;
             border: calc(${strokeWidth} * 1px) solid transparent;
-        }
-
-        .control[style] {
-            font-weight: 400;
         }
 
         :host([circular]) .control {

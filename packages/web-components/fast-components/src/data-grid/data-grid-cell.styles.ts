@@ -10,6 +10,7 @@ import {
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
+    focusStrokeWidth,
     neutralForegroundRest,
     strokeWidth,
     typeRampBaseFontSize,
@@ -33,7 +34,7 @@ export const dataGridCellStyles: FoundationElementTemplate<ElementStyles> = (
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
         font-weight: 400;
-        border: transparent calc(${strokeWidth} * 1px) solid;
+        border: transparent calc(${focusStrokeWidth} * 1px) solid;
         overflow: hidden;
         white-space: nowrap;
         border-radius: calc(${controlCornerRadius} * 1px);
@@ -44,7 +45,8 @@ export const dataGridCellStyles: FoundationElementTemplate<ElementStyles> = (
     }
 
     :host(:${focusVisible}) {
-        border: ${focusStrokeOuter} calc(${strokeWidth} * 1px) solid;
+        border: ${focusStrokeOuter} calc(${focusStrokeWidth} * 1px) solid;
+        outline: none;
         color: ${neutralForegroundRest};
     }
 

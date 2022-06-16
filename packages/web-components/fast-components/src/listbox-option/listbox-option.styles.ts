@@ -56,7 +56,7 @@ export const optionStyles: FoundationElementTemplate<
             font-family: ${bodyFont};
             background: ${neutralFillStealthRest};
             border-radius: calc(${controlCornerRadius} * 1px);
-            border: calc(${strokeWidth} * 1px) solid ${neutralLayerFloating};
+            border: calc(${strokeWidth} * 1px) solid transparent;
             box-sizing: border-box;
             color: ${neutralForegroundRest};
             cursor: pointer;

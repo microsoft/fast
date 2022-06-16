@@ -24,7 +24,7 @@ export const accordionStyles: FoundationElementTemplate<ElementStyles> = (
             transform: translateX(-50%);
             content: "";
             background: ${neutralFillActive};
-            width: calc(100% - 40px);
+            width: calc(100% - 24px);
             height: 1px;
         }
     `;

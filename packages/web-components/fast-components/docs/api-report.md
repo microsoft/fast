@@ -1824,7 +1824,7 @@ export const sliderStyles: FoundationElementTemplate<ElementStyles, SliderOption
 // @public
 export enum StandardLuminance {
     // (undocumented)
-    DarkMode = 0.09,
+    DarkMode = 0.2,
     // (undocumented)
     LightMode = 1
 }
