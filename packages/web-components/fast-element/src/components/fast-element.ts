@@ -131,6 +131,7 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
 
     /**
      * Defines metadata for a FASTElement which can be used to later define the element.
+     * IMPORTANT: This API will be renamed to "compose" in a future beta.
      * @public
      */
     metadata<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(

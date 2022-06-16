@@ -1,10 +1,9 @@
 import "../install-dom-shim.js";
-import { FASTElement, customElement, css, html, attr } from "@microsoft/fast-element";
+import { FASTElement, customElement, css, html, attr, observable } from "@microsoft/fast-element";
 import { expect, test } from '@playwright/test';
 import { FASTElementRenderer } from "./fast-element-renderer.js";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
-
 
 @customElement({
     name: "bare-element",
@@ -23,6 +22,8 @@ export class StyledElement extends FASTElement {}
     `
 })
 export class HostBindingElement extends FASTElement {}
+
+
 test.describe("FASTElementRenderer", () => {
     test.describe("should have a 'matchesClass' method", () => {
         test("that returns true when invoked with a class that extends FASTElement ",  () => {
@@ -86,6 +87,110 @@ test.describe("FASTElementRenderer", () => {
             expect(result).toBe(`
                 <bare-element  attr><template shadowroot=\"open\"></template></bare-element>
             `);
+        });
+    });
+
+    test.describe("emitting events", () => {
+
+    @customElement("test-event-dispatch")
+    class TestEventDispatch extends FASTElement {
+        @attr({attribute: "event-detail"})
+        eventDetail: string = "";
+
+        @attr({ attribute: "listen-self", mode: "boolean"})
+        listenSelf: boolean = false;
+
+        @attr({ attribute: "stop-immediate-prop", mode: "boolean"})
+        stopImmediateProp: boolean = false;
+
+        @attr({ attribute: "stop-prop", mode: "boolean"})
+        stopProp: boolean = false;
+
+        connectedCallback(): void {
+            super.connectedCallback();
+            const e = new CustomEvent<{ data: string }>("test-event", {bubbles: true, detail: { data: ""}})
+
+            if (this.listenSelf) {
+                this.addEventListener("test-event", (e: any) => {
+                    e.detail.data = "listen-self-success";
+                    e.stopPropagation();
+                });
+            }
+
+            if (this.stopProp) {
+                this.addEventListener("test-event", (e: any) => {
+                    e.detail.data = "stop-prop-success";
+                    e.stopPropagation();
+                });
+            }
+            if (this.stopImmediateProp) {
+                this.addEventListener("test-event", (e: any) => {
+                    e.detail.data = "stop-immediate-prop-success";
+                    e.stopImmediatePropagation();
+                });
+                this.addEventListener("test-event", (e: any) => {
+                    e.detail.data = "stop-immediate-prop-failure";
+                });
+            }
+
+            this.dispatchEvent(e);
+
+            this.eventDetail = e.detail.data || "";
+        }
+    }
+
+    @customElement("test-event-listener")
+    class TestEventListener extends FASTElement {
+        @attr
+        data: string = "default"
+
+        connectedCallback() {
+            super.connectedCallback();
+            this.addEventListener("test-event", (e: Event) => {
+                ( e as CustomEvent<{ data: string }> ).detail.data = this.data;
+            })
+        }
+    }
+        test("An element dispatching an event should get it's own handler fired", () => {
+            const { templateRenderer, defaultRenderInfo } = fastSSR();
+            const result = consolidate(templateRenderer.render(html`<test-event-dispatch listen-self></test-event-dispatch>`, defaultRenderInfo));
+            expect(result).toBe(`<test-event-dispatch  event-detail=\"listen-self-success\" listen-self><template shadowroot="open"></template></test-event-dispatch>`)
+        });
+        test("An ancestor with a handler should get it's handler invoked if the event bubbles", () => {
+            const { templateRenderer, defaultRenderInfo } = fastSSR();
+
+            const result = consolidate(templateRenderer.render(html`<test-event-listener data="bubble-success"><test-event-dispatch></test-event-dispatch></test-event-listener>`, defaultRenderInfo));
+            expect(result).toBe(`<test-event-listener  data=\"bubble-success\"><template shadowroot=\"open\"></template><test-event-dispatch event-detail=\"bubble-success\"><template shadowroot=\"open\"></template></test-event-dispatch></test-event-listener>`)
+        });
+        test("Should bubble events to the document", () => {
+            document.addEventListener("test-event", (e) => {
+                (e as any).detail.data = "document-success";
+            });
+            const { templateRenderer, defaultRenderInfo } = fastSSR();
+
+            const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`, defaultRenderInfo));
+            expect(result).toBe(`<test-event-dispatch event-detail=\"document-success\"><template shadowroot=\"open\"></template></test-event-dispatch>`);
+        });
+        test("Should bubble events to the window", () => {
+            window.addEventListener("test-event", (e) => {
+                (e as any).detail.data = "window-success";
+            });
+            const { templateRenderer, defaultRenderInfo } = fastSSR();
+
+            const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`, defaultRenderInfo));
+            expect(result).toBe(`<test-event-dispatch event-detail=\"window-success\"><template shadowroot=\"open\"></template></test-event-dispatch>`);
+        });
+        test("Should not bubble an event that invokes event.stopImmediatePropagation()", () => {
+            const { templateRenderer, defaultRenderInfo } = fastSSR();
+
+            const result = consolidate(templateRenderer.render(html`<test-event-listener data="stop-immediate-propagation-failure"><test-event-dispatch stop-immediate-prop></test-event-dispatch></test-event-listener>`, defaultRenderInfo));
+            expect(result).toBe(`<test-event-listener  data=\"stop-immediate-propagation-failure\"><template shadowroot=\"open\"></template><test-event-dispatch  event-detail=\"stop-immediate-prop-success\" stop-immediate-prop><template shadowroot=\"open\"></template></test-event-dispatch></test-event-listener>`)
+        });
+        test("Should not bubble an event that invokes event.stopPropagation()", () => {
+            const { templateRenderer, defaultRenderInfo } = fastSSR();
+
+            const result = consolidate(templateRenderer.render(html`<test-event-listener data="stop-propagation-failure"><test-event-dispatch stop-prop></test-event-dispatch></test-event-listener>`, defaultRenderInfo));
+            expect(result).toBe(`<test-event-listener  data=\"stop-propagation-failure\"><template shadowroot=\"open\"></template><test-event-dispatch  event-detail=\"stop-prop-success\" stop-prop><template shadowroot=\"open\"></template></test-event-dispatch></test-event-listener>`)
         });
     })
 });
