@@ -28,8 +28,6 @@ module.exports = {
         config.resolve.alias["@microsoft/fast-element/utilities"] = require.resolve(
             "@microsoft/fast-element/utilities.js"
         );
-        console.log(config.resolve.alias["@microsoft/fast-element/utilities"]);
-        config.resolve.alias["@storybook/html"] = require.resolve("@storybook/html");
 
         config.resolve.plugins = [
             ...(config.resolve.plugins || []),
