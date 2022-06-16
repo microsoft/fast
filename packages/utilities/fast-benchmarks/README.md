@@ -12,9 +12,7 @@ $ yarn install
 
 ## Running a Benchmark
 
-You can start by running some benchmarks that are set under the package.json file.
-
-Or if you are already familiar with running benchmarks, jump straight to [arguments](#arguments).
+You can start by running some benchmarks that are set under the `package.json` file. Or if you are already familiar with running benchmarks, jump straight to [arguments](#arguments).
 
 Let's start by running the **Render** benchmark, and from here we can play with some combination of arugments to statisfy different needs.
 ```bash
@@ -149,7 +147,7 @@ Notice there are 4 rows under **Benchmark**, 2 belong to results from the **loca
       > Detailed Interpretation: **faster** means there is significant statistical difference. The next couple of lines tell us that the **local** version could be 0% or 0.02ms - 0.07ms faster. 
 
 
-You can refer to (Interpreting tachometer table results)https://github.com/Polymer/tachometer/blob/main/README.md#interpreting-results for more information.
+You can refer to [Interpreting tachometer table results](https://github.com/Polymer/tachometer/blob/main/README.md#interpreting-results) for more information.
 
 ## Adding a Benchmark
 
