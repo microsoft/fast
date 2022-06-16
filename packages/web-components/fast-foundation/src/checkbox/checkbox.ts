@@ -70,6 +70,10 @@ export class Checkbox extends FormAssociatedCheckbox {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent): void => {
+        if (this.readOnly) {
+            return;
+        }
+
         switch (e.key) {
             case keySpace:
                 if (this.indeterminate) {
