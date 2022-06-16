@@ -197,7 +197,7 @@ describe("Checkbox", () => {
         await disconnect();
     });
 
-    it("should set off `indeterminate` on `checked` change", async () => {
+    it("should set off `indeterminate` on `checked` change by user click", async () => {
         const { element, connect, disconnect } = await setup();
 
         element.indeterminate = true;
@@ -205,6 +205,20 @@ describe("Checkbox", () => {
         await connect();
 
         element.click();
+
+        assert(!element.indeterminate);
+
+        await disconnect();
+    });
+
+    it("should set off `indeterminate` on `checked` change by user keypress", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.indeterminate = true;
+
+        await connect();
+
+        element.dispatchEvent(new KeyboardEvent('keypress', { key: ' ' }));
 
         assert(!element.indeterminate);
 
