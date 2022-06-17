@@ -1,6 +1,6 @@
 import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
-import { Constructable, Disposable, isFunction, isString } from "../interfaces.js";
+import { Constructable, isFunction, isString } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
@@ -15,9 +15,15 @@ import type {
     ViewBehaviorTargets,
 } from "./html-directive.js";
 import { Markup } from "./markup.js";
-import { CaptureType, html } from "./template.js";
+import {
+    CaptureType,
+    html,
+    SyntheticViewTemplate,
+    TemplateValue,
+    ViewTemplate,
+} from "./template.js";
 
-export interface ViewLike extends Disposable {
+export interface ContentView {
     /**
      * Binds a view's behaviors to its binding source.
      * @param source - The binding source for the view's binding behaviors.
@@ -35,20 +41,26 @@ export interface ViewLike extends Disposable {
      * @param node - The node to insert the view's DOM before.
      */
     insertBefore(node: Node): void;
+
+    /**
+     * Removes the view's DOM nodes.
+     * The nodes are not disposed and the view can later be re-inserted.
+     */
+    remove(): void;
 }
 
-export interface TemplateLike {
+export interface ContentTemplate {
     /**
-     * Creates a view-like instance.
+     * Creates a simple content view instance.
      */
-    create(): ViewLike;
+    create(): ContentView;
 }
 
 export class RenderBehavior<TSource = any> implements Behavior, Subscriber {
     private source: TSource | null = null;
-    private view: ViewLike | null = null;
-    private template!: TemplateLike;
-    private templateBindingObserver: BindingObserver<TSource, TemplateLike>;
+    private view: ContentView | null = null;
+    private template!: ContentTemplate;
+    private templateBindingObserver: BindingObserver<TSource, ContentTemplate>;
     private data: any | null = null;
     private dataBindingObserver: BindingObserver<TSource, any[]>;
     private originalContext: ExecutionContext | undefined = void 0;
@@ -57,7 +69,7 @@ export class RenderBehavior<TSource = any> implements Behavior, Subscriber {
     public constructor(
         private location: Node,
         private dataBinding: Binding<TSource, any[]>,
-        private templateBinding: Binding<TSource, TemplateLike>
+        private templateBinding: Binding<TSource, ContentTemplate>
     ) {
         this.dataBindingObserver = Observable.binding(dataBinding, this, true);
 
@@ -110,7 +122,8 @@ export class RenderBehavior<TSource = any> implements Behavior, Subscriber {
 
     private refreshView() {
         if (this.view !== null) {
-            this.view.dispose();
+            this.view.remove();
+            this.view.unbind();
         }
 
         this.view = this.template.create();
@@ -125,7 +138,7 @@ export class RenderDirective<TSource = any> implements HTMLDirective {
 
     public constructor(
         private dataBinding: Binding,
-        private templateBinding: Binding<TSource, TemplateLike>
+        private templateBinding: Binding<TSource, ContentTemplate>
     ) {}
 
     public createHTML(add: AddViewBehaviorFactory): string {
@@ -144,7 +157,7 @@ export class RenderDirective<TSource = any> implements HTMLDirective {
 export interface RenderInstruction {
     brand: symbol;
     type: Constructable;
-    template: TemplateLike;
+    template: ContentTemplate;
     name: string;
 }
 
@@ -153,7 +166,6 @@ const typeToInstructionLookup = new Map<
     Record<string, RenderInstruction>
 >();
 const defaultViewName = "default-view";
-const defaultInput = "model";
 const nullTemplate = html`
     &nbsp;
 `;
@@ -169,9 +181,9 @@ function definitionToTemplate(def: RenderInstruction | undefined) {
 export function render<TSource = any, TItem = any>(
     binding?: Binding<TSource, TItem>,
     templateOrTemplateBindingOrViewName?:
-        | TemplateLike
+        | ContentTemplate
         | string
-        | Binding<TSource, TemplateLike | string>
+        | Binding<TSource, ContentTemplate | string>
 ): CaptureType<TSource> {
     const dataBinding = binding ?? (((source: TSource) => source) as Binding<TSource>);
     let templateBinding;
@@ -213,12 +225,13 @@ export type CommonRenderOptions = {
 };
 
 export type TemplateRenderOptions = CommonRenderOptions & {
-    template: TemplateLike;
+    template: ContentTemplate;
 };
 
-export type ElementRenderOptions = CommonRenderOptions & {
+export type ElementRenderOptions<TSource = any, TParent = any> = CommonRenderOptions & {
     element: Constructable<FASTElement>;
-    input?: string;
+    attributes?: Record<string, string | TemplateValue<TSource, TParent>>;
+    content?: string | SyntheticViewTemplate;
 };
 
 export type RenderOptions = TemplateRenderOptions | ElementRenderOptions;
@@ -228,6 +241,8 @@ function isElementRenderOptions(object: any): object is ElementRenderOptions {
 }
 
 const brand = Symbol("RenderInstruction");
+/* eslint @typescript-eslint/naming-convention: "off"*/
+const defaultAttributes = { ":model": x => x };
 
 export const RenderInstruction = Object.freeze({
     instanceOf(object: any): object is RenderInstruction {
@@ -235,14 +250,17 @@ export const RenderInstruction = Object.freeze({
     },
     create(options: RenderOptions): RenderInstruction {
         const name = options.name ?? defaultViewName;
-        let template: TemplateLike;
+        let template: ContentTemplate;
 
         if (isElementRenderOptions(options)) {
             const def = FASTElementDefinition.getByType(options.element);
 
             if (def) {
-                const input = (options as ElementRenderOptions).input ?? defaultInput;
-                template = html`<${def.name} :${input}=${x => x}></${def.name}>`;
+                template = RenderInstruction.createElementTemplate(
+                    def.name,
+                    options.attributes ?? defaultAttributes,
+                    options.content
+                );
             } else {
                 throw new Error("Invalid element for model rendering.");
             }
@@ -256,6 +274,40 @@ export const RenderInstruction = Object.freeze({
             name,
             template,
         };
+    },
+    createElementTemplate<TSource = any, TParent = any>(
+        tagName: string,
+        attributes?: Record<string, string | TemplateValue<TSource, TParent>>,
+        content?: string | ContentTemplate
+    ): ViewTemplate<TSource, TParent> {
+        const markup = [`<${tagName}`];
+        const values: Array<TemplateValue<TSource, TParent>> = [];
+
+        if (attributes) {
+            const attrNames = Object.getOwnPropertyNames(attributes);
+
+            for (let i = 0, ii = attrNames.length; i < ii; ++i) {
+                const name = attrNames[i];
+
+                if (i === 0) {
+                    markup[0] = `${markup[0]} ${name}="`;
+                } else {
+                    markup.push(`" ${name}="`);
+                }
+
+                values.push(attributes[name]);
+            }
+        }
+
+        if (content && isFunction((content as any).create)) {
+            markup.push(`">`);
+            values.push(content);
+            markup.push(`</${tagName}>`);
+        } else {
+            markup.push(`">${content ?? ""}</${tagName}>`);
+        }
+
+        return html((markup as any) as TemplateStringsArray, ...values);
     },
     register(optionsOrInstruction: RenderOptions | RenderInstruction): RenderInstruction {
         let lookup = typeToInstructionLookup.get(optionsOrInstruction.type);
@@ -296,7 +348,7 @@ export function renderWith(
     element: Constructable<FASTElement>,
     name?: string
 ): ClassDecorator;
-export function renderWith(template: TemplateLike, name?: string): ClassDecorator;
+export function renderWith(template: ContentTemplate, name?: string): ClassDecorator;
 export function renderWith(value: any, name?: string) {
     return function (type: Constructable) {
         if (isFunction(value)) {
