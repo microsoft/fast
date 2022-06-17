@@ -49,6 +49,8 @@ Lastly, we are running the benchmark with the **update10th** operation, jump to 
 
 Under the versions argument, you can pass in the following values:
 1. **Github Branch Name** - these can be any branch that is pushed to Github, including your development branch and the master branch.
+
+   For example:
    ```
    --versions master feature/fast-element-1 users/wendy/test-1
    ```
@@ -57,8 +59,9 @@ Under the versions argument, you can pass in the following values:
    This is a screenshot of what that looks like when you run a benchmark:
    ![Screen Shot 2022-06-16 at 9 52 28 AM](https://user-images.githubusercontent.com/6309989/174124701-547e7473-008c-41c7-b548-2b3008d091d6.png)
 
-2. **Published library version** - any version that is available for the library you are benchmarking
-    available [fast-element](https://www.npmjs.com/package/@microsoft/fast-element) versions
+2. **Published library version** - any version that is available for the library you are benchmarking.
+    
+    [fast-element versions](https://www.npmjs.com/package/@microsoft/fast-element)
 
     For example:
     ```
@@ -88,7 +91,7 @@ Under the versions argument, you can pass in the following values:
    ```
    
    
-   The _--localBenchFile_ and _--branchName_ are optional arguments you pass in with the **local** version.
+   The _--localBenchFile_ and _--branchName_ are optional arguments you can pass in with the **local** version.
     
    1. **--localBenchFile** - you can pass in a different implementation from the main benchmark file _index.ts_. 
  
@@ -106,7 +109,7 @@ Under the versions argument, you can pass in the following values:
       $ yarn run benchmark --library=fast-element --benchmark=render --versions local master --localBenchFile=index2 --operations=update10th
       ```
 
-   2. **--branchname** - you can pass in any branch that has been pushed to Github.
+   2. **--branchName** - you can pass in any branch that has been pushed to Github.
 
       :crystal_ball: Use Case: you want to compare **master** branch with implementation from _index.ts_ and **archives/fast-element-1** branch with same implementation from _index.ts_
       
