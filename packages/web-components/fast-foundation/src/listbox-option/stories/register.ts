@@ -1,7 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 import { DesignSystem } from "../../design-system/design-system.js";
-import { forcedColorsStylesheetBehavior } from "../../utilities/match-media-stylesheet-behavior.js";
 import { ListboxOption } from "../listbox-option.js";
 import { listboxOptionTemplate as template } from "../listbox-option.template.js";
 
@@ -9,18 +7,22 @@ const styles = () =>
     css`
         :host {
             align-items: center;
-            background: var(--neutral-fill-stealth-rest);
             border-radius: calc(var(--control-corner-radius) * 1px);
-            border: calc(var(--focus-stroke-width) * 1px) solid transparent;
+            border: calc(var(--focus-stroke-width) * 1px) solid
+                var(--neutral-layer-floating);
             box-sizing: border-box;
             color: var(--neutral-foreground-rest);
             cursor: pointer;
             display: inline-flex;
             fill: currentcolor;
             flex: 0 0 auto;
-            font: var(--type-ramp-base-font-size) / var(--type-ramp-base-line-height)
-                var(--body-font);
-            height: calc(var(--height-number) * 1px);
+            font-family: var(--body-font);
+            font-size: var(--type-ramp-base-font-size);
+            height: calc(
+                (var(--base-height-multiplier) + var(--density)) * var(--design-unit) *
+                    1px
+            );
+            line-height: var(--type-ramp-base-line-height);
             margin: 0 calc((var(--design-unit) - var(--focus-stroke-width)) * 1px);
             outline: none;
             overflow: hidden;
@@ -29,12 +31,12 @@ const styles = () =>
             white-space: nowrap;
         }
 
-        :host(:not([disabled]):not([aria-selected="true"]):hover) {
-            background: var(--neutral-fill-stealth-hover);
-        }
-
-        :host(:not([disabled]):not([aria-selected="true"]):active) {
-            background: var(--neutral-fill-stealth-active);
+        :host(:focus-visible) {
+            background: var(--accent-fill-focus);
+            border-color: var(--focus-stroke-outer);
+            box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 1px) inset
+                var(--focus-stroke-inner);
+            color: var(--foreground-on-accent-focus);
         }
 
         :host([aria-selected="true"]) {
@@ -42,19 +44,29 @@ const styles = () =>
             color: var(--foreground-on-accent-rest);
         }
 
-        :host(:not([disabled])[aria-selected="true"]:hover) {
+        :host(:hover) {
             background: var(--accent-fill-hover);
             color: var(--foreground-on-accent-hover);
         }
 
-        :host(:not([disabled])[aria-selected="true"]:active) {
+        :host(:active) {
             background: var(--accent-fill-active);
             color: var(--foreground-on-accent-active);
         }
 
+        :host(:not([aria-selected="true"]):hover),
+        :host(:not([aria-selected="true"]):active) {
+            background: var(--neutral-fill-hover);
+            color: var(--neutral-foreground-rest);
+        }
+
         :host([disabled]) {
-            cursor: var(--disabled-cursor);
+            cursor: not-allowed;
             opacity: var(--disabled-opacity);
+        }
+
+        :host([disabled]:hover) {
+            background-color: inherit;
         }
 
         .content {
@@ -84,53 +96,26 @@ const styles = () =>
         }
 
         :host([aria-checked="true"][aria-selected="false"]) {
-            border-color: var(--focus-stroke-outer);
+            border-color: var(--neutral-stroke-rest);
+            background: var(--neutral-layer-3);
+            color: var(--neutral-foreground-rest);
+        }
+
+        :host([aria-checked="true"][aria-selected="false"]:not([disabled]):hover) {
+            background: var(--neutral-fill-hover);
         }
 
         :host([aria-checked="true"][aria-selected="true"]) {
             border-color: var(--focus-stroke-outer);
-            box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 2 * 1px) inset
-                var(--focus-stroke-inner);
+            background: var(--accent-fill-focus);
+            color: var(--foreground-on-accent-focus);
         }
-    `.withBehaviors(
-        forcedColorsStylesheetBehavior(
-            css`
-                :host {
-                    border-color: transparent;
-                    color: ${SystemColors.ButtonText};
-                    fill: currentcolor;
-                    forced-color-adjust: none;
-                }
 
-                :host(:not([aria-selected="true"]):hover),
-                :host([aria-selected="true"]) {
-                    background: ${SystemColors.Highlight};
-                    color: ${SystemColors.HighlightText};
-                }
-
-                :host([disabled]),
-                :host([disabled][aria-selected="false"]:hover) {
-                    background: ${SystemColors.Canvas};
-                    color: ${SystemColors.GrayText};
-                    fill: currentcolor;
-                    opacity: 1;
-                }
-
-                :host([aria-checked="true"][aria-selected="false"]) {
-                    background: ${SystemColors.ButtonFace};
-                    border-color: ${SystemColors.ButtonText};
-                    color: ${SystemColors.ButtonText};
-                }
-
-                :host([aria-checked="true"][aria-selected="true"]),
-                :host([aria-checked="true"][aria-selected="true"]:hover) {
-                    background: ${SystemColors.Highlight};
-                    border-color: ${SystemColors.ButtonText};
-                    color: ${SystemColors.HighlightText};
-                }
-            `
-        )
-    );
+        :host([aria-checked="true"][aria-selected="true"]:hover) {
+            background: var(--accent-fill-hover);
+            color: var(--foreground-on-accent-hover);
+        }
+    `;
 
 DesignSystem.getOrCreate()
     .withPrefix("fast")
