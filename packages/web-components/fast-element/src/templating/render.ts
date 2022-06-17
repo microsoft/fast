@@ -9,6 +9,7 @@ import {
     ExecutionContext,
     Observable,
 } from "../observation/observable.js";
+import type { ContentTemplate, ContentView } from "./binding.js";
 import type {
     AddViewBehaviorFactory,
     HTMLDirective,
@@ -22,39 +23,6 @@ import {
     TemplateValue,
     ViewTemplate,
 } from "./template.js";
-
-export interface ContentView {
-    /**
-     * Binds a view's behaviors to its binding source.
-     * @param source - The binding source for the view's binding behaviors.
-     * @param context - The execution context to run the view within.
-     */
-    bind(source: any, context: ExecutionContext): void;
-
-    /**
-     * Unbinds a view's behaviors from its binding source and context.
-     */
-    unbind(): void;
-
-    /**
-     * Inserts the view's DOM nodes before the referenced node.
-     * @param node - The node to insert the view's DOM before.
-     */
-    insertBefore(node: Node): void;
-
-    /**
-     * Removes the view's DOM nodes.
-     * The nodes are not disposed and the view can later be re-inserted.
-     */
-    remove(): void;
-}
-
-export interface ContentTemplate {
-    /**
-     * Creates a simple content view instance.
-     */
-    create(): ContentView;
-}
 
 export class RenderBehavior<TSource = any> implements Behavior, Subscriber {
     private source: TSource | null = null;
@@ -72,7 +40,6 @@ export class RenderBehavior<TSource = any> implements Behavior, Subscriber {
         private templateBinding: Binding<TSource, ContentTemplate>
     ) {
         this.dataBindingObserver = Observable.binding(dataBinding, this, true);
-
         this.templateBindingObserver = Observable.binding(templateBinding, this, true);
     }
 

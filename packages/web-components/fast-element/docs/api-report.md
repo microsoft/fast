@@ -211,6 +211,19 @@ export type ConstructibleStyleStrategy = {
 };
 
 // @public
+export interface ContentTemplate {
+    create(): ContentView;
+}
+
+// @public
+export interface ContentView {
+    bind(source: any, context: ExecutionContext): void;
+    insertBefore(node: Node): void;
+    remove(): void;
+    unbind(): void;
+}
+
+// @public
 export class Controller<TElement extends HTMLElement = HTMLElement> extends PropertyChangeNotifier {
     // @internal
     constructor(element: TElement, definition: FASTElementDefinition);
