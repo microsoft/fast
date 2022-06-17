@@ -1,8 +1,8 @@
 import type { ElementStyles } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { DesignSystem } from "../../design-system/design-system.js";
-import { listboxTemplate as template } from "../../index.js";
 import { ListboxElement as FoundationListboxElement } from "../listbox.element.js";
+import { listboxTemplate as template } from "../listbox.template.js";
 
 const styles = () => css`
     :host {

@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/index.js";
+import { DesignSystem } from "../../design-system/design-system.js";
 import { AccordionItem } from "../accordion-item.js";
 import { accordionItemTemplate as template } from "../accordion-item.template.js";
 
