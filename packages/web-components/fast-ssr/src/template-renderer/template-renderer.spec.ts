@@ -212,6 +212,13 @@ test.describe("TemplateRenderer", () => {
         expect(result).toBe(`<body attr="value"></body>`);
     });
 
+    test("should evaluate bindings as an element child", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = consolidate(templateRenderer.render(html`<html><head><script>content ${x => "test-content"}</script></head></html>`, defaultRenderInfo));
+
+        expect(result).toBe(`<script>content test-content</script>`);
+    });
+
     test("should emit embedded templates", () =>{
         const { templateRenderer, defaultRenderInfo} = fastSSR();
 

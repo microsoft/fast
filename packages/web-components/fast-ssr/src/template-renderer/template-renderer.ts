@@ -102,7 +102,10 @@ export class TemplateRenderer {
                         } else if (result === null || result === undefined) {
                             // Don't yield anything if result is null
                             break;
-                        } else if (factory.aspectType === Aspect.content) {
+                        } else if (
+                            factory.aspectType ===
+                            Aspect.content /* || typeof result === "string" */
+                        ) {
                             yield result;
                         } else {
                             // debugging error - we should handle all result cases
