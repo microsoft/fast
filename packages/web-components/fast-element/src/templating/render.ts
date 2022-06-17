@@ -161,21 +161,211 @@ export interface RenderInstruction {
     name: string;
 }
 
+export type CommonRenderOptions = {
+    type: Constructable;
+    name?: string;
+};
+
+export type TemplateRenderOptions = CommonRenderOptions & {
+    template: ContentTemplate;
+};
+
+export type BaseElementRenderOptions<
+    TSource = any,
+    TParent = any
+> = CommonRenderOptions & {
+    attributes?: Record<string, string | TemplateValue<TSource, TParent>>;
+    content?: string | SyntheticViewTemplate;
+};
+
+export type ElementConstructorRenderOptions<
+    TSource = any,
+    TParent = any
+> = BaseElementRenderOptions<TSource, TParent> & {
+    element: Constructable<FASTElement>;
+};
+
+export type TagNameRenderOptions<TSource = any, TParent = any> = BaseElementRenderOptions<
+    TSource,
+    TParent
+> & {
+    tagName: string;
+};
+
+type ElementRenderOptions<TSource = any, TParent = any> =
+    | TagNameRenderOptions<TSource, TParent>
+    | ElementConstructorRenderOptions<TSource, TParent>;
+
+function isElementRenderOptions(object: any): object is ElementRenderOptions {
+    return !!object.element || !!object.tagName;
+}
+
 const typeToInstructionLookup = new Map<
     Constructable,
     Record<string, RenderInstruction>
 >();
+
+/* eslint @typescript-eslint/naming-convention: "off"*/
+const defaultAttributes = { ":model": x => x };
+const brand = Symbol("RenderInstruction");
 const defaultViewName = "default-view";
 const nullTemplate = html`
     &nbsp;
 `;
 
-function definitionToTemplate(def: RenderInstruction | undefined) {
+function instructionToTemplate(def: RenderInstruction | undefined) {
     if (def === void 0) {
         return nullTemplate;
     }
 
     return def.template;
+}
+
+function createElementTemplate<TSource = any, TParent = any>(
+    tagName: string,
+    attributes?: Record<string, string | TemplateValue<TSource, TParent>>,
+    content?: string | ContentTemplate
+): ViewTemplate<TSource, TParent> {
+    const markup = [`<${tagName}`];
+    const values: Array<TemplateValue<TSource, TParent>> = [];
+
+    if (attributes) {
+        const attrNames = Object.getOwnPropertyNames(attributes);
+
+        for (let i = 0, ii = attrNames.length; i < ii; ++i) {
+            const name = attrNames[i];
+
+            if (i === 0) {
+                markup[0] = `${markup[0]} ${name}="`;
+            } else {
+                markup.push(`" ${name}="`);
+            }
+
+            values.push(attributes[name]);
+        }
+    }
+
+    if (content && isFunction((content as any).create)) {
+        markup.push(`">`);
+        values.push(content);
+        markup.push(`</${tagName}>`);
+    } else {
+        markup.push(`">${content ?? ""}</${tagName}>`);
+    }
+
+    return html((markup as any) as TemplateStringsArray, ...values);
+}
+
+function create(options: TagNameRenderOptions): RenderInstruction;
+function create(options: ElementConstructorRenderOptions): RenderInstruction;
+function create(options: TemplateRenderOptions): RenderInstruction;
+function create(options: any): RenderInstruction {
+    const name = options.name ?? defaultViewName;
+    let template: ContentTemplate;
+
+    if (isElementRenderOptions(options)) {
+        let tagName = (options as TagNameRenderOptions).tagName;
+
+        if (!tagName) {
+            const def = FASTElementDefinition.getByType(
+                (options as ElementConstructorRenderOptions).element
+            );
+
+            if (def) {
+                tagName = def.name;
+            } else {
+                throw new Error("Invalid element for model rendering.");
+            }
+        }
+
+        template = createElementTemplate(
+            tagName,
+            options.attributes ?? defaultAttributes,
+            options.content
+        );
+    } else {
+        template = options.template;
+    }
+
+    return {
+        brand,
+        type: options.type,
+        name,
+        template,
+    };
+}
+
+function instanceOf(object: any): object is RenderInstruction {
+    return object && object.brand === brand;
+}
+
+function register(options: TagNameRenderOptions): RenderInstruction;
+function register(options: ElementConstructorRenderOptions): RenderInstruction;
+function register(options: TemplateRenderOptions): RenderInstruction;
+function register(instruction: RenderInstruction): RenderInstruction;
+function register(optionsOrInstruction: any): RenderInstruction {
+    let lookup = typeToInstructionLookup.get(optionsOrInstruction.type);
+    if (lookup === void 0) {
+        typeToInstructionLookup.set(
+            optionsOrInstruction.type,
+            (lookup = Object.create(null) as {})
+        );
+    }
+
+    const instruction = instanceOf(optionsOrInstruction)
+        ? optionsOrInstruction
+        : create(optionsOrInstruction);
+
+    return (lookup[instruction.name] = instruction);
+}
+
+function getByType(type: Constructable, name?: string): RenderInstruction | undefined {
+    const entries = typeToInstructionLookup.get(type);
+
+    if (entries === void 0) {
+        return void 0;
+    }
+
+    return entries[name ?? defaultViewName];
+}
+
+function getForInstance(object: any, name?: string): RenderInstruction | undefined {
+    if (object) {
+        return getByType(object.constructor, name);
+    }
+
+    return void 0;
+}
+
+export const RenderInstruction = Object.freeze({
+    instanceOf,
+    create,
+    createElementTemplate,
+    register,
+    getByType,
+    getForInstance,
+});
+
+export function renderWith(options: Omit<TagNameRenderOptions, "type">): ClassDecorator;
+export function renderWith(
+    options: Omit<ElementConstructorRenderOptions, "type">
+): ClassDecorator;
+export function renderWith(options: Omit<TemplateRenderOptions, "type">): ClassDecorator;
+export function renderWith(
+    element: Constructable<FASTElement>,
+    name?: string
+): ClassDecorator;
+export function renderWith(template: ContentTemplate, name?: string): ClassDecorator;
+export function renderWith(value: any, name?: string) {
+    return function (type: Constructable) {
+        if (isFunction(value)) {
+            register({ type, element: value, name });
+        } else if (isFunction(value.create)) {
+            register({ type, template: value, name });
+        } else {
+            register({ type, ...value });
+        }
+    };
 }
 
 export function render<TSource = any, TItem = any>(
@@ -190,26 +380,21 @@ export function render<TSource = any, TItem = any>(
 
     if (templateOrTemplateBindingOrViewName === void 0) {
         templateBinding = (s: any, c: ExecutionContext) =>
-            definitionToTemplate(RenderInstruction.getForInstance(dataBinding(s, c)));
+            instructionToTemplate(getForInstance(dataBinding(s, c)));
     } else if (isFunction(templateOrTemplateBindingOrViewName)) {
         templateBinding = (s: any, c: ExecutionContext) => {
             let result = templateOrTemplateBindingOrViewName(s, c);
 
             if (isString(result)) {
-                result = definitionToTemplate(
-                    RenderInstruction.getForInstance(dataBinding(s, c), result)
-                );
+                result = instructionToTemplate(getForInstance(dataBinding(s, c), result));
             }
 
             return result;
         };
     } else if (isString(templateOrTemplateBindingOrViewName)) {
         templateBinding = (s: any, c: ExecutionContext) =>
-            definitionToTemplate(
-                RenderInstruction.getForInstance(
-                    dataBinding(s, c),
-                    templateOrTemplateBindingOrViewName
-                )
+            instructionToTemplate(
+                getForInstance(dataBinding(s, c), templateOrTemplateBindingOrViewName)
             );
     } else {
         templateBinding = (s: any, c: ExecutionContext) =>
@@ -217,146 +402,4 @@ export function render<TSource = any, TItem = any>(
     }
 
     return new RenderDirective<TSource>(dataBinding, templateBinding);
-}
-
-export type CommonRenderOptions = {
-    type: Constructable;
-    name?: string;
-};
-
-export type TemplateRenderOptions = CommonRenderOptions & {
-    template: ContentTemplate;
-};
-
-export type ElementRenderOptions<TSource = any, TParent = any> = CommonRenderOptions & {
-    element: Constructable<FASTElement>;
-    attributes?: Record<string, string | TemplateValue<TSource, TParent>>;
-    content?: string | SyntheticViewTemplate;
-};
-
-export type RenderOptions = TemplateRenderOptions | ElementRenderOptions;
-
-function isElementRenderOptions(object: any): object is ElementRenderOptions {
-    return !!object.element;
-}
-
-const brand = Symbol("RenderInstruction");
-/* eslint @typescript-eslint/naming-convention: "off"*/
-const defaultAttributes = { ":model": x => x };
-
-export const RenderInstruction = Object.freeze({
-    instanceOf(object: any): object is RenderInstruction {
-        return object && object.brand === brand;
-    },
-    create(options: RenderOptions): RenderInstruction {
-        const name = options.name ?? defaultViewName;
-        let template: ContentTemplate;
-
-        if (isElementRenderOptions(options)) {
-            const def = FASTElementDefinition.getByType(options.element);
-
-            if (def) {
-                template = RenderInstruction.createElementTemplate(
-                    def.name,
-                    options.attributes ?? defaultAttributes,
-                    options.content
-                );
-            } else {
-                throw new Error("Invalid element for model rendering.");
-            }
-        } else {
-            template = options.template;
-        }
-
-        return {
-            brand,
-            type: options.type,
-            name,
-            template,
-        };
-    },
-    createElementTemplate<TSource = any, TParent = any>(
-        tagName: string,
-        attributes?: Record<string, string | TemplateValue<TSource, TParent>>,
-        content?: string | ContentTemplate
-    ): ViewTemplate<TSource, TParent> {
-        const markup = [`<${tagName}`];
-        const values: Array<TemplateValue<TSource, TParent>> = [];
-
-        if (attributes) {
-            const attrNames = Object.getOwnPropertyNames(attributes);
-
-            for (let i = 0, ii = attrNames.length; i < ii; ++i) {
-                const name = attrNames[i];
-
-                if (i === 0) {
-                    markup[0] = `${markup[0]} ${name}="`;
-                } else {
-                    markup.push(`" ${name}="`);
-                }
-
-                values.push(attributes[name]);
-            }
-        }
-
-        if (content && isFunction((content as any).create)) {
-            markup.push(`">`);
-            values.push(content);
-            markup.push(`</${tagName}>`);
-        } else {
-            markup.push(`">${content ?? ""}</${tagName}>`);
-        }
-
-        return html((markup as any) as TemplateStringsArray, ...values);
-    },
-    register(optionsOrInstruction: RenderOptions | RenderInstruction): RenderInstruction {
-        let lookup = typeToInstructionLookup.get(optionsOrInstruction.type);
-        if (lookup === void 0) {
-            typeToInstructionLookup.set(
-                optionsOrInstruction.type,
-                (lookup = Object.create(null) as {})
-            );
-        }
-
-        const instruction = RenderInstruction.instanceOf(optionsOrInstruction)
-            ? optionsOrInstruction
-            : RenderInstruction.create(optionsOrInstruction);
-
-        return (lookup[instruction.name] = instruction);
-    },
-    getByType(type: Constructable, name?: string): RenderInstruction | undefined {
-        const entries = typeToInstructionLookup.get(type);
-
-        if (entries === void 0) {
-            return void 0;
-        }
-
-        return entries[name ?? defaultViewName];
-    },
-    getForInstance(object: any, name?: string): RenderInstruction | undefined {
-        if (object) {
-            return RenderInstruction.getByType(object.constructor, name);
-        }
-
-        return void 0;
-    },
-});
-
-export function renderWith(options: Omit<ElementRenderOptions, "type">): ClassDecorator;
-export function renderWith(options: Omit<TemplateRenderOptions, "type">): ClassDecorator;
-export function renderWith(
-    element: Constructable<FASTElement>,
-    name?: string
-): ClassDecorator;
-export function renderWith(template: ContentTemplate, name?: string): ClassDecorator;
-export function renderWith(value: any, name?: string) {
-    return function (type: Constructable) {
-        if (isFunction(value)) {
-            RenderInstruction.register({ type, element: value, name });
-        } else if (isFunction(value.create)) {
-            RenderInstruction.register({ type, template: value, name });
-        } else {
-            RenderInstruction.register({ type, ...value });
-        }
-    };
 }
