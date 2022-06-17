@@ -38,8 +38,8 @@ export default {
     },
     argTypes: {
         autocomplete: {
+            options: Object.values(ComboboxAutocomplete),
             control: {
-                options: Object.values(ComboboxAutocomplete),
                 type: "select",
             },
         },

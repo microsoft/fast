@@ -31,9 +31,9 @@ export default {
     },
     argTypes: {
         shape: {
+            options: ["circle", "square"],
             control: {
                 type: "select",
-                options: ["circle", "square"],
             },
         },
     },
