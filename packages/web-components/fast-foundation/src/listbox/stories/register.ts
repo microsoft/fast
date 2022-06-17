@@ -6,9 +6,9 @@ import { ListboxElement as FoundationListboxElement } from "../listbox.element.j
 
 const styles = () => css`
     :host {
-        background: var(--fill-color);
-        border-radius: calc(var(--control-corner-radius) * 1px);
+        background: var(--neutral-layer-floating);
         border: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-rest);
+        border-radius: calc(var(--control-corner-radius) * 1px);
         box-sizing: border-box;
         display: inline-flex;
         flex-direction: column;
@@ -22,23 +22,20 @@ const styles = () => css`
     }
 
     :host([disabled]) ::slotted(*) {
-        cursor: var(--disabled-cursor);
         opacity: var(--disabled-opacity);
+        cursor: not-allowed;
         pointer-events: none;
     }
 
     :host([size]) {
         max-height: calc(
             (
-                    var(--size) * var(--height-number) +
-                        (var(--design-unit) * var(--stroke-width) * 2)
+                    var(--size) * (var(--base-height-multiplier) + var(--density)) *
+                        var(--design-unit) +
+                        ((var(--design-unit) + var(--stroke-width)) * 2)
                 ) * 1px
         );
         overflow-y: auto;
-    }
-
-    :host([size="0"]) {
-        max-height: none;
     }
 `;
 
