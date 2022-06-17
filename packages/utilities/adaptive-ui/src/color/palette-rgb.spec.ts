@@ -17,13 +17,19 @@ describe("PaletteRGB.from", () => {
 
     it("should create a palette with increased contrast", () => {
         const options: Partial<PaletteRGBOptions> = {
-                stepContrast: 1.07,
-                stepContrastRamp: 0,
+            stepContrast: 1.07,
+            stepContrastRamp: 0,
         };
         const palette = PaletteRGB.from(grey, options);
 
-        expect(contrast(palette.swatches[0], palette.swatches[1]), "at least 1.07:1 between 0 and 1").to.be.gte(1.07);
-        expect(contrast(palette.swatches[20], palette.swatches[21]), "at least 1.07:1 between 20 and 21").to.be.gte(1.07);
+        expect(
+            contrast(palette.swatches[0], palette.swatches[1]),
+            "at least 1.07:1 between 0 and 1"
+        ).to.be.gte(1.07);
+        expect(
+            contrast(palette.swatches[20], palette.swatches[21]),
+            "at least 1.07:1 between 20 and 21"
+        ).to.be.gte(1.07);
     });
 
     // TODO: Fix with https://github.com/microsoft/fast/issues/5852
