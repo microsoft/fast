@@ -1,8 +1,6 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
 import type { ListboxElement } from "../listbox.element.js";
-import "../../listbox-option/stories/register.js";
-import "./register.js";
 
 type ListboxStoryArgs = Args & ListboxElement;
 type ListboxStoryMeta = Meta<ListboxStoryArgs>;

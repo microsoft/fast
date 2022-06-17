@@ -1,9 +1,7 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import "../../listbox-option/stories/register.js";
 import type { Combobox as FoundationCombobox } from "../combobox.js";
 import { ComboboxAutocomplete } from "../combobox.options.js";
-import "./register.js";
 
 type ComboboxStoryArgs = Args & FoundationCombobox;
 type ComboboxStoryMeta = Meta<ComboboxStoryArgs>;

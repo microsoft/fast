@@ -1,8 +1,6 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import "../../listbox-option/stories/register.js";
 import type { Select as FoundationSelect } from "../select.js";
-import "./register.js";
 
 type SelectStoryArgs = Args & FoundationSelect;
 type SelectStoryMeta = Meta<SelectStoryArgs>;

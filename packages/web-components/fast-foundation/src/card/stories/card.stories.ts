@@ -1,7 +1,6 @@
 import { css, html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
 import type { Card as FoundationCard } from "../card.js";
-import "./register.js";
 
 type CardStoryMeta = Meta<Args & FoundationCard>;
 type CardStoryArgs = CardStoryMeta["args"];

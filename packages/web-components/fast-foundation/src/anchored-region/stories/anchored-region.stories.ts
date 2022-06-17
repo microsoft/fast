@@ -1,7 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
 import type { AnchoredRegion as FoundationAnchoredRegion } from "../anchored-region.js";
-import "./register.js";
 
 type AnchoredRegionArgs = Args & FoundationAnchoredRegion;
 type AnchoredRegionMeta = Meta<AnchoredRegionArgs>;

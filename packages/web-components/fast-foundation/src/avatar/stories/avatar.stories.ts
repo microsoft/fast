@@ -1,8 +1,6 @@
 import { css, html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import "../../badge/stories/register.js";
 import type { Avatar as FoundationAvatar } from "../avatar.js";
-import "./register.js";
 
 type AvatarStoryArgs = Args & FoundationAvatar;
 type AvatarStoryMeta = Meta<AvatarStoryArgs>;

@@ -1,7 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
 import type { DataGridCell as FoundationDataGridCell } from "../data-grid-cell.js";
-import "./data-grid-cell.register.js";
 
 type DataGridCellArgs = Args & FoundationDataGridCell;
 type DataGridCellMeta = Meta<DataGridCellArgs>;

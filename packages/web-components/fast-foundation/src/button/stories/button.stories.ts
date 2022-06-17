@@ -1,7 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
 import type { Button as FoundationButton } from "../button.js";
-import "./register.js";
 
 type ButtonStoryArgs = Args & FoundationButton;
 type ButtonStoryMeta = Meta<ButtonStoryArgs>;

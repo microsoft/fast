@@ -1,7 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
 import type { Anchor as FoundationAnchor } from "../anchor.js";
-import "./register.js";
 
 type AnchorArgs = Args & FoundationAnchor;
 type AnchorMeta = Meta<AnchorArgs>;

@@ -1,8 +1,6 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import "../../button/stories/register.js";
 import type { Checkbox as FoundationCheckbox } from "../checkbox.js";
-import "./register.js";
 
 type CheckboxStoryArgs = Args & FoundationCheckbox;
 type CheckboxStoryMeta = Meta<CheckboxStoryArgs>;
