@@ -54,7 +54,6 @@ describe("idealColorDeltaSwatchSet", (): void => {
         ];
 
         accentColors.forEach(
-            /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
             (accent): void => {
                 const accentPalette = PaletteRGB.from(accent);
 
