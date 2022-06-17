@@ -1,6 +1,6 @@
 import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
-import { Constructable, isFunction, isString } from "../interfaces.js";
+import { Constructable, Disposable, isFunction, isString } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
@@ -15,14 +15,40 @@ import type {
     ViewBehaviorTargets,
 } from "./html-directive.js";
 import { Markup } from "./markup.js";
-import { CaptureType, html, SyntheticViewTemplate } from "./template.js";
-import type { SyntheticView } from "./view.js";
+import { CaptureType, html } from "./template.js";
+
+export interface ViewLike extends Disposable {
+    /**
+     * Binds a view's behaviors to its binding source.
+     * @param source - The binding source for the view's binding behaviors.
+     * @param context - The execution context to run the view within.
+     */
+    bind(source: any, context: ExecutionContext): void;
+
+    /**
+     * Unbinds a view's behaviors from its binding source and context.
+     */
+    unbind(): void;
+
+    /**
+     * Inserts the view's DOM nodes before the referenced node.
+     * @param node - The node to insert the view's DOM before.
+     */
+    insertBefore(node: Node): void;
+}
+
+export interface TemplateLike {
+    /**
+     * Creates a view-like instance.
+     */
+    create(): ViewLike;
+}
 
 export class RenderBehavior<TSource = any> implements Behavior, Subscriber {
     private source: TSource | null = null;
-    private view: SyntheticView | null = null;
-    private template!: SyntheticViewTemplate;
-    private templateBindingObserver: BindingObserver<TSource, SyntheticViewTemplate>;
+    private view: ViewLike | null = null;
+    private template!: TemplateLike;
+    private templateBindingObserver: BindingObserver<TSource, TemplateLike>;
     private data: any | null = null;
     private dataBindingObserver: BindingObserver<TSource, any[]>;
     private originalContext: ExecutionContext | undefined = void 0;
@@ -31,7 +57,7 @@ export class RenderBehavior<TSource = any> implements Behavior, Subscriber {
     public constructor(
         private location: Node,
         private dataBinding: Binding<TSource, any[]>,
-        private templateBinding: Binding<TSource, SyntheticViewTemplate>
+        private templateBinding: Binding<TSource, TemplateLike>
     ) {
         this.dataBindingObserver = Observable.binding(dataBinding, this, true);
 
@@ -99,7 +125,7 @@ export class RenderDirective<TSource = any> implements HTMLDirective {
 
     public constructor(
         private dataBinding: Binding,
-        private templateBinding: Binding<TSource, SyntheticViewTemplate>
+        private templateBinding: Binding<TSource, TemplateLike>
     ) {}
 
     public createHTML(add: AddViewBehaviorFactory): string {
@@ -118,7 +144,7 @@ export class RenderDirective<TSource = any> implements HTMLDirective {
 export interface RenderInstruction {
     brand: symbol;
     type: Constructable;
-    template: SyntheticViewTemplate;
+    template: TemplateLike;
     name: string;
 }
 
@@ -143,9 +169,9 @@ function definitionToTemplate(def: RenderInstruction | undefined) {
 export function render<TSource = any, TItem = any>(
     binding?: Binding<TSource, TItem>,
     templateOrTemplateBindingOrViewName?:
-        | SyntheticViewTemplate
+        | TemplateLike
         | string
-        | Binding<TSource, SyntheticViewTemplate | string>
+        | Binding<TSource, TemplateLike | string>
 ): CaptureType<TSource> {
     const dataBinding = binding ?? (((source: TSource) => source) as Binding<TSource>);
     let templateBinding;
@@ -187,7 +213,7 @@ export type CommonRenderOptions = {
 };
 
 export type TemplateRenderOptions = CommonRenderOptions & {
-    template: SyntheticViewTemplate;
+    template: TemplateLike;
 };
 
 export type ElementRenderOptions = CommonRenderOptions & {
@@ -209,7 +235,7 @@ export const RenderInstruction = Object.freeze({
     },
     create(options: RenderOptions): RenderInstruction {
         const name = options.name ?? defaultViewName;
-        let template: SyntheticViewTemplate;
+        let template: TemplateLike;
 
         if (isElementRenderOptions(options)) {
             const def = FASTElementDefinition.getByType(options.element);
@@ -264,15 +290,13 @@ export const RenderInstruction = Object.freeze({
     },
 });
 
-export function renderWith(options: Omit<RenderOptions, "type">): ClassDecorator;
+export function renderWith(options: Omit<ElementRenderOptions, "type">): ClassDecorator;
+export function renderWith(options: Omit<TemplateRenderOptions, "type">): ClassDecorator;
 export function renderWith(
     element: Constructable<FASTElement>,
     name?: string
 ): ClassDecorator;
-export function renderWith(
-    template: SyntheticViewTemplate,
-    name?: string
-): ClassDecorator;
+export function renderWith(template: TemplateLike, name?: string): ClassDecorator;
 export function renderWith(value: any, name?: string) {
     return function (type: Constructable) {
         if (isFunction(value)) {
