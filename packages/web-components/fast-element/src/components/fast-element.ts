@@ -126,7 +126,19 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
         type: TType,
         nameOrDef?: string | PartialFASTElementDefinition
     ): TType {
-        return new FASTElementDefinition(type, nameOrDef).define().type;
+        return this.metadata(type, nameOrDef).define().type;
+    },
+
+    /**
+     * Defines metadata for a FASTElement which can be used to later define the element.
+     * IMPORTANT: This API will be renamed to "compose" in a future beta.
+     * @public
+     */
+    metadata<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+        type: TType,
+        nameOrDef?: string | PartialFASTElementDefinition
+    ): FASTElementDefinition<TType> {
+        return new FASTElementDefinition<TType>(type, nameOrDef);
     },
 });
 
@@ -139,6 +151,6 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
 export function customElement(nameOrDef: string | PartialFASTElementDefinition) {
     /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
     return function (type: Constructable<HTMLElement>) {
-        new FASTElementDefinition(type, nameOrDef).define();
+        FASTElement.define(type, nameOrDef);
     };
 }

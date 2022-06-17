@@ -533,7 +533,7 @@ export const ArrayObserver = Object.freeze({
  * @returns The length of the array.
  * @public
  */
-export function length<T>(array: readonly T[]): number {
+export function lengthOf<T>(array: readonly T[]): number {
     if (!array) {
         return 0;
     }

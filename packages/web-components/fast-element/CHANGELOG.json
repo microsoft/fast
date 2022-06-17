@@ -2,6 +2,57 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 15 Jun 2022 17:41:10 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.2",
+      "version": "2.0.0-beta.2",
+      "comments": {
+        "prerelease": [
+          {
+            "comment": "doc: add note to FASTElement.metadata API",
+            "author": "roeisenb@microsoft.com",
+            "commit": "359467f9ae67c46a33dfc28ce86dfd908072695d",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "when recycle is set to false while itemBinding stays the same, views should be recreated",
+            "author": "wendy.hsu@microsoft.com",
+            "commit": "9c92b9bb5bc9bf221b439c0a776b3621fdd9d9aa",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: simplify execution context to align closer with v1",
+            "author": "roeisenb@microsoft.com",
+            "commit": "488d051999c43b93a0beef4db30a2bddd6bbdc64",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: ergo improvements to context, array length, and metadata",
+            "author": "roeisenb@microsoft.com",
+            "commit": "12f5671e215ebd2b95c9cc83f856e233e01e9c4a",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: move optional bindings out of rollup and list as exports",
+            "author": "roeisenb@microsoft.com",
+            "commit": "e86a638b9e84cbf36d950025889742944e68e512",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "fix: make SyntheticViewTemplate type a string so it is generally usable",
+            "author": "roeisenb@microsoft.com",
+            "commit": "de7f234ef871204fcac2b5df59433d919809341d",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: implement W3C WC community context protocol and integrate with DI",
+            "author": "roeisenb@microsoft.com",
+            "commit": "c45297c0ca48b7e5f4343ba48e5183f2bccdb946",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Jun 2022 17:53:14 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.1",
       "version": "2.0.0-beta.1",

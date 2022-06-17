@@ -183,6 +183,15 @@ module.exports = {
                         keywords: ["fast-foundation"],
                     },
                 },
+                {
+                    type: "doc",
+                    id: "api/fast-ssr",
+                    customProps: {
+                        description:
+                            "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-ssr.",
+                        keywords: ["fast-ssr"],
+                    },
+                },
             ],
         },
         {

@@ -7,7 +7,6 @@
 import type { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
 import type { CaptureType } from '@microsoft/fast-element';
-import { ChildViewTemplate } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { composedContains } from '@microsoft/fast-element/utilities';
 import { composedParent } from '@microsoft/fast-element/utilities';
@@ -18,7 +17,6 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
-import { ItemViewTemplate } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import type { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
@@ -392,7 +390,7 @@ export class Calendar extends FoundationElement {
 }
 
 // @public
-export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ItemViewTemplate<CalendarDateInfo>;
+export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate<CalendarDateInfo>;
 
 // @public
 export type CalendarDateInfo = {
@@ -415,7 +413,7 @@ export type CalendarOptions = FoundationElementDefinition & StartEndOptions & {
 };
 
 // @public (undocumented)
-export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ChildViewTemplate;
+export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate;
 
 // @public
 export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>, CalendarOptions>;
@@ -424,7 +422,7 @@ export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>,
 export const CalendarTitleTemplate: ViewTemplate<Calendar>;
 
 // @public
-export const calendarWeekdayTemplate: (context: ElementDefinitionContext) => ItemViewTemplate;
+export const calendarWeekdayTemplate: (context: ElementDefinitionContext) => ViewTemplate;
 
 // @public
 export class Card extends FoundationElement {
@@ -691,14 +689,14 @@ export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaSt
 // @public
 export class DataGrid extends FoundationElement {
     constructor();
-    cellItemTemplate?: ItemViewTemplate;
+    cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // (undocumented)
     protected columnDefinitionsChanged(): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultRowItemTemplate: ItemViewTemplate;
+    defaultRowItemTemplate: ViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     focusColumnIndex: number;
@@ -716,14 +714,14 @@ export class DataGrid extends FoundationElement {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
-    headerCellItemTemplate?: ItemViewTemplate;
+    headerCellItemTemplate?: ViewTemplate;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
     // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
-    rowItemTemplate: ItemViewTemplate;
+    rowItemTemplate: ViewTemplate;
     rowsData: object[];
     // (undocumented)
     protected rowsDataChanged(): void;
@@ -767,17 +765,17 @@ export type DataGridCellTypes = typeof DataGridCellTypes[keyof typeof DataGridCe
 // @public
 export class DataGridRow extends FoundationElement {
     // @internal
-    activeCellItemTemplate?: ItemViewTemplate;
+    activeCellItemTemplate?: ViewTemplate;
     // @internal
     cellElements: HTMLElement[];
-    cellItemTemplate?: ItemViewTemplate;
+    cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultCellItemTemplate?: ItemViewTemplate;
+    defaultCellItemTemplate?: ViewTemplate;
     // @internal
-    defaultHeaderCellItemTemplate?: ItemViewTemplate;
+    defaultHeaderCellItemTemplate?: ViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // @internal (undocumented)
@@ -791,7 +789,7 @@ export class DataGridRow extends FoundationElement {
     handleFocusout(e: FocusEvent): void;
     // (undocumented)
     handleKeydown(e: KeyboardEvent): void;
-    headerCellItemTemplate?: ItemViewTemplate;
+    headerCellItemTemplate?: ViewTemplate;
     // @internal
     isActiveRow: boolean;
     rowData: object | null;
@@ -1408,6 +1406,7 @@ export class HorizontalScroll extends FoundationElement {
     scrolled(): void;
     // @internal
     scrollingChanged(prev: unknown, next: boolean): void;
+    scrollInView(item: HTMLElement | number, padding?: number, rightPadding?: number): void;
     scrollItems: HTMLElement[];
     scrollItemsChanged(previous: HTMLElement[], next: HTMLElement[]): void;
     scrollToNext(): void;

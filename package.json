@@ -15,7 +15,7 @@
       "sites/site-utilities",
       "sites/fast-website",
       "sites/website",
-      "examples/design-system-tutorial"
+      "examples/todo-app"
     ],
     "nohoist": [
       "**/@types/chai",

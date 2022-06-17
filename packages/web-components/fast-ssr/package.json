@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-ssr",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "type": "module",
   "author": {
     "name": "Microsoft",
@@ -35,10 +35,10 @@
   },
   "description": "A package for rendering FAST Web Components outside the browser.",
   "main": "./dist/esm/exports.js",
-  "types": "./dist/fast-ssr.d.ts",
+  "types": "./dist/dts/exports.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/fast-ssr.d.ts",
+      "types": "./dist/dts/exports.d.ts",
       "default": "./dist/esm/exports.js"
     },
     "./install-dom-shim": "./dist/esm/install-dom-shim.js",
@@ -52,11 +52,11 @@
     "tslib": "^2.4.0"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.1"
+    "@microsoft/fast-element": "^2.0.0-beta.2"
   },
   "devDependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.1",
-    "@microsoft/fast-foundation": "^3.0.0-alpha.2",
+    "@microsoft/fast-element": "^2.0.0-beta.2",
+    "@microsoft/fast-foundation": "^3.0.0-alpha.3",
     "@microsoft/api-extractor": "7.24.2",
     "@playwright/test": "^1.20.1",
     "@types/express": "^4.17.13",

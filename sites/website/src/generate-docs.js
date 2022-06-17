@@ -41,6 +41,7 @@ const packages = [
     "fast-element",
     "fast-foundation",
     "fast-components",
+    "fast-ssr",
 ];
 
 function identifyPackage(path) {

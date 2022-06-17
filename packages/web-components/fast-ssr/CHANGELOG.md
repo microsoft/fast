@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Wed, 01 Jun 2022 22:21:24 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Jun 2022 17:41:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.3
+
+Wed, 15 Jun 2022 17:41:10 GMT
+
+### Changes
+
+- Implemented Event support into SSR (nicholasrice@users.noreply.github.com)
+- feat: simplify execution context to align closer with v1 (roeisenb@microsoft.com)
+- chore: fix package.json type fields (roeisenb@microsoft.com)
 
 ## 1.0.0-beta.2
 

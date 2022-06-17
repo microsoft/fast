@@ -2,40 +2,72 @@
  * This file was ported from {@link https://github.com/lit/lit/tree/main/packages/labs/ssr}.
  * Please see {@link ../ACKNOWLEDGEMENTS.md}
  */
+import { observable } from "@microsoft/fast-element";
 import { RenderInfo } from "../render-info.js";
 import { escapeHtml } from "../escape-html.js";
+import { HTMLElement as ShimHTMLElement } from "../dom-shim.js";
+import { shouldBubble } from "../event-utilities.js";
 
 type AttributesMap = Map<string, string>;
 
 /**
  * @beta
  */
-export type ConstructableElementRenderer = (new (tagName: string) => ElementRenderer) &
+export type ConstructableElementRenderer = (new (
+    tagName: string,
+    renderInfo: RenderInfo
+) => ElementRenderer) &
     typeof ElementRenderer;
 
 export const getElementRenderer = (
-    { elementRenderers }: RenderInfo,
+    renderInfo: RenderInfo,
     tagName: string,
     ceClass: typeof HTMLElement | undefined = customElements.get(tagName),
     attributes: AttributesMap = new Map()
 ): ElementRenderer => {
     if (ceClass === undefined) {
         console.warn(`Custom element ${tagName} was not registered.`);
-        return new FallbackRenderer(tagName);
-    }
-    for (const renderer of elementRenderers) {
-        if (renderer.matchesClass(ceClass, tagName, attributes)) {
-            return new renderer(tagName);
+    } else {
+        for (const renderer of renderInfo.elementRenderers) {
+            if (renderer.matchesClass(ceClass, tagName, attributes)) {
+                return new renderer(tagName, renderInfo);
+            }
         }
     }
-    return new FallbackRenderer(tagName);
+
+    return new FallbackRenderer(tagName, renderInfo);
 };
 
 /**
  * @beta
  */
 export abstract class ElementRenderer {
+    private parent: ElementRenderer | null = null;
+    @observable
     abstract readonly element?: HTMLElement;
+    elementChanged() {
+        if (this.element) {
+            const dispatch = this.element.dispatchEvent;
+            Reflect.defineProperty(this.element, "dispatchEvent", {
+                value: (event: Event) => {
+                    let canceled = dispatch.call(this.element, event);
+
+                    if (shouldBubble(event)) {
+                        if (this.parent) {
+                            canceled = this.parent.dispatchEvent(event);
+                        } else if (this.element instanceof ShimHTMLElement) {
+                            // Only emit on document if the the element is the DOM shim's element.
+                            // Otherwise, the installed DOM should implement it's own behavior for bubbling
+                            // an event from an element to the document and window.
+                            canceled = document.dispatchEvent(event);
+                        }
+                    }
+
+                    return canceled;
+                },
+            });
+        }
+    }
 
     /**
      * Should return true when the renderer should handle rendering for a custom element ctor or tag name.
@@ -52,7 +84,12 @@ export abstract class ElementRenderer {
         return false;
     }
 
-    constructor(public readonly tagName: string) {}
+    constructor(
+        public readonly tagName: string,
+        private readonly renderInfo: RenderInfo
+    ) {
+        this.parent = renderInfo.customElementInstanceStack.at(-1) || null;
+    }
 
     abstract connectedCallback(): void;
     abstract attributeChangedCallback(
@@ -60,6 +97,10 @@ export abstract class ElementRenderer {
         prev: string | null,
         next: string | null
     ): void;
+
+    public dispatchEvent(event: Event): boolean {
+        return this.element?.dispatchEvent(event) || false;
+    }
 
     /**
      * Sets a property for the element if it exists.
@@ -88,7 +129,7 @@ export abstract class ElementRenderer {
      *
      * Default implementation serializes all attributes on the element instance.
      */
-    *renderAttributes(): IterableIterator<string> {
+    public *renderAttributes(): IterableIterator<string> {
         if (this.element !== undefined) {
             const { attributes } = this.element;
             for (
