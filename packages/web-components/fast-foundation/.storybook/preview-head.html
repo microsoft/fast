@@ -92,6 +92,17 @@
         --type-ramp-plus-6-line-height: 72px;
     }
 
+    html {
+        background-color: var(--fill-color);
+        min-height: 100%;
+    }
+
+    html,
+    body,
+    #root {
+        width: 100%;
+    }
+
     @media (prefers-color-scheme: dark) {
         :root {
             --accent-fill-active: #a01346;
@@ -148,10 +159,6 @@
             --neutral-stroke-rest: #5a5a5a;
             --tree-item-expand-collapse-hover: #333333;
             --tree-item-expand-collapse-selected-hover: #383838;
-        }
-
-        body {
-            background-color: var(--fill-color);
         }
     }
 </style>
