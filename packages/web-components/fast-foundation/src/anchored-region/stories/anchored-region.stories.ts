@@ -43,6 +43,10 @@ const storyTemplate = html<AnchoredRegionArgs>`
 export default {
     title: "Anchored Region",
     args: {
+        verticalPositioningMode: "locktodefault",
+        horizontalPositioningMode: "locktodefault",
+        verticalDefaultPosition: "top",
+        horizontalDefaultPosition: "left",
         content: html`
             <div style="background: green">
                 anchored-region
@@ -54,12 +58,10 @@ export default {
         verticalPositioningMode: {
             options: ["uncontrolled", "locktodefault", "dynamic"],
             control: { type: "select" },
-            defaultValue: "locktodefault",
         },
         verticalDefaultPosition: {
             options: ["top", "bottom", "center", "unset"],
             control: { type: "select" },
-            defaultValue: "top",
         },
         verticalInset: { control: { type: "boolean" } },
         verticalScaling: {
@@ -69,12 +71,10 @@ export default {
         horizontalPositioningMode: {
             options: ["uncontrolled", "locktodefault", "dynamic"],
             control: { type: "select" },
-            defaultValue: "locktodefault",
         },
         horizontalDefaultPosition: {
             options: ["start", "end", "left", "right", "center", "unset"],
             control: { type: "select" },
-            defaultValue: "left",
         },
         horizontalScaling: {
             options: ["anchor", "fill", "content"],
