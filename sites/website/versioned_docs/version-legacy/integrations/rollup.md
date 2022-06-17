@@ -222,7 +222,7 @@ This code uses the FAST Design System to register the `<fast-card>` and `<fast-b
       align-self: flex-end;
     }
   </style>
-  <script src="dist/bundle.js"></script>
+  <script src="/bundle.js"></script>
 </body>
 ```
 
