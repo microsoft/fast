@@ -6,14 +6,16 @@ import { comboboxTemplate as template } from "../combobox.template.js";
 const styles = () => css`
     :host {
         --elevation: 14;
-        display: inline-flex;
         background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         box-sizing: border-box;
         color: var(--neutral-foreground-rest);
+        display: inline-flex;
         font-family: var(--body-font);
-        height: calc(var(--height-number) * 1px);
+        height: calc(
+            (var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px
+        );
         position: relative;
         user-select: none;
         min-width: 250px;
@@ -21,43 +23,30 @@ const styles = () => css`
         vertical-align: top;
     }
 
-    :host .listbox {
-        background: var(--fill-color);
+    .listbox {
+        box-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px)
+                rgba(0, 0, 0, calc(0.11 * (2 - var(--background-luminance, 1)))),
+            0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px))
+                rgba(0, 0, 0, calc(0.13 * (2 - var(--background-luminance, 1))));
+        background: var(--neutral-layer-floating);
         border: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-rest);
         border-radius: calc(var(--control-corner-radius) * 1px);
         box-sizing: border-box;
+        display: inline-flex;
         flex-direction: column;
-        padding: calc(var(--design-unit) * 1px) 0;
-    }
-
-    .listbox {
-        max-height: calc(
-            (
-                    var(--size) * var(--height-number) +
-                        (var(--design-unit) * var(--stroke-width) * 2)
-                ) * 1px
-        );
-        overflow-y: auto;
-    }
-
-    :host([size="0"]) .listbox {
-        max-height: none;
-    }
-
-    :host .listbox {
-        border: none;
-        display: flex;
         left: 0;
+        max-height: calc(
+            var(--max-height) -
+                (
+                    (var(--base-height-multiplier) + var(--density)) * var(--design-unit) *
+                        1px
+                )
+        );
+        padding: calc(var(--design-unit) * 1px) 0;
+        overflow-y: auto;
         position: absolute;
         width: 100%;
         z-index: 1;
-    }
-
-    .control + .listbox {
-        --stroke-size: calc(var(--design-unit) * var(--stroke-width) * 2);
-        max-height: calc(
-            (var(--listbox-max-height) * var(--height-number) + var(--stroke-size)) * 1px
-        );
     }
 
     .listbox[hidden] {
@@ -84,15 +73,11 @@ const styles = () => css`
 
     :host(:focus-visible) {
         border-color: var(--focus-stroke-outer);
-    }
-
-    :host(:not([size]):not([multiple]):not([open]):focus-visible),
-    :host([multiple]:focus-visible),
-    :host([size]:focus-visible) {
         box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 1px) var(--focus-stroke-outer);
     }
 
-    :host(:not([multiple]):not([size]):focus-visible) ::slotted(fast-option)[aria-selected="true"]:not([disabled])) {
+    :host(:focus-visible)
+        ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
         box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 1px) inset
             var(--focus-stroke-inner);
         border-color: var(--focus-stroke-outer);
@@ -101,12 +86,12 @@ const styles = () => css`
     }
 
     :host([disabled]) {
-        cursor: var(--disabled-cursor);
+        cursor: not-allowed;
         opacity: var(--disabled-opacity);
     }
 
     :host([disabled]) .control {
-        cursor: var(--disabled-cursor);
+        cursor: not-allowed;
         user-select: none;
     }
 
@@ -125,25 +110,34 @@ const styles = () => css`
     :host([open][position="above"]) .listbox {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-        border-bottom: 0;
-        bottom: calc(var(--height-number) * 1px);
     }
 
     :host([open][position="below"]) .listbox {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
+    }
+
+    :host([open][position="above"]) .listbox {
+        border-bottom: 0;
+        bottom: calc(
+            (var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px
+        );
+    }
+
+    :host([open][position="below"]) .listbox {
         border-top: 0;
-        top: calc(var(--height-number) * 1px);
+        top: calc(
+            (var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px
+        );
     }
 
     .selected-value {
         flex: 1 1 auto;
         font-family: inherit;
-        min-width: calc(var(--listbox-scroll-width, 0) - (var(--design-unit) * 4) * 1px);
-        overflow: hidden;
         text-align: start;
-        text-overflow: ellipsis;
         white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     .indicator {
@@ -159,6 +153,10 @@ const styles = () => css`
     :host([open]) slot[name="listbox"] {
         display: flex;
         position: absolute;
+        box-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px)
+                rgba(0, 0, 0, calc(0.11 * (2 - var(--background-luminance, 1)))),
+            0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px))
+                rgba(0, 0, 0, calc(0.13 * (2 - var(--background-luminance, 1))));
     }
 
     .end {
@@ -182,25 +180,29 @@ const styles = () => css`
     ::slotted(option) {
         flex: 0 0 auto;
     }
+
     :host(:empty) .listbox {
         display: none;
     }
+
     :host([disabled]) *,
     :host([disabled]) {
-        cursor: var(--disabled-cursor);
+        cursor: not-allowed;
         user-select: none;
     }
+
     .selected-value {
-        -webkit-appearance: none;
+        appearance: none;
         background: transparent;
         border: none;
-        color: inherit;
+        color: currentcolor;
         font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
         height: calc(100% - (var(--stroke-width) * 1px));
+        line-height: var(--type-ramp-base-line-height);
         margin: auto 0;
         width: 100%;
     }
+
     .selected-value:hover,
     .selected-value:focus-visible,
     .selected-value:disabled,
