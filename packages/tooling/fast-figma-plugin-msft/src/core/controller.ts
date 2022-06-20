@@ -1,7 +1,10 @@
 import { AppliedDesignTokens, AppliedRecipes, RecipeEvaluations } from "./model";
 import { PluginNode } from "./node";
-import { PluginUIProps } from "./ui";
 import { PluginUINodeData } from "./ui/ui-controller";
+
+export interface PluginUIState {
+    selectedNodes: PluginUINodeData[];
+}
 
 /**
  * Controller class designed to handle communication between the plugin and the design tool.
@@ -76,7 +79,7 @@ export abstract class Controller {
         return convertedNodes;
     }
 
-    private getPluginUIState(): Omit<PluginUIProps, "dispatch"> {
+    private getPluginUIState(): PluginUIState {
         const selectedNodes = this._selectedNodeIds
             .map(id => this.getNode(id))
             .filter((node): node is PluginNode => node !== null);
@@ -130,5 +133,5 @@ export abstract class Controller {
      * Provides the state object to the UI component and updates the UI
      * @param state the UI state object
      */
-    protected abstract setPluginUIState(state: Omit<PluginUIProps, "dispatch">): void;
+    protected abstract setPluginUIState(state: PluginUIState): void;
 }
