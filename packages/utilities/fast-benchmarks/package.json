@@ -1,7 +1,7 @@
 {
     "name": "@microsoft/fast-benchmarks",
     "version": "1.0.0",
-    "description": "utility library benchmarking for FAST libraries",
+    "description": "FAST Benchmarking utility for FAST Libraries.",
     "type": "module",
     "private": true,
     "author": {
