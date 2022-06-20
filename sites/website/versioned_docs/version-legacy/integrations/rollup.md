@@ -2,13 +2,14 @@
 id: rollup
 title: Rollup
 sidebar_label: Rollup
-custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/rollup.md
-description: FAST works great with TypeScript and Rollup, using a fairly standard setup. Let's take a look at how you can set up a FAST+TypeScript+Rollup project, starting from scratch.
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/integrations/rollup.md
+description: FAST works great with Rollup and TypeScript, using a standard setup. Let's take a look at how you can set up a FAST+Rollup+TypeScript project, starting from scratch.
 keywords:
   - rollup
+  - typescript
 ---
 
-FAST works great with TypeScript and Rollup, using a fairly standard setup. Let's take a look at how you can set up a FAST+TypeScript+Rollup project, starting from scratch.
+FAST works great with Rollup and TypeScript, using a standard setup. Let's take a look at how you can set up a FAST+Rollup+TypeScript project, starting from scratch.
 
 ## Setting up the package
 
@@ -30,7 +31,7 @@ From here, we'll initialize npm:
 npm init
 ```
 
-Follow the prompts from npm, answering each question in turn. You can always accept the defaults at first and then make changes later in the package.json file.
+Follow the prompts from npm, answering each question in turn. You can always accept the defaults at first and then make changes later in the `package.json` file.
 
 Next, we'll install the FAST packages, along with supporting libraries. To do that, run this command:
 
@@ -152,9 +153,9 @@ Let's add some helpful commands to our `package.json` file. Find the `scripts` s
 }
 ```
 
-Running `npm run build` in the terminal will build our application into the `dist` folder, allowing us to run it locally or deploy it.
+- `npm run build`: running this command in the terminal will build our application into the `dist` folder, allowing us to run it locally or deploy it.
 
-Running `npm run dev` does the same as `build`, except it will keep a process running that rebuilds our app whenever our source files change. Rollup will watch our entrypoint `main.ts` and any files that get imported from there.
+- `npm run dev`: running this command in the terminal does the same as `build`, except it will keep a process running that rebuilds our app whenever our source files change. Rollup will watch our entrypoint `main.ts` and any files that get imported from there.
 
 To complete our setup, we need to add an `index.html` file to the root of our project. We'll start with some basic content as follows:
 
@@ -175,7 +176,9 @@ There's nothing special about the HTML yet, other than the `script` tag in the `
 
 ## Using the components
 
-With all the basic pieces in place, let's run our app with `npm run build`. Rollup should build your project and open your default browser with your `index.html` page. Right now, it should be blank, since we haven't added any code or interesting HTML. Let's change that.
+With all the basic pieces in place, let's run our app with `npm run build`. 
+
+Rollup should build your project and open your default browser with your `index.html` page. Right now, it should be blank, since we haven't added any code or interesting HTML. Let's change that.
 
 First, open your `src/main.ts` file and add the following code:
 
@@ -193,7 +196,9 @@ provideFASTDesignSystem()
   );
 ```
 
-This code uses the FAST Design System to register the `<fast-card>` and `<fast-button>` components. To get some UI showing, we need to write some HTML that uses our components. Replace the contents of the `<body>` in your `index.html` file with the following markup:
+This code uses the FAST Design System to register the `<fast-card>` and `<fast-button>` components. To get some UI showing, we need to write some HTML that uses our components. 
+
+Replace the contents of the `<body>` in your `index.html` file with the following markup:
 
 ```html
 <body>
@@ -228,4 +233,4 @@ This code uses the FAST Design System to register the `<fast-card>` and `<fast-b
 
 After saving your `index.html` file, run `npm run build` again, and you should see a card with text and a button.
 
-Congratulations! You're now set up to use FAST, TypeScript, and Rollup. You can import and use more components, build your own components, and when you are ready, build and deploy your website or app to production.
+Congratulations! You're now set up to use FAST, Rollup, and TypeScript. You can import and use more components, build your own components, and when you are ready, build and deploy your website or app to production.
