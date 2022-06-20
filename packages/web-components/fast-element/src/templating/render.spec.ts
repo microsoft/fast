@@ -1,6 +1,9 @@
 import { expect } from "chai";
-import { ExecutionContext, html } from "../index.js";
+import { customElement, FASTElement } from "../components/fast-element.js";
+import { ExecutionContext } from "../observation/observable.js";
+import { uniqueElementName } from "../__test__/helpers.js";
 import { NodeTemplate, render, RenderDirective, RenderInstruction } from "./render.js";
+import { html, ViewTemplate } from "./template.js";
 
 describe.only("The render", () => {
     const childTemplate = html`Child Template`;
@@ -138,6 +141,251 @@ describe.only("The render", () => {
                 const template = directive.templateBinding(source, ExecutionContext.default);
                 expect(template).equal(childEditTemplate);
             });
+        });
+    });
+
+    context("instruction gateway", () => {
+        const operations = ["create", "register"];
+
+        for (const operation of operations) {
+            it(`can ${operation} an instruction from type and template`, () => {
+                class TestClass {};
+
+                const instruction = RenderInstruction[operation]({
+                    type: TestClass,
+                    template: parentTemplate
+                });
+
+                expect(RenderInstruction.instanceOf(instruction)).to.be.true;
+                expect(instruction.type).equal(TestClass);
+                expect(instruction.template).equal(parentTemplate);
+            });
+
+            it(`can ${operation} an instruction from type, template, and name`, () => {
+                class TestClass {};
+
+                const instruction = RenderInstruction[operation]({
+                    type: TestClass,
+                    template: parentTemplate,
+                    name: "test"
+                });
+
+                expect(RenderInstruction.instanceOf(instruction)).to.be.true;
+                expect(instruction.type).equal(TestClass);
+                expect(instruction.template).equal(parentTemplate);
+                expect(instruction.name).equal("test");
+            });
+
+            it(`can ${operation} an instruction from type and element`, () => {
+                class TestClass {};
+                const tagName = uniqueElementName();
+
+                @customElement(tagName)
+                class TestElement extends FASTElement {}
+
+                const instruction = RenderInstruction[operation]({
+                    element: TestElement,
+                    type: TestClass
+                });
+
+                const template = instruction.template as ViewTemplate;
+
+                expect(RenderInstruction.instanceOf(instruction)).to.be.true;
+                expect(instruction.type).equal(TestClass);
+                expect(template).instanceOf(ViewTemplate);
+                expect(template.html).to.include(`</${tagName}>`);
+            });
+
+            it(`can ${operation} an instruction from type, element, and name`, () => {
+                class TestClass {};
+                const tagName = uniqueElementName();
+
+                @customElement(tagName)
+                class TestElement extends FASTElement {}
+
+                const instruction = RenderInstruction[operation]({
+                    element: TestElement,
+                    type: TestClass,
+                    name: "test"
+                });
+
+                const template = instruction.template as ViewTemplate;
+
+                expect(RenderInstruction.instanceOf(instruction)).to.be.true;
+                expect(instruction.type).equal(TestClass);
+                expect(template).instanceOf(ViewTemplate);
+                expect(template.html).to.include(`</${tagName}>`);
+                expect(instruction.name).equal("test");
+            });
+
+            it(`can ${operation} an instruction from type, element, and content`, () => {
+                class TestClass {};
+                const tagName = uniqueElementName();
+                const content = "Hello World!";
+
+                @customElement(tagName)
+                class TestElement extends FASTElement {}
+
+                const instruction = RenderInstruction[operation]({
+                    element: TestElement,
+                    type: TestClass,
+                    content
+                });
+
+                const template = instruction.template as ViewTemplate;
+
+                expect(RenderInstruction.instanceOf(instruction)).to.be.true;
+                expect(instruction.type).equal(TestClass);
+                expect(template).instanceOf(ViewTemplate);
+                expect(template.html).to.include(`${content}</${tagName}>`);
+            });
+
+            it(`can ${operation} an instruction from type, element, content, and attributes`, () => {
+                class TestClass {};
+                const tagName = uniqueElementName();
+                const content = "Hello World!";
+
+                @customElement(tagName)
+                class TestElement extends FASTElement {}
+
+                const instruction = RenderInstruction[operation]({
+                    element: TestElement,
+                    type: TestClass,
+                    content,
+                    attributes: {
+                        "foo": "bar",
+                        "baz": "qux"
+                    }
+                });
+
+                const template = instruction.template as ViewTemplate;
+
+                expect(RenderInstruction.instanceOf(instruction)).to.be.true;
+                expect(instruction.type).equal(TestClass);
+                expect(template).instanceOf(ViewTemplate);
+                expect(template.html).to.include(`${content}</${tagName}>`);
+                expect(template.html).to.include(`foo="`);
+                expect(template.html).to.include(`baz="`);
+            });
+
+            it(`can ${operation} an instruction from type and tagName`, () => {
+                class TestClass {};
+                const tagName = uniqueElementName();
+
+                const instruction = RenderInstruction[operation]({
+                    tagName,
+                    type: TestClass
+                });
+
+                const template = instruction.template as ViewTemplate;
+
+                expect(RenderInstruction.instanceOf(instruction)).to.be.true;
+                expect(instruction.type).equal(TestClass);
+                expect(template).instanceOf(ViewTemplate);
+                expect(template.html).to.include(`</${tagName}>`);
+            });
+
+            it(`can ${operation} an instruction from type, tagName, and name`, () => {
+                class TestClass {};
+                const tagName = uniqueElementName();
+
+                const instruction = RenderInstruction[operation]({
+                    tagName,
+                    type: TestClass,
+                    name: "test"
+                });
+
+                const template = instruction.template as ViewTemplate;
+
+                expect(RenderInstruction.instanceOf(instruction)).to.be.true;
+                expect(instruction.type).equal(TestClass);
+                expect(template).instanceOf(ViewTemplate);
+                expect(template.html).to.include(`</${tagName}>`);
+                expect(instruction.name).equal("test");
+            });
+
+            it(`can ${operation} an instruction from type, tagName, and content`, () => {
+                class TestClass {};
+                const tagName = uniqueElementName();
+                const content = "Hello World!";
+
+                const instruction = RenderInstruction[operation]({
+                    tagName,
+                    type: TestClass,
+                    content
+                });
+
+                const template = instruction.template as ViewTemplate;
+
+                expect(RenderInstruction.instanceOf(instruction)).to.be.true;
+                expect(instruction.type).equal(TestClass);
+                expect(template).instanceOf(ViewTemplate);
+                expect(template.html).to.include(`${content}</${tagName}>`);
+            });
+
+            it(`can ${operation} an instruction from type, tagName, content, and attributes`, () => {
+                class TestClass {};
+                const tagName = uniqueElementName();
+                const content = "Hello World!";
+
+                const instruction = RenderInstruction[operation]({
+                    tagName,
+                    type: TestClass,
+                    content,
+                    attributes: {
+                        "foo": "bar",
+                        "baz": "qux"
+                    }
+                });
+
+                const template = instruction.template as ViewTemplate;
+
+                expect(RenderInstruction.instanceOf(instruction)).to.be.true;
+                expect(instruction.type).equal(TestClass);
+                expect(template).instanceOf(ViewTemplate);
+                expect(template.html).to.include(`${content}</${tagName}>`);
+                expect(template.html).to.include(`foo="`);
+                expect(template.html).to.include(`baz="`);
+            });
+        }
+
+        it(`can register an existing instruction`, () => {
+            class TestClass {};
+
+            const instruction = RenderInstruction.create({
+                type: TestClass,
+                template: parentTemplate
+            });
+
+            const result = RenderInstruction.register(instruction);
+
+            expect(result).equal(instruction);
+        });
+
+        it(`can get an instruction for an instance`, () => {
+            class TestClass {};
+
+            const instruction = RenderInstruction.register({
+                type: TestClass,
+                template: parentTemplate
+            });
+
+            const result = RenderInstruction.getForInstance(new TestClass());
+
+            expect(result).equal(instruction);
+        });
+
+        it(`can get an instruction for a type`, () => {
+            class TestClass {};
+
+            const instruction = RenderInstruction.register({
+                type: TestClass,
+                template: parentTemplate
+            });
+
+            const result = RenderInstruction.getByType(TestClass);
+
+            expect(result).equal(instruction);
         });
     });
 });
