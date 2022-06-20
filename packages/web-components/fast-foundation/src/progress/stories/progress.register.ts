@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { DesignSystem } from "../../design-system/design-system.js";
-import type { ProgressOptions } from "../base-progress.js";
 import { BaseProgress as Progress } from "../base-progress.js";
+import type { ProgressOptions } from "../progress.options.js";
 import { progressTemplate as template } from "../progress.template.js";
 
 const styles = () => css`

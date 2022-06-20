@@ -262,7 +262,7 @@ export class Badge extends FoundationElement {
 export const badgeTemplate: FoundationElementTemplate<ViewTemplate<Badge>>;
 
 // @public
-export class BaseProgress extends FoundationElement {
+class BaseProgress extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
     max: number;
@@ -278,6 +278,8 @@ export class BaseProgress extends FoundationElement {
     // (undocumented)
     protected valueChanged(): void;
 }
+export { BaseProgress }
+export { BaseProgress as ProgressRing }
 
 // @public
 export class Breadcrumb extends FoundationElement {
