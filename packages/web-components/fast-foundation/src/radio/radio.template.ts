@@ -1,6 +1,7 @@
-import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import { whitespaceFilter } from "../utilities/whitespace-filter.js";
 import type { Radio, RadioOptions } from "./radio.js";
 
 /**
@@ -13,8 +14,8 @@ export const radioTemplate: FoundationElementTemplate<
 > = (context, definition) => html`
     <template
         role="radio"
-        :classList="${x => (x.checked ? "checked" : "")} ${x =>
-            x.readOnly ? "readonly" : ""}"
+        class="${x =>
+            [x.checked && "checked", x.readOnly && "readonly"].filter(Boolean).join(" ")}"
         aria-checked="${x => x.checked}"
         aria-required="${x => x.required}"
         aria-disabled="${x => x.disabled}"
@@ -24,17 +25,22 @@ export const radioTemplate: FoundationElementTemplate<
     >
         <div part="control" class="control">
             <slot name="checked-indicator">
-                ${definition.checkedIndicator || ""}
+                ${definition.checkedIndicator ?? ""}
             </slot>
         </div>
         <label
             part="label"
             class="${x =>
-                x.defaultSlottedNodes && x.defaultSlottedNodes.length
-                    ? "label"
-                    : "label label__hidden"}"
+                ["label", !x.defaultSlottedNodes?.length && "label__hidden"]
+                    .filter(Boolean)
+                    .join(" ")}"
         >
-            <slot ${slotted("defaultSlottedNodes")}></slot>
+            <slot
+                ${slotted({
+                    property: "defaultSlottedNodes",
+                    filter: whitespaceFilter,
+                })}
+            ></slot>
         </label>
     </template>
 `;
