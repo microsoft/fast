@@ -369,8 +369,11 @@ export function renderWith(value: any, name?: string) {
     };
 }
 
-class NodeTemplate implements ContentTemplate, ContentView {
-    constructor(private node: Node) {
+/**
+ * @internal
+ */
+export class NodeTemplate implements ContentTemplate, ContentView {
+    constructor(public readonly node: Node) {
         (node as any).$fastTemplate = this;
     }
 
