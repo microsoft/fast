@@ -335,34 +335,81 @@ export function renderWith(value: any, name?: string) {
     };
 }
 
+class NodeTemplate implements ContentTemplate, ContentView {
+    constructor(private node: Node) {
+        (node as any).$fastTemplate = this;
+    }
+
+    bind(source: any, context: ExecutionContext<any>): void {}
+
+    unbind(): void {}
+
+    insertBefore(refNode: Node): void {
+        refNode.parentNode!.insertBefore(this.node, refNode);
+    }
+
+    remove(): void {
+        this.node.parentNode!.removeChild(this.node);
+    }
+
+    create(): ContentView {
+        return this;
+    }
+}
+
 export function render<TSource = any, TItem = any>(
-    binding?: Binding<TSource, TItem>,
+    binding?: Binding<TSource, TItem> | Node,
     templateOrTemplateBindingOrViewName?:
         | ContentTemplate
         | string
-        | Binding<TSource, ContentTemplate | string>
+        | Binding<TSource, ContentTemplate | string | Node>
 ): CaptureType<TSource> {
-    const dataBinding = binding ?? (((source: TSource) => source) as Binding<TSource>);
+    let dataBinding: Binding<TSource>;
+
+    if (binding === void 0) {
+        dataBinding = (source: TSource) => source;
+    } else if (binding instanceof Node) {
+        dataBinding = () => binding;
+    } else {
+        dataBinding = binding;
+    }
+
     let templateBinding;
 
     if (templateOrTemplateBindingOrViewName === void 0) {
-        templateBinding = (s: any, c: ExecutionContext) =>
-            instructionToTemplate(getForInstance(dataBinding(s, c)));
+        templateBinding = (s: any, c: ExecutionContext) => {
+            const data = dataBinding(s, c);
+
+            if (data instanceof Node) {
+                return (data as any).$fastTemplate ?? new NodeTemplate(data);
+            }
+
+            return instructionToTemplate(getForInstance(data));
+        };
     } else if (isFunction(templateOrTemplateBindingOrViewName)) {
         templateBinding = (s: any, c: ExecutionContext) => {
             let result = templateOrTemplateBindingOrViewName(s, c);
 
             if (isString(result)) {
                 result = instructionToTemplate(getForInstance(dataBinding(s, c), result));
+            } else if (result instanceof Node) {
+                result = (result as any).$fastTemplate ?? new NodeTemplate(result);
             }
 
             return result;
         };
     } else if (isString(templateOrTemplateBindingOrViewName)) {
-        templateBinding = (s: any, c: ExecutionContext) =>
-            instructionToTemplate(
-                getForInstance(dataBinding(s, c), templateOrTemplateBindingOrViewName)
+        templateBinding = (s: any, c: ExecutionContext) => {
+            const data = dataBinding(s, c);
+
+            if (data instanceof Node) {
+                return (data as any).$fastTemplate ?? new NodeTemplate(data);
+            }
+
+            return instructionToTemplate(
+                getForInstance(data, templateOrTemplateBindingOrViewName)
             );
+        };
     } else {
         templateBinding = (s: any, c: ExecutionContext) =>
             templateOrTemplateBindingOrViewName;
