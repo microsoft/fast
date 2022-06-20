@@ -10,7 +10,7 @@ import {
     Observable,
 } from "../observation/observable.js";
 import type { ContentTemplate, ContentView } from "./binding.js";
-import type {
+import {
     AddViewBehaviorFactory,
     HTMLDirective,
     ViewBehaviorTargets,
@@ -104,8 +104,8 @@ export class RenderDirective<TSource = any> implements HTMLDirective {
     public nodeId: string;
 
     public constructor(
-        private dataBinding: Binding,
-        private templateBinding: Binding<TSource, ContentTemplate>
+        public readonly dataBinding: Binding,
+        public readonly templateBinding: Binding<TSource, ContentTemplate>
     ) {}
 
     public createHTML(add: AddViewBehaviorFactory): string {
@@ -120,6 +120,8 @@ export class RenderDirective<TSource = any> implements HTMLDirective {
         );
     }
 }
+
+HTMLDirective.define(RenderDirective);
 
 export interface RenderInstruction {
     brand: symbol;
