@@ -24,9 +24,15 @@ import {
     ViewTemplate,
 } from "./template.js";
 
+type ComposableView = ContentView & {
+    isComposed?: boolean;
+    needsBindOnly?: boolean;
+    $fastTemplate?: ContentTemplate;
+};
+
 export class RenderBehavior<TSource = any> implements Behavior, Subscriber {
     private source: TSource | null = null;
-    private view: ContentView | null = null;
+    private view: ComposableView | null = null;
     private template!: ContentTemplate;
     private templateBindingObserver: BindingObserver<TSource, ContentTemplate>;
     private data: any | null = null;
@@ -60,8 +66,11 @@ export class RenderBehavior<TSource = any> implements Behavior, Subscriber {
         this.source = null;
         this.data = null;
 
-        if (this.view !== null) {
-            this.view.unbind();
+        const view = this.view;
+
+        if (view !== null && view.isComposed) {
+            view.unbind();
+            view.needsBindOnly = true;
         }
 
         this.dataBindingObserver.dispose();
@@ -88,14 +97,37 @@ export class RenderBehavior<TSource = any> implements Behavior, Subscriber {
     }
 
     private refreshView() {
-        if (this.view !== null) {
-            this.view.remove();
-            this.view.unbind();
+        let view = this.view;
+        const template = this.template;
+
+        if (view === null) {
+            view = template.create();
+        } else {
+            // If there is a previous view, but it wasn't created
+            // from the same template as the new value, then we
+            // need to remove the old view if it's still in the DOM
+            // and create a new view from the template.
+            if (view.$fastTemplate !== template) {
+                if (view.isComposed) {
+                    view.remove();
+                    view.unbind();
+                }
+
+                view = template.create();
+            }
         }
 
-        this.view = this.template.create();
-        this.view.bind(this.data, this.childContext!);
-        this.view.insertBefore(this.location);
+        // It's possible that the value is the same as the previous template
+        // and that there's actually no need to compose it.
+        if (!view.isComposed) {
+            view.isComposed = true;
+            view.bind(this.data, this.childContext!);
+            view.insertBefore(this.location);
+            view.$fastTemplate = template;
+        } else if (view.needsBindOnly) {
+            view.needsBindOnly = false;
+            view.bind(this.data, this.childContext!);
+        }
     }
 }
 
