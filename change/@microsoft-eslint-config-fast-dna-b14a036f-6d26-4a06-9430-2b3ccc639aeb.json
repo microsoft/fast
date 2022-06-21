@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Check imports to ensure there are no cyclical references",
+  "packageName": "@microsoft/eslint-config-fast-dna",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
