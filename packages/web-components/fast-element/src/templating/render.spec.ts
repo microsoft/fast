@@ -1,13 +1,15 @@
 import { expect } from "chai";
 import { customElement, FASTElement } from "../components/fast-element.js";
-import { ExecutionContext } from "../observation/observable.js";
-import { uniqueElementName } from "../__test__/helpers.js";
+import { ExecutionContext, observable } from "../observation/observable.js";
+import { Updates } from "../observation/update-queue.js";
+import { toHTML, uniqueElementName } from "../__test__/helpers.js";
 import type { AddViewBehaviorFactory, ViewBehaviorFactory } from "./html-directive.js";
 import { Markup } from "./markup.js";
 import { NodeTemplate, render, RenderBehavior, RenderDirective, RenderInstruction, renderWith } from "./render.js";
 import { html, ViewTemplate } from "./template.js";
+import type { SyntheticView } from "./view.js";
 
-describe.only("The render", () => {
+describe("The render", () => {
     const childTemplate = html`Child Template`;
     const childEditTemplate = html`Child Edit Template`;
     const parentTemplate = html`Parent Template`;
@@ -562,6 +564,122 @@ describe.only("The render", () => {
             expect(instruction.type).equals(Model);
             expect((instruction.template as ViewTemplate).html).contains(`hello world`);
             expect(instruction.name).equals("test");
+        });
+    });
+
+    context("behavior", () => {
+        const childTemplate = html<Child>`This is a template. ${x => x.knownValue}`;
+
+        class Child {
+            @observable knownValue = "value";
+        }
+
+        class Parent {
+            @observable child = new Child();
+            @observable trigger = 0;
+            @observable innerTemplate = childTemplate;
+
+            get template() {
+                const value = this.trigger;
+                return this.innerTemplate;
+            }
+
+            forceComputedUpdate() {
+                this.trigger++;
+            }
+        }
+
+        function renderBehavior() {
+            const directive = render<Parent>(x => x.child, x => x.template) as RenderDirective;
+            directive.nodeId = 'r';
+
+            const node = document.createComment("");
+            const targets = { r: node };
+
+            const behavior = directive.createBehavior(targets);
+            const parentNode = document.createElement("div");
+
+            parentNode.appendChild(node);
+
+            return { directive, behavior, node, parentNode, targets };
+        }
+
+        it("initially inserts a view based on the template", () => {
+            const { behavior, parentNode } = renderBehavior();
+            const model = new Parent();
+
+            behavior.bind(model, ExecutionContext.default);
+
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
+        });
+
+        it("updates an inserted view when the value changes to a new template", async () => {
+            const { behavior, parentNode } = renderBehavior();
+            const model = new Parent();
+
+            behavior.bind(model, ExecutionContext.default);
+
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
+
+            model.innerTemplate = html<Child>`This is a new template. ${x => x.knownValue}`;
+
+            await Updates.next();
+
+            expect(toHTML(parentNode)).to.equal(`This is a new template. value`);
+        });
+
+        it("doesn't compose an already composed view", async () => {
+            const { behavior, parentNode, node } = renderBehavior();
+            const model = new Parent();
+
+            behavior.bind(model, ExecutionContext.default);
+            const inserted = node.previousSibling;
+
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
+
+            model.forceComputedUpdate();
+
+            await Updates.next();
+
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
+            expect(node.previousSibling).equal(inserted);
+        });
+
+        it("unbinds a composed view", () => {
+            const { behavior, parentNode } = renderBehavior();
+            const model = new Parent();
+
+            behavior.bind(model, ExecutionContext.default);
+            const view = (behavior as any).view as SyntheticView;
+
+            expect(view.source).equal(model.child);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
+
+            behavior.unbind();
+
+            expect(view.source).equal(null);
+        });
+
+        it("rebinds a previously unbound composed view", () => {
+            const { behavior, parentNode } = renderBehavior();
+            const model = new Parent();
+
+            behavior.bind(model, ExecutionContext.default);
+            const view = (behavior as any).view as SyntheticView;
+
+            expect(view.source).to.equal(model.child);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
+
+            behavior.unbind();
+
+            expect(view.source).to.equal(null);
+
+            behavior.bind(model, ExecutionContext.default);
+
+            const newView = (behavior as any).view as SyntheticView;
+            expect(newView.source).to.equal(model.child);
+            expect(newView).equal(view);
+            expect(toHTML(parentNode)).to.equal(`This is a template. value`);
         });
     });
 });

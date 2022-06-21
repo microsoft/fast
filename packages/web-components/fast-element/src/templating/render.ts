@@ -101,7 +101,7 @@ export class RenderBehavior<TSource = any> implements Behavior, Subscriber {
         const template = this.template;
 
         if (view === null) {
-            view = template.create();
+            this.view = view = template.create();
         } else {
             // If there is a previous view, but it wasn't created
             // from the same template as the new value, then we
@@ -113,7 +113,7 @@ export class RenderBehavior<TSource = any> implements Behavior, Subscriber {
                     view.unbind();
                 }
 
-                view = template.create();
+                this.view = view = template.create();
             }
         }
 
