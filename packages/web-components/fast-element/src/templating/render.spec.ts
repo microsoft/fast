@@ -655,7 +655,7 @@ describe("The render", () => {
             expect(view.source).equal(model.child);
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
-            behavior.unbind();
+            behavior.unbind(model, ExecutionContext.default);
 
             expect(view.source).equal(null);
         });
@@ -670,7 +670,7 @@ describe("The render", () => {
             expect(view.source).to.equal(model.child);
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
-            behavior.unbind();
+            behavior.unbind(model, ExecutionContext.default);
 
             expect(view.source).to.equal(null);
 
