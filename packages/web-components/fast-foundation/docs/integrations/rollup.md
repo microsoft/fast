@@ -42,7 +42,7 @@ npm install @microsoft/fast-components @microsoft/fast-element tslib --save
 We also need to install the Rollup build tooling:
 
 ```shell
-npm install rollup typescript @rollup/plugin-typescript @rollup/plugin-node-resolve rollup-plugin-cleaner rollup-plugin-copy rollup-plugin-serve --save-dev
+npm install rollup typescript @rollup/plugin-typescript @rollup/plugin-node-resolve rollup-plugin-cleaner rollup-plugin-copy rollup-plugin-serve rollup-plugin-terser --save-dev
 ```
 
 ## Adding configuration and source
@@ -91,11 +91,13 @@ Do not set `useDefineForClassFields` to `true` in your `tsconfig.json` if you ar
 Next, create a `rollup.config.js` file in the root of your project folder with the following source:
 
 ```js
+import transformTaggedTemplate from 'rollup-plugin-transform-tagged-template';
 import typescript from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import cleaner from 'rollup-plugin-cleaner';
 import copy from 'rollup-plugin-copy';
 import serve from 'rollup-plugin-serve';
+import { terser } from 'rollup-plugin-terser';
 
 export default {
   input: 'src/main.ts',
@@ -106,6 +108,31 @@ export default {
     sourcemap: true
   },
   plugins: [
+    transformTaggedTemplate({
+      tagsToProcess: ['html','css'],
+      parserOptions: {
+        sourceType: "module",
+        plugins: [
+            "typescript",
+            [
+                "decorators",
+                { decoratorsBeforeExport: true }
+            ]
+        ]
+      },
+      transformer(data) {
+          // Spaces before and after these characters
+          data = data.replace(/\s([{}()>~+=^$:!;])\s/gm, '$1');
+
+          // Spaces only after these characters
+          data = data.replace(/([",[]])\s+/gm, '$1');
+
+          // You only need one space consequent in CSS
+          data = data.replace(/\s{2,}/gm, ' ');
+
+          return data.trim();
+      }
+    }),
     typescript(),
     resolve(),
     cleaner({
@@ -121,7 +148,8 @@ export default {
     serve({
       open: true,
       contentBase: 'dist'
-    })
+    }),
+    terser(),
   ]
 };
 ```
@@ -134,6 +162,7 @@ Let's go over our config file:
 - `plugins` is where you can add additional functionality to Rollup.
 
 Let's go over the plugins we're using:
+- `transformTaggedTemplate` minifies content within tagged templates (e.g. html and css)
 - `typescript` allows us to write our source files in TypeScript.
 - `resolve` allows us to import modules installed from npm, like `@microsoft/fast-components`.
 - `cleaner` will delete the `dist` folder before rebuilding.
@@ -141,6 +170,7 @@ Let's go over the plugins we're using:
      - Without this plugin, Rollup would only add or overwrite files in the `dist` folder, but never delete them.
 - `copy` will copy source files to our `dist` folder, ensuring everything we need for deploying our app is in one place.
 - `serve` provides a development server that will open our application in the browser for us.
+- `terser` will minify the generated es bundle.
 
 Let's add some helpful commands to our `package.json` file. Find the `scripts` section of your `package.json` file and add the following lines:
 
