@@ -20,6 +20,7 @@ module.exports = {
         "@typescript-eslint/explicit-function-return-type": "off",
         "max-len": ["error", 140],
         "import/order": "error",
+        "import/no-cycle": "error",
         "sort-imports": [
             "error",
             {
