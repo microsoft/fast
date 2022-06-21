@@ -2,7 +2,9 @@ import { expect } from "chai";
 import { customElement, FASTElement } from "../components/fast-element.js";
 import { ExecutionContext } from "../observation/observable.js";
 import { uniqueElementName } from "../__test__/helpers.js";
-import { NodeTemplate, render, RenderDirective, RenderInstruction } from "./render.js";
+import type { AddViewBehaviorFactory, ViewBehaviorFactory } from "./html-directive.js";
+import { Markup } from "./markup.js";
+import { NodeTemplate, render, RenderBehavior, RenderDirective, RenderInstruction } from "./render.js";
 import { html, ViewTemplate } from "./template.js";
 
 describe.only("The render", () => {
@@ -386,6 +388,76 @@ describe.only("The render", () => {
             const result = RenderInstruction.getByType(TestClass);
 
             expect(result).equal(instruction);
+        });
+    });
+
+    context("node template", () => {
+        it("can add a node", () => {
+            const parent = document.createElement("div");
+            const location = document.createComment("");
+            parent.appendChild(location);
+
+            const child = document.createElement("div");
+            const template = new NodeTemplate(child);
+
+            const view = template.create();
+            view.insertBefore(location);
+
+            expect(child.parentElement).equal(parent);
+            expect(child.nextSibling).equal(location);
+        });
+
+        it("can remove a node", () => {
+            const parent = document.createElement("div");
+            const child = document.createElement("div");
+            parent.appendChild(child);
+
+            const template = new NodeTemplate(child);
+
+            const view = template.create();
+            view.remove();
+
+            expect(child.parentElement).equal(null);
+            expect(child.nextSibling).equal(null);
+        });
+    });
+
+    context("directive", () => {
+        it("adds itself to a template with a comment placeholder", () => {
+            const directive = render() as RenderDirective;
+            const id = "12345";
+            let captured;
+            const addViewBehaviorFactory: AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => {
+                captured = factory;
+                return id;
+            };
+
+            const html = directive.createHTML(addViewBehaviorFactory);
+
+            expect(html).equals(Markup.comment(id));
+            expect(captured).equals(directive);
+        });
+
+        it("creates a behavior", () => {
+            const directive = render() as RenderDirective;
+            directive.nodeId = "12345";
+            const comment = document.createComment("");
+
+            const targets = {
+                "12345": comment
+            };
+
+            const behavior = directive.createBehavior(targets);
+
+            expect(behavior).instanceOf(RenderBehavior);
+        });
+
+        it("can be interpolated in html", () => {
+            const template = html`hello${render()}world`;
+            const keys = Object.keys(template.factories);
+            const directive = template.factories[keys[0]];
+
+            expect(directive).instanceOf(RenderDirective);
         });
     });
 });
