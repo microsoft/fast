@@ -30,6 +30,7 @@
     "build": "tsc -p ./tsconfig.json && yarn doc",
     "build:tests": "tsc -p ./tsconfig.json",
     "clean:dist": "node ../../../build/clean.js dist",
+    "clean:test": "node ../../../build/clean.js test",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
     "prepare": "yarn clean:dist && yarn build",
