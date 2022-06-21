@@ -8,6 +8,7 @@ import {
 } from "../core/model";
 import { PluginNode } from "../core/node";
 import { DesignTokenType } from "../core/ui/design-token-registry";
+import { variantBooleanHelper } from "./utility";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -317,35 +318,12 @@ export class FigmaPluginNode extends PluginNode {
                 if (currentDarkMode) {
                     const color = this.getEffectiveFillColor();
                     if (color) {
-                        let trueString = "Yes";
-                        let falseString = "No";
-                        // Thanks Figma for supporting "true", "True", "yes", and "Yes", but not doing the work to interpret it. Assume it's paired.
-                        switch (currentDarkMode) {
-                            case "yes":
-                            case "no":
-                                trueString = "yes";
-                                falseString = "no";
-                                break;
-                            case "Yes":
-                            case "No":
-                                trueString = "Yes";
-                                falseString = "No";
-                                break;
-                            case "true":
-                            case "false":
-                                trueString = "true";
-                                falseString = "false";
-                                break;
-                            case "True":
-                            case "False":
-                                trueString = "True";
-                                falseString = "False";
-                                break;
-                        }
                         const containerIsDark = isDark(SwatchRGB.from(color));
                         // console.log("handleManualDarkMode", this.node.variantProperties['Dark mode'], "color", color.toStringHexRGB(), "dark", containerIsDark);
                         this.node.setProperties({
-                            "Dark mode": containerIsDark ? trueString : falseString,
+                            "Dark mode": variantBooleanHelper(currentDarkMode)(
+                                containerIsDark
+                            ),
                         });
                         return true;
                     }
