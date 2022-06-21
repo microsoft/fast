@@ -1,7 +1,7 @@
-import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { TreeItem, TreeItemOptions } from "./tree-item.js";
 
 /**
@@ -16,9 +16,15 @@ export const treeItemTemplate: FoundationElementTemplate<
         role="treeitem"
         slot="${x => (x.isNestedItem() ? "item" : void 0)}"
         tabindex="-1"
-        class="${x => (x.expanded ? "expanded" : "")} ${x =>
-            x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}
-            ${x => (x.disabled ? "disabled" : "")}"
+        class="${x =>
+            [
+                x.expanded && "expanded",
+                x.selected && "selected",
+                x.nested && "nested",
+                x.disabled && "disabled",
+            ]
+                .filter(Boolean)
+                .join(" ")}"
         aria-expanded="${x =>
             x.childItems && x.childItemLength() > 0 ? x.expanded : void 0}"
         aria-selected="${x => x.selected}"
@@ -33,7 +39,7 @@ export const treeItemTemplate: FoundationElementTemplate<
         <div class="positioning-region" part="positioning-region">
             <div class="content-region" part="content-region">
                 ${when(
-                    x => x.childItems && x.childItemLength() > 0,
+                    x => x.childItems && x.childItemLength(),
                     html<TreeItem>`
                         <div
                             aria-hidden="true"
@@ -57,7 +63,7 @@ export const treeItemTemplate: FoundationElementTemplate<
         ${when(
             x =>
                 x.childItems &&
-                x.childItemLength() > 0 &&
+                x.childItemLength() &&
                 (x.expanded || x.renderCollapsedChildren),
             html<TreeItem>`
                 <div role="group" class="items" part="items">
