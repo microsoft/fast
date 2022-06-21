@@ -1,4 +1,4 @@
-import { bind, html, oneTime, repeat } from "@microsoft/fast-element";
+import { bind, html, repeat } from "@microsoft/fast-element";
 import { twoWay } from "@microsoft/fast-element/binding/two-way";
 import type { TodoApp } from "./todo-app.js";
 import type { Todo } from "./todo-list.js";
@@ -27,11 +27,7 @@ export const template = html<TodoApp>`
             x => x.todos.filtered,
             html<Todo, TodoApp>`
                 <li class="todo">
-                    <input
-                        type="checkbox"
-                        :checked=${bind(x => x.done, twoWay)}
-                        ?checked=${bind(x => x.done, oneTime)}
-                    />
+                    <input type="checkbox" :checked=${bind(x => x.done, twoWay)} />
                     <span class="description ${x => (x.done ? "done" : "")}">
                         ${x => x.description}
                     </span>
