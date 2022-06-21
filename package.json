@@ -10,7 +10,8 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/**/*",
+      "packages/utilities/*",
+      "packages/web-components/*",
       "sites/fast-color-explorer",
       "sites/site-utilities",
       "sites/fast-website",

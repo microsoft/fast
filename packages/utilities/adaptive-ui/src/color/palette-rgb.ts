@@ -112,20 +112,27 @@ class HighResolutionPaletteRGB extends BasePalette<SwatchRGB> {
  */
 export interface PaletteRGBOptions {
     /**
-     * The minimum amount of contrast between steps in the palette. Default 1.05.
-     * Recommended increments by hundredths.
+     * The minimum amount of contrast between steps in the palette.
+     * - Default 1.05
+     * - Greater than 1
+     * - Recommended increments by hundredths
      */
     stepContrast: number;
 
     /**
-     * Multiplier for increasing step contrast as the swatches darken. Default 0.
-     * Recommended increments by hundredths.
+     * Multiplier for increasing step contrast as the swatches darken.
+     * - Default 0.
+     * - Greater than or equal to 0
+     * - Recommended increments by hundredths
      */
     stepContrastRamp: number;
 
     /**
-     * Whether to keep the exact source color in the target palette. Default false.
+     * Whether to keep the exact source color in the target palette.
+     * - Default false
+     *
      * Only recommended when the exact color is required and used in stateful interaction recipes like hover.
+     *
      * Note that custom recipes can still access the source color even if it's not in the ramp,
      * but turning this on will potentially increase the contrast between steps toward the ends of the palette.
      */
@@ -246,18 +253,18 @@ export class PaletteRGB extends BasePalette<SwatchRGB> {
 
         const swatches: SwatchRGB[] = [];
 
-        // Start with the source color or the light end color
+        // Start with the source color (when preserving) or the light end color
         let ref = options.preserveSource ? source : referencePalette.swatches[0];
         swatches.push(ref);
 
-        // Add swatches with contrast toward dark
+        // Add swatches by contrast toward dark
         do {
             const targetContrast = nextContrast(ref);
             ref = referencePalette.colorContrast(ref, targetContrast, undefined, 1);
             swatches.push(ref);
         } while (ref.relativeLuminance > 0);
 
-        // Add swatches with contrast toward light
+        // Add swatches by contrast toward light
         if (options.preserveSource) {
             ref = source;
             do {
@@ -268,10 +275,10 @@ export class PaletteRGB extends BasePalette<SwatchRGB> {
             } while (ref.relativeLuminance < 1);
         }
 
-        // Validate dark end
+        // Cleanup dark end
         this.adjustEnd(nextContrast, referencePalette, swatches, -1);
 
-        // Validate light end
+        // Cleanup light end
         if (options.preserveSource) {
             this.adjustEnd(nextContrast, referencePalette, swatches, 1);
         }
@@ -280,10 +287,11 @@ export class PaletteRGB extends BasePalette<SwatchRGB> {
     }
 
     /**
-     * Create a color Palette from a provided Swatch.
+     * Creates a PaletteRGB from a source Swatch with options.
      *
      * @param source - The source Swatch to create a Palette from
-     * @returns The Palette
+     * @param options - Options to specify details of palette generation
+     * @returns The PaletteRGB with Swatches based on `source`
      */
     static from(source: SwatchRGB, options?: Partial<PaletteRGBOptions>): PaletteRGB {
         const opts =
