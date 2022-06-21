@@ -117,6 +117,7 @@
         "integrations/ember",
         "integrations/react",
         "integrations/rollup",
+        "integrations/vite",
         "integrations/vue",
         "integrations/webpack"
       ]

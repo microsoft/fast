@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.3",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -18,12 +18,12 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "main": "dist/esm/index.js",
-  "types": "dist/fast-foundation.d.ts",
+  "types": "dist/dts/index.d.ts",
   "unpkg": "dist/fast-foundation.min.js",
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/fast-foundation.d.ts",
+      "types": "./dist/dts/index.d.ts",
       "default": "./dist/esm/index.js"
     },
     "./testing": {
@@ -37,7 +37,9 @@
     "doc:ci": "api-extractor run",
     "build:rollup": "rollup -c",
     "build:tsc": "tsc -p ./tsconfig.json",
-    "build": "yarn build:tsc && yarn build:rollup && yarn doc && yarn cem",
+    "prebuild": "yarn build:tsc",
+    "build": "yarn build:rollup",
+    "postbuild": "yarn doc && yarn cem",
     "dev": "tsc -p ./tsconfig.json -w",
     "cem": "yarn cem-analyze && yarn cem-markdown",
     "cem-analyze": "cem analyze",
@@ -94,7 +96,6 @@
     "rollup": "^2.71.1",
     "rollup-plugin-filesize": "^9.1.2",
     "rollup-plugin-terser": "^7.0.2",
-    "@rollup/plugin-typescript": "^8.3.2",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "rollup-plugin-transform-tagged-template": "^0.0.3",
     "source-map": "^0.7.3",
@@ -107,7 +108,7 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.1",
+    "@microsoft/fast-element": "^2.0.0-beta.2",
     "@microsoft/fast-web-utilities": "^6.0.0",
     "tabbable": "^5.2.0",
     "tslib": "^2.4.0"

@@ -2,7 +2,7 @@
 id: faq
 title: FAQ
 sidebar_label: FAQ
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/faq.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/resources/faq.md
 description: A list of frequently asked questions.
 keywords:
   - frequently asked questions

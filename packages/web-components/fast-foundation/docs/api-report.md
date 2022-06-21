@@ -7,17 +7,16 @@
 import type { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
 import type { CaptureType } from '@microsoft/fast-element';
-import { ChildViewTemplate } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { composedContains } from '@microsoft/fast-element/utilities';
 import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
+import { ContextDecorator } from '@microsoft/fast-element/context';
 import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
-import { ItemViewTemplate } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import type { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
@@ -391,7 +390,7 @@ export class Calendar extends FoundationElement {
 }
 
 // @public
-export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ItemViewTemplate<CalendarDateInfo>;
+export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate<CalendarDateInfo>;
 
 // @public
 export type CalendarDateInfo = {
@@ -414,7 +413,7 @@ export type CalendarOptions = FoundationElementDefinition & StartEndOptions & {
 };
 
 // @public (undocumented)
-export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ChildViewTemplate;
+export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate;
 
 // @public
 export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>, CalendarOptions>;
@@ -423,7 +422,7 @@ export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>,
 export const CalendarTitleTemplate: ViewTemplate<Calendar>;
 
 // @public
-export const calendarWeekdayTemplate: (context: ElementDefinitionContext) => ItemViewTemplate;
+export const calendarWeekdayTemplate: (context: ElementDefinitionContext) => ViewTemplate;
 
 // @public
 export class Card extends FoundationElement {
@@ -616,7 +615,7 @@ export interface Container extends ServiceLocator {
 }
 
 // @public
-export const Container: InterfaceSymbol<Container>;
+export const Container: ContextDecorator<Container>;
 
 // @public
 export interface ContainerConfiguration {
@@ -633,7 +632,7 @@ export const ContainerConfiguration: Readonly<{
 // Warning: (ae-internal-missing-underscore) The name "ContainerImpl" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export class ContainerImpl implements Container {
+export class ContainerImpl implements DOMContainer {
     constructor(owner: any, config: ContainerConfiguration);
     // (undocumented)
     protected config: ContainerConfiguration;
@@ -649,6 +648,8 @@ export class ContainerImpl implements Container {
     getFactory<K extends Constructable>(Type: K): Factory<K>;
     // (undocumented)
     getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
+    // (undocumented)
+    handleContextRequests(enable: boolean): void;
     // (undocumented)
     has<K extends Key>(key: K, searchAncestors?: boolean): boolean;
     // (undocumented)
@@ -688,14 +689,14 @@ export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaSt
 // @public
 export class DataGrid extends FoundationElement {
     constructor();
-    cellItemTemplate?: ItemViewTemplate;
+    cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // (undocumented)
     protected columnDefinitionsChanged(): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultRowItemTemplate: ItemViewTemplate;
+    defaultRowItemTemplate: ViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     focusColumnIndex: number;
@@ -713,14 +714,14 @@ export class DataGrid extends FoundationElement {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
-    headerCellItemTemplate?: ItemViewTemplate;
+    headerCellItemTemplate?: ViewTemplate;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
     // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
-    rowItemTemplate: ItemViewTemplate;
+    rowItemTemplate: ViewTemplate;
     rowsData: object[];
     // (undocumented)
     protected rowsDataChanged(): void;
@@ -764,17 +765,17 @@ export type DataGridCellTypes = typeof DataGridCellTypes[keyof typeof DataGridCe
 // @public
 export class DataGridRow extends FoundationElement {
     // @internal
-    activeCellItemTemplate?: ItemViewTemplate;
+    activeCellItemTemplate?: ViewTemplate;
     // @internal
     cellElements: HTMLElement[];
-    cellItemTemplate?: ItemViewTemplate;
+    cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultCellItemTemplate?: ItemViewTemplate;
+    defaultCellItemTemplate?: ViewTemplate;
     // @internal
-    defaultHeaderCellItemTemplate?: ItemViewTemplate;
+    defaultHeaderCellItemTemplate?: ViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // @internal (undocumented)
@@ -788,7 +789,7 @@ export class DataGridRow extends FoundationElement {
     handleFocusout(e: FocusEvent): void;
     // (undocumented)
     handleKeydown(e: KeyboardEvent): void;
-    headerCellItemTemplate?: ItemViewTemplate;
+    headerCellItemTemplate?: ViewTemplate;
     // @internal
     isActiveRow: boolean;
     rowData: object | null;
@@ -1052,16 +1053,15 @@ export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignToken
 
 // @public
 export const DI: Readonly<{
+    installAsContextRequestStrategy(): void;
     createContainer(config?: Partial<ContainerConfiguration>): Container;
-    findResponsibleContainer(node: Node): Container;
-    findParentContainer(node: Node): Container;
-    getOrCreateDOMContainer(node?: Node, config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
-    getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
-    getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
-    getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
+    findResponsibleContainer(target: EventTarget): DOMContainer;
+    findParentContainer(target: EventTarget): DOMContainer;
+    getOrCreateDOMContainer(target?: EventTarget, config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): DOMContainer;
     getDependencies(Type: Constructable | Injectable): Key[];
     defineProperty(target: {}, propertyName: string, key: Key, respectConnection?: boolean): void;
-    createInterface<K extends Key>(nameConfigOrCallback?: string | InterfaceConfiguration | ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined, configuror?: ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined): InterfaceSymbol<K>;
+    createContext: typeof createContext;
+    createInterface: typeof createContext;
     inject(...dependencies: Key[]): (target: any, key?: string | number, descriptor?: PropertyDescriptor | number) => void;
     transient<T extends Constructable<{}>>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
     singleton<T_1 extends Constructable<{}>>(target: T_1 & Partial<RegisterSelf<T_1>>, options?: SingletonOptions): T_1 & RegisterSelf<T_1>;
@@ -1135,6 +1135,15 @@ export type DividerRole = typeof DividerRole[keyof typeof DividerRole];
 
 // @public
 export const dividerTemplate: FoundationElementTemplate<ViewTemplate<Divider>>;
+
+// @public
+export interface DOMContainer extends Container {
+    // @beta
+    handleContextRequests(enable: boolean): void;
+}
+
+// @public
+export const DOMContainer: ContextDecorator<DOMContainer>;
 
 // @public
 export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
@@ -1397,6 +1406,7 @@ export class HorizontalScroll extends FoundationElement {
     scrolled(): void;
     // @internal
     scrollingChanged(prev: unknown, next: boolean): void;
+    scrollInView(item: HTMLElement | number, padding?: number, rightPadding?: number): void;
     scrollItems: HTMLElement[];
     scrollItemsChanged(previous: HTMLElement[], next: HTMLElement[]): void;
     scrollToNext(): void;
@@ -1441,16 +1451,13 @@ export interface InterfaceConfiguration {
 }
 
 // @public
-export type InterfaceSymbol<K = any> = (target: any, property: string, index?: number) => void;
-
-// @public
 export function isListboxOption(el: Element): el is ListboxOption;
 
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
 
 // @public
-export type Key = PropertyKey | object | InterfaceSymbol | Constructable | Resolver;
+export type Key = PropertyKey | object | ContextDecorator | Constructable | Resolver;
 
 // @public
 export const lazy: (key: any) => any;
@@ -2156,7 +2163,7 @@ export type ResolveCallback<T = any> = (handler: Container, requestor: Container
 // Warning: (ae-forgotten-export) The symbol "ResolverLike" needs to be exported by the entry point index.d.ts
 //
 // @public
-export type Resolved<K> = K extends InterfaceSymbol<infer T> ? T : K extends Constructable ? InstanceType<K> : K extends ResolverLike<any, infer T1> ? T1 extends Constructable ? InstanceType<T1> : T1 : K;
+export type Resolved<K> = K extends ContextDecorator<infer T> ? T : K extends Constructable ? InstanceType<K> : K extends ResolverLike<any, infer T1> ? T1 extends Constructable ? InstanceType<T1> : T1 : K;
 
 // @public
 export interface Resolver<K = any> extends ResolverLike<Container, K> {
@@ -2371,7 +2378,7 @@ export interface ServiceLocator {
 }
 
 // @public
-export const ServiceLocator: InterfaceSymbol<ServiceLocator>;
+export const ServiceLocator: ContextDecorator<ServiceLocator>;
 
 // Warning: (ae-forgotten-export) The symbol "singletonDecorator" needs to be exported by the entry point index.d.ts
 //
@@ -2992,7 +2999,8 @@ export type YearFormat = "2-digit" | "numeric";
 // Warnings were encountered during analysis:
 //
 // dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:513:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:446:5 - (ae-forgotten-export) The symbol "createContext" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:512:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

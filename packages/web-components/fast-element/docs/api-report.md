@@ -104,16 +104,16 @@ export class AttributeDefinition implements Accessor {
 export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
 // @public
-export interface Behavior<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = RootContext> {
-    bind(source: TSource, context: TContext): void;
-    unbind(source: TSource, context: TContext): void;
+export interface Behavior<TSource = any, TParent = any> {
+    bind(source: TSource, context: ExecutionContext<TParent>): void;
+    unbind(source: TSource, context: ExecutionContext<TParent>): void;
 }
 
 // @public
 export function bind<T = any>(binding: Binding<T>, config?: BindingConfig | DefaultBindingOptions): CaptureType<T>;
 
 // @public
-export type Binding<TSource = any, TReturn = any, TContext extends ExecutionContext = ExecutionContext> = (source: TSource, context: TContext) => TReturn;
+export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
 
 // @public
 export interface BindingConfig<T = any> {
@@ -167,16 +167,6 @@ export class ChangeBinding extends UpdateBinding {
 }
 
 // @public
-export const child: <TChild = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TChild, TParent, ChildContext<TParent>>[]) => ChildViewTemplate<TChild, TParent>;
-
-// @public
-export interface ChildContext<TParentSource = any> extends RootContext {
-    createItemContext(index: number, length: number): ItemContext<TParentSource>;
-    readonly parent: TParentSource;
-    readonly parentContext: ChildContext<TParentSource>;
-}
-
-// @public
 export interface ChildListDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, Omit<MutationObserverInit, "subtree" | "childList"> {
 }
 
@@ -195,13 +185,6 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
 export type ChildrenDirectiveOptions<T = any> = ChildListDirectiveOptions<T> | SubtreeDirectiveOptions<T>;
 
 // @public
-export interface ChildViewTemplate<TSource = any, TParent = any> {
-    create(): SyntheticView<TSource, TParent, ChildContext<TParent>>;
-    // (undocumented)
-    type: "child";
-}
-
-// @public
 export type CompilationStrategy = (
 html: string | HTMLTemplateElement,
 factories: Record<string, ViewBehaviorFactory>) => HTMLTemplateCompilationResult;
@@ -209,7 +192,7 @@ factories: Record<string, ViewBehaviorFactory>) => HTMLTemplateCompilationResult
 // @public
 export const Compiler: {
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
-    compile<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>>(html: string | HTMLTemplateElement, directives: Record<string, ViewBehaviorFactory>): HTMLTemplateCompilationResult<TSource, TParent, TContext>;
+    compile<TSource = any, TParent = any>(html: string | HTMLTemplateElement, directives: Record<string, ViewBehaviorFactory>): HTMLTemplateCompilationResult<TSource, TParent>;
     setDefaultStrategy(strategy: CompilationStrategy): void;
     aggregate(parts: (string | ViewBehaviorFactory)[]): ViewBehaviorFactory;
 };
@@ -296,12 +279,6 @@ export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "prop
 export type DefaultBindingOptions = AddEventListenerOptions;
 
 // @public
-export type DefaultTwoWayBindingOptions = DefaultBindingOptions & {
-    changeEvent?: string;
-    fromView?: (value: any) => any;
-};
-
-// @public
 export interface Disposable {
     dispose(): void;
 }
@@ -341,7 +318,7 @@ export class ElementStyles {
 }
 
 // @public
-export interface ElementView<TSource = any, TParent = any> extends View<TSource, TParent, RootContext> {
+export interface ElementView<TSource = any, TParent = any> extends View<TSource, TParent> {
     appendTo(node: Node): void;
 }
 
@@ -349,8 +326,6 @@ export interface ElementView<TSource = any, TParent = any> extends View<TSource,
 export interface ElementViewTemplate<TSource = any, TParent = any> {
     create(hostBindingTarget: Element): ElementView<TSource, TParent>;
     render(source: TSource, host: Node, hostBindingTarget?: Element): ElementView<TSource, TParent>;
-    // (undocumented)
-    type: "element";
 }
 
 // @public
@@ -369,14 +344,27 @@ export class EventBinding {
 }
 
 // @public
-export const ExecutionContext: Readonly<{
-    default: RootContext;
-    setEvent(event: Event | null): void;
-    create(): RootContext;
-}>;
-
-// @public
-export type ExecutionContext<TParentSource = any> = RootContext | ChildContext<TParentSource> | ItemContext<TParentSource>;
+export class ExecutionContext<TParentSource = any> {
+    static create(): ExecutionContext;
+    createChildContext<TParentSource>(parentSource: TParentSource): ExecutionContext<TParentSource>;
+    createItemContext(index: number, length: number): ExecutionContext<TParentSource>;
+    static readonly default: ExecutionContext<any>;
+    get event(): Event;
+    eventDetail<TDetail>(): TDetail;
+    eventTarget<TTarget extends EventTarget>(): TTarget;
+    index: number;
+    get isEven(): boolean;
+    get isFirst(): boolean;
+    get isInMiddle(): boolean;
+    get isLast(): boolean;
+    get isOdd(): boolean;
+    length: number;
+    readonly parent: TParentSource;
+    readonly parentContext: ExecutionContext<TParentSource>;
+    // @internal
+    static setEvent(event: Event | null): void;
+    updatePosition(index: number, length: number): void;
+}
 
 // Warning: (ae-internal-missing-underscore) The name "FAST" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -399,6 +387,7 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
     define<TType extends Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): TType;
+    metadata<TType_1 extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType_1, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType_1>;
 };
 
 // @public
@@ -433,7 +422,7 @@ export interface FASTGlobal {
 }
 
 // @public
-export function html<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent, TContext>[]): ViewTemplate<TSource, TParent>;
+export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
 
 // @public
 export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, Aspected {
@@ -474,16 +463,16 @@ export interface HTMLDirectiveDefinition<TType extends Constructable<HTMLDirecti
 }
 
 // @public
-export interface HTMLTemplateCompilationResult<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>> {
-    createView(hostBindingTarget?: Element): HTMLView<TSource, TParent, TContext>;
+export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
+    createView(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
 }
 
 // @public
-export class HTMLView<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent, TContext> {
+export class HTMLView<TSource = any, TParent = any> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent> {
     constructor(fragment: DocumentFragment, factories: ReadonlyArray<ViewBehaviorFactory>, targets: ViewBehaviorTargets);
     appendTo(node: Node): void;
-    bind(source: TSource, context: TContext): void;
-    context: TContext | null;
+    bind(source: TSource, context: ExecutionContext<TParent>): void;
+    context: ExecutionContext<TParent> | null;
     dispose(): void;
     static disposeContiguousBatch(views: SyntheticView[]): void;
     firstChild: Node;
@@ -495,35 +484,12 @@ export class HTMLView<TSource = any, TParent = any, TContext extends ExecutionCo
 }
 
 // @public
-export const item: <TItem = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TItem, TParent, ItemContext<TParent>>[]) => ItemViewTemplate<TItem, TParent>;
-
-// @public
-export interface ItemContext<TParentSource = any> extends ChildContext<TParentSource> {
-    readonly index: number;
-    readonly isEven: boolean;
-    readonly isFirst: boolean;
-    readonly isInMiddle: boolean;
-    readonly isLast: boolean;
-    readonly isOdd: boolean;
-    readonly length: number;
-    updatePosition(index: number, length: number): void;
-}
-
-// @public
-export interface ItemViewTemplate<TSource = any, TParent = any> {
-    create(): SyntheticView<TSource, TParent, ItemContext<TParent>>;
-    // (undocumented)
-    type: "item";
-}
-
-// @public
-function length_2<T>(array: readonly T[]): number;
-export { length_2 as length }
-
-// @public
 export interface LengthObserver extends Subscriber {
     length: number;
 }
+
+// @public
+export function lengthOf<T>(array: readonly T[]): number;
 
 // @public
 export const Markup: Readonly<{
@@ -577,8 +543,8 @@ export const Observable: Readonly<{
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors: (target: {}) => Accessor[];
-    binding<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn, ExecutionContext<any>>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): BindingObserver<TSource, TReturn, any>;
-    isVolatileBinding<TSource_1 = any, TReturn_1 = any>(binding: Binding<TSource_1, TReturn_1, ExecutionContext<any>>): boolean;
+    binding<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn, any>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): BindingObserver<TSource, TReturn, any>;
+    isVolatileBinding<TSource_1 = any, TReturn_1 = any>(binding: Binding<TSource_1, TReturn_1, any>): boolean;
 }>;
 
 // @public
@@ -640,41 +606,7 @@ export class RefDirective extends StatelessAttachedAttributeDirective<string> {
 }
 
 // @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>, templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate, RootContext>, options?: {
-    positioning: false;
-} | {
-    recycle: true;
-} | {
-    positioning: false;
-    recycle: false;
-} | {
-    positioning: false;
-    recycle: true;
-}): CaptureType<TSource>;
-
-// @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>, templateOrTemplateBinding: ChildViewTemplate | Binding<TSource, ChildViewTemplate, ChildContext>, options?: {
-    positioning: false;
-} | {
-    recycle: true;
-} | {
-    positioning: false;
-    recycle: false;
-} | {
-    positioning: false;
-    recycle: true;
-}): CaptureType<TSource>;
-
-// @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>, templateOrTemplateBinding: ItemViewTemplate | Binding<TSource, ItemViewTemplate, ItemContext>, options: {
-    positioning: true;
-} | {
-    positioning: true;
-    recycle: true;
-} | {
-    positioning: true;
-    recycle: false;
-}): CaptureType<TSource>;
+export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>, templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate>, options?: RepeatOptions): CaptureType<TSource>;
 
 // @public
 export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
@@ -703,24 +635,6 @@ export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehavi
 export interface RepeatOptions {
     positioning?: boolean;
     recycle?: boolean;
-}
-
-// @public
-export interface RootContext {
-    createChildContext<TParentSource>(source: TParentSource): ChildContext<TParentSource>;
-    readonly event: Event;
-    eventDetail<TDetail = any>(): TDetail;
-    eventTarget<TTarget extends EventTarget = EventTarget>(): TTarget;
-}
-
-// @public
-export const signal: <T = any>(options: string | Binding<T, any, ExecutionContext<any>>) => BindingConfig<string | Binding<T, any, ExecutionContext<any>>>;
-
-// @public
-export class SignalBinding extends UpdateBinding {
-    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
-    static send(signal: string): void;
-    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
 }
 
 // @public
@@ -830,7 +744,7 @@ export interface SubtreeDirectiveOptions<T = any> extends NodeBehaviorOptions<T>
 }
 
 // @public
-export interface SyntheticView<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>> extends View<TSource, TParent, TContext> {
+export interface SyntheticView<TSource = any, TParent = any> extends View<TSource, TParent> {
     readonly firstChild: Node;
     insertBefore(node: Node): void;
     readonly lastChild: Node;
@@ -838,14 +752,12 @@ export interface SyntheticView<TSource = any, TParent = any, TContext extends Ex
 }
 
 // @public
-export interface SyntheticViewTemplate<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>> {
-    create(): SyntheticView<TSource, TParent, TContext>;
-    // (undocumented)
-    type: "synthetic";
+export interface SyntheticViewTemplate<TSource = any, TParent = any> {
+    create(): SyntheticView<TSource, TParent>;
 }
 
 // @public
-export type TemplateValue<TSource, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>> = Binding<TSource, any, TContext> | HTMLDirective | CaptureType<TSource>;
+export type TemplateValue<TSource, TParent = any> = Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource>;
 
 // @public
 export type TrustedTypes = {
@@ -856,23 +768,6 @@ export type TrustedTypes = {
 export type TrustedTypesPolicy = {
     createHTML(html: string): string;
 };
-
-// @public
-export const twoWay: BindingConfig<DefaultTwoWayBindingOptions> & BindingConfigResolver<DefaultTwoWayBindingOptions>;
-
-// @public
-export class TwoWayBinding extends ChangeBinding {
-    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
-    static configure(settings: TwoWaySettings): void;
-    // @internal (undocumented)
-    handleEvent(event: Event): void;
-    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
-}
-
-// @public
-export interface TwoWaySettings {
-    determineChangeEvent(directive: HTMLBindingDirective, target: HTMLElement): string;
-}
 
 // Warning: (ae-internal-missing-underscore) The name "TypeDefinition" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -932,9 +827,9 @@ export interface ValueConverter {
 }
 
 // @public
-export interface View<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>> extends Disposable {
-    bind(source: TSource, context: TContext): void;
-    readonly context: TContext | null;
+export interface View<TSource = any, TParent = any> extends Disposable {
+    bind(source: TSource, context: ExecutionContext<TParent>): void;
+    readonly context: ExecutionContext<TParent> | null;
     readonly source: TSource | null;
     unbind(): void;
 }
@@ -958,13 +853,12 @@ export type ViewBehaviorTargets = {
 };
 
 // @public
-export class ViewTemplate<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent, TContext> {
+export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent> {
     constructor(html: string | HTMLTemplateElement, factories: Record<string, ViewBehaviorFactory>);
-    create(hostBindingTarget?: Element): HTMLView<TSource, TParent, TContext>;
+    create(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
-    render(source: TSource, host: Node, hostBindingTarget?: Element, context?: TContext): HTMLView<TSource, TParent, TContext>;
-    type: any;
+    render(source: TSource, host: Node, hostBindingTarget?: Element, context?: ExecutionContext): HTMLView<TSource, TParent>;
 }
 
 // @public

@@ -58,8 +58,6 @@ const styles = css`
         justify-content: space-between;
         align-items: center;
         font-weight: 600;
-        padding-inline-start: 16px;
-        padding-inline-end: 8px;
     }
 
     :host(.collapsed) .expanded-content,

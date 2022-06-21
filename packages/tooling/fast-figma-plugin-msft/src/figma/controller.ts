@@ -1,11 +1,10 @@
-import { Controller } from "../core/controller";
+import { Controller, PluginUIState } from "../core/controller";
 import {
     AdditionalData,
     AppliedDesignTokens,
     AppliedRecipes,
     RecipeEvaluations,
 } from "../core/model";
-import { PluginUIProps } from "../core/ui";
 import { DesignTokenType } from "../core/ui/design-token-registry";
 import { PluginUINodeData } from "../core/ui/ui-controller";
 import { FigmaPluginNode } from "./node";
@@ -110,7 +109,7 @@ export class FigmaController extends Controller {
         }
     }
 
-    public setPluginUIState(state: Omit<PluginUIProps, "dispatch">): void {
+    public setPluginUIState(state: PluginUIState): void {
         const message = {
             selectedNodes: serializeUINodes(state.selectedNodes),
         };

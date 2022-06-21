@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Observable } from "./observable.js";
-import { ArrayObserver, length, Splice } from "./arrays.js";
+import { ArrayObserver, lengthOf, Splice } from "./arrays.js";
 import { SubscriberSet } from "./notifier.js";
 import { Updates } from "./update-queue.js";
 
@@ -363,7 +363,7 @@ describe("The array length observer", () => {
 
     it("returns zero length if the array is undefined", async () => {
         const instance = new Model();
-        const observer = Observable.binding<Model>(x => length(x.items));
+        const observer = Observable.binding<Model>(x => lengthOf(x.items));
 
         const value = observer.observe(instance)
 
@@ -375,7 +375,7 @@ describe("The array length observer", () => {
     it("returns zero length if the array is null", async () => {
         const instance = new Model();
         instance.items = null as any;
-        const observer = Observable.binding<Model>(x => length(x.items));
+        const observer = Observable.binding<Model>(x => lengthOf(x.items));
 
         const value = observer.observe(instance)
 
@@ -387,7 +387,7 @@ describe("The array length observer", () => {
     it("returns length of an array", async () => {
         const instance = new Model();
         instance.items = [1,2,3,4,5];
-        const observer = Observable.binding<Model>(x => length(x.items));
+        const observer = Observable.binding<Model>(x => lengthOf(x.items));
 
         const value = observer.observe(instance)
 
@@ -401,7 +401,7 @@ describe("The array length observer", () => {
         instance.items = [1,2,3,4,5];
 
         let changed = false;
-        const observer = Observable.binding<Model>(x => length(x.items), {
+        const observer = Observable.binding<Model>(x => lengthOf(x.items), {
             handleChange() {
                 changed = true;
             }
@@ -426,7 +426,7 @@ describe("The array length observer", () => {
         instance.items = [1,2,3,4,5];
 
         let changed = false;
-        const observer = Observable.binding<Model>(x => length(x.items), {
+        const observer = Observable.binding<Model>(x => lengthOf(x.items), {
             handleChange() {
                 changed = true;
             }

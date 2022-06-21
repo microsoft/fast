@@ -53,44 +53,41 @@ describe("idealColorDeltaSwatchSet", (): void => {
             SwatchRGB.from(parseColorHexRGB("#F2C812")!),
         ];
 
-        accentColors.forEach(
-            /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-            (accent): void => {
-                const accentPalette = PaletteRGB.from(accent);
+        accentColors.forEach((accent): void => {
+            const accentPalette = PaletteRGB.from(accent);
 
-                neutralPalette.swatches.forEach((swatch): void => {
-                    const smallColors = idealColorDeltaSwatchSet(
-                        accentPalette,
-                        swatch,
-                        4.5,
-                        accentPalette.source,
-                        0,
-                        6,
-                        -4,
-                        0
-                    );
-                    const largeColors = idealColorDeltaSwatchSet(
-                        accentPalette,
-                        swatch,
-                        3,
-                        accentPalette.source,
-                        0,
-                        6,
-                        -4,
-                        0
-                    );
-                    expect(
-                        swatch.contrast(smallColors.rest)
-                        // There are a few states that are impossible to meet contrast on
-                    ).to.be.gte(4.47);
-                    expect(
-                        swatch.contrast(smallColors.hover)
-                        // There are a few states that are impossible to meet contrast on
-                    ).to.be.gte(3.7);
-                    expect(swatch.contrast(largeColors.rest)).to.be.gte(3);
-                    expect(swatch.contrast(largeColors.hover)).to.be.gte(3);
-                });
-            }
-        );
+            neutralPalette.swatches.forEach((swatch): void => {
+                const smallColors = idealColorDeltaSwatchSet(
+                    accentPalette,
+                    swatch,
+                    4.5,
+                    accentPalette.source,
+                    0,
+                    6,
+                    -4,
+                    0
+                );
+                const largeColors = idealColorDeltaSwatchSet(
+                    accentPalette,
+                    swatch,
+                    3,
+                    accentPalette.source,
+                    0,
+                    6,
+                    -4,
+                    0
+                );
+                expect(
+                    swatch.contrast(smallColors.rest)
+                    // There are a few states that are impossible to meet contrast on
+                ).to.be.gte(4.47);
+                expect(
+                    swatch.contrast(smallColors.hover)
+                    // There are a few states that are impossible to meet contrast on
+                ).to.be.gte(3.7);
+                expect(swatch.contrast(largeColors.rest)).to.be.gte(3);
+                expect(swatch.contrast(largeColors.hover)).to.be.gte(3);
+            });
+        });
     });
 });
