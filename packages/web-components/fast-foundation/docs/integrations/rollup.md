@@ -121,15 +121,9 @@ export default {
         ]
       },
       transformer(data) {
-          // Spaces before and after these characters
           data = data.replace(/\s([{}()>~+=^$:!;])\s/gm, '$1');
-
-          // Spaces only after these characters
           data = data.replace(/([",[]])\s+/gm, '$1');
-
-          // You only need one space consequent in CSS
           data = data.replace(/\s{2,}/gm, ' ');
-
           return data.trim();
       }
     }),
