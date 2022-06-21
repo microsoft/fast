@@ -5,7 +5,12 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  * A structure representing skeleton shapes
  * @public
  */
-export type SkeletonShape = "rect" | "circle";
+export const SkeletonShape = {
+    rect: "rect",
+    circle: "circle",
+} as const;
+
+export type SkeletonShape = typeof SkeletonShape[keyof typeof SkeletonShape];
 
 /**
  * A Skeleton Custom HTML Element.
@@ -31,14 +36,14 @@ export class Skeleton extends FoundationElement {
      * @remarks
      * HTML Attribute: shape
      */
-    @attr public shape: SkeletonShape = "rect";
+    @attr public shape: SkeletonShape = SkeletonShape.rect;
 
     /**
      * Indicates that the component can accept a pattern URL.
      *
      * @public
      * @remarks
-     * HTML Attribute: shape
+     * HTML Attribute: pattern
      */
     @attr public pattern: string;
 

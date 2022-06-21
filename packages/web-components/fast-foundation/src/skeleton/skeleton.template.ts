@@ -1,7 +1,7 @@
-import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, when } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { Skeleton } from "./skeleton.js";
+import { Skeleton, SkeletonShape } from "./skeleton.js";
 
 /**
  * The template for the fast-skeleton component
@@ -12,7 +12,7 @@ export const skeletonTemplate: FoundationElementTemplate<ViewTemplate<Skeleton>>
     definition
 ) => html`
     <template
-        class="${x => (x.shape === "circle" ? "circle" : "rect")}"
+        class="${x => (x.shape in SkeletonShape ? x.shape : "rect")}"
         pattern="${x => x.pattern}"
         ?shimmer="${x => x.shimmer}"
     >
