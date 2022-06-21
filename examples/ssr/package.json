@@ -9,7 +9,8 @@
   "scripts": {
     "build": "webpack",
     "watch": "tsc -p tsconfig.json --watch",
-    "start": "npm run build && node server.js"
+    "start": "yarn build && node server.js",
+    "test": "yarn build"
   },
   "author": {
     "name": "Microsoft",
