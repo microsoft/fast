@@ -35,6 +35,12 @@ export class DefaultTodoList {
         }
     }
 
+    constructor(todos?: Todo[]) {
+        if (todos) {
+            this._todos = todos.map(x => makeObservable(x));
+        }
+    }
+
     public add(description: string) {
         this.splice(this._todos.length, 0, makeObservable({ description, done: false }));
     }
@@ -55,11 +61,5 @@ export class DefaultTodoList {
         // on the filter, we need to notify FAST that the dependent _todos
         // observable has changed whenever we splice the internal data structure.
         this.activeFilter !== "all" && Observable.notify(this, "_todos");
-    }
-
-    constructor(todos?: Todo[]) {
-        if (todos) {
-            this._todos = this._todos.concat(todos);
-        }
     }
 }
