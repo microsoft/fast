@@ -48,7 +48,12 @@ export type VerticalPosition = "top" | "bottom" | "center" | "unset";
  *
  * @public
  */
-export type AutoUpdateMode = "anchor" | "auto";
+export const AutoUpdateMode = {
+    anchor: "anchor",
+    auto: "auto",
+} as const;
+
+export type AutoUpdateMode = typeof AutoUpdateMode[keyof typeof AutoUpdateMode];
 
 /**
  * Describes the possible positions of the region relative
