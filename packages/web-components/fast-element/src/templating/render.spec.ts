@@ -4,7 +4,7 @@ import { ExecutionContext } from "../observation/observable.js";
 import { uniqueElementName } from "../__test__/helpers.js";
 import type { AddViewBehaviorFactory, ViewBehaviorFactory } from "./html-directive.js";
 import { Markup } from "./markup.js";
-import { NodeTemplate, render, RenderBehavior, RenderDirective, RenderInstruction } from "./render.js";
+import { NodeTemplate, render, RenderBehavior, RenderDirective, RenderInstruction, renderWith } from "./render.js";
 import { html, ViewTemplate } from "./template.js";
 
 describe.only("The render", () => {
@@ -458,6 +458,110 @@ describe.only("The render", () => {
             const directive = template.factories[keys[0]];
 
             expect(directive).instanceOf(RenderDirective);
+        });
+    });
+
+    context("decorator", () => {
+        it("registers with tagName options", () => {
+            const tagName = uniqueElementName();
+
+            @renderWith({ tagName })
+            class Model {
+
+            }
+
+            const instruction = RenderInstruction.getByType(Model)!;
+            expect(instruction.type).equals(Model);
+            expect((instruction.template as ViewTemplate).html).contains(`</${tagName}>`);
+        });
+
+        it("registers with element options", () => {
+            const tagName = uniqueElementName();
+
+            @customElement(tagName)
+            class TestElement extends FASTElement {}
+
+            @renderWith({ element: TestElement })
+            class Model {
+
+            }
+
+            const instruction = RenderInstruction.getByType(Model)!;
+            expect(instruction.type).equals(Model);
+            expect((instruction.template as ViewTemplate).html).contains(`</${tagName}>`);
+        });
+
+        it("registers with template options", () => {
+            const template = html`hello world`;
+
+            @renderWith({ template })
+            class Model {
+
+            }
+
+            const instruction = RenderInstruction.getByType(Model)!;
+            expect(instruction.type).equals(Model);
+            expect((instruction.template as ViewTemplate).html).contains(`hello world`);
+        });
+
+        it("registers with element", () => {
+            const tagName = uniqueElementName();
+
+            @customElement(tagName)
+            class TestElement extends FASTElement {}
+
+            @renderWith(TestElement)
+            class Model {
+
+            }
+
+            const instruction = RenderInstruction.getByType(Model)!;
+            expect(instruction.type).equals(Model);
+            expect((instruction.template as ViewTemplate).html).contains(`</${tagName}>`);
+        });
+
+        it("registers with element and name", () => {
+            const tagName = uniqueElementName();
+
+            @customElement(tagName)
+            class TestElement extends FASTElement {}
+
+            @renderWith(TestElement, "test")
+            class Model {
+
+            }
+
+            const instruction = RenderInstruction.getByType(Model, "test")!;
+            expect(instruction.type).equals(Model);
+            expect((instruction.template as ViewTemplate).html).contains(`</${tagName}>`);
+            expect(instruction.name).equals("test");
+        });
+
+        it("registers with template", () => {
+            const template = html`hello world`;
+
+            @renderWith(template)
+            class Model {
+
+            }
+
+            const instruction = RenderInstruction.getByType(Model)!;
+            expect(instruction.type).equals(Model);
+            expect((instruction.template as ViewTemplate).html).contains(`hello world`);
+        });
+
+        it("registers with template and name", () => {
+            const template = html`hello world`;
+
+            @renderWith(template, "test")
+            class Model {
+
+            }
+
+            const instruction = RenderInstruction.getByType(Model, "test")!;
+            expect(instruction.type).equals(Model);
+            expect((instruction.template as ViewTemplate).html).contains(`hello world`);
+            expect(instruction.name).equals("test");
         });
     });
 });
