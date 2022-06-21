@@ -7,7 +7,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --mode=production",
     "watch": "tsc -p tsconfig.json --watch",
     "start": "yarn build && node server.js",
     "test": "yarn build"
