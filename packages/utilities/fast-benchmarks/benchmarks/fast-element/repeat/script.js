@@ -12,7 +12,7 @@ import baseJson from "./base.js";
     const addQueries = (source, dest) => {
         for (const clickEvent in source) {
             for (let i = 0; i < source[clickEvent].length; i++) {
-                const option = [`ce=${clickEvent}`];
+                const option = [`method=${clickEvent}`];
                 const variation = source[clickEvent][i];
                 for (const count in variation) {
                     option.push(`${count}=${variation[count]}`);

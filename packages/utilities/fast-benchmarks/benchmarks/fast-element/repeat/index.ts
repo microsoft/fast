@@ -17,8 +17,8 @@ import { queryParams } from "../../../utils/query-params.js";
 const {
     template,
     method,
-    itemCount: count = 10,
-    loopCount: count2 = 1,
+    itemCount: count = 50,
+    loopCount: count2 = 100,
     deleteCount: count3 = 1,
     addCount: count4 = 1,
     startIndex: count5 = 0,
@@ -191,51 +191,53 @@ class XApp extends FASTElement {
 
     splice() {
         const otherData: Array<RandomItem | NestedRandomData> = generateData(addCount);
-        for (let i = startIndex; i < loopCount; i++) {
-            this.items.splice(i, deleteCount, ...otherData);
+        for (let i = 0; i < loopCount; i++) {
+            addCount > 0
+                ? this.items.splice(startIndex, deleteCount, ...otherData)
+                : this.items.splice(startIndex, deleteCount);
         }
     }
 
     reverse() {
-        for (let i = startIndex; i <= loopCount; i++) {
+        for (let i = 0; i < loopCount; i++) {
             this.items.reverse();
         }
     }
 
     push() {
         const otherData: Array<RandomItem | NestedRandomData> = generateData(addCount);
-        for (let i = startIndex; i < loopCount; i++) {
+        for (let i = 0; i < loopCount; i++) {
             this.items.push(...otherData);
         }
     }
 
     unshift() {
         const otherData: Array<RandomItem | NestedRandomData> = generateData(addCount);
-        for (let i = startIndex; i < loopCount; i++) {
+        for (let i = 0; i < loopCount; i++) {
             this.items.unshift(...otherData);
         }
     }
 
     shift() {
-        for (let i = startIndex; i <= loopCount; i++) {
+        for (let i = 0; i < loopCount; i++) {
             this.items.shift();
         }
     }
 
     sort() {
-        for (let i = startIndex; i < loopCount; i++) {
+        for (let i = 0; i < loopCount; i++) {
             this.items.sort();
         }
     }
 
     filter() {
-        for (let i = startIndex; i < loopCount - 1; i++) {
+        for (let i = 0; i < loopCount; i++) {
             this.items = this.items.filter(item => item !== this.items[0]);
         }
     }
 
     combo() {
-        for (let i = startIndex; i < loopCount; i++) {
+        for (let i = 0; i < loopCount; i++) {
             this.push();
             this.reverse();
             this.splice();

@@ -175,16 +175,31 @@ function generateBenchmark(
     url,
     template,
     method,
-    queryParams
+    queryParams,
+    version
 ) {
     const queryStr = queryParams?.join("&");
+    if (queryParams) {
+        const measurementName = queryParams.slice(1).join("&");
+        newBench.measurement = [
+            {
+                name: measurementName,
+                mode: "performance",
+                entryName: "clickTrigger10x",
+            },
+            {
+                name: `memory-${measurementName}`,
+                mode: "expression",
+                expression: "window.usedJSHeapSize",
+            },
+        ];
+    }
+
     const fullUrl = queryParams
         ? `${url}?template=${template}&method=${method}&${queryStr}`
         : `${url}?template=${template}&method=${method}`;
     newBench.url = fullUrl;
-    newBench.name = queryParams
-        ? `${name}-${template}-${method}-${queryStr}`
-        : `${name}-${template}-${method}`;
+    newBench.name = `${name}-${template}-${method}-${version}`;
     benchmarks.push(newBench);
     return benchmarks;
 }
@@ -217,6 +232,7 @@ export async function generateBenchmarks(
             headless: true,
             addArguments: ["--js-flags=--expose-gc", "--enable-precise-memory-info"],
         };
+
         const measurement = [
             {
                 mode: "performance",
@@ -287,8 +303,8 @@ export async function generateBenchmarks(
                     if (customQueryParams) {
                         const queryParams = JSON.parse(customQueryParams);
                         queryParams[template]?.forEach(queries => {
-                            const clickEvent = queries[0];
-                            if (clickEvent.includes(method)) {
+                            const methodParam = queries[0];
+                            if (methodParam.includes(method)) {
                                 generateBenchmark(
                                     benchmarks,
                                     benchmark,
@@ -296,7 +312,8 @@ export async function generateBenchmarks(
                                     url,
                                     template,
                                     method,
-                                    queries
+                                    queries,
+                                    version
                                 );
                             }
                         });
@@ -308,7 +325,8 @@ export async function generateBenchmarks(
                             url,
                             template,
                             method,
-                            queryParam
+                            queryParam,
+                            version
                         );
                     }
                 }
@@ -329,22 +347,26 @@ export async function generateBenchmarks(
  */
 async function generateConfig(fileName, benchmarksHash) {
     try {
-        const TACH_SCHEMA =
-            "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json";
+        // const TACH_SCHEMA =
+        //     "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json";
 
+        // This schema enables "collage" property
+        const DRAFT_SCHEMA = "http://json-schema.org/draft-07/schema#";
         const defaultBenchOptions = {
             // Tachometer default is 50, but locally let's only do 10
             sampleSize: 30,
             // Tachometer default is 3 minutes, but let's shrink it to 1 here to save some
             timeout: 0,
-            autoSampleConditions: ["0%", "10%"],
+            // autoSampleConditions: ["0%", "10%"],
+            // https://github.com/Polymer/tachometer/pull/198
+            collate: true,
         };
 
         const pathsPromises = [];
         const pathNames = [];
         for (const benchmark in benchmarksHash) {
             const config = {
-                $schema: TACH_SCHEMA,
+                $schema: DRAFT_SCHEMA,
                 ...defaultBenchOptions,
                 benchmarks: benchmarksHash[benchmark],
             };
