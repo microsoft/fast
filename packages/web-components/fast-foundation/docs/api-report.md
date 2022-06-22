@@ -558,6 +558,8 @@ export class Combobox extends FormAssociatedCombobox {
     // @internal
     setDefaultSelectedOption(): void;
     setPositioning(): void;
+    // @internal (undocumented)
+    slottedLabel: Node[];
     // @internal
     slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void;
     get value(): string;

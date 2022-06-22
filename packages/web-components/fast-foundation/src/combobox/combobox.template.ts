@@ -80,7 +80,7 @@ export const comboboxTemplate: FoundationElementTemplate<
                     ? "label"
                     : "label label__hidden"}"
         >
-            <slot ${slotted("slottedLabel")}></slot>
+            <slot name="label" ${slotted("slottedLabel")}></slot>
         </label>
     </template>
 `;

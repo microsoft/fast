@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "add label support to combobox, including passing aria-label and aria-labelledby to the internal input",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}
