@@ -224,6 +224,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `selected-value` | The input element representing the selected value                      |
 | `indicator`      | The element wrapping the indicator slot                                |
 | `listbox`        | The wrapper for the listbox slotted options                            |
+| `label`          | The label for the combobox                                             |
 
 #### Slots
 
@@ -234,6 +235,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `control`   | Used to replace the input element representing the combobox |
 | `indicator` | The visual indicator representing the expanded state        |
 |             | The default slot for the options                            |
+| `label`     | The slot for the combobox's label                           |
 
 <hr/>
 

@@ -29,10 +29,12 @@ export type ComboboxOptions = FoundationElementDefinition &
  * @slot control - Used to replace the input element representing the combobox
  * @slot indicator - The visual indicator representing the expanded state
  * @slot - The default slot for the options
+ * @slot label - The slot for the combobox's label
  * @csspart control - The wrapper element containing the input area, including start and end
  * @csspart selected-value - The input element representing the selected value
  * @csspart indicator - The element wrapping the indicator slot
  * @csspart listbox - The wrapper for the listbox slotted options
+ * @csspart label - The label for the combobox
  * @fires change - Fires a custom 'change' event when the value updates
  *
  * @public
