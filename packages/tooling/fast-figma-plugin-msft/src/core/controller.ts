@@ -111,6 +111,7 @@ export abstract class Controller {
         nodes.forEach(node => {
             const pluginNode = this.getNode(node.id);
             if (pluginNode) {
+                pluginNode.handleManualDarkMode();
                 pluginNode.setDesignTokens(node.designTokens);
                 pluginNode.setRecipes(node.recipes);
                 pluginNode.setRecipeEvaluations(node.recipeEvaluations);
