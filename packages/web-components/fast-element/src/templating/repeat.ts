@@ -213,7 +213,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
                 const location = neighbor ? neighbor.firstChild : this.location;
                 const view =
                     this.options.recycle && totalRemoved.length > 0
-                        ? totalRemoved.shift()!
+                        ? totalRemoved.pop()!
                         : template.create();
 
                 views.splice(addIndex, 0, view);
