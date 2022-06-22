@@ -10,6 +10,9 @@ export const SkeletonShape = {
     circle: "circle",
 } as const;
 
+/**
+ * @public
+ */
 export type SkeletonShape = typeof SkeletonShape[keyof typeof SkeletonShape];
 
 /**

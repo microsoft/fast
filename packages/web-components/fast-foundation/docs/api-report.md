@@ -223,7 +223,13 @@ export class ARIAGlobalStatesAndProperties {
 }
 
 // @public
-export type AutoUpdateMode = "anchor" | "auto";
+export const AutoUpdateMode: {
+    readonly anchor: "anchor";
+    readonly auto: "auto";
+};
+
+// @public (undocumented)
+export type AutoUpdateMode = typeof AutoUpdateMode[keyof typeof AutoUpdateMode];
 
 // @public
 export class Avatar extends FoundationElement {
@@ -2402,7 +2408,13 @@ export class Skeleton extends FoundationElement {
 }
 
 // @public
-export type SkeletonShape = "rect" | "circle";
+export const SkeletonShape: {
+    readonly rect: "rect";
+    readonly circle: "circle";
+};
+
+// @public (undocumented)
+export type SkeletonShape = typeof SkeletonShape[keyof typeof SkeletonShape];
 
 // @public
 export const skeletonTemplate: FoundationElementTemplate<ViewTemplate<Skeleton>>;

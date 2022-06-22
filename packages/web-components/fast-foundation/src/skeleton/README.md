@@ -149,15 +149,15 @@ export const mySkeleton = Skeleton.compose({
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default  | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | ------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `fill`          | public  | `string`                              |          | Indicates the Skeleton should have a filled style.                                                                                                                                  |                   |
-| `shape`         | public  | `SkeletonShape`                       | `"rect"` | Indicates what the shape of the Skeleton should be.                                                                                                                                 |                   |
-| `pattern`       | public  | `string`                              |          | Indicates that the component can accept a pattern URL.                                                                                                                              |                   |
-| `shimmer`       | public  | `boolean`                             |          | Indicates that the component has an activated shimmer effect                                                                                                                        |                   |
-| `$presentation` | public  | `ComponentPresentation or null`       |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `fill`          | public  | `string`                              |         | Indicates the Skeleton should have a filled style.                                                                                                                                  |                   |
+| `shape`         | public  | `SkeletonShape`                       |         | Indicates what the shape of the Skeleton should be.                                                                                                                                 |                   |
+| `pattern`       | public  | `string`                              |         | Indicates that the component can accept a pattern URL.                                                                                                                              |                   |
+| `shimmer`       | public  | `boolean`                             |         | Indicates that the component has an activated shimmer effect                                                                                                                        |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -180,6 +180,14 @@ export const mySkeleton = Skeleton.compose({
 | Name | Description      |
 | ---- | ---------------- |
 |      | The default slot |
+
+<hr/>
+
+### Variables
+
+| Name            | Description                              | Type                                  |
+| --------------- | ---------------------------------------- | ------------------------------------- |
+| `SkeletonShape` | A structure representing skeleton shapes | `{ rect: "rect", circle: "circle", }` |
 
 <hr/>
 

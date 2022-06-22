@@ -53,6 +53,9 @@ export const AutoUpdateMode = {
     auto: "auto",
 } as const;
 
+/**
+ * @public
+ */
 export type AutoUpdateMode = typeof AutoUpdateMode[keyof typeof AutoUpdateMode];
 
 /**
