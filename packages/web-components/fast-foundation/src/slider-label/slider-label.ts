@@ -135,7 +135,7 @@ export class SliderLabel extends FoundationElement {
                 this.sliderOrientation = source.orientation;
                 break;
             case "max":
-                this.sliderMinPosition = source.max;
+                this.sliderMaxPosition = source.max;
                 break;
             case "min":
                 this.sliderMinPosition = source.min;
