@@ -490,4 +490,18 @@ describe("Combobox", () => {
 
         await disconnect();
     });
+
+    it("should set the input element's `aria-label` attribute to the ariaLabel of the combobox", async () => {
+        const { connect, disconnect, element } = await setup();
+
+        await connect();
+
+        element.setAttribute("aria-label", "foo")
+        await DOM.nextUpdate();
+
+        expect(element.control).to.exist;
+        expect(element.control.getAttribute("aria-label")).to.equal("foo");
+
+        await disconnect();
+    });
 });
