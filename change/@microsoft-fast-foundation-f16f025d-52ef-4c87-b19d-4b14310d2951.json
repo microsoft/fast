@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fast-foundation checkbox - turn off indeterminate on user `checked` change",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "yinon@hotmail.com",
-  "dependentChangeType": "prerelease"
-}

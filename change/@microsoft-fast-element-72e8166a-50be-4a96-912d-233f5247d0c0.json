@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: correct aspect type for content that looks like an attribute",
-  "packageName": "@microsoft/fast-element",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

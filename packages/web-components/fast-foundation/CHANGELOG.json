@@ -2,6 +2,47 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 22 Jun 2022 20:17:50 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.4",
+      "version": "3.0.0-alpha.4",
+      "comments": {
+        "prerelease": [
+          {
+            "comment": "handle change for source.max set to sliderMaxPosition",
+            "author": "email not defined",
+            "commit": "eec60d5d7a59371d2429cbd7147f2671f35d705c",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fast-foundation checkbox - turn off indeterminate on user `checked` change",
+            "author": "yinon@hotmail.com",
+            "commit": "a30264352369e9e9422a2616e1e35597430a21c9",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "prevent keyboard events with space when checkbox is readonly",
+            "author": "chhol@microsoft.com",
+            "commit": "6f1b027e7710475e30b83db10198cab2aafda146",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "feat: horizontal-scroll scroll item into view",
+            "author": "robarb@microsoft.com",
+            "commit": "e7893d838020d9fe721fcc3e4547ee8d98ce5cda",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "none": [
+          {
+            "comment": "add vite integration guide and starter templates",
+            "author": "steph@huynhicode.dev",
+            "commit": "267a014a3de09048e2e7cc22ad58a2cd2da25a3f",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Jun 2022 17:41:10 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.3",
       "version": "3.0.0-alpha.3",

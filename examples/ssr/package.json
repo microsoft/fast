@@ -1,4 +1,3 @@
-
 {
   "name": "fast-ssr",
   "version": "1.0.0",
@@ -24,8 +23,8 @@
     "directory": "examples/ssr"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.2",
-    "@microsoft/fast-ssr": "1.0.0-beta.3",
+    "@microsoft/fast-element": "^2.0.0-beta.3",
+    "@microsoft/fast-ssr": "1.0.0-beta.4",
     "clean-webpack-plugin": "^4.0.0",
     "express": "^4.18.1",
     "fast-todo-app": "1.0.0",
