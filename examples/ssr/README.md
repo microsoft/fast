@@ -1,6 +1,6 @@
 # Server-Side Rendering (SSR) Tutorial
 
-A SSR implementation of the Todo App Tutorial. All components are defined by the [Todo App tutorial](../todo-app/), and the SSR implementation exists in [server.js](./server.js)
+An SSR implementation of the Todo App Tutorial. All components are defined by the [Todo App tutorial](../todo-app/), and the SSR implementation exists in [server.js](./server.js)
 
 ## Running the experience
 
