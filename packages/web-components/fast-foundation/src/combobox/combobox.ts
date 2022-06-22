@@ -327,8 +327,7 @@ export class Combobox extends FormAssociatedCombobox {
      */
     public filterOptions(): void {
         if (!this.autocomplete || this.autocomplete === ComboboxAutocomplete.none) {
-            this.filteredOptions = [];
-            return;
+            this.filter = "";
         }
 
         const filter = this.filter.toLowerCase();
@@ -373,9 +372,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @internal
      */
     public focusoutHandler(e: FocusEvent): boolean | void {
-        if (this.control.value !== this.value) {
-            this.updateValue(true);
-        }
+        this.updateValue(this.dirtyValue);
 
         if (!this.open) {
             return true;
@@ -402,7 +399,7 @@ export class Combobox extends FormAssociatedCombobox {
         this.filter = this.control.value;
         this.filterOptions();
 
-        if (this.filteredOptions.length == 0) {
+        if (this.filter === "") {
             // if no matching value deselect any selected item in popup
             this.selectedIndex = -1;
         }
@@ -439,11 +436,7 @@ export class Combobox extends FormAssociatedCombobox {
 
         switch (key) {
             case "Enter": {
-                const emitChangeEvent =
-                    this.selectedIndex >= 0
-                        ? this.firstSelectedOption.value !== this.value
-                        : this.control.value !== this.value;
-                this.updateValue(emitChangeEvent);
+                this.updateValue(this.dirtyValue);
                 if (this.isAutocompleteInline) {
                     this.filter = this.value;
                 }
@@ -614,6 +607,12 @@ export class Combobox extends FormAssociatedCombobox {
                 "backward"
             );
         }
+    }
+
+    private get dirtyValue(): boolean {
+        return this.selectedIndex >= 0
+            ? this.firstSelectedOption.value !== this.value
+            : this.control.value !== this.value;
     }
 
     /**

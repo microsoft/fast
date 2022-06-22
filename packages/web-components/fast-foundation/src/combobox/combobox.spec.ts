@@ -193,7 +193,6 @@ describe("Combobox", () => {
                 // fake a key entered value
                 (element as Combobox).control.value = 'a';
                 (element as Combobox).control.dispatchEvent(new InputEvent('input', { data: 'a', inputType: 'insertText' }));
-                DOM.nextUpdate();
 
                 element.dispatchEvent(enterEvent);
             }),
@@ -212,19 +211,18 @@ describe("Combobox", () => {
 
         await connect();
 
-        element.value = "two";
         element.click(); // open dropdown
 
         const keyDownEvent = new KeyboardEvent("keydown", {
             key: keyArrowDown,
         } as KeyboardEventInit);
+        element.dispatchEvent(keyDownEvent);
+        DOM.nextUpdate();
 
         const wasChanged = await Promise.race([
             new Promise(resolve => {
                 element.addEventListener("change", () => resolve(true));
 
-                element.dispatchEvent(keyDownEvent);
-                DOM.nextUpdate();
                 // fake focusout handling
                 element.dispatchEvent(new FocusEvent('focusout', { relatedTarget: element }));
             }),
