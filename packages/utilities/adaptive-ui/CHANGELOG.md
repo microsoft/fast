@@ -1,8 +1,16 @@
 # Change Log - @microsoft/adaptive-ui
 
-This log was last generated on Wed, 15 Jun 2022 17:41:10 GMT and should not be manually modified.
+This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.4
+
+Wed, 22 Jun 2022 20:17:50 GMT
+
+### Changes
+
+- Fixed a cyclical reference (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.3
 
