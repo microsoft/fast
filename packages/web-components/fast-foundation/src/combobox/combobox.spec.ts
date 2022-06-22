@@ -1,5 +1,5 @@
 import { DOM } from "@microsoft/fast-element";
-import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
+import { keyArrowDown, keyArrowUp, keyEnter } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
 import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
 import { fixture } from "../test-utilities/fixture";
@@ -148,6 +148,93 @@ describe("Combobox", () => {
         expect(element.hasAttribute("open")).to.be.true;
 
         await disconnect();
+    });
+
+    it("should NOT emit a 'change' event when the user presses Enter without changing value", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.value = "two";
+
+        const event = new KeyboardEvent("keydown", {
+            key: keyEnter,
+        } as KeyboardEventInit);
+
+        const wasChanged = await Promise.race([
+            new Promise(resolve => {
+                element.addEventListener("change", () => resolve(true));
+                element.dispatchEvent(event);
+            }),
+            DOM.nextUpdate().then(() => false),
+        ]);
+
+        expect(wasChanged).to.be.false;
+
+        await disconnect();
+
+    });
+
+    it("should update value to entered non-option value after selecting an option value", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.value = "two";
+
+        const enterEvent = new KeyboardEvent("keydown", {
+            key: keyEnter,
+        } as KeyboardEventInit);
+
+        const wasChanged = await Promise.race([
+            new Promise(resolve => {
+                element.addEventListener("change", () => resolve(true));
+
+                // fake a key entered value
+                (element as Combobox).control.value = 'a';
+                (element as Combobox).control.dispatchEvent(new InputEvent('input', { data: 'a', inputType: 'insertText' }));
+                DOM.nextUpdate();
+
+                element.dispatchEvent(enterEvent);
+            }),
+            DOM.nextUpdate().then(() => false),
+        ]);
+
+        expect(wasChanged).to.be.true;
+        expect((element as Combobox).value).to.equal('a');
+
+        await disconnect();
+
+    });
+
+    it("should emit a 'change' event when the user clicks away after selecting option in dropdown", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.value = "two";
+        element.click(); // open dropdown
+
+        const keyDownEvent = new KeyboardEvent("keydown", {
+            key: keyArrowDown,
+        } as KeyboardEventInit);
+
+        const wasChanged = await Promise.race([
+            new Promise(resolve => {
+                element.addEventListener("change", () => resolve(true));
+
+                element.dispatchEvent(keyDownEvent);
+                DOM.nextUpdate();
+                // fake focusout handling
+                element.dispatchEvent(new FocusEvent('focusout', { relatedTarget: element }));
+            }),
+            DOM.nextUpdate().then(() => false),
+        ]);
+
+        expect(wasChanged).to.be.true;
+
+        await disconnect();
+
     });
 
     describe("should NOT emit a 'change' event when the value changes by user input while open", () => {

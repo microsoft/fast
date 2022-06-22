@@ -327,7 +327,8 @@ export class Combobox extends FormAssociatedCombobox {
      */
     public filterOptions(): void {
         if (!this.autocomplete || this.autocomplete === ComboboxAutocomplete.none) {
-            this.filter = "";
+            this.filteredOptions = [];
+            return;
         }
 
         const filter = this.filter.toLowerCase();
@@ -372,7 +373,9 @@ export class Combobox extends FormAssociatedCombobox {
      * @internal
      */
     public focusoutHandler(e: FocusEvent): boolean | void {
-        this.updateValue();
+        if (this.control.value !== this.value) {
+            this.updateValue(true);
+        }
 
         if (!this.open) {
             return true;
@@ -398,6 +401,11 @@ export class Combobox extends FormAssociatedCombobox {
     public inputHandler(e: InputEvent): boolean | void {
         this.filter = this.control.value;
         this.filterOptions();
+
+        if (this.filteredOptions.length == 0) {
+            // if no matching value deselect any selected item in popup
+            this.selectedIndex = -1;
+        }
 
         if (e.inputType === "deleteContentBackward" || !this.filter.length) {
             return true;
@@ -431,7 +439,11 @@ export class Combobox extends FormAssociatedCombobox {
 
         switch (key) {
             case "Enter": {
-                this.updateValue(true);
+                const emitChangeEvent =
+                    this.selectedIndex >= 0
+                        ? this.firstSelectedOption.value !== this.value
+                        : this.control.value !== this.value;
+                this.updateValue(emitChangeEvent);
                 if (this.isAutocompleteInline) {
                     this.filter = this.value;
                 }
@@ -459,7 +471,7 @@ export class Combobox extends FormAssociatedCombobox {
             }
 
             case "Tab": {
-                this.updateValue();
+                this.setInputToSelection();
 
                 if (!this.open) {
                     return true;
@@ -484,7 +496,6 @@ export class Combobox extends FormAssociatedCombobox {
                 }
 
                 if (this.isAutocompleteInline) {
-                    this.updateValue();
                     this.setInlineSelection();
                 }
 
@@ -578,15 +589,25 @@ export class Combobox extends FormAssociatedCombobox {
     }
 
     /**
-     * Focus and select the content of the control based on the first selected option.
+     * Focus and set the content of the control based on the first selected option.
      *
-     * @param start - The index for the starting range
+     * @internal
+     */
+    private setInputToSelection(): void {
+        if (this.firstSelectedOption) {
+            this.control.value = this.firstSelectedOption.text;
+            this.control.focus();
+        }
+    }
+
+    /**
+     * Focus, set and select the content of the control based on the first selected option.
+     *
      * @internal
      */
     private setInlineSelection(): void {
         if (this.firstSelectedOption) {
-            this.control.value = this.firstSelectedOption.text;
-            this.control.focus();
+            this.setInputToSelection();
             this.control.setSelectionRange(
                 this.filter.length,
                 this.control.value.length,
