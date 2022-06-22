@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Fixed a cyclical reference",
+  "packageName": "@microsoft/adaptive-ui",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}

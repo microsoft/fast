@@ -178,6 +178,7 @@ export const enum Message {
     // 1201 - 1300 Templating
     onlySetHTMLPolicyOnce = 1201,
     bindingInnerHTMLRequiresTrustedTypes = 1202,
+    twoWayBindingRequiresObservables = 1203,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,

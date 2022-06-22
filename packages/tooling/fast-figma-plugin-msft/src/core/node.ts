@@ -163,6 +163,11 @@ export abstract class PluginNode {
     public abstract getEffectiveFillColor(): ColorRGBA64 | null;
 
     /**
+     * Handle components that have custom dark mode configuration, like logos or illustration.
+     */
+    public abstract handleManualDarkMode(): boolean;
+
+    /**
      * Setup special handling for fill color. It should either be a recipe or a fixed color applied in the design tool.
      * Must be called after design tokens and recipe evaluations are loaded.
      */
