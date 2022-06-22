@@ -35,6 +35,8 @@ export const comboboxTemplate: FoundationElementTemplate<
                     aria-disabled="${x => x.ariaDisabled}"
                     aria-expanded="${x => x.ariaExpanded}"
                     aria-haspopup="listbox"
+                    aria-label="${x => x.ariaLabel}"
+                    aria-labelledby=${x => x.ariaLabelledby}
                     class="selected-value"
                     part="selected-value"
                     placeholder="${x => x.placeholder}"
@@ -71,5 +73,14 @@ export const comboboxTemplate: FoundationElementTemplate<
                 })}
             ></slot>
         </div>
+        <label
+            part="label"
+            class="${x =>
+                x.slottedLabel && x.slottedLabel.length
+                    ? "label"
+                    : "label label__hidden"}"
+        >
+            <slot ${slotted("slottedLabel")}></slot>
+        </label>
     </template>
 `;

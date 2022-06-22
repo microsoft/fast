@@ -56,6 +56,12 @@ export class Combobox extends FormAssociatedCombobox {
     autocomplete: ComboboxAutocomplete | undefined;
 
     /**
+     * @internal
+     */
+    @observable
+    public slottedLabel: Node[];
+
+    /**
      * Reference to the internal text input element.
      *
      * @internal
