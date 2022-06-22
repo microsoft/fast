@@ -34,7 +34,6 @@ export const comboboxTemplate: FoundationElementTemplate<
                     aria-controls="${x => x.ariaControls}"
                     aria-disabled="${x => x.ariaDisabled}"
                     aria-expanded="${x => x.ariaExpanded}"
-                    aria-label="${x => x.ariaLabel}"
                     aria-haspopup="listbox"
                     class="selected-value"
                     part="selected-value"
