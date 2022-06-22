@@ -80,7 +80,6 @@ const styles = () => css`
 
     .items {
         display: none;
-        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
         font-size: calc(1em + (var(--design-unit) + 16) * 1px);
     }
 
@@ -88,7 +87,6 @@ const styles = () => css`
         background: none;
         border: none;
         outline: none;
-        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
         width: calc(
             (
                     ((var(--base-height-multiplier) / 2) * var(--design-unit)) +
@@ -113,7 +111,6 @@ const styles = () => css`
     }
 
     .expand-collapse-glyph {
-        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
         width: 16px;
         height: 16px;
         transition: transform 0.1s linear;
@@ -129,18 +126,15 @@ const styles = () => css`
     }
 
     ::slotted(svg) {
-        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
         width: 16px;
         height: 16px;
     }
 
     .start {
-        /* TODO: horizontalSpacing https://github.com/microsoft/fast/issues/2766 */
         margin-inline-end: calc(var(--design-unit) * 2px + 2px);
     }
 
     .end {
-        /* TODO: horizontalSpacing https://github.com/microsoft/fast/issues/2766 */
         margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 

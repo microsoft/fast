@@ -168,7 +168,6 @@ const styles = () => css`
     .indicator,
     .select-indicator,
     ::slotted(svg) {
-        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
         fill: currentcolor;
         height: 1em;
         min-height: calc(var(--design-unit) * 4px);

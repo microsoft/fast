@@ -91,7 +91,6 @@ const styles = () => css`
     }
 
     ::slotted(svg) {
-        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
         width: 16px;
         height: 16px;
     }
