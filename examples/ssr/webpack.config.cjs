@@ -15,17 +15,6 @@ module.exports = function(env, { mode }) {
       publicPath:'/',
       path: path.resolve(process.cwd(), 'www'),
     },
-    devServer: {
-      port: 9000,
-      historyApiFallback: true,
-      open: !process.env.CI,
-      devMiddleware: {
-        writeToDisk: true,
-      },
-      static: {
-        directory: path.join(__dirname, './')
-      }
-    },
     plugins: [
       new CleanWebpackPlugin()
     ],

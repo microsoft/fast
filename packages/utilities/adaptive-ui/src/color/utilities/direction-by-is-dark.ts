@@ -3,7 +3,7 @@ import { isDark } from "./is-dark.js";
 import { RelativeLuminance } from "./relative-luminance.js";
 
 /**
- * A convenience for many color recipes. Gets a directional multiplier based on whether the `color` is dark or light.
+ * Gets an inverse directional multiplier based on whether the `color` is dark or light.
  *
  * @param color - The color to check
  * @returns `darker` if the `color` is light, `lighter` if the `color` is dark

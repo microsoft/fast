@@ -53,7 +53,7 @@ export const Aspect: Readonly<{
     readonly content: 4;
     readonly tokenList: 5;
     readonly event: 6;
-    readonly assign: (directive: Aspected, value: string) => void;
+    readonly assign: (directive: Aspected, value?: string) => void;
 }>;
 
 // @public

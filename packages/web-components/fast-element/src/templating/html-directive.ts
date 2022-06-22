@@ -199,13 +199,16 @@ export const Aspect = Object.freeze({
      *
      * @param directive - The directive to assign the aspect to.
      * @param value - The value to base the aspect determination on.
+     * @remarks
+     * If a falsy value is provided, then the content aspect will be assigned.
      */
-    assign(directive: Aspected, value: string): void {
-        directive.sourceAspect = value;
-
+    assign(directive: Aspected, value?: string): void {
         if (!value) {
+            directive.aspectType = Aspect.content;
             return;
         }
+
+        directive.sourceAspect = value;
 
         switch (value[0]) {
             case ":":
