@@ -3,5 +3,5 @@
   "comment": "handle change for source.max set to sliderMaxPosition",
   "packageName": "@microsoft/fast-foundation",
   "email": "email not defined",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
