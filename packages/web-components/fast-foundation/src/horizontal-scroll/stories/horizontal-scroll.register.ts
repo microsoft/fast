@@ -99,7 +99,7 @@ const styles = () => css`
     }
 `;
 
-export class HorizontalScroll extends FoundationHorizontalScroll {
+class HorizontalScroll extends FoundationHorizontalScroll {
     /**
      * @public
      */

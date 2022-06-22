@@ -83,7 +83,7 @@ const media = html<Avatar>`
     )}
 `;
 
-export class Avatar extends FoundationAvatar {
+class Avatar extends FoundationAvatar {
     @attr({ attribute: "src" })
     public imgSrc?: string;
 

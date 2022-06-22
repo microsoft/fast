@@ -39,7 +39,7 @@ const styles = () => css`
     }
 `;
 
-export class Listbox extends FoundationListboxElement {
+class Listbox extends FoundationListboxElement {
     private computedStylesheet?: ElementStyles;
 
     protected sizeChanged(prev: number | undefined, next: number): void {
