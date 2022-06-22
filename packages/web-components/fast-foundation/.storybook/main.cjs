@@ -25,10 +25,6 @@ module.exports = {
             },
         ];
 
-        config.resolve.alias["@microsoft/fast-element/utilities"] = require.resolve(
-            "@microsoft/fast-element/utilities.js"
-        );
-
         config.resolve.plugins = [
             ...(config.resolve.plugins || []),
             new ResolveTypescriptPlugin({
