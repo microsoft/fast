@@ -3442,11 +3442,6 @@
     "@microsoft/fast-web-utilities" "^5.4.1"
     tslib "^1.13.0"
 
-"@microsoft/fast-element@2.0.0-beta.1":
-  version "2.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-2.0.0-beta.1.tgz#7e569e26a9680bb464685304d078850fc784113b"
-  integrity sha512-eJRWLkDkZiIPe6UcvEnPfVlRZ12xvaXpZifoGRJWZgDSD9p58qRVrF42OjCdmsbzXD+xD6ZyFbjpgLXEKE9c4A==
-
 "@microsoft/fast-element@^1.0.0", "@microsoft/fast-element@^1.10.1", "@microsoft/fast-element@^1.10.2", "@microsoft/fast-element@^1.5.1":
   version "1.10.2"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-1.10.2.tgz#34a2faa8a97608e1b7c8024b9aed3deddd5c6ad8"
