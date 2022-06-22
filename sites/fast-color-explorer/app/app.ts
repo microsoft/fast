@@ -85,6 +85,17 @@ const colorBlockTemplate = html<App>`
 
 const template = html<App>`
     <div class="container fill">
+        <div class="row banner">
+            <p>
+                <a
+                    href="https://aka.ms/fluentwebcomponents/?path=/docs/design-system-color-explorer--page"
+                >
+                    Fluent UI Web Components color explorer
+                </a>
+                has moved to the Fluent UI Storybook site. This site now represents the
+                latest version of @microsoft/fast-components.
+            </p>
+        </div>
         <div class="row fill">
             <div class="canvas" ${ref("canvasElement")}>
                 <div class="container fill">
@@ -161,6 +172,15 @@ const styles = css`
     .row.fill {
         flex: 1;
         overflow: hidden;
+    }
+
+    .banner {
+        background-color: #80deea;
+        padding: 20px;
+    }
+
+    .banner p {
+        margin: 0;
     }
 
     .canvas {
