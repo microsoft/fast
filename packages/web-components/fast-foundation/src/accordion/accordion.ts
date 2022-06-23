@@ -131,6 +131,15 @@ export class FASTAccordion extends FASTElement {
     };
 
     private activeItemChange = (event: Event): void => {
+        if (
+            event.defaultPrevented ||
+            event.target === null ||
+            this.accordionItems.indexOf(event.target as HTMLElement) === -1
+        ) {
+            return;
+        }
+
+        event.preventDefault();
         const selectedItem = event.target as FASTAccordionItem;
         this.activeid = selectedItem.getAttribute("id");
         if (this.isSingleExpandMode()) {
