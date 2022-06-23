@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "add Svelte integration guides and starter projects",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "steph@huynhicode.dev",
+  "dependentChangeType": "none"
+}
