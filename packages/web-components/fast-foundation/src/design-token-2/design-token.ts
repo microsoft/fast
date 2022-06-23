@@ -90,7 +90,7 @@ export class DesignTokenNode {
     > = new Map();
 
     /**
-     * Retrieves the tokens assigned directly to a node.
+     * Retrieves all tokens assigned directly to a node.
      * @param node - the node to retrieve assigned tokens for
      * @returns
      */
@@ -99,7 +99,7 @@ export class DesignTokenNode {
     }
 
     /**
-     * Retrieves the tokens assigned to the node and ancestor nodes.
+     * Retrieves all tokens assigned to the node and ancestor nodes.
      * @param node - the node to compose assigned tokens for
      */
     public static composeAssignedTokensForNode(
@@ -122,7 +122,7 @@ export class DesignTokenNode {
     }
 
     /**
-     * Determines if a value is a { @DerivedDesignTokenValue }
+     * Determines if a value is a {@link DerivedDesignTokenValue}
      * @param value - The value to test
      */
     private static isDerivedTokenValue<T>(
@@ -132,7 +132,7 @@ export class DesignTokenNode {
     }
 
     /**
-     * Tests if a token is assigned to a node
+     * Tests if a token is assigned directly to a node
      * @param node - The node to test
      * @param token  - The token to test
      * @returns
@@ -142,7 +142,7 @@ export class DesignTokenNode {
     }
 
     /**
-     * Determines if the node has a derived value for token
+     * Determines if the token is assigned to a {@link DerivedTokenValue } for the node.
      * @param node - The node to test
      * @param token - The token to test
      * @returns
@@ -249,6 +249,9 @@ export class DesignTokenNode {
         this.children.forEach(child => child.notifyStatic(token, originator));
     }
 
+    /**
+     * Notifies that a token has been assigned a {@link DerivedDesignTokenValue } for the context.
+     */
     private notifyDerived<T>(
         token: DesignToken<T>,
         evaluator: DerivedValueEvaluator<T>,
