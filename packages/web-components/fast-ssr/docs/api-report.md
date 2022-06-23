@@ -63,11 +63,42 @@ function fastSSR(): {
 };
 export default fastSSR;
 
+// @public (undocumented)
+export type MiddlewareOptions = StorageOptions & {
+    windowLocals?: readonly string[];
+};
+
 // @beta (undocumented)
 export type RenderInfo = {
     elementRenderers: ConstructableElementRenderer[];
     customElementInstanceStack: ElementRenderer[];
     customElementHostStack: ElementRenderer[];
+};
+
+// @public (undocumented)
+export const RequestManager: Readonly<{
+    windowLocals: readonly ["dispatchEvent", "addEventListener", "removeEventListener", "window", "document"];
+    installDOMShim(windowLocals?: readonly string[]): void;
+    createStorage(options?: StorageOptions): Map<any, any>;
+    run(storage: Map<any, any>, callback: () => unknown): void;
+    createMiddleware(options?: MiddlewareOptions): (req: Request, res: Response, next: () => any) => void;
+}>;
+
+// @public (undocumented)
+export const RequestStorage: Readonly<{
+    set(key: any, value: any): void;
+    get<T = any>(key: any): T | undefined;
+    clear(): void;
+    delete(key: any): void;
+    has(key: any): boolean;
+}>;
+
+// @public (undocumented)
+export type StorageOptions = {
+    createWindow?: () => {
+        [key: string]: unknown;
+    };
+    storage?: Map<any, any>;
 };
 
 // @beta

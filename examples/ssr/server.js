@@ -1,20 +1,18 @@
+/* eslint-disable no-undef */
 import "@microsoft/fast-ssr/install-dom-shim";
 import fs from "fs";
 import { html } from "@microsoft/fast-element";
-import fastSSR from "@microsoft/fast-ssr";
+import fastSSR, { RequestManager } from "@microsoft/fast-ssr";
 import express from "express";
-import "fast-todo-app";
 import { DefaultTodoList, app as todoApp, TodoList } from "fast-todo-app";
 
 const app = express();
 const port = 8080;
 const { templateRenderer, defaultRenderInfo } = fastSSR();
-const todoData = JSON.parse(fs.readFileSync("./todo-data.json").toString());
 
-/* eslint-disable-next-line */
-TodoList.provide(document, new DefaultTodoList(todoData));
 todoApp.define();
 
+app.use(RequestManager.createMiddleware());
 app.use(express.static("./www"));
 
 const template = html`
@@ -29,7 +27,9 @@ const template = html`
                     In general the JSON should be sanitized to prevent
                     JSON injection attacks.
                 -->
-            <script>window.__SSR_STATE__ = ${() => JSON.stringify(todoData)};</script>
+            <script>window.__SSR_STATE__ = ${() =>
+                JSON.stringify(TodoList.get(document).all)};
+            </script>
         <body>
             <todo-app></todo-app>
             <script src="/bundle.js" defer></script>
@@ -38,6 +38,9 @@ const template = html`
 `;
 
 app.get("/", (req, res) => {
+    const todoData = JSON.parse(fs.readFileSync("./todo-data.json").toString());
+    TodoList.provide(document, new DefaultTodoList(todoData));
+
     const stream = templateRenderer.render(template, defaultRenderInfo);
 
     for (const part of stream) {
