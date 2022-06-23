@@ -372,7 +372,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @internal
      */
     public focusoutHandler(e: FocusEvent): boolean | void {
-        this.updateValue(this.dirtyValue);
+        this.updateValue(this.shouldEmitChange());
 
         if (!this.open) {
             return true;
@@ -436,7 +436,7 @@ export class Combobox extends FormAssociatedCombobox {
 
         switch (key) {
             case "Enter": {
-                this.updateValue(this.dirtyValue);
+                this.updateValue(this.shouldEmitChange());
                 if (this.isAutocompleteInline) {
                     this.filter = this.value;
                 }
@@ -609,7 +609,12 @@ export class Combobox extends FormAssociatedCombobox {
         }
     }
 
-    private get dirtyValue(): boolean {
+    /**
+     * Determines if a value update should involve emitting a change event
+     *
+     * @internal
+     */
+    private shouldEmitChange(): boolean {
         return this.selectedIndex >= 0
             ? this.firstSelectedOption.value !== this.value
             : this.control.value !== this.value;
