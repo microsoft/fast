@@ -1,8 +1,16 @@
 # Change Log - @microsoft/site-utilities
 
-This log was last generated on Wed, 15 Jun 2022 17:41:10 GMT and should not be manually modified.
+This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.0
+
+Wed, 22 Jun 2022 20:17:50 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.4 (email not defined)
 
 ## 0.9.0
 

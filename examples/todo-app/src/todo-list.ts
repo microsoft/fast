@@ -35,6 +35,12 @@ export class DefaultTodoList {
         }
     }
 
+    constructor(todos?: Todo[]) {
+        if (todos) {
+            this._todos = todos.map(x => makeObservable(x));
+        }
+    }
+
     public add(description: string) {
         this.splice(this._todos.length, 0, makeObservable({ description, done: false }));
     }

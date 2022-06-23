@@ -178,6 +178,7 @@ function compileContent(
             currentNode.textContent = currentPart;
         } else {
             currentNode.textContent = " ";
+            Aspect.assign((currentPart as any) as Aspected);
             context.addFactory(currentPart, parentId, nodeId, nodeIndex);
         }
 
