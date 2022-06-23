@@ -3,7 +3,7 @@ import { DesignSystem } from "../../design-system/design-system.js";
 import { TabPanel } from "../tab-panel.js";
 import { tabPanelTemplate as template } from "../tab-panel.template.js";
 
-const styles = css`
+const styles = () => css`
     :host([hidden]) {
         display: none;
     }

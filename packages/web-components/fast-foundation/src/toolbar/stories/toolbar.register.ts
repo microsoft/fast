@@ -3,7 +3,7 @@ import { DesignSystem } from "../../design-system/design-system.js";
 import { Toolbar } from "../toolbar.js";
 import { toolbarTemplate as template } from "../toolbar.template.js";
 
-const styles = css`
+const styles = () => css`
     :host([hidden]) {
         display: none;
     }
