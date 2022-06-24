@@ -858,7 +858,13 @@ export class DateFormatter {
 }
 
 // @public
-export type DayFormat = "2-digit" | "numeric";
+export const DayFormat: {
+    readonly "2-digit": "2-digit";
+    readonly numeric: "numeric";
+};
+
+// @public
+export type DayFormat = typeof DayFormat[keyof typeof DayFormat];
 
 // @public
 export class DefaultComponentPresentation implements ComponentPresentation {
@@ -1775,7 +1781,16 @@ export const menuItemTemplate: FoundationElementTemplate<ViewTemplate<MenuItem>,
 export const menuTemplate: FoundationElementTemplate<ViewTemplate<Menu>>;
 
 // @public
-export type MonthFormat = "2-digit" | "long" | "narrow" | "numeric" | "short";
+export const MonthFormat: {
+    readonly "2-digit": "2-digit";
+    readonly numeric: "numeric";
+    readonly short: "short";
+    readonly long: "long";
+    readonly narrow: "narrow";
+};
+
+// @public
+export type MonthFormat = typeof MonthFormat[keyof typeof MonthFormat];
 
 // @public
 export type MonthInfo = {
@@ -2996,7 +3011,14 @@ export function validateKey(key: any): void;
 export type VerticalPosition = "top" | "bottom" | "center" | "unset";
 
 // @public
-export type WeekdayFormat = "long" | "narrow" | "short";
+export const WeekdayFormat: {
+    readonly long: "long";
+    readonly narrow: "narrow";
+    readonly short: "short";
+};
+
+// @public
+export type WeekdayFormat = typeof WeekdayFormat[keyof typeof WeekdayFormat];
 
 // @public
 export type WeekdayText = {
@@ -3008,7 +3030,13 @@ export type WeekdayText = {
 export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;
 
 // @public
-export type YearFormat = "2-digit" | "numeric";
+export const YearFormat: {
+    readonly "2-digit": "2-digit";
+    readonly numeric: "numeric";
+};
+
+// @public
+export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 
 // Warnings were encountered during analysis:
 //

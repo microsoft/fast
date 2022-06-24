@@ -16,7 +16,7 @@ const storyTemplate = html<TreeItemStoryArgs>`
 `;
 
 export default {
-    title: "Tree view/Tree item",
+    title: "Tree view/Tree Item",
     args: {
         content: "Tree Item",
         expanded: false,
