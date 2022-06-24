@@ -339,12 +339,12 @@ describe("The repeat", () => {
                 behavior.bind(vm, ExecutionContext.default);
 
                 const mid = Math.floor(vm.items.length/2)
-                vm.items.splice(mid, 1, { name: "newitem1" }, { name: "newitem2" });
+                vm.items.splice(mid, 2, { name: "newitem1" }, { name: "newitem2" });
                 await Updates.next();
                 expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1newitem2${createOutput(vm.items.slice(mid +2).length , void 0, void 0, void 0, mid +2 ) }`);
             });
 
-            it(`updates rendered HTML when a single item is spliced from the middle of an array of size ${size} with recycle property set to false`, async () => {
+            it(`updates rendered HTML when 2 items are spliced from the middle of an array of size ${size} with recycle property set to false`, async () => {
                 const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
@@ -359,12 +359,11 @@ describe("The repeat", () => {
                 behavior.bind(vm, ExecutionContext.default);
 
                 const mid = Math.floor(vm.items.length/2)
-                vm.items.splice(mid, 1, { name: "newitem1" }, { name: "newitem2" });
+                vm.items.splice(mid, 2, { name: "newitem1" }, { name: "newitem2" });
                 await Updates.next();
                 expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1newitem2${createOutput(vm.items.slice(mid +2).length , void 0, void 0, void 0, mid +2 ) }`);
             });
         });
-
 
         oneThroughTen.forEach(size => {
             it(`updates rendered HTML when a single item is replaced from the beginning of an array of size ${size}`, async () => {
