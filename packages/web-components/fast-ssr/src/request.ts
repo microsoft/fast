@@ -1,28 +1,51 @@
 import { AsyncLocalStorage } from "async_hooks";
+import { DI, DOMContainer } from "@microsoft/fast-foundation";
 import { createWindow } from "./dom-shim.js";
 
 const asyncLocalStorage = new AsyncLocalStorage();
 const defaultOptions = {};
 
-export const RequestStorage = Object.freeze({
+function getStore() {
+    const store = asyncLocalStorage.getStore();
+
+    if (!store) {
+        throw new Error("Storage must be accessed from within a request.");
+    }
+
+    return store as Map<any, any>;
+}
+
+export const CurrentRequest = Object.freeze({
+    get container(): DOMContainer {
+        let container = CurrentRequest.get<DOMContainer>("$$container$$");
+
+        if (!container) {
+            container = DI.getOrCreateDOMContainer(window);
+            CurrentRequest.set("$$container$$", container);
+        }
+
+        return container;
+    },
+
     set(key: any, value: any) {
-        (asyncLocalStorage.getStore() as Map<any, any>).set(key, value);
+        getStore().set(key, value);
+        return this;
     },
 
     get<T = any>(key: any): T | undefined {
-        return (asyncLocalStorage.getStore() as Map<any, any>).get(key);
+        return getStore().get(key);
     },
 
     clear() {
-        (asyncLocalStorage.getStore() as Map<any, any>).clear();
+        getStore().clear();
     },
 
     delete(key: any) {
-        (asyncLocalStorage.getStore() as Map<any, any>).delete(key);
+        return getStore().delete(key);
     },
 
     has(key: any) {
-        return (asyncLocalStorage.getStore() as Map<any, any>).has(key);
+        return getStore().has(key);
     },
 });
 
@@ -50,7 +73,7 @@ export const RequestManager = Object.freeze({
         for (const key of windowLocals) {
             Reflect.defineProperty(globalThis, key, {
                 get() {
-                    return RequestStorage.get("window")[key];
+                    return CurrentRequest.get("window")[key];
                 },
             });
         }
@@ -75,12 +98,16 @@ export const RequestManager = Object.freeze({
         asyncLocalStorage.run(storage, callback);
     },
 
-    createMiddleware(options: MiddlewareOptions = defaultOptions) {
+    middleware(options: MiddlewareOptions = defaultOptions) {
         RequestManager.installDOMShim(options.windowLocals);
 
         return (req: Request, res: Response, next: () => any) => {
             const storage = RequestManager.createStorage(options);
             RequestManager.run(storage, next);
         };
+    },
+
+    installDIContextRequestStrategy() {
+        DI.installAsContextRequestStrategy(() => CurrentRequest.container);
     },
 });

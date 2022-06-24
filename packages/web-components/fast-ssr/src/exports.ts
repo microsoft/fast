@@ -80,7 +80,7 @@ export default function fastSSR(): {
     };
 }
 
-export * from "./request-storage.js";
+export * from "./request.js";
 export type {
     ComponentDOMEmissionMode,
     ElementRenderer,

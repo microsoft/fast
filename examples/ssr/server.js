@@ -12,7 +12,7 @@ const { templateRenderer, defaultRenderInfo } = fastSSR();
 
 todoApp.define();
 
-app.use(RequestManager.createMiddleware());
+app.use(RequestManager.middleware());
 app.use(express.static("./www"));
 
 const template = html`

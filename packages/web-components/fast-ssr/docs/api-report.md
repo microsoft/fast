@@ -7,6 +7,7 @@
 import { Binding } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
+import { DOMContainer } from '@microsoft/fast-foundation';
 import { ExecutionContext } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { ViewBehaviorFactory } from '@microsoft/fast-element';
@@ -17,6 +18,16 @@ export type ComponentDOMEmissionMode = "shadow";
 
 // @beta (undocumented)
 export type ConstructableElementRenderer = (new (tagName: string, renderInfo: RenderInfo) => ElementRenderer) & typeof ElementRenderer;
+
+// @public (undocumented)
+export const CurrentRequest: Readonly<{
+    readonly container: DOMContainer;
+    set(key: any, value: any): any;
+    get<T = any>(key: any): T | undefined;
+    clear(): void;
+    delete(key: any): boolean;
+    has(key: any): boolean;
+}>;
 
 // @beta (undocumented)
 export abstract class ElementRenderer {
@@ -81,16 +92,8 @@ export const RequestManager: Readonly<{
     installDOMShim(windowLocals?: readonly string[]): void;
     createStorage(options?: StorageOptions): Map<any, any>;
     run(storage: Map<any, any>, callback: () => unknown): void;
-    createMiddleware(options?: MiddlewareOptions): (req: Request, res: Response, next: () => any) => void;
-}>;
-
-// @public (undocumented)
-export const RequestStorage: Readonly<{
-    set(key: any, value: any): void;
-    get<T = any>(key: any): T | undefined;
-    clear(): void;
-    delete(key: any): void;
-    has(key: any): boolean;
+    middleware(options?: MiddlewareOptions): (req: Request, res: Response, next: () => any) => void;
+    installDIContextRequestStrategy(): void;
 }>;
 
 // @public (undocumented)
