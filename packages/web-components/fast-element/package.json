@@ -46,6 +46,10 @@
       "types": "./dist/dts/templating/binding-signal.d.ts",
       "default": "./dist/esm/templating/binding-signal.js"
     },
+    "./render": {
+      "types": "./dist/dts/templating/render.d.ts",
+      "default": "./dist/esm/templating/render.js"
+    },
     "./utilities": {
       "types": "./dist/dts/utilities.d.ts",
       "default": "./dist/esm/utilities.js"
