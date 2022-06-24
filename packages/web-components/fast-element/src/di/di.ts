@@ -547,6 +547,7 @@ export const DI = Object.freeze({
     /**
      * Installs dependency injection as the default strategy for handling
      * all calls to Context.request.
+     * @param fallback - Creates a container if one cannot be found.
      */
     installAsContextRequestStrategy(fallback?: () => DOMContainer) {
         Context.setDefaultRequestStrategy((target, context, callback) => {
@@ -571,6 +572,7 @@ export const DI = Object.freeze({
      * Finds the dependency injection container responsible for providing dependencies
      * to the specified node.
      * @param target - The node to find the responsible container for.
+     * @param fallback - Creates a container if one cannot be found.
      * @returns The container responsible for providing dependencies to the node.
      * @remarks
      * This will be the same as the parent container if the specified node
@@ -592,6 +594,7 @@ export const DI = Object.freeze({
     /**
      * Find the dependency injection container up the DOM tree from this node.
      * @param target - The node to find the parent container for.
+     * @param fallback - Creates a container if one cannot be found.
      * @returns The parent container of this node.
      * @remarks
      * This will be the same as the responsible container if the specified node
