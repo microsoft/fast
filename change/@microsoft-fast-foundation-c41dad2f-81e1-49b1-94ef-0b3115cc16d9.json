@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: enable fallback container creation for DI location APIs",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
