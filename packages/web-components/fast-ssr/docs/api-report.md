@@ -19,16 +19,6 @@ export type ComponentDOMEmissionMode = "shadow";
 // @beta (undocumented)
 export type ConstructableElementRenderer = (new (tagName: string, renderInfo: RenderInfo) => ElementRenderer) & typeof ElementRenderer;
 
-// @public (undocumented)
-export const CurrentRequest: Readonly<{
-    readonly container: DOMContainer;
-    set(key: any, value: any): any;
-    get<T = any>(key: any): T | undefined;
-    clear(): void;
-    delete(key: any): boolean;
-    has(key: any): boolean;
-}>;
-
 // @beta (undocumented)
 export abstract class ElementRenderer {
     constructor(tagName: string, renderInfo: RenderInfo);
@@ -75,9 +65,7 @@ function fastSSR(): {
 export default fastSSR;
 
 // @public (undocumented)
-export type MiddlewareOptions = StorageOptions & {
-    windowLocals?: readonly string[];
-};
+export type Middleware = (req: any, res: any, next: () => any) => void;
 
 // @beta (undocumented)
 export type RenderInfo = {
@@ -87,13 +75,22 @@ export type RenderInfo = {
 };
 
 // @public (undocumented)
-export const RequestManager: Readonly<{
-    windowLocals: readonly ["dispatchEvent", "addEventListener", "removeEventListener", "window", "document"];
-    installDOMShim(windowLocals?: readonly string[]): void;
-    createStorage(options?: StorageOptions): Map<any, any>;
-    run(storage: Map<any, any>, callback: () => unknown): void;
-    middleware(options?: MiddlewareOptions): (req: Request, res: Response, next: () => any) => void;
+export const RequestStorage: Readonly<{
+    readonly container: DOMContainer;
+    set(key: any, value: any): any;
+    get: typeof getItem;
+    clear(): void;
+    delete(key: any): boolean;
+    has(key: any): boolean;
+}>;
+
+// @public (undocumented)
+export const RequestStorageManager: Readonly<{
+    installDOMShim(): void;
     installDIContextRequestStrategy(): void;
+    createStorage(options?: StorageOptions): Map<any, any>;
+    run<T = unknown>(storage: Map<any, any>, callback: () => T): T;
+    middleware(options?: StorageOptions): Middleware;
 }>;
 
 // @public (undocumented)
@@ -126,6 +123,10 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
     matcher: Constructable<T>;
     render(behavior: T, renderInfo: RenderInfo, source: any, renderer: TemplateRenderer, context: ExecutionContext): IterableIterator<string>;
 }
+
+// Warnings were encountered during analysis:
+//
+// dist/dts/request-storage.d.ts:7:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
 
 // (No @packageDocumentation comment for this package)
 

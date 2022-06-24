@@ -2,7 +2,7 @@
 import "@microsoft/fast-ssr/install-dom-shim";
 import fs from "fs";
 import { html } from "@microsoft/fast-element";
-import fastSSR, { RequestManager } from "@microsoft/fast-ssr";
+import fastSSR, { RequestStorageManager } from "@microsoft/fast-ssr";
 import express from "express";
 import { DefaultTodoList, app as todoApp, TodoList } from "fast-todo-app";
 
@@ -12,7 +12,7 @@ const { templateRenderer, defaultRenderInfo } = fastSSR();
 
 todoApp.define();
 
-app.use(RequestManager.middleware());
+app.use(RequestStorageManager.middleware());
 app.use(express.static("./www"));
 
 const template = html`
