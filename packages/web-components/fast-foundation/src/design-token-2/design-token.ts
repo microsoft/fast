@@ -74,8 +74,6 @@ class DerivedValueEvaluator<T> {
             return node.getTokenValue(token);
         };
 
-        const value = this.binding.observe(resolve);
-
         return this.binding.observe(resolve);
     }
 }
@@ -88,6 +86,30 @@ export class DesignTokenNode {
         DesignToken<any>,
         [DerivedDesignTokenValue<any>, StaticDesignTokenValue<any>]
     > = new Map();
+
+    /**
+     * Determines if a value is a {@link DerivedDesignTokenValue}
+     * @param value - The value to test
+     */
+    private static isDerivedTokenValue<T>(
+        value: DesignTokenValue<T>
+    ): value is DerivedDesignTokenValue<T> {
+        return typeof value === "function";
+    }
+
+    private static evaluateDerived<T>(
+        node: DesignTokenNode,
+        token: DesignToken<T>,
+        value: DerivedDesignTokenValue<T>
+    ) {
+        const evaluator = DerivedValueEvaluator.getOrCreate(value);
+        const result = evaluator.evaluate(node);
+        node._derived.set(token, [value, result]);
+
+        Observable.getNotifier(token).notify(node);
+
+        return result;
+    }
 
     /**
      * Retrieves all tokens assigned directly to a node.
@@ -122,16 +144,6 @@ export class DesignTokenNode {
     }
 
     /**
-     * Determines if a value is a {@link DerivedDesignTokenValue}
-     * @param value - The value to test
-     */
-    private static isDerivedTokenValue<T>(
-        value: DesignTokenValue<T>
-    ): value is DerivedDesignTokenValue<T> {
-        return typeof value === "function";
-    }
-
-    /**
      * Tests if a token is assigned directly to a node
      * @param node - The node to test
      * @param token  - The token to test
@@ -149,20 +161,6 @@ export class DesignTokenNode {
      */
     public static isDerivedFor<T>(node: DesignTokenNode, token: DesignToken<T>) {
         return node._derived.has(token);
-    }
-
-    public static evaluateDerived<T>(
-        node: DesignTokenNode,
-        token: DesignToken<T>,
-        value: DerivedDesignTokenValue<T>
-    ) {
-        const evaluator = DerivedValueEvaluator.getOrCreate(value);
-        const result = evaluator.evaluate(node);
-        node._derived.set(token, [value, result]);
-
-        Observable.getNotifier(token).notify(node);
-
-        return result;
     }
 
     public get parent() {
