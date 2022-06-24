@@ -1,4 +1,4 @@
-import { attr } from "@microsoft/fast-element";
+import { attr, DOM } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
@@ -18,4 +18,13 @@ export class Badge extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public circular: boolean;
+    private circularChanged(oldValue: boolean, newValue: boolean): void {
+        DOM.queueUpdate(() => {
+            if (newValue) {
+                this.classList.add("circular");
+            } else {
+                this.classList.remove("circular");
+            }
+        });
+    }
 }
