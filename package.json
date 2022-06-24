@@ -16,7 +16,8 @@
       "sites/site-utilities",
       "sites/fast-website",
       "sites/website",
-      "examples/todo-app"
+      "examples/todo-app",
+      "examples/ssr"
     ],
     "nohoist": [
       "**/@types/chai",
@@ -138,7 +139,6 @@
     "trim": "^0.0.3",
     "typescript": "^4.7.0",
     "ua-parser-js": "^0.7.28",
-    "ws": "^7.4.6",
     "xmlhttprequest-ssl": "^1.6.2"
   },
   "devDependencies": {

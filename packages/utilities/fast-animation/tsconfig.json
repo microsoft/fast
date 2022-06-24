@@ -11,6 +11,7 @@
     "sourceMap": true,
     "rootDir": "./",
     "baseUrl": ".",
+    "types": ["jest", "webpack-env", "node"],
     "lib": [ "es2015", "es2017", "dom", "scripthost" ],
     "paths": {
       "[lib]/*": [

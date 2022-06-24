@@ -1,9 +1,9 @@
-import { expect } from "chai";
 import { css, Updates } from "@microsoft/fast-element";
-import { fixture } from "../testing/fixture.js";
-import { Tab, tabTemplate } from "../tab/index.js";
+import { expect } from "chai";
 import { TabPanel, tabPanelTemplate } from "../tab-panel/index.js";
-import { TabsOrientation, Tabs, tabsTemplate as template } from "./index.js";
+import { Tab, tabTemplate } from "../tab/index.js";
+import { fixture } from "../testing/fixture.js";
+import { Tabs, TabsOrientation, tabsTemplate as template } from "./index.js";
 
 const FASTTab = Tab.compose({
     baseName: "tab",
@@ -378,9 +378,7 @@ describe("Tabs", () => {
 
             await connect();
 
-            const activeIndicator = element.shadowRoot!.querySelector(
-                '[part="activeIndicator"]'
-            )!;
+            const activeIndicator = element.activeIndicatorRef;
 
             await new Promise(resolve => {
                 activeIndicator.addEventListener("transitionend", resolve, {

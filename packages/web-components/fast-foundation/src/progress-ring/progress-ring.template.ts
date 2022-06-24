@@ -1,16 +1,17 @@
-import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { BaseProgress, ProgressRingOptions } from "../progress/base-progress.js";
+import { html, when } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { ProgressRing } from "./progress-ring.js";
+import type { ProgressRingOptions } from "./progress-ring.options.js";
 
 const progressSegments: number = 44;
 
 /**
- * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
+ * The template for the {@link @microsoft/fast-foundation#ProgressRing} component.
  * @public
  */
 export const progressRingTemplate: FoundationElementTemplate<
-    ViewTemplate<BaseProgress>,
+    ViewTemplate<ProgressRing>,
     ProgressRingOptions
 > = (context, definition) => html`
     <template
@@ -22,7 +23,7 @@ export const progressRingTemplate: FoundationElementTemplate<
     >
         ${when(
             x => typeof x.value === "number",
-            html<BaseProgress>`
+            html<ProgressRing>`
                 <svg
                     class="progress"
                     part="progress"
@@ -51,7 +52,7 @@ export const progressRingTemplate: FoundationElementTemplate<
         )}
         ${when(
             x => typeof x.value !== "number",
-            html<BaseProgress>`
+            html<ProgressRing>`
                 <slot name="indeterminate">
                     ${definition.indeterminateIndicator || ""}
                 </slot>

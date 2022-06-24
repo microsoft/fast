@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
-  "version": "3.0.0-alpha.3",
+  "version": "3.0.0-alpha.4",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -36,11 +36,12 @@
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
     "build:rollup": "rollup -c",
-    "build:tsc": "tsc -p ./tsconfig.json",
+    "build:storybook": "build-storybook",
+    "build:tsc": "tsc -p ./tsconfig.build.json",
     "prebuild": "yarn build:tsc",
     "build": "yarn build:rollup",
     "postbuild": "yarn doc && yarn cem",
-    "dev": "tsc -p ./tsconfig.json -w",
+    "dev": "tsc -p ./tsconfig.build.json -w",
     "cem": "yarn cem-analyze && yarn cem-markdown",
     "cem-analyze": "cem analyze",
     "cem-markdown": "node CEMToMarkdown.mjs",
@@ -62,13 +63,21 @@
     "test-chrome:verbose:debugger": "karma start karma.conf.cjs --browsers=ChromeDebugging --reporter=mocha",
     "test-firefox": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage",
     "test-firefox:verbose": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
-    "test-firefox:watch": "karma start karma.conf.cjs --browsers=FirefoxHeadless   --coverage --watch-extensions js"
+    "test-firefox:watch": "karma start karma.conf.cjs --browsers=FirefoxHeadless   --coverage --watch-extensions js",
+    "start": "yarn start:storybook",
+    "start:storybook": "start-storybook -p 6006"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.5.7",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
     "@microsoft/api-extractor": "7.24.2",
     "@microsoft/tsdoc-config": "^0.13.4",
+    "@storybook/addon-docs": "6.5.9",
+    "@storybook/addon-essentials": "6.5.9",
+    "@storybook/addon-links": "6.5.9",
+    "@storybook/builder-webpack5": "6.5.9",
+    "@storybook/html": "6.5.9",
+    "@storybook/manager-webpack5": "6.5.9",
     "@types/chai": "^4.2.11",
     "@types/karma": "^5.0.0",
     "@types/mocha": "^7.0.2",
@@ -102,13 +111,14 @@
     "source-map-loader": "^0.2.4",
     "ts-loader": "^7.0.2",
     "ts-node": "^8.9.1",
+    "resolve-typescript-plugin": "^1.2.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.7.0",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.2",
+    "@microsoft/fast-element": "^2.0.0-beta.3",
     "@microsoft/fast-web-utilities": "^6.0.0",
     "tabbable": "^5.2.0",
     "tslib": "^2.4.0"

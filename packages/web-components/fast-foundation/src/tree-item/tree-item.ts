@@ -1,11 +1,11 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
-import { applyMixins } from "../utilities/apply-mixins.js";
 import {
     FoundationElement,
     FoundationElementDefinition,
 } from "../foundation-element/foundation-element.js";
+import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * check if the item is a tree item
@@ -14,7 +14,10 @@ import {
  * determines if element is an HTMLElement and if it has the role treeitem
  */
 export function isTreeItemElement(el: Element): el is HTMLElement {
-    return isHTMLElement(el) && (el.getAttribute("role") as string) === "treeitem";
+    return (
+        isHTMLElement(el) &&
+        (el.getAttribute("role") === "treeitem" || el.tagName.includes("TREE-ITEM"))
+    );
 }
 
 /**
