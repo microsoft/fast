@@ -82,7 +82,7 @@ const pickerListStyles = () => css`
     }
     ::slotted([role="combobox"]:active) {
         background: var(--neutral-fill-input-hover);
-        border-color: var(accent-fill-active);
+        border-color: var(--accent-fill-active);
     }
     ::slotted([role="combobox"]:focus-within) {
         border-color: var(--focus-stroke-outer);

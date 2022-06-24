@@ -11,6 +11,8 @@
         --accent-foreground-rest: #da1a5f;
         --ambient-shadow-alpha: calc(0.11 * (2 - var(--background-luminance, 1)));
         --ambient-shadow-color: rgba(0, 0, 0, var(--ambient-shadow-alpha));
+        --ambient-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px)
+            var(--ambient-shadow-color);
         --base-height-multiplier: 10;
         --base-horizontal-spacing-multiplier: 3;
         --base-layer-luminance: 1;
@@ -21,9 +23,13 @@
         --density: 0;
         --design-unit: 4;
         --direction: ltr;
+        --directional-shadow: 0 calc(var(--elevation) * 0.4px)
+            calc((var(--elevation) * 0.9px)) var(--directional-shadow-color);
         --directional-shadow-alpha: calc(0.13 * (2 - var(--background-luminance, 1)));
         --directional-shadow-color: rgba(0, 0, 0, var(--directional-shadow-alpha));
         --disabled-opacity: 0.3;
+        --elevation: 14;
+        --elevation-shadow: var(--ambient-shadow), var(--directional-shadow);
         --height-number: (var(--base-height-multiplier) + var(--density)) *
             var(--design-unit);
         --fill-color: #ffffff;
