@@ -1,0 +1,170 @@
+<style>
+    :root {
+        --accent-color: #da1a5f;
+        --accent-fill-active: #df3c77;
+        --accent-fill-focus: #dc2969;
+        --accent-fill-hover: #da1a5f;
+        --accent-fill-rest: #dc2969;
+        --accent-foreground-active: #dc2969;
+        --accent-foreground-focus: #da1a5f;
+        --accent-foreground-hover: #b3154e;
+        --accent-foreground-rest: #da1a5f;
+        --ambient-shadow-alpha: calc(0.11 * (2 - var(--background-luminance, 1)));
+        --ambient-shadow-color: rgba(0, 0, 0, var(--ambient-shadow-alpha));
+        --ambient-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px)
+            var(--ambient-shadow-color);
+        --base-height-multiplier: 10;
+        --base-horizontal-spacing-multiplier: 3;
+        --base-layer-luminance: 1;
+        --body-font: Arial, Helvetica, sans-serif;
+        --clear-button-active: #ededed;
+        --clear-button-hover: #f2f2f2;
+        --control-corner-radius: 4;
+        --density: 0;
+        --design-unit: 4;
+        --direction: ltr;
+        --directional-shadow: 0 calc(var(--elevation) * 0.4px)
+            calc((var(--elevation) * 0.9px)) var(--directional-shadow-color);
+        --directional-shadow-alpha: calc(0.13 * (2 - var(--background-luminance, 1)));
+        --directional-shadow-color: rgba(0, 0, 0, var(--directional-shadow-alpha));
+        --disabled-opacity: 0.3;
+        --elevation: 14;
+        --elevation-shadow: var(--ambient-shadow), var(--directional-shadow);
+        --height-number: (var(--base-height-multiplier) + var(--density)) *
+            var(--design-unit);
+        --fill-color: #ffffff;
+        --focus-stroke-inner: #ffffff;
+        --focus-stroke-outer: #888888;
+        --focus-stroke-width: 2;
+        --foreground-on-accent-active-large: #000000;
+        --foreground-on-accent-active: #000000;
+        --foreground-on-accent-focus-large: #000000;
+        --foreground-on-accent-focus: #ffffff;
+        --foreground-on-accent-hover-large: #000000;
+        --foreground-on-accent-hover: #ffffff;
+        --foreground-on-accent-rest-large: #000000;
+        --foreground-on-accent-rest: #ffffff;
+        --neutral-color: #808080;
+        --neutral-fill-active: #f2f2f2;
+        --neutral-fill-focus: #ffffff;
+        --neutral-fill-hover: #e5e5e5;
+        --neutral-fill-input-active: #ffffff;
+        --neutral-fill-input-focus: #ffffff;
+        --neutral-fill-input-hover: #ffffff;
+        --neutral-fill-input-rest: #ffffff;
+        --neutral-fill-layer-rest: #f7f7f7;
+        --neutral-fill-rest: #ededed;
+        --neutral-fill-stealth-active: #f7f7f7;
+        --neutral-fill-stealth-focus: #ffffff;
+        --neutral-fill-stealth-hover: #f2f2f2;
+        --neutral-fill-stealth-rest: #ffffff;
+        --neutral-fill-strong-active: #838383;
+        --neutral-fill-strong-focus: #767676;
+        --neutral-fill-strong-hover: #616161;
+        --neutral-fill-strong-rest: #767676;
+        --neutral-foreground-hint: #767676;
+        --neutral-foreground-rest: #2b2b2b;
+        --neutral-layer-1: #ffffff;
+        --neutral-layer-2: #e5e5e5;
+        --neutral-layer-3: #dddddd;
+        --neutral-layer-4: #d6d6d6;
+        --neutral-layer-card-container: #f7f7f7;
+        --neutral-layer-floating: #ffffff;
+        --neutral-stroke-active: #d6d6d6;
+        --neutral-stroke-divider-rest: #eaeaea;
+        --neutral-stroke-focus: #bebebe;
+        --neutral-stroke-hover: #979797;
+        --neutral-stroke-rest: #bebebe;
+        --stroke-width: 1;
+        --tree-item-expand-collapse-hover: #e5e5e5;
+        --tree-item-expand-collapse-selected-hover: #e0e0e0;
+        --type-ramp-base-font-size: 14px;
+        --type-ramp-base-line-height: 20px;
+        --type-ramp-minus-1-font-size: 12px;
+        --type-ramp-minus-1-line-height: 16px;
+        --type-ramp-minus-2-font-size: 10px;
+        --type-ramp-minus-2-line-height: 16px;
+        --type-ramp-plus-1-font-size: 16px;
+        --type-ramp-plus-1-line-height: 24px;
+        --type-ramp-plus-2-font-size: 20px;
+        --type-ramp-plus-2-line-height: 28px;
+        --type-ramp-plus-3-font-size: 28px;
+        --type-ramp-plus-3-line-height: 36px;
+        --type-ramp-plus-4-font-size: 34px;
+        --type-ramp-plus-4-line-height: 44px;
+        --type-ramp-plus-5-font-size: 46px;
+        --type-ramp-plus-5-line-height: 56px;
+        --type-ramp-plus-6-font-size: 60px;
+        --type-ramp-plus-6-line-height: 72px;
+    }
+
+    html {
+        background-color: var(--fill-color);
+        min-height: 100%;
+    }
+
+    html,
+    body,
+    #root {
+        width: 100%;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --accent-fill-active: #a01346;
+            --accent-fill-focus: #c01754;
+            --accent-fill-hover: #da1a5f;
+            --accent-fill-rest: #c01754;
+            --accent-foreground-active: #df3874;
+            --accent-foreground-focus: #e1477e;
+            --accent-foreground-hover: #e55e8e;
+            --accent-foreground-rest: #e1477e;
+            --base-layer-luminance: 0.1;
+            --clear-button-active: #3b3b3b;
+            --clear-button-hover: #404040;
+            --fill-color: #1a1a1a;
+            --focus-stroke-inner: #350617;
+            --focus-stroke-outer: #717171;
+            --foreground-on-accent-active-large: #ffffff;
+            --foreground-on-accent-active: #ffffff;
+            --foreground-on-accent-focus-large: #000000;
+            --foreground-on-accent-focus: #ffffff;
+            --foreground-on-accent-hover-large: #000000;
+            --foreground-on-accent-hover: #ffffff;
+            --foreground-on-accent-rest-large: #000000;
+            --foreground-on-accent-rest: #ffffff;
+            --neutral-fill-active: #262626;
+            --neutral-fill-focus: #181818;
+            --neutral-fill-hover: #333333;
+            --neutral-fill-input-active: #181818;
+            --neutral-fill-input-focus: #181818;
+            --neutral-fill-input-hover: #181818;
+            --neutral-fill-input-rest: #181818;
+            --neutral-fill-layer-rest: #212121;
+            --neutral-fill-rest: #2b2b2b;
+            --neutral-fill-stealth-active: #212121;
+            --neutral-fill-stealth-focus: #181818;
+            --neutral-fill-stealth-hover: #262626;
+            --neutral-fill-stealth-rest: #181818;
+            --neutral-fill-strong-active: #767676;
+            --neutral-fill-strong-focus: #838383;
+            --neutral-fill-strong-hover: #979797;
+            --neutral-fill-strong-rest: #838383;
+            --neutral-foreground-hint: #838383;
+            --neutral-foreground-rest: #e8e8e8;
+            --neutral-layer-1: #181818;
+            --neutral-layer-2: #101010;
+            --neutral-layer-3: #000000;
+            --neutral-layer-4: #000000;
+            --neutral-layer-card-container: #101010;
+            --neutral-layer-floating: #292929;
+            --neutral-stroke-active: #424242;
+            --neutral-stroke-divider-rest: #2e2e2e;
+            --neutral-stroke-focus: #5a5a5a;
+            --neutral-stroke-hover: #808080;
+            --neutral-stroke-rest: #5a5a5a;
+            --tree-item-expand-collapse-hover: #333333;
+            --tree-item-expand-collapse-selected-hover: #383838;
+        }
+    }
+</style>

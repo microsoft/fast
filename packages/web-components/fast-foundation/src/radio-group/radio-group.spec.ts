@@ -1,9 +1,9 @@
-import { assert, expect } from "chai";
-import { RadioGroup, radioGroupTemplate as template } from "./index.js";
-import { Radio, radioTemplate as itemTemplate } from "../radio/index.js";
-import { fixture } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
+import { assert, expect } from "chai";
+import { Radio, radioTemplate as itemTemplate } from "../radio/index.js";
+import { fixture } from "../testing/fixture.js";
+import { RadioGroup, radioGroupTemplate as template } from "./index.js";
 
 const FASTRadioGroup = RadioGroup.compose({
     baseName: "radio-group",
@@ -124,26 +124,20 @@ describe("Radio Group", () => {
         await disconnect();
     });
 
-    it("should set all child radio elements to disabled when the`disabled` is passed", async () => {
-        const { element, connect, disconnect } = await setup();
+    it("should set all child radio elements to disabled when the `disabled` attribute is present", async () => {
+        const { element, connect, disconnect, radio1, radio2, radio3 } = await setup();
         element.disabled = true;
 
         await connect();
         await Updates.next();
 
-        expect((element.querySelector(".one") as Radio).disabled).to.equal(true);
-        expect((element.querySelector(".two") as Radio).disabled).to.equal(true);
-        expect((element.querySelector(".three") as Radio).disabled).to.equal(true);
+        expect(radio1.disabled).to.equal(true);
+        expect(radio2.disabled).to.equal(true);
+        expect(radio3.disabled).to.equal(true);
 
-        expect(element.querySelector(".one")?.getAttribute("aria-disabled")).to.equal(
-            "true"
-        );
-        expect(element.querySelector(".two")?.getAttribute("aria-disabled")).to.equal(
-            "true"
-        );
-        expect(element.querySelector(".three")?.getAttribute("aria-disabled")).to.equal(
-            "true"
-        );
+        expect(radio1.getAttribute("aria-disabled")).to.equal("true");
+        expect(radio2.getAttribute("aria-disabled")).to.equal("true");
+        expect(radio3.getAttribute("aria-disabled")).to.equal("true");
 
         await disconnect();
     });
@@ -177,25 +171,19 @@ describe("Radio Group", () => {
     });
 
     it("should set all child radio elements to readonly when the`readonly` is passed", async () => {
-        const { element, connect, disconnect } = await setup();
+        const { element, connect, disconnect, radio1, radio2, radio3 } = await setup();
         element.readOnly = true;
 
         await connect();
         await Updates.next();
 
-        expect((element.querySelector(".one") as Radio).readOnly).to.equal(true);
-        expect((element.querySelector(".two") as Radio).readOnly).to.equal(true);
-        expect((element.querySelector(".three") as Radio).readOnly).to.equal(true);
+        expect(radio1.readOnly).to.equal(true);
+        expect(radio2.readOnly).to.equal(true);
+        expect(radio3.readOnly).to.equal(true);
 
-        expect(element.querySelector(".one")?.getAttribute("aria-readonly")).to.equal(
-            "true"
-        );
-        expect(element.querySelector(".two")?.getAttribute("aria-readonly")).to.equal(
-            "true"
-        );
-        expect(element.querySelector(".three")?.getAttribute("aria-readonly")).to.equal(
-            "true"
-        );
+        expect(radio1.getAttribute("aria-readonly")).to.equal("true");
+        expect(radio2.getAttribute("aria-readonly")).to.equal("true");
+        expect(radio3.getAttribute("aria-readonly")).to.equal("true");
 
         await disconnect();
     });
