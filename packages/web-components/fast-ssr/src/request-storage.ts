@@ -1,28 +1,28 @@
 import { AsyncLocalStorage } from "async_hooks";
 import { createWindow } from "./dom-shim.js";
 
-const localStorage = new AsyncLocalStorage();
+const asyncLocalStorage = new AsyncLocalStorage();
 const defaultOptions = {};
 
 export const RequestStorage = Object.freeze({
     set(key: any, value: any) {
-        (localStorage.getStore() as Map<any, any>).set(key, value);
+        (asyncLocalStorage.getStore() as Map<any, any>).set(key, value);
     },
 
     get<T = any>(key: any): T | undefined {
-        return (localStorage.getStore() as Map<any, any>).get(key);
+        return (asyncLocalStorage.getStore() as Map<any, any>).get(key);
     },
 
     clear() {
-        (localStorage.getStore() as Map<any, any>).clear();
+        (asyncLocalStorage.getStore() as Map<any, any>).clear();
     },
 
     delete(key: any) {
-        (localStorage.getStore() as Map<any, any>).delete(key);
+        (asyncLocalStorage.getStore() as Map<any, any>).delete(key);
     },
 
     has(key: any) {
-        return (localStorage.getStore() as Map<any, any>).has(key);
+        return (asyncLocalStorage.getStore() as Map<any, any>).has(key);
     },
 });
 
@@ -72,7 +72,7 @@ export const RequestManager = Object.freeze({
     },
 
     run(storage: Map<any, any>, callback: () => unknown) {
-        localStorage.run(storage, callback);
+        asyncLocalStorage.run(storage, callback);
     },
 
     createMiddleware(options: MiddlewareOptions = defaultOptions) {
