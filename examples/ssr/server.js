@@ -22,16 +22,16 @@ const template = html`
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>SSR Example</title>
-                <!--
-                    Use caution in production environments embedding JSON.
-                    In general the JSON should be sanitized to prevent
-                    JSON injection attacks.
-                -->
+        <body>
+            <todo-app></todo-app>
+            <!--
+                Use caution in production environments embedding JSON.
+                In general the JSON should be sanitized to prevent
+                JSON injection attacks.
+            -->
             <script>window.__SSR_STATE__ = ${() =>
                 JSON.stringify(TodoList.get(document).all)};
             </script>
-        <body>
-            <todo-app></todo-app>
             <script src="/bundle.js" defer></script>
         </body>
     </html>
