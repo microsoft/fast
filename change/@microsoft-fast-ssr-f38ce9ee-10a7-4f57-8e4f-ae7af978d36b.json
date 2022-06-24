@@ -3,5 +3,5 @@
   "comment": "feat: add request storage to support per-request context in ssr",
   "packageName": "@microsoft/fast-ssr",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
