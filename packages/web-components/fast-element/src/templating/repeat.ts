@@ -188,10 +188,13 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         const totalRemoved: SyntheticView[] = [];
         const bindView = this.bindView;
         let removeDelta = 0;
+        let removeIndex = 0;
+        let availableViews = 0;
 
         for (let i = 0, ii = splices.length; i < ii; ++i) {
             const splice = splices[i];
             const removed = splice.removed;
+            availableViews += removed.length;
 
             totalRemoved.push(
                 ...views.splice(splice.index + removeDelta, removed.length)
@@ -211,10 +214,16 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
             for (; addIndex < end; ++addIndex) {
                 const neighbor = views[addIndex];
                 const location = neighbor ? neighbor.firstChild : this.location;
-                const view =
-                    this.options.recycle && totalRemoved.length > 0
-                        ? totalRemoved.pop()!
-                        : template.create();
+
+                let view;
+
+                if (this.options.recycle && removeIndex < availableViews) {
+                    view = totalRemoved[removeIndex];
+                    removeIndex++;
+                    availableViews--;
+                } else {
+                    view = template.create();
+                }
 
                 views.splice(addIndex, 0, view);
                 bindView(view, items, addIndex, childContext);
@@ -222,7 +231,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
             }
         }
 
-        for (let i = 0, ii = totalRemoved.length; i < ii; ++i) {
+        for (let i = removeIndex, ii = totalRemoved.length; i < ii; ++i) {
             totalRemoved[i].dispose();
         }
 
