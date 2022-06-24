@@ -64,7 +64,7 @@ function fastSSR(): {
 };
 export default fastSSR;
 
-// @public (undocumented)
+// @beta
 export type Middleware = (req: any, res: any, next: () => any) => void;
 
 // @beta (undocumented)
@@ -74,7 +74,7 @@ export type RenderInfo = {
     customElementHostStack: ElementRenderer[];
 };
 
-// @public (undocumented)
+// @beta
 export const RequestStorage: Readonly<{
     readonly container: DOMContainer;
     set(key: any, value: any): any;
@@ -84,7 +84,7 @@ export const RequestStorage: Readonly<{
     has(key: any): boolean;
 }>;
 
-// @public (undocumented)
+// @beta
 export const RequestStorageManager: Readonly<{
     installDOMShim(): void;
     installDIContextRequestStrategy(): void;
@@ -93,7 +93,7 @@ export const RequestStorageManager: Readonly<{
     middleware(options?: StorageOptions): Middleware;
 }>;
 
-// @public (undocumented)
+// @beta
 export type StorageOptions = {
     createWindow?: () => {
         [key: string]: unknown;
@@ -126,7 +126,7 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/request-storage.d.ts:7:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
+// dist/dts/request-storage.d.ts:31:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
 
 // (No @packageDocumentation comment for this package)
 
