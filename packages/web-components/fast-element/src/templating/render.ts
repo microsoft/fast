@@ -330,11 +330,12 @@ function createElementTemplate<TSource = any, TParent = any>(
     attributes?: Record<string, string | TemplateValue<TSource, TParent>>,
     content?: string | ContentTemplate
 ): ViewTemplate<TSource, TParent> {
-    const markup = [`<${tagName}`];
+    const markup: Array<string> = [];
     const values: Array<TemplateValue<TSource, TParent>> = [];
 
     if (attributes) {
         const attrNames = Object.getOwnPropertyNames(attributes);
+        markup.push(`<${tagName}`);
 
         for (let i = 0, ii = attrNames.length; i < ii; ++i) {
             const name = attrNames[i];
@@ -347,14 +348,18 @@ function createElementTemplate<TSource = any, TParent = any>(
 
             values.push(attributes[name]);
         }
+
+        markup.push(`">`);
+    } else {
+        markup.push(`<${tagName}>`);
     }
 
     if (content && isFunction((content as any).create)) {
-        markup.push(`">`);
         values.push(content);
         markup.push(`</${tagName}>`);
     } else {
-        markup.push(`">${content ?? ""}</${tagName}>`);
+        const lastIndex = markup.length - 1;
+        markup[lastIndex] = `${markup[lastIndex]}${content ?? ""}</${tagName}>`;
     }
 
     return html((markup as any) as TemplateStringsArray, ...values);
