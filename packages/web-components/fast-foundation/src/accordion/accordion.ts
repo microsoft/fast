@@ -133,8 +133,7 @@ export class FASTAccordion extends FASTElement {
     private activeItemChange = (event: Event): void => {
         if (
             event.defaultPrevented ||
-            event.target === null ||
-            this.accordionItems.indexOf(event.target as HTMLElement) === -1
+            event.target !== event.currentTarget
         ) {
             return;
         }
