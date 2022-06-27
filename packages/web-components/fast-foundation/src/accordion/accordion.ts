@@ -131,10 +131,7 @@ export class FASTAccordion extends FASTElement {
     };
 
     private activeItemChange = (event: Event): void => {
-        if (
-            event.defaultPrevented ||
-            event.target !== event.currentTarget
-        ) {
+        if (event.defaultPrevented || event.target !== event.currentTarget) {
             return;
         }
 
