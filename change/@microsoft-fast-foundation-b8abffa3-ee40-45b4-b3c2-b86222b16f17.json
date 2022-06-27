@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: horizontal-scroll scroll item into view",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "robarb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

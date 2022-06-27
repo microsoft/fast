@@ -1,30 +1,30 @@
 {
-    "name": "@microsoft/fast-benchmarks",
-    "version": "1.0.0",
-    "description": "FAST Benchmarking utility for FAST Libraries.",
-    "type": "module",
-    "private": true,
-    "author": {
-        "name": "Microsoft",
-        "url": "https://discord.gg/FcSNfg4"
-    },
-    "license": "MIT",
-    "scripts": {
-        "benchmark": "node scripts/index.js",
-        "benchmark:fast-element:render": "yarn run benchmark --library=fast-element --benchmark=render --versions local master --localBenchFile=index2 --operations=update10th",
-        "benchmark:fast-element:repeat": "yarn run benchmark --library=fast-element --benchmark=repeat --versions local master --templates basic basicNoRecycle --method=reverse --operations=clickTrigger10x",
-        "benchmark:methods:append": "tach --config ./benchmarks/methods/append/tachometer.json",
-        "help": "node ./scripts/index.js --help"
-    },
-    "dependencies": {
-        "@microsoft/fast-element": "2.0.0-beta.1",
-        "tachometer": "^0.5.10"
-    },
-    "devDependencies": {
-        "chalk": "^5.0.1",
-        "chromedriver": "^101.0.0",
-        "commander": "^9.2.0",
-        "cross-spawn": "^7.0.3",
-        "typescript": "^4.6.2"
-    }
+  "name": "@microsoft/fast-benchmarks",
+  "version": "1.0.0",
+  "description": "FAST Benchmarking utility for FAST Libraries.",
+  "type": "module",
+  "private": true,
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "scripts": {
+    "benchmark": "node scripts/index.js",
+    "benchmark:fast-element:render": "yarn run benchmark --library=fast-element --benchmark=render --versions local master --localBenchFile=index2 --operations=update10th",
+    "benchmark:fast-element:repeat": "yarn run benchmark --library=fast-element --benchmark=repeat --versions local master --templates basic basicNoRecycle --method=reverse --operations=clickTrigger10x",
+    "benchmark:methods:append": "tach --config ./benchmarks/methods/append/tachometer.json",
+    "help": "node ./scripts/index.js --help"
+  },
+  "dependencies": {
+    "@microsoft/fast-element": "2.0.0-beta.3",
+    "tachometer": "^0.5.10"
+  },
+  "devDependencies": {
+    "chalk": "^5.0.1",
+    "chromedriver": "^101.0.0",
+    "commander": "^9.2.0",
+    "cross-spawn": "^7.0.3",
+    "typescript": "^4.6.2"
+  }
 }

@@ -3,6 +3,7 @@
     "compilerOptions": {
         "declarationDir": "dist/dts",
         "outDir": "dist/esm",
+        "baseUrl": ".",
         "experimentalDecorators": true,
         "suppressImplicitAnyIndexErrors": true,
         "strictPropertyInitialization": false,

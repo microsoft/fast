@@ -13,7 +13,7 @@ module.exports = function(env, { mode }) {
     output: {
       filename: 'bundle.js',
       publicPath:'/',
-      path: path.resolve(process.cwd(), 'dist'),
+      path: path.resolve(process.cwd(), 'www'),
     },
     devServer: {
       port: 9000,

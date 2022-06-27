@@ -1,4 +1,6 @@
+import { Message } from "../interfaces.js";
 import type { ExecutionContext, ObservationRecord } from "../observation/observable.js";
+import { FAST } from "../platform.js";
 import {
     BindingConfig,
     BindingMode,
@@ -73,6 +75,13 @@ export class TwoWayBinding extends ChangeBinding {
     public handleEvent(event: Event): void {
         const directive = this.directive;
         const target = event.currentTarget as HTMLElement;
+        const observer = this.getObserver(target);
+        const last = (observer as any).last as ObservationRecord; // using internal API!!!
+
+        if (!last) {
+            FAST.warn(Message.twoWayBindingRequiresObservables);
+            return;
+        }
 
         let value;
 
@@ -91,8 +100,6 @@ export class TwoWayBinding extends ChangeBinding {
                 break;
         }
 
-        const observer = this.getObserver(target);
-        const last = (observer as any).last as ObservationRecord; // using internal API!!!
         last.propertySource[last.propertyName] = directive.options.fromView(value);
     }
 

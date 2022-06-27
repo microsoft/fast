@@ -10,12 +10,7 @@ import type {
     FoundationElementDefinition,
     FoundationElementTemplate,
 } from "../foundation-element/foundation-element.js";
-import type {
-    DayFormat,
-    MonthFormat,
-    WeekdayFormat,
-    YearFormat,
-} from "./date-formatter.js";
+import { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./calendar.options.js";
 import { DateFormatter } from "./date-formatter.js";
 
 /**
@@ -124,7 +119,7 @@ export class Calendar extends FoundationElement {
      * @public
      */
     @attr({ attribute: "day-format", mode: "fromView" })
-    public dayFormat: DayFormat = "numeric";
+    public dayFormat: DayFormat = DayFormat.numeric;
     protected dayFormatChanged(): void {
         this.dateFormatter.dayFormat = this.dayFormat;
     }
@@ -134,7 +129,7 @@ export class Calendar extends FoundationElement {
      * @public
      */
     @attr({ attribute: "weekday-format", mode: "fromView" })
-    public weekdayFormat: WeekdayFormat = "short";
+    public weekdayFormat: WeekdayFormat = WeekdayFormat.short;
     protected weekdayFormatChanged(): void {
         this.dateFormatter.weekdayFormat = this.weekdayFormat;
     }
@@ -144,7 +139,7 @@ export class Calendar extends FoundationElement {
      * @public
      */
     @attr({ attribute: "month-format", mode: "fromView" })
-    public monthFormat: MonthFormat = "long";
+    public monthFormat: MonthFormat = MonthFormat.long;
     protected monthFormatChanged(): void {
         this.dateFormatter.monthFormat = this.monthFormat;
     }
@@ -154,7 +149,7 @@ export class Calendar extends FoundationElement {
      * @public
      */
     @attr({ attribute: "year-format", mode: "fromView" })
-    public yearFormat: YearFormat = "numeric";
+    public yearFormat: YearFormat = YearFormat.numeric;
     protected yearFormatChanged(): void {
         this.dateFormatter.yearFormat = this.yearFormat;
     }

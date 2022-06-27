@@ -18,7 +18,6 @@ import {
 } from "./html-directive.js";
 import { Markup } from "./markup.js";
 import type { CaptureType } from "./template.js";
-import type { SyntheticView } from "./view.js";
 
 declare class TrustedHTML {}
 const createInnerHTMLBinding = globalThis.TrustedHTML
@@ -211,14 +210,55 @@ function createContentBinding(Type: typeof UpdateBinding): typeof UpdateBinding 
     };
 }
 
-type ComposableView = SyntheticView & {
+/**
+ * A simple View that can be interpolated into HTML content.
+ * @public
+ */
+export interface ContentView {
+    /**
+     * Binds a view's behaviors to its binding source.
+     * @param source - The binding source for the view's binding behaviors.
+     * @param context - The execution context to run the view within.
+     */
+    bind(source: any, context: ExecutionContext): void;
+
+    /**
+     * Unbinds a view's behaviors from its binding source and context.
+     */
+    unbind(): void;
+
+    /**
+     * Inserts the view's DOM nodes before the referenced node.
+     * @param node - The node to insert the view's DOM before.
+     */
+    insertBefore(node: Node): void;
+
+    /**
+     * Removes the view's DOM nodes.
+     * The nodes are not disposed and the view can later be re-inserted.
+     */
+    remove(): void;
+}
+
+/**
+ * A simple template that can create ContentView instances.
+ * @public
+ */
+export interface ContentTemplate {
+    /**
+     * Creates a simple content view instance.
+     */
+    create(): ContentView;
+}
+
+type ComposableView = ContentView & {
     isComposed?: boolean;
     needsBindOnly?: boolean;
 };
 
 type ContentTarget = Node & {
     $fastView?: ComposableView;
-    $fastTemplate?: { create(): SyntheticView };
+    $fastTemplate?: ContentTemplate;
 };
 
 function updateContentTarget(
@@ -234,7 +274,7 @@ function updateContentTarget(
         value = "";
     }
 
-    // If the value has a "create" method, then it's a template-like.
+    // If the value has a "create" method, then it's a ContentTemplate.
     if (value.create) {
         target.textContent = "";
         let view = target.$fastView as ComposableView;
@@ -242,7 +282,7 @@ function updateContentTarget(
         // If there's no previous view that we might be able to
         // reuse then create a new view from the template.
         if (view === void 0) {
-            view = value.create() as SyntheticView;
+            view = value.create();
         } else {
             // If there is a previous view, but it wasn't created
             // from the same template as the new value, then we
@@ -254,7 +294,7 @@ function updateContentTarget(
                     view.unbind();
                 }
 
-                view = value.create() as SyntheticView;
+                view = value.create();
             }
         }
 
@@ -271,7 +311,7 @@ function updateContentTarget(
             view.bind(source, context!);
         }
     } else {
-        const view = target.$fastView as ComposableView;
+        const view = target.$fastView;
 
         // If there is a view and it's currently composed into
         // the DOM, then we need to remove it.

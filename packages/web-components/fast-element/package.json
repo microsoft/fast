@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-element",
   "description": "A library for constructing Web Components",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.3",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -45,6 +45,10 @@
     "./binding/signal": {
       "types": "./dist/dts/templating/binding-signal.d.ts",
       "default": "./dist/esm/templating/binding-signal.js"
+    },
+    "./render": {
+      "types": "./dist/dts/templating/render.d.ts",
+      "default": "./dist/esm/templating/render.js"
     },
     "./utilities": {
       "types": "./dist/dts/utilities.d.ts",

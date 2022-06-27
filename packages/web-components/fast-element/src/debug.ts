@@ -15,6 +15,7 @@ const debugMessages = {
     [1101 /* needsArrayObservation */]: "Must call enableArrayObservation before observing arrays.",
     [1201 /* onlySetHTMLPolicyOnce */]: "The HTML policy can only be set once.",
     [1202 /* bindingInnerHTMLRequiresTrustedTypes */]: "To bind innerHTML, you must use a TrustedTypesPolicy.",
+    [1203 /* twoWayBindingRequiresObservables */]: "View=>Model update skipped. To use twoWay binding, the target property must be observable.",
     [1401 /* missingElementDefinition */]: "Missing FASTElement definition.",
 };
 

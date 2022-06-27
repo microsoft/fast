@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 22 Jun 2022 20:17:50 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.3",
+      "version": "2.0.0-beta.3",
+      "comments": {
+        "prerelease": [
+          {
+            "comment": "fix: correct aspect type for content that looks like an attribute",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f28cdb9fdba9cb27904acfad7444de82d447f39e",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Jun 2022 17:41:10 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.2",
       "version": "2.0.0-beta.2",
