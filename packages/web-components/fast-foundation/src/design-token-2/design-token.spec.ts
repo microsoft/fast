@@ -302,7 +302,7 @@ describe.only("DesignTokenNode", () => {
         expect(handleChange).to.have.been.first.called.with(node, tokenB);
         expect(handleChange).to.have.been.second.called.with(node, tokenC);
         expect(node.getTokenValue(tokenB)).to.equal(26);
-        expect(node.getTokenValue(tokenC)).to.equal(52      );
+        expect(node.getTokenValue(tokenC)).to.equal(52);
     });
 
     it.skip("should notify for a derived token at a child when a dependent token is changed on the ancestor", () => {

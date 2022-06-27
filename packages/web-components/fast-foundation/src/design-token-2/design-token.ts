@@ -1,4 +1,5 @@
-import { BindingObserver, Markup, Observable } from "@microsoft/fast-element";
+import { BindingObserver, Markup, Observable, Subscriber } from "@microsoft/fast-element";
+import { ObservableMap } from "./observable-map.js";
 
 export type DesignTokenValueType =
     | string
@@ -82,10 +83,10 @@ export class DesignTokenNode {
     private _parent: DesignTokenNode | null = null;
     private _children: Set<DesignTokenNode> = new Set();
     private _values: Map<DesignToken<any>, DesignTokenValue<any>> = new Map();
-    private _derived: Map<
+    private _derived: ObservableMap<
         DesignToken<any>,
         [DerivedDesignTokenValue<any>, StaticDesignTokenValue<any>]
-    > = new Map();
+    > = new ObservableMap();
 
     /**
      * Determines if a value is a {@link DerivedDesignTokenValue}
@@ -104,9 +105,11 @@ export class DesignTokenNode {
     ) {
         const evaluator = DerivedValueEvaluator.getOrCreate(value);
         const result = evaluator.evaluate(node);
-        node._derived.set(token, [value, result]);
+        const prev = node._derived.get(token);
 
-        Observable.getNotifier(token).notify(node);
+        if (!prev || value !== prev[0] || result !== prev[1]) {
+            node._derived.set(token, [value, result]);
+        }
 
         return result;
     }
@@ -163,6 +166,10 @@ export class DesignTokenNode {
         return node._derived.has(token);
     }
 
+    constructor() {
+        Observable.getNotifier(this._derived).subscribe(this.derivedSubscriber);
+    }
+
     public get parent() {
         return this._parent;
     }
@@ -193,6 +200,8 @@ export class DesignTokenNode {
 
         if (DesignTokenNode.isDerivedTokenValue(value)) {
             DesignTokenNode.evaluateDerived(this, token, value);
+            // Walk up the node tree and collect token / value pairs that depend on the token that
+            // was set here. Only collect pa
             this.notifyDerived(token, DerivedValueEvaluator.getOrCreate(value), this);
         } else if (prev !== value) {
             Observable.getNotifier(token).notify(this);
@@ -225,6 +234,12 @@ export class DesignTokenNode {
             throw new Error(`No value set for token ${token} in node tree.`);
         }
     }
+
+    // private collect(): Map<DesignToken<any, DerivedDesignTokenValue<any>> {
+    //     this._derived.merge
+    //     const node = this;
+    //     return collection;
+    // }
 
     /**
      * Notifies the node that a token has changed for the context.
@@ -290,6 +305,21 @@ export class DesignTokenNode {
         }
 
         this.children.forEach(child => child.notifyDerived(token, evaluator, originator));
+    }
+
+    // Change handler for derived token values
+    private derivedSubscriber: Subscriber = {
+        handleChange: (source: ObservableMap, value: DesignToken<any>) => {
+            this.notifyToken(value);
+        },
+    };
+
+    /**
+     * Notifies the token subscribes that the value has changed for the node
+     * @param token - The token that changed
+     */
+    private notifyToken(token: DesignToken<any>) {
+        Observable.getNotifier(token).notify(this);
     }
 }
 
