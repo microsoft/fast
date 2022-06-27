@@ -194,7 +194,6 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         for (let i = 0, ii = splices.length; i < ii; ++i) {
             const splice = splices[i];
             const removed = splice.removed;
-            availableViews += removed.length;
 
             totalRemoved.push(
                 ...views.splice(splice.index + removeDelta, removed.length)
@@ -202,6 +201,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
             removeDelta -= splice.addedCount;
         }
+
+        availableViews += totalRemoved.length;
 
         const items = this.items!;
         const template = this.template;
