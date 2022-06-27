@@ -7,10 +7,10 @@ import {
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
-import { AccordionItem } from "../accordion-item/accordion-item.js";
+import { FoundationAccordionItem } from "../accordion-item/accordion-item.js";
 
 /**
- * Expand mode for {@link Accordion}
+ * Expand mode for {@link FoundationAccordion}
  * @public
  */
 export const AccordionExpandMode = {
@@ -26,7 +26,7 @@ export const AccordionExpandMode = {
 } as const;
 
 /**
- * Type for the {@link Accordion} Expand Mode
+ * Type for the {@link FoundationAccordion} Expand Mode
  * @public
  */
 export type AccordionExpandMode = typeof AccordionExpandMode[keyof typeof AccordionExpandMode];
@@ -40,9 +40,9 @@ export type AccordionExpandMode = typeof AccordionExpandMode[keyof typeof Accord
  * @public
  *
  * @remarks
- * Designed to be used with {@link @microsoft/fast-foundation#accordionTemplate} and {@link @microsoft/fast-foundation#(AccordionItem:class)}.
+ * Designed to be used with {@link @microsoft/fast-foundation#createAccordionTemplate} and {@link @microsoft/fast-foundation#(FoundationAccordionItem:class)}.
  */
-export class Accordion extends FoundationElement {
+export class FoundationAccordion extends FoundationElement {
     /**
      * Controls the expand mode of the Accordion, either allowing
      * single or multiple item expansion.
@@ -78,10 +78,10 @@ export class Accordion extends FoundationElement {
         this.$emit("change", this.activeid);
     };
 
-    private findExpandedItem(): AccordionItem | null {
+    private findExpandedItem(): FoundationAccordionItem | null {
         for (let item: number = 0; item < this.accordionItems.length; item++) {
             if (this.accordionItems[item].getAttribute("expanded") === "true") {
-                return this.accordionItems[item] as AccordionItem;
+                return this.accordionItems[item] as FoundationAccordionItem;
             }
         }
         return null;
@@ -93,7 +93,7 @@ export class Accordion extends FoundationElement {
         }
         this.accordionIds = this.getItemIds();
         this.accordionItems.forEach((item: HTMLElement, index: number) => {
-            if (item instanceof AccordionItem) {
+            if (item instanceof FoundationAccordionItem) {
                 item.addEventListener("change", this.activeItemChange);
                 if (this.isSingleExpandMode()) {
                     this.activeItemIndex !== index
@@ -111,14 +111,15 @@ export class Accordion extends FoundationElement {
             item.addEventListener("focus", this.handleItemFocus);
         });
         if (this.isSingleExpandMode()) {
-            const expandedItem: AccordionItem | null =
-                this.findExpandedItem() ?? (this.accordionItems[0] as AccordionItem);
+            const expandedItem: FoundationAccordionItem | null =
+                this.findExpandedItem() ??
+                (this.accordionItems[0] as FoundationAccordionItem);
             expandedItem.setAttribute("aria-disabled", "true");
         }
     };
 
     private resetItems(): void {
-        this.accordionItems.forEach((item: AccordionItem, index: number) => {
+        this.accordionItems.forEach((item: FoundationAccordionItem, index: number) => {
             item.expanded = false;
         });
     }
@@ -132,7 +133,7 @@ export class Accordion extends FoundationElement {
     };
 
     private activeItemChange = (event: Event): void => {
-        const selectedItem = event.target as AccordionItem;
+        const selectedItem = event.target as FoundationAccordionItem;
         this.activeid = selectedItem.getAttribute("id");
         if (this.isSingleExpandMode()) {
             this.resetItems();
@@ -211,7 +212,7 @@ export class Accordion extends FoundationElement {
 
     private focusItem(): void {
         const element: HTMLElement = this.accordionItems[this.activeItemIndex];
-        if (element instanceof AccordionItem) {
+        if (element instanceof FoundationAccordionItem) {
             element.expandbutton.focus();
         }
     }

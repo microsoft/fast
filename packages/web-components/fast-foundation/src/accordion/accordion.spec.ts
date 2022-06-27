@@ -1,25 +1,27 @@
 import { expect } from "chai";
-import { Accordion, accordionTemplate as template, AccordionExpandMode } from "./index.js";
-import { AccordionItem, accordionItemTemplate as itemTemplate } from "../accordion-item/index.js";
-import { fixture } from "../testing/fixture.js";
+import { FoundationAccordion, createAccordionTemplate, AccordionExpandMode } from "./index.js";
+import { FoundationAccordionItem, createAccordionItemTemplate } from "../accordion-item/index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 
-const FASTAccordion = Accordion.compose({
-    baseName: "accordion",
-    template
+const accordionName = uniqueElementName();
+FoundationAccordion.define(FoundationAccordion, {
+    name: accordionName,
+    template: createAccordionTemplate()
 })
 
-const FASTAccordionItem = AccordionItem.compose({
-    baseName: "accordion-item",
-    template: itemTemplate,
-})
+const accordionItemName = uniqueElementName();
+FoundationAccordionItem.define(FoundationAccordionItem, {
+    name: accordionItemName,
+    template: createAccordionItemTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture([FASTAccordion(), FASTAccordionItem()]);
+    const { element, connect, disconnect } = await fixture<FoundationAccordion>(accordionName);
 
-    const item1 = document.createElement("fast-accordion-item");
-    const item2 = document.createElement("fast-accordion-item");
-    const item3 = document.createElement("fast-accordion-item");
+    const item1 = document.createElement(accordionItemName);
+    const item2 = document.createElement(accordionItemName);
+    const item3 = document.createElement(accordionItemName);
 
     element.appendChild(item1);
     element.appendChild(item2);
@@ -61,7 +63,7 @@ describe("Accordion", () => {
         await connect();
         await Updates.next();
 
-        expect((element as Accordion).expandmode).to.equal(AccordionExpandMode.multi);
+        expect((element as FoundationAccordion).expandmode).to.equal(AccordionExpandMode.multi);
         expect(element.getAttribute("expand-mode")).to.equal(AccordionExpandMode.multi);
 
         await disconnect();

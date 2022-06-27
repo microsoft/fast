@@ -3,10 +3,7 @@ import {
     nullableNumberConverter,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
@@ -14,11 +11,10 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * Accordion Item configuration options
  * @public
  */
-export type AccordionItemOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        expandedIcon?: string | SyntheticViewTemplate;
-        collapsedIcon?: string | SyntheticViewTemplate;
-    };
+export type AccordionItemOptions = StartEndOptions & {
+    expandedIcon?: string | SyntheticViewTemplate;
+    collapsedIcon?: string | SyntheticViewTemplate;
+};
 
 /**
  * An individual item in an {@link @microsoft/fast-foundation#(Accordion:class) }.
@@ -38,7 +34,7 @@ export type AccordionItemOptions = FoundationElementDefinition &
  *
  * @public
  */
-export class AccordionItem extends FoundationElement {
+export class FoundationAccordionItem extends FoundationElement {
     /**
      * Configures the {@link https://www.w3.org/TR/wai-aria-1.1/#aria-level | level} of the
      * heading element.
@@ -99,5 +95,5 @@ export class AccordionItem extends FoundationElement {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface AccordionItem extends StartEnd {}
-applyMixins(AccordionItem, StartEnd);
+export interface FoundationAccordionItem extends StartEnd {}
+applyMixins(FoundationAccordionItem, StartEnd);

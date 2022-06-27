@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Accordion } from "../accordion.js";
-import { accordionTemplate as template } from "../accordion.template.js";
+import { FoundationAccordion } from "../accordion.js";
+import { createAccordionTemplate } from "../accordion.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         box-sizing: border-box;
         flex-direction: column;
@@ -15,12 +14,8 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate(document.body)
-    .withPrefix("fast")
-    .register(
-        Accordion.compose({
-            baseName: "accordion",
-            template,
-            styles,
-        })()
-    );
+FoundationAccordion.define(FoundationAccordion, {
+    name: "fast-accordion",
+    template: createAccordionTemplate(),
+    styles,
+});

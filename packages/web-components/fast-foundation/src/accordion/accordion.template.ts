@@ -1,17 +1,14 @@
-import { elements, html, slotted } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { Accordion } from "./accordion.js";
+import { elements, ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import type { FoundationAccordion } from "./accordion.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Accordion} component.
+ * Creates a template for the {@link @microsoft/fast-foundation#FoundationAccordion} component.
  * @public
  */
-export const accordionTemplate: FoundationElementTemplate<ViewTemplate<Accordion>> = (
-    context,
-    definition
-) => html`
-    <template>
-        <slot ${slotted({ property: "accordionItems", filter: elements() })}></slot>
-    </template>
-`;
+export function createAccordionTemplate(): ElementViewTemplate<FoundationAccordion> {
+    return html<FoundationAccordion>`
+        <template>
+            <slot ${slotted({ property: "accordionItems", filter: elements() })}></slot>
+        </template>
+    `;
+}

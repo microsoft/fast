@@ -1,6 +1,5 @@
 import { html, ref, SyntheticViewTemplate } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { ElementDefinitionContext } from "../design-system/registration-context.js";
 
 /**
  * Start configuration options
@@ -41,15 +40,11 @@ export class StartEnd {
  *
  * @public
  */
-export const endSlotTemplate: (
-    context: ElementDefinitionContext,
-    definition: EndOptions
-) => ViewTemplate<StartEnd> = (
-    context: ElementDefinitionContext,
-    definition: EndOptions
-) => html`
-    <slot name="end" ${ref("end")}>${definition.end || ""}</slot>
-`;
+export function createEndSlotTemplate(options: EndOptions): ViewTemplate<StartEnd> {
+    return html`
+        <slot name="end" ${ref("end")}>${options.end || ""}</slot>
+    `;
+}
 
 /**
  * The template for the start slots.
@@ -57,13 +52,8 @@ export const endSlotTemplate: (
  *
  * @public
  */
-export const startSlotTemplate: (
-    context: ElementDefinitionContext,
-    definition: StartOptions
-) => ViewTemplate<StartEnd> = (
-    context: ElementDefinitionContext,
-    definition: StartOptions
-) =>
-    html`
-        <slot name="start" ${ref("start")}>${definition.start || ""}</slot>
+export function createStartSlotTemplate(options: StartOptions): ViewTemplate<StartEnd> {
+    return html`
+        <slot name="start" ${ref("start")}>${options.start || ""}</slot>
     `;
+}

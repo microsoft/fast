@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { AccordionItem as FoundationAccordionItem } from "../accordion-item.js";
+import type { FoundationAccordionItem } from "../accordion-item.js";
 
 type AccordionItemArgs = Args & FoundationAccordionItem;
 type AccordionItemMeta = Meta<AccordionItemArgs>;
