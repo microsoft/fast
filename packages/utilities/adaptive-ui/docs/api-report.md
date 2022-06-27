@@ -134,6 +134,56 @@ export const direction: CSSDesignToken<Direction>;
 export function directionByIsDark(color: RelativeLuminance): PaletteDirectionValue;
 
 // @public (undocumented)
+export const elevationCardActive: CSSDesignToken<string>;
+
+// @public (undocumented)
+export const elevationCardActiveSize: DesignToken<number>;
+
+// @public (undocumented)
+export const elevationCardFocus: CSSDesignToken<string>;
+
+// @public (undocumented)
+export const elevationCardFocusSize: DesignToken<number>;
+
+// @public (undocumented)
+export const elevationCardHover: CSSDesignToken<string>;
+
+// @public (undocumented)
+export const elevationCardHoverSize: DesignToken<number>;
+
+// @public (undocumented)
+export const elevationCardRest: CSSDesignToken<string>;
+
+// @public (undocumented)
+export const elevationCardRestSize: DesignToken<number>;
+
+// @public (undocumented)
+export const elevationDialog: CSSDesignToken<string>;
+
+// @public (undocumented)
+export const elevationDialogSize: DesignToken<number>;
+
+// @public (undocumented)
+export const elevationFlyout: CSSDesignToken<string>;
+
+// @public (undocumented)
+export const elevationFlyoutSize: DesignToken<number>;
+
+// @public
+export interface ElevationRecipe {
+    evaluate(element: HTMLElement, size: number): string;
+}
+
+// @public (undocumented)
+export const elevationRecipe: DesignToken<ElevationRecipe>;
+
+// @public (undocumented)
+export const elevationTooltip: CSSDesignToken<string>;
+
+// @public (undocumented)
+export const elevationTooltipSize: DesignToken<number>;
+
+// @public (undocumented)
 export const fillColor: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
