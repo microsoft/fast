@@ -305,7 +305,7 @@ describe.only("DesignTokenNode", () => {
         expect(node.getTokenValue(tokenC)).to.equal(52);
     });
 
-    it.skip("should notify for a derived token at a child when a dependent token is changed on the ancestor", () => {
+    it("should notify for a derived token at a child when a dependent token is changed on the ancestor", () => {
         const tokenA = DesignToken.create<number>("a");
         const tokenB = DesignToken.create<number>("b");
         const ancestor = new DesignTokenNode();

@@ -198,15 +198,21 @@ export class DesignTokenNode {
         const prev = this._values.get(token);
         this._values.set(token, value);
 
+        const derived = DesignTokenNode.collectDerivedContext(this);
+
         if (DesignTokenNode.isDerivedTokenValue(value)) {
             DesignTokenNode.evaluateDerived(this, token, value);
-            // Walk up the node tree and collect token / value pairs that depend on the token that
-            // was set here. Only collect pa
             this.notifyDerived(token, DerivedValueEvaluator.getOrCreate(value), this);
         } else if (prev !== value) {
             Observable.getNotifier(token).notify(this);
             this.notifyStatic(token, this);
         }
+
+        derived.forEach((fn, token) => {
+            const evaluator = DerivedValueEvaluator.getOrCreate(fn);
+            DesignTokenNode.evaluateDerived(this, token, fn);
+            this.notifyDerived(token, evaluator, this);
+        });
     }
 
     public getTokenValue<T>(token: DesignToken<T>): StaticDesignTokenValue<T> {
@@ -235,11 +241,37 @@ export class DesignTokenNode {
         }
     }
 
-    // private collect(): Map<DesignToken<any, DerivedDesignTokenValue<any>> {
-    //     this._derived.merge
-    //     const node = this;
-    //     return collection;
-    // }
+    /**
+     * Collects token/value pairs for all derived token / values set on upstream nodes.
+     */
+    private static collectDerivedContext(
+        node: DesignTokenNode
+    ): Map<DesignToken<any>, DerivedDesignTokenValue<any>> {
+        const collected = new Map<DesignToken<any>, DerivedDesignTokenValue<any>>();
+        // Exit early if  there is no parent
+        if (node.parent === null) {
+            return collected;
+        }
+
+        let ignored = DesignTokenNode.getAssignedTokensForNode(node);
+        let current: DesignTokenNode | null = node.parent;
+
+        do {
+            const assigned = DesignTokenNode.getAssignedTokensForNode(current);
+            assigned
+                .filter(token => ignored.indexOf(token) === -1)
+                .forEach(token => {
+                    if (DesignTokenNode.isDerivedFor(current!, token)) {
+                        collected.set(token, current!._derived.get(token)![0]);
+                    }
+                });
+
+            ignored = Array.from(new Set(ignored.concat(assigned)));
+            current = current.parent;
+        } while (current !== null);
+
+        return collected;
+    }
 
     /**
      * Notifies the node that a token has changed for the context.
