@@ -364,7 +364,7 @@ describe.only("DesignTokenNode", () => {
         expect(child.getTokenValue(tokenA)).to.equal(25);
     });
 
-    it("should resolve circular references to the parent node", () => {
+    it("should resolve circular references from the parent node", () => {
         const token = new DesignToken<number>();
         const parent = new DesignTokenNode();
         const child = new DesignTokenNode();
@@ -380,6 +380,18 @@ describe.only("DesignTokenNode", () => {
     it("should error if attempting to resolve a circular reference and there is no parent to resolve from", () => {
         const token = new DesignToken<number>();
         const target = new DesignTokenNode();
+
+        expect(() => {
+            target.setTokenValue(token, (resolve) => {
+                return resolve(token) * 2;
+            });
+        }).to.throw()
+    });
+    it("should error if attempting to resolve a circular reference and the parent node does not contain the value", () => {
+        const token = new DesignToken<number>();
+        const parent = new DesignTokenNode();
+        const target = new DesignTokenNode();
+        parent.appendChild(target);
 
         expect(() => {
             target.setTokenValue(token, (resolve) => {
