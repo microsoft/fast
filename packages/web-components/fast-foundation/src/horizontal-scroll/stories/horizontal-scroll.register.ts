@@ -1,8 +1,6 @@
 import { css, html } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import type { HorizontalScrollOptions } from "../horizontal-scroll.js";
-import { HorizontalScroll as FoundationHorizontalScroll } from "../horizontal-scroll.js";
-import { horizontalScrollTemplate as template } from "../horizontal-scroll.template.js";
+import { FASTHorizontalScroll } from "../horizontal-scroll.js";
+import { horizontalScrollTemplate } from "../horizontal-scroll.template.js";
 
 const ActionsStyles = css`
     .scroll-area {
@@ -65,7 +63,7 @@ const ActionsStyles = css`
     }
 `;
 
-const styles = () => css`
+const styles = css`
     :host {
         --scroll-align: center;
         --scroll-item-spacing: 5px;
@@ -99,7 +97,7 @@ const styles = () => css`
     }
 `;
 
-class HorizontalScroll extends FoundationHorizontalScroll {
+class HorizontalScroll extends FASTHorizontalScroll {
     /**
      * @public
      */
@@ -112,26 +110,22 @@ class HorizontalScroll extends FoundationHorizontalScroll {
     }
 }
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        HorizontalScroll.compose<HorizontalScrollOptions>({
-            baseName: "horizontal-scroll",
-            baseClass: FoundationHorizontalScroll,
-            template,
-            styles,
-            nextFlipper: context => html`
-                <fast-flipper
-                    @click="${x => x.scrollToNext()}"
-                    aria-hidden="${x => x.flippersHiddenFromAT}"
-                ></fast-flipper>
-            `,
-            previousFlipper: context => html`
-                <fast-flipper
-                    @click="${x => x.scrollToPrevious()}"
-                    direction="previous"
-                    aria-hidden="${x => x.flippersHiddenFromAT}"
-                ></fast-flipper>
-            `,
-        })()
-    );
+HorizontalScroll.define({
+    name: "fast-horizontal-scroll",
+    template: horizontalScrollTemplate({
+        nextFlipper: html`
+            <fast-flipper
+                @click="${x => x.scrollToNext()}"
+                aria-hidden="${x => x.flippersHiddenFromAT}"
+            ></fast-flipper>
+        `,
+        previousFlipper: html`
+            <fast-flipper
+                @click="${x => x.scrollToPrevious()}"
+                direction="previous"
+                aria-hidden="${x => x.flippersHiddenFromAT}"
+            ></fast-flipper>
+        `,
+    }),
+    styles,
+});
