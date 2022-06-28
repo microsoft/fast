@@ -11,9 +11,7 @@ export const badgeTemplate: FoundationElementTemplate<ViewTemplate<Badge>> = (
     context,
     definition
 ) => html`
-    <template>
-        <div class="control" part="control">
-            <slot></slot>
-        </div>
-    </template>
+    <div class="control" part="control">
+        <slot></slot>
+    </div>
 `;

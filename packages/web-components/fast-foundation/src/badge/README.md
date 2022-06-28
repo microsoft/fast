@@ -57,7 +57,6 @@ export const myBadge = Badge.compose({
 
 | Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `circular`      | public  | `boolean`                             |         | Indicates the element should be circular                                                                                                                                            |                   |
 | `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
 | `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
 | `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
@@ -68,12 +67,6 @@ export const myBadge = Badge.compose({
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
-
-#### Attributes
-
-| Name | Field    | Inherited From |
-| ---- | -------- | -------------- |
-|      | circular |                |
 
 #### CSS Parts
 

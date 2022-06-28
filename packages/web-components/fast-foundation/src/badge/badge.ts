@@ -1,4 +1,3 @@
-import { attr, DOM } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
@@ -8,23 +7,4 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  *
  * @public
  */
-export class Badge extends FoundationElement {
-    /**
-     * Indicates the element should be circular
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: circular
-     */
-    @attr({ mode: "boolean" })
-    public circular: boolean;
-    private circularChanged(oldValue: boolean, newValue: boolean): void {
-        DOM.queueUpdate(() => {
-            if (newValue) {
-                this.classList.add("circular");
-            } else {
-                this.classList.remove("circular");
-            }
-        });
-    }
-}
+export class Badge extends FoundationElement {}

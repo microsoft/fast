@@ -10,8 +10,7 @@ Typical use cases include, but are not limited to, denoting a sale or new item, 
   
 ### Features
 
-A badge should allow the following properties:
-- `circular`, if circular styling is desired.
+A badge has no functionality and no properties:
 
 ### Prior Art/Examples
 - [FAST Badge (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
@@ -29,7 +28,7 @@ A badge should allow the following properties:
 - `fast-badge`
 
 *Attributes:*
-- `circular`: boolean
+- N/A
 
 *Slots:*
 - `default`
@@ -51,9 +50,7 @@ A badge should allow the following properties:
 ```
 
 ```
-<fast-badge
-    circular=true
->
+<fast-badge>
     99
 </fast-badge>
 ```
