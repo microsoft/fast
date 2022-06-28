@@ -376,8 +376,17 @@ describe.only("DesignTokenNode", () => {
         });
 
         expect(child.getTokenValue(token)).to.equal(24);
-        expect(2).to.equal(2);
-    })
+    });
+    it("should error if attempting to resolve a circular reference and there is no parent to resolve from", () => {
+        const token = new DesignToken<number>();
+        const target = new DesignTokenNode();
+
+        expect(() => {
+            target.setTokenValue(token, (resolve) => {
+                return resolve(token) * 2;
+            });
+        }).to.throw()
+    });
 
 
     describe("Original tests", () => {

@@ -64,10 +64,23 @@ class DerivedValueEvaluator<T> {
         return v;
     }
 
-    public evaluate(node: DesignTokenNode): StaticDesignTokenValue<T> {
+    public evaluate(
+        node: DesignTokenNode,
+        tokenContext: DesignToken<any>
+    ): StaticDesignTokenValue<T> {
         const resolve = <T>(token: DesignToken<T>): StaticDesignTokenValue<T> => {
             this.dependencies.add(token);
-            return node.getTokenValue(token);
+            if (tokenContext === token) {
+                if (node.parent) {
+                    return node.parent.getTokenValue(token);
+                }
+
+                throw new Error(
+                    "DesignTokenNode has encountered a circular token reference. Avoid this by setting the token value for an ancestor node."
+                );
+            } else {
+                return node.getTokenValue(token);
+            }
         };
 
         return this.binding.observe(resolve);
@@ -99,7 +112,7 @@ export class DesignTokenNode {
         value: DerivedDesignTokenValue<T>
     ) {
         const evaluator = DerivedValueEvaluator.getOrCreate(value);
-        const result = evaluator.evaluate(node);
+        const result = evaluator.evaluate(node, token);
         const prev = node._derived.get(token);
 
         if (prev === undefined || value !== prev[0] || result !== prev[1]) {
@@ -286,7 +299,9 @@ export class DesignTokenNode {
             }
         }
 
-        this.children.forEach(child => child.notifyStatic(token, originator));
+        for (let i = 0, l = this.children.length; i < l; i++) {
+            this.children[i].notifyStatic(token, originator);
+        }
     }
 
     /**
@@ -331,7 +346,9 @@ export class DesignTokenNode {
             }
         }
 
-        this.children.forEach(child => child.notifyDerived(token, evaluator, originator));
+        for (let i = 0, l = this.children.length; i < l; i++) {
+            this.children[i].notifyDerived(token, evaluator, originator);
+        }
     }
 
     // Change handler for derived token values
