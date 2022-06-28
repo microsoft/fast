@@ -1,5 +1,5 @@
 import { expect, assert } from "chai";
-import { Button, buttonTemplate } from "../button/index.js";
+import { FASTButton, buttonTemplate } from "../button/index.js";
 import { fixture } from "../testing/fixture.js";
 import { Search, searchTemplate as template } from "./index.js";
 
@@ -8,7 +8,7 @@ const FASTSearch = Search.compose({
     template,
 })
 
-const FASTButton = Button.compose({
+const FASTButton = FASTButton.compose({
     baseName: "button",
     template: buttonTemplate,
 })
