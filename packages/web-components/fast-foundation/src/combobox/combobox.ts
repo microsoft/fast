@@ -61,7 +61,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @internal
      */
     @observable
-    public slottedLabel: Node[];
+    public slottedLabel: HTMLElement[];
 
     /**
      * Reference to the internal text input element.
