@@ -1,32 +1,34 @@
 import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { ListboxOption } from "../listbox-option/listbox-option.js";
-import { listboxOptionTemplate as itemTemplate } from "../listbox-option/listbox-option.template.js";
-import { fixture } from "../testing/fixture.js";
-import { ListboxElement, listboxTemplate as template } from "./index.js";
+import { FASTListboxOption } from "../listbox-option/listbox-option.js";
+import { listboxOptionTemplate } from "../listbox-option/listbox-option.template.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTListboxElement, listboxTemplate } from "./index.js";
 
 describe("Listbox", () => {
-    const FASTListbox = ListboxElement.compose({
-        baseName: "listbox",
-        template
+    const listboxName = uniqueElementName();
+    FASTListboxElement.define({
+        name: listboxName,
+        template: listboxTemplate()
     });
 
-    const FASTOption = ListboxOption.compose({
-        baseName: "option",
-        template: itemTemplate
+    const optionName = uniqueElementName();
+    FASTListboxOption.define({
+        name: optionName,
+        template: listboxOptionTemplate()
     });
 
     async function setup() {
-        const { element, connect, disconnect } = await fixture([FASTListbox(), FASTOption()]);
+        const { element, connect, disconnect } = await fixture<FASTListboxElement>(listboxName);
 
         const option1 = document.createElement("fast-option");
-        (option1 as ListboxOption).textContent = "option 1";
+        (option1 as FASTListboxOption).textContent = "option 1";
 
         const option2 = document.createElement("fast-option");
-        (option2 as ListboxOption).textContent = "option 2";
+        (option2 as FASTListboxOption).textContent = "option 2";
 
         const option3 = document.createElement("fast-option");
-        (option3 as ListboxOption).textContent = "option 3";
+        (option3 as FASTListboxOption).textContent = "option 3";
 
         element.appendChild(option1);
         element.appendChild(option2);

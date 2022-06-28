@@ -1,7 +1,7 @@
 import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { ListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
+import { FASTListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
 import { fixture } from "../testing/fixture.js";
 import { timeout } from "../testing/timeout.js";
 import { Select, selectTemplate as template } from "./index.js";
@@ -12,7 +12,7 @@ describe("Select", () => {
         template
     });
 
-    const FASTOption = ListboxOption.compose({
+    const FASTOption = FASTListboxOption.compose({
         baseName: "option",
         template: listboxOptionTemplate,
     });
@@ -20,15 +20,15 @@ describe("Select", () => {
     async function setup() {
         const { element, connect, disconnect, parent } = await fixture([FASTSelect(), FASTOption()]);
 
-        const option1 = document.createElement("fast-option") as ListboxOption;
+        const option1 = document.createElement("fast-option") as FASTListboxOption;
         option1.value = "one";
         option1.textContent = "option one";
 
-        const option2 = document.createElement("fast-option") as ListboxOption;
+        const option2 = document.createElement("fast-option") as FASTListboxOption;
         option2.value = "two";
         option2.textContent = "option two";
 
-        const option3 = document.createElement("fast-option") as ListboxOption;
+        const option3 = document.createElement("fast-option") as FASTListboxOption;
         option3.value = "three";
         option3.textContent = "option three";
 

@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { DesignSystem } from "../../design-system/design-system.js";
-import { Combobox } from "../combobox.js";
+import { FASTCombobox } from "../combobox.js";
 import { comboboxTemplate as template } from "../combobox.template.js";
 
 const styles = () => css`
@@ -213,7 +213,7 @@ const styles = () => css`
 DesignSystem.getOrCreate()
     .withPrefix("fast")
     .register(
-        Combobox.compose({
+        FASTCombobox.compose({
             baseName: "combobox",
             template,
             styles,

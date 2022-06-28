@@ -1,7 +1,7 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import { Listbox } from "../listbox/listbox.js";
+import { FASTListbox } from "../listbox/listbox.js";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { Select, SelectOptions } from "./select.js";
 
@@ -73,7 +73,7 @@ export const selectTemplate: FoundationElementTemplate<
         >
             <slot
                 ${slotted({
-                    filter: Listbox.slottedOptionFilter,
+                    filter: FASTListbox.slottedOptionFilter,
                     flatten: true,
                     property: "slottedOptions",
                 })}

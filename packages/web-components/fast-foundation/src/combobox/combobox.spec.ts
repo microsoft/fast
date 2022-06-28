@@ -1,35 +1,35 @@
 import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { ListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
-import { fixture } from "../testing/fixture.js";
-import { Combobox, comboboxTemplate as template } from "./index.js";
+import { FASTListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTCombobox, comboboxTemplate } from "./index.js";
 
 describe("Combobox", () => {
-    const FASTCombobox = Combobox.compose({
-        baseName: "combobox",
-        template
-    })
+    const comboboxName = uniqueElementName();
+    FASTCombobox.define({
+        name: comboboxName,
+        template: comboboxTemplate()
+    });
 
-    const FASTOption = ListboxOption.compose({
-        baseName: "option",
-        template: listboxOptionTemplate
-    })
+    const listboxName = uniqueElementName();
+    FASTListboxOption.define({
+        name: listboxName,
+        template: listboxOptionTemplate()
+    });
 
     async function setup() {
-        const { element, connect, disconnect, parent } = await fixture(
-            [FASTCombobox(), FASTOption()]
-        );
+        const { element, connect, disconnect, parent } = await fixture<FASTCombobox>(comboboxName);
 
         element.id = "combobox";
 
-        const option1 = document.createElement("fast-option") as ListboxOption;
+        const option1 = document.createElement("fast-option") as FASTListboxOption;
         option1.textContent = "one";
 
-        const option2 = document.createElement("fast-option") as ListboxOption;
+        const option2 = document.createElement("fast-option") as FASTListboxOption;
         option2.textContent = "two";
 
-        const option3 = document.createElement("fast-option") as ListboxOption;
+        const option3 = document.createElement("fast-option") as FASTListboxOption;
         option3.textContent = "three";
 
         element.appendChild(option1);

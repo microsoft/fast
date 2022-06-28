@@ -12,8 +12,8 @@ import {
     uniqueId,
 } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
-import type { ListboxOption } from "../listbox-option/listbox-option.js";
-import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";
+import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
+import { DelegatesARIAListbox, FASTListbox } from "../listbox/listbox.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
 import { StartEnd } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
@@ -321,7 +321,7 @@ export class Select extends FormAssociatedSelect {
         if (this.open) {
             const captured = (e.target as HTMLElement).closest(
                 `option,[role=option]`
-            ) as ListboxOption;
+            ) as FASTListboxOption;
 
             if (captured && captured.disabled) {
                 return;
@@ -358,7 +358,7 @@ export class Select extends FormAssociatedSelect {
             return;
         }
 
-        if (!this.options?.includes(focusTarget as ListboxOption)) {
+        if (!this.options?.includes(focusTarget as FASTListboxOption)) {
             this.open = false;
             if (this.indexWhenOpened !== this.selectedIndex) {
                 this.updateValue(true);
@@ -446,8 +446,8 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     protected selectedOptionsChanged(
-        prev: ListboxOption[] | undefined,
-        next: ListboxOption[]
+        prev: FASTListboxOption[] | undefined,
+        next: FASTListboxOption[]
     ): void {
         super.selectedOptionsChanged(prev, next);
         this.options?.forEach((o, i) => {
@@ -466,8 +466,9 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     protected setDefaultSelectedOption(): void {
-        const options: ListboxOption[] =
-            this.options ?? Array.from(this.children).filter(Listbox.slottedOptionFilter);
+        const options: FASTListboxOption[] =
+            this.options ??
+            Array.from(this.children).filter(FASTListbox.slottedOptionFilter);
 
         const selectedIndex = options?.findIndex(
             el => el.hasAttribute("selected") || el.selected || el.value === this.value
