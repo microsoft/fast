@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Disclosure } from "../disclosure.js";
-import { disclosureTemplate as template } from "../disclosure.template.js";
+import { FASTDisclosure } from "../disclosure.js";
+import { disclosureTemplate } from "../disclosure.template.js";
 
-const styles = () => css`
+const styles = css`
     .disclosure {
         transition: height 0.35s;
     }
@@ -54,15 +53,11 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Disclosure.compose({
-            baseName: "disclosure",
-            shadowOptions: {
-                delegatesFocus: true,
-            },
-            styles,
-            template,
-        })()
-    );
+FASTDisclosure.define({
+    name: "fast-disclosure",
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+    styles,
+    template: disclosureTemplate(),
+});
