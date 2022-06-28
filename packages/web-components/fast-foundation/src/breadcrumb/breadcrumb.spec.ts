@@ -1,25 +1,27 @@
 import { expect } from "chai";
-import { Breadcrumb, breadcrumbTemplate as template } from "./index.js";
-import { fixture } from "../testing/fixture.js";
-import { BreadcrumbItem, breadcrumbItemTemplate } from "../breadcrumb-item/index.js";
+import { FASTBreadcrumb, breadcrumbTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTBreadcrumbItem, breadcrumbItemTemplate } from "../breadcrumb-item/index.js";
 import { Updates } from "@microsoft/fast-element";
 
-const FASTBreadcrumb = Breadcrumb.compose({
-    baseName: "breadcrumb",
-    template
-})
+const breadcrumbName = uniqueElementName();
+FASTBreadcrumb.define({
+    name: breadcrumbName,
+    template: breadcrumbTemplate()
+});
 
-const FASTBreadcrumbItem = BreadcrumbItem.compose({
-    baseName: "breadcrumb-item",
-    breadcrumbItemTemplate
-})
+const breadcrumbItemName = uniqueElementName();
+FASTBreadcrumbItem.define({
+    name: breadcrumbItemName,
+    template: breadcrumbItemTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture([FASTBreadcrumb(), FASTBreadcrumbItem()]);
+    const { element, connect, disconnect } = await fixture<FASTBreadcrumb>(breadcrumbName);
 
-    const item1 = document.createElement("fast-breadcrumb-item");
-    const item2 = document.createElement("fast-breadcrumb-item");
-    const item3 = document.createElement("fast-breadcrumb-item");
+    const item1 = document.createElement(breadcrumbItemName);
+    const item2 = document.createElement(breadcrumbItemName);
+    const item3 = document.createElement(breadcrumbItemName);
 
     element.appendChild(item1);
     element.appendChild(item2);
@@ -54,9 +56,9 @@ describe("Breadcrumb", () => {
 
         await connect();
 
-        let items: NodeListOf<BreadcrumbItem> = element.querySelectorAll("fast-breadcrumb-item");
+        let items: NodeListOf<FASTBreadcrumbItem> = element.querySelectorAll(breadcrumbItemName);
 
-        let lastItem: BreadcrumbItem = items[items.length - 1];
+        let lastItem: FASTBreadcrumbItem = items[items.length - 1];
 
         expect(lastItem.separator).to.equal(false);
 
@@ -91,28 +93,28 @@ describe("Breadcrumb", () => {
     it("should remove aria-current from any prior Breadcrumb Item children with hrefs when a new node is appended", async () => {
         const { element, connect, disconnect, item1, item2, item3 } = await setup();
 
-        (item1 as BreadcrumbItem).setAttribute("href", "#");
-        (item2 as BreadcrumbItem).setAttribute("href", "#");
-        (item3 as BreadcrumbItem).setAttribute("href", "#");
+        (item1 as FASTBreadcrumbItem).setAttribute("href", "#");
+        (item2 as FASTBreadcrumbItem).setAttribute("href", "#");
+        (item3 as FASTBreadcrumbItem).setAttribute("href", "#");
 
         await connect();
 
         expect(
-            element.querySelectorAll("fast-breadcrumb-item")[2].getAttribute("aria-current")
+            element.querySelectorAll(breadcrumbItemName)[2].getAttribute("aria-current")
         ).to.equal("page");
 
         const item4 = document.createElement("fast-breadcrumb-item");
-        (item4 as BreadcrumbItem).setAttribute("href", "#");
+        (item4 as FASTBreadcrumbItem).setAttribute("href", "#");
         element.appendChild(item4);
 
         await Updates.next();
 
         expect(
-            element.querySelectorAll("fast-breadcrumb-item")[2].hasAttribute("aria-current")
+            element.querySelectorAll(breadcrumbItemName)[2].hasAttribute("aria-current")
         ).to.equal(false);
 
         expect(
-            element.querySelectorAll("fast-breadcrumb-item")[3].getAttribute("aria-current")
+            element.querySelectorAll(breadcrumbItemName)[3].getAttribute("aria-current")
         ).to.equal("page");
 
         await disconnect();
@@ -140,7 +142,7 @@ describe("Breadcrumb", () => {
             element.querySelectorAll("a[href]")[2].getAttribute("aria-current")
         ).to.equal("page");
 
-        const item4 = document.createElement("fast-breadcrumb-item");
+        const item4 = document.createElement(breadcrumbItemName);
         const anchor4 = document.createElement("a");
         anchor4.href = "#";
 
