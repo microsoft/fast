@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Badge as FoundationBadge } from "../badge.js";
+import type { FASTBadge } from "../badge.js";
 
-type BadgeStoryArgs = Args & FoundationBadge;
+type BadgeStoryArgs = Args & FASTBadge;
 type BadgeStoryMeta = Meta<BadgeStoryArgs>;
 
 const storyTemplate = html<BadgeStoryArgs>`
