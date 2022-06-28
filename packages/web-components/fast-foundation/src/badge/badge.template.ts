@@ -11,9 +11,7 @@ export const badgeTemplate: FoundationElementTemplate<ViewTemplate<Badge>> = (
     context,
     definition
 ) => html`
-    <template class="${x => (x.circular ? "circular" : "")}">
-        <div class="control" part="control" style="${x => x.generateBadgeStyle()}">
-            <slot></slot>
-        </div>
-    </template>
+    <div class="control" part="control">
+        <slot></slot>
+    </div>
 `;

@@ -257,11 +257,6 @@ export type AxisScalingMode = "anchor" | "fill" | "content";
 
 // @public
 export class Badge extends FoundationElement {
-    circular: boolean;
-    color: string;
-    fill: string;
-    // (undocumented)
-    generateBadgeStyle: () => string | undefined;
 }
 
 // @public
