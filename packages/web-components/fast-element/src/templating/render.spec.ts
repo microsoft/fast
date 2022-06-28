@@ -682,4 +682,92 @@ describe("The render", () => {
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
         });
     });
+
+    context("createElementTemplate function", () => {
+        const childTemplate = html<Child>`This is a template. ${x => x.knownValue}`;
+        class Child {
+            id = 'child-1';
+            @observable knownValue: string = "value";
+        }
+
+        it(`creates a template from a tag name`, () => {
+            const template = RenderInstruction.createElementTemplate("button");
+
+            expect(template.html).to.equal(`<button></button>`);
+        });
+
+        it(`creates a template with attributes`, () => {
+            const template = RenderInstruction.createElementTemplate(
+                "button",
+                { id: x => x.id }
+            );
+
+            const targetNode = document.createElement("div");
+            const source = new Child();
+            const view = template.create();
+
+            view.bind(source, ExecutionContext.default);
+            view.appendTo(targetNode);
+
+            expect(view.source).to.equal(source);
+            expect(toHTML(targetNode)).to.equal(`<button id="child-1"></button>`);
+        });
+
+        it(`creates a template with static content`, () => {
+            const template = RenderInstruction.createElementTemplate("button", undefined, "foo");
+            const targetNode = document.createElement("div");
+            const view = template.create();
+
+            view.appendTo(targetNode);
+
+            expect(view.source).to.equal(null);
+            expect(toHTML(targetNode.firstElementChild!)).to.equal("foo");
+        });
+
+        it(`creates a template with attributes and content ViewTemplate`, () => {
+            const template = RenderInstruction.createElementTemplate(
+                "button",
+                {
+                    id: x => x.id
+                },
+                childTemplate
+            );
+
+            const targetNode = document.createElement("div");
+            const source = new Child();
+            const view = template.create();
+
+            view.bind(source, ExecutionContext.default);
+            view.appendTo(targetNode);
+
+            expect(view.source).to.equal(source);
+            expect(toHTML(targetNode.firstElementChild!)).to.equal("This is a template. value")
+        });
+
+        it(`creates a template with content binding that can change when the source value changes`, async () => {
+            const template = RenderInstruction.createElementTemplate(
+                "button",
+                {
+                    id: x => x.id
+                },
+                childTemplate
+            );
+
+            const targetNode = document.createElement("div");
+            const source = new Child();
+            const view = template.create();
+
+            view.bind(source, ExecutionContext.default);
+            view.appendTo(targetNode);
+
+            expect(view.source).to.equal(source);
+            expect(toHTML(targetNode.firstElementChild!)).to.equal("This is a template. value");
+
+            source.knownValue = "new-value";
+
+            await Updates.next();
+
+            expect(toHTML(targetNode.firstElementChild!)).to.equal("This is a template. new-value");
+        });
+    });
 });
