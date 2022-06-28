@@ -75,7 +75,7 @@ export class Accordion extends FoundationElement {
     private accordionIds: Array<string | null>;
 
     private change = (): void => {
-        this.$emit("change");
+        this.$emit("change", this.activeid);
     };
 
     private findExpandedItem(): AccordionItem | null {
