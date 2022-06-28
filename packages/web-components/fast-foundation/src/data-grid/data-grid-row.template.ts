@@ -1,16 +1,25 @@
-import { children, elements, html, slotted } from "@microsoft/fast-element";
+import {
+    children,
+    elements,
+    ElementViewTemplate,
+    html,
+    slotted,
+} from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { ElementDefinitionContext } from "../design-system/registration-context.js";
-import type { DataGridRow } from "./data-grid-row.js";
-import { DataGridCell } from "./data-grid-cell.js";
+import type { TemplateElementDependency } from "src/index.js";
+import { tagFor } from "../patterns/tag-for.js";
+import type { FASTDataGridRow } from "./data-grid-row.js";
 import type { ColumnDefinition } from "./data-grid.js";
 
-function createCellItemTemplate(
-    context: ElementDefinitionContext
-): ViewTemplate<ColumnDefinition, DataGridRow> {
-    const cellTag = context.tagFor(DataGridCell);
-    return html<ColumnDefinition, DataGridRow>`
+export type CellItemTemplateOptions = {
+    dataGridCell: TemplateElementDependency;
+};
+
+function cellItemTemplate(
+    options: CellItemTemplateOptions
+): ViewTemplate<ColumnDefinition, FASTDataGridRow> {
+    const cellTag = tagFor(options.dataGridCell);
+    return html<ColumnDefinition, FASTDataGridRow>`
     <${cellTag}
         cell-type="${x => (x.isRowHeader ? "rowheader" : undefined)}"
         grid-column="${(x, c) => c.index + 1}"
@@ -20,11 +29,11 @@ function createCellItemTemplate(
 `;
 }
 
-function createHeaderCellItemTemplate(
-    context: ElementDefinitionContext
-): ViewTemplate<ColumnDefinition, DataGridRow> {
-    const cellTag = context.tagFor(DataGridCell);
-    return html<ColumnDefinition, DataGridRow>`
+function headerCellItemTemplate(
+    options: CellItemTemplateOptions
+): ViewTemplate<ColumnDefinition, FASTDataGridRow> {
+    const cellTag = tagFor(options.dataGridCell);
+    return html<ColumnDefinition, FASTDataGridRow>`
     <${cellTag}
         cell-type="columnheader"
         grid-column="${(x, c) => c.index + 1}"
@@ -39,18 +48,15 @@ function createHeaderCellItemTemplate(
  *
  * @public
  */
-export const dataGridRowTemplate: FoundationElementTemplate<ViewTemplate<DataGridRow>> = (
-    context,
-    definition
-) => {
-    const cellItemTemplate = createCellItemTemplate(context);
-    const headerCellItemTemplate = createHeaderCellItemTemplate(context);
-    return html<DataGridRow>`
+export function dataGridRowTemplate(
+    options: CellItemTemplateOptions
+): ElementViewTemplate<FASTDataGridRow> {
+    return html<FASTDataGridRow>`
         <template
             role="row"
             :classList="${x => (x.rowType !== "default" ? x.rowType : "")}"
-            :defaultCellItemTemplate="${cellItemTemplate}"
-            :defaultHeaderCellItemTemplate="${headerCellItemTemplate}"
+            :defaultCellItemTemplate="${cellItemTemplate(options)}"
+            :defaultHeaderCellItemTemplate="${headerCellItemTemplate(options)}"
             ${children({
                 property: "cellElements",
                 filter: elements(
@@ -61,4 +67,4 @@ export const dataGridRowTemplate: FoundationElementTemplate<ViewTemplate<DataGri
             <slot ${slotted("slottedCellElements")}></slot>
         </template>
     `;
-};
+}
