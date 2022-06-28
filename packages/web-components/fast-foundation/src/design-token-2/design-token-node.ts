@@ -164,13 +164,7 @@ export class DesignTokenNode {
         return node._values.has(token);
     }
 
-    /**
-     * Determines if the token is assigned to a {@link DerivedTokenValue } for the node.
-     * @param node - The node to test
-     * @param token - The token to test
-     * @returns
-     */
-    public static isDerivedFor<T>(node: DesignTokenNode, token: DesignToken<T>) {
+    private static isDerivedFor<T>(node: DesignTokenNode, token: DesignToken<T>) {
         return node._derived.has(token);
     }
 
@@ -211,9 +205,19 @@ export class DesignTokenNode {
         if (DesignTokenNode.isDerivedTokenValue(value)) {
             DesignTokenNode.evaluateDerived(this, token, value);
             this.notifyDerived(token, DerivedValueEvaluator.getOrCreate(value), this);
-        } else if (prev !== value) {
-            Observable.getNotifier(token).notify(this);
-            this.notifyStatic(token, this);
+        } else {
+            // _derived.delete will notify for the token that is deleted, so only notify if deleting the value
+            // was unsuccessful
+            const notified =
+                DesignTokenNode.isDerivedFor(this, token) && this._derived.delete(token);
+
+            if (prev !== value) {
+                if (!notified) {
+                    Observable.getNotifier(token).notify(this);
+                }
+
+                this.notifyStatic(token, this);
+            }
         }
 
         derived.forEach((fn, token) => {
@@ -246,6 +250,18 @@ export class DesignTokenNode {
             return value;
         } else {
             throw new Error(`No value set for token ${token} in node tree.`);
+        }
+    }
+
+    public deleteTokenValue<T>(token: DesignToken<T>): void {
+        if (DesignTokenNode.isAssigned(this, token)) {
+            this._values.delete(token);
+            const notified =
+                DesignTokenNode.isDerivedFor(this, token) && this._derived.delete(token);
+
+            if (!notified) {
+                Observable.getNotifier(token).notify(this);
+            }
         }
     }
 

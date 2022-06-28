@@ -285,7 +285,6 @@ describe.only("DesignTokenNode", () => {
         });
     });
 
-
     it("should notify for a derived token at the node when a dependent token is changed for the node", () => {
         const tokenA = new DesignToken<number>();
         const tokenB = new DesignToken<number>();
