@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
-import { FoundationAccordionItem } from "../accordion-item.js";
-import { createAccordionItemTemplate } from "../accordion-item.template.js";
+import { FASTAccordionItem } from "../accordion-item.js";
+import { accordionItemTemplate } from "../accordion-item.template.js";
 
 const styles = css`
     :host {
@@ -121,8 +121,8 @@ const styles = css`
     }
 `;
 
-FoundationAccordionItem.define(FoundationAccordionItem, {
+FASTAccordionItem.define({
     name: "fast-accordion-item",
-    template: createAccordionItemTemplate(),
+    template: accordionItemTemplate(),
     styles,
 });

@@ -1,23 +1,23 @@
 import { expect } from "chai";
-import { FoundationAccordion, createAccordionTemplate, AccordionExpandMode } from "./index.js";
-import { FoundationAccordionItem, createAccordionItemTemplate } from "../accordion-item/index.js";
+import { FASTAccordion, accordionTemplate, AccordionExpandMode } from "./index.js";
+import { FASTAccordionItem, accordionItemTemplate } from "../accordion-item/index.js";
 import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 
 const accordionName = uniqueElementName();
-FoundationAccordion.define(FoundationAccordion, {
+FASTAccordion.define({
     name: accordionName,
-    template: createAccordionTemplate()
+    template: accordionTemplate()
 })
 
 const accordionItemName = uniqueElementName();
-FoundationAccordionItem.define(FoundationAccordionItem, {
+FASTAccordionItem.define({
     name: accordionItemName,
-    template: createAccordionItemTemplate()
+    template: accordionItemTemplate()
 });
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FoundationAccordion>(accordionName);
+    const { element, connect, disconnect } = await fixture<FASTAccordion>(accordionName);
 
     const item1 = document.createElement(accordionItemName);
     const item2 = document.createElement(accordionItemName);
@@ -63,7 +63,7 @@ describe("Accordion", () => {
         await connect();
         await Updates.next();
 
-        expect((element as FoundationAccordion).expandmode).to.equal(AccordionExpandMode.multi);
+        expect((element as FASTAccordion).expandmode).to.equal(AccordionExpandMode.multi);
         expect(element.getAttribute("expand-mode")).to.equal(AccordionExpandMode.multi);
 
         await disconnect();

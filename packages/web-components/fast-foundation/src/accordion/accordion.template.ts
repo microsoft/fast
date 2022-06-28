@@ -1,12 +1,12 @@
 import { elements, ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
-import type { FoundationAccordion } from "./accordion.js";
+import type { FASTAccordion } from "./accordion.js";
 
 /**
  * Creates a template for the {@link @microsoft/fast-foundation#FoundationAccordion} component.
  * @public
  */
-export function createAccordionTemplate(): ElementViewTemplate<FoundationAccordion> {
-    return html<FoundationAccordion>`
+export function accordionTemplate(): ElementViewTemplate<FASTAccordion> {
+    return html<FASTAccordion>`
         <template>
             <slot ${slotted({ property: "accordionItems", filter: elements() })}></slot>
         </template>

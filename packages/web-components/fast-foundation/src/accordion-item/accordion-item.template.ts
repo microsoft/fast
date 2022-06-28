@@ -1,15 +1,15 @@
 import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
-import { createEndSlotTemplate, createStartSlotTemplate } from "../patterns/start-end.js";
-import type { AccordionItemOptions, FoundationAccordionItem } from "./accordion-item.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { AccordionItemOptions, FASTAccordionItem } from "./accordion-item.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(FoundationAccordionItem:class)} component.
+ * The template for the {@link @microsoft/fast-foundation#(FASTAccordionItem:class)} component.
  * @public
  */
-export function createAccordionItemTemplate(
+export function accordionItemTemplate(
     options: AccordionItemOptions = {}
-): ElementViewTemplate<FoundationAccordionItem> {
-    return html<FoundationAccordionItem>`
+): ElementViewTemplate<FASTAccordionItem> {
+    return html<FASTAccordionItem>`
         <template class="${x => (x.expanded ? "expanded" : "")}">
             <div
                 class="heading"
@@ -30,8 +30,8 @@ export function createAccordionItemTemplate(
                         <slot name="heading"></slot>
                     </span>
                 </button>
-                ${createStartSlotTemplate(options)}
-                ${createEndSlotTemplate(options)}
+                ${startSlotTemplate(options)}
+                ${endSlotTemplate(options)}
                 <span class="icon" part="icon" aria-hidden="true">
                     <slot name="expanded-icon">
                         ${options.expandedIcon || ""}

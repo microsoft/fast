@@ -40,7 +40,7 @@ export class StartEnd {
  *
  * @public
  */
-export function createEndSlotTemplate(options: EndOptions): ViewTemplate<StartEnd> {
+export function endSlotTemplate(options: EndOptions): ViewTemplate<StartEnd> {
     return html`
         <slot name="end" ${ref("end")}>${options.end || ""}</slot>
     `;
@@ -52,7 +52,7 @@ export function createEndSlotTemplate(options: EndOptions): ViewTemplate<StartEn
  *
  * @public
  */
-export function createStartSlotTemplate(options: StartOptions): ViewTemplate<StartEnd> {
+export function startSlotTemplate(options: StartOptions): ViewTemplate<StartEnd> {
     return html`
         <slot name="start" ${ref("start")}>${options.start || ""}</slot>
     `;

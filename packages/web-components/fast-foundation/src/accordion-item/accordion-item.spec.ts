@@ -1,15 +1,15 @@
 import { expect } from "chai";
-import { FoundationAccordionItem, createAccordionItemTemplate } from "./index.js";
+import { FASTAccordionItem, accordionItemTemplate } from "./index.js";
 import { fixture, uniqueElementName } from "../testing/fixture.js";
 
 const name = uniqueElementName();
-FoundationAccordionItem.define(FoundationAccordionItem, {
+FASTAccordionItem.define({
     name,
-    template: createAccordionItemTemplate()
+    template: accordionItemTemplate()
 });
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FoundationAccordionItem>(name);
+    const { element, connect, disconnect } = await fixture<FASTAccordionItem>(name);
 
     return { element, connect, disconnect };
 }
