@@ -5,12 +5,11 @@ export class ObservableMap<T = any, K = any> extends Map<T, K> {
 
     set(key: T, value: K): this {
         const prev = super.get(key);
+        super.set(key, value);
 
         if (prev !== value) {
             this.notifier.notify(key);
         }
-
-        super.set(key, value);
 
         return this;
     }

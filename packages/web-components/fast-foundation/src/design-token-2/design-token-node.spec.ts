@@ -1,7 +1,8 @@
 import { Observable, Subscriber, Updates } from "@microsoft/fast-element";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
-import { DesignToken, DesignTokenNode } from "./design-token.js";
+import { DesignTokenNode } from "./design-token-node.js";
+import { DesignToken } from "./design-token.js";
 
 chai.use(spies);
 
@@ -82,7 +83,7 @@ describe.only("DesignTokenNode", () => {
     describe("setting a token value to a static value", () => {
         describe("should notify subscribers", () => {
             it("that the token has changed for the node", () => {
-                const token = DesignToken.create<number>("");
+                const token = new DesignToken<number>();
                 const node = new DesignTokenNode();
                 const handleChange = chai.spy(() => {})
                 const subscriber: Subscriber = { handleChange }
@@ -95,7 +96,7 @@ describe.only("DesignTokenNode", () => {
             });
 
             it("that the token has changed for the node even if the value assigned is the upstream value", () => {
-                const token = DesignToken.create<number>("");
+                const token = new DesignToken<number>();
                 const node = new DesignTokenNode();
                 const parent = new DesignTokenNode();
                 parent.appendChild(node);
@@ -113,7 +114,7 @@ describe.only("DesignTokenNode", () => {
 
         describe("should not notify subscribers", () => {
             it("when the value assigned is the same value", () => {
-                const token = DesignToken.create<number>("");
+                const token = new DesignToken<number>();
                 const node = new DesignTokenNode();
                 const handleChange = chai.spy(() => {})
                 const subscriber: Subscriber = { handleChange }
@@ -130,7 +131,7 @@ describe.only("DesignTokenNode", () => {
     describe("setting a token to a derived value", () => {
         describe("should notify subscribers", () => {
             it("that the token has changed for the node", () => {
-                const token = DesignToken.create<number>("");
+                const token = new DesignToken<number>();
                 const node = new DesignTokenNode();
                 const handleChange = chai.spy(() => {})
                 const subscriber: Subscriber = { handleChange }
@@ -146,20 +147,20 @@ describe.only("DesignTokenNode", () => {
 
     describe("getting a token value", () => {
         it("should throw if no token value has been set for the token in a node tree", () => {
-            const token = DesignToken.create<number>("token");
+            const token = new DesignToken<number>();
             const node = new DesignTokenNode();
 
             expect(() => node.getTokenValue(token)).to.throw;
         });
         it("should not throw if the node has the token set to a value", () => {
-            const token = DesignToken.create<number>("token");
+            const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             node.setTokenValue(token, 12);
 
             expect(() => node.getTokenValue(token)).not.to.throw;
         });
         it("should not throw if the parent node has the token set to a value", () => {
-            const token = DesignToken.create<number>("token");
+            const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             const parent = new DesignTokenNode();
             parent.appendChild(node)
@@ -169,7 +170,7 @@ describe.only("DesignTokenNode", () => {
             expect(() => node.getTokenValue(token)).not.to.throw;
         });
         it("should not throw if an ancestor node has the token set to a value", () => {
-            const token = DesignToken.create<number>("token");
+            const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             const parent = new DesignTokenNode();
             const ancestor = new DesignTokenNode();
@@ -181,14 +182,14 @@ describe.only("DesignTokenNode", () => {
         });
 
         it("should return the value set for a token", () => {
-            const token = DesignToken.create<number>("token");
+            const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             node.setTokenValue(token, 12);
 
             expect(node.getTokenValue(token)).to.equal(12)
         });
         it("should return the derived value set for a token", () => {
-            const token = DesignToken.create<number>("token");
+            const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             node.setTokenValue(token, () => 12);
 
@@ -196,8 +197,8 @@ describe.only("DesignTokenNode", () => {
         });
 
         it("should return the value set for the parent node if the value is not set for the token", () => {
-            const staticToken = DesignToken.create<number>("token");
-            const derivedToken = DesignToken.create<number>("token");
+            const staticToken = new DesignToken<number>();
+            const derivedToken = new DesignToken<number>();
             const node = new DesignTokenNode();
             const parent = new DesignTokenNode();
             parent.appendChild(node)
@@ -210,8 +211,8 @@ describe.only("DesignTokenNode", () => {
         });
 
         it("should return the value set for the ancestor node if the value is not set for the token on the node or it's parent", () => {
-            const staticToken = DesignToken.create<number>("token");
-            const derivedToken = DesignToken.create<number>("token");
+            const staticToken = new DesignToken<number>();
+            const derivedToken = new DesignToken<number>();
             const node = new DesignTokenNode();
             const parent = new DesignTokenNode();
             const ancestor = new DesignTokenNode();
@@ -233,7 +234,7 @@ describe.only("DesignTokenNode", () => {
         });
         it("should return an array that contains the tokens set for the node", () => {
             const node = new DesignTokenNode();
-            const token = DesignToken.create<number>("token");
+            const token = new DesignToken<number>();
             node.setTokenValue(token, 12);
             const assigned = DesignTokenNode.getAssignedTokensForNode(node);
 
@@ -244,7 +245,7 @@ describe.only("DesignTokenNode", () => {
             const parent = new DesignTokenNode();
             const node = new DesignTokenNode();
             parent.appendChild(node);
-            const token = DesignToken.create<number>("token");
+            const token = new DesignToken<number>();
             parent.setTokenValue(token, 12);
             const assigned = DesignTokenNode.getAssignedTokensForNode(node);
 
@@ -264,7 +265,7 @@ describe.only("DesignTokenNode", () => {
             const node = new DesignTokenNode();
             const parent = new DesignTokenNode();
             parent.appendChild(node);
-            const token = DesignToken.create<number>("token");
+            const token = new DesignToken<number>();
             node.setTokenValue(token, 12);
             const assigned = DesignTokenNode.composeAssignedTokensForNode(node);
 
@@ -275,7 +276,7 @@ describe.only("DesignTokenNode", () => {
             const parent = new DesignTokenNode();
             const node = new DesignTokenNode();
             parent.appendChild(node);
-            const token = DesignToken.create<number>("token");
+            const token = new DesignToken<number>();
             parent.setTokenValue(token, 12);
             const assigned = DesignTokenNode.composeAssignedTokensForNode(node);
 
@@ -286,9 +287,9 @@ describe.only("DesignTokenNode", () => {
 
 
     it("should notify for a derived token at the node when a dependent token is changed for the node", () => {
-        const tokenA = DesignToken.create<number>("a");
-        const tokenB = DesignToken.create<number>("b");
-        const tokenC = DesignToken.create<number>("b");
+        const tokenA = new DesignToken<number>();
+        const tokenB = new DesignToken<number>();
+        const tokenC = new DesignToken<number>();
         const node = new DesignTokenNode();
         const { subscriber, handleChange } = makeChangeHandler();
         node.setTokenValue(tokenA, 12);
@@ -306,8 +307,8 @@ describe.only("DesignTokenNode", () => {
     });
 
     it("should notify for a derived token at a child when a dependent token is changed on the ancestor", () => {
-        const tokenA = DesignToken.create<number>("a");
-        const tokenB = DesignToken.create<number>("b");
+        const tokenA = new DesignToken<number>();
+        const tokenB = new DesignToken<number>();
         const ancestor = new DesignTokenNode();
         const parent = new DesignTokenNode();
         const child = new DesignTokenNode();
@@ -325,8 +326,8 @@ describe.only("DesignTokenNode", () => {
         expect(child.getTokenValue(tokenA)).to.equal(26);
     });
     it("should notify for the node and a descendent node which has dependent tokens configured", () => {
-        const tokenA = DesignToken.create<number>("a");
-        const tokenB = DesignToken.create<number>("b");
+        const tokenA = new DesignToken<number>();
+        const tokenB = new DesignToken<number>();
         const ancestor = new DesignTokenNode();
         const parent = new DesignTokenNode();
         const child = new DesignTokenNode();
@@ -344,8 +345,8 @@ describe.only("DesignTokenNode", () => {
 
     })
     it("should not notify for a derived token at a child when the token is set for an intermediary and the value does not have dependent tokens", () => {
-        const tokenA = DesignToken.create<number>("a");
-        const tokenB = DesignToken.create<number>("b");
+        const tokenA = new DesignToken<number>();
+        const tokenB = new DesignToken<number>();
         const ancestor = new DesignTokenNode();
         const parent = new DesignTokenNode();
         const child = new DesignTokenNode();
@@ -363,19 +364,34 @@ describe.only("DesignTokenNode", () => {
         expect(child.getTokenValue(tokenA)).to.equal(25);
     });
 
+    it("should resolve circular references to the parent node", () => {
+        const token = new DesignToken<number>();
+        const parent = new DesignTokenNode();
+        const child = new DesignTokenNode();
+        parent.appendChild(child);
+
+        parent.setTokenValue(token, 12);
+        child.setTokenValue(token, (resolve) => {
+            return resolve(token) * 2;
+        });
+
+        expect(child.getTokenValue(token)).to.equal(24);
+        expect(2).to.equal(2);
+    })
+
 
     describe("Original tests", () => {
         describe("getting and setting a simple value", () => {
             it("should throw if the token value has never been set on the element or it's any ancestors", () => {
                 const target = new DesignTokenNode();
-                const token = DesignToken.create<number>("test");
+                const token = new DesignToken<number>();
 
                 expect(() => target.getTokenValue(token)).to.throw();
             });
 
             it("should return the value set for the element if one has been set", () => {
                 const target = new DesignTokenNode();
-                const token = DesignToken.create<number>("test");
+                const token = new DesignToken<number>();
                 target.setTokenValue(token, 12)
 
                 expect(target.getTokenValue(token)).to.equal(12);
@@ -385,7 +401,7 @@ describe.only("DesignTokenNode", () => {
                 const ancestor = new DesignTokenNode();
                 const target = new DesignTokenNode();
                 ancestor.appendChild(target);
-                const token = DesignToken.create<number>("test");
+                const token = new DesignToken<number>();
                 ancestor.setTokenValue(token, 12)
 
                 expect(target.getTokenValue(token)).to.equal(12);
@@ -399,7 +415,7 @@ describe.only("DesignTokenNode", () => {
                 grandparent.appendChild(parent);
                 parent.appendChild(target);
 
-                const token = DesignToken.create<number>("test");
+                const token = new DesignToken<number>();
 
                 grandparent.setTokenValue(token, 12);
 
@@ -416,7 +432,7 @@ describe.only("DesignTokenNode", () => {
                 const target = new DesignTokenNode();
                 parentA.appendChild(target)
 
-                const token = DesignToken.create<number>("test");
+                const token = new DesignToken<number>();
 
                 parentA.setTokenValue(token, 12);
                 parentB.setTokenValue(token, 14);
@@ -431,7 +447,7 @@ describe.only("DesignTokenNode", () => {
                 const target = new DesignTokenNode();
                 [false, null, 0, "", NaN].forEach(value => {
 
-                    const token = DesignToken.create<typeof value>("test");
+                    const token = new DesignToken<typeof value>();
                     target.setTokenValue(token, value)
 
                     if (typeof value === "number" && isNaN(value)) {
@@ -445,7 +461,7 @@ describe.only("DesignTokenNode", () => {
             // describe("that is a CSSDesignToken", () => {
             //     it("should set the CSS custom property for the element", async () => {
             //         const target = addElement();
-            //         const token = DesignToken.create<number>("test");
+            //         const token = new DesignToken<number>("test");
             //         token.setValueFor(target, 12);
             //         await Updates.next();
             //         expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal('12');
@@ -455,7 +471,7 @@ describe.only("DesignTokenNode", () => {
             // describe("that is not a CSSDesignToken", () => {
             //     it("should not set a CSS custom property for the element", () => {
             //         const target = addElement();
-            //         const token = DesignToken.create<number>({ name: "test", cssCustomPropertyName: null });
+            //         const token = new DesignToken<number>({ name: "test", cssCustomPropertyName: null });
             //         token.setValueFor(target, 12);
             //         expect(window.getComputedStyle(target).getPropertyValue(("--test"))).to.equal('');
             //         removeElement(target)
@@ -465,14 +481,14 @@ describe.only("DesignTokenNode", () => {
         describe("getting and setting derived values", () => {
             it("should get the return value of a derived value", () => {
                 const target = new DesignTokenNode();
-                const token = DesignToken.create<number>("test");
+                const token = new DesignToken<number>();
                 target.setTokenValue(token, () => 12)
 
                 expect(target.getTokenValue(token)).to.equal(12);
             });
             it("should get an updated value when observable properties used in a derived property are changed", () => {
                 const target = new DesignTokenNode();
-                const token = DesignToken.create<number>("test");
+                const token = new DesignToken<number>();
                 const dependencies: { value: number } = {} as { value: number }
                 Observable.defineProperty(dependencies, "value");
                 dependencies.value = 6
@@ -487,8 +503,8 @@ describe.only("DesignTokenNode", () => {
             });
             it("should get an updated value when other design tokens used in a derived property are changed", () => {
                 const target = new DesignTokenNode();
-                const tokenA = DesignToken.create<number>("A");
-                const tokenB = DesignToken.create<number>("B");
+                const tokenA = new DesignToken<number>();
+                const tokenB = new DesignToken<number>();
 
                 target.setTokenValue(tokenA, 6);
                 target.setTokenValue(tokenB, (resolve) => resolve(tokenA) * 2);
@@ -506,8 +522,8 @@ describe.only("DesignTokenNode", () => {
 
                 ancestor.appendChild(parent)
                 parent.appendChild(target);
-                const tokenA = DesignToken.create<number>("A");
-                const tokenB = DesignToken.create<number>("B");
+                const tokenA = new DesignToken<number>();
+                const tokenB = new DesignToken<number>();
 
                 ancestor.setTokenValue(tokenA, 7);
                 parent.setTokenValue(tokenA, 6)
@@ -522,8 +538,8 @@ describe.only("DesignTokenNode", () => {
                 const target = new DesignTokenNode();
                 ancestor.appendChild(parent);
                 parent.appendChild(target);
-                const tokenA = DesignToken.create<number>("A");
-                const tokenB = DesignToken.create<number>("B");
+                const tokenA = new DesignToken<number>();
+                const tokenB = new DesignToken<number>();
 
                 ancestor.setTokenValue(tokenA, 7);
                 parent.setTokenValue(tokenA, 6)
@@ -543,8 +559,8 @@ describe.only("DesignTokenNode", () => {
                 ancestor.appendChild(parent);
                 parent.appendChild(target);
 
-                const tokenA = DesignToken.create<number>("A");
-                const tokenB = DesignToken.create<number>("B");
+                const tokenA = new DesignToken<number>();
+                const tokenB = new DesignToken<number>();
 
                 ancestor.setTokenValue(tokenA, 6)
                 ancestor.setTokenValue(tokenB, (resolve) => resolve( tokenA ) * 2)
@@ -559,7 +575,7 @@ describe.only("DesignTokenNode", () => {
         //     describe("that is a CSSDesignToken", () => {
         //         it("should set a CSS custom property equal to the resolved value of a derived token value", async () => {
         //             const target = addElement();
-        //             const token = DesignToken.create<number>("test");
+        //             const token = new DesignToken<number>("test");
 
         //             token.setValueFor(target, (target) => 12);
 
@@ -570,8 +586,8 @@ describe.only("DesignTokenNode", () => {
         //         });
         //         it("should set a CSS custom property equal to the resolved value of a derived token value with a dependent token", async () => {
         //             const target = addElement();
-        //             const tokenA = DesignToken.create<number>("A");
-        //             const tokenB = DesignToken.create<number>("B");
+        //             const tokenA = new DesignToken<number>();
+        //             const tokenB = new DesignToken<number>();
 
         //             tokenA.setValueFor(target, 6);
         //             tokenB.setValueFor(target, (target) => tokenA.getValueFor(target) * 2);
@@ -584,8 +600,8 @@ describe.only("DesignTokenNode", () => {
 
         //         it("should update a CSS custom property to the resolved value of a derived token value with a dependent token when the dependent token changes", async () => {
         //             const target = addElement();
-        //             const tokenA = DesignToken.create<number>("A");
-        //             const tokenB = DesignToken.create<number>("B");
+        //             const tokenA = new DesignToken<number>();
+        //             const tokenB = new DesignToken<number>();
 
         //             tokenA.setValueFor(target, 6);
         //             tokenB.setValueFor(target, (target) => tokenA.getValueFor(target) * 2);
@@ -603,8 +619,8 @@ describe.only("DesignTokenNode", () => {
         //         it("should set a CSS custom property equal to the resolved value for an element of a derived token value with a dependent token", async () => {
         //             const parent = addElement();
         //             const target = addElement(parent);
-        //             const tokenA = DesignToken.create<number>("A");
-        //             const tokenB = DesignToken.create<number>("B");
+        //             const tokenA = new DesignToken<number>();
+        //             const tokenB = new DesignToken<number>();
 
         //             tokenA.setValueFor(parent, 6);
         //             tokenB.setValueFor(parent, (target) => tokenA.getValueFor(target) * 2);
@@ -622,8 +638,8 @@ describe.only("DesignTokenNode", () => {
         //             const child = addElement(parent);
         //             const target = document.createElement("div");
         //             child.shadowRoot!.appendChild(target);
-        //             const tokenA = DesignToken.create<number>("A");
-        //             const tokenB = DesignToken.create<number>("B");
+        //             const tokenA = new DesignToken<number>();
+        //             const tokenB = new DesignToken<number>();
 
         //             tokenA.setValueFor(parent, 6);
         //             tokenB.setValueFor(parent, (target) => tokenA.getValueFor(target) * 2);
@@ -639,8 +655,8 @@ describe.only("DesignTokenNode", () => {
         //         it("should set a CSS custom property equal to the resolved value for both elements for which a dependent token is set when setting a derived token value", async () => {
         //             const parent = addElement();
         //             const target = addElement(parent);
-        //             const tokenA = DesignToken.create<number>("A");
-        //             const tokenB = DesignToken.create<number>("B");
+        //             const tokenA = new DesignToken<number>();
+        //             const tokenB = new DesignToken<number>();
 
         //             tokenA.setValueFor(parent, 6);
         //             tokenA.setValueFor(target, 7);
@@ -654,7 +670,7 @@ describe.only("DesignTokenNode", () => {
         //         });
 
         //         it("should revert a CSS custom property back to a previous value when the Design Token value is reverted", async () => {
-        //             const token = DesignToken.create<number>("test");
+        //             const token = new DesignToken<number>("test");
         //             const target = addElement();
 
         //             token.setValueFor(target, 12);
@@ -674,7 +690,7 @@ describe.only("DesignTokenNode", () => {
         //     describe("that is not a CSSDesignToken", () => {
         //         it("should not emit a CSS custom property", () => {
         //             const target = addElement();
-        //             const token = DesignToken.create<number>({name: "test", cssCustomPropertyName: null});
+        //             const token = new DesignToken<number>({name: "test", cssCustomPropertyName: null});
 
         //             token.setValueFor(target, (target) => 12);
 
@@ -688,7 +704,7 @@ describe.only("DesignTokenNode", () => {
                  const target = new DesignTokenNode();
                  [false, null, 0, "", NaN].forEach(value => {
 
-                     const token = DesignToken.create<typeof value>("test");
+                     const token = new DesignToken<typeof value>();
                      target.setTokenValue(token, () => value as any);
                      //token.setValueFor(target, () => value as any);
 
@@ -703,8 +719,8 @@ describe.only("DesignTokenNode", () => {
 
         // describe("getting and setting a token value", () => {
         //     it("should retrieve the value of the token it was set to", () => {
-        //         const tokenA = DesignToken.create<number>("token-a");
-        //         const tokenB = DesignToken.create<number>("token-b");
+        //         const tokenA = new DesignToken<number>("token-a");
+        //         const tokenB = new DesignToken<number>("token-b");
         //         const target = addElement();
 
         //         tokenA.setValueFor(target, 12);
@@ -715,8 +731,8 @@ describe.only("DesignTokenNode", () => {
         //         removeElement(target);
         //     });
         //     it("should update the value of the token it was set to when the token's value changes", () => {
-        //         const tokenA = DesignToken.create<number>("token-a");
-        //         const tokenB = DesignToken.create<number>("token-b");
+        //         const tokenA = new DesignToken<number>("token-a");
+        //         const tokenB = new DesignToken<number>("token-b");
         //         const target = addElement();
 
         //         tokenA.setValueFor(target, 12);
@@ -731,9 +747,9 @@ describe.only("DesignTokenNode", () => {
         //         removeElement(target);
         //     });
         //     it("should update the derived value of the token when a dependency of the derived value changes", () => {
-        //         const tokenA = DesignToken.create<number>("token-a");
-        //         const tokenB = DesignToken.create<number>("token-b");
-        //         const tokenC = DesignToken.create<number>("token-b");
+        //         const tokenA = new DesignToken<number>("token-a");
+        //         const tokenB = new DesignToken<number>("token-b");
+        //         const tokenC = new DesignToken<number>("token-b");
         //         const target = addElement();
 
         //         tokenA.setValueFor(target, 6);
@@ -751,8 +767,8 @@ describe.only("DesignTokenNode", () => {
 
         //     describe("that is a CSSDesignToken", () => {
         //         it("should emit a CSS custom property", () => {
-        //             const tokenA = DesignToken.create<number>("token-a");
-        //             const tokenB = DesignToken.create<number>("token-b");
+        //             const tokenA = new DesignToken<number>("token-a");
+        //             const tokenB = new DesignToken<number>("token-b");
         //             const target = addElement();
 
         //             tokenA.setValueFor(target, 12);
@@ -763,8 +779,8 @@ describe.only("DesignTokenNode", () => {
         //             removeElement(target);
         //         });
         //         it("should update the emitted CSS custom property when the token's value changes", async () => {
-        //             const tokenA = DesignToken.create<number>("token-a");
-        //             const tokenB = DesignToken.create<number>("token-b");
+        //             const tokenA = new DesignToken<number>("token-a");
+        //             const tokenB = new DesignToken<number>("token-b");
         //             const target = addElement();
 
         //             tokenA.setValueFor(target, 12);
@@ -781,9 +797,9 @@ describe.only("DesignTokenNode", () => {
         //             removeElement(target);
         //         });
         //         it("should update the emitted CSS custom property of a token assigned a derived value when the token dependency changes", async () => {
-        //             const tokenA = DesignToken.create<number>("token-a");
-        //             const tokenB = DesignToken.create<number>("token-b");
-        //             const tokenC = DesignToken.create<number>("token-c");
+        //             const tokenA = new DesignToken<number>("token-a");
+        //             const tokenB = new DesignToken<number>("token-b");
+        //             const tokenC = new DesignToken<number>("token-c");
         //             const target = addElement();
 
         //             tokenA.setValueFor(target, 6);
@@ -802,7 +818,7 @@ describe.only("DesignTokenNode", () => {
         //         });
 
         //         it("should support accessing the token for being assigned from the derived value", () => {
-        //             const tokenA = DesignToken.create<number>("token-a");
+        //             const tokenA = new DesignToken<number>("token-a");
         //             const parent = addElement();
         //             const child = addElement(parent);
         //             tokenA.withDefault(6);
@@ -815,9 +831,9 @@ describe.only("DesignTokenNode", () => {
         //         })
         //     });
         //     it("should update the CSS custom property of a derived token with a dependency that is a derived token that depends on a third token", async () => {
-        //             const tokenA = DesignToken.create<number>("token-a");
-        //             const tokenB = DesignToken.create<number>("token-b");
-        //             const tokenC = DesignToken.create<number>("token-c");
+        //             const tokenA = new DesignToken<number>("token-a");
+        //             const tokenB = new DesignToken<number>("token-b");
+        //             const tokenC = new DesignToken<number>("token-c");
         //             const grandparent = addElement()
         //             const parent = addElement(grandparent);
         //             const child = addElement(parent);
@@ -840,8 +856,8 @@ describe.only("DesignTokenNode", () => {
         //     it("should update tokens when an element for which a token with static dependencies is set is appended to the DOM", async () => {
 
 
-        //         const tokenA = DesignToken.create<number>("token-a");
-        //         const tokenB = DesignToken.create<number>("token-b");
+        //         const tokenA = new DesignToken<number>("token-a");
+        //         const tokenB = new DesignToken<number>("token-b");
 
         //         tokenA.withDefault(6);
         //         tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
@@ -857,8 +873,8 @@ describe.only("DesignTokenNode", () => {
         //         expect(window.getComputedStyle(element).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
         //     });
         //     it("should update tokens and notify when an element for which a token with dynamic dependencies is set is appended to the DOM", async () => {
-        //         const tokenA = DesignToken.create<number>("token-a");
-        //         const tokenB = DesignToken.create<number>("token-b");
+        //         const tokenA = new DesignToken<number>("token-a");
+        //         const tokenB = new DesignToken<number>("token-b");
 
         //         tokenA.withDefault(() => 6);
         //         tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
@@ -885,8 +901,8 @@ describe.only("DesignTokenNode", () => {
         //         expect(handleChange).to.have.been.called.once;
         //     });
         //     it("should notify a subscriber for a token after being appended to a parent with a different token value than the previous context", async () => {
-        //         const tokenA = DesignToken.create<number>("token-a");
-        //         const tokenB = DesignToken.create<number>("token-b");
+        //         const tokenA = new DesignToken<number>("token-a");
+        //         const tokenB = new DesignToken<number>("token-b");
 
         //         tokenA.withDefault(() => 6);
         //         tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
@@ -909,7 +925,7 @@ describe.only("DesignTokenNode", () => {
         //         expect(handleChange).to.have.been.called.once
         //     });
         //     it("should notify a subscriber for a token after being appended to a parent with a different token value than the previous context", async () => {
-        //         const tokenA = DesignToken.create<number>("token-a");
+        //         const tokenA = new DesignToken<number>("token-a");
         //         tokenA.withDefault(6);
 
         //         const parent = document.createElement(`fast-${elementName}`);
@@ -932,7 +948,7 @@ describe.only("DesignTokenNode", () => {
         // describe("deleting simple values", () => {
         //     it("should throw when deleted and no parent token value is set", () => {
         //         const target = addElement();
-        //         const token = DesignToken.create<number>("test");
+        //         const token = new DesignToken<number>("test");
 
         //         token.setValueFor(target, 12);
 
@@ -946,7 +962,7 @@ describe.only("DesignTokenNode", () => {
         //     it("should allow getting a value that was set upstream", () => {
         //         const parent = addElement()
         //         const target = addElement(parent);
-        //         const token = DesignToken.create<number>("test");
+        //         const token = new DesignToken<number>("test");
 
         //         token.setValueFor(parent, 12);
         //         token.setValueFor(target, 14);
@@ -962,7 +978,7 @@ describe.only("DesignTokenNode", () => {
         // describe("deleting derived values", () => {
         //     it("should throw when deleted and no parent token value is set", () => {
         //         const target = addElement();
-        //         const token = DesignToken.create<number>("test");
+        //         const token = new DesignToken<number>("test");
 
         //         token.setValueFor(target, () => 12);
 
@@ -976,7 +992,7 @@ describe.only("DesignTokenNode", () => {
         //     it("should allow getting a value that was set upstream", () => {
         //         const parent = addElement()
         //         const target = addElement(parent);
-        //         const token = DesignToken.create<number>("test");
+        //         const token = new DesignToken<number>("test");
 
         //         token.setValueFor(parent, () => 12);
         //         token.setValueFor(target, () => 14);
@@ -990,8 +1006,8 @@ describe.only("DesignTokenNode", () => {
         //     });
 
         //     it("should cause dependent tokens to re-evaluate", () => {
-        //         const tokenA = DesignToken.create<number>("A");
-        //         const tokenB = DesignToken.create<number>("B");
+        //         const tokenA = new DesignToken<number>();
+        //         const tokenB = new DesignToken<number>();
         //         const parent = addElement();
         //         const target = addElement(parent);
 
@@ -1011,7 +1027,7 @@ describe.only("DesignTokenNode", () => {
         // describe("when used as a CSSDirective", () => {
         //     it("should set a CSS custom property for the element when the token is set for the element", async () => {
         //         const target = addElement();
-        //         const token = DesignToken.create<number>("test");
+        //         const token = new DesignToken<number>("test");
         //         token.setValueFor(target, 12);
         //         const styles = css`:host{width: calc(${token} * 1px);}`
         //         target.$fastController.addStyles(styles);
@@ -1023,7 +1039,7 @@ describe.only("DesignTokenNode", () => {
         //     it("should set a CSS custom property for the element when the token is set for an ancestor element", async () => {
         //         const parent = addElement()
         //         const target = addElement(parent);
-        //         const token = DesignToken.create<number>("test");
+        //         const token = new DesignToken<number>("test");
         //         token.setValueFor(parent, 12);
         //         const styles = css`:host{width: calc(${token} * 1px);}`
         //         target.$fastController.addStyles(styles);
@@ -1037,7 +1053,7 @@ describe.only("DesignTokenNode", () => {
         // describe("with a default value set", () => {
         //     it("should return the default value if no value is set for a target", () => {
         //         const target = addElement();
-        //         const token = DesignToken.create<number>("test");
+        //         const token = new DesignToken<number>("test");
         //         token.withDefault(2)
 
         //         expect(token.getValueFor(target)).to.equal(2);
@@ -1046,7 +1062,7 @@ describe.only("DesignTokenNode", () => {
         //     it("should return the default value for a descendent if no value is set for a target", () => {
         //         const parent = addElement()
         //         const target = addElement(parent);
-        //         const token = DesignToken.create<number>("test");
+        //         const token = new DesignToken<number>("test");
         //         token.withDefault(2)
 
         //         expect(token.getValueFor(target)).to.equal(2);
@@ -1054,7 +1070,7 @@ describe.only("DesignTokenNode", () => {
         //     });
         //     it("should return the value set and not the default if value is set", () => {
         //         const target = addElement();
-        //         const token = DesignToken.create<number>("test");
+        //         const token = new DesignToken<number>("test");
         //         token.withDefault(4)
         //         token.setValueFor(target, 2)
 
@@ -1063,7 +1079,7 @@ describe.only("DesignTokenNode", () => {
         //     });
         //     it("should get a new default value if a new default is provided", () => {
         //         const target = addElement();
-        //         const token = DesignToken.create<number>("test");
+        //         const token = new DesignToken<number>("test");
         //         token.withDefault(2);
         //         token.withDefault(4);
 
@@ -1077,7 +1093,7 @@ describe.only("DesignTokenNode", () => {
         //         const ancestor = addElement();
         //         const parent = addElement(ancestor);
         //         const target = addElement(parent);
-        //         const token = DesignToken.create<number>("test");
+        //         const token = new DesignToken<number>("test");
         //         const spy = new Map<HTMLElement, boolean>([[ancestor, false], [parent, false], [ target, false ]]);
 
         //         const subscriber: DesignTokenSubscriber<typeof token>  = {
@@ -1112,7 +1128,7 @@ describe.only("DesignTokenNode", () => {
         //     it("should notify a target-subscriber if the value is changed for the provided target", () => {
         //             const parent = addElement();
         //             const target = addElement(parent);
-        //             const token = DesignToken.create<number>("test");
+        //             const token = new DesignToken<number>("test");
 
         //             const handleChange = chia.spy(() => {});
         //             const subscriber: DesignTokenSubscriber<typeof token>  = {
@@ -1133,7 +1149,7 @@ describe.only("DesignTokenNode", () => {
         //     it("should not notify a subscriber after unsubscribing", () => {
         //         let invoked = false;
         //         const target = addElement();
-        //         const token = DesignToken.create<number>("test");
+        //         const token = new DesignToken<number>("test");
 
         //         const subscriber: DesignTokenSubscriber<typeof token>  = {
         //             handleChange(record: DesignTokenChangeRecord<typeof token>) {
@@ -1152,20 +1168,20 @@ describe.only("DesignTokenNode", () => {
 
         //     it("should infer DesignToken and CSSDesignToken token types on subscription record", () => {
         //         type AssertCSSDesignToken<T> = T extends CSSDesignToken<any> ? T : never;
-        //         DesignToken.create<number>("css").subscribe({handleChange(record) {
+        //         new DesignToken<number>("css").subscribe({handleChange(record) {
         //             const test: AssertCSSDesignToken<typeof record.token> = record.token;
         //         }});
 
         //         type AssertDesignToken<T> = T extends CSSDesignToken<any> ? never : T;
 
-        //         DesignToken.create<number>({name: "no-css", cssCustomPropertyName: null}).subscribe({handleChange(record) {
+        //         new DesignToken<number>({name: "no-css", cssCustomPropertyName: null}).subscribe({handleChange(record) {
         //             const test: AssertDesignToken<typeof record.token> = record.token;
         //         }})
         //     });
 
         //     it("should notify a subscriber when a dependency of a subscribed token changes", async () => {
-        //         const tokenA = DesignToken.create<number>("a");
-        //         const tokenB = DesignToken.create<number>("b");
+        //         const tokenA = new DesignToken<number>();
+        //         const tokenB = new DesignToken<number>();
 
         //         tokenA.withDefault(6);
         //         tokenB.withDefault((el) => tokenA.getValueFor(el) * 2);
@@ -1184,9 +1200,9 @@ describe.only("DesignTokenNode", () => {
         //     });
 
         //     it("should notify a subscriber when a dependency of a dependency of a subscribed token changes", async () => {
-        //         const tokenA = DesignToken.create<number>("a");
-        //         const tokenB = DesignToken.create<number>("b");
-        //         const tokenC = DesignToken.create<number>("c");
+        //         const tokenA = new DesignToken<number>();
+        //         const tokenB = new DesignToken<number>();
+        //         const tokenC = new DesignToken<number>("c");
 
         //         tokenA.withDefault(6);
         //         tokenB.withDefault((el) => tokenA.getValueFor(el) * 2);
@@ -1206,8 +1222,8 @@ describe.only("DesignTokenNode", () => {
         //     });
 
         //     it("should notify a subscriber when a dependency changes for an element down the DOM tree", async () => {
-        //         const tokenA = DesignToken.create<number>("a");
-        //         const tokenB = DesignToken.create<number>("b");
+        //         const tokenA = new DesignToken<number>();
+        //         const tokenB = new DesignToken<number>();
 
         //         const target = addElement();
 
@@ -1227,8 +1243,8 @@ describe.only("DesignTokenNode", () => {
         //         expect(handleChange).to.have.been.called();
         //     })
         //     it("should notify a subscriber when a static-value dependency of subscribed token changes for a parent of the subscription target", async () => {
-        //         const tokenA = DesignToken.create<number>("a");
-        //         const tokenB = DesignToken.create<number>("b");
+        //         const tokenA = new DesignToken<number>();
+        //         const tokenB = new DesignToken<number>();
 
         //         const parent = addElement();
         //         const target = addElement(parent)
@@ -1250,8 +1266,8 @@ describe.only("DesignTokenNode", () => {
         //         expect(tokenB.getValueFor(target)).to.equal(14)
         //     });
         //     it("should notify a subscriber when a derived-value dependency of subscribed token changes for a parent of the subscription target", async () => {
-        //         const tokenA = DesignToken.create<number>("a");
-        //         const tokenB = DesignToken.create<number>("b");
+        //         const tokenA = new DesignToken<number>();
+        //         const tokenB = new DesignToken<number>();
 
         //         const parent = addElement();
         //         const target = addElement(parent)
@@ -1273,8 +1289,8 @@ describe.only("DesignTokenNode", () => {
         //         expect(tokenB.getValueFor(target)).to.equal(14)
         //     });
         //     it("should notify a subscriber when a dependency of subscribed token changes for a parent of the subscription target", async () => {
-        //         const tokenA = DesignToken.create<number>("a");
-        //         const tokenB = DesignToken.create<number>("b");
+        //         const tokenA = new DesignToken<number>();
+        //         const tokenB = new DesignToken<number>();
 
         //         const grandparent = addElement();
         //         const parent = addElement(grandparent)
@@ -1300,14 +1316,14 @@ describe.only("DesignTokenNode", () => {
         // describe("with root registration", () => {
         //     it("should not emit CSS custom properties for the default value", () => {
         //         DesignToken.unregisterRoot();
-        //         const token = DesignToken.create<number>('default-no-root').withDefault(12);
+        //         const token = new DesignToken<number>('default-no-root').withDefault(12);
         //         const styles = window.getComputedStyle(document.body);
 
         //         expect(styles.getPropertyValue(token.cssCustomProperty)).to.equal("");
         //     });
 
         //     it("should emit CSS custom properties for the default value when a design token root is registered", async () => {
-        //         const token = DesignToken.create<number>('default-with-root').withDefault(12);
+        //         const token = new DesignToken<number>('default-with-root').withDefault(12);
         //         const styles = window.getComputedStyle(document.body);
 
         //         DesignToken.registerRoot();
@@ -1319,7 +1335,7 @@ describe.only("DesignTokenNode", () => {
         //     });
 
         //     it("should remove emitted CSS custom properties for a root when the root is deregistered", async () => {
-        //         const token = DesignToken.create<number>('deregistered-root').withDefault(12);
+        //         const token = new DesignToken<number>('deregistered-root').withDefault(12);
         //         const styles = window.getComputedStyle(document.body);
 
         //         DesignToken.registerRoot();
@@ -1335,7 +1351,7 @@ describe.only("DesignTokenNode", () => {
         //     });
 
         //     it("should emit CSS custom properties to an element when the element is provided as a root", async () => {
-        //         const token = DesignToken.create<number>('default-with-element-root').withDefault(12);
+        //         const token = new DesignToken<number>('default-with-element-root').withDefault(12);
         //         const element = addElement();
 
         //         DesignToken.registerRoot(element);
@@ -1348,7 +1364,7 @@ describe.only("DesignTokenNode", () => {
         //     });
         //     it("should emit CSS custom properties to multiple roots", async () => {
         //         DesignToken.unregisterRoot();
-        //         const token = DesignToken.create<number>('default-with-multiple-roots').withDefault(12);
+        //         const token = new DesignToken<number>('default-with-multiple-roots').withDefault(12);
         //         const a = addElement();
         //         const b = addElement();
 
