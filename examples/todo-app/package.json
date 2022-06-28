@@ -2,12 +2,14 @@
   "name": "fast-todo-app",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/main.js",
+  "main": "dist/exports.js",
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "webpack --mode=production",
-    "dev": "webpack serve"
+    "build": "webpack --mode=production && tsc -p tsconfig.json",
+    "dev": "webpack serve",
+    "prepare": "yarn build",
+    "test": "yarn build"
   },
   "author": {
     "name": "Microsoft",
@@ -21,7 +23,7 @@
     "directory": "examples/todo-app"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.2",
+    "@microsoft/fast-element": "^2.0.0-beta.3",
     "tslib": "^2.4.0"
   },
   "devDependencies": {

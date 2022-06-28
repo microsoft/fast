@@ -53,7 +53,7 @@ export const Aspect: Readonly<{
     readonly content: 4;
     readonly tokenList: 5;
     readonly event: 6;
-    readonly assign: (directive: Aspected, value: string) => void;
+    readonly assign: (directive: Aspected, value?: string) => void;
 }>;
 
 // @public
@@ -209,6 +209,19 @@ export type Constructable<T = {}> = {
 export type ConstructibleStyleStrategy = {
     new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
 };
+
+// @public
+export interface ContentTemplate {
+    create(): ContentView;
+}
+
+// @public
+export interface ContentView {
+    bind(source: any, context: ExecutionContext): void;
+    insertBefore(node: Node): void;
+    remove(): void;
+    unbind(): void;
+}
 
 // @public
 export class Controller<TElement extends HTMLElement = HTMLElement> extends PropertyChangeNotifier {

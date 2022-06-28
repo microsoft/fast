@@ -173,6 +173,14 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 <hr/>
 
+### Variables
+
+| Name             | Description                                                                                                                                                                                                                                                                                                                                                          | Type                                  |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `AutoUpdateMode` | Defines if the component updates its position automatically. Calling update() always provokes an update. anchor - the component only updates its position when the anchor resizes (default) auto - the component updates its position when: - update() is called - the anchor resizes - the window resizes - the viewport resizes - any scroll event in the document | `{ anchor: "anchor", auto: "auto", }` |
+
+<hr/>
+
 
 ## Additional resources
 

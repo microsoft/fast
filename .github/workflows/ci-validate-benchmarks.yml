@@ -1,0 +1,230 @@
+name: Validate Benchmarks
+
+on:
+  pull_request:
+    branches:
+      - master
+      - releases/*
+      - features/*
+    paths:
+      - 'packages/web-components/fast-element/**'
+
+jobs:
+  setup:
+    name: Setup Tachometer Reporting
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Initialize tachometer comment
+        uses: andrewiggins/tachometer-reporter-action@v2
+        with:
+            initialize: true
+
+  render_create10k:
+    name: Run rendering benchmark with create 10k elements operation
+    needs: [setup]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=render --versions master ${GITHUB_HEAD_REF} --operations=create10k
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element-render-create10k.json
+
+  render_update10th:
+    name: Run rendering benchmark with update 10th operation
+    needs: [setup]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=render --versions master ${GITHUB_HEAD_REF} --operations=update10th
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element-render-update10th.json
+
+  render_createDelete5x:
+    name: Run rendering benchmark with create and delete 5 times operation
+    needs: [setup]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=render --versions master ${GITHUB_HEAD_REF} --operations=createDelete5x
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element-render-createDelete5x.json
+
+  repeat_reverse:
+    name: Run repeat benchmark with nested template, reverse method
+    needs: [setup]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=reverse --operations=clickTrigger10x --queryParam loopCount=200 itemCount=200
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element-repeat-reverse_clickTrigger10x.json
+
+  repeat_push:
+    name: Run repeat benchmark with nested template, push method
+    needs: [setup]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=push --operations=clickTrigger10x --queryParam loopCount=200 itemCount=200
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element-repeat-push_clickTrigger10x.json
+
+  repeat_unshift:
+    name: Run repeat benchmark with nested template, unshift method
+    needs: [setup]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=unshift --operations=clickTrigger10x --queryParam loopCount=200 itemCount=200 addCount=1
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element-repeat-unshift_clickTrigger10x.json
+
+  repeat_shift:
+    name: Run repeat benchmark with nested template, shift method
+    needs: [setup]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=shift --operations=clickTrigger10x --queryParam loopCount=200 itemCount=200
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element-repeat-shift_clickTrigger10x.json
+
+  repeat_splice:
+      name: Run repeat benchmark with basic template, splice method
+      needs: [setup]
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/checkout@v3
+
+        - uses: actions/setup-node@v1
+          with:
+              node-version: "16.x"
+
+        - name: Run tachometer and generate results file
+          run: |
+              cd packages/utilities/fast-benchmarks
+              yarn install
+              yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates basic --method=splice --operations=clickTrigger10x --queryParam loopCount=1000 itemCount=1000 deleteCount=10 addCount=10
+
+        - name: Upload results
+          uses: actions/upload-artifact@v2
+          with:
+              name: results
+              path: packages/utilities/fast-benchmarks/results/fast-element-repeat-splice_clickTrigger10x.json
+
+  report_results:
+    name: Report Results
+    needs: [render_create10k, render_update10th, render_createDelete5x, repeat_reverse, repeat_push, repeat_unshift, repeat_shift, repeat_splice]
+    runs-on: ubuntu-latest
+
+    steps:
+        - uses: actions/download-artifact@v2
+          with:
+              name: results
+              path: packages/utilities/fast-benchmarks/results
+              
+        - name: Report Tachometer Result
+          uses: andrewiggins/tachometer-reporter-action@v2
+          with:
+              name: results
+              path: packages/utilities/fast-benchmarks/results/*.json

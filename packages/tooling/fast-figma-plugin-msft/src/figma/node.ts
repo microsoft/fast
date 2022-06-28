@@ -1,3 +1,4 @@
+import { isDark, SwatchRGB } from "@fluentui/web-components";
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
 import {
     AppliedDesignTokens,
@@ -7,6 +8,7 @@ import {
 } from "../core/model";
 import { PluginNode } from "../core/node";
 import { DesignTokenType } from "../core/ui/design-token-registry";
+import { variantBooleanHelper } from "./utility";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -307,6 +309,29 @@ export class FigmaPluginNode extends PluginNode {
         }
 
         return null;
+    }
+
+    public handleManualDarkMode(): boolean {
+        if (isInstanceNode(this.node)) {
+            if (this.node.variantProperties) {
+                const currentDarkMode = this.node.variantProperties["Dark mode"];
+                if (currentDarkMode) {
+                    const color = this.getEffectiveFillColor();
+                    if (color) {
+                        const containerIsDark = isDark(SwatchRGB.from(color));
+                        // console.log("handleManualDarkMode", this.node.variantProperties['Dark mode'], "color", color.toStringHexRGB(), "dark", containerIsDark);
+                        this.node.setProperties({
+                            "Dark mode": variantBooleanHelper(currentDarkMode)(
+                                containerIsDark
+                            ),
+                        });
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     protected getPluginData<K extends keyof PluginNodeData>(key: K): string | undefined {

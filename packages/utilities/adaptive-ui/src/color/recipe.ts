@@ -37,22 +37,22 @@ export interface InteractiveColorRecipe {
  */
 export interface InteractiveSwatchSet {
     /**
-     * The Swatch to apply to the rest state
+     * The Swatch to apply to the rest state.
      */
     rest: Swatch;
 
     /**
-     * The Swatch to apply to the hover state
+     * The Swatch to apply to the hover state.
      */
     hover: Swatch;
 
     /**
-     * The Swatch to apply to the active state
+     * The Swatch to apply to the active state.
      */
     active: Swatch;
 
     /**
-     * The Swatch to apply to the focus state
+     * The Swatch to apply to the focus state.
      */
     focus: Swatch;
 }

@@ -1,0 +1,72 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
+    "timeout": 0,
+    "benchmarks": [
+        {
+            "name": "fast-element",
+            "browser": {
+                "name": "chrome",
+                "headless": true,
+                "addArguments": ["--js-flags=--expose-gc", "--enable-precise-memory-info"]
+            },
+            "measurement": [
+                {
+                    "name": "usedJSHeapSize",
+                    "mode": "expression",
+                    "expression": "window.usedJSHeapSize"
+                }
+            ],
+
+            "expand": [
+                {
+                    "name": "previous-version",
+                    "url": "fast-element/binding/index.html",
+                    "packageVersions": {
+                        "label": "1.4.0",
+                        "dependencies": {
+                            "@microsoft/fast-element": "1.4.0"
+                        }
+                    }
+                },
+                {
+                    "name": "current-version",
+                    "url": "fast-element/binding/index.html",
+                    "packageVersions": {
+                        "label": "master",
+                        "dependencies": {
+                            "@microsoft/fast-element": {
+                                "kind": "git",
+                                "repo": "https://github.com/microsoft/fast.git",
+                                "ref": "master",
+                                "subdir": "packages/web-components/fast-element",
+                                "setupCommands": [
+                                    "yarn install",
+                                    "yarn --cwd ./packages/web-components/fast-element build"
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "local-version",
+                    "url": "fast-element/binding/index2.html",
+                    "packageVersions": {
+                        "label": "local",
+                        "dependencies": {
+                            "@microsoft/fast-element": {
+                                "kind": "git",
+                                "repo": "https://github.com/microsoft/fast.git",
+                                "ref": "features/fast-element-2",
+                                "subdir": "packages/web-components/fast-element",
+                                "setupCommands": [
+                                    "yarn install",
+                                    "yarn --cwd ./packages/web-components/fast-element build"
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

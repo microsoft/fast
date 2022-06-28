@@ -20,6 +20,12 @@
                 },
                 "extendDefaults": true
             }
+        ],
+        "no-restricted-imports": [
+            "error",
+            {
+                "patterns": ["**/stories/**"]
+            }
         ]
     }
 }

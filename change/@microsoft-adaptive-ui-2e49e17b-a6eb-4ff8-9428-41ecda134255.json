@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Added elevation design tokens",
+  "packageName": "@microsoft/adaptive-ui",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
