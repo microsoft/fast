@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Card as FoundationCard } from "../../card/card.js";
+import type { FASTCard as FoundationCard } from "../../card/card.js";
 import { Skeleton as FoundationSkeleton, SkeletonShape } from "../skeleton.js";
 
 type SkeletonStoryArgs = Args & FoundationSkeleton;
