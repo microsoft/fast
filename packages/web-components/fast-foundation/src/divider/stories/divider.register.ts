@@ -21,7 +21,7 @@ const styles = css`
     }
 `;
 
-FASTDivider.compose({
+FASTDivider.define({
     name: "fast-divider",
     styles,
     template: dividerTemplate(),
