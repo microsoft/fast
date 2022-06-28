@@ -2821,20 +2821,6 @@ export const VerticalPosition: {
 export type VerticalPosition = typeof VerticalPosition[keyof typeof VerticalPosition];
 
 // @public
-export const WeekdayFormat: {
-    readonly long: "long";
-    readonly narrow: "narrow";
-    readonly short: "short";
-};
-
-// @public
-export type WeekdayFormat = typeof WeekdayFormat[keyof typeof WeekdayFormat];
-
-// @public
-export type WeekdayText = {
-    text: string;
-    abbr?: string;
-};
 export class VirtualList extends FoundationElement {
     autoResizeItems: boolean;
     autoUpdateMode: VirtualListAutoUpdateMode;
@@ -2928,7 +2914,20 @@ export const virtualListItemTemplate: FoundationElementTemplate<ViewTemplate<Vir
 export const virtualListTemplate: FoundationElementTemplate<ViewTemplate<VirtualList>>;
 
 // @public
-export type WeekdayFormat = "long" | "narrow" | "short";
+export const WeekdayFormat: {
+    readonly long: "long";
+    readonly narrow: "narrow";
+    readonly short: "short";
+};
+
+// @public
+export type WeekdayFormat = typeof WeekdayFormat[keyof typeof WeekdayFormat];
+
+// @public
+export type WeekdayText = {
+    text: string;
+    abbr?: string;
+};
 
 // @public
 export const whitespaceFilter: ElementsFilter;

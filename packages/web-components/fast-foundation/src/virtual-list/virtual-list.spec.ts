@@ -1,9 +1,8 @@
 import { expect } from "chai";
-import { VirtualList, virtualListTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { VirtualList, virtualListTemplate as template } from "./index.js";
+import { fixture } from "../testing/fixture.js";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { DOM, customElement, html } from "@microsoft/fast-element";
-import { timeout } from "../test-utilities/timeout";
 
 const FASTVirtualList = VirtualList.compose({
     baseName: "virtual-list",

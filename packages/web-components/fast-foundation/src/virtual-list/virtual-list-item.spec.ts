@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { VirtualListItem } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { VirtualListItem } from "./index.js";
+import { fixture } from "../testing/fixture.js";
 import { DOM,html } from "@microsoft/fast-element";
-import { IdleCallbackQueue } from "../utilities/idle-callback-queue";
+import { IdleCallbackQueue } from "../utilities/idle-callback-queue.js";
 
 const FASTVirtualListItem = VirtualListItem.compose({
     baseName: "virtual-list-item"
