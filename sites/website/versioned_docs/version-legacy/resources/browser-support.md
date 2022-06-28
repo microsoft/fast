@@ -8,7 +8,7 @@ keywords:
   - browser support
 ---
 
-The following browsers have native support for the Web Components features used by `fast-element` and our components:
+The following browsers have native support for the Web Components features used by `fast-element`:
 
 * Microsoft Edge 79+
 * Mozilla Firefox 63+
@@ -21,3 +21,5 @@ The following browsers have native support for the Web Components features used 
 * Chrome for Android 81+
 * Firefox for Android 68+
 * Samsung Internet 6.2+x
+
+For `fast-foundation` we will support the last 4 versions of all major browsers. This approach allows us to take advantage of improvements and new features being added to the web platform.
