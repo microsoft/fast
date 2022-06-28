@@ -32,15 +32,15 @@ export interface SizeMap {
 }
 
 /**
- *  The VirtualListItem class
+ *  The VirtualListItem class.  Note that all props are set at runtime by the parent list.
  *
  * @public
  */
 export class VirtualListItem extends FoundationElement {
     /**
+     * Controls how the item loads content
      *
-     *
-     * @public
+     * @internal
      */
     @observable
     public loadMode: VirtualListItemLoadMode;
@@ -48,7 +48,7 @@ export class VirtualListItem extends FoundationElement {
     /**
      * The data associated with this item
      *
-     * @public
+     * @internal
      */
     @observable
     public itemData: object;
@@ -56,7 +56,7 @@ export class VirtualListItem extends FoundationElement {
     /**
      * The index of the item in the items array.
      *
-     * @public
+     * @internal
      */
     @observable
     public itemIndex: number;
@@ -64,7 +64,7 @@ export class VirtualListItem extends FoundationElement {
     /**
      *  Custom context provided to the parent virtual list
      *
-     * @public
+     * @internal
      */
     @observable
     public listItemContext: object;
@@ -72,7 +72,7 @@ export class VirtualListItem extends FoundationElement {
     /**
      *  idleCallbackQueue instance
      *
-     * @public
+     * @internal
      */
     @observable
     public idleCallbackQueue: IdleCallbackQueue;
@@ -80,7 +80,7 @@ export class VirtualListItem extends FoundationElement {
     /**
      * The viewtemplate used to render the item contents
      *
-     * @public
+     * @internal
      */
     @observable
     public listItemContentsTemplate: ViewTemplate;
@@ -88,7 +88,7 @@ export class VirtualListItem extends FoundationElement {
     /**
      * The list sizemap
      *
-     * @public
+     * @internal
      */
     @observable
     public sizeMap: SizeMap[];
@@ -99,7 +99,7 @@ export class VirtualListItem extends FoundationElement {
     /**
      * The item sizemap
      *
-     * @public
+     * @internal
      */
     @observable
     public itemSizeMap: SizeMap;
