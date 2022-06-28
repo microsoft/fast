@@ -126,7 +126,7 @@ export class VirtualList extends FoundationElement {
      * @remarks
      * HTML Attribute: orientation
      */
-    @attr
+    @attr({ attribute: "orientation" })
     public orientation: Orientation = Orientation.vertical;
     private orientationChanged(): void {
         if (this.$fastController.isConnected) {
@@ -143,7 +143,7 @@ export class VirtualList extends FoundationElement {
      * HTML Attribute: auto-update-mode
      */
     @attr({ attribute: "auto-update-mode" })
-    public autoUpdateMode: VirtualListAutoUpdateMode = "manual";
+    public autoUpdateMode: VirtualListAutoUpdateMode = "viewport";
     private autoUpdateModeChanged(
         prevMode: VirtualListAutoUpdateMode,
         newMode: VirtualListAutoUpdateMode
@@ -272,14 +272,6 @@ export class VirtualList extends FoundationElement {
     public listItemContentsTemplate: ViewTemplate;
 
     /**
-     * Used to pass custom context objects to list items.
-     *
-     * @public
-     */
-    @observable
-    public listItemContext: object;
-
-    /**
      * Determines when child virtual list items load content,
      * or more specifically when the item's "loadContent" observable prop
      * becomes 'true'.
@@ -309,6 +301,14 @@ export class VirtualList extends FoundationElement {
             this.idleCallbackQueue.idleCallbackTimeout = this.idleCallbackTimeout;
         }
     }
+
+    /**
+     * Used to pass custom context objects to list items.
+     *
+     * @public
+     */
+    @observable
+    public listItemContext: object;
 
     /**
      * The default ViewTemplate used to render items vertically.

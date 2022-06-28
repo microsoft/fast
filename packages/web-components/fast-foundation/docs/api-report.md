@@ -2891,16 +2891,23 @@ export class VirtualListItem extends FoundationElement {
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
+    // @internal
     idleCallbackQueue: IdleCallbackQueue;
+    // @internal
     itemData: object;
+    // @internal
     itemIndex: number;
+    // @internal
     itemSizeMap: SizeMap;
+    // @internal
     listItemContentsTemplate: ViewTemplate;
+    // @internal
     listItemContext: object;
     // @internal
     loadContent: boolean;
-    // (undocumented)
+    // @internal
     loadMode: VirtualListItemLoadMode;
+    // @internal
     sizeMap: SizeMap[];
 }
 
