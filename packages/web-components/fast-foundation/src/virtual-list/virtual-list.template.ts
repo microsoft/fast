@@ -1,6 +1,6 @@
 import { html, ref, ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type { ElementDefinitionContext } from "..";
+import type { ElementDefinitionContext } from "../design-system/registration-context.js";
 import type { FoundationElementTemplate } from "../foundation-element/index.js";
 import type { VirtualList } from "./virtual-list.js";
 import { VirtualListItem } from "./virtual-list-item.js";

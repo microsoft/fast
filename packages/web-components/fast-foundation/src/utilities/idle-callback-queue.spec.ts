@@ -1,5 +1,5 @@
 import { DOM } from "@microsoft/fast-element";
-import { IdleCallbackQueue } from "./idle-callback-queue";
+import { IdleCallbackQueue } from "./idle-callback-queue.js";
 import { expect } from "chai";
 
 describe("The idle callback queu", () => {

@@ -725,12 +725,17 @@ export class VirtualList extends FoundationElement {
             return;
         }
 
-        this.itemsRepeatBehavior = new RepeatDirective(
+        const itemsRepeatDirective = new RepeatDirective(
             x => x.visibleItems,
             x => x.itemTemplate,
             { positioning: true, recycle: this.recycle }
-        ).createBehavior(this.itemsPlaceholder);
-        this.$fastController.addBehaviors([this.itemsRepeatBehavior]);
+        );
+        this.itemsRepeatBehavior = itemsRepeatDirective.createBehavior({
+            [itemsRepeatDirective.nodeId]: this.itemsPlaceholder,
+        });
+
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
     }
 
     /**
