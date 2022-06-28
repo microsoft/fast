@@ -3,14 +3,14 @@ import { Updates } from "@microsoft/fast-element";
 import { fixture } from "../testing/fixture.js";
 import { tooltipTemplate as template, Tooltip } from "./index.js";
 import { TooltipPosition } from "./tooltip.js";
-import { AnchoredRegion, anchoredRegionTemplate } from '../anchored-region/index.js';
+import { FASTAnchoredRegion, anchoredRegionTemplate } from '../anchored-region/index.js';
 
 const FASTTooltip = Tooltip.compose({
     baseName: "tooltip",
     template
 })
 
-const FASTAnchoredRegion = AnchoredRegion.compose({
+const FASTAnchoredRegion = FASTAnchoredRegion.compose({
     baseName: "anchored-region",
     template: anchoredRegionTemplate
 })

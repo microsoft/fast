@@ -1,6 +1,6 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { AnchoredRegion } from "../anchored-region/anchored-region.js";
+import { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import { MenuItemRole } from "./menu-item.js";
@@ -77,7 +77,7 @@ export const menuItemTemplate: FoundationElementTemplate<
         ${when(
             x => x.expanded,
             html<MenuItem>`
-                <${context.tagFor(AnchoredRegion)}
+                <${context.tagFor(FASTAnchoredRegion)}
                     :anchorElement="${x => x}"
                     vertical-positioning-mode="dynamic"
                     vertical-default-position="bottom"
@@ -91,7 +91,7 @@ export const menuItemTemplate: FoundationElementTemplate<
                     part="submenu-region"
                 >
                     <slot name="submenu"></slot>
-                </${context.tagFor(AnchoredRegion)}>
+                </${context.tagFor(FASTAnchoredRegion)}>
             `
         )}
     </template>

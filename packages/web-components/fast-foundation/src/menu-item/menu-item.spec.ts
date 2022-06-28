@@ -4,14 +4,14 @@ import { fixture } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 import { MenuItemRole } from "./menu-item.js";
 import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
-import { AnchoredRegion, anchoredRegionTemplate } from "../anchored-region/index.js";
+import { FASTAnchoredRegion, anchoredRegionTemplate } from "../anchored-region/index.js";
 
 const FASTMenuItem = MenuItem.compose({
     baseName: "menu-item",
     template
 })
 
-const FASTAnchoredRegion = AnchoredRegion.compose({
+const FASTAnchoredRegion = FASTAnchoredRegion.compose({
     baseName: "anchored-region",
     template: anchoredRegionTemplate
 })

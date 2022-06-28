@@ -21,7 +21,7 @@ import {
     uniqueId,
 } from "@microsoft/fast-web-utilities";
 import {
-    AnchoredRegion,
+    FASTAnchoredRegion,
     AnchoredRegionConfig,
     FlyoutPosBottom,
     FlyoutPosBottomFill,
@@ -440,7 +440,7 @@ export class Picker extends FormAssociatedPicker {
      *
      * @internal
      */
-    public region: AnchoredRegion;
+    public region: FASTAnchoredRegion;
 
     /**
      *

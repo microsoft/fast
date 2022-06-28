@@ -11,7 +11,7 @@ import {
     keyEnter,
     keySpace,
 } from "@microsoft/fast-web-utilities";
-import type { AnchoredRegion } from "../anchored-region/anchored-region.js";
+import type { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
 import {
     FoundationElement,
     FoundationElementDefinition,
@@ -135,7 +135,7 @@ export class MenuItem extends FoundationElement {
      * @internal
      */
     @observable
-    public submenuRegion: AnchoredRegion;
+    public submenuRegion: FASTAnchoredRegion;
 
     /**
      * @internal

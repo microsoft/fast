@@ -1,6 +1,6 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { AnchoredRegion } from "../anchored-region/anchored-region.js";
+import { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { Tooltip } from "./tooltip.js";
 
@@ -16,7 +16,7 @@ export const tooltipTemplate: FoundationElementTemplate<ViewTemplate<Tooltip>> =
         ${when(
             x => x.tooltipVisible,
             html<Tooltip>`
-            <${context.tagFor(AnchoredRegion)}
+            <${context.tagFor(FASTAnchoredRegion)}
                 fixed-placement="true"
                 auto-update-mode="${x => x.autoUpdateMode}"
                 vertical-positioning-mode="${x => x.verticalPositioningMode}"
@@ -35,7 +35,7 @@ export const tooltipTemplate: FoundationElementTemplate<ViewTemplate<Tooltip>> =
                 <div class="tooltip" part="tooltip" role="tooltip">
                     <slot></slot>
                 </div>
-            </${context.tagFor(AnchoredRegion)}>
+            </${context.tagFor(FASTAnchoredRegion)}>
         `
         )}
     `;

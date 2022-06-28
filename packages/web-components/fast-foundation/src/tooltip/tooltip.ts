@@ -1,7 +1,7 @@
 import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
 import { Direction, keyEscape } from "@microsoft/fast-web-utilities";
 import type {
-    AnchoredRegion,
+    FASTAnchoredRegion,
     AutoUpdateMode,
     AxisPositioningMode,
     AxisScalingMode,
@@ -255,7 +255,7 @@ export class Tooltip extends FoundationElement {
      *
      * @internal
      */
-    public region: AnchoredRegion;
+    public region: FASTAnchoredRegion;
 
     /**
      * The timer that tracks delay time before the tooltip is shown on hover

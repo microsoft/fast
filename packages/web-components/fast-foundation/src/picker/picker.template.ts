@@ -1,5 +1,5 @@
 import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
-import { AnchoredRegion } from "../anchored-region/anchored-region.js";
+import { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { ElementDefinitionContext } from "../design-system/registration-context.js";
 import type { Picker } from "./picker.js";
@@ -40,7 +40,7 @@ export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>> = (
     context,
     definition
 ) => {
-    const anchoredRegionTag: string = context.tagFor(AnchoredRegion);
+    const anchoredRegionTag: string = context.tagFor(FASTAnchoredRegion);
     const pickerMenuTag: string = context.tagFor(PickerMenu);
     const pickerListTag: string = context.tagFor(PickerList);
     const progressRingTag: string = context.tagFor(PickerList);
