@@ -160,8 +160,41 @@ flowchart
 
 `@microsoft/fast-element` provides a thin layer of opinion on top of Web Components, lifting the level of abstraction just enough to make it easier and faster to build components. `@microsoft/fast-element` helps by providing attribute/property syncing, rich Model-View-ViewModel (MVVM), efficient template rendering/update, style composition, and much more. The entire `@microsoft/fast-element` library, *without* tree-shaking, is around 10kb minified and GZipped. It was designed for tree-shaking from the beginning, so any feature you don't use when building a component will be removed during build, allowing for highly efficient optimized payloads as small as 4.5k.
 
+<DocCardList>
+  <DocCardItem
+    href='./components/getting-started.md'
+    title='Glossary'
+    description='A glossary of terms.'
+  />
+  <DocCardItem
+    href='./fast-element/getting-started.md'
+    title='FAQ'
+    description='A list of frequently asked questions.'
+  />
+</DocCardList>
+
+<hr />
+
 ## Joining the community
 
-Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via GitHub](https://github.com/Microsoft/fast/labels/community:good-first-issue).
+We look forward to building an amazing open source community with you.
 
-We look forward to building an amazing open source community with you!
+<DocCardList>
+  <div>
+  <DocCardItem
+    href='.https://discord.gg/FcSNfg4'
+    title='Discord'
+    description='Our community is most active on Discord.'
+  />
+  </div>
+  <DocCardItem
+    href='./fast-element/getting-started.md'
+    title='GitHub'
+    description='Submit requests and issues on GitHub.'
+  />
+  <DocCardItem
+    href='./fast-element/getting-started.md'
+    title='Stack Overflow'
+    description='Use our Stack Overflow tag to ask a question.'
+  />
+</DocCardList>
