@@ -4,24 +4,23 @@ import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { FASTBreadcrumbItem, breadcrumbItemTemplate } from "../breadcrumb-item/index.js";
 import { Updates } from "@microsoft/fast-element";
 
-const breadcrumbName = uniqueElementName();
-FASTBreadcrumb.define({
-    name: breadcrumbName,
+const Breadcrumb = FASTBreadcrumb.define({
+    name: uniqueElementName("breadcrumb"),
     template: breadcrumbTemplate()
 });
 
-const breadcrumbItemName = uniqueElementName();
-FASTBreadcrumbItem.define({
+const breadcrumbItemName = uniqueElementName("breadcrumb-item");
+const BreadcrumbItem = FASTBreadcrumbItem.define({
     name: breadcrumbItemName,
     template: breadcrumbItemTemplate()
 });
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTBreadcrumb>(breadcrumbName);
+    const { element, connect, disconnect } = await fixture(Breadcrumb);
 
-    const item1 = document.createElement(breadcrumbItemName);
-    const item2 = document.createElement(breadcrumbItemName);
-    const item3 = document.createElement(breadcrumbItemName);
+    const item1 = new BreadcrumbItem();
+    const item2 = new BreadcrumbItem();
+    const item3 = new BreadcrumbItem();
 
     element.appendChild(item1);
     element.appendChild(item2);
@@ -93,9 +92,9 @@ describe("Breadcrumb", () => {
     it("should remove aria-current from any prior Breadcrumb Item children with hrefs when a new node is appended", async () => {
         const { element, connect, disconnect, item1, item2, item3 } = await setup();
 
-        (item1 as FASTBreadcrumbItem).setAttribute("href", "#");
-        (item2 as FASTBreadcrumbItem).setAttribute("href", "#");
-        (item3 as FASTBreadcrumbItem).setAttribute("href", "#");
+        item1.setAttribute("href", "#");
+        item2.setAttribute("href", "#");
+        item3.setAttribute("href", "#");
 
         await connect();
 
@@ -103,8 +102,8 @@ describe("Breadcrumb", () => {
             element.querySelectorAll(breadcrumbItemName)[2].getAttribute("aria-current")
         ).to.equal("page");
 
-        const item4 = document.createElement("fast-breadcrumb-item");
-        (item4 as FASTBreadcrumbItem).setAttribute("href", "#");
+        const item4 = new BreadcrumbItem();
+        item4.setAttribute("href", "#");
         element.appendChild(item4);
 
         await Updates.next();
@@ -142,7 +141,7 @@ describe("Breadcrumb", () => {
             element.querySelectorAll("a[href]")[2].getAttribute("aria-current")
         ).to.equal("page");
 
-        const item4 = document.createElement(breadcrumbItemName);
+        const item4 = new BreadcrumbItem();
         const anchor4 = document.createElement("a");
         anchor4.href = "#";
 

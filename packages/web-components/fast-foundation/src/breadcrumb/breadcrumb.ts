@@ -38,7 +38,7 @@ export class FASTBreadcrumb extends FASTElement {
 
     private setItemSeparator(item: HTMLElement, isLastNode: boolean): void {
         if (item instanceof FASTBreadcrumbItem) {
-            (item as FASTBreadcrumbItem).separator = !isLastNode;
+            item.separator = !isLastNode;
         }
     }
 
@@ -68,8 +68,8 @@ export class FASTBreadcrumb extends FASTElement {
             item instanceof FASTBreadcrumbItem
         ) {
             isLastNode
-                ? (item as FASTBreadcrumbItem).setAttribute("aria-current", "page")
-                : (item as FASTBreadcrumbItem).removeAttribute("aria-current");
+                ? item.setAttribute("aria-current", "page")
+                : item.removeAttribute("aria-current");
         } else if (childNodeWithHref !== null) {
             isLastNode
                 ? childNodeWithHref.setAttribute("aria-current", "page")
