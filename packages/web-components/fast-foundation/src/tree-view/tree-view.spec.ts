@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { TreeView, treeViewTemplate as template } from "./index.js";
-import { TreeItem, treeItemTemplate as itemTemplate } from "../tree-item/index.js";
+import { FASTTreeItem, treeItemTemplate as itemTemplate } from "../tree-item/index.js";
 import { fixture } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 
@@ -9,7 +9,7 @@ const FASTTreeView = TreeView.compose({
     template
 })
 
-const FASTTreeItem = TreeItem.compose({
+const FASTTreeItem = FASTTreeItem.compose({
     baseName: "tree-item",
     template: itemTemplate
 })
