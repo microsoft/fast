@@ -89,36 +89,6 @@ describe("Breadcrumb", () => {
         await disconnect();
     });
 
-    it("should remove aria-current from any prior Breadcrumb Item children with hrefs when a new node is appended", async () => {
-        const { element, connect, disconnect, item1, item2, item3 } = await setup();
-
-        item1.setAttribute("href", "#");
-        item2.setAttribute("href", "#");
-        item3.setAttribute("href", "#");
-
-        await connect();
-
-        expect(
-            element.querySelectorAll(breadcrumbItemName)[2].getAttribute("aria-current")
-        ).to.equal("page");
-
-        const item4 = new BreadcrumbItem();
-        item4.setAttribute("href", "#");
-        element.appendChild(item4);
-
-        await Updates.next();
-
-        expect(
-            element.querySelectorAll(breadcrumbItemName)[2].hasAttribute("aria-current")
-        ).to.equal(false);
-
-        expect(
-            element.querySelectorAll(breadcrumbItemName)[3].getAttribute("aria-current")
-        ).to.equal("page");
-
-        await disconnect();
-    });
-
     it("should remove aria-current from any prior Breadcrumb Item children with child anchors when a new node is appended", async () => {
         const { element, connect, disconnect, item1, item2, item3 } = await setup();
 
