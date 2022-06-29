@@ -3,8 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { uniqueElementName } from '@microsoft/fast-foundation/testing';
 import { expect } from "chai";
-import { DesignSystem, FoundationElement } from "@microsoft/fast-foundation";
-import { provideReactWrapper } from './index.js';
+import { reactWrapper } from './index.js';
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 type CustomElementProperties = {
@@ -102,27 +101,7 @@ class DecoratedTestElement extends FASTElement {
   @attr({ converter: nullableNumberConverter }) rnum = -1;
 }
 
-const composedElementName = uniqueElementName();
-class ComposedTestElement extends FoundationElement {
-  @observable bool = false;
-  @observable str = '';
-  @observable num = -1;
-  @observable obj: {[index: string]: unknown} | null | undefined = null;
-  @observable arr: unknown[] | null | undefined = null;
-  @attr({ mode: "boolean" }) rbool = false;
-  @attr rstr = '';
-  @attr({ converter: nullableNumberConverter }) rnum = -1;
-}
 
-const composedTestElement = ComposedTestElement.compose({
-  baseName: composedElementName,
-  template: html`<slot></slot>`
-});
-
-const composedTestElement2 = ComposedTestElement.compose({
-  baseName: composedElementName + '-bis',
-  template: html`<slot></slot>`
-});
 
 const scenarios = [
   {
@@ -130,21 +109,6 @@ const scenarios = [
     elementName: decoratedElementName,
     wrap: (x: any) => x(DecoratedTestElement, {
       events: restTestEvents
-    })
-  },
-  {
-    description: 'Wrapping a composed FoundationElement',
-    elementName: `fast-${composedElementName}`,
-    wrap: (x: any) => x(composedTestElement(), {
-      events: restTestEvents
-    })
-  },
-  {
-    description: 'Wrapping a copied composed FoundationElement',
-    elementName: `fast-${composedElementName}-bis`,
-    wrap: (x: any) => x(composedTestElement2(), {
-      events: restTestEvents,
-      name: `fast-${composedElementName}-bis`
     })
   },
   {
@@ -182,7 +146,7 @@ for (const scenario of scenarios) {
       }
     });
 
-    const { wrap } = provideReactWrapper(React, DesignSystem.getOrCreate());
+    const wrap = reactWrapper(React);
     const WrappedComponent = scenario.wrap(wrap);
 
     let el: CustomElement;
@@ -428,7 +392,7 @@ for (const scenario of scenarios) {
         @attr ref = 'hi';
       }
 
-      const { wrap } = provideReactWrapper(React);
+      const wrap = reactWrapper(React);
       const WarningComponent = wrap(Warn);
 
       ReactDOM.render(

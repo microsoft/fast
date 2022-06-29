@@ -4,13 +4,6 @@ import {
     FASTElementDefinition,
     Observable,
 } from "@microsoft/fast-element";
-import {
-    Container,
-    DesignSystem,
-    FoundationElementDefinition,
-    FoundationElementRegistry,
-    Registry,
-} from "@microsoft/fast-foundation";
 
 const reservedReactProperties = new Set([
     "children",
@@ -89,21 +82,6 @@ export type ReactWrapperProps<
 export type ReactWrapper<TElement extends HTMLElement, TEvents> = Constructable<
     ReactModule.Component<ReactWrapperProps<TElement, TEvents>>
 >;
-
-/**
- * Extracts the element type from a FoundationElementRegistry
- * @public
- */
-export type FoundationElementRegistryElement<
-    TRegistry
-> = TRegistry extends FoundationElementRegistry<
-    FoundationElementDefinition,
-    infer TElement
->
-    ? TElement extends typeof HTMLElement
-        ? InstanceType<TElement>
-        : any
-    : any;
 
 // There are 2 kinds of refs and there's no built in React API to set one.
 function setRef(ref: React.Ref<unknown>, value: Element | null) {
@@ -196,31 +174,15 @@ function getElementKeys<TElement, TEvents>(
  * @param designSystem - A design system to register the components with.
  * @public
  */
-export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
-    let registrations: Registry[] = [];
-    const registry: Registry = {
-        register(container: Container, ...rest: any[]) {
-            registrations.forEach(x => x.register(container, ...rest));
-            registrations = [];
-        },
-    };
-
+export function reactWrapper(React: any) {
     /**
      * Creates a React component for a custom element. Properties are distinguished
      * from attributes automatically, and events can be configured so they are
      * added to the custom element as event listeners.
      *
      * @param type - The custom element class to wrap.
-     * @param registry - A FoundationElement registry for the component to wrap.
      * @param config - Special configuration for the wrapper.
      */
-    function wrap<
-        TRegistry extends FoundationElementRegistry<FoundationElementDefinition, any>,
-        TEvents
-    >(
-        registry: TRegistry,
-        config?: ReactWrapperConfig<TEvents>
-    ): ReactWrapper<FoundationElementRegistryElement<TRegistry>, TEvents>;
     function wrap<TElement extends HTMLElement, TEvents>(
         type: Constructable<TElement>,
         config?: ReactWrapperConfig<TEvents>
@@ -236,16 +198,6 @@ export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
         type InternalProps = ReactWrapperProps<TElement, TEvents> & {
             __forwardedRef?: ReactModule.Ref<unknown>;
         };
-
-        if (type instanceof FoundationElementRegistry) {
-            if (designSystem) {
-                designSystem.register(type);
-            } else {
-                registrations.push(type);
-            }
-
-            type = type.type as any;
-        }
 
         const cachedCandidates = wrappersCache.get(type);
         if (cachedCandidates) {
@@ -368,5 +320,5 @@ export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
         return reactComponent;
     }
 
-    return { wrap, registry };
+    return wrap;
 }
