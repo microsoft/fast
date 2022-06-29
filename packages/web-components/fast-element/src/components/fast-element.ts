@@ -114,10 +114,10 @@ function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLEl
     nameOrDef?: string | PartialFASTElementDefinition
 ): FASTElementDefinition<TType> {
     if (isFunction(type)) {
-        return new FASTElementDefinition<TType>(type, nameOrDef);
+        return FASTElementDefinition.compose(type, nameOrDef);
     }
 
-    return new FASTElementDefinition<TType>(this, nameOrDef);
+    return FASTElementDefinition.compose(this, type);
 }
 
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
@@ -133,10 +133,10 @@ function define<TType extends Constructable<HTMLElement> = Constructable<HTMLEle
     nameOrDef?: string | PartialFASTElementDefinition
 ): TType {
     if (isFunction(type)) {
-        return new FASTElementDefinition<TType>(type, nameOrDef).define().type;
+        return FASTElementDefinition.compose(type, nameOrDef).define().type;
     }
 
-    return new FASTElementDefinition<TType>(this, nameOrDef).define().type;
+    return FASTElementDefinition.compose(this, type).define().type;
 }
 
 /**

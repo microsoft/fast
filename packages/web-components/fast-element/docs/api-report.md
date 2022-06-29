@@ -405,9 +405,9 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
 
 // @public
 export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
-    constructor(type: TType, nameOrConfig?: PartialFASTElementDefinition | string);
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
+    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType>;
     define(registry?: CustomElementRegistry): this;
     readonly elementOptions?: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;

@@ -22,7 +22,7 @@ describe("The Controller", () => {
         BaseClass = FASTElement
     ) {
         const name = uniqueElementName();
-        const definition = new FASTElementDefinition(
+        const definition = FASTElementDefinition.compose(
             class ControllerTest extends BaseClass {
                 static definition = { ...config, name };
             }
@@ -522,7 +522,7 @@ describe("The Controller", () => {
 
             document.body.append(element);
 
-            new FASTElementDefinition(
+            FASTElementDefinition.compose(
                 class TestElement extends FASTElement {
                     static definition = {
                         name,
