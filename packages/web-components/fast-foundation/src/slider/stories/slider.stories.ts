@@ -1,9 +1,9 @@
 import { html } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import type { Args, Meta } from "@storybook/html";
-import type { Slider as FoundationSlider } from "../slider.js";
+import type { FASTSlider } from "../slider.js";
 
-type SliderStoryArgs = Args & FoundationSlider;
+type SliderStoryArgs = Args & FASTSlider;
 type SliderStoryMeta = Meta<SliderStoryArgs>;
 
 const componentTemplate = html<SliderStoryArgs>`
