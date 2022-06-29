@@ -200,7 +200,7 @@ const styles = css`
     }
 `;
 
-FASTTreeItem.compose({
+FASTTreeItem.define({
     name: "fast-tree-item",
     styles,
     template: treeItemTemplate({
