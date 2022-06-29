@@ -1,6 +1,6 @@
 import { css, Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { TabPanel, tabPanelTemplate } from "../tab-panel/index.js";
+import { FASTTabPanel, tabPanelTemplate } from "../tab-panel/index.js";
 import { FASTTab, tabTemplate } from "../tab/index.js";
 import { fixture } from "../testing/fixture.js";
 import { Tabs, TabsOrientation, tabsTemplate as template } from "./index.js";
@@ -10,7 +10,7 @@ const FASTTab = FASTTab.compose({
     template: tabTemplate,
 })
 
-const FASTTabPanel = TabPanel.compose({
+const FASTTabPanel = FASTTabPanel.compose({
     baseName: "tab-panel",
     template: tabPanelTemplate,
 })
@@ -33,7 +33,7 @@ async function setup() {
         const tab = document.createElement("fast-tab") as FASTTab;
         tab.id = `tab${i}`;
 
-        const panel = document.createElement("fast-tab-panel") as TabPanel;
+        const panel = document.createElement("fast-tab-panel") as FASTTabPanel;
         panel.id = `panel${i}`;
         element.appendChild(panel);
         element.insertBefore(tab, element.querySelector("fast-tab-panel"));
@@ -147,7 +147,7 @@ describe("Tabs", () => {
 
         for (let i = 0; i < 4; i++) {
             const tab = document.createElement("fast-tab") as FASTTab;
-            const panel = document.createElement("fast-tab-panel") as TabPanel;
+            const panel = document.createElement("fast-tab-panel") as FASTTabPanel;
 
             element.appendChild(panel);
             element.insertBefore(tab, element.querySelector("fast-tab-panel"));
@@ -168,7 +168,7 @@ describe("Tabs", () => {
 
         for (let i = 0; i < 4; i++) {
             const tab = document.createElement("fast-tab") as FASTTab;
-            const panel = document.createElement("fast-tab-panel") as TabPanel;
+            const panel = document.createElement("fast-tab-panel") as FASTTabPanel;
 
             element.appendChild(panel);
             element.insertBefore(tab, element.querySelector("fast-tab-panel"));
@@ -194,7 +194,7 @@ describe("Tabs", () => {
 
         for (let i = 0; i < 4; i++) {
             const tab = document.createElement("fast-tab") as FASTTab;
-            const panel = document.createElement("fast-tab-panel") as TabPanel;
+            const panel = document.createElement("fast-tab-panel") as FASTTabPanel;
 
             element.appendChild(panel);
             element.insertBefore(tab, element.querySelector("fast-tab-panel"));
@@ -213,7 +213,7 @@ describe("Tabs", () => {
         expect(element.querySelectorAll("fast-tab-panel")[3]?.getAttribute("aria-labelledby")).to.equal(tabId3);
 
         const newTab = document.createElement("fast-tab") as FASTTab;
-        const newPanel = document.createElement("fast-tab-panel") as TabPanel;
+        const newPanel = document.createElement("fast-tab-panel") as FASTTabPanel;
 
         element.appendChild(newPanel);
         element.insertBefore(newTab, element.querySelector("fast-tab-panel"));
@@ -255,7 +255,7 @@ describe("Tabs", () => {
 
         for (let i = 0; i < 4; i++) {
             const tab = document.createElement("fast-tab") as FASTTab;
-            const panel = document.createElement("fast-tab-panel") as TabPanel;
+            const panel = document.createElement("fast-tab-panel") as FASTTabPanel;
 
             element.appendChild(panel);
             element.insertBefore(tab, element.querySelector("fast-tab-panel"));
@@ -281,7 +281,7 @@ describe("Tabs", () => {
 
         for (let i = 0; i < 4; i++) {
             const tab = document.createElement("fast-tab") as FASTTab;
-            const panel = document.createElement("fast-tab-panel") as TabPanel;
+            const panel = document.createElement("fast-tab-panel") as FASTTabPanel;
 
             element.appendChild(panel);
             element.insertBefore(tab, element.querySelector("fast-tab-panel"));
@@ -300,7 +300,7 @@ describe("Tabs", () => {
         expect(element.querySelectorAll("fast-tab")[3]?.getAttribute("aria-controls")).to.equal(tabpanelId3);
 
         const newTab = document.createElement("fast-tab") as FASTTab;
-        const newPanel = document.createElement("fast-tab-panel") as TabPanel;
+        const newPanel = document.createElement("fast-tab-panel") as FASTTabPanel;
 
         element.appendChild(newPanel);
         element.insertBefore(newTab, element.querySelector("fast-tab-panel"));
@@ -450,7 +450,7 @@ describe("Tabs", () => {
                 const tab = document.createElement("fast-tab") as FASTTab;
                 tab.disabled = true;
 
-                const panel = document.createElement("fast-tab-panel") as TabPanel;
+                const panel = document.createElement("fast-tab-panel") as FASTTabPanel;
                 panel.id = `panel${i}`;
                 element.appendChild(panel);
                 element.insertBefore(tab, element.querySelector("fast-tab-panel"));
@@ -474,7 +474,7 @@ describe("Tabs", () => {
                     tab.disabled = true;
                 }
 
-                const panel = document.createElement("fast-tab-panel") as TabPanel;
+                const panel = document.createElement("fast-tab-panel") as FASTTabPanel;
                 panel.id = `panel${i}`;
                 element.appendChild(panel);
                 element.insertBefore(tab, element.querySelector("fast-tab-panel"));
@@ -494,7 +494,7 @@ describe("Tabs", () => {
                 const tab = document.createElement("fast-tab") as FASTTab;
                 tab.id = `tab${i}`;
 
-                const panel = document.createElement("fast-tab-panel") as TabPanel;
+                const panel = document.createElement("fast-tab-panel") as FASTTabPanel;
                 panel.id = `panel${i}`;
                 element.appendChild(panel);
                 element.insertBefore(tab, element.querySelector("fast-tab-panel"));
@@ -524,7 +524,7 @@ describe("Tabs", () => {
                     tab.disabled = true;
                 }
 
-                const panel = document.createElement("fast-tab-panel") as TabPanel;
+                const panel = document.createElement("fast-tab-panel") as FASTTabPanel;
                 panel.id = `panel${i}`;
                 element.appendChild(panel);
                 element.insertBefore(tab, element.querySelector("fast-tab-panel"));
