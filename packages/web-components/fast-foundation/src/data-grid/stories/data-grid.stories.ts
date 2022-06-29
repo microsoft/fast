@@ -12,6 +12,10 @@ const storyTemplate = html<StoryArgs<FASTDataGrid>>`
         generate-header="${x => x.generateHeader}"
         grid-template-columns="${x => x.gridTemplateColumns}"
         page-size="${x => x.pageSize}"
+        click-select="${x => x.clickSelect}"
+        selection-mode="${x => x.selectionMode}"
+        unselectable-row-indexes="${x => x.unselectableRowIndexes}"
+        initial-row-selection="${x => x.initialRowSelection}"
     >
         ${x => x.content}
     </fast-data-grid>
@@ -58,6 +62,22 @@ export default {
         },
         columnDefinitions: {
             control: { type: "object" },
+        },
+        storyContent: {
+            table: { disable: true },
+        },
+        selectionMode: {
+            options: ["none", "single-row", "multi-row"],
+            control: { type: "select" },
+        },
+        clickSelect: {
+            control: { type: "boolean" },
+        },
+        unselectableRowIndexes: {
+            control: { type: "text" },
+        },
+        initialRowSelection: {
+            control: { type: "text" },
         },
     },
 } as Meta<FASTDataGrid>;

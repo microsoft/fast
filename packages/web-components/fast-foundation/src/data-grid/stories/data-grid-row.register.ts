@@ -16,6 +16,11 @@ const styles = css`
         position: sticky;
         top: 0;
     }
+
+    :host([aria-selected="true"]) {
+        background: var(--accent-fill-rest);
+        color: var(--foreground-on-accent-active);
+    }
 `;
 
 FASTDataGridRow.define({

@@ -354,16 +354,20 @@ export class DataGrid extends FoundationElement {
     headerCellItemTemplate?: ViewTemplate;
     initialRowSelection: string;
     noTabbing: boolean;
+    // (undocumented)
+    protected noTabbingChanged(): void;
     // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
     rowItemTemplate: ViewTemplate;
     rowsData: object[];
+    // (undocumented)
+    protected rowsDataChanged(): void;
     get selectedRowIndexes(): number[];
     set selectedRowIndexes(next: number[]);
     selectionMode: DataGridSelectionMode;
     unselectableRowIndexes: number[];
-    }
+}
 
 // @public
 export class DataGridCell extends FoundationElement {
@@ -385,7 +389,7 @@ export class DataGridCell extends FoundationElement {
     // (undocumented)
     handleKeydown(e: KeyboardEvent): void;
     rowData: object | null;
-    }
+}
 
 // @public
 export const dataGridCellTemplate: FoundationElementTemplate<ViewTemplate<DataGridCell>>;
@@ -421,13 +425,15 @@ export class DataGridRow extends FoundationElement {
     // @internal (undocumented)
     focusColumnIndex: number;
     gridTemplateColumns: string;
+    // (undocumented)
+    protected gridTemplateColumnsChanged(): void;
     // @internal (undocumented)
     handleCellFocus(e: Event): void;
     // @internal (undocumented)
     handleClick(e: MouseEvent): void;
-    // @internal (undocumented)
-    handleFocusout(e: FocusEvent): void;
     // (undocumented)
+    handleFocusout(e: FocusEvent): void;
+    // @internal (undocumented)
     handleKeydown(e: KeyboardEvent): void;
     headerCellItemTemplate?: ViewTemplate;
     // @internal
@@ -436,14 +442,14 @@ export class DataGridRow extends FoundationElement {
     // (undocumented)
     protected rowDataChanged(): void;
     rowIndex: number;
-    rowType: DataGridRowTypes | "default" | "header" | "sticky-header";
+    rowType: DataGridRowTypes;
     // @internal
     selected: boolean;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
     // Warning: (ae-incompatible-release-tags) The symbol "toggleSelected" is marked as @public, but its signature references "DataGridRowSelectionChangedDetail" which is marked as @internal
     toggleSelected(detail: DataGridRowSelectionChangedDetail): void;
-    }
+}
 
 // Warning: (ae-internal-missing-underscore) The name "DataGridRowSelectionChangedDetail" should be prefixed with an underscore because the declaration is marked as @internal
 //

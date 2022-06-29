@@ -125,14 +125,12 @@ An author could define a `ColumnDefinition` that specifies that the cells in tha
 function getFocusTarget(cell: DataGridCell): HTMLElement {
     return cell.children[0] as HTMLElement;
 }
-
 const nestedColumn: ColumnDefinition = {
     ...
     cellInternalFocusQueue: true,
     cellFocusTargetCallback: getFocusTarget,
     ...
 };
-
 ```
 
 ### Grid Selection
@@ -144,15 +142,10 @@ Keyboard selection model is based on guidance [here](https://w3c.github.io/aria-
 #### "single-row" selection mode: 
 
 When in single row selection mode a maximum of one row can be selected at a time.  All rows are labelled with `aria-selected' with any selected row having a value of "true".
-
 When the grid's `click-select` attribute is set to "true", which is the default, any click on a selectable row will select that row, or deselect if already selected.
-
 Keyboard:
-
 - Space: Selects the currently focused row, or deselects it if already selected.
-
 #### "multi-row" selection mode: 
-
 When in single row selection mode a maximum of one row can be selected at a time.  All rows are labelled with `aria-selected' with any selected row having a value of "true".
 
 When the grid's `click-select` attribute is set to "true", which is the default, any click on a selectable row will select that row, or deselect if already selected.  It will additionally deselect all other selected rows.  Holding the control key while selecting prevents deselection of other rows, and holding shift while selecting selects the row and all the rows between it and the last non-shift selected row, if any. 
@@ -166,7 +159,6 @@ Keyboard:
 - Space + Ctrl: Selects/Deselects the currently focused row, does not affect the selection state of other rows.
 
 - "a" + Ctrl: Selects all rows, or deselects all if all rows already selected.
-
 
 ### API
 
@@ -254,14 +246,12 @@ Custom [template](https://fast.design/docs/fast-element/declaring-templates) to 
 - `headerCellItemTemplate`  
 Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating header cells by iterating over data. The default template uses `fast-data-grid-cell`, this is where authors can change that. The component applies this to generated rows only.
 
+
 - `focusRowIndex`
 The index of the row that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid. Changing this value when focus is already within the grid moves focus to the specified row. Note that the header row if there is one is typically at index 0.
 
 - `focusColumnIndex`
 The index of the column that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid. Changing this value when focus is already within the grid moves focus to the specified column.
-
-- `selectedRowIndexes`
-The currently selected rows. Authors may set or get the current selection via this property.
 
 *Slots:*
 - `default`  
@@ -270,6 +260,9 @@ Custom generated rows can be placed here
 *Functions:*
 - `generateColumns(object): ColumnDefinition`   
 Static function that creates a basic set of columns from an object representing a row.
+
+- `selectedRowIndexes`
+The currently selected rows. Authors may set or get the current selection via this property.
 
 *Events*
 - `selectionchanged`
@@ -311,26 +304,15 @@ Custom [template](https://fast.design/docs/fast-element/declaring-templates) to 
 - `headerCellItemTemplate`  
 Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating header cells by iterating over data. The default template uses `fast-data-grid-cell`, this is where authors can change that.
 
-*Functions:*
-- `toggleSelected(detail: DataGridSelectionChangedDetail):`   
-Attempts to set the selected state of the row.  The detail object has the following properties:
-
-    // the new selected value
-    newValue: boolean;
-
-    // if the shiftKey is pressed
-    shiftKey: boolean;
-
-    // if the control key is pressed
-    ctrlKey: boolean;
-
-
 *Slots:*
 - `default`  
 Default slot for items
 
 *Events*
 - `row-focused` - Event triggered when a row or one of its internal elements is focused.
+
+- `selectionchanged`
+Emitted when the selected elements of the grid have been updated.
 
 *parts:*
 - `cellsSlot`
@@ -387,6 +369,7 @@ const baseRows: object[] = [
     { name: "Bob", age: "20" },
 ];
  ```
+
  An author could pass the data to the component from a javascript function:
 
 ```js
