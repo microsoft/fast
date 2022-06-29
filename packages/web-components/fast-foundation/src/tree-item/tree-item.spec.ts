@@ -3,14 +3,13 @@ import { FASTTreeItem, treeItemTemplate } from "./index.js";
 import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 
-const treeItemName = uniqueElementName();
-FASTTreeItem.define({
-    name: treeItemName,
+const TreeItem = FASTTreeItem.define({
+    name: uniqueElementName("tree-item"),
     template: treeItemTemplate()
 });
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTTreeItem>(treeItemName);
+    const { element, connect, disconnect } = await fixture(TreeItem);
 
     return { element, connect, disconnect };
 }
@@ -29,7 +28,7 @@ describe("TreeItem", () => {
 
     it("should set the `aria-expanded` attribute equal to the `expanded` value when the tree item has children", async () => {
         const { element, connect, disconnect } = await setup();
-        const child = document.createElement(treeItemName);
+        const child = new TreeItem();
 
         element.appendChild(child);
         element.expanded = true;
@@ -157,7 +156,7 @@ describe("TreeItem", () => {
 
     it("should add a slot attribute of `item` to nested tree items", async () => {
         const { element, connect, disconnect } = await setup();
-        const nestedItem = document.createElement(treeItemName);
+        const nestedItem = new TreeItem();
 
         element.appendChild(nestedItem);
 
@@ -206,7 +205,7 @@ describe("TreeItem", () => {
 
     it("should render an element with a class of `expand-collapse-button` when nested tree items exist", async () => {
         const { element, connect, disconnect } = await setup();
-        const nestedItem = document.createElement(treeItemName);
+        const nestedItem = new TreeItem();
 
         element.appendChild(nestedItem);
 
@@ -219,7 +218,7 @@ describe("TreeItem", () => {
 
     it("should include an aria-hidden attribute on the `expand-collapse-button`", async () => {
         const { element, connect, disconnect } = await setup();
-        const nestedItem = document.createElement(treeItemName);
+        const nestedItem = new TreeItem();
 
         element.appendChild(nestedItem);
 
@@ -235,7 +234,7 @@ describe("TreeItem", () => {
 
     it("should render an element with a role of `group` when nested tree items exist and expanded is true", async () => {
         const { element, connect, disconnect } = await setup();
-        const nestedItem = document.createElement(treeItemName);
+        const nestedItem = new TreeItem();
 
         element.appendChild(nestedItem);
         element.expanded = true;
@@ -252,7 +251,7 @@ describe("TreeItem", () => {
 
     it("should NOT render an element with a role of `group` when nested tree items exist and expanded is false", async () => {
         const { element, connect, disconnect } = await setup();
-        const nestedItem = document.createElement(treeItemName);
+        const nestedItem = new TreeItem();
 
         element.appendChild(nestedItem);
 
@@ -267,7 +266,7 @@ describe("TreeItem", () => {
     describe("events", () => {
         it("should fire a change event when expanded changes", async () => {
             const { element, connect, disconnect } = await setup();
-            const nestedItem = document.createElement(treeItemName);
+            const nestedItem = new TreeItem();
             element.appendChild(nestedItem);
 
             let wasClicked = false;
@@ -295,7 +294,7 @@ describe("TreeItem", () => {
 
         it("should toggle the expanded state when `expand-collapse-button` is clicked", async () => {
             const { element, connect, disconnect } = await setup();
-            const nestedItem = document.createElement(treeItemName);
+            const nestedItem = new TreeItem();
 
             element.appendChild(nestedItem);
 
@@ -324,7 +323,7 @@ describe("TreeItem", () => {
 
         it("should fire a selected change event when selected changes", async () => {
             const { element, connect, disconnect } = await setup();
-            const nestedItem = document.createElement(treeItemName);
+            const nestedItem = new TreeItem();
             element.appendChild(nestedItem);
 
             let wasSelected = false;
@@ -347,7 +346,7 @@ describe("TreeItem", () => {
 
         it("should NOT set selected state when the element is clicked when disabled", async () => {
             const { element, connect, disconnect } = await setup();
-            const nestedItem = document.createElement(treeItemName);
+            const nestedItem = new TreeItem();
 
             element.appendChild(nestedItem);
             element.disabled = true;
