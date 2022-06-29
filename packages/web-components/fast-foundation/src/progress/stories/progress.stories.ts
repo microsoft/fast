@@ -1,9 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { FoundationElement } from "../../index.js";
-import type { BaseProgress as FoundationProgress } from "../base-progress.js";
+import type { FASTProgress } from "../progress.js";
 
-type ProgressStoryArgs = Args & Omit<FoundationProgress, keyof FoundationElement>;
+type ProgressStoryArgs = Args & FASTProgress;
 type ProgressStoryMeta = Meta<ProgressStoryArgs>;
 
 const componentTemplate = html<ProgressStoryArgs>`

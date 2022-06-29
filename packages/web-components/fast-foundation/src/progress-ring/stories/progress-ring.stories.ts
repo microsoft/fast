@@ -1,9 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { FoundationElement } from "../../index.js";
-import type { ProgressRing as FoundationProgressRing } from "../progress-ring.js";
+import type { FASTProgressRing } from "../progress-ring.js";
 
-type ProgressRingStoryArgs = Args & Omit<FoundationProgressRing, keyof FoundationElement>;
+type ProgressRingStoryArgs = Args & FASTProgressRing;
 type ProgressRingStoryMeta = Meta<ProgressRingStoryArgs>;
 
 const componentTemplate = html<ProgressRingStoryArgs>`

@@ -1,10 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { ProgressRing } from "../progress-ring.js";
-import type { ProgressRingOptions } from "../progress-ring.options.js";
-import { progressRingTemplate as template } from "../progress-ring.template.js";
+import { FASTProgressRing } from "../progress-ring.js";
+import { progressRingTemplate } from "../progress-ring.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         align-items: center;
         display: flex;
@@ -71,30 +69,27 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        ProgressRing.compose<ProgressRingOptions>({
-            baseName: "progress-ring",
-            template,
-            styles,
-            indeterminateIndicator: /* html */ `
-                <svg class="progress" part="progress" viewBox="0 0 16 16">
-                    <circle
-                        class="background"
-                        part="background"
-                        cx="8px"
-                        cy="8px"
-                        r="7px"
-                    ></circle>
-                    <circle
-                        class="indeterminate-indicator-1"
-                        part="indeterminate-indicator-1"
-                        cx="8px"
-                        cy="8px"
-                        r="7px"
-                    ></circle>
-                </svg>
-            `,
-        })()
-    );
+FASTProgressRing.define({
+    name: "fast-progress-ring",
+    template: progressRingTemplate({
+        indeterminateIndicator: /* html */ `
+            <svg class="progress" part="progress" viewBox="0 0 16 16">
+                <circle
+                    class="background"
+                    part="background"
+                    cx="8px"
+                    cy="8px"
+                    r="7px"
+                ></circle>
+                <circle
+                    class="indeterminate-indicator-1"
+                    part="indeterminate-indicator-1"
+                    cx="8px"
+                    cy="8px"
+                    r="7px"
+                ></circle>
+            </svg>
+        `,
+    }),
+    styles,
+});
