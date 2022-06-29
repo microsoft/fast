@@ -28,7 +28,7 @@ FASTDataGridRow.define({
 });
 
 const dataGridName = uniqueElementName();
-FASTDataGrid.compose({
+FASTDataGrid.define({
     name: dataGridName,
     template: dataGridTemplate({
         dataGridRow: dataGridRowName
