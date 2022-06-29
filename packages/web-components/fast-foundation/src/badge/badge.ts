@@ -1,4 +1,4 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
 
 /**
  * A Badge Custom HTML Element.
@@ -7,4 +7,4 @@ import { attr, FASTElement } from "@microsoft/fast-element";
  *
  * @public
  */
-export class FASTBadge extends FASTElement {
+export class FASTBadge extends FASTElement {}

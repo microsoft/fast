@@ -7,8 +7,8 @@ import type { FASTBadge } from "./badge.js";
  */
 export function badgeTemplate(): ElementViewTemplate<FASTBadge> {
     return html<FASTBadge>`
-    <div class="control" part="control">
-        <slot></slot>
-    </div>
-`;
+        <div class="control" part="control">
+            <slot></slot>
+        </div>
+    `;
 }

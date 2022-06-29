@@ -796,11 +796,6 @@ export class FASTAvatar extends FASTElement {
 
 // @public
 export class FASTBadge extends FASTElement {
-    circular: boolean;
-    color: string;
-    fill: string;
-    // (undocumented)
-    generateBadgeStyle: () => string | undefined;
 }
 
 // @public

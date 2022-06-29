@@ -53,23 +53,6 @@ export const myBadge = Badge.compose({
 | ------------- | ------ | ----------------------- |
 | `FASTElement` |        | @microsoft/fast-element |
 
-#### Fields
-
-| Name                 | Privacy | Type      | Default | Description                                     | Inherited From |
-| -------------------- | ------- | --------- | ------- | ----------------------------------------------- | -------------- |
-| `fill`               | public  | `string`  |         | Indicates the badge should have a filled style. |                |
-| `color`              | public  | `string`  |         | Indicates the badge should have a filled style. |                |
-| `circular`           | public  | `boolean` |         | Indicates the element should be circular        |                |
-| `generateBadgeStyle` | public  |           |         |                                                 |                |
-
-#### Attributes
-
-| Name    | Field    | Inherited From |
-| ------- | -------- | -------------- |
-| `fill`  | fill     |                |
-| `color` | color    |                |
-|         | circular |                |
-
 #### CSS Parts
 
 | Name      | Description                                                      |
