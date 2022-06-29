@@ -1,11 +1,11 @@
 import { css, Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { TabPanel, tabPanelTemplate } from "../tab-panel/index.js";
-import { Tab, tabTemplate } from "../tab/index.js";
+import { FASTTab, tabTemplate } from "../tab/index.js";
 import { fixture } from "../testing/fixture.js";
 import { Tabs, TabsOrientation, tabsTemplate as template } from "./index.js";
 
-const FASTTab = Tab.compose({
+const FASTTab = FASTTab.compose({
     baseName: "tab",
     template: tabTemplate,
 })
@@ -30,7 +30,7 @@ async function setup() {
     const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
 
     for (let i = 1; i < 4; i++) {
-        const tab = document.createElement("fast-tab") as Tab;
+        const tab = document.createElement("fast-tab") as FASTTab;
         tab.id = `tab${i}`;
 
         const panel = document.createElement("fast-tab-panel") as TabPanel;
@@ -146,7 +146,7 @@ describe("Tabs", () => {
         const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
 
         for (let i = 0; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;
+            const tab = document.createElement("fast-tab") as FASTTab;
             const panel = document.createElement("fast-tab-panel") as TabPanel;
 
             element.appendChild(panel);
@@ -167,7 +167,7 @@ describe("Tabs", () => {
         const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
 
         for (let i = 0; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;
+            const tab = document.createElement("fast-tab") as FASTTab;
             const panel = document.createElement("fast-tab-panel") as TabPanel;
 
             element.appendChild(panel);
@@ -193,7 +193,7 @@ describe("Tabs", () => {
         const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
 
         for (let i = 0; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;
+            const tab = document.createElement("fast-tab") as FASTTab;
             const panel = document.createElement("fast-tab-panel") as TabPanel;
 
             element.appendChild(panel);
@@ -212,7 +212,7 @@ describe("Tabs", () => {
         expect(element.querySelectorAll("fast-tab-panel")[2]?.getAttribute("aria-labelledby")).to.equal(tabId2);
         expect(element.querySelectorAll("fast-tab-panel")[3]?.getAttribute("aria-labelledby")).to.equal(tabId3);
 
-        const newTab = document.createElement("fast-tab") as Tab;
+        const newTab = document.createElement("fast-tab") as FASTTab;
         const newPanel = document.createElement("fast-tab-panel") as TabPanel;
 
         element.appendChild(newPanel);
@@ -254,7 +254,7 @@ describe("Tabs", () => {
         const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
 
         for (let i = 0; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;
+            const tab = document.createElement("fast-tab") as FASTTab;
             const panel = document.createElement("fast-tab-panel") as TabPanel;
 
             element.appendChild(panel);
@@ -280,7 +280,7 @@ describe("Tabs", () => {
         const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
 
         for (let i = 0; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;
+            const tab = document.createElement("fast-tab") as FASTTab;
             const panel = document.createElement("fast-tab-panel") as TabPanel;
 
             element.appendChild(panel);
@@ -299,7 +299,7 @@ describe("Tabs", () => {
         expect(element.querySelectorAll("fast-tab")[2]?.getAttribute("aria-controls")).to.equal(tabpanelId2);
         expect(element.querySelectorAll("fast-tab")[3]?.getAttribute("aria-controls")).to.equal(tabpanelId3);
 
-        const newTab = document.createElement("fast-tab") as Tab;
+        const newTab = document.createElement("fast-tab") as FASTTab;
         const newPanel = document.createElement("fast-tab-panel") as TabPanel;
 
         element.appendChild(newPanel);
@@ -447,7 +447,7 @@ describe("Tabs", () => {
             const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()]);
 
             for (let i = 1; i < 4; i++) {
-                const tab = document.createElement("fast-tab") as Tab;
+                const tab = document.createElement("fast-tab") as FASTTab;
                 tab.disabled = true;
 
                 const panel = document.createElement("fast-tab-panel") as TabPanel;
@@ -467,7 +467,7 @@ describe("Tabs", () => {
             const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()]);
 
             for (let i = 1; i < 4; i++) {
-                const tab = document.createElement("fast-tab") as Tab;
+                const tab = document.createElement("fast-tab") as FASTTab;
                 tab.id = `tab${i}`;
 
                 if (i === 3) {
@@ -491,7 +491,7 @@ describe("Tabs", () => {
             const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()]);
 
             for (let i = 1; i < 4; i++) {
-                const tab = document.createElement("fast-tab") as Tab;
+                const tab = document.createElement("fast-tab") as FASTTab;
                 tab.id = `tab${i}`;
 
                 const panel = document.createElement("fast-tab-panel") as TabPanel;
@@ -503,7 +503,7 @@ describe("Tabs", () => {
             await connect();
 
             element.activeid = "tab1";
-            const tab3 = element.querySelectorAll("fast-tab")[2] as Tab;
+            const tab3 = element.querySelectorAll("fast-tab")[2] as FASTTab;
             tab3.disabled = true;
             await Updates.next();
             tab3.click();
@@ -517,7 +517,7 @@ describe("Tabs", () => {
             const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()]);
 
             for (let i = 1; i < 4; i++) {
-                const tab = document.createElement("fast-tab") as Tab;
+                const tab = document.createElement("fast-tab") as FASTTab;
                 tab.id = `tab${i}`;
 
                 if (i === 3) {
@@ -533,7 +533,7 @@ describe("Tabs", () => {
             await connect();
 
             element.activeid = "tab1";
-            const tab3 = element.querySelectorAll("fast-tab")[2] as Tab;
+            const tab3 = element.querySelectorAll("fast-tab")[2] as FASTTab;
             tab3.disabled = false;
             await Updates.next();
             tab3.click();

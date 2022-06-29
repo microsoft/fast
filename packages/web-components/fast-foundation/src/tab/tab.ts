@@ -1,5 +1,4 @@
-import { attr } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { attr, FASTElement } from "@microsoft/fast-element";
 
 /**
  * A Tab Component to be used with {@link @microsoft/fast-foundation#(Tabs:class)}
@@ -8,7 +7,7 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  *
  * @public
  */
-export class Tab extends FoundationElement {
+export class FASTTab extends FASTElement {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
      * @public
