@@ -1,4 +1,4 @@
-import { attr, observable, Updates } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
     isHTMLElement,
@@ -10,8 +10,7 @@ import {
     keyEnter,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import { isTreeItemElement, FASTTreeItem } from "../tree-item/tree-item.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { FASTTreeItem, isTreeItemElement } from "../tree-item/tree-item.js";
 
 /**
  * A Tree view Custom HTML Element.
@@ -21,7 +20,7 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  *
  * @public
  */
-export class TreeView extends FoundationElement {
+export class FASTTreeView extends FASTElement {
     /**
    /**
     * When true, the control will be appear expanded by user interaction.

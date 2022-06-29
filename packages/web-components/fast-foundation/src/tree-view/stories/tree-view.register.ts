@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { TreeView } from "../tree-view.js";
-import { treeViewTemplate as template } from "../tree-view.template.js";
+import { FASTTreeView } from "../tree-view.js";
+import { treeViewTemplate } from "../tree-view.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -20,12 +19,8 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        TreeView.compose({
-            baseName: "tree-view",
-            styles,
-            template,
-        })()
-    );
+FASTTreeView.define({
+    name: "fast-tree-view",
+    styles,
+    template: treeViewTemplate(),
+});
