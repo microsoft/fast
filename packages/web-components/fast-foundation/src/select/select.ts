@@ -11,7 +11,6 @@ import {
     keyTab,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox, FASTListbox } from "../listbox/listbox.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
@@ -24,10 +23,9 @@ import { SelectPosition } from "./select.options.js";
  * Select configuration options
  * @public
  */
-export type SelectOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        indicator?: string | SyntheticViewTemplate;
-    };
+export type SelectOptions = StartEndOptions & {
+    indicator?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Select Custom HTML Element.
@@ -48,7 +46,7 @@ export type SelectOptions = FoundationElementDefinition &
  *
  * @public
  */
-export class Select extends FormAssociatedSelect {
+export class FASTSelect extends FormAssociatedSelect {
     /**
      * The open attribute.
      *
@@ -627,5 +625,5 @@ applyMixins(DelegatesARIASelect, DelegatesARIAListbox);
 /**
  * @internal
  */
-export interface Select extends StartEnd, DelegatesARIASelect {}
-applyMixins(Select, StartEnd, DelegatesARIASelect);
+export interface FASTSelect extends StartEnd, DelegatesARIASelect {}
+applyMixins(FASTSelect, StartEnd, DelegatesARIASelect);

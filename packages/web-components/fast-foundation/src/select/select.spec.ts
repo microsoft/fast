@@ -2,33 +2,35 @@ import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
 import { FASTListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
-import { fixture } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { timeout } from "../testing/timeout.js";
-import { Select, selectTemplate as template } from "./index.js";
+import { FASTSelect, selectTemplate } from "./index.js";
 
 describe("Select", () => {
-    const FASTSelect = Select.compose({
-        baseName: "select",
-        template
+    const selectName = uniqueElementName();
+    FASTSelect.define({
+        name: selectName,
+        template: selectTemplate()
     });
 
-    const FASTOption = FASTListboxOption.compose({
-        baseName: "option",
-        template: listboxOptionTemplate,
+    const optionName = uniqueElementName();
+    FASTListboxOption.define({
+        name: optionName,
+        template: listboxOptionTemplate()
     });
 
     async function setup() {
-        const { element, connect, disconnect, parent } = await fixture([FASTSelect(), FASTOption()]);
+        const { element, connect, disconnect, parent } = await fixture<FASTSelect>(selectName);
 
-        const option1 = document.createElement("fast-option") as FASTListboxOption;
+        const option1 = document.createElement(optionName) as FASTListboxOption;
         option1.value = "one";
         option1.textContent = "option one";
 
-        const option2 = document.createElement("fast-option") as FASTListboxOption;
+        const option2 = document.createElement(optionName) as FASTListboxOption;
         option2.value = "two";
         option2.textContent = "option two";
 
-        const option3 = document.createElement("fast-option") as FASTListboxOption;
+        const option3 = document.createElement(optionName) as FASTListboxOption;
         option3.value = "three";
         option3.textContent = "option three";
 
