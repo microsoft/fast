@@ -28,7 +28,7 @@ async function setup() {
     return { element, connect, disconnect, item1, item2, item3 };
 }
 
-describe.only("Accordion", () => {
+describe("Accordion", () => {
     it("should set an expand mode of `multi` when passed to the `expand-mode` attribute", async () => {
         const { element, connect, disconnect } = await setup();
 
