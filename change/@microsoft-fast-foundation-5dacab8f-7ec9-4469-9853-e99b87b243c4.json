@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "anchored-region checks local shadow dom",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "patch"
+}
