@@ -416,8 +416,8 @@ export class VirtualList extends FoundationElement {
     private pendingReset: boolean = false;
 
     // stored geometry for the viewport and internal container elements
-    private viewportRect: ClientRect | DOMRect | undefined;
-    private containerRect: ClientRect | DOMRect | undefined;
+    private viewportRect: DOMRect | undefined;
+    private containerRect: DOMRect | undefined;
 
     // reference to the repeat behavior used to render items
     private itemsRepeatBehavior: RepeatBehavior | null = null;
@@ -544,6 +544,9 @@ export class VirtualList extends FoundationElement {
         };
     };
 
+    /**
+     * @internal
+     */
     public handleListItemConnected(e: Event): void {
         if (e.defaultPrevented) {
             return;
@@ -552,6 +555,9 @@ export class VirtualList extends FoundationElement {
         this.resizeDetector?.observe(e.target as Element);
     }
 
+    /**
+     * @internal
+     */
     public handleListItemDisconnected(e: Event): void {
         if (e.defaultPrevented) {
             return;
@@ -569,9 +575,6 @@ export class VirtualList extends FoundationElement {
         if (!this.items) {
             return;
         }
-
-        // TODO:  we don't use splices calculated by array change events
-        // look for cheaper observer implementation later
 
         const newObserver = (this.itemsObserver = Observable.getNotifier(this.items));
         newObserver.subscribe(this);
@@ -594,9 +597,6 @@ export class VirtualList extends FoundationElement {
         if (!this.sizemap) {
             return;
         }
-
-        // TODO:  we don't use splices calculated by array change events
-        // look for cheaper observer implementation later
 
         const newObserver = (this.sizemapObserver = Observable.getNotifier(this.sizemap));
         newObserver.subscribe(this);
