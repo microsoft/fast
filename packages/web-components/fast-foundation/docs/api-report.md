@@ -2841,9 +2841,9 @@ export class VirtualList extends FoundationElement {
     getItemSizeMap: (itemIndex: number) => SizeMap | null;
     // @internal
     handleChange(source: any, splices: Splice[]): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleListItemConnected(e: Event): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleListItemDisconnected(e: Event): void;
     // Warning: (ae-forgotten-export) The symbol "IdleCallbackQueue" needs to be exported by the entry point index.d.ts
     //
