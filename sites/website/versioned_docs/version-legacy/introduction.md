@@ -180,13 +180,11 @@ flowchart
 We look forward to building an amazing open source community with you.
 
 <DocCardList>
-  <div>
   <DocCardItem
     href='.https://discord.gg/FcSNfg4'
     title='Discord'
     description='Our community is most active on Discord.'
   />
-  </div>
   <DocCardItem
     href='./fast-element/getting-started.md'
     title='GitHub'

@@ -7,4 +7,5 @@
 .docCard {
   min-width: 350px;
   max-width: 48%;
+  min-width: 48%;
 }
