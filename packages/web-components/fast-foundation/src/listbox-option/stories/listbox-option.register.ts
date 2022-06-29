@@ -113,7 +113,7 @@ const styles = css`
     }
 `;
 
-FASTListboxOption.compose({
+FASTListboxOption.define({
     name: "fast-option",
     template: listboxOptionTemplate(),
     styles,
