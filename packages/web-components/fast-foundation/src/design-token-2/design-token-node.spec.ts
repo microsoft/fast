@@ -316,8 +316,8 @@ describe.only("DesignTokenNode", () => {
         });
     });
 
-    describe("should notify the token", () => {
-        it("with the node that has the token assigned a static value", () => {
+    describe("should notify", () => {
+        it("the token with the node that has the token assigned a static value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             const { subscriber, handleChange } = makeChangeHandler();
@@ -329,7 +329,7 @@ describe.only("DesignTokenNode", () => {
             expect(handleChange).to.have.been.first.called.with.exactly(token, node)
             expect(node.getTokenValue(token)).to.equal(12);
         });
-        it("with the node that has the token assigned a derived value", () => {
+        it("the token with the node that has the token assigned a derived value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             const { subscriber, handleChange } = makeChangeHandler();
@@ -341,7 +341,7 @@ describe.only("DesignTokenNode", () => {
             expect(handleChange).to.have.been.first.called.with.exactly(token, node)
             expect(node.getTokenValue(token)).to.equal(12);
         });
-        it("with the node that has the token reassigned a static value from a derived value", () => {
+        it("the token with the node that has the token reassigned a static value from a derived value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             const { subscriber, handleChange } = makeChangeHandler();
@@ -354,7 +354,7 @@ describe.only("DesignTokenNode", () => {
             expect(handleChange).to.have.been.second.called.with.exactly(token, node);
             expect(node.getTokenValue(token)).to.equal(14);
         });
-        it("with the node that has the token reassigned a derived value from a static value", () => {
+        it("the token with the node that has the token reassigned a derived value from a static value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             const { subscriber, handleChange } = makeChangeHandler();
@@ -367,7 +367,7 @@ describe.only("DesignTokenNode", () => {
             expect(handleChange).to.have.been.second.called.with.exactly(token, node)
             expect(node.getTokenValue(token)).to.equal(14);
         });
-        it("with the node that has the token assigned a static value which is then deleted", () => {
+        it("the token with the node that has the token assigned a static value which is then deleted", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             const { subscriber, handleChange } = makeChangeHandler();
@@ -380,7 +380,7 @@ describe.only("DesignTokenNode", () => {
             expect(handleChange).to.have.been.second.called.with.exactly(token, node)
             expect(() => node.getTokenValue(token)).to.throw();
         });
-        it("with the node that has the token assigned a derived value which is then deleted", () => {
+        it("the token with the node that has the token assigned a derived value which is then deleted", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             const { subscriber, handleChange } = makeChangeHandler();
@@ -393,7 +393,7 @@ describe.only("DesignTokenNode", () => {
             expect(handleChange).to.have.been.second.called.with.exactly(token, node)
             expect(() => node.getTokenValue(token)).to.throw();
         });
-        it("with the node that has a token assigned a derived value and a dependency of the derived value changes for the node", () => {
+        it("the token with the node that has a token assigned a derived value and a dependency of the derived value changes for the node", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const node = new DesignTokenNode();
@@ -412,7 +412,7 @@ describe.only("DesignTokenNode", () => {
             expect(handleChange).to.have.been.first.called.with.exactly(token, node)
             expect(node.getTokenValue(token)).to.equal(14);
         });
-        it("with the descendent node that has a token assigned a static value that is a dependency of a value assigned for an ancestor", () => {
+        it("the token with the descendent node that has a token assigned a static value that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
@@ -435,7 +435,7 @@ describe.only("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).to.equal(12);
             expect(target.getTokenValue(token)).to.equal(14);
         });
-        it("with the descendent node that has a token assigned a derived value that is a dependency of a value assigned for an ancestor", () => {
+        it("the token with the descendent node that has a token assigned a derived value that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
@@ -458,7 +458,7 @@ describe.only("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).to.equal(12);
             expect(target.getTokenValue(token)).to.equal(14);
         });
-        it("with the descendent node that has a token reassigned a static value that is a dependency of a value assigned for an ancestor", () => {
+        it("the token with the descendent node that has a token reassigned a static value that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
@@ -483,7 +483,7 @@ describe.only("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).to.equal(12);
             expect(target.getTokenValue(token)).to.equal(16);
         });
-        it("with the descendent node that has a token reassigned a derived value that is a dependency of a value assigned for an ancestor", () => {
+        it("the token with the descendent node that has a token reassigned a derived value that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
@@ -507,7 +507,7 @@ describe.only("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).to.equal(12);
             expect(target.getTokenValue(token)).to.equal(16);
         });
-        it("with a descendent node and an ancestor node that both have a token assigned that is a dependency of a derived value assigned to an ancestor", () => {
+        it("the token with a descendent node and an ancestor node that both have a token assigned that is a dependency of a derived value assigned to an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
@@ -531,7 +531,7 @@ describe.only("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).to.equal(12);
             expect(target.getTokenValue(token)).to.equal(14);
         });
-        it("with the descendent node that has a token assigned a static value deleted that is a dependency of a value assigned for an ancestor", () => {
+        it("the token with the descendent node that has a token assigned a static value deleted that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
@@ -553,7 +553,7 @@ describe.only("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).to.equal(12);
             expect(target.getTokenValue(token)).to.equal(16);
         });
-        it("with the descendent node that has a token assigned a derived value deleted that is a dependency of a value assigned for an ancestor", () => {
+        it("the token with the descendent node that has a token assigned a derived value deleted that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
