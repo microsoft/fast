@@ -8,7 +8,47 @@ keywords:
   - web components
 ---
 
-Welcome to the FAST documentation! We're glad you're here and can't wait to show you around.
+import logo from "../../../site-utilities/statics/assets/fast-logo.png";
+
+<div
+    style={{
+        margin: "20px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    }}
+>
+    <img src={logo} alt="logo" style={{ width: "100px", height: "100px" }} />
+</div>
+<div
+    style={{
+        marginBottom: "80px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    }}
+>
+    <h2>
+        Welcome to the <i>FAST</i> documentation!
+    </h2>
+</div>
+
+## Where should I start?
+
+Pick the statement you most identify with, and follow the links where they lead. Come back and explore another topic at any time. Or, [click here](#what-is-fast) to learn more about FAST.
+
+* "I just want ready-made components!"
+  * [Jump to the component docs.](./components/getting-started.md)
+* "I want to build my own design system."
+  * [Jump to the design system docs.](./design-systems/overview.md)
+* "I want to build my own components."
+  * [Jump to the fast-element docs.](./fast-element/getting-started.md)
+* "I need to integrate FAST with another framework or build system."
+  * [Jump to the integration docs.](./integrations/introduction.md)
+* "I want to look at a quick reference."
+  * [Jump to the Cheat Sheet](./resources/cheat-sheet.md)
+
+<hr />
 
 ## What is FAST?
 
@@ -96,21 +136,6 @@ flowchart
 </div>
 
 `@microsoft/fast-element` provides a thin layer of opinion on top of Web Components, lifting the level of abstraction just enough to make it easier and faster to build components. `@microsoft/fast-element` helps by providing attribute/property syncing, rich Model-View-ViewModel (MVVM), efficient template rendering/update, style composition, and much more. The entire `@microsoft/fast-element` library, *without* tree-shaking, is around 10kb minified and GZipped. It was designed for tree-shaking from the beginning, so any feature you don't use when building a component will be removed during build, allowing for highly efficient optimized payloads as small as 4.5k.
-
-## Where should I start?
-
-We hope you're excited by the possibilities that FAST presents. But, you may be wondering where to start. Here are a few statements that describe various members of our community. We recommend that you pick the statement you most identify with and follow the links where they lead. You can always come back and explore another topic at any time.
-
-* "I just want ready-made components!"
-  * [Jump to the component docs.](./components/getting-started.md)
-* "I want to build my own design system."
-  * [Jump to the design system docs.](./design-systems/overview.md)
-* "I want to build my own components."
-  * [Jump to the fast-element docs.](./fast-element/getting-started.md)
-* "I need to integrate FAST with another framework or build system."
-  * [Jump to the integration docs.](./integrations/introduction.md)
-* "I want to look at a quick reference."
-  * [Jump to the Cheat Sheet](./resources/cheat-sheet.md)
 
 ## Joining the community
 
