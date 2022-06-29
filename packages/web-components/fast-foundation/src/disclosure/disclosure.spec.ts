@@ -1,15 +1,16 @@
 import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../testing/fixture.js";
-import { Disclosure, disclosureTemplate as template } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTDisclosure, disclosureTemplate } from "./index.js";
 
-const FastDisclosure = Disclosure.compose({
-    baseName: "disclosure",
-    template
+const disclosureName = uniqueElementName();
+FASTDisclosure.define({
+    name: disclosureName,
+    template: disclosureTemplate()
 })
 
 async function createDisclosure() {
-    const { element, connect, disconnect } = await fixture(FastDisclosure());
+    const { element, connect, disconnect } = await fixture<FASTDisclosure>(disclosureName);
 
     return { element, connect, disconnect };
 }

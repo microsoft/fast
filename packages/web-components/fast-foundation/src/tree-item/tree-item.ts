@@ -1,10 +1,11 @@
-import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
-import { isHTMLElement } from "@microsoft/fast-web-utilities";
 import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+    attr,
+    FASTElement,
+    observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
+import { isHTMLElement } from "@microsoft/fast-web-utilities";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
@@ -24,10 +25,9 @@ export function isTreeItemElement(el: Element): el is HTMLElement {
  * Tree Item configuration options
  * @public
  */
-export type TreeItemOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        expandCollapseGlyph?: string | SyntheticViewTemplate;
-    };
+export type TreeItemOptions = StartEndOptions & {
+    expandCollapseGlyph?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Tree item Custom HTML Element.
@@ -46,7 +46,7 @@ export type TreeItemOptions = FoundationElementDefinition &
  *
  * @public
  */
-export class TreeItem extends FoundationElement {
+export class FASTTreeItem extends FASTElement {
     /**
      * When true, the control will be appear expanded by user interaction.
      * @public
@@ -119,7 +119,7 @@ export class TreeItem extends FoundationElement {
             this.items.forEach((node: HTMLElement) => {
                 if (isTreeItemElement(node)) {
                     // TODO: maybe not require it to be a TreeItem?
-                    (node as TreeItem).nested = true;
+                    (node as FASTTreeItem).nested = true;
                 }
             });
         }
@@ -148,7 +148,7 @@ export class TreeItem extends FoundationElement {
      * @param el - the element to focus
      */
     public static focusItem(el: HTMLElement) {
-        (el as TreeItem).focusable = true;
+        (el as FASTTreeItem).focusable = true;
         el.focus();
     }
 
@@ -212,5 +212,5 @@ export class TreeItem extends FoundationElement {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface TreeItem extends StartEnd {}
-applyMixins(TreeItem, StartEnd);
+export interface FASTTreeItem extends StartEnd {}
+applyMixins(FASTTreeItem, StartEnd);

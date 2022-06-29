@@ -1,10 +1,9 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { FoundationElement } from "../../index.js";
-import type { Select as FoundationSelect } from "../select.js";
+import type { FASTSelect } from "../select.js";
 import { SelectPosition } from "../select.options.js";
 
-type SelectStoryArgs = Args & Omit<FoundationSelect, keyof FoundationElement>;
+type SelectStoryArgs = Args & FASTSelect;
 type SelectStoryMeta = Meta<SelectStoryArgs>;
 
 const storyTemplate = html<SelectStoryArgs>`

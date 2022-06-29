@@ -1,16 +1,17 @@
 import { expect, assert } from "chai";
-import { Slider, sliderTemplate as template } from "./index.js";
-import { fixture } from "../testing/fixture.js";
+import { FASTSlider, sliderTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 import { Orientation, Direction } from "@microsoft/fast-web-utilities";
 
-const FASTSlider = Slider.compose({
-    baseName: "slider",
-    template
-})
+const sliderName = uniqueElementName();
+FASTSlider.define({
+    name: sliderName,
+    template: sliderTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture(FASTSlider());
+    const { element, connect, disconnect, parent } = await fixture<FASTSlider>(sliderName);
 
     return { element, connect, disconnect, parent };
 }

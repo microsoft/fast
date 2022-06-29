@@ -1,11 +1,9 @@
 import { SyntheticViewTemplate, Updates } from "@microsoft/fast-element";
 import { attr, Observable, observable } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
-import type { ListboxOption } from "../listbox-option/listbox-option.js";
+import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox } from "../listbox/listbox.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
-import { StartEnd } from "../patterns/start-end.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { SelectPosition } from "../select/select.options.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedCombobox } from "./combobox.form-associated.js";
@@ -15,10 +13,9 @@ import { ComboboxAutocomplete } from "./combobox.options.js";
  * Combobox configuration options
  * @public
  */
-export type ComboboxOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        indicator?: string | SyntheticViewTemplate;
-    };
+export type ComboboxOptions = StartEndOptions & {
+    indicator?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Combobox Custom HTML Element.
@@ -37,7 +34,7 @@ export type ComboboxOptions = FoundationElementDefinition &
  *
  * @public
  */
-export class Combobox extends FormAssociatedCombobox {
+export class FASTCombobox extends FormAssociatedCombobox {
     /**
      * The internal value property.
      *
@@ -74,7 +71,7 @@ export class Combobox extends FormAssociatedCombobox {
      *
      * @public
      */
-    public filteredOptions: ListboxOption[] = [];
+    public filteredOptions: FASTListboxOption[] = [];
 
     /**
      * The current filter value.
@@ -173,12 +170,12 @@ export class Combobox extends FormAssociatedCombobox {
      * @remarks
      * Overrides `Listbox.options`.
      */
-    public get options(): ListboxOption[] {
+    public get options(): FASTListboxOption[] {
         Observable.track(this, "options");
         return this.filteredOptions.length ? this.filteredOptions : this._options;
     }
 
-    public set options(value: ListboxOption[]) {
+    public set options(value: FASTListboxOption[]) {
         this._options = value;
         Observable.notify(this, "options");
     }
@@ -276,7 +273,7 @@ export class Combobox extends FormAssociatedCombobox {
         if (this.open) {
             const captured = (e.target as HTMLElement).closest(
                 `option,[role=option]`
-            ) as ListboxOption | null;
+            ) as FASTListboxOption | null;
 
             if (!captured || captured.disabled) {
                 return;
@@ -384,7 +381,7 @@ export class Combobox extends FormAssociatedCombobox {
             return;
         }
 
-        if (!this.options || !this.options.includes(focusTarget as ListboxOption)) {
+        if (!this.options || !this.options.includes(focusTarget as FASTListboxOption)) {
             this.open = false;
         }
     }
@@ -631,8 +628,8 @@ export class Combobox extends FormAssociatedCombobox {
      * Overrides: `Listbox.selectedOptionsChanged`
      */
     public selectedOptionsChanged(
-        prev: ListboxOption[] | undefined,
-        next: ListboxOption[]
+        prev: FASTListboxOption[] | undefined,
+        next: FASTListboxOption[]
     ): void {
         if (this.$fastController.isConnected) {
             this._options.forEach(o => {
@@ -722,5 +719,5 @@ applyMixins(DelegatesARIACombobox, DelegatesARIAListbox);
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Combobox extends StartEnd, DelegatesARIACombobox {}
-applyMixins(Combobox, StartEnd, DelegatesARIACombobox);
+export interface FASTCombobox extends StartEnd, DelegatesARIACombobox {}
+applyMixins(FASTCombobox, StartEnd, DelegatesARIACombobox);

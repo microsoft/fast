@@ -1,8 +1,8 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { HorizontalScroll as FoundationHorizontalScroll } from "../horizontal-scroll.js";
+import type { FASTHorizontalScroll } from "../horizontal-scroll.js";
 
-type HorizontalScrollStoryArgs = Args & FoundationHorizontalScroll;
+type HorizontalScrollStoryArgs = Args & FASTHorizontalScroll;
 type HorizontalScrollStoryMeta = Meta<HorizontalScrollStoryArgs>;
 
 const componentTemplate = html<HorizontalScrollStoryArgs>`
@@ -31,7 +31,7 @@ export default {
     },
     decorators: [
         Story => {
-            const renderedStory = Story() as FoundationHorizontalScroll;
+            const renderedStory = Story() as FASTHorizontalScroll;
 
             const styles = document.createElement("style");
             styles.innerHTML = /* css */ `

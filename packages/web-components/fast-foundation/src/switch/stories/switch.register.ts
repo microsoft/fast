@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Switch, SwitchOptions } from "../switch.js";
-import { switchTemplate as template } from "../switch.template.js";
+import { FASTSwitch } from "../switch.js";
+import { switchTemplate } from "../switch.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -132,15 +131,12 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Switch.compose<SwitchOptions>({
-            baseName: "switch",
-            template,
-            styles,
-            switch: /* html */ `
-                <span class="checked-indicator" part="checked-indicator"></span>
-            `,
-        })()
-    );
+FASTSwitch.define({
+    name: "fast-switch",
+    template: switchTemplate({
+        switch: /* html */ `
+            <span class="checked-indicator" part="checked-indicator"></span>
+        `,
+    }),
+    styles,
+});

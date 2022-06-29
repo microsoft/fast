@@ -1,14 +1,14 @@
 import { expect } from "chai";
-import { BreadcrumbItem, breadcrumbItemTemplate as template } from "./index.js";
-import { fixture } from "../testing/fixture.js";
+import { FASTBreadcrumbItem, breadcrumbItemTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 
-const FASTBreadcrumbItem = BreadcrumbItem.compose({
-    baseName: "breadcrumb-item",
-    template
-})
+const BreadcrumbItem = FASTBreadcrumbItem.define({
+    name: uniqueElementName("breadcrumb-item"),
+    template: breadcrumbItemTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTBreadcrumbItem());
+    const { element, connect, disconnect } = await fixture(BreadcrumbItem);
 
     return { element, connect, disconnect };
 }

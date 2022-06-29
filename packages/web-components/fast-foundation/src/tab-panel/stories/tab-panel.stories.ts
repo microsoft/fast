@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { TabPanel as FoundationTabPanel } from "../tab-panel.js";
+import type { FASTTabPanel } from "../tab-panel.js";
 
-type TabPanelStoryArgs = Args & FoundationTabPanel;
+type TabPanelStoryArgs = Args & FASTTabPanel;
 type TabPanelStoryMeta = Meta<TabPanelStoryArgs>;
 
 const componentTemplate = html<TabPanelStoryArgs>`

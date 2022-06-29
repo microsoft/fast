@@ -1,25 +1,25 @@
-import { attr, observable, Observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
-import { StartEnd } from "../patterns/start-end.js";
+import {
+    ARIAGlobalStatesAndProperties,
+    StartEnd,
+    StartEndOptions,
+} from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Listbox option configuration options
  * @public
  */
-export type ListboxOptionOptions = FoundationElementDefinition & StartEndOptions;
+export type ListboxOptionOptions = StartEndOptions;
 
 /**
- * Determines if the element is a {@link (ListboxOption:class)}
+ * Determines if the element is a {@link (FASTListboxOption:class)}
  *
  * @param element - the element to test.
  * @public
  */
-export function isListboxOption(el: Element): el is ListboxOption {
+export function isListboxOption(el: Element): el is FASTListboxOption {
     return (
         isHTMLElement(el) &&
         ((el.getAttribute("role") as string) === "option" ||
@@ -38,7 +38,7 @@ export function isListboxOption(el: Element): el is ListboxOption {
  *
  * @public
  */
-export class ListboxOption extends FoundationElement {
+export class FASTListboxOption extends FASTElement {
     /**
      * @internal
      */
@@ -320,5 +320,5 @@ applyMixins(DelegatesARIAListboxOption, ARIAGlobalStatesAndProperties);
  * confuses API documenter.
  * TODO: https://github.com/microsoft/fast/issues/3317
  */
-export interface ListboxOption extends StartEnd, DelegatesARIAListboxOption {}
-applyMixins(ListboxOption, StartEnd, DelegatesARIAListboxOption);
+export interface FASTListboxOption extends StartEnd, DelegatesARIAListboxOption {}
+applyMixins(FASTListboxOption, StartEnd, DelegatesARIAListboxOption);

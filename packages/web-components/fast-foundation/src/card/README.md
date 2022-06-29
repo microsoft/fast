@@ -52,28 +52,13 @@ export const myCard = Card.compose({
 
 
 
-### class: `Card`
+### class: `FASTCard`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
-
-#### Fields
-
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
-
-#### Methods
-
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Slots
 

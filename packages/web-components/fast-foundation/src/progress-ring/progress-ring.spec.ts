@@ -1,15 +1,16 @@
 import { expect } from "chai";
-import { BaseProgress as Progress } from "../progress/index.js";
-import { progressRingTemplate as template } from "./index.js";
-import { fixture } from "../testing/fixture.js";
+import { FASTProgressRing } from "./progress-ring.js";
+import { progressRingTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 
-const FASTProgressRing = Progress.compose({
-    baseName: "progress-ring",
-    template
-})
+const progressRingName = uniqueElementName();
+FASTProgressRing.define({
+    name: progressRingName,
+    template: progressRingTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTProgressRing());
+    const { element, connect, disconnect } = await fixture<FASTProgressRing>(progressRingName);
 
     return { element, connect, disconnect };
 }

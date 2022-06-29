@@ -1,10 +1,10 @@
-import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { FASTElement } from "@microsoft/fast-element";
 
 /**
- * A TabPanel Component to be used with {@link @microsoft/fast-foundation#(Tabs:class)}
+ * A TabPanel Component to be used with {@link @microsoft/fast-foundation#(FASTTabs:class)}
  *
  * @slot - The default slot for the tabpanel content
  *
  * @public
  */
-export class TabPanel extends FoundationElement {}
+export class FASTTabPanel extends FASTElement {}

@@ -1,8 +1,14 @@
-import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    html,
+    HTMLView,
+    observable,
+    ViewTemplate,
+} from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 
-const defaultContentsTemplate: ViewTemplate<PickerListItem> = html`
+const defaultContentsTemplate: ViewTemplate<FASTPickerListItem> = html`
     <template>
         ${x => x.value}
     </template>
@@ -13,7 +19,7 @@ const defaultContentsTemplate: ViewTemplate<PickerListItem> = html`
  *
  * @beta
  */
-export class PickerListItem extends FoundationElement {
+export class FASTPickerListItem extends FASTElement {
     /**
      * The underlying string value of the item
      *

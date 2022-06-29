@@ -1,21 +1,19 @@
-import { html, ref, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import { AnchoredRegion } from "../anchored-region/anchored-region.js";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import { ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
+import { endSlotTemplate, startSlotTemplate, tagFor } from "../patterns/index.js";
 import { MenuItemRole } from "./menu-item.js";
-import type { MenuItem, MenuItemOptions } from "./menu-item.js";
+import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
 
 /**
- * Generates a template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component using
+ * Generates a template for the {@link @microsoft/fast-foundation#(FASTMenuItem:class)} component using
  * the provided prefix.
  *
  * @public
  */
-export const menuItemTemplate: FoundationElementTemplate<
-    ViewTemplate<MenuItem>,
-    MenuItemOptions
-> = (context, definition) => html<MenuItem>`
+export function menuItemTemplate(
+    options: MenuItemOptions
+): ElementViewTemplate<FASTMenuItem> {
+    const anchoredRegionTag = tagFor(options.anchoredRegion);
+    return html<FASTMenuItem>`
     <template
         role="${x => x.role}"
         aria-haspopup="${x => (x.hasSubmenu ? "menu" : void 0)}"
@@ -27,15 +25,15 @@ export const menuItemTemplate: FoundationElementTemplate<
         @mouseover="${(x, c) => x.handleMouseOver(c.event as MouseEvent)}"
         @mouseout="${(x, c) => x.handleMouseOut(c.event as MouseEvent)}"
         class="${x => (x.disabled ? "disabled" : "")} ${x =>
-    x.expanded ? "expanded" : ""} ${x => `indent-${x.startColumnCount}`}"
+        x.expanded ? "expanded" : ""} ${x => `indent-${x.startColumnCount}`}"
     >
             ${when(
                 x => x.role === MenuItemRole.menuitemcheckbox,
-                html<MenuItem>`
+                html<FASTMenuItem>`
                     <div part="input-container" class="input-container">
                         <span part="checkbox" class="checkbox">
                             <slot name="checkbox-indicator">
-                                ${definition.checkboxIndicator || ""}
+                                ${options.checkboxIndicator || ""}
                             </slot>
                         </span>
                     </div>
@@ -43,32 +41,32 @@ export const menuItemTemplate: FoundationElementTemplate<
             )}
             ${when(
                 x => x.role === MenuItemRole.menuitemradio,
-                html<MenuItem>`
+                html<FASTMenuItem>`
                     <div part="input-container" class="input-container">
                         <span part="radio" class="radio">
                             <slot name="radio-indicator">
-                                ${definition.radioIndicator || ""}
+                                ${options.radioIndicator || ""}
                             </slot>
                         </span>
                     </div>
                 `
             )}
         </div>
-        ${startSlotTemplate(context, definition)}
+        ${startSlotTemplate(options)}
         <span class="content" part="content">
             <slot></slot>
         </span>
-        ${endSlotTemplate(context, definition)}
+        ${endSlotTemplate(options)}
         ${when(
             x => x.hasSubmenu,
-            html<MenuItem>`
+            html<FASTMenuItem>`
                 <div
                     part="expand-collapse-glyph-container"
                     class="expand-collapse-glyph-container"
                 >
                     <span part="expand-collapse" class="expand-collapse">
                         <slot name="expand-collapse-indicator">
-                            ${definition.expandCollapseGlyph || ""}
+                            ${options.expandCollapseGlyph || ""}
                         </slot>
                     </span>
                 </div>
@@ -76,8 +74,8 @@ export const menuItemTemplate: FoundationElementTemplate<
         )}
         ${when(
             x => x.expanded,
-            html<MenuItem>`
-                <${context.tagFor(AnchoredRegion)}
+            html<FASTMenuItem>`
+                <${anchoredRegionTag}
                     :anchorElement="${x => x}"
                     vertical-positioning-mode="dynamic"
                     vertical-default-position="bottom"
@@ -91,8 +89,9 @@ export const menuItemTemplate: FoundationElementTemplate<
                     part="submenu-region"
                 >
                     <slot name="submenu"></slot>
-                </${context.tagFor(AnchoredRegion)}>
+                </${anchoredRegionTag}>
             `
         )}
     </template>
-`;
+    `;
+}

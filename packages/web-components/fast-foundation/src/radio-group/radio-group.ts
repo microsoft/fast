@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
     ArrowKeys,
     Direction,
@@ -10,7 +10,6 @@ import {
     Orientation,
 } from "@microsoft/fast-web-utilities";
 import { getDirection } from "../utilities/direction.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * An Radio Group Custom HTML Element.
@@ -23,7 +22,7 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  *
  * @public
  */
-export class RadioGroup extends FoundationElement {
+export class FASTRadioGroup extends FASTElement {
     /**
      * When true, the child radios will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public

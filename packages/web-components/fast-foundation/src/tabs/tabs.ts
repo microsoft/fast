@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowLeft,
@@ -9,21 +9,17 @@ import {
     uniqueId,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
-import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
 
 /**
  * Tabs option configuration options
  * @public
  */
-export type TabsOptions = FoundationElementDefinition & StartEndOptions;
+export type TabsOptions = StartEndOptions;
 
 /**
- * The orientation of the {@link @microsoft/fast-foundation#(Tabs:class)} component
+ * The orientation of the {@link @microsoft/fast-foundation#(FASTTabs:class)} component
  * @public
  */
 export const TabsOrientation = {
@@ -51,7 +47,7 @@ export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientatio
  *
  * @public
  */
-export class Tabs extends FoundationElement {
+export class FASTTabs extends FASTElement {
     /**
      * The orientation
      * @public
@@ -445,5 +441,5 @@ export class Tabs extends FoundationElement {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface Tabs extends StartEnd {}
-applyMixins(Tabs, StartEnd);
+export interface FASTTabs extends StartEnd {}
+applyMixins(FASTTabs, StartEnd);

@@ -1,10 +1,9 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { FormAssociatedRadio } from "./radio.form-associated.js";
 
 /**
- * A structure representing a {@link @microsoft/fast-foundation#(Radio:class)} element
+ * A structure representing a {@link @microsoft/fast-foundation#(FASTRadio:class)} element
  * @public
  */
 export type RadioControl = Pick<
@@ -16,7 +15,7 @@ export type RadioControl = Pick<
  * Radio configuration options
  * @public
  */
-export type RadioOptions = FoundationElementDefinition & {
+export type RadioOptions = {
     checkedIndicator?: string | SyntheticViewTemplate;
 };
 
@@ -32,7 +31,7 @@ export type RadioOptions = FoundationElementDefinition & {
  *
  * @public
  */
-export class Radio extends FormAssociatedRadio implements RadioControl {
+export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public

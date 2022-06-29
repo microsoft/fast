@@ -1,10 +1,9 @@
 import { css } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { SliderLabel as FoundationSliderLabel } from "../slider-label.js";
-import { sliderLabelTemplate as template } from "../slider-label.template.js";
+import { FASTSliderLabel } from "../slider-label.js";
+import { sliderLabelTemplate } from "../slider-label.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
@@ -76,7 +75,7 @@ const verticalSliderLabelStyles = css`
     }
 `;
 
-class SliderLabel extends FoundationSliderLabel {
+class SliderLabel extends FASTSliderLabel {
     protected sliderOrientationChanged(prev?: Orientation, next?: Orientation): void {
         switch (next) {
             case Orientation.horizontal: {
@@ -93,13 +92,8 @@ class SliderLabel extends FoundationSliderLabel {
     }
 }
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        SliderLabel.compose({
-            baseName: "slider-label",
-            baseClass: FoundationSliderLabel,
-            template,
-            styles,
-        })()
-    );
+SliderLabel.define({
+    name: "fast-slider-label",
+    template: sliderLabelTemplate(),
+    styles,
+});

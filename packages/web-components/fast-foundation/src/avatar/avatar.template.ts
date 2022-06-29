@@ -1,16 +1,14 @@
-import { html } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { Avatar, AvatarOptions } from "./avatar.js";
+import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { AvatarOptions, FASTAvatar } from "./avatar.js";
 
 /**
- * The template for {@link @microsoft/fast-foundation#Avatar} component.
+ * The template for {@link @microsoft/fast-foundation#FASTAvatar} component.
  * @public
  */
-export const avatarTemplate: FoundationElementTemplate<
-    ViewTemplate<Avatar>,
-    AvatarOptions
-> = (context, definition) => html`
+export function avatarTemplate(
+    options: AvatarOptions = {}
+): ElementViewTemplate<FASTAvatar> {
+    return html<FASTAvatar>`
     <div
         class="backplate ${x => x.shape}"
         part="backplate"
@@ -23,9 +21,10 @@ export const avatarTemplate: FoundationElementTemplate<
             href="${x => (x.link ? x.link : void 0)}"
             style="${x => (x.color ? `color: var(--avatar-color-${x.color});` : void 0)}"
         >
-            <slot name="media">${definition.media || ""}</slot>
+            <slot name="media">${options.media || ""}</slot>
             <slot><slot>
         </a>
     </div>
     <slot name="badge"></slot>
-`;
+    `;
+}

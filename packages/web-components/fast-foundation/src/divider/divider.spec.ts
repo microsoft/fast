@@ -1,17 +1,18 @@
 import { expect } from "chai";
 import { Updates } from "@microsoft/fast-element";
-import { fixture } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { DividerRole } from "./divider.options.js";
-import { Divider, dividerTemplate as template } from "./index.js";
+import { FASTDivider, dividerTemplate } from "./index.js";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
-const FASTDivider = Divider.compose({
-    baseName: "divider",
-    template
-})
+const dividerName = uniqueElementName();
+FASTDivider.define({
+    name: dividerName,
+    template: dividerTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTDivider());
+    const { element, connect, disconnect } = await fixture<FASTDivider>(dividerName);
 
     return { element, connect, disconnect };
 }

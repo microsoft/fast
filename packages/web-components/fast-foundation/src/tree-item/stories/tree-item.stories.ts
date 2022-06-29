@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { TreeItem as FoundationTreeItem } from "../tree-item.js";
+import type { FASTTreeItem } from "../tree-item.js";
 
-type TreeItemStoryArgs = Args & FoundationTreeItem;
+type TreeItemStoryArgs = Args & FASTTreeItem;
 type TreeItemStoryMeta = Meta<TreeItemStoryArgs>;
 
 const storyTemplate = html<TreeItemStoryArgs>`

@@ -13,7 +13,7 @@ describe("FASTElementDefinition", () => {
                 styles,
             };
 
-            const def = new FASTElementDefinition(MyElement, options);
+            const def = FASTElementDefinition.compose(MyElement, options);
             expect(def.styles!.styles).to.contain(styles);
         });
 
@@ -24,7 +24,7 @@ describe("FASTElementDefinition", () => {
                 name: "test-element",
                 styles: [css1, css2],
             };
-            const def = new FASTElementDefinition(MyElement, options);
+            const def = FASTElementDefinition.compose(MyElement, options);
             expect(def.styles!.styles).to.contain(css1);
             expect(def.styles!.styles.indexOf(css1)).to.equal(0);
             expect(def.styles!.styles).to.contain(css2);
@@ -37,7 +37,7 @@ describe("FASTElementDefinition", () => {
                 name: "test-element",
                 styles,
             };
-            const def = new FASTElementDefinition(MyElement, options);
+            const def = FASTElementDefinition.compose(MyElement, options);
             expect(def.styles).to.equal(styles);
         });
 
@@ -50,7 +50,7 @@ describe("FASTElementDefinition", () => {
                 name: "test-element",
                 styles: [existingStyles1, existingStyles2],
             };
-            const def = new FASTElementDefinition(MyElement, options);
+            const def = FASTElementDefinition.compose(MyElement, options);
             expect(def.styles!.styles).to.contain(existingStyles1);
             expect(def.styles!.styles.indexOf(existingStyles1)).to.equal(0);
             expect(def.styles!.styles).to.contain(existingStyles2);
@@ -64,7 +64,7 @@ describe("FASTElementDefinition", () => {
                 name: "test-element",
                 styles: [css1, existingStyles2],
             };
-            const def = new FASTElementDefinition(MyElement, options);
+            const def = FASTElementDefinition.compose(MyElement, options);
             expect(def.styles!.styles).to.contain(css1);
             expect(def.styles!.styles.indexOf(css1)).to.equal(0);
             expect(def.styles!.styles).to.contain(existingStyles2);
@@ -77,7 +77,7 @@ describe("FASTElementDefinition", () => {
                     name: "test-element",
                     styles,
                 };
-                const def = new FASTElementDefinition(MyElement, options);
+                const def = FASTElementDefinition.compose(MyElement, options);
                 expect(def.styles!.styles).to.contain(styles);
             });
 
@@ -88,7 +88,7 @@ describe("FASTElementDefinition", () => {
                     name: "test-element",
                     styles: [styleSheet1, styleSheet2],
                 };
-                const def = new FASTElementDefinition(MyElement, options);
+                const def = FASTElementDefinition.compose(MyElement, options);
                 expect(def.styles!.styles).to.contain(styleSheet1);
                 expect(def.styles!.styles.indexOf(styleSheet1)).to.equal(0);
                 expect(def.styles!.styles).to.contain(styleSheet2);
@@ -103,7 +103,7 @@ describe("FASTElementDefinition", () => {
                     name: "test-element",
                     styles: [css1, existingStyles2, styleSheet3],
                 };
-                const def = new FASTElementDefinition(MyElement, options);
+                const def = FASTElementDefinition.compose(MyElement, options);
                 expect(def.styles!.styles).to.contain(css1);
                 expect(def.styles!.styles.indexOf(css1)).to.equal(0);
                 expect(def.styles!.styles).to.contain(existingStyles2);

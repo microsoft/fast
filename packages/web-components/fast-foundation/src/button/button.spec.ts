@@ -1,16 +1,17 @@
 import { expect } from "chai";
 import { Updates } from "@microsoft/fast-element";
-import { fixture } from "../testing/fixture.js";
-import { Button, buttonTemplate as template } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTButton, buttonTemplate } from "./index.js";
 import { eventClick } from "@microsoft/fast-web-utilities";
 
-const FASTButton = Button.compose({
-    baseName: "button",
-    template
-})
+const buttonName = uniqueElementName();
+FASTButton.define({
+    name: buttonName,
+    template: buttonTemplate()
+});
 
 async function setup() {
-    const { connect, disconnect, element, parent } = await fixture(FASTButton());
+    const { connect, disconnect, element, parent } = await fixture<FASTButton>(buttonName);
 
     return { connect, disconnect, element, parent };
 }

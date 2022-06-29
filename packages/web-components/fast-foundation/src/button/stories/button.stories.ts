@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Button as FoundationButton } from "../button.js";
+import type { FASTButton } from "../button.js";
 
-type ButtonStoryArgs = Args & FoundationButton;
+type ButtonStoryArgs = Args & FASTButton;
 type ButtonStoryMeta = Meta<ButtonStoryArgs>;
 
 export const storyTemplate = html<ButtonStoryArgs>`

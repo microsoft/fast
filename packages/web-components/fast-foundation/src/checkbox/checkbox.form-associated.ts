@@ -1,7 +1,7 @@
+import { FASTElement } from "@microsoft/fast-element";
 import { CheckableFormAssociated } from "../form-associated/form-associated.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 
-class _Checkbox extends FoundationElement {}
+class _Checkbox extends FASTElement {}
 interface _Checkbox extends CheckableFormAssociated {}
 
 /**

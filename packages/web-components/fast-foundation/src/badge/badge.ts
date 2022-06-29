@@ -1,4 +1,4 @@
-import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { FASTElement } from "@microsoft/fast-element";
 
 /**
  * A Badge Custom HTML Element.
@@ -7,4 +7,4 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  *
  * @public
  */
-export class Badge extends FoundationElement {}
+export class FASTBadge extends FASTElement {}
