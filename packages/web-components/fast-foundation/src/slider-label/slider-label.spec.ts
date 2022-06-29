@@ -4,14 +4,13 @@ import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
-const sliderLabelName = uniqueElementName();
-FASTSliderLabel.compose({
-    name: sliderLabelName,
+const SliderLabel = FASTSliderLabel.define({
+    name: uniqueElementName("slider-label"),
     template: sliderLabelTemplate()
 });
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTSliderLabel>(sliderLabelName)
+    const { element, connect, disconnect } = await fixture(SliderLabel)
 
     return { element, connect, disconnect };
 }
