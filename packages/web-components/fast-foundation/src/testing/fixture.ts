@@ -102,8 +102,8 @@ function findElement(view: HTMLView): HTMLElement {
  * Creates a random, unique name suitable for use as a Custom Element name.
  * @public
  */
-export function uniqueElementName(): string {
-    return `fast-unique-${Math.random().toString(36).substring(7)}`;
+export function uniqueElementName(prefix: string = "fast-unique"): string {
+    return `${prefix}-${Math.random().toString(36).substring(7)}`;
 }
 
 /**

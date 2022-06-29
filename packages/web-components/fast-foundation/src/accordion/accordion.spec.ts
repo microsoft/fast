@@ -4,24 +4,22 @@ import { FASTAccordionItem, accordionItemTemplate } from "../accordion-item/inde
 import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 
-const accordionName = uniqueElementName();
-FASTAccordion.define({
-    name: accordionName,
+const Accordion = FASTAccordion.define({
+    name: uniqueElementName("accordion"),
     template: accordionTemplate()
-})
+});
 
-const accordionItemName = uniqueElementName();
-FASTAccordionItem.define({
-    name: accordionItemName,
+const AccordionItem = FASTAccordionItem.define({
+    name: uniqueElementName("accordion-item"),
     template: accordionItemTemplate()
 });
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTAccordion>(accordionName);
+    const { element, connect, disconnect } = await fixture(Accordion);
 
-    const item1 = document.createElement(accordionItemName);
-    const item2 = document.createElement(accordionItemName);
-    const item3 = document.createElement(accordionItemName);
+    const item1 = new AccordionItem();
+    const item2 = new AccordionItem();
+    const item3 = new AccordionItem();
 
     element.appendChild(item1);
     element.appendChild(item2);
@@ -30,7 +28,7 @@ async function setup() {
     return { element, connect, disconnect, item1, item2, item3 };
 }
 
-describe("Accordion", () => {
+describe.only("Accordion", () => {
     it("should set an expand mode of `multi` when passed to the `expand-mode` attribute", async () => {
         const { element, connect, disconnect } = await setup();
 

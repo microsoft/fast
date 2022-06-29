@@ -1,4 +1,4 @@
-import { Constructable, isFunction, isString, KernelServiceId } from "../interfaces.js";
+import { Constructable, isString, KernelServiceId } from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
 import { createTypeRegistry, FAST, TypeRegistry } from "../platform.js";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles.js";
@@ -56,8 +56,6 @@ export interface PartialFASTElementDefinition {
 export class FASTElementDefinition<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
 > {
-    private observedAttributes: string[];
-
     /**
      * The type this element definition describes.
      */
@@ -133,7 +131,7 @@ export class FASTElementDefinition<
             observedAttributes[i] = current.attribute;
             propertyLookup[current.name] = current;
             attributeLookup[current.attribute] = current;
-            Observable.defineProperty(proto, current.name);
+            Observable.defineProperty(proto, current);
         }
 
         Reflect.defineProperty(type, "observedAttributes", {
@@ -142,7 +140,6 @@ export class FASTElementDefinition<
         });
 
         this.attributes = attributes;
-        this.observedAttributes = observedAttributes;
         this.propertyLookup = propertyLookup;
         this.attributeLookup = attributeLookup;
 
