@@ -185,7 +185,7 @@ const pickerMenuOptionStyles = css`
     }
 `;
 
-FASTPickerList.compose({
+FASTPickerList.define({
     name: "fast-picker-list",
     template: pickerListTemplate(),
     styles: pickerListStyles,
@@ -203,7 +203,7 @@ FASTPickerMenu.define({
     styles: pickerMenuStyles,
 });
 
-FASTPickerMenuOption.compose({
+FASTPickerMenuOption.define({
     name: "fast-picker-menu-option",
     template: pickerMenuOptionTemplate(),
     styles: pickerMenuOptionStyles,
