@@ -195,7 +195,7 @@ describe("Picker", () => {
 
         await Updates.next();
 
-        expect(element.querySelectorAll("fast-picker-list-item").length).to.equal(3);
+        expect(element.querySelectorAll(pickerListItemName).length).to.equal(3);
 
         await disconnect();
     });
@@ -225,7 +225,7 @@ describe("Picker", () => {
 
         expect(document.activeElement === element.inputElement).to.equal(true);
 
-        const listItems: Element[] = Array.from(element.querySelectorAll("fast-picker-list-item"));
+        const listItems: Element[] = Array.from(element.querySelectorAll(pickerListItemName));
 
         element.dispatchEvent(arrowLeftEvent);
         expect(document.activeElement === listItems[2]).to.equal(true);
@@ -264,19 +264,19 @@ describe("Picker", () => {
         await Updates.next();
         element.focus();
 
-        let listItems: Element[] = Array.from(element.querySelectorAll("fast-picker-list-item"));
+        let listItems: Element[] = Array.from(element.querySelectorAll(pickerListItemName));
         expect(listItems.length).to.equal(3);
         expect(element.selection).to.equal("apples,oranges,bananas");
 
         element.dispatchEvent(backEvent);
         await Updates.next();
-        listItems = Array.from(element.querySelectorAll("fast-picker-list-item"));
+        listItems = Array.from(element.querySelectorAll(pickerListItemName));
         expect(listItems.length).to.equal(2);
         expect(element.selection).to.equal("apples,oranges");
 
         element.dispatchEvent(deleteEvent);
         await Updates.next();
-        listItems = Array.from(element.querySelectorAll("fast-picker-list-item"));
+        listItems = Array.from(element.querySelectorAll(pickerListItemName));
         expect(listItems.length).to.equal(1);
         expect(element.selection).to.equal("apples");
 
