@@ -27,12 +27,13 @@ Observable.getNotifier(token).subscribe({
 
 #### Methods
 
-| Name            | Privacy | Description | Parameters                                          | Return                      | Inherited From |
-| --------------- | ------- | ----------- | --------------------------------------------------- | --------------------------- | -------------- |
-| `appendChild`   | public  |             | `child: DesignTokenNode`                            |                             |                |
-| `removeChild`   | public  |             | `child: DesignTokenNode`                            |                             |                |
-| `setTokenValue` | public  |             | `token: DesignToken<T>, value: DesignTokenValue<T>` |                             |                |
-| `getTokenValue` | public  |             | `token: DesignToken<T>`                             | `StaticDesignTokenValue<T>` |                |
+| Name               | Privacy | Description | Parameters                                          | Return                      | Inherited From |
+| ------------------ | ------- | ----------- | --------------------------------------------------- | --------------------------- | -------------- |
+| `appendChild`      | public  |             | `child: DesignTokenNode`                            |                             |                |
+| `removeChild`      | public  |             | `child: DesignTokenNode`                            |                             |                |
+| `setTokenValue`    | public  |             | `token: DesignToken<T>, value: DesignTokenValue<T>` |                             |                |
+| `getTokenValue`    | public  |             | `token: DesignToken<T>`                             | `StaticDesignTokenValue<T>` |                |
+| `deleteTokenValue` | public  |             | `token: DesignToken<T>`                             | `void`                      |                |
 
 <hr/>
 

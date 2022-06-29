@@ -1,12 +1,12 @@
 import { Observable, Subscriber, Updates } from "@microsoft/fast-element";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
-import { DesignTokenNode } from "./design-token-node.js";
+import { DesignTokenNode, DesignTokenResolver } from "./design-token-node.js";
 import { DesignToken } from "./design-token.js";
 
 chai.use(spies);
 
-function makeChangeHandler() {
+function createChangeHandler() {
     const handleChange = chai.spy(() => {})
     const subscriber: Subscriber = { handleChange }
     return { handleChange, subscriber }
@@ -65,7 +65,6 @@ describe.only("DesignTokenNode", () => {
             parent.removeChild(child);
             expect(child.parent).to.be.null;
         });
-
         it("should remove the child from the `children` set if the item is a child of the parent", () => {
             const parent = new DesignTokenNode();
             const child = new DesignTokenNode();
@@ -232,7 +231,7 @@ describe.only("DesignTokenNode", () => {
         it("the token with the node that has the token assigned a static value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             Observable.getNotifier(token).subscribe(subscriber);
             node.setTokenValue(token, 12);
@@ -245,7 +244,7 @@ describe.only("DesignTokenNode", () => {
             const token = new DesignToken<number>();
             const parent = createNode();
             const node = createNode(parent);
-            const { handleChange, subscriber } = makeChangeHandler()
+            const { handleChange, subscriber } = createChangeHandler()
 
             parent.setTokenValue(token, 12);
             Observable.getNotifier(token).subscribe(subscriber);
@@ -258,7 +257,7 @@ describe.only("DesignTokenNode", () => {
         it("the token with the node that has the token assigned a derived value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             Observable.getNotifier(token).subscribe(subscriber);
             node.setTokenValue(token, () => 12);
@@ -270,7 +269,7 @@ describe.only("DesignTokenNode", () => {
         it("the token with the node that has the token reassigned a static value from a derived value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             Observable.getNotifier(token).subscribe(subscriber);
             node.setTokenValue(token, () => 12);
@@ -283,7 +282,7 @@ describe.only("DesignTokenNode", () => {
         it("the token with the node that has the token reassigned a derived value from a static value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             Observable.getNotifier(token).subscribe(subscriber);
             node.setTokenValue(token, 12);
@@ -296,7 +295,7 @@ describe.only("DesignTokenNode", () => {
         it("the token with the node that has the token assigned a static value which is then deleted", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             Observable.getNotifier(token).subscribe(subscriber);
             node.setTokenValue(token, 12);
@@ -309,7 +308,7 @@ describe.only("DesignTokenNode", () => {
         it("the token with the node that has the token assigned a derived value which is then deleted", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             Observable.getNotifier(token).subscribe(subscriber);
             node.setTokenValue(token, () => 12);
@@ -323,7 +322,7 @@ describe.only("DesignTokenNode", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const node = new DesignTokenNode();
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             node.setTokenValue(dependency, 6);
             node.setTokenValue(token, (resolve) => resolve(dependency) * 2);
@@ -344,7 +343,7 @@ describe.only("DesignTokenNode", () => {
             const ancestor = createNode();
             const parent = createNode(ancestor);
             const target = createNode(parent);
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             ancestor.setTokenValue(dependency, 6);
             ancestor.setTokenValue(token, (resolve) => resolve(dependency) * 2);
@@ -367,7 +366,7 @@ describe.only("DesignTokenNode", () => {
             const ancestor = createNode();
             const parent = createNode(ancestor);
             const target = createNode(parent);
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             ancestor.setTokenValue(dependency, 6);
             ancestor.setTokenValue(token, (resolve) => resolve(dependency) * 2);
@@ -390,7 +389,7 @@ describe.only("DesignTokenNode", () => {
             const ancestor = createNode();
             const parent = createNode(ancestor);
             const target = createNode(parent);
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             ancestor.setTokenValue(dependency, 6);
             ancestor.setTokenValue(token, (resolve) => resolve(dependency) * 2);
@@ -415,7 +414,7 @@ describe.only("DesignTokenNode", () => {
             const ancestor = createNode();
             const parent = createNode(ancestor);
             const target = createNode(parent);
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             ancestor.setTokenValue(dependency, 6);
             ancestor.setTokenValue(token, (resolve) => resolve(dependency) * 2);
@@ -439,7 +438,7 @@ describe.only("DesignTokenNode", () => {
             const ancestor = createNode();
             const parent = createNode(ancestor);
             const target = createNode(parent);
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             ancestor.setTokenValue(dependency, 6);
             ancestor.setTokenValue(token, 12);
@@ -463,7 +462,7 @@ describe.only("DesignTokenNode", () => {
             const ancestor = createNode();
             const parent = createNode(ancestor);
             const target = createNode(parent);
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             ancestor.setTokenValue(dependency, 6);
             ancestor.setTokenValue(token, (resolve) => resolve(dependency) * 2);
@@ -485,7 +484,7 @@ describe.only("DesignTokenNode", () => {
             const ancestor = createNode();
             const parent = createNode(ancestor);
             const target = createNode(parent);
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
 
             ancestor.setTokenValue(dependency, 6);
             ancestor.setTokenValue(token, (resolve) => resolve(dependency) * 2);
@@ -501,8 +500,63 @@ describe.only("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).to.equal(12);
             expect(target.getTokenValue(token)).to.equal(16);
         });
+        /**
+         * Appending nodes
+         */
+        it("the token with the descendent node that has a dependency assigned when the node is appended to an ancestor with a derived value assigned that depends on the dependency", () => {
+            const ancestor = createNode();
+            const parent = createNode(ancestor);
+            const descendent = createNode();
+            const dependency = new DesignToken<number>();
+            const token = new DesignToken<number>();
+            const { subscriber, handleChange } = createChangeHandler();
+
+            ancestor.setTokenValue(dependency, 6);
+            ancestor.setTokenValue(token, (resolve) => resolve(dependency) * 2);
+            descendent.setTokenValue(dependency, 7);
+
+            Observable.getNotifier(token).subscribe(subscriber);
+
+            parent.appendChild(descendent);
+
+            expect(handleChange).to.have.been.called.once;
+            expect(handleChange).to.have.been.first.called.with.exactly(token, descendent);
+            expect(descendent.getTokenValue(token)).to.equal(14);
+        });
+        /**
+         * Removing nodes
+         */
+        /**
+         * Moving node
+         */
+        it("the token with the descendent node that has a dependency assigned when the node is re-parented to an ancestor with a different derived value assigned that depends on the dependency", () => {
+            const ancestorA = createNode();
+            const ancestorB = createNode();
+            const parentA = createNode(ancestorA);
+            const parentB = createNode(ancestorB);
+            const descendent = createNode(parentA);
+            const dependency = new DesignToken<number>();
+            const token = new DesignToken<number>();
+            const { subscriber, handleChange } = createChangeHandler();
+
+            ancestorA.setTokenValue(dependency, 6);
+            ancestorA.setTokenValue(token, (resolve) => resolve(dependency) * 2);
+            ancestorB.setTokenValue(dependency, 7);
+            ancestorB.setTokenValue(token, resolve => resolve(dependency) * 3);
+            descendent.setTokenValue(dependency, 7);
+
+            Observable.getNotifier(token).subscribe(subscriber);
+
+            parentB.appendChild(descendent);
+
+            expect(handleChange).to.have.been.called.once;
+            expect(handleChange).to.have.been.first.called.with.exactly(token, descendent);
+            expect(descendent.getTokenValue(token)).to.equal(21);
+        });
         // TODO appendChild
         // TODO removeChild
+        // TODO moved child
+        // TODO default values
     });
 
     describe("should not notify", () => {
@@ -518,14 +572,13 @@ describe.only("DesignTokenNode", () => {
 
             expect(handleChange).not.to.have.been.called();
         });
-
         it("the token when a dependency of a derived token value is set for a descendent but there is an intermediary value set that is a static value", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
             const parent = createNode(ancestor);
             const child = createNode(parent);
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
             ancestor.setTokenValue(dependency, 12);
             ancestor.setTokenValue(token, (resolve) => resolve(dependency) * 2);
             parent.setTokenValue(token, 25);
@@ -536,14 +589,13 @@ describe.only("DesignTokenNode", () => {
             expect(handleChange).not.to.have.been.called;
             expect(child.getTokenValue(token)).to.equal(25);
         });
-
         it("the token when a dependency of a derived token value is set for a descendent but there is an intermediary value set that is a derived value that does not depend on the dependent token", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
             const parent = createNode(ancestor);
             const child = createNode(parent);
-            const { subscriber, handleChange } = makeChangeHandler();
+            const { subscriber, handleChange } = createChangeHandler();
             ancestor.setTokenValue(dependency, 12);
             ancestor.setTokenValue(token, (resolve) => resolve(dependency) * 2);
             parent.setTokenValue(token, () => 25);
@@ -553,7 +605,7 @@ describe.only("DesignTokenNode", () => {
 
             expect(handleChange).not.to.have.been.called;
             expect(child.getTokenValue(token)).to.equal(25);
-        })
+        });
     });
 
 

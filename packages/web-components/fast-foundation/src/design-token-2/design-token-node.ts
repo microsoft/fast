@@ -282,13 +282,16 @@ export class DesignTokenNode {
 
         do {
             const assigned = DesignTokenNode.getAssignedTokensForNode(current);
-            assigned
-                .filter(token => ignored.indexOf(token) === -1)
-                .forEach(token => {
-                    if (DesignTokenNode.isDerivedFor(current!, token)) {
-                        collected.set(token, current!._derived.get(token)![0]);
-                    }
-                });
+            for (let i = 0, l = assigned.length; i < l; i++) {
+                const token = assigned[i];
+
+                if (
+                    !ignored.includes(token) &&
+                    DesignTokenNode.isDerivedFor(current, token)
+                ) {
+                    collected.set(token, current!._derived.get(token)![0]);
+                }
+            }
 
             ignored = Array.from(new Set(ignored.concat(assigned)));
             current = current.parent;
