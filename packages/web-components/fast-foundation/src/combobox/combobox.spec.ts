@@ -6,30 +6,28 @@ import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { FASTCombobox, comboboxTemplate } from "./index.js";
 
 describe("Combobox", () => {
-    const comboboxName = uniqueElementName();
-    FASTCombobox.define({
-        name: comboboxName,
+    const Combobox = FASTCombobox.define({
+        name: uniqueElementName("combobox"),
         template: comboboxTemplate()
     });
 
-    const listboxName = uniqueElementName();
-    FASTListboxOption.define({
-        name: listboxName,
+    const Option = FASTListboxOption.define({
+        name: uniqueElementName("option"),
         template: listboxOptionTemplate()
     });
 
     async function setup() {
-        const { element, connect, disconnect, parent } = await fixture<FASTCombobox>(comboboxName);
+        const { element, connect, disconnect, parent } = await fixture(Combobox);
 
         element.id = "combobox";
 
-        const option1 = document.createElement("fast-option") as FASTListboxOption;
+        const option1 = new Option();
         option1.textContent = "one";
 
-        const option2 = document.createElement("fast-option") as FASTListboxOption;
+        const option2 = new Option();
         option2.textContent = "two";
 
-        const option3 = document.createElement("fast-option") as FASTListboxOption;
+        const option3 = new Option();
         option3.textContent = "three";
 
         element.appendChild(option1);
