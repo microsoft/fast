@@ -168,6 +168,41 @@ export class DesignTokenNode {
         return node._derived.has(token);
     }
 
+    /**
+     * Collects token/value pairs for all derived token / values set on upstream nodes.
+     */
+    private static collectDerivedContext(
+        node: DesignTokenNode
+    ): Map<DesignToken<any>, DerivedDesignTokenValue<any>> {
+        const collected = new Map<DesignToken<any>, DerivedDesignTokenValue<any>>();
+        // Exit early if  there is no parent
+        if (node.parent === null) {
+            return collected;
+        }
+
+        let ignored = DesignTokenNode.getAssignedTokensForNode(node);
+        let current: DesignTokenNode | null = node.parent;
+
+        do {
+            const assigned = DesignTokenNode.getAssignedTokensForNode(current);
+            for (let i = 0, l = assigned.length; i < l; i++) {
+                const token = assigned[i];
+
+                if (
+                    !ignored.includes(token) &&
+                    DesignTokenNode.isDerivedFor(current, token)
+                ) {
+                    collected.set(token, current!._derived.get(token)![0]);
+                }
+            }
+
+            ignored = Array.from(new Set(ignored.concat(assigned)));
+            current = current.parent;
+        } while (current !== null);
+
+        return collected;
+    }
+
     constructor() {
         Observable.getNotifier(this._derived).subscribe(this.derivedSubscriber);
     }
@@ -266,41 +301,6 @@ export class DesignTokenNode {
     }
 
     /**
-     * Collects token/value pairs for all derived token / values set on upstream nodes.
-     */
-    private static collectDerivedContext(
-        node: DesignTokenNode
-    ): Map<DesignToken<any>, DerivedDesignTokenValue<any>> {
-        const collected = new Map<DesignToken<any>, DerivedDesignTokenValue<any>>();
-        // Exit early if  there is no parent
-        if (node.parent === null) {
-            return collected;
-        }
-
-        let ignored = DesignTokenNode.getAssignedTokensForNode(node);
-        let current: DesignTokenNode | null = node.parent;
-
-        do {
-            const assigned = DesignTokenNode.getAssignedTokensForNode(current);
-            for (let i = 0, l = assigned.length; i < l; i++) {
-                const token = assigned[i];
-
-                if (
-                    !ignored.includes(token) &&
-                    DesignTokenNode.isDerivedFor(current, token)
-                ) {
-                    collected.set(token, current!._derived.get(token)![0]);
-                }
-            }
-
-            ignored = Array.from(new Set(ignored.concat(assigned)));
-            current = current.parent;
-        } while (current !== null);
-
-        return collected;
-    }
-
-    /**
      * Notifies the node that a token has changed for the context.
      */
     private notifyStatic<T>(token: DesignToken<T>, originator: DesignTokenNode) {
@@ -370,7 +370,9 @@ export class DesignTokenNode {
         }
     }
 
-    // Change handler for derived token values
+    /**
+     * Change handler for derived token values
+     */
     private derivedSubscriber: Subscriber = {
         handleChange: (source: ObservableMap, value: DesignToken<any>) => {
             this.notifyToken(value);
@@ -381,7 +383,7 @@ export class DesignTokenNode {
      * Notifies the token subscribes that the value has changed for the node
      * @param token - The token that changed
      */
-    private notifyToken(token: DesignToken<any>) {
+    private notifyToken<T>(token: DesignToken<T>): void {
         Observable.getNotifier(token).notify(this);
     }
 }
