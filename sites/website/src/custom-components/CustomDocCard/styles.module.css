@@ -1,0 +1,10 @@
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.docCard {
+  min-width: 350px;
+  max-width: 48%;
+}
