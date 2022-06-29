@@ -1,7 +1,6 @@
 import { ElementViewTemplate, html, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
-import { tagFor } from "../patterns/tag-for.js";
+import { endSlotTemplate, startSlotTemplate, tagFor } from "../patterns/index.js";
 import type {
     CalendarDateInfo,
     CalendarOptions,

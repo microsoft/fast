@@ -3,7 +3,7 @@ import { TextAreaResize } from "./text-area.js";
 import type { FASTTextArea } from "./text-area.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(TextArea:class)} component.
+ * The template for the {@link @microsoft/fast-foundation#(FASTTextArea:class)} component.
  * @public
  */
 export function textAreaTemplate(): ElementViewTemplate<FASTTextArea> {

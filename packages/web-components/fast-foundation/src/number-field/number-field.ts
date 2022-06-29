@@ -6,7 +6,7 @@ import {
     Updates,
 } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { DelegatesARIATextbox } from "../text-field/text-field.js";
 import { FormAssociatedNumberField } from "./number-field.form-associated.js";

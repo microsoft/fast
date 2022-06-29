@@ -7,17 +7,17 @@ import {
     Updates,
 } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import type { StartEndOptions } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/index.js";
 import type { ResizeObserverClassDefinition } from "../utilities/resize-observer.js";
 
 /**
- * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
+ * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)}
  * @public
  */
 export type HorizontalScrollView = "default" | "mobile";
 
 /**
- * The easing types available for the horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
+ * The easing types available for the horizontal-scroll {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)}
  * @public
  */
 export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | string;

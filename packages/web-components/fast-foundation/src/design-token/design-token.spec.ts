@@ -1,22 +1,16 @@
 import { css, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
 import chia, { expect } from "chai";
-import { DesignSystem } from "../design-system/index.js";
 import { uniqueElementName } from "../testing/fixture.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { CSSDesignToken, DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token.js";
 import spies from "chai-spies";
 
 chia.use(spies);
 const elementName = uniqueElementName();
 
-DesignSystem.getOrCreate()
-    .register(
-        FoundationElement.compose({
-            type: class extends FoundationElement { },
-            baseName: elementName,
-            template: html`<slot></slot>`
-        })()
-    );
+FASTElement.define(class extends FASTElement { }, {
+    name: elementName,
+    template: html`<slot></slot>`
+});
 
 function addElement(parent = document.body): FASTElement & HTMLElement {
     const el = document.createElement(`fast-${elementName}`) as any;

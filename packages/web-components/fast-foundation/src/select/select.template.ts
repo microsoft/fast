@@ -1,6 +1,6 @@
 import { ElementViewTemplate, html, ref, slotted, when } from "@microsoft/fast-element";
 import { FASTListbox } from "../listbox/listbox.js";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { FASTSelect, SelectOptions } from "./select.js";
 
 /**

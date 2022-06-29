@@ -2,7 +2,7 @@ import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
 import type { FASTSwitch, SwitchOptions } from "./switch.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(Switch:class)} component.
+ * The template for the {@link @microsoft/fast-foundation#(FASTSwitch:class)} component.
  * @public
  */
 export function switchTemplate(

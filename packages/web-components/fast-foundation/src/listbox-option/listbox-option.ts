@@ -1,8 +1,10 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
-import { StartEnd } from "../patterns/start-end.js";
+import {
+    ARIAGlobalStatesAndProperties,
+    StartEnd,
+    StartEndOptions,
+} from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
@@ -12,7 +14,7 @@ import { applyMixins } from "../utilities/apply-mixins.js";
 export type ListboxOptionOptions = StartEndOptions;
 
 /**
- * Determines if the element is a {@link (ListboxOption:class)}
+ * Determines if the element is a {@link (FASTListboxOption:class)}
  *
  * @param element - the element to test.
  * @public

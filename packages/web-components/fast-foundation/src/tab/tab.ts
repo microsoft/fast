@@ -1,7 +1,7 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
 
 /**
- * A Tab Component to be used with {@link @microsoft/fast-foundation#(Tabs:class)}
+ * A Tab Component to be used with {@link @microsoft/fast-foundation#(FASTTabs:class)}
  *
  * @slot - The default slot for the tab content
  *

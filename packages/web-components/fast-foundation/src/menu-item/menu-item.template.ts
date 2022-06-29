@@ -1,6 +1,5 @@
 import { ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
-import { tagFor } from "../patterns/tag-for.js";
+import { endSlotTemplate, startSlotTemplate, tagFor } from "../patterns/index.js";
 import { MenuItemRole } from "./menu-item.js";
 import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
 

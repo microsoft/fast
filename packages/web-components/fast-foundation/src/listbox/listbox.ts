@@ -12,7 +12,7 @@ import {
     uniqueId,
 } from "@microsoft/fast-web-utilities";
 import { FASTListboxOption, isListboxOption } from "../listbox-option/listbox-option.js";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
+import { ARIAGlobalStatesAndProperties } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**

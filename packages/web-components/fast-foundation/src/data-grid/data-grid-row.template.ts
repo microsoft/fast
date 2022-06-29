@@ -6,11 +6,14 @@ import {
     slotted,
 } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { TemplateElementDependency } from "src/index.js";
-import { tagFor } from "../patterns/tag-for.js";
+import { tagFor, TemplateElementDependency } from "../patterns/index.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import type { ColumnDefinition } from "./data-grid.js";
 
+/**
+ * Options for data grid cells.
+ * @public
+ */
 export type CellItemTemplateOptions = {
     dataGridCell: TemplateElementDependency;
 };
@@ -43,7 +46,7 @@ function headerCellItemTemplate(
 }
 
 /**
- * Generates a template for the {@link @microsoft/fast-foundation#DataGridRow} component using
+ * Generates a template for the {@link @microsoft/fast-foundation#FASTDataGridRow} component using
  * the provided prefix.
  *
  * @public

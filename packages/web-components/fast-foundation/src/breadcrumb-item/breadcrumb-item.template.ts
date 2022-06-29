@@ -1,6 +1,6 @@
 import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
 import { anchorTemplate } from "../anchor/anchor.template.js";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { BreadcrumbItemOptions, FASTBreadcrumbItem } from "./breadcrumb-item.js";
 
 /**

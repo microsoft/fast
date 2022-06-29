@@ -97,31 +97,26 @@ export const myTreeView = TreeView.compose({
 
 
 
-### class: `TreeView`
+### class: `FASTTreeView`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name                   | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| ---------------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `renderCollapsedNodes` | public  | `boolean`                             |         | /\*\*   When true, the control will be appear expanded by user interaction.                                                                                                         |                   |
-| `currentSelected`      | public  | `HTMLElement or TreeItem or null`     |         | The currently selected tree item                                                                                                                                                    |                   |
-| `$presentation`        | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`             | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`               | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name                   | Privacy | Type                                  | Default | Description                                                                 | Inherited From |
+| ---------------------- | ------- | ------------------------------------- | ------- | --------------------------------------------------------------------------- | -------------- |
+| `renderCollapsedNodes` | public  | `boolean`                             |         | /\*\*   When true, the control will be appear expanded by user interaction. |                |
+| `currentSelected`      | public  | `HTMLElement or FASTTreeItem or null` |         | The currently selected tree item                                            |                |
 
 #### Methods
 
-| Name                      | Privacy   | Description | Parameters | Return | Inherited From    |
-| ------------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `slottedTreeItemsChanged` | protected |             |            | `void` |                   |
-| `templateChanged`         | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`           | protected |             |            | `void` | FoundationElement |
+| Name                      | Privacy   | Description | Parameters | Return | Inherited From |
+| ------------------------- | --------- | ----------- | ---------- | ------ | -------------- |
+| `slottedTreeItemsChanged` | protected |             |            | `void` |                |
 
 #### Attributes
 

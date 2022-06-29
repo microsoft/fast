@@ -1,6 +1,6 @@
 import type { ElementViewTemplate } from "@microsoft/fast-element";
 import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { FASTTreeItem, TreeItemOptions } from "./tree-item.js";
 
 /**

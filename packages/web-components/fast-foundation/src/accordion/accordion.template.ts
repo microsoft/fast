@@ -2,7 +2,7 @@ import { elements, ElementViewTemplate, html, slotted } from "@microsoft/fast-el
 import type { FASTAccordion } from "./accordion.js";
 
 /**
- * Creates a template for the {@link @microsoft/fast-foundation#FoundationAccordion} component.
+ * Creates a template for the {@link @microsoft/fast-foundation#FASTAccordion} component.
  * @public
  */
 export function accordionTemplate(): ElementViewTemplate<FASTAccordion> {

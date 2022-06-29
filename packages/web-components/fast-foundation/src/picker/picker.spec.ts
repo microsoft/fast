@@ -20,7 +20,8 @@ import {
     keyDelete,
     keyEnter,
 } from "@microsoft/fast-web-utilities";
-import { FASTAnchoredRegion, anchoredRegionTemplate, FASTProgressRing, progressRingTemplate } from "src/index.js";
+import { FASTAnchoredRegion, anchoredRegionTemplate } from "../anchored-region/index.js";
+import { FASTProgressRing, progressRingTemplate } from "../progress-ring/index.js";
 
 const anchoredRegionName = uniqueElementName();
 FASTAnchoredRegion.define({

@@ -2,7 +2,7 @@ import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element
 import type { FASTTreeView } from "./tree-view.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#TreeView} component.
+ * The template for the {@link @microsoft/fast-foundation#FASTTreeView} component.
  * @public
  */
 export function treeViewTemplate(): ElementViewTemplate<FASTTreeView> {

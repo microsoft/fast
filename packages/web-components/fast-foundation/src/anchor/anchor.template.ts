@@ -1,5 +1,5 @@
 import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { AnchorOptions, FASTAnchor } from "./anchor.js";
 
 /**

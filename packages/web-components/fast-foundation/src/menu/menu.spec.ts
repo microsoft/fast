@@ -4,7 +4,7 @@ import { FASTMenuItem, menuItemTemplate, MenuItemRole } from "../menu-item/index
 import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
-import { FASTAnchoredRegion, anchoredRegionTemplate } from "src/index.js";
+import { FASTAnchoredRegion, anchoredRegionTemplate } from "../anchored-region/index.js";
 
 const anchoredRegionName = uniqueElementName();
 FASTAnchoredRegion.compose({

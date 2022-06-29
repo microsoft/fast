@@ -1,5 +1,4 @@
-import { html, ref, SyntheticViewTemplate } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, ref, SyntheticViewTemplate, ViewTemplate } from "@microsoft/fast-element";
 
 /**
  * Start configuration options

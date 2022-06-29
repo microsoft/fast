@@ -5,7 +5,7 @@ import {
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**

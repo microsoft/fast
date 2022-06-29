@@ -6,7 +6,7 @@ import type { ProgressRingOptions } from "./progress-ring.options.js";
 const progressSegments: number = 44;
 
 /**
- * The template for the {@link @microsoft/fast-foundation#ProgressRing} component.
+ * The template for the {@link @microsoft/fast-foundation#FASTProgressRing} component.
  * @public
  */
 export function progressRingTemplate(

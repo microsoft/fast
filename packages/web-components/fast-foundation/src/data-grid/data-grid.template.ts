@@ -3,6 +3,10 @@ import type { ViewTemplate } from "@microsoft/fast-element";
 import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
 import type { FASTDataGrid } from "./data-grid.js";
 
+/**
+ * Options for data grid templates.
+ * @public
+ */
 export type DataGridOptions = {
     dataGridRow: TemplateElementDependency;
 };
@@ -19,7 +23,7 @@ function rowItemTemplate(options: DataGridOptions): ViewTemplate<any, FASTDataGr
 }
 
 /**
- * Generates a template for the {@link @microsoft/fast-foundation#DataGrid} component using
+ * Generates a template for the {@link @microsoft/fast-foundation#FASTDataGrid} component using
  * the provided prefix.
  *
  * @public

@@ -12,10 +12,13 @@ import {
     keyEnter,
     keySpace,
 } from "@microsoft/fast-web-utilities";
-import type { TemplateElementDependency } from "src/index.js";
 import type { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
 import type { FASTMenu } from "../menu/menu.js";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import {
+    StartEnd,
+    StartEndOptions,
+    TemplateElementDependency,
+} from "../patterns/index.js";
 import { getDirection } from "../utilities/direction.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { MenuItemRole, roleForMenuItem } from "./menu-item.options.js";

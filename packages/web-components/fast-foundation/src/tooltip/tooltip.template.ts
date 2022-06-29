@@ -2,12 +2,16 @@ import { ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
 import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
 import type { FASTTooltip } from "./tooltip.js";
 
+/**
+ * Options for the tooltip.
+ * @public
+ */
 export type TooltipOptions = {
     anchoredRegion: TemplateElementDependency;
 };
 
 /**
- * Creates a template for the {@link @microsoft/fast-foundation#(Tooltip:class)} component using the provided prefix.
+ * Creates a template for the {@link @microsoft/fast-foundation#(FASTTooltip:class)} component using the provided prefix.
  * @public
  */
 export function tooltipTemplate(

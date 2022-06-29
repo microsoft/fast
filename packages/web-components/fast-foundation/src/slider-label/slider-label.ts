@@ -61,7 +61,7 @@ export class FASTSliderLabel extends FASTElement {
     public hideMark: boolean = false;
 
     /**
-     * The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#(Slider:class)}.
+     * The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#(FASTSlider:class)}.
      *
      * @public
      * @remarks
