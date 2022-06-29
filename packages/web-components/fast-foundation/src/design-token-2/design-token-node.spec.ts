@@ -89,61 +89,11 @@ describe.only("DesignTokenNode", () => {
             expect(child.parent).to.equal(parent);
         });
     });
-
-    describe("setting a token value to a static value", () => {
-        describe("should notify subscribers", () => {
-            it("that the token has changed for the node", () => {
-                const token = new DesignToken<number>();
-                const node = new DesignTokenNode();
-                const handleChange = chai.spy(() => {})
-                const subscriber: Subscriber = { handleChange }
-                Observable.getNotifier(token).subscribe(subscriber);
-
-                node.setTokenValue(token, 12);
-
-                expect(handleChange).to.have.been.called.once;
-                expect(handleChange).to.have.been.called.with(token, node);
-            });
-
-            it("that the token has changed for the node even if the value assigned is the upstream value", () => {
-                const token = new DesignToken<number>();
-                const node = new DesignTokenNode();
-                const parent = new DesignTokenNode();
-                parent.appendChild(node);
-                const handleChange = chai.spy(() => {});
-                const subscriber: Subscriber = { handleChange };
-                parent.setTokenValue(token, 12);
-                Observable.getNotifier(token).subscribe(subscriber);
-
-                node.setTokenValue(token, 12);
-
-                expect(handleChange).to.have.been.called.once;
-                expect(handleChange).to.have.been.called.with(token, node);
-            });
-        })
-
-        describe("should not notify subscribers", () => {
-            it("when the value assigned is the same value", () => {
-                const token = new DesignToken<number>();
-                const node = new DesignTokenNode();
-                const handleChange = chai.spy(() => {})
-                const subscriber: Subscriber = { handleChange }
-                node.setTokenValue(token, 12);
-                Observable.getNotifier(token).subscribe(subscriber);
-
-                node.setTokenValue(token, 12);
-
-                expect(handleChange).not.to.have.been.called();
-            });
-        });
-    });
-
     describe("setting a token to a derived value", () => {
-        it("should resolve circular references from the parent node", () => {
+        it("should resolve a value for for the token being assigned from the parent node", () => {
             const token = new DesignToken<number>();
-            const parent = new DesignTokenNode();
-            const child = new DesignTokenNode();
-            parent.appendChild(child);
+            const parent = createNode();
+            const child = createNode(parent);
 
             parent.setTokenValue(token, 12);
             child.setTokenValue(token, (resolve) => {
@@ -152,7 +102,7 @@ describe.only("DesignTokenNode", () => {
 
             expect(child.getTokenValue(token)).to.equal(24);
         });
-        it("should error if attempting to resolve a circular reference and there is no parent to resolve from", () => {
+        it("should error if attempting to resolve the token being assigned and there is no parent node", () => {
             const token = new DesignToken<number>();
             const target = new DesignTokenNode();
 
@@ -162,14 +112,14 @@ describe.only("DesignTokenNode", () => {
                 });
             }).to.throw()
         });
-        it("should error if attempting to resolve a circular reference and the parent node does not contain the value", () => {
+        it("should error if attempting to resolve the token being assigned and the token is not assigned for any ancestor", () => {
             const token = new DesignToken<number>();
-            const parent = new DesignTokenNode();
-            const target = new DesignTokenNode();
-            parent.appendChild(target);
+            const ancestor = createNode();
+            const parent = createNode(ancestor);
+            const descendent = createNode(parent);
 
             expect(() => {
-                target.setTokenValue(token, (resolve) => {
+                descendent.setTokenValue(token, (resolve) => {
                     return resolve(token) * 2;
                 });
             }).to.throw()
@@ -183,77 +133,39 @@ describe.only("DesignTokenNode", () => {
 
             expect(() => node.getTokenValue(token)).to.throw;
         });
-        it("should not throw if the node has the token set to a value", () => {
+        it("should return the assigned value when a node is assigned a static value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             node.setTokenValue(token, 12);
 
-            expect(() => node.getTokenValue(token)).not.to.throw;
+            expect(node.getTokenValue(token)).to.equal(12);
         });
-        it("should not throw if the parent node has the token set to a value", () => {
-            const token = new DesignToken<number>();
-            const node = new DesignTokenNode();
-            const parent = new DesignTokenNode();
-            parent.appendChild(node)
-
-            parent.setTokenValue(token, 12);
-
-            expect(() => node.getTokenValue(token)).not.to.throw;
-        });
-        it("should not throw if an ancestor node has the token set to a value", () => {
-            const token = new DesignToken<number>();
-            const node = new DesignTokenNode();
-            const parent = new DesignTokenNode();
-            const ancestor = new DesignTokenNode();
-            parent.appendChild(node);
-            ancestor.appendChild(parent);
-            ancestor.setTokenValue(token, 12);
-
-            expect(() => node.getTokenValue(token)).not.to.throw;
-        });
-
-        it("should return the value set for a token", () => {
-            const token = new DesignToken<number>();
-            const node = new DesignTokenNode();
-            node.setTokenValue(token, 12);
-
-            expect(node.getTokenValue(token)).to.equal(12)
-        });
-        it("should return the derived value set for a token", () => {
+        it("should return the resolved value when a node is assigned a derived value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
             node.setTokenValue(token, () => 12);
 
-            expect(node.getTokenValue(token)).to.equal(12)
+            expect(node.getTokenValue(token)).to.equal(12);
         });
+        it("should resolve a static value from an ancestor node assigned a static value when the descendent node does not have the token assigned a value", () => {
+            const token = new DesignToken<number>();
+            const ancestor = createNode();
+            const parent = createNode(ancestor);
+            const descendent = createNode(parent);
 
-        it("should return the value set for the parent node if the value is not set for the token", () => {
-            const staticToken = new DesignToken<number>();
-            const derivedToken = new DesignToken<number>();
-            const node = new DesignTokenNode();
-            const parent = new DesignTokenNode();
-            parent.appendChild(node)
+            ancestor.setTokenValue(token, 12);
 
-            parent.setTokenValue(staticToken, 12);
-            parent.setTokenValue(derivedToken, () => 11);
-
-            expect(node.getTokenValue(staticToken)).to.equal(12);
-            expect(node.getTokenValue(derivedToken)).to.equal(11);
+            expect(descendent.getTokenValue(token)).to.equal(12);
         });
+        it("should resolve a static value from an ancestor node assigned a derived value when the descendent node does not have the token assigned a value", () => {
+            const token = new DesignToken<number>();
+            const ancestor = createNode();
+            const parent = createNode(ancestor);
+            const descendent = createNode(parent);
 
-        it("should return the value set for the ancestor node if the value is not set for the token on the node or it's parent", () => {
-            const staticToken = new DesignToken<number>();
-            const derivedToken = new DesignToken<number>();
-            const node = new DesignTokenNode();
-            const parent = new DesignTokenNode();
-            const ancestor = new DesignTokenNode();
-            parent.appendChild(node);
-            ancestor.appendChild(parent);
-            ancestor.setTokenValue(staticToken, 12);
-            ancestor.setTokenValue(derivedToken, 11);
+            ancestor.setTokenValue(token, () => 12);
 
-            expect(node.getTokenValue(staticToken)).to.equal(12);
-            expect(node.getTokenValue(derivedToken)).to.equal(11);
+            expect(descendent.getTokenValue(token)).to.equal(12);
         });
     })
 
@@ -328,6 +240,20 @@ describe.only("DesignTokenNode", () => {
             expect(handleChange).to.have.been.called.once;
             expect(handleChange).to.have.been.first.called.with.exactly(token, node)
             expect(node.getTokenValue(token)).to.equal(12);
+        });
+        it("the token for the node assigned a static value when the value assigned is the same as the inherited static value", () => {
+            const token = new DesignToken<number>();
+            const parent = createNode();
+            const node = createNode(parent);
+            const { handleChange, subscriber } = makeChangeHandler()
+
+            parent.setTokenValue(token, 12);
+            Observable.getNotifier(token).subscribe(subscriber);
+
+            node.setTokenValue(token, 12);
+
+            expect(handleChange).to.have.been.called.once;
+            expect(handleChange).to.have.been.called.with(token, node);
         });
         it("the token with the node that has the token assigned a derived value", () => {
             const token = new DesignToken<number>();
@@ -579,9 +505,21 @@ describe.only("DesignTokenNode", () => {
         // TODO removeChild
     });
 
-    describe("should not notify the token", () => {
+    describe("should not notify", () => {
+        it("the token when the static value assigned to a node is the same value as was previously assigned", () => {
+            const token = new DesignToken<number>();
+            const node = new DesignTokenNode();
+            const handleChange = chai.spy(() => {})
+            const subscriber: Subscriber = { handleChange }
+            node.setTokenValue(token, 12);
+            Observable.getNotifier(token).subscribe(subscriber);
 
-        it("when a dependency of a derived token value is set for a descendent but there is an intermediary value set that is a static value", () => {
+            node.setTokenValue(token, 12);
+
+            expect(handleChange).not.to.have.been.called();
+        });
+
+        it("the token when a dependency of a derived token value is set for a descendent but there is an intermediary value set that is a static value", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
@@ -599,7 +537,7 @@ describe.only("DesignTokenNode", () => {
             expect(child.getTokenValue(token)).to.equal(25);
         });
 
-        it("when a dependency of a derived token value is set for a descendent but there is an intermediary value set that is a derived value that does not depend on the dependent token", () => {
+        it("the token when a dependency of a derived token value is set for a descendent but there is an intermediary value set that is a derived value that does not depend on the dependent token", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
