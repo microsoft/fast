@@ -38,7 +38,7 @@ const styles = css`
     }
 `;
 
-FASTMenu.compose({
+FASTMenu.define({
     name: "fast-menu",
     styles,
     template: menuTemplate(),
