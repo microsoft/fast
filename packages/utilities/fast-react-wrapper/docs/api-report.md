@@ -5,6 +5,7 @@
 ```ts
 
 import { Constructable } from '@microsoft/fast-element';
+import { FASTElementDefinition } from '@microsoft/fast-element';
 import type ReactModule from 'react';
 
 // @public
@@ -21,7 +22,10 @@ export type ReactEvents<T> = {
 export type ReactWrapper<TElement extends HTMLElement, TEvents> = Constructable<ReactModule.Component<ReactWrapperProps<TElement, TEvents>>>;
 
 // @public (undocumented)
-export function reactWrapper(React: any): <TElement extends HTMLElement, TEvents>(type: Constructable<TElement>, config?: ReactWrapperConfig<TEvents> | undefined) => ReactWrapper<TElement, TEvents>;
+export function reactWrapper(React: any, registry?: CustomElementRegistry): {
+    <TElement extends HTMLElement, TEvents>(def: FASTElementDefinition<Constructable<TElement>>, config?: ReactWrapperConfig<TEvents> | undefined): ReactWrapper<TElement, TEvents>;
+    <TElement_1 extends HTMLElement, TEvents_1>(type: Constructable<TElement_1>, config?: ReactWrapperConfig<TEvents_1> | undefined): ReactWrapper<TElement_1, TEvents_1>;
+};
 
 // @public
 export type ReactWrapperConfig<TEvents> = {

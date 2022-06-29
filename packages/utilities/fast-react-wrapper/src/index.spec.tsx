@@ -101,13 +101,34 @@ class DecoratedTestElement extends FASTElement {
   @attr({ converter: nullableNumberConverter }) rnum = -1;
 }
 
+class DefinitionTestElement extends FASTElement {
+  @observable bool = false;
+  @observable str = '';
+  @observable num = -1;
+  @observable obj: {[index: string]: unknown} | null | undefined = null;
+  @observable arr: unknown[] | null | undefined = null;
+  @attr({ mode: "boolean" }) rbool = false;
+  @attr rstr = '';
+  @attr({ converter: nullableNumberConverter }) rnum = -1;
+}
 
+const def = DefinitionTestElement.compose({
+  name: uniqueElementName(),
+  template: html`<slot></slot>`
+});
 
 const scenarios = [
   {
     description: 'Wrapping a decorated FASTElement',
     elementName: decoratedElementName,
     wrap: (x: any) => x(DecoratedTestElement, {
+      events: restTestEvents
+    })
+  },
+  {
+    description: 'Wrapping a FASTElementDefinition',
+    elementName: def.name,
+    wrap: (x: any) => x(def, {
       events: restTestEvents
     })
   },

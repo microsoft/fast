@@ -171,18 +171,25 @@ function getElementKeys<TElement, TEvents>(
 /**
  * @param React - The React module, typically imported from the `react` npm
  * package
- * @param designSystem - A design system to register the components with.
+ * @param registry - The custom elements registry to register components in if wrapped by definition.
  * @public
  */
-export function reactWrapper(React: any) {
+export function reactWrapper(
+    React: any,
+    registry: CustomElementRegistry = customElements
+) {
     /**
      * Creates a React component for a custom element. Properties are distinguished
      * from attributes automatically, and events can be configured so they are
      * added to the custom element as event listeners.
      *
-     * @param type - The custom element class to wrap.
+     * @param type - The custom element class to wrap or a FASTElementDefinition object.
      * @param config - Special configuration for the wrapper.
      */
+    function wrap<TElement extends HTMLElement, TEvents>(
+        def: FASTElementDefinition<Constructable<TElement>>,
+        config?: ReactWrapperConfig<TEvents>
+    ): ReactWrapper<TElement, TEvents>;
     function wrap<TElement extends HTMLElement, TEvents>(
         type: Constructable<TElement>,
         config?: ReactWrapperConfig<TEvents>
@@ -198,6 +205,11 @@ export function reactWrapper(React: any) {
         type InternalProps = ReactWrapperProps<TElement, TEvents> & {
             __forwardedRef?: ReactModule.Ref<unknown>;
         };
+
+        if (type instanceof FASTElementDefinition) {
+            type.define(registry);
+            type = type.type;
+        }
 
         const cachedCandidates = wrappersCache.get(type);
         if (cachedCandidates) {
