@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Toolbar } from "../toolbar.js";
-import { toolbarTemplate as template } from "../toolbar.template.js";
+import { FASTToolbar } from "../toolbar.js";
+import { toolbarTemplate } from "../toolbar.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -47,15 +46,11 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Toolbar.compose({
-            baseName: "toolbar",
-            styles,
-            template,
-            shadowOptions: {
-                delegatesFocus: true,
-            },
-        })()
-    );
+FASTToolbar.define({
+    name: "fast-toolbar",
+    styles,
+    template: toolbarTemplate(),
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+});
