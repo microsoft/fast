@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Search, SearchOptions } from "../search.js";
-import { searchTemplate as template } from "../search.template.js";
+import { FASTSearch } from "../search.js";
+import { searchTemplate } from "../search.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -169,15 +168,11 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Search.compose<SearchOptions>({
-            baseName: "search",
-            template,
-            shadowOptions: {
-                delegatesFocus: true,
-            },
-            styles,
-        })()
-    );
+FASTSearch.define({
+    name: "fast-search",
+    template: searchTemplate(),
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+    styles,
+});

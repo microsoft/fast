@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Search as FoundationSearch } from "../search.js";
+import type { FASTSearch } from "../search.js";
 
-type SearchStoryArgs = Args & FoundationSearch;
+type SearchStoryArgs = Args & FASTSearch;
 type SearchStoryMeta = Meta<SearchStoryArgs>;
 
 const componentTemplate = html<SearchStoryArgs>`
