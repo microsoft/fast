@@ -253,7 +253,7 @@ export class FASTDataGrid extends FASTElement {
     public unselectableRowIndexes: number[];
 
     /**
-     * The initially selected grid elements.
+     * The indexes of initially selected grid elements. Includes header rows.
      * In the case of row selection the format should be a comma delimited list of row indexes. ie. "1,3,5"
      *
      * @public
@@ -405,6 +405,16 @@ export class FASTDataGrid extends FASTElement {
         if (this.selectionMode !== "multi-row" && this.selectionMode !== "single-row") {
             return;
         }
+
+        // cull unselectable rows
+        if (this.unselectableRowIndexes) {
+            this.unselectableRowIndexes.forEach(rowIndex => {
+                if (next.includes(rowIndex)) {
+                    next.splice(next.indexOf(rowIndex), 1);
+                }
+            });
+        }
+
         if (this.selectionMode === "single-row" && next.length > 1) {
             this._selectedRowIndexes.splice(0, this.selectedRowIndexes.length, next[0]);
         } else {
@@ -443,10 +453,6 @@ export class FASTDataGrid extends FASTElement {
     private preShiftRowSelection: number[] | null = null;
 
     private selectionUpdated: boolean = false;
-
-    constructor() {
-        super();
-    }
 
     /**
      * @internal
@@ -497,6 +503,14 @@ export class FASTDataGrid extends FASTElement {
             });
 
             this.updateSelectedRows(initialSelection);
+        }
+
+        // default to not selecting generated header rows
+        if (
+            !this.unselectableRowIndexes &&
+            this.generateHeader !== GenerateHeaderOptions.none
+        ) {
+            this.unselectableRowIndexes = [0];
         }
 
         Updates.enqueue(this.queueRowIndexUpdate);

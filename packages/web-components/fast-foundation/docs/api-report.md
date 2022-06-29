@@ -322,7 +322,6 @@ export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaSt
 
 // @public
 export class DataGrid extends FoundationElement {
-    constructor();
     cellItemTemplate?: ViewTemplate;
     clickSelect: boolean;
     columnDefinitions: ColumnDefinition[] | null;
