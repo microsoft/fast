@@ -45,3 +45,12 @@ BreadcrumbsWithSeparators.args = {
         </fast-breadcrumb-item>
     `,
 };
+
+export const BreadcrumbsWithAnchors: BreadcrumbStoryMeta = Breadcrumb.bind({});
+BreadcrumbsWithAnchors.args = {
+    content: html`
+        <a href="#">Breadcrumb Item 1</a>
+        <a href="#">Breadcrumb Item 2</a>
+        <a href="#">Breadcrumb Item 3</a>
+    `,
+};

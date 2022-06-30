@@ -51,7 +51,7 @@ export class FASTBreadcrumb extends FASTElement {
             return node.querySelector("a");
         } else if (node.shadowRoot?.childElementCount) {
             return node.shadowRoot?.querySelector("a");
-        } else return null;
+        } else return node;
     }
 
     /**

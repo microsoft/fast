@@ -15,7 +15,7 @@ const BreadcrumbItem = FASTBreadcrumbItem.define({
     template: breadcrumbItemTemplate()
 });
 
-async function setupBreadcrumbItems() {
+async function setup() {
     const { element, connect, disconnect } = await fixture(Breadcrumb);
 
     const item1 = new BreadcrumbItem();
@@ -29,23 +29,9 @@ async function setupBreadcrumbItems() {
     return { element, connect, disconnect, item1, item2, item3 };
 }
 
-async function setupAnchors() {
-    const { element, connect, disconnect } = await fixture(Breadcrumb);
-
-    const item1 = document.createElement("a");
-    const item2 = document.createElement("a");
-    const item3 = document.createElement("a");
-
-    element.appendChild(item1);
-    element.appendChild(item2);
-    element.appendChild(item3);
-
-    return { element, connect, disconnect, item1, item2, item3 };
-}
-
 describe("Breadcrumb", () => {
     it("should include a `role` of `navigation`", async () => {
-        const { element, connect, disconnect } = await setupBreadcrumbItems();
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -55,7 +41,7 @@ describe("Breadcrumb", () => {
     });
 
     it("should include a `role` of `list`", async () => {
-        const { element, connect, disconnect } = await setupBreadcrumbItems();
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -65,7 +51,7 @@ describe("Breadcrumb", () => {
     });
 
     it("should not render a separator on last item", async () => {
-        const { element, connect, disconnect } = await setupBreadcrumbItems();
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -79,33 +65,33 @@ describe("Breadcrumb", () => {
     });
 
     it("should set `aria-current` on a FASTBreadcrumbItem's internal, last anchor when `href` is passed", async () => {
-        const { connect, disconnect, item3 } = await setupBreadcrumbItems();
+        const { connect, disconnect, item3 } = await setup();
 
         item3.href = "#";
 
         await connect();
 
         expect(
-            item3.shadowRoot?.querySelectorAll("a")[2].getAttribute("aria-current")
+            item3.shadowRoot?.querySelector("a")?.getAttribute("aria-current")
         ).to.equal("page");
 
         await disconnect();
     });
 
     it("should set `aria-current` on a FASTBreadcrumbItem's internal, last anchor when `href` is NOT passed", async () => {
-        const { connect, disconnect, item3 } = await setupBreadcrumbItems();
+        const { connect, disconnect, item3 } = await setup();
 
         await connect();
 
         expect(
-            item3.shadowRoot?.querySelectorAll("a")[2].getAttribute("aria-current")
+            item3.shadowRoot?.querySelector("a")?.getAttribute("aria-current")
         ).to.equal("page");
 
         await disconnect();
     });
 
     it("should remove aria-current from any prior Breadcrumb Item children with child anchors when a new node is appended", async () => {
-        const { element, connect, disconnect, item1, item2, item3 } = await setupBreadcrumbItems();
+        const { element, connect, disconnect, item1, item2, item3 } = await setup();
 
         item1.href = "#";
         item2.href = "#";
@@ -114,7 +100,7 @@ describe("Breadcrumb", () => {
         await connect();
 
         expect(
-            item3.shadowRoot?.querySelectorAll("a")[2].getAttribute("aria-current")
+            item3.shadowRoot?.querySelector("a")?.getAttribute("aria-current")
         ).to.equal("page");
 
         const item4 = new BreadcrumbItem();
@@ -125,64 +111,100 @@ describe("Breadcrumb", () => {
         await Updates.next();
 
         expect(
-            item3.shadowRoot?.querySelectorAll("a")[2].hasAttribute("aria-current")
+            item3.shadowRoot?.querySelector("a")?.hasAttribute("aria-current")
         ).to.equal(false);
 
         expect(
-            item4.shadowRoot?.querySelectorAll("a")[3].getAttribute("aria-current")
+            item4.shadowRoot?.querySelector("a")?.getAttribute("aria-current")
         ).to.equal("page");
 
         await disconnect();
     });
 
     it("should set `aria-current` on the last anchor child when `href` is passed", async () => {
-        const { connect, disconnect, item3 } = await setupAnchors();
+        const { element, connect, disconnect, item1, item2, item3 } = await setup();
 
-        item3.href = "#";
+        element.removeChild(item1);
+        element.removeChild(item2);
+        element.removeChild(item3);
+
+        const anchor1 = document.createElement("a");
+        const anchor2 = document.createElement("a");
+        const anchor3 = document.createElement("a");
+        anchor3.href = "#";
+
+        element.appendChild(anchor1);
+        element.appendChild(anchor2);
+        element.appendChild(anchor3);
 
         await connect();
 
-        expect(item3.getAttribute("aria-current")).to.equal("page");
+        expect(anchor3.getAttribute("aria-current")).to.equal("page");
 
         await disconnect();
     });
 
     it("should set `aria-current` on the last anchor child when `href` is NOT passed", async () => {
-        const { connect, disconnect, item3 } = await setupAnchors();
+        const { element, connect, disconnect, item1, item2, item3 } = await setup();
+
+        element.removeChild(item1);
+        element.removeChild(item2);
+        element.removeChild(item3);
+
+        const anchor1 = document.createElement("a");
+        const anchor2 = document.createElement("a");
+        const anchor3 = document.createElement("a");
+
+        element.appendChild(anchor1);
+        element.appendChild(anchor2);
+        element.appendChild(anchor3);
 
         await connect();
 
-        expect(item3.getAttribute("aria-current")).to.equal("page");
+
+        expect(anchor3.getAttribute("aria-current")).to.equal("page");
 
         await disconnect();
     });
 
     it("should remove aria-current from any prior child anchors when a new node is appended", async () => {
-        const { element, connect, disconnect, item1, item2, item3 } = await setupAnchors();
+        const { element, connect, disconnect, item1, item2, item3 } = await setup();
 
-        item1.href = "#";
-        item2.href = "#";
-        item3.href = "#";
+        element.removeChild(item1);
+        element.removeChild(item2);
+        element.removeChild(item3);
+
+        const anchor1 = document.createElement("a");
+        const anchor2 = document.createElement("a");
+        const anchor3 = document.createElement("a");
+
+        anchor1.href = "#";
+        anchor2.href = "#";
+        anchor3.href = "#";
+
+        element.appendChild(anchor1);
+        element.appendChild(anchor2);
+        element.appendChild(anchor3);
 
         await connect();
 
         expect(
-            item3.getAttribute("aria-current")
+            anchor3.getAttribute("aria-current")
         ).to.equal("page");
 
-        const item4 = new BreadcrumbItem();
-        item4.href = "#";
+        const anchor4 = document.createElement("a");
+        anchor4.href = "#";
 
-        element.appendChild(item4);
+        element.appendChild(anchor4);
 
         await Updates.next();
 
         expect(
-            item3.hasAttribute("aria-current")
+            anchor3.hasAttribute("aria-current")
         ).to.equal(false);
 
         expect(
-            item4.getAttribute("aria-current")
+            anchor4.getAttribute("aria-current")
         ).to.equal("page");
 
         await disconnect();
