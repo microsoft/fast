@@ -188,6 +188,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         const bindView = this.bindView;
         const items = this.items!;
         const template = this.template;
+        const recycle: RepeatOptions["recycle"] = this.options.recycle;
         const leftoverViews: SyntheticView[] = [];
         let leftoverIndex = 0;
         let availableViews = 0;
@@ -207,8 +208,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
                 const location = neighbor ? neighbor.firstChild : this.location;
                 let view;
 
-                if (this.options.recycle && availableViews) {
-                    if (removeIndex <= availableViews && removedViews.length) {
+                if (recycle && availableViews > 0) {
+                    if (removeIndex <= availableViews && removedViews.length > 0) {
                         view = removedViews[removeIndex];
                         removeIndex++;
                     } else {
