@@ -170,14 +170,6 @@ export interface Container extends ServiceLocator {
     register(...params: any[]): Container;
 
     /**
-     * Registers dependencies with the container via registration objects, providing
-     * the specified context to each register invocation.
-     * @param context - The context object to pass to the registration objects.
-     * @param params - The registration objects.
-     */
-    registerWithContext(context: any, ...params: any[]): Container;
-
-    /**
      * Registers a resolver with the container for the specified key.
      * @param key - The key to register the resolver under.
      * @param resolver - The resolver to register.
@@ -1463,7 +1455,6 @@ export class ContainerImpl implements DOMContainer {
     private _parent: ContainerImpl | null | undefined = void 0;
     private registerDepth: number = 0;
     private resolvers: Map<Key, Resolver>;
-    private context: any = null;
     private isHandlingContextRequests = false;
 
     public get parent() {
@@ -1517,13 +1508,6 @@ export class ContainerImpl implements DOMContainer {
         this.isHandlingContextRequests = enable;
     }
 
-    public registerWithContext(context: any, ...params: any[]): Container {
-        this.context = context;
-        this.register(...params);
-        this.context = null;
-        return this;
-    }
-
     public register(...params: any[]): Container {
         if (++this.registerDepth === 100) {
             throw new Error("Unable to autoregister dependency");
@@ -1536,7 +1520,6 @@ export class ContainerImpl implements DOMContainer {
         let value: Registry;
         let j: number;
         let jj: number;
-        const context = this.context;
 
         for (let i = 0, ii = params.length; i < ii; ++i) {
             current = params[i];
@@ -1546,7 +1529,7 @@ export class ContainerImpl implements DOMContainer {
             }
 
             if (isRegistry(current)) {
-                current.register(this, context);
+                current.register(this);
             } else if (isClass(current)) {
                 Registration.singleton(current, current as Constructable).register(this);
             } else {
@@ -1561,7 +1544,7 @@ export class ContainerImpl implements DOMContainer {
                     // note: we could remove this if-branch and call this.register directly
                     // - the extra check is just a perf tweak to create fewer unnecessary arrays by the spread operator
                     if (isRegistry(value)) {
-                        value.register(this, context);
+                        value.register(this);
                     } else {
                         this.register(value);
                     }

@@ -586,25 +586,6 @@ describe(`The Container class`, function () {
                     }
                 };
             }
-        },
-        {
-            name: 'registerWithContext',
-            createTest() {
-                const { sut, register, context } = createFixture();
-
-                return {
-                    register,
-                    test: (...args: any[]) => {
-                        sut.registerWithContext(context, ...args);
-
-                        expect(register).to.have.been.first.called.with(sut, context);
-
-                        if (args.length === 2) {
-                            expect(register).to.have.been.second.called.with(sut, context);
-                        }
-                    }
-                }
-            }
         }
     ];
 
