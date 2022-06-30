@@ -1,6 +1,6 @@
 import { expect, assert } from "chai";
 import { FASTSlider, sliderTemplate } from "./index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { Updates } from "@microsoft/fast-element";
 import { Orientation, Direction } from "@microsoft/fast-web-utilities";
 

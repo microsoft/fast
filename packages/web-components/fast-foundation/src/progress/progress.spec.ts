@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { progressTemplate } from "./progress.template.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { FASTProgress } from "./progress.js";
 
 const progressName = uniqueElementName();

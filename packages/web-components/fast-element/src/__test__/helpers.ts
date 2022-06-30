@@ -9,8 +9,3 @@ export function toHTML(node: Node, preserveCommentMarkup: boolean = false): stri
         })
         .join("");
 }
-
-let counter = 0;
-export function uniqueElementName(): string {
-    return `test-element-${++counter}`;
-}

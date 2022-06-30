@@ -2,15 +2,11 @@
  * Big thanks to https://github.com/fkleuver and the https://github.com/aurelia/aurelia project
  * for the bulk of this code and many of the associated tests.
  */
-import { Constructable, emptyArray, FASTElement } from "@microsoft/fast-element";
-import {
-    Context,
-    ContextDecorator,
-    ContextEvent,
-    UnknownContext,
-} from "@microsoft/fast-element/context";
-import { Metadata } from "@microsoft/fast-element/metadata";
-import type { Class } from "../interfaces.js";
+import { FASTElement } from "../components/fast-element.js";
+import { Context, ContextDecorator, ContextEvent, UnknownContext } from "../context.js";
+import type { Class, Constructable } from "../interfaces.js";
+import { Metadata } from "../metadata.js";
+import { emptyArray } from "../platform.js";
 
 /**
  * Represents a custom callback for resolving a request from the container.

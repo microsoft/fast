@@ -2,7 +2,7 @@ import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
 import { FASTListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { FASTCombobox, comboboxTemplate } from "./index.js";
 
 describe("Combobox", () => {

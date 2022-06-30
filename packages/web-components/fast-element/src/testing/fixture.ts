@@ -1,10 +1,8 @@
-import {
-    Constructable,
-    ExecutionContext,
-    FASTElementDefinition,
-    HTMLView,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import { FASTElementDefinition } from "../components/fast-definitions.js";
+import type { Constructable } from "../interfaces.js";
+import { ExecutionContext } from "../observation/observable.js";
+import { ViewTemplate } from "../templating/template.js";
+import type { HTMLView } from "../templating/view.js";
 
 /**
  * Options used to customize the creation of the test fixture.

@@ -1,5 +1,5 @@
 import { expect, assert } from "chai";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { FASTTextField, textFieldTemplate } from "./index.js";
 import { TextFieldType } from "./text-field.js";
 

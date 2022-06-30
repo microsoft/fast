@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import {
     dataGridTemplate,
     FASTDataGrid,

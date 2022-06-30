@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Updates } from "@microsoft/fast-element";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { FlipperDirection } from "./flipper.options.js";
 import { FASTFlipper, flipperTemplate } from "./index.js";
 

@@ -65,6 +65,14 @@
     "./metadata": {
       "types": "./dist/dts/metadata.d.ts",
       "default": "./dist/esm/metadata.js"
+    },
+    "./testing": {
+      "types": "./dist/dts/testing/exports.d.ts",
+      "default": "./dist/esm/testing/exports.js"
+    },
+    "./di": {
+      "types": "./dist/dts/di/di.d.ts",
+      "default": "./dist/esm/di/di.js"
     }
   },
   "unpkg": "dist/fast-element.min.js",

@@ -1,7 +1,7 @@
 import { Updates } from "@microsoft/fast-element";
 import { keyArrowRight, Orientation } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { FASTToolbar, toolbarTemplate } from "./index.js";
 
 const toolbarName = uniqueElementName();

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { FASTMenu, menuTemplate } from "./index.js";
 import { FASTMenuItem, menuItemTemplate, MenuItemRole } from "../menu-item/index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 import { FASTAnchoredRegion, anchoredRegionTemplate } from "../anchored-region/index.js";

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { FASTAnchoredRegion, anchoredRegionTemplate } from "./index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { Updates } from "@microsoft/fast-element";
 
 const anchoredRegionName = uniqueElementName();

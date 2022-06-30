@@ -1,12 +1,9 @@
 import { expect } from "chai";
-import {
-    attr,
-    customElement,
-    FASTElement,
-    html,
-    observable,
-    Updates,
-} from "@microsoft/fast-element";
+import { attr } from "../components/attributes.js";
+import { customElement, FASTElement } from "../components/fast-element.js";
+import { observable } from "../observation/observable.js";
+import { Updates } from "../observation/update-queue.js";
+import { html } from "../templating/template.js";
 import { uniqueElementName, fixture } from "./fixture.js";
 
 describe("The fixture helper", () => {

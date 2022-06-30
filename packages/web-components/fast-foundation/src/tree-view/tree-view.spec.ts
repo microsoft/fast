@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { FASTTreeView, treeViewTemplate } from "./index.js";
 import { FASTTreeItem, treeItemTemplate } from "../tree-item/index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { Updates } from "@microsoft/fast-element";
 
 const treeViewName = uniqueElementName();

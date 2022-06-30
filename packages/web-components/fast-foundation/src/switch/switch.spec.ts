@@ -1,6 +1,6 @@
 import { expect, assert } from "chai";
 import { FASTSwitch, switchTemplate } from "./index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { Updates } from "@microsoft/fast-element";
 import { keySpace, keyEnter } from "@microsoft/fast-web-utilities";
 

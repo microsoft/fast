@@ -1,7 +1,7 @@
 import { DI, Container, inject, Registration, singleton } from "./di.js";
-import type { ContextDecorator } from "@microsoft/fast-element/context";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
+import type { ContextDecorator } from "../context.js";
 
 chai.use(spies);
 
