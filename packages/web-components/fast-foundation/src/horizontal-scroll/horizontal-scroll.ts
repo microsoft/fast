@@ -355,6 +355,49 @@ export class HorizontalScroll extends FoundationElement {
     }
 
     /**
+     * Function that can scroll an item into view.
+     * @param item - An item index, a scroll item or a child of one of the scroll items
+     * @param padding - Padding of the viewport where the active item shouldn't be
+     * @param rightPadding - Optional right padding. Uses the padding if not defined
+     *
+     * @public
+     */
+    public scrollInView(
+        item: HTMLElement | number,
+        padding: number = 0,
+        rightPadding?: number
+    ): void {
+        if (typeof item !== "number" && item) {
+            item = this.scrollItems.findIndex(
+                scrollItem =>
+                    scrollItem === item || scrollItem.contains(item as HTMLElement)
+            );
+        }
+        if (item !== undefined) {
+            rightPadding = rightPadding ?? padding;
+            const { scrollLeft, offsetWidth } = this.scrollContainer;
+            const itemStart = this.scrollStops[item];
+            const { offsetWidth: width } = this.scrollItems[item];
+            const itemEnd = itemStart + width;
+
+            const isBefore = scrollLeft + padding > itemStart;
+
+            if (isBefore || scrollLeft + offsetWidth - rightPadding < itemEnd) {
+                const stops = [...this.scrollStops].sort((a, b) =>
+                    isBefore ? b - a : a - b
+                );
+                const scrollTo =
+                    stops.find(position =>
+                        isBefore
+                            ? position + padding < itemStart
+                            : position + offsetWidth - (rightPadding ?? 0) > itemEnd
+                    ) ?? 0;
+                this.scrollToPosition(scrollTo);
+            }
+        }
+    }
+
+    /**
      * Lets the user arrow left and right through the horizontal scroll
      * @param e - Keyboard event
      * @public
