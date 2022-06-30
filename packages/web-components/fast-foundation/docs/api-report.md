@@ -321,77 +321,7 @@ export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "
 export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // @public
-export class DataGrid extends FoundationElement {
-    cellItemTemplate?: ViewTemplate;
-    clickSelect: boolean;
-    columnDefinitions: ColumnDefinition[] | null;
-    // (undocumented)
-    protected columnDefinitionsChanged(): void;
-    // @internal (undocumented)
-    connectedCallback(): void;
-    // @internal
-    defaultRowItemTemplate: ViewTemplate;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
-    focusColumnIndex: number;
-    focusRowIndex: number;
-    static generateColumns: (row: object) => ColumnDefinition[];
-    generateHeader: GenerateHeaderOptions;
-    gridTemplateColumns: string;
-    // (undocumented)
-    protected gridTemplateColumnsChanged(): void;
-    // @internal (undocumented)
-    handleFocus(e: FocusEvent): void;
-    // @internal (undocumented)
-    handleFocusOut(e: FocusEvent): void;
-    // @internal (undocumented)
-    handleKeydown(e: KeyboardEvent): void;
-    // @internal (undocumented)
-    handleRowFocus(e: Event): void;
-    // (undocumented)
-    handleRowSelectedChange(e: CustomEvent): void;
-    headerCellItemTemplate?: ViewTemplate;
-    initialRowSelection: string;
-    noTabbing: boolean;
-    // (undocumented)
-    protected noTabbingChanged(): void;
-    // @internal
-    rowElements: HTMLElement[];
-    rowElementTag: string;
-    rowItemTemplate: ViewTemplate;
-    rowsData: object[];
-    // (undocumented)
-    protected rowsDataChanged(): void;
-    get selectedRowIndexes(): number[];
-    set selectedRowIndexes(next: number[]);
-    selectionMode: DataGridSelectionMode;
-    unselectableRowIndexes: number[];
-}
-
-// @public
-export class DataGridCell extends FoundationElement {
-    cellType: DataGridCellTypes;
-    columnDefinition: ColumnDefinition | null;
-    // (undocumented)
-    protected columnDefinitionChanged(oldValue: ColumnDefinition | null, newValue: ColumnDefinition | null): void;
-    // @internal (undocumented)
-    connectedCallback(): void;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
-    gridColumn: string;
-    // (undocumented)
-    protected gridColumnChanged(): void;
-    // (undocumented)
-    handleFocusin(e: FocusEvent): void;
-    // (undocumented)
-    handleFocusout(e: FocusEvent): void;
-    // (undocumented)
-    handleKeydown(e: KeyboardEvent): void;
-    rowData: object | null;
-}
-
-// @public
-export const dataGridCellTemplate: FoundationElementTemplate<ViewTemplate<DataGridCell>>;
+export function dataGridCellTemplate(): ElementViewTemplate<FASTDataGridCell>;
 
 // @public
 export const DataGridCellTypes: {
@@ -404,51 +334,9 @@ export const DataGridCellTypes: {
 export type DataGridCellTypes = ValuesOf<typeof DataGridCellTypes>;
 
 // @public
-export class DataGridRow extends FoundationElement {
-    // @internal
-    activeCellItemTemplate?: ViewTemplate;
-    // @internal
-    cellElements: HTMLElement[];
-    cellItemTemplate?: ViewTemplate;
-    // @internal
-    clickSelect: boolean;
-    columnDefinitions: ColumnDefinition[] | null;
-    // @internal (undocumented)
-    connectedCallback(): void;
-    // @internal
-    defaultCellItemTemplate?: ViewTemplate;
-    // @internal
-    defaultHeaderCellItemTemplate?: ViewTemplate;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
-    // @internal (undocumented)
-    focusColumnIndex: number;
-    gridTemplateColumns: string;
-    // (undocumented)
-    protected gridTemplateColumnsChanged(): void;
-    // @internal (undocumented)
-    handleCellFocus(e: Event): void;
-    // @internal (undocumented)
-    handleClick(e: MouseEvent): void;
-    // (undocumented)
-    handleFocusout(e: FocusEvent): void;
-    // @internal (undocumented)
-    handleKeydown(e: KeyboardEvent): void;
-    headerCellItemTemplate?: ViewTemplate;
-    // @internal
-    isActiveRow: boolean;
-    rowData: object | null;
-    // (undocumented)
-    protected rowDataChanged(): void;
-    rowIndex: number;
-    rowType: DataGridRowTypes;
-    // @internal
-    selected: boolean;
-    // @internal (undocumented)
-    slottedCellElements: HTMLElement[];
-    // Warning: (ae-incompatible-release-tags) The symbol "toggleSelected" is marked as @public, but its signature references "DataGridRowSelectionChangedDetail" which is marked as @internal
-    toggleSelected(detail: DataGridRowSelectionChangedDetail): void;
-}
+export type DataGridOptions = {
+    dataGridRow: TemplateElementDependency;
+};
 
 // Warning: (ae-internal-missing-underscore) The name "DataGridRowSelectionChangedDetail" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -479,7 +367,7 @@ export type DataGridRowTypes = ValuesOf<typeof DataGridRowTypes>;
 export type DataGridSelectionMode = "none" | "single-row" | "multi-row";
 
 // @public
-export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>;
+export function dataGridTemplate(options: DataGridOptions): ElementViewTemplate<FASTDataGrid>;
 
 // @public
 export class DateFormatter {
@@ -1100,8 +988,8 @@ export interface FASTCombobox extends StartEnd, DelegatesARIACombobox {
 
 // @public
 export class FASTDataGrid extends FASTElement {
-    constructor();
     cellItemTemplate?: ViewTemplate;
+    clickSelect: boolean;
     columnDefinitions: ColumnDefinition[] | null;
     // (undocumented)
     protected columnDefinitionsChanged(): void;
@@ -1126,7 +1014,10 @@ export class FASTDataGrid extends FASTElement {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
+    // (undocumented)
+    handleRowSelectedChange(e: CustomEvent): void;
     headerCellItemTemplate?: ViewTemplate;
+    initialRowSelection: string;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
@@ -1138,6 +1029,10 @@ export class FASTDataGrid extends FASTElement {
     rowsData: object[];
     // (undocumented)
     protected rowsDataChanged(): void;
+    get selectedRowIndexes(): number[];
+    set selectedRowIndexes(next: number[]);
+    selectionMode: DataGridSelectionMode;
+    unselectableRowIndexes: number[];
 }
 
 // @public
@@ -1169,6 +1064,8 @@ export class FASTDataGridRow extends FASTElement {
     // @internal
     cellElements: HTMLElement[];
     cellItemTemplate?: ViewTemplate;
+    // @internal
+    clickSelect: boolean;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1183,11 +1080,13 @@ export class FASTDataGridRow extends FASTElement {
     gridTemplateColumns: string;
     // (undocumented)
     protected gridTemplateColumnsChanged(): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleCellFocus(e: Event): void;
+    // @internal (undocumented)
+    handleClick(e: MouseEvent): void;
     // (undocumented)
     handleFocusout(e: FocusEvent): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleKeydown(e: KeyboardEvent): void;
     headerCellItemTemplate?: ViewTemplate;
     // @internal
@@ -1197,8 +1096,12 @@ export class FASTDataGridRow extends FASTElement {
     protected rowDataChanged(): void;
     rowIndex: number;
     rowType: DataGridRowTypes;
+    // @internal
+    selected: boolean;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
+    // Warning: (ae-incompatible-release-tags) The symbol "toggleSelected" is marked as @public, but its signature references "DataGridRowSelectionChangedDetail" which is marked as @internal
+    toggleSelected(detail: DataGridRowSelectionChangedDetail): void;
 }
 
 // @public
