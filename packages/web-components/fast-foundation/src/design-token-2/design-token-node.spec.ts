@@ -1,7 +1,8 @@
-import { Observable, Subscriber, Updates } from "@microsoft/fast-element";
+import { Observable, Subscriber } from "@microsoft/fast-element";
+import { makeObservable } from "@microsoft/fast-element/utilities";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
-import { DesignTokenNode, DesignTokenResolver } from "./design-token-node.js";
+import { DesignTokenNode } from "./design-token-node.js";
 import { DesignToken } from "./design-token.js";
 
 chai.use(spies);
@@ -572,6 +573,40 @@ describe.only("DesignTokenNode", () => {
 
             expect(handleChange).not.to.have.been.called();
         });
+        it("the token when the derived value assigned to a node results in the same value as the previously assigned static value", () => {
+            const token = new DesignToken<number>();
+            const node = new DesignTokenNode();
+            const handleChange = chai.spy(() => {})
+            const subscriber: Subscriber = { handleChange }
+            node.setTokenValue(token, 12);
+            Observable.getNotifier(token).subscribe(subscriber);
+
+            node.setTokenValue(token, ()=> 12);
+
+            expect(handleChange).not.to.have.been.called();
+        });
+        it("the token when the derived value assigned to a node results in the same value as the previously assigned derived value", () => {
+            const token = new DesignToken<number>();
+            const node = new DesignTokenNode();
+            const handleChange = chai.spy(() => {})
+            const subscriber: Subscriber = { handleChange }
+            function a() {
+                return 12;
+            }
+
+            function b() {
+                return 12;
+            }
+
+            node.setTokenValue(token, a);
+            Observable.getNotifier(token).subscribe(subscriber);
+
+            node.setTokenValue(token, b);
+
+            expect(a).not.to.equal(b)
+            expect(handleChange).not.to.have.been.called();
+        });
+
         it("the token when a dependency of a derived token value is set for a descendent but there is an intermediary value set that is a static value", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
@@ -718,9 +753,7 @@ describe.only("DesignTokenNode", () => {
             it("should get an updated value when observable properties used in a derived property are changed", () => {
                 const target = new DesignTokenNode();
                 const token = new DesignToken<number>();
-                const dependencies: { value: number } = {} as { value: number }
-                Observable.defineProperty(dependencies, "value");
-                dependencies.value = 6
+                const dependencies: { value: number } = makeObservable({ value: 6});
 
                 target.setTokenValue(token, () => dependencies.value * 2);
 

@@ -1,5 +1,4 @@
-import { BindingObserver, Observable, Subscriber } from "@microsoft/fast-element";
-import { ObservableMap } from "./observable-map.js";
+import { BindingObserver, Observable } from "@microsoft/fast-element";
 import type { DesignToken } from "./design-token.js";
 
 export type DesignTokenValueType =
@@ -91,10 +90,10 @@ export class DesignTokenNode {
     private _parent: DesignTokenNode | null = null;
     private _children: Set<DesignTokenNode> = new Set();
     private _values: Map<DesignToken<any>, DesignTokenValue<any>> = new Map();
-    private _derived: ObservableMap<
+    private _derived: Map<
         DesignToken<any>,
         [DerivedDesignTokenValue<any>, StaticDesignTokenValue<any>]
-    > = new ObservableMap();
+    > = new Map();
 
     /**
      * Determines if a value is a {@link DerivedDesignTokenValue}
@@ -106,22 +105,68 @@ export class DesignTokenNode {
         return typeof value === "function";
     }
 
+    /**
+     * @returns {boolean} - true if the resulting value has changed, otherwise false.
+     */
     private static evaluateDerived<T>(
         node: DesignTokenNode,
         token: DesignToken<T>,
         value: DerivedDesignTokenValue<T>
-    ) {
+    ): boolean {
         const evaluator = DerivedValueEvaluator.getOrCreate(value);
         const result = evaluator.evaluate(node, token);
         const prev = node._derived.get(token);
+        node._derived.set(token, [value, result]);
 
-        if (prev === undefined || value !== prev[0] || result !== prev[1]) {
-            node._derived.set(token, [value, result]);
-        }
-
-        return result;
+        return prev === undefined ? true : prev[1] !== result;
     }
 
+    /**
+     * Notifies the token subscribes that the value has changed for the node
+     * @param token - The token that changed
+     */
+    private static notifyToken<T>(token: DesignToken<T>, node: DesignTokenNode): void {
+        Observable.getNotifier(token).notify(node);
+    }
+
+    private static isDerivedFor<T>(node: DesignTokenNode, token: DesignToken<T>) {
+        return node._derived.has(token);
+    }
+
+    /**
+     * Collects token/value pairs for all derived token / values set on upstream nodes.
+     */
+    private static collectDerivedContext(
+        node: DesignTokenNode
+    ): Map<DesignToken<any>, DerivedDesignTokenValue<any>> {
+        const collected = new Map<DesignToken<any>, DerivedDesignTokenValue<any>>();
+        // Exit early if  there is no parent
+        if (node.parent === null) {
+            return collected;
+        }
+
+        let ignored = DesignTokenNode.getAssignedTokensForNode(node);
+        let current: DesignTokenNode | null = node.parent;
+
+        do {
+            const assigned = DesignTokenNode.getAssignedTokensForNode(current);
+            for (let i = 0, l = assigned.length; i < l; i++) {
+                const token = assigned[i];
+
+                if (
+                    !ignored.includes(token) &&
+                    DesignTokenNode.isDerivedFor(current, token)
+                ) {
+                    collected.set(token, current!._derived.get(token)![0]);
+                }
+            }
+
+            ignored = Array.from(new Set(ignored.concat(assigned)));
+            current = current.parent;
+        } while (current !== null);
+
+        return collected;
+    }
     /**
      * Retrieves all tokens assigned directly to a node.
      * @param node - the node to retrieve assigned tokens for
@@ -164,49 +209,6 @@ export class DesignTokenNode {
         return node._values.has(token);
     }
 
-    private static isDerivedFor<T>(node: DesignTokenNode, token: DesignToken<T>) {
-        return node._derived.has(token);
-    }
-
-    /**
-     * Collects token/value pairs for all derived token / values set on upstream nodes.
-     */
-    private static collectDerivedContext(
-        node: DesignTokenNode
-    ): Map<DesignToken<any>, DerivedDesignTokenValue<any>> {
-        const collected = new Map<DesignToken<any>, DerivedDesignTokenValue<any>>();
-        // Exit early if  there is no parent
-        if (node.parent === null) {
-            return collected;
-        }
-
-        let ignored = DesignTokenNode.getAssignedTokensForNode(node);
-        let current: DesignTokenNode | null = node.parent;
-
-        do {
-            const assigned = DesignTokenNode.getAssignedTokensForNode(current);
-            for (let i = 0, l = assigned.length; i < l; i++) {
-                const token = assigned[i];
-
-                if (
-                    !ignored.includes(token) &&
-                    DesignTokenNode.isDerivedFor(current, token)
-                ) {
-                    collected.set(token, current!._derived.get(token)![0]);
-                }
-            }
-
-            ignored = Array.from(new Set(ignored.concat(assigned)));
-            current = current.parent;
-        } while (current !== null);
-
-        return collected;
-    }
-
-    constructor() {
-        Observable.getNotifier(this._derived).subscribe(this.derivedSubscriber);
-    }
-
     public get parent() {
         return this._parent;
     }
@@ -238,26 +240,23 @@ export class DesignTokenNode {
         const derived = DesignTokenNode.collectDerivedContext(this);
 
         if (DesignTokenNode.isDerivedTokenValue(value)) {
-            DesignTokenNode.evaluateDerived(this, token, value);
+            DesignTokenNode.evaluateDerived(this, token, value) &&
+                DesignTokenNode.notifyToken(token, this);
+
             this.notifyDerived(token, DerivedValueEvaluator.getOrCreate(value), this);
         } else {
-            // _derived.delete will notify for the token that is deleted, so only notify if deleting the value
-            // was unsuccessful
-            const notified =
-                DesignTokenNode.isDerivedFor(this, token) && this._derived.delete(token);
+            DesignTokenNode.isDerivedFor(this, token) && this._derived.delete(token);
 
             if (prev !== value) {
-                if (!notified) {
-                    Observable.getNotifier(token).notify(this);
-                }
-
+                DesignTokenNode.notifyToken(token, this);
                 this.notifyStatic(token, this);
             }
         }
 
         derived.forEach((fn, token) => {
             const evaluator = DerivedValueEvaluator.getOrCreate(fn);
-            DesignTokenNode.evaluateDerived(this, token, fn);
+            DesignTokenNode.evaluateDerived(this, token, fn) &&
+                DesignTokenNode.notifyToken(token, this);
             this.notifyDerived(token, evaluator, this);
         });
     }
@@ -291,12 +290,12 @@ export class DesignTokenNode {
     public deleteTokenValue<T>(token: DesignToken<T>): void {
         if (DesignTokenNode.isAssigned(this, token)) {
             this._values.delete(token);
-            const notified =
-                DesignTokenNode.isDerivedFor(this, token) && this._derived.delete(token);
+            DesignTokenNode.isDerivedFor(this, token) && this._derived.delete(token);
 
-            if (!notified) {
-                Observable.getNotifier(token).notify(this);
-            }
+            // TODO this should really check prev / next values
+            // TODO if there is an upstream value, it should notify static if the upstream is static,
+            // otherwise it should notify w/ the upstream derived value
+            DesignTokenNode.notifyToken(token, this);
         }
     }
 
@@ -313,7 +312,8 @@ export class DesignTokenNode {
             const evaluator = DerivedValueEvaluator.getOrCreate(source);
 
             if (evaluator.dependencies.has(token)) {
-                DesignTokenNode.evaluateDerived(this, _token, source);
+                DesignTokenNode.evaluateDerived(this, _token, source) &&
+                    DesignTokenNode.notifyToken(_token, this);
                 this.notifyDerived(_token, evaluator, originator);
             }
         }
@@ -340,7 +340,8 @@ export class DesignTokenNode {
             // has any dependencies of the token value. If so, we need to evaluate for this node
             evaluator.dependencies.forEach(dep => {
                 if (DesignTokenNode.isAssigned(this, dep)) {
-                    DesignTokenNode.evaluateDerived(this, token, evaluator.value);
+                    DesignTokenNode.evaluateDerived(this, token, evaluator.value) &&
+                        DesignTokenNode.notifyToken(token, this);
                     this.notifyDerived(token, evaluator, this);
                 }
             });
@@ -360,7 +361,8 @@ export class DesignTokenNode {
             const evaluator = DerivedValueEvaluator.getOrCreate(source);
 
             if (evaluator.dependencies.has(token)) {
-                DesignTokenNode.evaluateDerived(this, _token, source);
+                DesignTokenNode.evaluateDerived(this, _token, source) &&
+                    DesignTokenNode.notifyToken(_token, this);
                 this.notifyDerived(_token, evaluator, originator);
             }
         }
@@ -368,22 +370,5 @@ export class DesignTokenNode {
         for (let i = 0, l = this.children.length; i < l; i++) {
             this.children[i].notifyDerived(token, evaluator, originator);
         }
-    }
-
-    /**
-     * Change handler for derived token values
-     */
-    private derivedSubscriber: Subscriber = {
-        handleChange: (source: ObservableMap, value: DesignToken<any>) => {
-            this.notifyToken(value);
-        },
-    };
-
-    /**
-     * Notifies the token subscribes that the value has changed for the node
-     * @param token - The token that changed
-     */
-    private notifyToken<T>(token: DesignToken<T>): void {
-        Observable.getNotifier(token).notify(this);
     }
 }
