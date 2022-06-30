@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Menu } from "../menu.js";
-import { menuTemplate as template } from "../menu.template.js";
+import { FASTMenu } from "../menu.js";
+import { menuTemplate } from "../menu.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -39,12 +38,8 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Menu.compose({
-            baseName: "menu",
-            styles,
-            template,
-        })()
-    );
+FASTMenu.define({
+    name: "fast-menu",
+    styles,
+    template: menuTemplate(),
+});

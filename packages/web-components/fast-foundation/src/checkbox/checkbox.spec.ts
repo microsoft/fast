@@ -1,16 +1,17 @@
 import { assert, expect } from "chai";
-import { Checkbox, checkboxTemplate as template } from "./index.js";
-import { fixture } from "../testing/fixture.js";
+import { FASTCheckbox, checkboxTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
 
-const FASTCheckbox = Checkbox.compose({
-    baseName: "checkbox",
-    template,
+const checkboxName = uniqueElementName();
+FASTCheckbox.define({
+    name: checkboxName,
+    template: checkboxTemplate()
 })
 
 async function setup() {
-    const { connect, disconnect, element, parent } = await fixture(FASTCheckbox());
+    const { connect, disconnect, element, parent } = await fixture<FASTCheckbox>(checkboxName);
 
     return { connect, disconnect, element, parent };
 }

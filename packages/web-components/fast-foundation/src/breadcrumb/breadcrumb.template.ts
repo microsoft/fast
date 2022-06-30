@@ -1,21 +1,18 @@
-import { elements, html, slotted } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { Breadcrumb } from "./breadcrumb.js";
+import { elements, ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import type { FASTBreadcrumb } from "./breadcrumb.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Breadcrumb} component.
+ * The template for the {@link @microsoft/fast-foundation#FASTBreadcrumb} component.
  * @public
  */
-export const breadcrumbTemplate: FoundationElementTemplate<ViewTemplate<Breadcrumb>> = (
-    context,
-    definition
-) => html`
-    <template role="navigation">
-        <div role="list" class="list" part="list">
-            <slot
-                ${slotted({ property: "slottedBreadcrumbItems", filter: elements() })}
-            ></slot>
-        </div>
-    </template>
-`;
+export function breadcrumbTemplate(): ElementViewTemplate<FASTBreadcrumb> {
+    return html<FASTBreadcrumb>`
+        <template role="navigation">
+            <div role="list" class="list" part="list">
+                <slot
+                    ${slotted({ property: "slottedBreadcrumbItems", filter: elements() })}
+                ></slot>
+            </div>
+        </template>
+    `;
+}

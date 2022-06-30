@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { BreadcrumbItem } from "../breadcrumb-item.js";
-import { breadcrumbItemTemplate as template } from "../breadcrumb-item.template.js";
+import { FASTBreadcrumbItem } from "../breadcrumb-item.js";
+import { breadcrumbItemTemplate } from "../breadcrumb-item.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         background: transparent;
         box-sizing: border-box;
@@ -104,12 +103,8 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        BreadcrumbItem.compose({
-            baseName: "breadcrumb-item",
-            styles,
-            template,
-        })()
-    );
+FASTBreadcrumbItem.define({
+    name: "fast-breadcrumb-item",
+    template: breadcrumbItemTemplate(),
+    styles,
+});

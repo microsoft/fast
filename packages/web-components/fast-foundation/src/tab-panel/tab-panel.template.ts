@@ -1,16 +1,14 @@
-import { html } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { TabPanel } from "./tab-panel.js";
+import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { FASTTabPanel } from "./tab-panel.js";
+
 /**
- * The template for the {@link @microsoft/fast-foundation#TabPanel} component.
+ * The template for the {@link @microsoft/fast-foundation#FASTTabPanel} component.
  * @public
  */
-export const tabPanelTemplate: FoundationElementTemplate<ViewTemplate<TabPanel>> = (
-    context,
-    definition
-) => html`
-    <template slot="tabpanel" role="tabpanel">
-        <slot></slot>
-    </template>
-`;
+export function tabPanelTemplate(): ElementViewTemplate<FASTTabPanel> {
+    return html<FASTTabPanel>`
+        <template slot="tabpanel" role="tabpanel">
+            <slot></slot>
+        </template>
+    `;
+}

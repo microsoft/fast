@@ -1,15 +1,16 @@
 import { expect } from "chai";
-import { AnchoredRegion, anchoredRegionTemplate as template } from "./index.js";
-import { fixture } from "../testing/fixture.js";
+import { FASTAnchoredRegion, anchoredRegionTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 
-const FASTAnchoredRegion = AnchoredRegion.compose({
-    baseName: "anchored-region",
-    template
-})
+const anchoredRegionName = uniqueElementName();
+FASTAnchoredRegion.define({
+    name: anchoredRegionName,
+    template: anchoredRegionTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture(FASTAnchoredRegion());
+    const { element, connect, disconnect, parent } = await fixture<FASTAnchoredRegion>(anchoredRegionName);
 
     const button = document.createElement("button");
     const content = document.createElement("div");

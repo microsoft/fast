@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { TextField } from "../text-field.js";
-import { textFieldTemplate as template } from "../text-field.template.js";
+import { FASTTextField } from "../text-field.js";
+import { textFieldTemplate } from "../text-field.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -133,15 +132,11 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        TextField.compose({
-            baseName: "text-field",
-            template,
-            shadowOptions: {
-                delegatesFocus: true,
-            },
-            styles,
-        })()
-    );
+FASTTextField.define({
+    name: "fast-text-field",
+    template: textFieldTemplate(),
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+    styles,
+});

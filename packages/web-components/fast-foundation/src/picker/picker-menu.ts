@@ -1,13 +1,12 @@
 import { uniqueId } from "@microsoft/fast-web-utilities";
-import { observable } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { FASTElement, observable } from "@microsoft/fast-element";
 
 /**
  * A List Picker Menu Custom HTML Element.
  *
  * @beta
  */
-export class PickerMenu extends FoundationElement {
+export class FASTPickerMenu extends FASTElement {
     /**
      *  Elements in the default slot
      *

@@ -1,7 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { FoundationElement } from "../../foundation-element/foundation-element.js";
-import type { Calendar as FoundationCalendar } from "../calendar.js";
+import type { FASTCalendar } from "../calendar.js";
 import {
     DayFormat,
     MonthFormat,
@@ -9,7 +8,7 @@ import {
     YearFormat,
 } from "../calendar.options.js";
 
-type CalendarStoryArgs = Args & Omit<FoundationCalendar, keyof FoundationElement>;
+type CalendarStoryArgs = Args & FASTCalendar;
 type CalendarStoryMeta = Meta<CalendarStoryArgs>;
 
 const componentTemplate = html<CalendarStoryArgs>`

@@ -1,8 +1,9 @@
-import { attr, booleanConverter, SyntheticViewTemplate } from "@microsoft/fast-element";
 import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
+    attr,
+    booleanConverter,
+    FASTElement,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 import { FlipperDirection } from "./flipper.options.js";
 
 export { FlipperDirection };
@@ -11,7 +12,7 @@ export { FlipperDirection };
  * Flipper configuration options
  * @public
  */
-export type FlipperOptions = FoundationElementDefinition & {
+export type FlipperOptions = {
     next?: string | SyntheticViewTemplate;
     previous?: string | SyntheticViewTemplate;
 };
@@ -28,7 +29,7 @@ export type FlipperOptions = FoundationElementDefinition & {
  *
  * @public
  */
-export class Flipper extends FoundationElement {
+export class FASTFlipper extends FASTElement {
     /**
      * The disabled state of the flipper.
      * @public

@@ -1,9 +1,9 @@
 import { css, html, repeat } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { MenuItem as FoundationMenuItem } from "../menu-item.js";
+import type { FASTMenuItem } from "../menu-item.js";
 import { MenuItemRole } from "../menu-item.options.js";
 
-type MenuItemStoryArgs = Args & FoundationMenuItem;
+type MenuItemStoryArgs = Args & FASTMenuItem;
 type MenuItemStoryMeta = Meta<MenuItemStoryArgs>;
 
 const componentTemplate = html<MenuItemStoryArgs>`
@@ -130,7 +130,7 @@ MenuItemExpanded.args = {
 };
 MenuItemExpanded.decorators = [
     Story => {
-        const renderedStory = Story() as FoundationMenuItem;
+        const renderedStory = Story() as FASTMenuItem;
         // Disable cursor interaction to prevent the state from changing
         renderedStory.$fastController.addStyles(css`
             :host {

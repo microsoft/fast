@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { SliderLabel as FoundationSlider } from "../slider-label.js";
+import type { FASTSliderLabel } from "../slider-label.js";
 
-type SliderLabelStoryArgs = Args & FoundationSlider;
+type SliderLabelStoryArgs = Args & FASTSliderLabel;
 type SliderLabelStoryMeta = Meta<SliderLabelStoryArgs>;
 
 const componentTemplate = html<SliderLabelStoryArgs>`

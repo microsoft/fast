@@ -88,25 +88,15 @@ export const mySwitch = Switch.compose<SwitchOptions>({
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `proxy`         |         |                                       |         |                                                                                                                                                                                     |                   |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
-
-#### Methods
-
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name    | Privacy | Type | Default | Description | Inherited From |
+| ------- | ------- | ---- | ------- | ----------- | -------------- |
+| `proxy` |         |      |         |             |                |
 
 <hr/>
 
 
 
-### class: `Switch`
+### class: `FASTSwitch`
 
 #### Superclass
 
@@ -116,21 +106,16 @@ export const mySwitch = Switch.compose<SwitchOptions>({
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                 | Inherited From       |
-| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `readOnly`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                      |
-| `proxy`         |         |                                       |         |                                                                                                                                                                                             | FormAssociatedSwitch |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                     | FoundationElement    |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                  | FoundationElement    |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.         | FoundationElement    |
+| Name       | Privacy | Type      | Default | Description                                                                                                                                                                                 | Inherited From       |
+| ---------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `readOnly` | public  | `boolean` |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                      |
+| `proxy`    |         |           |         |                                                                                                                                                                                             | FormAssociatedSwitch |
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `readOnlyChanged` | protected |             |            | `void` |                   |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name              | Privacy   | Description | Parameters | Return | Inherited From |
+| ----------------- | --------- | ----------- | ---------- | ------ | -------------- |
+| `readOnlyChanged` | protected |             |            | `void` |                |
 
 #### Events
 

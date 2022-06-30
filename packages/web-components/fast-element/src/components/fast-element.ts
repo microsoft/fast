@@ -1,4 +1,4 @@
-import type { Constructable } from "../interfaces.js";
+import { Constructable, isFunction } from "../interfaces.js";
 import { Controller } from "./controller.js";
 import {
     FASTElementDefinition,
@@ -101,6 +101,44 @@ function createFASTElement<T extends typeof HTMLElement>(
     } as any;
 }
 
+function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+    this: TType,
+    nameOrDef: string | PartialFASTElementDefinition
+): FASTElementDefinition<TType>;
+function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+    type: TType,
+    nameOrDef?: string | PartialFASTElementDefinition
+): FASTElementDefinition<TType>;
+function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+    type: TType | string | PartialFASTElementDefinition,
+    nameOrDef?: string | PartialFASTElementDefinition
+): FASTElementDefinition<TType> {
+    if (isFunction(type)) {
+        return FASTElementDefinition.compose(type, nameOrDef);
+    }
+
+    return FASTElementDefinition.compose(this, type);
+}
+
+function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+    this: TType,
+    nameOrDef: string | PartialFASTElementDefinition
+): TType;
+function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+    type: TType,
+    nameOrDef?: string | PartialFASTElementDefinition
+): TType;
+function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+    type: TType | string | PartialFASTElementDefinition,
+    nameOrDef?: string | PartialFASTElementDefinition
+): TType {
+    if (isFunction(type)) {
+        return FASTElementDefinition.compose(type, nameOrDef).define().type;
+    }
+
+    return FASTElementDefinition.compose(this, type).define().type;
+}
+
 /**
  * A minimal base class for FASTElements that also provides
  * static helpers for working with FASTElements.
@@ -122,24 +160,13 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
      * @param nameOrDef - The name of the element to define or a definition object
      * that describes the element to define.
      */
-    define<TType extends Constructable<HTMLElement>>(
-        type: TType,
-        nameOrDef?: string | PartialFASTElementDefinition
-    ): TType {
-        return this.metadata(type, nameOrDef).define().type;
-    },
+    define,
 
     /**
      * Defines metadata for a FASTElement which can be used to later define the element.
-     * IMPORTANT: This API will be renamed to "compose" in a future beta.
      * @public
      */
-    metadata<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
-        type: TType,
-        nameOrDef?: string | PartialFASTElementDefinition
-    ): FASTElementDefinition<TType> {
-        return new FASTElementDefinition<TType>(type, nameOrDef);
-    },
+    compose,
 });
 
 /**
@@ -151,6 +178,6 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
 export function customElement(nameOrDef: string | PartialFASTElementDefinition) {
     /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
     return function (type: Constructable<HTMLElement>) {
-        FASTElement.define(type, nameOrDef);
+        define(type, nameOrDef);
     };
 }

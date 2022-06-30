@@ -11,11 +11,9 @@ import {
     keyTab,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
-import type { ListboxOption } from "../listbox-option/listbox-option.js";
-import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
-import { StartEnd } from "../patterns/start-end.js";
+import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
+import { DelegatesARIAListbox, FASTListbox } from "../listbox/listbox.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedSelect } from "./select.form-associated.js";
 import { SelectPosition } from "./select.options.js";
@@ -24,10 +22,9 @@ import { SelectPosition } from "./select.options.js";
  * Select configuration options
  * @public
  */
-export type SelectOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        indicator?: string | SyntheticViewTemplate;
-    };
+export type SelectOptions = StartEndOptions & {
+    indicator?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Select Custom HTML Element.
@@ -48,7 +45,7 @@ export type SelectOptions = FoundationElementDefinition &
  *
  * @public
  */
-export class Select extends FormAssociatedSelect {
+export class FASTSelect extends FormAssociatedSelect {
     /**
      * The open attribute.
      *
@@ -321,7 +318,7 @@ export class Select extends FormAssociatedSelect {
         if (this.open) {
             const captured = (e.target as HTMLElement).closest(
                 `option,[role=option]`
-            ) as ListboxOption;
+            ) as FASTListboxOption;
 
             if (captured && captured.disabled) {
                 return;
@@ -358,7 +355,7 @@ export class Select extends FormAssociatedSelect {
             return;
         }
 
-        if (!this.options?.includes(focusTarget as ListboxOption)) {
+        if (!this.options?.includes(focusTarget as FASTListboxOption)) {
             this.open = false;
             if (this.indexWhenOpened !== this.selectedIndex) {
                 this.updateValue(true);
@@ -446,8 +443,8 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     protected selectedOptionsChanged(
-        prev: ListboxOption[] | undefined,
-        next: ListboxOption[]
+        prev: FASTListboxOption[] | undefined,
+        next: FASTListboxOption[]
     ): void {
         super.selectedOptionsChanged(prev, next);
         this.options?.forEach((o, i) => {
@@ -466,8 +463,9 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     protected setDefaultSelectedOption(): void {
-        const options: ListboxOption[] =
-            this.options ?? Array.from(this.children).filter(Listbox.slottedOptionFilter);
+        const options: FASTListboxOption[] =
+            this.options ??
+            Array.from(this.children).filter(FASTListbox.slottedOptionFilter);
 
         const selectedIndex = options?.findIndex(
             el => el.hasAttribute("selected") || el.selected || el.value === this.value
@@ -626,5 +624,5 @@ applyMixins(DelegatesARIASelect, DelegatesARIAListbox);
 /**
  * @internal
  */
-export interface Select extends StartEnd, DelegatesARIASelect {}
-applyMixins(Select, StartEnd, DelegatesARIASelect);
+export interface FASTSelect extends StartEnd, DelegatesARIASelect {}
+applyMixins(FASTSelect, StartEnd, DelegatesARIASelect);

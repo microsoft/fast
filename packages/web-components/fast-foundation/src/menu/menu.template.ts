@@ -1,22 +1,19 @@
-import { html, slotted } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { Menu } from "./menu.js";
+import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import type { FASTMenu } from "./menu.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Menu} component.
+ * The template for the {@link @microsoft/fast-foundation#FASTMenu} component.
  * @public
  */
-export const menuTemplate: FoundationElementTemplate<ViewTemplate<Menu>> = (
-    context,
-    definition
-) => html`
-    <template
-        slot="${x => (x.slot ? x.slot : x.isNestedMenu() ? "submenu" : void 0)}"
-        role="menu"
-        @keydown="${(x, c) => x.handleMenuKeyDown(c.event as KeyboardEvent)}"
-        @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"
-    >
-        <slot ${slotted("items")}></slot>
-    </template>
-`;
+export function menuTemplate(): ElementViewTemplate<FASTMenu> {
+    return html<FASTMenu>`
+        <template
+            slot="${x => (x.slot ? x.slot : x.isNestedMenu() ? "submenu" : void 0)}"
+            role="menu"
+            @keydown="${(x, c) => x.handleMenuKeyDown(c.event as KeyboardEvent)}"
+            @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"
+        >
+            <slot ${slotted("items")}></slot>
+        </template>
+    `;
+}
