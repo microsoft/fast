@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: remove design system, foundation element & related infrastructure",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

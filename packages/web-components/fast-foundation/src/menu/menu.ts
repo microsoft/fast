@@ -1,4 +1,4 @@
-import { observable, Updates } from "@microsoft/fast-element";
+import { FASTElement, observable, Updates } from "@microsoft/fast-element";
 import {
     isHTMLElement,
     keyArrowDown,
@@ -7,12 +7,11 @@ import {
     keyHome,
 } from "@microsoft/fast-web-utilities";
 import {
-    MenuItem,
+    FASTMenuItem,
     MenuItemColumnCount,
     MenuItemRole,
     roleForMenuItem,
 } from "../menu-item/index.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Menu Custom HTML Element.
@@ -22,7 +21,7 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  *
  * @public
  */
-export class Menu extends FoundationElement {
+export class FASTMenu extends FASTElement {
     /**
      * @internal
      */
@@ -39,7 +38,7 @@ export class Menu extends FoundationElement {
 
     private menuItems: Element[] | undefined;
 
-    private expandedItem: MenuItem | null = null;
+    private expandedItem: FASTMenuItem | null = null;
 
     /**
      * The index of the focusable element in the items array
@@ -178,7 +177,7 @@ export class Menu extends FoundationElement {
         }
 
         e.preventDefault();
-        const changedItem: MenuItem = (e.target as any) as MenuItem;
+        const changedItem: FASTMenuItem = (e.target as any) as FASTMenuItem;
 
         // closing an expanded item without opening another
         if (
@@ -249,7 +248,7 @@ export class Menu extends FoundationElement {
             item.addEventListener("expanded-change", this.handleExpandedChanged);
             item.addEventListener("focus", this.handleItemFocus);
 
-            if (item instanceof MenuItem) {
+            if (item instanceof FASTMenuItem) {
                 item.startColumnCount = indent;
             }
         });
@@ -262,7 +261,7 @@ export class Menu extends FoundationElement {
         if (this.menuItems === undefined) {
             return;
         }
-        const changedMenuItem: MenuItem = e.target as MenuItem;
+        const changedMenuItem: FASTMenuItem = e.target as FASTMenuItem;
         const changeItemIndex: number = this.menuItems.indexOf(changedMenuItem);
 
         if (changeItemIndex === -1) {
@@ -277,7 +276,7 @@ export class Menu extends FoundationElement {
                 const item: Element = this.menuItems[i];
                 const role: string | null = item.getAttribute("role");
                 if (role === MenuItemRole.menuitemradio) {
-                    (item as MenuItem).checked = false;
+                    (item as FASTMenuItem).checked = false;
                 }
                 if (role === "separator") {
                     break;
@@ -288,7 +287,7 @@ export class Menu extends FoundationElement {
                 const item: Element = this.menuItems[i];
                 const role: string | null = item.getAttribute("role");
                 if (role === MenuItemRole.menuitemradio) {
-                    (item as MenuItem).checked = false;
+                    (item as FASTMenuItem).checked = false;
                 }
                 if (role === "separator") {
                     break;
@@ -310,7 +309,9 @@ export class Menu extends FoundationElement {
     private isMenuItemElement = (el: Element): el is HTMLElement => {
         return (
             isHTMLElement(el) &&
-            Menu.focusableElementRoles.hasOwnProperty(el.getAttribute("role") as string)
+            FASTMenu.focusableElementRoles.hasOwnProperty(
+                el.getAttribute("role") as string
+            )
         );
     };
 

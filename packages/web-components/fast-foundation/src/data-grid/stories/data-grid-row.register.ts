@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { DataGridRow } from "../data-grid-row.js";
-import { dataGridRowTemplate as template } from "../data-grid-row.template.js";
+import { FASTDataGridRow } from "../data-grid-row.js";
+import { dataGridRowTemplate } from "../data-grid-row.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         display: grid;
         padding: 1px 0;
@@ -19,12 +18,10 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        DataGridRow.compose({
-            baseName: "data-grid-row",
-            styles,
-            template,
-        })()
-    );
+FASTDataGridRow.define({
+    name: "fast-data-grid-row",
+    template: dataGridRowTemplate({
+        dataGridCell: "fast-data-grid-cell",
+    }),
+    styles,
+});

@@ -1,9 +1,9 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
 import { AutoUpdateMode } from "../../index.js";
-import { Tooltip as FoundationTooltip, TooltipPosition } from "../tooltip.js";
+import { FASTTooltip, TooltipPosition } from "../tooltip.js";
 
-type TooltipStoryArgs = Args & FoundationTooltip;
+type TooltipStoryArgs = Args & FASTTooltip;
 type TooltipStoryMeta = Meta<TooltipStoryArgs>;
 
 const storyTemplate = html<TooltipStoryArgs>`

@@ -1,13 +1,12 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { FormAssociatedSwitch } from "./switch.form-associated.js";
 
 /**
  * Switch configuration options
  * @public
  */
-export type SwitchOptions = FoundationElementDefinition & {
+export type SwitchOptions = {
     switch?: string | SyntheticViewTemplate;
 };
 
@@ -27,7 +26,7 @@ export type SwitchOptions = FoundationElementDefinition & {
  *
  * @public
  */
-export class Switch extends FormAssociatedSwitch {
+export class FASTSwitch extends FormAssociatedSwitch {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public

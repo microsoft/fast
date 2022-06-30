@@ -14,8 +14,8 @@ import {
     keySpace,
     keyTab,
 } from "@microsoft/fast-web-utilities";
-import type { ListboxOption } from "../listbox-option/listbox-option.js";
-import { Listbox } from "./listbox.js";
+import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
+import { FASTListbox } from "./listbox.js";
 
 /**
  * A Listbox Custom HTML Element.
@@ -23,7 +23,7 @@ import { Listbox } from "./listbox.js";
  *
  * @public
  */
-export class ListboxElement extends Listbox {
+export class FASTListboxElement extends FASTListbox {
     /**
      * The index of the most recently checked option.
      *
@@ -39,7 +39,7 @@ export class ListboxElement extends Listbox {
      *
      * @internal
      */
-    public get activeOption(): ListboxOption | null {
+    public get activeOption(): FASTListboxOption | null {
         return this.options[this.activeIndex];
     }
 
@@ -48,7 +48,7 @@ export class ListboxElement extends Listbox {
      *
      * @internal
      */
-    protected get checkedOptions(): ListboxOption[] {
+    protected get checkedOptions(): FASTListboxOption[] {
         return this.options?.filter(o => o.checked);
     }
 
@@ -265,7 +265,7 @@ export class ListboxElement extends Listbox {
             return super.clickHandler(e);
         }
 
-        const captured = (e.target as Element | null)?.closest<ListboxOption>(
+        const captured = (e.target as Element | null)?.closest<FASTListboxOption>(
             `[role=option]`
         );
 

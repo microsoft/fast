@@ -96,39 +96,34 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 | Name                  | Privacy | Type | Default | Description                                         | Inherited From |
 | --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
-| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | Listbox        |
+| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | FASTListbox    |
 
 #### Fields
 
-| Name               | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| ------------------ | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `proxy`            |           |                                       |         |                                                                                                                                                                                     |                   |
-| `multiple`         | public    | `boolean`                             |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                | ListboxElement    |
-| `size`             | public    | `number`                              |         | The maximum number of options to display.                                                                                                                                           | ListboxElement    |
-| `length`           | public    | `number`                              |         | The number of options.                                                                                                                                                              | Listbox           |
-| `options`          | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                | Listbox           |
-| `typeAheadExpired` | protected |                                       |         |                                                                                                                                                                                     | Listbox           |
-| `disabled`         | public    | `boolean`                             |         | The disabled state of the listbox.                                                                                                                                                  | Listbox           |
-| `selectedIndex`    | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   | Listbox           |
-| `selectedOptions`  | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               | Listbox           |
-| `$presentation`    | public    | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`         | public    | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`           | public    | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name               | Privacy   | Type                  | Default | Description                                          | Inherited From     |
+| ------------------ | --------- | --------------------- | ------- | ---------------------------------------------------- | ------------------ |
+| `proxy`            |           |                       |         |                                                      |                    |
+| `multiple`         | public    | `boolean`             |         | Indicates if the listbox is in multi-selection mode. | FASTListboxElement |
+| `size`             | public    | `number`              |         | The maximum number of options to display.            | FASTListboxElement |
+| `length`           | public    | `number`              |         | The number of options.                               | FASTListbox        |
+| `options`          | public    | `FASTListboxOption[]` |         | The list of options.                                 | FASTListbox        |
+| `typeAheadExpired` | protected |                       |         |                                                      | FASTListbox        |
+| `disabled`         | public    | `boolean`             |         | The disabled state of the listbox.                   | FASTListbox        |
+| `selectedIndex`    | public    | `number`              | `-1`    | The index of the selected option.                    | FASTListbox        |
+| `selectedOptions`  | public    | `FASTListboxOption[]` | `[]`    | A collection of the selected options.                | FASTListbox        |
 
 #### Methods
 
-| Name                 | Privacy   | Description                                    | Parameters | Return | Inherited From    |
-| -------------------- | --------- | ---------------------------------------------- | ---------- | ------ | ----------------- |
-| `setSelectedOptions` | public    | Sets an option as selected and gives it focus. |            |        | Listbox           |
-| `selectFirstOption`  | public    | Moves focus to the first selectable option.    |            | `void` | Listbox           |
-| `templateChanged`    | protected |                                                |            | `void` | FoundationElement |
-| `stylesChanged`      | protected |                                                |            | `void` | FoundationElement |
+| Name                 | Privacy | Description                                    | Parameters | Return | Inherited From |
+| -------------------- | ------- | ---------------------------------------------- | ---------- | ------ | -------------- |
+| `setSelectedOptions` | public  | Sets an option as selected and gives it focus. |            |        | FASTListbox    |
+| `selectFirstOption`  | public  | Moves focus to the first selectable option.    |            | `void` | FASTListbox    |
 
 #### Attributes
 
 | Name | Field    | Inherited From |
 | ---- | -------- | -------------- |
-|      | multiple | Listbox        |
+|      | multiple | FASTListbox    |
 
 <hr/>
 
@@ -144,7 +139,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 
 
-### class: `Select`
+### class: `FASTSelect`
 
 #### Superclass
 
@@ -156,41 +151,36 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 | Name                  | Privacy | Type | Default | Description                                         | Inherited From |
 | --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
-| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | Listbox        |
+| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | FASTListbox    |
 
 #### Fields
 
-| Name                | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From       |
-| ------------------- | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `open`              | public    | `boolean`                             | `false` | The open attribute.                                                                                                                                                                 |                      |
-| `value`             | public    |                                       |         | The value property.                                                                                                                                                                 |                      |
-| `positionAttribute` | public    | `SelectPosition or undefined`         |         | Reflects the placement for the listbox when the select is open.                                                                                                                     |                      |
-| `position`          | public    | `SelectPosition or undefined`         |         | Holds the current state for the calculated position of the listbox.                                                                                                                 |                      |
-| `displayValue`      | public    | `string`                              |         | The value displayed on the button.                                                                                                                                                  |                      |
-| `proxy`             |           |                                       |         |                                                                                                                                                                                     | FormAssociatedSelect |
-| `multiple`          | public    | `boolean`                             |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                | ListboxElement       |
-| `size`              | public    | `number`                              |         | The maximum number of options to display.                                                                                                                                           | ListboxElement       |
-| `length`            | public    | `number`                              |         | The number of options.                                                                                                                                                              | Listbox              |
-| `options`           | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                | Listbox              |
-| `typeAheadExpired`  | protected |                                       |         |                                                                                                                                                                                     | Listbox              |
-| `disabled`          | public    | `boolean`                             |         | The disabled state of the listbox.                                                                                                                                                  | Listbox              |
-| `selectedIndex`     | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   | Listbox              |
-| `selectedOptions`   | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               | Listbox              |
-| `$presentation`     | public    | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement    |
-| `template`          | public    | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement    |
-| `styles`            | public    | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement    |
+| Name                | Privacy   | Type                          | Default | Description                                                         | Inherited From       |
+| ------------------- | --------- | ----------------------------- | ------- | ------------------------------------------------------------------- | -------------------- |
+| `open`              | public    | `boolean`                     | `false` | The open attribute.                                                 |                      |
+| `value`             | public    |                               |         | The value property.                                                 |                      |
+| `positionAttribute` | public    | `SelectPosition or undefined` |         | Reflects the placement for the listbox when the select is open.     |                      |
+| `position`          | public    | `SelectPosition or undefined` |         | Holds the current state for the calculated position of the listbox. |                      |
+| `displayValue`      | public    | `string`                      |         | The value displayed on the button.                                  |                      |
+| `proxy`             |           |                               |         |                                                                     | FormAssociatedSelect |
+| `multiple`          | public    | `boolean`                     |         | Indicates if the listbox is in multi-selection mode.                | FASTListboxElement   |
+| `size`              | public    | `number`                      |         | The maximum number of options to display.                           | FASTListboxElement   |
+| `length`            | public    | `number`                      |         | The number of options.                                              | FASTListbox          |
+| `options`           | public    | `FASTListboxOption[]`         |         | The list of options.                                                | FASTListbox          |
+| `typeAheadExpired`  | protected |                               |         |                                                                     | FASTListbox          |
+| `disabled`          | public    | `boolean`                     |         | The disabled state of the listbox.                                  | FASTListbox          |
+| `selectedIndex`     | public    | `number`                      | `-1`    | The index of the selected option.                                   | FASTListbox          |
+| `selectedOptions`   | public    | `FASTListboxOption[]`         | `[]`    | A collection of the selected options.                               | FASTListbox          |
 
 #### Methods
 
-| Name                 | Privacy   | Description                                                                | Parameters                                                             | Return | Inherited From    |
-| -------------------- | --------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------ | ----------------- |
-| `positionChanged`    | protected |                                                                            | `prev: SelectPosition or undefined, next: SelectPosition or undefined` | `void` |                   |
-| `setPositioning`     | public    | Calculate and apply listbox positioning based on available viewport space. |                                                                        | `void` |                   |
-| `multipleChanged`    | public    | Sets the multiple property on the proxy element.                           | `prev: boolean or undefined, next: boolean`                            |        |                   |
-| `setSelectedOptions` | public    | Sets an option as selected and gives it focus.                             |                                                                        |        | Listbox           |
-| `selectFirstOption`  | public    | Moves focus to the first selectable option.                                |                                                                        | `void` | Listbox           |
-| `templateChanged`    | protected |                                                                            |                                                                        | `void` | FoundationElement |
-| `stylesChanged`      | protected |                                                                            |                                                                        | `void` | FoundationElement |
+| Name                 | Privacy   | Description                                                                | Parameters                                                             | Return | Inherited From |
+| -------------------- | --------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------ | -------------- |
+| `positionChanged`    | protected |                                                                            | `prev: SelectPosition or undefined, next: SelectPosition or undefined` | `void` |                |
+| `setPositioning`     | public    | Calculate and apply listbox positioning based on available viewport space. |                                                                        | `void` |                |
+| `multipleChanged`    | public    | Sets the multiple property on the proxy element.                           | `prev: boolean or undefined, next: boolean`                            |        |                |
+| `setSelectedOptions` | public    | Sets an option as selected and gives it focus.                             |                                                                        |        | FASTListbox    |
+| `selectFirstOption`  | public    | Moves focus to the first selectable option.                                |                                                                        | `void` | FASTListbox    |
 
 #### Events
 
@@ -205,7 +195,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | ---------- | ----------------- | -------------- |
 | `open`     | open              |                |
 | `position` | positionAttribute |                |
-|            | multiple          | Listbox        |
+|            | multiple          | FASTListbox    |
 
 #### CSS Parts
 

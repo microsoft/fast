@@ -1,15 +1,11 @@
 import {
     attr,
+    FASTElement,
     nullableNumberConverter,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
-import type { StartEndOptions } from "../patterns/start-end.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element/foundation-element.js";
+import type { StartEndOptions, TemplateElementDependency } from "../patterns/index.js";
 import { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./calendar.options.js";
 import { DateFormatter } from "./date-formatter.js";
 
@@ -57,16 +53,12 @@ export type WeekdayText = { text: string; abbr?: string };
  * Calendar configuration options
  * @public
  */
-export type CalendarOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        title?:
-            | FoundationElementTemplate<
-                  SyntheticViewTemplate<any, Calendar>,
-                  CalendarOptions
-              >
-            | SyntheticViewTemplate
-            | string;
-    };
+export type CalendarOptions = StartEndOptions & {
+    dataGridCell: TemplateElementDependency;
+    dataGridRow: TemplateElementDependency;
+    dataGrid: TemplateElementDependency;
+    title?: SyntheticViewTemplate | string;
+};
 
 /**
  * Calendar component
@@ -76,7 +68,7 @@ export type CalendarOptions = FoundationElementDefinition &
  *
  * @public
  */
-export class Calendar extends FoundationElement {
+export class FASTCalendar extends FASTElement {
     /**
      * date formatter utitlity for getting localized strings
      * @public

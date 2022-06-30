@@ -6,9 +6,8 @@ import {
     Updates,
 } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { DelegatesARIATextbox } from "../text-field/text-field.js";
 import { FormAssociatedNumberField } from "./number-field.form-associated.js";
 
@@ -16,11 +15,10 @@ import { FormAssociatedNumberField } from "./number-field.form-associated.js";
  * Number Field configuration options
  * @public
  */
-export type NumberFieldOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        stepDownGlyph?: string | SyntheticViewTemplate;
-        stepUpGlyph?: string | SyntheticViewTemplate;
-    };
+export type NumberFieldOptions = StartEndOptions & {
+    stepDownGlyph?: string | SyntheticViewTemplate;
+    stepUpGlyph?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Number Field Custom HTML Element.
@@ -42,7 +40,7 @@ export type NumberFieldOptions = FoundationElementDefinition &
  *
  * @public
  */
-export class NumberField extends FormAssociatedNumberField {
+export class FASTNumberField extends FormAssociatedNumberField {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -389,5 +387,5 @@ export class NumberField extends FormAssociatedNumberField {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface NumberField extends StartEnd, DelegatesARIATextbox {}
-applyMixins(NumberField, StartEnd, DelegatesARIATextbox);
+export interface FASTNumberField extends StartEnd, DelegatesARIATextbox {}
+applyMixins(FASTNumberField, StartEnd, DelegatesARIATextbox);

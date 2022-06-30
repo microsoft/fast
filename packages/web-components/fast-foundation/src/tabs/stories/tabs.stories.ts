@@ -1,9 +1,9 @@
 import { html, repeat } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import type { Args, Meta } from "@storybook/html";
-import type { Tabs as FoundationTabs } from "../tabs.js";
+import type { FASTTabs } from "../tabs.js";
 
-type TabsStoryArgs = Args & FoundationTabs;
+type TabsStoryArgs = Args & FASTTabs;
 type TabsStoryMeta = Meta<TabsStoryArgs>;
 
 const componentTemplate = html<TabsStoryArgs>`

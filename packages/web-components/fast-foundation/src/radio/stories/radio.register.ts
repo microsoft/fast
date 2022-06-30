@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Radio, RadioOptions } from "../radio.js";
-import { radioTemplate as template } from "../radio.template.js";
+import { FASTRadio } from "../radio.js";
+import { radioTemplate } from "../radio.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -135,15 +134,12 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Radio.compose<RadioOptions>({
-            baseName: "radio",
-            template,
-            styles,
-            checkedIndicator: /* html */ `
-                <div part="checked-indicator" class="checked-indicator"></div>
-            `,
-        })()
-    );
+FASTRadio.define({
+    name: "fast-radio",
+    template: radioTemplate({
+        checkedIndicator: /* html */ `
+            <div part="checked-indicator" class="checked-indicator"></div>
+        `,
+    }),
+    styles,
+});

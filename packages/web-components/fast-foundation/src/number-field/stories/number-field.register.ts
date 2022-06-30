@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { NumberField } from "../number-field.js";
-import { numberFieldTemplate as template } from "../number-field.template.js";
+import { FASTNumberField } from "../number-field.js";
+import { numberFieldTemplate } from "../number-field.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         display: inline-block;
         font: var(--type-ramp-base-font-size) / var(--type-ramp-base-line-height)
@@ -162,17 +161,14 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        NumberField.compose({
-            baseName: "number-field",
-            styles,
-            template,
-            shadowOptions: {
-                delegatesFocus: true,
-            },
-            stepDownGlyph: /* html */ `<span class="step-down-glyph" part="step-down-glyph"></span>`,
-            stepUpGlyph: /* html */ `<span class="step-up-glyph" part="step-up-glyph"></span>`,
-        })()
-    );
+FASTNumberField.define({
+    name: "fast-number-field",
+    styles,
+    template: numberFieldTemplate({
+        stepDownGlyph: /* html */ `<span class="step-down-glyph" part="step-down-glyph"></span>`,
+        stepUpGlyph: /* html */ `<span class="step-up-glyph" part="step-up-glyph"></span>`,
+    }),
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+});

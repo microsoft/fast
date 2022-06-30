@@ -38,35 +38,30 @@ export class FASTTreeItem extends TreeItem {}
 
 
 
-### class: `TreeItem`
+### class: `FASTTreeItem`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                 | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `expanded`      | public  | `boolean`                             | `false` | When true, the control will be appear expanded by user interaction.                                                                                                                         |                   |
-| `selected`      | public  | `boolean`                             |         | When true, the control will appear selected by user interaction.                                                                                                                            |                   |
-| `disabled`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [disabled HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) for more information. |                   |
-| `isNestedItem`  | public  |                                       |         | Whether the tree is nested                                                                                                                                                                  |                   |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                     | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                  | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.         | FoundationElement |
+| Name           | Privacy | Type      | Default | Description                                                                                                                                                                                 | Inherited From |
+| -------------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `expanded`     | public  | `boolean` | `false` | When true, the control will be appear expanded by user interaction.                                                                                                                         |                |
+| `selected`     | public  | `boolean` |         | When true, the control will appear selected by user interaction.                                                                                                                            |                |
+| `disabled`     | public  | `boolean` |         | When true, the control will be immutable by user interaction. See [disabled HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) for more information. |                |
+| `isNestedItem` | public  |           |         | Whether the tree is nested                                                                                                                                                                  |                |
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters                                   | Return | Inherited From    |
-| ----------------- | --------- | ----------- | -------------------------------------------- | ------ | ----------------- |
-| `expandedChanged` | protected |             |                                              | `void` |                   |
-| `selectedChanged` | protected |             |                                              | `void` |                   |
-| `itemsChanged`    | protected |             | `oldValue: unknown, newValue: HTMLElement[]` | `void` |                   |
-| `templateChanged` | protected |             |                                              | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |                                              | `void` | FoundationElement |
+| Name              | Privacy   | Description | Parameters                                   | Return | Inherited From |
+| ----------------- | --------- | ----------- | -------------------------------------------- | ------ | -------------- |
+| `expandedChanged` | protected |             |                                              | `void` |                |
+| `selectedChanged` | protected |             |                                              | `void` |                |
+| `itemsChanged`    | protected |             | `oldValue: unknown, newValue: HTMLElement[]` | `void` |                |
 
 #### Events
 

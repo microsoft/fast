@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Dialog } from "../dialog.js";
-import { dialogTemplate as template } from "../dialog.template.js";
+import { FASTDialog } from "../dialog.js";
+import { dialogTemplate } from "../dialog.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -52,12 +51,8 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Dialog.compose({
-            baseName: "dialog",
-            template,
-            styles,
-        })()
-    );
+FASTDialog.define({
+    name: "fast-dialog",
+    template: dialogTemplate(),
+    styles,
+});

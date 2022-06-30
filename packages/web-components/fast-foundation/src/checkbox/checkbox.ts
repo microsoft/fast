@@ -1,13 +1,12 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { FormAssociatedCheckbox } from "./checkbox.form-associated.js";
 
 /**
  * Checkbox configuration options
  * @public
  */
-export type CheckboxOptions = FoundationElementDefinition & {
+export type CheckboxOptions = {
     checkedIndicator?: string | SyntheticViewTemplate;
     indeterminateIndicator?: string | SyntheticViewTemplate;
 };
@@ -25,7 +24,7 @@ export type CheckboxOptions = FoundationElementDefinition & {
  *
  * @public
  */
-export class Checkbox extends FormAssociatedCheckbox {
+export class FASTCheckbox extends FormAssociatedCheckbox {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public

@@ -1,9 +1,9 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Card as FoundationCard } from "../../card/card.js";
-import { Skeleton as FoundationSkeleton, SkeletonShape } from "../skeleton.js";
+import type { FASTCard } from "../../card/card.js";
+import { FASTSkeleton, SkeletonShape } from "../skeleton.js";
 
-type SkeletonStoryArgs = Args & FoundationSkeleton;
+type SkeletonStoryArgs = Args & FASTSkeleton;
 type SkeletonStoryMeta = Meta<SkeletonStoryArgs>;
 
 const componentTemplate = html<SkeletonStoryArgs>`
@@ -39,7 +39,7 @@ export const Skeleton: SkeletonStoryMeta = (args: SkeletonStoryArgs) => {
 };
 Skeleton.decorators = [
     (Story, { id }) => {
-        const renderedStory = Story() as FoundationSkeleton;
+        const renderedStory = Story() as FASTSkeleton;
         renderedStory.id = id;
 
         const styles = document.createElement("style");
@@ -77,7 +77,7 @@ SkeletonExample.args = {
 };
 SkeletonExample.decorators = [
     (Story, { id }) => {
-        const renderedStory = Story() as FoundationCard;
+        const renderedStory = Story() as FASTCard;
         renderedStory.id = id;
 
         const styles = document.createElement("style");

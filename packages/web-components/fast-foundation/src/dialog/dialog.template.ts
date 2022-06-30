@@ -1,40 +1,37 @@
-import { html, ref, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { Dialog } from "./dialog.js";
+import { ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
+import type { FASTDialog } from "./dialog.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Dialog} component.
+ * The template for the {@link @microsoft/fast-foundation#FASTDialog} component.
  * @public
  */
-export const dialogTemplate: FoundationElementTemplate<ViewTemplate<Dialog>> = (
-    context,
-    definition
-) => html<Dialog>`
-    <div class="positioning-region" part="positioning-region">
-        ${when(
-            x => x.modal,
-            html<Dialog>`
-                <div
-                    class="overlay"
-                    part="overlay"
-                    role="presentation"
-                    @click="${x => x.dismiss()}"
-                ></div>
-            `
-        )}
-        <div
-            role="dialog"
-            tabindex="-1"
-            class="control"
-            part="control"
-            aria-modal="${x => (x.modal ? x.modal : void 0)}"
-            aria-describedby="${x => x.ariaDescribedby}"
-            aria-labelledby="${x => x.ariaLabelledby}"
-            aria-label="${x => x.ariaLabel}"
-            ${ref("dialog")}
-        >
-            <slot></slot>
+export function dialogTemplate(): ElementViewTemplate<FASTDialog> {
+    return html<FASTDialog>`
+        <div class="positioning-region" part="positioning-region">
+            ${when(
+                x => x.modal,
+                html<FASTDialog>`
+                    <div
+                        class="overlay"
+                        part="overlay"
+                        role="presentation"
+                        @click="${x => x.dismiss()}"
+                    ></div>
+                `
+            )}
+            <div
+                role="dialog"
+                tabindex="-1"
+                class="control"
+                part="control"
+                aria-modal="${x => (x.modal ? x.modal : void 0)}"
+                aria-describedby="${x => x.ariaDescribedby}"
+                aria-labelledby="${x => x.ariaLabelledby}"
+                aria-label="${x => x.ariaLabel}"
+                ${ref("dialog")}
+            >
+                <slot></slot>
+            </div>
         </div>
-    </div>
-`;
+    `;
+}

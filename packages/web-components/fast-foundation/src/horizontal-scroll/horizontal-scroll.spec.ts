@@ -1,7 +1,7 @@
 import { css, Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../testing/fixture.js";
-import { HorizontalScroll, horizontalScrollTemplate as template } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTHorizontalScroll, horizontalScrollTemplate } from "./index.js";
 
 const styles = css`
     :host {
@@ -23,11 +23,12 @@ const styles = css`
     }
 `;
 
-const FASTHorizontalScroll = HorizontalScroll.compose({
-    baseName: "horizontal-scroll",
-    template,
+const scrollName = uniqueElementName();
+FASTHorizontalScroll.define({
+    name: scrollName,
+    template: horizontalScrollTemplate(),
     styles
-})
+});
 
 /**
  * Static widths for calculating expected returns
@@ -65,7 +66,7 @@ const getCards = (cnt: number): string => new Array(cnt).fill(cardTemplate).redu
  * @param paddingRight - optional right padding to override padding on both sides
  */
 const scrollIntoViewTest = async (
-    element: HorizontalScroll & HTMLElement,
+    element: FASTHorizontalScroll & HTMLElement,
     item: HTMLElement | number,
     padding: number = 0,
     paddingRight?: number
@@ -84,10 +85,10 @@ async function setup(options: {
 } = {}) {
     const { element, connect, disconnect }:
         {
-            element: HorizontalScroll & HTMLElement;
+            element: FASTHorizontalScroll;
             connect: () => void;
             disconnect: () => void;
-        } = await fixture(FASTHorizontalScroll());
+        } = await fixture<FASTHorizontalScroll>(scrollName);
 
     // Removing animated scroll so that tests don't have to wait on DOM updates
     element.speed = 0;

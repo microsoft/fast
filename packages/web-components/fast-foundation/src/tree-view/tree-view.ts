@@ -1,4 +1,4 @@
-import { attr, observable, Updates } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
     isHTMLElement,
@@ -10,8 +10,7 @@ import {
     keyEnter,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import { isTreeItemElement, TreeItem } from "../tree-item/tree-item.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { FASTTreeItem, isTreeItemElement } from "../tree-item/tree-item.js";
 
 /**
  * A Tree view Custom HTML Element.
@@ -21,7 +20,7 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  *
  * @public
  */
-export class TreeView extends FoundationElement {
+export class FASTTreeView extends FASTElement {
     /**
    /**
     * When true, the control will be appear expanded by user interaction.
@@ -37,7 +36,7 @@ export class TreeView extends FoundationElement {
      * @public
      */
     @observable
-    public currentSelected: HTMLElement | TreeItem | null;
+    public currentSelected: HTMLElement | FASTTreeItem | null;
 
     /**
      *  Slotted children
@@ -58,7 +57,7 @@ export class TreeView extends FoundationElement {
      *
      * @internal
      */
-    public currentFocused: HTMLElement | TreeItem | null = null;
+    public currentFocused: HTMLElement | FASTTreeItem | null = null;
 
     /**
      * Handle focus events
@@ -77,7 +76,7 @@ export class TreeView extends FoundationElement {
             }
 
             if (this.currentFocused !== null) {
-                TreeItem.focusItem(this.currentFocused);
+                FASTTreeItem.focusItem(this.currentFocused);
             }
 
             return;
@@ -139,12 +138,12 @@ export class TreeView extends FoundationElement {
         switch (e.key) {
             case keyHome:
                 if (treeItems.length) {
-                    TreeItem.focusItem(treeItems[0]);
+                    FASTTreeItem.focusItem(treeItems[0]);
                 }
                 return;
             case keyEnd:
                 if (treeItems.length) {
-                    TreeItem.focusItem(treeItems[treeItems.length - 1]);
+                    FASTTreeItem.focusItem(treeItems[treeItems.length - 1]);
                 }
                 return;
             case keyArrowLeft:
@@ -152,16 +151,16 @@ export class TreeView extends FoundationElement {
                     const item = e.target as HTMLElement;
 
                     if (
-                        item instanceof TreeItem &&
+                        item instanceof FASTTreeItem &&
                         item.childItemLength() > 0 &&
                         item.expanded
                     ) {
                         item.expanded = false;
                     } else if (
-                        item instanceof TreeItem &&
-                        item.parentElement instanceof TreeItem
+                        item instanceof FASTTreeItem &&
+                        item.parentElement instanceof FASTTreeItem
                     ) {
-                        TreeItem.focusItem(item.parentElement);
+                        FASTTreeItem.focusItem(item.parentElement);
                     }
                 }
                 return false;
@@ -169,24 +168,27 @@ export class TreeView extends FoundationElement {
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     const item = e.target as HTMLElement;
                     if (
-                        item instanceof TreeItem &&
+                        item instanceof FASTTreeItem &&
                         item.childItemLength() > 0 &&
                         !item.expanded
                     ) {
                         item.expanded = true;
-                    } else if (item instanceof TreeItem && item.childItemLength() > 0) {
-                        this.focusNextNode(1, e.target as TreeItem);
+                    } else if (
+                        item instanceof FASTTreeItem &&
+                        item.childItemLength() > 0
+                    ) {
+                        this.focusNextNode(1, e.target as FASTTreeItem);
                     }
                 }
                 return;
             case keyArrowDown:
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
-                    this.focusNextNode(1, e.target as TreeItem);
+                    this.focusNextNode(1, e.target as FASTTreeItem);
                 }
                 return;
             case keyArrowUp:
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
-                    this.focusNextNode(-1, e.target as TreeItem);
+                    this.focusNextNode(-1, e.target as FASTTreeItem);
                 }
                 return;
             case keyEnter:
@@ -216,7 +218,7 @@ export class TreeView extends FoundationElement {
             return true;
         }
 
-        const item: TreeItem = e.target as TreeItem;
+        const item: FASTTreeItem = e.target as FASTTreeItem;
 
         if (!item.disabled) {
             item.selected = !item.selected;
@@ -240,11 +242,11 @@ export class TreeView extends FoundationElement {
             return true;
         }
 
-        const item: TreeItem = e.target as TreeItem;
+        const item: FASTTreeItem = e.target as FASTTreeItem;
 
         if (item.selected) {
             if (this.currentSelected && this.currentSelected !== item) {
-                (this.currentSelected as TreeItem).selected = false;
+                (this.currentSelected as FASTTreeItem).selected = false;
             }
             // new selected item
             this.currentSelected = item;
@@ -259,7 +261,7 @@ export class TreeView extends FoundationElement {
     /**
      * Move focus to a tree item based on its offset from the provided item
      */
-    private focusNextNode(delta: number, item: TreeItem): void {
+    private focusNextNode(delta: number, item: FASTTreeItem): void {
         const visibleNodes: HTMLElement[] | void = this.getVisibleNodes();
         if (!visibleNodes) {
             return;
@@ -267,7 +269,7 @@ export class TreeView extends FoundationElement {
 
         const focusItem = visibleNodes[visibleNodes.indexOf(item) + delta];
         if (isHTMLElement(focusItem)) {
-            TreeItem.focusItem(focusItem);
+            FASTTreeItem.focusItem(focusItem);
         }
     }
 
@@ -293,7 +295,7 @@ export class TreeView extends FoundationElement {
         const treeItems: HTMLElement[] | void = this.getVisibleNodes();
         treeItems.forEach(node => {
             if (isTreeItemElement(node)) {
-                (node as TreeItem).nested = this.nested;
+                (node as FASTTreeItem).nested = this.nested;
             }
         });
     };
@@ -301,7 +303,7 @@ export class TreeView extends FoundationElement {
     /**
      * checks if there are any nested tree items
      */
-    private getValidFocusableItem(): null | HTMLElement | TreeItem {
+    private getValidFocusableItem(): null | HTMLElement | FASTTreeItem {
         const treeItems: HTMLElement[] | void = this.getVisibleNodes();
         // default to selected element if there is one
         let focusIndex = treeItems.findIndex(this.isSelectedElement);
@@ -332,7 +334,7 @@ export class TreeView extends FoundationElement {
         return isTreeItemElement(el);
     };
 
-    private isSelectedElement = (el: TreeItem): el is TreeItem => {
+    private isSelectedElement = (el: FASTTreeItem): el is FASTTreeItem => {
         return el.selected;
     };
 
