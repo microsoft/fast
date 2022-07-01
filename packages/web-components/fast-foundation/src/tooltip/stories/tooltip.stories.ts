@@ -1,29 +1,24 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import { AutoUpdateMode } from "../../index.js";
+import type { FASTButton } from "src/index.js";
 import { FASTTooltip, TooltipPosition } from "../tooltip.js";
 
-type TooltipStoryArgs = Args & FASTTooltip;
+type TooltipStoryArgs = Args & FASTTooltip & FASTButton;
 type TooltipStoryMeta = Meta<TooltipStoryArgs>;
 
 const storyTemplate = html<TooltipStoryArgs>`
-    <div id="viewport" style="height: 100%; width: 100%;">
+    <div>
         <fast-tooltip
             visible="${x => x.visible}"
             delay="${x => x.delay}"
             position="${x => x.position}"
-            auto-update-mode="${x => x.autoUpdateMode}"
-            vertical-viewport-lock="${x => x.verticalViewportLock}"
-            horizontal-viewport-lock="${x => x.horizontalViewportLock}"
+            autoupdate="${x => x.autoUpdate}"
             anchor="anchor-default"
         >
             ${x => x.content}
         </fast-tooltip>
-        <fast-button
-            id="anchor-default"
-            style="margin: 200px; height: 150px; width: 150px;"
-        >
-            anchor
+        <fast-button id="anchor-default" style="margin: 200px;">
+            Anchor
         </fast-button>
     </div>
 `;
@@ -41,11 +36,8 @@ export default {
             control: { type: "select" },
         },
         autoUpdateMode: {
-            options: Object.values(AutoUpdateMode),
-            control: { type: "select" },
+            control: { type: "boolean" },
         },
-        verticalViewportLock: { control: { type: "boolean" } },
-        horizontalViewportLock: { control: { type: "boolean" } },
     },
 } as TooltipStoryMeta;
 
