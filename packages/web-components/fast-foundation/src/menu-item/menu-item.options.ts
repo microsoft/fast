@@ -35,3 +35,77 @@ export const roleForMenuItem: {
     [MenuItemRole.menuitemcheckbox]: "menuitemcheckbox",
     [MenuItemRole.menuitemradio]: "menuitemradio",
 };
+
+/**
+ * Enumerates possible submenu positions
+ *
+ * @public
+ */
+ export const SubmenuPosition = {
+    /**
+     * The submenu is positioned above the element
+     */
+    top: "top",
+
+    /**
+     * The submenu is positioned above the element and and in the logical start position
+     */
+    topStart: "top-start",
+
+    /**
+     * The submenu is positioned above the element and in the logical end position
+     */
+    topEnd: "top-end",
+
+    /**
+     * The submenu is positioned to the right of the element
+     */
+    right: "right",
+
+    /**
+     * The submenu is positioned to the right the element and in the logical start position
+     */
+    rightStart: "right-start",
+
+    /**
+     * The submenu is positioned to the right of the element and in the logical end position
+     */
+    rightEnd: "right-end",
+
+    /**
+     * The submenu is positioned below the element
+     */
+    bottom: "bottom",
+
+    /**
+     * The submenu is positioned below the element and and in the logical start position
+     */
+     bottomStart: "bottom-start",
+
+    /**
+     * The submenu is positioned below the element and in the logical end position
+     */
+    bottomEnd: "bottom-end",
+
+    /**
+     * The submenu is positioned to the left of the element
+     */
+    left: "left",
+
+    /**
+     * The submenu is positioned to the left the element and in the logical start position
+     */
+    leftStart: "left-start",
+
+    /**
+     * The submenu is positioned to the left of the element and in the logical end position
+     */
+    leftEnd: "left-end",
+} as const;
+
+/**
+ * The possible submenu positions
+ *
+ * @public
+ */
+export type SubmenuPosition = typeof SubmenuPosition[keyof typeof SubmenuPosition];

@@ -24,7 +24,7 @@ const styles = css`
     }
 
     :host([slot="submenu"]) {
-        margin: 0 calc(var(--design-unit) * 1px);
+        position: absolute;
         width: max-content;
     }
 

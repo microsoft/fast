@@ -9,6 +9,7 @@ const styles = css`
 
     :host {
         --icon-col: minmax(42px, auto);
+        position: relative;
         align-items: center;
         background: var(--neutral-fill-stealth-rest);
         border-radius: calc(var(--control-corner-radius) * 1px);
@@ -35,7 +36,6 @@ const styles = css`
     :host(:hover) {
         background: var(--neutral-fill-stealth-hover);
         color: var(--neutral-foreground-rest);
-        position: relative;
         z-index: 1;
     }
 
@@ -256,6 +256,15 @@ const styles = css`
     :host([aria-checked="true"]) ::slotted([slot="radio-indicator"]) {
         display: block;
         pointer-events: none;
+    }
+
+    ::slotted([slot="submenu"]) {
+        display: block;
+        visibility: hidden;
+    }
+
+    :host([aria-expanded="true"]) ::slotted([slot="submenu"]) {
+        visibility: visible;
     }
 `;
 

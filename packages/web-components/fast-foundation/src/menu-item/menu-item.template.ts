@@ -1,4 +1,4 @@
-import { ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
+import { ElementViewTemplate, html, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate, tagFor } from "../patterns/index.js";
 import { MenuItemRole } from "./menu-item.js";
 import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
@@ -72,26 +72,7 @@ export function menuItemTemplate(
                 </div>
             `
         )}
-        ${when(
-            x => x.expanded,
-            html<FASTMenuItem>`
-                <${anchoredRegionTag}
-                    :anchorElement="${x => x}"
-                    vertical-positioning-mode="dynamic"
-                    vertical-default-position="bottom"
-                    vertical-inset="true"
-                    horizontal-positioning-mode="dynamic"
-                    horizontal-default-position="end"
-                    class="submenu-region"
-                    dir="${x => x.currentDirection}"
-                    @loaded="${x => x.submenuLoaded()}"
-                    ${ref("submenuRegion")}
-                    part="submenu-region"
-                >
-                    <slot name="submenu"></slot>
-                </${anchoredRegionTag}>
-            `
-        )}
+        <slot name="submenu"></slot>
     </template>
     `;
 }

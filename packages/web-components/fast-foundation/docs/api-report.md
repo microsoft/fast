@@ -1407,14 +1407,15 @@ export class FASTMenuItem extends FASTElement {
     // @internal (undocumented)
     hasSubmenu: boolean;
     role: MenuItemRole;
+    setSubmenuPosition: () => void;
     // @internal (undocumented)
     startColumnCount: MenuItemColumnCount;
     // @internal (undocumented)
     submenu: Element | undefined;
     // @internal (undocumented)
     submenuLoaded: () => void;
-    // @internal
-    submenuRegion: FASTAnchoredRegion;
+    submenuOffset: number;
+    submenuPositioning: SubmenuPlacement;
 }
 
 // @internal
@@ -2783,6 +2784,9 @@ export function startSlotTemplate(options: StartOptions): ViewTemplate<StartEnd>
 // @public
 export type StaticDesignTokenValue<T> = T extends Function ? never : T;
 
+// @public
+export type SubmenuPlacement = 'top' | 'top-start' | 'top-end' | 'right' | 'right-start' | 'right-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end';
+
 // @alpha (undocumented)
 export const supportsElementInternals: boolean;
 
@@ -2957,7 +2961,7 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:446:5 - (ae-forgotten-export) The symbol "createContext" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:512:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
-// dist/dts/menu-item/menu-item.d.ts:20:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/menu-item/menu-item.d.ts:23:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:11:5 - (ae-incompatible-release-tags) The symbol "pickerMenuOption" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

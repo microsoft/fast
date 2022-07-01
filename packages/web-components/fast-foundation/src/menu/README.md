@@ -183,12 +183,15 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 #### Fields
 
-| Name       | Privacy | Type           | Default | Description                        | Inherited From |
-| ---------- | ------- | -------------- | ------- | ---------------------------------- | -------------- |
-| `disabled` | public  | `boolean`      |         | The disabled state of the element. |                |
-| `expanded` | public  | `boolean`      |         | The expanded state of the element. |                |
-| `role`     | public  | `MenuItemRole` |         | The role of the element.           |                |
-| `checked`  | public  | `boolean`      |         | The checked value of the element.  |                |
+| Name                 | Privacy | Type               | Default | Description                        | Inherited From |
+| -------------------- | ------- | ------------------ | ------- | ---------------------------------- | -------------- |
+| `disabled`           | public  | `boolean`          |         | The disabled state of the element. |                |
+| `expanded`           | public  | `boolean`          |         | The expanded state of the element. |                |
+| `role`               | public  | `MenuItemRole`     |         | The role of the element.           |                |
+| `submenuPositioning` | public  | `SubmenuPlacement` |         | The positioning of the submenu     |                |
+| `submenuOffset`      | public  | `number`           |         | The submenu offset                 |                |
+| `checked`            | public  | `boolean`          |         | The checked value of the element.  |                |
+| `setSubmenuPosition` | public  |                    |         | Sets the submenu position          |                |
 
 #### Methods
 
@@ -206,12 +209,14 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 #### Attributes
 
-| Name   | Field    | Inherited From |
-| ------ | -------- | -------------- |
-|        | disabled |                |
-|        | expanded |                |
-| `role` | role     |                |
-|        | checked  |                |
+| Name                 | Field              | Inherited From |
+| -------------------- | ------------------ | -------------- |
+|                      | disabled           |                |
+|                      | expanded           |                |
+| `role`               | role               |                |
+| `submenuPositioning` | submenuPositioning |                |
+| `submenuOffset`      | submenuOffset      |                |
+|                      | checked            |                |
 
 #### CSS Parts
 
@@ -223,7 +228,6 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `content`                         | The element wrapping the menu item content                     |
 | `expand-collapse-glyph-container` | The element wrapping the expand collapse element               |
 | `expand-collapse`                 | The expand/collapse element                                    |
-| `submenu-region`                  | The container for the submenu, used for positioning            |
 
 #### Slots
 
