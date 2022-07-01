@@ -22,7 +22,7 @@ export default {
             </fast-accordion-item>
             <fast-accordion-item>
                 <div slot="heading">Accordion Item 2 Heading</div>
-                Accordion Item 2 Content
+                <fast-checkbox>A checkbox as content</fast-checkbox
             </fast-accordion-item>
         `,
     },
