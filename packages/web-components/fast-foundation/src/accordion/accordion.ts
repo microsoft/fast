@@ -132,7 +132,13 @@ export class Accordion extends FoundationElement {
     };
 
     private activeItemChange = (event: Event): void => {
+        if (event.defaultPrevented || event.target !== event.currentTarget) {
+            return;
+        }
+
+        event.preventDefault();
         const selectedItem = event.target as AccordionItem;
+
         this.activeid = selectedItem.getAttribute("id");
         if (this.isSingleExpandMode()) {
             this.resetItems();
