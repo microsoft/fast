@@ -1,34 +1,6 @@
 import { FASTElement, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
 import type { IdleCallbackQueue } from "../utilities/idle-callback-queue.js";
-
-/**
- * Defines the possible loading behaviors a Virtual List Item
- *
- * immediate: Sets loadContent to true on connect.
- *
- * manual: Developer takes ownership of setting loadContent, it will otherwise remain false.
- *
- * idle: The component will load content based on available idle time, this is the default.
- *
- * @public
- */
-export type VirtualListItemLoadMode = "immediate" | "manual" | "idle";
-
-/**
- * Used to describe the position of an element within the list
- *
- * @public
- */
-export interface SizeMap {
-    // start position
-    start: number;
-
-    // end position
-    end: number;
-
-    // list item size
-    size: number;
-}
+import type { SizeMap, VirtualListItemLoadMode } from "./virtual-list.options.js";
 
 /**
  *  The VirtualListItem class.  Note that all props are set at runtime by the parent list.
