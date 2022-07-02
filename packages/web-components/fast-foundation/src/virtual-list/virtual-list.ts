@@ -18,25 +18,13 @@ import type {
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
 } from "../utilities/resize-observer.js";
+import type { FASTVirtualListItem } from "./virtual-list-item.js";
 import type {
-    FASTVirtualListItem,
     SizeMap,
+    VirtualListAutoUpdateMode,
+    VirtualListIdleLoadMode,
     VirtualListItemLoadMode,
-} from "./virtual-list-item.js";
-
-/**
- * Defines what triggers the component to update layout.
- *
- * @public
- */
-export type VirtualListAutoUpdateMode = "manual" | "viewport" | "auto" | "self";
-
-/**
- * Defines how the idle load queue behaves.
- *
- * @public
- */
-export type VirtualListIdleLoadMode = "auto" | "enabled" | "suspended";
+} from "./virtual-list.options.js";
 
 /**
  *  The VirtualList class
