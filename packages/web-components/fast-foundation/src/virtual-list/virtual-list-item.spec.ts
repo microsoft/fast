@@ -1,12 +1,14 @@
 import { expect } from "chai";
-import { VirtualListItem } from "./index.js";
-import { fixture } from "../testing/fixture.js";
+import { FASTVirtualListItem, virtualListItemTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { DOM,html } from "@microsoft/fast-element";
 import { IdleCallbackQueue } from "../utilities/idle-callback-queue.js";
 
-const FASTVirtualListItem = VirtualListItem.compose({
-    baseName: "virtual-list-item"
-})
+const virtualListItemName = uniqueElementName();
+FASTVirtualListItem.define({
+    name: virtualListItemName,
+    template: virtualListItemTemplate()
+});
 
 const listItemTemplate = html`
     <template
@@ -21,7 +23,7 @@ interface customContext {
 
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture([FASTVirtualListItem()]);
+    const { document, element, connect, disconnect} = await fixture<FASTVirtualListItem>(virtualListItemName);
 
     const myContext: customContext = {
         titleString: "test custom context:"

@@ -1,13 +1,24 @@
 import { expect } from "chai";
-import { VirtualList, virtualListTemplate as template } from "./index.js";
-import { fixture } from "../testing/fixture.js";
+import { FASTVirtualList, virtualListTemplate } from "./index.js";
+import { FASTVirtualListItem, virtualListItemTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { DOM, html } from "@microsoft/fast-element";
 
-const FASTVirtualList = VirtualList.compose({
-    baseName: "virtual-list",
-    template
-})
+
+const virtualListItemName = uniqueElementName();
+FASTVirtualListItem.define({
+    name: virtualListItemName,
+    template: virtualListItemTemplate()
+});
+
+const virtualListName = uniqueElementName();
+FASTVirtualList.define({
+    name: virtualListName,
+    template: virtualListTemplate({
+        virtualListItem: virtualListItemName
+    })
+});
 
 const itemTemplate = html`
     <div
@@ -39,7 +50,7 @@ function newDataSet(rowCount: number): object[] {
 }
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture([FASTVirtualList()]);
+    const { document, element, connect, disconnect } = await fixture<FASTVirtualList>(virtualListName);
 
     element.itemTemplate = itemTemplate;
 
@@ -47,12 +58,12 @@ async function setup() {
 }
 
 describe("VirtualList", () => {
-    it("should have a default auto-update-mode of 'manual'", async () => {
+    it("should have a default auto-update-mode of 'viewport'", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
 
-        expect(element.autoUpdateMode).to.equal("manual");
+        expect(element.autoUpdateMode).to.equal("viewport");
 
         await disconnect();
     });

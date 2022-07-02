@@ -1,19 +1,26 @@
-import { html, ref, ViewTemplate } from "@microsoft/fast-element";
+import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type { ElementDefinitionContext } from "../design-system/registration-context.js";
-import type { FoundationElementTemplate } from "../foundation-element/index.js";
-import type { VirtualList } from "./virtual-list.js";
-import { VirtualListItem } from "./virtual-list-item.js";
+import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
+import type { FASTVirtualList } from "./virtual-list.js";
+
+/**
+ * Options for data grid templates.
+ * @public
+ */
+export type VirtualListOptions = {
+    virtualListItem: TemplateElementDependency;
+};
 
 /**
  * Creates a default vertical item template.  This is the template that defines what list items are created by the
  * list's repeat directive.  Authors can improve performance by tailoring templates to their specific scenario.
  */
-function createDefaultVerticalItemTemplate(
-    context: ElementDefinitionContext
-): ViewTemplate {
-    const listItemTag = context.tagFor(VirtualListItem);
-    return html`
+function defaultVerticalItemTemplate(
+    options: VirtualListOptions
+): ViewTemplate<any, FASTVirtualList> {
+    const listItemTag = tagFor(options.virtualListItem);
+    return html<any, FASTVirtualList>`
     <${listItemTag}
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
@@ -34,11 +41,11 @@ function createDefaultVerticalItemTemplate(
  * Creates a default horizontal item template.  This is the template that defines what list items are created by the
  * list's repeat directive.  Authors can improve performance by tailoring templates to their specific scenario.
  */
-function createDefaultHorizontalItemTemplate(
-    context: ElementDefinitionContext
-): ViewTemplate {
-    const listItemTag = context.tagFor(VirtualListItem);
-    return html`
+function defaultHorizontalItemTemplate(
+    options: VirtualListOptions
+): ViewTemplate<any, FASTVirtualList> {
+    const listItemTag = tagFor(options.virtualListItem);
+    return html<any, FASTVirtualList>`
     <${listItemTag}
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
@@ -56,23 +63,16 @@ function createDefaultHorizontalItemTemplate(
 }
 
 /**
- * The template for the {@link @microsoft/fast-foundation#VirtualList} component.
+ * Generates a template for the {@link @microsoft/fast-foundation#VirtualList} component.
  * @public
  */
-export const virtualListTemplate: FoundationElementTemplate<ViewTemplate<VirtualList>> = (
-    context,
-    definition
-) => {
-    const defaultVerticalItemTemplate: ViewTemplate = createDefaultVerticalItemTemplate(
-        context
-    );
-    const defaultHorizontalItemTemplate: ViewTemplate = createDefaultHorizontalItemTemplate(
-        context
-    );
-    return html<VirtualList>`
+export function virtualListTemplate(
+    options: VirtualListOptions
+): ElementViewTemplate<FASTVirtualList> {
+    return html<FASTVirtualList>`
         <template
-            :defaultVerticalItemTemplate="${defaultVerticalItemTemplate}"
-            :defaultHorizontalItemTemplate="${defaultHorizontalItemTemplate}"
+            :defaultVerticalItemTemplate="${defaultVerticalItemTemplate(options)}"
+            :defaultHorizontalItemTemplate="${defaultHorizontalItemTemplate(options)}"
         >
             <div
                 class="container"
@@ -93,4 +93,4 @@ export const virtualListTemplate: FoundationElementTemplate<ViewTemplate<Virtual
             </div>
         </template>
     `;
-};
+}

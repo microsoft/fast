@@ -1,6 +1,7 @@
 import {
     attr,
     DOM,
+    FASTElement,
     Notifier,
     nullableNumberConverter,
     Observable,
@@ -11,7 +12,6 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/index.js";
 import { IntersectionService } from "../utilities/intersection-service.js";
 import { IdleCallbackQueue } from "../utilities/idle-callback-queue.js";
 import type {
@@ -19,8 +19,8 @@ import type {
     ResizeObserverEntry,
 } from "../utilities/resize-observer.js";
 import type {
+    FASTVirtualListItem,
     SizeMap,
-    VirtualListItem,
     VirtualListItemLoadMode,
 } from "./virtual-list-item.js";
 
@@ -43,7 +43,7 @@ export type VirtualListIdleLoadMode = "auto" | "enabled" | "suspended";
  *
  * @public
  */
-export class VirtualList extends FoundationElement {
+export class FASTVirtualList extends FASTElement {
     /**
      * Item size to use if one is not specified
      */
@@ -95,7 +95,7 @@ export class VirtualList extends FoundationElement {
      * HTML Attribute: item-size
      */
     @attr({ attribute: "item-size", converter: nullableNumberConverter })
-    public itemSize: number = VirtualList.defaultItemSize;
+    public itemSize: number = FASTVirtualList.defaultItemSize;
     private itemSizeChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateDimensions();
@@ -111,7 +111,7 @@ export class VirtualList extends FoundationElement {
      * HTML Attribute: viewport-buffer
      */
     @attr({ attribute: "viewport-buffer", converter: nullableNumberConverter })
-    public viewportBuffer: number = VirtualList.defaultViewportBuffer;
+    public viewportBuffer: number = FASTVirtualList.defaultViewportBuffer;
     private viewportBufferChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateDimensions();
@@ -678,11 +678,11 @@ export class VirtualList extends FoundationElement {
             this.idleCallbackQueue.suspend();
         }
 
-        VirtualList.intersectionService.requestPosition(
+        FASTVirtualList.intersectionService.requestPosition(
             this.containerElement,
             this.handleIntersection
         );
-        VirtualList.intersectionService.requestPosition(
+        FASTVirtualList.intersectionService.requestPosition(
             this.viewportElement,
             this.handleIntersection
         );
@@ -744,12 +744,12 @@ export class VirtualList extends FoundationElement {
     private cancelPendingPositionUpdates(): void {
         if (this.pendingPositioningUpdate) {
             this.pendingPositioningUpdate = false;
-            VirtualList.intersectionService.cancelRequestPosition(
+            FASTVirtualList.intersectionService.cancelRequestPosition(
                 this.containerElement,
                 this.handleIntersection
             );
             if (this.viewportElement !== null) {
-                VirtualList.intersectionService.cancelRequestPosition(
+                FASTVirtualList.intersectionService.cancelRequestPosition(
                     this.viewportElement,
                     this.handleIntersection
                 );
@@ -847,11 +847,11 @@ export class VirtualList extends FoundationElement {
                 this.requestPositionUpdates();
             } else {
                 if (
-                    (entry.target as VirtualListItem).$fastController.isConnected &&
+                    (entry.target as FASTVirtualListItem).$fastController.isConnected &&
                     (!this.autoResizeItems ||
-                        (entry.target as VirtualListItem).loadContent)
+                        (entry.target as FASTVirtualListItem).loadContent)
                 ) {
-                    const index: number = (entry.target as VirtualListItem).itemIndex;
+                    const index: number = (entry.target as FASTVirtualListItem).itemIndex;
                     if (
                         this.pendingSizemapChangeIndex === -1 ||
                         index < this.pendingSizemapChangeIndex

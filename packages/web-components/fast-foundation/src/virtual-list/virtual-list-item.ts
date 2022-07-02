@@ -1,5 +1,4 @@
-import { HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element/index.js";
+import { FASTElement, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
 import type { IdleCallbackQueue } from "../utilities/idle-callback-queue.js";
 
 /**
@@ -36,7 +35,7 @@ export interface SizeMap {
  *
  * @public
  */
-export class VirtualListItem extends FoundationElement {
+export class FASTVirtualListItem extends FASTElement {
     /**
      * Controls how the item loads content
      *
