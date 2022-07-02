@@ -1,6 +1,6 @@
 import { html, when } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { VirtualList as FoundationVirtualList } from "../virtual-list.js";
+import type { FASTVirtualList as FoundationVirtualList } from "../virtual-list.js";
 
 type VirtualListStoryArgs = Args & FoundationVirtualList;
 type VirtualListStoryMeta = Meta<VirtualListStoryArgs>;

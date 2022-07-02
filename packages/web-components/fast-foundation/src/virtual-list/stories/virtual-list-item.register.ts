@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { VirtualListItem } from "../virtual-list-item.js";
-import { virtualListItemTemplate as template } from "../virtual-list-item.template.js";
+import { FASTVirtualListItem } from "../virtual-list-item.js";
+import { virtualListItemTemplate } from "../virtual-list-item.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         position: absolute;
         display: block;
@@ -15,12 +14,8 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        VirtualListItem.compose({
-            baseName: "virtual-list-item",
-            styles,
-            template,
-        })()
-    );
+FASTVirtualListItem.define({
+    name: "fast-virtual-list-item",
+    template: virtualListItemTemplate(),
+    styles,
+});
