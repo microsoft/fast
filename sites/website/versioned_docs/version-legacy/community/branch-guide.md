@@ -2,8 +2,10 @@
 id: branch-guide
 title: Branch Guide
 sidebar_label: Branch Guide
-custom_edit_url: https://github.com/microsoft/fast/blob/master/BRANCH_GUIDE.md
-description: undefined
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/community/branch-guide.md
+description: This is the branch guide for the FAST repository. When contributing to this project please follow the standards defined in this guide.
+keywords:
+  - branch guide
 ---
 
 This is the branch guide for the FAST repository. When contributing to this project please follow the standards defined in this guide.

@@ -3,14 +3,14 @@ import {
     Binding,
     BindingObserver,
     CSSDirective,
-    defaultExecutionContext,
+    Disposable,
+    ExecutionContext,
     FASTElement,
     observable,
     Observable,
     Subscriber,
 } from "@microsoft/fast-element";
-import { composedParent } from "../utilities/composed-parent.js";
-import { composedContains } from "../utilities/composed-contains.js";
+import { composedContains, composedParent } from "@microsoft/fast-element/utilities";
 import {
     PropertyTargetManager,
     RootStyleSheetTarget,
@@ -128,8 +128,8 @@ export interface DesignTokenSubscriber<T extends DesignToken<any>> {
 /**
  * Implementation of {@link (DesignToken:interface)}
  */
-class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
-    implements DesignToken<T> {
+class DesignTokenImpl<T extends { createCSS?(): string }>
+    implements CSSDirective, DesignToken<T> {
     public readonly name: string;
     public readonly cssCustomProperty: string | undefined;
     public readonly id: string;
@@ -201,8 +201,6 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 
     constructor(configuration: Required<DesignTokenConfiguration>) {
-        super();
-
         this.name = configuration.name;
 
         if (configuration.cssCustomPropertyName !== null) {
@@ -255,7 +253,6 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
 
     public withDefault(value: DesignTokenValue<T> | DesignToken<T>) {
         this.setValueFor(defaultElement, value);
-
         return this;
     }
 
@@ -349,7 +346,7 @@ class CustomPropertyReflector {
  * A light wrapper around BindingObserver to handle value caching and
  * token notification
  */
-class DesignTokenBindingObserver<T> {
+class DesignTokenBindingObserver<T> implements Disposable {
     public readonly dependencies = new Set<DesignTokenImpl<any>>();
     private observer: BindingObserver<HTMLElement, DerivedDesignTokenValue<T>>;
     constructor(
@@ -370,8 +367,8 @@ class DesignTokenBindingObserver<T> {
         this.handleChange();
     }
 
-    public disconnect() {
-        this.observer.disconnect();
+    public dispose(): void {
+        this.observer.dispose();
     }
 
     /**
@@ -383,7 +380,7 @@ class DesignTokenBindingObserver<T> {
 
             (this.observer.observe(
                 this.node.target,
-                defaultExecutionContext
+                ExecutionContext.default
             ) as unknown) as StaticDesignTokenValue<T>
         );
     }
@@ -830,7 +827,7 @@ class DesignTokenNode implements Behavior, Subscriber {
      */
     private tearDownBindingObserver<T>(token: DesignTokenImpl<T>): boolean {
         if (this.bindingObservers.has(token)) {
-            this.bindingObservers.get(token)!.disconnect();
+            this.bindingObservers.get(token)!.dispose();
             this.bindingObservers.delete(token);
             return true;
         }

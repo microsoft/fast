@@ -2,8 +2,10 @@
 id: working-with-shadow-dom
 title: Working with Shadow DOM
 sidebar_label: Working with Shadow DOM
-custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/guide/working-with-shadow-dom.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/fast-element/working-with-shadow-dom.md
 description: See how our custom elements can be composed together with standard HTML or other custom elements.
+keywords:
+   - working with shadow DOM
 ---
 
 So far we've looked at how to define elements, how to define attributes on those elements, and how to control element rendering through declarative templates. However, we haven't yet seen how our custom elements can be composed together with standard HTML or other custom elements.

@@ -1,32 +1,32 @@
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { ListboxOption } from "../listbox-option/listbox-option";
-import { listboxOptionTemplate as itemTemplate } from "../listbox-option/listbox-option.template";
-import { fixture } from "../test-utilities/fixture";
-import { ListboxElement, listboxTemplate as template } from "./index";
+import { FASTListboxOption } from "../listbox-option/listbox-option.js";
+import { listboxOptionTemplate } from "../listbox-option/listbox-option.template.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTListboxElement, listboxTemplate } from "./index.js";
 
 describe("Listbox", () => {
-    const FASTListbox = ListboxElement.compose({
-        baseName: "listbox",
-        template
+    const Listbox = FASTListboxElement.define({
+        name: uniqueElementName("listbox"),
+        template: listboxTemplate()
     });
 
-    const FASTOption = ListboxOption.compose({
-        baseName: "option",
-        template: itemTemplate
+    const Option = FASTListboxOption.define({
+        name: uniqueElementName("option"),
+        template: listboxOptionTemplate()
     });
 
     async function setup() {
-        const { element, connect, disconnect } = await fixture([FASTListbox(), FASTOption()]);
+        const { element, connect, disconnect } = await fixture(Listbox);
 
-        const option1 = document.createElement("fast-option");
-        (option1 as ListboxOption).textContent = "option 1";
+        const option1 = new Option();
+        (option1 as FASTListboxOption).textContent = "option 1";
 
-        const option2 = document.createElement("fast-option");
-        (option2 as ListboxOption).textContent = "option 2";
+        const option2 = new Option();
+        (option2 as FASTListboxOption).textContent = "option 2";
 
-        const option3 = document.createElement("fast-option");
-        (option3 as ListboxOption).textContent = "option 3";
+        const option3 = new Option();
+        (option3 as FASTListboxOption).textContent = "option 3";
 
         element.appendChild(option1);
         element.appendChild(option2);
@@ -52,7 +52,7 @@ describe("Listbox", () => {
 
         element.disabled = true;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("tabindex")).to.be.null;
 
@@ -128,7 +128,7 @@ describe("Listbox", () => {
 
         element.size = 4;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("size")).to.equal("4");
 
@@ -143,14 +143,14 @@ describe("Listbox", () => {
 
             element.size = 1;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.size).to.equal(1);
             expect(element.getAttribute("size")).to.equal("1");
 
             element.size = -1;
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.size).to.equal(0);
             expect(element.getAttribute("size")).to.equal("0");
@@ -170,7 +170,7 @@ describe("Listbox", () => {
 
             element.setAttribute("size", "-1");
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.size).to.equal(0);
             expect(element.getAttribute("size")).to.equal("0");
@@ -184,7 +184,7 @@ describe("Listbox", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(option1.getAttribute("aria-posinset")).to.equal("1");
         expect(option1.getAttribute("aria-setsize")).to.equal("3");
@@ -205,7 +205,7 @@ describe("Listbox", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(option1.id).to.match(/option-\d+/);
 
@@ -221,23 +221,23 @@ describe("Listbox", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         element.selectNextOption();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-activedescendant")).to.exist.and.equal(option1.id);
 
         element.selectNextOption();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-activedescendant")).to.equal(option2.id);
 
         element.selectNextOption();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-activedescendant")).to.equal(option3.id);
 
@@ -251,13 +251,13 @@ describe("Listbox", () => {
 
         element.multiple = true;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-multiselectable")).to.equal("true");
 
         element.multiple = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-multiselectable")).to.not.exist;
 

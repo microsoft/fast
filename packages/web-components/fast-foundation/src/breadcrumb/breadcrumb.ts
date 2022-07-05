@@ -1,6 +1,5 @@
-import { observable } from "@microsoft/fast-element";
-import { BreadcrumbItem } from "../breadcrumb-item/breadcrumb-item.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { FASTElement, observable } from "@microsoft/fast-element";
+import { FASTBreadcrumbItem } from "../breadcrumb-item/breadcrumb-item.js";
 
 /**
  * A Breadcrumb Custom HTML Element.
@@ -9,13 +8,13 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  *
  * @public
  */
-export class Breadcrumb extends FoundationElement {
+export class FASTBreadcrumb extends FASTElement {
     /**
      * @internal
      */
     @observable
     public slottedBreadcrumbItems: HTMLElement[];
-    public slottedBreadcrumbItemsChanged() {
+    protected slottedBreadcrumbItemsChanged() {
         if (this.$fastController.isConnected) {
             if (
                 this.slottedBreadcrumbItems === undefined ||
@@ -38,8 +37,8 @@ export class Breadcrumb extends FoundationElement {
     }
 
     private setItemSeparator(item: HTMLElement, isLastNode: boolean): void {
-        if (item instanceof BreadcrumbItem) {
-            (item as BreadcrumbItem).separator = !isLastNode;
+        if (item instanceof FASTBreadcrumbItem) {
+            item.separator = !isLastNode;
         }
     }
 
@@ -66,11 +65,11 @@ export class Breadcrumb extends FoundationElement {
         if (
             childNodeWithHref === null &&
             item.hasAttribute("href") &&
-            item instanceof BreadcrumbItem
+            item instanceof FASTBreadcrumbItem
         ) {
             isLastNode
-                ? (item as BreadcrumbItem).setAttribute("aria-current", "page")
-                : (item as BreadcrumbItem).removeAttribute("aria-current");
+                ? item.setAttribute("aria-current", "page")
+                : item.removeAttribute("aria-current");
         } else if (childNodeWithHref !== null) {
             isLastNode
                 ? childNodeWithHref.setAttribute("aria-current", "page")

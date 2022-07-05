@@ -7,7 +7,7 @@ interface AnchorEventInfo {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export interface LinkHandler {
     connect(): void;
@@ -15,7 +15,7 @@ export interface LinkHandler {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class DefaultLinkHandler implements LinkHandler {
     private handler = (e: MouseEvent) => {

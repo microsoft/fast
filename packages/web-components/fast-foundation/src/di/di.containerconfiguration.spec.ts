@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { ContainerConfiguration, DefaultResolver, DI, Container } from "./di";
+import { ContainerConfiguration, DefaultResolver, DI, Container } from "./di.js";
 
 describe("ContainerConfiguration", function () {
     let container0: Container;

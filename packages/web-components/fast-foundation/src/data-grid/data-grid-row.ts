@@ -1,5 +1,6 @@
 import {
     attr,
+    FASTElement,
     observable,
     RepeatBehavior,
     RepeatDirective,
@@ -13,7 +14,6 @@ import {
     keyEnd,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 import type { ColumnDefinition } from "./data-grid.js";
 import { DataGridRowTypes } from "./data-grid.options.js";
 
@@ -24,7 +24,7 @@ import { DataGridRowTypes } from "./data-grid.options.js";
  * @slot - The default slot for custom cell elements
  * @public
  */
-export class DataGridRow extends FoundationElement {
+export class FASTDataGridRow extends FASTElement {
     /**
      * String that gets applied to the the css gridTemplateColumns attribute for the row
      *
@@ -34,7 +34,7 @@ export class DataGridRow extends FoundationElement {
      */
     @attr({ attribute: "grid-template-columns" })
     public gridTemplateColumns: string;
-    private gridTemplateColumnsChanged(): void {
+    protected gridTemplateColumnsChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateRowStyle();
         }
@@ -62,7 +62,7 @@ export class DataGridRow extends FoundationElement {
      */
     @observable
     public rowData: object | null = null;
-    private rowDataChanged(): void {
+    protected rowDataChanged(): void {
         if (this.rowData !== null && this.isActiveRow) {
             this.refocusOnLoad = true;
             return;
@@ -177,11 +177,14 @@ export class DataGridRow extends FoundationElement {
 
             this.updateItemTemplate();
 
-            this.cellsRepeatBehavior = new RepeatDirective(
+            const cellsRepeatDirective = new RepeatDirective(
                 x => x.columnDefinitions,
                 x => x.activeCellItemTemplate,
                 { positioning: true }
-            ).createBehavior(this.cellsPlaceholder);
+            );
+            this.cellsRepeatBehavior = cellsRepeatDirective.createBehavior({
+                [cellsRepeatDirective.nodeId]: this.cellsPlaceholder,
+            });
             /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
             this.$fastController.addBehaviors([this.cellsRepeatBehavior!]);
         }

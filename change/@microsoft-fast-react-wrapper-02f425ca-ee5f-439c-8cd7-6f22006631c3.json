@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: update react wrapper to remove foundation dependency",
+  "packageName": "@microsoft/fast-react-wrapper",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

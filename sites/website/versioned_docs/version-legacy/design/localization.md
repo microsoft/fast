@@ -1,7 +1,7 @@
 ---
 id: localization
 title: Localization
-custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-components/docs/design/localization.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/design/localization.md
 description: FAST provides several mechanisms to apply direction-based styles.
 keywords:
     - localization

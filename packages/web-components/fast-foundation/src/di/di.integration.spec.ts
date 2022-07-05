@@ -1,4 +1,5 @@
-import { DI, Container, inject, InterfaceSymbol, Registration, singleton } from "./di";
+import { DI, Container, inject, Registration, singleton } from "./di.js";
+import type { ContextDecorator } from "@microsoft/fast-element/context";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
 
@@ -53,29 +54,29 @@ describe("DI.getDependencies", function () {
     });
 });
 
-describe("DI.createInterface() -> container.get()", function () {
+describe("DI.createContext() -> container.get()", function () {
     let container: Container;
 
     interface ITransient {}
     class Transient implements ITransient {}
-    let ITransient: InterfaceSymbol<ITransient>;
+    let ITransient: ContextDecorator<ITransient>;
 
     interface ISingleton {}
     class Singleton implements ISingleton {}
-    let ISingleton: InterfaceSymbol<ISingleton>;
+    let ISingleton: ContextDecorator<ISingleton>;
 
     interface IInstance {}
     class Instance implements IInstance {}
-    let IInstance: InterfaceSymbol<IInstance>;
+    let IInstance: ContextDecorator<IInstance>;
     let instance: Instance;
 
     interface ICallback {}
     class Callback implements ICallback {}
-    let ICallback: InterfaceSymbol<ICallback>;
+    let ICallback: ContextDecorator<ICallback>;
 
     interface ICachedCallback {}
     class CachedCallback implements ICachedCallback {}
-    let ICachedCallback: InterfaceSymbol<ICachedCallback>;
+    let ICachedCallback: ContextDecorator<ICachedCallback>;
     const cachedCallback = "cachedCallBack";
     let callbackCount = 0;
     function callbackToCache() {
@@ -89,17 +90,17 @@ describe("DI.createInterface() -> container.get()", function () {
     beforeEach(function () {
         callbackCount = 0;
         container = DI.createContainer();
-        ITransient = DI.createInterface<ITransient>("ITransient", x =>
+        ITransient = DI.createContext<ITransient>("ITransient", x =>
             x.transient(Transient)
         );
-        ISingleton = DI.createInterface<ISingleton>("ISingleton", x =>
+        ISingleton = DI.createContext<ISingleton>("ISingleton", x =>
             x.singleton(Singleton)
         );
         instance = new Instance();
-        IInstance = DI.createInterface<IInstance>("IInstance", x => x.instance(instance));
+        IInstance = DI.createContext<IInstance>("IInstance", x => x.instance(instance));
         callback = chai.spy(() => new Callback());
-        ICallback = DI.createInterface<ICallback>("ICallback", x => x.callback(callback));
-        ICachedCallback = DI.createInterface<ICachedCallback>("ICachedCallback", x =>
+        ICallback = DI.createContext<ICallback>("ICallback", x => x.callback(callback));
+        ICachedCallback = DI.createContext<ICachedCallback>("ICachedCallback", x =>
             x.cachedCallback(callbackToCache)
         );
         chai.spy.on(container, "get");
@@ -255,9 +256,9 @@ describe("DI.createInterface() -> container.get()", function () {
             expect(actual21).equal(actual22);
         });
 
-        it(`InterfaceSymbol alias to transient registration returns a new instance each time`, function () {
+        it(`ContextDecorator alias to transient registration returns a new instance each time`, function () {
             interface IAlias {}
-            const IAlias = DI.createInterface<IAlias>("IAlias", x =>
+            const IAlias = DI.createContext<IAlias>("IAlias", x =>
                 x.aliasTo(ITransient)
             );
 
@@ -275,9 +276,9 @@ describe("DI.createInterface() -> container.get()", function () {
             expect(container.get).to.have.been.nth(4).called.with(ITransient);
         });
 
-        it(`InterfaceSymbol alias to singleton registration returns the same instance each time`, function () {
+        it(`ContextDecorator alias to singleton registration returns the same instance each time`, function () {
             interface IAlias {}
-            const IAlias = DI.createInterface<IAlias>("IAlias", x =>
+            const IAlias = DI.createContext<IAlias>("IAlias", x =>
                 x.aliasTo(ISingleton)
             );
 
@@ -295,9 +296,9 @@ describe("DI.createInterface() -> container.get()", function () {
             expect(container.get).to.have.been.nth(4).called.with(ISingleton);
         });
 
-        it(`InterfaceSymbol alias to instance registration returns the same instance each time`, function () {
+        it(`ContextDecorator alias to instance registration returns the same instance each time`, function () {
             interface IAlias {}
-            const IAlias = DI.createInterface<IAlias>("IAlias", x =>
+            const IAlias = DI.createContext<IAlias>("IAlias", x =>
                 x.aliasTo(IInstance)
             );
 
@@ -317,9 +318,9 @@ describe("DI.createInterface() -> container.get()", function () {
         });
 
         // TODO: make test work
-        it(`InterfaceSymbol alias to callback registration is invoked each time`, function () {
+        it(`ContextDecorator alias to callback registration is invoked each time`, function () {
             interface IAlias {}
-            const IAlias = DI.createInterface<IAlias>("IAlias", x =>
+            const IAlias = DI.createContext<IAlias>("IAlias", x =>
                 x.aliasTo(ICallback)
             );
 
@@ -433,10 +434,10 @@ describe("DI.createInterface() -> container.get()", function () {
         interface ITransientParent {
             dep: any;
         }
-        let ITransientParent: InterfaceSymbol<ITransientParent>;
+        let ITransientParent: ContextDecorator<ITransientParent>;
 
         function register(cls: any) {
-            ITransientParent = DI.createInterface<ITransientParent>(
+            ITransientParent = DI.createContext<ITransientParent>(
                 "ITransientParent",
                 x => x.transient(cls)
             );
@@ -557,10 +558,10 @@ describe("DI.createInterface() -> container.get()", function () {
         interface ISingletonParent {
             dep: any;
         }
-        let ISingletonParent: InterfaceSymbol<ISingletonParent>;
+        let ISingletonParent: ContextDecorator<ISingletonParent>;
 
         function register(cls: any) {
-            ISingletonParent = DI.createInterface<ISingletonParent>(
+            ISingletonParent = DI.createContext<ISingletonParent>(
                 "ISingletonParent",
                 x => x.singleton(cls)
             );
@@ -672,12 +673,12 @@ describe("DI.createInterface() -> container.get()", function () {
         interface IInstanceParent {
             dep: any;
         }
-        let IInstanceParent: InterfaceSymbol<IInstanceParent>;
+        let IInstanceParent: ContextDecorator<IInstanceParent>;
         let instanceParent: IInstanceParent;
 
         function register(cls: any) {
             instanceParent = container.get(cls);
-            IInstanceParent = DI.createInterface<IInstanceParent>("IInstanceParent", x =>
+            IInstanceParent = DI.createContext<IInstanceParent>("IInstanceParent", x =>
                 x.instance(instanceParent)
             );
         }

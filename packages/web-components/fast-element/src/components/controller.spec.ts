@@ -1,13 +1,13 @@
 import { expect } from "chai";
-import { DOM } from "../dom";
-import type { Behavior } from "../observation/behavior";
-import { Observable } from "../observation/observable";
-import { css } from "../styles/css";
-import { html } from "../templating/template";
-import { toHTML, uniqueElementName } from "../__test__/helpers";
-import { Controller } from "./controller";
-import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions";
-import { FASTElement } from "./fast-element";
+import { ElementStyles } from "../index.debug.js";
+import type { Behavior } from "../observation/behavior.js";
+import { Observable } from "../observation/observable.js";
+import { css } from "../styles/css.js";
+import { html } from "../templating/template.js";
+import { toHTML, uniqueElementName } from "../__test__/helpers.js";
+import { Controller } from "./controller.js";
+import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions.js";
+import { FASTElement } from "./fast-element.js";
 
 describe("The Controller", () => {
     const templateA = html`a`;
@@ -22,7 +22,7 @@ describe("The Controller", () => {
         BaseClass = FASTElement
     ) {
         const name = uniqueElementName();
-        const definition = new FASTElementDefinition(
+        const definition = FASTElementDefinition.compose(
             class ControllerTest extends BaseClass {
                 static definition = { ...config, name };
             }
@@ -194,7 +194,7 @@ describe("The Controller", () => {
             expect(toHTML(element)).to.equal("b");
         });
 
-        if (DOM.supportsAdoptedStyleSheets) {
+        if (ElementStyles.supportsAdoptedStyleSheets) {
             it("sets no styles when none are provided", () => {
                 const { shadowRoot, controller } = createController();
 
@@ -289,7 +289,7 @@ describe("The Controller", () => {
             expect(toHTML(element)).to.equal("b");
         });
 
-        if (DOM.supportsAdoptedStyleSheets) {
+        if (ElementStyles.supportsAdoptedStyleSheets) {
             it("can dynamically change the styles", () => {
                 const { shadowRoot, controller } = createController({ styles: stylesA });
 
@@ -388,6 +388,7 @@ describe("The Controller", () => {
 
         expect(element.shadowRoot?.contains(style)).to.equal(false);
     });
+
     it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
         const { controller, element } = createController({
             shadowOptions: {
@@ -510,5 +511,29 @@ describe("The Controller", () => {
             controller.removeBehaviors([behavior], true);
             expect(behavior.bound).to.equal(false);
         });
-    })
+    });
+
+    context("with pre-existing shadow dom on the host", () => {
+        it("re-renders the view during connect", async () => {
+            const name = uniqueElementName();
+            const element = document.createElement(name);
+            const root = element.attachShadow({ mode: 'open' });
+            root.innerHTML = 'Test 1';
+
+            document.body.append(element);
+
+            FASTElementDefinition.compose(
+                class TestElement extends FASTElement {
+                    static definition = {
+                        name,
+                        template: html`Test 2`
+                    };
+                }
+            ).define();
+
+            expect(root.innerHTML).to.equal("Test 2");
+
+            document.body.removeChild(element);
+        });
+    });
 });

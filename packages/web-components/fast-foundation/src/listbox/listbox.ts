@@ -1,4 +1,4 @@
-import { attr, observable, Observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import {
     findLastIndex,
     keyArrowDown,
@@ -11,9 +11,8 @@ import {
     keyTab,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
-import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option.js";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
+import { FASTListboxOption, isListboxOption } from "../listbox-option/listbox-option.js";
+import { ARIAGlobalStatesAndProperties } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
@@ -24,20 +23,20 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  *
  * @public
  */
-export abstract class Listbox extends FoundationElement {
+export abstract class FASTListbox extends FASTElement {
     /**
      * The internal unfiltered list of selectable options.
      *
      * @internal
      */
-    protected _options: ListboxOption[] = [];
+    protected _options: FASTListboxOption[] = [];
 
     /**
      * The first selected option.
      *
      * @internal
      */
-    public get firstSelectedOption(): ListboxOption {
+    public get firstSelectedOption(): FASTListboxOption {
         return this.selectedOptions[0] ?? null;
     }
 
@@ -64,12 +63,12 @@ export abstract class Listbox extends FoundationElement {
      *
      * @public
      */
-    public get options(): ListboxOption[] {
+    public get options(): FASTListboxOption[] {
         Observable.track(this, "options");
         return this._options;
     }
 
-    public set options(value: ListboxOption[]) {
+    public set options(value: FASTListboxOption[]) {
         this._options = value;
         Observable.notify(this, "options");
     }
@@ -112,7 +111,7 @@ export abstract class Listbox extends FoundationElement {
      * @public
      */
     @observable
-    public selectedOptions: ListboxOption[] = [];
+    public selectedOptions: FASTListboxOption[] = [];
 
     /**
      * A standard `click` event creates a `focus` event before firing, so a
@@ -176,7 +175,7 @@ export abstract class Listbox extends FoundationElement {
     public clickHandler(e: MouseEvent): boolean | void {
         const captured = (e.target as HTMLElement).closest(
             `option,[role=option]`
-        ) as ListboxOption;
+        ) as FASTListboxOption;
 
         if (captured && !captured.disabled) {
             this.selectedIndex = this.options.indexOf(captured);
@@ -191,7 +190,7 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     protected focusAndScrollOptionIntoView(
-        optionToFocus: ListboxOption | null = this.firstSelectedOption
+        optionToFocus: FASTListboxOption | null = this.firstSelectedOption
     ): void {
         // To ensure that the browser handles both `focus()` and `scrollIntoView()`, the
         // timing here needs to guarantee that they happen on different frames. Since this
@@ -227,10 +226,10 @@ export abstract class Listbox extends FoundationElement {
      *
      * @internal
      */
-    protected getTypeaheadMatches(): ListboxOption[] {
+    protected getTypeaheadMatches(): FASTListboxOption[] {
         const pattern = this.typeaheadBuffer.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&");
         const re = new RegExp(`^${pattern}`, "gi");
-        return this.options.filter((o: ListboxOption) => o.text.trim().match(re));
+        return this.options.filter((o: FASTListboxOption) => o.text.trim().match(re));
     }
 
     /**
@@ -245,7 +244,7 @@ export abstract class Listbox extends FoundationElement {
         const direction = prev > next ? -1 : prev < next ? 1 : 0;
         const potentialDirection = prev + direction;
 
-        let nextSelectableOption: ListboxOption | null = null;
+        let nextSelectableOption: FASTListboxOption | null = null;
 
         switch (direction) {
             case -1: {
@@ -289,7 +288,7 @@ export abstract class Listbox extends FoundationElement {
     public handleChange(source: any, propertyName: string) {
         switch (propertyName) {
             case "selected": {
-                if (Listbox.slottedOptionFilter(source)) {
+                if (FASTListbox.slottedOptionFilter(source)) {
                     this.selectedIndex = this.options.indexOf(source);
                 }
                 this.setSelectedOptions();
@@ -315,7 +314,7 @@ export abstract class Listbox extends FoundationElement {
 
         this.typeaheadTimeout = window.setTimeout(
             () => (this.typeaheadExpired = true),
-            Listbox.TYPE_AHEAD_TIMEOUT_MS
+            FASTListbox.TYPE_AHEAD_TIMEOUT_MS
         );
 
         if (key.length > 1) {
@@ -461,10 +460,10 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     protected selectedOptionsChanged(
-        prev: ListboxOption[] | undefined,
-        next: ListboxOption[]
+        prev: FASTListboxOption[] | undefined,
+        next: FASTListboxOption[]
     ): void {
-        const filteredNext = next.filter(Listbox.slottedOptionFilter);
+        const filteredNext = next.filter(FASTListbox.slottedOptionFilter);
         this.options?.forEach(o => {
             const notifier = Observable.getNotifier(o);
             notifier.unsubscribe(this, "selected");
@@ -548,7 +547,7 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     public slottedOptionsChanged(prev: Element[] | undefined, next: Element[]) {
-        this.options = next.reduce<ListboxOption[]>((options, item) => {
+        this.options = next.reduce<FASTListboxOption[]>((options, item) => {
             if (isListboxOption(item)) {
                 options.push(item);
             }
@@ -650,5 +649,5 @@ applyMixins(DelegatesARIAListbox, ARIAGlobalStatesAndProperties);
 /**
  * @internal
  */
-export interface Listbox extends DelegatesARIAListbox {}
-applyMixins(Listbox, DelegatesARIAListbox);
+export interface FASTListbox extends DelegatesARIAListbox {}
+applyMixins(FASTListbox, DelegatesARIAListbox);

@@ -1,14 +1,15 @@
 import { expect, assert } from "chai";
-import { TextArea, textAreaTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { FASTTextArea, textAreaTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 
-const FASTTextArea = TextArea.compose({
-    baseName: "text-area",
-    template,
-})
+const textAreaName = uniqueElementName();
+FASTTextArea.define({
+    name: textAreaName,
+    template: textAreaTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture(FASTTextArea());
+    const { element, connect, disconnect, parent } = await fixture<FASTTextArea>(textAreaName);
 
     return { element, connect, disconnect, parent };
 }
@@ -576,7 +577,7 @@ describe("TextArea", () => {
 
             form.reset();
 
-            assert((element as TextArea).value === "");
+            assert((element as FASTTextArea).value === "");
 
             await disconnect();
         });
@@ -600,7 +601,7 @@ describe("TextArea", () => {
 
             form.reset();
 
-            assert((element as TextArea).value === "attr-value");
+            assert((element as FASTTextArea).value === "attr-value");
 
             await disconnect();
         });
@@ -622,11 +623,11 @@ describe("TextArea", () => {
 
             form.reset();
 
-            assert((element as TextArea).value === "attr-value");
+            assert((element as FASTTextArea).value === "attr-value");
 
             element.setAttribute("value", "new-attr-value");
 
-            assert((element as TextArea).value === "new-attr-value");
+            assert((element as FASTTextArea).value === "new-attr-value");
 
             await disconnect();
         });

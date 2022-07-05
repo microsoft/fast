@@ -2,8 +2,10 @@
 id: defining-elements
 title: Defining Elements
 sidebar_label: Defining Elements
-custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/guide/defining-elements.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/fast-element/defining-elements.md
 description: To define a custom element, begin by creating a class that extends FASTElement and decorate it with the @customElement decorator, providing the element name.
+keywords:
+  - defining elements
 ---
 
 ## Basic elements

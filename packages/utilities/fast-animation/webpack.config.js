@@ -13,12 +13,13 @@ module.exports = (env, args) => {
         devServer: {
             compress: false,
             historyApiFallback: true,
-            disableHostCheck: true,
             open: true,
-            overlay: true,
             port: 9005,
+            client: {
+                overlay: true,
+            },
         },
-        devtool: isProduction ? "none" : "inline-source-map",
+        devtool: isProduction ? undefined : "inline-source-map",
         entry: appDir + "/app.tsx",
         mode: args.mode || "development",
         module: {

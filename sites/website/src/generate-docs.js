@@ -2,14 +2,11 @@ const path = require("path");
 const { createInterface } = require("readline");
 const { exec } = require("child_process");
 const fs = require("fs-extra");
+const { getPackageJsonDir } = require("../../../build/get-package-json");
 
-const fastFoundation = path.dirname(
-    require.resolve("@microsoft/fast-foundation/package.json")
-);
-const fastElement = path.dirname(require.resolve("@microsoft/fast-element/package.json"));
-const fastComponents = path.dirname(
-    require.resolve("@microsoft/fast-components/package.json")
-);
+const fastFoundation = getPackageJsonDir("@microsoft/fast-foundation"); // path.dirname( require.resolve("@microsoft/fast-foundation/package.json"));
+const fastElement = getPackageJsonDir("@microsoft/fast-element"); // path.dirname(require.resolve("@microsoft/fast-element/package.json"));
+const fastComponents = getPackageJsonDir("@microsoft/fast-components"); // path.dirname( require.resolve("@microsoft/fast-components/package.json"));
 
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");
@@ -44,6 +41,7 @@ const packages = [
     "fast-element",
     "fast-foundation",
     "fast-components",
+    "fast-ssr",
 ];
 
 function identifyPackage(path) {
@@ -177,7 +175,10 @@ async function copyArticleMarkdown() {
             },
         },
         {
-            src: require.resolve("@microsoft/fast-element/docs/ACKNOWLEDGEMENTS.md"),
+            src: path.resolve(
+                getPackageJsonDir("@microsoft/fast-element"),
+                "./docs/ACKNOWLEDGEMENTS.md"
+            ), // require.resolve("@microsoft/fast-element/docs/ACKNOWLEDGEMENTS.md"),
             dest: path.resolve(outputDir, "resources/acknowledgements.md"),
             metadata: {
                 id: "acknowledgements",
@@ -191,7 +192,10 @@ async function copyArticleMarkdown() {
             },
         },
         {
-            src: require.resolve("@microsoft/fast-element/README.md"),
+            src: path.resolve(
+                getPackageJsonDir("@microsoft/fast-element"),
+                "./README.md"
+            ),
             dest: path.resolve(outputDir, "fast-element/getting-started.md"),
             metadata: {
                 id: "getting-started",
@@ -274,7 +278,11 @@ async function copyArticleMarkdown() {
 async function copyAPI() {
     for (const pkg of packages) {
         await safeCopy(
-            require.resolve(`@microsoft/${pkg}/dist/${pkg}.api.json`),
+            path.resolve(
+                getPackageJsonDir(`@microsoft/${pkg}`),
+                `./dist/${pkg}.api.json`
+            ),
+            // require.resolve(`@microsoft/${pkg}/dist/${pkg}.api.json`),
             `./src/docs/api/${pkg}.api.json`
         );
     }

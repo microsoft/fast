@@ -1,8 +1,80 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Tue, 24 May 2022 07:10:02 GMT and should not be manually modified.
+This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.3
+
+Wed, 22 Jun 2022 20:17:50 GMT
+
+### Changes
+
+- fix: correct aspect type for content that looks like an attribute (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.2
+
+Wed, 15 Jun 2022 17:41:10 GMT
+
+### Changes
+
+- doc: add note to FASTElement.metadata API (roeisenb@microsoft.com)
+- when recycle is set to false while itemBinding stays the same, views should be recreated (wendy.hsu@microsoft.com)
+- feat: simplify execution context to align closer with v1 (roeisenb@microsoft.com)
+- feat: ergo improvements to context, array length, and metadata (roeisenb@microsoft.com)
+- feat: move optional bindings out of rollup and list as exports (roeisenb@microsoft.com)
+- fix: make SyntheticViewTemplate type a string so it is generally usable (roeisenb@microsoft.com)
+- feat: implement W3C WC community context protocol and integrate with DI (roeisenb@microsoft.com)
+
+## 2.0.0-beta.1
+
+Wed, 01 Jun 2022 17:53:14 GMT
+
+### Changes
+
+- `DOM` - Tree Walker methods are no longer used and are thus removed. The API for removing child nodes has been removed as well since it was only used in one place and could be inlined. The helper `createCustomAttributePlaceholder()` no longer requires an attribute name. It will be uniquely generated internally. (roeisenb@microsoft.com)
+- `class` - Bindings to `class` are now more nuanced. Binding directly to `class` will simply set the `className` property. If you need to bind to `class` knowing that manual JS will also manipulate the `classList` in addition to the binding, then you should now bind to `:classList` instead. This allows for performance optimizations in the simple, most common case. (roeisenb@microsoft.com)
+- `Behavior` and `ViewBehavior` - `Behavior` now requires an `ExecutionContext` for `unbind`. Behaviors can be used for elements or views. `ViewBehavior` has been introduced for use exclusively with views, and provides some optimization opportunities. (roeisenb@microsoft.com)
+- `RefBehavior` has been replaced with `RefDirective`. The directive also implements `ViewBehavior` allowing a single directive instance to be shared across all template instances that use the ref. (roeisenb@microsoft.com)
+- Removed `SlottedBehavior` and `ChildrenBehavior` have been replaced with `SlottedDirective` and `ChildrenDirective`. These directives allow a single directive instance to be shared across all template instances that use the ref. (roeisenb@microsoft.com)
+- Removed `AttachedBehaviorHTMLDirective` and `AttachedBehaviorType` since they are no longer used in the new directive/behavior architecture for ref, slotted, and children. (roeisenb@microsoft.com)
+- Renamed `Notifier#source` to `Notifier#subject` to align with other observable terminology and prevent name clashes with `BindingObserver` properties. (roeisenb@microsoft.com)
+- feat: create unified API for parsing markers (roeisenb@microsoft.com)
+- allow null values in attributeChangedCallback (nicholasrice@users.noreply.github.com)
+- feat: add splice strategies for array observation (roeisenb@microsoft.com)
+- feat: handle existing shadow roots when upgrading (roeisenb@microsoft.com)
+- fix: enable safer type inference on the repeat helper (roeisenb@microsoft.com)
+- Set prerelease version (nicholasrice@users.noreply.github.com)
+- refactor: separate update queue from DOM and fix architectural layers (roeisenb@microsoft.com)
+- feat: aspected html directive exposes metadata (roeisenb@microsoft.com)
+- `HTMLDirective` - The `targetIndex: number` property has been replaced by a `targetId: string` property. The `createBehavior` method no longer takes a target `Node` but instead takes a `BehaviorTargets` instance. The actual target can be looked up on the `BehaviorTargets` instance by indexing with the `targetId` property. (roeisenb@microsoft.com)
+- `compileTemplate()` - Internals have been significantly changed. The implementation no longer uses a TreeWalker. The return type has change to an `HTMLTemplateCompilationResult` with different properties. (roeisenb@microsoft.com)
+- refactor: move template/style resolution to lazy getter (roeisenb@microsoft.com)
+- refactor: enable pluggable template compiler for SSR scenarios (roeisenb@microsoft.com)
+- feat: enable pluggable style handling strategies (roeisenb@microsoft.com)
+- fix(fast-element): do not notify splices for changes pre-subscription (roeisenb@microsoft.com)
+- feat: new directive registration/identification model (roeisenb@microsoft.com)
+- fix: prevent duplicative array observation patch (roeisenb@microsoft.com)
+- Adds Aspect as public export (nicholasrice@users.noreply.github.com)
+- feat: expose official Markup and Parser APIs (roeisenb@microsoft.com)
+- refactor: refine binding mode types (roeisenb@microsoft.com)
+- feat: add two-way binding (roeisenb@microsoft.com)
+- fix: defend against for/in use on arrays (roeisenb@microsoft.com)
+- fix: merge bug related to moved APIs (roeisenb@microsoft.com)
+- feat: enable multiple instances of fast-element on a page at once (roeisenb@microsoft.com)
+- Upgrade TypeScript (nicholasrice@users.noreply.github.com)
+- enumerate fast-element package as a ES module package (nicholasrice@users.noreply.github.com)
+- feat: enable array length observation (roeisenb@microsoft.com)
+- feat: add utilities and hooks, and change exports (roeisenb@microsoft.com)
+- refactor: new design for execution context (roeisenb@microsoft.com)
+- chore: fast-element package and build modernization (roeisenb@microsoft.com)
+- feat: new CSSDirective design (roeisenb@microsoft.com)
+- chore: configure fast-element for internal stripping (roeisenb@microsoft.com)
+- feat: enable synchronous dom updates for SSR (roeisenb@microsoft.com)
+- refactor: extract polyfill and polyfill-like code to an optional module (roeisenb@microsoft.com)
+- feat: add warn/error message infrastructure (roeisenb@microsoft.com)
+- `View` and `HTMLView` - Type parameters added to enable strongly typed views based on their data source. The constructor of `HTMLView` has a new signature based on changes to the compiler's output. Internals have been cleaned up and no longer rely on the Range type. (roeisenb@microsoft.com)
+- `ElementViewTemplate`, `SyntheticViewTemplate`, and `ViewTemplate` - Added type parameters throughout. Logic to instantiate and apply behaviors moved out of the template and into the view where it can be lazily executed. Removed the ability of the `render` method to take a string id of the node to render to. You must provide a node. (roeisenb@microsoft.com)
 
 ## 1.10.2
 

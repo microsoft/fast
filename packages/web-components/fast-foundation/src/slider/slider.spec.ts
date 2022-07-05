@@ -1,16 +1,17 @@
 import { expect, assert } from "chai";
-import { Slider, sliderTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { FASTSlider, sliderTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { Updates } from "@microsoft/fast-element";
 import { Orientation, Direction } from "@microsoft/fast-web-utilities";
 
-const FASTSlider = Slider.compose({
-    baseName: "slider",
-    template
-})
+const sliderName = uniqueElementName();
+FASTSlider.define({
+    name: sliderName,
+    template: sliderTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture(FASTSlider());
+    const { element, connect, disconnect, parent } = await fixture<FASTSlider>(sliderName);
 
     return { element, connect, disconnect, parent };
 }
@@ -96,7 +97,7 @@ describe("Slider", () => {
 
         element.orientation = Orientation.vertical;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-orientation")).to.equal(
             `${Orientation.vertical}`
@@ -116,7 +117,7 @@ describe("Slider", () => {
 
         element.orientation = Orientation.vertical;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.classList.contains(`${Orientation.vertical}`)).to.equal(true);
         await disconnect();
@@ -133,7 +134,7 @@ describe("Slider", () => {
 
         element.direction = Direction.rtl;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.direction).to.equal(Direction.rtl);
         await disconnect();
@@ -201,7 +202,7 @@ describe("Slider", () => {
         element.value = "50";
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.value).to.equal("5");
         expect(element.getAttribute("aria-valuenow")).to.equal("5");
@@ -343,7 +344,7 @@ describe("Slider", () => {
 
             element.increment();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal("55");
             expect(element.getAttribute("aria-valuenow")).to.equal("55");
@@ -365,7 +366,7 @@ describe("Slider", () => {
 
             element.decrement();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal("45");
             expect(element.getAttribute("aria-valuenow")).to.equal("45");

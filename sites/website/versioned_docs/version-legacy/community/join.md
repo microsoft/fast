@@ -2,7 +2,7 @@
 id: join
 title: Joining the community
 sidebar_label: Joining the community
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/community/join.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/community/join.md
 description: Our community drives the rhythm and direction of FAST. By taking part, your voice will help shape our future.
 keywords:
   - community

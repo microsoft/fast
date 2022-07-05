@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: perf and safety improvements to fast element definition",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

@@ -1,28 +1,49 @@
 import { expect } from "chai";
-import { customElement, FASTElement } from "../components/fast-element";
-import { DOM } from "../dom";
-import { defaultExecutionContext } from "../observation/observable";
-import { css } from "../styles/css";
-import type { StyleTarget } from "../styles/element-styles";
-import { toHTML, uniqueElementName } from "../__test__/helpers";
-import { HTMLBindingDirective } from "./binding";
-import { compileTemplate } from "./compiler";
-import type { HTMLDirective } from "./html-directive";
-import { html } from "./template";
+import { customElement, FASTElement } from "../components/fast-element.js";
+import { Markup } from './markup.js';
+import { ExecutionContext } from "../observation/observable.js";
+import { css } from "../styles/css.js";
+import { toHTML, uniqueElementName } from "../__test__/helpers.js";
+import { bind, HTMLBindingDirective } from "./binding.js";
+import { Compiler } from "./compiler.js";
+import { Aspect, HTMLDirective, ViewBehaviorFactory } from "./html-directive.js";
+import { html } from "./template.js";
+import type { StyleTarget } from "../interfaces.js";
+import { ElementStyles } from "../index.debug.js";
+
+/**
+ * Used to satisfy TS by exposing some internal properties of the
+ * compilation result that we want to make assertions against.
+ */
+interface CompilationResultInternals {
+    readonly fragment: DocumentFragment;
+    readonly factories: ViewBehaviorFactory[];
+}
 
 describe("The template compiler", () => {
     function compile(html: string, directives: HTMLDirective[]) {
-        const template = document.createElement("template");
-        template.innerHTML = html;
-        return compileTemplate(template, directives);
+        const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
+        const ids: string[] = [];
+        let nextId = -1;
+        const add = (factory: ViewBehaviorFactory): string => {
+            const id = `${++nextId}`;
+            ids.push(id);
+            factory.id = id;
+            factories[id] = factory;
+            return id;
+        };
+
+        directives.forEach(x => x.createHTML(add));
+
+        return Compiler.compile(html, factories) as any as CompilationResultInternals;
     }
 
     function inline(index: number) {
-        return DOM.createInterpolationPlaceholder(index);
+        return Markup.interpolation(`${index}`);
     }
 
     function binding(result = "result") {
-        return new HTMLBindingDirective(() => result);
+        return bind(() => result) as HTMLBindingDirective;
     }
 
     const scope = {};
@@ -41,7 +62,7 @@ describe("The template compiler", () => {
                 html: `${inline(0)}`,
                 directives: [binding()],
                 fragment: ` `,
-                targetIndexes: [0],
+                targetIds: ['r.1'],
                 childCount: 2,
             },
             {
@@ -49,88 +70,88 @@ describe("The template compiler", () => {
                 html: `${inline(0)} end`,
                 directives: [binding()],
                 fragment: `  end`,
-                targetIndexes: [0],
-                childCount: 2,
+                targetIds: ['r.1'],
+                childCount: 3,
             },
             {
                 type: "a single middle",
                 html: `beginning ${inline(0)} end`,
                 directives: [binding()],
                 fragment: `beginning   end`,
-                targetIndexes: [1],
-                childCount: 3,
+                targetIds: ['r.2'],
+                childCount: 4,
             },
             {
                 type: "a single ending",
                 html: `${inline(0)} end`,
                 directives: [binding()],
                 fragment: `  end`,
-                targetIndexes: [0],
-                childCount: 2,
+                targetIds: ['r.1'],
+                childCount: 3,
             },
             {
                 type: "back-to-back",
                 html: `${inline(0)}${inline(1)}`,
                 directives: [binding(), binding()],
                 fragment: `  `,
-                targetIndexes: [0, 1],
-                childCount: 2,
+                targetIds: ['r.1', 'r.2'],
+                childCount: 3,
             },
             {
                 type: "back-to-back starting",
                 html: `${inline(0)}${inline(1)} end`,
                 directives: [binding(), binding()],
                 fragment: `   end`,
-                targetIndexes: [0, 1],
-                childCount: 3,
+                targetIds: ['r.1', 'r.2'],
+                childCount: 4,
             },
             {
                 type: "back-to-back middle",
                 html: `beginning ${inline(0)}${inline(1)} end`,
                 directives: [binding(), binding()],
                 fragment: `beginning    end`,
-                targetIndexes: [1, 2],
-                childCount: 4,
+                targetIds: ['r.2', 'r.3'],
+                childCount: 5,
             },
             {
                 type: "back-to-back ending",
                 html: `start ${inline(0)}${inline(1)}`,
                 directives: [binding(), binding()],
                 fragment: `start   `,
-                targetIndexes: [1, 2],
-                childCount: 3,
+                targetIds: ['r.2', 'r.3'],
+                childCount: 4,
             },
             {
                 type: "separated",
                 html: `${inline(0)}separator${inline(1)}`,
                 directives: [binding(), binding()],
                 fragment: ` separator `,
-                targetIndexes: [0, 2],
-                childCount: 3,
+                targetIds: ['r.1', 'r.3'],
+                childCount: 4,
             },
             {
                 type: "separated starting",
                 html: `${inline(0)}separator${inline(1)} end`,
                 directives: [binding(), binding()],
                 fragment: ` separator  end`,
-                targetIndexes: [0, 2],
-                childCount: 4,
+                targetIds: ['r.1', 'r.3'],
+                childCount: 5,
             },
             {
                 type: "separated middle",
                 html: `beginning ${inline(0)}separator${inline(1)} end`,
                 directives: [binding(), binding()],
                 fragment: `beginning  separator  end`,
-                targetIndexes: [1, 3],
-                childCount: 5,
+                targetIds: ['r.2', 'r.4'],
+                childCount: 6,
             },
             {
                 type: "separated ending",
                 html: `beginning ${inline(0)}separator${inline(1)}`,
                 directives: [binding(), binding()],
                 fragment: `beginning  separator `,
-                targetIndexes: [1, 3],
-                childCount: 4,
+                targetIds: ['r.2', 'r.4'],
+                childCount: 5,
             },
             {
                 type: "mixed content",
@@ -139,14 +160,14 @@ describe("The template compiler", () => {
                 )}</a> ${inline(3)} end`,
                 directives: [binding(), binding(), binding(), binding()],
                 fragment: "<div>start   end</div><a> </a>   end",
-                targetIndexes: [2, 4, 5, 7],
+                targetIds: ['r.0.1', 'r.1', 'r.1.0', 'r.3'],
                 childCount: 5,
             },
         ];
 
         scenarios.forEach(x => {
             it(`handles ${x.type} binding expression(s)`, () => {
-                const { fragment, viewBehaviorFactories } = compile(x.html, x.directives);
+                const { fragment, factories } = compile(x.html, x.directives);
 
                 expect(toHTML(fragment)).to.equal(x.fragment);
                 expect(toHTML(fragment.cloneNode(true) as DocumentFragment)).to.equal(
@@ -160,20 +181,42 @@ describe("The template compiler", () => {
                     );
                 }
 
-                const length = viewBehaviorFactories.length;
+                const length = factories.length;
 
                 expect(length).to.equal(x.directives.length);
 
-                if (x.targetIndexes) {
-                    expect(length).to.equal(x.targetIndexes.length);
+                if (x.targetIds) {
+                    expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(viewBehaviorFactories[i].targetIndex).to.equal(
-                            x.targetIndexes[i]
+                        expect(factories[i].nodeId).to.equal(
+                            x.targetIds[i]
                         );
                     }
                 }
             });
+        });
+
+        it("fixes content that looks like an attribute to have the correct aspect type", () => {
+            const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
+            const ids: string[] = [];
+            let nextId = -1;
+            const add = (factory: ViewBehaviorFactory): string => {
+                const id = `${++nextId}`;
+                ids.push(id);
+                factory.id = id;
+                factories[id] = factory;
+                return id;
+            };
+
+            const binding = bind(x => x) as HTMLBindingDirective;
+            Aspect.assign(binding, "a"); // mimic the html function, which will think it's an attribute
+            const html = `a=${binding.createHTML(add)}`;
+
+            const result = Compiler.compile(html, factories) as any as CompilationResultInternals;
+            const bindingFactory = result.factories[0] as HTMLBindingDirective;
+
+            expect(bindingFactory.aspectType).equal(Aspect.content);
         });
     });
 
@@ -191,7 +234,7 @@ describe("The template compiler", () => {
                 directives: [binding()],
                 fragment: `<a>Link</a>`,
                 result: "result",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "a single starting",
@@ -199,7 +242,7 @@ describe("The template compiler", () => {
                 directives: [binding()],
                 fragment: `<a>Link</a>`,
                 result: "result end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "a single middle",
@@ -207,7 +250,7 @@ describe("The template compiler", () => {
                 directives: [binding()],
                 fragment: `<a>Link</a>`,
                 result: "beginning result end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "a single ending",
@@ -215,7 +258,7 @@ describe("The template compiler", () => {
                 directives: [binding()],
                 fragment: `<a>Link</a>`,
                 result: "result end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "back-to-back",
@@ -223,7 +266,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "resultresult",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "back-to-back starting",
@@ -231,7 +274,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "resultresult end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "back-to-back middle",
@@ -239,7 +282,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "beginning resultresult end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "back-to-back ending",
@@ -247,7 +290,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "start resultresult",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "separated",
@@ -255,7 +298,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "resultseparatorresult",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "separated starting",
@@ -263,7 +306,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "resultseparatorresult end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "separated middle",
@@ -273,7 +316,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "beginning resultseparatorresult end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "separated ending",
@@ -281,21 +324,21 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "beginning resultseparatorresult",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "multiple attributes on the same element with",
                 html: `<a href="${inline(0)}" target="${inline(1)}">Link</a>`,
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
-                targetIndexes: [0, 0],
+                targetIds: ['r.1', 'r.1'],
             },
             {
                 type: "attributes on different elements with",
                 html: `<a href="${inline(0)}">Link</a><a href="${inline(1)}">Link</a>`,
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a><a>Link</a>`,
-                targetIndexes: [0, 2],
+                targetIds: ['r.0', 'r.1'],
             },
             {
                 type: "multiple attributes on different elements with",
@@ -308,13 +351,13 @@ describe("The template compiler", () => {
           <a>Link</a>
           <a>Link</a>
         `,
-                targetIndexes: [1, 1, 4, 4],
+                targetIds: ['r.1', 'r.1', 'r.3', 'r.3'],
             },
         ];
 
         scenarios.forEach(x => {
             it(`handles ${x.type} binding expression(s)`, () => {
-                const { fragment, viewBehaviorFactories } = compile(x.html, x.directives);
+                const { fragment, factories } = compile(x.html, x.directives);
 
                 expect(toHTML(fragment)).to.equal(x.fragment);
                 expect(toHTML(fragment.cloneNode(true) as DocumentFragment)).to.equal(
@@ -323,21 +366,21 @@ describe("The template compiler", () => {
 
                 if (x.result) {
                     expect(
-                        (viewBehaviorFactories[0] as HTMLBindingDirective).binding(
+                        (factories[0] as HTMLBindingDirective).binding(
                             scope,
-                            defaultExecutionContext
+                            ExecutionContext.default
                         )
                     ).to.equal(x.result);
                 }
 
-                if (x.targetIndexes) {
-                    const length = viewBehaviorFactories.length;
+                if (x.targetIds) {
+                    const length = factories.length;
 
-                    expect(length).to.equal(x.targetIndexes.length);
+                    expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(viewBehaviorFactories[i].targetIndex).to.equal(
-                            x.targetIndexes[i]
+                        expect(factories[i].nodeId).to.equal(
+                            x.targetIds[i]
                         );
                     }
                 }
@@ -360,7 +403,7 @@ describe("The template compiler", () => {
 
     context("when compiling hosts", () => {});
 
-    if (DOM.supportsAdoptedStyleSheets) {
+    if (ElementStyles.supportsAdoptedStyleSheets) {
         it("handles templates with adoptedStyleSheets", () => {
             const name = uniqueElementName();
 

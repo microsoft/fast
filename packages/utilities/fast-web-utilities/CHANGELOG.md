@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-web-utilities
 
-This log was last generated on Wed, 04 May 2022 07:14:00 GMT and should not be manually modified.
+This log was last generated on Wed, 01 Jun 2022 17:53:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 6.0.0
+
+Wed, 01 Jun 2022 17:53:14 GMT
+
+### Major changes
+
+- remove deprecated keycodes and add additional keys (chhol@microsoft.com)
+
+### Patches
+
+- chore: fix broken build (roeisenb@microsoft.com)
+- Upgrade TypeScript (nicholasrice@users.noreply.github.com)
 
 ## 5.4.1
 

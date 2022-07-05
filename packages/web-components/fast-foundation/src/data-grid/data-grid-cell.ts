@@ -1,4 +1,11 @@
-import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    html,
+    HTMLView,
+    observable,
+    ViewTemplate,
+} from "@microsoft/fast-element";
 import {
     eventFocusIn,
     eventFocusOut,
@@ -7,13 +14,12 @@ import {
     keyEscape,
     keyFunction2,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 import type { ColumnDefinition } from "./data-grid.js";
 import { DataGridCellTypes } from "./data-grid.options.js";
 
 export { DataGridCellTypes };
 
-const defaultCellContentsTemplate: ViewTemplate<DataGridCell> = html`
+const defaultCellContentsTemplate: ViewTemplate<FASTDataGridCell> = html`
     <template>
         ${x =>
             x.rowData === null ||
@@ -24,7 +30,7 @@ const defaultCellContentsTemplate: ViewTemplate<DataGridCell> = html`
     </template>
 `;
 
-const defaultHeaderCellContentsTemplate: ViewTemplate<DataGridCell> = html`
+const defaultHeaderCellContentsTemplate: ViewTemplate<FASTDataGridCell> = html`
     <template>
         ${x =>
             x.columnDefinition === null
@@ -42,7 +48,7 @@ const defaultHeaderCellContentsTemplate: ViewTemplate<DataGridCell> = html`
  * @slot - The default slot for cell contents.  The "cell contents template" renders here.
  * @public
  */
-export class DataGridCell extends FoundationElement {
+export class FASTDataGridCell extends FASTElement {
     /**
      * The type of cell
      *
@@ -69,7 +75,7 @@ export class DataGridCell extends FoundationElement {
      */
     @attr({ attribute: "grid-column" })
     public gridColumn: string;
-    private gridColumnChanged(): void {
+    protected gridColumnChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateCellStyle();
         }
@@ -90,7 +96,7 @@ export class DataGridCell extends FoundationElement {
      */
     @observable
     public columnDefinition: ColumnDefinition | null = null;
-    private columnDefinitionChanged(
+    protected columnDefinitionChanged(
         oldValue: ColumnDefinition | null,
         newValue: ColumnDefinition | null
     ): void {

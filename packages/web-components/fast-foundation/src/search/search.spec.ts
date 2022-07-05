@@ -1,20 +1,22 @@
 import { expect, assert } from "chai";
-import { Button, buttonTemplate } from "../button";
-import { fixture } from "../test-utilities/fixture";
-import { Search, searchTemplate as template } from "./index";
+import { FASTButton, buttonTemplate } from "../button/index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTSearch, searchTemplate } from "./index.js";
 
-const FASTSearch = Search.compose({
-    baseName: "search",
-    template,
-})
+const searchName = uniqueElementName();
+FASTSearch.define({
+    name: searchName,
+    template: searchTemplate(),
+});
 
-const FASTButton = Button.compose({
-    baseName: "button",
-    template: buttonTemplate,
-})
+const buttonName = uniqueElementName();
+FASTButton.define({
+    name: buttonName,
+    template: buttonTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture([FASTSearch(), FASTButton()]);
+    const { element, connect, disconnect, parent } = await fixture<FASTSearch>(searchName);
 
     return { element, connect, disconnect, parent };
 }
@@ -646,7 +648,7 @@ describe("Search", () => {
 
             form.reset();
 
-            assert((element as Search).value === "");
+            assert((element as FASTSearch).value === "");
 
             await disconnect();
         });
@@ -669,7 +671,7 @@ describe("Search", () => {
 
             form.reset();
 
-            assert((element as Search).value === "attr-value");
+            assert((element as FASTSearch).value === "attr-value");
 
             await disconnect();
         });
@@ -689,11 +691,11 @@ describe("Search", () => {
 
             form.reset();
 
-            assert((element as Search).value === "attr-value");
+            assert((element as FASTSearch).value === "attr-value");
 
             element.setAttribute("value", "new-attr-value");
 
-            assert((element as Search).value === "new-attr-value");
+            assert((element as FASTSearch).value === "new-attr-value");
             await disconnect();
         });
     });

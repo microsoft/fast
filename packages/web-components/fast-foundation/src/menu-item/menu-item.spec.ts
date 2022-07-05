@@ -1,23 +1,27 @@
 import { expect } from "chai";
-import { MenuItem, menuItemTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
-import { MenuItemRole } from "./menu-item";
+import { FASTMenuItem, menuItemTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { Updates } from "@microsoft/fast-element";
+import { MenuItemRole } from "./menu-item.js";
 import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
-import { AnchoredRegion, anchoredRegionTemplate } from "../anchored-region";
+import { FASTAnchoredRegion, anchoredRegionTemplate } from "../anchored-region/index.js";
 
-const FASTMenuItem = MenuItem.compose({
-    baseName: "menu-item",
-    template
-})
+const anchoredRegionName = uniqueElementName();
+FASTAnchoredRegion.compose({
+    name: anchoredRegionName,
+    template: anchoredRegionTemplate()
+});
 
-const FASTAnchoredRegion = AnchoredRegion.compose({
-    baseName: "anchored-region",
-    template: anchoredRegionTemplate
-})
+const menuItemName = uniqueElementName();
+FASTMenuItem.define({
+    name: menuItemName,
+    template: menuItemTemplate({
+        anchoredRegion: anchoredRegionName
+    })
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture([FASTMenuItem(), FASTAnchoredRegion()]);
+    const { element, connect, disconnect } = await fixture<FASTMenuItem>(menuItemName);
 
     return { element, connect, disconnect };
 }
@@ -129,19 +133,19 @@ describe("Menu item", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal(null);
 
         element.click();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("true");
 
         element.click();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("false");
 
@@ -154,19 +158,19 @@ describe("Menu item", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal(null);
 
         element.click();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("true");
 
         element.click();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("true");
 
@@ -186,7 +190,7 @@ describe("Menu item", () => {
                 wasClicked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.click();
 
@@ -210,7 +214,7 @@ describe("Menu item", () => {
                 wasInvoked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.dispatchEvent(event);
 
@@ -234,7 +238,7 @@ describe("Menu item", () => {
                 wasInvoked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.dispatchEvent(event);
 

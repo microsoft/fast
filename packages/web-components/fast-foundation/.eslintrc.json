@@ -21,14 +21,10 @@
                 "extendDefaults": true
             }
         ],
-        "import/extensions": [
+        "no-restricted-imports": [
             "error",
-            "always",
             {
-                "template": "never",
-                "form-associated": "never",
-                "options": "never",
-                "element": "never"
+                "patterns": ["**/stories/**"]
             }
         ]
     }

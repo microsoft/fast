@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "add activeid to accordion change event",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

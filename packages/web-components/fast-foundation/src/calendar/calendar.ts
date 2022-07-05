@@ -1,21 +1,12 @@
 import {
     attr,
+    FASTElement,
     nullableNumberConverter,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
-import type { StartEndOptions } from "../patterns/start-end.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element/foundation-element.js";
-import type {
-    DayFormat,
-    MonthFormat,
-    WeekdayFormat,
-    YearFormat,
-} from "./date-formatter.js";
+import type { StartEndOptions, TemplateElementDependency } from "../patterns/index.js";
+import { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./calendar.options.js";
 import { DateFormatter } from "./date-formatter.js";
 
 /**
@@ -53,19 +44,21 @@ export type CalendarDateInfo = {
 };
 
 /**
+ * Calendar weekday text.
+ * @public
+ */
+export type WeekdayText = { text: string; abbr?: string };
+
+/**
  * Calendar configuration options
  * @public
  */
-export type CalendarOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        title?:
-            | FoundationElementTemplate<
-                  SyntheticViewTemplate<any, Calendar>,
-                  CalendarOptions
-              >
-            | SyntheticViewTemplate
-            | string;
-    };
+export type CalendarOptions = StartEndOptions & {
+    dataGridCell: TemplateElementDependency;
+    dataGridRow: TemplateElementDependency;
+    dataGrid: TemplateElementDependency;
+    title?: SyntheticViewTemplate | string;
+};
 
 /**
  * Calendar component
@@ -75,7 +68,7 @@ export type CalendarOptions = FoundationElementDefinition &
  *
  * @public
  */
-export class Calendar extends FoundationElement {
+export class FASTCalendar extends FASTElement {
     /**
      * date formatter utitlity for getting localized strings
      * @public
@@ -95,7 +88,7 @@ export class Calendar extends FoundationElement {
      */
     @attr
     public locale: string = "en-US";
-    private localeChanged(): void {
+    protected localeChanged(): void {
         this.dateFormatter.locale = this.locale;
     }
 
@@ -118,8 +111,8 @@ export class Calendar extends FoundationElement {
      * @public
      */
     @attr({ attribute: "day-format", mode: "fromView" })
-    public dayFormat: DayFormat = "numeric";
-    private dayFormatChanged(): void {
+    public dayFormat: DayFormat = DayFormat.numeric;
+    protected dayFormatChanged(): void {
         this.dateFormatter.dayFormat = this.dayFormat;
     }
 
@@ -128,8 +121,8 @@ export class Calendar extends FoundationElement {
      * @public
      */
     @attr({ attribute: "weekday-format", mode: "fromView" })
-    public weekdayFormat: WeekdayFormat = "short";
-    private weekdayFormatChanged(): void {
+    public weekdayFormat: WeekdayFormat = WeekdayFormat.short;
+    protected weekdayFormatChanged(): void {
         this.dateFormatter.weekdayFormat = this.weekdayFormat;
     }
 
@@ -138,8 +131,8 @@ export class Calendar extends FoundationElement {
      * @public
      */
     @attr({ attribute: "month-format", mode: "fromView" })
-    public monthFormat: MonthFormat = "long";
-    private monthFormatChanged(): void {
+    public monthFormat: MonthFormat = MonthFormat.long;
+    protected monthFormatChanged(): void {
         this.dateFormatter.monthFormat = this.monthFormat;
     }
 
@@ -148,8 +141,8 @@ export class Calendar extends FoundationElement {
      * @public
      */
     @attr({ attribute: "year-format", mode: "fromView" })
-    public yearFormat: YearFormat = "numeric";
-    private yearFormatChanged(): void {
+    public yearFormat: YearFormat = YearFormat.numeric;
+    protected yearFormatChanged(): void {
         this.dateFormatter.yearFormat = this.yearFormat;
     }
 
@@ -318,7 +311,7 @@ export class Calendar extends FoundationElement {
      * @returns An array of weekday text and full text if abbreviated
      * @public
      */
-    public getWeekdayText(): { text: string; abbr?: string }[] {
+    public getWeekdayText(): WeekdayText[] {
         const weekdayText: {
             text: string;
             abbr?: string;

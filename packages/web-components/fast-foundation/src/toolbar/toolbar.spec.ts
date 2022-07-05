@@ -1,21 +1,20 @@
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { keyArrowRight, Orientation } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { fixture } from "../test-utilities/fixture";
-import { Toolbar, toolbarTemplate as template } from "./index";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTToolbar, toolbarTemplate } from "./index.js";
 
-const FASTToolbar = Toolbar.compose({
-  baseName: "toolbar",
-  template,
+const toolbarName = uniqueElementName();
+FASTToolbar.define({
+  name: toolbarName,
+  template: toolbarTemplate(),
   shadowOptions: {
     delegatesFocus: true
   }
-})
+});
 
 async function setup() {
-  const { element, connect, disconnect, parent } = await fixture(
-    FASTToolbar()
-  );
+  const { element, connect, disconnect, parent } = await fixture<FASTToolbar>(toolbarName);
 
   const startButton = document.createElement("button");
   startButton.textContent = "startButton";
@@ -39,9 +38,7 @@ async function setup() {
 }
 
 async function setupEmpty() {
-  const { element, connect, disconnect, parent } = await fixture(
-    FASTToolbar()
-  );
+  const { element, connect, disconnect, parent } = await fixture<FASTToolbar>(toolbarName);
 
   return { element, connect, disconnect, document, parent };
 }
@@ -125,7 +122,7 @@ describe("Toolbar", () => {
     await connect();
 
     control1.disabled = true;
-    await DOM.nextUpdate();
+    await Updates.next();
 
     element.focus();
 
@@ -161,7 +158,7 @@ describe("Toolbar", () => {
     await connect();
 
     control1.hidden = true;
-    await DOM.nextUpdate();
+    await Updates.next();
 
     element.focus();
 
@@ -190,7 +187,7 @@ describe("Toolbar", () => {
     element.appendChild(startButton1);
     element.appendChild(startButton2);
 
-    await DOM.nextUpdate();
+    await Updates.next();
 
     element.focus();
 
@@ -219,7 +216,7 @@ describe("Toolbar", () => {
     element.appendChild(endButton1);
     element.appendChild(endButton2);
 
-    await DOM.nextUpdate();
+    await Updates.next();
 
     element.focus();
 
@@ -247,7 +244,7 @@ describe("Toolbar", () => {
     expect(document.activeElement).to.equal(control2);
 
     startButton.disabled = false;
-    await DOM.nextUpdate();
+    await Updates.next();
 
     pressRightArrowKey(element);
 
@@ -270,7 +267,7 @@ describe("Toolbar", () => {
     expect(document.activeElement).to.equal(control1);
 
     control1.disabled = true;
-    await DOM.nextUpdate();
+    await Updates.next();
 
     // re-focus the element because focus is lost when control1 became disabled
     element.focus();

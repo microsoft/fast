@@ -1,8 +1,68 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 29 May 2022 07:08:52 GMT and should not be manually modified.
+This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.4
+
+Wed, 22 Jun 2022 20:17:50 GMT
+
+### Changes
+
+- handle change for source.max set to sliderMaxPosition (email not defined)
+- fast-foundation checkbox - turn off indeterminate on user `checked` change (yinon@hotmail.com)
+- prevent keyboard events with space when checkbox is readonly (chhol@microsoft.com)
+- feat: horizontal-scroll scroll item into view (robarb@microsoft.com)
+
+## 3.0.0-alpha.3
+
+Wed, 15 Jun 2022 17:41:10 GMT
+
+### Changes
+
+- chore: fix package.json type fields (roeisenb@microsoft.com)
+- only rollup foundation after compiling with tsc (863023+radium-v@users.noreply.github.com)
+- Compare radio value property instead of attribute when value changes (sknoslo@gmail.com)
+- feat: simplify execution context to align closer with v1 (roeisenb@microsoft.com)
+- feat: implement W3C WC community context protocol and integrate with DI (roeisenb@microsoft.com)
+
+## 3.0.0-alpha.2
+
+Wed, 01 Jun 2022 22:21:24 GMT
+
+### Changes
+
+- Force version update (nicholasrice@users.noreply.github.com)
+
+## 3.0.0-alpha.1
+
+Wed, 01 Jun 2022 17:53:14 GMT
+
+### Changes
+
+- fix: update foundation and components template types (roeisenb@microsoft.com)
+- chore: update imports to match latest fast-element exports (roeisenb@microsoft.com)
+- fix incorrect and unsemantic slot names for search (chhol@microsoft.com)
+- fix: update to latest fast-element and change exports (roeisenb@microsoft.com)
+- update the default value of dialog's modal attribute to false (chhol@microsoft.com)
+- remove unnecessary DOM nodes from start/end slot templates (chhol@microsoft.com)
+- Updated to use the new FAST element 2.0 APIs for creating behaviors and creating element styles (7559015+janechu@users.noreply.github.com)
+- feat: officially expose testing helpers (roeisenb@microsoft.com)
+- chore: configure fast-foundation for internals stripping (roeisenb@microsoft.com)
+- change activeindicator attribute in tabs to hide-active-indicator to better support boolean attribute behavior (chhol@microsoft.com)
+- remove class and part names from slots in fast foundation templates (chhol@microsoft.com)
+- Deprecates style utilities and hard-codes focus-visible value (nicholasrice@users.noreply.github.com)
+- update attribute and observable change handlers with internal logic to be protected instead of private (chhol@microsoft.com)
+- fix: update foundation to new CSSDirective API (roeisenb@microsoft.com)
+- fix: update foundation to new APIs (roeisenb@microsoft.com)
+- fix: update fast-foundation to not use deprecated APIs (roeisenb@microsoft.com)
+- remove deprecated item slot name on accordion as it is the default slot (chhol@microsoft.com)
+- Set prerelease version (nicholasrice@users.noreply.github.com)
+- fix: update templates to use classList and fix classList bug (roeisenb@microsoft.com)
+- chore: fast-foundation package and build modernization (roeisenb@microsoft.com)
+- change trapFocus on dialog to noFocusTrap to better support boolean attributes (chhol@microsoft.com)
+- rename title attribute on disclosure to summary (chhol@microsoft.com)
 
 ## 2.46.9
 

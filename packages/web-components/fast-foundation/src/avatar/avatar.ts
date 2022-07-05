@@ -1,8 +1,4 @@
-import { attr, SyntheticViewTemplate } from "@microsoft/fast-element";
-import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
+import { attr, FASTElement, SyntheticViewTemplate } from "@microsoft/fast-element";
 
 type AvatarShape = "circle" | "square";
 
@@ -10,7 +6,7 @@ type AvatarShape = "circle" | "square";
  * Avatar configuration options
  * @public
  */
-export type AvatarOptions = FoundationElementDefinition & {
+export type AvatarOptions = {
     media?: string | SyntheticViewTemplate;
 };
 
@@ -22,12 +18,11 @@ export type AvatarOptions = FoundationElementDefinition & {
  * @slot badge - Used to provide a badge, such as a status badge
  * @csspart backplate - The wrapping container for the avatar
  * @csspart link - The avatar link
- * @csspart media - The media slot
  * @csspart content - The default slot
  *
  * @public
  */
-export class Avatar extends FoundationElement {
+export class FASTAvatar extends FASTElement {
     /**
      * Indicates the Avatar should have a color fill.
      *

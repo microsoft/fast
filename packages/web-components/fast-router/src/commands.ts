@@ -19,7 +19,7 @@ import { navigationContributor, NavigationContributor } from "./contributors.js"
 import { NavigationCommitPhase, NavigationPhase } from "./phases.js";
 
 /**
- * @alpha
+ * @beta
  */
 export interface NavigationCommand {
     createContributor(
@@ -29,7 +29,7 @@ export interface NavigationCommand {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export interface RenderCommand extends NavigationCommand {
     layout: Layout;
@@ -38,7 +38,7 @@ export interface RenderCommand extends NavigationCommand {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class Ignore implements NavigationCommand {
     public async createContributor() {
@@ -51,7 +51,7 @@ export class Ignore implements NavigationCommand {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class Redirect implements NavigationCommand {
     constructor(private redirect: string) {}
@@ -90,9 +90,12 @@ function factoryFromElementInstance(element: HTMLElement): ViewFactory {
     const fragment = document.createDocumentFragment();
     fragment.appendChild(element);
 
-    const view = new HTMLView(fragment, [
-        navigationContributor().createBehavior(element),
-    ]);
+    const factory = navigationContributor();
+    factory.nodeId = "h";
+
+    const view = new HTMLView(fragment, [factory], {
+        [factory.nodeId]: element,
+    });
 
     return {
         create() {
@@ -130,7 +133,7 @@ class RenderContributor {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class Render implements RenderCommand {
     private _layout: Layout | null = null;
@@ -193,7 +196,7 @@ export class Render implements RenderCommand {
                 } else if (typeof element === "function") {
                     // Do not cache it becase the function could return
                     // a different value each time.
-                    let def = FASTElementDefinition.forType(element);
+                    let def = FASTElementDefinition.getByType(element);
 
                     if (def) {
                         factory = factoryFromElementName(def.name);
@@ -205,7 +208,7 @@ export class Render implements RenderCommand {
                         } else if (element instanceof HTMLElement) {
                             factory = factoryFromElementInstance(element);
                         } else {
-                            def = FASTElementDefinition.forType(element as any);
+                            def = FASTElementDefinition.getByType(element);
 
                             if (def) {
                                 factory = factoryFromElementName(def.name);

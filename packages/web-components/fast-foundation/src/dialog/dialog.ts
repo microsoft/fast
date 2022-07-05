@@ -1,7 +1,12 @@
-import { attr, DOM, Notifier, Observable } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    Notifier,
+    Observable,
+    Updates,
+} from "@microsoft/fast-element";
 import { keyEscape, keyTab } from "@microsoft/fast-web-utilities";
 import { isTabbable } from "tabbable";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Switch Custom HTML Element.
@@ -16,17 +21,17 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  *
  * @public
  */
-export class Dialog extends FoundationElement {
+export class FASTDialog extends FASTElement {
     /**
      * Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal
      * overlay.  Clicks on the overlay will cause the dialog to emit a "dismiss" event.
      * @public
-     * @defaultValue - true
+     * @defaultValue - false
      * @remarks
      * HTML Attribute: modal
      */
     @attr({ mode: "boolean" })
-    public modal: boolean = true;
+    public modal: boolean = false;
 
     /**
      * The hidden state of the element.
@@ -40,17 +45,17 @@ export class Dialog extends FoundationElement {
     public hidden: boolean = false;
 
     /**
-     * Indicates that the dialog should trap focus.
+     * Indicates that the dialog should not trap focus.
      *
      * @public
      * @defaultValue - true
      * @remarks
-     * HTML Attribute: trap-focus
+     * HTML Attribute: no-focus-trap
      */
-    @attr({ attribute: "trap-focus", mode: "boolean" })
-    public trapFocus: boolean = true;
-    private trapFocusChanged = (): void => {
-        if ((this as FoundationElement).$fastController.isConnected) {
+    @attr({ attribute: "no-focus-trap", mode: "boolean" })
+    public noFocusTrap: boolean = false;
+    private noFocusTrapChanged = (): void => {
+        if (this.$fastController.isConnected) {
             this.updateTrapFocus();
         }
     };
@@ -190,7 +195,7 @@ export class Dialog extends FoundationElement {
     };
 
     private handleTabKeyDown = (e: KeyboardEvent): void => {
-        if (!this.trapFocus || this.hidden) {
+        if (this.noFocusTrap || this.hidden) {
             return;
         }
 
@@ -221,7 +226,7 @@ export class Dialog extends FoundationElement {
     private getTabQueueBounds = (): (HTMLElement | SVGElement)[] => {
         const bounds: HTMLElement[] = [];
 
-        return Dialog.reduceTabbableItems(bounds, this);
+        return FASTDialog.reduceTabbableItems(bounds, this);
     };
 
     /**
@@ -250,7 +255,7 @@ export class Dialog extends FoundationElement {
      * we should we be active trapping focus
      */
     private shouldTrapFocus = (): boolean => {
-        return this.trapFocus && !this.hidden;
+        return !this.noFocusTrap && !this.hidden;
     };
 
     /**
@@ -268,7 +273,7 @@ export class Dialog extends FoundationElement {
             this.isTrappingFocus = true;
             // Add an event listener for focusin events if we are trapping focus
             document.addEventListener("focusin", this.handleDocumentFocus);
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 if (this.shouldForceFocus(document.activeElement)) {
                     this.focusFirstElement();
                 }
@@ -290,7 +295,7 @@ export class Dialog extends FoundationElement {
      */
     private static reduceTabbableItems(
         elements: HTMLElement[],
-        element: FoundationElement & HTMLElement
+        element: FASTElement
     ): HTMLElement[] {
         if (element.getAttribute("tabindex") === "-1") {
             return elements;
@@ -298,7 +303,8 @@ export class Dialog extends FoundationElement {
 
         if (
             isTabbable(element) ||
-            (Dialog.isFocusableFastElement(element) && Dialog.hasTabbableShadow(element))
+            (FASTDialog.isFocusableFastElement(element) &&
+                FASTDialog.hasTabbableShadow(element))
         ) {
             elements.push(element);
             return elements;
@@ -306,7 +312,7 @@ export class Dialog extends FoundationElement {
 
         if (element.childElementCount) {
             return elements.concat(
-                Array.from(element.children).reduce(Dialog.reduceTabbableItems, [])
+                Array.from(element.children).reduce(FASTDialog.reduceTabbableItems, [])
             );
         }
 
@@ -320,9 +326,7 @@ export class Dialog extends FoundationElement {
      *
      * @internal
      */
-    private static isFocusableFastElement(
-        element: FoundationElement & HTMLElement
-    ): boolean {
+    private static isFocusableFastElement(element: FASTElement): boolean {
         return !!element.$fastController?.definition.shadowOptions?.delegatesFocus;
     }
 
@@ -333,7 +337,7 @@ export class Dialog extends FoundationElement {
      *
      * @internal
      */
-    private static hasTabbableShadow(element: FoundationElement & HTMLElement) {
+    private static hasTabbableShadow(element: FASTElement) {
         return Array.from(element.shadowRoot?.querySelectorAll("*") ?? []).some(x => {
             return isTabbable(x);
         });

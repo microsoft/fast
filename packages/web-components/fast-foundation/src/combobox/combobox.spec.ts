@@ -1,35 +1,33 @@
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
-import { fixture } from "../test-utilities/fixture";
-import { Combobox, comboboxTemplate as template } from "./index";
+import { FASTListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTCombobox, comboboxTemplate } from "./index.js";
 
 describe("Combobox", () => {
-    const FASTCombobox = Combobox.compose({
-        baseName: "combobox",
-        template
-    })
+    const Combobox = FASTCombobox.define({
+        name: uniqueElementName("combobox"),
+        template: comboboxTemplate()
+    });
 
-    const FASTOption = ListboxOption.compose({
-        baseName: "option",
-        template: listboxOptionTemplate
-    })
+    const Option = FASTListboxOption.define({
+        name: uniqueElementName("option"),
+        template: listboxOptionTemplate()
+    });
 
     async function setup() {
-        const { element, connect, disconnect, parent } = await fixture(
-            [FASTCombobox(), FASTOption()]
-        );
+        const { element, connect, disconnect, parent } = await fixture(Combobox);
 
         element.id = "combobox";
 
-        const option1 = document.createElement("fast-option") as ListboxOption;
+        const option1 = new Option();
         option1.textContent = "one";
 
-        const option2 = document.createElement("fast-option") as ListboxOption;
+        const option2 = new Option();
         option2.textContent = "two";
 
-        const option3 = document.createElement("fast-option") as ListboxOption;
+        const option3 = new Option();
         option3.textContent = "three";
 
         element.appendChild(option1);
@@ -62,7 +60,7 @@ describe("Combobox", () => {
 
         element.disabled = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-disabled")).to.equal("false");
 
@@ -169,7 +167,7 @@ describe("Combobox", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -199,7 +197,7 @@ describe("Combobox", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -226,7 +224,7 @@ describe("Combobox", () => {
 
                     element.value = "two";
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -297,7 +295,7 @@ describe("Combobox", () => {
 
             form.reset();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal("two");
 
@@ -329,7 +327,7 @@ describe("Combobox", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.control).to.exist;
 
@@ -343,31 +341,31 @@ describe("Combobox", () => {
 
         element.open = true;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.control.getAttribute("aria-activedescendant")).to.exist.and.be.empty;
 
         element.selectNextOption();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.control.getAttribute("aria-activedescendant")).to.equal(option1.id);
 
         element.selectNextOption();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.control.getAttribute("aria-activedescendant")).to.equal(option2.id);
 
         element.selectNextOption();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.control.getAttribute("aria-activedescendant")).to.equal(option3.id);
 
         element.value = "other";
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.control.getAttribute("aria-activedescendant")).to.be.empty;
 
@@ -391,13 +389,13 @@ describe("Combobox", () => {
 
         element.open = true;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.control.getAttribute("aria-controls")).to.equal(listboxId);
 
         element.open = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.control.getAttribute("aria-controls")).to.be.empty;
 

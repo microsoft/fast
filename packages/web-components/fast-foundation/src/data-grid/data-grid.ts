@@ -1,9 +1,10 @@
 import {
     attr,
-    DOM,
+    FASTElement,
     observable,
     RepeatBehavior,
     RepeatDirective,
+    Updates,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
@@ -17,9 +18,8 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
-import type { DataGridCell } from "./data-grid-cell.js";
-import type { DataGridRow } from "./data-grid-row.js";
+import type { FASTDataGridCell } from "./data-grid-cell.js";
+import type { FASTDataGridRow } from "./data-grid-row.js";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options.js";
 
 export { DataGridRowTypes, GenerateHeaderOptions };
@@ -65,7 +65,7 @@ export interface ColumnDefinition {
      * focus directly to the checkbox.
      * When headerCellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
-    headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
 
     /**
      * cell template
@@ -85,7 +85,7 @@ export interface ColumnDefinition {
      * When cellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
 
-    cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
 
     /**
      * Whether this column is the row header
@@ -99,7 +99,7 @@ export interface ColumnDefinition {
  * @slot - The default slot for custom row elements
  * @public
  */
-export class DataGrid extends FoundationElement {
+export class FASTDataGrid extends FASTElement {
     /**
      *  generates a basic column definition by examining sample row data
      */
@@ -137,7 +137,7 @@ export class DataGrid extends FoundationElement {
      */
     @attr({ attribute: "no-tabbing", mode: "boolean" })
     public noTabbing: boolean = false;
-    private noTabbingChanged(): void {
+    protected noTabbingChanged(): void {
         if (this.$fastController.isConnected) {
             if (this.noTabbing) {
                 this.setAttribute("tabIndex", "-1");
@@ -177,7 +177,7 @@ export class DataGrid extends FoundationElement {
      */
     @attr({ attribute: "grid-template-columns" })
     public gridTemplateColumns: string;
-    private gridTemplateColumnsChanged(): void {
+    protected gridTemplateColumnsChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateRowIndexes();
         }
@@ -190,9 +190,9 @@ export class DataGrid extends FoundationElement {
      */
     @observable
     public rowsData: object[] = [];
-    private rowsDataChanged(): void {
+    protected rowsDataChanged(): void {
         if (this.columnDefinitions === null && this.rowsData.length > 0) {
-            this.columnDefinitions = DataGrid.generateColumns(this.rowsData[0]);
+            this.columnDefinitions = FASTDataGrid.generateColumns(this.rowsData[0]);
         }
         if (this.$fastController.isConnected) {
             this.toggleGeneratedHeader();
@@ -206,12 +206,12 @@ export class DataGrid extends FoundationElement {
      */
     @observable
     public columnDefinitions: ColumnDefinition[] | null = null;
-    private columnDefinitionsChanged(): void {
+    protected columnDefinitionsChanged(): void {
         if (this.columnDefinitions === null) {
             this.generatedGridTemplateColumns = "";
             return;
         }
-        this.generatedGridTemplateColumns = DataGrid.generateTemplateColumns(
+        this.generatedGridTemplateColumns = FASTDataGrid.generateTemplateColumns(
             this.columnDefinitions
         );
         if (this.$fastController.isConnected) {
@@ -309,7 +309,7 @@ export class DataGrid extends FoundationElement {
     private rowsRepeatBehavior: RepeatBehavior | null;
     private rowsPlaceholder: Node | null = null;
 
-    private generatedHeader: DataGridRow | null = null;
+    private generatedHeader: FASTDataGridRow | null = null;
 
     private isUpdatingFocus: boolean = false;
     private pendingFocusUpdate: boolean = false;
@@ -340,11 +340,14 @@ export class DataGrid extends FoundationElement {
 
         this.toggleGeneratedHeader();
 
-        this.rowsRepeatBehavior = new RepeatDirective(
+        const rowsRepeatDirective = new RepeatDirective(
             x => x.rowsData,
             x => x.rowItemTemplate,
             { positioning: true }
-        ).createBehavior(this.rowsPlaceholder);
+        );
+        this.rowsRepeatBehavior = rowsRepeatDirective.createBehavior({
+            [rowsRepeatDirective.nodeId]: this.rowsPlaceholder,
+        });
 
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
@@ -362,7 +365,7 @@ export class DataGrid extends FoundationElement {
             this.setAttribute("tabindex", "-1");
         }
 
-        DOM.queueUpdate(this.queueRowIndexUpdate);
+        Updates.enqueue(this.queueRowIndexUpdate);
     }
 
     /**
@@ -388,7 +391,7 @@ export class DataGrid extends FoundationElement {
      */
     public handleRowFocus(e: Event): void {
         this.isUpdatingFocus = true;
-        const focusRow: DataGridRow = e.target as DataGridRow;
+        const focusRow: FASTDataGridRow = e.target as FASTDataGridRow;
         this.focusRowIndex = this.rowElements.indexOf(focusRow);
         this.focusColumnIndex = focusRow.focusColumnIndex;
         this.setAttribute("tabIndex", "-1");
@@ -570,7 +573,7 @@ export class DataGrid extends FoundationElement {
         }
         if (this.pendingFocusUpdate === false) {
             this.pendingFocusUpdate = true;
-            DOM.queueUpdate(() => this.updateFocus());
+            Updates.enqueue(() => this.updateFocus());
         }
     }
 
@@ -592,7 +595,7 @@ export class DataGrid extends FoundationElement {
             const generatedHeaderElement: HTMLElement = document.createElement(
                 this.rowElementTag
             );
-            this.generatedHeader = (generatedHeaderElement as unknown) as DataGridRow;
+            this.generatedHeader = (generatedHeaderElement as unknown) as FASTDataGridRow;
             this.generatedHeader.columnDefinitions = this.columnDefinitions;
             this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
             this.generatedHeader.rowType =
@@ -621,7 +624,7 @@ export class DataGrid extends FoundationElement {
                         newNode.nodeType === 1 &&
                         (newNode as Element).getAttribute("role") === "row"
                     ) {
-                        (newNode as DataGridRow).columnDefinitions = this.columnDefinitions;
+                        (newNode as FASTDataGridRow).columnDefinitions = this.columnDefinitions;
                     }
                 });
             });
@@ -633,7 +636,7 @@ export class DataGrid extends FoundationElement {
     private queueRowIndexUpdate = (): void => {
         if (!this.rowindexUpdateQueued) {
             this.rowindexUpdateQueued = true;
-            DOM.queueUpdate(this.updateRowIndexes);
+            Updates.enqueue(this.updateRowIndexes);
         }
     };
 
@@ -643,7 +646,7 @@ export class DataGrid extends FoundationElement {
         if (newGridTemplateColumns === undefined) {
             // try to generate columns based on manual rows
             if (this.generatedGridTemplateColumns === "" && this.rowElements.length > 0) {
-                const firstRow: DataGridRow = this.rowElements[0] as DataGridRow;
+                const firstRow: FASTDataGridRow = this.rowElements[0] as FASTDataGridRow;
                 this.generatedGridTemplateColumns = new Array(
                     firstRow.cellElements.length
                 )
@@ -655,7 +658,7 @@ export class DataGrid extends FoundationElement {
         }
 
         this.rowElements.forEach((element: Element, index: number): void => {
-            const thisRow = element as DataGridRow;
+            const thisRow = element as FASTDataGridRow;
             thisRow.rowIndex = index;
             thisRow.gridTemplateColumns = newGridTemplateColumns;
             if (this.columnDefinitionsStale) {

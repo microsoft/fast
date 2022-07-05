@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: add render directive, renderWith decorator, and RenderInstruction",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

@@ -2,7 +2,7 @@
 id: high-contrast
 title: High Contrast in FAST
 sidebar_label: High Contrast
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/high-contrast.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/design-systems/high-contrast.md
 description: High contrast mode uses the CSS media feature, forced-colors. When forced-colors is set to active, the user agent will apply a limited color palette to the component.
 keywords:
     - forced-colors

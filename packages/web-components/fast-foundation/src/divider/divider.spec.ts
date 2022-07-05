@@ -1,17 +1,18 @@
 import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
-import { fixture } from "../test-utilities/fixture";
-import { DividerRole } from "./divider.options";
-import { Divider, dividerTemplate as template } from "./index";
+import { Updates } from "@microsoft/fast-element";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { DividerRole } from "./divider.options.js";
+import { FASTDivider, dividerTemplate } from "./index.js";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
-const FASTDivider = Divider.compose({
-    baseName: "divider",
-    template
-})
+const dividerName = uniqueElementName();
+FASTDivider.define({
+    name: dividerName,
+    template: dividerTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTDivider());
+    const { element, connect, disconnect } = await fixture<FASTDivider>(dividerName);
 
     return { element, connect, disconnect };
 }
@@ -28,7 +29,7 @@ describe("Divider", () => {
 
         element.role = DividerRole.presentation;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("role")).to.equal(`${DividerRole.presentation}`);
 
@@ -39,7 +40,7 @@ describe("Divider", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("role")).to.equal(`${DividerRole.separator}`);
 
@@ -59,7 +60,7 @@ describe("Divider", () => {
 
         element.orientation = Orientation.vertical;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-orientation")).to.equal(
             `${Orientation.vertical}`
