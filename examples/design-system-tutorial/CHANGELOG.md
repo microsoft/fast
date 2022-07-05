@@ -1,8 +1,16 @@
 # Change Log - fast-design-system-demo
 
-This log was last generated on Wed, 01 Jun 2022 22:21:24 GMT and should not be manually modified.
+This log was last generated on Tue, 05 Jul 2022 18:04:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0
+
+Tue, 05 Jul 2022 18:04:06 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.10.3 (email not defined)
 
 ## 1.0.0
 

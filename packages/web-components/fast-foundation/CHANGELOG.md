@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
+This log was last generated on Tue, 05 Jul 2022 18:04:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.10
+
+Tue, 05 Jul 2022 18:04:06 GMT
+
+### Patches
+
+- handle change for source.max set to sliderMaxPosition (email not defined)
+- Compare radio value property instead of attribute when value changes (sknoslo@gmail.com)
+- feat: horizontal-scroll scroll item into view (robarb@microsoft.com)
+- prevent keyboard events with space when checkbox is readonly (chhol@microsoft.com)
+- fast-foundation checkbox - turn off indeterminate on user `checked` change (yinon@hotmail.com)
 
 ## 3.0.0-alpha.4
 

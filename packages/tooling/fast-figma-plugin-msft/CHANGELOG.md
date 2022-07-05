@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-figma-plugin-msft
 
-This log was last generated on Wed, 15 Jun 2022 17:41:10 GMT and should not be manually modified.
+This log was last generated on Tue, 05 Jul 2022 18:04:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.16
+
+Tue, 05 Jul 2022 18:04:06 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.10.3 (email not defined)
 
 ## 0.8.16
 

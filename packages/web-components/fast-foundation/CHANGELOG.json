@@ -2,6 +2,53 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 05 Jul 2022 18:04:06 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.10",
+      "version": "2.46.10",
+      "comments": {
+        "patch": [
+          {
+            "comment": "handle change for source.max set to sliderMaxPosition",
+            "author": "email not defined",
+            "commit": "94c41d0edfae872ccd93730b0424abbe01943ba3",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Compare radio value property instead of attribute when value changes",
+            "author": "sknoslo@gmail.com",
+            "commit": "b93af8845002a5703aeacf25a2ffd79164369b51",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "feat: horizontal-scroll scroll item into view",
+            "author": "robarb@microsoft.com",
+            "commit": "3320b684158bc7224c5f2526647eb9d9989a40af",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "prevent keyboard events with space when checkbox is readonly",
+            "author": "chhol@microsoft.com",
+            "commit": "324ffff458f4463e3aedd85b1cdf2c45b0e31dc8",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fast-foundation checkbox - turn off indeterminate on user `checked` change",
+            "author": "yinon@hotmail.com",
+            "commit": "5a833876130566e7a7e70fc3b73deffc3233bb2c",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "none": [
+          {
+            "comment": "fix horizontal scroll tests for archive/fast-element-1 branch",
+            "author": "chhol@microsoft.com",
+            "commit": "bb5a7bfabbdbcef6c74d1fe203c7a56f1ba8e8a5",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 22 Jun 2022 20:17:50 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.4",
       "version": "3.0.0-alpha.4",

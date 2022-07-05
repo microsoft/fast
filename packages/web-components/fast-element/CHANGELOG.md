@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
+This log was last generated on Tue, 05 Jul 2022 18:04:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.10.3
+
+Tue, 05 Jul 2022 18:04:06 GMT
+
+### Patches
+
+- when recycle option is turn off in repeat, don't use existing views (email not defined)
 
 ## 2.0.0-beta.3
 

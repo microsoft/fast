@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "prevent keyboard events with space when checkbox is readonly",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}
