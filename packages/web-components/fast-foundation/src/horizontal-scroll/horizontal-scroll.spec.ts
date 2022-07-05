@@ -1,4 +1,4 @@
-import { css, DOM, html } from "@microsoft/fast-element";
+import { css, DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
 import { HorizontalScroll, horizontalScrollTemplate as template } from "./index";
@@ -72,7 +72,7 @@ const scrollIntoViewTest = async (
 ) => {
     element.scrollInView(item, padding, paddingRight);
 
-    await Updates.next()
+    await DOM.nextUpdate();
     const {offsetLeft, offsetWidth} = typeof item === "number" ? element.scrollItems[item] : item;
     const xPosition = getXPosition(element) ?? 0;
     expect(offsetLeft - xPosition).to.greaterThanOrEqual(padding);
@@ -370,7 +370,7 @@ describe("HorizontalScroll", () => {
             const { element, disconnect } = await setup();
             element.scrollInView(2);
 
-            await Updates.next();
+            await DOM.nextUpdate();;
             expect(getXPosition(element)).to.equal(0);
 
             await disconnect();
