@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "when recycle option is turn off in repeat, don't use existing views",
-  "packageName": "@microsoft/fast-element",
-  "email": "email not defined",
-  "dependentChangeType": "patch"
-}
