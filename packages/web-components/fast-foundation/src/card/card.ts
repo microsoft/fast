@@ -1,4 +1,4 @@
-import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { FASTElement } from "@microsoft/fast-element";
 
 /**
  * An Card Custom HTML Element.
@@ -7,4 +7,4 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  *
  * @public
  */
-export class Card extends FoundationElement {}
+export class FASTCard extends FASTElement {}

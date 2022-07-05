@@ -14,13 +14,12 @@ import {
     keyHome,
     Orientation,
 } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { getDirection } from "../utilities/direction.js";
 import { convertPixelToPercent } from "./slider-utilities.js";
 import { FormAssociatedSlider } from "./slider.form-associated.js";
 
 /**
- * The selection modes of a {@link @microsoft/fast-foundation#(Slider:class)}.
+ * The selection modes of a {@link @microsoft/fast-foundation#(FASTSlider:class)}.
  * @public
  */
 export const SliderMode = {
@@ -34,7 +33,7 @@ export const SliderMode = {
 export type SliderMode = typeof SliderMode[keyof typeof SliderMode];
 
 /**
- * The configuration structure of {@link @microsoft/fast-foundation#(Slider:class)}.
+ * The configuration structure of {@link @microsoft/fast-foundation#(FASTSlider:class)}.
  * @public
  */
 export interface SliderConfiguration {
@@ -49,7 +48,7 @@ export interface SliderConfiguration {
  * Slider configuration options
  * @public
  */
-export type SliderOptions = FoundationElementDefinition & {
+export type SliderOptions = {
     thumb?: string | SyntheticViewTemplate;
 };
 
@@ -69,7 +68,7 @@ export type SliderOptions = FoundationElementDefinition & {
  *
  * @public
  */
-export class Slider extends FormAssociatedSlider implements SliderConfiguration {
+export class FASTSlider extends FormAssociatedSlider implements SliderConfiguration {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      *

@@ -1,8 +1,8 @@
 import { css, html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Avatar as FoundationAvatar } from "../avatar.js";
+import type { FASTAvatar } from "../avatar.js";
 
-type AvatarStoryArgs = Args & FoundationAvatar;
+type AvatarStoryArgs = Args & FASTAvatar;
 type AvatarStoryMeta = Meta<AvatarStoryArgs>;
 
 const storyTemplate = html<AvatarStoryArgs>`
@@ -39,7 +39,7 @@ export default {
     },
     decorators: [
         Story => {
-            const renderedStory = Story() as FoundationAvatar;
+            const renderedStory = Story() as FASTAvatar;
 
             const storyStyles = css`
                 :host {

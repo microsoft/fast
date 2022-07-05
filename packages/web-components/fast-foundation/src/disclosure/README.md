@@ -55,35 +55,30 @@ export const myDisclosure = Disclosure.compose({
 
 
 
-### class: `Disclosure`
+### class: `FASTDisclosure`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `expanded`      | public  | `boolean`                             | `false` | Determines if the element should show the extra content or not.                                                                                                                     |                   |
-| `summary`       | public  | `string`                              |         | Invoker title                                                                                                                                                                       |                   |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name       | Privacy | Type      | Default | Description                                                     | Inherited From |
+| ---------- | ------- | --------- | ------- | --------------------------------------------------------------- | -------------- |
+| `expanded` | public  | `boolean` | `false` | Determines if the element should show the extra content or not. |                |
+| `summary`  | public  | `string`  |         | Invoker title                                                   |                |
 
 #### Methods
 
-| Name              | Privacy   | Description                                       | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ------------------------------------------------- | ---------- | ------ | ----------------- |
-| `show`            | public    | Show extra content.                               |            | `void` |                   |
-| `hide`            | public    | Hide extra content.                               |            | `void` |                   |
-| `toggle`          | public    | Toggle the current(expanded/collapsed) state.     |            | `void` |                   |
-| `setup`           | protected | Register listener and set default disclosure mode |            | `void` |                   |
-| `onToggle`        | protected | Update the aria attr and fire \`toggle\` event    |            |        |                   |
-| `templateChanged` | protected |                                                   |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |                                                   |            | `void` | FoundationElement |
+| Name       | Privacy   | Description                                       | Parameters | Return | Inherited From |
+| ---------- | --------- | ------------------------------------------------- | ---------- | ------ | -------------- |
+| `show`     | public    | Show extra content.                               |            | `void` |                |
+| `hide`     | public    | Hide extra content.                               |            | `void` |                |
+| `toggle`   | public    | Toggle the current(expanded/collapsed) state.     |            | `void` |                |
+| `setup`    | protected | Register listener and set default disclosure mode |            | `void` |                |
+| `onToggle` | protected | Update the aria attr and fire \`toggle\` event    |            |        |                |
 
 #### Events
 

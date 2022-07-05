@@ -1,36 +1,33 @@
-import { html, ref, slotted, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { Tabs, TabsOptions } from "./tabs.js";
+import { ElementViewTemplate, html, ref, slotted, when } from "@microsoft/fast-element";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
+import type { FASTTabs, TabsOptions } from "./tabs.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(Tabs:class)} component.
+ * The template for the {@link @microsoft/fast-foundation#(FASTTabs:class)} component.
  * @public
  */
-export const tabsTemplate: FoundationElementTemplate<ViewTemplate<Tabs>, TabsOptions> = (
-    context,
-    definition
-) => html`
-    <template class="${x => x.orientation}">
-        ${startSlotTemplate(context, definition)}
-        <div class="tablist" part="tablist" role="tablist">
-            <slot name="tab" ${slotted("tabs")}></slot>
+export function tabsTemplate(options: TabsOptions = {}): ElementViewTemplate<FASTTabs> {
+    return html<FASTTabs>`
+        <template class="${x => x.orientation}">
+            ${startSlotTemplate(options)}
+            <div class="tablist" part="tablist" role="tablist">
+                <slot name="tab" ${slotted("tabs")}></slot>
 
-            ${when(
-                x => x.showActiveIndicator,
-                html<Tabs>`
-                    <div
-                        ${ref("activeIndicatorRef")}
-                        class="active-indicator"
-                        part="active-indicator"
-                    ></div>
-                `
-            )}
-        </div>
-        ${endSlotTemplate(context, definition)}
-        <div class="tabpanel">
-            <slot name="tabpanel" ${slotted("tabpanels")}></slot>
-        </div>
-    </template>
-`;
+                ${when(
+                    x => x.showActiveIndicator,
+                    html<FASTTabs>`
+                        <div
+                            ${ref("activeIndicatorRef")}
+                            class="active-indicator"
+                            part="active-indicator"
+                        ></div>
+                    `
+                )}
+            </div>
+            ${endSlotTemplate(options)}
+            <div class="tabpanel">
+                <slot name="tabpanel" ${slotted("tabpanels")}></slot>
+            </div>
+        </template>
+    `;
+}

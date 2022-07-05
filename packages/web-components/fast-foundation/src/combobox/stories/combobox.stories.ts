@@ -1,9 +1,9 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Combobox as FoundationCombobox } from "../combobox.js";
+import type { FASTCombobox } from "../combobox.js";
 import { ComboboxAutocomplete } from "../combobox.options.js";
 
-type ComboboxStoryArgs = Args & FoundationCombobox;
+type ComboboxStoryArgs = Args & FASTCombobox;
 type ComboboxStoryMeta = Meta<ComboboxStoryArgs>;
 
 const storyTemplate = html<ComboboxStoryArgs>`

@@ -1,15 +1,16 @@
 import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../testing/fixture.js";
-import { NumberField, numberFieldTemplate as template } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTNumberField, numberFieldTemplate } from "./index.js";
 
-const FASTNumberField = NumberField.compose({
-    baseName: "number-field",
-    template,
-})
+const numberFieldName = uniqueElementName();
+FASTNumberField.define({
+    name: numberFieldName,
+    template: numberFieldTemplate()
+});
 
-async function setup(props?: Partial<NumberField>) {
-    const { element, connect, disconnect, parent } = await fixture(FASTNumberField());
+async function setup(props?: Partial<FASTNumberField>) {
+    const { element, connect, disconnect, parent } = await fixture<FASTNumberField>(numberFieldName);
 
     if(props) {
         for(let key in props) {

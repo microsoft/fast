@@ -1,15 +1,10 @@
 import {
     Constructable,
     ExecutionContext,
+    FASTElementDefinition,
     HTMLView,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { DesignSystem, DesignSystemRegistrationContext } from "../design-system/index.js";
-import type { Container } from "../di/di.js";
-import type {
-    FoundationElementDefinition,
-    FoundationElementRegistry,
-} from "../foundation-element/foundation-element.js";
 
 /**
  * Options used to customize the creation of the test fixture.
@@ -36,14 +31,9 @@ export interface FixtureOptions {
 
     /**
      * The execution context to use during binding.
-     * @defaultValue {@link @microsoft/fast-element#defaultExecutionContext}
+     * @defaultValue {@link @microsoft/fast-element#ExecutionContext}
      */
     context?: ExecutionContext;
-
-    /**
-     * A pre-configured design system instance used in setting up the fixture.
-     */
-    designSystem?: DesignSystem;
 }
 
 /**
@@ -112,20 +102,13 @@ function findElement(view: HTMLView): HTMLElement {
  * Creates a random, unique name suitable for use as a Custom Element name.
  * @public
  */
-export function uniqueElementName(): string {
-    return `fast-unique-${Math.random().toString(36).substring(7)}`;
-}
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-function isElementRegistry<T>(
-    obj: any
-): obj is FoundationElementRegistry<FoundationElementDefinition, any> {
-    return typeof obj.register === "function";
+export function uniqueElementName(prefix: string = "fast-unique"): string {
+    return `${prefix}-${Math.random().toString(36).substring(7)}`;
 }
 
 /**
  * Creates a test fixture suitable for testing custom elements, templates, and bindings.
- * @param templateNameOrRegistry An HTML template or single element name to create the fixture for.
+ * @param templateNameOrType An HTML template or single element name to create the fixture for.
  * @param options Enables customizing fixture creation behavior.
  * @remarks
  * Yields control to the caller one Microtask later, in order to
@@ -133,17 +116,7 @@ function isElementRegistry<T>(
  * @public
  */
 export async function fixture<TElement = HTMLElement>(
-    templateNameOrRegistry:
-        | ViewTemplate
-        | string
-        | FoundationElementRegistry<FoundationElementDefinition, Constructable<TElement>>
-        | [
-              FoundationElementRegistry<
-                  FoundationElementDefinition,
-                  Constructable<TElement>
-              >,
-              ...FoundationElementRegistry<FoundationElementDefinition, Constructable>[]
-          ],
+    templateNameOrType: ViewTemplate | string | Constructable<TElement>,
     options: FixtureOptions = {}
 ): Promise<Fixture<TElement>> {
     const document = options.document || globalThis.document;
@@ -151,30 +124,21 @@ export async function fixture<TElement = HTMLElement>(
     const source = options.source || {};
     const context = options.context || ExecutionContext.default;
 
-    if (typeof templateNameOrRegistry === "string") {
-        const html = `<${templateNameOrRegistry}></${templateNameOrRegistry}>`;
-        templateNameOrRegistry = new ViewTemplate(html, {});
-    } else if (isElementRegistry(templateNameOrRegistry)) {
-        templateNameOrRegistry = [templateNameOrRegistry];
+    if (typeof templateNameOrType === "function") {
+        const def = FASTElementDefinition.getByType(templateNameOrType);
+        if (!def) {
+            throw new Error("Missing FASTElement definition.");
+        }
+
+        templateNameOrType = def.name;
     }
 
-    if (Array.isArray(templateNameOrRegistry)) {
-        const first = templateNameOrRegistry[0];
-        const ds = options.designSystem || DesignSystem.getOrCreate(parent);
-        let prefix = "";
-
-        ds.register(templateNameOrRegistry, {
-            register(container: Container, context: DesignSystemRegistrationContext) {
-                prefix = context.elementPrefix;
-            },
-        });
-
-        const elementName = `${prefix}-${first.definition.baseName}`;
-        const html = `<${elementName}></${elementName}>`;
-        templateNameOrRegistry = new ViewTemplate(html, {});
+    if (typeof templateNameOrType === "string") {
+        const html = `<${templateNameOrType}></${templateNameOrType}>`;
+        templateNameOrType = new ViewTemplate(html, {});
     }
 
-    const view = templateNameOrRegistry.create();
+    const view = templateNameOrType.create();
     const element = findElement(view) as any;
     let isConnected = false;
 
@@ -209,7 +173,7 @@ export async function fixture<TElement = HTMLElement>(
 
     return {
         document,
-        template: templateNameOrRegistry,
+        template: templateNameOrType,
         view,
         parent,
         element,

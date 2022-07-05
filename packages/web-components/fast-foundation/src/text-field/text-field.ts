@@ -10,7 +10,6 @@ import {
     StartEndOptions,
 } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { FormAssociatedTextField } from "./text-field.form-associated.js";
 import { TextFieldType } from "./text-field.options.js";
 
@@ -20,7 +19,7 @@ export { TextFieldType };
  * Text field configuration options
  * @public
  */
-export type TextFieldOptions = FoundationElementDefinition & StartEndOptions;
+export type TextFieldOptions = StartEndOptions;
 
 /**
  * A Text Field Custom HTML Element.
@@ -36,7 +35,7 @@ export type TextFieldOptions = FoundationElementDefinition & StartEndOptions;
  *
  * @public
  */
-export class TextField extends FormAssociatedTextField {
+export class FASTTextField extends FormAssociatedTextField {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -275,5 +274,5 @@ applyMixins(DelegatesARIATextbox, ARIAGlobalStatesAndProperties);
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface TextField extends StartEnd, DelegatesARIATextbox {}
-applyMixins(TextField, StartEnd, DelegatesARIATextbox);
+export interface FASTTextField extends StartEnd, DelegatesARIATextbox {}
+applyMixins(FASTTextField, StartEnd, DelegatesARIATextbox);

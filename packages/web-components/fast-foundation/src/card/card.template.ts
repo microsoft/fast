@@ -1,15 +1,12 @@
-import { html } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { Card } from "./card.js";
+import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { FASTCard } from "./card.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Card} component.
+ * The template for the {@link @microsoft/fast-foundation#FASTCard} component.
  * @public
  */
-export const cardTemplate: FoundationElementTemplate<ViewTemplate<Card>> = (
-    context,
-    definition
-) => html`
-    <slot></slot>
-`;
+export function cardTemplate(): ElementViewTemplate<FASTCard> {
+    return html`
+        <slot></slot>
+    `;
+}

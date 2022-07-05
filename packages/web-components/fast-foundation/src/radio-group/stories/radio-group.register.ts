@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { RadioGroup } from "../radio-group.js";
-import { radioGroupTemplate as template } from "../radio-group.template.js";
+import { FASTRadioGroup } from "../radio-group.js";
+import { radioGroupTemplate } from "../radio-group.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -25,12 +24,8 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        RadioGroup.compose({
-            baseName: "radio-group",
-            template,
-            styles,
-        })()
-    );
+FASTRadioGroup.define({
+    name: "fast-radio-group",
+    template: radioGroupTemplate(),
+    styles,
+});

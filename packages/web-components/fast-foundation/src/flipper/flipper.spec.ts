@@ -1,16 +1,17 @@
 import { expect } from "chai";
 import { Updates } from "@microsoft/fast-element";
-import { fixture } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { FlipperDirection } from "./flipper.options.js";
-import { Flipper, flipperTemplate as template } from "./index.js";
+import { FASTFlipper, flipperTemplate } from "./index.js";
 
-const FASTFlipper = Flipper.compose({
-    baseName: "flipper",
-    template
-})
+const flipperName = uniqueElementName();
+FASTFlipper.define({
+    name: flipperName,
+    template: flipperTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTFlipper());
+    const { element, connect, disconnect } = await fixture<FASTFlipper>(flipperName);
 
     return { element, connect, disconnect };
 }

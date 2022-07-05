@@ -1,16 +1,17 @@
 import { expect, assert } from "chai";
-import { Switch, switchTemplate as template } from "./index.js";
-import { fixture } from "../testing/fixture.js";
+import { FASTSwitch, switchTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 import { keySpace, keyEnter } from "@microsoft/fast-web-utilities";
 
-const FASTSwitch = Switch.compose({
-    baseName: "switch",
-    template
-})
+const switchName = uniqueElementName();
+FASTSwitch.define({
+    name: switchName,
+    template: switchTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture(FASTSwitch());
+    const { element, connect, disconnect, parent } = await fixture<FASTSwitch>(switchName);
 
     return { element, connect, disconnect, parent };
 }

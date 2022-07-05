@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Skeleton } from "../skeleton.js";
-import { skeletonTemplate as template } from "../skeleton.template.js";
+import { FASTSkeleton } from "../skeleton.js";
+import { skeletonTemplate } from "../skeleton.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -84,12 +83,8 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Skeleton.compose({
-            baseName: "skeleton",
-            styles,
-            template,
-        })()
-    );
+FASTSkeleton.define({
+    name: "fast-skeleton",
+    styles,
+    template: skeletonTemplate(),
+});

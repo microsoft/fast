@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Menu as FoundationMenu } from "../menu.js";
+import type { FASTMenu } from "../menu.js";
 
-type MenuStoryArgs = Args & FoundationMenu;
+type MenuStoryArgs = Args & FASTMenu;
 type MenuStoryMeta = Meta<MenuStoryArgs>;
 
 const storyTemplate = html<MenuStoryArgs>`

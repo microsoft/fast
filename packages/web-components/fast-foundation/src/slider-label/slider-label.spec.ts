@@ -1,16 +1,16 @@
 import { expect } from "chai";
-import { SliderLabel, sliderLabelTemplate as template } from "../index.js";
-import { fixture } from "../testing/fixture.js";
-import { DOM, Updates } from "@microsoft/fast-element";
+import { FASTSliderLabel, sliderLabelTemplate } from "../index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { Updates } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
-const FASTSliderLabel = SliderLabel.compose({
-    baseName: "slider-label",
-    template
-})
+const SliderLabel = FASTSliderLabel.define({
+    name: uniqueElementName("slider-label"),
+    template: sliderLabelTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTSliderLabel())
+    const { element, connect, disconnect } = await fixture(SliderLabel)
 
     return { element, connect, disconnect };
 }
@@ -42,13 +42,13 @@ describe("Slider label", () => {
     it("should add a class equal to the `sliderOrientation` value", async () => {
         const { element, connect, disconnect } = await setup();
 
-        (element as SliderLabel).sliderOrientation = Orientation.horizontal;
+        (element as FASTSliderLabel).sliderOrientation = Orientation.horizontal;
 
         await connect();
 
         expect(element.classList.contains(`${Orientation.horizontal}`)).to.equal(true);
 
-        (element as SliderLabel).sliderOrientation = Orientation.vertical;
+        (element as FASTSliderLabel).sliderOrientation = Orientation.vertical;
 
         await Updates.next();
 

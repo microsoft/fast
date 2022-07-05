@@ -18,7 +18,7 @@ export { TextAreaResize };
  *
  * @public
  */
-export class TextArea extends FormAssociatedTextArea {
+export class FASTTextArea extends FormAssociatedTextArea {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -215,5 +215,5 @@ export class TextArea extends FormAssociatedTextArea {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface TextArea extends DelegatesARIATextbox {}
-applyMixins(TextArea, DelegatesARIATextbox);
+export interface FASTTextArea extends DelegatesARIATextbox {}
+applyMixins(FASTTextArea, DelegatesARIATextbox);

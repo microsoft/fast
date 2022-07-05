@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Tabs } from "../tabs.js";
-import { tabsTemplate as template } from "../tabs.template.js";
+import { FASTTabs } from "../tabs.js";
+import { tabsTemplate } from "../tabs.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -94,12 +93,8 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Tabs.compose({
-            baseName: "tabs",
-            styles,
-            template,
-        })()
-    );
+FASTTabs.define({
+    name: "fast-tabs",
+    styles,
+    template: tabsTemplate(),
+});

@@ -1,6 +1,5 @@
-import { attr } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { DividerRole } from "./divider.options.js";
 
 export { DividerRole };
@@ -11,7 +10,7 @@ export { DividerRole };
  *
  * @public
  */
-export class Divider extends FoundationElement {
+export class FASTDivider extends FASTElement {
     /**
      * The role of the element.
      *

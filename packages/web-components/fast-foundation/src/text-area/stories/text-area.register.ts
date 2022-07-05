@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { TextArea } from "../text-area.js";
-import { textAreaTemplate as template } from "../text-area.template.js";
+import { FASTTextArea } from "../text-area.js";
+import { textAreaTemplate } from "../text-area.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         display: inline-block;
         font-family: var(--body-font);
@@ -105,15 +104,11 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        TextArea.compose({
-            baseName: "text-area",
-            template,
-            shadowOptions: {
-                delegatesFocus: true,
-            },
-            styles,
-        })()
-    );
+FASTTextArea.define({
+    name: "fast-text-area",
+    template: textAreaTemplate(),
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+    styles,
+});

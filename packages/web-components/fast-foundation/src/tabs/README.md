@@ -106,33 +106,28 @@ export const myTabs = Tabs.compose({
 
 
 
-### class: `Tabs`
+### class: `FASTTabs`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name                  | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `orientation`         | public  | `TabsOrientation`                     |         | The orientation                                                                                                                                                                     |                   |
-| `activeid`            | public  | `string`                              |         | The id of the active tab                                                                                                                                                            |                   |
-| `hideActiveIndicator` | public  | `boolean`                             | `false` | Whether or not to show the active indicator                                                                                                                                         |                   |
-| `activetab`           | public  | `HTMLElement`                         |         | A reference to the active tab                                                                                                                                                       |                   |
-| `$presentation`       | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`            | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`              | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name                  | Privacy | Type              | Default | Description                                 | Inherited From |
+| --------------------- | ------- | ----------------- | ------- | ------------------------------------------- | -------------- |
+| `orientation`         | public  | `TabsOrientation` |         | The orientation                             |                |
+| `activeid`            | public  | `string`          |         | The id of the active tab                    |                |
+| `hideActiveIndicator` | public  | `boolean`         | `false` | Whether or not to show the active indicator |                |
+| `activetab`           | public  | `HTMLElement`     |         | A reference to the active tab               |                |
 
 #### Methods
 
-| Name              | Privacy   | Description                    | Parameters           | Return | Inherited From    |
-| ----------------- | --------- | ------------------------------ | -------------------- | ------ | ----------------- |
-| `adjust`          | public    | The adjust method for FASTTabs | `adjustment: number` | `void` |                   |
-| `templateChanged` | protected |                                |                      | `void` | FoundationElement |
-| `stylesChanged`   | protected |                                |                      | `void` | FoundationElement |
+| Name     | Privacy | Description                    | Parameters           | Return | Inherited From |
+| -------- | ------- | ------------------------------ | -------------------- | ------ | -------------- |
+| `adjust` | public  | The adjust method for FASTTabs | `adjustment: number` | `void` |                |
 
 #### Events
 
@@ -168,36 +163,21 @@ export const myTabs = Tabs.compose({
 
 ### Variables
 
-| Name              | Description                                                              | Type                                                  |
-| ----------------- | ------------------------------------------------------------------------ | ----------------------------------------------------- |
-| `TabsOrientation` | The orientation of the @microsoft/fast-foundation#(Tabs:class) component | `{ vertical: "vertical", horizontal: "horizontal", }` |
+| Name              | Description                                                                  | Type                                                  |
+| ----------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `TabsOrientation` | The orientation of the @microsoft/fast-foundation#(FASTTabs:class) component | `{ vertical: "vertical", horizontal: "horizontal", }` |
 
 <hr/>
 
 
 
-### class: `TabPanel`
+### class: `FASTTabPanel`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
-
-#### Fields
-
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
-
-#### Methods
-
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Slots
 
@@ -209,29 +189,19 @@ export const myTabs = Tabs.compose({
 
 
 
-### class: `Tab`
+### class: `FASTTab`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                 | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `disabled`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [disabled HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) for more information. |                   |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                     | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                  | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.         | FoundationElement |
-
-#### Methods
-
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name       | Privacy | Type      | Default | Description                                                                                                                                                                                 | Inherited From |
+| ---------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `disabled` | public  | `boolean` |         | When true, the control will be immutable by user interaction. See [disabled HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) for more information. |                |
 
 #### Attributes
 

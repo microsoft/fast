@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { TreeItem } from "../tree-item.js";
-import { treeItemTemplate as template } from "../tree-item.template.js";
+import { FASTTreeItem } from "../tree-item.js";
+import { treeItemTemplate } from "../tree-item.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -201,23 +200,20 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        TreeItem.compose({
-            baseName: "tree-item",
-            styles,
-            template,
-            expandCollapseGlyph: /* html */ `
-                <svg
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="expand-collapse-glyph"
-                >
-                    <path
-                        d="M5 12.3a1 1 0 0 0 1.6.8L11 8.8a1.5 1.5 0 0 0 0-2.3L6.6 2.2A1 1 0 0 0 5 3v9.3Z"
-                    />
-                </svg>
-            `,
-        })()
-    );
+FASTTreeItem.define({
+    name: "fast-tree-item",
+    styles,
+    template: treeItemTemplate({
+        expandCollapseGlyph: /* html */ `
+            <svg
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+                class="expand-collapse-glyph"
+            >
+                <path
+                    d="M5 12.3a1 1 0 0 0 1.6.8L11 8.8a1.5 1.5 0 0 0 0-2.3L6.6 2.2A1 1 0 0 0 5 3v9.3Z"
+                />
+            </svg>
+        `,
+    }),
+});

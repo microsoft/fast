@@ -399,15 +399,15 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
         new (): HTMLElement;
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-    define<TType extends Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): TType;
-    metadata<TType_1 extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType_1, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType_1>;
+    define: typeof define;
+    compose: typeof compose;
 };
 
 // @public
 export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
-    constructor(type: TType, nameOrConfig?: PartialFASTElementDefinition | string);
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
+    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType>;
     define(registry?: CustomElementRegistry): this;
     readonly elementOptions?: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
@@ -879,6 +879,11 @@ export function volatile(target: {}, name: string | Accessor, descriptor: Proper
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
+
+// Warnings were encountered during analysis:
+//
+// dist/dts/components/fast-element.d.ts:73:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:78:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { NumberField as FoundationNumberField } from "../number-field.js";
+import type { FASTNumberField } from "../number-field.js";
 
-type NumberFieldStoryArgs = Args & FoundationNumberField;
+type NumberFieldStoryArgs = Args & FASTNumberField;
 type NumberFieldStoryMeta = Meta<NumberFieldStoryArgs>;
 
 const componentTemplate = html<NumberFieldStoryArgs>`

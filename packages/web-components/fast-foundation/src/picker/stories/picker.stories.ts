@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Picker as FoundationPicker } from "../picker.js";
+import type { FASTPicker } from "../picker.js";
 
-type PickerArgs = Args & FoundationPicker;
+type PickerArgs = Args & FASTPicker;
 type PickerMeta = Meta<PickerArgs>;
 
 const storyTemplate = html<PickerArgs>`

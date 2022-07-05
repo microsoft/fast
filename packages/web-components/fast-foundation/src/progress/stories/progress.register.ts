@@ -1,10 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { BaseProgress as Progress } from "../base-progress.js";
-import type { ProgressOptions } from "../progress.options.js";
-import { progressTemplate as template } from "../progress.template.js";
+import { FASTProgress } from "../progress.js";
+import { progressTemplate } from "../progress.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         align-items: center;
         display: flex;
@@ -108,18 +106,15 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Progress.compose<ProgressOptions>({
-            baseName: "progress",
-            template,
-            styles,
-            indeterminateIndicator1: /* html */ `
-                <span class="indeterminate-indicator-1" part="indeterminate-indicator-1"></span>
-            `,
-            indeterminateIndicator2: /* html */ `
-                <span class="indeterminate-indicator-2" part="indeterminate-indicator-2"></span>
-            `,
-        })()
-    );
+FASTProgress.define({
+    name: "fast-progress",
+    template: progressTemplate({
+        indeterminateIndicator1: /* html */ `
+            <span class="indeterminate-indicator-1" part="indeterminate-indicator-1"></span>
+        `,
+        indeterminateIndicator2: /* html */ `
+            <span class="indeterminate-indicator-2" part="indeterminate-indicator-2"></span>
+        `,
+    }),
+    styles,
+});

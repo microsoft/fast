@@ -1,20 +1,15 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { AnchoredRegion } from "../anchored-region.js";
-import { anchoredRegionTemplate as template } from "../anchored-region.template.js";
+import { FASTAnchoredRegion } from "../anchored-region.js";
+import { anchoredRegionTemplate } from "../anchored-region.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         display: block;
     }
 `;
 
-DesignSystem.getOrCreate(document.body)
-    .withPrefix("fast")
-    .register(
-        AnchoredRegion.compose({
-            baseName: "anchored-region",
-            template,
-            styles,
-        })()
-    );
+FASTAnchoredRegion.define({
+    name: "fast-anchored-region",
+    template: anchoredRegionTemplate(),
+    styles,
+});

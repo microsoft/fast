@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { DataGrid as FoundationDataGrid } from "../data-grid.js";
+import type { FASTDataGrid } from "../data-grid.js";
 
-type DataGridArgs = Args & FoundationDataGrid;
+type DataGridArgs = Args & FASTDataGrid;
 type DataGridMeta = Meta<DataGridArgs>;
 
 function newDataRow(id: string): object {

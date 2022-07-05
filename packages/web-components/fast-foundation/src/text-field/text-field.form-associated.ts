@@ -1,7 +1,7 @@
+import { FASTElement } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/form-associated.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 
-class _TextField extends FoundationElement {}
+class _TextField extends FASTElement {}
 interface _TextField extends FormAssociated {}
 
 /**

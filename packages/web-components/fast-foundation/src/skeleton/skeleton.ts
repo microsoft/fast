@@ -1,5 +1,4 @@
-import { attr } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { attr, FASTElement } from "@microsoft/fast-element";
 
 /**
  * A structure representing skeleton shapes
@@ -22,7 +21,7 @@ export type SkeletonShape = typeof SkeletonShape[keyof typeof SkeletonShape];
  *
  * @public
  */
-export class Skeleton extends FoundationElement {
+export class FASTSkeleton extends FASTElement {
     /**
      * Indicates the Skeleton should have a filled style.
      *

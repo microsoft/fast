@@ -1,16 +1,12 @@
-import { html, slotted, ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { PickerMenu } from "./picker-menu.js";
+import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import type { FASTPickerMenu } from "./picker-menu.js";
 
 /**
  * The template for the List Picker component.
  * @public
  */
-export const pickerMenuTemplate: FoundationElementTemplate<ViewTemplate<PickerMenu>> = (
-    context,
-    definition
-) => {
-    return html<PickerMenu>`
+export function pickerMenuTemplate(): ElementViewTemplate<FASTPickerMenu> {
+    return html<FASTPickerMenu>`
         <template role="list" slot="menu-region">
             <div class="options-display" part="options-display">
                 <div class="header-region" part="header-region">
@@ -32,4 +28,4 @@ export const pickerMenuTemplate: FoundationElementTemplate<ViewTemplate<PickerMe
             </div>
         </template>
     `;
-};
+}

@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Card } from "../card.js";
-import { cardTemplate as template } from "../card.template.js";
+import { FASTCard } from "../card.js";
+import { cardTemplate } from "../card.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         background: var(--fill-color);
         border-radius: calc(var(--control-corner-radius) * 1px);
@@ -17,12 +16,8 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Card.compose({
-            baseName: "card",
-            styles,
-            template,
-        })()
-    );
+FASTCard.define({
+    name: "fast-card",
+    styles,
+    template: cardTemplate(),
+});

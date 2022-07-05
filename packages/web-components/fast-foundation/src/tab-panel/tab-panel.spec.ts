@@ -1,14 +1,15 @@
 import { expect } from "chai";
-import { TabPanel, tabPanelTemplate as template } from "./index.js";
-import { fixture } from "../testing/fixture.js";
+import { FASTTabPanel, tabPanelTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 
-const FASTTabPanel = TabPanel.compose({
-    baseName: "tab-panel",
-    template,
-})
+const tabPanelName = uniqueElementName();
+FASTTabPanel.define({
+    name: tabPanelName,
+    template: tabPanelTemplate(),
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTTabPanel());
+    const { element, connect, disconnect } = await fixture<FASTTabPanel>(tabPanelName);
 
     return { element, connect, disconnect };
 }

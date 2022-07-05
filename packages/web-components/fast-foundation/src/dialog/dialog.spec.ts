@@ -1,16 +1,17 @@
 import { expect } from "chai";
-import { Dialog, dialogTemplate as template } from "./index.js";
-import { fixture } from "../testing/fixture.js";
+import { FASTDialog, dialogTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 import { keyEscape } from "@microsoft/fast-web-utilities";
 
-const FASTDialog = Dialog.compose({
-    baseName: "dialog",
-    template,
-})
+const dialogName = uniqueElementName();
+FASTDialog.define({
+    name: dialogName,
+    template: dialogTemplate()
+});
 
 async function setup() {
-    const { connect, disconnect, document, element } = await fixture(FASTDialog());
+    const { connect, disconnect, document, element } = await fixture<FASTDialog>(dialogName);
 
     return { connect, disconnect, document, element };
 }
@@ -299,7 +300,7 @@ describe("Dialog", () => {
 
             const button = document.createElement('button');
             button.textContent = 'close';
-            button.addEventListener("click", () => (element as unknown as Dialog).hide());
+            button.addEventListener("click", () => (element as unknown as FASTDialog).hide());
             element.append(button)
 
             await connect();

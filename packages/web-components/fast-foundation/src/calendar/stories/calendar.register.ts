@@ -1,12 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Calendar } from "../calendar.js";
-import {
-    CalendarTitleTemplate,
-    calendarTemplate as template,
-} from "../calendar.template.js";
+import { FASTCalendar } from "../calendar.js";
+import { calendarTemplate, calendarTitleTemplate } from "../calendar.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         --cell-border: none;
         --cell-height: calc(var(--height-number) * 1px);
@@ -96,13 +92,13 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Calendar.compose({
-            baseName: "calendar",
-            template,
-            styles,
-            title: CalendarTitleTemplate,
-        })()
-    );
+FASTCalendar.define({
+    name: "fast-calendar",
+    template: calendarTemplate({
+        title: calendarTitleTemplate(),
+        dataGrid: "fast-data-grid",
+        dataGridRow: "fast-data-grid-row",
+        dataGridCell: "fast-data-grid-cell",
+    }),
+    styles,
+});

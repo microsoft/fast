@@ -1,22 +1,27 @@
-import { html, ref, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import { AnchoredRegion } from "../anchored-region/anchored-region.js";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { Tooltip } from "./tooltip.js";
+import { ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
+import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
+import type { FASTTooltip } from "./tooltip.js";
 
 /**
- * Creates a template for the {@link @microsoft/fast-foundation#(Tooltip:class)} component using the provided prefix.
+ * Options for the tooltip.
  * @public
  */
-export const tooltipTemplate: FoundationElementTemplate<ViewTemplate<Tooltip>> = (
-    context,
-    definition
-) => {
-    return html<Tooltip>`
+export type TooltipOptions = {
+    anchoredRegion: TemplateElementDependency;
+};
+
+/**
+ * Creates a template for the {@link @microsoft/fast-foundation#(FASTTooltip:class)} component using the provided prefix.
+ * @public
+ */
+export function tooltipTemplate(
+    options: TooltipOptions
+): ElementViewTemplate<FASTTooltip> {
+    return html<FASTTooltip>`
         ${when(
             x => x.tooltipVisible,
-            html<Tooltip>`
-            <${context.tagFor(AnchoredRegion)}
+            html<FASTTooltip>`
+            <${tagFor(options.anchoredRegion)}
                 fixed-placement="true"
                 auto-update-mode="${x => x.autoUpdateMode}"
                 vertical-positioning-mode="${x => x.verticalPositioningMode}"
@@ -35,8 +40,8 @@ export const tooltipTemplate: FoundationElementTemplate<ViewTemplate<Tooltip>> =
                 <div class="tooltip" part="tooltip" role="tooltip">
                     <slot></slot>
                 </div>
-            </${context.tagFor(AnchoredRegion)}>
+            </${tagFor(options.anchoredRegion)}>
         `
         )}
     `;
-};
+}

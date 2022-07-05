@@ -1,8 +1,8 @@
 import { css, html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Card as FoundationCard } from "../card.js";
+import type { FASTCard } from "../card.js";
 
-type CardStoryMeta = Meta<Args & FoundationCard>;
+type CardStoryMeta = Meta<Args & FASTCard>;
 type CardStoryArgs = CardStoryMeta["args"];
 
 const storyTemplate = html<CardStoryArgs>`
@@ -27,7 +27,7 @@ export const Card = (args: CardStoryArgs) => {
 export const CardWithCustomDimensions: CardStoryMeta = Card.bind({});
 CardWithCustomDimensions.decorators = [
     Story => {
-        const renderedStory = Story() as FoundationCard;
+        const renderedStory = Story() as FASTCard;
         renderedStory.style.setProperty("--card-height", "400px");
         renderedStory.style.setProperty("--card-width", "500px");
         return renderedStory;
@@ -43,7 +43,7 @@ CardWithControls.args = {
 
 CardWithControls.decorators = [
     Story => {
-        const renderedStory = Story() as FoundationCard;
+        const renderedStory = Story() as FASTCard;
         const style = css`
             :host {
                 --card-height: 400px;

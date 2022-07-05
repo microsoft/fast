@@ -1,9 +1,8 @@
 import { attr, css, html, when } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Avatar as FoundationAvatar } from "../avatar.js";
-import { avatarTemplate as template } from "../avatar.template.js";
+import { FASTAvatar } from "../avatar.js";
+import { avatarTemplate } from "../avatar.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         --avatar-size-default: 32px;
         --avatar-text-size: var(--type-ramp-base-font-size);
@@ -68,6 +67,14 @@ const styles = () => css`
     }
 `;
 
+class Avatar extends FASTAvatar {
+    @attr({ attribute: "src" })
+    public imgSrc?: string;
+
+    @attr
+    public alt?: string;
+}
+
 const media = html<Avatar>`
     ${when(
         x => x.imgSrc,
@@ -83,25 +90,11 @@ const media = html<Avatar>`
     )}
 `;
 
-class Avatar extends FoundationAvatar {
-    @attr({ attribute: "src" })
-    public imgSrc?: string;
-
-    @attr
-    public alt?: string;
-}
-
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Avatar.compose({
-            baseClass: FoundationAvatar,
-            baseName: "avatar",
-            media,
-            styles,
-            template,
-            shadowOptions: {
-                delegatesFocus: true,
-            },
-        })()
-    );
+Avatar.define({
+    name: "fast-avatar",
+    template: avatarTemplate({ media }),
+    styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+});

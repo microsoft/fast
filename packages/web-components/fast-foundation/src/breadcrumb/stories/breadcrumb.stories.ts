@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Breadcrumb as FoundationBreadcrumb } from "../breadcrumb.js";
+import type { FASTBreadcrumb } from "../breadcrumb.js";
 
-type BreadcrumbStoryArgs = Args & FoundationBreadcrumb;
+type BreadcrumbStoryArgs = Args & FASTBreadcrumb;
 type BreadcrumbStoryMeta = Meta<BreadcrumbStoryArgs>;
 
 const storyTemplate = html<BreadcrumbStoryArgs>`

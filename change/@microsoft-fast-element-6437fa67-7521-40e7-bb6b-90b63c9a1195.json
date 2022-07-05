@@ -1,0 +1,7 @@
+{
+    "type": "prerelease",
+    "comment": "only store removed views if it can't be reused right away",
+    "packageName": "@microsoft/fast-element",
+    "email": "prudepixie@users.noreply.github.com",
+    "dependentChangeType": "prerelease"
+}

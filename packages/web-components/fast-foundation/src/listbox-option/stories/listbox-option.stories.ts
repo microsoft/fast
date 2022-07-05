@@ -1,8 +1,8 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { ListboxOption as FoundationListboxOption } from "../listbox-option.js";
+import type { FASTListboxOption } from "../listbox-option.js";
 
-type ListboxOptionStoryArgs = Args & FoundationListboxOption;
+type ListboxOptionStoryArgs = Args & FASTListboxOption;
 type ListboxOptionStoryMeta = Meta<ListboxOptionStoryArgs>;
 
 const storyTemplate = html<ListboxOptionStoryArgs>`

@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Disclosure as FoundationDisclosure } from "../disclosure.js";
+import type { FASTDisclosure } from "../disclosure.js";
 
-type DisclosureStoryArgs = Args & FoundationDisclosure;
+type DisclosureStoryArgs = Args & FASTDisclosure;
 type DisclosureStoryMeta = Meta<DisclosureStoryArgs>;
 
 const storyTemplate = html<DisclosureStoryArgs>`

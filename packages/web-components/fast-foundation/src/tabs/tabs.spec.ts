@@ -1,48 +1,50 @@
 import { css, Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { TabPanel, tabPanelTemplate } from "../tab-panel/index.js";
-import { Tab, tabTemplate } from "../tab/index.js";
-import { fixture } from "../testing/fixture.js";
-import { Tabs, TabsOrientation, tabsTemplate as template } from "./index.js";
+import { FASTTabPanel, tabPanelTemplate } from "../tab-panel/index.js";
+import { FASTTab, tabTemplate } from "../tab/index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTTabs, TabsOrientation, tabsTemplate } from "./index.js";
 
-const FASTTab = Tab.compose({
-    baseName: "tab",
-    template: tabTemplate,
-})
+const tabName = uniqueElementName();
+FASTTab.define({
+    name: tabName,
+    template: tabTemplate()
+});
 
-const FASTTabPanel = TabPanel.compose({
-    baseName: "tab-panel",
-    template: tabPanelTemplate,
-})
+const tabPanelName = uniqueElementName();
+FASTTabPanel.define({
+    name: tabPanelName,
+    template: tabPanelTemplate(),
+});
 
-
-const FASTTabs = Tabs.compose({
-    baseName: "tabs",
-    template,
+const tabsName = uniqueElementName();
+FASTTabs.define({
+    name: tabsName,
+    template: tabsTemplate(),
     styles: css`
         .activeIndicatorTransition {
             transition: transform 1ms;
         }
     `,
-})
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
+    const { element, connect, disconnect } = await fixture<FASTTabs>(tabsName)
 
     for (let i = 1; i < 4; i++) {
-        const tab = document.createElement("fast-tab") as Tab;
+        const tab = document.createElement(tabName) as FASTTab;
         tab.id = `tab${i}`;
 
-        const panel = document.createElement("fast-tab-panel") as TabPanel;
+        const panel = document.createElement(tabPanelName) as FASTTabPanel;
         panel.id = `panel${i}`;
         element.appendChild(panel);
-        element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+        element.insertBefore(tab, element.querySelector(tabPanelName));
     }
 
     const [tabPanel1, tabPanel2, tabPanel3] = Array.from(
-        element.querySelectorAll("fast-tab-panel")
+        element.querySelectorAll(tabPanelName)
     );
-    const [tab1, tab2, tab3] = Array.from(element.querySelectorAll("fast-tab"));
+    const [tab1, tab2, tab3] = Array.from(element.querySelectorAll(tabName));
 
     return {
         element,
@@ -134,8 +136,8 @@ describe("Tabs", () => {
 
         await connect();
 
-        expect(element.querySelector("fast-tab")?.getAttribute("id")).to.equal("01");
-        expect(element.querySelectorAll("fast-tab")[1]?.getAttribute("id")).to.equal(
+        expect(element.querySelector(tabName)?.getAttribute("id")).to.equal("01");
+        expect(element.querySelectorAll(tabName)[1]?.getAttribute("id")).to.equal(
             "02"
         );
 
@@ -143,94 +145,94 @@ describe("Tabs", () => {
     });
 
     it("should set an `id` attribute tab items with a unique ID when an `id is NOT provided", async () => {
-        const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
+        const { element, connect, disconnect } = await fixture<FASTTabs>(tabsName)
 
         for (let i = 0; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;
-            const panel = document.createElement("fast-tab-panel") as TabPanel;
+            const tab = document.createElement(tabName) as FASTTab;
+            const panel = document.createElement(tabPanelName) as FASTTabPanel;
 
             element.appendChild(panel);
-            element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+            element.insertBefore(tab, element.querySelector(tabPanelName));
         }
 
         await connect();
 
-        expect(element.querySelectorAll("fast-tab")[0]?.getAttribute("id")).to.not.be.undefined;
-        expect(element.querySelectorAll("fast-tab")[1]?.getAttribute("id")).to.not.be.undefined;
-        expect(element.querySelectorAll("fast-tab")[2]?.getAttribute("id")).to.not.be.undefined;
-        expect(element.querySelectorAll("fast-tab")[3]?.getAttribute("id")).to.not.be.undefined;
+        expect(element.querySelectorAll(tabName)[0]?.getAttribute("id")).to.not.be.undefined;
+        expect(element.querySelectorAll(tabName)[1]?.getAttribute("id")).to.not.be.undefined;
+        expect(element.querySelectorAll(tabName)[2]?.getAttribute("id")).to.not.be.undefined;
+        expect(element.querySelectorAll(tabName)[3]?.getAttribute("id")).to.not.be.undefined;
 
         await disconnect();
     });
 
     it("should set the corresponding tab panel aria-labelledby attribute to the corresponding tab unique ID when a tab id is NOT provided", async () => {
-        const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
+        const { element, connect, disconnect } = await fixture<FASTTabs>(tabsName)
 
         for (let i = 0; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;
-            const panel = document.createElement("fast-tab-panel") as TabPanel;
+            const tab = document.createElement(tabName) as FASTTab;
+            const panel = document.createElement(tabPanelName) as FASTTabPanel;
 
             element.appendChild(panel);
-            element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+            element.insertBefore(tab, element.querySelector(tabPanelName));
         }
 
         await connect();
 
-        let tabId0: string | null = element.querySelectorAll("fast-tab")[0]?.getAttribute("id");
-        let tabId1: string | null = element.querySelectorAll("fast-tab")[1]?.getAttribute("id");
-        let tabId2: string | null = element.querySelectorAll("fast-tab")[2]?.getAttribute("id");
-        let tabId3: string | null = element.querySelectorAll("fast-tab")[3]?.getAttribute("id");
+        let tabId0: string | null = element.querySelectorAll(tabName)[0]?.getAttribute("id");
+        let tabId1: string | null = element.querySelectorAll(tabName)[1]?.getAttribute("id");
+        let tabId2: string | null = element.querySelectorAll(tabName)[2]?.getAttribute("id");
+        let tabId3: string | null = element.querySelectorAll(tabName)[3]?.getAttribute("id");
 
-        expect(element.querySelectorAll("fast-tab-panel")[0]?.getAttribute("aria-labelledby")).to.equal(tabId0);
-        expect(element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("aria-labelledby")).to.equal(tabId1);
-        expect(element.querySelectorAll("fast-tab-panel")[2]?.getAttribute("aria-labelledby")).to.equal(tabId2);
-        expect(element.querySelectorAll("fast-tab-panel")[3]?.getAttribute("aria-labelledby")).to.equal(tabId3);
+        expect(element.querySelectorAll(tabPanelName)[0]?.getAttribute("aria-labelledby")).to.equal(tabId0);
+        expect(element.querySelectorAll(tabPanelName)[1]?.getAttribute("aria-labelledby")).to.equal(tabId1);
+        expect(element.querySelectorAll(tabPanelName)[2]?.getAttribute("aria-labelledby")).to.equal(tabId2);
+        expect(element.querySelectorAll(tabPanelName)[3]?.getAttribute("aria-labelledby")).to.equal(tabId3);
 
         await disconnect();
     });
 
     it("should set the corresponding tab panel aria-labelledby attribute to the corresponding tab unique ID when a tab id is NOT provided and additional tabs and panels are added", async () => {
-        const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
+        const { element, connect, disconnect } = await fixture<FASTTabs>(tabsName)
 
         for (let i = 0; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;
-            const panel = document.createElement("fast-tab-panel") as TabPanel;
+            const tab = document.createElement(tabName) as FASTTab;
+            const panel = document.createElement(tabPanelName) as FASTTabPanel;
 
             element.appendChild(panel);
-            element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+            element.insertBefore(tab, element.querySelector(tabPanelName));
         }
 
         await connect();
 
-        let tabId0: string | null = element.querySelectorAll("fast-tab")[0]?.getAttribute("id");
-        let tabId1: string | null = element.querySelectorAll("fast-tab")[1]?.getAttribute("id");
-        let tabId2: string | null = element.querySelectorAll("fast-tab")[2]?.getAttribute("id");
-        let tabId3: string | null = element.querySelectorAll("fast-tab")[3]?.getAttribute("id");
+        let tabId0: string | null = element.querySelectorAll(tabName)[0]?.getAttribute("id");
+        let tabId1: string | null = element.querySelectorAll(tabName)[1]?.getAttribute("id");
+        let tabId2: string | null = element.querySelectorAll(tabName)[2]?.getAttribute("id");
+        let tabId3: string | null = element.querySelectorAll(tabName)[3]?.getAttribute("id");
 
-        expect(element.querySelectorAll("fast-tab-panel")[0]?.getAttribute("aria-labelledby")).to.equal(tabId0);
-        expect(element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("aria-labelledby")).to.equal(tabId1);
-        expect(element.querySelectorAll("fast-tab-panel")[2]?.getAttribute("aria-labelledby")).to.equal(tabId2);
-        expect(element.querySelectorAll("fast-tab-panel")[3]?.getAttribute("aria-labelledby")).to.equal(tabId3);
+        expect(element.querySelectorAll(tabPanelName)[0]?.getAttribute("aria-labelledby")).to.equal(tabId0);
+        expect(element.querySelectorAll(tabPanelName)[1]?.getAttribute("aria-labelledby")).to.equal(tabId1);
+        expect(element.querySelectorAll(tabPanelName)[2]?.getAttribute("aria-labelledby")).to.equal(tabId2);
+        expect(element.querySelectorAll(tabPanelName)[3]?.getAttribute("aria-labelledby")).to.equal(tabId3);
 
-        const newTab = document.createElement("fast-tab") as Tab;
-        const newPanel = document.createElement("fast-tab-panel") as TabPanel;
+        const newTab = document.createElement(tabName) as FASTTab;
+        const newPanel = document.createElement(tabPanelName) as FASTTabPanel;
 
         element.appendChild(newPanel);
-        element.insertBefore(newTab, element.querySelector("fast-tab-panel"));
+        element.insertBefore(newTab, element.querySelector(tabPanelName));
 
         await Updates.next();
 
-        tabId0 = element.querySelectorAll("fast-tab")[0]?.getAttribute("id");
-        tabId1 = element.querySelectorAll("fast-tab")[1]?.getAttribute("id");
-        tabId2 = element.querySelectorAll("fast-tab")[2]?.getAttribute("id");
-        tabId3 = element.querySelectorAll("fast-tab")[3]?.getAttribute("id");
-        let tabId4 = element.querySelectorAll("fast-tab")[4]?.getAttribute("id");
+        tabId0 = element.querySelectorAll(tabName)[0]?.getAttribute("id");
+        tabId1 = element.querySelectorAll(tabName)[1]?.getAttribute("id");
+        tabId2 = element.querySelectorAll(tabName)[2]?.getAttribute("id");
+        tabId3 = element.querySelectorAll(tabName)[3]?.getAttribute("id");
+        let tabId4 = element.querySelectorAll(tabName)[4]?.getAttribute("id");
 
-        expect(element.querySelectorAll("fast-tab-panel")[0]?.getAttribute("aria-labelledby")).to.equal(tabId0);
-        expect(element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("aria-labelledby")).to.equal(tabId1);
-        expect(element.querySelectorAll("fast-tab-panel")[2]?.getAttribute("aria-labelledby")).to.equal(tabId2);
-        expect(element.querySelectorAll("fast-tab-panel")[3]?.getAttribute("aria-labelledby")).to.equal(tabId3);
-        expect(element.querySelectorAll("fast-tab-panel")[4]?.getAttribute("aria-labelledby")).to.equal(tabId4);
+        expect(element.querySelectorAll(tabPanelName)[0]?.getAttribute("aria-labelledby")).to.equal(tabId0);
+        expect(element.querySelectorAll(tabPanelName)[1]?.getAttribute("aria-labelledby")).to.equal(tabId1);
+        expect(element.querySelectorAll(tabPanelName)[2]?.getAttribute("aria-labelledby")).to.equal(tabId2);
+        expect(element.querySelectorAll(tabPanelName)[3]?.getAttribute("aria-labelledby")).to.equal(tabId3);
+        expect(element.querySelectorAll(tabPanelName)[4]?.getAttribute("aria-labelledby")).to.equal(tabId4);
 
         await disconnect();
     });
@@ -240,84 +242,84 @@ describe("Tabs", () => {
 
         await connect();
 
-        expect(element.querySelector("fast-tab-panel")?.getAttribute("id")).to.equal(
+        expect(element.querySelector(tabPanelName)?.getAttribute("id")).to.equal(
             "panel1"
         );
         expect(
-            element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("id")
+            element.querySelectorAll(tabPanelName)[1]?.getAttribute("id")
         ).to.equal("panel2");
 
         await disconnect();
     });
 
     it("should set the tabpanel id to the corresponding tab aria-controls attribute when a tabpanel id is NOT provided", async () => {
-        const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
+        const { element, connect, disconnect } = await fixture<FASTTabs>(tabsName)
 
         for (let i = 0; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;
-            const panel = document.createElement("fast-tab-panel") as TabPanel;
+            const tab = document.createElement(tabName) as FASTTab;
+            const panel = document.createElement(tabPanelName) as FASTTabPanel;
 
             element.appendChild(panel);
-            element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+            element.insertBefore(tab, element.querySelector(tabPanelName));
         }
 
         await connect();
 
-        let tabpanelId0: string | null = element.querySelectorAll("fast-tab-panel")[0]?.getAttribute("id");
-        let tabpanelId1: string | null = element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("id");
-        let tabpanelId2: string | null = element.querySelectorAll("fast-tab-panel")[2]?.getAttribute("id");
-        let tabpanelId3: string | null = element.querySelectorAll("fast-tab-panel")[3]?.getAttribute("id");
+        let tabpanelId0: string | null = element.querySelectorAll(tabPanelName)[0]?.getAttribute("id");
+        let tabpanelId1: string | null = element.querySelectorAll(tabPanelName)[1]?.getAttribute("id");
+        let tabpanelId2: string | null = element.querySelectorAll(tabPanelName)[2]?.getAttribute("id");
+        let tabpanelId3: string | null = element.querySelectorAll(tabPanelName)[3]?.getAttribute("id");
 
-        expect(element.querySelectorAll("fast-tab")[0]?.getAttribute("aria-controls")).to.equal(tabpanelId0);
-        expect(element.querySelectorAll("fast-tab")[1]?.getAttribute("aria-controls")).to.equal(tabpanelId1);
-        expect(element.querySelectorAll("fast-tab")[2]?.getAttribute("aria-controls")).to.equal(tabpanelId2);
-        expect(element.querySelectorAll("fast-tab")[3]?.getAttribute("aria-controls")).to.equal(tabpanelId3);
+        expect(element.querySelectorAll(tabName)[0]?.getAttribute("aria-controls")).to.equal(tabpanelId0);
+        expect(element.querySelectorAll(tabName)[1]?.getAttribute("aria-controls")).to.equal(tabpanelId1);
+        expect(element.querySelectorAll(tabName)[2]?.getAttribute("aria-controls")).to.equal(tabpanelId2);
+        expect(element.querySelectorAll(tabName)[3]?.getAttribute("aria-controls")).to.equal(tabpanelId3);
 
         await disconnect();
     });
 
     it("should set the tabpanel id to the corresponding tab aria-controls attribute when a tabpanel id is NOT provided and new tabs and tabpanels are added", async () => {
-        const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
+        const { element, connect, disconnect } = await fixture<FASTTabs>(tabsName)
 
         for (let i = 0; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;
-            const panel = document.createElement("fast-tab-panel") as TabPanel;
+            const tab = document.createElement(tabName) as FASTTab;
+            const panel = document.createElement(tabPanelName) as FASTTabPanel;
 
             element.appendChild(panel);
-            element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+            element.insertBefore(tab, element.querySelector(tabPanelName));
         }
 
         await connect();
 
-        let tabpanelId0: string | null = element.querySelectorAll("fast-tab-panel")[0]?.getAttribute("id");
-        let tabpanelId1: string | null = element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("id");
-        let tabpanelId2: string | null = element.querySelectorAll("fast-tab-panel")[2]?.getAttribute("id");
-        let tabpanelId3: string | null = element.querySelectorAll("fast-tab-panel")[3]?.getAttribute("id");
+        let tabpanelId0: string | null = element.querySelectorAll(tabPanelName)[0]?.getAttribute("id");
+        let tabpanelId1: string | null = element.querySelectorAll(tabPanelName)[1]?.getAttribute("id");
+        let tabpanelId2: string | null = element.querySelectorAll(tabPanelName)[2]?.getAttribute("id");
+        let tabpanelId3: string | null = element.querySelectorAll(tabPanelName)[3]?.getAttribute("id");
 
-        expect(element.querySelectorAll("fast-tab")[0]?.getAttribute("aria-controls")).to.equal(tabpanelId0);
-        expect(element.querySelectorAll("fast-tab")[1]?.getAttribute("aria-controls")).to.equal(tabpanelId1);
-        expect(element.querySelectorAll("fast-tab")[2]?.getAttribute("aria-controls")).to.equal(tabpanelId2);
-        expect(element.querySelectorAll("fast-tab")[3]?.getAttribute("aria-controls")).to.equal(tabpanelId3);
+        expect(element.querySelectorAll(tabName)[0]?.getAttribute("aria-controls")).to.equal(tabpanelId0);
+        expect(element.querySelectorAll(tabName)[1]?.getAttribute("aria-controls")).to.equal(tabpanelId1);
+        expect(element.querySelectorAll(tabName)[2]?.getAttribute("aria-controls")).to.equal(tabpanelId2);
+        expect(element.querySelectorAll(tabName)[3]?.getAttribute("aria-controls")).to.equal(tabpanelId3);
 
-        const newTab = document.createElement("fast-tab") as Tab;
-        const newPanel = document.createElement("fast-tab-panel") as TabPanel;
+        const newTab = document.createElement(tabName) as FASTTab;
+        const newPanel = document.createElement(tabPanelName) as FASTTabPanel;
 
         element.appendChild(newPanel);
-        element.insertBefore(newTab, element.querySelector("fast-tab-panel"));
+        element.insertBefore(newTab, element.querySelector(tabPanelName));
 
         await Updates.next();
 
-        tabpanelId0 = element.querySelectorAll("fast-tab-panel")[0]?.getAttribute("id");
-        tabpanelId1 = element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("id");
-        tabpanelId2 = element.querySelectorAll("fast-tab-panel")[2]?.getAttribute("id");
-        tabpanelId3 = element.querySelectorAll("fast-tab-panel")[3]?.getAttribute("id");
-        let tabpanelId4 = element.querySelectorAll("fast-tab-panel")[4]?.getAttribute("id");
+        tabpanelId0 = element.querySelectorAll(tabPanelName)[0]?.getAttribute("id");
+        tabpanelId1 = element.querySelectorAll(tabPanelName)[1]?.getAttribute("id");
+        tabpanelId2 = element.querySelectorAll(tabPanelName)[2]?.getAttribute("id");
+        tabpanelId3 = element.querySelectorAll(tabPanelName)[3]?.getAttribute("id");
+        let tabpanelId4 = element.querySelectorAll(tabPanelName)[4]?.getAttribute("id");
 
-        expect(element.querySelectorAll("fast-tab")[0]?.getAttribute("aria-controls")).to.equal(tabpanelId0);
-        expect(element.querySelectorAll("fast-tab")[1]?.getAttribute("aria-controls")).to.equal(tabpanelId1);
-        expect(element.querySelectorAll("fast-tab")[2]?.getAttribute("aria-controls")).to.equal(tabpanelId2);
-        expect(element.querySelectorAll("fast-tab")[3]?.getAttribute("aria-controls")).to.equal(tabpanelId3);
-        expect(element.querySelectorAll("fast-tab")[4]?.getAttribute("aria-controls")).to.equal(tabpanelId4);
+        expect(element.querySelectorAll(tabName)[0]?.getAttribute("aria-controls")).to.equal(tabpanelId0);
+        expect(element.querySelectorAll(tabName)[1]?.getAttribute("aria-controls")).to.equal(tabpanelId1);
+        expect(element.querySelectorAll(tabName)[2]?.getAttribute("aria-controls")).to.equal(tabpanelId2);
+        expect(element.querySelectorAll(tabName)[3]?.getAttribute("aria-controls")).to.equal(tabpanelId3);
+        expect(element.querySelectorAll(tabName)[4]?.getAttribute("aria-controls")).to.equal(tabpanelId4);
 
         await disconnect();
     });
@@ -444,16 +446,16 @@ describe("Tabs", () => {
 
     describe("disabled tab", () => {
         it("should not display an active indicator if all tabs are disabled", async () => {
-            const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()]);
+            const { element, connect, disconnect } = await fixture<FASTTabs>(tabsName);
 
             for (let i = 1; i < 4; i++) {
-                const tab = document.createElement("fast-tab") as Tab;
+                const tab = document.createElement(tabName) as FASTTab;
                 tab.disabled = true;
 
-                const panel = document.createElement("fast-tab-panel") as TabPanel;
+                const panel = document.createElement(tabPanelName) as FASTTabPanel;
                 panel.id = `panel${i}`;
                 element.appendChild(panel);
-                element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+                element.insertBefore(tab, element.querySelector(tabPanelName));
             }
 
             await connect();
@@ -464,20 +466,20 @@ describe("Tabs", () => {
         });
 
         it("should display an active indicator if the last tab is disabled", async () => {
-            const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()]);
+            const { element, connect, disconnect } = await fixture<FASTTabs>(tabsName);
 
             for (let i = 1; i < 4; i++) {
-                const tab = document.createElement("fast-tab") as Tab;
+                const tab = document.createElement(tabName) as FASTTab;
                 tab.id = `tab${i}`;
 
                 if (i === 3) {
                     tab.disabled = true;
                 }
 
-                const panel = document.createElement("fast-tab-panel") as TabPanel;
+                const panel = document.createElement(tabPanelName) as FASTTabPanel;
                 panel.id = `panel${i}`;
                 element.appendChild(panel);
-                element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+                element.insertBefore(tab, element.querySelector(tabPanelName));
             }
 
             await connect();
@@ -488,22 +490,22 @@ describe("Tabs", () => {
         });
 
         it("should not allow selecting tab that has been disabled after it has been connected", async () => {
-            const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()]);
+            const { element, connect, disconnect } = await fixture<FASTTabs>(tabsName);
 
             for (let i = 1; i < 4; i++) {
-                const tab = document.createElement("fast-tab") as Tab;
+                const tab = document.createElement(tabName) as FASTTab;
                 tab.id = `tab${i}`;
 
-                const panel = document.createElement("fast-tab-panel") as TabPanel;
+                const panel = document.createElement(tabPanelName) as FASTTabPanel;
                 panel.id = `panel${i}`;
                 element.appendChild(panel);
-                element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+                element.insertBefore(tab, element.querySelector(tabPanelName));
             }
 
             await connect();
 
             element.activeid = "tab1";
-            const tab3 = element.querySelectorAll("fast-tab")[2] as Tab;
+            const tab3 = element.querySelectorAll(tabName)[2] as FASTTab;
             tab3.disabled = true;
             await Updates.next();
             tab3.click();
@@ -514,26 +516,26 @@ describe("Tabs", () => {
         });
 
         it("should allow selecting tab that has been enabled after it has been connected", async () => {
-            const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()]);
+            const { element, connect, disconnect } = await fixture<FASTTabs>(tabsName);
 
             for (let i = 1; i < 4; i++) {
-                const tab = document.createElement("fast-tab") as Tab;
+                const tab = document.createElement(tabName) as FASTTab;
                 tab.id = `tab${i}`;
 
                 if (i === 3) {
                     tab.disabled = true;
                 }
 
-                const panel = document.createElement("fast-tab-panel") as TabPanel;
+                const panel = document.createElement(tabPanelName) as FASTTabPanel;
                 panel.id = `panel${i}`;
                 element.appendChild(panel);
-                element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+                element.insertBefore(tab, element.querySelector(tabPanelName));
             }
 
             await connect();
 
             element.activeid = "tab1";
-            const tab3 = element.querySelectorAll("fast-tab")[2] as Tab;
+            const tab3 = element.querySelectorAll(tabName)[2] as FASTTab;
             tab3.disabled = false;
             await Updates.next();
             tab3.click();

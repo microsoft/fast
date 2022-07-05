@@ -10,13 +10,12 @@ import {
     StartEndOptions,
 } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { FormAssociatedSearch } from "./search.form-associated.js";
 /**
  * Search configuration options
  * @public
  */
-export type SearchOptions = FoundationElementDefinition & StartEndOptions;
+export type SearchOptions = StartEndOptions;
 
 /**
  * A Search Custom HTML Element.
@@ -34,7 +33,7 @@ export type SearchOptions = FoundationElementDefinition & StartEndOptions;
  *
  * @public
  */
-export class Search extends FormAssociatedSearch {
+export class FASTSearch extends FormAssociatedSearch {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -255,5 +254,5 @@ applyMixins(DelegatesARIASearch, ARIAGlobalStatesAndProperties);
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Search extends StartEnd, DelegatesARIASearch {}
-applyMixins(Search, StartEnd, DelegatesARIASearch);
+export interface FASTSearch extends StartEnd, DelegatesARIASearch {}
+applyMixins(FASTSearch, StartEnd, DelegatesARIASearch);

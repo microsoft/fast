@@ -1,15 +1,16 @@
 import { expect, assert } from "chai";
-import { fixture } from "../testing/fixture.js";
-import { TextField, textFieldTemplate as template } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTTextField, textFieldTemplate } from "./index.js";
 import { TextFieldType } from "./text-field.js";
 
-const FASTTextField = TextField.compose({
-    baseName: "text-field",
-    template,
-})
+const textFieldName = uniqueElementName();
+FASTTextField.define({
+    name: textFieldName,
+    template: textFieldTemplate(),
+});
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture(FASTTextField());
+    const { element, connect, disconnect, parent } = await fixture<FASTTextField>(textFieldName);
 
     return { element, connect, disconnect, parent };
 }
@@ -816,7 +817,7 @@ describe("TextField", () => {
 
             form.reset();
 
-            assert((element as TextField).value === "");
+            assert((element as FASTTextField).value === "");
 
             await disconnect();
         });
@@ -839,7 +840,7 @@ describe("TextField", () => {
 
             form.reset();
 
-            assert((element as TextField).value === "attr-value");
+            assert((element as FASTTextField).value === "attr-value");
 
             await disconnect();
         });
@@ -859,11 +860,11 @@ describe("TextField", () => {
 
             form.reset();
 
-            assert((element as TextField).value === "attr-value");
+            assert((element as FASTTextField).value === "attr-value");
 
             element.setAttribute("value", "new-attr-value");
 
-            assert((element as TextField).value === "new-attr-value");
+            assert((element as FASTTextField).value === "new-attr-value");
             await disconnect();
         });
     });

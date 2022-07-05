@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import { TextField as FoundationTextField, TextFieldType } from "../text-field.js";
+import { FASTTextField, TextFieldType } from "../text-field.js";
 
-type TextFieldStoryArgs = Args & FoundationTextField;
+type TextFieldStoryArgs = Args & FASTTextField;
 type TextFieldStoryMeta = Meta<TextFieldStoryArgs>;
 
 const componentTemplate = html<TextFieldStoryArgs>`

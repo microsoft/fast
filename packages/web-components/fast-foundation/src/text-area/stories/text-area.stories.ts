@@ -1,9 +1,9 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { TextArea as FoundationTextArea } from "../text-area.js";
+import type { FASTTextArea } from "../text-area.js";
 import { TextAreaResize } from "../text-area.options.js";
 
-type TextAreaStoryArgs = Args & FoundationTextArea;
+type TextAreaStoryArgs = Args & FASTTextArea;
 type TextAreaStoryMeta = Meta<TextAreaStoryArgs>;
 
 const componentTemplate = html<TextAreaStoryArgs>`

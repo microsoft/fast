@@ -71,19 +71,9 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `proxy`         |         |                                       |         |                                                                                                                                                                                     |                   |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
-
-#### Methods
-
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name    | Privacy | Type | Default | Description | Inherited From |
+| ------- | ------- | ---- | ------- | ----------- | -------------- |
+| `proxy` |         |      |         |             |                |
 
 <hr/>
 
@@ -99,7 +89,7 @@ This component is built with the expectation that focus is delegated to the inpu
 
 
 
-### class: `TextArea`
+### class: `FASTTextArea`
 
 #### Superclass
 
@@ -109,38 +99,33 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                        | Inherited From         |
-| --------------- | ------- | ------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `readOnly`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information.        |                        |
-| `resize`        | public  | `TextAreaResize`                      |         | The resize mode of the element.                                                                                                                                                                    |                        |
-| `autofocus`     | public  | `boolean`                             |         | Indicates that this element should get focus after the page finishes loading.                                                                                                                      |                        |
-| `formId`        | public  | `string`                              |         | The [id](https://developer.mozilla.org/en-US/docs/Web/HTML/Global\_attributes/id) of the [form](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form) the element is associated to |                        |
-| `list`          | public  | `string`                              |         | Allows associating a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) to the element by https://developer.mozilla.org/en-US/docs/Web/API/Element/id.             |                        |
-| `maxlength`     | public  | `number`                              |         | The maximum number of characters a user can enter.                                                                                                                                                 |                        |
-| `minlength`     | public  | `number`                              |         | The minimum number of characters a user can enter.                                                                                                                                                 |                        |
-| `name`          | public  | `string`                              |         | The name of the element.                                                                                                                                                                           |                        |
-| `placeholder`   | public  | `string`                              |         | Sets the placeholder value of the element, generally used to provide a hint to the user.                                                                                                           |                        |
-| `cols`          | public  | `number`                              | `20`    | Sizes the element horizontally by a number of character columns.                                                                                                                                   |                        |
-| `rows`          | public  | `number`                              |         | Sizes the element vertically by a number of character rows.                                                                                                                                        |                        |
-| `spellcheck`    | public  | `boolean`                             |         | Sets if the element is eligible for spell checking but the UA.                                                                                                                                     |                        |
-| `proxy`         |         |                                       |         |                                                                                                                                                                                                    | FormAssociatedTextArea |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                            | FoundationElement      |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                         | FoundationElement      |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                | FoundationElement      |
+| Name          | Privacy | Type             | Default | Description                                                                                                                                                                                        | Inherited From         |
+| ------------- | ------- | ---------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `readOnly`    | public  | `boolean`        |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information.        |                        |
+| `resize`      | public  | `TextAreaResize` |         | The resize mode of the element.                                                                                                                                                                    |                        |
+| `autofocus`   | public  | `boolean`        |         | Indicates that this element should get focus after the page finishes loading.                                                                                                                      |                        |
+| `formId`      | public  | `string`         |         | The [id](https://developer.mozilla.org/en-US/docs/Web/HTML/Global\_attributes/id) of the [form](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form) the element is associated to |                        |
+| `list`        | public  | `string`         |         | Allows associating a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) to the element by https://developer.mozilla.org/en-US/docs/Web/API/Element/id.             |                        |
+| `maxlength`   | public  | `number`         |         | The maximum number of characters a user can enter.                                                                                                                                                 |                        |
+| `minlength`   | public  | `number`         |         | The minimum number of characters a user can enter.                                                                                                                                                 |                        |
+| `name`        | public  | `string`         |         | The name of the element.                                                                                                                                                                           |                        |
+| `placeholder` | public  | `string`         |         | Sets the placeholder value of the element, generally used to provide a hint to the user.                                                                                                           |                        |
+| `cols`        | public  | `number`         | `20`    | Sizes the element horizontally by a number of character columns.                                                                                                                                   |                        |
+| `rows`        | public  | `number`         |         | Sizes the element vertically by a number of character rows.                                                                                                                                        |                        |
+| `spellcheck`  | public  | `boolean`        |         | Sets if the element is eligible for spell checking but the UA.                                                                                                                                     |                        |
+| `proxy`       |         |                  |         |                                                                                                                                                                                                    | FormAssociatedTextArea |
 
 #### Methods
 
-| Name                | Privacy   | Description                           | Parameters | Return | Inherited From    |
-| ------------------- | --------- | ------------------------------------- | ---------- | ------ | ----------------- |
-| `readOnlyChanged`   | protected |                                       |            | `void` |                   |
-| `autofocusChanged`  | protected |                                       |            | `void` |                   |
-| `listChanged`       | protected |                                       |            | `void` |                   |
-| `maxlengthChanged`  | protected |                                       |            | `void` |                   |
-| `minlengthChanged`  | protected |                                       |            | `void` |                   |
-| `spellcheckChanged` | protected |                                       |            | `void` |                   |
-| `select`            | public    | Selects all the text in the text area |            | `void` |                   |
-| `templateChanged`   | protected |                                       |            | `void` | FoundationElement |
-| `stylesChanged`     | protected |                                       |            | `void` | FoundationElement |
+| Name                | Privacy   | Description                           | Parameters | Return | Inherited From |
+| ------------------- | --------- | ------------------------------------- | ---------- | ------ | -------------- |
+| `readOnlyChanged`   | protected |                                       |            | `void` |                |
+| `autofocusChanged`  | protected |                                       |            | `void` |                |
+| `listChanged`       | protected |                                       |            | `void` |                |
+| `maxlengthChanged`  | protected |                                       |            | `void` |                |
+| `minlengthChanged`  | protected |                                       |            | `void` |                |
+| `spellcheckChanged` | protected |                                       |            | `void` |                |
+| `select`            | public    | Selects all the text in the text area |            | `void` |                |
 
 #### Events
 

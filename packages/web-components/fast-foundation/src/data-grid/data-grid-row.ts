@@ -1,5 +1,6 @@
 import {
     attr,
+    FASTElement,
     observable,
     RepeatBehavior,
     RepeatDirective,
@@ -13,7 +14,6 @@ import {
     keyEnd,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 import type { ColumnDefinition } from "./data-grid.js";
 import { DataGridRowTypes } from "./data-grid.options.js";
 
@@ -24,7 +24,7 @@ import { DataGridRowTypes } from "./data-grid.options.js";
  * @slot - The default slot for custom cell elements
  * @public
  */
-export class DataGridRow extends FoundationElement {
+export class FASTDataGridRow extends FASTElement {
     /**
      * String that gets applied to the the css gridTemplateColumns attribute for the row
      *

@@ -5,14 +5,13 @@ import {
     StartEndOptions,
 } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { FormAssociatedButton } from "./button.form-associated.js";
 
 /**
  * Button configuration options
  * @public
  */
-export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
+export type ButtonOptions = StartEndOptions;
 
 /**
  * A Button Custom HTML Element.
@@ -26,7 +25,7 @@ export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
  *
  * @public
  */
-export class Button extends FormAssociatedButton {
+export class FASTButton extends FormAssociatedButton {
     /**
      * Determines if the element should receive document focus on page load.
      *
@@ -289,5 +288,5 @@ applyMixins(DelegatesARIAButton, ARIAGlobalStatesAndProperties);
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Button extends StartEnd, DelegatesARIAButton {}
-applyMixins(Button, StartEnd, DelegatesARIAButton);
+export interface FASTButton extends StartEnd, DelegatesARIAButton {}
+applyMixins(FASTButton, StartEnd, DelegatesARIAButton);

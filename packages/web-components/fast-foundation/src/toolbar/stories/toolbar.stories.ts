@@ -1,9 +1,9 @@
 import { html } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import type { Args, Meta } from "@storybook/html";
-import type { Toolbar as FoundationToolbar } from "../toolbar.js";
+import type { FASTToolbar } from "../toolbar.js";
 
-type ToolbarStoryArgs = Args & FoundationToolbar;
+type ToolbarStoryArgs = Args & FASTToolbar;
 type ToolbarStoryMeta = Meta<ToolbarStoryArgs>;
 
 const componentTemplate = html<ToolbarStoryArgs>`

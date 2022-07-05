@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { TreeView as FoundationTreeView } from "../tree-view.js";
+import type { FASTTreeView } from "../tree-view.js";
 
-type TreeViewStoryArgs = Args & FoundationTreeView;
+type TreeViewStoryArgs = Args & FASTTreeView;
 type TreeViewStoryMeta = Meta<TreeViewStoryArgs>;
 
 const storyTemplate = html<TreeViewStoryArgs>`

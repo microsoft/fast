@@ -1,9 +1,9 @@
 import { html, repeat, when } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import type { Args, Meta } from "@storybook/html";
-import type { RadioGroup as FoundationRadioGroup } from "../radio-group.js";
+import type { FASTRadioGroup } from "../radio-group.js";
 
-type RadioGroupStoryArgs = Args & FoundationRadioGroup;
+type RadioGroupStoryArgs = Args & FASTRadioGroup;
 type RadioGroupStoryMeta = Meta<RadioGroupStoryArgs>;
 
 const storyTemplate = html<RadioGroupStoryArgs>`
@@ -24,7 +24,7 @@ const storyTemplate = html<RadioGroupStoryArgs>`
                 </fast-radio>
             `
         )}
-    </fast-radio>
+    </fast-radio-group>
 `;
 
 export default {

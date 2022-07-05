@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Tooltip } from "../tooltip.js";
-import { tooltipTemplate as template } from "../tooltip.template.js";
+import { FASTTooltip } from "../tooltip.js";
+import { tooltipTemplate } from "../tooltip.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         contain: size;
         overflow: visible;
@@ -66,12 +65,10 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Tooltip.compose({
-            baseName: "tooltip",
-            styles,
-            template,
-        })()
-    );
+FASTTooltip.define({
+    name: "fast-tooltip",
+    styles,
+    template: tooltipTemplate({
+        anchoredRegion: "fast-anchored-region",
+    }),
+});

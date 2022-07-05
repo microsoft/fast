@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { MenuItem } from "../menu-item.js";
-import { menuItemTemplate as template } from "../menu-item.template.js";
+import { FASTMenuItem } from "../menu-item.js";
+import { menuItemTemplate } from "../menu-item.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -260,35 +259,33 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        MenuItem.compose({
-            baseName: "menu-item",
-            template,
-            styles,
-            checkboxIndicator: /* html */ `
-                <svg
-                    part="checkbox-indicator"
-                    class="checkbox-indicator"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="m8.1 12.7 7.1-8.2 1.6 1.4-8.6 9.9-4.4-4.5 1.5-1.5L8 12.7Z"/>
-                </svg>
-            `,
-            expandCollapseGlyph: /* html */ `
-                <svg
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="expand-collapse-glyph"
-                    part="expand-collapse-glyph"
-                >
-                    <path d="M5 12.3a1 1 0 0 0 1.6.8L11 8.8a1.5 1.5 0 0 0 0-2.3L6.6 2.2A1 1 0 0 0 5 3v9.3Z"/>
-                </svg>
-            `,
-            radioIndicator: /* html */ `
-                <span part="radio-indicator" class="radio-indicator"></span>
-            `,
-        })()
-    );
+FASTMenuItem.define({
+    name: "fast-menu-item",
+    template: menuItemTemplate({
+        anchoredRegion: "fast-anchored-region",
+        checkboxIndicator: /* html */ `
+            <svg
+                part="checkbox-indicator"
+                class="checkbox-indicator"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path fill-rule="evenodd" clip-rule="evenodd" d="m8.1 12.7 7.1-8.2 1.6 1.4-8.6 9.9-4.4-4.5 1.5-1.5L8 12.7Z"/>
+            </svg>
+        `,
+        expandCollapseGlyph: /* html */ `
+            <svg
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+                class="expand-collapse-glyph"
+                part="expand-collapse-glyph"
+            >
+                <path d="M5 12.3a1 1 0 0 0 1.6.8L11 8.8a1.5 1.5 0 0 0 0-2.3L6.6 2.2A1 1 0 0 0 5 3v9.3Z"/>
+            </svg>
+        `,
+        radioIndicator: /* html */ `
+            <span part="radio-indicator" class="radio-indicator"></span>
+        `,
+    }),
+    styles,
+});

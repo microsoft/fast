@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Button } from "../button.js";
-import { buttonTemplate as template } from "../button.template.js";
+import { FASTButton } from "../button.js";
+import { buttonTemplate } from "../button.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         display: inline-flex;
         font-family: var(--body-font);
@@ -99,15 +98,11 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate(document.body)
-    .withPrefix("fast")
-    .register(
-        Button.compose({
-            baseName: "button",
-            shadowOptions: {
-                delegatesFocus: true,
-            },
-            styles,
-            template,
-        })()
-    );
+FASTButton.define({
+    name: "fast-button",
+    template: buttonTemplate(),
+    styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+});

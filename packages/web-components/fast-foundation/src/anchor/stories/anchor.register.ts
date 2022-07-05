@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Anchor } from "../anchor.js";
-import { anchorTemplate as template } from "../anchor.template.js";
+import { FASTAnchor } from "../anchor.js";
+import { anchorTemplate } from "../anchor.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         --shadow-spread: calc((var(--focus-stroke-width) - var(--stroke-width)) * 1px);
         --base-size: calc((var(--base-height-multiplier)) * var(--design-unit) * 1px);
@@ -95,15 +94,11 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate(document.body)
-    .withPrefix("fast")
-    .register(
-        Anchor.compose({
-            baseName: "anchor",
-            shadowOptions: {
-                delegatesFocus: true,
-            },
-            styles,
-            template,
-        })()
-    );
+FASTAnchor.define({
+    name: "fast-anchor",
+    template: anchorTemplate(),
+    styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+});

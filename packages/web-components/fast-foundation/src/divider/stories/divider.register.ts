@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Divider } from "../divider.js";
-import { dividerTemplate as template } from "../divider.template.js";
+import { FASTDivider } from "../divider.js";
+import { dividerTemplate } from "../divider.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         border-left: none;
         border-top: calc(var(--stroke-width) * 1px) solid
@@ -22,12 +21,8 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Divider.compose({
-            baseName: "divider",
-            styles,
-            template,
-        })()
-    );
+FASTDivider.define({
+    name: "fast-divider",
+    styles,
+    template: dividerTemplate(),
+});

@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Slider, SliderOptions } from "../slider.js";
-import { sliderTemplate as template } from "../slider.template.js";
+import { FASTSlider } from "../slider.js";
+import { sliderTemplate } from "../slider.template.js";
 
-const styles = () => css`
+const styles = css`
     :host([hidden]) {
         display: none;
     }
@@ -121,13 +120,10 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Slider.compose<SliderOptions>({
-            baseName: "slider",
-            template,
-            styles,
-            thumb: /* html */ `<div class="thumb-cursor"></div>`,
-        })()
-    );
+FASTSlider.define({
+    name: "fast-slider",
+    template: sliderTemplate({
+        thumb: /* html */ `<div class="thumb-cursor"></div>`,
+    }),
+    styles,
+});

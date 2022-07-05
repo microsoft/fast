@@ -1,25 +1,19 @@
 import { css, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
 import chia, { expect } from "chai";
-import { DesignSystem } from "../design-system/index.js";
 import { uniqueElementName } from "../testing/fixture.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { CSSDesignToken, DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token.js";
 import spies from "chai-spies";
 
 chia.use(spies);
-const elementName = uniqueElementName();
+const elementName = uniqueElementName("token-test");
 
-DesignSystem.getOrCreate()
-    .register(
-        FoundationElement.compose({
-            type: class extends FoundationElement { },
-            baseName: elementName,
-            template: html`<slot></slot>`
-        })()
-    );
+FASTElement.define(class extends FASTElement { }, {
+    name: elementName,
+    template: html`<slot></slot>`
+});
 
 function addElement(parent = document.body): FASTElement & HTMLElement {
-    const el = document.createElement(`fast-${elementName}`) as any;
+    const el = document.createElement(elementName) as any;
     parent.appendChild(el);
     return el;
 }
@@ -561,7 +555,7 @@ describe("A DesignToken", () => {
             tokenA.withDefault(6);
             tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
 
-            const element = document.createElement(`fast-${elementName}`);
+            const element = document.createElement(elementName);
 
             tokenA.setValueFor(element, 7);
 
@@ -578,8 +572,8 @@ describe("A DesignToken", () => {
             tokenA.withDefault(() => 6);
             tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
 
-            const parent = document.createElement(`fast-${elementName}`);
-            const child = document.createElement(`fast-${elementName}`);
+            const parent = document.createElement(elementName);
+            const child = document.createElement(elementName);
             parent.appendChild(child);
 
             const handleChange = chia.spy(() => {});
@@ -606,8 +600,8 @@ describe("A DesignToken", () => {
             tokenA.withDefault(() => 6);
             tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
 
-            const parent = document.createElement(`fast-${elementName}`);
-            const child = document.createElement(`fast-${elementName}`);
+            const parent = document.createElement(elementName);
+            const child = document.createElement(elementName);
             document.body.appendChild(parent);
             tokenA.setValueFor(parent, () => 7);
 
@@ -627,8 +621,8 @@ describe("A DesignToken", () => {
             const tokenA = DesignToken.create<number>("token-a");
             tokenA.withDefault(6);
 
-            const parent = document.createElement(`fast-${elementName}`);
-            const child = document.createElement(`fast-${elementName}`);
+            const parent = document.createElement(elementName);
+            const child = document.createElement(elementName);
             document.body.appendChild(parent);
             tokenA.setValueFor(parent, 7);
 

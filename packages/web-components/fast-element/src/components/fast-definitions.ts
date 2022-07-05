@@ -56,8 +56,6 @@ export interface PartialFASTElementDefinition {
 export class FASTElementDefinition<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
 > {
-    private observedAttributes: string[];
-
     /**
      * The type this element definition describes.
      */
@@ -110,13 +108,7 @@ export class FASTElementDefinition<
      */
     public readonly elementOptions?: ElementDefinitionOptions;
 
-    /**
-     * Creates an instance of FASTElementDefinition.
-     * @param type - The type this definition is being created for.
-     * @param nameOrConfig - The name of the element to define or a config object
-     * that describes the element to define.
-     */
-    public constructor(
+    private constructor(
         type: TType,
         nameOrConfig: PartialFASTElementDefinition | string = (type as any).definition
     ) {
@@ -128,6 +120,7 @@ export class FASTElementDefinition<
         this.name = nameOrConfig.name;
         this.template = nameOrConfig.template;
 
+        const proto = type.prototype;
         const attributes = AttributeDefinition.collect(type, nameOrConfig.attributes);
         const observedAttributes = new Array<string>(attributes.length);
         const propertyLookup = {};
@@ -138,10 +131,15 @@ export class FASTElementDefinition<
             observedAttributes[i] = current.attribute;
             propertyLookup[current.name] = current;
             attributeLookup[current.attribute] = current;
+            Observable.defineProperty(proto, current);
         }
 
+        Reflect.defineProperty(type, "observedAttributes", {
+            value: observedAttributes,
+            enumerable: true,
+        });
+
         this.attributes = attributes;
-        this.observedAttributes = observedAttributes;
         this.propertyLookup = propertyLookup;
         this.attributeLookup = attributeLookup;
 
@@ -165,6 +163,8 @@ export class FASTElementDefinition<
                 : nameOrConfig.styles instanceof ElementStyles
                 ? nameOrConfig.styles
                 : new ElementStyles([nameOrConfig.styles]);
+
+        fastElementRegistry.register(this);
     }
 
     /**
@@ -176,25 +176,32 @@ export class FASTElementDefinition<
     public define(registry: CustomElementRegistry = customElements): this {
         const type = this.type;
 
-        if (fastElementRegistry.register(this)) {
-            const attributes = this.attributes;
-            const proto = type.prototype;
-
-            for (let i = 0, ii = attributes.length; i < ii; ++i) {
-                Observable.defineProperty(proto, attributes[i]);
-            }
-
-            Reflect.defineProperty(type, "observedAttributes", {
-                value: this.observedAttributes,
-                enumerable: true,
-            });
-        }
-
         if (!registry.get(this.name)) {
             registry.define(this.name, type as any, this.elementOptions);
         }
 
         return this;
+    }
+
+    /**
+     * Creates an instance of FASTElementDefinition.
+     * @param type - The type this definition is being created for.
+     * @param nameOrDef - The name of the element to define or a config object
+     * that describes the element to define.
+     */
+    public static compose<
+        TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+    >(
+        type: TType,
+        nameOrDef?: string | PartialFASTElementDefinition
+    ): FASTElementDefinition<TType> {
+        const found = fastElementRegistry.getByType(type);
+
+        if (found) {
+            return new FASTElementDefinition<TType>(class extends type {}, nameOrDef);
+        }
+
+        return new FASTElementDefinition<TType>(type, nameOrDef);
     }
 
     /**

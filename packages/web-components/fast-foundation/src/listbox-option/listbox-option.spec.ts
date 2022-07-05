@@ -1,17 +1,18 @@
 import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { listboxOptionTemplate } from "../listbox-option/listbox-option.template.js";
-import { fixture } from "../testing/fixture.js";
-import { ListboxOption } from "./listbox-option.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTListboxOption } from "./listbox-option.js";
 
 describe("ListboxOption", () => {
-    const FASTOption = ListboxOption.compose({
-        baseName: "option",
-        template: listboxOptionTemplate,
+    const optionName = uniqueElementName();
+    FASTListboxOption.define({
+        name: optionName,
+        template: listboxOptionTemplate(),
     });
 
     async function setup() {
-        const { element, connect, disconnect } = await fixture(FASTOption());
+        const { element, connect, disconnect } = await fixture<FASTListboxOption>(optionName);
 
         return { element, connect, disconnect };
     }

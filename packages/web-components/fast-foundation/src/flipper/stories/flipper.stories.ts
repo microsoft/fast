@@ -1,9 +1,9 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Flipper as FoundationFlipper } from "../flipper.js";
+import type { FASTFlipper } from "../flipper.js";
 import { FlipperDirection } from "../flipper.options.js";
 
-type FlipperStoryArgs = Args & FoundationFlipper;
+type FlipperStoryArgs = Args & FASTFlipper;
 type FlipperStoryMeta = Meta<FlipperStoryArgs>;
 
 const componentTemplate = html<FlipperStoryArgs>`

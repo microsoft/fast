@@ -1,10 +1,9 @@
 import type { ElementStyles } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { ListboxElement as FoundationListboxElement } from "../listbox.element.js";
-import { listboxTemplate as template } from "../listbox.template.js";
+import { FASTListboxElement } from "../listbox.element.js";
+import { listboxTemplate } from "../listbox.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         background: var(--neutral-layer-floating);
         border: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-rest);
@@ -39,7 +38,7 @@ const styles = () => css`
     }
 `;
 
-class Listbox extends FoundationListboxElement {
+class Listbox extends FASTListboxElement {
     private computedStylesheet?: ElementStyles;
 
     protected sizeChanged(prev: number | undefined, next: number): void {
@@ -64,13 +63,8 @@ class Listbox extends FoundationListboxElement {
     }
 }
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Listbox.compose({
-            baseName: "listbox",
-            baseClass: FoundationListboxElement,
-            template,
-            styles,
-        })()
-    );
+Listbox.define({
+    name: "fast-listbox",
+    template: listboxTemplate(),
+    styles,
+});

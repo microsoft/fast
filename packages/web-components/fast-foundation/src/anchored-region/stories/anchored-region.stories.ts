@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { AnchoredRegion as FoundationAnchoredRegion } from "../anchored-region.js";
+import type { FASTAnchoredRegion } from "../anchored-region.js";
 
-type AnchoredRegionArgs = Args & FoundationAnchoredRegion;
+type AnchoredRegionArgs = Args & FASTAnchoredRegion;
 type AnchoredRegionMeta = Meta<AnchoredRegionArgs>;
 
 const storyTemplate = html<AnchoredRegionArgs>`

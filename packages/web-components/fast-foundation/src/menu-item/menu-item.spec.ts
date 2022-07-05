@@ -1,23 +1,27 @@
 import { expect } from "chai";
-import { MenuItem, menuItemTemplate as template } from "./index.js";
-import { fixture } from "../testing/fixture.js";
+import { FASTMenuItem, menuItemTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Updates } from "@microsoft/fast-element";
 import { MenuItemRole } from "./menu-item.js";
 import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
-import { AnchoredRegion, anchoredRegionTemplate } from "../anchored-region/index.js";
+import { FASTAnchoredRegion, anchoredRegionTemplate } from "../anchored-region/index.js";
 
-const FASTMenuItem = MenuItem.compose({
-    baseName: "menu-item",
-    template
-})
+const anchoredRegionName = uniqueElementName();
+FASTAnchoredRegion.compose({
+    name: anchoredRegionName,
+    template: anchoredRegionTemplate()
+});
 
-const FASTAnchoredRegion = AnchoredRegion.compose({
-    baseName: "anchored-region",
-    template: anchoredRegionTemplate
-})
+const menuItemName = uniqueElementName();
+FASTMenuItem.define({
+    name: menuItemName,
+    template: menuItemTemplate({
+        anchoredRegion: anchoredRegionName
+    })
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture([FASTMenuItem(), FASTAnchoredRegion()]);
+    const { element, connect, disconnect } = await fixture<FASTMenuItem>(menuItemName);
 
     return { element, connect, disconnect };
 }

@@ -58,40 +58,35 @@ export const myTooltip = Tooltip.compose({
 
 
 
-### class: `Tooltip`
+### class: `FASTTooltip`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name                     | Privacy | Type                                  | Default    | Description                                                                                                                                                                                                      | Inherited From    |
-| ------------------------ | ------- | ------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `visible`                | public  | `boolean`                             |            | Whether the tooltip is visible or not. If undefined tooltip is shown when anchor element is hovered                                                                                                              |                   |
-| `anchor`                 | public  | `string`                              | `""`       | The id of the element the tooltip is anchored to                                                                                                                                                                 |                   |
-| `delay`                  | public  | `number`                              | `300`      | The delay in milliseconds before a tooltip is shown after a hover event                                                                                                                                          |                   |
-| `position`               | public  | `TooltipPosition`                     |            | Controls the placement of the tooltip relative to the anchor. When the position is undefined the tooltip is placed above or below the anchor based on available space.                                           |                   |
-| `autoUpdateMode`         | public  | `AutoUpdateMode`                      | `"anchor"` | Controls when the tooltip updates its position, default is 'anchor' which only updates when the anchor is resized.  'auto' will update on scroll/resize events. Corresponds to anchored-region auto-update-mode. |                   |
-| `horizontalViewportLock` | public  | `boolean`                             |            | Controls if the tooltip will always remain fully in the viewport on the horizontal axis                                                                                                                          |                   |
-| `verticalViewportLock`   | public  | `boolean`                             |            | Controls if the tooltip will always remain fully in the viewport on the vertical axis                                                                                                                            |                   |
-| `anchorElement`          | public  | `HTMLElement or null`                 | `null`     | the html element currently being used as anchor. Setting this directly overrides the anchor attribute.                                                                                                           |                   |
-| `$presentation`          | public  | `ComponentPresentation or null`       |            | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                          | FoundationElement |
-| `template`               | public  | `ElementViewTemplate or void or null` |            | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                       | FoundationElement |
-| `styles`                 | public  | `ElementStyles or void or null`       |            | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                              | FoundationElement |
+| Name                     | Privacy | Type                  | Default    | Description                                                                                                                                                                                                      | Inherited From |
+| ------------------------ | ------- | --------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `visible`                | public  | `boolean`             |            | Whether the tooltip is visible or not. If undefined tooltip is shown when anchor element is hovered                                                                                                              |                |
+| `anchor`                 | public  | `string`              | `""`       | The id of the element the tooltip is anchored to                                                                                                                                                                 |                |
+| `delay`                  | public  | `number`              | `300`      | The delay in milliseconds before a tooltip is shown after a hover event                                                                                                                                          |                |
+| `position`               | public  | `TooltipPosition`     |            | Controls the placement of the tooltip relative to the anchor. When the position is undefined the tooltip is placed above or below the anchor based on available space.                                           |                |
+| `autoUpdateMode`         | public  | `AutoUpdateMode`      | `"anchor"` | Controls when the tooltip updates its position, default is 'anchor' which only updates when the anchor is resized.  'auto' will update on scroll/resize events. Corresponds to anchored-region auto-update-mode. |                |
+| `horizontalViewportLock` | public  | `boolean`             |            | Controls if the tooltip will always remain fully in the viewport on the horizontal axis                                                                                                                          |                |
+| `verticalViewportLock`   | public  | `boolean`             |            | Controls if the tooltip will always remain fully in the viewport on the vertical axis                                                                                                                            |                |
+| `anchorElement`          | public  | `HTMLElement or null` | `null`     | the html element currently being used as anchor. Setting this directly overrides the anchor attribute.                                                                                                           |                |
 
 #### Methods
 
-| Name                     | Privacy   | Description | Parameters                      | Return | Inherited From    |
-| ------------------------ | --------- | ----------- | ------------------------------- | ------ | ----------------- |
-| `visibleChanged`         | protected |             |                                 | `void` |                   |
-| `anchorChanged`          | protected |             |                                 | `void` |                   |
-| `anchorElementChanged`   | protected |             | `oldValue: HTMLElement or null` | `void` |                   |
-| `viewportElementChanged` | protected |             |                                 | `void` |                   |
-| `templateChanged`        | protected |             |                                 | `void` | FoundationElement |
-| `stylesChanged`          | protected |             |                                 | `void` | FoundationElement |
+| Name                     | Privacy   | Description | Parameters                      | Return | Inherited From |
+| ------------------------ | --------- | ----------- | ------------------------------- | ------ | -------------- |
+| `visibleChanged`         | protected |             |                                 | `void` |                |
+| `anchorChanged`          | protected |             |                                 | `void` |                |
+| `anchorElementChanged`   | protected |             | `oldValue: HTMLElement or null` | `void` |                |
+| `viewportElementChanged` | protected |             |                                 | `void` |                |
 
 #### Events
 

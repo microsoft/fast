@@ -1,10 +1,10 @@
 import { html } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import type { Args, Meta } from "@storybook/html";
-import type { Divider as FoundationDivider } from "../divider.js";
+import type { FASTDivider } from "../divider.js";
 import { DividerRole } from "../divider.options.js";
 
-type DividerStoryArgs = Args & FoundationDivider;
+type DividerStoryArgs = Args & FASTDivider;
 type DividerStoryMeta = Meta<DividerStoryArgs>;
 
 const componentTemplate = html<DividerStoryArgs>`

@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Radio as FoundationRadio } from "../radio.js";
+import type { FASTRadio } from "../radio.js";
 
-type RadioStoryArgs = Args & FoundationRadio;
+type RadioStoryArgs = Args & FASTRadio;
 type RadioStoryMeta = Meta<RadioStoryArgs>;
 
 const storyTemplate = html<RadioStoryArgs>`

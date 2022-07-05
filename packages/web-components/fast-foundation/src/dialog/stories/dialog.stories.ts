@@ -1,8 +1,8 @@
 import { html, ref } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Dialog as FoundationDialog } from "../dialog.js";
+import type { FASTDialog } from "../dialog.js";
 
-type DialogStoryArgs = Args & FoundationDialog;
+type DialogStoryArgs = Args & FASTDialog;
 type DialogStoryMeta = Meta<DialogStoryArgs>;
 
 const componentTemplate = html<DialogStoryArgs>`

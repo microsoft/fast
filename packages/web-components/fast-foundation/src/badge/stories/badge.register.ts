@@ -1,9 +1,8 @@
 import { css } from "@microsoft/fast-element";
-import { DesignSystem } from "../../design-system/design-system.js";
-import { Badge } from "../badge.js";
-import { badgeTemplate as template } from "../badge.template.js";
+import { FASTBadge } from "../badge.js";
+import { badgeTemplate } from "../badge.template.js";
 
-const styles = () => css`
+const styles = css`
     :host {
         box-sizing: border-box;
         display: inline-block;
@@ -20,12 +19,8 @@ const styles = () => css`
     }
 `;
 
-DesignSystem.getOrCreate()
-    .withPrefix("fast")
-    .register(
-        Badge.compose({
-            baseName: "badge",
-            styles,
-            template,
-        })()
-    );
+FASTBadge.define({
+    name: "fast-badge",
+    template: badgeTemplate(),
+    styles,
+});

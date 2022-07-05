@@ -1,7 +1,7 @@
-import { ListboxElement } from "../listbox/listbox.element.js";
+import { FASTListboxElement } from "../listbox/listbox.element.js";
 import { FormAssociated } from "../form-associated/form-associated.js";
 
-class _Select extends ListboxElement {}
+class _Select extends FASTListboxElement {}
 interface _Select extends FormAssociated {}
 
 /**

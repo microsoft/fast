@@ -1,32 +1,32 @@
 import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { ListboxOption } from "../listbox-option/listbox-option.js";
-import { listboxOptionTemplate as itemTemplate } from "../listbox-option/listbox-option.template.js";
-import { fixture } from "../testing/fixture.js";
-import { ListboxElement, listboxTemplate as template } from "./index.js";
+import { FASTListboxOption } from "../listbox-option/listbox-option.js";
+import { listboxOptionTemplate } from "../listbox-option/listbox-option.template.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { FASTListboxElement, listboxTemplate } from "./index.js";
 
 describe("Listbox", () => {
-    const FASTListbox = ListboxElement.compose({
-        baseName: "listbox",
-        template
+    const Listbox = FASTListboxElement.define({
+        name: uniqueElementName("listbox"),
+        template: listboxTemplate()
     });
 
-    const FASTOption = ListboxOption.compose({
-        baseName: "option",
-        template: itemTemplate
+    const Option = FASTListboxOption.define({
+        name: uniqueElementName("option"),
+        template: listboxOptionTemplate()
     });
 
     async function setup() {
-        const { element, connect, disconnect } = await fixture([FASTListbox(), FASTOption()]);
+        const { element, connect, disconnect } = await fixture(Listbox);
 
-        const option1 = document.createElement("fast-option");
-        (option1 as ListboxOption).textContent = "option 1";
+        const option1 = new Option();
+        (option1 as FASTListboxOption).textContent = "option 1";
 
-        const option2 = document.createElement("fast-option");
-        (option2 as ListboxOption).textContent = "option 2";
+        const option2 = new Option();
+        (option2 as FASTListboxOption).textContent = "option 2";
 
-        const option3 = document.createElement("fast-option");
-        (option3 as ListboxOption).textContent = "option 3";
+        const option3 = new Option();
+        (option3 as FASTListboxOption).textContent = "option 3";
 
         element.appendChild(option1);
         element.appendChild(option2);

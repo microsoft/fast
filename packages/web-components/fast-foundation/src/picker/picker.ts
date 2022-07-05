@@ -21,8 +21,8 @@ import {
     uniqueId,
 } from "@microsoft/fast-web-utilities";
 import {
-    AnchoredRegion,
     AnchoredRegionConfig,
+    FASTAnchoredRegion,
     FlyoutPosBottom,
     FlyoutPosBottomFill,
     FlyoutPosTallest,
@@ -30,13 +30,13 @@ import {
     FlyoutPosTop,
     FlyoutPosTopFill,
 } from "../anchored-region/index.js";
-import type { PickerMenu } from "./picker-menu.js";
-import { PickerMenuOption } from "./picker-menu-option.js";
-import { PickerListItem } from "./picker-list-item.js";
+import type { FASTPickerMenu } from "./picker-menu.js";
+import { FASTPickerMenuOption } from "./picker-menu-option.js";
+import { FASTPickerListItem } from "./picker-list-item.js";
 import { FormAssociatedPicker } from "./picker.form-associated.js";
-import type { PickerList } from "./picker-list.js";
+import type { FASTPickerList } from "./picker-list.js";
 
-const pickerInputTemplate: ViewTemplate = html<Picker>`
+const pickerInputTemplate: ViewTemplate = html<FASTPicker>`
     <input
         slot="input-region"
         role="combobox"
@@ -48,7 +48,7 @@ const pickerInputTemplate: ViewTemplate = html<Picker>`
         aria-labelledby="${x => x.labelledBy}"
         placeholder="${x => x.placeholder}"
         ${ref("inputElement")}
-    ></input>
+    />
 `;
 
 /**
@@ -70,7 +70,7 @@ export type menuConfigs =
  *
  * @beta
  */
-export class Picker extends FormAssociatedPicker {
+export class FASTPicker extends FormAssociatedPicker {
     /**
      * Currently selected items. Comma delineated string ie. "apples,oranges".
      *
@@ -426,21 +426,21 @@ export class Picker extends FormAssociatedPicker {
      *
      * @internal
      */
-    public listElement: PickerList;
+    public listElement: FASTPickerList;
 
     /**
      * reference to the menu element
      *
      * @internal
      */
-    public menuElement: PickerMenu;
+    public menuElement: FASTPickerMenu;
 
     /**
      * reference to the anchored region element
      *
      * @internal
      */
-    public region: AnchoredRegion;
+    public region: FASTAnchoredRegion;
 
     /**
      *
@@ -461,7 +461,7 @@ export class Picker extends FormAssociatedPicker {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        this.listElement = document.createElement(this.selectedListTag) as PickerList;
+        this.listElement = document.createElement(this.selectedListTag) as FASTPickerList;
         this.appendChild(this.listElement);
         this.itemsPlaceholderElement = document.createComment("");
         this.listElement.append(this.itemsPlaceholderElement);
@@ -471,10 +471,10 @@ export class Picker extends FormAssociatedPicker {
         const match: string = this.menuTag.toUpperCase();
         this.menuElement = Array.from(this.children).find((element: HTMLElement) => {
             return element.tagName === match;
-        }) as PickerMenu;
+        }) as FASTPickerMenu;
 
         if (this.menuElement === undefined) {
-            this.menuElement = document.createElement(this.menuTag) as PickerMenu;
+            this.menuElement = document.createElement(this.menuTag) as FASTPickerMenu;
             this.appendChild(this.menuElement);
         }
 
@@ -833,7 +833,7 @@ export class Picker extends FormAssociatedPicker {
         if (e.defaultPrevented) {
             return false;
         }
-        if (e.target instanceof PickerListItem) {
+        if (e.target instanceof FASTPickerListItem) {
             const listItems: Element[] = Array.from(
                 this.listElement.querySelectorAll("[role='listitem']")
             );
@@ -857,7 +857,7 @@ export class Picker extends FormAssociatedPicker {
             return false;
         }
 
-        if (e.target instanceof PickerMenuOption) {
+        if (e.target instanceof FASTPickerMenuOption) {
             if (e.target.value !== undefined) {
                 this.selection = `${this.selection}${this.selection === "" ? "" : ","}${
                     e.target.value

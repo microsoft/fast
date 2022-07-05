@@ -1,7 +1,13 @@
-import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
+import {
+    attr,
+    FASTElement,
+    html,
+    HTMLView,
+    observable,
+    ViewTemplate,
+} from "@microsoft/fast-element";
 
-const defaultContentsTemplate: ViewTemplate<PickerMenuOption> = html`
+const defaultContentsTemplate: ViewTemplate<FASTPickerMenuOption> = html`
     <template>
         ${x => x.value}
     </template>
@@ -12,7 +18,7 @@ const defaultContentsTemplate: ViewTemplate<PickerMenuOption> = html`
  *
  * @beta
  */
-export class PickerMenuOption extends FoundationElement {
+export class FASTPickerMenuOption extends FASTElement {
     /**
      * The underlying string value of the item
      *

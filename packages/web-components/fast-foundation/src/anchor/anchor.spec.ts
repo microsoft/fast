@@ -1,14 +1,15 @@
 import { expect } from "chai";
-import { Anchor, anchorTemplate as template } from "./index.js";
-import { fixture } from "../testing/fixture.js";
+import { FASTAnchor, anchorTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 
-const FASTAnchor = Anchor.compose({
-    baseName: "anchor",
-    template
+const anchorName = uniqueElementName();
+FASTAnchor.define({
+    name: anchorName,
+    template: anchorTemplate()
 });
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTAnchor());
+    const { element, connect, disconnect } = await fixture<FASTAnchor>(anchorName);
 
     return { element, connect, disconnect };
 }

@@ -1,11 +1,11 @@
 import { expect } from "chai";
-import { fixture } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "../testing/fixture.js";
 import {
     dataGridTemplate,
-    DataGrid,
-    DataGridRow,
+    FASTDataGrid,
+    FASTDataGridRow,
     dataGridRowTemplate,
-    DataGridCell,
+    FASTDataGridCell,
     dataGridCellTemplate
 } from "./index.js";
 import type { ColumnDefinition } from "./data-grid.js";
@@ -13,20 +13,27 @@ import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options.js"
 import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 
-const FASTDataGridCell = DataGridCell.compose({
-    baseName: "data-grid-cell",
-    template: dataGridCellTemplate
-})
+const dataGridCellName = uniqueElementName();
+FASTDataGridCell.define({
+    name: dataGridCellName,
+    template: dataGridCellTemplate()
+});
 
-const FASTDataGridRow = DataGridRow.compose({
-    baseName: "data-grid-row",
-    template: dataGridRowTemplate
-})
+const dataGridRowName = uniqueElementName();
+FASTDataGridRow.define({
+    name: dataGridRowName,
+    template: dataGridRowTemplate({
+        dataGridCell: dataGridCellName
+    })
+});
 
-const FASTDataGrid = DataGrid.compose({
-    baseName: "data-grid",
-    template: dataGridTemplate
-})
+const dataGridName = uniqueElementName();
+FASTDataGrid.define({
+    name: dataGridName,
+    template: dataGridTemplate({
+        dataGridRow: dataGridRowName
+    })
+});
 
 // Utility functions to generate test data
 export function newDataSet(rowCount: number): object[] {
@@ -73,9 +80,7 @@ const endEvent = new KeyboardEvent("keydown", {
 const cellQueryString = '[role="cell"], [role="gridcell"], [role="columnheader"]';
 
 async function setup() {
-    const { document, element, connect, disconnect} = await fixture(
-        [FASTDataGrid(), FASTDataGridRow(), FASTDataGridCell()]
-    );
+    const { document, element, connect, disconnect} = await fixture<FASTDataGrid>(dataGridName);
     return { document, element, connect, disconnect};
 }
 
@@ -130,7 +135,7 @@ describe("Data grid", () => {
     });
 
     it("should generate basic column definitions when generateColumns is called", async () => {
-        const columns: ColumnDefinition[] = DataGrid.generateColumns(newDataRow("test"));
+        const columns: ColumnDefinition[] = FASTDataGrid.generateColumns(newDataRow("test"));
         expect(columns.length).to.equal(6);
         expect(columns[0].columnDataKey).to.equal("item1");
         expect(columns[5].columnDataKey).to.equal("item6");
@@ -141,7 +146,7 @@ describe("Data grid", () => {
         element.rowsData = newDataSet(5);
         await connect();
 
-        const rows: DataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
+        const rows: FASTDataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
 
         expect(rows.length).to.equal(6);
         expect(rows[0].rowType).to.equal(DataGridRowTypes.header);
@@ -155,7 +160,7 @@ describe("Data grid", () => {
         element.generateHeader = GenerateHeaderOptions.none;
         await connect();
 
-        const rows: DataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
+        const rows: FASTDataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
 
         expect(rows.length).to.equal(5);
         expect(rows[0].rowType).to.equal(DataGridRowTypes.default);
@@ -167,7 +172,7 @@ describe("Data grid", () => {
         const {  document, element, connect, disconnect } = await setup();
         await connect();
 
-        const rows: DataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
+        const rows: FASTDataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
 
         expect(rows.length).to.equal(0);
 
@@ -180,7 +185,7 @@ describe("Data grid", () => {
         element.generateHeader = GenerateHeaderOptions.sticky;
         await connect();
 
-        const rows: DataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
+        const rows: FASTDataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
 
         expect(rows.length).to.equal(6);
         expect(rows[0].rowType).to.equal(DataGridRowTypes.stickyHeader);
@@ -194,7 +199,7 @@ describe("Data grid", () => {
         element.generateHeader = GenerateHeaderOptions.sticky;
         await connect();
 
-        const rows: DataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
+        const rows: FASTDataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
 
         await Updates.next();
 
@@ -340,9 +345,9 @@ describe("Data grid", () => {
     it("should auto generate grid-columns from a manual row", async () => {
         const {  document, element, connect, disconnect } = await setup();
 
-        const row = new DataGridRow();
-        row.appendChild(new DataGridCell());
-        row.appendChild(new DataGridCell());
+        const row = new FASTDataGridRow();
+        row.appendChild(new FASTDataGridCell());
+        row.appendChild(new FASTDataGridCell());
         element.appendChild(row);
         await connect();
         await Updates.next();

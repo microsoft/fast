@@ -1,8 +1,8 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Checkbox as FoundationCheckbox } from "../checkbox.js";
+import type { FASTCheckbox } from "../checkbox.js";
 
-type CheckboxStoryArgs = Args & FoundationCheckbox;
+type CheckboxStoryArgs = Args & FASTCheckbox;
 type CheckboxStoryMeta = Meta<CheckboxStoryArgs>;
 
 const storyTemplate = html<CheckboxStoryArgs>`

@@ -1,27 +1,23 @@
 import {
     attr,
     booleanConverter,
+    FASTElement,
     nullableNumberConverter,
     observable,
     Updates,
 } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element/foundation-element.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/index.js";
 import type { ResizeObserverClassDefinition } from "../utilities/resize-observer.js";
 
 /**
- * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
+ * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)}
  * @public
  */
 export type HorizontalScrollView = "default" | "mobile";
 
 /**
- * The easing types available for the horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
+ * The easing types available for the horizontal-scroll {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)}
  * @public
  */
 export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | string;
@@ -30,23 +26,10 @@ export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | s
  * Horizontal scroll configuration options
  * @public
  */
-export type HorizontalScrollOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        nextFlipper?:
-            | FoundationElementTemplate<
-                  SyntheticViewTemplate<any, HorizontalScroll>,
-                  HorizontalScrollOptions
-              >
-            | SyntheticViewTemplate
-            | string;
-        previousFlipper?:
-            | FoundationElementTemplate<
-                  SyntheticViewTemplate<any, HorizontalScroll>,
-                  HorizontalScrollOptions
-              >
-            | SyntheticViewTemplate
-            | string;
-    };
+export type HorizontalScrollOptions = StartEndOptions & {
+    nextFlipper?: SyntheticViewTemplate | string;
+    previousFlipper?: SyntheticViewTemplate | string;
+};
 
 /**
  * A HorizontalScroll Custom HTML Element
@@ -65,7 +48,7 @@ export type HorizontalScrollOptions = FoundationElementDefinition &
  *
  * @public
  */
-export class HorizontalScroll extends FoundationElement {
+export class FASTHorizontalScroll extends FASTElement {
     /**
      * Reference to DOM element that scrolls the content
      * @public
@@ -545,10 +528,10 @@ export class HorizontalScroll extends FoundationElement {
             this.resizeTimeout = clearTimeout(this.resizeTimeout);
         }
 
-        this.resizeTimeout = setTimeout(() => {
+        this.resizeTimeout = (setTimeout(() => {
             this.width = this.offsetWidth;
             this.setFlippers();
-        }, this.frameTime);
+        }, this.frameTime) as any) as number;
     }
 
     /**
@@ -560,8 +543,8 @@ export class HorizontalScroll extends FoundationElement {
             this.scrollTimeout = clearTimeout(this.scrollTimeout);
         }
 
-        this.scrollTimeout = setTimeout(() => {
+        this.scrollTimeout = (setTimeout(() => {
             this.setFlippers();
-        }, this.frameTime);
+        }, this.frameTime) as any) as number;
     }
 }

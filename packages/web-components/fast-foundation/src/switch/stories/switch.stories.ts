@@ -1,8 +1,8 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
-import type { Switch as FoundationSwitch } from "../switch.js";
+import type { FASTSwitch } from "../switch.js";
 
-type SwitchStoryArgs = Args & FoundationSwitch;
+type SwitchStoryArgs = Args & FASTSwitch;
 type SwitchStoryMeta = Meta<SwitchStoryArgs>;
 
 const storyTemplate = html<SwitchStoryArgs>`
