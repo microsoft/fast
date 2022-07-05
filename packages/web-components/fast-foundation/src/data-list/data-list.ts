@@ -9,7 +9,7 @@ import {
 } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import type { FASTDataListItem } from "./data-list-item.js";
-import type { IdleLoadMode } from "./data-list.options.js";
+import type { ItemLoadMode } from "./data-list.options.js";
 
 /**
  *  The DataList class
@@ -57,8 +57,8 @@ export class FASTDataList extends FASTElement {
      * @remarks
      * HTML Attribute: idle-load-mode
      */
-    @attr({ attribute: "idle-load-mode" })
-    public idleLoadMode: IdleLoadMode = "enabled";
+    @attr({ attribute: "item-load-mode" })
+    public itemLoadMode: ItemLoadMode = "immediate";
 
     /**
      * The ViewTemplate used in the items repeat loop
@@ -67,6 +67,11 @@ export class FASTDataList extends FASTElement {
      */
     @observable
     public itemTemplate: ViewTemplate;
+    private itemTemplateChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.initializeRepeatBehavior();
+        }
+    }
 
     /**
      * The ViewTemplate used to render a list item contents
@@ -74,7 +79,12 @@ export class FASTDataList extends FASTElement {
      * @public
      */
     @observable
-    public listItemContentsTemplate: ViewTemplate;
+    public itemContentsTemplate: ViewTemplate;
+    private itemContentsTemplateChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.initializeRepeatBehavior();
+        }
+    }
 
     /**
      * Suspends idle loading
@@ -86,7 +96,7 @@ export class FASTDataList extends FASTElement {
     public idleLoadingSuspended: boolean;
     protected idleLoadingSuspendedChanged(): void {
         if (this.$fastController.isConnected) {
-            if (!this.idleLoadingSuspended && this.idleLoadMode === "enabled") {
+            if (!this.idleLoadingSuspended && this.itemLoadMode === "idle") {
                 this.nextCallback();
             }
         }
@@ -112,22 +122,6 @@ export class FASTDataList extends FASTElement {
     public listItemContext: object;
 
     /**
-     * The default ViewTemplate used to render items vertically.
-     *
-     * @internal
-     */
-    @observable
-    public defaultVerticalItemTemplate: ViewTemplate;
-
-    /**
-     * The default ViewTemplate used to render items horizontally.
-     *
-     * @internal
-     */
-    @observable
-    public defaultHorizontalItemTemplate: ViewTemplate;
-
-    /**
      * the idle callback queue for this list instance.
      * List items can use this instance to coordinate idle loading.
      *
@@ -135,6 +129,11 @@ export class FASTDataList extends FASTElement {
      */
     @observable
     public renderItems: object[];
+    private renderItemsChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.initializeRepeatBehavior();
+        }
+    }
 
     // reference to the repeat behavior used to render items
     private itemsRepeatBehavior: RepeatBehavior | null = null;
@@ -157,13 +156,6 @@ export class FASTDataList extends FASTElement {
         if (this.itemsPlaceholder === undefined) {
             this.itemsPlaceholder = document.createComment("");
             this.appendChild(this.itemsPlaceholder);
-        }
-
-        if (!this.itemTemplate) {
-            this.itemTemplate =
-                this.orientation === Orientation.vertical
-                    ? this.defaultVerticalItemTemplate
-                    : this.defaultHorizontalItemTemplate;
         }
 
         this.addEventListener("listitemconnected", this.handleListItemConnected);
@@ -215,9 +207,13 @@ export class FASTDataList extends FASTElement {
     /**
      * initialize repeat behavior for render items
      */
-    private initializeRepeatBehavior(): void {
-        if (this.itemsRepeatBehavior !== null) {
+    protected initializeRepeatBehavior(): void {
+        if (!this.renderItems || !this.itemTemplate) {
             return;
+        }
+
+        if (this.itemsRepeatBehavior) {
+            this.clearRepeatBehavior();
         }
 
         const itemsRepeatDirective = new RepeatDirective(
@@ -231,6 +227,13 @@ export class FASTDataList extends FASTElement {
 
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
+    }
+
+    protected clearRepeatBehavior(): void {
+        if (!this.itemsRepeatBehavior) {
+            return;
+        }
+        this.itemsRepeatBehavior.unbind();
     }
 
     /**
@@ -273,6 +276,7 @@ export class FASTDataList extends FASTElement {
      */
     private nextCallback = (): void => {
         if (
+            this.itemLoadMode !== "idle" ||
             this.idleLoadingSuspended ||
             this.currentCallbackId ||
             this.callbackQueue.size === 0

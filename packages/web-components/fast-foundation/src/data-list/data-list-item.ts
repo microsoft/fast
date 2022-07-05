@@ -31,20 +31,20 @@ export class FASTDataListItem extends FASTElement {
     public itemIndex: number;
 
     /**
-     *  Custom context provided to the parent data list
-     *
-     * @internal
-     */
-    @observable
-    public listItemContext: object;
-
-    /**
      * The viewtemplate used to render the item contents
      *
      * @internal
      */
     @observable
-    public listItemContentsTemplate: ViewTemplate;
+    public itemContentsTemplate: ViewTemplate;
+    private itemContentsTemplateChanged(): void {
+        if (this.$fastController.isConnected) {
+            if (this.customView) {
+                this.customView.dispose();
+            }
+            this.customView = this.itemContentsTemplate.render(this, this);
+        }
+    }
 
     /**
      *  Flag indicating whether the item should load contents
@@ -65,8 +65,8 @@ export class FASTDataListItem extends FASTElement {
             this.loadContent = true;
         }
 
-        if (this.listItemContentsTemplate) {
-            this.customView = this.listItemContentsTemplate.render(this, this);
+        if (this.itemContentsTemplate) {
+            this.customView = this.itemContentsTemplate.render(this, this);
         }
 
         this.$emit("listitemconnected");

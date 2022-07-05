@@ -20,7 +20,16 @@ function newDataSet(rowCount: number, prefix: number): object[] {
     return newData;
 }
 
-const listItemContentsTemplate = html`
+const listItemTemplate = html`
+    <fast-data-list-item
+        :itemData="${x => x}"
+        :itemIndex="${(x, c) => c.index}"
+        :idleLoad="${(x, c) => (c.parent.itemLoadMode === "idle" ? true : false)}"
+        :itemContentsTemplate="${(x, c) => c.parent.itemContentsTemplate}"
+    ></fast-data-list-item>
+`;
+
+const itemContentsTemplate = html`
     <fast-card>
         <div
             style="
@@ -28,7 +37,7 @@ const listItemContentsTemplate = html`
                 color: white;
             "
         >
-            ${x => x.listItemContext.titleString} ${x => x.itemData.title}
+            ${x => x.itemData.title}
         </div>
         ${when(
             x => x.loadContent,
@@ -63,15 +72,12 @@ const listItemContentsTemplate = html`
 const storyTemplate = html<DataListStoryArgs>`
     <fast-data-list
         :items="${newDataSet(100, 1)}"
-        orientation="${x => x.orientation}"
         recycle="${x => x.recycle}"
-        idle-load-mode="${x => x.idleLoadMode}"
+        item-load-mode="${x => x.itemLoadMode}"
         idle-callback-timeout="${x => x.idleCallbackTimeout}"
         list-item-load-mode="${x => x.listItemLoadMode}"
-        :listItemContentsTemplate="${listItemContentsTemplate}"
-        :listItemContext="${{
-            titleString: "title:",
-        }}"
+        :itemTemplate="${listItemTemplate}"
+        :itemContentsTemplate="${itemContentsTemplate}"
     ></fast-data-list>
 `;
 
@@ -79,23 +85,16 @@ export default {
     title: "Data List",
     args: {
         itemSize: 100,
+        idleLoadMode: "idle",
     },
     argTypes: {
-        orientation: {
-            options: ["horizontal", "vertical"],
-            control: { type: "select" },
-        },
         recycle: { control: { type: "boolean" } },
-        idleLoadMode: {
-            options: ["enabled", "suspended"],
+        itemLoadMode: {
+            options: ["idle", "immediate"],
             control: { type: "select" },
         },
         idleCallbackTimeout: {
             control: { type: "text" },
-        },
-        listItemLoadMode: {
-            options: ["manual", "immediate", "idle"],
-            control: { type: "select" },
         },
     },
 } as DataListStoryMeta;

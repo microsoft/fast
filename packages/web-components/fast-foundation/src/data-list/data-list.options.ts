@@ -3,4 +3,4 @@
  *
  * @public
  */
-export type IdleLoadMode = "enabled" | "immediate";
+export type ItemLoadMode = "idle" | "immediate";
