@@ -46,23 +46,3 @@ Observable.getNotifier(token).subscribe({
 
 
 
-
-### class: `ObservableMap`
-
-#### Superclass
-
-| Name  | Module                               | Package |
-| ----- | ------------------------------------ | ------- |
-| `Map` | src/design-token-2/observable-map.ts |         |
-
-#### Methods
-
-| Name     | Privacy | Description | Parameters         | Return           | Inherited From |
-| -------- | ------- | ----------- | ------------------ | ---------------- | -------------- |
-| `set`    |         |             | `key: T, value: K` | `this`           |                |
-| `get`    |         |             | `key: T`           | `K or undefined` |                |
-| `delete` |         |             | `key: T`           | `boolean`        |                |
-
-<hr/>
-
-

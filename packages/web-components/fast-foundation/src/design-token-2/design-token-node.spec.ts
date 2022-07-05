@@ -395,7 +395,6 @@ describe.only("DesignTokenNode", () => {
             ancestor.setTokenValue(dependency, 6);
             ancestor.setTokenValue(token, (resolve) => resolve(dependency) * 2);
 
-
             expect(target.getTokenValue(token)).to.equal(12);
 
             target.setTokenValue(dependency, 7);
@@ -581,7 +580,7 @@ describe.only("DesignTokenNode", () => {
             node.setTokenValue(token, 12);
             Observable.getNotifier(token).subscribe(subscriber);
 
-            node.setTokenValue(token, ()=> 12);
+            node.setTokenValue(token, () => 12);
 
             expect(handleChange).not.to.have.been.called();
         });
