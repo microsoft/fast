@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "fix horizontal scroll tests for archive/fast-element-1 branch",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}
