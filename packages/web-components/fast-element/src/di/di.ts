@@ -2,15 +2,11 @@
  * Big thanks to https://github.com/fkleuver and the https://github.com/aurelia/aurelia project
  * for the bulk of this code and many of the associated tests.
  */
-import { Constructable, emptyArray, FASTElement } from "@microsoft/fast-element";
-import {
-    Context,
-    ContextDecorator,
-    ContextEvent,
-    UnknownContext,
-} from "@microsoft/fast-element/context";
-import { Metadata } from "@microsoft/fast-element/metadata";
-import type { Class } from "../interfaces.js";
+import { FASTElement } from "../components/fast-element.js";
+import { Context, ContextDecorator, ContextEvent, UnknownContext } from "../context.js";
+import type { Class, Constructable } from "../interfaces.js";
+import { Metadata } from "../metadata.js";
+import { emptyArray } from "../platform.js";
 
 /**
  * Represents a custom callback for resolving a request from the container.
@@ -172,14 +168,6 @@ export interface Container extends ServiceLocator {
      * @param params - The registration objects.
      */
     register(...params: any[]): Container;
-
-    /**
-     * Registers dependencies with the container via registration objects, providing
-     * the specified context to each register invocation.
-     * @param context - The context object to pass to the registration objects.
-     * @param params - The registration objects.
-     */
-    registerWithContext(context: any, ...params: any[]): Container;
 
     /**
      * Registers a resolver with the container for the specified key.
@@ -1467,7 +1455,6 @@ export class ContainerImpl implements DOMContainer {
     private _parent: ContainerImpl | null | undefined = void 0;
     private registerDepth: number = 0;
     private resolvers: Map<Key, Resolver>;
-    private context: any = null;
     private isHandlingContextRequests = false;
 
     public get parent() {
@@ -1521,13 +1508,6 @@ export class ContainerImpl implements DOMContainer {
         this.isHandlingContextRequests = enable;
     }
 
-    public registerWithContext(context: any, ...params: any[]): Container {
-        this.context = context;
-        this.register(...params);
-        this.context = null;
-        return this;
-    }
-
     public register(...params: any[]): Container {
         if (++this.registerDepth === 100) {
             throw new Error("Unable to autoregister dependency");
@@ -1540,7 +1520,6 @@ export class ContainerImpl implements DOMContainer {
         let value: Registry;
         let j: number;
         let jj: number;
-        const context = this.context;
 
         for (let i = 0, ii = params.length; i < ii; ++i) {
             current = params[i];
@@ -1550,7 +1529,7 @@ export class ContainerImpl implements DOMContainer {
             }
 
             if (isRegistry(current)) {
-                current.register(this, context);
+                current.register(this);
             } else if (isClass(current)) {
                 Registration.singleton(current, current as Constructable).register(this);
             } else {
@@ -1565,7 +1544,7 @@ export class ContainerImpl implements DOMContainer {
                     // note: we could remove this if-branch and call this.register directly
                     // - the extra check is just a perf tweak to create fewer unnecessary arrays by the spread operator
                     if (isRegistry(value)) {
-                        value.register(this, context);
+                        value.register(this);
                     } else {
                         this.register(value);
                     }

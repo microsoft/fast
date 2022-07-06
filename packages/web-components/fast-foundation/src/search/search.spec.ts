@@ -1,6 +1,6 @@
 import { expect, assert } from "chai";
 import { FASTButton, buttonTemplate } from "../button/index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { FASTSearch, searchTemplate } from "./index.js";
 
 const searchName = uniqueElementName();

@@ -9,7 +9,6 @@ import type { CaptureType } from '@microsoft/fast-element';
 import { composedContains } from '@microsoft/fast-element/utilities';
 import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
-import { ContextDecorator } from '@microsoft/fast-element/context';
 import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -40,9 +39,6 @@ export function accordionItemTemplate(options?: AccordionItemOptions): ElementVi
 
 // @public
 export function accordionTemplate(): ElementViewTemplate<FASTAccordion>;
-
-// @public
-export const all: (key: any, searchAncestors?: boolean) => ReturnType<typeof DI.inject>;
 
 // @public
 export interface AnchoredRegionConfig {
@@ -265,74 +261,6 @@ export { composedParent }
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
 // @public
-export interface Container extends ServiceLocator {
-    createChild(config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
-    getFactory<T extends Constructable>(key: T): Factory<T>;
-    getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
-    register(...params: any[]): Container;
-    registerFactory<T extends Constructable>(key: T, factory: Factory<T>): void;
-    registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
-    registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
-    registerWithContext(context: any, ...params: any[]): Container;
-}
-
-// @public
-export const Container: ContextDecorator<Container>;
-
-// @public
-export interface ContainerConfiguration {
-    defaultResolver(key: Key, handler: Container): Resolver;
-    parentLocator: ParentLocator;
-    responsibleForOwnerRequests: boolean;
-}
-
-// @public
-export const ContainerConfiguration: Readonly<{
-    default: Readonly<ContainerConfiguration>;
-}>;
-
-// Warning: (ae-internal-missing-underscore) The name "ContainerImpl" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export class ContainerImpl implements DOMContainer {
-    constructor(owner: any, config: ContainerConfiguration);
-    // (undocumented)
-    protected config: ContainerConfiguration;
-    // (undocumented)
-    createChild(config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
-    // (undocumented)
-    get depth(): number;
-    // (undocumented)
-    get<K extends Key>(key: K): Resolved<K>;
-    // (undocumented)
-    getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
-    // (undocumented)
-    getFactory<K extends Constructable>(Type: K): Factory<K>;
-    // (undocumented)
-    getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
-    // (undocumented)
-    handleContextRequests(enable: boolean): void;
-    // (undocumented)
-    has<K extends Key>(key: K, searchAncestors?: boolean): boolean;
-    // (undocumented)
-    protected owner: any;
-    // (undocumented)
-    get parent(): ContainerImpl | null;
-    // (undocumented)
-    register(...params: any[]): Container;
-    // (undocumented)
-    registerFactory<K extends Constructable>(key: K, factory: Factory<K>): void;
-    // (undocumented)
-    registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
-    // (undocumented)
-    registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
-    // (undocumented)
-    registerWithContext(context: any, ...params: any[]): Container;
-    // (undocumented)
-    get responsibleForOwnerRequests(): boolean;
-}
-
-// @public
 export interface CSSDesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | ({
     createCSS?(): string;
 } & Record<PropertyKey, any>)> extends DesignToken<T>, CSSDirective {
@@ -419,13 +347,6 @@ export const DayFormat: {
 
 // @public
 export type DayFormat = typeof DayFormat[keyof typeof DayFormat];
-
-// @public
-export const DefaultResolver: Readonly<{
-    none(key: Key): Resolver;
-    singleton(key: Key): Resolver;
-    transient(key: Key): Resolver;
-}>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAButton" because one of its declarations is marked as @internal
@@ -588,22 +509,6 @@ export interface DesignTokenSubscriber<T extends DesignToken<any>> {
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
 // @public
-export const DI: Readonly<{
-    installAsContextRequestStrategy(): void;
-    createContainer(config?: Partial<ContainerConfiguration>): Container;
-    findResponsibleContainer(target: EventTarget): DOMContainer;
-    findParentContainer(target: EventTarget): DOMContainer;
-    getOrCreateDOMContainer(target?: EventTarget, config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): DOMContainer;
-    getDependencies(Type: Constructable | Injectable): Key[];
-    defineProperty(target: {}, propertyName: string, key: Key, respectConnection?: boolean): void;
-    createContext: typeof createContext;
-    createInterface: typeof createContext;
-    inject(...dependencies: Key[]): (target: any, key?: string | number, descriptor?: PropertyDescriptor | number) => void;
-    transient<T extends Constructable<{}>>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
-    singleton<T_1 extends Constructable<{}>>(target: T_1 & Partial<RegisterSelf<T_1>>, options?: SingletonOptions): T_1 & RegisterSelf<T_1>;
-}>;
-
-// @public
 export function dialogTemplate(): ElementViewTemplate<FASTDialog>;
 
 // @public @deprecated
@@ -628,41 +533,12 @@ export type DividerRole = typeof DividerRole[keyof typeof DividerRole];
 export function dividerTemplate(): ElementViewTemplate<FASTDivider>;
 
 // @public
-export interface DOMContainer extends Container {
-    // @beta
-    handleContextRequests(enable: boolean): void;
-}
-
-// @public
-export const DOMContainer: ContextDecorator<DOMContainer>;
-
-// @public
 export type EndOptions = {
     end?: string | SyntheticViewTemplate;
 };
 
 // @public
 export function endSlotTemplate(options: EndOptions): ViewTemplate<StartEnd>;
-
-// @public
-export interface Factory<T extends Constructable = any> {
-    construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
-    registerTransformer(transformer: Transformer_2<T>): void;
-    readonly Type: T;
-}
-
-// Warning: (ae-internal-missing-underscore) The name "FactoryImpl" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
-    constructor(Type: T, dependencies: Key[]);
-    // (undocumented)
-    construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
-    // (undocumented)
-    registerTransformer(transformer: (instance: any) => any): void;
-    // (undocumented)
-    Type: T;
-}
 
 // @public
 export class FASTAccordion extends FASTElement {
@@ -2344,39 +2220,16 @@ export function horizontalScrollTemplate(options?: HorizontalScrollOptions): Ele
 // @public
 export type HorizontalScrollView = "default" | "mobile";
 
-// @public
-export function ignore(target: Injectable, property?: string | number, descriptor?: PropertyDescriptor | number): void;
-
-// @public
-export const inject: (...dependencies: Key[]) => (target: any, key?: string | number, descriptor?: PropertyDescriptor | number) => void;
-
-// @public
-export type Injectable<T = {}> = Constructable<T> & {
-    inject?: Key[];
-};
-
 // Warning: (ae-internal-missing-underscore) The name "interactiveCalendarGridTemplate" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
 export function interactiveCalendarGridTemplate(options: CalendarOptions, todayString: string): ViewTemplate<FASTCalendar>;
 
 // @public
-export interface InterfaceConfiguration {
-    friendlyName?: string;
-    respectConnection?: boolean;
-}
-
-// @public
 export function isListboxOption(el: Element): el is FASTListboxOption;
 
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
-
-// @public
-export type Key = PropertyKey | object | ContextDecorator | Constructable | Resolver;
-
-// @public
-export const lazy: (key: any) => any;
 
 // @public
 export const lightModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
@@ -2463,12 +2316,6 @@ export type MonthInfo = {
     start: number;
 };
 
-// @public
-export const newInstanceForScope: (key: any) => any;
-
-// @public
-export const newInstanceOf: (key: any) => any;
-
 // Warning: (ae-internal-missing-underscore) The name "noninteractiveCalendarTemplate" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -2482,12 +2329,6 @@ export type NumberFieldOptions = StartEndOptions & {
 
 // @public
 export function numberFieldTemplate(options?: NumberFieldOptions): ElementViewTemplate<FASTNumberField>;
-
-// @public
-export const optional: (key: any) => any;
-
-// @public
-export type ParentLocator = (owner: any) => Container | null;
 
 // Warning: (ae-incompatible-release-tags) The symbol "pickerListItemTemplate" is marked as @public, but its signature references "FASTPickerListItem" which is marked as @beta
 //
@@ -2570,94 +2411,6 @@ export function radioTemplate(options?: RadioOptions): ElementViewTemplate<FASTR
 // @beta
 export function reflectAttributes<T = any>(...attributes: string[]): CaptureType<T>;
 
-// @public
-export type RegisterSelf<T extends Constructable> = {
-    register(container: Container): Resolver<InstanceType<T>>;
-    registerInRequestor: boolean;
-};
-
-// @public
-export interface Registration<K = any> {
-    register(container: Container): Resolver<K>;
-}
-
-// @public
-export const Registration: Readonly<{
-    instance<T>(key: Key, value: T): Registration<T>;
-    singleton<T_1 extends Constructable<{}>>(key: Key, value: T_1): Registration<InstanceType<T_1>>;
-    transient<T_2 extends Constructable<{}>>(key: Key, value: T_2): Registration<InstanceType<T_2>>;
-    callback<T_3>(key: Key, callback: ResolveCallback<T_3>): Registration<Resolved<T_3>>;
-    cachedCallback<T_4>(key: Key, callback: ResolveCallback<T_4>): Registration<Resolved<T_4>>;
-    aliasTo<T_5>(originalKey: T_5, aliasKey: Key): Registration<Resolved<T_5>>;
-}>;
-
-// @public
-export interface Registry {
-    register(container: Container, ...params: unknown[]): void | Resolver;
-}
-
-// @public
-export type ResolveCallback<T = any> = (handler: Container, requestor: Container, resolver: Resolver<T>) => T;
-
-// Warning: (ae-forgotten-export) The symbol "ResolverLike" needs to be exported by the entry point index.d.ts
-//
-// @public
-export type Resolved<K> = K extends ContextDecorator<infer T> ? T : K extends Constructable ? InstanceType<K> : K extends ResolverLike<any, infer T1> ? T1 extends Constructable ? InstanceType<T1> : T1 : K;
-
-// @public
-export interface Resolver<K = any> extends ResolverLike<Container, K> {
-}
-
-// @public
-export class ResolverBuilder<K> {
-    constructor(container: Container, key: Key);
-    aliasTo(destinationKey: Key): Resolver<K>;
-    cachedCallback(value: ResolveCallback<K>): Resolver<K>;
-    callback(value: ResolveCallback<K>): Resolver<K>;
-    instance(value: K): Resolver<K>;
-    singleton(value: Constructable): Resolver<K>;
-    transient(value: Constructable): Resolver<K>;
-}
-
-// Warning: (ae-internal-missing-underscore) The name "ResolverImpl" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export class ResolverImpl implements Resolver, Registration {
-    // (undocumented)
-    get $isResolver(): true;
-    constructor(key: Key, strategy: ResolverStrategy, state: any);
-    // (undocumented)
-    getFactory(container: Container): Factory | null;
-    // (undocumented)
-    key: Key;
-    // (undocumented)
-    register(container: Container): Resolver;
-    // (undocumented)
-    resolve(handler: Container, requestor: Container): any;
-    // (undocumented)
-    state: any;
-    // (undocumented)
-    strategy: ResolverStrategy;
-}
-
-// Warning: (ae-internal-missing-underscore) The name "ResolverStrategy" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const enum ResolverStrategy {
-    // (undocumented)
-    alias = 5,
-    // (undocumented)
-    array = 4,
-    // (undocumented)
-    callback = 3,
-    // (undocumented)
-    instance = 0,
-    // (undocumented)
-    singleton = 1,
-    // (undocumented)
-    transient = 2
-}
-
 // Warning: (ae-internal-missing-underscore) The name "roleForMenuItem" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
@@ -2690,31 +2443,6 @@ export type SelectPosition = typeof SelectPosition[keyof typeof SelectPosition];
 
 // @public
 export function selectTemplate(options?: SelectOptions): ElementViewTemplate<FASTSelect>;
-
-// @public
-export interface ServiceLocator {
-    get<K extends Key>(key: K): Resolved<K>;
-    get<K extends Key>(key: Key): Resolved<K>;
-    get<K extends Key>(key: K | Key): Resolved<K>;
-    getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
-    getAll<K extends Key>(key: Key, searchAncestors?: boolean): readonly Resolved<K>[];
-    getAll<K extends Key>(key: K | Key, searchAncestors?: boolean): readonly Resolved<K>[];
-    has<K extends Key>(key: K | Key, searchAncestors: boolean): boolean;
-}
-
-// @public
-export const ServiceLocator: ContextDecorator<ServiceLocator>;
-
-// Warning: (ae-forgotten-export) The symbol "singletonDecorator" needs to be exported by the entry point index.d.ts
-//
-// @public
-export function singleton<T extends Constructable>(): typeof singletonDecorator;
-
-// @public (undocumented)
-export function singleton<T extends Constructable>(options?: SingletonOptions): typeof singletonDecorator;
-
-// @public
-export function singleton<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
 
 // @public
 export const SkeletonShape: {
@@ -2889,18 +2617,6 @@ export type TooltipPosition = typeof TooltipPosition[keyof typeof TooltipPositio
 export function tooltipTemplate(options: TooltipOptions): ElementViewTemplate<FASTTooltip>;
 
 // @public
-type Transformer_2<K> = (instance: Resolved<K>) => Resolved<K>;
-export { Transformer_2 as Transformer }
-
-// Warning: (ae-forgotten-export) The symbol "transientDecorator" needs to be exported by the entry point index.d.ts
-//
-// @public
-export function transient<T extends Constructable>(): typeof transientDecorator;
-
-// @public
-export function transient<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
-
-// @public
 export type TreeItemOptions = StartEndOptions & {
     expandCollapseGlyph?: string | SyntheticViewTemplate;
 };
@@ -2910,11 +2626,6 @@ export function treeItemTemplate(options?: TreeItemOptions): ElementViewTemplate
 
 // @public
 export function treeViewTemplate(): ElementViewTemplate<FASTTreeView>;
-
-// Warning: (ae-internal-missing-underscore) The name "validateKey" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export function validateKey(key: any): void;
 
 // @public
 export type VerticalPosition = "top" | "bottom" | "center" | "unset";
@@ -2955,8 +2666,6 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:446:5 - (ae-forgotten-export) The symbol "createContext" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:512:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 // dist/dts/menu-item/menu-item.d.ts:20:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

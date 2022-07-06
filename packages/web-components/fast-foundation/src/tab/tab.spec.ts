@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { FASTTab, tabTemplate } from "./index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 
 const tabName = uniqueElementName();
 FASTTab.define({

@@ -14,6 +14,22 @@ export type Constructable<T = {}> = {
 };
 
 /**
+ * Represents a class.
+ * @public
+ */
+export type Class<T, C = {}> = C & {
+    /**
+     * The class's prototype;
+     */
+    readonly prototype: T;
+
+    /**
+     * The class's constructor.
+     */
+    new (...args: any[]): T;
+};
+
+/**
  * Provides a mechanism for releasing resources.
  * @public
  */

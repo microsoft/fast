@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { FASTAccordion, accordionTemplate, AccordionExpandMode } from "./index.js";
 import { FASTAccordionItem, accordionItemTemplate } from "../accordion-item/index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { FASTCheckbox, checkboxTemplate } from "../checkbox/index.js";
 import { Updates } from "@microsoft/fast-element";
 

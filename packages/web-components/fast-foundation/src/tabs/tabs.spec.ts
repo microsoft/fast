@@ -2,7 +2,7 @@ import { css, Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { FASTTabPanel, tabPanelTemplate } from "../tab-panel/index.js";
 import { FASTTab, tabTemplate } from "../tab/index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { FASTTabs, TabsOrientation, tabsTemplate } from "./index.js";
 
 const tabName = uniqueElementName();
