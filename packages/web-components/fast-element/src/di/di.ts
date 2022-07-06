@@ -547,10 +547,11 @@ export const DI = Object.freeze({
     /**
      * Installs dependency injection as the default strategy for handling
      * all calls to Context.request.
+     * @param fallback - Creates a container if one cannot be found.
      */
-    installAsContextRequestStrategy() {
+    installAsContextRequestStrategy(fallback?: () => DOMContainer) {
         Context.setDefaultRequestStrategy((target, context, callback) => {
-            const container = DI.findResponsibleContainer(target);
+            const container = DI.findResponsibleContainer(target, fallback);
             callback(container.get(context) as any);
         });
     },
@@ -571,36 +572,44 @@ export const DI = Object.freeze({
      * Finds the dependency injection container responsible for providing dependencies
      * to the specified node.
      * @param target - The node to find the responsible container for.
+     * @param fallback - Creates a container if one cannot be found.
      * @returns The container responsible for providing dependencies to the node.
      * @remarks
      * This will be the same as the parent container if the specified node
      * does not itself host a container configured with responsibleForOwnerRequests.
      */
-    findResponsibleContainer(target: EventTarget): DOMContainer {
+    findResponsibleContainer(
+        target: EventTarget,
+        fallback?: () => DOMContainer
+    ): DOMContainer {
         const owned = (target as any).$$container$$ as ContainerImpl;
 
         if (owned && owned.responsibleForOwnerRequests) {
             return owned;
         }
 
-        return DI.findParentContainer(target);
+        return DI.findParentContainer(target, fallback);
     },
 
     /**
      * Find the dependency injection container up the DOM tree from this node.
      * @param target - The node to find the parent container for.
+     * @param fallback - Creates a container if one cannot be found.
      * @returns The parent container of this node.
      * @remarks
      * This will be the same as the responsible container if the specified node
      * does not itself host a container configured with responsibleForOwnerRequests.
      */
-    findParentContainer(target: EventTarget): DOMContainer {
+    findParentContainer(
+        target: EventTarget,
+        fallback?: () => DOMContainer
+    ): DOMContainer {
         // NOTE: If there are no node-specific containers in existence other
         // than the root, then we can bypass raising events and instead just grab
         // the reference to the root container because we know it's the parent
         // for this node.
         if (nonRootDOMContainerCount < 1) {
-            return DI.getOrCreateDOMContainer();
+            return fallback ? fallback() : DI.getOrCreateDOMContainer();
         }
 
         // NOTE: If even one node-specific container has been created then we can
@@ -613,7 +622,7 @@ export const DI = Object.freeze({
         // NOTE: If there are node-specific containers but there doesn't happen to
         // be one that is a parent to the target node, then we still need to fall
         // back to the root container.
-        return container ?? DI.getOrCreateDOMContainer();
+        return container ?? (fallback ? fallback() : DI.getOrCreateDOMContainer());
     },
 
     /**

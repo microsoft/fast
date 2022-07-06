@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "fix: server side rendering foundation tests",
+  "comment": "feat: add request storage to support per-request context in server side rendering",
   "packageName": "@microsoft/fast-ssr",
   "email": "roeisenb@microsoft.com",
   "dependentChangeType": "prerelease"

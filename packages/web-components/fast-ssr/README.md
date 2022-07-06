@@ -148,3 +148,64 @@ const result = templateRenderer.render(html`
     customElementInstanceStack: []
 });
 ```
+
+### Scoping Requests
+
+The SSR renderer can be used in a variety of contexts, one of the most common being a web server. In the web server context, it's important to keep data scoped to the context of an individual request. The easiest way to do this is to use the W3C Context protocol to inject data and services into web components combined with FAST's `RequestStorage` mechanism.
+
+`RequestStorage` and `RequestStorageManager` provide a way to execute web server response handlers with per-request scoped Context. This can be set up for any web server framework, but FAST provides a simple helper for Express-compatible middleware. Here's a quick sample of how to configure middleware for per-request scoped DOM globals and Context.
+
+```ts
+import fastSSR, { RequestStorageManager } from "@microsoft/fast-ssr";
+import express from "express";
+
+const app = express();
+const port = 8080;
+const { templateRenderer, defaultRenderInfo } = fastSSR();
+
+defineWebComponents();
+const template = pageTemplate();
+
+// set up per-request DOM globals and storage
+app.use(RequestStorageManager.middleware());
+
+app.get("/", (req, res) => {
+    // This is running in the scoped context.
+    // You can provide context instances here
+    // and they will be scoped to the request
+    // handler and cleaned up afterward.
+
+    const stream = templateRenderer.render(
+        template, 
+        defaultRenderInfo
+    );
+
+    for (const part of stream) {
+        res.write(part);
+    }
+
+    res.end();
+});
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+});
+```
+
+If working with a different framework not compatible with Express middleware, you can use the `RequestStorageManager` APIs to create custom middleware or set up individual requests. First, install the per-request DOM shim when setting up your web server:
+
+```ts
+RequestStorageManager.installDOMShim();
+```
+
+Then, at the beginning of each request or in your middleware, create the backing storage for the request:
+
+```ts
+const storage = RequestStorageManager.createStorage();
+```
+
+Finally, you must run the request handler function using the `RequestStorageManager` as follows:
+
+```ts
+RequestStorageManager.run(storage, requestHandler);
+```
