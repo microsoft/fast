@@ -7,7 +7,7 @@
 import { Binding } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
-import { DOMContainer } from '@microsoft/fast-foundation';
+import { DOMContainer } from '@microsoft/fast-element/di';
 import { ExecutionContext } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { ViewBehaviorFactory } from '@microsoft/fast-element';
