@@ -364,7 +364,7 @@ HTMLDirective.define(RepeatDirective);
 
 /**
  * A directive that enables list rendering.
- * @param itemsBinding - The array to render.
+ * @param items - The array to render.
  * @param templateOrTemplateBinding - The template or a template binding used obtain a template
  * to render for each item in the array.
  * @param options - Options used to turn on special repeat features.
@@ -374,10 +374,12 @@ export function repeat<
     TSource = any,
     TArray extends ReadonlyArray<any> = ReadonlyArray<any>
 >(
-    itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>,
+    items: Binding<TSource, TArray, ExecutionContext<TSource>> | ReadonlyArray<any>,
     templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate>,
     options: RepeatOptions = defaultRepeatOptions
 ): CaptureType<TSource> {
+    const itemsBinding = isFunction(items) ? items : () => items;
+
     const templateBinding = isFunction(templateOrTemplateBinding)
         ? templateOrTemplateBinding
         : (): SyntheticViewTemplate => templateOrTemplateBinding;

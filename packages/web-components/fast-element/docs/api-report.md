@@ -619,7 +619,7 @@ export class RefDirective extends StatelessAttachedAttributeDirective<string> {
 }
 
 // @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>, templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate>, options?: RepeatOptions): CaptureType<TSource>;
+export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(items: Binding<TSource, TArray, ExecutionContext<TSource>> | ReadonlyArray<any>, templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate>, options?: RepeatOptions): CaptureType<TSource>;
 
 // @public
 export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
