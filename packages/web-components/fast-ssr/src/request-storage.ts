@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from "async_hooks";
-import { DI, DOMContainer } from "@microsoft/fast-foundation";
+import { DI, DOMContainer } from "@microsoft/fast-element/di";
 import { createWindow } from "./dom-shim.js";
 
 const asyncLocalStorage = new AsyncLocalStorage();
