@@ -3,7 +3,7 @@ import { FASTVirtualList, virtualListTemplate } from "./index.js";
 import { FASTVirtualListItem, virtualListItemTemplate } from "./index.js";
 import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { DOM, html } from "@microsoft/fast-element";
+import { Updates, html } from "@microsoft/fast-element";
 
 
 const virtualListItemName = uniqueElementName();
@@ -113,7 +113,7 @@ describe("VirtualList", () => {
 
         await connect();
 
-        expect(element.visibleItemMap).to.be.empty;
+        expect(element.renderedItemMap).to.be.empty;
 
         await disconnect();
     });
@@ -135,9 +135,9 @@ describe("VirtualList", () => {
         element.virtualizationEnabled = false;
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
-        expect(element.visibleItems.length).to.equal(100);
+        expect(element.renderItems.length).to.equal(100);
 
         await disconnect();
     });
@@ -148,7 +148,7 @@ describe("VirtualList", () => {
         const newItems  =  newDataSet(100);
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         let eventEmitted = false;
         element.addEventListener("renderedrangechange", e => {
@@ -157,7 +157,7 @@ describe("VirtualList", () => {
 
         element.items = newItems;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(eventEmitted).to.be.true;
 

@@ -5,6 +5,7 @@ import {
     observable,
     RepeatBehavior,
     RepeatDirective,
+    Updates,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
@@ -17,18 +18,6 @@ import type { ItemLoadMode } from "./data-list.options.js";
  * @public
  */
 export class FASTDataList extends FASTElement {
-    /**
-     * Whether the list is oriented vertically or horizontally.
-     * Default is vertical.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: orientation
-     */
-    @attr({ attribute: "orientation" })
-    public orientation: Orientation = Orientation.vertical;
-    protected orientationChanged(): void {}
-
     /**
      * Whether or not to recycle the html container used to display items.
      * May help performance but containers may retain artifacts from previous use that
@@ -45,9 +34,12 @@ export class FASTDataList extends FASTElement {
      * @public
      */
     @observable
-    public items: object[] = [];
+    public items: object[];
     protected itemsChanged(): void {
         this.renderItems = this.items;
+        if (this.$fastController.isConnected) {
+            this.initializeRepeatBehavior();
+        }
     }
 
     /**
@@ -128,15 +120,10 @@ export class FASTDataList extends FASTElement {
      * @internal
      */
     @observable
-    public renderItems: object[];
-    private renderItemsChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.initializeRepeatBehavior();
-        }
-    }
+    public renderItems: object[] = [];
 
     // reference to the repeat behavior used to render items
-    private itemsRepeatBehavior: RepeatBehavior | null = null;
+    protected itemsRepeatBehavior: RepeatBehavior | null = null;
 
     // the placeholder element used by the repeat behavior
     private itemsPlaceholder: Node;
@@ -161,8 +148,7 @@ export class FASTDataList extends FASTElement {
         this.addEventListener("listitemconnected", this.handleListItemConnected);
         this.addEventListener("listitemdisconnected", this.handleListItemDisconnected);
 
-        this.initializeRepeatBehavior();
-        this.nextCallback();
+        Updates.enqueue(() => this.initializeRepeatBehavior());
     }
 
     /**

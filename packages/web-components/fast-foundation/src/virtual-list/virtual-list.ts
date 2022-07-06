@@ -1,37 +1,29 @@
 import {
     attr,
     DOM,
-    FASTElement,
     Notifier,
     nullableNumberConverter,
     Observable,
     observable,
-    RepeatBehavior,
-    RepeatDirective,
     Splice,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
 import { IntersectionService } from "../utilities/intersection-service.js";
-import { IdleCallbackQueue } from "../utilities/idle-callback-queue.js";
 import type {
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
 } from "../utilities/resize-observer.js";
+import { FASTDataList } from "../data-list/index.js";
 import type { FASTVirtualListItem } from "./virtual-list-item.js";
-import type {
-    SizeMap,
-    VirtualListAutoUpdateMode,
-    VirtualListIdleLoadMode,
-    VirtualListItemLoadMode,
-} from "./virtual-list.options.js";
+import type { SizeMap, VirtualListAutoUpdateMode } from "./virtual-list.options.js";
 
 /**
  *  The VirtualList class
  *
  * @public
  */
-export class FASTVirtualList extends FASTElement {
+export class FASTVirtualList extends FASTDataList {
     /**
      * Item size to use if one is not specified
      */
@@ -142,23 +134,9 @@ export class FASTVirtualList extends FASTElement {
     }
 
     /**
-     * Whether or not to recycle the html container used to display items.
-     * May help performance but containers may retain artifacts from previous use that
-     * developers will need to clear.
-     *
-     * @public
+     * override
      */
-    @attr({ attribute: "recycle", mode: "boolean" })
-    public recycle: boolean = false;
-
-    /**
-     *  The array of items to be displayed.
-     *
-     * @public
-     */
-    @observable
-    public items: object[] = [];
-    private itemsChanged(): void {
+    protected itemsChanged(): void {
         if (this.$fastController.isConnected) {
             this.reset();
         }
@@ -192,41 +170,22 @@ export class FASTVirtualList extends FASTElement {
     public autoResizeItems: boolean;
     private autoResizeItemsChanged(prev: boolean): void {
         if (this.$fastController.isConnected) {
-            if (this.autoResizeItems) {
-                this.addEventListener("listitemconnected", this.handleListItemConnected);
-                this.addEventListener(
-                    "listitemdisconnected",
-                    this.handleListItemDisconnected
-                );
-            } else if (prev) {
-                this.removeEventListener(
-                    "listitemconnected",
-                    this.handleListItemConnected
-                );
-                this.removeEventListener(
-                    "listitemdisconnected",
-                    this.handleListItemDisconnected
-                );
-            }
-        }
-    }
-
-    /**
-     * Controls the idle load queue behavior.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: idle-load-mode
-     */
-    @attr({ attribute: "idle-load-mode" })
-    public idleLoadMode: VirtualListIdleLoadMode = "auto";
-    private idleLoadModeChanged(): void {
-        if (this.$fastController.isConnected) {
-            if (this.idleLoadMode === "suspended") {
-                this.idleCallbackQueue.suspend();
-            } else {
-                this.idleCallbackQueue.resume();
-            }
+            // if (this.autoResizeItems) {
+            //     this.addEventListener("listitemconnected", this.handleListItemConnected);
+            //     this.addEventListener(
+            //         "listitemdisconnected",
+            //         this.handleListItemDisconnected
+            //     );
+            // } else if (prev) {
+            //     this.removeEventListener(
+            //         "listitemconnected",
+            //         this.handleListItemConnected
+            //     );
+            //     this.removeEventListener(
+            //         "listitemdisconnected",
+            //         this.handleListItemDisconnected
+            //     );
+            // }
         }
     }
 
@@ -242,61 +201,6 @@ export class FASTVirtualList extends FASTElement {
             this.resetAutoUpdateMode(this.autoUpdateMode, this.autoUpdateMode);
         }
     }
-
-    /**
-     * The ViewTemplate used in the items repeat loop
-     *
-     * @public
-     */
-    @observable
-    public itemTemplate: ViewTemplate;
-
-    /**
-     * The ViewTemplate used to render a virtual list item contents
-     *
-     * @public
-     */
-    @observable
-    public listItemContentsTemplate: ViewTemplate;
-
-    /**
-     * Determines when child virtual list items load content,
-     * or more specifically when the item's "loadContent" observable prop
-     * becomes 'true'.
-     *
-     * "immediate": When the component connects.
-     * "manual": When set manually by some external code (ie. 'myListItem.laodContent = true')
-     * "idle": Items are loaded based on available idle cycles.
-     *
-     *
-     * @public
-     */
-    @attr({ attribute: "list-item-load-mode" })
-    public listItemLoadMode: VirtualListItemLoadMode;
-
-    /**
-     * Defines the idle callback timeout value.
-     * Defaults to 1000
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: idle-callback-timeout
-     */
-    @attr({ attribute: "idle-callback-timeout", converter: nullableNumberConverter })
-    public idleCallbackTimeout: number = 1000;
-    private idleCallbackTimeoutChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.idleCallbackQueue.idleCallbackTimeout = this.idleCallbackTimeout;
-        }
-    }
-
-    /**
-     * Used to pass custom context objects to list items.
-     *
-     * @public
-     */
-    @observable
-    public listItemContext: object;
 
     /**
      * The default ViewTemplate used to render items vertically.
@@ -315,21 +219,12 @@ export class FASTVirtualList extends FASTElement {
     public defaultHorizontalItemTemplate: ViewTemplate;
 
     /**
-     * The items that are currently visible (includes buffer regions).
-     * This is the array used by the component repeat directive.
-     *
-     * @internal
-     */
-    @observable
-    public visibleItems: any[] = [];
-
-    /**
      * The positions of the currently rendered items in the list
      *
      * @internal
      */
     @observable
-    public visibleItemMap: SizeMap[] = [];
+    public renderedItemMap: SizeMap[] = [];
 
     /**
      * The calculated size of the total stack.
@@ -375,15 +270,6 @@ export class FASTVirtualList extends FASTElement {
     public lastRenderedIndex: number = -1;
 
     /**
-     * the idle callback queue for this list instance.
-     * List items can use this instance to coordinate idle loading.
-     *
-     * @internal
-     */
-    @observable
-    public idleCallbackQueue: IdleCallbackQueue = new IdleCallbackQueue();
-
-    /**
      * reference to the container element
      *
      * @internal
@@ -406,12 +292,6 @@ export class FASTVirtualList extends FASTElement {
     // stored geometry for the viewport and internal container elements
     private viewportRect: DOMRect | undefined;
     private containerRect: DOMRect | undefined;
-
-    // reference to the repeat behavior used to render items
-    private itemsRepeatBehavior: RepeatBehavior | null = null;
-
-    // the placeholder element used by the repeat behavior
-    private itemsPlaceholder: Node;
 
     // notifier used to trigger updates after changes to items array
     private itemsObserver: Notifier | null = null;
@@ -440,19 +320,6 @@ export class FASTVirtualList extends FASTElement {
     connectedCallback() {
         super.connectedCallback();
 
-        this.idleCallbackQueue.idleCallbackTimeout = this.idleCallbackTimeout;
-        if (this.idleLoadMode === "suspended") {
-            this.idleCallbackQueue.suspend();
-        }
-
-        this.viewportElement = this.viewportElement ?? this.getViewport();
-        this.resetAutoUpdateMode("manual", this.autoUpdateMode);
-
-        if (this.itemsPlaceholder === undefined) {
-            this.itemsPlaceholder = document.createComment("");
-            this.appendChild(this.itemsPlaceholder);
-        }
-
         if (!this.itemTemplate) {
             this.itemTemplate =
                 this.orientation === Orientation.vertical
@@ -460,16 +327,9 @@ export class FASTVirtualList extends FASTElement {
                     : this.defaultHorizontalItemTemplate;
         }
 
-        this.initializeRepeatBehavior();
+        this.viewportElement = this.viewportElement ?? this.getViewport();
+        this.resetAutoUpdateMode("manual", this.autoUpdateMode);
         this.initializeResizeDetector();
-
-        if (this.autoResizeItems) {
-            this.addEventListener("listitemconnected", this.handleListItemConnected);
-            this.addEventListener(
-                "listitemdisconnected",
-                this.handleListItemDisconnected
-            );
-        }
 
         this.doReset();
     }
@@ -485,16 +345,8 @@ export class FASTVirtualList extends FASTElement {
         this.cancelPendingPositionUpdates();
         this.unobserveItems();
         this.unobserveSizeMap();
-        this.visibleItems = this.visibleItems.splice(0, this.visibleItems.length);
-        this.visibleItemMap = [];
-
-        if (this.autoResizeItems) {
-            this.removeEventListener("listitemconnected", this.handleListItemConnected);
-            this.removeEventListener(
-                "listitemdisconnected",
-                this.handleListItemDisconnected
-            );
-        }
+        this.renderItems.splice(0, this.renderItems.length);
+        this.renderedItemMap = [];
 
         this.disconnectResizeDetector();
     }
@@ -539,8 +391,10 @@ export class FASTVirtualList extends FASTElement {
         if (e.defaultPrevented) {
             return;
         }
-        e.preventDefault();
-        this.resizeDetector?.observe(e.target as Element);
+        if (this.autoResizeItems) {
+            this.resizeDetector?.observe(e.target as Element);
+        }
+        super.handleListItemConnected(e);
     }
 
     /**
@@ -550,8 +404,10 @@ export class FASTVirtualList extends FASTElement {
         if (e.defaultPrevented) {
             return;
         }
-        e.preventDefault();
-        this.resizeDetector?.unobserve(e.target as Element);
+        if (this.autoResizeItems) {
+            this.resizeDetector?.unobserve(e.target as Element);
+        }
+        super.handleListItemDisconnected(e);
     }
 
     /**
@@ -633,7 +489,7 @@ export class FASTVirtualList extends FASTElement {
                 lastRenderedIndex + 1
             );
 
-            this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
+            this.renderItems.splice(0, this.renderItems.length, ...newVisibleItems);
 
             this.updateDimensions();
             this.requestPositionUpdates();
@@ -662,8 +518,8 @@ export class FASTVirtualList extends FASTElement {
         }
         this.finalUpdateNeeded = false;
         this.pendingPositioningUpdate = true;
-        if (this.idleLoadMode === "auto") {
-            this.idleCallbackQueue.suspend();
+        if (this.itemLoadMode === "idle") {
+            this.idleLoadingSuspended = true;
         }
 
         FASTVirtualList.intersectionService.requestPosition(
@@ -703,27 +559,6 @@ export class FASTVirtualList extends FASTElement {
         this.observeItems();
         this.observeSizeMap();
         this.updateDimensions();
-    }
-
-    /**
-     * initialize repeat behavior for visible items
-     */
-    private initializeRepeatBehavior(): void {
-        if (this.itemsRepeatBehavior !== null) {
-            return;
-        }
-
-        const itemsRepeatDirective = new RepeatDirective(
-            x => x.visibleItems,
-            x => x.itemTemplate,
-            { positioning: true, recycle: this.recycle }
-        );
-        this.itemsRepeatBehavior = itemsRepeatDirective.createBehavior({
-            [itemsRepeatDirective.nodeId]: this.itemsPlaceholder,
-        });
-
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
     }
 
     /**
@@ -987,8 +822,8 @@ export class FASTVirtualList extends FASTElement {
         }
 
         if (!this.virtualizationEnabled) {
-            this.visibleItems.splice(0, this.visibleItems.length, ...this.items);
-            this.updateVisibleItemSizes(0, this.visibleItems.length - 1);
+            this.renderItems.splice(0, this.renderItems.length, ...this.items);
+            this.updateVisibleItemSizes(0, this.renderItems.length - 1);
             return;
         }
 
@@ -1077,7 +912,7 @@ export class FASTVirtualList extends FASTElement {
         );
 
         this.updateVisibleItemSizes(newFirstRenderedIndex, newLastRenderedIndex);
-        this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
+        this.renderItems.splice(0, this.renderItems.length, ...newVisibleItems);
     }
 
     /**
@@ -1113,7 +948,7 @@ export class FASTVirtualList extends FASTElement {
             }
         }
 
-        this.visibleItemMap = newVisibleItemSizes;
+        this.renderedItemMap = newVisibleItemSizes;
 
         this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
     }
@@ -1143,8 +978,8 @@ export class FASTVirtualList extends FASTElement {
      */
     private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
         if (!this.pendingPositioningUpdate) {
-            if (this.idleLoadMode === "auto") {
-                this.idleCallbackQueue.resume();
+            if (this.itemLoadMode === "idle") {
+                this.idleLoadingSuspended = false;
             }
             return;
         }
@@ -1154,8 +989,8 @@ export class FASTVirtualList extends FASTElement {
         if (this.finalUpdateNeeded) {
             this.requestPositionUpdates();
         } else {
-            if (this.idleLoadMode === "auto") {
-                this.idleCallbackQueue.resume();
+            if (this.itemLoadMode === "idle") {
+                this.idleLoadingSuspended = false;
             }
         }
 

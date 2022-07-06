@@ -84,8 +84,7 @@ const storyTemplate = html<DataListStoryArgs>`
 export default {
     title: "Data List",
     args: {
-        itemSize: 100,
-        idleLoadMode: "idle",
+        itemLoadMode: "idle",
     },
     argTypes: {
         recycle: { control: { type: "boolean" } },

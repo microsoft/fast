@@ -20,7 +20,7 @@ function newDataSet(rowCount: number, prefix: number): object[] {
     return newData;
 }
 
-const listItemContentsTemplate = html`
+const itemContentsTemplate = html`
     <fast-card>
         <div
             style="
@@ -28,7 +28,7 @@ const listItemContentsTemplate = html`
                 color: white;
             "
         >
-            ${x => x.listItemContext.titleString} ${x => x.itemData.title}
+            ${x => x.itemData.title}
         </div>
         ${when(
             x => x.loadContent,
@@ -75,10 +75,7 @@ const storyTemplate = html<VirtualListStoryArgs>`
         idle-load-mode="${x => x.idleLoadMode}"
         idle-callback-timeout="${x => x.idleCallbackTimeout}"
         list-item-load-mode="${x => x.listItemLoadMode}"
-        :listItemContentsTemplate="${listItemContentsTemplate}"
-        :listItemContext="${{
-            titleString: "title:",
-        }}"
+        :itemContentsTemplate="${itemContentsTemplate}"
     ></fast-virtual-list>
 `;
 
@@ -86,6 +83,7 @@ export default {
     title: "Virtual List",
     args: {
         itemSize: 100,
+        itemLoadMode: "idle",
     },
     argTypes: {
         virtualizationEnabled: {
@@ -110,16 +108,12 @@ export default {
         },
         recycle: { control: { type: "boolean" } },
         autoResizeItems: { control: { type: "boolean" } },
-        idleLoadMode: {
-            options: ["auto", "enabled", "suspended"],
+        itemLoadMode: {
+            options: ["idle", "immediate"],
             control: { type: "select" },
         },
         idleCallbackTimeout: {
             control: { type: "text" },
-        },
-        listItemLoadMode: {
-            options: ["manual", "immediate", "idle"],
-            control: { type: "select" },
         },
     },
 } as VirtualListStoryMeta;

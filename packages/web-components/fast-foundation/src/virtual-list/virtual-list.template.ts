@@ -24,14 +24,12 @@ function defaultVerticalItemTemplate(
     <${listItemTag}
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
-        :listItemContext="${(x, c) => c.parent.listItemContext}"
-        :idleCallbackQueue="${(x, c) => c.parent.idleCallbackQueue}"
-        :loadMode="${(x, c) => c.parent.listItemLoadMode}"
-        :listItemContentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"
+        :loadMode="${(x, c) => c.parent.itemLoadMode}"
+        :itemContentsTemplate="${(x, c) => c.parent.itemContentsTemplate}"
         :sizeMap="${(x, c) => c.parent.sizemap}"
         style="
             transform: ${(x, c) =>
-                `translateY(${c.parent.visibleItemMap[c.index]?.start}px)`};
+                `translateY(${c.parent.renderedItemMap[c.index]?.start}px)`};
         "
     ></${listItemTag}>
 `;
@@ -49,14 +47,12 @@ function defaultHorizontalItemTemplate(
     <${listItemTag}
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
-        :listItemContext="${(x, c) => c.parent.listItemContext}"
-        :idleCallbackQueue="${(x, c) => c.parent.idleCallbackQueue}"
-        :loadMode="${(x, c) => c.parent.listItemLoadMode}"
-        :listItemContentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"
+        :loadMode="${(x, c) => c.parent.itemLoadMode}"
+        :itemContentsTemplate="${(x, c) => c.parent.itemContentsTemplate}"
         :sizeMap="${(x, c) => c.parent.sizemap}"
         style="
             transform: ${(x, c) =>
-                `translateX(${c.parent.visibleItemMap[c.index]?.start}px)`};
+                `translateX(${c.parent.renderedItemMap[c.index]?.start}px)`};
         "
     ></${listItemTag}>
 `;

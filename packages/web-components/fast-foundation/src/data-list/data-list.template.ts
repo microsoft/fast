@@ -1,7 +1,5 @@
-import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
-import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
+import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { TemplateElementDependency } from "../patterns/tag-for.js";
 import type { FASTDataList } from "./data-list.js";
 
 /**
