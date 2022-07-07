@@ -257,7 +257,7 @@ Web component | Blazor component | Status | Remarks
 |[`<fluent-card>`](https://docs.microsoft.com/en-us/fluent-ui/web-components/components/card)|`<FluentCard>`|✔️|-|
 |[`<fluent-checkbox>`](https://docs.microsoft.com/en-us/fluent-ui/web-components/components/checkbox)|`<FluentCheckbox>`|✔️|-|
 |[`<fluent-combobox>`](https://docs.microsoft.com/en-us/fluent-ui/web-components/components/combobox)|`<FluentCombobox>`|✔️|-|
-|[`<fluent-data-grid>`](https://docs.microsoft.com/en-us/fluent-ui/web-components/components/grid)|`<FluentDataGrid>`|✔️|-|
+|[`<fluent-data-grid>`](https://docs.microsoft.com/en-us/fluent-ui/web-components/components/data-grid)|`<FluentDataGrid>`|✔️|-|
 |`<fluent-data-grid-cell>`|`<FluentDataGridCell>`|✔️|-|
 |`<fluent-data-grid-row>`|`<FluentDataGridRow>`|✔️|-|
 |[`<fluent-design-system-provider>`](https://docs.microsoft.com/en-us/fluent-ui/web-components/components/provider)|`<FluentDesignSystemProvider>`|✔️|-|
