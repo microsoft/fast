@@ -18,6 +18,10 @@ describe("The repeat", () => {
     }
 
     context("template function", () => {
+        class ViewModel {
+            items = ["a", "b", "c"]
+        }
+
         it("returns a RepeatDirective", () => {
             const directive = repeat(
                 () => [],
@@ -25,6 +29,7 @@ describe("The repeat", () => {
             );
             expect(directive).to.be.instanceOf(RepeatDirective);
         });
+
         it("returns a RepeatDirective with optional properties set to different values", () => {
             const directive = repeat(
                 () => [],
@@ -33,6 +38,41 @@ describe("The repeat", () => {
             ) as RepeatDirective;
             expect(directive).to.be.instanceOf(RepeatDirective);
             expect(directive.options).to.deep.equal({positioning: true, recycle: false})
+        });
+
+        it("creates a data binding that evaluates the provided binding", () => {
+            const source = new ViewModel();
+            const directive = repeat<ViewModel>(x => x.items, html`test`) as RepeatDirective;
+
+            const data = directive.dataBinding(source, ExecutionContext.default);
+
+            expect(data).to.equal(source.items);
+        });
+
+        it("creates a data binding that evaluates to a provided array", () => {
+            const array = ["a", "b", "c"];
+            const itemTemplate = html`test`;
+            const directive = repeat(array, itemTemplate) as RepeatDirective;
+
+            const data = directive.dataBinding({}, ExecutionContext.default);
+
+            expect(data).to.equal(array);
+        });
+
+        it("creates a template binding when a template is provided", () => {
+            const source = new ViewModel();
+            const itemTemplate = html`test`;
+            const directive = repeat<ViewModel>(x => x.items, itemTemplate) as RepeatDirective;
+            const template = directive.templateBinding(source, ExecutionContext.default);
+            expect(template).to.equal(itemTemplate);
+        });
+
+        it("creates a template binding when a function is provided", () => {
+            const source = new ViewModel();
+            const itemTemplate = html`test`;
+            const directive = repeat<ViewModel>(x => x.items, () => itemTemplate) as RepeatDirective;
+            const template = directive.templateBinding(source, ExecutionContext.default);
+            expect(template).equal(itemTemplate);
         });
     });
 

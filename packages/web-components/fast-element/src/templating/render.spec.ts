@@ -73,6 +73,16 @@ describe("The render", () => {
             expect(data).to.equal(node);
         });
 
+        it("creates a data binding that evaluates to a provided object", () => {
+            const source = new TestParent();
+            const obj = {};
+            const directive = render(obj) as RenderDirective;
+
+            const data = directive.dataBinding(source, ExecutionContext.default);
+
+            expect(data).to.equal(obj);
+        });
+
         it("creates a template binding when a template is provided", () => {
             const source = new TestParent();
             const directive = render<TestParent>(x => x.child, childEditTemplate) as RenderDirective;

@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: update server-side-rendering of the repeat directive to use the renamed dataBinding property of the repeat directive",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

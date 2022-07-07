@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: enable render, repeat, and when template helpers to handle static data in addition to the already supported dynamic bindings",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}
