@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { html, ViewTemplate } from "@microsoft/fast-element";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { dataGridCellTemplate, FASTDataGridCell } from "./index.js";
 import { newDataRow } from "./data-grid.spec.js";
 import { DataGridCellTypes } from "./data-grid.options.js";

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Updates } from "@microsoft/fast-element";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { tooltipTemplate, FASTTooltip } from "./index.js";
 import { TooltipPosition } from "./tooltip.js";
 import { FASTAnchoredRegion, anchoredRegionTemplate } from '../anchored-region/index.js';

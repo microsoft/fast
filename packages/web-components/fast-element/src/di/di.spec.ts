@@ -12,9 +12,11 @@ import {
 } from "./di.js";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
-import { customElement, FASTElement, html, ref } from "@microsoft/fast-element";
-import { Context } from "@microsoft/fast-element/context";
-import { uniqueElementName } from "../testing/exports.js";
+import { uniqueElementName } from "../testing/fixture.js";
+import { Context } from "../context.js";
+import { customElement, FASTElement } from "../components/fast-element.js";
+import { html } from "../templating/template.js";
+import { ref } from "../templating/ref.js";
 
 chai.use(spies);
 
@@ -583,25 +585,6 @@ describe(`The Container class`, function () {
                         }
                     }
                 };
-            }
-        },
-        {
-            name: 'registerWithContext',
-            createTest() {
-                const { sut, register, context } = createFixture();
-
-                return {
-                    register,
-                    test: (...args: any[]) => {
-                        sut.registerWithContext(context, ...args);
-
-                        expect(register).to.have.been.first.called.with(sut, context);
-
-                        if (args.length === 2) {
-                            expect(register).to.have.been.second.called.with(sut, context);
-                        }
-                    }
-                }
             }
         }
     ];
