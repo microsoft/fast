@@ -378,11 +378,11 @@ export function repeat<
     templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate>,
     options: RepeatOptions = defaultRepeatOptions
 ): CaptureType<TSource> {
-    const itemsBinding = isFunction(items) ? items : () => items;
+    const dataBinding = isFunction(items) ? items : () => items;
 
     const templateBinding = isFunction(templateOrTemplateBinding)
         ? templateOrTemplateBinding
         : (): SyntheticViewTemplate => templateOrTemplateBinding;
 
-    return new RepeatDirective(itemsBinding, templateBinding, options) as any;
+    return new RepeatDirective(dataBinding, templateBinding, options) as any;
 }

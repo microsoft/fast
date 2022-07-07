@@ -13,14 +13,26 @@ describe("The 'when' template function", () => {
         const scope = {};
         const template = html`template1`;
 
-        it("returns a template when the condition is true", () => {
+        it("returns a template when the condition binding is true", () => {
             const expression = when(() => true, template) as Binding;
             const result = expression(scope, ExecutionContext.default);
             expect(result).to.equal(template);
         });
 
-        it("returns null when the condition is false", () => {
+        it("returns a template when the condition is statically true", () => {
+            const expression = when(true, template) as Binding;
+            const result = expression(scope, ExecutionContext.default);
+            expect(result).to.equal(template);
+        });
+
+        it("returns null when the condition binding is false", () => {
             const expression = when(() => false, template) as Binding;
+            const result = expression(scope, ExecutionContext.default);
+            expect(result).to.equal(null);
+        });
+
+        it("returns null when the condition is statically false", () => {
+            const expression = when(false, template) as Binding;
             const result = expression(scope, ExecutionContext.default);
             expect(result).to.equal(null);
         });
