@@ -19,7 +19,6 @@ import { HostBehavior } from '@microsoft/fast-element';
 import { HostController } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { RepeatBehavior } from '@microsoft/fast-element';
-import { Splice } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
@@ -2192,52 +2191,10 @@ export class FASTTreeView extends FASTElement {
     treeView: HTMLElement;
 }
 
-// Warning: (ae-forgotten-export) The symbol "FASTDataList" needs to be exported by the entry point index.d.ts
+// Warning: (ae-incompatible-release-tags) The symbol "FASTVirtualList" is marked as @public, but its signature references "VirtualList" which is marked as @beta
 //
 // @public
-export class FASTVirtualList extends FASTDataList {
-    autoResizeItems: boolean;
-    autoUpdateMode: VirtualListAutoUpdateMode;
-    // @internal (undocumented)
-    connectedCallback(): void;
-    // @internal
-    containerElement: HTMLDivElement;
-    // @internal
-    defaultHorizontalItemTemplate: ViewTemplate;
-    // @internal
-    defaultVerticalItemTemplate: ViewTemplate;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
-    // @internal
-    endSpacerSize: number;
-    // @internal
-    firstRenderedIndex: number;
-    getItemSizeMap: (itemIndex: number) => SizeMap | null;
-    // @internal
-    handleChange(source: any, splices: Splice[]): void;
-    // @internal (undocumented)
-    handleListItemConnected(e: Event): void;
-    // @internal (undocumented)
-    handleListItemDisconnected(e: Event): void;
-    protected itemsChanged(): void;
-    itemSize: number;
-    // @internal
-    lastRenderedIndex: number;
-    orientation: Orientation;
-    // @internal
-    renderedItemMap: SizeMap[];
-    protected requestPositionUpdates(): void;
-    protected reset(): void;
-    sizemap: SizeMap[];
-    // @internal
-    startSpacerSize: number;
-    // @internal
-    totalListSize: number;
-    update(): void;
-    viewport: string;
-    viewportBuffer: number;
-    viewportElement: HTMLElement;
-    virtualizationEnabled: boolean;
+export class FASTVirtualList extends VirtualList {
 }
 
 // Warning: (ae-forgotten-export) The symbol "FASTDataListItem" needs to be exported by the entry point index.d.ts
@@ -2871,6 +2828,12 @@ export const VerticalPosition: {
 
 // @public
 export type VerticalPosition = typeof VerticalPosition[keyof typeof VerticalPosition];
+
+// Warning: (ae-forgotten-export) The symbol "VirtualList_base" needs to be exported by the entry point index.d.ts
+//
+// @beta
+export class VirtualList extends VirtualList_base {
+}
 
 // @public
 export type VirtualListAutoUpdateMode = "manual" | "viewport" | "auto" | "self";

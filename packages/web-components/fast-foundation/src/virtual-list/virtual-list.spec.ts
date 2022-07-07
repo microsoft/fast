@@ -68,12 +68,12 @@ describe("VirtualList", () => {
         await disconnect();
     });
 
-    it("should have a default virtualization-enabled attr of 'true'", async () => {
+    it("should have a default virtualization-disable attr of 'false'", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
 
-        expect(element.virtualizationEnabled).to.equal(true);
+        expect(element.virtualizationDisabled).to.equal(false);
 
         await disconnect();
     });
@@ -128,11 +128,11 @@ describe("VirtualList", () => {
         await disconnect();
     });
 
-    it("should render all items when virtualization-enabled is false", async () => {
+    it("should render all items when virtualization-Disabled is true", async () => {
         const { element, connect, disconnect } = await setup();
 
         element.items = newDataSet(100);
-        element.virtualizationEnabled = false;
+        element.virtualizationDisabled = true;
         await connect();
 
         await Updates.next();
@@ -168,7 +168,7 @@ describe("VirtualList", () => {
         const { element, connect, disconnect } = await setup();
 
         element.items = newDataSet(3);
-        element.virtualizationEnabled = false;
+        element.virtualizationDisabled = true;
         element.sizemap = [
             {start: 0, size: 100, end: 100},
             {start: 100, size: 200, end: 300},
@@ -185,7 +185,7 @@ describe("VirtualList", () => {
         const { element, connect, disconnect } = await setup();
 
         element.items = newDataSet(3);
-        element.virtualizationEnabled = false;
+        element.virtualizationDisabled = true;
         element.sizemap = [
             {start: 0, size: 100, end: 100},
             {start: 100, size: 200, end: 300},
@@ -203,7 +203,7 @@ describe("VirtualList", () => {
         const { element, connect, disconnect } = await setup();
 
         element.items = newDataSet(3);
-        element.virtualizationEnabled = false;
+        element.virtualizationDisabled = false;
 
         await connect();
 

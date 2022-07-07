@@ -8,7 +8,6 @@ import {
     Updates,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
 import type { FASTDataListItem } from "./data-list-item.js";
 import type { ItemLoadMode } from "./data-list.options.js";
 
