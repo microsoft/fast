@@ -49,7 +49,7 @@ export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirectiv
             renderer: TemplateRenderer,
             context: ExecutionContext
         ): IterableIterator<string> {
-            const items = directive.itemsBinding(source, context);
+            const items = directive.dataBinding(source, context);
             const template = directive.templateBinding(source, context);
             const childContext = context.createChildContext(source);
 
