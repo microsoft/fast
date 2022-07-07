@@ -59,5 +59,8 @@
     "@microsoft/fast-element": "^1.0.0",
     "@microsoft/fast-foundation": "^2.0.0",
     "@microsoft/fast-web-utilities": "^6.0.0"
+  },
+  "resolutions": {
+    "ejs": "^3.1.7"
   }
 }
