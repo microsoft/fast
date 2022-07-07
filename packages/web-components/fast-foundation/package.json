@@ -25,10 +25,6 @@
     ".": {
       "types": "./dist/dts/index.d.ts",
       "default": "./dist/esm/index.js"
-    },
-    "./testing": {
-      "types": "./dist/dts/testing/exports.d.ts",
-      "default": "./dist/esm/testing/exports.js"
     }
   },
   "scripts": {

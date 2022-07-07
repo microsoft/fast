@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Updates a security vulnerability on dependency",
+  "packageName": "@microsoft/fast-animation",
+  "email": "16669785+awentzel@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

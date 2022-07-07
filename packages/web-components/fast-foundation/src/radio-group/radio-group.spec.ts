@@ -2,7 +2,7 @@ import { Updates } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { assert, expect } from "chai";
 import { FASTRadio, radioTemplate } from "../radio/index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { FASTRadioGroup, radioGroupTemplate } from "./index.js";
 
 const radioGroupName = uniqueElementName();

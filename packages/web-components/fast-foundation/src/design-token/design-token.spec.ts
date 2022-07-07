@@ -1,6 +1,6 @@
 import { css, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
 import chia, { expect } from "chai";
-import { uniqueElementName } from "../testing/fixture.js";
+import { uniqueElementName } from "@microsoft/fast-element/testing";
 import { CSSDesignToken, DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token.js";
 import spies from "chai-spies";
 

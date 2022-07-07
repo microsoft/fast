@@ -2,15 +2,11 @@
  * Big thanks to https://github.com/fkleuver and the https://github.com/aurelia/aurelia project
  * for the bulk of this code and many of the associated tests.
  */
-import { Constructable, emptyArray, FASTElement } from "@microsoft/fast-element";
-import {
-    Context,
-    ContextDecorator,
-    ContextEvent,
-    UnknownContext,
-} from "@microsoft/fast-element/context";
-import { Metadata } from "@microsoft/fast-element/metadata";
-import type { Class } from "../interfaces.js";
+import { FASTElement } from "../components/fast-element.js";
+import { Context, ContextDecorator, ContextEvent, UnknownContext } from "../context.js";
+import type { Class, Constructable } from "../interfaces.js";
+import { Metadata } from "../metadata.js";
+import { emptyArray } from "../platform.js";
 
 /**
  * Represents a custom callback for resolving a request from the container.
@@ -172,14 +168,6 @@ export interface Container extends ServiceLocator {
      * @param params - The registration objects.
      */
     register(...params: any[]): Container;
-
-    /**
-     * Registers dependencies with the container via registration objects, providing
-     * the specified context to each register invocation.
-     * @param context - The context object to pass to the registration objects.
-     * @param params - The registration objects.
-     */
-    registerWithContext(context: any, ...params: any[]): Container;
 
     /**
      * Registers a resolver with the container for the specified key.
@@ -559,10 +547,11 @@ export const DI = Object.freeze({
     /**
      * Installs dependency injection as the default strategy for handling
      * all calls to Context.request.
+     * @param fallback - Creates a container if one cannot be found.
      */
-    installAsContextRequestStrategy() {
+    installAsContextRequestStrategy(fallback?: () => DOMContainer) {
         Context.setDefaultRequestStrategy((target, context, callback) => {
-            const container = DI.findResponsibleContainer(target);
+            const container = DI.findResponsibleContainer(target, fallback);
             callback(container.get(context) as any);
         });
     },
@@ -583,36 +572,44 @@ export const DI = Object.freeze({
      * Finds the dependency injection container responsible for providing dependencies
      * to the specified node.
      * @param target - The node to find the responsible container for.
+     * @param fallback - Creates a container if one cannot be found.
      * @returns The container responsible for providing dependencies to the node.
      * @remarks
      * This will be the same as the parent container if the specified node
      * does not itself host a container configured with responsibleForOwnerRequests.
      */
-    findResponsibleContainer(target: EventTarget): DOMContainer {
+    findResponsibleContainer(
+        target: EventTarget,
+        fallback?: () => DOMContainer
+    ): DOMContainer {
         const owned = (target as any).$$container$$ as ContainerImpl;
 
         if (owned && owned.responsibleForOwnerRequests) {
             return owned;
         }
 
-        return DI.findParentContainer(target);
+        return DI.findParentContainer(target, fallback);
     },
 
     /**
      * Find the dependency injection container up the DOM tree from this node.
      * @param target - The node to find the parent container for.
+     * @param fallback - Creates a container if one cannot be found.
      * @returns The parent container of this node.
      * @remarks
      * This will be the same as the responsible container if the specified node
      * does not itself host a container configured with responsibleForOwnerRequests.
      */
-    findParentContainer(target: EventTarget): DOMContainer {
+    findParentContainer(
+        target: EventTarget,
+        fallback?: () => DOMContainer
+    ): DOMContainer {
         // NOTE: If there are no node-specific containers in existence other
         // than the root, then we can bypass raising events and instead just grab
         // the reference to the root container because we know it's the parent
         // for this node.
         if (nonRootDOMContainerCount < 1) {
-            return DI.getOrCreateDOMContainer();
+            return fallback ? fallback() : DI.getOrCreateDOMContainer();
         }
 
         // NOTE: If even one node-specific container has been created then we can
@@ -625,7 +622,7 @@ export const DI = Object.freeze({
         // NOTE: If there are node-specific containers but there doesn't happen to
         // be one that is a parent to the target node, then we still need to fall
         // back to the root container.
-        return container ?? DI.getOrCreateDOMContainer();
+        return container ?? (fallback ? fallback() : DI.getOrCreateDOMContainer());
     },
 
     /**
@@ -1467,7 +1464,6 @@ export class ContainerImpl implements DOMContainer {
     private _parent: ContainerImpl | null | undefined = void 0;
     private registerDepth: number = 0;
     private resolvers: Map<Key, Resolver>;
-    private context: any = null;
     private isHandlingContextRequests = false;
 
     public get parent() {
@@ -1521,13 +1517,6 @@ export class ContainerImpl implements DOMContainer {
         this.isHandlingContextRequests = enable;
     }
 
-    public registerWithContext(context: any, ...params: any[]): Container {
-        this.context = context;
-        this.register(...params);
-        this.context = null;
-        return this;
-    }
-
     public register(...params: any[]): Container {
         if (++this.registerDepth === 100) {
             throw new Error("Unable to autoregister dependency");
@@ -1540,7 +1529,6 @@ export class ContainerImpl implements DOMContainer {
         let value: Registry;
         let j: number;
         let jj: number;
-        const context = this.context;
 
         for (let i = 0, ii = params.length; i < ii; ++i) {
             current = params[i];
@@ -1550,7 +1538,7 @@ export class ContainerImpl implements DOMContainer {
             }
 
             if (isRegistry(current)) {
-                current.register(this, context);
+                current.register(this);
             } else if (isClass(current)) {
                 Registration.singleton(current, current as Constructable).register(this);
             } else {
@@ -1565,7 +1553,7 @@ export class ContainerImpl implements DOMContainer {
                     // note: we could remove this if-branch and call this.register directly
                     // - the extra check is just a perf tweak to create fewer unnecessary arrays by the spread operator
                     if (isRegistry(value)) {
-                        value.register(this, context);
+                        value.register(this);
                     } else {
                         this.register(value);
                     }

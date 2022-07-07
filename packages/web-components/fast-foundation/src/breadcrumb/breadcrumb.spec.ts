@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { FASTBreadcrumb, breadcrumbTemplate } from "./index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { FASTBreadcrumbItem, breadcrumbItemTemplate } from "../breadcrumb-item/index.js";
 import { Updates } from "@microsoft/fast-element";
 
