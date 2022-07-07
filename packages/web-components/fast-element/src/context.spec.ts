@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Context } from "./context.js";
-import { uniqueElementName } from "./__test__/helpers.js";
+import { uniqueElementName } from "./testing/fixture.js";
 
 describe("Context", () => {
     describe(`create()`, () => {

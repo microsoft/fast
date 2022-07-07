@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "chore: update tests to use testing helpers from fast-element",
+  "packageName": "@microsoft/fast-react-wrapper",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

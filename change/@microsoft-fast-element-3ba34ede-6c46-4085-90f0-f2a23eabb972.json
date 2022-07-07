@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Enabled DOM Container fallback functions when a container cannot be located.",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

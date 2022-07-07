@@ -24,7 +24,6 @@ export {
     DesignTokenValue,
     DesignTokenConfiguration,
 } from "./design-token/interfaces.js";
-export * from "./di/index.js";
 export * from "./dialog/index.js";
 export { reflectAttributes } from "./directives/reflect-attributes.js";
 export * from "./disclosure/index.js";

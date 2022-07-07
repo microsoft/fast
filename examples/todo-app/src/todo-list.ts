@@ -16,6 +16,10 @@ export class DefaultTodoList {
     @observable private _todos: Todo[] = [];
     @observable public activeFilter: TodoListFilter = "all";
 
+    public get all() {
+        return this._todos;
+    }
+
     @volatile
     public get filtered(): readonly Todo[] {
         // This property is decorated with @volatile because the exact

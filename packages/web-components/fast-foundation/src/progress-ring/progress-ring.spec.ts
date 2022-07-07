@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { FASTProgressRing } from "./progress-ring.js";
 import { progressRingTemplate } from "./index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 
 const progressRingName = uniqueElementName();
 FASTProgressRing.define({
