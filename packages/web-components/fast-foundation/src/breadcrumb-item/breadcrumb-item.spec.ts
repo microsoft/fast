@@ -40,12 +40,12 @@ describe("Breadcrumb item", () => {
         await disconnect();
     });
 
-    it("should NOT render `anchor` when `href` is not provided", async () => {
+    it("should render `anchor` when `href` is not provided", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
 
-        expect(element.shadowRoot?.querySelector("a")).to.equal(null);
+        expect(element.shadowRoot?.querySelector("a")).not.to.equal(null);
 
         await disconnect();
     });
