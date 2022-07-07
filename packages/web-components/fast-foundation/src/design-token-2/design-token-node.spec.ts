@@ -462,22 +462,22 @@ describe.only("DesignTokenNode", () => {
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
             const parent = createNode(ancestor);
-            const target = createNode(parent);
+            const descendent = createNode(parent);
             const { subscriber, handleChange } = createChangeHandler();
 
             ancestor.setTokenValue(dependency, 6);
             ancestor.setTokenValue(token, (resolve) => resolve(dependency) * 2);
-            target.setTokenValue(dependency, 7);
+            descendent.setTokenValue(dependency, 7);
             Observable.getNotifier(token).subscribe(subscriber);
-            expect(target.getTokenValue(token)).to.equal(14);
+            expect(descendent.getTokenValue(token)).to.equal(14);
 
-            target.deleteTokenValue(token);
+            descendent.deleteTokenValue(token);
 
             expect(handleChange).to.have.been.called.once;
-            expect(handleChange).to.have.been.first.called.with.exactly(token, target)
+            expect(handleChange).to.have.been.first.called.with.exactly(token, descendent)
             expect(ancestor.getTokenValue(token)).to.equal(12);
             expect(parent.getTokenValue(token)).to.equal(12);
-            expect(target.getTokenValue(token)).to.equal(16);
+            expect(descendent.getTokenValue(token)).to.equal(16);
         });
         it("the token with the descendent node that has a token assigned a derived value deleted that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
@@ -602,7 +602,6 @@ describe.only("DesignTokenNode", () => {
         // TODO appendChild
         // TODO removeChild
         // TODO moved child
-        // TODO default values
     });
 
     describe("should not notify", () => {
@@ -685,6 +684,37 @@ describe.only("DesignTokenNode", () => {
 
             expect(handleChange).not.to.have.been.called;
             expect(child.getTokenValue(token)).to.equal(25);
+        });
+        it("the token when a derived value using an observable value is deleted and then the observable value is changed", () => {
+            const token = new DesignToken<number>();
+            const node = new DesignTokenNode();
+            const handleChange = chai.spy(() => {})
+            const subscriber: Subscriber = { handleChange }
+            node.setTokenValue(token, 12);
+            const dependencies = makeObservable({value: 6});
+
+            node.setTokenValue(token, () => dependencies.value * 2);
+            node.deleteTokenValue(token);
+            Observable.getNotifier(token).subscribe(subscriber);
+
+            dependencies.value = 7;
+
+            expect(handleChange).not.to.have.been.called();
+        });
+        it("the token when a derived value using an observable value is re-assigned and then the observable value is changed", () => {
+            const token = new DesignToken<number>();
+            const node = new DesignTokenNode();
+            const handleChange = chai.spy(() => {})
+            const subscriber: Subscriber = { handleChange }
+            node.setTokenValue(token, 12);
+            const dependencies = makeObservable({value: 6});
+
+            node.setTokenValue(token, () => dependencies.value * 2);
+            node.setTokenValue(token, () => 14);
+            Observable.getNotifier(token).subscribe(subscriber);
+            dependencies.value = 7;
+
+            expect(handleChange).not.to.have.been.called();
         });
     });
 
