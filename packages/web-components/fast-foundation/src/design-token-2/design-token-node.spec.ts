@@ -431,8 +431,9 @@ describe.only("DesignTokenNode", () => {
             expect(ancestor.getTokenValue(token)).to.equal(12);
             expect(parent.getTokenValue(token)).to.equal(12);
             expect(target.getTokenValue(token)).to.equal(16);
+            expect(2).to.equal(2)
         });
-        it.only("the token with a descendent node when a ancestor and descendent both have a dependency assigned and the ancestor is reassigned a token to a derived value that resolves the dependency and results in a value change", () => {
+        it("the token with a descendent node when a ancestor and descendent both have a dependency assigned and the ancestor is reassigned a token to a derived value that resolves the dependency and results in a value change", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
@@ -552,6 +553,51 @@ describe.only("DesignTokenNode", () => {
             expect(handleChange).to.have.been.called.once;
             expect(handleChange).to.have.been.first.called.with.exactly(token, descendent);
             expect(descendent.getTokenValue(token)).to.equal(21);
+        });
+        /**
+         * Observable values
+         */
+        it("the token with the node assigned a derived value when an observable value used by the value is changed", () => {
+            const node = createNode();
+            const token = new DesignToken<number>();
+            const dependencies: { value: number } = makeObservable({ value: 6});
+            const { subscriber, handleChange} = createChangeHandler();
+
+            node.setTokenValue(token, () => dependencies.value * 2);
+            Observable.getNotifier(token).subscribe(subscriber)
+
+            expect(node.getTokenValue(token)).to.equal(12);
+
+            dependencies.value = 7;
+
+            expect(node.getTokenValue(token)).to.equal(14);
+            expect(handleChange).to.have.been.called.once;
+            expect(handleChange).to.have.been.first.called.with.exactly(token, node);
+        });
+        it("the token with the ancestor and descendent node when the ancestor is assigned a derived value using an observable and a token, where both nodes contain a value set for the dependency", () => {
+            const ancestor = createNode();
+            const parent = createNode(ancestor);
+            const descendent = createNode(parent);
+            const token = new DesignToken<number>();
+            const dependency = new DesignToken<number>();
+            const observableDependency: { value: number } = makeObservable({ value: 6});
+            const { subscriber, handleChange} = createChangeHandler();
+
+            ancestor.setTokenValue(dependency, 4);
+            ancestor.setTokenValue(token, (resolve) => observableDependency.value * 2 + resolve(dependency));
+            descendent.setTokenValue(dependency, 8);
+            Observable.getNotifier(token).subscribe(subscriber)
+
+            expect(ancestor.getTokenValue(token)).to.equal(16);
+            expect(descendent.getTokenValue(token)).to.equal(20);
+
+            observableDependency.value = 7;
+
+            expect(ancestor.getTokenValue(token)).to.equal(18);
+            expect(descendent.getTokenValue(token)).to.equal(22);
+            expect(handleChange).to.have.been.called.twice;
+            expect(handleChange).to.have.been.first.called.with.exactly(token, ancestor);
+            expect(handleChange).to.have.been.second.called.with.exactly(token, descendent);
         });
         // TODO appendChild
         // TODO removeChild

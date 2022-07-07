@@ -41,6 +41,12 @@ Observable.getNotifier(token).subscribe({
 
 ### class: `DesignToken`
 
+#### Fields
+
+| Name | Privacy | Type | Default | Description | Inherited From |
+| ---- | ------- | ---- | ------- | ----------- | -------------- |
+| `id` | public  |      | `id++`  |             |                |
+
 <hr/>
 
 
