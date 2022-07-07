@@ -44,7 +44,7 @@ describe("The repeat", () => {
             const source = new ViewModel();
             const directive = repeat<ViewModel>(x => x.items, html`test`) as RepeatDirective;
 
-            const data = directive.itemsBinding(source, ExecutionContext.default);
+            const data = directive.dataBinding(source, ExecutionContext.default);
 
             expect(data).to.equal(source.items);
         });
@@ -54,7 +54,7 @@ describe("The repeat", () => {
             const itemTemplate = html`test`;
             const directive = repeat(array, itemTemplate) as RepeatDirective;
 
-            const data = directive.itemsBinding({}, ExecutionContext.default);
+            const data = directive.dataBinding({}, ExecutionContext.default);
 
             expect(data).to.equal(array);
         });

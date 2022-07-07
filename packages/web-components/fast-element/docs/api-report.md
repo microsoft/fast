@@ -623,7 +623,7 @@ export function repeat<TSource = any, TArray extends ReadonlyArray<any> = Readon
 
 // @public
 export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
-    constructor(location: Node, itemsBinding: Binding<TSource, any[]>, isItemsBindingVolatile: boolean, templateBinding: Binding<TSource, SyntheticViewTemplate>, isTemplateBindingVolatile: boolean, options: RepeatOptions);
+    constructor(location: Node, dataBinding: Binding<TSource, any[]>, isItemsBindingVolatile: boolean, templateBinding: Binding<TSource, SyntheticViewTemplate>, isTemplateBindingVolatile: boolean, options: RepeatOptions);
     bind(source: TSource, context: ExecutionContext): void;
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
@@ -631,12 +631,12 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
 // @public
 export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory {
-    constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
+    constructor(dataBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
     createHTML(add: AddViewBehaviorFactory): string;
-    id: string;
     // (undocumented)
-    readonly itemsBinding: Binding;
+    readonly dataBinding: Binding;
+    id: string;
     nodeId: string;
     // (undocumented)
     readonly options: RepeatOptions;
