@@ -1,3 +1,4 @@
+import { observable, ViewTemplate } from "@microsoft/fast-element";
 import { FASTDataList } from "../data-list/index.js";
 import { Virtualizing } from "./virtualizing.js";
 
@@ -16,4 +17,17 @@ export class VirtualList extends Virtualizing(_VirtualList) {}
  *
  * @public
  */
-export class FASTVirtualList extends VirtualList {}
+export class FASTVirtualList extends VirtualList {
+    /**
+     * The ViewTemplate used to render list item contents
+     *
+     * @public
+     */
+    @observable
+    public itemContentsTemplate: ViewTemplate;
+    private itemContentsTemplateChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.initializeRepeatBehavior();
+        }
+    }
+}

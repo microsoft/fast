@@ -65,19 +65,6 @@ export class FASTDataList extends FASTElement {
     }
 
     /**
-     * The ViewTemplate used to render a list item contents
-     *
-     * @public
-     */
-    @observable
-    public itemContentsTemplate: ViewTemplate;
-    private itemContentsTemplateChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.initializeRepeatBehavior();
-        }
-    }
-
-    /**
      * Suspends idle loading
      *
      *
@@ -105,14 +92,6 @@ export class FASTDataList extends FASTElement {
     public idleCallbackTimeout: number = 1000;
 
     /**
-     * Used to pass custom context objects to list items.
-     *
-     * @public
-     */
-    @observable
-    public listItemContext: object;
-
-    /**
      * the idle callback queue for this list instance.
      * List items can use this instance to coordinate idle loading.
      *
@@ -125,7 +104,7 @@ export class FASTDataList extends FASTElement {
     protected itemsRepeatBehavior: RepeatBehavior | null = null;
 
     // the placeholder element used by the repeat behavior
-    private itemsPlaceholder: Node;
+    protected itemsPlaceholder: Node;
 
     private idleCallbackInterval: number = 20;
     private callbackQueue: Map<Element, () => void> = new Map<Element, () => void>();
@@ -168,7 +147,7 @@ export class FASTDataList extends FASTElement {
      * @internal
      */
     protected handleListItemConnected(e: Event): void {
-        if (e.defaultPrevented) {
+        if (e.defaultPrevented || this.itemLoadMode !== "idle") {
             return;
         }
         e.preventDefault();
@@ -182,7 +161,7 @@ export class FASTDataList extends FASTElement {
      * @internal
      */
     protected handleListItemDisconnected(e: Event): void {
-        if (e.defaultPrevented) {
+        if (e.defaultPrevented || this.itemLoadMode !== "idle") {
             return;
         }
         e.preventDefault();
