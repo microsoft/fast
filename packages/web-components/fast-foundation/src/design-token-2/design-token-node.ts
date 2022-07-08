@@ -91,6 +91,19 @@ class DerivedValueEvaluator<T> {
     }
 }
 
+export class DesignTokenChangeRecord {
+    constructor(
+        public readonly target: DesignTokenNode,
+        public readonly type: DesignTokenMutationType
+    ) {}
+}
+
+export const enum DesignTokenMutationType {
+    add,
+    change,
+    delete,
+}
+
 export class DesignTokenNode {
     private _parent: DesignTokenNode | null = null;
     private _children: Set<DesignTokenNode> = new Set();
@@ -124,8 +137,12 @@ export class DesignTokenNode {
      * Notifies the token subscribes that the value has changed for the node
      * @param token - The token that changed
      */
-    private static notifyToken<T>(token: DesignToken<T>, node: DesignTokenNode): void {
-        Observable.getNotifier(token).notify(node);
+    private static notifyToken<T>(
+        token: DesignToken<T>,
+        node: DesignTokenNode,
+        type: DesignTokenMutationType
+    ): void {
+        Observable.getNotifier(token).notify(new DesignTokenChangeRecord(node, type));
     }
 
     private static isDerivedFor<T>(node: DesignTokenNode, token: DesignToken<T>) {
@@ -247,6 +264,11 @@ export class DesignTokenNode {
     }
 
     public setTokenValue<T>(token: DesignToken<T>, value: DesignTokenValue<T>) {
+        const changeType =
+            DesignTokenNode.isAssigned(this, token) ||
+            DesignTokenNode.isDerivedFor(this, token)
+                ? DesignTokenMutationType.change
+                : DesignTokenMutationType.add;
         const prev = DesignTokenNode.getLocalTokenValue(this, token);
         this._values.set(token, value);
         const isDerived = DesignTokenNode.isDerivedTokenValue(value);
@@ -266,7 +288,7 @@ export class DesignTokenNode {
         }
 
         if (prev !== result) {
-            DesignTokenNode.notifyToken(token, this);
+            DesignTokenNode.notifyToken(token, this, changeType);
         }
 
         isDerived
@@ -280,7 +302,11 @@ export class DesignTokenNode {
                 const prev = DesignTokenNode.getLocalTokenValue(this, token);
                 const result = DesignTokenNode.evaluateDerived(this, token, evaluator);
                 if (prev !== result) {
-                    DesignTokenNode.notifyToken(token, this);
+                    DesignTokenNode.notifyToken(
+                        token,
+                        this,
+                        DesignTokenMutationType.change
+                    );
                 }
 
                 this.notifyDerived(token, evaluator, this);
@@ -322,7 +348,7 @@ export class DesignTokenNode {
             // TODO this should really check prev / next values
             // TODO if there is an upstream value, it should notify static if the upstream is static,
             // otherwise it should notify w/ the upstream derived value
-            DesignTokenNode.notifyToken(token, this);
+            DesignTokenNode.notifyToken(token, this, DesignTokenMutationType.delete);
         }
     }
 
@@ -341,7 +367,11 @@ export class DesignTokenNode {
                 const prev = DesignTokenNode.getLocalTokenValue(this, _token);
                 const value = DesignTokenNode.evaluateDerived(this, _token, evaluator);
                 if (value !== prev) {
-                    DesignTokenNode.notifyToken(_token, this);
+                    DesignTokenNode.notifyToken(
+                        _token,
+                        this,
+                        DesignTokenMutationType.change
+                    );
                 }
                 this.notifyDerived(_token, evaluator, originator);
             }
@@ -373,7 +403,11 @@ export class DesignTokenNode {
                     const value = DesignTokenNode.evaluateDerived(this, token, evaluator);
 
                     if (prev !== value) {
-                        DesignTokenNode.notifyToken(token, this);
+                        DesignTokenNode.notifyToken(
+                            token,
+                            this,
+                            DesignTokenMutationType.change
+                        );
                     }
                     this.notifyDerived(token, evaluator, this);
                 }
@@ -394,7 +428,7 @@ export class DesignTokenNode {
 
             if (evaluator.dependencies.has(token)) {
                 DesignTokenNode.evaluateDerived(this, _token, evaluator);
-                DesignTokenNode.notifyToken(_token, this);
+                DesignTokenNode.notifyToken(_token, this, DesignTokenMutationType.change);
                 this.notifyDerived(_token, evaluator, originator);
             }
         }
@@ -416,7 +450,11 @@ export class DesignTokenNode {
                         evaluator
                     );
                     if (result !== prev) {
-                        DesignTokenNode.notifyToken(token, this);
+                        DesignTokenNode.notifyToken(
+                            token,
+                            this,
+                            DesignTokenMutationType.change
+                        );
                         this.notifyDerived(token, evaluator, this);
                     }
                 }
