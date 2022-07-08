@@ -6,7 +6,14 @@ const { getPackageJsonDir } = require("../../../build/get-package-json");
 
 const fastFoundation = getPackageJsonDir("@microsoft/fast-foundation"); // path.dirname( require.resolve("@microsoft/fast-foundation/package.json"));
 const fastElement = getPackageJsonDir("@microsoft/fast-element"); // path.dirname(require.resolve("@microsoft/fast-element/package.json"));
-const fastComponents = getPackageJsonDir("@microsoft/fast-components"); // path.dirname( require.resolve("@microsoft/fast-components/package.json"));
+const fastComponents = getPackageJsonDir("@microsoft/fast-components", {
+    paths: [
+        path.resolve(
+            path.dirname(require.resolve("@microsoft/fast-website/package.json")),
+            "node_modules"
+        ),
+    ],
+});
 
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");
