@@ -462,7 +462,6 @@ describe.only("DesignTokenNode", () => {
             expect(descendent.getTokenValue(token)).to.equal(14);
         });
         it("the token with the descendent node that has a token assigned a static value deleted that is a dependency of a value assigned for an ancestor", () => {
-            // This test doesn't seem to be implemented correctly
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
@@ -485,7 +484,6 @@ describe.only("DesignTokenNode", () => {
             expect(descendent.getTokenValue(token)).to.equal(12);
         });
         it("the token with the descendent node that has a token assigned a derived value deleted that is a dependency of a value assigned for an ancestor", () => {
-            // This test doesn't seem to be implemented correctly
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
             const ancestor = createNode();
@@ -502,7 +500,6 @@ describe.only("DesignTokenNode", () => {
             descendent.deleteTokenValue(dependency);
 
             expect(handleChange).to.have.been.called.once;
-            // expect(handleChange).to.have.been.first.called.with.exactly(token, descendent)
             expect(handleChange).to.have.been.first.called.with.exactly(token, new DesignTokenChangeRecord(descendent, DesignTokenMutationType.change));
             expect(ancestor.getTokenValue(token)).to.equal(12);
             expect(parent.getTokenValue(token)).to.equal(12);
