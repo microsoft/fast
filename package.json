@@ -14,8 +14,8 @@
       "packages/web-components/*",
       "sites/fast-color-explorer",
       "sites/site-utilities",
-      "sites/fast-website",
       "sites/website",
+      "sites/fast-website",
       "examples/todo-app",
       "examples/ssr"
     ],

@@ -13,8 +13,8 @@ const fs = require("fs");
  * allowing file-system retrieval by relative path for arbitrary files outside of
  * Node's module system.
  */
-exports.getPackageJsonDir = name => {
-    const entry = require.resolve(name).toString();
+exports.getPackageJsonDir = (name, options) => {
+    const entry = require.resolve(name, options).toString();
     let dir = path.parse(entry).dir;
 
     while (!fs.existsSync(path.resolve(dir, "package.json"))) {
