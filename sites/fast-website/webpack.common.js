@@ -51,7 +51,7 @@ module.exports = {
             },
             {
                 test: /\.svg$/,
-                type: "asset/resource",
+                type: "asset/source",
             },
             {
                 test: /\.ejs$/,
