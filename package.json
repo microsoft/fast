@@ -148,7 +148,7 @@
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^15.0.1",
-    "beachball": "^2.23.0",
+    "beachball": "^2.24.0",
     "chalk": "^2.4.2",
     "copyfiles": "^2.4.1",
     "docusaurus-init": "^1.11.0",

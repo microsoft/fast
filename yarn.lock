@@ -7074,10 +7074,10 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-beachball@^2.23.0:
-  version "2.23.0"
-  resolved "https://pkgs.dev.azure.com/microsoftdesign/Proteus/_packaging/proteus-testing/npm/registry/beachball/-/beachball-2.23.0.tgz#b223602b88d459dec8ce92c940568fa72f057874"
-  integrity sha1-siNgK4jUWd7IzpLJQFaPpy8FeHQ=
+beachball@^2.24.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/beachball/-/beachball-2.24.0.tgz#e907fc95a9f315c5289e9b4c76e855407093202e"
+  integrity sha512-UMZWX7BfmXwEw3CW8gOWnErbR7I1JYO6msa4vQav1EiUbPF1TxEN5vvQiKBu1wDHXKbPIWi3/elXAUphqT90gQ==
   dependencies:
     cosmiconfig "^6.0.0"
     execa "^4.0.3"
@@ -7092,7 +7092,7 @@ beachball@^2.23.0:
     semver "^6.1.1"
     toposort "^2.0.2"
     uuid "^8.3.1"
-    workspace-tools "^0.19.0"
+    workspace-tools "^0.21.0"
     yargs-parser "^20.2.4"
 
 before-after-hook@^2.0.0, before-after-hook@^2.2.0:
@@ -24308,10 +24308,10 @@ workerpool@6.1.0:
   resolved "https://registry.yarnpkg.com/workerpool/-/workerpool-6.1.0.tgz#a8e038b4c94569596852de7a8ea4228eefdeb37b"
   integrity sha512-toV7q9rWNYha963Pl/qyeZ6wG+3nnsyvolaNUS8+R5Wtw6qJPTxIlOP1ZSvcGhEJw+l3HMMmtiNo9Gl61G4GVg==
 
-workspace-tools@^0.19.0:
-  version "0.19.4"
-  resolved "https://pkgs.dev.azure.com/microsoftdesign/Proteus/_packaging/proteus-testing/npm/registry/workspace-tools/-/workspace-tools-0.19.4.tgz#87ef2101060787588f0a21b550f2aa7b24fde0bf"
-  integrity sha1-h+8hAQYHh1iPCiG1UPKqeyT94L8=
+workspace-tools@^0.21.0:
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.21.0.tgz#eab13d4fac2cace36f6ecef1fe30ed6d912124cb"
+  integrity sha512-ZOGOr42brfDFJcKUz8AonRabORtq0UbuoF6chmcQUwRYmu+Qs85/ZhfflrrMSJLP3yRoqcBe/lvDjGzkWYViww==
   dependencies:
     "@yarnpkg/lockfile" "^1.1.0"
     find-up "^4.1.0"
