@@ -2,22 +2,26 @@ import {
     attr,
     Constructable,
     DOM,
+    FASTElement,
     Notifier,
     nullableNumberConverter,
     Observable,
     observable,
     Splice,
-    ViewTemplate,
 } from "@microsoft/fast-element";
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
+
 import { IntersectionService } from "../utilities/intersection-service.js";
 import type {
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
 } from "../utilities/resize-observer.js";
-import type { FASTDataList } from "../data-list/index.js";
 import type { FASTVirtualListItem } from "./virtual-list-item.js";
-import type { SizeMap, VirtualListAutoUpdateMode } from "./virtual-list.options.js";
+import type {
+    ItemLoadMode,
+    SizeMap,
+    VirtualListAutoUpdateMode,
+} from "./virtual-list.options.js";
 
 /**
  * Base class for providing Custom Element Virtualizing.
@@ -34,8 +38,6 @@ export interface Virtualizing {
     sizemap: SizeMap[];
     autoResizeItems: boolean;
     viewportElement: HTMLElement;
-    defaultVerticalItemTemplate: ViewTemplate;
-    defaultHorizontalItemTemplate: ViewTemplate;
     renderedItemMap: SizeMap[];
     totalListSize: number;
     startSpacerSize: number;
@@ -43,6 +45,9 @@ export interface Virtualizing {
     firstRenderedIndex: number;
     lastRenderedIndex: number;
     containerElement: HTMLElement;
+    renderItems: object[];
+    sourceItems: object[];
+    itemLoadMode: ItemLoadMode;
 
     getItemSizeMap(itemIndex: number): SizeMap | null;
 }
@@ -52,7 +57,7 @@ export interface Virtualizing {
  *
  * @beta
  */
-export type ConstructableVirtualizing = Constructable<HTMLElement & FASTDataList>;
+export type ConstructableVirtualizing = Constructable<HTMLElement & FASTElement>;
 
 /**
  * Base function for providing Custom Element Virtualization
@@ -167,15 +172,6 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
         }
 
         /**
-         * override
-         */
-        protected itemsChanged(): void {
-            if (this.$fastController.isConnected) {
-                this.reset();
-            }
-        }
-
-        /**
          * The sizemap for the items
          * Authors need to provide a sizemap for arrays of irregular size items,
          * when the items have a uniform size use the 'item-size' attribute instead.
@@ -217,18 +213,58 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
         }
 
         /**
-         * The default ViewTemplate used to render items vertically.
+         * Controls the idle load queue behavior.
          *
-         * @internal
+         * @public
+         * @remarks
+         * HTML Attribute: item-load-mode
          */
-        public defaultVerticalItemTemplate: ViewTemplate;
+        public itemLoadMode: ItemLoadMode = "immediate";
 
         /**
-         * The default ViewTemplate used to render items horizontally.
+         * Suspends idle loading
+         *
+         *
+         * @public
+         */
+        public idleLoadingSuspended: boolean;
+        protected idleLoadingSuspendedChanged(): void {
+            if (this.$fastController.isConnected) {
+                if (!this.idleLoadingSuspended && this.itemLoadMode === "idle") {
+                    this.nextCallback();
+                }
+            }
+        }
+
+        /**
+         * the idle callback queue for this list instance.
+         * List items can use this instance to coordinate idle loading.
          *
          * @internal
          */
-        public defaultHorizontalItemTemplate: ViewTemplate;
+        public renderItems: object[] = [];
+
+        /**
+         *  The array of items to be rendered.
+         *
+         * @public
+         */
+        public sourceItems: object[];
+        protected sourceItemsChanged(): void {
+            if (this.$fastController.isConnected) {
+                this.reset();
+            }
+        }
+
+        /**
+         * Defines the idle callback timeout value.
+         * Defaults to 1000
+         *
+         * @public
+         * @remarks
+         * HTML Attribute: idle-callback-timeout
+         */
+        public idleCallbackTimeout: number = 1000;
 
         /**
          * The positions of the currently rendered items in the list
@@ -320,22 +356,27 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
          */
         private finalUpdateNeeded: boolean = false;
 
+        private idleCallbackInterval: number = 20;
+        private callbackQueue: Map<Element, () => void> = new Map<Element, () => void>();
+        private currentCallbackId: number | undefined;
+        private currentCallbackElement: Element | undefined;
+        private currentCallback: (() => void) | undefined;
+
         /**
          * @internal
          */
         connectedCallback() {
             super.connectedCallback();
 
-            if (!this.itemTemplate) {
-                this.itemTemplate =
-                    this.orientation === Orientation.vertical
-                        ? this.defaultVerticalItemTemplate
-                        : this.defaultHorizontalItemTemplate;
-            }
-
             this.viewportElement = this.viewportElement ?? this.getViewport();
             this.resetAutoUpdateMode("manual", this.autoUpdateMode);
             this.initializeResizeDetector();
+
+            this.addEventListener("listitemconnected", this.handleListItemConnected);
+            this.addEventListener(
+                "listitemdisconnected",
+                this.handleListItemDisconnected
+            );
 
             this.doReset();
         }
@@ -355,6 +396,16 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
             this.renderedItemMap = [];
 
             this.disconnectResizeDetector();
+
+            this.removeEventListener("listitemconnected", this.handleListItemConnected);
+            this.removeEventListener(
+                "listitemdisconnected",
+                this.handleListItemDisconnected
+            );
+            this.callbackQueue.clear();
+            if (this.currentCallbackElement) {
+                this.currentCallbackElement;
+            }
         }
 
         /**
@@ -374,7 +425,7 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
          * @public
          */
         public getItemSizeMap = (itemIndex: number): SizeMap | null => {
-            if (itemIndex < 0 || itemIndex >= this.items.length) {
+            if (itemIndex < 0 || itemIndex >= this.sourceItems.length) {
                 // out of range
                 return null;
             }
@@ -400,7 +451,10 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
             if (this.autoResizeItems) {
                 this.resizeDetector?.observe(e.target as Element);
             }
-            super.handleListItemConnected(e);
+            this.requestIdleCallback(
+                e.target as FASTVirtualListItem,
+                (e.target as FASTVirtualListItem).handleIdleCallback
+            );
         }
 
         /**
@@ -413,7 +467,7 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
             if (this.autoResizeItems) {
                 this.resizeDetector?.unobserve(e.target as Element);
             }
-            super.handleListItemDisconnected(e);
+            this.cancelIdleCallback(e.target as Element);
         }
 
         /**
@@ -422,11 +476,13 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
         private observeItems(): void {
             this.unobserveItems();
 
-            if (!this.items) {
+            if (!this.sourceItems) {
                 return;
             }
 
-            const newObserver = (this.itemsObserver = Observable.getNotifier(this.items));
+            const newObserver = (this.itemsObserver = Observable.getNotifier(
+                this.sourceItems
+            ));
             newObserver.subscribe(this);
         }
 
@@ -459,7 +515,7 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
          */
         private generateSizeMap(): SizeMap[] {
             const sizemap: SizeMap[] = [];
-            const itemsCount: number = this.items.length;
+            const itemsCount: number = this.sourceItems.length;
             let currentPosition: number = 0;
             for (let i = 0; i < itemsCount; i++) {
                 const mapEnd = this.itemSize + currentPosition;
@@ -487,8 +543,8 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
          * @internal
          */
         public handleChange(source: any, splices: Splice[]): void {
-            if (source === this.items) {
-                const itemsLength = this.items.length;
+            if (source === this.sourceItems) {
+                const itemsLength = this.sourceItems.length;
                 const firstRenderedIndex = Math.min(
                     this.firstRenderedIndex,
                     itemsLength - 1
@@ -498,7 +554,7 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
                     itemsLength - 1
                 );
 
-                const newVisibleItems = this.items.slice(
+                const newVisibleItems = this.sourceItems.slice(
                     firstRenderedIndex,
                     lastRenderedIndex + 1
                 );
@@ -816,7 +872,7 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
          * updates the dimensions of the list
          */
         private updateDimensions = (): void => {
-            if (this.items === undefined) {
+            if (this.sourceItems === undefined) {
                 this.totalListSize = 0;
                 return;
             }
@@ -826,7 +882,7 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
                         ? this.sizemap[this.sizemap.length - 1].end
                         : 0;
             } else {
-                this.totalListSize = this.itemSize * this.items.length;
+                this.totalListSize = this.itemSize * this.sourceItems.length;
             }
 
             this.requestPositionUpdates();
@@ -836,12 +892,12 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
          *  Updates the visible items
          */
         private updateVisibleItems(): void {
-            if (!this.items) {
+            if (!this.sourceItems) {
                 return;
             }
 
             if (this.virtualizationDisabled) {
-                this.renderItems.splice(0, this.renderItems.length, ...this.items);
+                this.renderItems.splice(0, this.renderItems.length, ...this.sourceItems);
                 this.updateVisibleItemSizes(0, this.renderItems.length - 1);
                 return;
             }
@@ -898,12 +954,12 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
                 newFirstRenderedIndex = Math.max(0, newFirstRenderedIndex);
                 newLastRenderedIndex = Math.min(
                     newLastRenderedIndex,
-                    this.items.length - 1
+                    this.sourceItems.length - 1
                 );
 
                 this.startSpacerSize = newFirstRenderedIndex * this.itemSize;
                 this.endSpacerSize =
-                    (this.items.length - newLastRenderedIndex - 1) * this.itemSize;
+                    (this.sourceItems.length - newLastRenderedIndex - 1) * this.itemSize;
             } else {
                 const firstVisibleItem: SizeMap | undefined = this.sizemap.find(
                     x => x.end >= renderedRangeStart
@@ -922,7 +978,7 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
                 newFirstRenderedIndex = Math.max(0, newFirstRenderedIndex);
                 newLastRenderedIndex = Math.min(
                     newLastRenderedIndex,
-                    this.items.length - 1
+                    this.sourceItems.length - 1
                 );
 
                 this.startSpacerSize = this.sizemap[newFirstRenderedIndex].start;
@@ -931,7 +987,7 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
                     this.sizemap[newLastRenderedIndex].end;
             }
 
-            const newVisibleItems = this.items.slice(
+            const newVisibleItems = this.sourceItems.slice(
                 newFirstRenderedIndex,
                 newLastRenderedIndex + 1
             );
@@ -1049,6 +1105,80 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
 
             this.updateVisibleItems();
         };
+
+        /**
+         * Request an idle callback
+         *
+         * @internal
+         */
+        public requestIdleCallback(target: Element, callback: () => void): void {
+            if (this.callbackQueue.has(target)) {
+                return;
+            }
+            this.callbackQueue.set(target, callback);
+            this.nextCallback();
+        }
+
+        /**
+         * Cancel an idle callback request
+         *
+         * @internal
+         */
+        public cancelIdleCallback(target: Element): void {
+            if (this.callbackQueue.has(target)) {
+                this.callbackQueue.delete(target);
+                return;
+            }
+
+            if (this.currentCallbackElement === target && this.currentCallbackId) {
+                ((window as unknown) as WindowWithIdleCallback).cancelIdleCallback(
+                    this.currentCallbackId
+                );
+                this.currentCallbackId = undefined;
+                this.currentCallbackElement = undefined;
+                this.currentCallback = undefined;
+                this.nextCallback();
+            }
+        }
+
+        /**
+         * Queue up the next item
+         */
+        private nextCallback = (): void => {
+            if (
+                this.itemLoadMode !== "idle" ||
+                this.idleLoadingSuspended ||
+                this.currentCallbackId ||
+                this.callbackQueue.size === 0
+            ) {
+                return;
+            }
+
+            const [nextCallbackElement] = this.callbackQueue.keys();
+            this.currentCallback = this.callbackQueue.get(nextCallbackElement);
+            this.callbackQueue.delete(nextCallbackElement);
+            this.currentCallbackElement = nextCallbackElement;
+
+            this.currentCallbackId = ((window as unknown) as WindowWithIdleCallback).requestIdleCallback(
+                this.handleIdleCallback,
+                { timeout: this.idleCallbackTimeout }
+            );
+        };
+
+        /**
+         *  Handle callback
+         */
+        private handleIdleCallback = (): void => {
+            if (this.currentCallback) {
+                this.currentCallback();
+            }
+            this.currentCallbackId = undefined;
+            this.currentCallbackElement = undefined;
+            this.currentCallback = undefined;
+            window.setTimeout(() => {
+                this.nextCallback();
+            }, this.idleCallbackInterval);
+        };
     };
 
     attr({ attribute: "virtualization-disabled", mode: "boolean" })(
@@ -1067,10 +1197,12 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
     attr(C.prototype, "orientation");
     attr({ attribute: "auto-update-mode" })(C.prototype, "autoUpdateMode");
     attr({ attribute: "auto-resize-items" })(C.prototype, "autoResizeItems");
+    attr({ attribute: "item-load-mode" })(C.prototype, "itemLoadMode");
+    attr({ attribute: "idle-callback-timeout" })(C.prototype, "idleCallbackTimeout");
+    attr({ attribute: "idle-loading-suspended" })(C.prototype, "idleLoadingSuspended");
+
     observable(C.prototype, "sizemap");
     observable(C.prototype, "viewportElement");
-    observable(C.prototype, "defaultVerticalItemTemplate");
-    observable(C.prototype, "defaultHorizontalItemTemplate");
     observable(C.prototype, "renderedItemMap");
     observable(C.prototype, "totalListSize");
     observable(C.prototype, "startSpacerSize");
@@ -1078,6 +1210,8 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
     observable(C.prototype, "firstRenderedIndex");
     observable(C.prototype, "lastRenderedIndex");
     observable(C.prototype, "containerElement");
+    observable(C.prototype, "renderItems");
+    observable(C.prototype, "sourceItems");
 
     return C;
 }

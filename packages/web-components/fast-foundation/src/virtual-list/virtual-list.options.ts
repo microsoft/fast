@@ -20,3 +20,10 @@ export interface SizeMap {
     // list item size
     size: number;
 }
+
+/**
+ * Defines how the idle load queue behaves.
+ *
+ * @public
+ */
+export type ItemLoadMode = "idle" | "immediate";

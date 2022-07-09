@@ -2195,16 +2195,49 @@ export class FASTTreeView extends FASTElement {
 //
 // @public
 export class FASTVirtualList extends VirtualList {
+    // (undocumented)
+    protected clearRepeatBehavior(): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    defaultHorizontalItemTemplate: ViewTemplate;
+    // @internal
+    defaultVerticalItemTemplate: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    protected initializeRepeatBehavior(): void;
+    itemContentsTemplate: ViewTemplate;
+    // (undocumented)
+    protected itemContentsTemplateChanged(): void;
+    // (undocumented)
+    protected itemsPlaceholder: Node;
+    // (undocumented)
+    protected itemsRepeatBehavior: RepeatBehavior | null;
+    itemTemplate: ViewTemplate;
+    recycle: boolean;
 }
 
-// Warning: (ae-forgotten-export) The symbol "FASTDataListItem" needs to be exported by the entry point index.d.ts
-//
 // @public
-export class FASTVirtualListItem extends FASTDataListItem {
+export class FASTVirtualListItem extends FASTElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    handleIdleCallback: () => void;
+    // @internal
+    idleLoad: boolean;
+    // @internal
+    itemContentsTemplate: ViewTemplate;
+    // @internal
+    itemData: object;
+    // @internal
+    itemIndex: number;
     // @internal
     itemSizeMap: SizeMap;
     // @internal
     listItemContentsTemplate: ViewTemplate;
+    // @internal
+    loadContent: boolean;
     // @internal
     sizeMap: SizeMap[];
 }

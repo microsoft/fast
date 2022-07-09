@@ -62,7 +62,7 @@ const itemContentsTemplate = html`
 
 const storyTemplate = html<VirtualListStoryArgs>`
     <fast-virtual-list
-        :items="${newDataSet(5000, 1)}"
+        :sourceItems="${newDataSet(5000, 1)}"
         :sizemap="${x => x.sizemap}"
         virtualization-enabled="${x => x.virtualizationEnabled}"
         viewport="${x => x.viewport}"
