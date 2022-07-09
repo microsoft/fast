@@ -12004,8 +12004,8 @@ https-proxy-agent@^5.0.0:
 
 human-id@^2.0.1:
   version "2.0.1"
-  resolved "https://pkgs.dev.azure.com/microsoftdesign/Proteus/_packaging/proteus-testing/npm/registry/human-id/-/human-id-2.0.1.tgz#71aadd0f46d577fd982358133cfd43f2a46f1477"
-  integrity sha1-cardD0bVd/2YI1gTPP1D8qRvFHc=
+  resolved "https://registry.yarnpkg.com/human-id/-/human-id-2.0.1.tgz#71aadd0f46d577fd982358133cfd43f2a46f1477"
+  integrity sha512-XWoYbGsEfBB0mtUHiyihsefgf+s1tNQHj7sX1kgDxUM0IEKk8rcZIPTwUpqDdFIQbkViOLejbc0t8jBzz5jL3w==
 
 human-signals@^1.1.1:
   version "1.1.1"
