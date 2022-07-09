@@ -38,38 +38,19 @@ import { DocCardList, DocCardItem } from "@site/src/custom-components/CustomDocC
 
 Pick the statement you most identify with, and follow the links where they lead. Come back and explore another topic at any time. Or, [click here](#what-is-fast) to learn more about FAST.
 
-<DocCardList>
-  <DocCardItem
-    href="./components/getting-started"
-    title="I want ready-made components"
-    description="The @microsoft/fast-components library contains Web Components built on top of our standard component and design system foundation. Jump to the component docs."
-  />
-  <DocCardItem
-    href="./fast-element/getting-started"
-    title="I want to build my own components"
-    description="The fast-element library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. Jump to the fast-element docs."
-  />
-  <DocCardItem
-    href="./design-systems/overview"
-    title="I want to build my own design system"
-    description="FAST Frame is the name of our highly configurable design system. It is made up of a set of Web Components and accompanying design tokens. Jump to the design system docs."
-  />
-  <DocCardItem
-    href="./integrations/introduction"
-    title="I want to integrate FAST"
-    description="FAST libraries can be used on their own to build modern web sites and apps, but they can also be used with a wide variety of existing technologies. Jump to the integration docs."
-  />
-  <DocCardItem
-    href="./resources/cheat-sheet"
-    title="I want to look at a quick reference"
-    description="A quick reference for FAST packages, using/building components, design systems/tokens, and how to make contributions to FAST. Jump to the cheat sheet doc."
-  />
-  <DocCardItem
-    href="./community/contributor-guide"
-    title="I want to contribute to FAST"
-    description="To get started as a contributor, read our code of conduct, and contributor guides. Join our Discord server and look at good first issues. Jump to the contributor guide docs."
-  />
-</DocCardList>
+
+* "I just want ready-made components!"
+  * [Jump to the component docs.](./components/getting-started.md)
+* "I want to build my own design system."
+  * [Jump to the design system docs.](./design-systems/overview.md)
+* "I want to build my own components."
+  * [Jump to the fast-element docs.](./fast-element/getting-started.md)
+* "I need to integrate FAST with another framework or build system."
+  * [Jump to the integration docs.](./integrations/introduction.md)
+* "I want to look at a quick reference."
+  * [Jump to the Cheat Sheet](./resources/cheat-sheet.md)
+* "I want to contribute to FAST."
+  * [Jump to the contributor guide.](./community/contributor-guide.md)
 
 <hr />
 
