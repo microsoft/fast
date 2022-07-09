@@ -158,27 +158,6 @@ flowchart
 
 ## Joining the community
 
-We look forward to building an amazing open source community with you.
+Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via GitHub](https://github.com/Microsoft/fast/labels/community:good-first-issue).
 
-<DocCardList>
-  <DocCardItem
-    href="https://discord.gg/FcSNfg4"
-    title="Discord"
-    description="Join our active community on Discord. Follow the latest updates and contributions, ask questions, give feedback, or keep up on our reading list."
-  />
-  <DocCardItem
-    href="https://github.com/Microsoft/fast/issues/new/choose"
-    title="GitHub"
-    description="Explore the FAST repository on GitHub and try out our components, utilities, and tools. Or, mix-and-match with your own solutions."
-  />
-  <DocCardItem
-    href="https://twitter.com/FAST_UI"
-    title="Twitter"
-    description="Follow along as we share out the latest happenings on Twitter. You will find important updates, announcements, and sneak peeks."
-  />
-    <DocCardItem
-    href="https://medium.com/fast-design"
-    title="Medium"
-    description="Read articles published on our official FAST blog. Like, comment, share, and bookmark content. Sign up for our monthly newsletter, FAST Monthly."
-  />
-</DocCardList>
+We look forward to building an amazing open source community with you!
