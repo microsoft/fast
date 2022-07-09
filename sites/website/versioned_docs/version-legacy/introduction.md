@@ -141,19 +141,6 @@ flowchart
 
 `@microsoft/fast-element` provides a thin layer of opinion on top of Web Components, lifting the level of abstraction just enough to make it easier and faster to build components. `@microsoft/fast-element` helps by providing attribute/property syncing, rich Model-View-ViewModel (MVVM), efficient template rendering/update, style composition, and much more. The entire `@microsoft/fast-element` library, *without* tree-shaking, is around 10kb minified and GZipped. It was designed for tree-shaking from the beginning, so any feature you don't use when building a component will be removed during build, allowing for highly efficient optimized payloads as small as 4.5k.
 
-<DocCardList>
-  <DocCardItem
-    href="./resources/glossary"
-    title="Glossary"
-    description="A glossary of terms, which includes Design System, Design Token, ES2015, Evergreen Browser, Houdini, Polyfill, Time to Interactive (TTI), Transpiler, and Web Components."
-  />
-  <DocCardItem
-    href="./resources/faq"
-    title="FAQ"
-    description="A list of frequently asked questions (e.g. What are Web Components, Why should I choose Web Components over [other JavaScript framework], etc)."
-  />
-</DocCardList>
-
 <hr />
 
 ## Joining the community
