@@ -4,7 +4,6 @@ import {
     observable,
     RepeatBehavior,
     RepeatDirective,
-    Updates,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
@@ -26,6 +25,17 @@ export class VirtualList extends Virtualizing(_VirtualList) {}
  * @public
  */
 export class FASTVirtualList extends VirtualList {
+    /**
+     * The source array of objects to be rendered
+     *
+     * @public
+     */
+    @observable
+    public items: object[];
+    private itemsChanged(): void {
+        this.sourceItems = this.items;
+    }
+
     /**
      * Whether or not to recycle the html container used to display items.
      * May help performance but containers may retain artifacts from previous use that
@@ -99,14 +109,7 @@ export class FASTVirtualList extends VirtualList {
                     : this.defaultHorizontalItemTemplate;
         }
 
-        Updates.enqueue(() => this.initializeRepeatBehavior());
-    }
-
-    /**
-     * @internal
-     */
-    public disconnectedCallback(): void {
-        super.disconnectedCallback();
+        this.initializeRepeatBehavior();
     }
 
     /**

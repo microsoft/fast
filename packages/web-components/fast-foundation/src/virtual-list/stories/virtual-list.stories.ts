@@ -64,7 +64,7 @@ const storyTemplate = html<VirtualListStoryArgs>`
     <fast-virtual-list
         :sourceItems="${newDataSet(5000, 1)}"
         :sizemap="${x => x.sizemap}"
-        virtualization-enabled="${x => x.virtualizationEnabled}"
+        virtualization-disabled="${x => x.virtualizationDisabled}"
         viewport="${x => x.viewport}"
         item-size="${x => x.itemSize}"
         viewport-buffer="${x => x.viewportBuffer}"
@@ -86,7 +86,7 @@ export default {
         itemLoadMode: "idle",
     },
     argTypes: {
-        virtualizationEnabled: {
+        virtualizationDisabled: {
             control: { type: "boolean" },
         },
         viewport: {

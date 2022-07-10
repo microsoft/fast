@@ -28,6 +28,8 @@ import "../src/data-grid/stories/data-grid-cell.register.js";
 import "../src/data-grid/stories/data-grid-row.register.js";
 import "../src/data-grid/stories/data-grid.register.js";
 
+import "../src/virtual-data-grid/stories/virtual-data-grid.register.js";
+
 import "../src/calendar/stories/calendar.register.js";
 
 import "../src/slider-label/stories/slider-label.register.js";

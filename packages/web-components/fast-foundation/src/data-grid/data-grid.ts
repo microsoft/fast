@@ -317,8 +317,8 @@ export class FASTDataGrid extends FASTElement {
 
     private observer: MutationObserver;
 
-    private rowindexUpdateQueued: boolean = false;
-    private columnDefinitionsStale: boolean = true;
+    protected rowindexUpdateQueued: boolean = false;
+    protected columnDefinitionsStale: boolean = true;
 
     private generatedGridTemplateColumns: string = "";
 
@@ -336,8 +336,7 @@ export class FASTDataGrid extends FASTElement {
             this.rowItemTemplate = this.defaultRowItemTemplate;
         }
 
-        this.rowsPlaceholder = document.createComment("");
-        this.appendChild(this.rowsPlaceholder);
+        this.initializeRepeatBehavior();
 
         if (this.behaviorOrchestrator === null) {
             this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
@@ -367,6 +366,25 @@ export class FASTDataGrid extends FASTElement {
         }
 
         Updates.enqueue(this.queueRowIndexUpdate);
+    }
+
+    /**
+     * @internal
+     */
+    protected initializeRepeatBehavior(): void {
+        this.rowsPlaceholder = document.createComment("");
+        this.appendChild(this.rowsPlaceholder);
+        const rowsRepeatDirective = new RepeatDirective(
+            x => x.rowsData,
+            x => x.rowItemTemplate,
+            { positioning: true }
+        );
+        this.rowsRepeatBehavior = rowsRepeatDirective.createBehavior({
+            [rowsRepeatDirective.nodeId]: this.rowsPlaceholder,
+        });
+
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+        this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
     }
 
     /**
@@ -637,11 +655,11 @@ export class FASTDataGrid extends FASTElement {
     private queueRowIndexUpdate = (): void => {
         if (!this.rowindexUpdateQueued) {
             this.rowindexUpdateQueued = true;
-            Updates.enqueue(this.updateRowIndexes);
+            Updates.enqueue(() => this.updateRowIndexes());
         }
     };
 
-    private updateRowIndexes = (): void => {
+    protected getGridTemplateColumns(): string {
         let newGridTemplateColumns = this.gridTemplateColumns;
 
         if (newGridTemplateColumns === undefined) {
@@ -658,6 +676,12 @@ export class FASTDataGrid extends FASTElement {
             newGridTemplateColumns = this.generatedGridTemplateColumns;
         }
 
+        return newGridTemplateColumns;
+    }
+
+    protected updateRowIndexes(): void {
+        const newGridTemplateColumns: string = this.getGridTemplateColumns();
+
         this.rowElements.forEach((element: Element, index: number): void => {
             const thisRow = element as FASTDataGridRow;
             thisRow.rowIndex = index;
@@ -669,5 +693,5 @@ export class FASTDataGrid extends FASTElement {
 
         this.rowindexUpdateQueued = false;
         this.columnDefinitionsStale = false;
-    };
+    }
 }

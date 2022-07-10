@@ -982,6 +982,8 @@ export class FASTDataGrid extends FASTElement {
     columnDefinitions: ColumnDefinition[] | null;
     // (undocumented)
     protected columnDefinitionsChanged(): void;
+    // (undocumented)
+    protected columnDefinitionsStale: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
@@ -992,6 +994,8 @@ export class FASTDataGrid extends FASTElement {
     focusRowIndex: number;
     static generateColumns: (row: object) => ColumnDefinition[];
     generateHeader: GenerateHeaderOptions;
+    // (undocumented)
+    protected getGridTemplateColumns(): string;
     gridTemplateColumns: string;
     // (undocumented)
     protected gridTemplateColumnsChanged(): void;
@@ -1004,16 +1008,26 @@ export class FASTDataGrid extends FASTElement {
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
     headerCellItemTemplate?: ViewTemplate;
+    // @internal (undocumented)
+    protected initializeRepeatBehavior(): void;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
     // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
+    // (undocumented)
+    protected rowindexUpdateQueued: boolean;
     rowItemTemplate: ViewTemplate;
     rowsData: object[];
     // (undocumented)
     protected rowsDataChanged(): void;
+    // (undocumented)
+    protected rowsPlaceholder: Node | null;
+    // (undocumented)
+    protected rowsRepeatBehavior: RepeatBehavior | null;
+    // (undocumented)
+    protected updateRowIndexes(): void;
 }
 
 // @public
@@ -2203,12 +2217,11 @@ export class FASTVirtualList extends VirtualList {
     defaultHorizontalItemTemplate: ViewTemplate;
     // @internal
     defaultVerticalItemTemplate: ViewTemplate;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
     protected initializeRepeatBehavior(): void;
     itemContentsTemplate: ViewTemplate;
     // (undocumented)
     protected itemContentsTemplateChanged(): void;
+    items: object[];
     // (undocumented)
     protected itemsPlaceholder: Node;
     // (undocumented)
@@ -2861,6 +2874,53 @@ export const VerticalPosition: {
 
 // @public
 export type VerticalPosition = typeof VerticalPosition[keyof typeof VerticalPosition];
+
+// @beta
+export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): T;
+
+// @beta
+export interface Virtualizing {
+    // (undocumented)
+    autoResizeItems: boolean;
+    // (undocumented)
+    autoUpdateMode: VirtualListAutoUpdateMode;
+    // (undocumented)
+    containerElement: HTMLElement;
+    // (undocumented)
+    endSpacerSize: number;
+    // (undocumented)
+    firstRenderedIndex: number;
+    // (undocumented)
+    getItemSizeMap(itemIndex: number): SizeMap | null;
+    // (undocumented)
+    itemLoadMode: ItemLoadMode;
+    // (undocumented)
+    itemSize: number;
+    // (undocumented)
+    lastRenderedIndex: number;
+    // (undocumented)
+    orientation: Orientation;
+    // (undocumented)
+    renderedItemMap: SizeMap[];
+    // (undocumented)
+    renderItems: object[];
+    // (undocumented)
+    sizemap: SizeMap[];
+    // (undocumented)
+    sourceItems: object[];
+    // (undocumented)
+    startSpacerSize: number;
+    // (undocumented)
+    totalListSize: number;
+    // (undocumented)
+    viewport: string;
+    // (undocumented)
+    viewportBuffer: number;
+    // (undocumented)
+    viewportElement: HTMLElement;
+    // (undocumented)
+    virtualizationDisabled: boolean;
+}
 
 // Warning: (ae-forgotten-export) The symbol "VirtualList_base" needs to be exported by the entry point index.d.ts
 //

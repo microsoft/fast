@@ -249,7 +249,7 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
          *
          * @public
          */
-        public sourceItems: object[];
+        protected sourceItems: object[];
         protected sourceItemsChanged(): void {
             if (this.$fastController.isConnected) {
                 this.reset();
@@ -1211,7 +1211,6 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
     observable(C.prototype, "lastRenderedIndex");
     observable(C.prototype, "containerElement");
     observable(C.prototype, "renderItems");
-    observable(C.prototype, "sourceItems");
 
     return C;
 }
