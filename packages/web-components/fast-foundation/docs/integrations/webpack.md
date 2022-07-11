@@ -3,7 +3,7 @@ id: webpack
 title: Webpack
 sidebar_label: Webpack
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/webpack.md
-description: FAST works great with TypeScript and Webpack, using a fairly standard setup. Let's take a look at how you can set up a TypeScript+Webpack project, starting from scratch.
+description: FAST works great with TypeScript and Webpack, using a fairly standard setup. Let's take a look at how you can set up a TypeScript+Webpack project, starting from scratch. 
 ---
 
 FAST works great with TypeScript and Webpack, using a fairly standard setup. Let's take a look at how you can set up a TypeScript+Webpack project, starting from scratch.
@@ -57,7 +57,7 @@ Now that we've got our basic package and dependencies set up, let's create some 
 
 Open the `fast-webpack` folder in your favorite editor. You should see your `package.json` along with a `package-lock.json` and a `node_modules` folder.
 
-First, let's create a `src` folder where we'll put all our TypeScript code. In the `src` folder, add a `main.ts` file. You can leave the file empty for now. We'll come back it in a bit.
+First, let's create a `src` folder where we'll put all our TypeScript code. In the `src` folder, add a `main.ts` file. You can leave the file empty for now. We'll come back to it in a bit.
 
 Next, in the root of your project folder, add a `tsconfig.json` file to configure the TypeScript compiler. Here's an example starter config that you can put into that file:
 
@@ -274,7 +274,6 @@ Here, by adding `@babel/preset-env` to presets will allow you to use the latest 
 Targeting specific browser versions prevents Babel from transpiling too much to support old JavaScript versions, increasing total file size and potentially hurting overall performance.
 
 Then, create a `webpack.config.js` file in the root of your project folder with the following source:
-This setup uses the `babel-loader` to transpile JavaScript files.
 
 ```js
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -324,6 +323,7 @@ module.exports = function (env, { mode }) {
     };
 };
 ```
+This setup uses the `babel-loader` to transpile JavaScript files.
 
 Finish up the setup by following steps from [Completing the setup](#completing-the-setup).
 
