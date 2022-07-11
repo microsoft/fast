@@ -77,7 +77,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     /**
      * Creates an instance of RepeatBehavior.
      * @param location - The location in the DOM to render the repeat.
-     * @param itemsBinding - The array to render.
+     * @param dataBinding - The array to render.
      * @param isItemsBindingVolatile - Indicates whether the items binding has volatile dependencies.
      * @param templateBinding - The template to render for each item.
      * @param isTemplateBindingVolatile - Indicates whether the template binding has volatile dependencies.
@@ -85,14 +85,14 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
      */
     public constructor(
         private location: Node,
-        private itemsBinding: Binding<TSource, any[]>,
+        private dataBinding: Binding<TSource, any[]>,
         isItemsBindingVolatile: boolean,
         private templateBinding: Binding<TSource, SyntheticViewTemplate>,
         isTemplateBindingVolatile: boolean,
         private options: RepeatOptions
     ) {
         this.itemsBindingObserver = Observable.binding(
-            itemsBinding,
+            dataBinding,
             this,
             isItemsBindingVolatile
         );
@@ -146,7 +146,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
      * @param args - The details about what was changed.
      */
     public handleChange(source: any, args: Splice[]): void {
-        if (source === this.itemsBinding) {
+        if (source === this.dataBinding) {
             this.items = this.itemsBindingObserver.observe(this.source!, this.context!);
             this.observeItems();
             this.refreshAllViews();
@@ -330,17 +330,17 @@ export class RepeatDirective<TSource = any>
 
     /**
      * Creates an instance of RepeatDirective.
-     * @param itemsBinding - The binding that provides the array to render.
+     * @param dataBinding - The binding that provides the array to render.
      * @param templateBinding - The template binding used to obtain a template to render for each item in the array.
      * @param options - Options used to turn on special repeat features.
      */
     public constructor(
-        public readonly itemsBinding: Binding,
+        public readonly dataBinding: Binding,
         public readonly templateBinding: Binding<TSource, SyntheticViewTemplate>,
         public readonly options: RepeatOptions
     ) {
         ArrayObserver.enable();
-        this.isItemsBindingVolatile = Observable.isVolatileBinding(itemsBinding);
+        this.isItemsBindingVolatile = Observable.isVolatileBinding(dataBinding);
         this.isTemplateBindingVolatile = Observable.isVolatileBinding(templateBinding);
     }
 
@@ -351,7 +351,7 @@ export class RepeatDirective<TSource = any>
     public createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource> {
         return new RepeatBehavior<TSource>(
             targets[this.nodeId],
-            this.itemsBinding,
+            this.dataBinding,
             this.isItemsBindingVolatile,
             this.templateBinding,
             this.isTemplateBindingVolatile,
@@ -364,7 +364,7 @@ HTMLDirective.define(RepeatDirective);
 
 /**
  * A directive that enables list rendering.
- * @param itemsBinding - The array to render.
+ * @param items - The array to render.
  * @param templateOrTemplateBinding - The template or a template binding used obtain a template
  * to render for each item in the array.
  * @param options - Options used to turn on special repeat features.
@@ -374,13 +374,15 @@ export function repeat<
     TSource = any,
     TArray extends ReadonlyArray<any> = ReadonlyArray<any>
 >(
-    itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>,
+    items: Binding<TSource, TArray, ExecutionContext<TSource>> | ReadonlyArray<any>,
     templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate>,
     options: RepeatOptions = defaultRepeatOptions
 ): CaptureType<TSource> {
+    const dataBinding = isFunction(items) ? items : () => items;
+
     const templateBinding = isFunction(templateOrTemplateBinding)
         ? templateOrTemplateBinding
         : (): SyntheticViewTemplate => templateOrTemplateBinding;
 
-    return new RepeatDirective(itemsBinding, templateBinding, options) as any;
+    return new RepeatDirective(dataBinding, templateBinding, options) as any;
 }

@@ -14,8 +14,8 @@
       "packages/web-components/*",
       "sites/fast-color-explorer",
       "sites/site-utilities",
-      "sites/fast-website",
       "sites/website",
+      "sites/fast-website",
       "examples/todo-app",
       "examples/ssr"
     ],
@@ -148,7 +148,7 @@
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^15.0.1",
-    "beachball": "^1.53.1",
+    "beachball": "^2.24.0",
     "chalk": "^2.4.2",
     "copyfiles": "^2.4.1",
     "docusaurus-init": "^1.11.0",

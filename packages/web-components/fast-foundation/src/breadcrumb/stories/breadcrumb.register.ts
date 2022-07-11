@@ -14,6 +14,15 @@ const styles = css`
         display: flex;
         flex-wrap: wrap;
     }
+
+    ::slotted(a) {
+        color: var(--neutral-foreground-rest);
+        margin: 0 6px;
+    }
+
+    ::slotted(a[href]) {
+        color: var(--accent-foreground-rest);
+    }
 `;
 
 FASTBreadcrumb.define({

@@ -569,7 +569,7 @@ export class NodeTemplate implements ContentTemplate, ContentView {
 
 /**
  * Creates a RenderDirective for use in advanced rendering scenarios.
- * @param binding - The binding expression that returns the data to be rendered. The expression
+ * @param data - The binding expression that returns the data to be rendered. The expression
  * can also return a Node to render directly.
  * @param templateOrTemplateBindingOrViewName - A template to render the data with
  * or a string to indicate which RenderInstruction to use when looking up a RenderInstruction.
@@ -584,7 +584,7 @@ export class NodeTemplate implements ContentTemplate, ContentView {
  * @public
  */
 export function render<TSource = any, TItem = any>(
-    binding?: Binding<TSource, TItem> | Node,
+    data?: Binding<TSource, TItem> | {},
     templateOrTemplateBindingOrViewName?:
         | ContentTemplate
         | string
@@ -592,12 +592,12 @@ export function render<TSource = any, TItem = any>(
 ): CaptureType<TSource> {
     let dataBinding: Binding<TSource>;
 
-    if (binding === void 0) {
+    if (data === void 0) {
         dataBinding = (source: TSource) => source;
-    } else if (binding instanceof Node) {
-        dataBinding = () => binding;
+    } else if (isFunction(data)) {
+        dataBinding = data;
     } else {
-        dataBinding = binding;
+        dataBinding = () => data;
     }
 
     let templateBinding;

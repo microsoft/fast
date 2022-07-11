@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "update breadcrumb item to always use an anchor and ensure aria-current is applied correctly in breadcrumb",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

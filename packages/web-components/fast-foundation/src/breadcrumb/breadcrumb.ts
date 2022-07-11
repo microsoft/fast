@@ -43,37 +43,28 @@ export class FASTBreadcrumb extends FASTElement {
     }
 
     /**
-     * Finds href on childnodes in the light DOM or shadow DOM.
-     * We look in the shadow DOM because we insert an anchor when breadcrumb-item has an href.
+     * Finds anchor childnodes in the light DOM or shadow DOM.
+     * We look in the shadow DOM because we use an anchor inside the breadcrumb-item template.
      */
-    private findChildWithHref(node: HTMLElement): HTMLElement | null {
+    private findChildAnchor(node: HTMLElement): HTMLElement | null {
         if (node.childElementCount > 0) {
-            return node.querySelector("a[href]");
+            return node.querySelector("a");
         } else if (node.shadowRoot?.childElementCount) {
-            return node.shadowRoot?.querySelector("a[href]");
-        } else return null;
+            return node.shadowRoot?.querySelector("a");
+        } else return node;
     }
 
     /**
-     *  Sets ARIA Current for the current node
-     * If child node with an anchor tag and with href is found then set aria-current to correct value for the child node,
-     * otherwise apply aria-current to the host element, with an href
+     * Sets ARIA Current for the "current" node
+     * `aria-current` is not optional and should be set regardless of the href value of a given anchor
      */
     private setAriaCurrent(item: HTMLElement, isLastNode: boolean): void {
-        const childNodeWithHref: HTMLElement | null = this.findChildWithHref(item);
+        const childNode: HTMLElement | null = this.findChildAnchor(item);
 
-        if (
-            childNodeWithHref === null &&
-            item.hasAttribute("href") &&
-            item instanceof FASTBreadcrumbItem
-        ) {
+        if (childNode !== null) {
             isLastNode
-                ? item.setAttribute("aria-current", "page")
-                : item.removeAttribute("aria-current");
-        } else if (childNodeWithHref !== null) {
-            isLastNode
-                ? childNodeWithHref.setAttribute("aria-current", "page")
-                : childNodeWithHref.removeAttribute("aria-current");
+                ? childNode.setAttribute("aria-current", "page")
+                : childNode.removeAttribute("aria-current");
         }
     }
 }

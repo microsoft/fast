@@ -619,11 +619,11 @@ export class RefDirective extends StatelessAttachedAttributeDirective<string> {
 }
 
 // @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(itemsBinding: Binding<TSource, TArray, ExecutionContext<TSource>>, templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate>, options?: RepeatOptions): CaptureType<TSource>;
+export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(items: Binding<TSource, TArray, ExecutionContext<TSource>> | ReadonlyArray<any>, templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate>, options?: RepeatOptions): CaptureType<TSource>;
 
 // @public
 export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
-    constructor(location: Node, itemsBinding: Binding<TSource, any[]>, isItemsBindingVolatile: boolean, templateBinding: Binding<TSource, SyntheticViewTemplate>, isTemplateBindingVolatile: boolean, options: RepeatOptions);
+    constructor(location: Node, dataBinding: Binding<TSource, any[]>, isItemsBindingVolatile: boolean, templateBinding: Binding<TSource, SyntheticViewTemplate>, isTemplateBindingVolatile: boolean, options: RepeatOptions);
     bind(source: TSource, context: ExecutionContext): void;
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
@@ -631,12 +631,12 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
 // @public
 export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory {
-    constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
+    constructor(dataBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
     createHTML(add: AddViewBehaviorFactory): string;
-    id: string;
     // (undocumented)
-    readonly itemsBinding: Binding;
+    readonly dataBinding: Binding;
+    id: string;
     nodeId: string;
     // (undocumented)
     readonly options: RepeatOptions;
@@ -878,7 +878,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
 export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
 
 // @public
-export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
+export function when<TSource = any, TReturn = any>(condition: Binding<TSource, TReturn> | boolean, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
 
 // Warnings were encountered during analysis:
 //
