@@ -252,8 +252,14 @@ export class DesignTokenNode {
             child.parent.removeChild(child);
         }
 
+        const context = DesignTokenNode.composeAssignedTokensForNode(this);
+        const derivedContext = DesignTokenNode.collectDerivedContext(this);
         child._parent = this;
         this._children.add(child);
+
+        for (const token of context) {
+            child.notify(token, this, derivedContext.get(token));
+        }
     }
 
     public removeChild(child: DesignTokenNode) {

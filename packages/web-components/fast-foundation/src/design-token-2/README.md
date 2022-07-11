@@ -52,7 +52,3 @@ Observable.getNotifier(token).subscribe({
 | `id` | public  |      | `id++`  |             |                |
 
 <hr/>
-
-
-
-

@@ -525,7 +525,7 @@ describe.only("DesignTokenNode", () => {
             parent.appendChild(descendent);
 
             expect(handleChange).to.have.been.called.once;
-            expect(handleChange).to.have.been.first.called.with.exactly(token, new DesignTokenChangeRecord(descendent, DesignTokenMutationType.add));
+            expect(handleChange).to.have.been.first.called.with.exactly(token, new DesignTokenChangeRecord(descendent, DesignTokenMutationType.change));
             expect(descendent.getTokenValue(token)).to.equal(14);
         });
         /**
