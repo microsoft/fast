@@ -12,6 +12,10 @@ Observable.getNotifier(token).subscribe({
 });
 ```
 
+## Perf Improvements
+- Change propagation of token changes to allow propagating a *set* of changes. This should improve performance because the node tree will only need to be walked once for all tokens, instead of once for each token.
+- Implement caching mechanism for token context collection. This should speed up appending nodes because the context can be cached and re-used for any node connected. Notifications of adding / removal of tokens should force the cache to update.
+
 ## API
 
 
