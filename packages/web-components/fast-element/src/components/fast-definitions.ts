@@ -56,6 +56,8 @@ export interface PartialFASTElementDefinition {
 export class FASTElementDefinition<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
 > {
+    private platformDefined = false;
+
     /**
      * The type this element definition describes.
      */
@@ -65,7 +67,7 @@ export class FASTElementDefinition<
      * Indicates if this element has been defined in at least one registry.
      */
     public get isDefined(): boolean {
-        return !!fastElementRegistry.getByType(this.type);
+        return this.platformDefined;
     }
 
     /**
@@ -155,14 +157,7 @@ export class FASTElementDefinition<
                 ? defaultElementOptions
                 : { ...defaultElementOptions, ...nameOrConfig.elementOptions };
 
-        this.styles =
-            nameOrConfig.styles === void 0
-                ? void 0
-                : Array.isArray(nameOrConfig.styles)
-                ? new ElementStyles(nameOrConfig.styles)
-                : nameOrConfig.styles instanceof ElementStyles
-                ? nameOrConfig.styles
-                : new ElementStyles([nameOrConfig.styles]);
+        this.styles = ElementStyles.normalize(nameOrConfig.styles);
 
         fastElementRegistry.register(this);
     }
@@ -177,6 +172,7 @@ export class FASTElementDefinition<
         const type = this.type;
 
         if (!registry.get(this.name)) {
+            this.platformDefined = true;
             registry.define(this.name, type as any, this.elementOptions);
         }
 
