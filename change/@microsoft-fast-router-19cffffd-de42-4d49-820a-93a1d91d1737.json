@@ -3,5 +3,5 @@
   "comment": "refactor: reduce duplication in style normalization code scenarios",
   "packageName": "@microsoft/fast-router",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
