@@ -103,7 +103,8 @@ export class DesignTokenChangeRecordImpl<T> implements DesignTokenChangeRecord<T
     constructor(
         public readonly target: DesignTokenNode,
         public readonly type: DesignTokenMutationType,
-        public readonly token: DesignToken<T>
+        public readonly token: DesignToken<T>,
+        public readonly value?: DesignTokenValue<T>
     ) {}
 
     public notify() {
@@ -125,7 +126,7 @@ export class DesignTokenNode {
         DesignToken<any>,
         [DerivedValueEvaluator<any>, StaticDesignTokenValue<any>]
     > = new Map();
-    private _notifications: DesignTokenChangeRecordImpl<any>[];
+    private static _notifications: DesignTokenChangeRecordImpl<any>[];
 
     /**
      * Determines if a value is a {@link DerivedDesignTokenValue}
@@ -213,6 +214,18 @@ export class DesignTokenNode {
             ? node._derived.get(token)![1]
             : node._values.get(token);
     }
+
+    /**
+     * Emit all queued notifications
+     */
+    private static notify() {
+        for (const record of this._notifications) {
+            record.notify();
+        }
+
+        this._notifications = [];
+    }
+
     /**
      * Retrieves all tokens assigned directly to a node.
      * @param node - the node to retrieve assigned tokens for
@@ -274,11 +287,13 @@ export class DesignTokenNode {
         this._children.add(child);
 
         for (const token of context) {
-            child.notify(
-                token,
-                this,
-                DesignTokenMutationType.add,
-                derivedContext.get(token)
+            child.dispatch(
+                new DesignTokenChangeRecordImpl(
+                    this,
+                    DesignTokenMutationType.add,
+                    token,
+                    derivedContext.get(token)?.value
+                )
             );
         }
     }
@@ -291,7 +306,13 @@ export class DesignTokenNode {
             this._children.delete(child);
 
             for (const token of context) {
-                child.notify(token, this, DesignTokenMutationType.delete);
+                child.dispatch(
+                    new DesignTokenChangeRecordImpl(
+                        this,
+                        DesignTokenMutationType.delete,
+                        token
+                    )
+                );
             }
         }
     }
@@ -324,12 +345,7 @@ export class DesignTokenNode {
             DesignTokenNode.notifyToken(token, this, changeType);
         }
 
-        this.notify(
-            token,
-            this,
-            changeType,
-            isDerived ? DerivedValueEvaluator.getOrCreate(value) : undefined
-        );
+        this.dispatch(new DesignTokenChangeRecordImpl(this, changeType, token, value));
 
         derivedContext.forEach((evaluator, token) => {
             // Skip over any derived values already established locally, because
@@ -345,7 +361,14 @@ export class DesignTokenNode {
                     );
                 }
 
-                this.notify(token, this, DesignTokenMutationType.add, evaluator);
+                this.dispatch(
+                    new DesignTokenChangeRecordImpl(
+                        this,
+                        DesignTokenMutationType.add,
+                        token,
+                        evaluator.value
+                    )
+                );
             }
         });
     }
@@ -391,47 +414,34 @@ export class DesignTokenNode {
             DesignTokenNode.notifyToken(token, this, DesignTokenMutationType.delete);
 
             if (prev !== newValue) {
-                this.notify(token, this, DesignTokenMutationType.delete);
+                this.dispatch(
+                    new DesignTokenChangeRecordImpl(
+                        this,
+                        DesignTokenMutationType.delete,
+                        token
+                    )
+                );
             }
         }
     }
 
-    private _notify(
-        changes: Map<
-            DesignTokenChangeRecordImpl<any>,
-            StaticDesignTokenValue<any> | DerivedValueEvaluator<any>
-        >
-    ) {
-        for (const [record, value] of changes) {
-            const isAssigned = DesignTokenNode.isAssigned(this, record.token);
-            const isDerived = DesignTokenNode.isDerivedFor(this, record.token);
-
-            // Prevent propagation of notification if this node contains a value for the token
-            if (isAssigned) {
-                changes.delete(record);
-            } else {
-                // If this node is a derived value assigned and the mutation type is a delete type,
-                // tear down the derived value
-                if (isDerived && record.type === DesignTokenMutationType.delete) {
-                    this.tearDownDerivedTokenValue(record.token);
-                    this._notifications.push(
-                        new DesignTokenChangeRecordImpl(
-                            this,
-                            DesignTokenMutationType.delete,
-                            record.token
-                        )
-                    );
-                }
+    /**
+     * Notifies that a token has been mutated
+     */
+    private dispatch<T>(record: DesignTokenChangeRecordImpl<T>) {
+        const { target, token, value } = record;
+        if (this !== target) {
+            if (DesignTokenNode.isAssigned(this, token)) {
+                return;
             }
 
-            // You're here. This should move somewhere into the conditional block above, but I'm not quite sure where
-            if (value instanceof DerivedValueEvaluator) {
-                // The value needs to be evaluated if this node contains any token values that are
-                // dependencies of the derived value. (This should probably also happen if it already contains a derived value)
+            if (value && DesignTokenNode.isDerivedTokenValue(value)) {
+                const evaluator = DerivedValueEvaluator.getOrCreate(value);
+                // If this is not the originator, check to see if this node
+                // has any dependencies of the token value. If so, we need to evaluate for this node
                 let evaluate = false;
 
-                for (const dependency of value.dependencies) {
-                    // Do we need to check derived here too?
+                for (const dependency of evaluator.dependencies) {
                     if (DesignTokenNode.isAssigned(this, dependency)) {
                         evaluate = true;
                         break;
@@ -439,74 +449,34 @@ export class DesignTokenNode {
                 }
 
                 if (evaluate) {
-                    const prev = DesignTokenNode.getLocalTokenValue(this, dependency);
-                }
+                    const prev = this._derived.get(token)?.[1];
+                    const value = DesignTokenNode.evaluateDerived(this, token, evaluator);
 
-                // value.dependencies.forEach(dependency => {
-                //     const prev = DesignTokenNode.getLocalTokenValue(this, dependency);
-                //     const value = DesignTokenNode.evaluateDerived(
-                //         this,
-                //         token,
-                //         evaluator
-                //     );
-
-                //     if (prev !== value) {
-                //         DesignTokenNode.notifyToken(
-                //             token,
-                //             this,
-                //             DesignTokenMutationType.change
-                //         );
-                //     }
-
-                //     this.notify(token, this, DesignTokenMutationType.change, evaluator);
-                // })
-            }
-            // If there is an evaluator, check if any of it's dependencies are assigned to this node. If they are, evaluate and notify
-        }
-    }
-
-    /**
-     * Notifies that a token has been mutated
-     */
-    private notify<T>(
-        token: DesignToken<T>,
-        originator: DesignTokenNode,
-        type: DesignTokenMutationType,
-        evaluator?: DerivedValueEvaluator<T>
-    ) {
-        if (this !== originator) {
-            if (DesignTokenNode.isAssigned(this, token)) {
-                return;
-            }
-
-            if (evaluator) {
-                // If this is not the originator, check to see if this node
-                // has any dependencies of the token value. If so, we need to evaluate for this node
-                evaluator.dependencies.forEach(dep => {
-                    if (DesignTokenNode.isAssigned(this, dep)) {
-                        const prev = DesignTokenNode.getLocalTokenValue(this, token);
-                        const value = DesignTokenNode.evaluateDerived(
-                            this,
-                            token,
-                            evaluator
-                        );
-
-                        if (prev !== value) {
-                            DesignTokenNode.notifyToken(
-                                token,
-                                this,
-                                DesignTokenMutationType.change
-                            );
-                        }
-
-                        this.notify(
+                    if (prev !== value) {
+                        DesignTokenNode.notifyToken(
                             token,
                             this,
-                            DesignTokenMutationType.change,
-                            evaluator
+                            prev === undefined
+                                ? DesignTokenMutationType.add
+                                : DesignTokenMutationType.change
                         );
                     }
-                });
+
+                    this.dispatch(
+                        new DesignTokenChangeRecordImpl(
+                            this,
+                            DesignTokenMutationType.change,
+                            token,
+                            value
+                        )
+                    );
+                }
+            } else if (
+                record.type === DesignTokenMutationType.delete &&
+                DesignTokenNode.isDerivedFor(this, token)
+            ) {
+                this.tearDownDerivedTokenValue(token);
+                DesignTokenNode.notifyToken(token, this, DesignTokenMutationType.delete);
             }
         }
 
@@ -514,7 +484,7 @@ export class DesignTokenNode {
         // check if the fn has dependencies on the changed token.
         // If it does, re-evaluate and notify for the dependee
         for (const entry of this._derived) {
-            if (originator === this && entry[0] === token) {
+            if (target === this && entry[0] === token) {
                 // If this fn was just called by the node itself,
                 // skip the token that kicked off notification
                 continue;
@@ -525,22 +495,19 @@ export class DesignTokenNode {
             if (evaluator.dependencies.has(token)) {
                 DesignTokenNode.evaluateDerived(this, _token, evaluator);
                 DesignTokenNode.notifyToken(_token, this, DesignTokenMutationType.change);
-                this.notify(
-                    _token,
-                    originator,
-                    DesignTokenMutationType.change,
-                    evaluator
+                this.dispatch(
+                    new DesignTokenChangeRecordImpl(
+                        target,
+                        DesignTokenMutationType.change,
+                        _token,
+                        evaluator.value
+                    )
                 );
             }
         }
 
         for (let i = 0, l = this.children.length; i < l; i++) {
-            this.children[i].notify(
-                token,
-                originator,
-                DesignTokenMutationType.change,
-                evaluator
-            );
+            this.children[i].dispatch(record);
         }
     }
 
@@ -561,11 +528,13 @@ export class DesignTokenNode {
                             this,
                             DesignTokenMutationType.change
                         );
-                        this.notify(
-                            token,
-                            this,
-                            DesignTokenMutationType.change,
-                            evaluator
+                        this.dispatch(
+                            new DesignTokenChangeRecordImpl(
+                                this,
+                                DesignTokenMutationType.change,
+                                token,
+                                evaluator.value
+                            )
                         );
                     }
                 }
@@ -583,13 +552,5 @@ export class DesignTokenNode {
 
             this._derived.delete(token);
         }
-    }
-
-    private publishNotifications() {
-        for (let i = 0, l = this._notifications.length; i < l; i++) {
-            this._notifications[i].notify();
-        }
-
-        this._notifications = [];
     }
 }

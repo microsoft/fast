@@ -456,7 +456,7 @@ describe.only("DesignTokenNode", () => {
 
             expect(handleChange).to.have.been.called.twice;
             expect(handleChange).to.have.been.first.called.with.exactly(token, new DesignTokenChangeRecord(ancestor, DesignTokenMutationType.change, token));
-            expect(handleChange).to.have.been.second.called.with.exactly(token, new DesignTokenChangeRecord(descendent, DesignTokenMutationType.change, token));
+            expect(handleChange).to.have.been.second.called.with.exactly(token, new DesignTokenChangeRecord(descendent, DesignTokenMutationType.add, token));
             expect(ancestor.getTokenValue(token)).to.equal(10);
             expect(parent.getTokenValue(token)).to.equal(10);
             expect(descendent.getTokenValue(token)).to.equal(14);
@@ -525,7 +525,7 @@ describe.only("DesignTokenNode", () => {
             parent.appendChild(descendent);
 
             expect(handleChange).to.have.been.called.once;
-            expect(handleChange).to.have.been.first.called.with.exactly(token, new DesignTokenChangeRecord(descendent, DesignTokenMutationType.change, token));
+            expect(handleChange).to.have.been.first.called.with.exactly(token, new DesignTokenChangeRecord(descendent, DesignTokenMutationType.add, token));
             expect(descendent.getTokenValue(token)).to.equal(14);
         });
         /**
@@ -550,7 +550,8 @@ describe.only("DesignTokenNode", () => {
 
             expect(handleChange).to.have.been.called.once;
             expect(handleChange).to.have.been.first.called.with.exactly(token, new DesignTokenChangeRecord(descendent, DesignTokenMutationType.delete, token));
-            expect(descendent.getTokenValue(token)).to.equal(14);
+            expect(() => descendent.getTokenValue(token)).to.throw;
+            expect(2).to.equal(2)
         });
         /**
          * Moving node
@@ -577,7 +578,7 @@ describe.only("DesignTokenNode", () => {
 
             expect(handleChange).to.have.been.called.twice;
             expect(handleChange).to.have.been.first.called.with.exactly(token, new DesignTokenChangeRecord(descendent, DesignTokenMutationType.delete, token));
-            expect(handleChange).to.have.been.second.called.with.exactly(token, new DesignTokenChangeRecord(descendent, DesignTokenMutationType.change, token));
+            expect(handleChange).to.have.been.second.called.with.exactly(token, new DesignTokenChangeRecord(descendent, DesignTokenMutationType.add, token));
             expect(descendent.getTokenValue(token)).to.equal(21);
         });
 

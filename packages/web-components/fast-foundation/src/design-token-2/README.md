@@ -21,10 +21,6 @@ Observable.getNotifier(token).subscribe({
 
 
 
-### class: `DesignTokenChangeRecord`
-
-<hr/>
-
 ### class: `DesignTokenNode`
 
 #### Fields
@@ -57,3 +53,7 @@ Observable.getNotifier(token).subscribe({
 | `id` | public  |      | `id++`  |             |                |
 
 <hr/>
+
+
+
+
