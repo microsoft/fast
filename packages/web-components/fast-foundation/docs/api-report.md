@@ -461,8 +461,6 @@ export class Combobox extends FormAssociatedCombobox {
     // @internal
     keydownHandler(e: Event & KeyboardEvent): boolean | void;
     // @internal
-    keyupHandler(e: KeyboardEvent): boolean | void;
-    // @internal
     listbox: HTMLDivElement;
     // @internal
     listboxId: string;

@@ -3,7 +3,7 @@ import { keyArrowDown, keyArrowUp, keyEnter } from "@microsoft/fast-web-utilitie
 import { expect } from "chai";
 import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
 import { fixture } from "../test-utilities/fixture";
-import { Combobox, comboboxTemplate as template } from "./index";
+import { Combobox, ComboboxAutocomplete, comboboxTemplate as template } from "./index";
 
 describe("Combobox", () => {
     const FASTCombobox = Combobox.compose({
@@ -487,5 +487,78 @@ describe("Combobox", () => {
         expect(element.control.getAttribute("aria-controls")).to.be.empty;
 
         await disconnect();
+    });
+
+    const noInlineAutocompleteModes: ComboboxAutocomplete[] = [ "none", "list" ];
+    noInlineAutocompleteModes.forEach(mode => {
+        it(`when autocomplete is ${mode}, typing should select exact match`, async () => {
+            const { connect, disconnect, element, option2, option3 } = await setup();
+
+            await connect();
+
+            (element as Combobox).autocomplete = mode;
+
+            expect(option2.selected).to.be.false;
+
+            // fake a key entered value
+            (element as Combobox).control.value = 't';
+            (element as Combobox).control.dispatchEvent(new InputEvent('input', { data: 't', inputType: 'insertText' }));
+
+            expect(option2.selected).to.be.false; // 'two' not selected
+            expect(option3.selected).to.be.false; // 'three' not selected
+
+            (element as Combobox).control.value = 'tw';
+            (element as Combobox).control.dispatchEvent(new InputEvent('input', { data: 'w', inputType: 'insertText' }));
+
+            (element as Combobox).control.value = 'two';
+            (element as Combobox).control.dispatchEvent(new InputEvent('input', { data: 'o', inputType: 'insertText' }));
+
+            expect(option2.selected).to.be.true;
+
+            (element as Combobox).control.value = 'twos';
+            (element as Combobox).control.dispatchEvent(new InputEvent('input', { data: 's', inputType: 'insertText' }));
+
+            expect(option2.selected).to.be.false;
+
+            (element as Combobox).control.value = 'two';
+            (element as Combobox).control.dispatchEvent(new InputEvent('input', { inputType: 'deleteContentBackward' }));
+
+            expect(option2.selected).to.be.true;
+        });
+    });
+
+    it("should reset control's value when user selects current value after typing", async () => {
+        const { connect, disconnect, element } = await setup();
+
+        await connect();
+
+        element.value = "three";
+        (element as Combobox).autocomplete = "list";
+
+        await DOM.nextUpdate();
+
+        expect(element.control).to.exist;
+
+        (element as Combobox).control.value = "t";
+        (element as Combobox).control.dispatchEvent(new InputEvent('input', { inputType: 'deleteContentBackward' })); // filter dropdown
+        (element as Combobox).open = false;
+
+        const keyDownEvent = new KeyboardEvent("keydown", {
+            key: keyArrowDown,
+        } as KeyboardEventInit);
+        element.dispatchEvent(keyDownEvent); // open dropdown
+
+        await DOM.nextUpdate();
+        expect(element.hasAttribute("open")).to.be.true;
+
+        element.dispatchEvent(keyDownEvent); // select "two"
+        element.dispatchEvent(keyDownEvent); // select "three"
+
+        const enterEvent = new KeyboardEvent("keydown", {
+            key: keyEnter,
+        } as KeyboardEventInit);
+        element.dispatchEvent(enterEvent); // commit value
+
+        expect((element as Combobox).control.value).to.eq("three");
     });
 });

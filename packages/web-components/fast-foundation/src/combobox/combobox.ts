@@ -372,7 +372,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @internal
      */
     public focusoutHandler(e: FocusEvent): boolean | void {
-        this.updateValue(this.shouldEmitChange());
+        this.syncValue();
 
         if (!this.open) {
             return true;
@@ -399,9 +399,10 @@ export class Combobox extends FormAssociatedCombobox {
         this.filter = this.control.value;
         this.filterOptions();
 
-        if (this.filter === "") {
-            // if no matching value deselect any selected item in popup
-            this.selectedIndex = -1;
+        if (!this.isAutocompleteInline) {
+            this.selectedIndex = this.options
+                .map(option => option.text)
+                .indexOf(this.control.value);
         }
 
         if (e.inputType === "deleteContentBackward" || !this.filter.length) {
@@ -436,7 +437,7 @@ export class Combobox extends FormAssociatedCombobox {
 
         switch (key) {
             case "Enter": {
-                this.updateValue(this.shouldEmitChange());
+                this.syncValue();
                 if (this.isAutocompleteInline) {
                     this.filter = this.value;
                 }
@@ -497,30 +498,6 @@ export class Combobox extends FormAssociatedCombobox {
 
             default: {
                 return true;
-            }
-        }
-    }
-
-    /**
-     * Handle keyup actions for value input and text field manipulations.
-     *
-     * @param e - the keyboard event
-     * @internal
-     */
-    public keyupHandler(e: KeyboardEvent): boolean | void {
-        const key = e.key;
-
-        switch (key) {
-            case "ArrowLeft":
-            case "ArrowRight":
-            case "Backspace":
-            case "Delete":
-            case "Home":
-            case "End": {
-                this.filter = this.control.value;
-                this.selectedIndex = -1;
-                this.filterOptions();
-                break;
             }
         }
     }
@@ -610,14 +587,14 @@ export class Combobox extends FormAssociatedCombobox {
     }
 
     /**
-     * Determines if a value update should involve emitting a change event
+     * Determines if a value update should involve emitting a change event, then updates the value.
      *
      * @internal
      */
-    private shouldEmitChange(): boolean {
-        return this.selectedIndex >= 0
-            ? this.firstSelectedOption.value !== this.value
-            : this.control.value !== this.value;
+    private syncValue(): void {
+        const newValue =
+            this.selectedIndex > -1 ? this.firstSelectedOption?.text : this.control.value;
+        this.updateValue(this.value !== newValue);
     }
 
     /**
@@ -689,6 +666,7 @@ export class Combobox extends FormAssociatedCombobox {
     private updateValue(shouldEmit?: boolean) {
         if (this.$fastController.isConnected) {
             this.value = this.firstSelectedOption?.text || this.control.value;
+            this.control.value = this.value;
         }
 
         if (shouldEmit) {
