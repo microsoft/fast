@@ -108,7 +108,11 @@ export class DesignTokenChangeRecordImpl<T> implements DesignTokenChangeRecord<T
     ) {}
 
     public notify() {
-        Observable.getNotifier(this.token).notify(this);
+        // TODO It's a bit strange to notify like this because a new object is created w/o the value property. This is primarily
+        // to pass tests, but should be revisited to re-use the object
+        Observable.getNotifier(this.token).notify(
+            new DesignTokenChangeRecordImpl(this.target, this.type, this.token)
+        );
     }
 }
 
@@ -126,7 +130,7 @@ export class DesignTokenNode {
         DesignToken<any>,
         [DerivedValueEvaluator<any>, StaticDesignTokenValue<any>]
     > = new Map();
-    private static _notifications: DesignTokenChangeRecordImpl<any>[];
+    private static _notifications: DesignTokenChangeRecordImpl<any>[] = [];
 
     /**
      * Determines if a value is a {@link DerivedDesignTokenValue}
@@ -146,20 +150,6 @@ export class DesignTokenNode {
         const result = value.evaluate(node, token);
         node._derived.set(token, [value, result]);
         return result;
-    }
-
-    /**
-     * Notifies the token subscribes that the value has changed for the node
-     * @param token - The token that changed
-     */
-    private static notifyToken<T>(
-        token: DesignToken<T>,
-        node: DesignTokenNode,
-        type: DesignTokenMutationType
-    ): void {
-        Observable.getNotifier(token).notify(
-            new DesignTokenChangeRecordImpl(node, type, token)
-        );
     }
 
     private static isDerivedFor<T>(node: DesignTokenNode, token: DesignToken<T>) {
@@ -296,6 +286,7 @@ export class DesignTokenNode {
                 )
             );
         }
+        DesignTokenNode.notify();
     }
 
     public removeChild(child: DesignTokenNode) {
@@ -314,6 +305,8 @@ export class DesignTokenNode {
                     )
                 );
             }
+
+            DesignTokenNode.notify();
         }
     }
 
@@ -342,7 +335,9 @@ export class DesignTokenNode {
         }
 
         if (prev !== result) {
-            DesignTokenNode.notifyToken(token, this, changeType);
+            DesignTokenNode._notifications.push(
+                new DesignTokenChangeRecordImpl(this, changeType, token, value)
+            );
         }
 
         this.dispatch(new DesignTokenChangeRecordImpl(this, changeType, token, value));
@@ -354,10 +349,13 @@ export class DesignTokenNode {
                 const prev = DesignTokenNode.getLocalTokenValue(this, token);
                 const result = DesignTokenNode.evaluateDerived(this, token, evaluator);
                 if (prev !== result) {
-                    DesignTokenNode.notifyToken(
-                        token,
-                        this,
-                        DesignTokenMutationType.change
+                    DesignTokenNode._notifications.push(
+                        new DesignTokenChangeRecordImpl(
+                            this,
+                            DesignTokenMutationType.change,
+                            token,
+                            evaluator.value
+                        )
                     );
                 }
 
@@ -371,6 +369,8 @@ export class DesignTokenNode {
                 );
             }
         });
+
+        DesignTokenNode.notify();
     }
 
     public getTokenValue<T>(token: DesignToken<T>): StaticDesignTokenValue<T> {
@@ -411,7 +411,13 @@ export class DesignTokenNode {
                 newValue = undefined;
             }
 
-            DesignTokenNode.notifyToken(token, this, DesignTokenMutationType.delete);
+            DesignTokenNode._notifications.push(
+                new DesignTokenChangeRecordImpl(
+                    this,
+                    DesignTokenMutationType.delete,
+                    token
+                )
+            );
 
             if (prev !== newValue) {
                 this.dispatch(
@@ -422,6 +428,8 @@ export class DesignTokenNode {
                     )
                 );
             }
+
+            DesignTokenNode.notify();
         }
     }
 
@@ -453,12 +461,17 @@ export class DesignTokenNode {
                     const value = DesignTokenNode.evaluateDerived(this, token, evaluator);
 
                     if (prev !== value) {
-                        DesignTokenNode.notifyToken(
-                            token,
-                            this,
+                        const type =
                             prev === undefined
                                 ? DesignTokenMutationType.add
-                                : DesignTokenMutationType.change
+                                : DesignTokenMutationType.change;
+                        DesignTokenNode._notifications.push(
+                            new DesignTokenChangeRecordImpl(
+                                this,
+                                type,
+                                token,
+                                evaluator.value
+                            )
                         );
                     }
 
@@ -476,7 +489,14 @@ export class DesignTokenNode {
                 DesignTokenNode.isDerivedFor(this, token)
             ) {
                 this.tearDownDerivedTokenValue(token);
-                DesignTokenNode.notifyToken(token, this, DesignTokenMutationType.delete);
+                // DesignTokenNode.notifyToken(token, this, DesignTokenMutationType.delete);
+                DesignTokenNode._notifications.push(
+                    new DesignTokenChangeRecordImpl(
+                        this,
+                        DesignTokenMutationType.delete,
+                        token
+                    )
+                );
             }
         }
 
@@ -494,7 +514,14 @@ export class DesignTokenNode {
 
             if (evaluator.dependencies.has(token)) {
                 DesignTokenNode.evaluateDerived(this, _token, evaluator);
-                DesignTokenNode.notifyToken(_token, this, DesignTokenMutationType.change);
+                // DesignTokenNode.notifyToken(_token, this, DesignTokenMutationType.change);
+                DesignTokenNode._notifications.push(
+                    new DesignTokenChangeRecordImpl(
+                        this,
+                        DesignTokenMutationType.change,
+                        _token
+                    )
+                );
                 this.dispatch(
                     new DesignTokenChangeRecordImpl(
                         target,
@@ -523,10 +550,13 @@ export class DesignTokenNode {
                         evaluator
                     );
                     if (result !== prev) {
-                        DesignTokenNode.notifyToken(
-                            token,
-                            this,
-                            DesignTokenMutationType.change
+                        DesignTokenNode._notifications.push(
+                            new DesignTokenChangeRecordImpl(
+                                this,
+                                DesignTokenMutationType.change,
+                                token,
+                                evaluator.value
+                            )
                         );
                         this.dispatch(
                             new DesignTokenChangeRecordImpl(
@@ -536,6 +566,8 @@ export class DesignTokenNode {
                                 evaluator.value
                             )
                         );
+
+                        DesignTokenNode.notify();
                     }
                 }
             }
