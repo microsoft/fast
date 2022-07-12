@@ -319,6 +319,7 @@ export class ElementStyles {
     readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
     // @internal (undocumented)
     isAttachedTo(target: StyleTarget): boolean;
+    static normalize(styles: ComposableStyles | ComposableStyles[] | undefined): ElementStyles | undefined;
     // @internal (undocumented)
     removeStylesFrom(target: StyleTarget): void;
     static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void;

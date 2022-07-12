@@ -152,7 +152,7 @@ export type FASTElementConstructor = new () => FASTElement;
 
 // @beta (undocumented)
 export class FASTElementLayout implements Layout {
-    constructor(template?: ViewTemplate | null, styles?: ComposableStyles | ComposableStyles[] | null, runBeforeCommit?: boolean);
+    constructor(template?: ViewTemplate | null, styles?: ComposableStyles | ComposableStyles[] | undefined, runBeforeCommit?: boolean);
     // (undocumented)
     afterCommit(routerElement: HTMLElement): Promise<void>;
     // (undocumented)
