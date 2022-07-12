@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: FASTElementDefinition#isDefined should be true only after define",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

@@ -132,7 +132,6 @@ export const enum KernelServiceId {
     contextEvent = 3,
     elementRegistry = 4,
     styleSheetStrategy = 5,
-    developerChannel = 6,
 }
 
 /**

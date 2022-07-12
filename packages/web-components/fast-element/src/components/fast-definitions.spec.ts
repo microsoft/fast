@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { FASTElementDefinition } from "./fast-definitions.js";
 import { ElementStyles } from "../styles/element-styles.js";
+import { uniqueElementName } from "../testing/fixture.js";
 
 describe("FASTElementDefinition", () => {
     class MyElement extends HTMLElement {}
@@ -111,5 +112,17 @@ describe("FASTElementDefinition", () => {
                 expect(def.styles!.styles).to.contain(styleSheet3);
             });
         }
+    });
+
+    context("instance", () => {
+        it("reports not defined until after define is called", () => {
+            const def = FASTElementDefinition.compose(MyElement, uniqueElementName());
+
+            expect(def.isDefined).to.be.false;
+
+            def.define();
+
+            expect(def.isDefined).to.be.true;
+        });
     });
 });
