@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "only store views if it cant be reused right away",
+  "packageName": "@microsoft/fast-element",
+  "email": "prudepixie@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
