@@ -3,5 +3,5 @@
   "comment": "fix: warn when host bindings are accidentally applied on non CE views",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
