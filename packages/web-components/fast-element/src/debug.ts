@@ -19,14 +19,30 @@ const debugMessages = {
     [1401 /* missingElementDefinition */]: "Missing FASTElement definition.",
 };
 
+const allPlaceholders = /(\$\{\w+?})/g;
+const placeholder = /\$\{(\w+?)}/g;
+const noValues: Record<string, string> = Object.freeze({});
+
+function formatMessage(message: string, values: Record<string, string>) {
+    return message
+        .split(allPlaceholders)
+        .map(v => {
+            const replaced = v.replace(placeholder, "$1");
+            return values[replaced] || v;
+        })
+        .join("");
+}
+
 Object.assign(FAST, {
     addMessages(messages: Record<number, string>) {
         Object.assign(debugMessages, messages);
     },
-    warn(code: number, ...args: any[]) {
-        console.warn(debugMessages[code] ?? "Unknown Warning");
+    warn(code: number, values: Record<string, string> = noValues) {
+        const message = debugMessages[code] ?? "Unknown Warning";
+        console.warn(formatMessage(message, values));
     },
-    error(code: number, ...args: any[]) {
-        return new Error(debugMessages[code] ?? "Unknown Error");
+    error(code: number, values: Record<string, string> = noValues) {
+        const message = debugMessages[code] ?? "Unknown Error";
+        return new Error(formatMessage(message, values));
     },
 });

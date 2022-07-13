@@ -104,20 +104,23 @@ export interface FASTGlobal {
     /**
      * Sends a warning to the developer.
      * @param code - The warning code to send.
-     * @param args - Args relevant for the warning.
+     * @param values - Values relevant for the warning message.
      */
-    warn(code: number, ...args: any[]): void;
+    warn(code: number, values?: Record<string, string>): void;
 
     /**
      * Creates an error.
      * @param code - The error code to send.
-     * @param args - Args relevant for the error.
+     * @param values - Values relevant for the error message.
      */
-    error(code: number, ...args: any[]): Error;
+    error(code: number, values?: Record<string, string>): Error;
 
     /**
      * Adds debug messages for errors and warnings.
      * @param messages - The message dictionary to add.
+     * @remarks
+     * Message can include placeholders like ${name} which can be
+     * replaced by values passed at runtime.
      */
     addMessages(messages: Record<number, string>): void;
 }
