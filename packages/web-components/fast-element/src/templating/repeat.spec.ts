@@ -395,6 +395,29 @@ describe("The repeat", () => {
             });
         });
 
+        oneThroughTen.forEach(size => {
+            it(`handles back to back shift operations with multiple unshift items for arrays of size ${size}`, async () => {
+                const { parent, location } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                const behavior = directive.createBehavior(location);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, defaultExecutionContext);
+
+                vm.items.shift();
+                vm.items.unshift({ name: "shift" }, { name: "shift" });
+
+                await DOM.nextUpdate();
+
+                expect(toHTML(parent)).to.equal(
+                    `shiftshift${createOutput(size, index => index !== 0)}`
+                );
+            });
+        });
+
         zeroThroughTen.forEach(size => {
             it(`updates rendered HTML when a new item is pushed into an array of size ${size} after it has been unbound and rebound`, async () => {
                 const { parent, location } = createLocation();
