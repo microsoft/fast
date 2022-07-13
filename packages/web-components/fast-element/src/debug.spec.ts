@@ -4,7 +4,7 @@ import type { FASTGlobal } from "./interfaces.js";
 
 declare const FAST: FASTGlobal;
 
-describe.only("The debug module", () => {
+describe("The debug module", () => {
     let keyBase = 1111111111;
 
     context("when sending errors", () => {

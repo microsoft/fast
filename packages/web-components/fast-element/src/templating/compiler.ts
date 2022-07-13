@@ -1,4 +1,4 @@
-import { isString, Message, TrustedTypesPolicy } from "../interfaces.js";
+import { isFunction, isString, Message, TrustedTypesPolicy } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { Parser } from "./markup.js";
@@ -21,6 +21,25 @@ const next: NextNode = {
     index: 0,
     node: null as ChildNode | null,
 };
+
+function tryWarn(name: string) {
+    if (!name.startsWith("fast-")) {
+        FAST.warn(Message.hostBindingWithoutHost, { name });
+    }
+}
+
+const warningHost = new Proxy(document.createElement("div"), {
+    get(target, property: string) {
+        tryWarn(property);
+        const value = Reflect.get(target, property);
+        return isFunction(value) ? value.bind(target) : value;
+    },
+
+    set(target, property: string, value) {
+        tryWarn(property);
+        return Reflect.set(target, property, value);
+    },
+});
 
 class CompilationContext<TSource = any, TParent = any>
     implements TemplateCompilationResult<TSource, TParent> {
@@ -99,7 +118,7 @@ class CompilationContext<TSource = any, TParent = any>
         const targets = Object.create(this.proto);
 
         targets.r = fragment;
-        targets.h = hostBindingTarget ?? fragment;
+        targets.h = hostBindingTarget ?? warningHost;
 
         for (const id of this.nodeIds) {
             targets[id]; // trigger locator
