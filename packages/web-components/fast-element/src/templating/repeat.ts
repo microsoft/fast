@@ -3,7 +3,7 @@ import type { Behavior } from "../observation/behavior.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
     Binding,
-    BindingObserver,
+    BindingNotifier,
     ExecutionContext,
     Observable,
 } from "../observation/observable.js";
@@ -66,10 +66,10 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     private source: TSource | null = null;
     private views: SyntheticView[] = [];
     private template: SyntheticViewTemplate;
-    private templateBindingObserver: BindingObserver<TSource, SyntheticViewTemplate>;
+    private templateBindingObserver: BindingNotifier<TSource, SyntheticViewTemplate>;
     private items: readonly any[] | null = null;
     private itemsObserver: Notifier | null = null;
-    private itemsBindingObserver: BindingObserver<TSource, any[]>;
+    private itemsBindingObserver: BindingNotifier<TSource, any[]>;
     private context: ExecutionContext | undefined = void 0;
     private childContext: ExecutionContext | undefined = void 0;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;

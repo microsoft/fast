@@ -65,23 +65,20 @@ interface SubscriptionRecord extends ObservationRecord {
     next: SubscriptionRecord | undefined;
 }
 
+export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
+    extends Disposable {
+    observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
+}
+
 /**
  * Enables evaluation of and subscription to a binding.
  * @public
  */
-export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
+export interface BindingNotifier<TSource = any, TReturn = any, TParent = any>
     extends Notifier,
-        Disposable {
+        BindingObserver<TSource, TReturn, TParent> {
     /**
-     * Begins observing the binding for the source and returns the current value.
-     * @param source - The source that the binding is based on.
-     * @param context - The execution context to execute the binding within.
-     * @returns The value of the binding.
-     */
-    observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
-
-    /**
-     * Gets {@link ObservationRecord|ObservationRecords} that the {@link BindingObserver}
+     * Gets {@link ObservationRecord|ObservationRecords} that the {@link BindingNotifier}
      * is observing.
      */
     records(): IterableIterator<ObservationRecord>;
@@ -182,7 +179,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
 
     class BindingObserverImplementation<TSource = any, TReturn = any>
         extends SubscriberSet
-        implements BindingObserver<TSource, TReturn> {
+        implements BindingNotifier<TSource, TReturn> {
         public needsRefresh: boolean = true;
         private needsQueue: boolean = true;
         private isAsync = true;
@@ -368,7 +365,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         getAccessors,
 
         /**
-         * Creates a {@link BindingObserver} that can watch the
+         * Creates a {@link BindingNotifier} that can watch the
          * provided {@link Binding} for changes.
          * @param binding - The binding to observe.
          * @param initialSubscriber - An initial subscriber to changes in the binding value.
@@ -378,7 +375,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             binding: Binding<TSource, TReturn>,
             initialSubscriber?: Subscriber,
             isVolatileBinding: boolean = this.isVolatileBinding(binding)
-        ): BindingObserver<TSource, TReturn> {
+        ): BindingNotifier<TSource, TReturn> {
             return new BindingObserverImplementation(
                 binding,
                 initialSubscriber,

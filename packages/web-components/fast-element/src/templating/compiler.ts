@@ -147,7 +147,7 @@ function compileAttributes(
 
         if (parseResult === null) {
             if (includeBasicValues) {
-                result = bind(() => attrValue, oneTime) as ViewBehaviorFactory;
+                result = new HTMLBindingDirective(oneTime(() => attrValue));
                 Aspect.assign((result as any) as Aspected, attr.name);
             }
         } else {
@@ -404,7 +404,7 @@ export const Compiler = {
             return output;
         };
 
-        const directive = bind(binding) as HTMLBindingDirective;
+        const directive = new HTMLBindingDirective(bind(binding));
         Aspect.assign(directive, sourceAspect!);
         return directive;
     },

@@ -110,38 +110,46 @@ export interface Behavior<TSource = any, TParent = any> {
 }
 
 // @public
-export function bind<T = any>(binding: Binding<T>, config?: BindingConfig | DefaultBindingOptions): CaptureType<T>;
+export function bind<T = any>(binding: Binding<T>, isBindingVolatile?: boolean): BindingConfiguration<T>;
 
 // @public
 export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
 
 // @public
-export interface BindingConfig<T = any> {
-    mode: BindingMode;
-    options: T;
+export class BindingBehavior implements ViewBehavior {
+    constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget);
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
+    // (undocumented)
+    readonly directive: HTMLBindingDirective;
+    protected getObserver(target: Node): BindingObserver;
+    // @internal (undocumented)
+    handleChange(binding: Binding, observer: BindingObserver): void;
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    // (undocumented)
+    protected updateTarget: UpdateTarget;
+}
+
+// @public (undocumented)
+export abstract class BindingConfiguration<TSource = any, TReturn = any, TParent = any> {
+    // (undocumented)
+    abstract binding: Binding<TSource, TReturn, TParent>;
+    // (undocumented)
+    abstract createObserver(directive: HTMLBindingDirective, subscriber: Subscriber): BindingObserver<TSource, TReturn, TParent>;
+    // (undocumented)
+    options?: any;
 }
 
 // @public
-export const BindingConfig: Readonly<{
-    define<T>(mode: BindingMode, defaultOptions: T): BindingConfig<T> & BindingConfigResolver<T>;
-}>;
-
-// @public
-export type BindingConfigResolver<T> = (options: T) => BindingConfig<T>;
-
-// @public
-export type BindingMode = Record<Aspect, (directive: HTMLBindingDirective) => Pick<ViewBehaviorFactory, "createBehavior">>;
-
-// @public
-export const BindingMode: Readonly<{
-    define(UpdateType: typeof UpdateBinding, EventType?: typeof EventBinding): BindingMode;
-}>;
-
-// @public
-export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier, Disposable {
-    observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
+export interface BindingNotifier<TSource = any, TReturn = any, TParent = any> extends Notifier, BindingObserver<TSource, TReturn, TParent> {
     records(): IterableIterator<ObservationRecord>;
     setMode(isAsync: boolean): void;
+}
+
+// @public (undocumented)
+export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Disposable {
+    // (undocumented)
+    observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
 }
 
 // @public
@@ -154,16 +162,6 @@ export type Callable = typeof Function.prototype.call | {
 
 // @public
 export interface CaptureType<TSource> {
-}
-
-// @public
-export class ChangeBinding extends UpdateBinding {
-    constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget);
-    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
-    protected getObserver(target: Node): BindingObserver;
-    // @internal (undocumented)
-    handleChange(binding: Binding, observer: BindingObserver): void;
-    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
 }
 
 // @public
@@ -289,9 +287,6 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
 // @public
-export type DefaultBindingOptions = AddEventListenerOptions;
-
-// @public
 export interface Disposable {
     dispose(): void;
 }
@@ -346,7 +341,7 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
 export const emptyArray: readonly never[];
 
 // @public
-export class EventBinding {
+export class EventBehavior {
     constructor(directive: HTMLBindingDirective);
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
@@ -440,18 +435,14 @@ export function html<TSource = any, TParent = any>(strings: TemplateStringsArray
 
 // @public
 export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, Aspected {
-    constructor(binding: Binding, mode: BindingMode, options: any);
+    constructor(dataBinding: BindingConfiguration);
     aspectType: Aspect;
-    // (undocumented)
-    binding: Binding;
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
     createHTML(add: AddViewBehaviorFactory): string;
+    // (undocumented)
+    dataBinding: BindingConfiguration;
     id: string;
-    // (undocumented)
-    mode: BindingMode;
     nodeId: string;
-    // (undocumented)
-    options: any;
     sourceAspect: string;
     targetAspect: string;
 }
@@ -506,6 +497,9 @@ export interface LengthObserver extends Subscriber {
 export function lengthOf<T>(array: readonly T[]): number;
 
 // @public
+export function listener<T = any>(binding: Binding<T>, options?: AddEventListenerOptions): BindingConfiguration<T>;
+
+// @public
 export const Markup: Readonly<{
     interpolation: (id: string) => string;
     attribute: (id: string) => string;
@@ -557,7 +551,7 @@ export const Observable: Readonly<{
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors: (target: {}) => Accessor[];
-    binding<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn, any>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): BindingObserver<TSource, TReturn, any>;
+    binding<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn, any>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): BindingNotifier<TSource, TReturn, any>;
     isVolatileBinding<TSource_1 = any, TReturn_1 = any>(binding: Binding<TSource_1, TReturn_1, any>): boolean;
 }>;
 
@@ -571,15 +565,7 @@ export interface ObservationRecord {
 }
 
 // @public
-export const onChange: BindingConfig<AddEventListenerOptions> & BindingConfigResolver<AddEventListenerOptions>;
-
-// @public
-export const oneTime: BindingConfig<AddEventListenerOptions> & BindingConfigResolver<AddEventListenerOptions>;
-
-// @public
-export class OneTimeBinding extends UpdateBinding {
-    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
-}
+export function oneTime<T = any>(binding: Binding<T>): BindingConfiguration<T>;
 
 // @public
 export const Parser: Readonly<{
@@ -771,7 +757,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 }
 
 // @public
-export type TemplateValue<TSource, TParent = any> = Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource>;
+export type TemplateValue<TSource, TParent = any> = Binding<TSource, any, TParent> | BindingConfiguration<TSource, any, TParent> | HTMLDirective | CaptureType<TSource>;
 
 // @public
 export type TrustedTypes = {
@@ -801,18 +787,6 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
     getForInstance(object: any): TDefinition | undefined;
     // (undocumented)
     register(definition: TDefinition): boolean;
-}
-
-// @public
-export class UpdateBinding implements ViewBehavior {
-    constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget);
-    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
-    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
-    // (undocumented)
-    readonly directive: HTMLBindingDirective;
-    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
-    // (undocumented)
-    protected updateTarget: UpdateTarget;
 }
 
 // @public
