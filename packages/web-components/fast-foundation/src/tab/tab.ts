@@ -32,6 +32,5 @@ export class FASTTab extends FASTElement {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface FASTTab extends StartEnd {}
 applyMixins(FASTTab, StartEnd);
