@@ -185,45 +185,53 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     private updateViews(splices: Splice[]): void {
         const childContext = this.childContext!;
         const views = this.views;
-        const totalRemoved: SyntheticView[] = [];
         const bindView = this.bindView;
-        let removeDelta = 0;
+        const items = this.items!;
+        const template = this.template;
+        const recycle: RepeatOptions["recycle"] = this.options.recycle;
+        const leftoverViews: SyntheticView[] = [];
+        let leftoverIndex = 0;
+        let availableViews = 0;
 
         for (let i = 0, ii = splices.length; i < ii; ++i) {
             const splice = splices[i];
             const removed = splice.removed;
-
-            totalRemoved.push(
-                ...views.splice(splice.index + removeDelta, removed.length)
-            );
-
-            removeDelta -= splice.addedCount;
-        }
-
-        const items = this.items!;
-        const template = this.template;
-
-        for (let i = 0, ii = splices.length; i < ii; ++i) {
-            const splice = splices[i];
+            let removeIndex = 0;
             let addIndex = splice.index;
             const end = addIndex + splice.addedCount;
+            const removedViews = views.splice(splice.index, removed.length);
+            availableViews = leftoverViews.length + removedViews.length;
 
             for (; addIndex < end; ++addIndex) {
                 const neighbor = views[addIndex];
                 const location = neighbor ? neighbor.firstChild : this.location;
-                const view =
-                    this.options.recycle && totalRemoved.length > 0
-                        ? totalRemoved.shift()!
-                        : template.create();
+                let view;
+
+                if (recycle && availableViews > 0) {
+                    if (removeIndex <= availableViews && removedViews.length > 0) {
+                        view = removedViews[removeIndex];
+                        removeIndex++;
+                    } else {
+                        view = leftoverViews[leftoverIndex];
+                        leftoverIndex++;
+                    }
+                    availableViews--;
+                } else {
+                    view = template.create();
+                }
 
                 views.splice(addIndex, 0, view);
                 bindView(view, items, addIndex, childContext);
                 view.insertBefore(location);
             }
+
+            if (removedViews[removeIndex]) {
+                leftoverViews.push(...removedViews.slice(removeIndex));
+            }
         }
 
-        for (let i = 0, ii = totalRemoved.length; i < ii; ++i) {
-            totalRemoved[i].dispose();
+        for (let i = leftoverIndex, ii = leftoverViews.length; i < ii; ++i) {
+            leftoverViews[i].dispose();
         }
 
         if (this.options.positioning) {
