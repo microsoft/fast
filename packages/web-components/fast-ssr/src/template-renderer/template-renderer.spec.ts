@@ -4,6 +4,7 @@ import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
 import { TemplateRenderer } from "./template-renderer.js";
+import { render } from "@microsoft/fast-element/render";
 
 @customElement("hello-world")
 class HelloWorld extends FASTElement {}
@@ -287,6 +288,27 @@ test.describe("TemplateRenderer", () => {
             expect(consolidate( result )).toBe("foobarbat");
         });
     });
+
+    test.describe("with a 'render' directive", () => {
+        test("should provide parent and parentContext to execution context of bindings in child template", () => {
+
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const source = { data: "test" };
+            const ctx = ExecutionContext.default;
+            consolidate(templateRenderer.render(html<typeof source>`${render(x => x.data, html`${(x, c) => {
+                expect(c.parent).toBe(source);
+                expect(c.parentContext).toBe(ctx)
+            }}`)}`, defaultRenderInfo, source, ctx))
+        });
+
+        test("should render the provided template with the binding's value as the source data", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const source = { data: "test"};
+            const result = templateRenderer.render(html<typeof source>`${render(x => x.data, html<string>`${x => x}`)}`, defaultRenderInfo, source)
+            expect(consolidate( result )).toBe("test");
+        });
+    });
+
     for (let directive of [children, ref, slotted ]) {
         test.describe(`with '${directive.name}' directive`, () => {
             test("should interpolate empty string", () => {
