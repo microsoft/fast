@@ -5,8 +5,11 @@ import {
     Observable,
     Subscriber,
 } from "@microsoft/fast-element";
-import { PropertyTargetManager } from "../design-token/custom-property-manager.js";
-import { composedContains, composedParent } from "../index.js";
+import { composedContains, composedParent } from "@microsoft/fast-element/utilities";
+import {
+    PropertyTargetManager,
+    RootStyleSheetTarget,
+} from "../design-token/custom-property-manager.js";
 import {
     DerivedDesignTokenValue,
     DesignTokenChangeRecord,
@@ -118,7 +121,7 @@ export class FASTDesignToken<T extends DesignTokenValueType>
         return this.default;
     }
     public get default(): StaticDesignTokenValue<T> | undefined {
-        return undefined;
+        return FASTDesignTokenNode.defaultNode.getTokenValue(this);
     }
 
     private cssVar: string | undefined;
@@ -155,13 +158,9 @@ export class FASTDesignToken<T extends DesignTokenValueType>
         target: FASTElement,
         value: DesignToken<T> | DesignTokenValue<T>
     ): void {
-        if (value instanceof FASTDesignToken) {
-            value = this.alias(value);
-        }
-
         FASTDesignTokenNode.getOrCreate(target).setTokenValue(
             this,
-            value as DesignTokenValue<T>
+            this.normalizeValue(value)
         );
     }
 
@@ -171,6 +170,7 @@ export class FASTDesignToken<T extends DesignTokenValueType>
     }
 
     public withDefault(value: DesignToken<T> | DesignTokenValue<T>): this {
+        FASTDesignTokenNode.defaultNode.setTokenValue(this, this.normalizeValue(value));
         return this;
     }
 
@@ -187,33 +187,55 @@ export class FASTDesignToken<T extends DesignTokenValueType>
             resolve(token)) as DerivedDesignTokenValue<T>;
     }
 
+    private normalizeValue(
+        value: DesignToken<T> | DesignTokenValue<T>
+    ): DesignTokenValue<T> {
+        if (value instanceof FASTDesignToken) {
+            value = this.alias(value);
+        }
+
+        return value as DesignTokenValue<T>;
+    }
+
     private cssReflector: Subscriber = {
         handleChange: <T>(
             source: FASTDesignToken<T>,
             record: DesignTokenChangeRecord<T>
         ) => {
-            const manager = PropertyTargetManager.getOrCreate(
-                (record.target as FASTDesignTokenNode).target
-            );
-            if (record.type === DesignTokenMutationType.delete) {
-                manager.removeProperty(this.cssCustomProperty!);
-            } else {
-                manager.setProperty(
-                    this.cssCustomProperty!,
-                    record.target.getTokenValue(this) as any
-                );
+            const target =
+                record.target === FASTDesignTokenNode.defaultNode
+                    ? FASTDesignTokenNode.rootStyleSheetTarget
+                    : record.target instanceof FASTDesignTokenNode
+                    ? PropertyTargetManager.getOrCreate(record.target.target)
+                    : null;
+            // TODO we'll need to check if record.target.target exists, or if record.target is default node,
+            // then do something different
+            if (target) {
+                if (record.type === DesignTokenMutationType.delete) {
+                    target.removeProperty(this.cssCustomProperty!);
+                } else {
+                    target.setProperty(
+                        this.cssCustomProperty!,
+                        record.target.getTokenValue(this) as any
+                    );
+                }
             }
         },
     };
 }
 
 class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
+    public static defaultNode = new DesignTokenNode();
+    public static rootStyleSheetTarget = new RootStyleSheetTarget();
     private static cache = new WeakMap<FASTElement, FASTDesignTokenNode>();
     bind(target: FASTElement) {
-        const parent = FASTDesignTokenNode.findParent(target);
+        let parent = FASTDesignTokenNode.findParent(target);
 
-        if (parent && parent !== this.parent) {
-            // TODO we'll need to re-parent here
+        if (parent === null) {
+            parent = FASTDesignTokenNode.defaultNode;
+        }
+
+        if (parent !== this.parent) {
             const reparent = [];
             for (const child of parent.children as FASTDesignTokenNode[]) {
                 if (composedContains(target, child.target)) {
@@ -245,7 +267,7 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
         return found;
     }
 
-    private static findParent(target: FASTElement): FASTDesignTokenNode | null {
+    private static findParent(target: FASTElement): DesignTokenNode | null {
         let current = composedParent(target);
 
         while (current !== null) {
@@ -299,15 +321,15 @@ export const DesignToken = Object.freeze({
      * registered roots.
      * @param target - The root to register
      */
-    registerRoot(target?: HTMLElement | Document) {
-        // RootStyleSheetTarget.registerRoot(target);
+    registerRoot(target: FASTElement | Document = document) {
+        RootStyleSheetTarget.registerRoot(target);
     },
 
     /**
      * Unregister an element or document as a DesignToken root.
      * @param target - The root to deregister
      */
-    unregisterRoot(target?: HTMLElement | Document) {
-        // RootStyleSheetTarget.unregisterRoot(target);
+    unregisterRoot(target: FASTElement | Document = document) {
+        RootStyleSheetTarget.unregisterRoot(target);
     },
 });

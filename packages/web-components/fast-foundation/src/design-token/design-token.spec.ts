@@ -1,4 +1,4 @@
-import { css, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
+import { css, customElement, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
 import chia, { expect } from "chai";
 import { uniqueElementName } from "@microsoft/fast-element/testing";
 import { CSSDesignToken, DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token.js";
@@ -7,10 +7,11 @@ import spies from "chai-spies";
 chia.use(spies);
 const elementName = uniqueElementName("token-test");
 
-FASTElement.define(class extends FASTElement { }, {
-    name: elementName,
+@customElement({
+    name: `fast-${elementName}`,
     template: html`<slot></slot>`
-});
+})
+class MyElement extends FASTElement {}
 
 function addElement(parent = document.body): FASTElement & HTMLElement {
     const el = document.createElement(elementName) as any;

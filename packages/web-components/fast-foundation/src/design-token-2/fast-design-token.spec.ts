@@ -1,25 +1,18 @@
-import { css, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
+import { css, customElement, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
 import chia, { expect } from "chai";
 import spies from "chai-spies";
-import { DesignSystem } from "../design-system/index.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import type { DesignTokenResolver } from "./design-token-node.js";
-// import type { CSSDesignToken, DesignToken, /* DesignTokenChangeRecord, DesignTokenSubscriber */ } from "./fast-design-token.js";
 import { DesignToken } from "./fast-design-token.js";
 
 chia.use(spies);
 const elementName = uniqueElementName();
 
-DesignSystem.getOrCreate()
-    .register(
-        FoundationElement.compose({
-            type: class extends FoundationElement { },
-            baseName: elementName,
-            template: html`<slot></slot>`
-        })()
-    );
-
+@customElement({
+    name: `fast-${elementName}`,
+    template: html`<slot></slot>`
+})
+class MyElement extends FASTElement {}
 
 function createElement(): FASTElement & HTMLElement {
     return document.createElement(`fast-${elementName}`) as any;
