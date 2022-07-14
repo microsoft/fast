@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "add user-select to button",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "rina.oksman@vonage.com",
+  "dependentChangeType": "patch"
+}
