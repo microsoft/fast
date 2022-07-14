@@ -56,17 +56,19 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     constructor(
         private directive: HTMLBindingDirective,
         private subscriber: Subscriber,
-        private options: TwoWayBindingOptions,
-        binding: Binding,
-        isVolatile: boolean
+        private dataBinding: TwoWayBinding
     ) {
-        this.notifier = Observable.binding(binding, this, isVolatile);
+        this.notifier = Observable.binding(
+            dataBinding.binding,
+            this,
+            dataBinding.isVolatile
+        );
     }
 
     observe(source: TSource, context?: ExecutionContext<TParent> | undefined): TReturn {
         if (!this.changeEvent) {
             this.changeEvent =
-                this.options.changeEvent ??
+                this.dataBinding.options.changeEvent ??
                 twoWaySettings.determineChangeEvent(this.directive, this.target);
         }
 
@@ -75,12 +77,13 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     }
 
     dispose(): void {
+        this.notifier.dispose();
         this.target.removeEventListener(this.changeEvent, this);
     }
 
     /** @internal */
     public handleChange(subject: any, args: any) {
-        this.subscriber.handleChange(subject, args);
+        this.subscriber.handleChange(this.dataBinding.binding, this);
     }
 
     /** @internal */
@@ -112,7 +115,9 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
                 break;
         }
 
-        last.propertySource[last.propertyName] = this.options.fromView!(value);
+        last.propertySource[last.propertyName] = this.dataBinding.options.fromView!(
+            value
+        );
     }
 }
 
@@ -137,13 +142,7 @@ class TwoWayBinding<
         directive: HTMLBindingDirective,
         subscriber: Subscriber
     ): BindingObserver<TSource, TReturn, TParent> {
-        return new TwoWayObserver(
-            directive,
-            subscriber,
-            this.options,
-            this.binding,
-            this.isVolatile
-        );
+        return new TwoWayObserver(directive, subscriber, this);
     }
 
     /**

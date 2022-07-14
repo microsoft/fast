@@ -57,14 +57,14 @@ class SignalObserver<TSource = any, TReturn = any, TParent = any> {
     signal!: string;
 
     constructor(
-        private readonly expression: SignalBinding,
+        private readonly dataBinding: SignalBinding,
         private readonly subscriber: Subscriber
     ) {}
 
     observe(source: TSource, context: ExecutionContext<TParent>): TReturn {
         const signal = (this.signal = this.getSignal(source, context));
         Signal.subscribe(signal, this);
-        return this.expression.binding(source, context);
+        return this.dataBinding.binding(source, context);
     }
 
     dispose() {
@@ -72,11 +72,11 @@ class SignalObserver<TSource = any, TReturn = any, TParent = any> {
     }
 
     handleChange() {
-        this.subscriber.handleChange(this.expression.binding, this);
+        this.subscriber.handleChange(this.dataBinding.binding, this);
     }
 
     private getSignal(source: any, context: ExecutionContext): string {
-        const options = this.expression.options;
+        const options = this.dataBinding.options;
         return isString(options) ? options : options(source, context);
     }
 }
