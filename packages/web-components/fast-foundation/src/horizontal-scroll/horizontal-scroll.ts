@@ -6,10 +6,9 @@ import {
     observable,
     Updates,
 } from "@microsoft/fast-element";
-
-import type { ResizeObserverClassDefinition } from "../utilities/resize-observer.js";
-import type { StartEndOptions } from "../patterns/index.js";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import type { StartEndOptions } from "../patterns/index.js";
+import type { ResizeObserverClassDefinition } from "../utilities/resize-observer.js";
 
 /**
  * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)}
