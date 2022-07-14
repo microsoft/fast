@@ -427,12 +427,12 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
 // @internal
 export interface FASTGlobal {
     addMessages(messages: Record<number, string>): void;
-    error(code: number, ...args: any[]): Error;
+    error(code: number, values?: Record<string, any>): Error;
     getById<T>(id: string | number): T | null;
     // (undocumented)
     getById<T>(id: string | number, initialize: () => T): T;
     readonly versions: string[];
-    warn(code: number, ...args: any[]): void;
+    warn(code: number, values?: Record<string, any>): void;
 }
 
 // @public

@@ -41,7 +41,7 @@ if (FAST.error === void 0) {
     Object.assign(FAST, {
         warn() {},
         error(code: number) {
-            return new Error(`Code ${code}`);
+            return new Error(`Error ${code}`);
         },
         addMessages() {},
     });
