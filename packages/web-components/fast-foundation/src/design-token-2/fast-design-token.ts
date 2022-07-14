@@ -1,9 +1,7 @@
 import {
     Behavior,
     CSSDirective,
-    ExecutionContext,
     FASTElement,
-    nullableNumberConverter,
     Observable,
     Subscriber,
 } from "@microsoft/fast-element";
@@ -19,13 +17,13 @@ import {
     DesignTokenValueType,
     StaticDesignTokenValue,
 } from "./design-token-node.js";
-import type { DesignToken as IDesignToken } from "./design-token.js";
 
 /**
  * Describes a DesignToken instance.
  * @public
  */
-export interface DesignToken<T extends DesignTokenValueType> extends IDesignToken<T> {
+export interface DesignToken<T extends DesignTokenValueType> {
+    readonly $value: T | undefined;
     /**
      * The name of the token
      */
@@ -157,8 +155,6 @@ export class FASTDesignToken<T extends DesignTokenValueType>
         target: FASTElement,
         value: DesignToken<T> | DesignTokenValue<T>
     ): void {
-        // TODO how can we make this work against the DesignToken interface? Does that need to be a
-        // a class?
         if (value instanceof FASTDesignToken) {
             value = this.alias(value);
         }
