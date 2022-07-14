@@ -566,6 +566,7 @@ describe.only("A DesignToken", () => {
 
             await Updates.next();
 
+            expect(tokenB.getValueFor(element)).to.equal(14)
             expect(window.getComputedStyle(element).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
         });
         // it("should update tokens and notify when an element for which a token with dynamic dependencies is set is appended to the DOM", async () => {
