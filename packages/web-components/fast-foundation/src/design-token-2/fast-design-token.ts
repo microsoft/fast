@@ -1,0 +1,317 @@
+import {
+    Behavior,
+    CSSDirective,
+    ExecutionContext,
+    FASTElement,
+    nullableNumberConverter,
+    Observable,
+    Subscriber,
+} from "@microsoft/fast-element";
+import { PropertyTargetManager } from "../design-token/custom-property-manager.js";
+import { composedContains, composedParent } from "../index.js";
+import {
+    DerivedDesignTokenValue,
+    DesignTokenChangeRecord,
+    DesignTokenMutationType,
+    DesignTokenNode,
+    DesignTokenResolver,
+    DesignTokenValue,
+    DesignTokenValueType,
+    StaticDesignTokenValue,
+} from "./design-token-node.js";
+import type { DesignToken as IDesignToken } from "./design-token.js";
+
+/**
+ * Describes a DesignToken instance.
+ * @public
+ */
+export interface DesignToken<T extends DesignTokenValueType> extends IDesignToken<T> {
+    /**
+     * The name of the token
+     */
+    readonly name: string;
+
+    /**
+     * A list of elements for which the DesignToken has a value set
+     */
+    // readonly appliedTo: HTMLElement[];
+
+    /**
+     * The default value for the token, otherwise undefined. Also accessible from {@link DesignToken.$value}
+     */
+    readonly default: StaticDesignTokenValue<T> | undefined;
+
+    /**
+     * Get the token value for an element.
+     * @param target - The element to get the value for
+     * @returns - The value set for the element, or the value set for the nearest element ancestor.
+     */
+    getValueFor(target: FASTElement): StaticDesignTokenValue<T>;
+
+    /**
+     * Sets the token to a value for an element.
+     * @param target - The element to set the value for.
+     * @param value - The value.
+     */
+    setValueFor(target: FASTElement, value: DesignTokenValue<T> | DesignToken<T>): void;
+
+    /**
+     * Removes a value set for an element.
+     * @param target - The element to remove the value from
+     */
+    deleteValueFor(target: FASTElement): this;
+
+    /**
+     * Associates a default value to the token
+     */
+    withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
+
+    // /**
+    //  * Subscribes a subscriber to change records for a token. If an element is provided, only
+    //  * change records for that element will be emitted.
+    //  */
+    // subscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
+
+    // /**
+    //  * Unsubscribes a subscriber from change records for a token.
+    //  */
+    // unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
+}
+
+/**
+ * A {@link (DesignToken:interface)} that emits a CSS custom property.
+ * @public
+ */
+export interface CSSDesignToken<
+    T extends
+        | DesignTokenValueType
+        | ({
+              createCSS?(): string;
+          } & Record<PropertyKey, any>)
+> extends DesignToken<T>, CSSDirective {
+    /**
+     * The {@link (DesignToken:interface)} formatted as a CSS custom property if the token is
+     * configured to write a CSS custom property.
+     */
+    readonly cssCustomProperty: string;
+}
+/**
+ * Describes a {@link (DesignToken:interface)} configuration
+ * @public
+ */
+export interface DesignTokenConfiguration {
+    /**
+     * The name of the {@link (DesignToken:interface)}.
+     */
+    name: string;
+
+    /**
+     * The name of the CSS custom property to associate to the {@link (DesignToken:interface)}, or null
+     * if not CSS custom property should be associated.
+     */
+    cssCustomPropertyName?: string | null;
+}
+
+export class FASTDesignToken<T extends DesignTokenValueType>
+    implements CSSDesignToken<T> {
+    public cssCustomProperty: string;
+    public name: string;
+    public get $value() {
+        return this.default;
+    }
+    public get default(): StaticDesignTokenValue<T> | undefined {
+        return undefined;
+    }
+
+    private cssVar: string | undefined;
+    public static from<T>(
+        nameOrConfig: string | DesignTokenConfiguration
+    ): FASTDesignToken<T> {
+        return new FASTDesignToken<T>({
+            name: typeof nameOrConfig === "string" ? nameOrConfig : nameOrConfig.name,
+            cssCustomPropertyName:
+                typeof nameOrConfig === "string"
+                    ? nameOrConfig
+                    : nameOrConfig.cssCustomPropertyName === void 0
+                    ? nameOrConfig.name
+                    : nameOrConfig.cssCustomPropertyName,
+        });
+    }
+
+    constructor(configuration: DesignTokenConfiguration) {
+        this.name = configuration.name;
+        if (configuration.cssCustomPropertyName !== null) {
+            this.cssCustomProperty = `--${configuration.cssCustomPropertyName}`;
+            this.cssVar = `var(${this.cssCustomProperty})`;
+
+            // Subscribe to changes
+            Observable.getNotifier(this).subscribe(this.cssReflector);
+        }
+    }
+
+    public getValueFor(target: FASTElement): StaticDesignTokenValue<T> {
+        return FASTDesignTokenNode.getOrCreate(target).getTokenValue(this);
+    }
+
+    public setValueFor(
+        target: FASTElement,
+        value: DesignToken<T> | DesignTokenValue<T>
+    ): void {
+        // TODO how can we make this work against the DesignToken interface? Does that need to be a
+        // a class?
+        if (value instanceof FASTDesignToken) {
+            value = this.alias(value);
+        }
+
+        FASTDesignTokenNode.getOrCreate(target).setTokenValue(
+            this,
+            value as DesignTokenValue<T>
+        );
+    }
+
+    public deleteValueFor(target: FASTElement): this {
+        FASTDesignTokenNode.getOrCreate(target).deleteTokenValue(this);
+        return this;
+    }
+
+    public withDefault(value: DesignToken<T> | DesignTokenValue<T>): this {
+        return this;
+    }
+
+    public createCSS(): string {
+        return this.cssVar || "";
+    }
+
+    /**
+     * Alias the token to the provided token.
+     * @param token - the token to alias to
+     */
+    private alias(token: DesignToken<T>): DerivedDesignTokenValue<T> {
+        return ((resolve: DesignTokenResolver) =>
+            resolve(token)) as DerivedDesignTokenValue<T>;
+    }
+
+    private cssReflector: Subscriber = {
+        handleChange: <T>(
+            source: FASTDesignToken<T>,
+            record: DesignTokenChangeRecord<T>
+        ) => {
+            const manager = PropertyTargetManager.getOrCreate(
+                (record.target as FASTDesignTokenNode).target
+            );
+            if (record.type === DesignTokenMutationType.delete) {
+                manager.removeProperty(this.cssCustomProperty!);
+            } else {
+                manager.setProperty(
+                    this.cssCustomProperty!,
+                    record.target.getTokenValue(this) as any
+                );
+            }
+        },
+    };
+}
+
+class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
+    private static cache = new WeakMap<FASTElement, FASTDesignTokenNode>();
+    bind(target: FASTElement) {
+        const parent = FASTDesignTokenNode.findParent(target);
+
+        if (parent && parent !== this.parent) {
+            // TODO we'll need to re-parent here
+            const reparent = [];
+            for (const child of parent.children as FASTDesignTokenNode[]) {
+                if (composedContains(target, child.target)) {
+                    reparent.push(child);
+                }
+            }
+
+            parent.appendChild(this);
+
+            for (const child of reparent) {
+                this.appendChild(child);
+            }
+        }
+    }
+
+    unbind(): void {}
+
+    public static getOrCreate(target: FASTElement) {
+        let found = FASTDesignTokenNode.cache.get(target);
+
+        if (found) {
+            return found;
+        }
+
+        found = new FASTDesignTokenNode(target);
+        FASTDesignTokenNode.cache.set(target, found);
+        target.$fastController.addBehaviors([found]);
+
+        return found;
+    }
+
+    private static findParent(target: FASTElement): FASTDesignTokenNode | null {
+        let current = composedParent(target);
+
+        while (current !== null) {
+            const node = FASTDesignTokenNode.cache.get(current as FASTElement);
+            if (node) {
+                return node;
+            }
+
+            current = composedParent(current);
+        }
+
+        return null;
+    }
+
+    constructor(public readonly target: FASTElement) {
+        super();
+    }
+}
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+function create<T extends Function>(
+    nameOrConfig: string | DesignTokenConfiguration
+): never;
+function create<T extends undefined | void>(
+    nameOrConfig: string | DesignTokenConfiguration
+): never;
+function create<T>(nameOrConfig: string): CSSDesignToken<T>;
+function create<T>(
+    nameOrConfig:
+        | Omit<DesignTokenConfiguration, "cssCustomPropertyName">
+        | (DesignTokenConfiguration & Record<"cssCustomPropertyName", string>)
+): CSSDesignToken<T>;
+function create<T>(
+    nameOrConfig: DesignTokenConfiguration & Record<"cssCustomPropertyName", null>
+): DesignToken<T>;
+function create<T>(nameOrConfig: string | DesignTokenConfiguration): any {
+    return FASTDesignToken.from(nameOrConfig);
+}
+/* eslint-enable @typescript-eslint/no-unused-vars */
+/**
+ * Factory object for creating {@link (DesignToken:interface)} instances.
+ * @public
+ */
+export const DesignToken = Object.freeze({
+    create,
+
+    /**
+     * Registers and element or document as a DesignToken root.
+     * {@link CSSDesignToken | CSSDesignTokens} with default values assigned via
+     * {@link (DesignToken:interface).withDefault} will emit CSS custom properties to all
+     * registered roots.
+     * @param target - The root to register
+     */
+    registerRoot(target?: HTMLElement | Document) {
+        // RootStyleSheetTarget.registerRoot(target);
+    },
+
+    /**
+     * Unregister an element or document as a DesignToken root.
+     * @param target - The root to deregister
+     */
+    unregisterRoot(target?: HTMLElement | Document) {
+        // RootStyleSheetTarget.unregisterRoot(target);
+    },
+});

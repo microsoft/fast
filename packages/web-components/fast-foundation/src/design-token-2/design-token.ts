@@ -1,4 +1,3 @@
-let id = 0;
-export class DesignToken<T> {
-    public readonly id = id++;
+export interface DesignToken<T> {
+    readonly $value: T | undefined;
 }

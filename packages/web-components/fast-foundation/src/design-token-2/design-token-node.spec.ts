@@ -2,8 +2,8 @@ import { Observable, Subscriber } from "@microsoft/fast-element";
 import { makeObservable } from "@microsoft/fast-element/utilities";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
-import { DesignTokenChangeRecordImpl as DesignTokenChangeRecord, DesignTokenMutationType, DesignTokenNode } from "./design-token-node.js";
-import { DesignToken } from "./design-token.js";
+import { DesignTokenChangeRecordImpl as DesignTokenChangeRecord, DesignTokenMutationType, DesignTokenNode, DesignTokenValueType } from "./design-token-node.js";
+import type { DesignToken as IDesignToken } from "./design-token.js"
 
 chai.use(spies);
 
@@ -23,7 +23,11 @@ function createNode(parent?: DesignTokenNode) {
     return node;
 }
 
-describe.only("DesignTokenNode", () => {
+class DesignToken<T extends DesignTokenValueType> implements IDesignToken<T>  {
+    $value: T | undefined = undefined;
+}
+
+describe("DesignTokenNode", () => {
     describe("appending a child", () => {
         it("should assign the `parent` property of the child to the caller", () => {
             const parent = new DesignTokenNode();
@@ -97,7 +101,7 @@ describe.only("DesignTokenNode", () => {
 
             parent.setTokenValue(token, 12);
             child.setTokenValue(token, (resolve) => {
-                return resolve(token) * 2;
+                return resolve<number>(token) * 2;
             });
 
             expect(child.getTokenValue(token)).to.equal(24);

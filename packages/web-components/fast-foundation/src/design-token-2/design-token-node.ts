@@ -489,7 +489,6 @@ export class DesignTokenNode {
                 DesignTokenNode.isDerivedFor(this, token)
             ) {
                 this.tearDownDerivedTokenValue(token);
-                // DesignTokenNode.notifyToken(token, this, DesignTokenMutationType.delete);
                 DesignTokenNode._notifications.push(
                     new DesignTokenChangeRecordImpl(
                         this,
@@ -514,7 +513,6 @@ export class DesignTokenNode {
 
             if (evaluator.dependencies.has(token)) {
                 DesignTokenNode.evaluateDerived(this, _token, evaluator);
-                // DesignTokenNode.notifyToken(_token, this, DesignTokenMutationType.change);
                 DesignTokenNode._notifications.push(
                     new DesignTokenChangeRecordImpl(
                         this,
