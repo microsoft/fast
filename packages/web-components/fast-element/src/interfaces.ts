@@ -104,20 +104,23 @@ export interface FASTGlobal {
     /**
      * Sends a warning to the developer.
      * @param code - The warning code to send.
-     * @param args - Args relevant for the warning.
+     * @param values - Values relevant for the warning message.
      */
-    warn(code: number, ...args: any[]): void;
+    warn(code: number, values?: Record<string, any>): void;
 
     /**
      * Creates an error.
      * @param code - The error code to send.
-     * @param args - Args relevant for the error.
+     * @param values - Values relevant for the error message.
      */
-    error(code: number, ...args: any[]): Error;
+    error(code: number, values?: Record<string, any>): Error;
 
     /**
      * Adds debug messages for errors and warnings.
      * @param messages - The message dictionary to add.
+     * @remarks
+     * Message can include placeholders like $\{name\} which can be
+     * replaced by values passed at runtime.
      */
     addMessages(messages: Record<number, string>): void;
 }
@@ -194,6 +197,7 @@ export const enum Message {
     onlySetHTMLPolicyOnce = 1201,
     bindingInnerHTMLRequiresTrustedTypes = 1202,
     twoWayBindingRequiresObservables = 1203,
+    hostBindingWithoutHost = 1204,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,
