@@ -1,11 +1,12 @@
 import { isFunction, isString } from "../interfaces.js";
 import { Binding, ExecutionContext } from "../observation/observable.js";
-import { bind, BindingConfiguration, HTMLBindingDirective, oneTime } from "./binding.js";
+import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
 import {
     AddViewBehaviorFactory,
     Aspect,
     Aspected,
+    BindingConfiguration,
     HTMLDirective,
     HTMLDirectiveDefinition,
     ViewBehaviorFactory,

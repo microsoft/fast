@@ -493,7 +493,7 @@ describe("The HTML binding directive", () => {
         }
     });
 
-    context("when binding two-way", () => {
+    context.skip("when binding two-way", () => {
         for (const aspectScenario of aspectScenarios) {
             it(`sets the initial value of the ${aspectScenario.name} binding`, () => {
                 const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect);

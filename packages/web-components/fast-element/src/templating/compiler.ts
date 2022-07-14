@@ -3,7 +3,12 @@ import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { Parser } from "./markup.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
-import { Aspect, Aspected, ViewBehaviorFactory } from "./html-directive.js";
+import {
+    Aspect,
+    Aspected,
+    BindingConfiguration,
+    ViewBehaviorFactory,
+} from "./html-directive.js";
 import type { HTMLTemplateCompilationResult as TemplateCompilationResult } from "./template.js";
 import { HTMLView } from "./view.js";
 
@@ -383,15 +388,22 @@ export const Compiler = {
             return parts[0] as ViewBehaviorFactory;
         }
 
-        let sourceAspect: string | undefined;
+        let sourceAspect!: string;
+        let bindingConfiguration!: BindingConfiguration;
+        let isVolatile = false;
         const partCount = parts.length;
+
         const finalParts = parts.map((x: string | ViewBehaviorFactory) => {
             if (isString(x)) {
                 return (): string => x;
             }
 
             sourceAspect = ((x as any) as Aspected).sourceAspect || sourceAspect;
-            return ((x as any) as Aspected).binding!;
+            bindingConfiguration =
+                ((x as any) as Aspected).dataBinding || bindingConfiguration;
+            isVolatile =
+                isVolatile || ((x as any) as Aspected).dataBinding!.isVolatile || false;
+            return ((x as any) as Aspected).dataBinding!.binding;
         });
 
         const binding = (scope: unknown, context: ExecutionContext): string => {
@@ -404,7 +416,9 @@ export const Compiler = {
             return output;
         };
 
-        const directive = new HTMLBindingDirective(bind(binding));
+        bindingConfiguration.binding = binding;
+        bindingConfiguration.isVolatile = isVolatile;
+        const directive = new HTMLBindingDirective(bindingConfiguration);
         Aspect.assign(directive, sourceAspect!);
         return directive;
     },

@@ -9,7 +9,8 @@ import {
     ObservationRecord,
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
-import { BindingConfiguration, HTMLBindingDirective } from "./binding.js";
+import type { HTMLBindingDirective } from "./binding.js";
+import { BindingConfiguration } from "./html-directive.js";
 
 /**
  * The twoWay binding options.
@@ -45,6 +46,8 @@ let twoWaySettings: TwoWaySettings = {
 
 class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     implements BindingObserver<TSource, TReturn, TParent> {
+    private notifier: BindingNotifier;
+
     target!: HTMLElement;
     source!: any;
     context!: ExecutionContext;
@@ -52,9 +55,13 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
 
     constructor(
         private directive: HTMLBindingDirective,
+        private subscriber: Subscriber,
         private options: TwoWayBindingOptions,
-        private notifier: BindingNotifier
-    ) {}
+        binding: Binding,
+        isVolatile: boolean
+    ) {
+        this.notifier = Observable.binding(binding, this, isVolatile);
+    }
 
     observe(source: TSource, context?: ExecutionContext<TParent> | undefined): TReturn {
         if (!this.changeEvent) {
@@ -69,6 +76,11 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
 
     dispose(): void {
         this.target.removeEventListener(this.changeEvent, this);
+    }
+
+    /** @internal */
+    public handleChange(subject: any, args: any) {
+        this.subscriber.handleChange(subject, args);
     }
 
     /** @internal */
@@ -111,7 +123,7 @@ class TwoWayBinding<
 > extends BindingConfiguration<TSource, TReturn, TParent> {
     constructor(
         public readonly binding: Binding<TSource, TReturn, TParent>,
-        public isBindingVolatile: boolean,
+        public isVolatile: boolean,
         public options: TwoWayBindingOptions = defaultOptions
     ) {
         super();
@@ -127,8 +139,10 @@ class TwoWayBinding<
     ): BindingObserver<TSource, TReturn, TParent> {
         return new TwoWayObserver(
             directive,
+            subscriber,
             this.options,
-            Observable.binding(this.binding, subscriber, this.isBindingVolatile)
+            this.binding,
+            this.isVolatile
         );
     }
 

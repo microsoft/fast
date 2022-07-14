@@ -12,12 +12,13 @@ import {
     AddViewBehaviorFactory,
     Aspect,
     Aspected,
+    BindingConfiguration,
     HTMLDirective,
     ViewBehavior,
     ViewBehaviorFactory,
     ViewBehaviorTargets,
 } from "./html-directive.js";
-import { Markup } from "./markup.js";
+import { Markup, nextId } from "./markup.js";
 
 declare class TrustedHTML {}
 const createInnerHTMLBinding = globalThis.TrustedHTML
@@ -32,15 +33,6 @@ const createInnerHTMLBinding = globalThis.TrustedHTML
       }
     : (binding: Binding) => binding;
 
-export abstract class BindingConfiguration<TSource = any, TReturn = any, TParent = any> {
-    options?: any;
-    abstract binding: Binding<TSource, TReturn, TParent>;
-    abstract createObserver(
-        directive: HTMLBindingDirective,
-        subscriber: Subscriber
-    ): BindingObserver<TSource, TReturn, TParent>;
-}
-
 class DefaultBinding<
     TSource = any,
     TReturn = any,
@@ -48,7 +40,7 @@ class DefaultBinding<
 > extends BindingConfiguration<TSource, TReturn, TParent> {
     constructor(
         public readonly binding: Binding<TSource, TReturn, TParent>,
-        public isBindingVolatile: boolean
+        public isVolatile: boolean
     ) {
         super();
     }
@@ -57,7 +49,7 @@ class DefaultBinding<
         directive: HTMLBindingDirective,
         subscriber: Subscriber
     ): BindingObserver<TSource, TReturn, TParent> {
-        return Observable.binding(this.binding, subscriber, this.isBindingVolatile);
+        return Observable.binding(this.binding, subscriber, this.isVolatile);
     }
 }
 
@@ -484,7 +476,7 @@ export class HTMLBindingDirective
     /**
      * The unique id of the factory.
      */
-    id: string;
+    id: string = nextId();
 
     /**
      * The structural id of the DOM node to which the created behavior will apply.
@@ -565,15 +557,15 @@ HTMLDirective.define(HTMLBindingDirective, { aspected: true });
 /**
  * Creates a default binding.
  * @param binding - The binding to refresh when changed.
- * @param isBindingVolatile - Indicates whether the binding is volatile or not.
+ * @param isVolatile - Indicates whether the binding is volatile or not.
  * @returns A binding configuration.
  * @public
  */
 export function bind<T = any>(
     binding: Binding<T>,
-    isBindingVolatile = Observable.isVolatileBinding(binding)
+    isVolatile = Observable.isVolatileBinding(binding)
 ): BindingConfiguration<T> {
-    return new DefaultBinding(binding, isBindingVolatile);
+    return new DefaultBinding(binding, isVolatile);
 }
 
 /**

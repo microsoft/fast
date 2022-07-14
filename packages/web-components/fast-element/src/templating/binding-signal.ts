@@ -5,7 +5,8 @@ import type {
 } from "../observation/observable.js";
 import { isString } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
-import { BindingConfiguration, HTMLBindingDirective } from "./binding.js";
+import type { HTMLBindingDirective } from "./binding.js";
+import { BindingConfiguration } from "./html-directive.js";
 
 const subscribers: Record<string, undefined | Subscriber | Subscriber[]> = Object.create(
     null

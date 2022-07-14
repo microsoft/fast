@@ -62,7 +62,7 @@ export type Aspect = typeof Aspect[Exclude<keyof typeof Aspect, "assign" | "none
 // @public
 export interface Aspected {
     aspectType: Aspect;
-    binding?: Binding;
+    dataBinding?: BindingConfiguration;
     sourceAspect: string;
     targetAspect: string;
 }
@@ -110,7 +110,7 @@ export interface Behavior<TSource = any, TParent = any> {
 }
 
 // @public
-export function bind<T = any>(binding: Binding<T>, isBindingVolatile?: boolean): BindingConfiguration<T>;
+export function bind<T = any>(binding: Binding<T>, isVolatile?: boolean): BindingConfiguration<T>;
 
 // @public
 export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
@@ -135,7 +135,9 @@ export abstract class BindingConfiguration<TSource = any, TReturn = any, TParent
     // (undocumented)
     abstract binding: Binding<TSource, TReturn, TParent>;
     // (undocumented)
-    abstract createObserver(directive: HTMLBindingDirective, subscriber: Subscriber): BindingObserver<TSource, TReturn, TParent>;
+    abstract createObserver(directive: HTMLDirective, subscriber: Subscriber): BindingObserver<TSource, TReturn, TParent>;
+    // (undocumented)
+    isVolatile?: boolean;
     // (undocumented)
     options?: any;
 }
