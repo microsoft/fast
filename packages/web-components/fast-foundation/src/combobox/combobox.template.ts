@@ -43,6 +43,7 @@ export const comboboxTemplate: FoundationElementTemplate<
                     ?disabled="${x => x.disabled}"
                     :value="${x => x.value}"
                     @input="${(x, c) => x.inputHandler(c.event as InputEvent)}"
+                    @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
                     ${ref("control")}
                 />
                 <div class="indicator" part="indicator" aria-hidden="true">

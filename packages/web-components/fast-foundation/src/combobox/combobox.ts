@@ -405,7 +405,11 @@ export class Combobox extends FormAssociatedCombobox {
                 .indexOf(this.control.value);
         }
 
-        if (e.inputType === "deleteContentBackward" || !this.filter.length) {
+        if (
+            e.inputType === "deleteContentBackward" ||
+            e.inputType === "deleteContentForward" ||
+            !this.filter.length
+        ) {
             return true;
         }
 
@@ -498,6 +502,30 @@ export class Combobox extends FormAssociatedCombobox {
 
             default: {
                 return true;
+            }
+        }
+    }
+
+    /**
+     * Handle keyup actions for value input and text field manipulations.
+     *
+     * @param e - the keyboard event
+     * @internal
+     */
+    public keyupHandler(e: KeyboardEvent): boolean | void {
+        const key = e.key;
+
+        switch (key) {
+            case "ArrowLeft":
+            case "ArrowRight":
+            case "Backspace":
+            case "Delete":
+            case "Home":
+            case "End": {
+                this.filter = this.control.value;
+                this.selectedIndex = -1;
+                this.filterOptions();
+                break;
             }
         }
     }
