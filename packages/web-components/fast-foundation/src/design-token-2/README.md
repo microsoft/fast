@@ -46,29 +46,6 @@ Observable.getNotifier(token).subscribe({
 
 
 
-### class: `FASTDesignToken`
-
-#### Fields
-
-| Name                | Privacy | Type                                     | Default | Description | Inherited From |
-| ------------------- | ------- | ---------------------------------------- | ------- | ----------- | -------------- |
-| `cssCustomProperty` | public  | `string`                                 |         |             |                |
-| `name`              | public  | `string`                                 |         |             |                |
-| `$value`            | public  |                                          |         |             |                |
-| `default`           | public  | `StaticDesignTokenValue<T> or undefined` |         |             |                |
-
-#### Methods
-
-| Name             | Privacy | Description | Parameters                                                          | Return                      | Inherited From |
-| ---------------- | ------- | ----------- | ------------------------------------------------------------------- | --------------------------- | -------------- |
-| `getValueFor`    | public  |             | `target: FASTElement`                                               | `StaticDesignTokenValue<T>` |                |
-| `setValueFor`    | public  |             | `target: FASTElement, value: DesignToken<T> or DesignTokenValue<T>` | `void`                      |                |
-| `deleteValueFor` | public  |             | `target: FASTElement`                                               | `this`                      |                |
-| `withDefault`    | public  |             | `value: DesignToken<T> or DesignTokenValue<T>`                      | `this`                      |                |
-| `createCSS`      | public  |             |                                                                     | `string`                    |                |
-
-<hr/>
-
 ### Variables
 
 | Name          | Description                                                    | Type |

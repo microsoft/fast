@@ -4,6 +4,7 @@ import {
     FASTElement,
     Observable,
     Subscriber,
+    SubscriberSet,
 } from "@microsoft/fast-element";
 import { composedContains, composedParent } from "@microsoft/fast-element/utilities";
 import {
@@ -67,16 +68,36 @@ export interface DesignToken<T extends DesignTokenValueType> {
      */
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 
-    // /**
-    //  * Subscribes a subscriber to change records for a token. If an element is provided, only
-    //  * change records for that element will be emitted.
-    //  */
-    // subscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
+    /**
+     * Subscribes a subscriber to change records for a token. If an element is provided, only
+     * change records for that element will be emitted.
+     */
+    subscribe(subscriber: FASTDesignTokenSubscriber<this>): void;
 
-    // /**
-    //  * Unsubscribes a subscriber from change records for a token.
-    //  */
-    // unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
+    /**
+     * Unsubscribes a subscriber from change records for a token.
+     */
+    unsubscribe(subscriber: FASTDesignTokenSubscriber<this>): void;
+}
+
+export interface FASTDesignTokenChangeRecord<T extends DesignToken<any>> {
+    /**
+     * The element for which the value was changed
+     */
+    target: FASTElement | "default";
+
+    /**
+     * The token that was changed
+     */
+    token: T;
+}
+
+/**
+ * A subscriber that should receive {@link DesignTokenChangeRecord | change records} when a token changes for a target
+ * @public
+ */
+export interface FASTDesignTokenSubscriber<T extends DesignToken<any>> {
+    handleChange(token: T, record: FASTDesignTokenChangeRecord<T>): void;
 }
 
 /**
@@ -113,8 +134,7 @@ export interface DesignTokenConfiguration {
     cssCustomPropertyName?: string | null;
 }
 
-export class FASTDesignToken<T extends DesignTokenValueType>
-    implements CSSDesignToken<T> {
+class FASTDesignToken<T extends DesignTokenValueType> implements CSSDesignToken<T> {
     public cssCustomProperty: string;
     public name: string;
     public get $value() {
@@ -125,6 +145,8 @@ export class FASTDesignToken<T extends DesignTokenValueType>
     }
 
     private cssVar: string | undefined;
+    private subscribers = new SubscriberSet(this);
+
     public static from<T>(
         nameOrConfig: string | DesignTokenConfiguration
     ): FASTDesignToken<T> {
@@ -144,10 +166,10 @@ export class FASTDesignToken<T extends DesignTokenValueType>
         if (configuration.cssCustomPropertyName !== null) {
             this.cssCustomProperty = `--${configuration.cssCustomPropertyName}`;
             this.cssVar = `var(${this.cssCustomProperty})`;
-
-            // Subscribe to changes
             Observable.getNotifier(this).subscribe(this.cssReflector);
         }
+
+        Observable.getNotifier(this).subscribe(this.subscriberNotifier);
     }
 
     public getValueFor(target: FASTElement): StaticDesignTokenValue<T> {
@@ -176,6 +198,14 @@ export class FASTDesignToken<T extends DesignTokenValueType>
 
     public createCSS(): string {
         return this.cssVar || "";
+    }
+
+    public subscribe(subscriber: FASTDesignTokenSubscriber<this>): void {
+        this.subscribers.subscribe(subscriber);
+    }
+
+    public unsubscribe(subscriber: FASTDesignTokenSubscriber<this>): void {
+        this.subscribers.unsubscribe(subscriber);
     }
 
     /**
@@ -208,8 +238,6 @@ export class FASTDesignToken<T extends DesignTokenValueType>
                     : record.target instanceof FASTDesignTokenNode
                     ? PropertyTargetManager.getOrCreate(record.target.target)
                     : null;
-            // TODO we'll need to check if record.target.target exists, or if record.target is default node,
-            // then do something different
             if (target) {
                 if (record.type === DesignTokenMutationType.delete) {
                     target.removeProperty(this.cssCustomProperty!);
@@ -220,6 +248,22 @@ export class FASTDesignToken<T extends DesignTokenValueType>
                     );
                 }
             }
+        },
+    };
+
+    private subscriberNotifier: Subscriber = {
+        handleChange: (
+            source: FASTDesignToken<T>,
+            change: DesignTokenChangeRecord<T>
+        ) => {
+            const record: FASTDesignTokenChangeRecord<this> = {
+                target:
+                    change.target === FASTDesignTokenNode.defaultNode
+                        ? "default"
+                        : (change.target as FASTDesignTokenNode).target,
+                token: this,
+            };
+            this.subscribers.notify(record);
         },
     };
 }
