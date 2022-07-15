@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: update foundation to new binding APIs",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
