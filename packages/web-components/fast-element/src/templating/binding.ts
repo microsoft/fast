@@ -33,7 +33,7 @@ const createInnerHTMLBinding = globalThis.TrustedHTML
       }
     : (binding: Expression) => binding;
 
-class DefaultBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
+class OnChangeBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
     TSource,
     TReturn,
     TParent
@@ -46,7 +46,7 @@ class DefaultBinding<TSource = any, TReturn = any, TParent = any> extends Bindin
     }
 
     createObserver(
-        directive: HTMLBindingDirective,
+        _: HTMLBindingDirective,
         subscriber: Subscriber
     ): ExpressionObserver<TSource, TReturn, TParent> {
         return Observable.binding(this.evaluate, subscriber, this.isVolatile);
@@ -60,10 +60,7 @@ class OneTimeBinding<TSource = any, TReturn = any, TParent = any>
         super();
     }
 
-    createObserver(
-        directive: HTMLBindingDirective,
-        subscriber: Subscriber
-    ): ExpressionObserver<TSource, TReturn, TParent> {
+    createObserver(): ExpressionObserver<TSource, TReturn, TParent> {
         return this;
     }
 
@@ -372,7 +369,17 @@ export class BindingBehavior implements ViewBehavior {
     }
 }
 
-class ContentBehavior extends BindingBehavior {
+/**
+ * A special binding behavior that can bind node content.
+ * @public
+ */
+export class ContentBehavior extends BindingBehavior {
+    /**
+     * Unbinds this behavior from the source.
+     * @param source - The source to unbind from.
+     * @param context - The execution context that the binding is operating within.
+     * @param targets - The targets that behaviors in a view can attach to.
+     */
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         super.unbind(source, context, targets);
 
@@ -555,7 +562,7 @@ export class HTMLBindingDirective
 HTMLDirective.define(HTMLBindingDirective, { aspected: true });
 
 /**
- * Creates a default binding.
+ * Creates an standard binding.
  * @param binding - The binding to refresh when changed.
  * @param isVolatile - Indicates whether the binding is volatile or not.
  * @returns A binding configuration.
@@ -565,7 +572,7 @@ export function bind<T = any>(
     binding: Expression<T>,
     isVolatile = Observable.isVolatileBinding(binding)
 ): Binding<T> {
-    return new DefaultBinding(binding, isVolatile);
+    return new OnChangeBinding(binding, isVolatile);
 }
 
 /**
@@ -589,26 +596,23 @@ export function listener<T = any>(
     binding: Expression<T>,
     options?: AddEventListenerOptions
 ): Binding<T> {
-    const config = new DefaultBinding(binding, false);
+    const config = new OnChangeBinding(binding, false);
     config.options = options;
     return config;
 }
 
 /**
- * Creates a binding configuration for the value using the default behavior.
- * @param object - The value to create the default binding for.
+ * Normalizes the input value into a binding.
+ * @param value - The value to create the default binding for.
  * @returns A binding configuration for the provided value.
  * @public
  */
-export function defaultBinding<TSource = any, TReturn = any, TParent = any>(
-    object:
-        | Expression<TSource, TReturn, TParent>
-        | Binding<TSource, TReturn, TParent>
-        | any
+export function normalizeBinding<TSource = any, TReturn = any, TParent = any>(
+    value: Expression<TSource, TReturn, TParent> | Binding<TSource, TReturn, TParent> | {}
 ): Binding<TSource, TReturn, TParent> {
-    return isFunction(object)
-        ? bind(object)
-        : object instanceof Binding
-        ? object
-        : oneTime(() => object);
+    return isFunction(value)
+        ? bind(value)
+        : value instanceof Binding
+        ? value
+        : oneTime(() => value);
 }

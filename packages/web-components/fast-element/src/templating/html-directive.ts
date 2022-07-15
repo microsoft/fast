@@ -177,9 +177,9 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     isVolatile?: boolean;
 
     /**
-     * The binding.
+     * Evaluates the binding expression.
      */
-    abstract evaluate: Expression<TSource, TReturn, TParent>;
+    evaluate: Expression<TSource, TReturn, TParent>;
 
     /**
      * Creates an observer capable of notifying a subscriber when the output of a binding changes.

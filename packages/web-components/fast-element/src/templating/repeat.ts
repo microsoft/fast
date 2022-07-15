@@ -8,7 +8,7 @@ import {
 } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
 import { ArrayObserver, Splice } from "../observation/arrays.js";
-import { defaultBinding } from "../index.js";
+import { normalizeBinding } from "../index.js";
 import { Markup, nextId } from "./markup.js";
 import {
     AddViewBehaviorFactory,
@@ -362,7 +362,7 @@ export function repeat<
         | ViewTemplate,
     options: RepeatOptions = defaultRepeatOptions
 ): CaptureType<TSource> {
-    const dataBinding = defaultBinding(items);
-    const templateBinding = defaultBinding(templateOrTemplateBinding);
+    const dataBinding = normalizeBinding(items);
+    const templateBinding = normalizeBinding(templateOrTemplateBinding);
     return new RepeatDirective(dataBinding, templateBinding, options) as any;
 }

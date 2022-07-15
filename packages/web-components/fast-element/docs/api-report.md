@@ -115,7 +115,7 @@ export function bind<T = any>(binding: Expression<T>, isVolatile?: boolean): Bin
 // @public
 export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     abstract createObserver(directive: HTMLDirective, subscriber: Subscriber): ExpressionObserver<TSource, TReturn, TParent>;
-    abstract evaluate: Expression<TSource, TReturn, TParent>;
+    evaluate: Expression<TSource, TReturn, TParent>;
     isVolatile?: boolean;
     options?: any;
 }
@@ -190,6 +190,11 @@ export type Constructable<T = {}> = {
 export type ConstructibleStyleStrategy = {
     new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
 };
+
+// @public
+export class ContentBehavior extends BindingBehavior {
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+}
 
 // @public
 export interface ContentTemplate {
@@ -268,9 +273,6 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
-
-// @public
-export function defaultBinding<TSource = any, TReturn = any, TParent = any>(object: Expression<TSource, TReturn, TParent> | Binding<TSource, TReturn, TParent> | any): Binding<TSource, TReturn, TParent>;
 
 // @public
 export interface Disposable {
@@ -530,6 +532,9 @@ export abstract class NodeObservationDirective<T extends NodeBehaviorOptions> ex
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
     protected updateTarget(source: any, value: ReadonlyArray<any>): void;
 }
+
+// @public
+export function normalizeBinding<TSource = any, TReturn = any, TParent = any>(value: Expression<TSource, TReturn, TParent> | Binding<TSource, TReturn, TParent> | {}): Binding<TSource, TReturn, TParent>;
 
 // @public
 export interface Notifier {
