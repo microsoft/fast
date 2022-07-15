@@ -59,7 +59,7 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
         private dataBinding: TwoWayBinding
     ) {
         this.notifier = Observable.binding(
-            dataBinding.binding,
+            dataBinding.evaluate,
             this,
             dataBinding.isVolatile
         );
@@ -83,7 +83,7 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
 
     /** @internal */
     public handleChange(subject: any, args: any) {
-        this.subscriber.handleChange(this.dataBinding.binding, this);
+        this.subscriber.handleChange(this.dataBinding.evaluate, this);
     }
 
     /** @internal */
@@ -127,7 +127,7 @@ class TwoWayBinding<
     TParent = any
 > extends BindingConfiguration<TSource, TReturn, TParent> {
     constructor(
-        public readonly binding: Binding<TSource, TReturn, TParent>,
+        public readonly evaluate: Binding<TSource, TReturn, TParent>,
         public isVolatile: boolean,
         public options: TwoWayBindingOptions = defaultOptions
     ) {

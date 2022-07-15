@@ -179,7 +179,7 @@ export abstract class BindingConfiguration<TSource = any, TReturn = any, TParent
     /**
      * The binding.
      */
-    abstract binding: Binding<TSource, TReturn, TParent>;
+    abstract evaluate: Binding<TSource, TReturn, TParent>;
 
     /**
      * Creates an observer capable of notifying a subscriber when the output of a binding changes.

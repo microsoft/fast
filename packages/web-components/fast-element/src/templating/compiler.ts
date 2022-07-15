@@ -403,7 +403,7 @@ export const Compiler = {
                 ((x as any) as Aspected).dataBinding || bindingConfiguration;
             isVolatile =
                 isVolatile || ((x as any) as Aspected).dataBinding!.isVolatile || false;
-            return ((x as any) as Aspected).dataBinding!.binding;
+            return ((x as any) as Aspected).dataBinding!.evaluate;
         });
 
         const binding = (scope: unknown, context: ExecutionContext): string => {
@@ -416,7 +416,7 @@ export const Compiler = {
             return output;
         };
 
-        bindingConfiguration.binding = binding;
+        bindingConfiguration.evaluate = binding;
         bindingConfiguration.isVolatile = isVolatile;
         const directive = new HTMLBindingDirective(bindingConfiguration);
         Aspect.assign(directive, sourceAspect!);

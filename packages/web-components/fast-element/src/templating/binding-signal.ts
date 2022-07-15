@@ -64,7 +64,7 @@ class SignalObserver<TSource = any, TReturn = any, TParent = any> {
     observe(source: TSource, context: ExecutionContext<TParent>): TReturn {
         const signal = (this.signal = this.getSignal(source, context));
         Signal.subscribe(signal, this);
-        return this.dataBinding.binding(source, context);
+        return this.dataBinding.evaluate(source, context);
     }
 
     dispose() {
@@ -72,7 +72,7 @@ class SignalObserver<TSource = any, TReturn = any, TParent = any> {
     }
 
     handleChange() {
-        this.subscriber.handleChange(this.dataBinding.binding, this);
+        this.subscriber.handleChange(this.dataBinding.evaluate, this);
     }
 
     private getSignal(source: any, context: ExecutionContext): string {
@@ -87,7 +87,7 @@ class SignalBinding<
     TParent = any
 > extends BindingConfiguration<TSource, TReturn, TParent> {
     constructor(
-        public readonly binding: Binding<TSource, TReturn, TParent>,
+        public readonly evaluate: Binding<TSource, TReturn, TParent>,
         public readonly options: any
     ) {
         super();

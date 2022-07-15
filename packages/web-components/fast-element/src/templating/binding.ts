@@ -1,5 +1,5 @@
 import type { Subscriber } from "../index.js";
-import { Message } from "../interfaces.js";
+import { isFunction, Message } from "../interfaces.js";
 import {
     Binding,
     BindingObserver,
@@ -39,7 +39,7 @@ class DefaultBinding<
     TParent = any
 > extends BindingConfiguration<TSource, TReturn, TParent> {
     constructor(
-        public readonly binding: Binding<TSource, TReturn, TParent>,
+        public readonly evaluate: Binding<TSource, TReturn, TParent>,
         public isVolatile: boolean
     ) {
         super();
@@ -49,14 +49,14 @@ class DefaultBinding<
         directive: HTMLBindingDirective,
         subscriber: Subscriber
     ): BindingObserver<TSource, TReturn, TParent> {
-        return Observable.binding(this.binding, subscriber, this.isVolatile);
+        return Observable.binding(this.evaluate, subscriber, this.isVolatile);
     }
 }
 
 class OneTimeBinding<TSource = any, TReturn = any, TParent = any>
     extends BindingConfiguration<TSource, TReturn, TParent>
     implements BindingObserver<TSource, TReturn, TParent> {
-    constructor(public readonly binding: Binding<TSource, TReturn, TParent>) {
+    constructor(public readonly evaluate: Binding<TSource, TReturn, TParent>) {
         super();
     }
 
@@ -68,7 +68,7 @@ class OneTimeBinding<TSource = any, TReturn = any, TParent = any>
     }
 
     observe(source: TSource, context: ExecutionContext<TParent>): TReturn {
-        return this.binding(source, context);
+        return this.evaluate(source, context);
     }
 
     dispose(): void {}
@@ -453,7 +453,7 @@ export class EventBehavior {
         const target = event.currentTarget!;
 
         ExecutionContext.setEvent(event);
-        const result = this.directive.dataBinding.binding(
+        const result = this.directive.dataBinding.evaluate(
             target[this.sourceProperty],
             target[this.contextProperty]
         );
@@ -519,8 +519,8 @@ export class HTMLBindingDirective
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
         if (this.factory == null) {
             if (this.targetAspect === "innerHTML") {
-                this.dataBinding.binding = createInnerHTMLBinding(
-                    this.dataBinding.binding
+                this.dataBinding.evaluate = createInnerHTMLBinding(
+                    this.dataBinding.evaluate
                 );
             }
 
@@ -592,4 +592,23 @@ export function listener<T = any>(
     const config = new DefaultBinding(binding, false);
     config.options = options;
     return config;
+}
+
+/**
+ * Creates a binding configuration for the value using the default behavior.
+ * @param object - The value to create the default binding for.
+ * @returns A binding configuration for the provided value.
+ * @public
+ */
+export function defaultBinding<TSource = any, TReturn = any, TParent = any>(
+    object:
+        | Binding<TSource, TReturn, TParent>
+        | BindingConfiguration<TSource, TReturn, TParent>
+        | any
+): BindingConfiguration<TSource, TReturn, TParent> {
+    return isFunction(object)
+        ? bind(object)
+        : object instanceof BindingConfiguration
+        ? object
+        : oneTime(() => object);
 }

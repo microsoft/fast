@@ -132,8 +132,8 @@ export class BindingBehavior implements ViewBehavior {
 
 // @public
 export abstract class BindingConfiguration<TSource = any, TReturn = any, TParent = any> {
-    abstract binding: Binding<TSource, TReturn, TParent>;
     abstract createObserver(directive: HTMLDirective, subscriber: Subscriber): BindingObserver<TSource, TReturn, TParent>;
+    abstract evaluate: Binding<TSource, TReturn, TParent>;
     isVolatile?: boolean;
     options?: any;
 }
@@ -282,6 +282,9 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
+
+// @public
+export function defaultBinding<TSource = any, TReturn = any, TParent = any>(object: Binding<TSource, TReturn, TParent> | BindingConfiguration<TSource, TReturn, TParent> | any): BindingConfiguration<TSource, TReturn, TParent>;
 
 // @public
 export interface Disposable {
@@ -603,11 +606,11 @@ export class RefDirective extends StatelessAttachedAttributeDirective<string> {
 }
 
 // @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(items: Binding<TSource, TArray, ExecutionContext<TSource>> | ReadonlyArray<any>, templateOrTemplateBinding: ViewTemplate | Binding<TSource, ViewTemplate>, options?: RepeatOptions): CaptureType<TSource>;
+export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(items: Binding<TSource, TArray, ExecutionContext<TSource>> | BindingConfiguration<TSource, TArray> | ReadonlyArray<any>, templateOrTemplateBinding: Binding<TSource, ViewTemplate> | BindingConfiguration<TSource, ViewTemplate> | ViewTemplate, options?: RepeatOptions): CaptureType<TSource>;
 
 // @public
 export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
-    constructor(location: Node, dataBinding: Binding<TSource, any[]>, isItemsBindingVolatile: boolean, templateBinding: Binding<TSource, SyntheticViewTemplate>, isTemplateBindingVolatile: boolean, options: RepeatOptions);
+    constructor(directive: RepeatDirective, location: Node);
     bind(source: TSource, context: ExecutionContext): void;
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
@@ -615,17 +618,17 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
 // @public
 export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory {
-    constructor(dataBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
+    constructor(dataBinding: BindingConfiguration<TSource>, templateBinding: BindingConfiguration<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
     createHTML(add: AddViewBehaviorFactory): string;
     // (undocumented)
-    readonly dataBinding: Binding;
+    readonly dataBinding: BindingConfiguration<TSource>;
     id: string;
     nodeId: string;
     // (undocumented)
     readonly options: RepeatOptions;
     // (undocumented)
-    readonly templateBinding: Binding<TSource, SyntheticViewTemplate>;
+    readonly templateBinding: BindingConfiguration<TSource, SyntheticViewTemplate>;
 }
 
 // @public

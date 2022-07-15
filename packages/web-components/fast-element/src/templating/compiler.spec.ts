@@ -367,7 +367,7 @@ describe("The template compiler", () => {
 
                 if (x.result) {
                     expect(
-                        (factories[0] as HTMLBindingDirective).dataBinding.binding(
+                        (factories[0] as HTMLBindingDirective).dataBinding.evaluate(
                             scope,
                             ExecutionContext.default
                         )
@@ -528,7 +528,7 @@ describe("The template compiler", () => {
 
                 if (x.result) {
                     expect(
-                        (factories[0] as HTMLBindingDirective).dataBinding.binding(
+                        (factories[0] as HTMLBindingDirective).dataBinding.evaluate(
                             scope,
                             ExecutionContext.default
                         )
