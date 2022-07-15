@@ -65,8 +65,18 @@ interface SubscriptionRecord extends ObservationRecord {
     next: SubscriptionRecord | undefined;
 }
 
+/**
+ * Observes a binding for changes.
+ *
+ * @public
+ */
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
     extends Disposable {
+    /**
+     * Begins observing the binding.
+     * @param source - The source to pass to the binding.
+     * @param context - The context to pass to the binding.
+     */
     observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
 }
 

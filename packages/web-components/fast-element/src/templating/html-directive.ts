@@ -160,10 +160,32 @@ export function htmlDirective(options?: PartialHTMLDirectiveDefinition) {
     };
 }
 
+/**
+ * Captures a binding along with related information and capabilities.
+ *
+ * @public
+ */
 export abstract class BindingConfiguration<TSource = any, TReturn = any, TParent = any> {
+    /**
+     * Options associated with the binding.
+     */
     options?: any;
+
+    /**
+     * Whether or not the binding is volatile.
+     */
     isVolatile?: boolean;
+
+    /**
+     * The binding.
+     */
     abstract binding: Binding<TSource, TReturn, TParent>;
+
+    /**
+     * Creates an observer capable of notifying a subscriber when the output of a binding changes.
+     * @param directive - The HTML Directive to create the observer for.
+     * @param subscriber - The subscriber to changes in the binding.
+     */
     abstract createObserver(
         directive: HTMLDirective,
         subscriber: Subscriber

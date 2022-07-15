@@ -130,15 +130,11 @@ export class BindingBehavior implements ViewBehavior {
     protected updateTarget: UpdateTarget;
 }
 
-// @public (undocumented)
+// @public
 export abstract class BindingConfiguration<TSource = any, TReturn = any, TParent = any> {
-    // (undocumented)
     abstract binding: Binding<TSource, TReturn, TParent>;
-    // (undocumented)
     abstract createObserver(directive: HTMLDirective, subscriber: Subscriber): BindingObserver<TSource, TReturn, TParent>;
-    // (undocumented)
     isVolatile?: boolean;
-    // (undocumented)
     options?: any;
 }
 
@@ -148,9 +144,8 @@ export interface BindingNotifier<TSource = any, TReturn = any, TParent = any> ex
     setMode(isAsync: boolean): void;
 }
 
-// @public (undocumented)
+// @public
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Disposable {
-    // (undocumented)
     observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
 }
 
