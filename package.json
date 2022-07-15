@@ -17,8 +17,7 @@
       "sites/website",
       "sites/fast-website",
       "examples/todo-app",
-      "examples/ssr",
-      "examples/design-token-test"
+      "examples/ssr"
     ],
     "nohoist": [
       "**/@types/chai",
