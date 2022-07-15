@@ -50,8 +50,8 @@ export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirectiv
             renderer: TemplateRenderer,
             context: ExecutionContext
         ): IterableIterator<string> {
-            const items = directive.dataBinding(source, context);
-            const template = directive.templateBinding(source, context);
+            const items = directive.dataBinding.evaluate(source, context);
+            const template = directive.templateBinding.evaluate(source, context);
             const childContext = context.createChildContext(source);
 
             if (template instanceof ViewTemplate) {
