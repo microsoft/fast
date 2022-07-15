@@ -1,7 +1,7 @@
 import { css, customElement, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
 import chia, { expect } from "chai";
 import spies from "chai-spies";
-import { uniqueElementName } from "../testing/fixture.js";
+import { uniqueElementName } from "@microsoft/fast-element/testing";
 import type { DesignTokenResolver } from "./design-token-node.js";
 import { CSSDesignToken, DesignToken, FASTDesignTokenChangeRecord, FASTDesignTokenSubscriber } from "./fast-design-token.js";
 
