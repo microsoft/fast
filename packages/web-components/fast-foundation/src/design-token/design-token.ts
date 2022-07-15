@@ -10,7 +10,7 @@ import {
     Observable,
     Subscriber,
 } from "@microsoft/fast-element";
-import { composedContains, composedParent } from "@microsoft/fast-element/utilities";
+import { composedContains, composedParent } from "../utilities/index.js";
 import {
     PropertyTargetManager,
     RootStyleSheetTarget,

@@ -75,3 +75,11 @@ sites/website/i18n/
 # Ignore Build Artefacts
 bin/
 obj/
+
+# FAST Benchmarks
+packages/utilities/fast-benchmarks/results
+packages/utilities/fast-benchmarks/tsconfig.*
+packages/utilities/fast-benchmarks/utils/*.d.ts
+packages/utilities/fast-benchmarks/utils/*.js
+packages/utilities/fast-benchmarks/benchmarks/**/*.d.ts
+packages/utilities/fast-benchmarks/benchmarks/**/*.js
