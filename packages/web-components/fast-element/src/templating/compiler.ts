@@ -2,13 +2,8 @@ import { isFunction, isString, Message, TrustedTypesPolicy } from "../interfaces
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { Parser } from "./markup.js";
-import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
-import {
-    Aspect,
-    Aspected,
-    BindingConfiguration,
-    ViewBehaviorFactory,
-} from "./html-directive.js";
+import { HTMLBindingDirective, oneTime } from "./binding.js";
+import { Aspect, Aspected, Binding, ViewBehaviorFactory } from "./html-directive.js";
 import type { HTMLTemplateCompilationResult as TemplateCompilationResult } from "./template.js";
 import { HTMLView } from "./view.js";
 
@@ -389,8 +384,8 @@ export const Compiler = {
         }
 
         let sourceAspect!: string;
-        let bindingConfiguration!: BindingConfiguration;
-        let isVolatile = false;
+        let binding!: Binding;
+        let isVolatile: boolean | undefined = false;
         const partCount = parts.length;
 
         const finalParts = parts.map((x: string | ViewBehaviorFactory) => {
@@ -399,14 +394,12 @@ export const Compiler = {
             }
 
             sourceAspect = ((x as any) as Aspected).sourceAspect || sourceAspect;
-            bindingConfiguration =
-                ((x as any) as Aspected).dataBinding || bindingConfiguration;
-            isVolatile =
-                isVolatile || ((x as any) as Aspected).dataBinding!.isVolatile || false;
+            binding = ((x as any) as Aspected).dataBinding || binding;
+            isVolatile = isVolatile || ((x as any) as Aspected).dataBinding!.isVolatile;
             return ((x as any) as Aspected).dataBinding!.evaluate;
         });
 
-        const binding = (scope: unknown, context: ExecutionContext): string => {
+        const expression = (scope: unknown, context: ExecutionContext): string => {
             let output = "";
 
             for (let i = 0; i < partCount; ++i) {
@@ -416,9 +409,9 @@ export const Compiler = {
             return output;
         };
 
-        bindingConfiguration.evaluate = binding;
-        bindingConfiguration.isVolatile = isVolatile;
-        const directive = new HTMLBindingDirective(bindingConfiguration);
+        binding.evaluate = expression;
+        binding.isVolatile = isVolatile;
+        const directive = new HTMLBindingDirective(binding);
         Aspect.assign(directive, sourceAspect!);
         return directive;
     },

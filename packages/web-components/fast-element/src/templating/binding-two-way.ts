@@ -1,16 +1,15 @@
 import { isString, Message } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
-    Binding,
-    BindingNotifier,
-    BindingObserver,
     ExecutionContext,
+    Expression,
+    ExpressionObserver,
     Observable,
     ObservationRecord,
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import type { HTMLBindingDirective } from "./binding.js";
-import { BindingConfiguration } from "./html-directive.js";
+import { Binding } from "./html-directive.js";
 
 /**
  * The twoWay binding options.
@@ -45,8 +44,8 @@ let twoWaySettings: TwoWaySettings = {
 };
 
 class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
-    implements BindingObserver<TSource, TReturn, TParent> {
-    private notifier: BindingNotifier;
+    implements ExpressionObserver<TSource, TReturn, TParent> {
+    private notifier: ExpressionObserver;
 
     target!: HTMLElement;
     source!: any;
@@ -121,13 +120,13 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     }
 }
 
-class TwoWayBinding<
-    TSource = any,
-    TReturn = any,
-    TParent = any
-> extends BindingConfiguration<TSource, TReturn, TParent> {
+class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
+    TSource,
+    TReturn,
+    TParent
+> {
     constructor(
-        public readonly evaluate: Binding<TSource, TReturn, TParent>,
+        public readonly evaluate: Expression<TSource, TReturn, TParent>,
         public isVolatile: boolean,
         public options: TwoWayBindingOptions = defaultOptions
     ) {
@@ -141,7 +140,7 @@ class TwoWayBinding<
     createObserver(
         directive: HTMLBindingDirective,
         subscriber: Subscriber
-    ): BindingObserver<TSource, TReturn, TParent> {
+    ): ExpressionObserver<TSource, TReturn, TParent> {
         return new TwoWayObserver(directive, subscriber, this);
     }
 
@@ -162,10 +161,10 @@ class TwoWayBinding<
  * @public
  */
 export function twoWay<T = any>(
-    binding: Binding<T>,
+    binding: Expression<T>,
     optionsOrChangeEvent?: TwoWayBindingOptions | string,
     isBindingVolatile = Observable.isVolatileBinding(binding)
-): BindingConfiguration<T> {
+): Binding<T> {
     if (isString(optionsOrChangeEvent)) {
         optionsOrChangeEvent = { changeEvent: optionsOrChangeEvent };
     }

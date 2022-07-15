@@ -1,9 +1,9 @@
 import type { Behavior } from "../observation/behavior.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
-    Binding,
-    BindingObserver,
     ExecutionContext,
+    Expression,
+    ExpressionObserver,
     Observable,
 } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
@@ -12,7 +12,7 @@ import { defaultBinding } from "../index.js";
 import { Markup, nextId } from "./markup.js";
 import {
     AddViewBehaviorFactory,
-    BindingConfiguration,
+    Binding,
     HTMLDirective,
     ViewBehaviorFactory,
     ViewBehaviorTargets,
@@ -67,10 +67,10 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     private source: TSource | null = null;
     private views: SyntheticView[] = [];
     private template: SyntheticViewTemplate;
-    private templateBindingObserver: BindingObserver<TSource, SyntheticViewTemplate>;
+    private templateBindingObserver: ExpressionObserver<TSource, SyntheticViewTemplate>;
     private items: readonly any[] | null = null;
     private itemsObserver: Notifier | null = null;
-    private itemsBindingObserver: BindingObserver<TSource, any[]>;
+    private itemsBindingObserver: ExpressionObserver<TSource, any[]>;
     private context: ExecutionContext | undefined = void 0;
     private childContext: ExecutionContext | undefined = void 0;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
@@ -322,11 +322,8 @@ export class RepeatDirective<TSource = any>
      * @param options - Options used to turn on special repeat features.
      */
     public constructor(
-        public readonly dataBinding: BindingConfiguration<TSource>,
-        public readonly templateBinding: BindingConfiguration<
-            TSource,
-            SyntheticViewTemplate
-        >,
+        public readonly dataBinding: Binding<TSource>,
+        public readonly templateBinding: Binding<TSource, SyntheticViewTemplate>,
         public readonly options: RepeatOptions
     ) {
         ArrayObserver.enable();
@@ -356,12 +353,12 @@ export function repeat<
     TArray extends ReadonlyArray<any> = ReadonlyArray<any>
 >(
     items:
-        | Binding<TSource, TArray, ExecutionContext<TSource>>
-        | BindingConfiguration<TSource, TArray>
+        | Expression<TSource, TArray, ExecutionContext<TSource>>
+        | Binding<TSource, TArray>
         | ReadonlyArray<any>,
     templateOrTemplateBinding:
+        | Expression<TSource, ViewTemplate>
         | Binding<TSource, ViewTemplate>
-        | BindingConfiguration<TSource, ViewTemplate>
         | ViewTemplate,
     options: RepeatOptions = defaultRepeatOptions
 ): CaptureType<TSource> {

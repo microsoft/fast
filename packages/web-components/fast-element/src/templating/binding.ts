@@ -1,9 +1,9 @@
 import type { Subscriber } from "../index.js";
 import { isFunction, Message } from "../interfaces.js";
 import {
-    Binding,
-    BindingObserver,
     ExecutionContext,
+    Expression,
+    ExpressionObserver,
     Observable,
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
@@ -12,7 +12,7 @@ import {
     AddViewBehaviorFactory,
     Aspect,
     Aspected,
-    BindingConfiguration,
+    Binding,
     HTMLDirective,
     ViewBehavior,
     ViewBehaviorFactory,
@@ -22,7 +22,7 @@ import { Markup, nextId } from "./markup.js";
 
 declare class TrustedHTML {}
 const createInnerHTMLBinding = globalThis.TrustedHTML
-    ? (binding: Binding) => (s, c) => {
+    ? (binding: Expression) => (s, c) => {
           const value = binding(s, c);
 
           if (value instanceof TrustedHTML) {
@@ -31,15 +31,15 @@ const createInnerHTMLBinding = globalThis.TrustedHTML
 
           throw FAST.error(Message.bindingInnerHTMLRequiresTrustedTypes);
       }
-    : (binding: Binding) => binding;
+    : (binding: Expression) => binding;
 
-class DefaultBinding<
-    TSource = any,
-    TReturn = any,
-    TParent = any
-> extends BindingConfiguration<TSource, TReturn, TParent> {
+class DefaultBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
+    TSource,
+    TReturn,
+    TParent
+> {
     constructor(
-        public readonly evaluate: Binding<TSource, TReturn, TParent>,
+        public readonly evaluate: Expression<TSource, TReturn, TParent>,
         public isVolatile: boolean
     ) {
         super();
@@ -48,22 +48,22 @@ class DefaultBinding<
     createObserver(
         directive: HTMLBindingDirective,
         subscriber: Subscriber
-    ): BindingObserver<TSource, TReturn, TParent> {
+    ): ExpressionObserver<TSource, TReturn, TParent> {
         return Observable.binding(this.evaluate, subscriber, this.isVolatile);
     }
 }
 
 class OneTimeBinding<TSource = any, TReturn = any, TParent = any>
-    extends BindingConfiguration<TSource, TReturn, TParent>
-    implements BindingObserver<TSource, TReturn, TParent> {
-    constructor(public readonly evaluate: Binding<TSource, TReturn, TParent>) {
+    extends Binding<TSource, TReturn, TParent>
+    implements ExpressionObserver<TSource, TReturn, TParent> {
+    constructor(public readonly evaluate: Expression<TSource, TReturn, TParent>) {
         super();
     }
 
     createObserver(
         directive: HTMLBindingDirective,
         subscriber: Subscriber
-    ): BindingObserver<TSource, TReturn, TParent> {
+    ): ExpressionObserver<TSource, TReturn, TParent> {
         return this;
     }
 
@@ -335,7 +335,7 @@ export class BindingBehavior implements ViewBehavior {
     }
 
     /** @internal */
-    public handleChange(binding: Binding, observer: BindingObserver): void {
+    public handleChange(binding: Expression, observer: ExpressionObserver): void {
         const target = (observer as any).target;
         const source = (observer as any).source;
         const context = (observer as any).context;
@@ -353,7 +353,7 @@ export class BindingBehavior implements ViewBehavior {
      * @param target - The target node.
      * @returns A BindingObserver.
      */
-    protected getObserver(target: Node): BindingObserver {
+    protected getObserver(target: Node): ExpressionObserver {
         return (
             target[this.observerProperty] ??
             (target[this.observerProperty] = this.directive.dataBinding.createObserver(
@@ -502,7 +502,7 @@ export class HTMLBindingDirective
      * Creates an instance of HTMLBindingDirective.
      * @param dataBinding - The binding configuration to apply.
      */
-    constructor(public dataBinding: BindingConfiguration) {}
+    constructor(public dataBinding: Binding) {}
 
     /**
      * Creates HTML to be used within a template.
@@ -562,9 +562,9 @@ HTMLDirective.define(HTMLBindingDirective, { aspected: true });
  * @public
  */
 export function bind<T = any>(
-    binding: Binding<T>,
+    binding: Expression<T>,
     isVolatile = Observable.isVolatileBinding(binding)
-): BindingConfiguration<T> {
+): Binding<T> {
     return new DefaultBinding(binding, isVolatile);
 }
 
@@ -574,7 +574,7 @@ export function bind<T = any>(
  * @returns A binding configuration.
  * @public
  */
-export function oneTime<T = any>(binding: Binding<T>): BindingConfiguration<T> {
+export function oneTime<T = any>(binding: Expression<T>): Binding<T> {
     return new OneTimeBinding(binding);
 }
 
@@ -586,9 +586,9 @@ export function oneTime<T = any>(binding: Binding<T>): BindingConfiguration<T> {
  * @public
  */
 export function listener<T = any>(
-    binding: Binding<T>,
+    binding: Expression<T>,
     options?: AddEventListenerOptions
-): BindingConfiguration<T> {
+): Binding<T> {
     const config = new DefaultBinding(binding, false);
     config.options = options;
     return config;
@@ -602,13 +602,13 @@ export function listener<T = any>(
  */
 export function defaultBinding<TSource = any, TReturn = any, TParent = any>(
     object:
+        | Expression<TSource, TReturn, TParent>
         | Binding<TSource, TReturn, TParent>
-        | BindingConfiguration<TSource, TReturn, TParent>
         | any
-): BindingConfiguration<TSource, TReturn, TParent> {
+): Binding<TSource, TReturn, TParent> {
     return isFunction(object)
         ? bind(object)
-        : object instanceof BindingConfiguration
+        : object instanceof Binding
         ? object
         : oneTime(() => object);
 }

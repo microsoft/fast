@@ -1,12 +1,12 @@
 import { isFunction, isString } from "../interfaces.js";
-import { Binding, ExecutionContext } from "../observation/observable.js";
+import { ExecutionContext, Expression } from "../observation/observable.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
 import {
     AddViewBehaviorFactory,
     Aspect,
     Aspected,
-    BindingConfiguration,
+    Binding,
     HTMLDirective,
     HTMLDirectiveDefinition,
     ViewBehaviorFactory,
@@ -145,8 +145,8 @@ export interface CaptureType<TSource> {}
  * @public
  */
 export type TemplateValue<TSource, TParent = any> =
+    | Expression<TSource, any, TParent>
     | Binding<TSource, any, TParent>
-    | BindingConfiguration<TSource, any, TParent>
     | HTMLDirective
     | CaptureType<TSource>;
 
@@ -206,7 +206,7 @@ export function html<TSource = any, TParent = any>(
             } else {
                 html += currentValue;
             }
-        } else if (currentValue instanceof BindingConfiguration) {
+        } else if (currentValue instanceof Binding) {
             html += createAspectedHTML(
                 new HTMLBindingDirective(currentValue),
                 currentString,

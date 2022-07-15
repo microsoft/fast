@@ -2,9 +2,9 @@ import type { Constructable, Mutable } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
-    Binding,
-    BindingObserver,
     ExecutionContext,
+    Expression,
+    ExpressionObserver,
 } from "../observation/observable.js";
 import { createTypeRegistry } from "../platform.js";
 import { Markup, nextId } from "./markup.js";
@@ -161,11 +161,11 @@ export function htmlDirective(options?: PartialHTMLDirectiveDefinition) {
 }
 
 /**
- * Captures a binding along with related information and capabilities.
+ * Captures a binding expression along with related information and capabilities.
  *
  * @public
  */
-export abstract class BindingConfiguration<TSource = any, TReturn = any, TParent = any> {
+export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     /**
      * Options associated with the binding.
      */
@@ -179,7 +179,7 @@ export abstract class BindingConfiguration<TSource = any, TReturn = any, TParent
     /**
      * The binding.
      */
-    abstract evaluate: Binding<TSource, TReturn, TParent>;
+    abstract evaluate: Expression<TSource, TReturn, TParent>;
 
     /**
      * Creates an observer capable of notifying a subscriber when the output of a binding changes.
@@ -189,7 +189,7 @@ export abstract class BindingConfiguration<TSource = any, TReturn = any, TParent
     abstract createObserver(
         directive: HTMLDirective,
         subscriber: Subscriber
-    ): BindingObserver<TSource, TReturn, TParent>;
+    ): ExpressionObserver<TSource, TReturn, TParent>;
 }
 
 /**
@@ -312,7 +312,7 @@ export interface Aspected {
     /**
      * A binding if one is associated with the aspect.
      */
-    dataBinding?: BindingConfiguration;
+    dataBinding?: Binding;
 }
 
 /**

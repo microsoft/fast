@@ -1,4 +1,4 @@
-import { BindingNotifier, Observable } from "./observation/observable.js";
+import { ExpressionNotifier, Observable } from "./observation/observable.js";
 import { makeObservable } from "./utilities.js";
 
 /**
@@ -26,9 +26,9 @@ const effectModel = Object.freeze({});
  * @param action An action that is affected by state changes.
  * @returns A BindingObserver which can be used to dispose of the effect.
  */
-export function useEffect(action: () => void): BindingNotifier {
+export function useEffect(action: () => void): ExpressionNotifier {
     /* eslint prefer-const: 0 */
-    let observer: BindingNotifier;
+    let observer: ExpressionNotifier;
 
     const subscriber = {
         handleChange() {

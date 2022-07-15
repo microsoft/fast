@@ -1,12 +1,12 @@
 import type {
-    Binding,
-    BindingObserver,
     ExecutionContext,
+    Expression,
+    ExpressionObserver,
 } from "../observation/observable.js";
 import { isString } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type { HTMLBindingDirective } from "./binding.js";
-import { BindingConfiguration } from "./html-directive.js";
+import { Binding } from "./html-directive.js";
 
 const subscribers: Record<string, undefined | Subscriber | Subscriber[]> = Object.create(
     null
@@ -81,13 +81,13 @@ class SignalObserver<TSource = any, TReturn = any, TParent = any> {
     }
 }
 
-class SignalBinding<
-    TSource = any,
-    TReturn = any,
-    TParent = any
-> extends BindingConfiguration<TSource, TReturn, TParent> {
+class SignalBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
+    TSource,
+    TReturn,
+    TParent
+> {
     constructor(
-        public readonly evaluate: Binding<TSource, TReturn, TParent>,
+        public readonly evaluate: Expression<TSource, TReturn, TParent>,
         public readonly options: any
     ) {
         super();
@@ -96,7 +96,7 @@ class SignalBinding<
     createObserver(
         directive: HTMLBindingDirective,
         subscriber: Subscriber
-    ): BindingObserver<TSource, TReturn, TParent> {
+    ): ExpressionObserver<TSource, TReturn, TParent> {
         return new SignalObserver(this, subscriber);
     }
 }
@@ -109,8 +109,8 @@ class SignalBinding<
  * @public
  */
 export function signal<T = any>(
-    binding: Binding<T>,
-    options: string | Binding<T>
-): BindingConfiguration<T> {
+    binding: Expression<T>,
+    options: string | Expression<T>
+): Binding<T> {
     return new SignalBinding(binding, options);
 }

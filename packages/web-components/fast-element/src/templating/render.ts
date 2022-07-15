@@ -4,9 +4,9 @@ import { Constructable, isFunction, isString } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
-    Binding,
-    BindingObserver,
     ExecutionContext,
+    Expression,
+    ExpressionObserver,
     Observable,
 } from "../observation/observable.js";
 import type { ContentTemplate, ContentView } from "./binding.js";
@@ -40,9 +40,9 @@ export class RenderBehavior<TSource = any, TParent = any>
     private source: TSource | null = null;
     private view: ComposableView | null = null;
     private template!: ContentTemplate;
-    private templateBindingObserver: BindingObserver<TSource, ContentTemplate>;
+    private templateBindingObserver: ExpressionObserver<TSource, ContentTemplate>;
     private data: any | null = null;
-    private dataBindingObserver: BindingObserver<TSource, any[]>;
+    private dataBindingObserver: ExpressionObserver<TSource, any[]>;
     private originalContext: ExecutionContext | undefined = void 0;
     private childContext: ExecutionContext | undefined = void 0;
 
@@ -54,8 +54,8 @@ export class RenderBehavior<TSource = any, TParent = any>
      */
     public constructor(
         private location: Node,
-        private dataBinding: Binding<TSource, any[]>,
-        private templateBinding: Binding<TSource, ContentTemplate>
+        private dataBinding: Expression<TSource, any[]>,
+        private templateBinding: Expression<TSource, ContentTemplate>
     ) {
         this.dataBindingObserver = Observable.binding(dataBinding, this, true);
         this.templateBindingObserver = Observable.binding(templateBinding, this, true);
@@ -174,8 +174,8 @@ export class RenderDirective<TSource = any>
      * @param templateBinding - A binding expression that returns the template to use to render the data.
      */
     public constructor(
-        public readonly dataBinding: Binding,
-        public readonly templateBinding: Binding<TSource, ContentTemplate>
+        public readonly dataBinding: Expression,
+        public readonly templateBinding: Expression<TSource, ContentTemplate>
     ) {}
 
     /**
@@ -584,13 +584,13 @@ export class NodeTemplate implements ContentTemplate, ContentView {
  * @public
  */
 export function render<TSource = any, TItem = any>(
-    data?: Binding<TSource, TItem> | {},
+    data?: Expression<TSource, TItem> | {},
     templateOrTemplateBindingOrViewName?:
         | ContentTemplate
         | string
-        | Binding<TSource, ContentTemplate | string | Node>
+        | Expression<TSource, ContentTemplate | string | Node>
 ): CaptureType<TSource> {
-    let dataBinding: Binding<TSource>;
+    let dataBinding: Expression<TSource>;
 
     if (data === void 0) {
         dataBinding = (source: TSource) => source;
