@@ -551,7 +551,7 @@ export class HTMLBindingDirective
                     this.factory = new EventBehavior(this);
                     break;
                 default:
-                    throw new Error("TODO: use error abstraction here");
+                    throw FAST.error(Message.unsupportedBindingBehavior);
             }
         }
 

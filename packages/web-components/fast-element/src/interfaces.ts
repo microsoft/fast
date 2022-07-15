@@ -198,6 +198,7 @@ export const enum Message {
     bindingInnerHTMLRequiresTrustedTypes = 1202,
     twoWayBindingRequiresObservables = 1203,
     hostBindingWithoutHost = 1204,
+    unsupportedBindingBehavior = 1205,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,

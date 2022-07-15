@@ -8,7 +8,6 @@ import {
 } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
 import { ArrayObserver, Splice } from "../observation/arrays.js";
-import { normalizeBinding } from "../index.js";
 import { Markup, nextId } from "./markup.js";
 import {
     AddViewBehaviorFactory,
@@ -19,6 +18,7 @@ import {
 } from "./html-directive.js";
 import type { CaptureType, SyntheticViewTemplate, ViewTemplate } from "./template.js";
 import { HTMLView, SyntheticView } from "./view.js";
+import { normalizeBinding } from "./binding.js";
 
 /**
  * Options for configuring repeat behavior.
