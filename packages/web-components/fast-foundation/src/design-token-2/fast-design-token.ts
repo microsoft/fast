@@ -34,11 +34,6 @@ export interface DesignToken<T extends DesignTokenValueType> {
     readonly name: string;
 
     /**
-     * A list of elements for which the DesignToken has a value set
-     */
-    // readonly appliedTo: HTMLElement[];
-
-    /**
      * The default value for the token, otherwise undefined. Also accessible from {@link DesignToken.$value}
      */
     readonly default: StaticDesignTokenValue<T> | undefined;

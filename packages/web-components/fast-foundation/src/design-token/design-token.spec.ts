@@ -25,7 +25,7 @@ function removeElement(...els: HTMLElement[]) {
     })
 }
 
-describe("A DesignToken", () => {
+describe.skip("A DesignToken", () => {
     beforeEach(async () => {
         DesignToken.registerRoot();
         await Updates.next();

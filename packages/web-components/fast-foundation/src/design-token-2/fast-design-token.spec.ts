@@ -29,7 +29,7 @@ function removeElement(...els: HTMLElement[]) {
     })
 }
 
-describe.only("A DesignToken", () => {
+describe("A FASTDesignToken", () => {
     beforeEach(async () => {
         DesignToken.registerRoot();
         await Updates.next();

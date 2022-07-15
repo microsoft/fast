@@ -111,7 +111,8 @@ export class DesignTokenChangeRecordImpl<T> implements DesignTokenChangeRecord<T
         // TODO It's a bit strange to notify like this because a new object is created w/o the value property. This is primarily
         // to pass tests, but should be revisited to re-use the object
         Observable.getNotifier(this.token).notify(
-            new DesignTokenChangeRecordImpl(this.target, this.type, this.token)
+            this
+            // new DesignTokenChangeRecordImpl(this.target, this.type, this.token)
         );
     }
 }
