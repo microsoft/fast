@@ -104,8 +104,8 @@ export class RenderBehavior<TSource = any, TParent = any>
     }
 
     /** @internal */
-    public handleChange(source: any): void {
-        if (source === this.directive.dataBinding.evaluate) {
+    public handleChange(source: any, observer: ExpressionObserver): void {
+        if (observer === this.dataBindingObserver) {
             this.data = this.dataBindingObserver.observe(
                 this.source!,
                 this.originalContext!
@@ -114,7 +114,7 @@ export class RenderBehavior<TSource = any, TParent = any>
 
         if (
             this.directive.templateBindingDependsOnData ||
-            source === this.directive.templateBinding.evaluate
+            observer === this.templateBindingObserver
         ) {
             this.template = this.templateBindingObserver.observe(
                 this.source!,

@@ -134,12 +134,12 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
      * @param source - The source of the change.
      * @param args - The details about what was changed.
      */
-    public handleChange(source: any, args: Splice[]): void {
-        if (source === this.directive.dataBinding.evaluate) {
+    public handleChange(source: any, args: Splice[] | ExpressionObserver): void {
+        if (args === this.itemsBindingObserver) {
             this.items = this.itemsBindingObserver.observe(this.source!, this.context!);
             this.observeItems();
             this.refreshAllViews();
-        } else if (source === this.directive.templateBinding.evaluate) {
+        } else if (args === this.templateBindingObserver) {
             this.template = this.templateBindingObserver.observe(
                 this.source!,
                 this.context!
@@ -149,7 +149,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         } else if (args[0].reset) {
             this.refreshAllViews();
         } else {
-            this.updateViews(args);
+            this.updateViews(args as Splice[]);
         }
     }
 

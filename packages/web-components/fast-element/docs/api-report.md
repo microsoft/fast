@@ -617,7 +617,7 @@ export function repeat<TSource = any, TArray extends ReadonlyArray<any> = Readon
 export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     constructor(directive: RepeatDirective, location: Node);
     bind(source: TSource, context: ExecutionContext): void;
-    handleChange(source: any, args: Splice[]): void;
+    handleChange(source: any, args: Splice[] | ExpressionObserver): void;
     unbind(): void;
 }
 
