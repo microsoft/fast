@@ -343,7 +343,7 @@ HTMLDirective.define(RepeatDirective);
 /**
  * A directive that enables list rendering.
  * @param items - The array to render.
- * @param templateOrTemplateBinding - The template or a template binding used obtain a template
+ * @param template - The template or a template binding used obtain a template
  * to render for each item in the array.
  * @param options - Options used to turn on special repeat features.
  * @public
@@ -356,13 +356,13 @@ export function repeat<
         | Expression<TSource, TArray, ExecutionContext<TSource>>
         | Binding<TSource, TArray>
         | ReadonlyArray<any>,
-    templateOrTemplateBinding:
+    template:
         | Expression<TSource, ViewTemplate>
         | Binding<TSource, ViewTemplate>
         | ViewTemplate,
     options: RepeatOptions = defaultRepeatOptions
 ): CaptureType<TSource> {
     const dataBinding = normalizeBinding(items);
-    const templateBinding = normalizeBinding(templateOrTemplateBinding);
+    const templateBinding = normalizeBinding(template);
     return new RepeatDirective(dataBinding, templateBinding, options) as any;
 }

@@ -8,18 +8,19 @@ import type { Subscriber } from "../observation/notifier.js";
 import type { HTMLBindingDirective } from "./binding.js";
 import { Binding } from "./html-directive.js";
 
-const subscribers: Record<string, undefined | Subscriber | Subscriber[]> = Object.create(
-    null
-);
+const subscribers: Record<
+    string,
+    undefined | Subscriber | Set<Subscriber>
+> = Object.create(null);
 
 export const Signal = Object.freeze({
     subscribe(signal: string, subscriber: Subscriber) {
         const found = subscribers[signal];
 
         if (found) {
-            Array.isArray(found)
-                ? found.push(subscriber)
-                : (subscribers[signal] = [found, subscriber]);
+            found instanceof Set
+                ? found.add(subscriber)
+                : (subscribers[signal] = new Set([found, subscriber]));
         } else {
             subscribers[signal] = subscriber;
         }
@@ -28,11 +29,8 @@ export const Signal = Object.freeze({
     unsubscribe(signal: string, subscriber: Subscriber) {
         const found = subscribers[signal];
 
-        if (found && Array.isArray(found)) {
-            const index = found.indexOf(subscriber);
-            if (index !== -1) {
-                found.splice(index, 1);
-            }
+        if (found && found instanceof Set) {
+            found.delete(subscriber);
         } else {
             subscribers[signal] = void 0;
         }
@@ -46,7 +44,7 @@ export const Signal = Object.freeze({
     send(signal: string): void {
         const found = subscribers[signal];
         if (found) {
-            Array.isArray(found)
+            found instanceof Set
                 ? found.forEach(x => x.handleChange(this, signal))
                 : found.handleChange(this, signal);
         }
