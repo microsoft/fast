@@ -26,7 +26,7 @@
       "types": "./dist/dts/index.d.ts",
       "default": "./dist/esm/index.js"
     },
-    "./custom-elements": "./dist/custom-elements.json"
+    "./custom-elements.json": "./dist/custom-elements.json"
   },
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
