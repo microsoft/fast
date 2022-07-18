@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: extract all error messages from context and DI",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

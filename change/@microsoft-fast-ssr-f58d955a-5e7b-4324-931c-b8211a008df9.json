@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: update SSR to new binding APIs",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

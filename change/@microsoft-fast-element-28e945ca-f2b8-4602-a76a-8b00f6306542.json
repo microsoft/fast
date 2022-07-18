@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: introduce new binding API",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

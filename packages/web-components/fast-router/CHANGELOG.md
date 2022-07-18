@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
+This log was last generated on Mon, 18 Jul 2022 21:10:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.4
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- refactor: reduce duplication in style normalization code scenarios (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.4
 
 ## 1.0.0-alpha.3
 
