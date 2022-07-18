@@ -1,10 +1,10 @@
 import {
     Behavior,
-    Binding,
-    BindingObserver,
     CSSDirective,
     Disposable,
     ExecutionContext,
+    Expression,
+    ExpressionObserver,
     FASTElement,
     observable,
     Observable,
@@ -348,9 +348,9 @@ class CustomPropertyReflector {
  */
 class DesignTokenBindingObserver<T> implements Disposable {
     public readonly dependencies = new Set<DesignTokenImpl<any>>();
-    private observer: BindingObserver<HTMLElement, DerivedDesignTokenValue<T>>;
+    private observer: ExpressionObserver<HTMLElement, DerivedDesignTokenValue<T>>;
     constructor(
-        public readonly source: Binding<HTMLElement, DerivedDesignTokenValue<T>>,
+        public readonly source: Expression<HTMLElement, DerivedDesignTokenValue<T>>,
         public readonly token: DesignTokenImpl<T>,
         public readonly node: DesignTokenNode
     ) {

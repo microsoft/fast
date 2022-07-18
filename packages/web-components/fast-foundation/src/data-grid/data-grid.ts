@@ -1,5 +1,6 @@
 import {
     attr,
+    bind,
     FASTElement,
     observable,
     RepeatBehavior,
@@ -340,9 +341,9 @@ export class FASTDataGrid extends FASTElement {
 
         this.toggleGeneratedHeader();
 
-        const rowsRepeatDirective = new RepeatDirective(
-            x => x.rowsData,
-            x => x.rowItemTemplate,
+        const rowsRepeatDirective = new RepeatDirective<FASTDataGrid>(
+            bind(x => x.rowsData, false),
+            bind(x => x.rowItemTemplate, false),
             { positioning: true }
         );
         this.rowsRepeatBehavior = rowsRepeatDirective.createBehavior({

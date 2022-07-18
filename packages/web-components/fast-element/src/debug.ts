@@ -17,6 +17,7 @@ const debugMessages = {
     [1202 /* bindingInnerHTMLRequiresTrustedTypes */]: "To bind innerHTML, you must use a TrustedTypesPolicy.",
     [1203 /* twoWayBindingRequiresObservables */]: "View=>Model update skipped. To use twoWay binding, the target property must be observable.",
     [1204 /* hostBindingWithoutHost */]: "No host element is present. Cannot bind host with ${name}.",
+    [1205 /* unsupportedBindingBehavior */]: "The requested binding behavior is not supported by the binding engine.",
     [1401 /* missingElementDefinition */]: "Missing FASTElement definition.",
 };
 

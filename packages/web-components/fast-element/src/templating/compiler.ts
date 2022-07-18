@@ -2,8 +2,8 @@ import { isFunction, isString, Message, TrustedTypesPolicy } from "../interfaces
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { Parser } from "./markup.js";
-import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
-import { Aspect, Aspected, ViewBehaviorFactory } from "./html-directive.js";
+import { HTMLBindingDirective, oneTime } from "./binding.js";
+import { Aspect, Aspected, Binding, ViewBehaviorFactory } from "./html-directive.js";
 import type { HTMLTemplateCompilationResult as TemplateCompilationResult } from "./template.js";
 import { HTMLView } from "./view.js";
 
@@ -147,7 +147,7 @@ function compileAttributes(
 
         if (parseResult === null) {
             if (includeBasicValues) {
-                result = bind(() => attrValue, oneTime) as ViewBehaviorFactory;
+                result = new HTMLBindingDirective(oneTime(() => attrValue));
                 Aspect.assign((result as any) as Aspected, attr.name);
             }
         } else {
@@ -383,18 +383,23 @@ export const Compiler = {
             return parts[0] as ViewBehaviorFactory;
         }
 
-        let sourceAspect: string | undefined;
+        let sourceAspect!: string;
+        let binding!: Binding;
+        let isVolatile: boolean | undefined = false;
         const partCount = parts.length;
+
         const finalParts = parts.map((x: string | ViewBehaviorFactory) => {
             if (isString(x)) {
                 return (): string => x;
             }
 
             sourceAspect = ((x as any) as Aspected).sourceAspect || sourceAspect;
-            return ((x as any) as Aspected).binding!;
+            binding = ((x as any) as Aspected).dataBinding || binding;
+            isVolatile = isVolatile || ((x as any) as Aspected).dataBinding!.isVolatile;
+            return ((x as any) as Aspected).dataBinding!.evaluate;
         });
 
-        const binding = (scope: unknown, context: ExecutionContext): string => {
+        const expression = (scope: unknown, context: ExecutionContext): string => {
             let output = "";
 
             for (let i = 0; i < partCount; ++i) {
@@ -404,7 +409,9 @@ export const Compiler = {
             return output;
         };
 
-        const directive = bind(binding) as HTMLBindingDirective;
+        binding.evaluate = expression;
+        binding.isVolatile = isVolatile;
+        const directive = new HTMLBindingDirective(binding);
         Aspect.assign(directive, sourceAspect!);
         return directive;
     },
