@@ -1,9 +1,9 @@
 import { DOM } from "@microsoft/fast-element";
-import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
+import { keyArrowDown, keyArrowUp, keyEnter } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
 import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
 import { fixture } from "../test-utilities/fixture";
-import { Combobox, comboboxTemplate as template } from "./index";
+import { Combobox, ComboboxAutocomplete, comboboxTemplate as template } from "./index";
 
 describe("Combobox", () => {
     const FASTCombobox = Combobox.compose({
@@ -148,6 +148,91 @@ describe("Combobox", () => {
         expect(element.hasAttribute("open")).to.be.true;
 
         await disconnect();
+    });
+
+    it("should NOT emit a 'change' event when the user presses Enter without changing value", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.value = "two";
+
+        const event = new KeyboardEvent("keydown", {
+            key: keyEnter,
+        } as KeyboardEventInit);
+
+        const wasChanged = await Promise.race([
+            new Promise(resolve => {
+                element.addEventListener("change", () => resolve(true));
+                element.dispatchEvent(event);
+            }),
+            DOM.nextUpdate().then(() => false),
+        ]);
+
+        expect(wasChanged).to.be.false;
+
+        await disconnect();
+
+    });
+
+    it("should update value to entered non-option value after selecting an option value", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.value = "two";
+
+        const enterEvent = new KeyboardEvent("keydown", {
+            key: keyEnter,
+        } as KeyboardEventInit);
+
+        const wasChanged = await Promise.race([
+            new Promise(resolve => {
+                element.addEventListener("change", () => resolve(true));
+
+                // fake a key entered value
+                (element as Combobox).control.value = 'a';
+                (element as Combobox).control.dispatchEvent(new InputEvent('input', { data: 'a', inputType: 'insertText' }));
+
+                element.dispatchEvent(enterEvent);
+            }),
+            DOM.nextUpdate().then(() => false),
+        ]);
+
+        expect(wasChanged).to.be.true;
+        expect((element as Combobox).value).to.equal('a');
+
+        await disconnect();
+
+    });
+
+    it("should emit a 'change' event when the user clicks away after selecting option in dropdown", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.click(); // open dropdown
+
+        const keyDownEvent = new KeyboardEvent("keydown", {
+            key: keyArrowDown,
+        } as KeyboardEventInit);
+        element.dispatchEvent(keyDownEvent);
+        DOM.nextUpdate();
+
+        const wasChanged = await Promise.race([
+            new Promise(resolve => {
+                element.addEventListener("change", () => resolve(true));
+
+                // fake focusout handling
+                element.dispatchEvent(new FocusEvent('focusout', { relatedTarget: element }));
+            }),
+            DOM.nextUpdate().then(() => false),
+        ]);
+
+        expect(wasChanged).to.be.true;
+
+        await disconnect();
+
     });
 
     describe("should NOT emit a 'change' event when the value changes by user input while open", () => {
@@ -402,5 +487,78 @@ describe("Combobox", () => {
         expect(element.control.getAttribute("aria-controls")).to.be.empty;
 
         await disconnect();
+    });
+
+    const noInlineAutocompleteModes: ComboboxAutocomplete[] = [ "none", "list" ];
+    noInlineAutocompleteModes.forEach(mode => {
+        it(`when autocomplete is ${mode}, typing should select exact match`, async () => {
+            const { connect, disconnect, element, option2, option3 } = await setup();
+
+            await connect();
+
+            (element as Combobox).autocomplete = mode;
+
+            expect(option2.selected).to.be.false;
+
+            // fake a key entered value
+            (element as Combobox).control.value = 't';
+            (element as Combobox).control.dispatchEvent(new InputEvent('input', { data: 't', inputType: 'insertText' }));
+
+            expect(option2.selected).to.be.false; // 'two' not selected
+            expect(option3.selected).to.be.false; // 'three' not selected
+
+            (element as Combobox).control.value = 'tw';
+            (element as Combobox).control.dispatchEvent(new InputEvent('input', { data: 'w', inputType: 'insertText' }));
+
+            (element as Combobox).control.value = 'two';
+            (element as Combobox).control.dispatchEvent(new InputEvent('input', { data: 'o', inputType: 'insertText' }));
+
+            expect(option2.selected).to.be.true;
+
+            (element as Combobox).control.value = 'twos';
+            (element as Combobox).control.dispatchEvent(new InputEvent('input', { data: 's', inputType: 'insertText' }));
+
+            expect(option2.selected).to.be.false;
+
+            (element as Combobox).control.value = 'two';
+            (element as Combobox).control.dispatchEvent(new InputEvent('input', { inputType: 'deleteContentBackward' }));
+
+            expect(option2.selected).to.be.true;
+        });
+    });
+
+    it("should reset control's value when user selects current value after typing", async () => {
+        const { connect, disconnect, element } = await setup();
+
+        await connect();
+
+        element.value = "three";
+        (element as Combobox).autocomplete = "list";
+
+        await DOM.nextUpdate();
+
+        expect(element.control).to.exist;
+
+        (element as Combobox).control.value = "t";
+        (element as Combobox).control.dispatchEvent(new InputEvent('input', { inputType: 'deleteContentBackward' })); // filter dropdown
+        (element as Combobox).open = false;
+
+        const keyDownEvent = new KeyboardEvent("keydown", {
+            key: keyArrowDown,
+        } as KeyboardEventInit);
+        element.dispatchEvent(keyDownEvent); // open dropdown
+
+        await DOM.nextUpdate();
+        expect(element.hasAttribute("open")).to.be.true;
+
+        element.dispatchEvent(keyDownEvent); // select "two"
+        element.dispatchEvent(keyDownEvent); // select "three"
+
+        const enterEvent = new KeyboardEvent("keydown", {
+            key: keyEnter,
+        } as KeyboardEventInit);
+        element.dispatchEvent(enterEvent); // commit value
+
+        expect((element as Combobox).control.value).to.eq("three");
     });
 });

@@ -372,7 +372,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @internal
      */
     public focusoutHandler(e: FocusEvent): boolean | void {
-        this.updateValue();
+        this.syncValue();
 
         if (!this.open) {
             return true;
@@ -399,7 +399,13 @@ export class Combobox extends FormAssociatedCombobox {
         this.filter = this.control.value;
         this.filterOptions();
 
-        if (e.inputType === "deleteContentBackward" || !this.filter.length) {
+        if (!this.isAutocompleteInline) {
+            this.selectedIndex = this.options
+                .map(option => option.text)
+                .indexOf(this.control.value);
+        }
+
+        if (e.inputType.includes("deleteContent") || !this.filter.length) {
             return true;
         }
 
@@ -431,7 +437,7 @@ export class Combobox extends FormAssociatedCombobox {
 
         switch (key) {
             case "Enter": {
-                this.updateValue(true);
+                this.syncValue();
                 if (this.isAutocompleteInline) {
                     this.filter = this.value;
                 }
@@ -459,7 +465,7 @@ export class Combobox extends FormAssociatedCombobox {
             }
 
             case "Tab": {
-                this.updateValue();
+                this.setInputToSelection();
 
                 if (!this.open) {
                     return true;
@@ -484,7 +490,6 @@ export class Combobox extends FormAssociatedCombobox {
                 }
 
                 if (this.isAutocompleteInline) {
-                    this.updateValue();
                     this.setInlineSelection();
                 }
 
@@ -578,21 +583,42 @@ export class Combobox extends FormAssociatedCombobox {
     }
 
     /**
-     * Focus and select the content of the control based on the first selected option.
+     * Focus and set the content of the control based on the first selected option.
      *
-     * @param start - The index for the starting range
+     * @internal
+     */
+    private setInputToSelection(): void {
+        if (this.firstSelectedOption) {
+            this.control.value = this.firstSelectedOption.text;
+            this.control.focus();
+        }
+    }
+
+    /**
+     * Focus, set and select the content of the control based on the first selected option.
+     *
      * @internal
      */
     private setInlineSelection(): void {
         if (this.firstSelectedOption) {
-            this.control.value = this.firstSelectedOption.text;
-            this.control.focus();
+            this.setInputToSelection();
             this.control.setSelectionRange(
                 this.filter.length,
                 this.control.value.length,
                 "backward"
             );
         }
+    }
+
+    /**
+     * Determines if a value update should involve emitting a change event, then updates the value.
+     *
+     * @internal
+     */
+    private syncValue(): void {
+        const newValue =
+            this.selectedIndex > -1 ? this.firstSelectedOption?.text : this.control.value;
+        this.updateValue(this.value !== newValue);
     }
 
     /**
@@ -664,6 +690,7 @@ export class Combobox extends FormAssociatedCombobox {
     private updateValue(shouldEmit?: boolean) {
         if (this.$fastController.isConnected) {
             this.value = this.firstSelectedOption?.text || this.control.value;
+            this.control.value = this.value;
         }
 
         if (shouldEmit) {
