@@ -405,11 +405,7 @@ export class Combobox extends FormAssociatedCombobox {
                 .indexOf(this.control.value);
         }
 
-        if (
-            e.inputType === "deleteContentBackward" ||
-            e.inputType === "deleteContentForward" ||
-            !this.filter.length
-        ) {
+        if (e.inputType.includes("deleteContent") || !this.filter.length) {
             return true;
         }
 
