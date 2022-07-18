@@ -20,7 +20,7 @@ import {
     DesignTokenNode,
     DesignTokenResolver,
     DesignTokenValue,
-} from "./design-token-node.js";
+} from "./core/design-token-node.js";
 
 export interface FASTDesignTokenChangeRecord<T extends DesignToken<any>> {
     /**

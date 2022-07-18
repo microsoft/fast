@@ -21,29 +21,6 @@ Observable.getNotifier(token).subscribe({
 
 
 
-### class: `DesignTokenNode`
-
-#### Fields
-
-| Name       | Privacy | Type                | Default | Description | Inherited From |
-| ---------- | ------- | ------------------- | ------- | ----------- | -------------- |
-| `parent`   | public  |                     |         |             |                |
-| `children` | public  | `DesignTokenNode[]` |         |             |                |
-
-#### Methods
-
-| Name               | Privacy | Description | Parameters                                          | Return | Inherited From |
-| ------------------ | ------- | ----------- | --------------------------------------------------- | ------ | -------------- |
-| `appendChild`      | public  |             | `child: DesignTokenNode`                            |        |                |
-| `removeChild`      | public  |             | `child: DesignTokenNode`                            |        |                |
-| `setTokenValue`    | public  |             | `token: DesignToken<T>, value: DesignTokenValue<T>` |        |                |
-| `getTokenValue`    | public  |             | `token: DesignToken<T>`                             | `T`    |                |
-| `deleteTokenValue` | public  |             | `token: DesignToken<T>`                             | `void` |                |
-
-<hr/>
-
-
-
 
 
 ### class: `DesignToken`
@@ -97,6 +74,29 @@ Observable.getNotifier(token).subscribe({
 | `withDefault`    | public  |             | `value: DesignToken<T> or DesignTokenValue<T>`                      | `this`             | DesignToken    |
 | `subscribe`      | public  |             | `subscriber: FASTDesignTokenSubscriber<this>`                       | `void`             | DesignToken    |
 | `unsubscribe`    | public  |             | `subscriber: FASTDesignTokenSubscriber<this>`                       | `void`             | DesignToken    |
+
+<hr/>
+
+
+
+### class: `DesignTokenNode`
+
+#### Fields
+
+| Name       | Privacy | Type                | Default | Description | Inherited From |
+| ---------- | ------- | ------------------- | ------- | ----------- | -------------- |
+| `parent`   | public  |                     |         |             |                |
+| `children` | public  | `DesignTokenNode[]` |         |             |                |
+
+#### Methods
+
+| Name               | Privacy | Description | Parameters                                          | Return | Inherited From |
+| ------------------ | ------- | ----------- | --------------------------------------------------- | ------ | -------------- |
+| `appendChild`      | public  |             | `child: DesignTokenNode`                            |        |                |
+| `removeChild`      | public  |             | `child: DesignTokenNode`                            |        |                |
+| `setTokenValue`    | public  |             | `token: DesignToken<T>, value: DesignTokenValue<T>` |        |                |
+| `getTokenValue`    | public  |             | `token: DesignToken<T>`                             | `T`    |                |
+| `deleteTokenValue` | public  |             | `token: DesignToken<T>`                             | `void` |                |
 
 <hr/>
 
