@@ -1,35 +1,25 @@
 import { BindingObserver, Observable, Subscriber } from "@microsoft/fast-element";
 import type { DesignToken } from "./design-token.js";
 
-export type DesignTokenValueType =
-    | string
-    | number
-    | boolean
-    | BigInteger
-    | null
-    | Array<any>
-    | symbol
-    | {};
-
 /**
  * A function that resolves the value of a DesignToken.
  */
-export type DesignTokenResolver = <T>(token: DesignToken<T>) => StaticDesignTokenValue<T>;
+export type DesignTokenResolver = <T>(token: DesignToken<T>) => T;
 
 /**
  * A {@link (DesignToken:interface)} value that is derived. These values can depend on other {@link (DesignToken:interface)}s
  * or arbitrary observable properties.
  * @public
  */
-export type DerivedDesignTokenValue<T> = T extends Function
-    ? never
-    : (resolve: DesignTokenResolver) => StaticDesignTokenValue<T>;
+export type DerivedDesignTokenValue<T> = (resolve: DesignTokenResolver) => T;
 
 /**
  * A design token value with no observable dependencies
  * @public
  */
-export type StaticDesignTokenValue<T> = T extends Function ? never : T;
+export type StaticDesignTokenValue<T> = T extends (...args: any[]) => any
+    ? DerivedDesignTokenValue<T>
+    : T;
 
 /**
  * The type that a {@link (DesignToken:interface)} can be set to.
@@ -68,7 +58,7 @@ class DerivedValueEvaluator<T> {
         node: DesignTokenNode,
         tokenContext: DesignToken<any>
     ): StaticDesignTokenValue<T> {
-        const resolve = <T>(token: DesignToken<T>): StaticDesignTokenValue<T> => {
+        const resolve = <T>(token: DesignToken<T>): T => {
             this.dependencies.add(token);
             if (tokenContext === token) {
                 if (node.parent) {
@@ -374,7 +364,7 @@ export class DesignTokenNode {
         DesignTokenNode.notify();
     }
 
-    public getTokenValue<T>(token: DesignToken<T>): StaticDesignTokenValue<T> {
+    public getTokenValue<T>(token: DesignToken<T>): T {
         /* eslint-disable-next-line */
         let node: DesignTokenNode | null = this;
         let value;
@@ -405,7 +395,7 @@ export class DesignTokenNode {
             const prev = DesignTokenNode.getLocalTokenValue(this, token);
             this._values.delete(token);
             this.tearDownDerivedTokenValue(token);
-            let newValue: StaticDesignTokenValue<T> | undefined;
+            let newValue: T | undefined;
             try {
                 newValue = this.getTokenValue(token);
             } catch (e) {

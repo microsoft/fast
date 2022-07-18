@@ -2,7 +2,7 @@ import { Observable, Subscriber } from "@microsoft/fast-element";
 import { makeObservable } from "@microsoft/fast-element/utilities";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
-import { DesignTokenChangeRecordImpl as DesignTokenChangeRecord, DesignTokenMutationType, DesignTokenNode, DesignTokenResolver, DesignTokenValueType } from "./design-token-node.js";
+import { DesignTokenChangeRecordImpl as DesignTokenChangeRecord, DesignTokenMutationType, DesignTokenNode, DesignTokenResolver } from "./design-token-node.js";
 import type { DesignToken as IDesignToken } from "./design-token.js"
 
 chai.use(spies);
@@ -23,7 +23,7 @@ function createNode(parent?: DesignTokenNode) {
     return node;
 }
 
-class DesignToken<T extends DesignTokenValueType> implements IDesignToken<T>  {
+class DesignToken<T> implements IDesignToken<T>  {
     $value: T | undefined = undefined;
 }
 

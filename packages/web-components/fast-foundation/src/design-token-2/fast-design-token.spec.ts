@@ -3,7 +3,7 @@ import chia, { expect } from "chai";
 import spies from "chai-spies";
 import { uniqueElementName } from "@microsoft/fast-element/testing";
 import type { DesignTokenResolver } from "./design-token-node.js";
-import { CSSDesignToken, DesignToken, FASTDesignTokenChangeRecord, FASTDesignTokenSubscriber } from "./fast-design-token.js";
+import { CSSDesignToken, DesignToken, FASTDesignTokenSubscriber } from "./fast-design-token.js";
 
 chia.use(spies);
 const elementName = uniqueElementName();
@@ -29,7 +29,7 @@ function removeElement(...els: HTMLElement[]) {
     })
 }
 
-describe("A FASTDesignToken", () => {
+describe("A DesignToken", () => {
     beforeEach(async () => {
         DesignToken.registerRoot();
         await Updates.next();
@@ -48,7 +48,19 @@ describe("A FASTDesignToken", () => {
         class Foo { }
         const _class: DesignToken<Foo> = DesignToken.create<Foo>("class");
         const sym: DesignToken<symbol> = DesignToken.create<symbol>("symbol")
-    })
+    });
+
+    describe("should have a create method", () => {
+        it("that creates a CSSDesignToken when invoked with a string value", () => {
+            expect(DesignToken.create("name") instanceof CSSDesignToken).to.be.true;
+        });
+        it("that creates a CSSDesignToken when invoked with a CSSDesignTokenConfiguration", () => {
+            expect(DesignToken.create({name: "name", cssCustomPropertyName: "css"}) instanceof CSSDesignToken).to.be.true;
+        });
+        it("that creates a DesignToken when invoked with a DesignTokenConfiguration", () => {
+            expect(DesignToken.create({name: "name"}) instanceof CSSDesignToken).to.be.false;
+        });
+    });
 
     describe("that is a CSSDesignToken", () => {
         it("should have a createCSS() method that returns a string with the name property formatted as a CSS variable", () => {
@@ -65,10 +77,10 @@ describe("A FASTDesignToken", () => {
 
     describe("that is not a CSSDesignToken", () => {
         it("should not have a cssCustomProperty property", () => {
-            expect("cssCustomProperty" in DesignToken.create<number>({name: "test", cssCustomPropertyName: null})).to.equal(false);
+            expect("cssCustomProperty" in DesignToken.create<number>({name: "test"})).to.equal(false);
         });
         it("should not have a cssVar property", () => {
-            expect("cssVar" in DesignToken.create<number>({name: "test", cssCustomPropertyName: null})).to.equal(false);
+            expect("cssVar" in DesignToken.create<number>({name: "test"})).to.equal(false);
         });
     });
 
@@ -167,7 +179,7 @@ describe("A FASTDesignToken", () => {
         describe("that is not a CSSDesignToken", () => {
             it("should not set a CSS custom property for the element", () => {
                 const target = addElement();
-                const token = DesignToken.create<number>({ name: "test", cssCustomPropertyName: null });
+                const token = DesignToken.create<number>({ name: "test"});
                 token.setValueFor(target, 12);
                 expect(window.getComputedStyle(target).getPropertyValue(("--test"))).to.equal('');
                 removeElement(target)
@@ -388,7 +400,7 @@ describe("A FASTDesignToken", () => {
         describe("that is not a CSSDesignToken", () => {
             it("should not emit a CSS custom property", () => {
                 const target = addElement();
-                const token = DesignToken.create<number>({name: "test", cssCustomPropertyName: null});
+                const token = DesignToken.create<number>({name: "test"});
 
                 token.setValueFor(target, (target) => 12);
 
@@ -827,7 +839,7 @@ describe("A FASTDesignToken", () => {
 
             type AssertDesignToken<T> = T extends CSSDesignToken<any> ? never : T;
 
-            DesignToken.create<number>({name: "no-css", cssCustomPropertyName: null}).subscribe({handleChange(token, record) {
+            DesignToken.create<number>({name: "no-css"}).subscribe({handleChange(token, record) {
                 const test: AssertDesignToken<typeof record.token> = record.token;
             }})
         });
