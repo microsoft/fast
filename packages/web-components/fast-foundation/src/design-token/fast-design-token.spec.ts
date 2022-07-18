@@ -3,7 +3,7 @@ import chia, { expect } from "chai";
 import spies from "chai-spies";
 import { uniqueElementName } from "@microsoft/fast-element/testing";
 import type { DesignTokenResolver } from "./core/design-token-node.js";
-import { CSSDesignToken, DesignToken, FASTDesignTokenSubscriber } from "./fast-design-token.js";
+import { CSSDesignToken, DesignToken, DesignTokenSubscriber } from "./fast-design-token.js";
 
 chia.use(spies);
 const elementName = uniqueElementName();
@@ -761,7 +761,7 @@ describe("A DesignToken", () => {
             const token = DesignToken.create<number>("test");
             const spy = new Map<FASTElement | "default", boolean>([[ancestor, false], [parent, false], [ target, false ]]);
 
-            const subscriber: FASTDesignTokenSubscriber<typeof token>  = {
+            const subscriber: DesignTokenSubscriber<typeof token>  = {
                 handleChange(token, record) {
                     spy.set(record.target, true)
                 }
@@ -796,7 +796,7 @@ describe("A DesignToken", () => {
                 const token = DesignToken.create<number>("test");
 
                 const handleChange = chia.spy(() => {});
-                const subscriber: FASTDesignTokenSubscriber<typeof token>  = {
+                const subscriber: DesignTokenSubscriber<typeof token>  = {
                     handleChange
                 }
 
@@ -816,7 +816,7 @@ describe("A DesignToken", () => {
             const target = addElement();
             const token = DesignToken.create<number>("test");
 
-            const subscriber: FASTDesignTokenSubscriber<typeof token>  = {
+            const subscriber: DesignTokenSubscriber<typeof token>  = {
                 handleChange(token, record) {
                     invoked = true;
                 }

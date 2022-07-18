@@ -41,8 +41,8 @@ Observable.getNotifier(token).subscribe({
 | `setValueFor`    | public  |             | `target: FASTElement, value: DesignToken<T> or DesignTokenValue<T>` | `void` |                |
 | `deleteValueFor` | public  |             | `target: FASTElement`                                               | `this` |                |
 | `withDefault`    | public  |             | `value: DesignToken<T> or DesignTokenValue<T>`                      | `this` |                |
-| `subscribe`      | public  |             | `subscriber: FASTDesignTokenSubscriber<this>`                       | `void` |                |
-| `unsubscribe`    | public  |             | `subscriber: FASTDesignTokenSubscriber<this>`                       | `void` |                |
+| `subscribe`      | public  |             | `subscriber: DesignTokenSubscriber<this>`                           | `void` |                |
+| `unsubscribe`    | public  |             | `subscriber: DesignTokenSubscriber<this>`                           | `void` |                |
 
 <hr/>
 
@@ -50,9 +50,9 @@ Observable.getNotifier(token).subscribe({
 
 #### Superclass
 
-| Name          | Module                                  | Package |
-| ------------- | --------------------------------------- | ------- |
-| `DesignToken` | src/design-token-2/fast-design-token.ts |         |
+| Name          | Module                                | Package |
+| ------------- | ------------------------------------- | ------- |
+| `DesignToken` | src/design-token/fast-design-token.ts |         |
 
 #### Fields
 
@@ -72,8 +72,8 @@ Observable.getNotifier(token).subscribe({
 | `setValueFor`    | public  |             | `target: FASTElement, value: DesignToken<T> or DesignTokenValue<T>` | `void`             | DesignToken    |
 | `deleteValueFor` | public  |             | `target: FASTElement`                                               | `this`             | DesignToken    |
 | `withDefault`    | public  |             | `value: DesignToken<T> or DesignTokenValue<T>`                      | `this`             | DesignToken    |
-| `subscribe`      | public  |             | `subscriber: FASTDesignTokenSubscriber<this>`                       | `void`             | DesignToken    |
-| `unsubscribe`    | public  |             | `subscriber: FASTDesignTokenSubscriber<this>`                       | `void`             | DesignToken    |
+| `subscribe`      | public  |             | `subscriber: DesignTokenSubscriber<this>`                           | `void`             | DesignToken    |
+| `unsubscribe`    | public  |             | `subscriber: DesignTokenSubscriber<this>`                           | `void`             | DesignToken    |
 
 <hr/>
 
@@ -99,5 +99,7 @@ Observable.getNotifier(token).subscribe({
 | `deleteTokenValue` | public  |             | `token: DesignToken<T>`                             | `void` |                |
 
 <hr/>
+
+
 
 

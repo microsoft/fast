@@ -12,17 +12,20 @@ import { composedContains, composedParent } from "@microsoft/fast-element/utilit
 import {
     PropertyTargetManager,
     RootStyleSheetTarget,
-} from "../design-token/custom-property-manager.js";
+} from "./custom-property-manager.js";
 import {
+    DesignTokenChangeRecord as CoreDesignTokenChangeRecord,
     DerivedDesignTokenValue,
-    DesignTokenChangeRecord,
     DesignTokenMutationType,
     DesignTokenNode,
     DesignTokenResolver,
     DesignTokenValue,
 } from "./core/design-token-node.js";
 
-export interface FASTDesignTokenChangeRecord<T extends DesignToken<any>> {
+/**
+ * @public
+ */
+export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
     /**
      * The element for which the value was changed
      */
@@ -38,12 +41,12 @@ export interface FASTDesignTokenChangeRecord<T extends DesignToken<any>> {
  * A subscriber that should receive {@link DesignTokenChangeRecord | change records} when a token changes for a target
  * @public
  */
-export interface FASTDesignTokenSubscriber<T extends DesignToken<any>> {
-    handleChange(token: T, record: FASTDesignTokenChangeRecord<T>): void;
+export interface DesignTokenSubscriber<T extends DesignToken<any>> {
+    handleChange(token: T, record: DesignTokenChangeRecord<T>): void;
 }
 
 /**
- * Describes a {@link (DesignToken:interface)} configuration
+ * Describes a {@link DesignToken} configuration
  * @public
  */
 export interface DesignTokenConfiguration {
@@ -53,6 +56,9 @@ export interface DesignTokenConfiguration {
     name: string;
 }
 
+/**
+ * @public
+ */
 export interface CSSDesignTokenConfiguration extends DesignTokenConfiguration {
     /**
      * The name of the CSS custom property to associate to the {@link CSSDesignToken}
@@ -60,6 +66,9 @@ export interface CSSDesignTokenConfiguration extends DesignTokenConfiguration {
     cssCustomPropertyName: string;
 }
 
+/**
+ * @public
+ */
 export class DesignToken<T> {
     public name: string;
     public get $value() {
@@ -102,7 +111,7 @@ export class DesignToken<T> {
     /**
      * Registers and element or document as a DesignToken root.
      * {@link CSSDesignToken | CSSDesignTokens} with default values assigned via
-     * {@link (DesignToken:interface).withDefault} will emit CSS custom properties to all
+     * {@link DesignToken.withDefault} will emit CSS custom properties to all
      * registered roots.
      * @param target - The root to register
      */
@@ -141,11 +150,11 @@ export class DesignToken<T> {
         return this;
     }
 
-    public subscribe(subscriber: FASTDesignTokenSubscriber<this>): void {
+    public subscribe(subscriber: DesignTokenSubscriber<this>): void {
         this.subscribers.subscribe(subscriber);
     }
 
-    public unsubscribe(subscriber: FASTDesignTokenSubscriber<this>): void {
+    public unsubscribe(subscriber: DesignTokenSubscriber<this>): void {
         this.subscribers.unsubscribe(subscriber);
     }
 
@@ -167,8 +176,11 @@ export class DesignToken<T> {
     }
 
     private subscriberNotifier: Subscriber = {
-        handleChange: (source: DesignToken<T>, change: DesignTokenChangeRecord<T>) => {
-            const record: FASTDesignTokenChangeRecord<this> = {
+        handleChange: (
+            source: DesignToken<T>,
+            change: CoreDesignTokenChangeRecord<T>
+        ) => {
+            const record: DesignTokenChangeRecord<this> = {
                 target:
                     change.target === FASTDesignTokenNode.defaultNode
                         ? "default"
@@ -180,6 +192,9 @@ export class DesignToken<T> {
     };
 }
 
+/**
+ * @public
+ */
 export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
     public cssCustomProperty: string;
     private cssVar: string;
@@ -188,7 +203,10 @@ export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
         return this.cssVar;
     }
     private cssReflector: Subscriber = {
-        handleChange: <T>(source: DesignToken<T>, record: DesignTokenChangeRecord<T>) => {
+        handleChange: <T>(
+            source: DesignToken<T>,
+            record: CoreDesignTokenChangeRecord<T>
+        ) => {
             const target =
                 record.target === FASTDesignTokenNode.defaultNode
                     ? FASTDesignTokenNode.rootStyleSheetTarget

@@ -3,6 +3,7 @@ import type { DesignToken } from "./design-token.js";
 
 /**
  * A function that resolves the value of a DesignToken.
+ * @public
  */
 export type DesignTokenResolver = <T>(token: DesignToken<T>) => T;
 
@@ -80,6 +81,10 @@ class DerivedValueEvaluator<T> {
         Observable.getNotifier(this).notify(undefined);
     }
 }
+
+/**
+ * @public
+ */
 export interface DesignTokenChangeRecord<T> {
     readonly target: DesignTokenNode;
     readonly type: DesignTokenMutationType;
@@ -98,21 +103,22 @@ export class DesignTokenChangeRecordImpl<T> implements DesignTokenChangeRecord<T
     ) {}
 
     public notify() {
-        // TODO It's a bit strange to notify like this because a new object is created w/o the value property. This is primarily
-        // to pass tests, but should be revisited to re-use the object
-        Observable.getNotifier(this.token).notify(
-            this
-            // new DesignTokenChangeRecordImpl(this.target, this.type, this.token)
-        );
+        Observable.getNotifier(this.token).notify(this);
     }
 }
 
+/**
+ * @public
+ */
 export const enum DesignTokenMutationType {
     add,
     change,
     delete,
 }
 
+/**
+ * @public
+ */
 export class DesignTokenNode {
     private _parent: DesignTokenNode | null = null;
     private _children: Set<DesignTokenNode> = new Set();
