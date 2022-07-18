@@ -40,7 +40,7 @@ const xAppTemplate = html<XApp>`
             x => x.items,
             html<RandomItem>`
                 <x-item
-                    :value="${bind((x: { label: string }) => x.label, oneTime)}"
+                    :value="${oneTime(x => x.label)}"
                 ></x-item>
             `
         )}
