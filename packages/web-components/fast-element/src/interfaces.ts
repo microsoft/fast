@@ -202,6 +202,20 @@ export const enum Message {
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,
+    // 1501 - 1600 Context and Dependency Injection
+    noRegistrationForContext = 1501,
+    noFactoryForResolver = 1502,
+    invalidResolverStrategy = 1503,
+    cannotAutoregisterDependency = 1504,
+    cannotResolveKey = 1505,
+    cannotConstructNativeFunction = 1506,
+    cannotJITRegisterNonConstructor = 1507,
+    cannotJITRegisterIntrinsic = 1508,
+    cannotJITRegisterInterface = 1509,
+    invalidResolver = 1510,
+    invalidKey = 1511,
+    noDefaultResolver = 1512,
+    cyclicDependency = 1513,
 }
 
 /**
