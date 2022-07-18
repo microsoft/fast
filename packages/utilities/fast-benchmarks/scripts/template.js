@@ -69,8 +69,9 @@ async function generateHtmlTemplate(operationFile, compiledJsBench, fileName) {
     </body>
     </html>`;
     // generate html template of all default suite for benchmark
-    const path = await writeConfig(fileName + "-" + name, defaultHtml, ".html", "dist");
-    return { name, path };
+    const htmlFileName = fileName + "-" + name;
+    await writeConfig(htmlFileName, defaultHtml, ".html", "dist");
+    return { name, path: htmlFileName + ".html" };
 }
 
 const DEFAULT_BENCH_FILE = "index";
@@ -333,6 +334,7 @@ async function generateConfig(fileName, benchmarksHash) {
             "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json";
 
         const defaultBenchOptions = {
+            root: "..",
             // Tachometer default is 50, but locally let's only do 10
             sampleSize: 30,
             // Tachometer default is 3 minutes, but let's shrink it to 1 here to save some
