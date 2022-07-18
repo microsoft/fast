@@ -150,6 +150,8 @@ describe("The ArrayObserver", () => {
 
         observer.subscribe({
             handleChange(array, args) {
+                console.log('args', array, args)
+
                 changeArgs = args;
             }
         });
@@ -159,6 +161,7 @@ describe("The ArrayObserver", () => {
 
         await Updates.next();
 
+        console.log(changeArgs![0])
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(0);
         expect(changeArgs![0].removed).members([]);
@@ -167,7 +170,6 @@ describe("The ArrayObserver", () => {
 
         Array.prototype.reverse.call(array);
         expect(array).members([1, 2, 3, 4]);
-
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(0);
         expect(changeArgs![0].removed).members([]);
@@ -230,6 +232,7 @@ describe("The ArrayObserver", () => {
 
         observer.subscribe({
             handleChange(array, args) {
+                console.log('args', array, args)
                 changeArgs = args;
             }
         });

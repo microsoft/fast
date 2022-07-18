@@ -1,9 +1,10 @@
-import { expect } from "chai";
-import { repeat, RepeatDirective, RepeatBehavior, RepeatOptions } from "./repeat.js";
-import { html } from "./template.js";
 import { ExecutionContext, observable } from "../observation/observable.js";
-import { toHTML } from "../__test__/helpers.js";
+import { RepeatBehavior, RepeatDirective, RepeatOptions, repeat } from "./repeat.js";
+
 import { Updates } from "../observation/update-queue.js";
+import { expect } from "chai";
+import { html } from "./template.js";
+import { toHTML } from "../__test__/helpers.js";
 
 describe("The repeat", () => {
     function createLocation() {
@@ -524,6 +525,56 @@ describe("The repeat", () => {
 
                 expect(toHTML(parent)).to.equal(
                     `shiftshift${createOutput(size, index => index !== 0)}`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back shift and unshift operations with multiple unshift items for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior(targets);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, ExecutionContext.default);
+
+                vm.items.shift();
+                vm.items.unshift({ name: "shift1" }, { name: "shift2" });
+                vm.items.shift();
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `shift2${createOutput(size, index => index !== 0)}`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back multiple shift operations with unshift with multiple items for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior(targets);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, ExecutionContext.default);
+
+                vm.items.shift();
+                vm.items.shift();
+                vm.items.unshift({ name: "shift1" }, { name: "shift2" });
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `shift1shift2${createOutput(size -1, index => index !== 0, void 0, void 0, 1 ) }`
                 );
             });
         });
