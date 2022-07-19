@@ -1,3 +1,4 @@
+import { DesignTokenResolver } from "@microsoft/fast-foundation";
 import { ElevationRecipe } from "../elevation/recipe.js";
 import { create, createNonCss } from "./create.js";
 
@@ -7,7 +8,7 @@ import { create, createNonCss } from "./create.js";
 export const elevationRecipe = createNonCss<ElevationRecipe>(
     "elevation-recipe"
 ).withDefault({
-    evaluate: (element: HTMLElement, size: number): string => {
+    evaluate: (resolve: DesignTokenResolver, size: number): string => {
         let ambientOpacity = 0.12;
         let directionalOpacity = 0.14;
 
@@ -45,37 +46,29 @@ export const elevationCardFocusSize = createNonCss<number>(
 /** @public */
 export const elevationCardRest = create<string>(
     "elevation-card-rest"
-).withDefault((element: HTMLElement) =>
-    elevationRecipe
-        .getValueFor(element)
-        .evaluate(element, elevationCardRestSize.getValueFor(element))
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardRestSize))
 );
 
 /** @public */
 export const elevationCardHover = create<string>(
     "elevation-card-hover"
-).withDefault((element: HTMLElement) =>
-    elevationRecipe
-        .getValueFor(element)
-        .evaluate(element, elevationCardHoverSize.getValueFor(element))
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardHoverSize))
 );
 
 /** @public */
 export const elevationCardActive = create<string>(
     "elevation-card-active"
-).withDefault((element: HTMLElement) =>
-    elevationRecipe
-        .getValueFor(element)
-        .evaluate(element, elevationCardActiveSize.getValueFor(element))
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardActiveSize))
 );
 
 /** @public */
 export const elevationCardFocus = create<string>(
     "elevation-card-focus"
-).withDefault((element: HTMLElement) =>
-    elevationRecipe
-        .getValueFor(element)
-        .evaluate(element, elevationCardFocusSize.getValueFor(element))
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardFocusSize))
 );
 
 /** @public */
@@ -86,10 +79,8 @@ export const elevationTooltipSize = createNonCss<number>(
 /** @public */
 export const elevationTooltip = create<string>(
     "elevation-tooltip"
-).withDefault((element: HTMLElement) =>
-    elevationRecipe
-        .getValueFor(element)
-        .evaluate(element, elevationTooltipSize.getValueFor(element))
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(elevationRecipe).evaluate(resolve, resolve(elevationTooltipSize))
 );
 
 /** @public */
@@ -100,10 +91,8 @@ export const elevationFlyoutSize = createNonCss<number>(
 /** @public */
 export const elevationFlyout = create<string>(
     "elevation-flyout"
-).withDefault((element: HTMLElement) =>
-    elevationRecipe
-        .getValueFor(element)
-        .evaluate(element, elevationFlyoutSize.getValueFor(element))
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(elevationRecipe).evaluate(resolve, resolve(elevationFlyoutSize))
 );
 
 /** @public */
@@ -112,10 +101,6 @@ export const elevationDialogSize = createNonCss<number>(
 ).withDefault(128);
 
 /** @public */
-export const elevationDialog = create<string>(
-    "elevation-dialog"
-).withDefault((element: HTMLElement) =>
-    elevationRecipe
-        .getValueFor(element)
-        .evaluate(element, elevationDialogSize.getValueFor(element))
+export const elevationDialog = create<string>("elevation-dialog").withDefault(resolve =>
+    resolve(elevationRecipe).evaluate(resolve, resolve(elevationDialogSize))
 );
