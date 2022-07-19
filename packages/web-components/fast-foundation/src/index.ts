@@ -12,18 +12,18 @@ export * from "./card/index.js";
 export * from "./checkbox/index.js";
 export * from "./combobox/index.js";
 export * from "./data-grid/index.js";
-// export {
-//     DesignToken,
-//     CSSDesignToken,
-//     DesignTokenChangeRecord,
-//     DesignTokenSubscriber,
-// } from "./design-token/design-token.js";
-// export {
-//     StaticDesignTokenValue,
-//     DerivedDesignTokenValue,
-//     DesignTokenValue,
-//     DesignTokenConfiguration,
-// } from "./design-token/interfaces.js";
+export {
+    DesignToken,
+    CSSDesignToken,
+    DesignTokenChangeRecord,
+    DesignTokenSubscriber,
+} from "./design-token/design-token.js";
+export {
+    StaticDesignTokenValue,
+    DerivedDesignTokenValue,
+    DesignTokenValue,
+    DesignTokenConfiguration,
+} from "./design-token/interfaces.js";
 export * from "./dialog/index.js";
 export { reflectAttributes } from "./directives/reflect-attributes.js";
 export * from "./disclosure/index.js";
