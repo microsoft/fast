@@ -6,10 +6,7 @@
 
 import { Behavior } from '@microsoft/fast-element';
 import type { CaptureType } from '@microsoft/fast-element';
-import { composedContains } from '@microsoft/fast-element/utilities';
-import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
-import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
@@ -253,19 +250,8 @@ export type ComboboxOptions = StartEndOptions & {
 // @public
 export function comboboxTemplate(options?: ComboboxOptions): ElementViewTemplate<FASTCombobox>;
 
-export { composedContains }
-
-export { composedParent }
-
 // @beta
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
-
-// @public
-export interface CSSDesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | ({
-    createCSS?(): string;
-} & Record<PropertyKey, any>)> extends DesignToken<T>, CSSDirective {
-    readonly cssCustomProperty: string;
-}
 
 // @public @deprecated
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
@@ -462,51 +448,6 @@ export class DelegatesARIAToolbar {
 // @internal
 export interface DelegatesARIAToolbar extends ARIAGlobalStatesAndProperties {
 }
-
-// @public
-export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: HTMLElement) => T;
-
-// @public
-export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
-    readonly appliedTo: HTMLElement[];
-    deleteValueFor(element: HTMLElement): this;
-    getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
-    readonly name: string;
-    setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
-    subscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
-    unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
-    withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
-}
-
-// @public
-export const DesignToken: Readonly<{
-    create: typeof create;
-    notifyConnection(element: HTMLElement): boolean;
-    notifyDisconnection(element: HTMLElement): boolean;
-    registerRoot(target?: HTMLElement | Document): void;
-    unregisterRoot(target?: HTMLElement | Document): void;
-}>;
-
-// @public
-export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
-    target: HTMLElement;
-    token: T;
-}
-
-// @public
-export interface DesignTokenConfiguration {
-    cssCustomPropertyName?: string | null;
-    name: string;
-}
-
-// @public
-export interface DesignTokenSubscriber<T extends DesignToken<any>> {
-    // (undocumented)
-    handleChange(record: DesignTokenChangeRecord<T>): void;
-}
-
-// @public
-export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
 // @public
 export function dialogTemplate(): ElementViewTemplate<FASTDialog>;
@@ -2515,9 +2456,6 @@ export type StartOptions = {
 // @public
 export function startSlotTemplate(options: StartOptions): ViewTemplate<StartEnd>;
 
-// @public
-export type StaticDesignTokenValue<T> = T extends Function ? never : T;
-
 // @alpha (undocumented)
 export const supportsElementInternals: boolean;
 
@@ -2675,7 +2613,6 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/menu-item/menu-item.d.ts:20:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
