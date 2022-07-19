@@ -436,7 +436,14 @@ export class DesignTokenNode {
     private dispatch<T>(record: DesignTokenChangeRecordImpl<T>) {
         const { target, token, value } = record;
         if (this !== target) {
-            if (DesignTokenNode.isAssigned(this, token)) {
+            // If the node is assigned the token being dispatched and the assigned value does not depend on the token
+            // (circular token reference) then terminate the dispatch.
+            // TODO: the record needs to be updated in the case where the node is assigned a token that has a circular ref,
+            // because the new target node and value are different
+            if (
+                DesignTokenNode.isAssigned(this, token) &&
+                !this._derived.get(token)?.[0].dependencies.has(token)
+            ) {
                 return;
             }
 
@@ -514,17 +521,23 @@ export class DesignTokenNode {
                     new DesignTokenChangeRecordImpl(
                         this,
                         DesignTokenMutationType.change,
-                        _token
-                    )
-                );
-                this.dispatch(
-                    new DesignTokenChangeRecordImpl(
-                        target,
-                        DesignTokenMutationType.change,
                         _token,
                         evaluator.value
                     )
                 );
+
+                // If the token being evaluated is the same as the incoming dispatch,
+                // Don't dispatch again because it will lead to recursive dispatch calls
+                if (_token !== token) {
+                    this.dispatch(
+                        new DesignTokenChangeRecordImpl(
+                            target,
+                            DesignTokenMutationType.change,
+                            _token,
+                            evaluator.value
+                        )
+                    );
+                }
             }
         }
 
