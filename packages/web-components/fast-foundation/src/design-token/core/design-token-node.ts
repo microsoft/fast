@@ -444,10 +444,7 @@ export class DesignTokenNode {
             // (circular token reference) then terminate the dispatch.
             // TODO: the record needs to be updated in the case where the node is assigned a token that has a circular ref,
             // because the new target node and value are different
-            if (
-                DesignTokenNode.isAssigned(this, token) &&
-                !this._derived.get(token)?.[0].dependencies.has(token)
-            ) {
+            if (DesignTokenNode.isAssigned(this, token)) {
                 return;
             }
 
@@ -532,21 +529,31 @@ export class DesignTokenNode {
 
                 // If the token being evaluated is the same as the incoming dispatch,
                 // Don't dispatch again because it will lead to recursive dispatch calls
-                if (_token !== token) {
-                    this.dispatch(
-                        new DesignTokenChangeRecordImpl(
-                            target,
-                            DesignTokenMutationType.change,
-                            _token,
-                            evaluator.value
-                        )
-                    );
-                }
+                // if (_token !== token) {
+                this.dispatch(
+                    new DesignTokenChangeRecordImpl(
+                        target,
+                        DesignTokenMutationType.change,
+                        _token,
+                        evaluator.value
+                    )
+                );
+                // }
             }
         }
 
+        this.notifyChildren(record);
+    }
+
+    /**
+     *
+     * Notify children of changes to the node
+     */
+    private notifyChildren(...records: DesignTokenChangeRecordImpl<any>[]) {
         for (let i = 0, l = this.children.length; i < l; i++) {
-            this.children[i].dispatch(record);
+            for (let j = 0; j < records.length; j++) {
+                this.children[i].dispatch(records[j]);
+            }
         }
     }
 
