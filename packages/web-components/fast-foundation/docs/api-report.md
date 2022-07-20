@@ -352,9 +352,6 @@ export const DataGridRowTypes: {
 export type DataGridRowTypes = ValuesOf<typeof DataGridRowTypes>;
 
 // @public
-export type DataGridSelectionMode = "none" | "single-row" | "multi-row";
-
-// @public
 export function dataGridTemplate(options: DataGridOptions): ElementViewTemplate<FASTDataGrid>;
 
 // @public
@@ -1019,6 +1016,7 @@ export class FASTDataGrid extends FASTElement {
     protected rowsDataChanged(): void;
     get selectedRowIndexes(): number[];
     set selectedRowIndexes(next: number[]);
+    // Warning: (ae-forgotten-export) The symbol "DataGridSelectionMode" needs to be exported by the entry point index.d.ts
     selectionMode: DataGridSelectionMode;
     unselectableRowIndexes: number[];
 }
