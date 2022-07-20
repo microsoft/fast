@@ -559,7 +559,6 @@ function merge(splice: Splice, splices: Splice[]): void {
 }
 
 function project(array: unknown[], changes: Splice[]): Splice[] {
-    console.log("project");
     let splices: Splice[] = [];
     const initialSplices: Splice[] = [];
 
@@ -611,11 +610,10 @@ let defaultSpliceStrategy: SpliceStrategy = Object.freeze({
             if (changes === void 0) {
                 return emptyArray;
             }
-
             return changes.length > 1 ? project(current, changes) : changes;
         }
 
-        return calc(current, 0, current.length, previous, 0, previous.length);
+        return resetSplices;
     },
 
     pop(
@@ -653,10 +651,8 @@ let defaultSpliceStrategy: SpliceStrategy = Object.freeze({
         reverse: typeof Array.prototype.reverse,
         args: any[]
     ): any {
-        observer.flush();
-        const oldArray = array.slice();
         const result = reverse.apply(array, args);
-        observer.reset(oldArray);
+        observer.reset(array);
         return result;
     },
 
@@ -682,10 +678,8 @@ let defaultSpliceStrategy: SpliceStrategy = Object.freeze({
         sort: typeof Array.prototype.sort,
         args: any[]
     ): any[] {
-        observer.flush();
-        const oldArray = array.slice();
         const result = sort.apply(array, args);
-        observer.reset(oldArray);
+        observer.reset(array);
         return result;
     },
 
@@ -861,28 +855,13 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
         this.splices = void 0;
         this.oldCollection = void 0;
 
-        // this.notify(
-        //     (this._strategy ?? defaultSpliceStrategy).normalize(
-        //         oldCollection,
-        //         this.subject,
-        //         splices
-        //     )
-        // );
-
-        const finalSplices =
-            oldCollection === void 0
-                ? project(this.subject, splices!)
-                : calc(
-                      this.subject,
-                      0,
-                      this.subject.length,
-                      oldCollection,
-                      0,
-                      oldCollection.length
-                  );
-
-        console.log("finalSplices", finalSplices.length);
-        this.notify(finalSplices);
+        this.notify(
+            (this._strategy ?? defaultSpliceStrategy).normalize(
+                oldCollection,
+                this.subject,
+                splices
+            )
+        );
     }
 
     private enqueue(): void {

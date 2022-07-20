@@ -159,7 +159,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         } else if (args[0].reset) {
             this.refreshAllViews();
         } else {
-            this.updateViews(args);
+            this.updateViews(args[0]);
         }
     }
 
@@ -182,57 +182,47 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         }
     }
 
-    private updateViews(splices: Splice[]): void {
+    private updateViews(splice: Splice): void {
         const views = this.views;
         const childContext = this.childContext!;
         const bindView = this.bindView;
         const items = this.items!;
         const template = this.template;
         const recycle: RepeatOptions["recycle"] = this.options.recycle;
-        const leftoverViews: SyntheticView[] = [];
-        let leftoverIndex = 0;
+
+        const removed = splice.removed;
         let availableViews = 0;
+        let removeIndex = 0;
+        let addIndex = splice.index;
+        const end = addIndex + splice.addedCount;
+        const removedViews = views.splice(splice.index, removed.length);
+        availableViews = removedViews.length;
 
-        for (let i = 0, ii = splices.length; i < ii; ++i) {
-            const splice = splices[i];
-            const removed = splice.removed;
+        for (; addIndex < end; ++addIndex) {
+            const neighbor = views[addIndex];
+            const location = neighbor ? neighbor.firstChild : this.location;
+            let view;
 
-            let removeIndex = 0;
-            let addIndex = splice.index;
-            const end = addIndex + splice.addedCount;
-            const removedViews = views.splice(splice.index, removed.length);
-            availableViews = leftoverViews.length + removedViews.length;
-
-            for (; addIndex < end; ++addIndex) {
-                const neighbor = views[addIndex];
-                const location = neighbor ? neighbor.firstChild : this.location;
-                let view;
-
-                if (recycle && availableViews > 0) {
-                    if (removeIndex <= availableViews && removedViews.length > 0) {
-                        view = removedViews[removeIndex];
-                        removeIndex++;
-                    } else {
-                        view = leftoverViews[leftoverIndex];
-                        leftoverIndex++;
-                    }
-                    availableViews--;
-                } else {
-                    view = template.create();
+            if (recycle && availableViews > 0) {
+                if (removeIndex <= availableViews && removedViews.length > 0) {
+                    view = removedViews[removeIndex];
+                    removeIndex++;
                 }
-
-                views.splice(addIndex, 0, view);
-                bindView(view, items, addIndex, childContext);
-                view.insertBefore(location);
+                availableViews--;
+            } else {
+                view = template.create();
             }
 
-            if (removedViews[removeIndex]) {
-                leftoverViews.push(...removedViews.slice(removeIndex));
-            }
+            views.splice(addIndex, 0, view);
+            bindView(view, items, addIndex, childContext);
+            view.insertBefore(location);
         }
 
-        for (let i = leftoverIndex, ii = leftoverViews.length; i < ii; ++i) {
-            leftoverViews[i].dispose();
+        if (removedViews[removeIndex]) {
+            const leftoverViews = removedViews.slice(removeIndex);
+            for (let i = 0, ii = leftoverViews.length; i < ii; ++i) {
+                leftoverViews[i].dispose();
+            }
         }
 
         if (this.options.positioning) {
