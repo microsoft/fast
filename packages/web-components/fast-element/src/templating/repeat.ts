@@ -219,9 +219,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         }
 
         if (removedViews[removeIndex]) {
-            const leftoverViews = removedViews.slice(removeIndex);
-            for (let i = 0, ii = leftoverViews.length; i < ii; ++i) {
-                leftoverViews[i].dispose();
+            for (let i = removeIndex, ii = removedViews.length; i < ii; ++i) {
+                removedViews[i].dispose();
             }
         }
 
