@@ -21,20 +21,15 @@ import {
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
-import type {
-    DataGridRowSelectionChangedDetail,
-    FASTDataGridRow,
-} from "./data-grid-row.js";
-import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options.js";
+import type { FASTDataGridRow } from "./data-grid-row.js";
+import {
+    DataGridRowTypes,
+    DataGridSelectionChangeDetail,
+    DataGridSelectionMode,
+    GenerateHeaderOptions,
+} from "./data-grid.options.js";
 
 export { DataGridRowTypes, GenerateHeaderOptions };
-
-/**
- * Describes the how the dialog element handles selection
- *
- * @public
- */
-export type DataGridSelectionMode = "none" | "single-row" | "multi-row";
 
 /**
  * Defines a column in the grid
@@ -224,15 +219,12 @@ export class FASTDataGrid extends FASTElement {
         if (this.$fastController.isConnected) {
             if (prev === "single-row" || prev === "multi-row") {
                 this.removeEventListener(
-                    "rowselectionchanged",
+                    "rowselectionchange",
                     this.handleRowSelectedChange
                 );
             }
             if (next === "single-row" || next === "multi-row") {
-                this.addEventListener(
-                    "rowselectionchanged",
-                    this.handleRowSelectedChange
-                );
+                this.addEventListener("rowselectionchange", this.handleRowSelectedChange);
             }
             this.deselectAllRows();
         }
@@ -487,7 +479,7 @@ export class FASTDataGrid extends FASTElement {
         this.addEventListener(eventFocusOut, this.handleFocusOut);
 
         if (this.selectionMode === "single-row" || this.selectionMode === "multi-row") {
-            this.addEventListener("rowselectionchanged", this.handleRowSelectedChange);
+            this.addEventListener("rowselectionchange", this.handleRowSelectedChange);
         }
 
         this.observer = new MutationObserver(this.onChildListChange);
@@ -531,7 +523,7 @@ export class FASTDataGrid extends FASTElement {
         this.removeEventListener(eventFocusOut, this.handleFocusOut);
 
         if (this.selectionMode === "single-row" || this.selectionMode === "multi-row") {
-            this.removeEventListener("rowselectionchanged", this.handleRowSelectedChange);
+            this.removeEventListener("rowselectionchange", this.handleRowSelectedChange);
         }
 
         this.observer.disconnect();
@@ -674,7 +666,7 @@ export class FASTDataGrid extends FASTElement {
         if (rowMatch) {
             e.preventDefault();
             const changedRow: FASTDataGridRow = rowMatch as FASTDataGridRow;
-            const changeEventDetail: DataGridRowSelectionChangedDetail = e.detail;
+            const changeEventDetail: DataGridSelectionChangeDetail = e.detail;
             let newSelection: number[] = this.selectedRowIndexes.slice();
             switch (this.selectionMode) {
                 case "single-row":
@@ -820,7 +812,7 @@ export class FASTDataGrid extends FASTElement {
 
     private handleSingleRowSelection(
         changedRow: FASTDataGridRow,
-        detail: DataGridRowSelectionChangedDetail
+        detail: DataGridSelectionChangeDetail
     ): void {
         if (detail.newValue) {
             this.updateSelectedRows([changedRow.rowIndex]);

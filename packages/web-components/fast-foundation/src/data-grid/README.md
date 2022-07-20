@@ -168,12 +168,12 @@ export const myDataGrid = DataGrid.compose({
 
 #### Methods
 
-| Name                         | Privacy   | Description                                   | Parameters                                  | Return | Inherited From |
-| ---------------------------- | --------- | --------------------------------------------- | ------------------------------------------- | ------ | -------------- |
-| `gridTemplateColumnsChanged` | protected |                                               |                                             | `void` |                |
-| `rowDataChanged`             | protected |                                               |                                             | `void` |                |
-| `toggleSelected`             | public    | Attempts to set the selected state of the row | `detail: DataGridRowSelectionChangedDetail` | `void` |                |
-| `handleFocusout`             | public    |                                               | `e: FocusEvent`                             | `void` |                |
+| Name                         | Privacy   | Description                                   | Parameters                              | Return | Inherited From |
+| ---------------------------- | --------- | --------------------------------------------- | --------------------------------------- | ------ | -------------- |
+| `gridTemplateColumnsChanged` | protected |                                               |                                         | `void` |                |
+| `rowDataChanged`             | protected |                                               |                                         | `void` |                |
+| `toggleSelected`             | public    | Attempts to set the selected state of the row | `detail: DataGridSelectionChangeDetail` | `void` |                |
+| `handleFocusout`             | public    |                                               | `e: FocusEvent`                         | `void` |                |
 
 #### Events
 

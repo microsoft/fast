@@ -1,7 +1,7 @@
 {
-  "type": "patch",
-  "comment": "support row selection",
+  "type": "prerelease",
+  "comment": "support row selection in data grid",
   "packageName": "@microsoft/fast-foundation",
   "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }

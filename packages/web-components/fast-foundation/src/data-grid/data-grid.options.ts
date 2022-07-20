@@ -87,3 +87,26 @@ export const DataGridCellRole = {
  * @public
  */
 export type DataGridCellRole = ValuesOf<typeof DataGridCellRole>;
+
+/**
+ * Event detail for DataGridRow row/cell selectionchanged events
+ *
+ * @internal
+ */
+export interface DataGridSelectionChangeDetail {
+    // the new selected value
+    newValue: boolean;
+
+    // if the shiftKey is pressed
+    shiftKey: boolean;
+
+    // if the control key is pressed
+    ctrlKey: boolean;
+}
+
+/**
+ * Describes the how the data grid element handles selection
+ *
+ * @public
+ */
+export type DataGridSelectionMode = "none" | "single-row" | "multi-row";

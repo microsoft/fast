@@ -338,18 +338,6 @@ export type DataGridOptions = {
     dataGridRow: TemplateElementDependency;
 };
 
-// Warning: (ae-internal-missing-underscore) The name "DataGridRowSelectionChangedDetail" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export interface DataGridRowSelectionChangedDetail {
-    // (undocumented)
-    ctrlKey: boolean;
-    // (undocumented)
-    newValue: boolean;
-    // (undocumented)
-    shiftKey: boolean;
-}
-
 // @public
 export function dataGridRowTemplate<T extends FASTDataGridRow>(options: CellItemTemplateOptions): ElementViewTemplate<T>;
 
@@ -1100,8 +1088,8 @@ export class FASTDataGridRow extends FASTElement {
     selected: boolean;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
-    // Warning: (ae-incompatible-release-tags) The symbol "toggleSelected" is marked as @public, but its signature references "DataGridRowSelectionChangedDetail" which is marked as @internal
-    toggleSelected(detail: DataGridRowSelectionChangedDetail): void;
+    // Warning: (ae-forgotten-export) The symbol "DataGridSelectionChangeDetail" needs to be exported by the entry point index.d.ts
+    toggleSelected(detail: DataGridSelectionChangeDetail): void;
 }
 
 // @public

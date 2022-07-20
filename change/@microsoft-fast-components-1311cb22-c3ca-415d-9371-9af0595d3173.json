@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "support row selection",
-  "packageName": "@microsoft/fast-components",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}

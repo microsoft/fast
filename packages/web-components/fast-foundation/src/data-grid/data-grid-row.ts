@@ -18,23 +18,7 @@ import {
     keySpace,
 } from "@microsoft/fast-web-utilities";
 import type { ColumnDefinition } from "./data-grid.js";
-import { DataGridRowTypes } from "./data-grid.options.js";
-
-/**
- * Event detail for DataGridRow "rowselectionchanged" events
- *
- * @internal
- */
-export interface DataGridRowSelectionChangedDetail {
-    // the new selected value
-    newValue: boolean;
-
-    // if the shiftKey is pressed
-    shiftKey: boolean;
-
-    // if the control key is pressed
-    ctrlKey: boolean;
-}
+import { DataGridRowTypes, DataGridSelectionChangeDetail } from "./data-grid.options.js";
 
 /**
  * A Data Grid Row Custom HTML Element.
@@ -253,8 +237,8 @@ export class FASTDataGridRow extends FASTElement {
      *
      * @public
      */
-    public toggleSelected(detail: DataGridRowSelectionChangedDetail): void {
-        this.$emit("rowselectionchanged", detail);
+    public toggleSelected(detail: DataGridSelectionChangeDetail): void {
+        this.$emit("rowselectionchange", detail);
     }
 
     public handleFocusout(e: FocusEvent): void {
