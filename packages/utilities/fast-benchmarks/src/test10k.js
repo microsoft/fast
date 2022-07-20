@@ -10,7 +10,9 @@ import {
     const render = async () => {
         const start = getTestStartName(test);
         performance.mark(start);
-        window.test();
+        for (let i = 0; i < 10000; i++) {
+            window.test();
+        }
         await updateComplete();
         performance.measure(test, start);
         destroy(container);

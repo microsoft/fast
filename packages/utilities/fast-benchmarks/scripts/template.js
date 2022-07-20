@@ -198,8 +198,10 @@ const FAST_ELEMENT = "fast-element";
 const FAST_FOUNDATION = "fast-foundation";
 const libraryDependencies = {
     [FAST_FOUNDATION]: {
-        "@microsoft/fast-element": "latest",
-        "@microsoft/fast-web-utilities": "latest",
+        "@microsoft/fast-element": "2.0.0-beta.3",
+        tabbable: "^5.2.0",
+        tslib: "^2.4.0",
+        "@microsoft/fast-web-utilities": "^6.0.0",
     },
 };
 export async function generateBenchmarks(

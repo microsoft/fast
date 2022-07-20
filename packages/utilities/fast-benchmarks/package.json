@@ -13,7 +13,7 @@
         "benchmark": "node scripts/index.js",
         "benchmark:fast-element:render": "yarn run benchmark --library=fast-element --benchmark=render --versions local master --localBenchFile=index2 --operations=update10th",
         "benchmark:fast-element:repeat": "yarn run benchmark --library=fast-element --benchmark=repeat --versions local master --templates basic basicNoRecycle --method=reverse --operations=clickTrigger10x",
-        "benchmark:fast-foundation:design-token": "yarn run benchmark --library=fast-foundation --benchmark=design-token --versions local --operations=test10k",
+        "benchmark:fast-foundation:design-token": "yarn run benchmark --library=fast-foundation --benchmark=design-token --versions local 2.46.10 --operations=test10k",
         "benchmark:methods:append": "tach --config ./benchmarks/methods/append/tachometer.json",
         "help": "node ./scripts/index.js --help"
     },
