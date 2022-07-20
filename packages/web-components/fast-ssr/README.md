@@ -110,6 +110,7 @@ const result = templateRenderer.render(html`
 |-|-|
 |[`children`](https://www.fast.design/docs/fast-element/using-directives#the-children-directive)|[![](https://img.shields.io/badge/-Unsupported-red)]()|
 |[`ref`](https://www.fast.design/docs/fast-element/using-directives#the-ref-directive)|[![](https://img.shields.io/badge/-Unsupported-red)]()|
+|`render`|[![](https://img.shields.io/badge/-Supported-brightgreen)]()|
 |[`repeat`](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive)|[![](https://img.shields.io/badge/-Supported-brightgreen)]()|
 |[`slotted`](https://www.fast.design/docs/fast-element/using-directives#the-slotted-directive)|[![](https://img.shields.io/badge/-Unsupported-red)]()|
 |[`when`](https://www.fast.design/docs/fast-element/using-directives#the-when-directive)|[![](https://img.shields.io/badge/-Supported-brightgreen)]()|

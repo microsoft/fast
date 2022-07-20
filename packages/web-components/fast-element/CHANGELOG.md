@@ -1,8 +1,27 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
+This log was last generated on Mon, 18 Jul 2022 21:10:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.4
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- feat: extract all error messages from context and DI (roeisenb@microsoft.com)
+- feat: introduce new binding API (roeisenb@microsoft.com)
+- Enabled DOM Container fallback functions when a container cannot be located. (roeisenb@microsoft.com)
+- feat: add render directive, renderWith decorator, and RenderInstruction (roeisenb@microsoft.com)
+- only store removed views if it can't be reused right away (prudepixie@users.noreply.github.com)
+- fix: enable createElementTemplate to have undefined attributes (32497422+KingOfTac@users.noreply.github.com)
+- use index to track reusable views (prudepixie@users.noreply.github.com)
+- feat: enable render, repeat, and when template helpers to handle static data in addition to the already supported dynamic bindings (roeisenb@microsoft.com)
+- fix: FASTElementDefinition#isDefined should be true only after define (roeisenb@microsoft.com)
+- feat: move testing and dependency injection to fast-element (roeisenb@microsoft.com)
+- fix: warn when host bindings are accidentally applied on non CE views (roeisenb@microsoft.com)
+- feat: perf and safety improvements to fast element definition (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.3
 

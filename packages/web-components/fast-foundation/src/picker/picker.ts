@@ -1,5 +1,6 @@
 import {
     attr,
+    bind,
     html,
     HTMLView,
     observable,
@@ -518,8 +519,8 @@ export class FASTPicker extends FormAssociatedPicker {
         this.updateOptionTemplate();
 
         const itemsRepeatDirective = new RepeatDirective(
-            x => x.selectedItems,
-            x => x.activeListItemTemplate,
+            bind(x => x.selectedItems, false),
+            bind(x => x.activeListItemTemplate, false),
             { positioning: true }
         );
         this.itemsRepeatBehavior = itemsRepeatDirective.createBehavior({
@@ -538,8 +539,8 @@ export class FASTPicker extends FormAssociatedPicker {
         );
 
         const optionsRepeatDirective = new RepeatDirective(
-            x => x.filteredOptionsList,
-            x => x.activeMenuOptionTemplate,
+            bind(x => x.filteredOptionsList, false),
+            bind(x => x.activeMenuOptionTemplate, false),
             { positioning: true }
         );
         this.optionsRepeatBehavior = optionsRepeatDirective.createBehavior({

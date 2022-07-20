@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: move testing and dependency injection to fast-element",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

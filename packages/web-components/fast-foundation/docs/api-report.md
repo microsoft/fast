@@ -1779,9 +1779,16 @@ export class FASTSwitch extends FormAssociatedSwitch {
     protected readOnlyChanged(): void;
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FASTTab" because one of its declarations is marked as @internal
+//
 // @public
 export class FASTTab extends FASTElement {
     disabled: boolean;
+}
+
+// @internal
+export interface FASTTab extends StartEnd {
 }
 
 // @public
@@ -2523,6 +2530,9 @@ export type SwitchOptions = {
 export function switchTemplate(options?: SwitchOptions): ElementViewTemplate<FASTSwitch>;
 
 // @public
+export type TabOptionOptions = StartEndOptions;
+
+// @public
 export function tabPanelTemplate(): ElementViewTemplate<FASTTabPanel>;
 
 // @public
@@ -2541,7 +2551,7 @@ export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientatio
 export function tabsTemplate(options?: TabsOptions): ElementViewTemplate<FASTTabs>;
 
 // @public
-export function tabTemplate(): ElementViewTemplate<FASTTab>;
+export function tabTemplate(options?: StartEndOptions): ElementViewTemplate<FASTTab>;
 
 // @beta
 export function tagFor(dependency: TemplateElementDependency): string;

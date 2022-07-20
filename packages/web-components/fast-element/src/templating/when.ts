@@ -1,5 +1,5 @@
 import { isFunction } from "../interfaces.js";
-import type { Binding, ExecutionContext } from "../observation/observable.js";
+import type { ExecutionContext, Expression } from "../observation/observable.js";
 import type { CaptureType, SyntheticViewTemplate } from "./template.js";
 
 /**
@@ -10,10 +10,10 @@ import type { CaptureType, SyntheticViewTemplate } from "./template.js";
  * @public
  */
 export function when<TSource = any, TReturn = any>(
-    condition: Binding<TSource, TReturn> | boolean,
+    condition: Expression<TSource, TReturn> | boolean,
     templateOrTemplateBinding:
         | SyntheticViewTemplate
-        | Binding<TSource, SyntheticViewTemplate>
+        | Expression<TSource, SyntheticViewTemplate>
 ): CaptureType<TSource> {
     const dataBinding = isFunction(condition) ? condition : () => condition;
 

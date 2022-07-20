@@ -1,8 +1,17 @@
 # Change Log - @microsoft/adaptive-ui
 
-This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
+This log was last generated on Mon, 18 Jul 2022 21:10:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.5
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- Added elevation design tokens (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.5
 
 ## 1.0.0-alpha.4
 
