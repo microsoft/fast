@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: server side rendering foundation tests",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

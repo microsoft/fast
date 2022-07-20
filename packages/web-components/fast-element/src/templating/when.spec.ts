@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { when } from "./when.js";
 import { html } from "./template.js";
-import { Binding, ExecutionContext } from "../observation/observable.js";
+import { Expression, ExecutionContext } from "../observation/observable.js";
 
 describe("The 'when' template function", () => {
     it("returns an expression", () => {
@@ -14,25 +14,25 @@ describe("The 'when' template function", () => {
         const template = html`template1`;
 
         it("returns a template when the condition binding is true", () => {
-            const expression = when(() => true, template) as Binding;
+            const expression = when(() => true, template) as Expression;
             const result = expression(scope, ExecutionContext.default);
             expect(result).to.equal(template);
         });
 
         it("returns a template when the condition is statically true", () => {
-            const expression = when(true, template) as Binding;
+            const expression = when(true, template) as Expression;
             const result = expression(scope, ExecutionContext.default);
             expect(result).to.equal(template);
         });
 
         it("returns null when the condition binding is false", () => {
-            const expression = when(() => false, template) as Binding;
+            const expression = when(() => false, template) as Expression;
             const result = expression(scope, ExecutionContext.default);
             expect(result).to.equal(null);
         });
 
         it("returns null when the condition is statically false", () => {
-            const expression = when(false, template) as Binding;
+            const expression = when(false, template) as Expression;
             const result = expression(scope, ExecutionContext.default);
             expect(result).to.equal(null);
         });
@@ -41,7 +41,7 @@ describe("The 'when' template function", () => {
             const expression = when(
                 () => true,
                 () => template
-            ) as Binding;
+            ) as Expression;
             const result = expression(scope, ExecutionContext.default);
             expect(result).to.equal(template);
         });

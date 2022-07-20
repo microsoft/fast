@@ -58,7 +58,7 @@ export class SwatchRGB implements Swatch {
         this.r = red;
         this.g = green;
         this.b = blue;
-        this.color = new ColorRGBA64(red, blue, green);
+        this.color = new ColorRGBA64(red, green, blue);
 
         this.relativeLuminance = rgbToRelativeLuminance(this.color);
     }

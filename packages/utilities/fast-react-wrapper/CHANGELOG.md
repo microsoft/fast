@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
+This log was last generated on Mon, 18 Jul 2022 21:10:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.5
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- fix: update react wrapper to remove foundation dependency (roeisenb@microsoft.com)
+- chore: update tests to use testing helpers from fast-element (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.4
 
 ## 1.0.0-alpha.4
 

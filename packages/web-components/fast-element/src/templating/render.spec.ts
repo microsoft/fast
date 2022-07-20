@@ -49,7 +49,7 @@ describe("The render", () => {
             const source = new TestParent();
             const directive = render() as RenderDirective;
 
-            const data = directive.dataBinding(source, ExecutionContext.default);
+            const data = directive.dataBinding.evaluate(source, ExecutionContext.default);
 
             expect(data).to.equal(source);
         });
@@ -58,7 +58,7 @@ describe("The render", () => {
             const source = new TestParent();
             const directive = render<TestParent>(x => x.child) as RenderDirective;
 
-            const data = directive.dataBinding(source, ExecutionContext.default);
+            const data = directive.dataBinding.evaluate(source, ExecutionContext.default);
 
             expect(data).to.equal(source.child);
         });
@@ -68,7 +68,7 @@ describe("The render", () => {
             const node = document.createElement("div");
             const directive = render(node) as RenderDirective;
 
-            const data = directive.dataBinding(source, ExecutionContext.default);
+            const data = directive.dataBinding.evaluate(source, ExecutionContext.default);
 
             expect(data).to.equal(node);
         });
@@ -78,7 +78,7 @@ describe("The render", () => {
             const obj = {};
             const directive = render(obj) as RenderDirective;
 
-            const data = directive.dataBinding(source, ExecutionContext.default);
+            const data = directive.dataBinding.evaluate(source, ExecutionContext.default);
 
             expect(data).to.equal(obj);
         });
@@ -86,7 +86,7 @@ describe("The render", () => {
         it("creates a template binding when a template is provided", () => {
             const source = new TestParent();
             const directive = render<TestParent>(x => x.child, childEditTemplate) as RenderDirective;
-            const template = directive.templateBinding(source, ExecutionContext.default);
+            const template = directive.templateBinding.evaluate(source, ExecutionContext.default);
             expect(template).to.equal(childEditTemplate);
         });
 
@@ -94,14 +94,14 @@ describe("The render", () => {
             it("for no binding", () => {
                 const source = new TestParent();
                 const directive = render() as RenderDirective;
-                const template = directive.templateBinding(source, ExecutionContext.default);
+                const template = directive.templateBinding.evaluate(source, ExecutionContext.default);
                 expect(template).to.equal(parentTemplate);
             });
 
             it("for normal binding", () => {
                 const source = new TestParent();
                 const directive = render<TestParent>(x => x.child) as RenderDirective;
-                const template = directive.templateBinding(source, ExecutionContext.default);
+                const template = directive.templateBinding.evaluate(source, ExecutionContext.default);
                 expect(template).to.equal(childTemplate);
             });
 
@@ -109,7 +109,7 @@ describe("The render", () => {
                 const source = new TestParent();
                 const node = document.createElement("div");
                 const directive = render<TestParent>(() => node) as RenderDirective;
-                const template = directive.templateBinding(source, ExecutionContext.default) as NodeTemplate;
+                const template = directive.templateBinding.evaluate(source, ExecutionContext.default) as NodeTemplate;
                 expect(template).to.be.instanceOf(NodeTemplate);
                 expect(template.node).equals(node);
             });
@@ -119,7 +119,7 @@ describe("The render", () => {
             it("when the template binding returns a string", () => {
                 const source = new TestParent();
                 const directive = render<TestParent>(x => x.child, () => "edit") as RenderDirective;
-                const template = directive.templateBinding(source, ExecutionContext.default);
+                const template = directive.templateBinding.evaluate(source, ExecutionContext.default);
                 expect(template).to.equal(childEditTemplate);
             });
 
@@ -127,7 +127,7 @@ describe("The render", () => {
                 const source = new TestParent();
                 const node = document.createElement("div");
                 const directive = render<TestParent>(x => x.child, () => node) as RenderDirective;
-                const template = directive.templateBinding(source, ExecutionContext.default) as NodeTemplate;
+                const template = directive.templateBinding.evaluate(source, ExecutionContext.default) as NodeTemplate;
                 expect(template).to.be.instanceOf(NodeTemplate);
                 expect(template.node).equals(node);
             });
@@ -135,7 +135,7 @@ describe("The render", () => {
             it("when the template binding returns a template", () => {
                 const source = new TestParent();
                 const directive = render<TestParent>(x => x.child, () => childEditTemplate) as RenderDirective;
-                const template = directive.templateBinding(source, ExecutionContext.default);
+                const template = directive.templateBinding.evaluate(source, ExecutionContext.default);
                 expect(template).equal(childEditTemplate);
             });
         });
@@ -145,7 +145,7 @@ describe("The render", () => {
                 const source = new TestParent();
                 const node = document.createElement("div");
                 const directive = render<TestParent>(() => node, "edit") as RenderDirective;
-                const template = directive.templateBinding(source, ExecutionContext.default) as NodeTemplate;
+                const template = directive.templateBinding.evaluate(source, ExecutionContext.default) as NodeTemplate;
                 expect(template).to.be.instanceOf(NodeTemplate);
                 expect(template.node).equals(node);
             });
@@ -153,7 +153,7 @@ describe("The render", () => {
             it("when the data binding returns a value", () => {
                 const source = new TestParent();
                 const directive = render<TestParent>(x => x.child, "edit") as RenderDirective;
-                const template = directive.templateBinding(source, ExecutionContext.default);
+                const template = directive.templateBinding.evaluate(source, ExecutionContext.default);
                 expect(template).equal(childEditTemplate);
             });
         });

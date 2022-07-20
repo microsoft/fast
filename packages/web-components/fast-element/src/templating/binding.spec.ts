@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { bind, BindingConfig, HTMLBindingDirective, onChange, oneTime } from "./binding.js";
+import { bind, HTMLBindingDirective, oneTime, listener } from "./binding.js";
 import { ExecutionContext, observable } from "../observation/observable.js";
 import { html, ViewTemplate } from "./template.js";
 import { toHTML } from "../__test__/helpers.js";
@@ -7,8 +7,8 @@ import { SyntheticView, HTMLView } from "./view.js";
 import { Updates } from "../observation/update-queue.js";
 import { Aspect } from "./html-directive.js";
 import { DOM } from "./dom.js";
-import { signal, SignalBinding } from "./binding-signal.js";
-import { twoWay } from "./binding-two-way.js";
+import { Signal, signal } from "./binding-signal.js";
+import { twoWay, TwoWayBindingOptions } from "./binding-two-way.js";
 
 describe("The HTML binding directive", () => {
     class Model {
@@ -36,7 +36,7 @@ describe("The HTML binding directive", () => {
     }
 
     function contentBinding(propertyName: keyof Model = "value") {
-        const directive = bind(x => x[propertyName]) as HTMLBindingDirective;
+        const directive = new HTMLBindingDirective(bind(x => x[propertyName]));
         directive.nodeId = 'r';
 
         const node = document.createTextNode(" ");
@@ -50,8 +50,7 @@ describe("The HTML binding directive", () => {
         return { directive, behavior, node, parentNode, targets };
     }
 
-    function bindingWithConfig(config: BindingConfig, sourceAspect?: string) {
-        const directive = bind<Model>(x => x.value, config) as HTMLBindingDirective;
+    function configureDirective(directive: HTMLBindingDirective, sourceAspect?: string) {
         directive.nodeId = 'r';
 
         if (sourceAspect) {
@@ -69,21 +68,29 @@ describe("The HTML binding directive", () => {
         return { directive, behavior, node, parentNode, targets };
     }
 
-    function eventBinding(config: BindingConfig, sourceAspect: string) {
-        const directive = bind<Model>(x => x.invokeAction(), config) as HTMLBindingDirective;
-        directive.nodeId = 'r';
+    function defaultBinding(sourceAspect?: string) {
+        const directive = new HTMLBindingDirective(bind<Model>(x => x.value));
+        return configureDirective(directive, sourceAspect);
+    }
 
-        Aspect.assign(directive, sourceAspect);
+    function oneTimeBinding(sourceAspect?: string) {
+        const directive = new HTMLBindingDirective(oneTime<Model>(x => x.value));
+        return configureDirective(directive, sourceAspect);
+    }
 
-        const node = document.createElement("div");
-        const targets = { r: node };
+    function signalBinding(signalName: string, sourceAspect?: string) {
+        const directive = new HTMLBindingDirective(signal<Model>(x => x.value, signalName));
+        return configureDirective(directive, sourceAspect);
+    }
 
-        const behavior = directive.createBehavior(targets);
-        const parentNode = document.createElement("div");
+    function twoWayBinding(options: TwoWayBindingOptions, sourceAspect?: string) {
+        const directive = new HTMLBindingDirective(twoWay<Model>(x => x.value, options));
+        return configureDirective(directive, sourceAspect);
+    }
 
-        parentNode.appendChild(node);
-
-        return { directive, behavior, node, parentNode, targets };
+    function eventBinding(options: AddEventListenerOptions, sourceAspect: string) {
+        const directive = new HTMLBindingDirective(listener<Model>(x => x.invokeAction(), options));
+        return configureDirective(directive, sourceAspect);
     }
 
     context("when binding text content", () => {
@@ -349,7 +356,7 @@ describe("The HTML binding directive", () => {
     context("when binding on-change", () => {
         for (const aspectScenario of aspectScenarios) {
             it(`sets the initial value of a ${aspectScenario.name} binding`, () => {
-                const { behavior, node, targets } = bindingWithConfig(onChange, aspectScenario.sourceAspect);
+                const { behavior, node, targets } = defaultBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -358,7 +365,7 @@ describe("The HTML binding directive", () => {
             });
 
             it(`updates the ${aspectScenario.name} when the model changes`, async () => {
-                const { behavior, node, targets } = bindingWithConfig(onChange, aspectScenario.sourceAspect);
+                const { behavior, node, targets } = defaultBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -373,7 +380,7 @@ describe("The HTML binding directive", () => {
             });
 
             it(`doesn't update the ${aspectScenario.name} after unbind`, async () => {
-                const { behavior, node, targets } = bindingWithConfig(onChange, aspectScenario.sourceAspect);
+                const { behavior, node, targets } = defaultBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -393,7 +400,7 @@ describe("The HTML binding directive", () => {
     context("when binding one-time", () => {
         for (const aspectScenario of aspectScenarios) {
             it(`sets the initial value of a ${aspectScenario.name} binding`, () => {
-                const { behavior, node, targets } = bindingWithConfig(oneTime, aspectScenario.sourceAspect);
+                const { behavior, node, targets } = oneTimeBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -402,7 +409,7 @@ describe("The HTML binding directive", () => {
             });
 
             it(`does not update the ${aspectScenario.name} after the initial set`, async () => {
-                const { behavior, node, targets } = bindingWithConfig(oneTime, aspectScenario.sourceAspect);
+                const { behavior, node, targets } = oneTimeBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -417,7 +424,7 @@ describe("The HTML binding directive", () => {
             });
 
             it(`doesn't update the ${aspectScenario.name} after unbind`, async () => {
-                const { behavior, node, targets } = bindingWithConfig(oneTime, aspectScenario.sourceAspect);
+                const { behavior, node, targets } = oneTimeBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -436,7 +443,7 @@ describe("The HTML binding directive", () => {
     context("when binding with a signal", () => {
         for (const aspectScenario of aspectScenarios) {
             it(`sets the initial value of the ${aspectScenario.name} binding`, () => {
-                const { behavior, node, targets } = bindingWithConfig(signal("test-signal"), aspectScenario.sourceAspect);
+                const { behavior, node, targets } = signalBinding("test-signal", aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -446,7 +453,7 @@ describe("The HTML binding directive", () => {
 
             it(`updates the ${aspectScenario.name} only when the signal is sent`, async () => {
                 const signalName = "test-signal";
-                const { behavior, node, targets } = bindingWithConfig(signal(signalName), aspectScenario.sourceAspect);
+                const { behavior, node, targets } = signalBinding(signalName, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -459,7 +466,7 @@ describe("The HTML binding directive", () => {
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
 
-                SignalBinding.send(signalName);
+                Signal.send(signalName);
 
                 await Updates.next();
 
@@ -468,7 +475,7 @@ describe("The HTML binding directive", () => {
 
             it(`doesn't respond to signals for a ${aspectScenario.name} binding after unbind`, async () => {
                 const signalName = "test-signal";
-                const { behavior, node, targets } = bindingWithConfig(signal(signalName), aspectScenario.sourceAspect);
+                const { behavior, node, targets } = signalBinding(signalName, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -477,7 +484,7 @@ describe("The HTML binding directive", () => {
 
                 behavior.unbind(model, ExecutionContext.default, targets);
                 model.value = aspectScenario.newValue;
-                SignalBinding.send(signalName);
+                Signal.send(signalName);
 
                 await Updates.next();
 
@@ -489,7 +496,7 @@ describe("The HTML binding directive", () => {
     context("when binding two-way", () => {
         for (const aspectScenario of aspectScenarios) {
             it(`sets the initial value of the ${aspectScenario.name} binding`, () => {
-                const { behavior, node, targets } = bindingWithConfig(twoWay, aspectScenario.sourceAspect);
+                const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -498,7 +505,7 @@ describe("The HTML binding directive", () => {
             });
 
             it(`updates the ${aspectScenario.name} when the model changes`, async () => {
-                const { behavior, node, targets } = bindingWithConfig(twoWay, aspectScenario.sourceAspect);
+                const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -513,7 +520,7 @@ describe("The HTML binding directive", () => {
             });
 
             it(`updates the model when a change event fires for the ${aspectScenario.name}`, async () => {
-                const { behavior, node, targets } = bindingWithConfig(twoWay, aspectScenario.sourceAspect);
+                const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -530,7 +537,7 @@ describe("The HTML binding directive", () => {
 
             it(`updates the model when a change event fires for the ${aspectScenario.name} with conversion`, async () => {
                 const fromView = value => "fixed value";
-                const { behavior, node, targets } = bindingWithConfig(twoWay({ fromView }), aspectScenario.sourceAspect);
+                const { behavior, node, targets } = twoWayBinding({ fromView }, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -547,7 +554,7 @@ describe("The HTML binding directive", () => {
 
             it(`updates the model when a configured event fires for the ${aspectScenario.name}`, async () => {
                 const changeEvent = "foo";
-                const { behavior, node, targets } = bindingWithConfig(twoWay({changeEvent}), aspectScenario.sourceAspect);
+                const { behavior, node, targets } = twoWayBinding({changeEvent}, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -563,7 +570,7 @@ describe("The HTML binding directive", () => {
             });
 
             it(`doesn't update the ${aspectScenario.name} after unbind`, async () => {
-                const { behavior, node, targets } = bindingWithConfig(twoWay, aspectScenario.sourceAspect);
+                const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
 
                 behavior.bind(model, ExecutionContext.default, targets);
@@ -581,7 +588,7 @@ describe("The HTML binding directive", () => {
 
     context("when binding events", () => {
         it("does not invoke the method on bind", () => {
-            const { behavior, targets } = eventBinding(onChange, "@my-event");
+            const { behavior, targets } = eventBinding({}, "@my-event");
             const model = new Model("Test value.");
 
             behavior.bind(model, ExecutionContext.default, targets);
@@ -589,7 +596,7 @@ describe("The HTML binding directive", () => {
         });
 
         it("invokes the method each time the event is raised", () => {
-            const { behavior, node, targets } = eventBinding(onChange, "@my-event");
+            const { behavior, node, targets } = eventBinding({}, "@my-event");
             const model = new Model("Test value.");
 
             behavior.bind(model, ExecutionContext.default, targets);
@@ -606,7 +613,7 @@ describe("The HTML binding directive", () => {
         });
 
         it("invokes the method one time for a one time event", () => {
-            const { behavior, node, targets } = eventBinding(oneTime, "@my-event");
+            const { behavior, node, targets } = eventBinding({ once: true }, "@my-event");
             const model = new Model("Test value.");
 
             behavior.bind(model, ExecutionContext.default, targets);
@@ -620,7 +627,7 @@ describe("The HTML binding directive", () => {
         });
 
         it("does not invoke the method after unbind", () => {
-            const { behavior, node, targets } = eventBinding(onChange, "@my-event");
+            const { behavior, node, targets } = eventBinding({}, "@my-event");
             const model = new Model("Test value.");
 
             behavior.bind(model, ExecutionContext.default, targets);
