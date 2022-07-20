@@ -213,6 +213,10 @@ export class DesignTokenNode {
         this._notifications = [];
     }
 
+    private static queueNotification(...records: DesignTokenChangeRecordImpl<any>[]) {
+        this._notifications.push(...records);
+    }
+
     /**
      * Retrieves all tokens assigned directly to a node.
      * @param node - the node to retrieve assigned tokens for
@@ -332,7 +336,7 @@ export class DesignTokenNode {
         }
 
         if (prev !== result) {
-            DesignTokenNode._notifications.push(
+            DesignTokenNode.queueNotification(
                 new DesignTokenChangeRecordImpl(this, changeType, token, value)
             );
         }
@@ -346,7 +350,7 @@ export class DesignTokenNode {
                 const prev = DesignTokenNode.getLocalTokenValue(this, token);
                 const result = DesignTokenNode.evaluateDerived(this, token, evaluator);
                 if (prev !== result) {
-                    DesignTokenNode._notifications.push(
+                    DesignTokenNode.queueNotification(
                         new DesignTokenChangeRecordImpl(
                             this,
                             DesignTokenMutationType.change,
@@ -408,7 +412,7 @@ export class DesignTokenNode {
                 newValue = undefined;
             }
 
-            DesignTokenNode._notifications.push(
+            DesignTokenNode.queueNotification(
                 new DesignTokenChangeRecordImpl(
                     this,
                     DesignTokenMutationType.delete,
@@ -469,7 +473,7 @@ export class DesignTokenNode {
                             prev === undefined
                                 ? DesignTokenMutationType.add
                                 : DesignTokenMutationType.change;
-                        DesignTokenNode._notifications.push(
+                        DesignTokenNode.queueNotification(
                             new DesignTokenChangeRecordImpl(
                                 this,
                                 type,
@@ -493,7 +497,7 @@ export class DesignTokenNode {
                 DesignTokenNode.isDerivedFor(this, token)
             ) {
                 this.tearDownDerivedTokenValue(token);
-                DesignTokenNode._notifications.push(
+                DesignTokenNode.queueNotification(
                     new DesignTokenChangeRecordImpl(
                         this,
                         DesignTokenMutationType.delete,
@@ -517,7 +521,7 @@ export class DesignTokenNode {
 
             if (evaluator.dependencies.has(token)) {
                 DesignTokenNode.evaluateDerived(this, _token, evaluator);
-                DesignTokenNode._notifications.push(
+                DesignTokenNode.queueNotification(
                     new DesignTokenChangeRecordImpl(
                         this,
                         DesignTokenMutationType.change,
@@ -558,7 +562,7 @@ export class DesignTokenNode {
                         evaluator
                     );
                     if (result !== prev) {
-                        DesignTokenNode._notifications.push(
+                        DesignTokenNode.queueNotification(
                             new DesignTokenChangeRecordImpl(
                                 this,
                                 DesignTokenMutationType.change,
