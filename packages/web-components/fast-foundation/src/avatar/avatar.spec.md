@@ -12,8 +12,6 @@ A common use case would be to display an image or text (usually initials) of a u
 - A URL for an image can be passed to the component to be displayed in the backplate
 - Badge slot: Able to slot in a badge component
 - Media slot: Accepts an `img` or an `svg`
-- `shape`, a circle or square shape can be chosen. Any border radius for square shaped backplates should be determined by the users design system values or stylesheet
-- `color`, a hexadecimal color can be provided to determine the backplate background color
 - When a `link` is provided an `aria-link` attribute is added
 
 ### Prior Art/Examples
@@ -33,12 +31,9 @@ A common use case would be to display an image or text (usually initials) of a u
 #### Attributes
 |   Name    | Description                                                 | Type                                |
 |-----------|-------------------------------------------------------------|-------------------------------------|
-| `src` | Accepts URL string of image to be displayed                 | `string`                            |
-| `alt`| Accepts alt text for image                                  | `string`                            |
+| `src`     | Accepts URL string of image to be displayed                 | `string`                            |
+| `alt`     | Accepts alt text for image                                  | `string`                            |
 | `link`    | Accepts a URL for the anchor source                         | `string`                            |
-| `shape`   | Determines the avatar backplate shape. Default will be a circle. | `string: default | circle | square` |
-| `fill`    | Accepts a string that defines the `avatar-fill-*` post-fix for custom variable mapping.                | `string`                 |
-| `color`   | Accepts a string that defines the `avatar-color-*` post-fix for custom variable mapping.                    | `string`                |
 
 #### Slots
 
@@ -52,16 +47,13 @@ A common use case would be to display an image or text (usually initials) of a u
 *Template*
 ```js
 <div
-    class="backplate ${x => x.shape}"
+    class="backplate"
     part="backplate"
-    style="${x =>
-        x.fill ? `background-color: var(--avatar-fill-${x.fill});` : void 0}"
 >
     <a
         class="link"
         part="link"
         href="${x => (x.link ? x.link : void 0)}"
-        style="${x => (x.color ? `color: var(--avatar-color-${x.color});` : void 0)}"
     >
         <slot name="media" part="media">${definition.media || ""}</slot>
         <slot class="content" part="content"></slot>
