@@ -199,10 +199,10 @@ export function parseStringToOpCodes(
                     const factory = Compiler.aggregate(parsed) as ViewBehaviorFactory &
                         Aspected;
                     // Guard against directives like children, ref, and slotted
-                    if (factory.binding && factory.aspectType !== Aspect.content) {
+                    if (factory.dataBinding && factory.aspectType !== Aspect.content) {
                         prev.dynamic.set(current, {
                             type: OpType.attributeBinding,
-                            binding: factory.binding,
+                            dataBinding: factory.dataBinding,
                             aspect: factory.aspectType,
                             target: factory.targetAspect,
                             useCustomElementInstance: Boolean(

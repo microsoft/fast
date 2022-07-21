@@ -8,6 +8,7 @@ import {
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { RenderDirective } from "@microsoft/fast-element/render";
 import { RenderInfo } from "../render-info.js";
 import { TemplateRenderer } from "./template-renderer.js";
 
@@ -49,8 +50,8 @@ export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirectiv
             renderer: TemplateRenderer,
             context: ExecutionContext
         ): IterableIterator<string> {
-            const items = directive.dataBinding(source, context);
-            const template = directive.templateBinding(source, context);
+            const items = directive.dataBinding.evaluate(source, context);
+            const template = directive.templateBinding.evaluate(source, context);
             const childContext = context.createChildContext(source);
 
             if (template instanceof ViewTemplate) {
@@ -80,9 +81,33 @@ export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirectiv
     }
 );
 
+export const RenderDirectiveRenderer: ViewBehaviorFactoryRenderer<RenderDirective> = Object.freeze(
+    {
+        matcher: RenderDirective,
+        *render(
+            directive: RenderDirective,
+            renderInfo: RenderInfo,
+            source: any,
+            renderer: TemplateRenderer,
+            context: ExecutionContext
+        ): IterableIterator<string> {
+            const data = directive.dataBinding.evaluate(source, context);
+            const template = directive.templateBinding.evaluate(source, context);
+            const childContext = context.createChildContext(source);
+
+            if (template instanceof ViewTemplate) {
+                yield* renderer.render(template, renderInfo, data, childContext);
+            } else {
+                throw new Error("Unable to render Render Directive template");
+            }
+        },
+    }
+);
+
 function* noop() {
     yield "";
 }
+
 export const ChildrenDirectiveRenderer: ViewBehaviorFactoryRenderer<ChildrenDirective> = Object.freeze(
     {
         matcher: ChildrenDirective,
@@ -96,6 +121,7 @@ export const RefDirectiveRenderer: ViewBehaviorFactoryRenderer<RefDirective> = O
         render: noop,
     }
 );
+
 export const SlottedDirectiveRenderer: ViewBehaviorFactoryRenderer<SlottedDirective> = Object.freeze(
     {
         matcher: SlottedDirective,
@@ -105,6 +131,7 @@ export const SlottedDirectiveRenderer: ViewBehaviorFactoryRenderer<SlottedDirect
 
 export const defaultViewBehaviorFactoryRenderers: ViewBehaviorFactoryRenderer<any>[] = [
     RepeatDirectiveRenderer,
+    RenderDirectiveRenderer,
     ChildrenDirectiveRenderer,
     RefDirectiveRenderer,
     SlottedDirectiveRenderer,

@@ -87,17 +87,10 @@ export class FASTElementLayout implements Layout {
 
     constructor(
         private readonly template: ViewTemplate | null = null,
-        styles: ComposableStyles | ComposableStyles[] | null = null,
+        styles: ComposableStyles | ComposableStyles[] | undefined = undefined,
         private runBeforeCommit = true
     ) {
-        this.styles =
-            styles === void 0 || styles === null
-                ? null
-                : Array.isArray(styles)
-                ? new ElementStyles(styles)
-                : styles instanceof ElementStyles
-                ? styles
-                : new ElementStyles([styles]);
+        this.styles = ElementStyles.normalize(styles) ?? null;
     }
 
     async beforeCommit(routerElement: HTMLElement) {

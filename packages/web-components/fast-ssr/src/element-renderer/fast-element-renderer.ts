@@ -52,7 +52,10 @@ export abstract class FASTElementRenderer extends ElementRenderer {
 
             if (view.hostDynamicAttributes) {
                 for (const attr of view.hostDynamicAttributes) {
-                    const result = attr.binding(this.element, ExecutionContext.default);
+                    const result = attr.dataBinding.evaluate(
+                        this.element,
+                        ExecutionContext.default
+                    );
 
                     const { target } = attr;
                     switch (attr.aspect) {

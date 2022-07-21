@@ -2,6 +2,27 @@
   "name": "@microsoft/adaptive-ui",
   "entries": [
     {
+      "date": "Mon, 18 Jul 2022 21:10:01 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.5",
+      "version": "1.0.0-alpha.5",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "b7caa90b2d77f5e5d56ef5303ff7647a12e17802",
+            "comment": "Added elevation design tokens"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.5",
+            "commit": "2ff46a32cdd9af12b236d0e2f3436a4de782e8ee"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 22 Jun 2022 20:17:50 GMT",
       "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.4",
       "version": "1.0.0-alpha.4",

@@ -44,7 +44,7 @@ describe("The template compiler", () => {
     }
 
     function binding(result = "result") {
-        return bind(() => result) as HTMLBindingDirective;
+        return new HTMLBindingDirective(bind(() => result));
     }
 
     const scope = {};
@@ -210,7 +210,7 @@ describe("The template compiler", () => {
                 return id;
             };
 
-            const binding = bind(x => x) as HTMLBindingDirective;
+            const binding = new HTMLBindingDirective(bind(x => x));
             Aspect.assign(binding, "a"); // mimic the html function, which will think it's an attribute
             const html = `a=${binding.createHTML(add)}`;
 
@@ -367,7 +367,7 @@ describe("The template compiler", () => {
 
                 if (x.result) {
                     expect(
-                        (factories[0] as HTMLBindingDirective).binding(
+                        (factories[0] as HTMLBindingDirective).dataBinding.evaluate(
                             scope,
                             ExecutionContext.default
                         )
@@ -402,7 +402,153 @@ describe("The template compiler", () => {
         });
     });
 
-    context("when compiling hosts", () => {});
+    context("when compiling hosts", () => {
+        const scenarios = [
+            {
+                type: "no",
+                html: `<template></template>`,
+                directives: [],
+                fragment: ``,
+            },
+            {
+                type: "a single",
+                html: `<template class="${inline(0)}"></template>`,
+                directives: [binding()],
+                fragment: ``,
+                result: "result",
+                targetIds: ['h'],
+            },
+            {
+                type: "a single starting",
+                html: `<template class="${inline(0)} end"></template>`,
+                directives: [binding()],
+                fragment: ``,
+                result: "result end",
+                targetIds: ['h'],
+            },
+            {
+                type: "a single middle",
+                html: `<template class="beginning ${inline(0)} end"></template>`,
+                directives: [binding()],
+                fragment: ``,
+                result: "beginning result end",
+                targetIds: ['h'],
+            },
+            {
+                type: "a single ending",
+                html: `<template class="${inline(0)} end"></template>`,
+                directives: [binding()],
+                fragment: ``,
+                result: "result end",
+                targetIds: ['h'],
+            },
+            {
+                type: "back-to-back",
+                html: `<template class="${inline(0)}${inline(1)}"></template>`,
+                directives: [binding(), binding()],
+                fragment: ``,
+                result: "resultresult",
+                targetIds: ['h'],
+            },
+            {
+                type: "back-to-back starting",
+                html: `<template class="${inline(0)}${inline(1)} end"></template>`,
+                directives: [binding(), binding()],
+                fragment: ``,
+                result: "resultresult end",
+                targetIds: ['h'],
+            },
+            {
+                type: "back-to-back middle",
+                html: `<template class="beginning ${inline(0)}${inline(1)} end"></template>`,
+                directives: [binding(), binding()],
+                fragment: ``,
+                result: "beginning resultresult end",
+                targetIds: ['h'],
+            },
+            {
+                type: "back-to-back ending",
+                html: `<template class="start ${inline(0)}${inline(1)}"></template>`,
+                directives: [binding(), binding()],
+                fragment: ``,
+                result: "start resultresult",
+                targetIds: ['h'],
+            },
+            {
+                type: "separated",
+                html: `<template class="${inline(0)}separator${inline(1)}"></template>`,
+                directives: [binding(), binding()],
+                fragment: ``,
+                result: "resultseparatorresult",
+                targetIds: ['h'],
+            },
+            {
+                type: "separated starting",
+                html: `<template class="${inline(0)}separator${inline(1)} end"></template>`,
+                directives: [binding(), binding()],
+                fragment: ``,
+                result: "resultseparatorresult end",
+                targetIds: ['h'],
+            },
+            {
+                type: "separated middle",
+                html: `<template class="beginning ${inline(0)}separator${inline(
+                    1
+                )} end"></template>`,
+                directives: [binding(), binding()],
+                fragment: ``,
+                result: "beginning resultseparatorresult end",
+                targetIds: ['h'],
+            },
+            {
+                type: "separated ending",
+                html: `<template class="beginning ${inline(0)}separator${inline(1)}"></template>`,
+                directives: [binding(), binding()],
+                fragment: ``,
+                result: "beginning resultseparatorresult",
+                targetIds: ['h'],
+            },
+            {
+                type: "multiple attributes on the same element with",
+                html: `<template class="${inline(0)}" role="${inline(1)}"></template>`,
+                directives: [binding(), binding()],
+                fragment: ``,
+                targetIds: ['h', 'h'],
+            }
+        ];
+
+        scenarios.forEach(x => {
+            it(`handles ${x.type} binding expression(s)`, () => {
+                const { fragment, factories } = compile(x.html, x.directives);
+
+                expect(toHTML(fragment)).to.equal(x.fragment);
+                expect(toHTML(fragment.cloneNode(true) as DocumentFragment)).to.equal(
+                    x.fragment
+                );
+
+                if (x.result) {
+                    expect(
+                        (factories[0] as HTMLBindingDirective).dataBinding.evaluate(
+                            scope,
+                            ExecutionContext.default
+                        )
+                    ).to.equal(x.result);
+                }
+
+                if (x.targetIds) {
+                    const length = factories.length;
+
+                    expect(length).to.equal(x.targetIds.length);
+
+                    for (let i = 0; i < length; ++i) {
+                        expect(factories[i].nodeId).to.equal(
+                            x.targetIds[i]
+                        );
+                    }
+                }
+            });
+        });
+    });
 
     if (ElementStyles.supportsAdoptedStyleSheets) {
         it("handles templates with adoptedStyleSheets", () => {

@@ -104,20 +104,23 @@ export interface FASTGlobal {
     /**
      * Sends a warning to the developer.
      * @param code - The warning code to send.
-     * @param args - Args relevant for the warning.
+     * @param values - Values relevant for the warning message.
      */
-    warn(code: number, ...args: any[]): void;
+    warn(code: number, values?: Record<string, any>): void;
 
     /**
      * Creates an error.
      * @param code - The error code to send.
-     * @param args - Args relevant for the error.
+     * @param values - Values relevant for the error message.
      */
-    error(code: number, ...args: any[]): Error;
+    error(code: number, values?: Record<string, any>): Error;
 
     /**
      * Adds debug messages for errors and warnings.
      * @param messages - The message dictionary to add.
+     * @remarks
+     * Message can include placeholders like $\{name\} which can be
+     * replaced by values passed at runtime.
      */
     addMessages(messages: Record<number, string>): void;
 }
@@ -132,7 +135,6 @@ export const enum KernelServiceId {
     contextEvent = 3,
     elementRegistry = 4,
     styleSheetStrategy = 5,
-    developerChannel = 6,
 }
 
 /**
@@ -195,9 +197,25 @@ export const enum Message {
     onlySetHTMLPolicyOnce = 1201,
     bindingInnerHTMLRequiresTrustedTypes = 1202,
     twoWayBindingRequiresObservables = 1203,
+    hostBindingWithoutHost = 1204,
+    unsupportedBindingBehavior = 1205,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,
+    // 1501 - 1600 Context and Dependency Injection
+    noRegistrationForContext = 1501,
+    noFactoryForResolver = 1502,
+    invalidResolverStrategy = 1503,
+    cannotAutoregisterDependency = 1504,
+    cannotResolveKey = 1505,
+    cannotConstructNativeFunction = 1506,
+    cannotJITRegisterNonConstructor = 1507,
+    cannotJITRegisterIntrinsic = 1508,
+    cannotJITRegisterInterface = 1509,
+    invalidResolver = 1510,
+    invalidKey = 1511,
+    noDefaultResolver = 1512,
+    cyclicDependency = 1513,
 }
 
 /**

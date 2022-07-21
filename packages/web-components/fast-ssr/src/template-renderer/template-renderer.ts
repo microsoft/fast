@@ -93,8 +93,8 @@ export class TemplateRenderer {
                             this,
                             context
                         );
-                    } else if (factory.aspectType && factory.binding) {
-                        const result = factory.binding(source, context);
+                    } else if (factory.aspectType && factory.dataBinding) {
+                        const result = factory.dataBinding.evaluate(source, context);
 
                         // If the result is a template, render the template
                         if (result instanceof ViewTemplate) {
@@ -179,13 +179,13 @@ export class TemplateRenderer {
                 }
 
                 case OpType.attributeBinding: {
-                    const { aspect, binding } = code;
+                    const { aspect, dataBinding: binding } = code;
                     // Don't emit anything for events or directives without bindings
                     if (aspect === Aspect.event) {
                         break;
                     }
 
-                    const result = binding(source, context);
+                    const result = binding.evaluate(source, context);
                     const renderer = this.getAttributeBindingRenderer(code);
 
                     if (renderer) {
@@ -205,7 +205,7 @@ export class TemplateRenderer {
                         const renderer = this.getAttributeBindingRenderer(attr);
 
                         if (renderer) {
-                            const result = attr.binding(source, context);
+                            const result = attr.dataBinding.evaluate(source, context);
                             yield " ";
                             yield* renderer(attr, result, renderInfo);
                         }

@@ -121,6 +121,23 @@ export class ElementStyles {
     }
 
     /**
+     * Normalizes a set of composable style options.
+     * @param styles - The style options to normalize.
+     * @returns A singular ElementStyles instance or undefined.
+     */
+    public static normalize(
+        styles: ComposableStyles | ComposableStyles[] | undefined
+    ): ElementStyles | undefined {
+        return styles === void 0
+            ? void 0
+            : Array.isArray(styles)
+            ? new ElementStyles(styles)
+            : styles instanceof ElementStyles
+            ? styles
+            : new ElementStyles([styles]);
+    }
+
+    /**
      * Indicates whether the DOM supports the adoptedStyleSheets feature.
      */
     public static readonly supportsAdoptedStyleSheets =
