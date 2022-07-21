@@ -1,4 +1,4 @@
-import { cssPartial } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
 import {
     bodyFont,
     typeRampBaseFontSize,
@@ -31,7 +31,7 @@ import {
 } from "../design-tokens/type.js";
 
 /** @public */
-export const typeRampBase = cssPartial`
+export const typeRampBase = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampBaseFontSize};
     line-height: ${typeRampBaseLineHeight};
@@ -40,7 +40,7 @@ export const typeRampBase = cssPartial`
 `;
 
 /** @public */
-export const typeRampMinus1 = cssPartial`
+export const typeRampMinus1 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampMinus1FontSize};
     line-height: ${typeRampMinus1LineHeight};
@@ -49,7 +49,7 @@ export const typeRampMinus1 = cssPartial`
 `;
 
 /** @public */
-export const typeRampMinus2 = cssPartial`
+export const typeRampMinus2 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampMinus2FontSize};
     line-height: ${typeRampMinus2LineHeight};
@@ -58,7 +58,7 @@ export const typeRampMinus2 = cssPartial`
 `;
 
 /** @public */
-export const typeRampPlus1 = cssPartial`
+export const typeRampPlus1 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampPlus1FontSize};
     line-height: ${typeRampPlus1LineHeight};
@@ -67,7 +67,7 @@ export const typeRampPlus1 = cssPartial`
 `;
 
 /** @public */
-export const typeRampPlus2 = cssPartial`
+export const typeRampPlus2 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampPlus2FontSize};
     line-height: ${typeRampPlus2LineHeight};
@@ -76,7 +76,7 @@ export const typeRampPlus2 = cssPartial`
 `;
 
 /** @public */
-export const typeRampPlus3 = cssPartial`
+export const typeRampPlus3 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampPlus3FontSize};
     line-height: ${typeRampPlus3LineHeight};
@@ -85,7 +85,7 @@ export const typeRampPlus3 = cssPartial`
 `;
 
 /** @public */
-export const typeRampPlus4 = cssPartial`
+export const typeRampPlus4 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampPlus4FontSize};
     line-height: ${typeRampPlus4LineHeight};
@@ -94,7 +94,7 @@ export const typeRampPlus4 = cssPartial`
 `;
 
 /** @public */
-export const typeRampPlus5 = cssPartial`
+export const typeRampPlus5 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampPlus5FontSize};
     line-height: ${typeRampPlus5LineHeight};
@@ -103,7 +103,7 @@ export const typeRampPlus5 = cssPartial`
 `;
 
 /** @public */
-export const typeRampPlus6 = cssPartial`
+export const typeRampPlus6 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampPlus6FontSize};
     line-height: ${typeRampPlus6LineHeight};
