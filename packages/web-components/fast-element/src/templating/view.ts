@@ -154,6 +154,8 @@ export class HTMLView<TSource = any, TParent = any>
             let current = this.firstChild!;
             let next;
 
+            if (node.previousSibling === end) return;
+
             while (current !== end) {
                 next = current.nextSibling;
                 parentNode.insertBefore(current, node);
