@@ -219,12 +219,10 @@ export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
                 if (record.type === DesignTokenMutationType.delete) {
                     target.removeProperty(this.cssCustomProperty!);
                 } else {
-                    let value = record.target.getTokenValue(this);
-                    if (typeof (value as any).createCSS === "function") {
-                        value = (value as any).createCSS();
-                    }
-
-                    target.setProperty(this.cssCustomProperty!, value as any);
+                    target.setProperty(
+                        this.cssCustomProperty!,
+                        this.resolveCSSValue(record.target.getTokenValue(this)) as any
+                    );
                 }
             }
         },
@@ -235,6 +233,10 @@ export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
         this.cssCustomProperty = `--${configuration.cssCustomPropertyName}`;
         this.cssVar = `var(${this.cssCustomProperty})`;
         Observable.getNotifier(this).subscribe(this.cssReflector);
+    }
+
+    private resolveCSSValue(value: any) {
+        return value && typeof value.createCSS === "function" ? value.createCSS() : value;
     }
 }
 
