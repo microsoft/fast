@@ -3,6 +3,7 @@ import {
     Behavior,
     ComposableStyles,
     CSSDirective,
+    cssDirective,
     FASTElement,
     Observable,
     Subscriber,
@@ -195,6 +196,7 @@ export class DesignToken<T> {
 /**
  * @public
  */
+@cssDirective()
 export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
     public cssCustomProperty: string;
     private cssVar: string;
@@ -217,10 +219,12 @@ export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
                 if (record.type === DesignTokenMutationType.delete) {
                     target.removeProperty(this.cssCustomProperty!);
                 } else {
-                    target.setProperty(
-                        this.cssCustomProperty!,
-                        record.target.getTokenValue(this) as any
-                    );
+                    let value = record.target.getTokenValue(this);
+                    if (typeof (value as any).createCSS === "function") {
+                        value = (value as any).createCSS();
+                    }
+
+                    target.setProperty(this.cssCustomProperty!, value as any);
                 }
             }
         },
