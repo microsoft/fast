@@ -438,15 +438,44 @@ export class DesignTokenNode {
      * Notifies that a token has been mutated
      */
     private dispatch<T>(record: DesignTokenChangeRecordImpl<T>) {
-        const { target, token, value } = record;
-        if (this !== target) {
+        if (this !== record.target) {
+            const { token } = record;
             // If the node is assigned the token being dispatched and the assigned value does not depend on the token
             // (circular token reference) then terminate the dispatch.
-            // TODO: the record needs to be updated in the case where the node is assigned a token that has a circular ref,
-            // because the new target node and value are different
-            if (DesignTokenNode.isAssigned(this, token)) {
+            const isAssigned = DesignTokenNode.isAssigned(this, token);
+            const containsCircularForToken =
+                isAssigned && this._derived.get(token)?.[0].dependencies.has(token);
+            if (isAssigned && !containsCircularForToken) {
                 return;
             }
+
+            // Delete token evaluations if the token is not assigned explicitly but is derived for the node and
+            // the record is a delete type.
+            if (
+                record.type === DesignTokenMutationType.delete &&
+                !isAssigned &&
+                DesignTokenNode.isDerivedFor(this, token)
+            ) {
+                this.tearDownDerivedTokenValue(token);
+                DesignTokenNode.queueNotification(
+                    new DesignTokenChangeRecordImpl(
+                        this,
+                        DesignTokenMutationType.delete,
+                        token
+                    )
+                );
+            }
+
+            if (containsCircularForToken) {
+                record = new DesignTokenChangeRecordImpl(
+                    this,
+                    DesignTokenMutationType.change,
+                    token,
+                    this._derived.get(token)?.[0].value
+                );
+            }
+
+            const { value } = record;
 
             if (value && DesignTokenNode.isDerivedTokenValue(value)) {
                 const evaluator = DerivedValueEvaluator.getOrCreate(value);
@@ -470,79 +499,59 @@ export class DesignTokenNode {
                             prev === undefined
                                 ? DesignTokenMutationType.add
                                 : DesignTokenMutationType.change;
-                        DesignTokenNode.queueNotification(
-                            new DesignTokenChangeRecordImpl(
-                                this,
-                                type,
-                                token,
-                                evaluator.value
-                            )
+                        const notification = new DesignTokenChangeRecordImpl(
+                            this,
+                            type,
+                            token,
+                            evaluator.value
                         );
+                        DesignTokenNode.queueNotification(notification);
+                        record = notification;
                     }
+                }
+            }
+        }
 
-                    this.dispatch(
+        this.collectLocalChangeRecords(record).forEach(_record => {
+            DesignTokenNode.queueNotification(_record);
+            this.dispatch(_record);
+        });
+
+        this.notifyChildren(record);
+    }
+
+    /**
+     * Generate change-records for local dependencies of a change record
+     * TODO: I think we can get some perf gains from making this recursive to reconcile *all*
+     * tokens from one record input (or maybe a set of inputs?). Instead, dispatch just calls dispatch
+     * with the result of this, which effectively does the same thing with more steps
+     */
+    private collectLocalChangeRecords<T>(
+        record: DesignTokenChangeRecordImpl<T>
+    ): Map<DesignToken<any>, DesignTokenChangeRecordImpl<any>> {
+        const collected = new Map<DesignToken<any>, DesignTokenChangeRecordImpl<any>>();
+        const { token } = record;
+
+        for (const entry of this._derived) {
+            if (entry[0] !== token) {
+                const [_token, [evaluator]] = entry;
+                if (evaluator.dependencies.has(token)) {
+                    DesignTokenNode.evaluateDerived(this, _token, evaluator);
+
+                    collected.set(
+                        _token,
                         new DesignTokenChangeRecordImpl(
                             this,
                             DesignTokenMutationType.change,
-                            token,
-                            value
+                            _token,
+                            evaluator.value
                         )
                     );
                 }
-            } else if (
-                record.type === DesignTokenMutationType.delete &&
-                DesignTokenNode.isDerivedFor(this, token)
-            ) {
-                this.tearDownDerivedTokenValue(token);
-                DesignTokenNode.queueNotification(
-                    new DesignTokenChangeRecordImpl(
-                        this,
-                        DesignTokenMutationType.delete,
-                        token
-                    )
-                );
             }
         }
 
-        // For all derived tokens on the node,
-        // check if the fn has dependencies on the changed token.
-        // If it does, re-evaluate and notify for the dependee
-        for (const entry of this._derived) {
-            if (target === this && entry[0] === token) {
-                // If this fn was just called by the node itself,
-                // skip the token that kicked off notification
-                continue;
-            }
-
-            const [_token, [evaluator]] = entry;
-
-            if (evaluator.dependencies.has(token)) {
-                DesignTokenNode.evaluateDerived(this, _token, evaluator);
-                DesignTokenNode.queueNotification(
-                    new DesignTokenChangeRecordImpl(
-                        this,
-                        DesignTokenMutationType.change,
-                        _token,
-                        evaluator.value
-                    )
-                );
-
-                // If the token being evaluated is the same as the incoming dispatch,
-                // Don't dispatch again because it will lead to recursive dispatch calls
-                // if (_token !== token) {
-                this.dispatch(
-                    new DesignTokenChangeRecordImpl(
-                        target,
-                        DesignTokenMutationType.change,
-                        _token,
-                        evaluator.value
-                    )
-                );
-                // }
-            }
-        }
-
-        this.notifyChildren(record);
+        return collected;
     }
 
     /**
