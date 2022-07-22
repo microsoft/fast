@@ -1,6 +1,6 @@
 import type {
-    ExecutionContext,
     Expression,
+    ExpressionController,
     ExpressionObserver,
 } from "../observation/observable.js";
 import { isString } from "../interfaces.js";
@@ -45,37 +45,37 @@ export const Signal = Object.freeze({
         const found = subscribers[signal];
         if (found) {
             found instanceof Set
-                ? found.forEach(x => x.handleChange(this, signal))
+                ? found.forEach(x => x.handleChange(found, signal))
                 : found.handleChange(this, signal);
         }
     },
 });
 
-class SignalObserver<TSource = any, TReturn = any, TParent = any> {
-    signal!: string;
-
+class SignalObserver<TSource = any, TReturn = any, TParent = any> implements Subscriber {
     constructor(
         private readonly dataBinding: SignalBinding,
         private readonly subscriber: Subscriber
     ) {}
 
-    observe(source: TSource, context: ExecutionContext<TParent>): TReturn {
-        const signal = (this.signal = this.getSignal(source, context));
-        Signal.subscribe(signal, this);
-        return this.dataBinding.evaluate(source, context);
+    bind(controller: ExpressionController<TSource, TParent>): TReturn {
+        Signal.subscribe(this.getSignal(controller), this);
+        controller.onUnbind(this);
+        return this.dataBinding.evaluate(controller.source, controller.context);
     }
 
-    dispose() {
-        Signal.unsubscribe(this.signal, this);
+    unbind(controller: ExpressionController<TSource, TParent>) {
+        Signal.unsubscribe(this.getSignal(controller), this);
     }
 
     handleChange() {
         this.subscriber.handleChange(this.dataBinding.evaluate, this);
     }
 
-    private getSignal(source: any, context: ExecutionContext): string {
+    private getSignal(controller: ExpressionController<TSource, TParent>): string {
         const options = this.dataBinding.options;
-        return isString(options) ? options : options(source, context);
+        return isString(options)
+            ? options
+            : options(controller.source, controller.context);
     }
 }
 
@@ -84,13 +84,6 @@ class SignalBinding<TSource = any, TReturn = any, TParent = any> extends Binding
     TReturn,
     TParent
 > {
-    constructor(
-        public readonly evaluate: Expression<TSource, TReturn, TParent>,
-        public readonly options: any
-    ) {
-        super();
-    }
-
     createObserver(
         directive: HTMLBindingDirective,
         subscriber: Subscriber
@@ -101,14 +94,16 @@ class SignalBinding<TSource = any, TReturn = any, TParent = any> extends Binding
 
 /**
  * Creates a signal binding configuration with the supplied options.
- * @param binding - The binding to refresh when signaled.
+ * @param expression - The binding to refresh when signaled.
  * @param options - The signal name or a binding to use to retrieve the signal name.
  * @returns A binding configuration.
  * @public
  */
 export function signal<T = any>(
-    binding: Expression<T>,
+    expression: Expression<T>,
     options: string | Expression<T>
 ): Binding<T> {
-    return new SignalBinding(binding, options);
+    const binding = new SignalBinding(expression);
+    binding.options = options;
+    return binding;
 }

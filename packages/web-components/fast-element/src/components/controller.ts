@@ -1,7 +1,10 @@
 import { Message, Mutable, StyleTarget } from "../interfaces.js";
-import type { Behavior } from "../observation/behavior.js";
+import {
+    HostBehaviorCollection,
+    HostBehaviorOrchestrator,
+} from "../observation/behavior.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
-import { ExecutionContext, Observable } from "../observation/observable.js";
+import { Observable } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import type { ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
@@ -25,13 +28,13 @@ const isConnectedPropertyName = "isConnected";
  * Controls the lifecycle and rendering of a `FASTElement`.
  * @public
  */
-export class Controller<
+export class ElementController<
     TElement extends HTMLElement = HTMLElement
 > extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;
-    private behaviors: Map<Behavior<TElement>, number> | null = null;
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
+    private _behaviors: HostBehaviorOrchestrator | null = null;
     private _template: ElementViewTemplate<TElement> | null = null;
     private _styles: ElementStyles | null = null;
     private _isConnected: boolean = false;
@@ -63,6 +66,18 @@ export class Controller<
      * If `null` then the element is managing its own rendering.
      */
     public readonly view: ElementView<TElement> | null = null;
+
+    public get behaviors(): HostBehaviorCollection {
+        if (this._behaviors === null) {
+            this._behaviors = HostBehaviorOrchestrator.create(this.element);
+
+            if (this._isConnected) {
+                this._behaviors.bind();
+            }
+        }
+
+        return this._behaviors.behaviors;
+    }
 
     /**
      * Indicates whether or not the custom element has been
@@ -220,7 +235,11 @@ export class Controller<
             styles.addStylesTo(target);
 
             if (sourceBehaviors !== null) {
-                this.addBehaviors(sourceBehaviors);
+                const behaviors = this.behaviors;
+
+                for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
+                    behaviors.add(sourceBehaviors[i]);
+                }
             }
         }
     }
@@ -248,77 +267,11 @@ export class Controller<
             styles.removeStylesFrom(target);
 
             if (sourceBehaviors !== null) {
-                this.removeBehaviors(sourceBehaviors);
-            }
-        }
-    }
+                const behaviors = this.behaviors;
 
-    /**
-     * Adds behaviors to this element.
-     * @param behaviors - The behaviors to add.
-     */
-    public addBehaviors(behaviors: ReadonlyArray<Behavior<TElement>>): void {
-        const targetBehaviors = this.behaviors ?? (this.behaviors = new Map());
-        const length = behaviors.length;
-        const behaviorsToBind: Behavior<TElement>[] = [];
-
-        for (let i = 0; i < length; ++i) {
-            const behavior = behaviors[i];
-
-            if (targetBehaviors.has(behavior)) {
-                targetBehaviors.set(behavior, targetBehaviors.get(behavior) + 1);
-            } else {
-                targetBehaviors.set(behavior, 1);
-                behaviorsToBind.push(behavior);
-            }
-        }
-
-        if (this._isConnected) {
-            const element = this.element;
-            const context = ExecutionContext.default;
-
-            for (let i = 0; i < behaviorsToBind.length; ++i) {
-                behaviorsToBind[i].bind(element, context);
-            }
-        }
-    }
-
-    /**
-     * Removes behaviors from this element.
-     * @param behaviors - The behaviors to remove.
-     * @param force - Forces unbinding of behaviors.
-     */
-    public removeBehaviors(
-        behaviors: ReadonlyArray<Behavior<TElement>>,
-        force: boolean = false
-    ): void {
-        const targetBehaviors = this.behaviors;
-
-        if (targetBehaviors === null) {
-            return;
-        }
-
-        const length = behaviors.length;
-        const behaviorsToUnbind: Behavior<TElement>[] = [];
-
-        for (let i = 0; i < length; ++i) {
-            const behavior = behaviors[i];
-
-            if (targetBehaviors.has(behavior)) {
-                const count = targetBehaviors.get(behavior)! - 1;
-
-                count === 0 || force
-                    ? targetBehaviors.delete(behavior) && behaviorsToUnbind.push(behavior)
-                    : targetBehaviors.set(behavior, count);
-            }
-        }
-
-        if (this._isConnected) {
-            const element = this.element;
-            const context = ExecutionContext.default;
-
-            for (let i = 0; i < behaviorsToUnbind.length; ++i) {
-                behaviorsToUnbind[i].unbind(element, context);
+                for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
+                    behaviors.add(sourceBehaviors[i]);
+                }
             }
         }
     }
@@ -332,20 +285,17 @@ export class Controller<
         }
 
         const element = this.element;
-        const context = ExecutionContext.default;
 
         if (this.needsInitialization) {
             this.finishInitialization();
         } else if (this.view !== null) {
-            this.view.bind(element, context);
+            this.view.bind(element);
         }
 
-        const behaviors = this.behaviors;
+        const behaviors = this._behaviors;
 
         if (behaviors !== null) {
-            for (const behavior of behaviors.keys()) {
-                behavior.bind(element, context);
-            }
+            behaviors.bind();
         }
 
         this.setIsConnected(true);
@@ -367,15 +317,10 @@ export class Controller<
             view.unbind();
         }
 
-        const behaviors = this.behaviors;
+        const behaviors = this._behaviors;
 
         if (behaviors !== null) {
-            const element = this.element;
-            const context = ExecutionContext.default;
-
-            for (const behavior of behaviors.keys()) {
-                behavior.unbind(element, context);
-            }
+            behaviors.unbind();
         }
     }
 
@@ -475,8 +420,8 @@ export class Controller<
      * registered either through the use of the {@link customElement}
      * decorator or a call to `FASTElement.define`.
      */
-    public static forCustomElement(element: HTMLElement): Controller {
-        const controller: Controller = (element as any).$fastController;
+    public static forCustomElement(element: HTMLElement): ElementController {
+        const controller: ElementController = (element as any).$fastController;
 
         if (controller !== void 0) {
             return controller;
@@ -488,6 +433,9 @@ export class Controller<
             throw FAST.error(Message.missingElementDefinition);
         }
 
-        return ((element as any).$fastController = new Controller(element, definition));
+        return ((element as any).$fastController = new ElementController(
+            element,
+            definition
+        ));
     }
 }

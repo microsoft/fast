@@ -1,12 +1,12 @@
 import { expect } from "chai";
 import { ElementStyles } from "../index.debug.js";
-import type { Behavior } from "../observation/behavior.js";
+import type { HostBehavior, HostBehaviorController } from "../observation/behavior.js";
 import { Observable } from "../observation/observable.js";
 import { css } from "../styles/css.js";
 import { html } from "../templating/template.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { toHTML } from "../__test__/helpers.js";
-import { Controller } from "./controller.js";
+import { ElementController } from "./controller.js";
 import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions.js";
 import { FASTElement } from "./fast-element.js";
 
@@ -30,7 +30,7 @@ describe("The Controller", () => {
         ).define();
 
         const element = document.createElement(name);
-        const controller = Controller.forCustomElement(element);
+        const controller = ElementController.forCustomElement(element);
 
         return {
             name,
@@ -412,8 +412,9 @@ describe("The Controller", () => {
 
     context("with behaviors", () => {
         it("should bind all behaviors added prior to connection, during connection", () => {
-            class TestBehavior implements Behavior {
+            class TestBehavior implements HostBehavior {
                 public bound = false;
+
                 bind() {
                     this.bound = true;
                 }
@@ -424,7 +425,7 @@ describe("The Controller", () => {
 
             const behaviors = [new TestBehavior(), new TestBehavior(), new TestBehavior()];
             const { controller, element } = createController();
-            controller.addBehaviors(behaviors);
+            behaviors.forEach(x => controller.behaviors.add(x));
 
             behaviors.forEach(x => expect(x.bound).to.equal(false))
 
@@ -435,33 +436,29 @@ describe("The Controller", () => {
 
         it("should bind a behavior B that is added to the Controller by behavior A, where A is added prior to connection and B is added during A's bind()", () => {
             let childBehaviorBound = false;
-            class ParentBehavior implements Behavior {
-                bind(el: FASTElement) {
-                    el.$fastController.addBehaviors([new ChildBehavior()])
+            class ParentBehavior implements HostBehavior {
+                attach(controller: HostBehaviorController<any>): void {
+                    controller.behaviors.add(new ChildBehavior())
                 }
-
-                unbind() {}
             }
 
-            class ChildBehavior implements Behavior {
-                bind(el: FASTElement) {
+            class ChildBehavior implements HostBehavior {
+                bind(controller: HostBehaviorController<any>) {
                     childBehaviorBound = true;
                 }
-
-                unbind() {}
             }
 
-
-
             const { element, controller } = createController();
-            controller.addBehaviors([new ParentBehavior()]);
+            controller.behaviors.add(new ParentBehavior());
             document.body.appendChild(element);
 
             expect(childBehaviorBound).to.equal(true);
         });
+
         it("should unbind a behavior only when the behavior is removed the number of times it has been added", () => {
-            class TestBehavior implements Behavior {
+            class TestBehavior implements HostBehavior {
                 public bound = false;
+
                 bind() {
                     this.bound = true;
                 }
@@ -476,21 +473,22 @@ describe("The Controller", () => {
 
             document.body.appendChild(element);
 
-            controller.addBehaviors([behavior]);
-            controller.addBehaviors([behavior]);
-            controller.addBehaviors([behavior]);
+            controller.behaviors.add(behavior);
+            controller.behaviors.add(behavior);
+            controller.behaviors.add(behavior);
 
             expect(behavior.bound).to.equal(true);
-            controller.removeBehaviors([behavior]);
+            controller.behaviors.remove(behavior);
             expect(behavior.bound).to.equal(true);
-            controller.removeBehaviors([behavior]);
+            controller.behaviors.remove(behavior);
             expect(behavior.bound).to.equal(true);
-            controller.removeBehaviors([behavior]);
+            controller.behaviors.remove(behavior);
             expect(behavior.bound).to.equal(false);
         });
         it("should unbind a behavior whenever the behavior is removed with the force argument", () => {
-            class TestBehavior implements Behavior {
+            class TestBehavior implements HostBehavior {
                 public bound = false;
+
                 bind() {
                     this.bound = true;
                 }
@@ -505,11 +503,11 @@ describe("The Controller", () => {
 
             document.body.appendChild(element);
 
-            controller.addBehaviors([behavior]);
-            controller.addBehaviors([behavior]);
+            controller.behaviors.add(behavior);
+            controller.behaviors.add(behavior);
 
             expect(behavior.bound).to.equal(true);
-            controller.removeBehaviors([behavior], true);
+            controller.behaviors.remove(behavior, true);
             expect(behavior.bound).to.equal(false);
         });
     });

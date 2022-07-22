@@ -29,7 +29,7 @@ describe(`The HTMLView`, () => {
 
             const warnings = startCapturingWarnings();
             const view = template.create();
-            view.bind({}, ExecutionContext.default);
+            view.bind({});
             warnings.dispose();
 
             expect(warnings.list.length).equal(1);
@@ -44,7 +44,7 @@ describe(`The HTMLView`, () => {
 
             const warnings = startCapturingWarnings();
             const view = template.create();
-            view.bind({}, ExecutionContext.default);
+            view.bind({});
             warnings.dispose();
 
             expect(warnings.list.length).equal(1);
@@ -59,7 +59,7 @@ describe(`The HTMLView`, () => {
 
             const warnings = startCapturingWarnings();
             const view = template.create();
-            view.bind({}, ExecutionContext.default);
+            view.bind({});
             warnings.dispose();
 
             expect(warnings.list.length).equal(1);
@@ -74,7 +74,7 @@ describe(`The HTMLView`, () => {
 
             const warnings = startCapturingWarnings();
             const view = template.create();
-            view.bind({}, ExecutionContext.default);
+            view.bind({});
             warnings.dispose();
 
             expect(warnings.list.length).equal(1);
@@ -89,7 +89,7 @@ describe(`The HTMLView`, () => {
 
             const warnings = startCapturingWarnings();
             const view = template.create();
-            view.bind({}, ExecutionContext.default);
+            view.bind({});
             warnings.dispose();
 
             expect(warnings.list.length).equal(1);
@@ -104,7 +104,7 @@ describe(`The HTMLView`, () => {
 
             const warnings = startCapturingWarnings();
             const view = template.create();
-            view.bind({}, ExecutionContext.default);
+            view.bind({});
             warnings.dispose();
 
             expect(warnings.list.length).equal(1);

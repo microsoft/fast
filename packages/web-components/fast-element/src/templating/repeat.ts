@@ -1,4 +1,3 @@
-import type { Behavior } from "../observation/behavior.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -13,8 +12,9 @@ import {
     AddViewBehaviorFactory,
     Binding,
     HTMLDirective,
+    ViewBehavior,
     ViewBehaviorFactory,
-    ViewBehaviorTargets,
+    ViewController,
 } from "./html-directive.js";
 import type { CaptureType, SyntheticViewTemplate, ViewTemplate } from "./template.js";
 import { HTMLView, SyntheticView } from "./view.js";
@@ -47,7 +47,8 @@ function bindWithoutPositioning(
     index: number,
     context: ExecutionContext
 ): void {
-    view.bind(items[index], context);
+    // TODO: set parent
+    view.bind(items[index]);
 }
 
 function bindWithPositioning(
@@ -56,22 +57,24 @@ function bindWithPositioning(
     index: number,
     context: ExecutionContext
 ): void {
-    view.bind(items[index], context.createItemContext(index, items.length));
+    // TODO: set parent
+    // TODO update view's index and length properties
+    view.bind(items[index]);
 }
 
 /**
  * A behavior that renders a template for each item in an array.
  * @public
  */
-export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
-    private source: TSource | null = null;
+export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
+    private location: Node;
+    private controller: ViewController;
     private views: SyntheticView[] = [];
     private template: SyntheticViewTemplate;
     private templateBindingObserver: ExpressionObserver<TSource, SyntheticViewTemplate>;
     private items: readonly any[] | null = null;
     private itemsObserver: Notifier | null = null;
     private itemsBindingObserver: ExpressionObserver<TSource, any[]>;
-    private context: ExecutionContext | undefined = void 0;
     private childContext: ExecutionContext | undefined = void 0;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
 
@@ -84,7 +87,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
      * @param isTemplateBindingVolatile - Indicates whether the template binding has volatile dependencies.
      * @param options - Options used to turn on special repeat features.
      */
-    public constructor(private directive: RepeatDirective, private location: Node) {
+    public constructor(private directive: RepeatDirective) {
         this.itemsBindingObserver = directive.dataBinding.createObserver(directive, this);
         this.templateBindingObserver = directive.templateBinding.createObserver(
             directive,
@@ -97,36 +100,28 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     }
 
     /**
-     * Bind this behavior to the source.
-     * @param source - The source to bind to.
-     * @param context - The execution context that the binding is operating within.
+     * Bind this behavior.
+     * @param controller - The view controller that manages the lifecycle of this behavior.
      */
-    public bind(source: TSource, context: ExecutionContext): void {
-        this.source = source;
-        this.context = context;
-        this.childContext = context.createChildContext(source);
-
-        this.items = this.itemsBindingObserver.observe(source, this.context);
-        this.template = this.templateBindingObserver.observe(source, this.context);
+    public bind(controller: ViewController): void {
+        this.location = controller.targets[this.directive.nodeId];
+        this.controller = controller;
+        this.items = this.itemsBindingObserver.bind(controller);
+        this.template = this.templateBindingObserver.bind(controller);
         this.observeItems(true);
         this.refreshAllViews();
+        controller.onUnbind(this);
     }
 
     /**
-     * Unbinds this behavior from the source.
-     * @param source - The source to unbind from.
+     * Unbinds this behavior.
      */
     public unbind(): void {
-        this.source = null;
-        this.items = null;
-
         if (this.itemsObserver !== null) {
             this.itemsObserver.unsubscribe(this);
         }
 
         this.unbindAllViews();
-        this.itemsBindingObserver.dispose();
-        this.templateBindingObserver.dispose();
     }
 
     /**
@@ -136,14 +131,11 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
      */
     public handleChange(source: any, args: Splice[] | ExpressionObserver): void {
         if (args === this.itemsBindingObserver) {
-            this.items = this.itemsBindingObserver.observe(this.source!, this.context!);
+            this.items = this.itemsBindingObserver.bind(this.controller);
             this.observeItems();
             this.refreshAllViews();
         } else if (args === this.templateBindingObserver) {
-            this.template = this.templateBindingObserver.observe(
-                this.source!,
-                this.context!
-            );
+            this.template = this.templateBindingObserver.bind(this.controller);
 
             this.refreshAllViews(true);
         } else if (!args[0]) {
@@ -229,7 +221,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
         if (this.directive.options.positioning) {
             for (let i = 0, ii = views.length; i < ii; ++i) {
-                views[i].context!.updatePosition(i, ii);
+                // TODO: update index and length
+                //views[i].context!.updatePosition(i, ii);
             }
         }
     }
@@ -335,8 +328,8 @@ export class RepeatDirective<TSource = any>
      * Creates a behavior for the provided target node.
      * @param target - The node instance to create the behavior for.
      */
-    public createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource> {
-        return new RepeatBehavior<TSource>(this, targets[this.nodeId]);
+    public createBehavior(): RepeatBehavior<TSource> {
+        return new RepeatBehavior<TSource>(this);
     }
 }
 

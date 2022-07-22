@@ -6,10 +6,9 @@ import {
 } from "./element-styles.js";
 import { AddBehavior, cssDirective, CSSDirective } from "./css-directive.js";
 import { css } from "./css.js";
-import type { Behavior } from "../observation/behavior.js";
+import { HostBehavior, HostBehaviorOrchestrator } from "../observation/behavior.js";
 import { StyleElementStrategy } from "../polyfills.js";
 import type { StyleTarget } from "../interfaces.js";
-import { ExecutionContext } from "../observation/observable.js";
 
 if (ElementStyles.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStrategy", () => {
@@ -286,8 +285,7 @@ describe("css", () => {
 
         it("should add the behavior returned from CSSDirective.getBehavior() to the resulting ElementStyles", () => {
             const behavior = {
-                bind(){},
-                unbind(){}
+                attach(){},
             }
 
             @cssDirective()
@@ -320,8 +318,7 @@ describe("cssPartial", () => {
 
     it("Should add behaviors from interpolated CSS directives", () => {
         const behavior = {
-            bind() {},
-            unbind() {},
+            attach() {},
         }
 
         const behavior2 = {...behavior};
@@ -343,8 +340,8 @@ describe("cssPartial", () => {
         }
 
         const partial = css.partial`${new directive}${new directive2}`;
-        const behaviors: Behavior<HTMLElement>[] = [];
-        const add = (x: Behavior) => behaviors.push(x);
+        const behaviors: HostBehavior<HTMLElement>[] = [];
+        const add = (x: HostBehavior) => behaviors.push(x);
 
         partial.createCSS(add);
 
@@ -365,13 +362,14 @@ describe("cssPartial", () => {
             }
         };
 
-        const behaviors: Behavior<HTMLElement>[] = [];
-        const add = (x: Behavior) => behaviors.push(x);
+        const behaviors: HostBehavior<HTMLElement>[] = [];
+        const add = (x: HostBehavior) => behaviors.push(x);
         partial.createCSS(add);
 
         expect(behaviors[0]).to.equal(partial);
 
-        (partial as any as Behavior).bind(el, ExecutionContext.default);
+        const controller = HostBehaviorOrchestrator.create(el);
+        controller.behaviors.add(partial as HostBehavior);
 
         expect(called).to.be.true;
     })

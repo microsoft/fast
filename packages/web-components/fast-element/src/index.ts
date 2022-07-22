@@ -17,7 +17,7 @@ export * from "./observation/observable.js";
 export * from "./observation/notifier.js";
 export * from "./observation/arrays.js";
 export * from "./observation/update-queue.js";
-export type { Behavior } from "./observation/behavior.js";
+export type { HostBehavior as Behavior } from "./observation/behavior.js";
 
 // Styles
 export * from "./styles/element-styles.js";

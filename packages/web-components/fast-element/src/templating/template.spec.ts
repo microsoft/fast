@@ -476,7 +476,7 @@ describe(`The html tag template helper`, () => {
             id: string;
             nodeId: string;
 
-            createBehavior(targets: ViewBehaviorTargets) {
+            createBehavior() {
                 return { bind() {}, unbind() {} };
             }
 

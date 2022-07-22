@@ -1,5 +1,5 @@
 import { Constructable, isFunction } from "../interfaces.js";
-import { Controller } from "./controller.js";
+import { ElementController } from "./controller.js";
 import {
     FASTElementDefinition,
     PartialFASTElementDefinition,
@@ -14,7 +14,7 @@ export interface FASTElement extends HTMLElement {
      * The underlying controller that handles the lifecycle and rendering of
      * this FASTElement.
      */
-    readonly $fastController: Controller;
+    readonly $fastController: ElementController;
 
     /**
      * Emits a custom HTML event.
@@ -67,12 +67,12 @@ function createFASTElement<T extends typeof HTMLElement>(
     BaseType: T
 ): { new (): InstanceType<T> & FASTElement } {
     return class extends (BaseType as any) {
-        public readonly $fastController!: Controller;
+        public readonly $fastController!: ElementController;
 
         public constructor() {
             /* eslint-disable-next-line */
             super();
-            Controller.forCustomElement(this as any);
+            ElementController.forCustomElement(this as any);
         }
 
         public $emit(

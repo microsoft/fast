@@ -65,19 +65,22 @@ interface SubscriptionRecord extends ObservationRecord {
     next: SubscriptionRecord | undefined;
 }
 
+export interface ExpressionController<TSource = any, TParent = any> {
+    readonly source: TSource;
+    readonly context: ExecutionContext<TParent>;
+
+    onUnbind(behavior: {
+        unbind(controller: ExpressionController<TSource, TParent>);
+    }): void;
+}
+
 /**
- * Observes a binding for changes.
+ * Observes an expression for changes.
  *
  * @public
  */
-export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any>
-    extends Disposable {
-    /**
-     * Begins observing the binding.
-     * @param source - The source to pass to the binding.
-     * @param context - The context to pass to the binding.
-     */
-    observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
+export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any> {
+    bind(controller: ExpressionController<TSource, TParent>): TReturn;
 }
 
 /**
@@ -86,7 +89,10 @@ export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any>
  */
 export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any>
     extends Notifier,
-        ExpressionObserver<TSource, TReturn, TParent> {
+        ExpressionObserver<TSource, TReturn, TParent>,
+        Disposable {
+    observe(source: TSource, context?: ExecutionContext): TReturn;
+
     /**
      * Gets {@link ObservationRecord|ObservationRecords} that the {@link ExpressionNotifier}
      * is observing.
@@ -211,6 +217,15 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
 
         public setMode(isAsync: boolean): void {
             this.isAsync = this.needsQueue = isAsync;
+        }
+
+        public bind(controller: ExpressionController) {
+            controller.onUnbind(this);
+            return this.observe(controller.source, controller.context);
+        }
+
+        public unbind(controller: ExpressionController) {
+            this.dispose();
         }
 
         public observe(source: TSource, context?: ExecutionContext): TReturn {

@@ -1,10 +1,10 @@
 import type { Disposable } from "../interfaces.js";
-import type { Behavior } from "../observation/behavior.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import type {
     ViewBehavior,
     ViewBehaviorFactory,
     ViewBehaviorTargets,
+    ViewController,
 } from "./html-directive.js";
 
 /**
@@ -25,9 +25,8 @@ export interface View<TSource = any, TParent = any> extends Disposable {
     /**
      * Binds a view's behaviors to its binding source.
      * @param source - The binding source for the view's binding behaviors.
-     * @param context - The execution context to run the view within.
      */
-    bind(source: TSource, context: ExecutionContext<TParent>): void;
+    bind(source: TSource): void;
 
     /**
      * Unbinds a view's behaviors from its binding source and context.
@@ -107,7 +106,10 @@ export class HTMLView<TSource = any, TParent = any>
     /**
      * The execution context the view is running within.
      */
-    public context: ExecutionContext<TParent> | null = null;
+    public get context(): ExecutionContext<TParent> {
+        // TODO: make this a real context
+        return this as any;
+    }
 
     /**
      * The first DOM node in the range of nodes that make up the view.
@@ -127,7 +129,7 @@ export class HTMLView<TSource = any, TParent = any>
     public constructor(
         private fragment: DocumentFragment,
         private factories: ReadonlyArray<ViewBehaviorFactory>,
-        private targets: ViewBehaviorTargets
+        public readonly targets: ViewBehaviorTargets
     ) {
         this.firstChild = fragment.firstChild!;
         this.lastChild = fragment.lastChild!;
@@ -194,12 +196,14 @@ export class HTMLView<TSource = any, TParent = any>
         this.unbind();
     }
 
+    onUnbind(behavior: { unbind(controller: ViewController<TSource, TParent>) }): void {}
+
     /**
      * Binds a view's behaviors to its binding source.
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the behaviors within.
      */
-    public bind(source: TSource, context: ExecutionContext<TParent>): void {
+    public bind(source: TSource): void {
         let behaviors = this.behaviors;
         const oldSource = this.source;
 
@@ -208,27 +212,26 @@ export class HTMLView<TSource = any, TParent = any>
         }
 
         this.source = source;
-        this.context = context;
-        const targets = this.targets;
 
         if (oldSource !== null) {
+            // TODO: unbind unbindables
+
             for (let i = 0, ii = behaviors!.length; i < ii; ++i) {
                 const current = behaviors![i];
-                current.unbind(oldSource, context, targets);
-                current.bind(source, context, targets);
+                current.bind(this);
             }
         } else if (behaviors === null) {
-            this.behaviors = behaviors = new Array<Behavior>(this.factories.length);
+            this.behaviors = behaviors = new Array<ViewBehavior>(this.factories.length);
             const factories = this.factories;
 
             for (let i = 0, ii = factories.length; i < ii; ++i) {
-                const behavior = factories[i].createBehavior(targets);
-                behavior.bind(source, context, targets);
+                const behavior = factories[i].createBehavior();
+                behavior.bind(this);
                 behaviors[i] = behavior;
             }
         } else {
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].bind(source, context, targets);
+                behaviors[i].bind(this);
             }
         }
     }
@@ -243,16 +246,9 @@ export class HTMLView<TSource = any, TParent = any>
             return;
         }
 
-        const targets = this.targets;
-        const context = this.context;
-        const behaviors = this.behaviors!;
-
-        for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-            behaviors[i].unbind(oldSource, context!, targets);
-        }
+        // TODO unbind bindables
 
         this.source = null;
-        this.context = null;
     }
 
     /**

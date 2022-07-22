@@ -1,17 +1,16 @@
-import type { FASTElement } from "../components/fast-element.js";
 import { isString } from "../interfaces.js";
-import type { Behavior } from "../observation/behavior.js";
+import type { HostBehavior, HostBehaviorController } from "../observation/behavior.js";
 import { AddBehavior, CSSDirective } from "./css-directive.js";
 import { ComposableStyles, ElementStyles } from "./element-styles.js";
 
 function collectStyles(
     strings: TemplateStringsArray,
     values: (ComposableStyles | CSSDirective)[]
-): { styles: ComposableStyles[]; behaviors: Behavior<HTMLElement>[] } {
+): { styles: ComposableStyles[]; behaviors: HostBehavior<HTMLElement>[] } {
     const styles: ComposableStyles[] = [];
     let cssString = "";
-    const behaviors: Behavior<HTMLElement>[] = [];
-    const add = (behavior: Behavior<HTMLElement>): void => {
+    const behaviors: HostBehavior<HTMLElement>[] = [];
+    const add = (behavior: HostBehavior<HTMLElement>): void => {
         behaviors.push(behavior);
     };
 
@@ -89,11 +88,14 @@ export const css: CSSTemplateTag = ((
     return behaviors.length ? elementStyles.withBehaviors(...behaviors) : elementStyles;
 }) as any;
 
-class CSSPartial implements CSSDirective, Behavior<HTMLElement> {
+class CSSPartial implements CSSDirective, HostBehavior<HTMLElement> {
     private css: string = "";
     private styles?: ElementStyles;
 
-    constructor(styles: ComposableStyles[], private behaviors: Behavior<HTMLElement>[]) {
+    constructor(
+        styles: ComposableStyles[],
+        private behaviors: HostBehavior<HTMLElement>[]
+    ) {
         const stylesheets: ReadonlyArray<Exclude<
             ComposableStyles,
             string
@@ -128,12 +130,12 @@ class CSSPartial implements CSSDirective, Behavior<HTMLElement> {
         return this.css;
     }
 
-    bind(el: FASTElement): void {
-        el.$fastController.addStyles(this.styles);
+    attach(controller: HostBehaviorController<HTMLElement>): void {
+        (controller.source as any).$fastController.addStyles(this.styles);
     }
 
-    unbind(el: FASTElement): void {
-        el.$fastController.removeStyles(this.styles);
+    detach(controller: HostBehaviorController<HTMLElement>): void {
+        (controller.source as any).$fastController.removeStyles(this.styles);
     }
 }
 

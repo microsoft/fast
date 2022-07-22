@@ -1,4 +1,4 @@
-import type { Behavior } from "../observation/behavior.js";
+import type { HostBehavior } from "../observation/behavior.js";
 import { FAST } from "../platform.js";
 import { KernelServiceId, StyleStrategy, StyleTarget } from "../interfaces.js";
 
@@ -44,7 +44,7 @@ export class ElementStyles {
     /**
      * The behaviors associated with this set of styles.
      */
-    public readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
+    public readonly behaviors: ReadonlyArray<HostBehavior<HTMLElement>> | null;
 
     /**
      * Gets the StyleStrategy associated with these element styles.
@@ -68,10 +68,10 @@ export class ElementStyles {
             )
             .reduce(
                 (
-                    prev: Behavior<HTMLElement>[] | null,
-                    curr: Behavior<HTMLElement>[] | null
+                    prev: HostBehavior<HTMLElement>[] | null,
+                    curr: HostBehavior<HTMLElement>[] | null
                 ) => (curr === null ? prev : prev === null ? curr : prev.concat(curr)),
-                null as Behavior<HTMLElement>[] | null
+                null as HostBehavior<HTMLElement>[] | null
             );
     }
 
@@ -96,7 +96,7 @@ export class ElementStyles {
      * Associates behaviors with this set of styles.
      * @param behaviors - The behaviors to associate.
      */
-    public withBehaviors(...behaviors: Behavior<HTMLElement>[]): this {
+    public withBehaviors(...behaviors: HostBehavior<HTMLElement>[]): this {
         (this.behaviors as any) =
             this.behaviors === null ? behaviors : this.behaviors.concat(behaviors);
 

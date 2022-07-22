@@ -1,6 +1,5 @@
 import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { Constructable } from "../interfaces.js";
-import { ExecutionContext } from "../observation/observable.js";
 import { ViewTemplate } from "../templating/template.js";
 import type { HTMLView } from "../templating/view.js";
 
@@ -26,12 +25,6 @@ export interface FixtureOptions {
      * @defaultValue An empty object.
      */
     source?: any;
-
-    /**
-     * The execution context to use during binding.
-     * @defaultValue {@link @microsoft/fast-element#ExecutionContext}
-     */
-    context?: ExecutionContext;
 }
 
 /**
@@ -120,7 +113,6 @@ export async function fixture<TElement = HTMLElement>(
     const document = options.document || globalThis.document;
     const parent = options.parent || document.createElement("div");
     const source = options.source || {};
-    const context = options.context || ExecutionContext.default;
 
     if (typeof templateNameOrType === "function") {
         const def = FASTElementDefinition.getByType(templateNameOrType);
@@ -140,7 +132,7 @@ export async function fixture<TElement = HTMLElement>(
     const element = findElement(view) as any;
     let isConnected = false;
 
-    view.bind(source, context);
+    view.bind(source);
     view.appendTo(parent);
 
     customElements.upgrade(parent);
