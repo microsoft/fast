@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { ElementStyles } from "../index.debug.js";
-import type { HostBehavior, HostBehaviorController } from "../observation/behavior.js";
+import type { HostBehavior, HostController } from "../observation/behavior.js";
 import { Observable } from "../observation/observable.js";
 import { css } from "../styles/css.js";
 import { html } from "../templating/template.js";
@@ -77,7 +77,7 @@ describe("The Controller", () => {
             const { shadowRoot, controller } = createController();
 
             expect(toHTML(shadowRoot)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(shadowRoot)).to.equal("");
         });
 
@@ -85,7 +85,7 @@ describe("The Controller", () => {
             const { element, controller } = createController({ shadowOptions: null });
 
             expect(toHTML(element)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(element)).to.equal("");
         });
 
@@ -93,7 +93,7 @@ describe("The Controller", () => {
             const { shadowRoot, controller } = createController({ template: templateA });
 
             expect(toHTML(shadowRoot)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(shadowRoot)).to.equal("a");
         });
 
@@ -104,7 +104,7 @@ describe("The Controller", () => {
             });
 
             expect(toHTML(element)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(element)).to.equal("a");
         });
 
@@ -114,7 +114,7 @@ describe("The Controller", () => {
             expect(toHTML(shadowRoot)).to.equal("");
             controller.template = templateB;
             expect(toHTML(shadowRoot)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(shadowRoot)).to.equal("b");
         });
 
@@ -127,7 +127,7 @@ describe("The Controller", () => {
             expect(toHTML(element)).to.equal("");
             controller.template = templateB;
             expect(toHTML(element)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(element)).to.equal("b");
         });
 
@@ -142,7 +142,7 @@ describe("The Controller", () => {
             );
 
             expect(toHTML(shadowRoot)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(shadowRoot)).to.equal("a");
         });
 
@@ -157,7 +157,7 @@ describe("The Controller", () => {
             );
 
             expect(toHTML(element)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(element)).to.equal("a");
         });
 
@@ -174,7 +174,7 @@ describe("The Controller", () => {
             expect(toHTML(shadowRoot)).to.equal("");
             controller.template = templateB;
             expect(toHTML(shadowRoot)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(shadowRoot)).to.equal("b");
         });
 
@@ -191,7 +191,7 @@ describe("The Controller", () => {
             expect(toHTML(element)).to.equal("");
             controller.template = templateB;
             expect(toHTML(element)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(element)).to.equal("b");
         });
 
@@ -200,7 +200,7 @@ describe("The Controller", () => {
                 const { shadowRoot, controller } = createController();
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.onConnectedCallback();
+                controller.connect();
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
             });
 
@@ -208,7 +208,7 @@ describe("The Controller", () => {
                 const { shadowRoot, controller } = createController({ styles: stylesA });
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.onConnectedCallback();
+                controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssA
                 );
@@ -220,7 +220,7 @@ describe("The Controller", () => {
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
                 controller.styles = stylesB;
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.onConnectedCallback();
+                controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssB
                 );
@@ -237,7 +237,7 @@ describe("The Controller", () => {
                 );
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.onConnectedCallback();
+                controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssA
                 );
@@ -256,7 +256,7 @@ describe("The Controller", () => {
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
                 controller.styles = stylesB;
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.onConnectedCallback();
+                controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssB
                 );
@@ -269,7 +269,7 @@ describe("The Controller", () => {
             const { shadowRoot, controller } = createController({ template: templateA });
 
             expect(toHTML(shadowRoot)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(shadowRoot)).to.equal("a");
 
             controller.template = templateB;
@@ -283,7 +283,7 @@ describe("The Controller", () => {
             });
 
             expect(toHTML(element)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(element)).to.equal("a");
 
             controller.template = templateB;
@@ -295,7 +295,7 @@ describe("The Controller", () => {
                 const { shadowRoot, controller } = createController({ styles: stylesA });
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.onConnectedCallback();
+                controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssA
                 );
@@ -332,7 +332,7 @@ describe("The Controller", () => {
         const { controller, element } = createController();
         let cancelable = false;
 
-        controller.onConnectedCallback();
+        controller.connect();
         element.addEventListener('my-event', (e: Event) => {
             cancelable = e.cancelable;
         });
@@ -346,7 +346,7 @@ describe("The Controller", () => {
         const { controller, element } = createController();
         let bubbles = false;
 
-        controller.onConnectedCallback();
+        controller.connect();
         element.addEventListener('my-event', (e: Event) => {
             bubbles = e.bubbles;
         });
@@ -360,7 +360,7 @@ describe("The Controller", () => {
         const { controller, element } = createController();
         let composed = false;
 
-        controller.onConnectedCallback();
+        controller.connect();
         element.addEventListener('my-event', (e: Event) => {
             composed = e.composed;
         });
@@ -415,10 +415,10 @@ describe("The Controller", () => {
             class TestBehavior implements HostBehavior {
                 public bound = false;
 
-                bind() {
+                connectedCallback() {
                     this.bound = true;
                 }
-                unbind() {
+                disconnectedCallback() {
                     this.bound = false;
                 }
             }
@@ -437,13 +437,13 @@ describe("The Controller", () => {
         it("should bind a behavior B that is added to the Controller by behavior A, where A is added prior to connection and B is added during A's bind()", () => {
             let childBehaviorBound = false;
             class ParentBehavior implements HostBehavior {
-                attach(controller: HostBehaviorController<any>): void {
+                addedCallback(controller: HostController<any>): void {
                     controller.behaviors.add(new ChildBehavior())
                 }
             }
 
             class ChildBehavior implements HostBehavior {
-                bind(controller: HostBehaviorController<any>) {
+                connectedCallback(controller: HostController<any>) {
                     childBehaviorBound = true;
                 }
             }
@@ -459,11 +459,11 @@ describe("The Controller", () => {
             class TestBehavior implements HostBehavior {
                 public bound = false;
 
-                bind() {
+                connectedCallback() {
                     this.bound = true;
                 }
 
-                unbind() {
+                disconnectedCallback() {
                     this.bound = false;
                 }
             }
@@ -489,11 +489,11 @@ describe("The Controller", () => {
             class TestBehavior implements HostBehavior {
                 public bound = false;
 
-                bind() {
+                connectedCallback() {
                     this.bound = true;
                 }
 
-                unbind() {
+                disconnectedCallback() {
                     this.bound = false;
                 }
             }

@@ -285,7 +285,7 @@ describe("css", () => {
 
         it("should add the behavior returned from CSSDirective.getBehavior() to the resulting ElementStyles", () => {
             const behavior = {
-                attach(){},
+                addedCallback(){},
             }
 
             @cssDirective()
@@ -318,7 +318,7 @@ describe("cssPartial", () => {
 
     it("Should add behaviors from interpolated CSS directives", () => {
         const behavior = {
-            attach() {},
+            addedCallback() {},
         }
 
         const behavior2 = {...behavior};
@@ -353,12 +353,21 @@ describe("cssPartial", () => {
         const styles = css`:host {color: blue; }`;
         const partial = css.partial`${styles}`;
         let called = false;
-        const el = {
-            $fastController: {
-                addStyles(style: ElementStyles) {
-                    expect(style.styles.includes(styles)).to.be.true;
-                    called = true;
+        const controller = {
+            source: {
+                $fastController: {
+                    addStyles(style: ElementStyles) {
+                        expect(style.styles.includes(styles)).to.be.true;
+                        called = true;
+                    }
                 }
+            },
+            get behaviors() {
+                if (!this._behaviors) {
+                    this._behaviors = HostBehaviorOrchestrator.create(this);
+                }
+
+                return this._behaviors;
             }
         };
 
@@ -368,7 +377,6 @@ describe("cssPartial", () => {
 
         expect(behaviors[0]).to.equal(partial);
 
-        const controller = HostBehaviorOrchestrator.create(el);
         controller.behaviors.add(partial as HostBehavior);
 
         expect(called).to.be.true;

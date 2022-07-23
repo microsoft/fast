@@ -94,17 +94,17 @@ describe("The HTML binding directive", () => {
     }
 
     function createController(source: any, targets: ViewBehaviorTargets) {
-        const unbindables: { unbind(controller: ViewController) }[] = [];
+        const unbindables = new Set<{ unbind(controller: ViewController) }>();
 
         return {
             context: ExecutionContext.default,
             onUnbind(object) {
-                unbindables.push(object);
+                unbindables.add(object);
             },
             source,
             targets,
             unbind() {
-                unbindables.forEach(x => x.unbind(this))
+                unbindables.forEach(x => x.unbind(this));
             }
         };
     }
@@ -381,7 +381,7 @@ describe("The HTML binding directive", () => {
         },
     ];
 
-    context("when binding on-change", () => {
+    context.only("when binding on-change", () => {
         for (const aspectScenario of aspectScenarios) {
             it(`sets the initial value of a ${aspectScenario.name} binding`, () => {
                 const { behavior, node, targets } = defaultBinding(aspectScenario.sourceAspect);

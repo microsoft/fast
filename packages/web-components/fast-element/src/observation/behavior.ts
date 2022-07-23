@@ -1,4 +1,4 @@
-export interface HostBehaviorController<TSource = any> {
+export interface HostController<TSource = any> {
     readonly source: TSource;
     readonly behaviors: HostBehaviorCollection<TSource>;
 }
@@ -12,31 +12,25 @@ export interface HostBehavior<TSource = any> {
      * Executed when this behavior is attached to a controller.
      * @param controller - Controls the behavior lifecycle.
      */
-    attach?(controller: HostBehaviorController<TSource>): void;
+    addedCallback?(controller: HostController<TSource>): void;
 
     /**
      * Executed when this behavior is detached from a controller.
      * @param controller - Controls the behavior lifecycle.
      */
-    detach?(controller: HostBehaviorController<TSource>): void;
+    removedCallback?(controller: HostController<TSource>): void;
 
     /**
      * Executed when this behavior is bound.
      * @param controller - Controls the behavior lifecycle.
      */
-    bind?(controller: HostBehaviorController<TSource>): void;
+    connectedCallback?(controller: HostController<TSource>): void;
 
     /**
      * Executed when this behavior is unbound.
      * @param controller - Controls the behavior lifecycle.
      */
-    unbind?(controller: HostBehaviorController<TSource>): void;
-}
-
-export interface HostBehaviorOrchestrator<TSource = any>
-    extends HostBehaviorController<TSource> {
-    bind(): void;
-    unbind(): void;
+    disconnectedCallback?(controller: HostController<TSource>): void;
 }
 
 export interface HostBehaviorCollection<TSource = any> {
@@ -44,22 +38,26 @@ export interface HostBehaviorCollection<TSource = any> {
     remove(behavior: HostBehavior<TSource>, force?: boolean);
 }
 
+export interface HostBehaviorOrchestrator<TSource = any>
+    extends HostBehaviorCollection<TSource> {
+    connect(): void;
+    disconnect(): void;
+}
+
 export const HostBehaviorOrchestrator = Object.freeze({
-    create<TSource = any>(source: TSource): HostBehaviorOrchestrator<TSource> {
-        return new BehaviorControllerImplementation(source);
+    create<TSource = any>(
+        controller: HostController<TSource>
+    ): HostBehaviorOrchestrator<TSource> {
+        return new DefaultHostBehaviorOrchestrator(controller);
     },
 });
 
-class BehaviorControllerImplementation<TSource = any>
+class DefaultHostBehaviorOrchestrator<TSource = any>
     implements HostBehaviorCollection<TSource>, HostBehaviorOrchestrator<TSource> {
-    private _behaviors = new Map<HostBehavior<TSource>, number>();
-    private _isBound: boolean = false;
+    private readonly _behaviors = new Map<HostBehavior<TSource>, number>();
+    private _connected: boolean = false;
 
-    constructor(public readonly source: TSource) {}
-
-    get behaviors(): HostBehaviorCollection<TSource> {
-        return this;
-    }
+    constructor(private readonly _controller: HostController<TSource>) {}
 
     add(behavior: HostBehavior<TSource>) {
         const behaviors = this._behaviors;
@@ -67,10 +65,10 @@ class BehaviorControllerImplementation<TSource = any>
 
         if (count === 0) {
             behaviors.set(behavior, 1);
-            behavior.attach && behavior.attach(this);
+            behavior.addedCallback && behavior.addedCallback(this._controller);
 
-            if (this._isBound && behavior.bind) {
-                behavior.bind(this);
+            if (this._connected && behavior.connectedCallback) {
+                behavior.connectedCallback(this._controller);
             }
         } else {
             behaviors.set(behavior, count + 1);
@@ -84,32 +82,34 @@ class BehaviorControllerImplementation<TSource = any>
         if (count === 0 || force) {
             behaviors.delete(behavior);
 
-            if (this._isBound && behavior.unbind) {
-                behavior.unbind(this);
+            if (this._connected && behavior.disconnectedCallback) {
+                behavior.disconnectedCallback(this._controller);
             }
 
-            behavior.detach && behavior.detach(this);
+            behavior.removedCallback && behavior.removedCallback(this._controller);
         } else {
             behaviors.set(behavior, count);
         }
     }
 
-    bind() {
-        if (!this._isBound) {
-            this._isBound = true;
+    connect() {
+        if (!this._connected) {
+            this._connected = true;
+            const controller = this._controller;
 
             for (const key of this._behaviors.keys()) {
-                key.bind && key.bind(this);
+                key.connectedCallback && key.connectedCallback(controller);
             }
         }
     }
 
-    unbind() {
-        if (this._isBound) {
-            this._isBound = false;
+    disconnect() {
+        if (this._connected) {
+            this._connected = false;
+            const controller = this._controller;
 
             for (const key of this._behaviors.keys()) {
-                key.unbind && key.unbind(this);
+                key.disconnectedCallback && key.disconnectedCallback(controller);
             }
         }
     }

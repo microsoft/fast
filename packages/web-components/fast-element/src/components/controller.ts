@@ -2,6 +2,7 @@ import { Message, Mutable, StyleTarget } from "../interfaces.js";
 import {
     HostBehaviorCollection,
     HostBehaviorOrchestrator,
+    HostController,
 } from "../observation/behavior.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { Observable } from "../observation/observable.js";
@@ -28,13 +29,13 @@ const isConnectedPropertyName = "isConnected";
  * Controls the lifecycle and rendering of a `FASTElement`.
  * @public
  */
-export class ElementController<
-    TElement extends HTMLElement = HTMLElement
-> extends PropertyChangeNotifier {
+export class ElementController<TElement extends HTMLElement = HTMLElement>
+    extends PropertyChangeNotifier
+    implements HostController<TElement> {
     private boundObservables: Record<string, any> | null = null;
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
-    private _behaviors: HostBehaviorOrchestrator | null = null;
+    private _behaviors: HostBehaviorOrchestrator<TElement> | null = null;
     private _template: ElementViewTemplate<TElement> | null = null;
     private _styles: ElementStyles | null = null;
     private _isConnected: boolean = false;
@@ -52,7 +53,7 @@ export class ElementController<
     /**
      * The element being controlled by this controller.
      */
-    public readonly element: TElement;
+    public readonly source: TElement;
 
     /**
      * The element definition that instructs this controller
@@ -67,16 +68,16 @@ export class ElementController<
      */
     public readonly view: ElementView<TElement> | null = null;
 
-    public get behaviors(): HostBehaviorCollection {
+    public get behaviors(): HostBehaviorCollection<TElement> {
         if (this._behaviors === null) {
-            this._behaviors = HostBehaviorOrchestrator.create(this.element);
+            this._behaviors = HostBehaviorOrchestrator.create(this);
 
             if (this._isConnected) {
-                this._behaviors.bind();
+                this._behaviors.connect();
             }
         }
 
-        return this._behaviors.behaviors;
+        return this._behaviors;
     }
 
     /**
@@ -103,9 +104,9 @@ export class ElementController<
         if (this._template === null) {
             const definition = this.definition;
 
-            if ((this.element as any).resolveTemplate) {
+            if ((this.source as any).resolveTemplate) {
                 // 2. Allow for element instance overrides next.
-                this._template = (this.element as any).resolveTemplate();
+                this._template = (this.source as any).resolveTemplate();
             } else if (definition.template) {
                 // 3. Default to the static definition.
                 this._template = definition.template ?? null;
@@ -137,9 +138,9 @@ export class ElementController<
         if (this._styles === null) {
             const definition = this.definition;
 
-            if ((this.element as any).resolveStyles) {
+            if ((this.source as any).resolveStyles) {
                 // 2. Allow for element instance overrides next.
-                this._styles = (this.element as any).resolveStyles();
+                this._styles = (this.source as any).resolveStyles();
             } else if (definition.styles) {
                 // 3. Default to the static definition.
                 this._styles = definition.styles ?? null;
@@ -175,7 +176,7 @@ export class ElementController<
     public constructor(element: TElement, definition: FASTElementDefinition) {
         super(element);
 
-        this.element = element;
+        this.source = element;
         this.definition = definition;
 
         const shadowOptions = definition.shadowOptions;
@@ -225,8 +226,8 @@ export class ElementController<
         }
 
         const target =
-            getShadowRoot(this.element) ||
-            ((this.element.getRootNode() as any) as StyleTarget);
+            getShadowRoot(this.source) ||
+            ((this.source.getRootNode() as any) as StyleTarget);
 
         if (styles instanceof HTMLElement) {
             target.append(styles);
@@ -256,8 +257,8 @@ export class ElementController<
         }
 
         const target =
-            getShadowRoot(this.element) ||
-            ((this.element.getRootNode() as any) as StyleTarget);
+            getShadowRoot(this.source) ||
+            ((this.source.getRootNode() as any) as StyleTarget);
 
         if (styles instanceof HTMLElement) {
             target.removeChild(styles);
@@ -279,23 +280,19 @@ export class ElementController<
     /**
      * Runs connected lifecycle behavior on the associated element.
      */
-    public onConnectedCallback(): void {
+    public connect(): void {
         if (this._isConnected) {
             return;
         }
 
-        const element = this.element;
-
         if (this.needsInitialization) {
             this.finishInitialization();
         } else if (this.view !== null) {
-            this.view.bind(element);
+            this.view.bind(this.source);
         }
 
-        const behaviors = this._behaviors;
-
-        if (behaviors !== null) {
-            behaviors.bind();
+        if (this._behaviors !== null) {
+            this._behaviors.connect();
         }
 
         this.setIsConnected(true);
@@ -304,23 +301,19 @@ export class ElementController<
     /**
      * Runs disconnected lifecycle behavior on the associated element.
      */
-    public onDisconnectedCallback(): void {
+    public disconnect(): void {
         if (!this._isConnected) {
             return;
         }
 
         this.setIsConnected(false);
 
-        const view = this.view;
-
-        if (view !== null) {
-            view.unbind();
+        if (this.view !== null) {
+            this.view.unbind();
         }
 
-        const behaviors = this._behaviors;
-
-        if (behaviors !== null) {
-            behaviors.unbind();
+        if (this._behaviors !== null) {
+            this._behaviors.disconnect();
         }
     }
 
@@ -338,7 +331,7 @@ export class ElementController<
         const attrDef = this.definition.attributeLookup[name];
 
         if (attrDef !== void 0) {
-            attrDef.onAttributeChangedCallback(this.element, newValue);
+            attrDef.onAttributeChangedCallback(this.source, newValue);
         }
     }
 
@@ -356,7 +349,7 @@ export class ElementController<
         options?: Omit<CustomEventInit, "detail">
     ): void | boolean {
         if (this._isConnected) {
-            return this.element.dispatchEvent(
+            return this.source.dispatchEvent(
                 new CustomEvent(type, { detail, ...defaultEventOptions, ...options })
             );
         }
@@ -365,7 +358,7 @@ export class ElementController<
     }
 
     private finishInitialization(): void {
-        const element = this.element;
+        const element = this.source;
         const boundObservables = this.boundObservables;
 
         // If we have any observables that were bound, re-apply their values.
@@ -387,7 +380,7 @@ export class ElementController<
     }
 
     private renderTemplate(template: ElementViewTemplate | null | undefined): void {
-        const element = this.element;
+        const element = this.source;
         // When getting the host to render to, we start by looking
         // up the shadow root. If there isn't one, then that means
         // we're doing a Light DOM render to the element's direct children.

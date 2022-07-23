@@ -84,11 +84,11 @@ function createFASTElement<T extends typeof HTMLElement>(
         }
 
         public connectedCallback(): void {
-            this.$fastController.onConnectedCallback();
+            this.$fastController.connect();
         }
 
         public disconnectedCallback(): void {
-            this.$fastController.onDisconnectedCallback();
+            this.$fastController.disconnect();
         }
 
         public attributeChangedCallback(

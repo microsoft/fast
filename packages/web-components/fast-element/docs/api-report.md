@@ -105,11 +105,11 @@ export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView"
 
 // @public
 export interface Behavior<TSource = any> {
-    // Warning: (ae-forgotten-export) The symbol "HostBehaviorController" needs to be exported by the entry point index.d.ts
-    attach?(controller: HostBehaviorController<TSource>): void;
-    bind?(controller: HostBehaviorController<TSource>): void;
-    detach?(controller: HostBehaviorController<TSource>): void;
-    unbind?(controller: HostBehaviorController<TSource>): void;
+    // Warning: (ae-forgotten-export) The symbol "HostController" needs to be exported by the entry point index.d.ts
+    addedCallback?(controller: HostController<TSource>): void;
+    connectedCallback?(controller: HostController<TSource>): void;
+    disconnectedCallback?(controller: HostController<TSource>): void;
+    removedCallback?(controller: HostController<TSource>): void;
 }
 
 // @public
@@ -264,23 +264,23 @@ export const DOM: Readonly<{
 }>;
 
 // @public
-export class ElementController<TElement extends HTMLElement = HTMLElement> extends PropertyChangeNotifier {
+export class ElementController<TElement extends HTMLElement = HTMLElement> extends PropertyChangeNotifier implements HostController<TElement> {
     // @internal
     constructor(element: TElement, definition: FASTElementDefinition);
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     // Warning: (ae-forgotten-export) The symbol "HostBehaviorCollection" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    get behaviors(): HostBehaviorCollection;
+    get behaviors(): HostBehaviorCollection<TElement>;
+    connect(): void;
     readonly definition: FASTElementDefinition;
-    readonly element: TElement;
+    disconnect(): void;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement): ElementController;
     get isConnected(): boolean;
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
-    onConnectedCallback(): void;
-    onDisconnectedCallback(): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+    readonly source: TElement;
     get styles(): ElementStyles | null;
     set styles(value: ElementStyles | null);
     get template(): ElementViewTemplate<TElement> | null;
