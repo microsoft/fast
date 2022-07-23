@@ -603,6 +603,12 @@ export class FASTAnchoredRegion extends FASTElement {
             return document.documentElement;
         }
 
+        const rootNode = this.getRootNode();
+
+        if (rootNode instanceof ShadowRoot) {
+            return rootNode.getElementById(this.viewport);
+        }
+
         return document.getElementById(this.viewport);
     };
 
