@@ -287,7 +287,7 @@ export class BindingBehavior implements ViewBehavior {
         const target = controller.targets[directive.nodeId];
         const observer = this.getObserver(target);
 
-        (observer as any).target;
+        (observer as any).target = target;
         (observer as any).controller = controller;
 
         this.updateTarget(

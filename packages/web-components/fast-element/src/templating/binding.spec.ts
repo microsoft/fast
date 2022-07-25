@@ -381,7 +381,7 @@ describe("The HTML binding directive", () => {
         },
     ];
 
-    context.only("when binding on-change", () => {
+    context("when binding on-change", () => {
         for (const aspectScenario of aspectScenarios) {
             it(`sets the initial value of a ${aspectScenario.name} binding`, () => {
                 const { behavior, node, targets } = defaultBinding(aspectScenario.sourceAspect);
