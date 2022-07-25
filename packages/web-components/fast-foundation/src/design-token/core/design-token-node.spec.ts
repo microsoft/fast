@@ -94,7 +94,7 @@ describe("DesignTokenNode", () => {
         });
     });
     describe("setting a token to a derived value", () => {
-        it("should resolve a value for for the token being assigned from the parent node", () => {
+        it("should resolve a value for the token being assigned from the parent node", () => {
             const token = new DesignToken<number>();
             const parent = createNode();
             const child = createNode(parent);
