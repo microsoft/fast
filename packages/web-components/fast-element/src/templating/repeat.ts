@@ -146,10 +146,12 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
             );
 
             this.refreshAllViews(true);
+        } else if (!args[0]) {
+            return;
         } else if (args[0].reset) {
             this.refreshAllViews();
         } else {
-            this.updateViews(args[0] as Splice);
+            this.updateViews(args as Splice[]);
         }
     }
 
@@ -172,46 +174,57 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         }
     }
 
-    private updateViews(splice: Splice): void {
+    private updateViews(splices: Splice[]): void {
         const views = this.views;
         const childContext = this.childContext!;
         const bindView = this.bindView;
         const items = this.items!;
         const template = this.template;
         const recycle: RepeatOptions["recycle"] = this.directive.options.recycle;
-
-        const removed = splice.removed;
+        const leftoverViews: SyntheticView[] = [];
+        let leftoverIndex = 0;
         let availableViews = 0;
-        let removeIndex = 0;
-        let addIndex = splice.index;
-        const end = addIndex + splice.addedCount;
-        const removedViews = views.splice(splice.index, removed.length);
-        availableViews = removedViews.length;
 
-        for (; addIndex < end; ++addIndex) {
-            const neighbor = views[addIndex];
-            const location = neighbor ? neighbor.firstChild : this.location;
-            let view;
+        for (let i = 0, ii = splices.length; i < ii; ++i) {
+            const splice = splices[i];
+            const removed = splice.removed;
 
-            if (recycle && availableViews > 0) {
-                if (removeIndex <= availableViews && removedViews.length > 0) {
-                    view = removedViews[removeIndex];
-                    removeIndex++;
+            let removeIndex = 0;
+            let addIndex = splice.index;
+            const end = addIndex + splice.addedCount;
+            const removedViews = views.splice(splice.index, removed.length);
+            availableViews = leftoverViews.length + removedViews.length;
+
+            for (; addIndex < end; ++addIndex) {
+                const neighbor = views[addIndex];
+                const location = neighbor ? neighbor.firstChild : this.location;
+                let view;
+
+                if (recycle && availableViews > 0) {
+                    if (removeIndex <= availableViews && removedViews.length > 0) {
+                        view = removedViews[removeIndex];
+                        removeIndex++;
+                    } else {
+                        view = leftoverViews[leftoverIndex];
+                        leftoverIndex++;
+                    }
+                    availableViews--;
+                } else {
+                    view = template.create();
                 }
-                availableViews--;
-            } else {
-                view = template.create();
+
+                views.splice(addIndex, 0, view);
+                bindView(view, items, addIndex, childContext);
+                view.insertBefore(location);
             }
 
-            views.splice(addIndex, 0, view);
-            bindView(view, items, addIndex, childContext);
-            view.insertBefore(location);
+            if (removedViews[removeIndex]) {
+                leftoverViews.push(...removedViews.slice(removeIndex));
+            }
         }
 
-        if (removedViews[removeIndex]) {
-            for (let i = removeIndex, ii = removedViews.length; i < ii; ++i) {
-                removedViews[i].dispose();
-            }
+        for (let i = leftoverIndex, ii = leftoverViews.length; i < ii; ++i) {
+            leftoverViews[i].dispose();
         }
 
         if (this.directive.options.positioning) {

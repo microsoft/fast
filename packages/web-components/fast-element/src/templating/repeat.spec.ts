@@ -555,6 +555,152 @@ describe("The repeat", () => {
         });
 
         oneThroughTen.forEach(size => {
+            it(`handles back to back shift and push operations for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior(targets);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, ExecutionContext.default);
+
+                vm.items.shift();
+                vm.items.push({ name: "shift3" });
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `${createOutput(size, index => index !== 0)}shift3`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back push and shift operations for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior(targets);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, ExecutionContext.default);
+
+                vm.items.push({ name: "shift3" });
+                vm.items.shift();
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `${createOutput(size, index => index !== 0)}shift3`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back push and pop operations for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior(targets);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, ExecutionContext.default);
+
+                vm.items.push({ name: "shift3" });
+                vm.items.pop();
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `${createOutput(size)}`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back pop and push operations for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior(targets);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, ExecutionContext.default);
+
+                vm.items.pop();
+                vm.items.push({ name: "shift3" });
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `${createOutput(size-1)}shift3`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back array modification operations for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior(targets);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, ExecutionContext.default);
+
+                vm.items.pop();
+                vm.items.push({ name: "shift3" });
+                vm.items.unshift({ name: "shift1" }, { name: "shift2" });
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `shift1shift2${createOutput(size-1)}shift3`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back array modification 2 operations for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior(targets);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, ExecutionContext.default);
+
+                vm.items.push({ name: "shift3" });
+                vm.items.pop();
+                vm.items.unshift({ name: "shift1" }, { name: "shift2" });
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `shift1shift2${createOutput(size)}`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
             it(`handles back to back multiple shift operations with unshift with multiple items for arrays of size ${size}`, async () => {
                 const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
