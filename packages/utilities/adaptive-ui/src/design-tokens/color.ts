@@ -14,6 +14,11 @@ import { Swatch, SwatchRGB } from "../color/swatch.js";
 import { create, createNonCss } from "./create.js";
 import { accentPalette, neutralPalette } from "./palette.js";
 
+/**
+ * Convenience values for WCAG contrast requirements.
+ *
+ * @public
+ */
 export const ContrastTarget = Object.freeze({
     /**
      * Minimum contrast for normal (<= 14pt) text (AA rating).
