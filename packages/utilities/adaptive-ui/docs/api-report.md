@@ -15,19 +15,19 @@ export const accentBaseColor: CSSDesignToken<string>;
 // @public (undocumented)
 export const accentBaseSwatch: DesignToken<Swatch>;
 
-// @public (undocumented)
+// @public
 export const accentFillActive: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentFillActiveDelta: DesignToken<number>;
 
-// @public (undocumented)
+// @public
 export const accentFillFocus: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentFillFocusDelta: DesignToken<number>;
 
-// @public (undocumented)
+// @public
 export const accentFillHover: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
@@ -36,14 +36,17 @@ export const accentFillHoverDelta: DesignToken<number>;
 // @public (undocumented)
 export const accentFillMinContrast: DesignToken<number>;
 
-// @public (undocumented)
+// @public
 export const accentFillRecipe: DesignToken<InteractiveColorRecipe>;
 
-// @public (undocumented)
+// @public
 export const accentFillRest: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentFillRestDelta: DesignToken<number>;
+
+// @public
+export const accentFillSet: DesignToken<InteractiveSwatchSet>;
 
 // @public (undocumented)
 export const accentForegroundActive: CSSDesignToken<Swatch>;

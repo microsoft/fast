@@ -2,6 +2,7 @@ import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { blackOrWhiteByContrast } from "../color/index.js";
 import {
     ColorRecipe,
+    createInteractiveColorTokens,
     InteractiveColorRecipe,
     InteractiveSwatchSet,
 } from "../color/recipe.js";
@@ -63,11 +64,8 @@ export const accentFillFocusDelta = createNonCss<number>(
     "accent-fill-focus-delta"
 ).withDefault(0);
 
-/** @public */
-export const accentFillRecipe = createNonCss<InteractiveColorRecipe>(
-    "accent-fill-recipe"
-).withDefault({
-    evaluate: (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
+const accentFill = createInteractiveColorTokens(
+    (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
         contrastAndDeltaSwatchSet(
             accentPalette.getValueFor(element),
             reference || fillColor.getValueFor(element),
@@ -77,35 +75,62 @@ export const accentFillRecipe = createNonCss<InteractiveColorRecipe>(
             accentFillActiveDelta.getValueFor(element),
             accentFillFocusDelta.getValueFor(element)
         ),
-});
-
-/** @public */
-export const accentFillRest = create<Swatch>("accent-fill-rest").withDefault(
-    (element: HTMLElement) => {
-        return accentFillRecipe.getValueFor(element).evaluate(element).rest;
-    }
+    "accent-fill"
 );
 
-/** @public */
-export const accentFillHover = create<Swatch>("accent-fill-hover").withDefault(
-    (element: HTMLElement) => {
-        return accentFillRecipe.getValueFor(element).evaluate(element).hover;
-    }
-);
+/**
+ * An algorithm that produces an {@link InteractiveSwatchSet} for an accent fill.
+ *
+ * Default implementation exposes the values through {@link accentFillSet}.
+ *
+ * @public
+ */
+export const accentFillRecipe = accentFill.recipe;
 
-/** @public */
-export const accentFillActive = create<Swatch>("accent-fill-active").withDefault(
-    (element: HTMLElement) => {
-        return accentFillRecipe.getValueFor(element).evaluate(element).active;
-    }
-);
+/**
+ * An {@link InteractiveSwatchSet} for an accent fill.
+ *
+ * Default implementation is backed by the algorithm configured in {@link accentFillRecipe}.
+ *
+ * @public
+ */
+export const accentFillSet = accentFill.set;
 
-/** @public */
-export const accentFillFocus = create<Swatch>("accent-fill-focus").withDefault(
-    (element: HTMLElement) => {
-        return accentFillRecipe.getValueFor(element).evaluate(element).focus;
-    }
-);
+/**
+ * A token usable in styles for an accent fill color at rest.
+ *
+ * Default implementation is backed by {@link accentFillSet}.
+ *
+ * @public
+ */
+export const accentFillRest = accentFill.rest;
+
+/**
+ * A token usable in styles for an accent fill color when hovered.
+ *
+ * Default implementation is backed by {@link accentFillSet}.
+ *
+ * @public
+ */
+export const accentFillHover = accentFill.hover;
+
+/**
+ * A token usable in styles for an accent fill color when pressed.
+ *
+ * Default implementation is backed by {@link accentFillSet}.
+ *
+ * @public
+ */
+export const accentFillActive = accentFill.active;
+
+/**
+ * A token usable in styles for an accent fill color when focused.
+ *
+ * Default implementation is backed by {@link accentFillSet}.
+ *
+ * @public
+ */
+export const accentFillFocus = accentFill.focus;
 
 // Foreground On Accent
 

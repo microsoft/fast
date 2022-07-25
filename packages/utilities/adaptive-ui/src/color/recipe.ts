@@ -1,3 +1,5 @@
+import { CSSDesignToken, DesignToken } from "@microsoft/fast-foundation";
+import { create, createNonCss } from "../design-tokens/create.js";
 import { Swatch } from "./swatch.js";
 
 /**
@@ -55,4 +57,59 @@ export interface InteractiveSwatchSet {
      * The Swatch to apply to the focus state.
      */
     focus: Swatch;
+}
+
+export interface InteractiveColorTokens {
+    /**
+     * Interface recipe
+     */
+    recipe: DesignToken<InteractiveColorRecipe>;
+
+    set: DesignToken<InteractiveSwatchSet>;
+
+    rest: CSSDesignToken<Swatch>;
+
+    hover: CSSDesignToken<Swatch>;
+
+    active: CSSDesignToken<Swatch>;
+
+    focus: CSSDesignToken<Swatch>;
+}
+
+export function createInteractiveColorTokens(
+    recipe: (element: HTMLElement, reference?: Swatch) => InteractiveSwatchSet,
+    name: string
+): InteractiveColorTokens {
+    const recipeToken = createNonCss<InteractiveColorRecipe>(
+        `${name}-recipe`
+    ).withDefault({
+        evaluate: recipe,
+    });
+
+    const setToken = createNonCss<InteractiveSwatchSet>(`${name}-set`).withDefault(
+        (element: HTMLElement): InteractiveSwatchSet =>
+            recipeToken.getValueFor(element).evaluate(element)
+    );
+
+    return {
+        recipe: recipeToken,
+
+        set: setToken,
+
+        rest: create<Swatch>(`${name}-rest`).withDefault(
+            (element: HTMLElement) => setToken.getValueFor(element).rest
+        ),
+
+        hover: create<Swatch>(`${name}-hover`).withDefault(
+            (element: HTMLElement) => setToken.getValueFor(element).hover
+        ),
+
+        active: create<Swatch>(`${name}-active`).withDefault(
+            (element: HTMLElement) => setToken.getValueFor(element).active
+        ),
+
+        focus: create<Swatch>(`${name}-focus`).withDefault(
+            (element: HTMLElement) => setToken.getValueFor(element).focus
+        ),
+    };
 }
