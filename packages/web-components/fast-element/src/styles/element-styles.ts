@@ -1,6 +1,6 @@
-import type { HostBehavior } from "../observation/behavior.js";
 import { FAST } from "../platform.js";
 import { KernelServiceId, StyleStrategy, StyleTarget } from "../interfaces.js";
+import type { HostBehavior } from "./host.js";
 
 /**
  * Represents styles that can be composed into the ShadowDOM of a custom element.

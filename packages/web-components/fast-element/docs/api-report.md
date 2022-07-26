@@ -12,7 +12,7 @@ export interface Accessor {
 }
 
 // @public
-export type AddBehavior = (behavior: Behavior<HTMLElement>) => void;
+export type AddBehavior = (behavior: HostBehavior<HTMLElement>) => void;
 
 // @public
 export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
@@ -102,15 +102,6 @@ export class AttributeDefinition implements Accessor {
 //
 // @public
 export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
-
-// @public
-export interface Behavior<TSource = any> {
-    // Warning: (ae-forgotten-export) The symbol "HostController" needs to be exported by the entry point index.d.ts
-    addedCallback?(controller: HostController<TSource>): void;
-    connectedCallback?(controller: HostController<TSource>): void;
-    disconnectedCallback?(controller: HostController<TSource>): void;
-    removedCallback?(controller: HostController<TSource>): void;
-}
 
 // @public
 export function bind<T = any>(binding: Expression<T>, isVolatile?: boolean): Binding<T>;
@@ -269,9 +260,6 @@ export const DOM: Readonly<{
 export class ElementController<TElement extends HTMLElement = HTMLElement> extends PropertyChangeNotifier implements HostController<TElement> {
     // @internal
     constructor(element: TElement, definition: FASTElementDefinition);
-    addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
-    // Warning: (ae-forgotten-export) The symbol "HostBehaviorCollection" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     get behaviors(): HostBehaviorCollection<TElement>;
     connect(): void;
@@ -281,10 +269,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     static forCustomElement(element: HTMLElement): ElementController;
     get isConnected(): boolean;
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
-    removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     readonly source: TElement;
-    get styles(): ElementStyles | null;
-    set styles(value: ElementStyles | null);
+    // (undocumented)
+    get styles(): HostStyleCollection;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
     readonly view: ElementView<TElement> | null;
@@ -301,7 +288,7 @@ export class ElementStyles {
     constructor(styles: ReadonlyArray<ComposableStyles>);
     // @internal (undocumented)
     addStylesTo(target: StyleTarget): void;
-    readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
+    readonly behaviors: ReadonlyArray<HostBehavior<HTMLElement>> | null;
     // @internal (undocumented)
     isAttachedTo(target: StyleTarget): boolean;
     static normalize(styles: ComposableStyles | ComposableStyles[] | undefined): ElementStyles | undefined;
@@ -312,7 +299,7 @@ export class ElementStyles {
     // (undocumented)
     readonly styles: ReadonlyArray<ComposableStyles>;
     static readonly supportsAdoptedStyleSheets: boolean;
-    withBehaviors(...behaviors: Behavior<HTMLElement>[]): this;
+    withBehaviors(...behaviors: HostBehavior<HTMLElement>[]): this;
     withStrategy(Strategy: ConstructibleStyleStrategy): this;
 }
 
@@ -444,6 +431,66 @@ export interface FASTGlobal {
     readonly versions: string[];
     warn(code: number, values?: Record<string, any>): void;
 }
+
+// @public
+export interface HostBehavior<TSource = any> {
+    addedCallback?(controller: HostController<TSource>): void;
+    connectedCallback?(controller: HostController<TSource>): void;
+    disconnectedCallback?(controller: HostController<TSource>): void;
+    removedCallback?(controller: HostController<TSource>): void;
+}
+
+// @public (undocumented)
+export interface HostBehaviorCollection<TSource = any> {
+    // (undocumented)
+    add(behavior: HostBehavior<TSource>): any;
+    // (undocumented)
+    remove(behavior: HostBehavior<TSource>, force?: boolean): any;
+}
+
+// @public (undocumented)
+export interface HostBehaviorOrchestrator<TSource = any> extends HostBehaviorCollection<TSource> {
+    // (undocumented)
+    connect(): void;
+    // (undocumented)
+    disconnect(): void;
+}
+
+// @public (undocumented)
+export const HostBehaviorOrchestrator: Readonly<{
+    create<TSource = any>(controller: HostController<TSource>): HostBehaviorOrchestrator<TSource>;
+}>;
+
+// @public (undocumented)
+export interface HostController<TSource = any> {
+    // (undocumented)
+    readonly behaviors: HostBehaviorCollection<TSource>;
+    // (undocumented)
+    readonly source: TSource;
+    // (undocumented)
+    readonly styles: HostStyleCollection;
+}
+
+// @public (undocumented)
+export interface HostStyleCollection {
+    // (undocumented)
+    add(styles: ElementStyles | HTMLStyleElement | null | undefined): any;
+    // (undocumented)
+    main: ElementStyles | null;
+    // (undocumented)
+    remove(styles: ElementStyles | HTMLStyleElement | null | undefined): any;
+}
+
+// @public (undocumented)
+export interface HostStyleOrchestrator extends HostStyleCollection {
+    // (undocumented)
+    initialize(): void;
+}
+
+// @public (undocumented)
+export const HostStyleOrchestrator: Readonly<{
+    create(host: StylesHost): HostStyleOrchestrator;
+}>;
 
 // @public
 export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
@@ -740,6 +787,14 @@ export abstract class StatelessAttachedAttributeDirective<TOptions> implements H
     nodeId: string;
     // (undocumented)
     protected options: TOptions;
+}
+
+// @public (undocumented)
+export interface StylesHost<TSource = any> extends HostController<TSource> {
+    // (undocumented)
+    readonly definition: {
+        styles?: ElementStyles;
+    };
 }
 
 // @public

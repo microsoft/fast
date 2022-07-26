@@ -6,7 +6,7 @@ import {
 } from "./element-styles.js";
 import { AddBehavior, cssDirective, CSSDirective } from "./css-directive.js";
 import { css } from "./css.js";
-import { HostBehavior, HostBehaviorOrchestrator } from "../observation/behavior.js";
+import { HostBehavior, HostBehaviorOrchestrator, HostStyleOrchestrator } from "./host.js";
 import { StyleElementStrategy } from "../polyfills.js";
 import type { StyleTarget } from "../interfaces.js";
 
@@ -352,15 +352,31 @@ describe("cssPartial", () => {
     it("should add any ElementStyles interpolated into the template function when bound to an element", () => {
         const styles = css`:host {color: blue; }`;
         const partial = css.partial`${styles}`;
-        let called = false;
+        const capturedBehaviors: HostBehavior[] = [];
+        let addStylesCalled = false;
+
         const controller = {
             source: {
-                $fastController: {
-                    addStyles(style: ElementStyles) {
-                        expect(style.styles.includes(styles)).to.be.true;
-                        called = true;
+                getRootNode() {
+                    if (!this._rootNode) {
+                        this._rootNode = document.createElement("div");
                     }
+
+                    return this._rootNode;
                 }
+            },
+            get styles() {
+                if (!this._styles) {
+                    this._styles = HostStyleOrchestrator.create(this);
+                    const originalAdd = this._styles.add;
+                    this._styles.add = (s) => {
+                        addStylesCalled = true;
+                        expect(s.styles.includes(styles)).to.be.true;
+                        originalAdd.apply(this, s);
+                    };
+                }
+
+                return this._styles
             },
             get behaviors() {
                 if (!this._behaviors) {
@@ -371,14 +387,13 @@ describe("cssPartial", () => {
             }
         };
 
-        const behaviors: HostBehavior<HTMLElement>[] = [];
-        const add = (x: HostBehavior) => behaviors.push(x);
+        const add = (x: HostBehavior) => capturedBehaviors.push(x);
         partial.createCSS(add);
 
-        expect(behaviors[0]).to.equal(partial);
+        expect(capturedBehaviors[0]).to.equal(partial);
 
         controller.behaviors.add(partial as HostBehavior);
 
-        expect(called).to.be.true;
+        expect(addStylesCalled).to.be.true;
     })
 })

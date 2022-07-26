@@ -1,6 +1,6 @@
 import type { Constructable } from "../interfaces.js";
-import type { HostBehavior } from "../observation/behavior.js";
 import { createTypeRegistry } from "../platform.js";
+import type { HostBehavior } from "./host.js";
 import type { ComposableStyles } from "./element-styles.js";
 
 /**

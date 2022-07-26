@@ -1,27 +1,24 @@
-import { Message, Mutable, StyleTarget } from "../interfaces.js";
+import { Message, Mutable } from "../interfaces.js";
 import {
     HostBehaviorCollection,
     HostBehaviorOrchestrator,
     HostController,
-} from "../observation/behavior.js";
+    HostStyleCollection,
+    HostStyleOrchestrator,
+} from "../styles/host.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { Observable } from "../observation/observable.js";
 import { FAST } from "../platform.js";
-import type { ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
+import { getShadowRoot, setShadowRoot } from "../styles/shadow-root.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
 
-const shadowRoots = new WeakMap<HTMLElement, ShadowRoot>();
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
     composed: true,
     cancelable: true,
 };
-
-function getShadowRoot(element: HTMLElement): ShadowRoot | null {
-    return element.shadowRoot ?? shadowRoots.get(element) ?? null;
-}
 
 const isConnectedPropertyName = "isConnected";
 
@@ -36,8 +33,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
     private _behaviors: HostBehaviorOrchestrator<TElement> | null = null;
+    private _styles: HostStyleOrchestrator = HostStyleOrchestrator.create(this);
     private _template: ElementViewTemplate<TElement> | null = null;
-    private _styles: ElementStyles | null = null;
     private _isConnected: boolean = false;
 
     /**
@@ -78,6 +75,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         return this._behaviors;
+    }
+
+    public get styles(): HostStyleCollection {
+        return this._styles;
     }
 
     /**
@@ -129,44 +130,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     }
 
     /**
-     * Gets/sets the primary styles used for the component.
-     * @remarks
-     * This value can only be accurately read after connect but can be set at any time.
-     */
-    public get styles(): ElementStyles | null {
-        // 1. Styles overrides take top precedence.
-        if (this._styles === null) {
-            const definition = this.definition;
-
-            if ((this.source as any).resolveStyles) {
-                // 2. Allow for element instance overrides next.
-                this._styles = (this.source as any).resolveStyles();
-            } else if (definition.styles) {
-                // 3. Default to the static definition.
-                this._styles = definition.styles ?? null;
-            }
-        }
-
-        return this._styles;
-    }
-
-    public set styles(value: ElementStyles | null) {
-        if (this._styles === value) {
-            return;
-        }
-
-        if (this._styles !== null) {
-            this.removeStyles(this._styles);
-        }
-
-        this._styles = value;
-
-        if (!this.needsInitialization) {
-            this.addStyles(value);
-        }
-    }
-
-    /**
      * Creates a Controller to control the specified element.
      * @param element - The element to be controlled by this controller.
      * @param definition - The element definition metadata that instructs this
@@ -190,7 +153,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 shadowRoot = element.attachShadow(shadowOptions);
 
                 if (shadowOptions.mode === "closed") {
-                    shadowRoots.set(element, shadowRoot);
+                    setShadowRoot(element, shadowRoot);
                 }
             }
         }
@@ -211,67 +174,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 if (value !== void 0) {
                     delete (element as any)[propertyName];
                     boundObservables[propertyName] = value;
-                }
-            }
-        }
-    }
-
-    /**
-     * Adds styles to this element. Providing an HTMLStyleElement will attach the element instance to the shadowRoot.
-     * @param styles - The styles to add.
-     */
-    public addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void {
-        if (!styles) {
-            return;
-        }
-
-        const target =
-            getShadowRoot(this.source) ||
-            ((this.source.getRootNode() as any) as StyleTarget);
-
-        if (styles instanceof HTMLElement) {
-            target.append(styles);
-        } else if (!styles.isAttachedTo(target)) {
-            const sourceBehaviors = styles.behaviors;
-            styles.addStylesTo(target);
-
-            if (sourceBehaviors !== null) {
-                const behaviors = this.behaviors;
-
-                for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
-                    behaviors.add(sourceBehaviors[i]);
-                }
-            }
-        }
-    }
-
-    /**
-     * Removes styles from this element. Providing an HTMLStyleElement will detach the element instance from the shadowRoot.
-     * @param styles - the styles to remove.
-     */
-    public removeStyles(
-        styles: ElementStyles | HTMLStyleElement | null | undefined
-    ): void {
-        if (!styles) {
-            return;
-        }
-
-        const target =
-            getShadowRoot(this.source) ||
-            ((this.source.getRootNode() as any) as StyleTarget);
-
-        if (styles instanceof HTMLElement) {
-            target.removeChild(styles);
-        } else if (styles.isAttachedTo(target)) {
-            const sourceBehaviors = styles.behaviors;
-
-            styles.removeStylesFrom(target);
-
-            if (sourceBehaviors !== null) {
-                const behaviors = this.behaviors;
-
-                for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
-                    behaviors.add(sourceBehaviors[i]);
                 }
             }
         }
@@ -374,16 +276,16 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         this.renderTemplate(this.template);
-        this.addStyles(this.styles);
+        this._styles.initialize();
 
         this.needsInitialization = false;
     }
 
     private renderTemplate(template: ElementViewTemplate | null | undefined): void {
-        const element = this.source;
         // When getting the host to render to, we start by looking
         // up the shadow root. If there isn't one, then that means
         // we're doing a Light DOM render to the element's direct children.
+        const element = this.source;
         const host = getShadowRoot(element) ?? element;
 
         if (this.view !== null) {

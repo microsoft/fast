@@ -1,16 +1,16 @@
 import { expect } from "chai";
 import { ElementStyles } from "../index.debug.js";
-import type { HostBehavior, HostController } from "../observation/behavior.js";
+import type { HostBehavior, HostController } from "../styles/host.js";
 import { Observable } from "../observation/observable.js";
 import { css } from "../styles/css.js";
 import { html } from "../templating/template.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { toHTML } from "../__test__/helpers.js";
-import { ElementController } from "./controller.js";
+import { ElementController } from "./element-controller.js";
 import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions.js";
 import { FASTElement } from "./fast-element.js";
 
-describe("The Controller", () => {
+describe("The ElementController", () => {
     const templateA = html`a`;
     const templateB = html`b`;
     const cssA = "class-a { color: red; }";
@@ -218,7 +218,7 @@ describe("The Controller", () => {
                 const { shadowRoot, controller } = createController({ styles: stylesA });
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.styles = stylesB;
+                controller.styles.main = stylesB;
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
                 controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
@@ -254,7 +254,7 @@ describe("The Controller", () => {
                 );
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.styles = stylesB;
+                controller.styles.main = stylesB;
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
                 controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
@@ -300,7 +300,7 @@ describe("The Controller", () => {
                     cssA
                 );
 
-                controller.styles = stylesB;
+                controller.styles.main = stylesB;
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(1);
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssB
@@ -370,7 +370,7 @@ describe("The Controller", () => {
         expect(composed).to.be.true;
     });
 
-    it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
+    it("should attach and detach the HTMLStyleElement supplied to styles.add() and styles.remove() to the shadowRoot", () => {
         const { controller, element } = createController({
             shadowOptions: {
                 mode: "open",
@@ -381,31 +381,11 @@ describe("The Controller", () => {
         const style = document.createElement("style") as HTMLStyleElement;
         expect(element.shadowRoot?.contains(style)).to.equal(false);
 
-        controller.addStyles(style);
+        controller.styles.add(style);
 
         expect(element.shadowRoot?.contains(style)).to.equal(true);
 
-        controller.removeStyles(style);
-
-        expect(element.shadowRoot?.contains(style)).to.equal(false);
-    });
-
-    it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
-        const { controller, element } = createController({
-            shadowOptions: {
-                mode: "open",
-            },
-            template: templateA,
-        });
-
-        const style = document.createElement("style") as HTMLStyleElement;
-        expect(element.shadowRoot?.contains(style)).to.equal(false);
-
-        controller.addStyles(style);
-
-        expect(element.shadowRoot?.contains(style)).to.equal(true);
-
-        controller.removeStyles(style);
+        controller.styles.remove(style);
 
         expect(element.shadowRoot?.contains(style)).to.equal(false);
     });

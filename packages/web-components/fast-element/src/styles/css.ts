@@ -1,5 +1,5 @@
 import { isString } from "../interfaces.js";
-import type { HostBehavior, HostController } from "../observation/behavior.js";
+import type { HostBehavior, HostController } from "./host.js";
 import { AddBehavior, CSSDirective } from "./css-directive.js";
 import { ComposableStyles, ElementStyles } from "./element-styles.js";
 
@@ -131,11 +131,11 @@ class CSSPartial implements CSSDirective, HostBehavior<HTMLElement> {
     }
 
     addedCallback(controller: HostController<HTMLElement>): void {
-        (controller.source as any).$fastController.addStyles(this.styles);
+        controller.styles.add(this.styles);
     }
 
     removedCallback(controller: HostController<HTMLElement>): void {
-        (controller.source as any).$fastController.removeStyles(this.styles);
+        controller.styles.remove(this.styles);
     }
 }
 

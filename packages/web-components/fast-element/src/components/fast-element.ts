@@ -1,5 +1,5 @@
 import { Constructable, isFunction } from "../interfaces.js";
-import { ElementController } from "./controller.js";
+import { ElementController } from "./element-controller.js";
 import {
     FASTElementDefinition,
     PartialFASTElementDefinition,
