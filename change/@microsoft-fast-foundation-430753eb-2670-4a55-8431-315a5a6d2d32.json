@@ -1,7 +1,7 @@
 {
-  "type": "prerelease",
+  "type": "patch",
   "comment": "Using getBoundingClientRect for horizontal-scroll",
   "packageName": "@microsoft/fast-foundation",
   "email": "robarb@microsoft.com",
-  "dependentChangeType": "prerelease"
+  "dependentChangeType": "patch"
 }
