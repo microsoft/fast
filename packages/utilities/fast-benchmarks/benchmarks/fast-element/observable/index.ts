@@ -38,7 +38,7 @@ export class Person {
             // source will be the person instance
             // propertyName will be "firstName"
             source._firstName += "!!!!!!!!!!!!!!!";
-            source._lastName.trim();
+            source._lastName += "xxxxxxxxx";
         },
     };
 
@@ -46,7 +46,7 @@ export class Person {
     notifier.subscribe(handler, "lastName");
 
     person.firstName = "wendy";
-    person.lastName = "hsu                     ";
+    person.lastName = "hsu";
 
     notifier.unsubscribe(handler, "firstName");
     notifier.unsubscribe(handler, "lastName");
