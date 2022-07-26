@@ -1,8 +1,19 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Mon, 18 Jul 2022 21:10:01 GMT and should not be manually modified.
+This log was last generated on Tue, 26 Jul 2022 17:45:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.11
+
+Tue, 26 Jul 2022 17:45:06 GMT
+
+### Patches
+
+- package updates (prudepixie@users.noreply.github.com)
+- Various Combobox fixes with tests. (26874831+atmgrifter00@users.noreply.github.com)
+- Using getBoundingClientRect for horizontal-scroll (robarb@microsoft.com)
+- Bump @microsoft/fast-element to v1.10.4
 
 ## 3.0.0-alpha.5
 

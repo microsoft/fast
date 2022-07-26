@@ -56,8 +56,8 @@
     "@microsoft/fast-tooling": "0.37.9",
     "@microsoft/fast-colors": "^5.3.1",
     "@microsoft/fast-components": "^2.30.6",
-    "@microsoft/fast-element": "^1.0.0",
-    "@microsoft/fast-foundation": "^2.0.0",
+    "@microsoft/fast-element": "^1.10.4",
+    "@microsoft/fast-foundation": "^2.46.11",
     "@microsoft/fast-web-utilities": "^6.0.0"
   },
   "resolutions": {

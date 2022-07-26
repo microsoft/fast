@@ -2,6 +2,39 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 26 Jul 2022 17:45:06 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.11",
+      "version": "2.46.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "ae07e8fc912f2e05d43c19ee22d768e893316399",
+            "comment": "package updates"
+          },
+          {
+            "author": "26874831+atmgrifter00@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "5718acc6f4d0c54dbe6d6b0bc6913d58392347d7",
+            "comment": "Various Combobox fixes with tests."
+          },
+          {
+            "author": "robarb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7df4548954621d6247ab7fe3fae1a1ba0d33294b",
+            "comment": "Using getBoundingClientRect for horizontal-scroll"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v1.10.4",
+            "commit": "33a7e2c9870fb386bdefb48af4d0bdc85dfc3d38"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 18 Jul 2022 21:10:01 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.5",
       "version": "3.0.0-alpha.5",

@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Mon, 18 Jul 2022 21:10:01 GMT and should not be manually modified.
+This log was last generated on Tue, 26 Jul 2022 17:45:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.10.4
+
+Tue, 26 Jul 2022 17:45:06 GMT
+
+### Patches
+
+- only store views if it cant be reused right away (prudepixie@users.noreply.github.com)
 
 ## 2.0.0-beta.4
 
