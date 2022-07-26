@@ -10,7 +10,7 @@ import { getTestStartName, measureMemory, updateComplete } from "../utils/index.
         const start = getTestStartName(test);
         performance.mark(start);
         for (let i = 0; i < 100; i++) {
-            window.test();
+            window.runFunction();
         }
         await updateComplete();
         performance.measure(test, start);
