@@ -3364,6 +3364,14 @@
     tabbable "^5.2.0"
     tslib "^1.13.0"
 
+"@microsoft/fast-ssr@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-ssr/-/fast-ssr-1.0.0-beta.4.tgz#bfff391ff32a616fd69383709727cb891dab37e4"
+  integrity sha512-KJZ6z2TVr1yC3vY1NPztrNHHAIsJk7Dy6VtOf4VykxsZUkiJa+EStYEna3mxqkxfijmPwAsX4bwIUBXaTWOYSQ==
+  dependencies:
+    parse5 "^6.0.1"
+    tslib "^2.4.0"
+
 "@microsoft/fast-tooling@0.37.9", "@microsoft/fast-tooling@^0.37.7":
   version "0.37.9"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.37.9.tgz#76454362f84e4ea82ec3f9f2aababae29c1b8936"

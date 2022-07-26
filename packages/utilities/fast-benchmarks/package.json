@@ -13,11 +13,13 @@
     "benchmark": "node scripts/index.js",
     "benchmark:fast-element:render": "yarn run benchmark --library=fast-element --benchmark=render --versions local master --localBenchFile=index2 --operations=update10th",
     "benchmark:fast-element:repeat": "yarn run benchmark --library=fast-element --benchmark=repeat --versions local master --templates basic basicNoRecycle --method=reverse --operations=clickTrigger10x",
+    "benchmark:fast-colors:toColorHexRGB": "yarn run benchmark --library=fast-colors --benchmark=toColorHexRGB --versions local master  --operations=test10k",
     "benchmark:methods:append": "tach --config ./benchmarks/methods/append/tachometer.json",
     "help": "node ./scripts/index.js --help"
   },
   "dependencies": {
     "@microsoft/fast-element": "2.0.0-beta.4",
+    "@microsoft/fast-colors": "^5.3.1",
     "tachometer": "^0.5.10"
   },
   "devDependencies": {
