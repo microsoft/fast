@@ -150,6 +150,40 @@ describe("Combobox", () => {
         await disconnect();
     });
 
+    const autocompleteModes: ComboboxAutocomplete[] = [ "none", "list", "inline", "both" ];
+    autocompleteModes.forEach(mode => {
+        it(`should allow arbitrary text entry value for autocomplete mode ${mode}`, async () => {
+            const { element, connect, disconnect } = await setup();
+            element.autocomplete = mode;
+
+            await connect();
+
+            element.value = "two";
+
+            const enterEvent = new KeyboardEvent("keydown", {
+                key: keyEnter,
+            } as KeyboardEventInit);
+
+            const wasChanged = await Promise.race([
+                new Promise(resolve => {
+                    element.addEventListener("change", () => resolve(true));
+
+                    // fake a key entered value
+                    (element as Combobox).control.value = 'a';
+                    (element as Combobox).control.dispatchEvent(new InputEvent('input', { data: 'a', inputType: 'insertText' }));
+
+                    element.dispatchEvent(enterEvent);
+                }),
+                DOM.nextUpdate().then(() => false),
+            ]);
+
+            expect(wasChanged).to.be.true;
+            expect((element as Combobox).value).to.equal('a');
+
+            await disconnect();
+        });
+    });
+
     it("should NOT emit a 'change' event when the user presses Enter without changing value", async () => {
         const { element, connect, disconnect } = await setup();
 
