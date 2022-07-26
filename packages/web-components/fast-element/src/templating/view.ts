@@ -100,6 +100,9 @@ export class HTMLView<TSource = any, TParent = any>
         SyntheticView<TSource, TParent>,
         ExecutionContext<TParent> {
     private behaviors: ViewBehavior[] | null = null;
+    private unbindables: Set<{
+        unbind(controller: ViewController<TSource, TParent>);
+    }> | null = null;
 
     /**
      * The data that the view is bound to.
@@ -279,8 +282,14 @@ export class HTMLView<TSource = any, TParent = any>
         this.unbind();
     }
 
-    onUnbind(behavior: { unbind(controller: ViewController<TSource, TParent>) }): void {
-        // TODO
+    public onUnbind(behavior: {
+        unbind(controller: ViewController<TSource, TParent>);
+    }): void {
+        if (this.unbindables == null) {
+            this.unbindables = new Set();
+        }
+
+        this.unbindables.add(behavior);
     }
 
     /**
@@ -298,14 +307,7 @@ export class HTMLView<TSource = any, TParent = any>
 
         this.source = source;
 
-        if (oldSource !== null) {
-            // TODO: unbind unbindables
-
-            for (let i = 0, ii = behaviors!.length; i < ii; ++i) {
-                const current = behaviors![i];
-                current.bind(this);
-            }
-        } else if (behaviors === null) {
+        if (behaviors === null) {
             this.behaviors = behaviors = new Array<ViewBehavior>(this.factories.length);
             const factories = this.factories;
 
@@ -315,6 +317,10 @@ export class HTMLView<TSource = any, TParent = any>
                 behaviors[i] = behavior;
             }
         } else {
+            if (oldSource !== null) {
+                this.evaluateUnbindables();
+            }
+
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
                 behaviors[i].bind(this);
             }
@@ -331,9 +337,18 @@ export class HTMLView<TSource = any, TParent = any>
             return;
         }
 
-        // TODO unbind bindables
-
+        this.evaluateUnbindables();
         this.source = null;
+    }
+
+    private evaluateUnbindables() {
+        if (this.unbindables === null) {
+            return;
+        }
+
+        for (const unbindable of this.unbindables) {
+            unbindable.unbind(this as any);
+        }
     }
 
     /**
