@@ -23115,8 +23115,8 @@ workerpool@6.1.0:
 
 workspace-tools@^0.21.0:
   version "0.21.0"
-  resolved "https://pkgs.dev.azure.com/microsoftdesign/Proteus/_packaging/proteus-testing/npm/registry/workspace-tools/-/workspace-tools-0.21.0.tgz#eab13d4fac2cace36f6ecef1fe30ed6d912124cb"
-  integrity sha1-6rE9T6wsrONvbs7x/jDtbZEhJMs=
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.21.0.tgz#eab13d4fac2cace36f6ecef1fe30ed6d912124cb"
+  integrity sha512-ZOGOr42brfDFJcKUz8AonRabORtq0UbuoF6chmcQUwRYmu+Qs85/ZhfflrrMSJLP3yRoqcBe/lvDjGzkWYViww==
   dependencies:
     "@yarnpkg/lockfile" "^1.1.0"
     find-up "^4.1.0"
