@@ -92,7 +92,8 @@ export class ColorRGBA64 {
      * Returns the color formatted as a string; #RRGGBB
      */
     public toStringHexRGB(): string {
-        return "#" + [this.r, this.g, this.b].map(this.formatHexValue).join("");
+        const format = this.formatHexValue;
+        return `#${format(this.r)+format(this.g)+format(this.b)}`;
     }
 
     /**
