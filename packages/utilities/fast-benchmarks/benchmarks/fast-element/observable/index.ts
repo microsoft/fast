@@ -1,53 +1,52 @@
 import { Observable } from "@microsoft/fast-element";
+import { _random, adjectives, nouns } from "../../../utils/index.js";
+export class Pupil {
+    private _greetMessage: string;
+    private _exit: boolean = false;
 
-export class Person {
-    private _firstName: string;
-    private _lastName: string;
+    constructor(firstName: string, lastName: string) {
+        const first = firstName[0].toUpperCase() + firstName.slice(1);
+        const last = lastName[0].toUpperCase() + lastName.slice(1);
 
-    get firstName() {
-        Observable.track(this, "firstName");
-        return this._firstName;
+        this._greetMessage = `Welcome to FAST, ${first} ${last} !!`;
     }
 
-    set firstName(value: string) {
-        this._firstName = value;
-        Observable.notify(this, "firstName");
+    get greetMessage() {
+        Observable.track(this, "greetMessage");
+        return this._greetMessage;
     }
 
-    get lastName() {
-        Observable.track(this, "lastName");
-        return this._lastName;
+    set greetMessage(value: string) {
+        this._greetMessage = value;
+        Observable.notify(this, "greetMessage");
     }
 
-    set lastName(value: string) {
-        this._lastName = value;
-        Observable.notify(this, "lastName");
+    get exit() {
+        Observable.track(this, "exit");
+        return this._exit;
     }
 
-    get fullName() {
-        return `${this.firstName} ${this.lastName}`;
+    set exit(value: boolean) {
+        this._exit = value;
+        Observable.notify(this, "exit");
     }
 }
 
-(window as any).test = () => {
-    const person = new Person();
-    const notifier = Observable.getNotifier(person);
+(window as any).runFunction = () => {
+    const pupil = new Pupil(
+        adjectives[_random(adjectives.length)],
+        nouns[_random(nouns.length)]
+    );
+
+    const notifier = Observable.getNotifier(pupil);
     const handler = {
         handleChange(source: any, propertyName: string) {
-            // respond to the change here
-            // source will be the person instance
-            // propertyName will be "firstName"
-            source._firstName += "!!!!!!!!!!!!!!!";
-            source._lastName += "xxxxxxxxx";
+            source._exit = true;
         },
     };
 
-    notifier.subscribe(handler, "firstName");
-    notifier.subscribe(handler, "lastName");
+    notifier.subscribe(handler, "greetMessage");
 
-    person.firstName = "wendy";
-    person.lastName = "hsu";
-
-    notifier.unsubscribe(handler, "firstName");
-    notifier.unsubscribe(handler, "lastName");
+    pupil.greetMessage = "Goodbye, see you next time!";
+    notifier.unsubscribe(handler, "greetMessage");
 };

@@ -1,5 +1,5 @@
 import { Observable, observable } from "@microsoft/fast-element";
-import { _random, adjectives, nouns } from "../../../utils";
+import { _random, adjectives, nouns } from "../../../utils/index.js";
 
 export class Pupil {
     @observable greetMessage: string;
@@ -25,7 +25,7 @@ export class Pupil {
 
     const notifier2 = Observable.getNotifier(pupil);
     const handler2 = {
-        handleChange(source: any, propertyName: string) {
+        handleChange(source: any) {
             source._exit = true;
         },
     };
