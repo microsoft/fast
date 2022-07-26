@@ -93,6 +93,8 @@ export type UpdateTarget = (
  * @public
  */
 export interface ContentView {
+    readonly context: ExecutionContext;
+
     /**
      * Binds a view's behaviors to its binding source.
      * @param source - The binding source for the view's binding behaviors.

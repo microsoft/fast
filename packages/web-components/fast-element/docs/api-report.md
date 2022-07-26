@@ -202,6 +202,8 @@ export interface ContentTemplate {
 // @public
 export interface ContentView {
     bind(source: any): void;
+    // (undocumented)
+    readonly context: ExecutionContext;
     insertBefore(node: Node): void;
     remove(): void;
     unbind(): void;
@@ -340,27 +342,26 @@ export class EventBehavior implements ViewBehavior {
 }
 
 // @public
-export class ExecutionContext<TParentSource = any> {
-    static create(): ExecutionContext;
-    createChildContext<TParentSource>(parentSource: TParentSource): ExecutionContext<TParentSource>;
-    createItemContext(index: number, length: number): ExecutionContext<TParentSource>;
-    static readonly default: ExecutionContext<any>;
-    get event(): Event;
+export interface ExecutionContext<TParent = any> {
+    readonly event: Event;
     eventDetail<TDetail>(): TDetail;
     eventTarget<TTarget extends EventTarget>(): TTarget;
     index: number;
-    get isEven(): boolean;
-    get isFirst(): boolean;
-    get isInMiddle(): boolean;
-    get isLast(): boolean;
-    get isOdd(): boolean;
+    readonly isEven: boolean;
+    readonly isFirst: boolean;
+    readonly isInMiddle: boolean;
+    readonly isLast: boolean;
+    readonly isOdd: boolean;
     length: number;
-    readonly parent: TParentSource;
-    readonly parentContext: ExecutionContext<TParentSource>;
-    // @internal
-    static setEvent(event: Event | null): void;
-    updatePosition(index: number, length: number): void;
+    parent: TParent;
+    parentContext: ExecutionContext<TParent>;
 }
+
+// @public (undocumented)
+export const ExecutionContext: Readonly<{
+    getEvent(): Event | null;
+    setEvent(event: Event | null): void;
+}>;
 
 // @public
 export type Expression<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
@@ -487,20 +488,32 @@ export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
 }
 
 // @public
-export class HTMLView<TSource = any, TParent = any> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent> {
+export class HTMLView<TSource = any, TParent = any> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> {
     constructor(fragment: DocumentFragment, factories: ReadonlyArray<ViewBehaviorFactory>, targets: ViewBehaviorTargets);
     appendTo(node: Node): void;
     bind(source: TSource): void;
     get context(): ExecutionContext<TParent>;
     dispose(): void;
     static disposeContiguousBatch(views: SyntheticView[]): void;
+    get event(): Event;
+    eventDetail<TDetail>(): TDetail;
+    eventTarget<TTarget extends EventTarget>(): TTarget;
     firstChild: Node;
+    index: number;
     insertBefore(node: Node): void;
+    get isEven(): boolean;
+    get isFirst(): boolean;
+    get isInMiddle(): boolean;
+    get isLast(): boolean;
+    get isOdd(): boolean;
     lastChild: Node;
+    length: number;
     // (undocumented)
     onUnbind(behavior: {
         unbind(controller: ViewController<TSource, TParent>): any;
     }): void;
+    readonly parent: TParent;
+    readonly parentContext: ExecutionContext<TParent>;
     remove(): void;
     source: TSource | null;
     // (undocumented)
@@ -838,7 +851,7 @@ export interface ValueConverter {
 // @public
 export interface View<TSource = any, TParent = any> extends Disposable {
     bind(source: TSource): void;
-    readonly context: ExecutionContext<TParent> | null;
+    readonly context: ExecutionContext<TParent>;
     readonly source: TSource | null;
     unbind(): void;
 }

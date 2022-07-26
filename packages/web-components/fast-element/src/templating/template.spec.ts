@@ -2,9 +2,9 @@ import { expect } from "chai";
 import { html, ViewTemplate } from "./template.js";
 import { Markup, Parser } from "./markup.js";
 import { bind, HTMLBindingDirective } from "./binding.js";
-import { Aspect, HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory, ViewBehaviorTargets } from "./html-directive.js";
+import { Aspect, HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory } from "./html-directive.js";
 import { Constructable, isString } from "../interfaces.js";
-import { ExecutionContext } from "../observation/observable.js";
+import { Fake } from "../testing/fakes.js";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {
@@ -316,7 +316,7 @@ describe(`The html tag template helper`, () => {
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
-        expect(factory!.dataBinding.evaluate(null, ExecutionContext.default)).equals(stringValue);
+        expect(factory!.dataBinding.evaluate(null, Fake.executionContext())).equals(stringValue);
     });
 
     it(`captures an attribute with an interpolated number`, () => {
@@ -336,7 +336,7 @@ describe(`The html tag template helper`, () => {
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
-        expect(factory!.dataBinding.evaluate(null, ExecutionContext.default)).equals(numberValue);
+        expect(factory!.dataBinding.evaluate(null, Fake.executionContext())).equals(numberValue);
     });
 
     it(`captures a boolean attribute with an expression`, () => {
@@ -390,7 +390,7 @@ describe(`The html tag template helper`, () => {
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
-        expect(factory!.dataBinding.evaluate(null, ExecutionContext.default)).equals(true);
+        expect(factory!.dataBinding.evaluate(null, Fake.executionContext())).equals(true);
     });
 
     it(`captures a case-sensitive property with an expression`, () => {
@@ -444,7 +444,7 @@ describe(`The html tag template helper`, () => {
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
-        expect(factory!.dataBinding.evaluate(null, ExecutionContext.default)).equals(stringValue);
+        expect(factory!.dataBinding.evaluate(null, Fake.executionContext())).equals(stringValue);
     });
 
     it(`captures a case-sensitive property with an interpolated number`, () => {
@@ -464,7 +464,7 @@ describe(`The html tag template helper`, () => {
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
-        expect(factory!.dataBinding.evaluate(null, ExecutionContext.default)).equals(numberValue);
+        expect(factory!.dataBinding.evaluate(null, Fake.executionContext())).equals(numberValue);
     });
 
     it(`captures a case-sensitive property with an inline directive`, () => {

@@ -1,5 +1,5 @@
 import type { Disposable } from "../interfaces.js";
-import type { ExecutionContext } from "../observation/observable.js";
+import { ExecutionContext, Observable } from "../observation/observable.js";
 import type {
     ViewBehavior,
     ViewBehaviorFactory,
@@ -15,7 +15,7 @@ export interface View<TSource = any, TParent = any> extends Disposable {
     /**
      * The execution context the view is running within.
      */
-    readonly context: ExecutionContext<TParent> | null;
+    readonly context: ExecutionContext<TParent>;
 
     /**
      * The data that the view is bound to.
@@ -95,7 +95,10 @@ function removeNodeSequence(firstNode: Node, lastNode: Node): void {
  * @public
  */
 export class HTMLView<TSource = any, TParent = any>
-    implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent> {
+    implements
+        ElementView<TSource, TParent>,
+        SyntheticView<TSource, TParent>,
+        ExecutionContext<TParent> {
     private behaviors: ViewBehavior[] | null = null;
 
     /**
@@ -107,8 +110,88 @@ export class HTMLView<TSource = any, TParent = any>
      * The execution context the view is running within.
      */
     public get context(): ExecutionContext<TParent> {
-        // TODO: make this a real context
-        return this as any;
+        return this;
+    }
+
+    /**
+     * The index of the current item within a repeat context.
+     */
+    public index: number = 0;
+
+    /**
+     * The length of the current collection within a repeat context.
+     */
+    public length: number = 0;
+
+    /**
+     * The parent data source within a nested context.
+     */
+    public readonly parent: TParent;
+
+    /**
+     * The parent execution context when in nested context scenarios.
+     */
+    public readonly parentContext: ExecutionContext<TParent>;
+
+    /**
+     * The current event within an event handler.
+     */
+    public get event(): Event {
+        return ExecutionContext.getEvent()!;
+    }
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * has an even index.
+     */
+    public get isEven(): boolean {
+        return this.index % 2 === 0;
+    }
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * has an odd index.
+     */
+    public get isOdd(): boolean {
+        return this.index % 2 !== 0;
+    }
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * is the first item in the collection.
+     */
+    public get isFirst(): boolean {
+        return this.index === 0;
+    }
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * is somewhere in the middle of the collection.
+     */
+    public get isInMiddle(): boolean {
+        return !this.isFirst && !this.isLast;
+    }
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * is the last item in the collection.
+     */
+    public get isLast(): boolean {
+        return this.index === this.length - 1;
+    }
+
+    /**
+     * Returns the typed event detail of a custom event.
+     */
+    public eventDetail<TDetail>(): TDetail {
+        return (this.event as CustomEvent<TDetail>).detail;
+    }
+
+    /**
+     * Returns the typed event target of the event.
+     */
+    public eventTarget<TTarget extends EventTarget>(): TTarget {
+        return this.event.target! as TTarget;
     }
 
     /**
@@ -196,7 +279,9 @@ export class HTMLView<TSource = any, TParent = any>
         this.unbind();
     }
 
-    onUnbind(behavior: { unbind(controller: ViewController<TSource, TParent>) }): void {}
+    onUnbind(behavior: { unbind(controller: ViewController<TSource, TParent>) }): void {
+        // TODO
+    }
 
     /**
      * Binds a view's behaviors to its binding source.
@@ -267,3 +352,6 @@ export class HTMLView<TSource = any, TParent = any>
         }
     }
 }
+
+Observable.defineProperty(HTMLView.prototype, "index");
+Observable.defineProperty(HTMLView.prototype, "length");

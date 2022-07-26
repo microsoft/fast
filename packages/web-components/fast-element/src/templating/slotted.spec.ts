@@ -1,9 +1,10 @@
 import { expect } from "chai";
 import { slotted, SlottedDirective } from "./slotted.js";
-import { ExecutionContext, observable } from "../observation/observable.js";
+import { observable } from "../observation/observable.js";
 import { elements } from "./node-observation.js";
 import { Updates } from "../observation/update-queue.js";
 import type { ViewBehaviorTargets, ViewController } from "./html-directive.js";
+import { Fake } from "../testing/fakes.js";
 
 describe("The slotted", () => {
     context("template function", () => {
@@ -58,7 +59,7 @@ describe("The slotted", () => {
             return {
                 source,
                 targets,
-                context: ExecutionContext.default,
+                context: Fake.executionContext(),
                 onUnbind() {
 
                 }

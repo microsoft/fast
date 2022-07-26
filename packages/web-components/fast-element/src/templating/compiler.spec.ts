@@ -11,6 +11,7 @@ import { html } from "./template.js";
 import type { StyleTarget } from "../interfaces.js";
 import { ElementStyles } from "../index.debug.js";
 import { uniqueElementName } from "../testing/fixture.js";
+import { Fake } from "../testing/fakes.js";
 
 /**
  * Used to satisfy TS by exposing some internal properties of the
@@ -369,7 +370,7 @@ describe("The template compiler", () => {
                     expect(
                         (factories[0] as HTMLBindingDirective).dataBinding.evaluate(
                             scope,
-                            ExecutionContext.default
+                            Fake.executionContext()
                         )
                     ).to.equal(x.result);
                 }
@@ -530,7 +531,7 @@ describe("The template compiler", () => {
                     expect(
                         (factories[0] as HTMLBindingDirective).dataBinding.evaluate(
                             scope,
-                            ExecutionContext.default
+                            Fake.executionContext()
                         )
                     ).to.equal(x.result);
                 }

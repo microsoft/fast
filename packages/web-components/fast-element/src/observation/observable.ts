@@ -228,7 +228,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             this.dispose();
         }
 
-        public observe(source: TSource, context?: ExecutionContext): TReturn {
+        public observe(source: TSource, context: ExecutionContext): TReturn {
             if (this.needsRefresh && this.last !== null) {
                 this.dispose();
             }
@@ -455,6 +455,77 @@ export function volatile(
     });
 }
 
+/**
+ * Provides additional contextual information available to behaviors and expressions.
+ * @public
+ */
+export interface ExecutionContext<TParent = any> {
+    /**
+     * The index of the current item within a repeat context.
+     */
+    index: number;
+
+    /**
+     * The length of the current collection within a repeat context.
+     */
+    length: number;
+
+    /**
+     * The parent data source within a nested context.
+     */
+    parent: TParent;
+
+    /**
+     * The parent execution context when in nested context scenarios.
+     */
+    parentContext: ExecutionContext<TParent>;
+
+    /**
+     * The current event within an event handler.
+     */
+    readonly event: Event;
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * has an even index.
+     */
+    readonly isEven: boolean;
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * has an odd index.
+     */
+    readonly isOdd: boolean;
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * is the first item in the collection.
+     */
+    readonly isFirst: boolean;
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * is somewhere in the middle of the collection.
+     */
+    readonly isInMiddle: boolean;
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * is the last item in the collection.
+     */
+    readonly isLast: boolean;
+
+    /**
+     * Returns the typed event detail of a custom event.
+     */
+    eventDetail<TDetail>(): TDetail;
+
+    /**
+     * Returns the typed event target of the event.
+     */
+    eventTarget<TTarget extends EventTarget>(): TTarget;
+}
+
 const contextEvent = FAST.getById(KernelServiceId.contextEvent, () => {
     let current: Event | null = null;
 
@@ -468,159 +539,12 @@ const contextEvent = FAST.getById(KernelServiceId.contextEvent, () => {
     };
 });
 
-/**
- * Provides additional contextual information available to behaviors and expressions.
- * @public
- */
-export class ExecutionContext<TParentSource = any> {
-    /**
-     * The default execution context.
-     */
-    public static readonly default = new ExecutionContext();
+export const ExecutionContext = Object.freeze({
+    getEvent(): Event | null {
+        return contextEvent.get();
+    },
 
-    /**
-     * The index of the current item within a repeat context.
-     */
-    public index: number = 0;
-
-    /**
-     * The length of the current collection within a repeat context.
-     */
-    public length: number = 0;
-
-    /**
-     * The parent data source within a nested context.
-     */
-    public readonly parent: TParentSource;
-
-    /**
-     * The parent execution context when in nested context scenarios.
-     */
-    public readonly parentContext: ExecutionContext<TParentSource>;
-
-    private constructor(
-        parentSource: any = null,
-        parentContext: ExecutionContext | null = null
-    ) {
-        this.parent = parentSource;
-        this.parentContext = parentContext as any;
-    }
-
-    /**
-     * The current event within an event handler.
-     */
-    public get event(): Event {
-        return contextEvent.get()!;
-    }
-
-    /**
-     * Indicates whether the current item within a repeat context
-     * has an even index.
-     */
-    public get isEven(): boolean {
-        return this.index % 2 === 0;
-    }
-
-    /**
-     * Indicates whether the current item within a repeat context
-     * has an odd index.
-     */
-    public get isOdd(): boolean {
-        return this.index % 2 !== 0;
-    }
-
-    /**
-     * Indicates whether the current item within a repeat context
-     * is the first item in the collection.
-     */
-    public get isFirst(): boolean {
-        return this.index === 0;
-    }
-
-    /**
-     * Indicates whether the current item within a repeat context
-     * is somewhere in the middle of the collection.
-     */
-    public get isInMiddle(): boolean {
-        return !this.isFirst && !this.isLast;
-    }
-
-    /**
-     * Indicates whether the current item within a repeat context
-     * is the last item in the collection.
-     */
-    public get isLast(): boolean {
-        return this.index === this.length - 1;
-    }
-
-    /**
-     * Returns the typed event detail of a custom event.
-     */
-    public eventDetail<TDetail>(): TDetail {
-        return (this.event as CustomEvent<TDetail>).detail;
-    }
-
-    /**
-     * Returns the typed event target of the event.
-     */
-    public eventTarget<TTarget extends EventTarget>(): TTarget {
-        return this.event.target! as TTarget;
-    }
-
-    /**
-     * Updates the position/size on a context associated with a list item.
-     * @param index - The new index of the item.
-     * @param length - The new length of the list.
-     */
-    public updatePosition(index: number, length: number): void {
-        this.index = index;
-        this.length = length;
-    }
-
-    /**
-     * Creates a new execution context descendent from the current context.
-     * @param source - The source for the context if different than the parent.
-     * @returns A child execution context.
-     */
-    public createChildContext<TParentSource>(
-        parentSource: TParentSource
-    ): ExecutionContext<TParentSource> {
-        return new ExecutionContext(parentSource, this);
-    }
-
-    /**
-     * Creates a new execution context descent suitable for use in list rendering.
-     * @param item - The list item to serve as the source.
-     * @param index - The index of the item in the list.
-     * @param length - The length of the list.
-     */
-    public createItemContext(
-        index: number,
-        length: number
-    ): ExecutionContext<TParentSource> {
-        const childContext = Object.create(this);
-        childContext.index = index;
-        childContext.length = length;
-        return childContext;
-    }
-
-    /**
-     * Sets the event for the current execution context.
-     * @param event - The event to set.
-     * @internal
-     */
-    public static setEvent(event: Event | null): void {
+    setEvent(event: Event | null): void {
         contextEvent.set(event);
-    }
-
-    /**
-     * Creates a new root execution context.
-     * @returns A new execution context.
-     */
-    public static create(): ExecutionContext {
-        return new ExecutionContext();
-    }
-}
-
-Observable.defineProperty(ExecutionContext.prototype, "index");
-Observable.defineProperty(ExecutionContext.prototype, "length");
+    },
+});

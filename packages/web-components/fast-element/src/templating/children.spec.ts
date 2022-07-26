@@ -1,9 +1,10 @@
 import { expect } from "chai";
 import { children, ChildrenDirective } from "./children.js";
-import { ExecutionContext, observable } from "../observation/observable.js";
+import { observable } from "../observation/observable.js";
 import { elements } from "./node-observation.js";
 import { Updates } from "../observation/update-queue.js";
 import type { ViewBehaviorTargets, ViewController } from "./html-directive.js";
+import { Fake } from "../testing/fakes.js";
 
 describe("The children", () => {
     context("template function", () => {
@@ -51,7 +52,7 @@ describe("The children", () => {
             return {
                 source,
                 targets,
-                context: ExecutionContext.default,
+                context: Fake.executionContext(),
                 onUnbind() {
 
                 }

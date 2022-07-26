@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { bind, HTMLBindingDirective, oneTime, listener } from "./binding.js";
-import { ExecutionContext, observable } from "../observation/observable.js";
+import { observable } from "../observation/observable.js";
 import { html, ViewTemplate } from "./template.js";
 import { toHTML } from "../__test__/helpers.js";
 import { SyntheticView, HTMLView } from "./view.js";
@@ -9,6 +9,7 @@ import { Aspect, ViewBehaviorTargets, ViewController } from "./html-directive.js
 import { DOM } from "./dom.js";
 import { Signal, signal } from "./binding-signal.js";
 import { twoWay, TwoWayBindingOptions } from "./binding-two-way.js";
+import { Fake } from "../testing/fakes.js";
 
 describe("The HTML binding directive", () => {
     class Model {
@@ -97,7 +98,7 @@ describe("The HTML binding directive", () => {
         const unbindables = new Set<{ unbind(controller: ViewController) }>();
 
         return {
-            context: ExecutionContext.default,
+            context: Fake.executionContext(),
             onUnbind(object) {
                 unbindables.add(object);
             },

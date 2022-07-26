@@ -110,7 +110,8 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
 
         if (view === null) {
             this.view = view = template.create();
-            // TODO: set parent
+            this.view.context.parent = this.controller!.source;
+            this.view.context.parentContext = this.controller!.context;
         } else {
             // If there is a previous view, but it wasn't created
             // from the same template as the new value, then we
@@ -123,7 +124,8 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
                 }
 
                 this.view = view = template.create();
-                // TODO: set parent
+                this.view.context.parent = this.controller!.source;
+                this.view.context.parentContext = this.controller!.context;
             }
         }
 
@@ -534,6 +536,11 @@ export function renderWith(value: any, name?: string) {
 export class NodeTemplate implements ContentTemplate, ContentView {
     constructor(public readonly node: Node) {
         (node as any).$fastTemplate = this;
+    }
+
+    get context(): ExecutionContext<any> {
+        // HACK
+        return this as any;
     }
 
     bind(source: any): void {}
