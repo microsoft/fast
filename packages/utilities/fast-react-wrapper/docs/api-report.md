@@ -5,23 +5,8 @@
 ```ts
 
 import { Constructable } from '@microsoft/fast-element';
-import { DesignSystem } from '@microsoft/fast-foundation';
-import { FoundationElementDefinition } from '@microsoft/fast-foundation';
-import { FoundationElementRegistry } from '@microsoft/fast-foundation';
+import { FASTElementDefinition } from '@microsoft/fast-element';
 import type ReactModule from 'react';
-import { Registry } from '@microsoft/fast-foundation';
-
-// @public
-export type FoundationElementRegistryElement<TRegistry> = TRegistry extends FoundationElementRegistry<FoundationElementDefinition, infer TElement> ? TElement extends typeof HTMLElement ? InstanceType<TElement> : any : any;
-
-// @public (undocumented)
-export function provideReactWrapper(React: any, designSystem?: DesignSystem): {
-    wrap: {
-        <TRegistry extends FoundationElementRegistry<FoundationElementDefinition, any>, TEvents>(registry: TRegistry, config?: ReactWrapperConfig<TEvents> | undefined): ReactWrapper<FoundationElementRegistryElement<TRegistry>, TEvents>;
-        <TElement extends HTMLElement, TEvents_1>(type: Constructable<TElement>, config?: ReactWrapperConfig<TEvents_1> | undefined): ReactWrapper<TElement, TEvents_1>;
-    };
-    registry: Registry;
-};
 
 // @public
 export type ReactEventMap<T> = {
@@ -35,6 +20,12 @@ export type ReactEvents<T> = {
 
 // @public
 export type ReactWrapper<TElement extends HTMLElement, TEvents> = Constructable<ReactModule.Component<ReactWrapperProps<TElement, TEvents>>>;
+
+// @public (undocumented)
+export function reactWrapper(React: any, registry?: CustomElementRegistry): {
+    <TElement extends HTMLElement, TEvents>(def: FASTElementDefinition<Constructable<TElement>>, config?: ReactWrapperConfig<TEvents> | undefined): ReactWrapper<TElement, TEvents>;
+    <TElement_1 extends HTMLElement, TEvents_1>(type: Constructable<TElement_1>, config?: ReactWrapperConfig<TEvents_1> | undefined): ReactWrapper<TElement_1, TEvents_1>;
+};
 
 // @public
 export type ReactWrapperConfig<TEvents> = {

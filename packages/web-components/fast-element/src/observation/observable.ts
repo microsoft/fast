@@ -1,5 +1,12 @@
-import { DOM } from "../dom.js";
-import { FAST, KernelServiceId } from "../platform.js";
+import {
+    Disposable,
+    isFunction,
+    isString,
+    KernelServiceId,
+    Message,
+} from "../interfaces.js";
+import { FAST } from "../platform.js";
+import { Updates } from "./update-queue.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
 import type { Notifier, Subscriber } from "./notifier.js";
 
@@ -29,10 +36,10 @@ export interface Accessor {
 
 /**
  * The signature of an arrow function capable of being evaluated
- * as part of a template binding update.
+ * against source data and within an execution context.
  * @public
  */
-export type Binding<TSource = any, TReturn = any, TParent = any> = (
+export type Expression<TSource = any, TReturn = any, TParent = any> = (
     source: TSource,
     context: ExecutionContext<TParent>
 ) => TReturn;
@@ -59,29 +66,42 @@ interface SubscriptionRecord extends ObservationRecord {
 }
 
 /**
+ * Observes a binding for changes.
+ *
+ * @public
+ */
+export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any>
+    extends Disposable {
+    /**
+     * Begins observing the binding.
+     * @param source - The source to pass to the binding.
+     * @param context - The context to pass to the binding.
+     */
+    observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
+}
+
+/**
  * Enables evaluation of and subscription to a binding.
  * @public
  */
-export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
-    extends Notifier {
+export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any>
+    extends Notifier,
+        ExpressionObserver<TSource, TReturn, TParent> {
     /**
-     * Begins observing the binding for the source and returns the current value.
-     * @param source - The source that the binding is based on.
-     * @param context - The execution context to execute the binding within.
-     * @returns The value of the binding.
-     */
-    observe(source: TSource, context: ExecutionContext<TParent>): TReturn;
-
-    /**
-     * Unsubscribe from all dependent observables of the binding.
-     */
-    disconnect(): void;
-
-    /**
-     * Gets {@link ObservationRecord|ObservationRecords} that the {@link BindingObserver}
+     * Gets {@link ObservationRecord|ObservationRecords} that the {@link ExpressionNotifier}
      * is observing.
      */
     records(): IterableIterator<ObservationRecord>;
+
+    /**
+     * Sets the update mode used by the observer.
+     * @param isAsync - Indicates whether updates should be asynchronous.
+     * @remarks
+     * By default, the update mode is asynchronous, since that provides the best
+     * performance for template rendering scenarios. Passing false to setMode will
+     * instead cause the observer to notify subscribers immediately when changes occur.
+     */
+    setMode(isAsync: boolean): void;
 }
 
 /**
@@ -89,24 +109,25 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
  * @public
  */
 export const Observable = FAST.getById(KernelServiceId.observable, () => {
+    const queueUpdate = Updates.enqueue;
     const volatileRegex = /(:|&&|\|\||if)/;
     const notifierLookup = new WeakMap<any, Notifier>();
     const accessorLookup = new WeakMap<any, Accessor[]>();
-    const queueUpdate = DOM.queueUpdate;
-    let watcher: BindingObserverImplementation | undefined = void 0;
+    let watcher: ExpressionNotifierImplementation | undefined = void 0;
     let createArrayObserver = (array: any[]): Notifier => {
-        throw new Error("Must call enableArrayObservation before observing arrays.");
+        throw FAST.error(Message.needsArrayObservation);
     };
 
-    function getNotifier(source: any): Notifier {
-        let found = source.$fastController || notifierLookup.get(source);
+    function getNotifier<T extends Notifier = Notifier>(source: any): T {
+        let found = source.$fastController ?? notifierLookup.get(source);
 
         if (found === void 0) {
-            if (Array.isArray(source)) {
-                found = createArrayObserver(source);
-            } else {
-                notifierLookup.set(source, (found = new PropertyChangeNotifier(source)));
-            }
+            Array.isArray(source)
+                ? (found = createArrayObserver(source))
+                : notifierLookup.set(
+                      source,
+                      (found = new PropertyChangeNotifier(source))
+                  );
         }
 
         return found;
@@ -123,11 +144,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
                 currentTarget = Reflect.getPrototypeOf(currentTarget);
             }
 
-            if (accessors === void 0) {
-                accessors = [];
-            } else {
-                accessors = accessors.slice(0);
-            }
+            accessors = accessors === void 0 ? [] : accessors.slice(0);
 
             accessorLookup.set(target, accessors);
         }
@@ -161,7 +178,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
 
                 const callback = source[this.callback];
 
-                if (typeof callback === "function") {
+                if (isFunction(callback)) {
                     callback.call(source, oldValue, newValue);
                 }
 
@@ -170,11 +187,12 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         }
     }
 
-    class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
+    class ExpressionNotifierImplementation<TSource = any, TReturn = any>
         extends SubscriberSet
-        implements BindingObserver<TSource, TReturn, TParent> {
+        implements ExpressionNotifier<TSource, TReturn> {
         public needsRefresh: boolean = true;
         private needsQueue: boolean = true;
+        private isAsync = true;
 
         private first: SubscriptionRecord = this as any;
         private last: SubscriptionRecord | null = null;
@@ -184,28 +202,32 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         private next: SubscriptionRecord | undefined = void 0;
 
         constructor(
-            private binding: Binding<TSource, TReturn, TParent>,
+            private binding: Expression<TSource, TReturn>,
             initialSubscriber?: Subscriber,
             private isVolatileBinding: boolean = false
         ) {
             super(binding, initialSubscriber);
         }
 
-        public observe(source: TSource, context: ExecutionContext): TReturn {
+        public setMode(isAsync: boolean): void {
+            this.isAsync = this.needsQueue = isAsync;
+        }
+
+        public observe(source: TSource, context?: ExecutionContext): TReturn {
             if (this.needsRefresh && this.last !== null) {
-                this.disconnect();
+                this.dispose();
             }
 
             const previousWatcher = watcher;
             watcher = this.needsRefresh ? this : void 0;
             this.needsRefresh = this.isVolatileBinding;
-            const result = this.binding(source, context);
+            const result = this.binding(source, context ?? ExecutionContext.default);
             watcher = previousWatcher;
 
             return result;
         }
 
-        public disconnect(): void {
+        public dispose(): void {
             if (this.last !== null) {
                 let current = this.first;
 
@@ -215,7 +237,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
                 }
 
                 this.last = null;
-                this.needsRefresh = this.needsQueue = true;
+                this.needsRefresh = this.needsQueue = this.isAsync;
             }
         }
 
@@ -239,7 +261,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
                     watcher = void 0;
                     /* eslint-disable-next-line */
                     prevValue = prev.propertySource[prev.propertyName];
-                    /* eslint-disable-next-line @typescript-eslint/no-this-alias */
+                    /* eslint-disable-next-line */
                     watcher = this;
 
                     if (propertySource === prevValue) {
@@ -257,37 +279,25 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             if (this.needsQueue) {
                 this.needsQueue = false;
                 queueUpdate(this);
+            } else if (!this.isAsync) {
+                this.call();
             }
         }
 
         call(): void {
             if (this.last !== null) {
-                this.needsQueue = true;
+                this.needsQueue = this.isAsync;
                 this.notify(this);
             }
         }
 
-        public records(): IterableIterator<ObservationRecord> {
+        public *records(): IterableIterator<ObservationRecord> {
             let next = this.first;
 
-            return {
-                next: () => {
-                    const current = next;
-
-                    if (current === undefined) {
-                        return { value: void 0, done: true };
-                    } else {
-                        next = next.next!;
-                        return {
-                            value: current,
-                            done: false,
-                        };
-                    }
-                },
-                [Symbol.iterator]: function () {
-                    return this;
-                },
-            };
+            while (next !== void 0) {
+                yield next;
+                next = next.next!;
+            }
         }
     }
 
@@ -312,9 +322,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
          * @param propertyName - The property to track as changed.
          */
         track(source: unknown, propertyName: string): void {
-            if (watcher !== void 0) {
-                watcher.watch(source, propertyName);
-            }
+            watcher && watcher.watch(source, propertyName);
         },
 
         /**
@@ -322,9 +330,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
          * with respect to its observable dependencies.
          */
         trackVolatile(): void {
-            if (watcher !== void 0) {
-                watcher.needsRefresh = true;
-            }
+            watcher && (watcher.needsRefresh = true);
         },
 
         /**
@@ -333,6 +339,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
          * @param args - The change args to pass to subscribers.
          */
         notify(source: unknown, args: any): void {
+            /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
             getNotifier(source).notify(args);
         },
 
@@ -343,7 +350,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
          * or a custom accessor that specifies the property name and accessor implementation.
          */
         defineProperty(target: {}, nameOrAccessor: string | Accessor): void {
-            if (typeof nameOrAccessor === "string") {
+            if (isString(nameOrAccessor)) {
                 nameOrAccessor = new DefaultObservableAccessor(nameOrAccessor);
             }
 
@@ -351,10 +358,10 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
 
             Reflect.defineProperty(target, nameOrAccessor.name, {
                 enumerable: true,
-                get: function (this: any) {
+                get(this: any) {
                     return (nameOrAccessor as Accessor).getValue(this);
                 },
-                set: function (this: any, newValue: any) {
+                set(this: any, newValue: any) {
                     (nameOrAccessor as Accessor).setValue(this, newValue);
                 },
             });
@@ -368,18 +375,18 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         getAccessors,
 
         /**
-         * Creates a {@link BindingObserver} that can watch the
-         * provided {@link Binding} for changes.
+         * Creates a {@link ExpressionNotifier} that can watch the
+         * provided {@link Expression} for changes.
          * @param binding - The binding to observe.
          * @param initialSubscriber - An initial subscriber to changes in the binding value.
          * @param isVolatileBinding - Indicates whether the binding's dependency list must be re-evaluated on every value evaluation.
          */
-        binding<TSource = any, TReturn = any, TParent = any>(
-            binding: Binding<TSource, TReturn, TParent>,
+        binding<TSource = any, TReturn = any>(
+            binding: Expression<TSource, TReturn>,
             initialSubscriber?: Subscriber,
             isVolatileBinding: boolean = this.isVolatileBinding(binding)
-        ): BindingObserver<TSource, TReturn, TParent> {
-            return new BindingObserverImplementation(
+        ): ExpressionNotifier<TSource, TReturn> {
+            return new ExpressionNotifierImplementation(
                 binding,
                 initialSubscriber,
                 isVolatileBinding
@@ -391,8 +398,8 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
          * on every evaluation of the value.
          * @param binding - The binding to inspect.
          */
-        isVolatileBinding<TSource = any, TReturn = any, TParent = any>(
-            binding: Binding<TSource, TReturn, TParent>
+        isVolatileBinding<TSource = any, TReturn = any>(
+            binding: Expression<TSource, TReturn>
         ): boolean {
             return volatileRegex.test(binding.toString());
         },
@@ -422,7 +429,7 @@ export function volatile(
     descriptor: PropertyDescriptor
 ): PropertyDescriptor {
     return Object.assign({}, descriptor, {
-        get: function (this: any) {
+        get(this: any) {
             Observable.trackVolatile();
             return descriptor.get!.apply(this);
         },
@@ -446,7 +453,12 @@ const contextEvent = FAST.getById(KernelServiceId.contextEvent, () => {
  * Provides additional contextual information available to behaviors and expressions.
  * @public
  */
-export class ExecutionContext<TParent = any, TGrandparent = any> {
+export class ExecutionContext<TParentSource = any> {
+    /**
+     * The default execution context.
+     */
+    public static readonly default = new ExecutionContext();
+
     /**
      * The index of the current item within a repeat context.
      */
@@ -458,14 +470,22 @@ export class ExecutionContext<TParent = any, TGrandparent = any> {
     public length: number = 0;
 
     /**
-     * The parent data object within a repeat context.
+     * The parent data source within a nested context.
      */
-    public parent: TParent = null as any;
+    public readonly parent: TParentSource;
 
     /**
      * The parent execution context when in nested context scenarios.
      */
-    public parentContext: ExecutionContext<TGrandparent> = null as any;
+    public readonly parentContext: ExecutionContext<TParentSource>;
+
+    private constructor(
+        parentSource: any = null,
+        parentContext: ExecutionContext | null = null
+    ) {
+        this.parent = parentSource;
+        this.parentContext = parentContext as any;
+    }
 
     /**
      * The current event within an event handler.
@@ -515,6 +535,57 @@ export class ExecutionContext<TParent = any, TGrandparent = any> {
     }
 
     /**
+     * Returns the typed event detail of a custom event.
+     */
+    public eventDetail<TDetail>(): TDetail {
+        return (this.event as CustomEvent<TDetail>).detail;
+    }
+
+    /**
+     * Returns the typed event target of the event.
+     */
+    public eventTarget<TTarget extends EventTarget>(): TTarget {
+        return this.event.target! as TTarget;
+    }
+
+    /**
+     * Updates the position/size on a context associated with a list item.
+     * @param index - The new index of the item.
+     * @param length - The new length of the list.
+     */
+    public updatePosition(index: number, length: number): void {
+        this.index = index;
+        this.length = length;
+    }
+
+    /**
+     * Creates a new execution context descendent from the current context.
+     * @param source - The source for the context if different than the parent.
+     * @returns A child execution context.
+     */
+    public createChildContext<TParentSource>(
+        parentSource: TParentSource
+    ): ExecutionContext<TParentSource> {
+        return new ExecutionContext(parentSource, this);
+    }
+
+    /**
+     * Creates a new execution context descent suitable for use in list rendering.
+     * @param item - The list item to serve as the source.
+     * @param index - The index of the item in the list.
+     * @param length - The length of the list.
+     */
+    public createItemContext(
+        index: number,
+        length: number
+    ): ExecutionContext<TParentSource> {
+        const childContext = Object.create(this);
+        childContext.index = index;
+        childContext.length = length;
+        return childContext;
+    }
+
+    /**
      * Sets the event for the current execution context.
      * @param event - The event to set.
      * @internal
@@ -522,13 +593,15 @@ export class ExecutionContext<TParent = any, TGrandparent = any> {
     public static setEvent(event: Event | null): void {
         contextEvent.set(event);
     }
+
+    /**
+     * Creates a new root execution context.
+     * @returns A new execution context.
+     */
+    public static create(): ExecutionContext {
+        return new ExecutionContext();
+    }
 }
 
 Observable.defineProperty(ExecutionContext.prototype, "index");
 Observable.defineProperty(ExecutionContext.prototype, "length");
-
-/**
- * The default execution context used in binding expressions.
- * @public
- */
-export const defaultExecutionContext = Object.seal(new ExecutionContext());

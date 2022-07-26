@@ -1,15 +1,16 @@
 import { expect } from "chai";
-import { BaseProgress as Progress, progressTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
-import { customElement } from "@microsoft/fast-element";
+import { progressTemplate } from "./progress.template.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { FASTProgress } from "./progress.js";
 
-const FASTProgress = Progress.compose({
-    baseName: "progress",
-    template
-})
+const progressName = uniqueElementName();
+FASTProgress.define({
+    name: progressName,
+    template: progressTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTProgress());
+    const { element, connect, disconnect } = await fixture<FASTProgress>(progressName);
 
     return { element, connect, disconnect };
 }

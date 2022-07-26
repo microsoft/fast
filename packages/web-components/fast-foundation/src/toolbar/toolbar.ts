@@ -2,11 +2,10 @@ import { attr, FASTElement, observable, Observable } from "@microsoft/fast-eleme
 import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
 import { isFocusable } from "tabbable";
 import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+    ARIAGlobalStatesAndProperties,
+    StartEnd,
+    StartEndOptions,
+} from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { getDirection } from "../utilities/direction.js";
 
@@ -14,7 +13,7 @@ import { getDirection } from "../utilities/direction.js";
  * Toolbar configuration options
  * @public
  */
-export type ToolbarOptions = FoundationElementDefinition & StartEndOptions;
+export type ToolbarOptions = StartEndOptions;
 
 /**
  * A map for directionality derived from keyboard input strings,
@@ -55,7 +54,7 @@ const ToolbarArrowKeyMap = Object.freeze({
  *
  * @public
  */
-export class Toolbar extends FoundationElement {
+export class FASTToolbar extends FASTElement {
     /**
      * The internal index of the currently focused element.
      *
@@ -233,7 +232,7 @@ export class Toolbar extends FoundationElement {
         const previousFocusedElement = this.focusableElements?.[this.activeIndex];
 
         this.focusableElements = this.allSlottedItems.reduce(
-            Toolbar.reduceFocusableItems,
+            FASTToolbar.reduceFocusableItems,
             []
         );
 
@@ -292,7 +291,7 @@ export class Toolbar extends FoundationElement {
 
         if (element.childElementCount) {
             return elements.concat(
-                Array.from(element.children).reduce(Toolbar.reduceFocusableItems, [])
+                Array.from(element.children).reduce(FASTToolbar.reduceFocusableItems, [])
             );
         }
 
@@ -349,5 +348,5 @@ applyMixins(DelegatesARIAToolbar, ARIAGlobalStatesAndProperties);
 /**
  * @internal
  */
-export interface Toolbar extends StartEnd, DelegatesARIAToolbar {}
-applyMixins(Toolbar, StartEnd, DelegatesARIAToolbar);
+export interface FASTToolbar extends StartEnd, DelegatesARIAToolbar {}
+applyMixins(FASTToolbar, StartEnd, DelegatesARIAToolbar);

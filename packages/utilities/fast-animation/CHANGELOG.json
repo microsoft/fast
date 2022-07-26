@@ -2,6 +2,91 @@
   "name": "@microsoft/fast-animation",
   "entries": [
     {
+      "date": "Mon, 18 Jul 2022 21:10:01 GMT",
+      "tag": "@microsoft/fast-animation_v4.2.4",
+      "version": "4.2.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "16669785+awentzel@users.noreply.github.com",
+            "package": "@microsoft/fast-animation",
+            "commit": "da86be77519157db1ec428a1cdd7d1c0af9314f3",
+            "comment": "Updates a security vulnerability on dependency"
+          }
+        ],
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-animation",
+            "commit": "0466b2c5c45aed2ea39466d1657aca027e56a955",
+            "comment": "add types config to fast-animation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Jun 2022 17:41:10 GMT",
+      "tag": "@microsoft/fast-animation_v4.2.3",
+      "version": "4.2.3",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v6.0.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "a6b2a570c1cb592bc92b4c9d8366d197658819ae",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 01 Jun 2022 17:53:14 GMT",
+      "tag": "@microsoft/fast-animation_v4.2.3",
+      "version": "4.2.3",
+      "comments": {
+        "none": [
+          {
+            "comment": "update api extractor and typescript to use the latest versions",
+            "author": "chhol@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-animation"
+          },
+          {
+            "comment": "chore: update package.json metadata",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-animation"
+          },
+          {
+            "comment": "Updates webpack and installs missing dependency",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-animation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v6.0.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-animation"
+          },
+          {
+            "comment": "Bump @microsoft/eslint-config-fast-dna to v2.1.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-animation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Upgrade TypeScript",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 06 May 2022 20:58:02 GMT",
       "tag": "@microsoft/fast-animation_v4.2.2",
       "version": "4.2.2",

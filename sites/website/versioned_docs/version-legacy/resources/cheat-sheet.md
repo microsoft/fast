@@ -2,7 +2,7 @@
 id: cheat-sheet
 title: Cheat Sheet
 sidebar_label: Cheat Sheet
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/cheat-sheet.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/resources/cheat-sheet.md
 description: A quick reference guide to the documentation.
 keywords:
   - cheat sheet
@@ -165,6 +165,9 @@ FAST libraries can also be used in combination with a wide variety of existing t
 - [Blazor](../integrations/blazor.md)
 - [Ember](../integrations/ember.md)
 - [React](../integrations/react.md)
+- [Rollup](../integrations/rollup.md)
+- [Svelte](../integrations/svelte.md)
+- [Vite](..integrations/vite.md)
 - [Vue](../integrations/vue.md)
 - [Webpack](../integrations/webpack.md)
 

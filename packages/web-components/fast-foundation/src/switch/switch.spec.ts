@@ -1,16 +1,17 @@
 import { expect, assert } from "chai";
-import { Switch, switchTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { FASTSwitch, switchTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { Updates } from "@microsoft/fast-element";
 import { keySpace, keyEnter } from "@microsoft/fast-web-utilities";
 
-const FASTSwitch = Switch.compose({
-    baseName: "switch",
-    template
-})
+const switchName = uniqueElementName();
+FASTSwitch.define({
+    name: switchName,
+    template: switchTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture(FASTSwitch());
+    const { element, connect, disconnect, parent } = await fixture<FASTSwitch>(switchName);
 
     return { element, connect, disconnect, parent };
 }
@@ -37,7 +38,7 @@ describe("Switch", () => {
 
         element.checked = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("false");
 
@@ -77,7 +78,7 @@ describe("Switch", () => {
 
         element.disabled = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-disabled")).to.equal("false");
 
@@ -105,7 +106,7 @@ describe("Switch", () => {
 
         element.readOnly = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-readonly")).to.equal("false");
 
@@ -233,7 +234,7 @@ describe("Switch", () => {
                 wasClicked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.click();
 
@@ -257,7 +258,7 @@ describe("Switch", () => {
                 wasInvoked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.dispatchEvent(event);
 
@@ -281,7 +282,7 @@ describe("Switch", () => {
                 wasInvoked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.dispatchEvent(event);
 

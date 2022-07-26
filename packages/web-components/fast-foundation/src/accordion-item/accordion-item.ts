@@ -1,27 +1,23 @@
 import {
     attr,
+    FASTElement,
     nullableNumberConverter,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Accordion Item configuration options
  * @public
  */
-export type AccordionItemOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        expandedIcon?: string | SyntheticViewTemplate;
-        collapsedIcon?: string | SyntheticViewTemplate;
-    };
+export type AccordionItemOptions = StartEndOptions & {
+    expandedIcon?: string | SyntheticViewTemplate;
+    collapsedIcon?: string | SyntheticViewTemplate;
+};
 
 /**
- * An individual item in an {@link @microsoft/fast-foundation#(Accordion:class) }.
+ * An individual item in an {@link @microsoft/fast-foundation#(FASTAccordion:class) }.
  *
  * @slot start - Content which can be provided between the heading and the icon
  * @slot end - Content which can be provided between the start slot and icon
@@ -34,13 +30,11 @@ export type AccordionItemOptions = FoundationElementDefinition &
  * @csspart button - The button which serves to invoke the item
  * @csspart heading-content - Wraps the slot for the heading content within the button
  * @csspart icon - The icon container
- * @csspart expanded-icon - The expanded icon slot
- * @csspart collapsed-icon - The collapsed icon
  * @csspart region - The wrapper for the accordion item content
  *
  * @public
  */
-export class AccordionItem extends FoundationElement {
+export class FASTAccordionItem extends FASTElement {
     /**
      * Configures the {@link https://www.w3.org/TR/wai-aria-1.1/#aria-level | level} of the
      * heading element.
@@ -101,5 +95,5 @@ export class AccordionItem extends FoundationElement {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface AccordionItem extends StartEnd {}
-applyMixins(AccordionItem, StartEnd);
+export interface FASTAccordionItem extends StartEnd {}
+applyMixins(FASTAccordionItem, StartEnd);

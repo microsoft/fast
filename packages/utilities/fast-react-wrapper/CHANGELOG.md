@@ -1,8 +1,54 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Thu, 26 May 2022 07:11:44 GMT and should not be manually modified.
+This log was last generated on Mon, 18 Jul 2022 21:10:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.5
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- fix: update react wrapper to remove foundation dependency (roeisenb@microsoft.com)
+- chore: update tests to use testing helpers from fast-element (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.4
+
+## 1.0.0-alpha.4
+
+Wed, 22 Jun 2022 20:17:50 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.3 (nicholasrice@users.noreply.github.com)
+
+## 1.0.0-alpha.3
+
+Wed, 15 Jun 2022 17:41:10 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.2 (roeisenb@microsoft.com)
+
+## 1.0.0-alpha.2
+
+Wed, 01 Jun 2022 22:21:24 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.2 (nicholasrice@users.noreply.github.com)
+
+## 1.0.0-alpha.1
+
+Wed, 01 Jun 2022 17:53:14 GMT
+
+### Changes
+
+- fix: update React wrapper lib to use latest APIs (roeisenb@microsoft.com)
+- chore: remove rollup of react-wrapper (roeisenb@microsoft.com)
+- chore: update fast-react-wrapper to latest core APIs (roeisenb@microsoft.com)
+- Set prerelease version (nicholasrice@users.noreply.github.com)
+- fix: update fast-react-wrapper to not use deprecated APIs (roeisenb@microsoft.com)
 
 ## 0.3.9
 

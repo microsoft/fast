@@ -2,8 +2,10 @@
 id: contributor-guide
 title: Contributor Guide
 sidebar_label: Contributor Guide
-custom_edit_url: https://github.com/microsoft/fast/edit/master/CONTRIBUTING.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/community/contributor-guide.md
 description: Guide for contributing to FAST.
+keywords:
+  - contributor guide
 ---
 
 ## Getting started

@@ -1,26 +1,4 @@
-/**
- * A type representing the different day formats
- * @public
- */
-export type DayFormat = "2-digit" | "numeric";
-
-/**
- * A type representing the different weekday formats
- * @public
- */
-export type WeekdayFormat = "long" | "narrow" | "short";
-
-/**
- * A type representing the different month formats
- * @public
- */
-export type MonthFormat = "2-digit" | "long" | "narrow" | "numeric" | "short";
-
-/**
- * A type representing the different year formats
- * @public
- */
-export type YearFormat = "2-digit" | "numeric";
+import { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./calendar.options.js";
 
 /**
  * Date formatting utility
@@ -37,25 +15,25 @@ export class DateFormatter {
      * Formatting for the day
      * @public
      */
-    public dayFormat: DayFormat = "numeric";
+    public dayFormat: DayFormat = DayFormat.numeric;
 
     /**
      * Formatting for the weekday labels
      * @public
      */
-    public weekdayFormat: WeekdayFormat = "long";
+    public weekdayFormat: WeekdayFormat = WeekdayFormat.long;
 
     /**
      * Formatting for the month
      * @public
      */
-    public monthFormat: MonthFormat = "long";
+    public monthFormat: MonthFormat = MonthFormat.long;
 
     /**
      * Formatting for the year
      * @public
      */
-    public yearFormat: YearFormat = "numeric";
+    public yearFormat: YearFormat = YearFormat.numeric;
 
     /**
      * Date used for formatting

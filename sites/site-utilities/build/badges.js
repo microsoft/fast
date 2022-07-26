@@ -1,6 +1,7 @@
 const fs = require("fs-extra");
 const path = require("path");
 const { makeBadge } = require("badge-maker");
+const { getPackageJsonDir } = require("../../../build/get-package-json");
 
 const siteUtilitiesDir = path.dirname(
     require.resolve("@microsoft/site-utilities/package.json")
@@ -53,13 +54,13 @@ const formats = {
     },
 };
 
-[
-    "@microsoft/fast-element",
-    "@microsoft/fast-components",
-    "@microsoft/fast-foundation",
-].map(p => {
+["@microsoft/fast-element", "@microsoft/fast-foundation"].map(p => {
     try {
-        const { name, version: message } = require(`${p}/package.json`);
+        const dir = getPackageJsonDir(p);
+
+        const { name, version: message } = JSON.parse(
+            fs.readFileSync(path.resolve(dir, "package.json"))
+        );
         const packageName = name.split("/").pop();
         formats[`${encodeURIComponent(packageName)}.svg`] = {
             label: "npm package",

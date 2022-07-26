@@ -2,7 +2,7 @@
 id: issue-management
 title: Issue Management
 sidebar_label: Issue Management
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/community/issue-management.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/community/issue-management.md
 description: Managing a popular GitHub repo with a small team requires a good balance between creating new features, handling investigations, and fixing bugs.
 keywords:
   - issue management

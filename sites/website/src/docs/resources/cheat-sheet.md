@@ -165,6 +165,9 @@ FAST libraries can also be used in combination with a wide variety of existing t
 - [Blazor](../integrations/blazor.md)
 - [Ember](../integrations/ember.md)
 - [React](../integrations/react.md)
+- [Rollup](../integrations/rollup.md)
+- [Svelte](../integrations/svelte.md)
+- [Vite](..integrations/vite.md)
 - [Vue](../integrations/vue.md)
 - [Webpack](../integrations/webpack.md)
 

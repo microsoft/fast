@@ -1,4 +1,10 @@
-import { attr, DOM, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    observable,
+    SyntheticViewTemplate,
+    Updates,
+} from "@microsoft/fast-element";
 import {
     Direction,
     keyArrowLeft,
@@ -6,13 +12,13 @@ import {
     keyEnter,
     keySpace,
 } from "@microsoft/fast-web-utilities";
-import type { AnchoredRegion } from "../anchored-region/anchored-region.js";
+import type { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
+import type { FASTMenu } from "../menu/menu.js";
 import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
-import type { Menu } from "../menu/menu.js";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+    StartEnd,
+    StartEndOptions,
+    TemplateElementDependency,
+} from "../patterns/index.js";
 import { getDirection } from "../utilities/direction.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { MenuItemRole, roleForMenuItem } from "./menu-item.options.js";
@@ -29,12 +35,12 @@ export type MenuItemColumnCount = 0 | 1 | 2;
  * Menu Item configuration options
  * @public
  */
-export type MenuItemOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        checkboxIndicator?: string | SyntheticViewTemplate;
-        expandCollapseGlyph?: string | SyntheticViewTemplate;
-        radioIndicator?: string | SyntheticViewTemplate;
-    };
+export type MenuItemOptions = StartEndOptions & {
+    checkboxIndicator?: string | SyntheticViewTemplate;
+    expandCollapseGlyph?: string | SyntheticViewTemplate;
+    radioIndicator?: string | SyntheticViewTemplate;
+    anchoredRegion: TemplateElementDependency;
+};
 
 /**
  * A Switch Custom HTML Element.
@@ -59,7 +65,7 @@ export type MenuItemOptions = FoundationElementDefinition &
  *
  * @public
  */
-export class MenuItem extends FoundationElement {
+export class FASTMenuItem extends FASTElement {
     /**
      * The disabled state of the element.
      *
@@ -79,13 +85,13 @@ export class MenuItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public expanded: boolean;
-    private expandedChanged(oldValue: boolean): void {
+    protected expandedChanged(oldValue: boolean): void {
         if (this.$fastController.isConnected) {
             if (this.submenu === undefined) {
                 return;
             }
             if (this.expanded === false) {
-                (this.submenu as Menu).collapseExpandedItem();
+                (this.submenu as FASTMenu).collapseExpandedItem();
             } else {
                 this.currentDirection = getDirection(this);
             }
@@ -118,7 +124,7 @@ export class MenuItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public checked: boolean;
-    private checkedChanged(oldValue: boolean, newValue: boolean): void {
+    protected checkedChanged(oldValue: boolean, newValue: boolean): void {
         if (this.$fastController.isConnected) {
             this.$emit("change");
         }
@@ -130,7 +136,7 @@ export class MenuItem extends FoundationElement {
      * @internal
      */
     @observable
-    public submenuRegion: AnchoredRegion;
+    public submenuRegion: FASTAnchoredRegion;
 
     /**
      * @internal
@@ -161,7 +167,7 @@ export class MenuItem extends FoundationElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             this.updateSubmenu();
         });
 
@@ -337,5 +343,5 @@ export class MenuItem extends FoundationElement {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface MenuItem extends StartEnd {}
-applyMixins(MenuItem, StartEnd);
+export interface FASTMenuItem extends StartEnd {}
+applyMixins(FASTMenuItem, StartEnd);

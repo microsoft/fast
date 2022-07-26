@@ -1,5 +1,4 @@
-import { attr } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { attr, FASTElement } from "@microsoft/fast-element";
 /**
  * A Disclosure Custom HTML Element.
  * Based largely on the {@link https://w3c.github.io/aria-practices/#disclosure | disclosure element }.
@@ -12,14 +11,14 @@ import { FoundationElement } from "../foundation-element/foundation-element.js";
  *
  * @public
  */
-export class Disclosure extends FoundationElement {
+export class FASTDisclosure extends FASTElement {
     /**
      * Determines if the element should show the extra content or not.
      *
      * @public
      */
     @attr({ mode: "boolean" })
-    public expanded: boolean;
+    public expanded: boolean = false;
 
     /**
      * Invoker title
@@ -27,7 +26,7 @@ export class Disclosure extends FoundationElement {
      * @public
      */
     @attr
-    public title: string;
+    public summary: string;
 
     /**
      * @internal

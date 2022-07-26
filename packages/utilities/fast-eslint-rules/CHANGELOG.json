@@ -2,6 +2,27 @@
   "name": "@microsoft/eslint-config-fast-dna",
   "entries": [
     {
+      "date": "Wed, 01 Jun 2022 17:53:14 GMT",
+      "tag": "@microsoft/eslint-config-fast-dna_v2.1.0",
+      "version": "2.1.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "chore: update package.json metadata",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/eslint-config-fast-dna"
+          },
+          {
+            "comment": "update api extractor and typescript to use the latest versions",
+            "author": "chhol@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/eslint-config-fast-dna"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 27 Apr 2022 07:21:09 GMT",
       "tag": "@microsoft/eslint-config-fast-dna_v2.1.0",
       "version": "2.1.0",

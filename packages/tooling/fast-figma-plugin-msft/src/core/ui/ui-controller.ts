@@ -151,6 +151,10 @@ export class UIController {
         this.dispatchState(reason);
     }
 
+    public supports(type: DesignTokenType) {
+        return this._selectedNodes.some(node => node.supports.includes(type));
+    }
+
     /**
      * Gets a display representation of design tokens applied to the selected nodes.
      * @returns Applied design tokens.

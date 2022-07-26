@@ -1,6 +1,8 @@
 import { Accessor, Observable } from "../observation/observable.js";
-import { DOM } from "../dom.js";
 import type { Notifier } from "../observation/notifier.js";
+import { isString } from "../interfaces.js";
+import { Updates } from "../observation/update-queue.js";
+import { DOM } from "../templating/dom.js";
 
 /**
  * Represents objects that can convert values to and from
@@ -21,6 +23,9 @@ export interface ValueConverter {
     fromView(value: any): any;
 }
 
+const booleanMode = "boolean";
+const reflectMode = "reflect";
+
 /**
  * The mode that specifies the runtime behavior of the attribute.
  * @remarks
@@ -32,7 +37,7 @@ export interface ValueConverter {
  * changes in the DOM, but does not reflect property changes back.
  * @public
  */
-export type AttributeMode = "reflect" | "boolean" | "fromView";
+export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
 /**
  * Metadata used to configure a custom attribute's behavior.
@@ -63,19 +68,23 @@ export const booleanConverter: ValueConverter = {
     },
 
     fromView(value: any): any {
-        if (
-            value === null ||
+        return value === null ||
             value === void 0 ||
             value === "false" ||
             value === false ||
             value === 0
-        ) {
-            return false;
-        }
-
-        return true;
+            ? false
+            : true;
     },
 };
+
+function toNumber(value: any): any {
+    if (value === null || value === undefined) {
+        return null;
+    }
+    const number: number = value * 1;
+    return isNaN(number) ? null : number;
+}
 
 /**
  * A {@link ValueConverter} that converts to and from `number` values.
@@ -86,20 +95,11 @@ export const booleanConverter: ValueConverter = {
  */
 export const nullableNumberConverter: ValueConverter = {
     toView(value: any): string | null {
-        if (value === null || value === undefined) {
-            return null;
-        }
-        const number: number = value * 1;
-        return isNaN(number) ? null : number.toString();
+        const output = toNumber(value);
+        return output ? output.toString() : output;
     },
 
-    fromView(value: any): any {
-        if (value === null || value === undefined) {
-            return null;
-        }
-        const number: number = value * 1;
-        return isNaN(number) ? null : number;
-    },
+    fromView: toNumber,
 };
 
 /**
@@ -153,7 +153,7 @@ export class AttributeDefinition implements Accessor {
         Owner: Function,
         name: string,
         attribute: string = name.toLowerCase(),
-        mode: AttributeMode = "reflect",
+        mode: AttributeMode = reflectMode,
         converter?: ValueConverter
     ) {
         this.Owner = Owner;
@@ -165,7 +165,7 @@ export class AttributeDefinition implements Accessor {
         this.callbackName = `${name}Changed`;
         this.hasCallback = this.callbackName in Owner.prototype;
 
-        if (mode === "boolean" && converter === void 0) {
+        if (mode === booleanMode && converter === void 0) {
             this.converter = booleanConverter;
         }
     }
@@ -224,13 +224,13 @@ export class AttributeDefinition implements Accessor {
             return;
         }
 
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             guards.add(element);
 
             const latestValue = element[this.fieldName];
 
             switch (mode) {
-                case "reflect":
+                case reflectMode:
                     const converter = this.converter;
                     DOM.setAttribute(
                         element,
@@ -238,7 +238,7 @@ export class AttributeDefinition implements Accessor {
                         converter !== void 0 ? converter.toView(latestValue) : latestValue
                     );
                     break;
-                case "boolean":
+                case booleanMode:
                     DOM.setBooleanAttribute(element, this.attribute, latestValue);
                     break;
             }
@@ -271,7 +271,7 @@ export class AttributeDefinition implements Accessor {
             for (let j = 0, jj = list.length; j < jj; ++j) {
                 const config = list[j];
 
-                if (typeof config === "string") {
+                if (isString(config)) {
                     attributes.push(new AttributeDefinition(Owner, config));
                 } else {
                     attributes.push(

@@ -1,6 +1,5 @@
-import { attr, DOM, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
 import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { getDirection } from "../utilities/direction.js";
 import { IntersectionService } from "../utilities/intersection-service.js";
 import type {
@@ -48,7 +47,15 @@ export type VerticalPosition = "top" | "bottom" | "center" | "unset";
  *
  * @public
  */
-export type AutoUpdateMode = "anchor" | "auto";
+export const AutoUpdateMode = {
+    anchor: "anchor",
+    auto: "auto",
+} as const;
+
+/**
+ * @public
+ */
+export type AutoUpdateMode = typeof AutoUpdateMode[keyof typeof AutoUpdateMode];
 
 /**
  * Describes the possible positions of the region relative
@@ -80,7 +87,7 @@ interface Dimension {
  *
  * @public
  */
-export class AnchoredRegion extends FoundationElement {
+export class FASTAnchoredRegion extends FASTElement {
     /**
      * The HTML ID of the anchor element this region is positioned relative to
      *
@@ -90,7 +97,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr
     public anchor: string = "";
-    private anchorChanged(): void {
+    protected anchorChanged(): void {
         if (this.initialLayoutComplete) {
             this.anchorElement = this.getAnchor();
         }
@@ -105,7 +112,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr
     public viewport: string = "";
-    private viewportChanged(): void {
+    protected viewportChanged(): void {
         if (this.initialLayoutComplete) {
             this.viewportElement = this.getViewport();
         }
@@ -123,7 +130,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "horizontal-positioning-mode" })
     public horizontalPositioningMode: AxisPositioningMode = "uncontrolled";
-    private horizontalPositioningModeChanged(): void {
+    protected horizontalPositioningModeChanged(): void {
         this.requestReset();
     }
 
@@ -136,7 +143,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "horizontal-default-position" })
     public horizontalDefaultPosition: HorizontalPosition = "unset";
-    private horizontalDefaultPositionChanged(): void {
+    protected horizontalDefaultPositionChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -149,7 +156,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "horizontal-viewport-lock", mode: "boolean" })
     public horizontalViewportLock: boolean = false;
-    private horizontalViewportLockChanged(): void {
+    protected horizontalViewportLockChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -162,7 +169,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "horizontal-inset", mode: "boolean" })
     public horizontalInset: boolean = false;
-    private horizontalInsetChanged(): void {
+    protected horizontalInsetChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -176,7 +183,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "horizontal-threshold" })
     public horizontalThreshold: number;
-    private horizontalThresholdChanged(): void {
+    protected horizontalThresholdChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -189,7 +196,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "horizontal-scaling" })
     public horizontalScaling: AxisScalingMode = "content";
-    private horizontalScalingChanged(): void {
+    protected horizontalScalingChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -205,7 +212,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "vertical-positioning-mode" })
     public verticalPositioningMode: AxisPositioningMode = "uncontrolled";
-    private verticalPositioningModeChanged(): void {
+    protected verticalPositioningModeChanged(): void {
         this.requestReset();
     }
 
@@ -218,7 +225,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "vertical-default-position" })
     public verticalDefaultPosition: VerticalPosition = "unset";
-    private verticalDefaultPositionChanged(): void {
+    protected verticalDefaultPositionChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -231,7 +238,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "vertical-viewport-lock", mode: "boolean" })
     public verticalViewportLock: boolean = false;
-    private verticalViewportLockChanged(): void {
+    protected verticalViewportLockChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -244,7 +251,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "vertical-inset", mode: "boolean" })
     public verticalInset: boolean = false;
-    private verticalInsetChanged(): void {
+    protected verticalInsetChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -258,7 +265,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "vertical-threshold" })
     public verticalThreshold: number;
-    private verticalThresholdChanged(): void {
+    protected verticalThresholdChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -271,7 +278,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "vertical-scaling" })
     public verticalScaling: AxisScalingMode = "content";
-    private verticalScalingChanged(): void {
+    protected verticalScalingChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -286,11 +293,8 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "fixed-placement", mode: "boolean" })
     public fixedPlacement: boolean = false;
-    private fixedPlacementChanged(): void {
-        if (
-            (this as FoundationElement).$fastController.isConnected &&
-            this.initialLayoutComplete
-        ) {
+    protected fixedPlacementChanged(): void {
+        if (this.$fastController.isConnected && this.initialLayoutComplete) {
             this.initialize();
         }
     }
@@ -304,14 +308,11 @@ export class AnchoredRegion extends FoundationElement {
      */
     @attr({ attribute: "auto-update-mode" })
     public autoUpdateMode: AutoUpdateMode = "anchor";
-    private autoUpdateModeChanged(
+    protected autoUpdateModeChanged(
         prevMode: AutoUpdateMode,
         newMode: AutoUpdateMode
     ): void {
-        if (
-            (this as FoundationElement).$fastController.isConnected &&
-            this.initialLayoutComplete
-        ) {
+        if (this.$fastController.isConnected && this.initialLayoutComplete) {
             if (prevMode === "auto") {
                 this.stopAutoUpdateEventListeners();
             }
@@ -329,7 +330,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     @observable
     public anchorElement: HTMLElement | null = null;
-    private anchorElementChanged(): void {
+    protected anchorElementChanged(): void {
         this.requestReset();
     }
 
@@ -340,11 +341,8 @@ export class AnchoredRegion extends FoundationElement {
      */
     @observable
     public viewportElement: HTMLElement | null = null;
-    private viewportElementChanged(): void {
-        if (
-            (this as FoundationElement).$fastController.isConnected &&
-            this.initialLayoutComplete
-        ) {
+    protected viewportElementChanged(): void {
+        if (this.$fastController.isConnected && this.initialLayoutComplete) {
             this.initialize();
         }
     }
@@ -469,10 +467,7 @@ export class AnchoredRegion extends FoundationElement {
      * react to attribute changes that don't require a reset
      */
     private updateForAttributeChange(): void {
-        if (
-            (this as FoundationElement).$fastController.isConnected &&
-            this.initialLayoutComplete
-        ) {
+        if (this.$fastController.isConnected && this.initialLayoutComplete) {
             this.forceUpdate = true;
             this.update();
         }
@@ -493,12 +488,9 @@ export class AnchoredRegion extends FoundationElement {
      * Request a reset if there are currently no open requests
      */
     private requestReset(): void {
-        if (
-            (this as FoundationElement).$fastController.isConnected &&
-            this.pendingReset === false
-        ) {
+        if (this.$fastController.isConnected && this.pendingReset === false) {
             this.setInitialState();
-            DOM.queueUpdate(() => this.reset());
+            Updates.enqueue(() => this.reset());
             this.pendingReset = true;
         }
     }
@@ -558,13 +550,16 @@ export class AnchoredRegion extends FoundationElement {
         if (this.anchorElement === null || this.pendingPositioningUpdate) {
             return;
         }
-        AnchoredRegion.intersectionService.requestPosition(this, this.handleIntersection);
-        AnchoredRegion.intersectionService.requestPosition(
+        FASTAnchoredRegion.intersectionService.requestPosition(
+            this,
+            this.handleIntersection
+        );
+        FASTAnchoredRegion.intersectionService.requestPosition(
             this.anchorElement,
             this.handleIntersection
         );
         if (this.viewportElement !== null) {
-            AnchoredRegion.intersectionService.requestPosition(
+            FASTAnchoredRegion.intersectionService.requestPosition(
                 this.viewportElement,
                 this.handleIntersection
             );
@@ -578,18 +573,18 @@ export class AnchoredRegion extends FoundationElement {
     private stopObservers = (): void => {
         if (this.pendingPositioningUpdate) {
             this.pendingPositioningUpdate = false;
-            AnchoredRegion.intersectionService.cancelRequestPosition(
+            FASTAnchoredRegion.intersectionService.cancelRequestPosition(
                 this,
                 this.handleIntersection
             );
             if (this.anchorElement !== null) {
-                AnchoredRegion.intersectionService.cancelRequestPosition(
+                FASTAnchoredRegion.intersectionService.cancelRequestPosition(
                     this.anchorElement,
                     this.handleIntersection
                 );
             }
             if (this.viewportElement !== null) {
-                AnchoredRegion.intersectionService.cancelRequestPosition(
+                FASTAnchoredRegion.intersectionService.cancelRequestPosition(
                     this.viewportElement,
                     this.handleIntersection
                 );

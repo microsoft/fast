@@ -1,14 +1,15 @@
 import { expect } from "chai";
-import { TabPanel, tabPanelTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { FASTTabPanel, tabPanelTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 
-const FASTTabPanel = TabPanel.compose({
-    baseName: "tab-panel",
-    template,
-})
+const tabPanelName = uniqueElementName();
+FASTTabPanel.define({
+    name: tabPanelName,
+    template: tabPanelTemplate(),
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTTabPanel());
+    const { element, connect, disconnect } = await fixture<FASTTabPanel>(tabPanelName);
 
     return { element, connect, disconnect };
 }
