@@ -25,6 +25,9 @@
   "dependencies": {
     "@microsoft/fast-element": "^2.0.0-beta.3",
     "@microsoft/fast-foundation": "^3.0.0-alpha.4",
+    "@microsoft/fast-foundation-latest": "npm:@microsoft/fast-foundation@^2.0.0",
+    "@microsoft/fast-components": "^2.30.6",
+    "@microsoft/adaptive-ui": "^1.0.0-alpha.4",
     "tslib": "^2.4.0"
   },
   "devDependencies": {
