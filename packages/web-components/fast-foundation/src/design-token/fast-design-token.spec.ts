@@ -8,6 +8,10 @@ import { CSSDesignToken, DesignToken, DesignTokenSubscriber } from "./fast-desig
 chia.use(spies);
 const elementName = uniqueElementName();
 
+function uniqueTokenName() {
+    return uniqueElementName() + "token";
+}
+
 @customElement({
     name: `fast-${elementName}`,
     template: html`<slot></slot>`
@@ -174,6 +178,16 @@ describe("A DesignToken", () => {
                 await Updates.next();
                 expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal('12');
                 removeElement(target)
+            });
+            it("should be a CSSDirective", async () => {
+                const token = DesignToken.create<number>(uniqueTokenName()).withDefault(12);
+                const sheet = css`:host{--property: ${token};}`;
+                const element = addElement();
+                element.$fastController.addStyles(sheet)
+
+                await Updates.next();
+                expect(window.getComputedStyle(element).getPropertyValue("--property").trim()).to.equal('12');
+                removeElement(element);
             });
         });
         describe("that is not a CSSDesignToken", () => {
