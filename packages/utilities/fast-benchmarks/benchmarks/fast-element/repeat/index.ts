@@ -2,7 +2,6 @@ import {
     customElement,
     FASTElement,
     html,
-    ItemViewTemplate,
     observable,
     repeat,
 } from "@microsoft/fast-element";
@@ -44,7 +43,7 @@ const templates = {
             x => x.items,
             html<RandomItem>`
                 <li>${x => x.label}</li>
-            ` as ItemViewTemplate,
+            `,
             { positioning: true, recycle: false }
         )}
     `,
@@ -125,7 +124,7 @@ const templates = {
                             </ol>
                         `}
                 </li>
-            ` as ItemViewTemplate,
+            `,
             { positioning: true, recycle: false }
         )}
     `,

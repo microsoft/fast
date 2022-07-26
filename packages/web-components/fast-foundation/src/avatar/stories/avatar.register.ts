@@ -19,7 +19,7 @@ const styles = css`
 
     .link {
         align-items: center;
-        color: var(--neutral-foreground-rest);
+        color: var(--foreground-on-accent-rest);
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -27,21 +27,13 @@ const styles = css`
         text-decoration: none;
     }
 
-    .square {
-        border-radius: calc(var(--control-corner-radius) * 1px);
-        min-width: 100%;
-        overflow: hidden;
-    }
-
-    .circle {
-        border-radius: 100%;
-        min-width: 100%;
-        overflow: hidden;
-    }
-
     .backplate {
         display: flex;
         position: relative;
+        border-radius: 100%;
+        min-width: 100%;
+        overflow: hidden;
+        background-color: var(--accent-fill-rest);
     }
 
     .media,
