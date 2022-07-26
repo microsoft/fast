@@ -591,9 +591,11 @@ export class DesignTokenNode {
      * Notify children of changes to the node
      */
     private notifyChildren(...records: DesignTokenChangeRecordImpl<any>[]) {
-        for (let i = 0, l = this.children.length; i < l; i++) {
-            for (let j = 0; j < records.length; j++) {
-                this.children[i].dispatch(records[j]);
+        if (this.children.length) {
+            for (let i = 0, l = this.children.length; i < l; i++) {
+                for (let j = 0; j < records.length; j++) {
+                    this.children[i].dispatch(records[j]);
+                }
             }
         }
     }
