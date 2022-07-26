@@ -45,9 +45,10 @@ function bindWithoutPositioning(
     view: SyntheticView,
     items: readonly any[],
     index: number,
-    context: ExecutionContext
+    controller: ViewController
 ): void {
-    // TODO: set parent
+    view.context.parent = controller!.source;
+    view.context.parentContext = controller!.context;
     view.bind(items[index]);
 }
 
@@ -55,10 +56,12 @@ function bindWithPositioning(
     view: SyntheticView,
     items: readonly any[],
     index: number,
-    context: ExecutionContext
+    controller: ViewController
 ): void {
-    // TODO: set parent
-    // TODO update view's index and length properties
+    view.context.parent = controller!.source;
+    view.context.parentContext = controller!.context;
+    view.context.length = items.length;
+    view.context.index = index;
     view.bind(items[index]);
 }
 
@@ -75,7 +78,6 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     private items: readonly any[] | null = null;
     private itemsObserver: Notifier | null = null;
     private itemsBindingObserver: ExpressionObserver<TSource, any[]>;
-    private childContext: ExecutionContext | undefined = void 0;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
 
     /**
@@ -168,10 +170,10 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 
     private updateViews(splices: Splice[]): void {
         const views = this.views;
-        const childContext = this.childContext!;
         const bindView = this.bindView;
         const items = this.items!;
         const template = this.template;
+        const controller = this.controller;
         const recycle: RepeatOptions["recycle"] = this.directive.options.recycle;
         const leftoverViews: SyntheticView[] = [];
         let leftoverIndex = 0;
@@ -206,7 +208,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                 }
 
                 views.splice(addIndex, 0, view);
-                bindView(view, items, addIndex, childContext);
+                bindView(view, items, addIndex, controller);
                 view.insertBefore(location);
             }
 
@@ -221,8 +223,9 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 
         if (this.directive.options.positioning) {
             for (let i = 0, ii = views.length; i < ii; ++i) {
-                // TODO: update index and length
-                //views[i].context!.updatePosition(i, ii);
+                const context = views[i].context;
+                context.length = i;
+                context.index = ii;
             }
         }
     }
@@ -232,7 +235,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         const template = this.template;
         const location = this.location;
         const bindView = this.bindView;
-        const childContext = this.childContext!;
+        const controller = this.controller;
         let itemsLength = items.length;
         let views = this.views;
         let viewsLength = views.length;
@@ -249,7 +252,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 
             for (let i = 0; i < itemsLength; ++i) {
                 const view = template.create();
-                bindView(view, items, i, childContext);
+                bindView(view, items, i, controller);
                 views[i] = view;
                 view.insertBefore(location);
             }
@@ -260,10 +263,10 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             for (; i < itemsLength; ++i) {
                 if (i < viewsLength) {
                     const view = views[i];
-                    bindView(view, items, i, childContext);
+                    bindView(view, items, i, controller);
                 } else {
                     const view = template.create();
-                    bindView(view, items, i, childContext);
+                    bindView(view, items, i, controller);
                     views.push(view);
                     view.insertBefore(location);
                 }
