@@ -228,7 +228,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             this.dispose();
         }
 
-        public observe(source: TSource, context: ExecutionContext): TReturn {
+        public observe(source: TSource, context?: ExecutionContext): TReturn {
             if (this.needsRefresh && this.last !== null) {
                 this.dispose();
             }
@@ -540,6 +540,20 @@ const contextEvent = FAST.getById(KernelServiceId.contextEvent, () => {
 });
 
 export const ExecutionContext = Object.freeze({
+    default: {
+        index: 0,
+        length: 0,
+        get event(): Event {
+            return ExecutionContext.getEvent()!;
+        },
+        eventDetail<TDetail>(): TDetail {
+            return (this.event as CustomEvent<TDetail>).detail;
+        },
+        eventTarget<TTarget extends EventTarget>(): TTarget {
+            return this.event.target! as TTarget;
+        },
+    } as ExecutionContext,
+
     getEvent(): Event | null {
         return contextEvent.get();
     },

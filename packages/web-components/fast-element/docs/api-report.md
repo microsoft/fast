@@ -346,6 +346,7 @@ export interface ExecutionContext<TParent = any> {
 
 // @public (undocumented)
 export const ExecutionContext: Readonly<{
+    default: ExecutionContext<any>;
     getEvent(): Event | null;
     setEvent(event: Event | null): void;
 }>;

@@ -1,6 +1,6 @@
 import {
     Constructable,
-    Controller,
+    ElementController,
     ElementStyles,
     FASTElement,
     observable,
@@ -33,7 +33,7 @@ class ConstructableStyleSheetTarget extends QueuedStyleSheetTarget {
 
         const sheet = new CSSStyleSheet();
         this.target = (sheet.cssRules[sheet.insertRule(":host{}")] as CSSStyleRule).style;
-        source.$fastController.addStyles(new ElementStyles([sheet]));
+        source.$fastController.styles.add(new ElementStyles([sheet]));
     }
 }
 
@@ -95,7 +95,7 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
         const controller = target.$fastController;
         this.style = document.createElement("style") as HTMLStyleElement;
 
-        controller.addStyles(this.style);
+        controller.styles.add(this.style);
 
         Observable.getNotifier(controller).subscribe(this, "isConnected");
         this.handleChange(controller, "isConnected");
@@ -121,7 +121,7 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
         });
     }
 
-    handleChange(source: Controller, key: "isConnected") {
+    handleChange(source: ElementController, key: "isConnected") {
         // HTMLStyleElement.sheet is null if the element isn't connected to the DOM,
         // so this method reacts to changes in DOM connection for the element hosting
         // the HTMLStyleElement.

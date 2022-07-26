@@ -351,7 +351,7 @@ export class FASTDataGrid extends FASTElement {
         });
 
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
+        this.$fastController.behaviors.add(this.rowsRepeatBehavior!);
 
         this.addEventListener("row-focused", this.handleRowFocus);
         this.addEventListener(eventFocus, this.handleFocus);
