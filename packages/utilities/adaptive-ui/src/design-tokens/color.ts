@@ -14,10 +14,22 @@ import { Swatch, SwatchRGB } from "../color/swatch.js";
 import { create, createNonCss } from "./create.js";
 import { accentPalette, neutralPalette } from "./palette.js";
 
-enum ContrastTarget {
-    NormalText = 4.5,
-    LargeText = 3,
-}
+/**
+ * Convenience values for WCAG contrast requirements.
+ *
+ * @public
+ */
+export const ContrastTarget = Object.freeze({
+    /**
+     * Minimum contrast for normal (<= 14pt) text (AA rating).
+     */
+    NormalText: 4.5,
+
+    /**
+     * Minimum contrast for large (> 14pt) text (AA rating).
+     */
+    LargeText: 3,
+} as const);
 
 /** @public */
 export const fillColor = create<Swatch>("fill-color").withDefault(
@@ -149,7 +161,7 @@ export const foregroundOnAccentFocus = create<Swatch>(
 /** @public */
 export const accentForegroundMinContrast = createNonCss<number>(
     "accent-foreground-min-contrast"
-).withDefault(0);
+).withDefault(ContrastTarget.NormalText);
 
 /** @public */
 export const accentForegroundRestDelta = createNonCss<number>(
@@ -584,7 +596,7 @@ export const neutralFillStealthFocus = create<Swatch>(
 /** @public */
 export const neutralFillStrongMinContrast = createNonCss<number>(
     "neutral-fill-strong-min-contrast"
-).withDefault(0);
+).withDefault(3);
 
 /** @public */
 export const neutralFillStrongRestDelta = createNonCss<number>(
