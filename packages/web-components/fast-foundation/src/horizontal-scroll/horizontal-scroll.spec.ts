@@ -1,4 +1,4 @@
-import { css, DOM, html } from "@microsoft/fast-element";
+import { css, DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
 import { HorizontalScroll, horizontalScrollTemplate as template } from "./index";
@@ -56,6 +56,28 @@ const cardTemplate: string = `<div class="card" style="width: ${cardWidth}px; he
  * @param cnt number of cards
  */
 const getCards = (cnt: number): string => new Array(cnt).fill(cardTemplate).reduce((s, c) => s += c, '');
+
+/**
+ * Calls a scroll into view and checks that the item is inside the viewport
+ * @param element - HorizontalScroll element
+ * @param item - item to scroll into view, element or it's index
+ * @param padding - amount of padding, defaults to 0
+ * @param paddingRight - optional right padding to override padding on both sides
+ */
+const scrollIntoViewTest = async (
+    element: HorizontalScroll & HTMLElement,
+    item: HTMLElement | number,
+    padding: number = 0,
+    paddingRight?: number
+) => {
+    element.scrollInView(item, padding, paddingRight);
+
+    await DOM.nextUpdate();
+    const {offsetLeft, offsetWidth} = typeof item === "number" ? element.scrollItems[item] : item;
+    const xPosition = getXPosition(element) ?? 0;
+    expect(offsetLeft - xPosition).to.greaterThanOrEqual(padding);
+    expect(xPosition + element.offsetWidth - offsetLeft - offsetWidth).to.greaterThanOrEqual(paddingRight ?? padding);
+}
 
 async function setup(options: {
     width?: number
@@ -300,6 +322,56 @@ describe("HorizontalScroll", () => {
 
             const secondXPosition: number | null = getXPosition(element);
             expect(secondXPosition).to.equal(0);
+
+            await disconnect();
+        });
+
+        it("should scroll item into view when using scrollInView()", async () => {
+            const { element, disconnect } = await setup();
+            const testScroll = scrollIntoViewTest.bind(this, element);
+
+            await testScroll(element.scrollItems[element.scrollItems.length - 1]);
+            await testScroll(element.scrollItems[0])
+
+            await disconnect();
+        });
+
+        it("Should scroll item into view with scrollInView() by index", async () => {
+            const { element, disconnect } = await setup();
+            const testScroll = scrollIntoViewTest.bind(this, element);
+
+            await testScroll(element.scrollItems.length - 1);
+            await testScroll(0);
+
+            await disconnect();
+        });
+
+        it("Should scroll item into view respecting right and left padding", async () => {
+            const { element, disconnect } = await setup();
+            const testScroll = scrollIntoViewTest.bind(this, element, element.scrollItems.length - 4);
+
+            await testScroll();
+            const position1 = getXPosition(element);
+
+            await testScroll(80);
+            const position2 = getXPosition(element);
+            expect(position1).to.not.equal(position2);
+
+            await testScroll(0, 200);
+            const position3 = getXPosition(element);
+            expect(position2).to.not.equal(position3);
+
+            await scrollIntoViewTest(element, 2, 20);
+
+            await disconnect();
+        });
+
+        it("Should not scroll with scrollInView() when the item is in view", async () => {
+            const { element, disconnect } = await setup();
+            element.scrollInView(2);
+
+            await DOM.nextUpdate();;
+            expect(getXPosition(element)).to.equal(0);
 
             await disconnect();
         });

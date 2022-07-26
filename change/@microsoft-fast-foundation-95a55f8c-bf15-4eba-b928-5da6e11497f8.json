@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Compare radio value property instead of attribute when value changes",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "sknoslo@gmail.com",
-  "dependentChangeType": "patch"
-}

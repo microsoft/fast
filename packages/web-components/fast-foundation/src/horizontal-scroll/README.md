@@ -157,17 +157,18 @@ export const myHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptio
 
 #### Methods
 
-| Name                 | Privacy   | Description                                                      | Parameters                                     | Return | Inherited From    |
-| -------------------- | --------- | ---------------------------------------------------------------- | ---------------------------------------------- | ------ | ----------------- |
-| `scrollItemsChanged` | public    | Updates scroll stops and flippers when scroll items change       | `previous: HTMLElement[], next: HTMLElement[]` |        |                   |
-| `keyupHandler`       | public    | Lets the user arrow left and right through the horizontal scroll | `e: Event & KeyboardEvent`                     |        |                   |
-| `scrollToPrevious`   | public    | Scrolls items to the left                                        |                                                | `void` |                   |
-| `scrollToNext`       | public    | Scrolls items to the right                                       |                                                | `void` |                   |
-| `scrollToPosition`   | public    | Handles scrolling with easing                                    | `newPosition: number, position: number`        | `void` |                   |
-| `resized`            | public    | Monitors resize event on the horizontal-scroll element           |                                                | `void` |                   |
-| `scrolled`           | public    | Monitors scrolled event on the content container                 |                                                | `void` |                   |
-| `templateChanged`    | protected |                                                                  |                                                | `void` | FoundationElement |
-| `stylesChanged`      | protected |                                                                  |                                                | `void` | FoundationElement |
+| Name                 | Privacy   | Description                                                      | Parameters                                                           | Return | Inherited From    |
+| -------------------- | --------- | ---------------------------------------------------------------- | -------------------------------------------------------------------- | ------ | ----------------- |
+| `scrollItemsChanged` | public    | Updates scroll stops and flippers when scroll items change       | `previous: HTMLElement[], next: HTMLElement[]`                       |        |                   |
+| `scrollInView`       | public    | Function that can scroll an item into view.                      | `item: HTMLElement or number, padding: number, rightPadding: number` | `void` |                   |
+| `keyupHandler`       | public    | Lets the user arrow left and right through the horizontal scroll | `e: Event & KeyboardEvent`                                           |        |                   |
+| `scrollToPrevious`   | public    | Scrolls items to the left                                        |                                                                      | `void` |                   |
+| `scrollToNext`       | public    | Scrolls items to the right                                       |                                                                      | `void` |                   |
+| `scrollToPosition`   | public    | Handles scrolling with easing                                    | `newPosition: number, position: number`                              | `void` |                   |
+| `resized`            | public    | Monitors resize event on the horizontal-scroll element           |                                                                      | `void` |                   |
+| `scrolled`           | public    | Monitors scrolled event on the content container                 |                                                                      | `void` |                   |
+| `templateChanged`    | protected |                                                                  |                                                                      | `void` | FoundationElement |
+| `stylesChanged`      | protected |                                                                  |                                                                      | `void` | FoundationElement |
 
 #### Events
 
