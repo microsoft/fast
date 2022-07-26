@@ -105,8 +105,6 @@ class DerivedValue<T> implements Disposable {
         }
     }
 
-    public handleChange = this.update;
-
     public update() {
         this.value = this.evaluator.evaluate(this.node, this.token);
 
