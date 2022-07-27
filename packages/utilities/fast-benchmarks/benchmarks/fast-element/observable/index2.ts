@@ -1,19 +1,46 @@
-import { Observable, observable } from "@microsoft/fast-element";
+import { Observable } from "@microsoft/fast-element";
 import { _random, adjectives, nouns } from "../../../utils/index.js";
-
 export class Pupil {
-    @observable greetMessage: string;
-    @observable exit: boolean = false;
+    private _greetMessage: string;
+    private _exit: boolean = false;
+    private _name: string;
 
     constructor(firstName: string, lastName: string) {
         const first = firstName[0].toUpperCase() + firstName.slice(1);
         const last = lastName[0].toUpperCase() + lastName.slice(1);
 
-        this.greetMessage = `Welcome to FAST, ${first} ${last} !!`;
+        this._name = `${first} ${last}`;
+        this._greetMessage = `Welcome to FAST, ${this._name} !!`;
     }
 
-    sayGoodbye() {
-        this.greetMessage = "Goodbye, see you next time!";
+    get greetMessage() {
+        Observable.track(this, "greetMessage");
+        return this._greetMessage;
+    }
+
+    set greetMessage(value: string) {
+        this._greetMessage = value;
+        Observable.notify(this, "greetMessage");
+    }
+
+    get name() {
+        Observable.track(this, "name");
+        return this._name;
+    }
+
+    set name(value: string) {
+        this._name = value;
+        Observable.notify(this, "name");
+    }
+
+    get exit() {
+        Observable.track(this, "exit");
+        return this._exit;
+    }
+
+    set exit(value: boolean) {
+        this._exit = value;
+        Observable.notify(this, "exit");
     }
 }
 
@@ -23,15 +50,15 @@ export class Pupil {
         nouns[_random(nouns.length)]
     );
 
-    const notifier2 = Observable.getNotifier(pupil);
-    const handler2 = {
+    const notifier = Observable.getNotifier(pupil);
+    const handler = {
         handleChange(source: any) {
             source._exit = true;
         },
     };
 
-    notifier2.subscribe(handler2, "greetMessage");
+    notifier.subscribe(handler, "greetMessage");
 
-    pupil.sayGoodbye();
-    notifier2.unsubscribe(handler2, "greetMessage");
+    pupil.greetMessage = `Goodbye ${pupil.name}, see you next time!`;
+    notifier.unsubscribe(handler, "greetMessage");
 };

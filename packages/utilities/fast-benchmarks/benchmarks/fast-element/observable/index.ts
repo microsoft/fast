@@ -1,34 +1,21 @@
-import { Observable } from "@microsoft/fast-element";
+import { Observable, observable } from "@microsoft/fast-element";
 import { _random, adjectives, nouns } from "../../../utils/index.js";
+
 export class Pupil {
-    private _greetMessage: string;
-    private _exit: boolean = false;
+    @observable greetMessage: string;
+    @observable exit: boolean = false;
+    @observable name: string;
 
     constructor(firstName: string, lastName: string) {
         const first = firstName[0].toUpperCase() + firstName.slice(1);
         const last = lastName[0].toUpperCase() + lastName.slice(1);
 
-        this._greetMessage = `Welcome to FAST, ${first} ${last} !!`;
+        this.name = `${first} ${last}`;
+        this.greetMessage = `Welcome to FAST, ${this.name} !!`;
     }
 
-    get greetMessage() {
-        Observable.track(this, "greetMessage");
-        return this._greetMessage;
-    }
-
-    set greetMessage(value: string) {
-        this._greetMessage = value;
-        Observable.notify(this, "greetMessage");
-    }
-
-    get exit() {
-        Observable.track(this, "exit");
-        return this._exit;
-    }
-
-    set exit(value: boolean) {
-        this._exit = value;
-        Observable.notify(this, "exit");
+    sayGoodbye() {
+        this.greetMessage = `Goodbye ${this.name}, see you next time!`;
     }
 }
 
@@ -38,15 +25,15 @@ export class Pupil {
         nouns[_random(nouns.length)]
     );
 
-    const notifier = Observable.getNotifier(pupil);
-    const handler = {
-        handleChange(source: any, propertyName: string) {
+    const notifier2 = Observable.getNotifier(pupil);
+    const handler2 = {
+        handleChange(source: any) {
             source._exit = true;
         },
     };
 
-    notifier.subscribe(handler, "greetMessage");
+    notifier2.subscribe(handler2, "greetMessage");
 
-    pupil.greetMessage = "Goodbye, see you next time!";
-    notifier.unsubscribe(handler, "greetMessage");
+    pupil.sayGoodbye();
+    notifier2.unsubscribe(handler2, "greetMessage");
 };
