@@ -11,30 +11,15 @@ import { isFASTElementHost, Router } from "./router.js";
  * @beta
  */
 export type RouterExecutionContext = ExecutionContext & {
-    router: Router;
+    router?: Router;
 };
 
 /**
  * @beta
  */
-export const RouterExecutionContext = Object.freeze({
-    create(router: Router) {
-        return Object.create(ExecutionContext.default, {
-            router: {
-                value: router,
-            },
-        });
-    },
-});
-
-/**
- * @beta
- */
 export interface RouteView {
-    bind(
-        allTypedParams: Readonly<Record<string, any>>,
-        context: RouterExecutionContext
-    ): void;
+    context: RouterExecutionContext;
+    bind(allTypedParams: Readonly<Record<string, any>>): void;
     appendTo(host: HTMLElement): void;
     dispose(): void;
 }
@@ -111,8 +96,8 @@ export class FASTElementLayout implements Layout {
                 routerElement.$fastController.template = this.template!;
             }
 
-            if (routerElement.$fastController.styles !== this.styles) {
-                routerElement.$fastController.styles = this.styles!;
+            if (routerElement.$fastController.styles.main !== this.styles) {
+                routerElement.$fastController.styles.main = this.styles!;
             }
         }
     }
