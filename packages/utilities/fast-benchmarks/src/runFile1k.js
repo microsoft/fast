@@ -4,7 +4,7 @@ import { getTestStartName, measureMemory, updateComplete } from "../utils/index.
     const run = async () => {
         const start = getTestStartName(test);
         performance.mark(start);
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 1000; i++) {
             window.runFunction();
         }
         await updateComplete();
