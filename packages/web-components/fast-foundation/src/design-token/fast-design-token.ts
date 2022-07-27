@@ -271,31 +271,22 @@ export interface DesignTokenResolutionStrategy {
     bind(element: FASTElement): void;
 
     /**
-     * Binds the strategy to the element
+     * Un-binds the strategy to the element
      */
     unbind(element: FASTElement): void;
 }
 
 const defaultDesignTokenResolutionStrategy: DesignTokenResolutionStrategy = {
-    contains(parent: FASTElement, child: FASTElement) {
-        return composedContains(parent, child);
-    },
+    contains: composedContains,
     parent(element: FASTElement): FASTElement | null {
-        function spy(fn: any) {
-            return (...args: any) => {
-                return fn(...args);
-            };
-        }
-
-        const f = spy(composedParent);
-        let parent: HTMLElement | null = f(element);
+        let parent: HTMLElement | null = composedParent(element);
 
         while (parent !== null) {
             if (parent instanceof FASTElement) {
                 return parent as FASTElement;
             }
 
-            parent = f(parent);
+            parent = composedParent(parent);
         }
 
         return null;
