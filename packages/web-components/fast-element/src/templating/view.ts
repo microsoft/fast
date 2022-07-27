@@ -285,7 +285,7 @@ export class HTMLView<TSource = any, TParent = any>
     public onUnbind(behavior: {
         unbind(controller: ViewController<TSource, TParent>);
     }): void {
-        if (this.unbindables == null) {
+        if (this.unbindables === null) {
             this.unbindables = new Set();
         }
 

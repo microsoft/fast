@@ -369,22 +369,7 @@ export class EventBehavior implements ViewBehavior {
         const directive = this.directive;
         const target = controller.targets[directive.nodeId];
         target[this.controllerProperty] = controller;
-        controller.onUnbind(this);
         target.addEventListener(
-            directive.targetAspect,
-            this,
-            directive.dataBinding.options
-        );
-    }
-
-    /**
-     * Unbinds this behavior.
-     * @param controller - The view controller that manages the lifecycle of this behavior.
-     */
-    unbind(controller: ViewController): void {
-        const directive = this.directive;
-        const target = controller.targets[directive.nodeId];
-        target.removeEventListener(
             directive.targetAspect,
             this,
             directive.dataBinding.options

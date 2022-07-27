@@ -325,7 +325,6 @@ export class EventBehavior implements ViewBehavior {
     readonly directive: HTMLBindingDirective;
     // @internal (undocumented)
     handleEvent(event: Event): void;
-    unbind(controller: ViewController): void;
 }
 
 // @public

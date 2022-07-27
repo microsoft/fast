@@ -672,22 +672,5 @@ describe("The HTML binding directive", () => {
             node.dispatchEvent(new CustomEvent("my-event"));
             expect(model.actionInvokeCount).to.equal(1);
         });
-
-        it("does not invoke the method after unbind", () => {
-            const { behavior, node, targets } = eventBinding({}, "@my-event");
-            const model = new Model("Test value.");
-            const controller = createController(model, targets);
-
-            behavior.bind(controller);
-            expect(model.actionInvokeCount).to.equal(0);
-
-            node.dispatchEvent(new CustomEvent("my-event"));
-            expect(model.actionInvokeCount).to.equal(1);
-
-            controller.unbind();
-
-            node.dispatchEvent(new CustomEvent("my-event"));
-            expect(model.actionInvokeCount).to.equal(1);
-        });
     });
 });
