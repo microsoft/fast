@@ -924,6 +924,21 @@ export interface ViewBehaviorFactory {
     nodeId: string;
 }
 
+// @public (undocumented)
+export interface ViewBehaviorOrchestrator<TSource = any, TParent = any> extends ViewController<TSource, TParent>, HostBehavior<TSource> {
+    // (undocumented)
+    addBehavior(behavior: ViewBehavior): void;
+    // (undocumented)
+    addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void;
+    // (undocumented)
+    addTarget(nodeId: string, target: Node): void;
+}
+
+// @public (undocumented)
+export const ViewBehaviorOrchestrator: Readonly<{
+    create<TSource = any, TParent = any>(source: TSource): ViewBehaviorOrchestrator<TSource, TParent>;
+}>;
+
 // @public
 export type ViewBehaviorTargets = {
     [id: string]: Node;

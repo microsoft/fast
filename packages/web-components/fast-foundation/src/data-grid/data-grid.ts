@@ -3,9 +3,9 @@ import {
     bind,
     FASTElement,
     observable,
-    RepeatBehavior,
     RepeatDirective,
     Updates,
+    ViewBehaviorOrchestrator,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
@@ -307,8 +307,8 @@ export class FASTDataGrid extends FASTElement {
     @observable
     public rowElements: HTMLElement[];
 
-    private rowsRepeatBehavior: RepeatBehavior | null;
     private rowsPlaceholder: Node | null = null;
+    private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
 
     private generatedHeader: FASTDataGridRow | null = null;
 
@@ -336,23 +336,20 @@ export class FASTDataGrid extends FASTElement {
             this.rowItemTemplate = this.defaultRowItemTemplate;
         }
 
-        this.rowsPlaceholder = document.createComment("");
-        this.appendChild(this.rowsPlaceholder);
+        if (this.behaviorOrchestrator === null) {
+            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
+            this.$fastController.behaviors.add(this.behaviorOrchestrator);
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective<FASTDataGrid>(
+                    bind(x => x.rowsData, false),
+                    bind(x => x.rowItemTemplate, false),
+                    { positioning: true }
+                ),
+                this.appendChild((this.rowsPlaceholder = document.createComment("")))
+            );
+        }
 
         this.toggleGeneratedHeader();
-
-        const rowsRepeatDirective = new RepeatDirective<FASTDataGrid>(
-            bind(x => x.rowsData, false),
-            bind(x => x.rowItemTemplate, false),
-            { positioning: true }
-        );
-        this.rowsRepeatBehavior = rowsRepeatDirective.createBehavior({
-            [rowsRepeatDirective.nodeId]: this.rowsPlaceholder,
-        });
-
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        this.$fastController.behaviors.add(this.rowsRepeatBehavior!);
-
         this.addEventListener("row-focused", this.handleRowFocus);
         this.addEventListener(eventFocus, this.handleFocus);
         this.addEventListener(eventKeyDown, this.handleKeydown);
@@ -382,8 +379,6 @@ export class FASTDataGrid extends FASTElement {
 
         // disconnect observer
         this.observer.disconnect();
-
-        this.rowsPlaceholder = null;
         this.generatedHeader = null;
     }
 

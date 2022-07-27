@@ -1,11 +1,13 @@
+import type { HostBehavior } from "../index.js";
 import type { Constructable, Mutable } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
-import type {
+import {
     ExecutionContext,
     Expression,
     ExpressionObserver,
 } from "../observation/observable.js";
 import { createTypeRegistry } from "../platform.js";
+import type { HostController } from "../styles/host.js";
 import { Markup, nextId } from "./markup.js";
 
 /**
@@ -23,6 +25,69 @@ export interface ViewController<TSource = any, TParent = any> {
 
     onUnbind(behavior: { unbind(controller: ViewController<TSource, TParent>) }): void;
 }
+
+export interface ViewBehaviorOrchestrator<TSource = any, TParent = any>
+    extends ViewController<TSource, TParent>,
+        HostBehavior<TSource> {
+    addTarget(nodeId: string, target: Node): void;
+    addBehavior(behavior: ViewBehavior): void;
+    addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void;
+}
+
+export const ViewBehaviorOrchestrator = Object.freeze({
+    create<TSource = any, TParent = any>(
+        source: TSource
+    ): ViewBehaviorOrchestrator<TSource, TParent> {
+        const behaviors: ViewBehavior[] = [];
+        const targets: ViewBehaviorTargets = {};
+        let unbindables: { unbind(controller: ViewController<TSource>) }[] | null = null;
+        let isConnected = false;
+
+        return {
+            source,
+            context: ExecutionContext.default,
+            targets,
+            addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void {
+                const nodeId = factory.nodeId || (factory.nodeId = nextId());
+                factory.id || (factory.id = nextId());
+                this.addTarget(nodeId, target);
+                this.addBehavior(factory.createBehavior());
+            },
+            addTarget(nodeId: string, target: Node) {
+                targets[nodeId] = target;
+            },
+            addBehavior(behavior: ViewBehavior): void {
+                behaviors.push(behavior);
+
+                if (isConnected) {
+                    behavior.bind(this);
+                }
+            },
+            onUnbind(unbindable: { unbind(controller: ViewController<TSource>) }) {
+                if (unbindables === null) {
+                    unbindables = [];
+                }
+
+                unbindables.push(unbindable);
+            },
+            connectedCallback(controller: HostController<TSource>) {
+                if (!isConnected) {
+                    isConnected = true;
+                    behaviors.forEach(x => x.bind(this));
+                }
+            },
+            disconnectedCallback(controller: HostController<TSource>) {
+                if (isConnected) {
+                    isConnected = false;
+
+                    if (unbindables !== null) {
+                        unbindables.forEach(x => x.unbind(this));
+                    }
+                }
+            },
+        };
+    },
+});
 
 /**
  * Represents an object that can contribute behavior to a view.

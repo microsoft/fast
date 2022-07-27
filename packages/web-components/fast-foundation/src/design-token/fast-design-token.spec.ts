@@ -662,7 +662,7 @@ describe("A DesignToken", () => {
             const token = DesignToken.create<number>(uniqueTokenName());
             token.setValueFor(target, 12);
             const styles = css`:host{width: calc(${token} * 1px);}`
-            target.$fastController.addStyles(styles);
+            target.$fastController.styles.add(styles);
 
             await Updates.next();
             expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
@@ -674,7 +674,7 @@ describe("A DesignToken", () => {
             const token = DesignToken.create<number>(uniqueTokenName());
             token.setValueFor(parent, 12);
             const styles = css`:host{width: calc(${token} * 1px);}`
-            target.$fastController.addStyles(styles);
+            target.$fastController.styles.add(styles);
 
             await Updates.next();
             expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
