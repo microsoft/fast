@@ -1,16 +1,16 @@
 import { Observable } from "@microsoft/fast-element";
 import { _random, adjectives, nouns } from "../../../utils/index.js";
 export class Pupil {
-    private _greetMessage: string;
+    private _greetMessage: string = "";
+    private _name: string = "";
     private _exit: boolean = false;
-    private _name: string;
 
     constructor(firstName: string, lastName: string) {
         const first = firstName[0].toUpperCase() + firstName.slice(1);
         const last = lastName[0].toUpperCase() + lastName.slice(1);
 
-        this._name = `${first} ${last}`;
-        this._greetMessage = `Welcome to FAST, ${this._name} !!`;
+        this.name = `${first} ${last}`;
+        this.greetMessage = `Welcome to FAST, ${this.name} !!`;
     }
 
     get greetMessage() {
@@ -52,8 +52,8 @@ export class Pupil {
 
     const notifier = Observable.getNotifier(pupil);
     const handler = {
-        handleChange(source: any) {
-            source._exit = true;
+        handleChange(source: any, propertyName: any) {
+            if (propertyName === "greetMessage") source._exit = true;
         },
     };
 

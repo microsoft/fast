@@ -2,9 +2,9 @@ import { Observable, observable } from "@microsoft/fast-element";
 import { _random, adjectives, nouns } from "../../../utils/index.js";
 
 export class Pupil {
-    @observable greetMessage: string;
+    @observable greetMessage: string = "";
+    @observable name: string = "";
     @observable exit: boolean = false;
-    @observable name: string;
 
     constructor(firstName: string, lastName: string) {
         const first = firstName[0].toUpperCase() + firstName.slice(1);
@@ -27,8 +27,8 @@ export class Pupil {
 
     const notifier2 = Observable.getNotifier(pupil);
     const handler2 = {
-        handleChange(source: any) {
-            source._exit = true;
+        handleChange(source: any, propertyName: any) {
+            if (propertyName === "greetMessage") source._exit = true;
         },
     };
 
