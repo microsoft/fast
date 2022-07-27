@@ -79,7 +79,14 @@ export class DesignToken<T> {
         return FASTDesignTokenNode.defaultNode.getTokenValue(this);
     }
 
-    private subscribers = new SubscriberSet(this);
+    private _subscribers: SubscriberSet | undefined;
+    private get subscribers() {
+        if (this._subscribers) {
+            return this._subscribers;
+        }
+        this._subscribers = new SubscriberSet(this);
+        return this._subscribers;
+    }
 
     constructor(configuration: DesignTokenConfiguration) {
         this.name = configuration.name;
