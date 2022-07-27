@@ -116,6 +116,10 @@ export class DesignToken<T> {
         }
     }
 
+    public static withStrategy(strategy: DesignTokenResolutionStrategy): void {
+        FASTDesignTokenNode.withStrategy(strategy);
+    }
+
     /**
      * Registers and element or document as a DesignToken root.
      * {@link CSSDesignToken | CSSDesignTokens} with default values assigned via
@@ -247,12 +251,74 @@ export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
     }
 }
 
+export interface DesignTokenResolutionStrategy {
+    /**
+     * Determines if a 'child' element is contained by a 'parent'.
+     * @param child - The child element
+     * @param parent - The parent element
+     */
+    contains(parent: FASTElement, child: FASTElement): boolean;
+
+    /**
+     * Finds the nearest FASTElement parent node
+     * @param element - The element to find the parent of
+     */
+    parent(element: FASTElement): FASTElement | null;
+
+    /**
+     * Binds the strategy to the element
+     */
+    bind(element: FASTElement): void;
+
+    /**
+     * Binds the strategy to the element
+     */
+    unbind(element: FASTElement): void;
+}
+
+const defaultDesignTokenResolutionStrategy: DesignTokenResolutionStrategy = {
+    contains(parent: FASTElement, child: FASTElement) {
+        return composedContains(parent, child);
+    },
+    parent(element: FASTElement): FASTElement | null {
+        function spy(fn: any) {
+            return (...args: any) => {
+                return fn(...args);
+            };
+        }
+
+        const f = spy(composedParent);
+        let parent: HTMLElement | null = f(element);
+
+        while (parent !== null) {
+            if (parent instanceof FASTElement) {
+                return parent as FASTElement;
+            }
+
+            parent = f(parent);
+        }
+
+        return null;
+    },
+    bind() {},
+    unbind() {},
+};
+
 class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
+    private static _strategy: DesignTokenResolutionStrategy;
+    private static get strategy() {
+        if (this._strategy === undefined) {
+            FASTDesignTokenNode.withStrategy(defaultDesignTokenResolutionStrategy);
+        }
+
+        return this._strategy;
+    }
     public static defaultNode = new DesignTokenNode();
     public static rootStyleSheetTarget = new RootStyleSheetTarget();
     private static cache = new WeakMap<FASTElement, FASTDesignTokenNode>();
     private bound = false;
-    bind(target: FASTElement) {
+    public bind(target: FASTElement) {
+        FASTDesignTokenNode.strategy.bind(target);
         this.bound = true;
 
         let parent = FASTDesignTokenNode.findParent(target);
@@ -272,7 +338,7 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
             for (const child of parent.children) {
                 if (
                     child instanceof FASTDesignTokenNode &&
-                    composedContains(target, child.target)
+                    FASTDesignTokenNode.strategy.contains(target, child.target)
                 ) {
                     reparent.push(child);
                 }
@@ -286,7 +352,9 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
         }
     }
 
-    unbind(): void {}
+    public unbind(): void {
+        FASTDesignTokenNode.strategy.unbind(this.target);
+    }
 
     public static getOrCreate(target: FASTElement) {
         let found = FASTDesignTokenNode.cache.get(target);
@@ -302,8 +370,12 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
         return found;
     }
 
+    public static withStrategy(strategy: DesignTokenResolutionStrategy) {
+        this._strategy = strategy;
+    }
+
     private static findParent(target: FASTElement): DesignTokenNode | null {
-        let current = composedParent(target);
+        let current = FASTDesignTokenNode.strategy.parent(target);
 
         while (current !== null) {
             const node = FASTDesignTokenNode.cache.get(current as FASTElement);
@@ -311,7 +383,7 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
                 return node;
             }
 
-            current = composedParent(current);
+            current = FASTDesignTokenNode.strategy.parent(current);
         }
 
         return null;

@@ -506,6 +506,10 @@ export class DesignToken<T> {
     unsubscribe(subscriber: DesignTokenSubscriber<this>): void;
     // (undocumented)
     withDefault(value: DesignToken<T> | DesignTokenValue<T>): this;
+    // Warning: (ae-forgotten-export) The symbol "DesignTokenResolutionStrategy" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    static withStrategy(strategy: DesignTokenResolutionStrategy): void;
 }
 
 // @public (undocumented)
