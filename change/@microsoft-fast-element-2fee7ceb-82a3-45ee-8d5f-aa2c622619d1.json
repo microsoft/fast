@@ -1,7 +1,7 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "make insertbefore noop in view",
   "packageName": "@microsoft/fast-element",
   "email": "prudepixie@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
