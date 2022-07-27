@@ -4,6 +4,7 @@ import { getShadowRoot } from "./shadow-root.js";
 
 export interface HostController<TSource = any> {
     readonly source: TSource;
+    readonly isConnected: boolean;
     readonly behaviors: HostBehaviorCollection<TSource>;
     readonly styles: HostStyleCollection;
 }
@@ -59,21 +60,21 @@ export const HostBehaviorOrchestrator = Object.freeze({
 
 class DefaultHostBehaviorOrchestrator<TSource = any>
     implements HostBehaviorCollection<TSource>, HostBehaviorOrchestrator<TSource> {
-    private readonly _behaviors = new Map<HostBehavior<TSource>, number>();
-    private _connected: boolean = false;
+    private readonly behaviors = new Map<HostBehavior<TSource>, number>();
 
-    constructor(private readonly _controller: HostController<TSource>) {}
+    constructor(private readonly controller: HostController<TSource>) {}
 
     add(behavior: HostBehavior<TSource>) {
-        const behaviors = this._behaviors;
+        const behaviors = this.behaviors;
         const count = behaviors.get(behavior) ?? 0;
 
         if (count === 0) {
+            const controller = this.controller;
             behaviors.set(behavior, 1);
-            behavior.addedCallback && behavior.addedCallback(this._controller);
+            behavior.addedCallback && behavior.addedCallback(controller);
 
-            if (this._connected && behavior.connectedCallback) {
-                behavior.connectedCallback(this._controller);
+            if (behavior.connectedCallback && controller.isConnected) {
+                behavior.connectedCallback(controller);
             }
         } else {
             behaviors.set(behavior, count + 1);
@@ -81,39 +82,38 @@ class DefaultHostBehaviorOrchestrator<TSource = any>
     }
 
     remove(behavior: HostBehavior<TSource>, force: boolean = false) {
-        const behaviors = this._behaviors;
+        const behaviors = this.behaviors;
         const count = (behaviors.get(behavior) ?? 0) - 1;
 
         if (count === 0 || force) {
+            const controller = this.controller;
             behaviors.delete(behavior);
 
-            if (this._connected && behavior.disconnectedCallback) {
-                behavior.disconnectedCallback(this._controller);
+            if (behavior.disconnectedCallback && controller.isConnected) {
+                behavior.disconnectedCallback(controller);
             }
 
-            behavior.removedCallback && behavior.removedCallback(this._controller);
+            behavior.removedCallback && behavior.removedCallback(controller);
         } else {
             behaviors.set(behavior, count);
         }
     }
 
     connect() {
-        if (!this._connected) {
-            this._connected = true;
-            const controller = this._controller;
+        const controller = this.controller;
 
-            for (const key of this._behaviors.keys()) {
+        if (!controller.isConnected) {
+            for (const key of this.behaviors.keys()) {
                 key.connectedCallback && key.connectedCallback(controller);
             }
         }
     }
 
     disconnect() {
-        if (this._connected) {
-            this._connected = false;
-            const controller = this._controller;
+        const controller = this.controller;
 
-            for (const key of this._behaviors.keys()) {
+        if (controller.isConnected) {
+            for (const key of this.behaviors.keys()) {
                 key.disconnectedCallback && key.disconnectedCallback(controller);
             }
         }

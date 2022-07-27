@@ -466,6 +466,8 @@ export interface HostController<TSource = any> {
     // (undocumented)
     readonly behaviors: HostBehaviorCollection<TSource>;
     // (undocumented)
+    readonly isConnected: boolean;
+    // (undocumented)
     readonly source: TSource;
     // (undocumented)
     readonly styles: HostStyleCollection;
