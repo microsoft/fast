@@ -571,10 +571,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 vm.items.shift();
                 vm.items.unshift({ name: "shift1" }, { name: "shift2" });
@@ -596,10 +597,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 vm.items.shift();
                 vm.items.push({ name: "shift3" });
@@ -620,10 +622,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 vm.items.push({ name: "shift3" });
                 vm.items.shift();
@@ -644,10 +647,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 vm.items.push({ name: "shift3" });
                 vm.items.pop();
@@ -668,10 +672,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 vm.items.pop();
                 vm.items.push({ name: "shift3" });
@@ -692,10 +697,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);;
 
                 vm.items.pop();
                 vm.items.push({ name: "shift3" });
@@ -717,10 +723,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 vm.items.push({ name: "shift3" });
                 vm.items.pop();
@@ -742,10 +749,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 vm.items.shift();
                 vm.items.shift();
