@@ -410,12 +410,15 @@ export class FASTCombobox extends FormAssociatedCombobox {
             this.open = true;
         }
 
-        if (this.isAutocompleteInline && this.filteredOptions.length) {
-            this.selectedOptions = [this.filteredOptions[0]];
-            this.selectedIndex = this.options.indexOf(this.firstSelectedOption);
-            this.setInlineSelection();
+        if (this.isAutocompleteInline) {
+            if (this.filteredOptions.length) {
+                this.selectedOptions = [this.filteredOptions[0]];
+                this.selectedIndex = this.options.indexOf(this.firstSelectedOption);
+                this.setInlineSelection();
+            } else {
+                this.selectedIndex = -1;
+            }
         }
-
         return;
     }
 

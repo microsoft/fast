@@ -170,38 +170,39 @@ describe("Combobox", () => {
         expect(wasChanged).to.be.false;
 
         await disconnect();
-
     });
 
-    it("should update value to entered non-option value after selecting an option value", async () => {
-        const { element, connect, disconnect } = await setup();
+    const autocompleteModes: ComboboxAutocomplete[] = [ "none", "list", "inline", "both" ];
+    autocompleteModes.forEach(mode => {
+        it(`should update value to entered non-option value after selecting an option value for autocomplete mode: ${mode}`, async () => {
+            const { element, connect, disconnect } = await setup();
 
-        await connect();
+            await connect();
 
-        element.value = "two";
+            element.value = "two";
 
-        const enterEvent = new KeyboardEvent("keydown", {
-            key: keyEnter,
-        } as KeyboardEventInit);
+            const enterEvent = new KeyboardEvent("keydown", {
+                key: keyEnter,
+            } as KeyboardEventInit);
 
-        const wasChanged = await Promise.race([
-            new Promise(resolve => {
-                element.addEventListener("change", () => resolve(true));
+            const wasChanged = await Promise.race([
+                new Promise(resolve => {
+                    element.addEventListener("change", () => resolve(true));
 
-                // fake a key entered value
-                (element as FASTCombobox).control.value = 'a';
-                (element as FASTCombobox).control.dispatchEvent(new InputEvent('input', { data: 'a', inputType: 'insertText' }));
+                    // fake a key entered value
+                    (element as FASTCombobox).control.value = 'a';
+                    (element as FASTCombobox).control.dispatchEvent(new InputEvent('input', { data: 'a', inputType: 'insertText' }));
 
-                element.dispatchEvent(enterEvent);
-            }),
-            Updates.next().then(() => false),
-        ]);
+                    element.dispatchEvent(enterEvent);
+                }),
+                Updates.next().then(() => false),
+            ]);
 
-        expect(wasChanged).to.be.true;
-        expect((element as FASTCombobox).value).to.equal('a');
+            expect(wasChanged).to.be.true;
+            expect((element as FASTCombobox).value).to.equal('a');
 
-        await disconnect();
-
+            await disconnect();
+        });
     });
 
     it("should emit a 'change' event when the user clicks away after selecting option in dropdown", async () => {
@@ -230,7 +231,6 @@ describe("Combobox", () => {
         expect(wasChanged).to.be.true;
 
         await disconnect();
-
     });
 
     describe("should NOT emit a 'change' event when the value changes by user input while open", () => {
