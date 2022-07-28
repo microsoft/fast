@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 27 Jul 2022 17:36:33 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.6",
+      "version": "3.0.0-alpha.6",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "robarb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7df4548954621d6247ab7fe3fae1a1ba0d33294b",
+            "comment": "Using getBoundingClientRect for horizontal-scroll"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "0f63894082e89bbd7502e507d92932561322899e",
+            "comment": "Removed the `fill`, `color`, and `shape` attributes and styling from Avatar"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 18 Jul 2022 21:10:01 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.5",
       "version": "3.0.0-alpha.5",
