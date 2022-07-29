@@ -314,12 +314,14 @@ export class HTMLBindingDirective
                     this.updateTarget = setProperty;
                     break;
                 case 4:
+                    this.bind = this.bindContent;
                     this.updateTarget = updateContent;
                     break;
                 case 5:
                     this.updateTarget = updateTokenList;
                     break;
                 case 6:
+                    this.bind = this.bindEvent;
                     this.updateTarget = eventTarget;
                     break;
                 default:
@@ -331,28 +333,38 @@ export class HTMLBindingDirective
     }
 
     /** @internal */
-    bind(controller: ViewController): void {
+    bindDefault(controller: ViewController): void {
         const target = controller.targets[this.nodeId];
+        const observer = this.getObserver(target);
+        (observer as any).target = target;
+        (observer as any).controller = controller;
 
-        if (this.updateTarget === eventTarget) {
-            target[this.data] = controller;
-            target.addEventListener(this.targetAspect, this, this.dataBinding.options);
-        } else {
-            const observer = this.getObserver(target);
-            (observer as any).target = target;
-            (observer as any).controller = controller;
+        this.updateTarget!(
+            target,
+            this.targetAspect,
+            observer.bind(controller),
+            controller
+        );
 
-            this.updateTarget!(
-                target,
-                this.targetAspect,
-                observer.bind(controller),
-                controller
-            );
-
-            if (this.updateTarget === updateContent) {
-                controller.onUnbind(this);
-            }
+        if (this.updateTarget === updateContent) {
+            controller.onUnbind(this);
         }
+    }
+
+    /** @internal */
+    bind = this.bindDefault;
+
+    /** @internal */
+    bindContent(controller: ViewController): void {
+        this.bindDefault(controller);
+        controller.onUnbind(this);
+    }
+
+    /** @internal */
+    bindEvent(controller: ViewController) {
+        const target = controller.targets[this.nodeId];
+        target[this.data] = controller;
+        target.addEventListener(this.targetAspect, this, this.dataBinding.options);
     }
 
     /** @internal */

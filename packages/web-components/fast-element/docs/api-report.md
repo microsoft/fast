@@ -452,7 +452,13 @@ export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory,
     constructor(dataBinding: Binding);
     aspectType: Aspect;
     // @internal (undocumented)
-    bind(controller: ViewController): void;
+    bind: (controller: ViewController) => void;
+    // @internal (undocumented)
+    bindContent(controller: ViewController): void;
+    // @internal (undocumented)
+    bindDefault(controller: ViewController): void;
+    // @internal (undocumented)
+    bindEvent(controller: ViewController): void;
     createBehavior(): ViewBehavior;
     createHTML(add: AddViewBehaviorFactory): string;
     // (undocumented)
