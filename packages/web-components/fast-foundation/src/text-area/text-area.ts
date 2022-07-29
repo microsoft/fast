@@ -176,7 +176,7 @@ export class FASTTextArea extends FormAssociatedTextArea {
      *
      * @public
      */
-    protected select(): void {
+    public select(): void {
         this.control.select();
 
         /**
