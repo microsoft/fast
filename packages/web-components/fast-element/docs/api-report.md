@@ -118,18 +118,6 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
 }
 
 // @public
-export class BindingBehavior implements ViewBehavior {
-    constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget);
-    bind(controller: ViewController): void;
-    // (undocumented)
-    readonly directive: HTMLBindingDirective;
-    protected getObserver(target: Node): ExpressionObserver;
-    // @internal (undocumented)
-    handleChange(binding: Expression, observer: ExpressionObserver): void;
-    unbind(controller: ViewController): void;
-}
-
-// @public
 export const booleanConverter: ValueConverter;
 
 // @public
@@ -323,16 +311,6 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
 export const emptyArray: readonly never[];
 
 // @public
-export class EventBehavior implements ViewBehavior {
-    constructor(directive: HTMLBindingDirective);
-    bind(controller: ViewController): void;
-    // (undocumented)
-    readonly directive: HTMLBindingDirective;
-    // @internal (undocumented)
-    handleEvent(event: Event): void;
-}
-
-// @public
 export interface ExecutionContext<TParent = any> {
     readonly event: Event;
     eventDetail<TDetail>(): TDetail;
@@ -470,17 +448,25 @@ export interface HostController<TSource = any> {
 export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
 
 // @public
-export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, Aspected {
+export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected {
     constructor(dataBinding: Binding);
     aspectType: Aspect;
+    // @internal (undocumented)
+    bind(controller: ViewController): void;
     createBehavior(): ViewBehavior;
     createHTML(add: AddViewBehaviorFactory): string;
     // (undocumented)
     dataBinding: Binding;
+    // @internal (undocumented)
+    handleChange(binding: Expression, observer: ExpressionObserver): void;
+    // @internal (undocumented)
+    handleEvent(event: Event): void;
     id: string;
     nodeId: string;
     sourceAspect: string;
     targetAspect: string;
+    // @internal (undocumented)
+    unbind(controller: ViewController): void;
 }
 
 // @public
@@ -854,14 +840,6 @@ export interface UpdateQueue {
 
 // @public
 export const Updates: UpdateQueue;
-
-// @public
-export type UpdateTarget = (this: UpdateTargetThis, target: Node, aspect: string, value: any, controller: ViewController) => void;
-
-// @public
-export interface UpdateTargetThis {
-    directive: HTMLBindingDirective;
-}
 
 // @public
 export interface ValueConverter {

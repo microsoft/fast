@@ -59,29 +59,8 @@ class OneTimeBinding<TSource = any, TReturn = any, TParent = any>
     }
 }
 
-/**
- * The "this" context for an update target function.
- * @public
- */
-export interface UpdateTargetThis {
-    /**
-     * The directive configuration for the update.
-     */
-    directive: HTMLBindingDirective;
-}
-
-/**
- * A target update function.
- * @param this - The "this" context for the update.
- * @param target - The node that is targeted by the update.
- * @param aspect - The aspect of the node that is being targeted.
- * @param value - The value to assign to the aspect.
- * @param source - The source object that the value was derived from.
- * @param context - The execution context that the binding is being run under.
- * @public
- */
-export type UpdateTarget = (
-    this: UpdateTargetThis,
+type UpdateTarget = (
+    this: HTMLBindingDirective,
     target: Node,
     aspect: string,
     value: any,
@@ -141,7 +120,7 @@ type ContentTarget = Node & {
     $fastTemplate?: ContentTemplate;
 };
 
-function updateContentTarget(
+function updateContent(
     target: ContentTarget,
     aspect: string,
     value: any,
@@ -214,14 +193,13 @@ interface TokenListState {
     c: number;
 }
 
-function updateTokenListTarget(
-    this: UpdateTargetThis,
+function updateTokenList(
+    this: HTMLBindingDirective,
     target: Element,
     aspect: string,
     value: any
 ): void {
-    const directive = this.directive;
-    const lookup = `${directive.id}-t`;
+    const lookup = `${this.id}-t`;
     const state: TokenListState =
         target[lookup] ?? (target[lookup] = { c: 0, v: Object.create(null) });
     const versions = state.v;
@@ -261,150 +239,17 @@ function updateTokenListTarget(
     }
 }
 
-/**
- * A binding behavior for bindings that change.
- * @public
- */
-export class BindingBehavior implements ViewBehavior {
-    private observerProperty: string;
-
-    /**
-     * Creates an instance of ChangeBinding.
-     * @param directive - The directive that has the configuration for this behavior.
-     * @param updateTarget - The function used to update the target with the latest value.
-     */
-    constructor(
-        public readonly directive: HTMLBindingDirective,
-        private updateTarget: UpdateTarget
-    ) {
-        this.observerProperty = `${directive.id}-o`;
-    }
-
-    /**
-     * Bind this behavior.
-     * @param controller - The view controller that manages the lifecycle of this behavior.
-     */
-    bind(controller: ViewController): void {
-        const directive = this.directive;
-        const target = controller.targets[directive.nodeId];
-        const observer = this.getObserver(target);
-
-        (observer as any).target = target;
-        (observer as any).controller = controller;
-
-        this.updateTarget(
-            target,
-            directive.targetAspect,
-            observer.bind(controller),
-            controller
-        );
-
-        if (this.updateTarget === updateContentTarget) {
-            controller.onUnbind(this);
-        }
-    }
-
-    /**
-     * Unbinds this behavior.
-     * @param controller - The view controller that manages the lifecycle of this behavior.
-     */
-    unbind(controller: ViewController): void {
-        const target = controller.targets[this.directive.nodeId] as ContentTarget;
-        const view = target.$fastView as ComposableView;
-
-        if (view !== void 0 && view.isComposed) {
-            view.unbind();
-            view.needsBindOnly = true;
-        }
-    }
-
-    /** @internal */
-    public handleChange(binding: Expression, observer: ExpressionObserver): void {
-        const target = (observer as any).target;
-        const controller = (observer as any).controller;
-        this.updateTarget(
-            target,
-            this.directive.targetAspect,
-            observer.bind(controller),
-            controller
-        );
-    }
-
-    /**
-     * Returns the binding observer used to update the node.
-     * @param target - The target node.
-     * @returns A BindingObserver.
-     */
-    protected getObserver(target: Node): ExpressionObserver {
-        return (
-            target[this.observerProperty] ??
-            (target[this.observerProperty] = this.directive.dataBinding.createObserver(
-                this.directive,
-                this
-            ))
-        );
-    }
-}
-
-/**
- * A binding behavior for handling events.
- * @public
- */
-export class EventBehavior implements ViewBehavior {
-    private controllerProperty: string;
-
-    /**
-     * Creates an instance of EventBinding.
-     * @param directive - The directive that has the configuration for this behavior.
-     */
-    constructor(public readonly directive: HTMLBindingDirective) {
-        this.controllerProperty = `${directive.id}-c`;
-    }
-
-    /**
-     * Bind this behavior.
-     * @param controller - The view controller that manages the lifecycle of this behavior.
-     */
-    bind(controller: ViewController): void {
-        const directive = this.directive;
-        const target = controller.targets[directive.nodeId];
-        target[this.controllerProperty] = controller;
-        target.addEventListener(
-            directive.targetAspect,
-            this,
-            directive.dataBinding.options
-        );
-    }
-
-    /**
-     * @internal
-     */
-    handleEvent(event: Event): void {
-        const target = event.currentTarget!;
-
-        ExecutionContext.setEvent(event);
-
-        const controller = target[this.controllerProperty] as ViewController;
-        const result = this.directive.dataBinding.evaluate(
-            controller.source,
-            controller.context
-        );
-
-        ExecutionContext.setEvent(null);
-
-        if (result !== true) {
-            event.preventDefault();
-        }
-    }
-}
+const setProperty = (t, a, v) => (t[a] = v);
+const eventTarget = () => void 0;
 
 /**
  * A directive that applies bindings.
  * @public
  */
 export class HTMLBindingDirective
-    implements HTMLDirective, ViewBehaviorFactory, Aspected {
-    private behavior: BindingBehavior | EventBehavior | null = null;
+    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected {
+    private data: string;
+    private updateTarget: UpdateTarget | null = null;
 
     /**
      * The unique id of the factory.
@@ -435,7 +280,9 @@ export class HTMLBindingDirective
      * Creates an instance of HTMLBindingDirective.
      * @param dataBinding - The binding configuration to apply.
      */
-    constructor(public dataBinding: Binding) {}
+    constructor(public dataBinding: Binding) {
+        this.data = `${this.id}-d`;
+    }
 
     /**
      * Creates HTML to be used within a template.
@@ -449,7 +296,7 @@ export class HTMLBindingDirective
      * Creates a behavior.
      */
     createBehavior(): ViewBehavior {
-        if (this.behavior == null) {
+        if (this.updateTarget === null) {
             if (this.targetAspect === "innerHTML") {
                 this.dataBinding.evaluate = createInnerHTMLBinding(
                     this.dataBinding.evaluate
@@ -458,29 +305,100 @@ export class HTMLBindingDirective
 
             switch (this.aspectType) {
                 case 1:
-                    this.behavior = new BindingBehavior(this, DOM.setAttribute);
+                    this.updateTarget = DOM.setAttribute;
                     break;
                 case 2:
-                    this.behavior = new BindingBehavior(this, DOM.setBooleanAttribute);
+                    this.updateTarget = DOM.setBooleanAttribute;
                     break;
                 case 3:
-                    this.behavior = new BindingBehavior(this, (t, a, v) => (t[a] = v));
+                    this.updateTarget = setProperty;
                     break;
                 case 4:
-                    this.behavior = new BindingBehavior(this, updateContentTarget);
+                    this.updateTarget = updateContent;
                     break;
                 case 5:
-                    this.behavior = new BindingBehavior(this, updateTokenListTarget);
+                    this.updateTarget = updateTokenList;
                     break;
                 case 6:
-                    this.behavior = new EventBehavior(this);
+                    this.updateTarget = eventTarget;
                     break;
                 default:
                     throw FAST.error(Message.unsupportedBindingBehavior);
             }
         }
 
-        return this.behavior;
+        return this;
+    }
+
+    /** @internal */
+    bind(controller: ViewController): void {
+        const target = controller.targets[this.nodeId];
+
+        if (this.updateTarget === eventTarget) {
+            target[this.data] = controller;
+            target.addEventListener(this.targetAspect, this, this.dataBinding.options);
+        } else {
+            const observer = this.getObserver(target);
+            (observer as any).target = target;
+            (observer as any).controller = controller;
+
+            this.updateTarget!(
+                target,
+                this.targetAspect,
+                observer.bind(controller),
+                controller
+            );
+
+            if (this.updateTarget === updateContent) {
+                controller.onUnbind(this);
+            }
+        }
+    }
+
+    /** @internal */
+    unbind(controller: ViewController): void {
+        const target = controller.targets[this.nodeId] as ContentTarget;
+        const view = target.$fastView as ComposableView;
+
+        if (view !== void 0 && view.isComposed) {
+            view.unbind();
+            view.needsBindOnly = true;
+        }
+    }
+
+    /** @internal */
+    handleEvent(event: Event): void {
+        const target = event.currentTarget!;
+
+        ExecutionContext.setEvent(event);
+
+        const controller = target[this.data] as ViewController;
+        const result = this.dataBinding.evaluate(controller.source, controller.context);
+
+        ExecutionContext.setEvent(null);
+
+        if (result !== true) {
+            event.preventDefault();
+        }
+    }
+
+    /** @internal */
+    handleChange(binding: Expression, observer: ExpressionObserver): void {
+        const target = (observer as any).target;
+        const controller = (observer as any).controller;
+        this.updateTarget!(
+            target,
+            this.targetAspect,
+            observer.bind(controller),
+            controller
+        );
+    }
+
+    private getObserver(target: Node): ExpressionObserver {
+        return (
+            target[this.data] ??
+            (target[this.data] = this.dataBinding.createObserver(this, this))
+        );
     }
 }
 
