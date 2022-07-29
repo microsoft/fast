@@ -33,7 +33,7 @@ class ConstructableStyleSheetTarget extends QueuedStyleSheetTarget {
 
         const sheet = new CSSStyleSheet();
         this.target = (sheet.cssRules[sheet.insertRule(":host{}")] as CSSStyleRule).style;
-        source.$fastController.styles.add(new ElementStyles([sheet]));
+        source.$fastController.addStyles(new ElementStyles([sheet]));
     }
 }
 
@@ -95,7 +95,7 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
         const controller = target.$fastController;
         this.style = document.createElement("style") as HTMLStyleElement;
 
-        controller.styles.add(this.style);
+        controller.addStyles(this.style);
 
         Observable.getNotifier(controller).subscribe(this, "isConnected");
         this.handleChange(controller, "isConnected");

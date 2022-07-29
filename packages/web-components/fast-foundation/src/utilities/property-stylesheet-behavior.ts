@@ -41,7 +41,7 @@ export class PropertyStyleSheetBehavior implements HostBehavior {
      */
     public removedCallback(controller: HostController) {
         Observable.getNotifier(controller.source).unsubscribe(this, this.propertyName);
-        controller.styles.remove(this.styles);
+        controller.removeStyles(this.styles);
     }
 
     /**
@@ -51,12 +51,12 @@ export class PropertyStyleSheetBehavior implements HostBehavior {
      * @internal
      */
     public handleChange(source: FASTElement, key: string) {
-        const styles = source.$fastController.styles;
+        const controller = source.$fastController;
 
         if (source[key] === this.value) {
-            styles.add(this.styles);
+            controller.addStyles(this.styles);
         } else {
-            styles.remove(this.styles);
+            controller.removeStyles(this.styles);
         }
     }
 }

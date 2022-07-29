@@ -526,7 +526,7 @@ export class FASTPicker extends FormAssociatedPicker {
 
         if (this.behaviorOrchestrator === null) {
             this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
-            this.$fastController.behaviors.add(this.behaviorOrchestrator);
+            this.$fastController.addBehavior(this.behaviorOrchestrator);
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective(

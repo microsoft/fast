@@ -131,11 +131,11 @@ class CSSPartial implements CSSDirective, HostBehavior<HTMLElement> {
     }
 
     addedCallback(controller: HostController<HTMLElement>): void {
-        controller.styles.add(this.styles);
+        controller.addStyles(this.styles);
     }
 
     removedCallback(controller: HostController<HTMLElement>): void {
-        controller.styles.remove(this.styles);
+        controller.removeStyles(this.styles);
     }
 }
 

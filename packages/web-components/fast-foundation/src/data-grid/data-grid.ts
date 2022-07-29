@@ -338,7 +338,7 @@ export class FASTDataGrid extends FASTElement {
 
         if (this.behaviorOrchestrator === null) {
             this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
-            this.$fastController.behaviors.add(this.behaviorOrchestrator);
+            this.$fastController.addBehavior(this.behaviorOrchestrator);
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<FASTDataGrid>(
                     bind(x => x.rowsData, false),

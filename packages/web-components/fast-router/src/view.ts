@@ -96,8 +96,8 @@ export class FASTElementLayout implements Layout {
                 routerElement.$fastController.template = this.template!;
             }
 
-            if (routerElement.$fastController.styles.main !== this.styles) {
-                routerElement.$fastController.styles.main = this.styles!;
+            if (routerElement.$fastController.mainStyles !== this.styles) {
+                routerElement.$fastController.mainStyles = this.styles!;
             }
         }
     }

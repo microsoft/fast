@@ -6,7 +6,7 @@ import {
 } from "./element-styles.js";
 import { AddBehavior, cssDirective, CSSDirective } from "./css-directive.js";
 import { css } from "./css.js";
-import { HostBehavior, HostBehaviorOrchestrator, HostStyleOrchestrator } from "./host.js";
+import type { HostBehavior } from "./host.js";
 import { StyleElementStrategy } from "../polyfills.js";
 import type { StyleTarget } from "../interfaces.js";
 
@@ -356,35 +356,16 @@ describe("cssPartial", () => {
         let addStylesCalled = false;
 
         const controller = {
-            source: {
-                getRootNode() {
-                    if (!this._rootNode) {
-                        this._rootNode = document.createElement("div");
-                    }
-
-                    return this._rootNode;
-                }
+            mainStyles: null,
+            isConnected: false,
+            source: {},
+            addStyles(style: ElementStyles) {
+                expect(style.styles.includes(styles)).to.be.true;
+                addStylesCalled = true;
             },
-            get styles() {
-                if (!this._styles) {
-                    this._styles = HostStyleOrchestrator.create(this);
-                    const originalAdd = this._styles.add;
-                    this._styles.add = (s) => {
-                        addStylesCalled = true;
-                        expect(s.styles.includes(styles)).to.be.true;
-                        originalAdd.apply(this, s);
-                    };
-                }
-
-                return this._styles
-            },
-            get behaviors() {
-                if (!this._behaviors) {
-                    this._behaviors = HostBehaviorOrchestrator.create(this);
-                }
-
-                return this._behaviors;
-            }
+            removeStyles(styles) {},
+            addBehavior() {},
+            removeBehavior() {},
         };
 
         const add = (x: HostBehavior) => capturedBehaviors.push(x);
@@ -392,7 +373,7 @@ describe("cssPartial", () => {
 
         expect(capturedBehaviors[0]).to.equal(partial);
 
-        controller.behaviors.add(partial as HostBehavior);
+        (partial as any as HostBehavior).addedCallback!(controller);
 
         expect(addStylesCalled).to.be.true;
     })

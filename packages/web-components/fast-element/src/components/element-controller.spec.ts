@@ -218,7 +218,7 @@ describe("The ElementController", () => {
                 const { shadowRoot, controller } = createController({ styles: stylesA });
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.styles.main = stylesB;
+                controller.mainStyles = stylesB;
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
                 controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
@@ -254,7 +254,7 @@ describe("The ElementController", () => {
                 );
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.styles.main = stylesB;
+                controller.mainStyles = stylesB;
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
                 controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
@@ -300,7 +300,7 @@ describe("The ElementController", () => {
                     cssA
                 );
 
-                controller.styles.main = stylesB;
+                controller.mainStyles = stylesB;
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(1);
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssB
@@ -381,11 +381,11 @@ describe("The ElementController", () => {
         const style = document.createElement("style") as HTMLStyleElement;
         expect(element.shadowRoot?.contains(style)).to.equal(false);
 
-        controller.styles.add(style);
+        controller.addStyles(style);
 
         expect(element.shadowRoot?.contains(style)).to.equal(true);
 
-        controller.styles.remove(style);
+        controller.removeStyles(style);
 
         expect(element.shadowRoot?.contains(style)).to.equal(false);
     });
@@ -405,7 +405,7 @@ describe("The ElementController", () => {
 
             const behaviors = [new TestBehavior(), new TestBehavior(), new TestBehavior()];
             const { controller, element } = createController();
-            behaviors.forEach(x => controller.behaviors.add(x));
+            behaviors.forEach(x => controller.addBehavior(x));
 
             behaviors.forEach(x => expect(x.bound).to.equal(false))
 
@@ -418,7 +418,7 @@ describe("The ElementController", () => {
             let childBehaviorBound = false;
             class ParentBehavior implements HostBehavior {
                 addedCallback(controller: HostController<any>): void {
-                    controller.behaviors.add(new ChildBehavior())
+                    controller.addBehavior(new ChildBehavior())
                 }
             }
 
@@ -429,7 +429,7 @@ describe("The ElementController", () => {
             }
 
             const { element, controller } = createController();
-            controller.behaviors.add(new ParentBehavior());
+            controller.addBehavior(new ParentBehavior());
             document.body.appendChild(element);
 
             expect(childBehaviorBound).to.equal(true);
@@ -453,16 +453,16 @@ describe("The ElementController", () => {
 
             document.body.appendChild(element);
 
-            controller.behaviors.add(behavior);
-            controller.behaviors.add(behavior);
-            controller.behaviors.add(behavior);
+            controller.addBehavior(behavior);
+            controller.addBehavior(behavior);
+            controller.addBehavior(behavior);
 
             expect(behavior.bound).to.equal(true);
-            controller.behaviors.remove(behavior);
+            controller.removeBehavior(behavior);
             expect(behavior.bound).to.equal(true);
-            controller.behaviors.remove(behavior);
+            controller.removeBehavior(behavior);
             expect(behavior.bound).to.equal(true);
-            controller.behaviors.remove(behavior);
+            controller.removeBehavior(behavior);
             expect(behavior.bound).to.equal(false);
         });
         it("should unbind a behavior whenever the behavior is removed with the force argument", () => {
@@ -483,11 +483,11 @@ describe("The ElementController", () => {
 
             document.body.appendChild(element);
 
-            controller.behaviors.add(behavior);
-            controller.behaviors.add(behavior);
+            controller.addBehavior(behavior);
+            controller.addBehavior(behavior);
 
             expect(behavior.bound).to.equal(true);
-            controller.behaviors.remove(behavior, true);
+            controller.removeBehavior(behavior, true);
             expect(behavior.bound).to.equal(false);
         });
     });

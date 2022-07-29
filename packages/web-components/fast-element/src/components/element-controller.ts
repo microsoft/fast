@@ -1,17 +1,11 @@
-import { Message, Mutable } from "../interfaces.js";
-import {
-    HostBehaviorCollection,
-    HostBehaviorOrchestrator,
-    HostController,
-    HostStyleCollection,
-    HostStyleOrchestrator,
-} from "../styles/host.js";
+import { Message, Mutable, StyleTarget } from "../interfaces.js";
+import type { HostBehavior, HostController } from "../styles/host.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { Observable } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
-import { getShadowRoot, setShadowRoot } from "../styles/shadow-root.js";
+import type { ElementStyles } from "../styles/element-styles.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
 
 const defaultEventOptions: CustomEventInit = {
@@ -21,6 +15,12 @@ const defaultEventOptions: CustomEventInit = {
 };
 
 const isConnectedPropertyName = "isConnected";
+
+const shadowRoots = new WeakMap<HTMLElement, ShadowRoot>();
+
+export function getShadowRoot(element: HTMLElement): ShadowRoot | null {
+    return element.shadowRoot ?? shadowRoots.get(element) ?? null;
+}
 
 /**
  * Controls the lifecycle and rendering of a `FASTElement`.
@@ -32,10 +32,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private boundObservables: Record<string, any> | null = null;
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
-    private _behaviors: HostBehaviorOrchestrator<TElement> | null = null;
-    private _styles: HostStyleOrchestrator = HostStyleOrchestrator.create(this);
     private _template: ElementViewTemplate<TElement> | null = null;
     private _isConnected: boolean = false;
+    private behaviors: Map<HostBehavior<TElement>, number> | null = null;
+    private _mainStyles: ElementStyles | null = null;
 
     /**
      * This allows Observable.getNotifier(...) to return the Controller
@@ -64,22 +64,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * If `null` then the element is managing its own rendering.
      */
     public readonly view: ElementView<TElement> | null = null;
-
-    public get behaviors(): HostBehaviorCollection<TElement> {
-        if (this._behaviors === null) {
-            this._behaviors = HostBehaviorOrchestrator.create(this);
-
-            if (this._isConnected) {
-                this._behaviors.connect();
-            }
-        }
-
-        return this._behaviors;
-    }
-
-    public get styles(): HostStyleCollection {
-        return this._styles;
-    }
 
     /**
      * Indicates whether or not the custom element has been
@@ -129,6 +113,39 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
     }
 
+    public get mainStyles(): ElementStyles | null {
+        // 1. Styles overrides take top precedence.
+        if (this._mainStyles === null) {
+            const definition = this.definition;
+
+            if ((this.source as any).resolveStyles) {
+                // 2. Allow for element instance overrides next.
+                this._mainStyles = (this.source as any).resolveStyles();
+            } else if (definition.styles) {
+                // 3. Default to the static definition.
+                this._mainStyles = definition.styles ?? null;
+            }
+        }
+
+        return this._mainStyles;
+    }
+
+    public set mainStyles(value: ElementStyles | null) {
+        if (this._mainStyles === value) {
+            return;
+        }
+
+        if (this._mainStyles !== null) {
+            this.removeStyles(this._mainStyles);
+        }
+
+        this._mainStyles = value;
+
+        if (!this.needsInitialization) {
+            this.addStyles(value);
+        }
+    }
+
     /**
      * Creates a Controller to control the specified element.
      * @param element - The element to be controlled by this controller.
@@ -153,7 +170,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 shadowRoot = element.attachShadow(shadowOptions);
 
                 if (shadowOptions.mode === "closed") {
-                    setShadowRoot(element, shadowRoot);
+                    shadowRoots.set(element, shadowRoot);
                 }
             }
         }
@@ -179,6 +196,100 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
     }
 
+    addBehavior(behavior: HostBehavior<TElement>) {
+        const targetBehaviors = this.behaviors ?? (this.behaviors = new Map());
+        const count = targetBehaviors.get(behavior) ?? 0;
+
+        if (count === 0) {
+            targetBehaviors.set(behavior, 1);
+            behavior.addedCallback && behavior.addedCallback(this);
+
+            if (behavior.connectedCallback && this.isConnected) {
+                behavior.connectedCallback(this);
+            }
+        } else {
+            targetBehaviors.set(behavior, count + 1);
+        }
+    }
+
+    removeBehavior(behavior: HostBehavior<TElement>, force: boolean = false) {
+        const targetBehaviors = this.behaviors;
+        if (targetBehaviors === null) {
+            return;
+        }
+
+        const count = (targetBehaviors.get(behavior) ?? 0) - 1;
+
+        if (count === 0 || force) {
+            targetBehaviors.delete(behavior);
+
+            if (behavior.disconnectedCallback && this.isConnected) {
+                behavior.disconnectedCallback(this);
+            }
+
+            behavior.removedCallback && behavior.removedCallback(this);
+        } else {
+            targetBehaviors.set(behavior, count);
+        }
+    }
+
+    /**
+     * Adds styles to this element. Providing an HTMLStyleElement will attach the element instance to the shadowRoot.
+     * @param styles - The styles to add.
+     */
+    public addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void {
+        if (!styles) {
+            return;
+        }
+
+        const source = this.source;
+        const target: StyleTarget =
+            getShadowRoot(source) ?? ((source.getRootNode() as any) as StyleTarget);
+
+        if (styles instanceof HTMLElement) {
+            target.append(styles);
+        } else if (!styles.isAttachedTo(target)) {
+            const sourceBehaviors = styles.behaviors;
+            styles.addStylesTo(target);
+
+            if (sourceBehaviors !== null) {
+                for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
+                    this.addBehavior(sourceBehaviors[i]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Removes styles from this element. Providing an HTMLStyleElement will detach the element instance from the shadowRoot.
+     * @param styles - the styles to remove.
+     */
+    public removeStyles(
+        styles: ElementStyles | HTMLStyleElement | null | undefined
+    ): void {
+        if (!styles) {
+            return;
+        }
+
+        const source = this.source;
+        const target: StyleTarget =
+            getShadowRoot(source) ?? ((source.getRootNode() as any) as StyleTarget);
+
+        if (styles instanceof HTMLElement) {
+            target.removeChild(styles);
+        } else if (styles.isAttachedTo(target)) {
+            const sourceBehaviors = styles.behaviors;
+
+            styles.removeStylesFrom(target);
+
+            if (sourceBehaviors !== null) {
+                for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
+                    this.addBehavior(sourceBehaviors[i]);
+                }
+            }
+        }
+    }
+
     /**
      * Runs connected lifecycle behavior on the associated element.
      */
@@ -193,8 +304,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             this.view.bind(this.source);
         }
 
-        if (this._behaviors !== null) {
-            this._behaviors.connect();
+        const behaviors = this.behaviors;
+        if (behaviors !== null) {
+            for (const key of behaviors.keys()) {
+                key.connectedCallback && key.connectedCallback(this);
+            }
         }
 
         this.setIsConnected(true);
@@ -214,8 +328,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             this.view.unbind();
         }
 
-        if (this._behaviors !== null) {
-            this._behaviors.disconnect();
+        const behaviors = this.behaviors;
+        if (behaviors !== null) {
+            for (const key of behaviors.keys()) {
+                key.disconnectedCallback && key.disconnectedCallback(this);
+            }
         }
     }
 
@@ -276,7 +393,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         this.renderTemplate(this.template);
-        this._styles.initialize();
+        this.addStyles(this.mainStyles);
 
         this.needsInitialization = false;
     }

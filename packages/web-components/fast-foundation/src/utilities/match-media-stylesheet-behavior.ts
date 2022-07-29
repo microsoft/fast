@@ -154,10 +154,10 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
             const { matches } = this;
 
             if (matches && !attached) {
-                controller.styles.add(styles);
+                controller.addStyles(styles);
                 attached = matches;
             } else if (!matches && attached) {
-                controller.styles.remove(styles);
+                controller.removeStyles(styles);
                 attached = matches;
             }
         };
@@ -169,7 +169,7 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
      * @internal
      */
     public removedCallback(controller: HostController<any>): void {
-        controller.styles.remove(this.styles);
+        controller.removeStyles(this.styles);
     }
 }
 

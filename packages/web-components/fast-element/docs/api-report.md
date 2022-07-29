@@ -261,17 +261,22 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     // @internal
     constructor(element: TElement, definition: FASTElementDefinition);
     // (undocumented)
-    get behaviors(): HostBehaviorCollection<TElement>;
+    addBehavior(behavior: HostBehavior<TElement>): void;
+    addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     connect(): void;
     readonly definition: FASTElementDefinition;
     disconnect(): void;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement): ElementController;
     get isConnected(): boolean;
-    onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
-    readonly source: TElement;
     // (undocumented)
-    get styles(): HostStyleCollection;
+    get mainStyles(): ElementStyles | null;
+    set mainStyles(value: ElementStyles | null);
+    onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
+    // (undocumented)
+    removeBehavior(behavior: HostBehavior<TElement>, force?: boolean): void;
+    removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+    readonly source: TElement;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
     readonly view: ElementView<TElement> | null;
@@ -432,6 +437,9 @@ export interface FASTGlobal {
     warn(code: number, values?: Record<string, any>): void;
 }
 
+// @public (undocumented)
+export function getShadowRoot(element: HTMLElement): ShadowRoot | null;
+
 // @public
 export interface HostBehavior<TSource = any> {
     addedCallback?(controller: HostController<TSource>): void;
@@ -441,58 +449,22 @@ export interface HostBehavior<TSource = any> {
 }
 
 // @public (undocumented)
-export interface HostBehaviorCollection<TSource = any> {
-    // (undocumented)
-    add(behavior: HostBehavior<TSource>): any;
-    // (undocumented)
-    remove(behavior: HostBehavior<TSource>, force?: boolean): any;
-}
-
-// @public (undocumented)
-export interface HostBehaviorOrchestrator<TSource = any> extends HostBehaviorCollection<TSource> {
-    // (undocumented)
-    connect(): void;
-    // (undocumented)
-    disconnect(): void;
-}
-
-// @public (undocumented)
-export const HostBehaviorOrchestrator: Readonly<{
-    create<TSource = any>(controller: HostController<TSource>): HostBehaviorOrchestrator<TSource>;
-}>;
-
-// @public (undocumented)
 export interface HostController<TSource = any> {
     // (undocumented)
-    readonly behaviors: HostBehaviorCollection<TSource>;
+    addBehavior(behavior: HostBehavior<TSource>): void;
+    // (undocumented)
+    addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     // (undocumented)
     readonly isConnected: boolean;
     // (undocumented)
+    mainStyles: ElementStyles | null;
+    // (undocumented)
+    removeBehavior(behavior: HostBehavior<TSource>, force?: boolean): void;
+    // (undocumented)
+    removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+    // (undocumented)
     readonly source: TSource;
-    // (undocumented)
-    readonly styles: HostStyleCollection;
 }
-
-// @public (undocumented)
-export interface HostStyleCollection {
-    // (undocumented)
-    add(styles: ElementStyles | HTMLStyleElement | null | undefined): any;
-    // (undocumented)
-    main: ElementStyles | null;
-    // (undocumented)
-    remove(styles: ElementStyles | HTMLStyleElement | null | undefined): any;
-}
-
-// @public (undocumented)
-export interface HostStyleOrchestrator extends HostStyleCollection {
-    // (undocumented)
-    initialize(): void;
-}
-
-// @public (undocumented)
-export const HostStyleOrchestrator: Readonly<{
-    create(host: StylesHost): HostStyleOrchestrator;
-}>;
 
 // @public
 export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
@@ -789,14 +761,6 @@ export abstract class StatelessAttachedAttributeDirective<TOptions> implements H
     nodeId: string;
     // (undocumented)
     protected options: TOptions;
-}
-
-// @public (undocumented)
-export interface StylesHost<TSource = any> extends HostController<TSource> {
-    // (undocumented)
-    readonly definition: {
-        styles?: ElementStyles;
-    };
 }
 
 // @public
