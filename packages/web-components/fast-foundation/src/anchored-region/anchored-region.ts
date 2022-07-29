@@ -984,80 +984,52 @@ export class FASTAnchoredRegion extends FASTElement {
         }
 
         let sizeDelta: number = 0;
+        let regionLeft: number = 0;
+        let regionRight: number = 0;
+        let newTranslateX: number = 0;
 
         switch (desiredHorizontalPosition) {
             case "start":
-                this.translateX = this.baseHorizontalOffset - nextRegionWidth;
-                if (
-                    this.horizontalViewportLock &&
-                    this.anchorRect.left > this.viewportRect.right
-                ) {
-                    this.translateX =
-                        this.translateX -
-                        (this.anchorRect.left - this.viewportRect.right);
-                }
+                newTranslateX = this.baseHorizontalOffset - nextRegionWidth;
+                regionRight = this.anchorRect.left;
+                regionLeft = regionRight - nextRegionWidth;
                 break;
 
             case "insetStart":
-                this.translateX =
+                newTranslateX =
                     this.baseHorizontalOffset - nextRegionWidth + this.anchorRect.width;
-                if (
-                    this.horizontalViewportLock &&
-                    this.anchorRect.right > this.viewportRect.right
-                ) {
-                    this.translateX =
-                        this.translateX -
-                        (this.anchorRect.right - this.viewportRect.right);
-                }
+                regionRight = this.anchorRect.right;
+                regionLeft = regionRight - nextRegionWidth;
                 break;
 
             case "insetEnd":
-                this.translateX = this.baseHorizontalOffset;
-                if (
-                    this.horizontalViewportLock &&
-                    this.anchorRect.left < this.viewportRect.left
-                ) {
-                    this.translateX =
-                        this.translateX - (this.anchorRect.left - this.viewportRect.left);
-                }
+                newTranslateX = this.baseHorizontalOffset;
+                regionLeft = this.anchorRect.left;
+                regionRight = regionLeft + nextRegionWidth;
                 break;
 
             case "end":
-                this.translateX = this.baseHorizontalOffset + this.anchorRect.width;
-                if (
-                    this.horizontalViewportLock &&
-                    this.anchorRect.right < this.viewportRect.left
-                ) {
-                    this.translateX =
-                        this.translateX -
-                        (this.anchorRect.right - this.viewportRect.left);
-                }
+                newTranslateX = this.baseHorizontalOffset + this.anchorRect.width;
+                regionLeft = this.anchorRect.right;
+                regionRight = regionLeft + nextRegionWidth;
                 break;
 
             case "center":
                 sizeDelta = (this.anchorRect.width - nextRegionWidth) / 2;
-                this.translateX = this.baseHorizontalOffset + sizeDelta;
-                if (this.horizontalViewportLock) {
-                    const regionLeft: number = this.anchorRect.left + sizeDelta;
-                    const regionRight: number = this.anchorRect.right - sizeDelta;
-
-                    if (
-                        regionLeft < this.viewportRect.left &&
-                        !(regionRight > this.viewportRect.right)
-                    ) {
-                        this.translateX =
-                            this.translateX - (regionLeft - this.viewportRect.left);
-                    } else if (
-                        regionRight > this.viewportRect.right &&
-                        !(regionLeft < this.viewportRect.left)
-                    ) {
-                        this.translateX =
-                            this.translateX - (regionRight - this.viewportRect.right);
-                    }
-                }
+                newTranslateX = this.baseHorizontalOffset + sizeDelta;
+                regionLeft = this.anchorRect.left + sizeDelta;
+                regionRight = regionLeft + nextRegionWidth;
                 break;
         }
 
+        if (this.horizontalViewportLock) {
+            if (regionLeft < this.viewportRect.left) {
+                newTranslateX = newTranslateX - (regionLeft - this.viewportRect.left);
+            } else if (regionRight > this.viewportRect.right) {
+                newTranslateX = newTranslateX - (regionRight - this.viewportRect.right);
+            }
+        }
+        this.translateX = newTranslateX;
         this.horizontalPosition = desiredHorizontalPosition;
     };
 
@@ -1095,79 +1067,52 @@ export class FASTAnchoredRegion extends FASTElement {
         }
 
         let sizeDelta: number = 0;
+        let regionTop: number = 0;
+        let regionBottom: number = 0;
+        let newTranslateY: number = 0;
 
         switch (desiredVerticalPosition) {
             case "start":
-                this.translateY = this.baseVerticalOffset - nextRegionHeight;
-                if (
-                    this.verticalViewportLock &&
-                    this.anchorRect.top > this.viewportRect.bottom
-                ) {
-                    this.translateY =
-                        this.translateY -
-                        (this.anchorRect.top - this.viewportRect.bottom);
-                }
+                newTranslateY = this.baseVerticalOffset - nextRegionHeight;
+                regionBottom = this.anchorRect.top;
+                regionTop = regionBottom - nextRegionHeight;
                 break;
 
             case "insetStart":
-                this.translateY =
+                newTranslateY =
                     this.baseVerticalOffset - nextRegionHeight + this.anchorRect.height;
-                if (
-                    this.verticalViewportLock &&
-                    this.anchorRect.bottom > this.viewportRect.bottom
-                ) {
-                    this.translateY =
-                        this.translateY -
-                        (this.anchorRect.bottom - this.viewportRect.bottom);
-                }
+                regionBottom = this.anchorRect.bottom;
+                regionTop = regionBottom - nextRegionHeight;
                 break;
 
             case "insetEnd":
-                this.translateY = this.baseVerticalOffset;
-                if (
-                    this.verticalViewportLock &&
-                    this.anchorRect.top < this.viewportRect.top
-                ) {
-                    this.translateY =
-                        this.translateY - (this.anchorRect.top - this.viewportRect.top);
-                }
+                newTranslateY = this.baseVerticalOffset;
+                regionTop = this.anchorRect.top;
+                regionBottom = regionTop + nextRegionHeight;
                 break;
 
             case "end":
-                this.translateY = this.baseVerticalOffset + this.anchorRect.height;
-                if (
-                    this.verticalViewportLock &&
-                    this.anchorRect.bottom < this.viewportRect.top
-                ) {
-                    this.translateY =
-                        this.translateY -
-                        (this.anchorRect.bottom - this.viewportRect.top);
-                }
+                newTranslateY = this.baseVerticalOffset + this.anchorRect.height;
+                regionTop = this.anchorRect.bottom;
+                regionBottom = regionTop + nextRegionHeight;
                 break;
 
             case "center":
                 sizeDelta = (this.anchorRect.height - nextRegionHeight) / 2;
-                this.translateY = this.baseVerticalOffset + sizeDelta;
-                if (this.verticalViewportLock) {
-                    const regionTop: number = this.anchorRect.top + sizeDelta;
-                    const regionBottom: number = this.anchorRect.bottom - sizeDelta;
-
-                    if (
-                        regionTop < this.viewportRect.top &&
-                        !(regionBottom > this.viewportRect.bottom)
-                    ) {
-                        this.translateY =
-                            this.translateY - (regionTop - this.viewportRect.top);
-                    } else if (
-                        regionBottom > this.viewportRect.bottom &&
-                        !(regionTop < this.viewportRect.top)
-                    ) {
-                        this.translateY =
-                            this.translateY - (regionBottom - this.viewportRect.bottom);
-                    }
-                }
+                newTranslateY = this.baseVerticalOffset + sizeDelta;
+                regionTop = this.anchorRect.top + sizeDelta;
+                regionBottom = regionTop + nextRegionHeight;
         }
 
+        if (this.verticalViewportLock) {
+            if (regionTop < this.viewportRect.top) {
+                newTranslateY = newTranslateY - (regionTop - this.viewportRect.top);
+            } else if (regionBottom > this.viewportRect.bottom) {
+                newTranslateY = newTranslateY - (regionBottom - this.viewportRect.bottom);
+            }
+        }
+
+        this.translateY = newTranslateY;
         this.verticalPosition = desiredVerticalPosition;
     };
 
