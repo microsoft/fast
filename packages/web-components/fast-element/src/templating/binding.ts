@@ -335,7 +335,10 @@ export class HTMLBindingDirective
     /** @internal */
     bindDefault(controller: ViewController): void {
         const target = controller.targets[this.nodeId];
-        const observer = this.getObserver(target);
+        const observer =
+            target[this.data] ??
+            (target[this.data] = this.dataBinding.createObserver(this, this));
+
         (observer as any).target = target;
         (observer as any).controller = controller;
 
@@ -403,13 +406,6 @@ export class HTMLBindingDirective
             this.targetAspect,
             observer.bind(controller),
             controller
-        );
-    }
-
-    private getObserver(target: Node): ExpressionObserver {
-        return (
-            target[this.data] ??
-            (target[this.data] = this.dataBinding.createObserver(this, this))
         );
     }
 }
