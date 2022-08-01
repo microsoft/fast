@@ -1,34 +1,35 @@
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { ListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
-import { fixture } from "../test-utilities/fixture.js";
-import { timeout } from "../test-utilities/timeout.js";
-import { Select, selectTemplate as template } from "./index.js";
+import { FASTListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
+import { fixture, timeout, uniqueElementName } from "@microsoft/fast-element/testing";;
+import { FASTSelect, selectTemplate } from "./index.js";
 
 describe("Select", () => {
-    const FASTSelect = Select.compose({
-        baseName: "select",
-        template
+    const selectName = uniqueElementName();
+    FASTSelect.define({
+        name: selectName,
+        template: selectTemplate()
     });
 
-    const FASTOption = ListboxOption.compose({
-        baseName: "option",
-        template: listboxOptionTemplate,
+    const optionName = uniqueElementName();
+    FASTListboxOption.define({
+        name: optionName,
+        template: listboxOptionTemplate()
     });
 
     async function setup() {
-        const { element, connect, disconnect, parent } = await fixture([FASTSelect(), FASTOption()]);
+        const { element, connect, disconnect, parent } = await fixture<FASTSelect>(selectName);
 
-        const option1 = document.createElement("fast-option") as ListboxOption;
+        const option1 = document.createElement(optionName) as FASTListboxOption;
         option1.value = "one";
         option1.textContent = "option one";
 
-        const option2 = document.createElement("fast-option") as ListboxOption;
+        const option2 = document.createElement(optionName) as FASTListboxOption;
         option2.value = "two";
         option2.textContent = "option two";
 
-        const option3 = document.createElement("fast-option") as ListboxOption;
+        const option3 = document.createElement(optionName) as FASTListboxOption;
         option3.value = "three";
         option3.textContent = "option three";
 
@@ -60,7 +61,7 @@ describe("Select", () => {
 
         element.disabled = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-disabled")).to.equal("false");
 
@@ -249,7 +250,7 @@ describe("Select", () => {
 
         element.click();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-expanded")).to.equal("true");
 
@@ -287,7 +288,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -319,7 +320,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -347,7 +348,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -377,7 +378,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -529,7 +530,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.true;
@@ -559,7 +560,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.true;
@@ -589,7 +590,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.true;
@@ -615,7 +616,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.true;
@@ -804,7 +805,7 @@ describe("Select", () => {
 
                 element.value = "two";
             }),
-            DOM.nextUpdate().then(() => false),
+            Updates.next().then(() => false),
         ]);
 
         expect(wasChanged).to.be.false;
@@ -829,7 +830,7 @@ describe("Select", () => {
 
                 element.value = "two";
             }),
-            DOM.nextUpdate().then(() => false),
+            Updates.next().then(() => false),
         ]);
 
         expect(wasChanged).to.be.false;
@@ -872,19 +873,19 @@ describe("Select", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-activedescendant")).to.exist.and.equal(option1.id);
 
         element.selectNextOption();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-activedescendant")).to.equal(option2.id);
 
         element.selectNextOption();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-activedescendant")).to.equal(option3.id);
 
@@ -904,13 +905,13 @@ describe("Select", () => {
 
         element.open = true;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-controls")).to.equal(listboxId);
 
         element.open = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-controls")).to.be.empty;
 

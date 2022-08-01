@@ -1,7 +1,7 @@
-import { css, DOM, html } from "@microsoft/fast-element";
+import { css, Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../test-utilities/fixture";
-import { HorizontalScroll, horizontalScrollTemplate as template } from "./index";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { FASTHorizontalScroll, horizontalScrollTemplate } from "./index.js";
 
 const styles = css`
     :host {
@@ -23,11 +23,12 @@ const styles = css`
     }
 `;
 
-const FASTHorizontalScroll = HorizontalScroll.compose({
-    baseName: "horizontal-scroll",
-    template,
+const scrollName = uniqueElementName();
+FASTHorizontalScroll.define({
+    name: scrollName,
+    template: horizontalScrollTemplate(),
     styles
-})
+});
 
 /**
  * Static widths for calculating expected returns
@@ -57,15 +58,37 @@ const cardTemplate: string = `<div class="card" style="width: ${cardWidth}px; he
  */
 const getCards = (cnt: number): string => new Array(cnt).fill(cardTemplate).reduce((s, c) => s += c, '');
 
+/**
+ * Calls a scroll into view and checks that the item is inside the viewport
+ * @param element - HorizontalScroll element
+ * @param item - item to scroll into view, element or it's index
+ * @param padding - amount of padding, defaults to 0
+ * @param paddingRight - optional right padding to override padding on both sides
+ */
+const scrollIntoViewTest = async (
+    element: FASTHorizontalScroll & HTMLElement,
+    item: HTMLElement | number,
+    padding: number = 0,
+    paddingRight?: number
+) => {
+    element.scrollInView(item, padding, paddingRight);
+
+    await Updates.next()
+    const {offsetLeft, offsetWidth} = typeof item === "number" ? element.scrollItems[item] : item;
+    const xPosition = getXPosition(element) ?? 0;
+    expect(offsetLeft - xPosition).to.greaterThanOrEqual(padding);
+    expect(xPosition + element.offsetWidth - offsetLeft - offsetWidth).to.greaterThanOrEqual(paddingRight ?? padding);
+}
+
 async function setup(options: {
     width?: number
 } = {}) {
     const { element, connect, disconnect }:
         {
-            element: HorizontalScroll & HTMLElement;
+            element: FASTHorizontalScroll;
             connect: () => void;
             disconnect: () => void;
-        } = await fixture(FASTHorizontalScroll());
+        } = await fixture<FASTHorizontalScroll>(scrollName);
 
     // Removing animated scroll so that tests don't have to wait on DOM updates
     element.speed = 0;
@@ -74,7 +97,7 @@ async function setup(options: {
     element.innerHTML = getCards(8);
 
     await connect();
-    await DOM.nextUpdate();
+    await Updates.next();
 
     return { element, disconnect };
 }
@@ -93,7 +116,7 @@ describe("HorizontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.innerHTML = cardTemplate;
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
 
@@ -112,8 +135,8 @@ describe("HorizontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
-            await DOM.nextUpdate();
+            await Updates.next();
+            await Updates.next();
 
             expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(false);
             await disconnect();
@@ -123,11 +146,11 @@ describe("HorizontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.scrollToPrevious();
-            await DOM.nextUpdate();
-            await DOM.nextUpdate();
+            await Updates.next();
+            await Updates.next();
 
             expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(true);
             await disconnect();
@@ -137,17 +160,17 @@ describe("HorizontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
-            await DOM.nextUpdate();
+            await Updates.next();
+            await Updates.next();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
             await disconnect();
@@ -157,20 +180,20 @@ describe("HorizontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.scrollToPrevious();
-            await DOM.nextUpdate();
-            await DOM.nextUpdate();
+            await Updates.next();
+            await Updates.next();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
 
@@ -181,23 +204,23 @@ describe("HorizontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
 
             element.scrollToPrevious();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
 
@@ -218,7 +241,7 @@ describe("HorizontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             const position: number = getXPosition(element) || 0;
 
@@ -232,7 +255,7 @@ describe("HorizontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToPrevious();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             const scrollPosition: number | null = getXPosition(element);
 
@@ -252,7 +275,7 @@ describe("HorizontalScroll", () => {
             element.scrollToNext();
             element.scrollToNext();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             const cardViewWidth: number = cardSpace * 5 * -1;
             const scrollPosition: number | null = getXPosition(element);
@@ -267,14 +290,14 @@ describe("HorizontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             const firstXPos: number | null = getXPosition(element);
             element.scrollToPrevious();
 
             element.style.width = `${horizontalScrollWidth * 2}px`;
             element.scrollToNext();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             const secondXPos: number | null = getXPosition(element);
 
@@ -288,7 +311,7 @@ describe("HorizontalScroll", () => {
 
             element.scrollToNext();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             const firstXPos: number | null = getXPosition(element);
             expect(firstXPos).to.not.null;
@@ -296,10 +319,60 @@ describe("HorizontalScroll", () => {
 
             element.scrollToPrevious();
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             const secondXPosition: number | null = getXPosition(element);
             expect(secondXPosition).to.equal(0);
+
+            await disconnect();
+        });
+
+        it("should scroll item into view when using scrollInView()", async () => {
+            const { element, disconnect } = await setup();
+            const testScroll = scrollIntoViewTest.bind(this, element);
+
+            await testScroll(element.scrollItems[element.scrollItems.length - 1]);
+            await testScroll(element.scrollItems[0])
+
+            await disconnect();
+        });
+
+        it("Should scroll item into view with scrollInView() by index", async () => {
+            const { element, disconnect } = await setup();
+            const testScroll = scrollIntoViewTest.bind(this, element);
+
+            await testScroll(element.scrollItems.length - 1);
+            await testScroll(0);
+
+            await disconnect();
+        });
+
+        it("Should scroll item into view respecting right and left padding", async () => {
+            const { element, disconnect } = await setup();
+            const testScroll = scrollIntoViewTest.bind(this, element, element.scrollItems.length - 4);
+
+            await testScroll();
+            const position1 = getXPosition(element);
+
+            await testScroll(80);
+            const position2 = getXPosition(element);
+            expect(position1).to.not.equal(position2);
+
+            await testScroll(0, 200);
+            const position3 = getXPosition(element);
+            expect(position2).to.not.equal(position3);
+
+            await scrollIntoViewTest(element, 2, 20);
+
+            await disconnect();
+        });
+
+        it("Should not scroll with scrollInView() when the item is in view", async () => {
+            const { element, disconnect } = await setup();
+            element.scrollInView(2);
+
+            await Updates.next();
+            expect(getXPosition(element)).to.equal(0);
 
             await disconnect();
         });

@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-animation
 
-This log was last generated on Wed, 04 May 2022 07:14:00 GMT and should not be manually modified.
+This log was last generated on Mon, 18 Jul 2022 21:10:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 4.2.4
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Patches
+
+- Updates a security vulnerability on dependency (16669785+awentzel@users.noreply.github.com)
+
+## 4.2.3
+
+Wed, 01 Jun 2022 17:53:14 GMT
+
+### Patches
+
+- Upgrade TypeScript (nicholasrice@users.noreply.github.com)
 
 ## 4.2.2
 

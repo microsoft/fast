@@ -1,8 +1,13 @@
-import { attr, Notifier, Observable, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    Notifier,
+    Observable,
+    observable,
+} from "@microsoft/fast-element";
 import { Direction, Orientation } from "@microsoft/fast-web-utilities";
 import type { SliderConfiguration } from "../slider/slider.js";
 import { convertPixelToPercent } from "../slider/slider-utilities.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 const defaultConfig: SliderConfiguration = {
     min: 0,
@@ -13,14 +18,14 @@ const defaultConfig: SliderConfiguration = {
 };
 
 /**
- * A label element intended to be used with the {@link @microsoft/fast-foundation#(Slider:class)} component.
+ * A label element intended to be used with the {@link @microsoft/fast-foundation#(FASTSlider:class)} component.
  *
  * @slot - The default slot for the label content
  * @csspart root - The element wrapping the label mark and text
  *
  * @public
  */
-export class SliderLabel extends FoundationElement {
+export class FASTSliderLabel extends FASTElement {
     /**
      * @internal
      */
@@ -33,7 +38,7 @@ export class SliderLabel extends FoundationElement {
     public root: HTMLDivElement;
 
     /**
-     * The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#(Slider:class)}.
+     * The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#(FASTSlider:class)}.
      *
      * @public
      * @remarks
@@ -41,7 +46,7 @@ export class SliderLabel extends FoundationElement {
      */
     @attr
     public position: string;
-    private positionChanged(): void {
+    protected positionChanged(): void {
         this.positionStyle = this.positionAsStyle();
     }
 
@@ -56,7 +61,7 @@ export class SliderLabel extends FoundationElement {
     public hideMark: boolean = false;
 
     /**
-     * The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#(Slider:class)}.
+     * The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#(FASTSlider:class)}.
      *
      * @public
      * @remarks
@@ -135,7 +140,7 @@ export class SliderLabel extends FoundationElement {
                 this.sliderOrientation = source.orientation;
                 break;
             case "max":
-                this.sliderMinPosition = source.max;
+                this.sliderMaxPosition = source.max;
                 break;
             case "min":
                 this.sliderMinPosition = source.min;

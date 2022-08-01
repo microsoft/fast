@@ -55,30 +55,20 @@ export const myDivider = Divider.compose({
 
 
 
-### class: `Divider`
+### class: `FASTDivider`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `role`          | public  | `DividerRole`                         |         | The role of the element.                                                                                                                                                            |                   |
-| `orientation`   | public  | `Orientation`                         |         | The orientation of the divider.                                                                                                                                                     |                   |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
-
-#### Methods
-
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name          | Privacy | Type          | Default | Description                     | Inherited From |
+| ------------- | ------- | ------------- | ------- | ------------------------------- | -------------- |
+| `role`        | public  | `DividerRole` |         | The role of the element.        |                |
+| `orientation` | public  | `Orientation` |         | The orientation of the divider. |                |
 
 #### Attributes
 

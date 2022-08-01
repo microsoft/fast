@@ -1,5 +1,5 @@
 import { html, when, elements, slotted } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "@microsoft/fast-foundation";
+import { endSlotTemplate, startSlotTemplate } from "@microsoft/fast-foundation";
 import CloseIcon from "svg/icon-close.svg";
 import MenuIcon from "svg/icon-menu.svg";
 import { Navigation } from "./navigation";
@@ -10,7 +10,7 @@ export const NavigationTemplate = html<Navigation>`
         ${x => (x.debounce ? "debounce" : "")}"
         @focusout=${(x, c) => x.handleFocusOut(c.event as FocusEvent)}
     >
-        ${startTemplate}
+        ${startSlotTemplate}
         <fast-button
             class="nav-button"
             part="nav-button"
@@ -36,7 +36,7 @@ export const NavigationTemplate = html<Navigation>`
                     ${slotted({ property: "slottedNavigationItems", filter: elements() })}
                 ></slot>
             </ul>
-            ${endTemplate}
+            ${endSlotTemplate}
         </nav>
     </template>
 `;

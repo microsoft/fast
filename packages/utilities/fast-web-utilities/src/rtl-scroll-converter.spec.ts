@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { RtlScrollConverter } from "./rtl-scroll-converter";
-import { Direction } from "./localization";
+import { RtlScrollConverter } from "./rtl-scroll-converter.js";
+import { Direction } from "./localization.js";
 
 function getDummyDiv(): HTMLDivElement {
     const dummy: HTMLDivElement = document.createElement("div");

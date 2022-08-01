@@ -139,7 +139,6 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
     /**
      * Constructs a match-media listener for a provided element.
      * @param source - the element for which to attach or detach styles.
-     * @internal
      */
     protected constructListener(source: typeof FASTElement): MediaQueryListListener {
         let attached = false;

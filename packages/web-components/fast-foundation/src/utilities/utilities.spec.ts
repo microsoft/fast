@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { whitespaceFilter } from "./whitespace-filter";
+import { whitespaceFilter } from "./whitespace-filter.js";
 
 describe("Utilities", () => {
-    describe("The whitespaceFilter", () => { 
+    describe("The whitespaceFilter", () => {
         const spanEl: HTMLSpanElement = document.createElement("span");
         spanEl.innerText = "span";
 

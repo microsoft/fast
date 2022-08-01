@@ -3,7 +3,6 @@ import {
     StandardLuminance,
     PaletteRGB,
     SwatchRGB,
-    neutralLayer1Recipe,
     baseLayerLuminance,
     neutralPalette,
     accentPalette,
@@ -13,10 +12,6 @@ import {
     baseHorizontalSpacingMultiplier,
     controlCornerRadius,
     strokeWidth,
-    neutralLayer1,
-    neutralLayer2,
-    neutralLayer2Recipe,
-    neutralLayerCardContainerRecipe,
     neutralLayerCardContainer,
 } from "@microsoft/fast-components";
 import { RadioGroup, Slider } from "@microsoft/fast-foundation";

@@ -1,17 +1,18 @@
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { listboxOptionTemplate } from "../listbox-option/listbox-option.template.js";
-import { fixture } from "../test-utilities/fixture.js";
-import { ListboxOption } from "./listbox-option.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { FASTListboxOption } from "./listbox-option.js";
 
 describe("ListboxOption", () => {
-    const FASTOption = ListboxOption.compose({
-        baseName: "option",
-        template: listboxOptionTemplate,
+    const optionName = uniqueElementName();
+    FASTListboxOption.define({
+        name: optionName,
+        template: listboxOptionTemplate(),
     });
 
     async function setup() {
-        const { element, connect, disconnect } = await fixture(FASTOption());
+        const { element, connect, disconnect } = await fixture<FASTListboxOption>(optionName);
 
         return { element, connect, disconnect };
     }
@@ -37,7 +38,7 @@ describe("ListboxOption", () => {
 
         element.selected = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-selected")).to.equal("false");
 
@@ -55,7 +56,7 @@ describe("ListboxOption", () => {
 
         element.disabled = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-disabled")).to.equal("false");
 
@@ -71,19 +72,19 @@ describe("ListboxOption", () => {
 
         element.checked = true;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("true");
 
         element.checked = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("false");
 
         element.checked = undefined;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.hasAttribute("aria-checked")).to.be.false;
 

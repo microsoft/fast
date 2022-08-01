@@ -4,6 +4,8 @@ title: The FAST Frame Design System
 sidebar_label: FAST Frame Design System
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/fast-frame.md
 description: A highly configurable Design System composed of Web Components, Design Tokens, stylesheets, and styling tools.
+keywords:
+    - fast frame design system
 ---
 
 FAST Frame ([`@microsoft/fast-components`](https://www.npmjs.com/package/@microsoft/fast-components)) is a highly configurable Design System composed of Web Components, Design Tokens, stylesheets, and styling tools. You can drop it into any app to start with a robust component library and an adaptive and accessible UI system immediately.
@@ -30,7 +32,7 @@ provideFASTDesignSystem()
 
 ### Add Element to HTML
 
-Once you've registered the components as shown above, they are now available for use in your document (or template). Just use the new elements like any other HTML element:
+Once you've registered the components, as shown above, they are now available for use in your document (or template). Just use the new elements like any other HTML element:
 
 ```html
 <fast-button>Click me!</fast-button>
@@ -52,17 +54,17 @@ The consuming application must apply this, as the components themselves do not.
 
 ## Configuring Components
 
-FAST Frame components are highly configurable, so let’s look at some of the opportunities for configuration that can be leveraged. If you’d like to understand these APIs further, check out the [creating a component library](/docs/design-systems/creating-a-component-library) documentation. 
+FAST Frame components are highly configurable, so let’s look at some of the opportunities for configuration that can be leveraged. If you’d like to understand these APIs further, check out the [creating a component library](./creating-a-component-library.md) documentation.
 
 ### Configuring the DesignSystem
 
-The `DesignSystem` is the entry-point for most component configuration. It can be used to control the options for which the custom element is defined in the browser, which template and stylesheet to use, and how to disambiguate custom elements that are defined for a single element tag name.
+The `DesignSystem` is the entry-point for most component configurations. It can be used to control the options for which the custom element is defined in the browser, which template and stylesheet to use, and how to disambiguate custom elements that are defined for a single element tag name.
 
-For all APIs described in this section, the configuration overrides apply to all components registered to the DesignSystem except when the option is explicitly provided [during component registration](/docs/design-systems/fast-frame#configuring-components-during-registration). 
+For all APIs described in this section, the configuration overrides apply to all components registered to the DesignSystem except when the option is explicitly provided [during component registration](./fast-frame.md#configuring-components-during-registration).
 
 #### `DesignSystem.withPrefix()`
 
-As [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components), FAST Components are [Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) subject to the [naming conventions defined by HTML](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name). This means that the element name must contain a ‘-‘ character. By default, the DesignSystem defines all elements registered with it with the “fast” prefix. [The example above](/docs/design-systems/fast-frame/#add-element-to-html) illustrates this, where the FastButton is defined with the ‘fast’ prefix.
+As [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components), FAST Components are [Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) subject to the [naming conventions defined by HTML](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name). This means that the element name must contain a ‘-‘ character. By default, the DesignSystem defines all elements registered with it with the “fast” prefix. [The example above](./fast-frame.md/#add-element-to-html) illustrates this, where the FastButton is defined with the ‘fast’ prefix.
 
 This prefix can be changed for all components registered by the DesignSystem using the `DesignSystem.withPrefix()` API:
 
@@ -82,7 +84,7 @@ In this case, the element can be used in HTML using the ‘faster’:
 
 #### `DesignSystem.withShadowRootMode()`
 
-Unless specified during [component registration creation](/docs/design-systems/creating-a-component-library#compose-and-export-registration), all components registered with the DesignSystem are defined with [the shadow root mode](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode) originally specified by the component developer (typically "open", as that is both recommended and the default). This behavior can be changed using `DesignSystem.withShadowRootMode()` to close all shadow roots by default:
+Unless specified during [component registration creation](./creating-a-component-library.md#compose-and-export-registration), all components registered with the DesignSystem are defined with [the shadow root mode](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode) originally specified by the component developer (typically "open", as that is both recommended and the default). This behavior can be changed using `DesignSystem.withShadowRootMode()` to close all shadow roots by default:
 
 ```ts
 provideFASTDesignSystem()
@@ -201,11 +203,11 @@ For more information on shadow options, see [Element.attachShadow()](https://dev
 
 ## Configuring Styles
 
-FAST Frame is designed to be stylistically flexible, allowing dramatic changes to visual design with minimal code changes. This is possible through the extensive use of [Design Tokens](/docs/design-systems/design-tokens) and an [adaptive color system](/docs/design-systems/fast-frame#adaptive-color-system).
+FAST Frame is designed to be stylistically flexible, allowing dramatic changes to visual design with minimal code changes. This is possible through the extensive use of [Design Tokens](./design-tokens.md) and an [adaptive color system](./fast-frame.md#adaptive-color-system).
 
 ### FAST Frame Design Tokens
 
-FAST exposes the following Design Tokens that can be used to configure components stylistically. This section describes the non-color related Design Tokens. For Design Tokens related to color, see the [adaptive color system section](/docs/design-systems/fast-frame#adaptive-color-system)
+FAST exposes the following Design Tokens that can be used to configure components stylistically. This section describes the non-color related Design Tokens. For Design Tokens related to color, see the [adaptive color system section](./fast-frame.md#adaptive-color-system)
 
 #### Typography
 
@@ -235,7 +237,7 @@ FAST exposes the following Design Tokens that can be used to configure component
 - `direction`: The primary document direction (LTR or RTL).
 - `disabledOpacity`: The opacity of disabled controls.
 - `strokeWidth`: Controls the width of the stroke of a component that has a stroke.
-- `focusStrokeWidth`: Controls with width of the stroke of a component that has a stroke when it has document focus.
+- `focusStrokeWidth`: Controls the width of the stroke of a component that has a stroke when it has document focus.
 
 ### Adaptive Color System
 
@@ -255,7 +257,7 @@ Recipes are currently used for color values, but they are not limited to that an
 
 #### Common functionality
 
-Most color recipes are based on a `palette`. Currently `fast-components` has built-in support for `accent` and `neutral` palettes.
+Most color recipes are based on a `palette`. Currently, `fast-components` has built-in support for `accent` and `neutral` palettes.
 
 Most color recipes take a `reference` `Swatch`. This is a core concept of Adaptive UI which allows the recipes to vary based on the containing component's color. For instance, supporting a button with consistent treatment between light and dark modes is done with a single recipe.
 
@@ -279,7 +281,7 @@ Relies on `textColor` and `contrastTarget` to find the closest colors from the s
 
 Stateful.
 
-Commonly for link text or icon. Also for smaller elements that might not show up well using `accentFill`, for instance if your accent color is dark purple and you support a dark mode interface.
+Commonly for link text or icon. Also for smaller elements that might not show up well using `accentFill`, for instance, if your accent color is dark purple and you support a dark mode interface.
 
 Like `accentFill` this relies on `textColor` and `contrastTarget` to find the closest colors from the supplied palette that can be used for component states.
 
@@ -367,4 +369,4 @@ A special layer for floating layers, like flyouts or menus. It will be lighter t
 
 #### Adaptive Color "Don'ts"
 
-The adaptive color system lives entirely in JavaScript, emitting CSS custom properties for styling purposes where appropriate. This means that you should consider the CSS custom properties emitted by color Design Tokens to be immutable. If you declare the CSS custom property in CSS, the adaptive Color System is unable to know that has happened and components will render with incorrect colors, which can lead to accessibility issues. If you need to change the values for those CSS custom properties, set the value using the [DesignToken.setValueFor()](/docs/design-systems/design-tokens#setting-values) API.
+The adaptive color system lives entirely in JavaScript, emitting CSS custom properties for styling purposes where appropriate. This means that you should consider the CSS custom properties emitted by color Design Tokens to be immutable. If you declare the CSS custom property in CSS, the adaptive Color System is unable to know that has happened and components will render with incorrect colors, which can lead to accessibility issues. If you need to change the values for those CSS custom properties, set the value using the [DesignToken.setValueFor()](./design-tokens.md#setting-values) API.

@@ -24,19 +24,8 @@ provideFASTDesignSystem()
 
 ## Usage
 
-The `fill` and `color` attributes of the *badge* create CSS custom properties which can be used to style the control.
-
-```css
-fast-badge {
-    --badge-fill-primary: #00FF00;
-    --badge-fill-danger: #FF0000;
-    --badge-color-light: #FFFFFF;
-    --badge-color-dark: #000000;
-}
-```
-
 ```html live
-<fast-badge fill="danger" color="dark">Danger</fast-badge>
+<fast-badge>New</fast-badge>
 ```
 
 ## Create your own design
@@ -56,40 +45,13 @@ export const myBadge = Badge.compose({
 
 
 
-### class: `Badge`
+### class: `FASTBadge`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
-
-#### Fields
-
-| Name                 | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| -------------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `fill`               | public  | `string`                              |         | Indicates the badge should have a filled style.                                                                                                                                     |                   |
-| `color`              | public  | `string`                              |         | Indicates the badge should have a filled style.                                                                                                                                     |                   |
-| `circular`           | public  | `boolean`                             |         | Indicates the element should be circular                                                                                                                                            |                   |
-| `generateBadgeStyle` | public  |                                       |         |                                                                                                                                                                                     |                   |
-| `$presentation`      | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`           | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`             | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
-
-#### Methods
-
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
-
-#### Attributes
-
-| Name    | Field    | Inherited From |
-| ------- | -------- | -------------- |
-| `fill`  | fill     |                |
-| `color` | color    |                |
-|         | circular |                |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### CSS Parts
 

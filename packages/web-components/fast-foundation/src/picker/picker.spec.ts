@@ -1,59 +1,80 @@
 import { expect } from "chai";
 import {
-    Picker,
-    PickerList,
-    PickerListItem,
+    FASTPicker,
+    FASTPickerList,
+    FASTPickerListItem,
     pickerListItemTemplate,
     pickerListTemplate,
-    PickerMenu,
-    PickerMenuOption,
+    FASTPickerMenu,
+    FASTPickerMenuOption,
     pickerMenuOptionTemplate,
     pickerMenuTemplate,
     pickerTemplate,
-} from "./index";
-import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
+} from "./index.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { Updates } from "@microsoft/fast-element";
 import {
-    keyArrowDown,
     keyArrowLeft,
     keyArrowRight,
-    keyArrowUp,
     keyBackspace,
     keyDelete,
-    keyEnd,
     keyEnter,
-    keyEscape,
-    keyHome,
 } from "@microsoft/fast-web-utilities";
+import { FASTAnchoredRegion, anchoredRegionTemplate } from "../anchored-region/index.js";
+import { FASTProgressRing, progressRingTemplate } from "../progress-ring/index.js";
 
-const FASTPickerList = PickerList.compose({
-    baseName: "picker-list",
-    template: pickerListTemplate,
+const anchoredRegionName = uniqueElementName();
+FASTAnchoredRegion.define({
+    name: anchoredRegionName,
+    template: anchoredRegionTemplate()
+});
+
+const pickerListName = uniqueElementName();
+FASTPickerList.define({
+    name: pickerListName,
+    template: pickerListTemplate(),
     shadowOptions: null,
-})
+});
 
-const FASTPickerListItem = PickerListItem.compose({
-    baseName: "picker-list-item",
-    template: pickerListItemTemplate
-})
+const pickerListItemName = uniqueElementName();
+FASTPickerListItem.define({
+    name: pickerListItemName,
+    template: pickerListItemTemplate()
+});
 
-const FASTPickerMenu = PickerMenu.compose({
-    baseName: "picker-menu",
-    template: pickerMenuTemplate
-})
+const pickerMenuName = uniqueElementName();
+FASTPickerMenu.define({
+    name: pickerMenuName,
+    template: pickerMenuTemplate()
+});
 
-const FASTPickerMenuOption = PickerMenuOption.compose({
-    baseName: "picker-menu-option",
-    template: pickerMenuOptionTemplate
-})
+const pickerMenuOptionName = uniqueElementName();
+FASTPickerMenuOption.define({
+    name: pickerMenuOptionName,
+    template: pickerMenuOptionTemplate()
+});
 
-const FASTPicker = Picker.compose({
-    baseName: "picker",
-    template: pickerTemplate,
+const progressRingName = uniqueElementName();
+FASTProgressRing.define({
+    name: progressRingName,
+    template: progressRingTemplate()
+});
+
+const pickerName = uniqueElementName();
+FASTPicker.define({
+    name: pickerName,
+    template: pickerTemplate({
+        anchoredRegion: anchoredRegionName,
+        pickerList: pickerListName,
+        pickerListItem: pickerListItemName,
+        pickerMenu: pickerMenuName,
+        pickerMenuOption: pickerMenuOptionName,
+        progressRing: progressRingName
+    }),
     shadowOptions: {
         delegatesFocus: true,
     },
-})
+});
 
 const enterEvent = new KeyboardEvent("keydown", {
     key: keyEnter,
@@ -83,42 +104,34 @@ const deleteEvent = new KeyboardEvent("keydown", {
 
 async function setupPicker() {
     const { element, connect, disconnect }: {
-        element: HTMLElement & Picker,
+        element: HTMLElement & FASTPicker,
         connect: () => void,
         disconnect: () => void
-    } = await fixture(
-        [
-            FASTPicker(),
-            FASTPickerList(),
-            FASTPickerListItem(),
-            FASTPickerMenu(),
-            FASTPickerMenuOption()
-        ]
-    );
+    } = await fixture<FASTPicker>(pickerName);
 
     return { element, connect, disconnect };
 }
 
 async function setupPickerList() {
-    const { element, connect, disconnect } = await fixture(FASTPickerList());
+    const { element, connect, disconnect } = await fixture<FASTPickerList>(pickerListName);
 
     return { element, connect, disconnect };
 }
 
 async function setupPickerListItem() {
-    const { element, connect, disconnect } = await fixture(FASTPickerListItem());
+    const { element, connect, disconnect } = await fixture<FASTPickerListItem>(pickerListItemName);
 
     return { element, connect, disconnect };
 }
 
 async function setupPickerMenu() {
-    const { element, connect, disconnect } = await fixture(FASTPickerMenu());
+    const { element, connect, disconnect } = await fixture<FASTPickerMenu>(pickerMenuName);
 
     return { element, connect, disconnect };
 }
 
 async function setupPickerMenuOption() {
-    const { element, connect, disconnect } = await fixture(FASTPickerMenuOption());
+    const { element, connect, disconnect } = await fixture<FASTPickerMenuOption>(pickerMenuOptionName);
 
     return { element, connect, disconnect };
 }
@@ -134,7 +147,7 @@ describe("Picker", () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
 
-        expect(element.listElement).to.be.instanceof(PickerList);
+        expect(element.listElement).to.be.instanceof(FASTPickerList);
 
         await disconnect();
     });
@@ -169,7 +182,7 @@ describe("Picker", () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
 
-        expect(element.menuElement).to.be.instanceof(PickerMenu);
+        expect(element.menuElement).to.be.instanceof(FASTPickerMenu);
 
         await disconnect();
     });
@@ -180,9 +193,9 @@ describe("Picker", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
-        expect(element.querySelectorAll("fast-picker-list-item").length).to.equal(3);
+        expect(element.querySelectorAll(pickerListItemName).length).to.equal(3);
 
         await disconnect();
     });
@@ -191,7 +204,7 @@ describe("Picker", () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         element.focus();
 
@@ -207,12 +220,12 @@ describe("Picker", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
         element.focus();
 
         expect(document.activeElement === element.inputElement).to.equal(true);
 
-        const listItems: Element[] = Array.from(element.querySelectorAll("fast-picker-list-item"));
+        const listItems: Element[] = Array.from(element.querySelectorAll(pickerListItemName));
 
         element.dispatchEvent(arrowLeftEvent);
         expect(document.activeElement === listItems[2]).to.equal(true);
@@ -248,22 +261,22 @@ describe("Picker", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
         element.focus();
 
-        let listItems: Element[] = Array.from(element.querySelectorAll("fast-picker-list-item"));
+        let listItems: Element[] = Array.from(element.querySelectorAll(pickerListItemName));
         expect(listItems.length).to.equal(3);
         expect(element.selection).to.equal("apples,oranges,bananas");
 
         element.dispatchEvent(backEvent);
-        await DOM.nextUpdate();
-        listItems = Array.from(element.querySelectorAll("fast-picker-list-item"));
+        await Updates.next();
+        listItems = Array.from(element.querySelectorAll(pickerListItemName));
         expect(listItems.length).to.equal(2);
         expect(element.selection).to.equal("apples,oranges");
 
         element.dispatchEvent(deleteEvent);
-        await DOM.nextUpdate();
-        listItems = Array.from(element.querySelectorAll("fast-picker-list-item"));
+        await Updates.next();
+        listItems = Array.from(element.querySelectorAll(pickerListItemName));
         expect(listItems.length).to.equal(1);
         expect(element.selection).to.equal("apples");
 
@@ -274,7 +287,7 @@ describe("Picker", () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal("bottom");
         expect(element.menuConfig.verticalScaling).to.equal("fill");
@@ -287,42 +300,42 @@ describe("Picker", () => {
         element.menuPlacement = "top-fill";
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal("top");
         expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
         expect(element.menuConfig.verticalScaling).to.equal("fill");
 
         element.menuPlacement = "top";
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal("top");
         expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
         expect(element.menuConfig.verticalScaling).to.equal("content");
 
         element.menuPlacement = "bottom";
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal("bottom");
         expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
         expect(element.menuConfig.verticalScaling).to.equal("content");
 
         element.menuPlacement = "bottom-fill";
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal("bottom");
         expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
         expect(element.menuConfig.verticalScaling).to.equal("fill");
 
         element.menuPlacement = "tallest-fill";
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal(undefined);
         expect(element.menuConfig.verticalPositioningMode).to.equal("dynamic");
         expect(element.menuConfig.verticalScaling).to.equal("fill");
 
         element.menuPlacement = "tallest";
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.menuConfig.verticalDefaultPosition).to.equal(undefined);
         expect(element.menuConfig.verticalPositioningMode).to.equal("dynamic");

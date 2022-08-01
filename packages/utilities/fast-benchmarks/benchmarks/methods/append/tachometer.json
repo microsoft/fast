@@ -1,0 +1,82 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
+    "sampleSize": 40,
+    "timeout": 0,
+    "benchmarks": [
+        {
+            "browser": {
+                "name": "chrome",
+                "headless": true
+            },
+            "name": "append data",
+            "measurement": [
+                {
+                    "mode": "performance",
+                    "entryName": "clickTrigger10x"
+                }
+            ],
+            "expand": [
+                {
+                    "name": "push-apply",
+                    "url": "benchmarks/methods/append/index.html?method=push-apply",
+                    "packageVersions": {
+                        "label": "1.9.0",
+                        "dependencies": {
+                            "@microsoft/fast-element": "1.9.0"
+                        }
+                    }
+                },
+                {
+                    "name": "push-spread",
+                    "url": "benchmarks/methods/append/index.html?method=push-spread",
+                    "packageVersions": {
+                        "label": "1.9.0",
+                        "dependencies": {
+                            "@microsoft/fast-element": "1.9.0"
+                        }
+                    }
+                },
+                {
+                    "name": "concat",
+                    "url": "benchmarks/methods/append/index.html?method=concat",
+                    "packageVersions": {
+                        "label": "1.9.0",
+                        "dependencies": {
+                            "@microsoft/fast-element": "1.9.0"
+                        }
+                    }
+                },
+                {
+                    "name": "spread",
+                    "url": "benchmarks/methods/append/index.html?method=spread",
+                    "packageVersions": {
+                        "label": "1.9.0",
+                        "dependencies": {
+                            "@microsoft/fast-element": "1.9.0"
+                        }
+                    }
+                },
+                {
+                    "name": "splice",
+                    "url": "benchmarks/methods/append/index.html?method=splice",
+                    "packageVersions": {
+                        "label": "1.9.0",
+                        "dependencies": {
+                            "@microsoft/fast-element": "1.9.0"
+                        }
+                    }
+                },
+                {
+                    "name": "unshift",
+                    "url": "benchmarks/methods/append/index.html?method=unshift",
+                    "packageVersions": {
+                        "label": "1.9.0",
+                        "dependencies": {
+                            "@microsoft/fast-element": "1.9.0"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

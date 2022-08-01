@@ -1,5 +1,7 @@
 import { expect } from "chai";
-import { FAST } from './platform';
+import type { FASTGlobal } from "./interfaces.js";
+
+declare const FAST: FASTGlobal;
 
 describe("The FAST global", () => {
     context("kernel API", () => {

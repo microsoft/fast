@@ -1,11 +1,12 @@
-import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
-import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
-import { applyMixins } from "../utilities/apply-mixins.js";
 import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
+    attr,
+    FASTElement,
+    observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
+import { isHTMLElement } from "@microsoft/fast-web-utilities";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * check if the item is a tree item
@@ -14,17 +15,19 @@ import {
  * determines if element is an HTMLElement and if it has the role treeitem
  */
 export function isTreeItemElement(el: Element): el is HTMLElement {
-    return isHTMLElement(el) && (el.getAttribute("role") as string) === "treeitem";
+    return (
+        isHTMLElement(el) &&
+        (el.getAttribute("role") === "treeitem" || el.tagName.includes("TREE-ITEM"))
+    );
 }
 
 /**
  * Tree Item configuration options
  * @public
  */
-export type TreeItemOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        expandCollapseGlyph?: string | SyntheticViewTemplate;
-    };
+export type TreeItemOptions = StartEndOptions & {
+    expandCollapseGlyph?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Tree item Custom HTML Element.
@@ -43,7 +46,7 @@ export type TreeItemOptions = FoundationElementDefinition &
  *
  * @public
  */
-export class TreeItem extends FoundationElement {
+export class FASTTreeItem extends FASTElement {
     /**
      * When true, the control will be appear expanded by user interaction.
      * @public
@@ -52,7 +55,7 @@ export class TreeItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public expanded: boolean = false;
-    private expandedChanged(): void {
+    protected expandedChanged(): void {
         if (this.$fastController.isConnected) {
             this.$emit("expanded-change", this);
         }
@@ -66,7 +69,7 @@ export class TreeItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public selected: boolean;
-    private selectedChanged(): void {
+    protected selectedChanged(): void {
         if (this.$fastController.isConnected) {
             this.$emit("selected-change", this);
         }
@@ -111,12 +114,12 @@ export class TreeItem extends FoundationElement {
      */
     @observable
     public items: HTMLElement[];
-    private itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
+    protected itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this.items.forEach((node: HTMLElement) => {
                 if (isTreeItemElement(node)) {
                     // TODO: maybe not require it to be a TreeItem?
-                    (node as TreeItem).nested = true;
+                    (node as FASTTreeItem).nested = true;
                 }
             });
         }
@@ -145,7 +148,7 @@ export class TreeItem extends FoundationElement {
      * @param el - the element to focus
      */
     public static focusItem(el: HTMLElement) {
-        (el as TreeItem).focusable = true;
+        (el as FASTTreeItem).focusable = true;
         el.focus();
     }
 
@@ -209,5 +212,5 @@ export class TreeItem extends FoundationElement {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface TreeItem extends StartEnd {}
-applyMixins(TreeItem, StartEnd);
+export interface FASTTreeItem extends StartEnd {}
+applyMixins(FASTTreeItem, StartEnd);

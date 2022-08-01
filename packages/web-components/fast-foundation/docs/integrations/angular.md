@@ -97,6 +97,28 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 }) 
 ```
 
+Moreover the "[(ngModel)]" might give you warnings that "Event can't be assigned to String", this can be fixed by importing FormsModule in the `app/app.module.ts` file like below which contains the above Code too for completeness: 
+```ts 
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppComponent } from './app.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule, FormsModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+
+})
+```
 To add a splash of style, replace the `app/app.component.css` file contents with this:
 
 ```css

@@ -5,7 +5,7 @@ import {
     pascalCase,
     spinalCase,
     startsWith,
-} from "./strings";
+} from "./strings.js";
 
 describe("format", (): void => {
     it("should correctly manage having too many parameters", (): void => {

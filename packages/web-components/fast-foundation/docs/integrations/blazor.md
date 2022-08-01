@@ -4,6 +4,8 @@ title: Blazor
 sidebar_label: Blazor
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/blazor.md
 description: FAST works seamlessly with Blazor, including integration with Blazor's binding engine and components. Let's take a look at how to set things up.
+keywords:
+  - blazor
 ---
 
 FAST works seamlessly with Blazor, including integration with Blazor's binding engine and components. Let's take a look at how to set things up.
@@ -255,7 +257,7 @@ Web component | Blazor component | Status | Remarks
 |[`<fluent-card>`](https://docs.microsoft.com/en-us/fluent-ui/web-components/components/card)|`<FluentCard>`|✔️|-|
 |[`<fluent-checkbox>`](https://docs.microsoft.com/en-us/fluent-ui/web-components/components/checkbox)|`<FluentCheckbox>`|✔️|-|
 |[`<fluent-combobox>`](https://docs.microsoft.com/en-us/fluent-ui/web-components/components/combobox)|`<FluentCombobox>`|✔️|-|
-|[`<fluent-data-grid>`](https://docs.microsoft.com/en-us/fluent-ui/web-components/components/grid)|`<FluentDataGrid>`|✔️|-|
+|[`<fluent-data-grid>`](https://docs.microsoft.com/en-us/fluent-ui/web-components/components/data-grid)|`<FluentDataGrid>`|✔️|-|
 |`<fluent-data-grid-cell>`|`<FluentDataGridCell>`|✔️|-|
 |`<fluent-data-grid-row>`|`<FluentDataGridRow>`|✔️|-|
 |[`<fluent-design-system-provider>`](https://docs.microsoft.com/en-us/fluent-ui/web-components/components/provider)|`<FluentDesignSystemProvider>`|✔️|-|

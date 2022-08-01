@@ -123,7 +123,7 @@ export class Person {
 
 ### External observation
 
-Decorated properties can be subscribed to, to receive notification of changes in the property value. The templating engine uses this, but you can also directly subscribe as well. Here's how you would subscribe to changes in the `name` property of a `Person` class:
+Decorated properties can be subscribed to, to receive notification of changes in the property value. The templating engine uses this, but you can also directly subscribe. Here's how you would subscribe to changes in the `name` property of a `Person` class:
 
 **Example: Subscribing to an Observable**
 

@@ -18,7 +18,7 @@ export { TextAreaResize };
  *
  * @public
  */
-export class TextArea extends FormAssociatedTextArea {
+export class FASTTextArea extends FormAssociatedTextArea {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -27,7 +27,7 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @attr({ mode: "boolean" })
     public readOnly: boolean;
-    private readOnlyChanged(): void {
+    protected readOnlyChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.readOnly = this.readOnly;
         }
@@ -56,7 +56,7 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @attr({ mode: "boolean" })
     public autofocus: boolean;
-    private autofocusChanged(): void {
+    protected autofocusChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.autofocus = this.autofocus;
         }
@@ -77,7 +77,7 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @attr
     public list: string;
-    private listChanged(): void {
+    protected listChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.setAttribute("list", this.list);
         }
@@ -91,7 +91,7 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @attr({ converter: nullableNumberConverter })
     public maxlength: number;
-    private maxlengthChanged(): void {
+    protected maxlengthChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.maxLength = this.maxlength;
         }
@@ -105,7 +105,7 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @attr({ converter: nullableNumberConverter })
     public minlength: number;
-    private minlengthChanged(): void {
+    protected minlengthChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.minLength = this.minlength;
         }
@@ -159,7 +159,7 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @attr({ mode: "boolean" })
     public spellcheck: boolean;
-    private spellcheckChanged(): void {
+    protected spellcheckChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.spellcheck = this.spellcheck;
         }
@@ -215,5 +215,5 @@ export class TextArea extends FormAssociatedTextArea {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface TextArea extends DelegatesARIATextbox {}
-applyMixins(TextArea, DelegatesARIATextbox);
+export interface FASTTextArea extends DelegatesARIATextbox {}
+applyMixins(FASTTextArea, DelegatesARIATextbox);

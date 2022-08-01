@@ -1,13 +1,28 @@
-import { children, elements, html, slotted } from "@microsoft/fast-element";
+import {
+    children,
+    elements,
+    ElementViewTemplate,
+    html,
+    slotted,
+} from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { ElementDefinitionContext } from "../design-system/registration-context.js";
-import type { DataGridRow } from "./data-grid-row.js";
-import { DataGridCell } from "./data-grid-cell.js";
+import { tagFor, TemplateElementDependency } from "../patterns/index.js";
+import type { FASTDataGridRow } from "./data-grid-row.js";
+import type { ColumnDefinition } from "./data-grid.js";
 
-function createCellItemTemplate(context: ElementDefinitionContext): ViewTemplate {
-    const cellTag = context.tagFor(DataGridCell);
-    return html`
+/**
+ * Options for data grid cells.
+ * @public
+ */
+export type CellItemTemplateOptions = {
+    dataGridCell: TemplateElementDependency;
+};
+
+function cellItemTemplate(
+    options: CellItemTemplateOptions
+): ViewTemplate<ColumnDefinition, FASTDataGridRow> {
+    const cellTag = tagFor(options.dataGridCell);
+    return html<ColumnDefinition, FASTDataGridRow>`
     <${cellTag}
         cell-type="${x => (x.isRowHeader ? "rowheader" : undefined)}"
         grid-column="${(x, c) => c.index + 1}"
@@ -17,9 +32,11 @@ function createCellItemTemplate(context: ElementDefinitionContext): ViewTemplate
 `;
 }
 
-function createHeaderCellItemTemplate(context: ElementDefinitionContext): ViewTemplate {
-    const cellTag = context.tagFor(DataGridCell);
-    return html`
+function headerCellItemTemplate(
+    options: CellItemTemplateOptions
+): ViewTemplate<ColumnDefinition, FASTDataGridRow> {
+    const cellTag = tagFor(options.dataGridCell);
+    return html<ColumnDefinition, FASTDataGridRow>`
     <${cellTag}
         cell-type="columnheader"
         grid-column="${(x, c) => c.index + 1}"
@@ -29,23 +46,20 @@ function createHeaderCellItemTemplate(context: ElementDefinitionContext): ViewTe
 }
 
 /**
- * Generates a template for the {@link @microsoft/fast-foundation#DataGridRow} component using
+ * Generates a template for the {@link @microsoft/fast-foundation#FASTDataGridRow} component using
  * the provided prefix.
  *
  * @public
  */
-export const dataGridRowTemplate: FoundationElementTemplate<ViewTemplate<DataGridRow>> = (
-    context,
-    definition
-) => {
-    const cellItemTemplate: ViewTemplate = createCellItemTemplate(context);
-    const headerCellItemTemplate: ViewTemplate = createHeaderCellItemTemplate(context);
-    return html<DataGridRow>`
+export function dataGridRowTemplate(
+    options: CellItemTemplateOptions
+): ElementViewTemplate<FASTDataGridRow> {
+    return html<FASTDataGridRow>`
         <template
             role="row"
-            class="${x => (x.rowType !== "default" ? x.rowType : "")}"
-            :defaultCellItemTemplate="${cellItemTemplate}"
-            :defaultHeaderCellItemTemplate="${headerCellItemTemplate}"
+            :classList="${x => (x.rowType !== "default" ? x.rowType : "")}"
+            :defaultCellItemTemplate="${cellItemTemplate(options)}"
+            :defaultHeaderCellItemTemplate="${headerCellItemTemplate(options)}"
             ${children({
                 property: "cellElements",
                 filter: elements(
@@ -56,4 +70,4 @@ export const dataGridRowTemplate: FoundationElementTemplate<ViewTemplate<DataGri
             <slot ${slotted("slottedCellElements")}></slot>
         </template>
     `;
-};
+}

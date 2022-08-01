@@ -1,11 +1,18 @@
-import { attr } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { attr, FASTElement } from "@microsoft/fast-element";
 
 /**
  * A structure representing skeleton shapes
  * @public
  */
-export type SkeletonShape = "rect" | "circle";
+export const SkeletonShape = {
+    rect: "rect",
+    circle: "circle",
+} as const;
+
+/**
+ * @public
+ */
+export type SkeletonShape = typeof SkeletonShape[keyof typeof SkeletonShape];
 
 /**
  * A Skeleton Custom HTML Element.
@@ -14,7 +21,7 @@ export type SkeletonShape = "rect" | "circle";
  *
  * @public
  */
-export class Skeleton extends FoundationElement {
+export class FASTSkeleton extends FASTElement {
     /**
      * Indicates the Skeleton should have a filled style.
      *
@@ -31,14 +38,14 @@ export class Skeleton extends FoundationElement {
      * @remarks
      * HTML Attribute: shape
      */
-    @attr public shape: SkeletonShape = "rect";
+    @attr public shape: SkeletonShape = SkeletonShape.rect;
 
     /**
      * Indicates that the component can accept a pattern URL.
      *
      * @public
      * @remarks
-     * HTML Attribute: shape
+     * HTML Attribute: pattern
      */
     @attr public pattern: string;
 

@@ -1,16 +1,17 @@
 import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
-import { fixture } from "../test-utilities/fixture";
-import { FlipperDirection } from "./flipper.options";
-import { Flipper, flipperTemplate as template } from "./index";
+import { Updates } from "@microsoft/fast-element";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { FlipperDirection } from "./flipper.options.js";
+import { FASTFlipper, flipperTemplate } from "./index.js";
 
-const FASTFlipper = Flipper.compose({
-    baseName: "flipper",
-    template
-})
+const flipperName = uniqueElementName();
+FASTFlipper.define({
+    name: flipperName,
+    template: flipperTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTFlipper());
+    const { element, connect, disconnect } = await fixture<FASTFlipper>(flipperName);
 
     return { element, connect, disconnect };
 }
@@ -54,7 +55,7 @@ describe("Flipper", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-hidden")).to.equal("true");
 
@@ -75,9 +76,9 @@ describe("Flipper", () => {
         const { element, connect, disconnect } = await setup();
 
         element.setAttribute("aria-hidden", "false");
-        
+
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("tabindex")).to.equal("0");
 
@@ -116,7 +117,7 @@ describe("Flipper", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.shadowRoot?.querySelector("span")?.classList.contains("next")

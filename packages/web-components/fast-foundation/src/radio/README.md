@@ -79,7 +79,31 @@ export const myRadio = Radio.compose<RadioOptions>({
 
 
 
-### class: `Radio`
+### class: `FormAssociatedRadio`
+
+#### Superclass
+
+| Name     | Module                             | Package |
+| -------- | ---------------------------------- | ------- |
+| `_Radio` | src/radio/radio.form-associated.ts |         |
+
+#### Mixins
+
+| Name                      | Module                                  | Package |
+| ------------------------- | --------------------------------------- | ------- |
+| `CheckableFormAssociated` | /src/form-associated/form-associated.js |         |
+
+#### Fields
+
+| Name    | Privacy | Type | Default | Description | Inherited From |
+| ------- | ------- | ---- | ------- | ----------- | -------------- |
+| `proxy` |         |      |         |             |                |
+
+<hr/>
+
+
+
+### class: `FASTRadio`
 
 #### Superclass
 
@@ -89,21 +113,19 @@ export const myRadio = Radio.compose<RadioOptions>({
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                 | Inherited From      |
-| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| `readOnly`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                     |
-| `name`          | public  | `string`                              |         | The name of the radio. See [name attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname) for more info.                                              |                     |
-| `proxy`         |         |                                       |         |                                                                                                                                                                                             | FormAssociatedRadio |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                     | FoundationElement   |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                  | FoundationElement   |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.         | FoundationElement   |
+| Name       | Privacy | Type      | Default | Description                                                                                                                                                                                 | Inherited From      |
+| ---------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `readOnly` | public  | `boolean` |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                     |
+| `name`     | public  | `string`  |         | The name of the radio. See [name attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname) for more info.                                              |                     |
+| `proxy`    |         |           |         |                                                                                                                                                                                             | FormAssociatedRadio |
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name              | Privacy   | Description                       | Parameters         | Return            | Inherited From |
+| ----------------- | --------- | --------------------------------- | ------------------ | ----------------- | -------------- |
+| `readOnlyChanged` | protected |                                   |                    | `void`            |                |
+| `keypressHandler` | public    | Handles key presses on the radio. | `e: KeyboardEvent` | `boolean or void` |                |
+| `clickHandler`    | public    | Handles clicks on the radio.      | `e: MouseEvent`    | `boolean or void` |                |
 
 #### Events
 

@@ -3,10 +3,12 @@ title: Components QuickStart
 sidebar_label: QuickStart
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/fast-foundation/getting-started.md
 description: The @microsoft/fast-components library contains Web Components built on top of our standard component and design system foundation.
+keywords:
+    - getting started
 ---
 
 [![License: MIT](/badges/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](/badges/fast-components.svg)](https://www.npmjs.com/package/@microsoft/fast-components)
+[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://www.npmjs.com/package/@microsoft/fast-components)
 
 The `@microsoft/fast-components` library contains Web Components built on top of our standard component and design system foundation. `@microsoft/fast-components` expresses the FAST design language (FAST Frame). 
 
@@ -54,7 +56,7 @@ When working with a tree-shaking supporting bundler such as Webpack or Rollup, y
 :::
 
 :::tip
-Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](/docs/integrations/introduction).
+Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](../integrations/introduction.md).
 :::
 
 ### From CDN
@@ -85,7 +87,7 @@ For simplicity, examples throughout the documentation will assume the library ha
 
 ## Add components
 
-With the components registered, add any component to the HTML. That's it! For a comprehensive list of all elements, see the [Components](/docs/components/accordion) section.
+With the components registered, add any component to the HTML. That's it! For a comprehensive list of all elements, see the [Components](./fast-accordion.mdx) section.
 
 ```html
 <!-- ... -->

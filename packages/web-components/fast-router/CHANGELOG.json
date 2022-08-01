@@ -2,6 +2,161 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Mon, 18 Jul 2022 21:10:01 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.4",
+      "version": "1.0.0-alpha.4",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-router",
+            "commit": "f164aa75e62ed71c9386902051c021f1fdfba364",
+            "comment": "refactor: reduce duplication in style normalization code scenarios"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.4",
+            "commit": "2ff46a32cdd9af12b236d0e2f3436a4de782e8ee"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 22 Jun 2022 20:17:50 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.3",
+      "version": "1.0.0-alpha.3",
+      "comments": {
+        "prerelease": [
+          {
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.3",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f28cdb9fdba9cb27904acfad7444de82d447f39e",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Jun 2022 17:41:10 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.2",
+      "version": "1.0.0-alpha.2",
+      "comments": {
+        "prerelease": [
+          {
+            "comment": "chore: fix package.json type fields",
+            "author": "roeisenb@microsoft.com",
+            "commit": "e86a638b9e84cbf36d950025889742944e68e512",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 01 Jun 2022 17:53:14 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.1",
+      "version": "1.0.0-alpha.1",
+      "comments": {
+        "prerelease": [
+          {
+            "comment": "fix: update router to work with new template primitives",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-router"
+          },
+          {
+            "comment": "fix: update router to new directive APIs.",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-router"
+          },
+          {
+            "comment": "chore: remove rollup of router",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-router"
+          },
+          {
+            "comment": "Upgrade TypeScript",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-router"
+          },
+          {
+            "comment": "Set prerelease version",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "5b313a3262b977acbee3c2efac87d0d14a82f792",
+            "package": "@microsoft/fast-router"
+          },
+          {
+            "comment": "chore: configure fast-router for internals stripping",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-router"
+          },
+          {
+            "comment": "refactor: new design for execution context",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-router"
+          },
+          {
+            "comment": "Update the fast-router with the updates to fast-element 2.0 APIs",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-router"
+          },
+          {
+            "comment": "fix: update to latest fast-element utilities",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-router"
+          },
+          {
+            "comment": "Fixed an updated export from FAST element 2.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-router"
+          }
+        ],
+        "none": [
+          {
+            "comment": "update api extractor and typescript to use the latest versions",
+            "author": "chhol@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-router"
+          },
+          {
+            "comment": "docs: update a few readme files",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-router"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.1",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 29 May 2022 07:08:52 GMT",
+      "tag": "@microsoft/fast-router_v0.4.2",
+      "version": "0.4.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.10.2",
+            "author": "steph@huynhicode.dev",
+            "commit": "283b4838d46ed83c70ff4ad91f7f72a4936d59bf",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 24 May 2022 07:10:02 GMT",
       "tag": "@microsoft/fast-router_v0.4.2",
       "version": "0.4.2",

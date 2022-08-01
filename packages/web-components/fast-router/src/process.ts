@@ -75,14 +75,14 @@ class NavigationPhaseImpl<TSettings = any> implements NavigationCommitPhase<TSet
 }
 
 /**
- * @alpha
+ * @beta
  */
 export interface NavigationProcess {
     run(router: Router, message: NavigationMessage): Promise<void>;
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class DefaultNavigationProcess<TSettings> {
     private phases: NavigationPhaseName[] = [

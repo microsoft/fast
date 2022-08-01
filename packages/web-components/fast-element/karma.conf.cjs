@@ -1,5 +1,4 @@
 const path = require("path");
-
 const basePath = path.resolve(__dirname);
 
 const commonChromeFlags = [
@@ -44,9 +43,9 @@ module.exports = function (config) {
             require("karma-chrome-launcher"),
             require("karma-firefox-launcher"),
         ],
-        files: [`dist/esm/__test__/${setup}.js`],
+        files: [`dist/esm/__test__/${setup}.cjs`],
         preprocessors: {
-            [`dist/esm/__test__/${setup}.js`]: ["webpack", "sourcemap"],
+            [`dist/esm/__test__/${setup}.cjs`]: ["webpack", "sourcemap"],
         },
         webpackMiddleware: {
             // webpack-dev-middleware configuration
@@ -54,7 +53,7 @@ module.exports = function (config) {
             stats: "errors-only",
         },
         webpack: {
-            mode: "none",
+            mode: "development",
             resolve: {
                 extensions: [".js"],
                 modules: ["dist", "node_modules"],
@@ -65,12 +64,8 @@ module.exports = function (config) {
                 hints: false,
             },
             optimization: {
-                namedModules: false,
-                namedChunks: false,
-                nodeEnv: false,
                 usedExports: true,
                 flagIncludedChunks: false,
-                occurrenceOrder: false,
                 sideEffects: true,
                 concatenateModules: true,
                 splitChunks: {
@@ -89,14 +84,8 @@ module.exports = function (config) {
                     },
                     {
                         test: /\.js$/,
-                        use: [
-                            {
-                                loader: "source-map-loader",
-                                options: {
-                                    enforce: "pre",
-                                },
-                            },
-                        ],
+                        use: ["source-map-loader"],
+                        enforce: "pre",
                     },
                 ],
             },
@@ -125,7 +114,7 @@ module.exports = function (config) {
                 timeout: 5000,
             },
         },
-        logLevel: config.LOG_ERROR, // to disable the WARN 404 for image requests
+        logLevel: config.LOG_ERROR, // to disable the WARN 404 for image requests,
     };
 
     if (config.coverage) {

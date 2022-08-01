@@ -1,8 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
-import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
@@ -14,7 +10,7 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * Anchor configuration options
  * @public
  */
-export type AnchorOptions = FoundationElementDefinition & StartEndOptions;
+export type AnchorOptions = StartEndOptions;
 
 /**
  * An Anchor Custom HTML Element.
@@ -28,7 +24,7 @@ export type AnchorOptions = FoundationElementDefinition & StartEndOptions;
  *
  * @public
  */
-export class Anchor extends FoundationElement {
+export class FASTAnchor extends FASTElement {
     /**
      * Prompts the user to save the linked URL. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
      * @public
@@ -174,5 +170,5 @@ applyMixins(DelegatesARIALink, ARIAGlobalStatesAndProperties);
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Anchor extends StartEnd, DelegatesARIALink {}
-applyMixins(Anchor, StartEnd, DelegatesARIALink);
+export interface FASTAnchor extends StartEnd, DelegatesARIALink {}
+applyMixins(FASTAnchor, StartEnd, DelegatesARIALink);

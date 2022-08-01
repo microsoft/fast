@@ -1,27 +1,23 @@
 import {
     attr,
     booleanConverter,
-    DOM,
+    FASTElement,
     nullableNumberConverter,
     observable,
+    Updates,
 } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element/foundation-element.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/index.js";
 import type { ResizeObserverClassDefinition } from "../utilities/resize-observer.js";
 
 /**
- * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
+ * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)}
  * @public
  */
 export type HorizontalScrollView = "default" | "mobile";
 
 /**
- * The easing types available for the horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
+ * The easing types available for the horizontal-scroll {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)}
  * @public
  */
 export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | string;
@@ -30,23 +26,10 @@ export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | s
  * Horizontal scroll configuration options
  * @public
  */
-export type HorizontalScrollOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        nextFlipper?:
-            | FoundationElementTemplate<
-                  SyntheticViewTemplate<any, HorizontalScroll>,
-                  HorizontalScrollOptions
-              >
-            | SyntheticViewTemplate
-            | string;
-        previousFlipper?:
-            | FoundationElementTemplate<
-                  SyntheticViewTemplate<any, HorizontalScroll>,
-                  HorizontalScrollOptions
-              >
-            | SyntheticViewTemplate
-            | string;
-    };
+export type HorizontalScrollOptions = StartEndOptions & {
+    nextFlipper?: SyntheticViewTemplate | string;
+    previousFlipper?: SyntheticViewTemplate | string;
+};
 
 /**
  * A HorizontalScroll Custom HTML Element
@@ -65,7 +48,7 @@ export type HorizontalScrollOptions = FoundationElementDefinition &
  *
  * @public
  */
-export class HorizontalScroll extends FoundationElement {
+export class FASTHorizontalScroll extends FASTElement {
     /**
      * Reference to DOM element that scrolls the content
      * @public
@@ -237,7 +220,7 @@ export class HorizontalScroll extends FoundationElement {
      */
     public scrollItemsChanged(previous: HTMLElement[], next: HTMLElement[]) {
         if (next && !this.updatingItems) {
-            DOM.queueUpdate(() => this.setStops());
+            Updates.enqueue(() => this.setStops());
         }
     }
 
@@ -295,11 +278,19 @@ export class HorizontalScroll extends FoundationElement {
      */
     private setStops(): void {
         this.updateScrollStops();
-        this.width = this.offsetWidth;
+        const { scrollContainer: container } = this;
+        const { scrollLeft } = container;
+        const {
+            width: containerWidth,
+            left: containerLeft,
+        } = container.getBoundingClientRect();
+        this.width = containerWidth;
         let lastStop: number = 0;
         let stops: number[] = this.scrollItems
-            .map(({ offsetLeft: left, offsetWidth: width }, index: number): number => {
-                const right: number = left + width;
+            .map((item, index: number): number => {
+                const { left, width } = item.getBoundingClientRect();
+                const leftPosition = Math.round(left + scrollLeft - containerLeft);
+                const right: number = Math.round(leftPosition + width);
 
                 if (this.isRtl) {
                     return -right;
@@ -307,7 +298,7 @@ export class HorizontalScroll extends FoundationElement {
 
                 lastStop = right;
 
-                return index === 0 ? 0 : left;
+                return index === 0 ? 0 : leftPosition;
             })
             .concat(lastStop);
 
@@ -351,6 +342,49 @@ export class HorizontalScroll extends FoundationElement {
                 "disabled",
                 Math.abs(position) + this.width >= lastStop
             );
+        }
+    }
+
+    /**
+     * Function that can scroll an item into view.
+     * @param item - An item index, a scroll item or a child of one of the scroll items
+     * @param padding - Padding of the viewport where the active item shouldn't be
+     * @param rightPadding - Optional right padding. Uses the padding if not defined
+     *
+     * @public
+     */
+    public scrollInView(
+        item: HTMLElement | number,
+        padding: number = 0,
+        rightPadding?: number
+    ): void {
+        if (typeof item !== "number" && item) {
+            item = this.scrollItems.findIndex(
+                scrollItem =>
+                    scrollItem === item || scrollItem.contains(item as HTMLElement)
+            );
+        }
+        if (item !== undefined) {
+            rightPadding = rightPadding ?? padding;
+            const { scrollContainer: container, scrollStops, scrollItems: items } = this;
+            const { scrollLeft } = this.scrollContainer;
+            const { width: containerWidth } = container.getBoundingClientRect();
+            const itemStart = scrollStops[item];
+            const { width } = items[item].getBoundingClientRect();
+            const itemEnd = itemStart + width;
+
+            const isBefore = scrollLeft + padding > itemStart;
+
+            if (isBefore || scrollLeft + containerWidth - rightPadding < itemEnd) {
+                const stops = [...scrollStops].sort((a, b) => (isBefore ? b - a : a - b));
+                const scrollTo =
+                    stops.find(position =>
+                        isBefore
+                            ? position + padding < itemStart
+                            : position + containerWidth - (rightPadding ?? 0) > itemEnd
+                    ) ?? 0;
+                this.scrollToPosition(scrollTo);
+            }
         }
     }
 
@@ -502,10 +536,10 @@ export class HorizontalScroll extends FoundationElement {
             this.resizeTimeout = clearTimeout(this.resizeTimeout);
         }
 
-        this.resizeTimeout = setTimeout(() => {
-            this.width = this.offsetWidth;
+        this.resizeTimeout = (setTimeout(() => {
+            this.width = this.scrollContainer.offsetWidth;
             this.setFlippers();
-        }, this.frameTime);
+        }, this.frameTime) as any) as number;
     }
 
     /**
@@ -517,8 +551,8 @@ export class HorizontalScroll extends FoundationElement {
             this.scrollTimeout = clearTimeout(this.scrollTimeout);
         }
 
-        this.scrollTimeout = setTimeout(() => {
+        this.scrollTimeout = (setTimeout(() => {
             this.setFlippers();
-        }, this.frameTime);
+        }, this.frameTime) as any) as number;
     }
 }

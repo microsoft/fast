@@ -114,6 +114,9 @@ module.exports = {
                 "integrations/blazor",
                 "integrations/ember",
                 "integrations/react",
+                "integrations/rollup",
+                "integrations/svelte",
+                "integrations/vite",
                 "integrations/vue",
                 "integrations/webpack",
             ],
@@ -143,6 +146,7 @@ module.exports = {
                     customProps: {
                         description:
                             "Exlore the classes and functions of fast-animation.",
+                        keywords: ["fast-animation"],
                     },
                 },
                 {
@@ -151,6 +155,7 @@ module.exports = {
                     customProps: {
                         description:
                             "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-colors.",
+                        keywords: ["fast-colors"],
                     },
                 },
                 {
@@ -159,6 +164,7 @@ module.exports = {
                     customProps: {
                         description:
                             "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-components.",
+                        keywords: ["fast-components"],
                     },
                 },
                 {
@@ -167,6 +173,7 @@ module.exports = {
                     customProps: {
                         description:
                             "Explore the classes, functions, interfaces, variables, and type aliases of fast-element.",
+                        keywords: ["fast-element"],
                     },
                 },
                 {
@@ -175,6 +182,16 @@ module.exports = {
                     customProps: {
                         description:
                             "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-foundation.",
+                        keywords: ["fast-foundation"],
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-ssr",
+                    customProps: {
+                        description:
+                            "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-ssr.",
+                        keywords: ["fast-ssr"],
                     },
                 },
             ],

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { inRange, limit, wrapInBounds } from "./numbers";
+import { inRange, limit, wrapInBounds } from "./numbers.js";
 
 describe("wrapInBounds", () => {
     it("should return `min` if `value` is greater than `max`", () => {

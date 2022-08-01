@@ -9,6 +9,9 @@ import {
 } from "@microsoft/fast-element";
 import SubtractIcon from "../../assets/subtract.svg";
 import { UIDesignTokenValue } from "../../ui-controller";
+import { DesignTokenField } from "../design-token-field";
+
+DesignTokenField;
 
 const template = html<DesignTokensForm>`
     <ul>
@@ -67,7 +70,7 @@ export class DesignTokensForm extends FASTElement {
 
     changeHandler(token: UIDesignTokenValue, e: CustomEvent) {
         token.value = e.detail;
-        this.$emit("tokenchange", token);
+        this.$emit("tokenChange", token);
     }
 
     detachHandler(token: UIDesignTokenValue) {
