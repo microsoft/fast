@@ -278,11 +278,19 @@ export class FASTHorizontalScroll extends FASTElement {
      */
     private setStops(): void {
         this.updateScrollStops();
-        this.width = this.offsetWidth;
+        const { scrollContainer: container } = this;
+        const { scrollLeft } = container;
+        const {
+            width: containerWidth,
+            left: containerLeft,
+        } = container.getBoundingClientRect();
+        this.width = containerWidth;
         let lastStop: number = 0;
         let stops: number[] = this.scrollItems
-            .map(({ offsetLeft: left, offsetWidth: width }, index: number): number => {
-                const right: number = left + width;
+            .map((item, index: number): number => {
+                const { left, width } = item.getBoundingClientRect();
+                const leftPosition = Math.round(left + scrollLeft - containerLeft);
+                const right: number = Math.round(leftPosition + width);
 
                 if (this.isRtl) {
                     return -right;
@@ -290,7 +298,7 @@ export class FASTHorizontalScroll extends FASTElement {
 
                 lastStop = right;
 
-                return index === 0 ? 0 : left;
+                return index === 0 ? 0 : leftPosition;
             })
             .concat(lastStop);
 
@@ -358,22 +366,22 @@ export class FASTHorizontalScroll extends FASTElement {
         }
         if (item !== undefined) {
             rightPadding = rightPadding ?? padding;
-            const { scrollLeft, offsetWidth } = this.scrollContainer;
-            const itemStart = this.scrollStops[item];
-            const { offsetWidth: width } = this.scrollItems[item];
+            const { scrollContainer: container, scrollStops, scrollItems: items } = this;
+            const { scrollLeft } = this.scrollContainer;
+            const { width: containerWidth } = container.getBoundingClientRect();
+            const itemStart = scrollStops[item];
+            const { width } = items[item].getBoundingClientRect();
             const itemEnd = itemStart + width;
 
             const isBefore = scrollLeft + padding > itemStart;
 
-            if (isBefore || scrollLeft + offsetWidth - rightPadding < itemEnd) {
-                const stops = [...this.scrollStops].sort((a, b) =>
-                    isBefore ? b - a : a - b
-                );
+            if (isBefore || scrollLeft + containerWidth - rightPadding < itemEnd) {
+                const stops = [...scrollStops].sort((a, b) => (isBefore ? b - a : a - b));
                 const scrollTo =
                     stops.find(position =>
                         isBefore
                             ? position + padding < itemStart
-                            : position + offsetWidth - (rightPadding ?? 0) > itemEnd
+                            : position + containerWidth - (rightPadding ?? 0) > itemEnd
                     ) ?? 0;
                 this.scrollToPosition(scrollTo);
             }
@@ -529,7 +537,7 @@ export class FASTHorizontalScroll extends FASTElement {
         }
 
         this.resizeTimeout = (setTimeout(() => {
-            this.width = this.offsetWidth;
+            this.width = this.scrollContainer.offsetWidth;
             this.setFlippers();
         }, this.frameTime) as any) as number;
     }

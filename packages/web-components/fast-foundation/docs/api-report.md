@@ -662,12 +662,7 @@ export class FASTAnchoredRegion extends FASTElement {
 
 // @public
 export class FASTAvatar extends FASTElement {
-    color: string;
-    connectedCallback(): void;
-    fill: string;
     link: string;
-    // Warning: (ae-forgotten-export) The symbol "AvatarShape" needs to be exported by the entry point index.d.ts
-    shape: AvatarShape;
 }
 
 // @public
