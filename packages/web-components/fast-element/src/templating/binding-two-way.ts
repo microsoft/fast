@@ -57,6 +57,7 @@ export const TwoWaySettings = Object.freeze({
 class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     implements ExpressionObserver<TSource, TReturn, TParent> {
     private notifier: ExpressionObserver;
+    private isNotBound = true;
 
     target!: HTMLElement;
     source!: any;
@@ -82,13 +83,17 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
                 twoWaySettings.determineChangeEvent(this.directive, this.target);
         }
 
-        this.target.addEventListener(this.changeEvent, this);
-        controller.onUnbind(this);
+        if (this.isNotBound) {
+            this.target.addEventListener(this.changeEvent, this);
+            controller.onUnbind(this);
+            this.isNotBound = false;
+        }
 
         return this.notifier.bind(controller);
     }
 
     unbind(controller: ExpressionController<TSource, TParent>): void {
+        this.isNotBound = true;
         this.target.removeEventListener(this.changeEvent, this);
     }
 

@@ -52,18 +52,25 @@ export const Signal = Object.freeze({
 });
 
 class SignalObserver<TSource = any, TReturn = any, TParent = any> implements Subscriber {
+    private isNotBound = true;
+
     constructor(
         private readonly dataBinding: SignalBinding,
         private readonly subscriber: Subscriber
     ) {}
 
     bind(controller: ExpressionController<TSource, TParent>): TReturn {
-        Signal.subscribe(this.getSignal(controller), this);
-        controller.onUnbind(this);
+        if (this.isNotBound) {
+            Signal.subscribe(this.getSignal(controller), this);
+            controller.onUnbind(this);
+            this.isNotBound = false;
+        }
+
         return this.dataBinding.evaluate(controller.source, controller.context);
     }
 
     unbind(controller: ExpressionController<TSource, TParent>) {
+        this.isNotBound = true;
         Signal.unsubscribe(this.getSignal(controller), this);
     }
 

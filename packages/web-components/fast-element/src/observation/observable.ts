@@ -199,6 +199,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         public needsRefresh: boolean = true;
         private needsQueue: boolean = true;
         private isAsync = true;
+        private isNotBound = true;
 
         private first: SubscriptionRecord = this as any;
         private last: SubscriptionRecord | null = null;
@@ -220,11 +221,16 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         }
 
         public bind(controller: ExpressionController) {
-            controller.onUnbind(this);
+            if (this.isNotBound) {
+                controller.onUnbind(this);
+                this.isNotBound = false;
+            }
+
             return this.observe(controller.source, controller.context);
         }
 
         public unbind(controller: ExpressionController) {
+            this.isNotBound = true;
             this.dispose();
         }
 

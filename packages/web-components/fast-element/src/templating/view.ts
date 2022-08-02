@@ -100,9 +100,7 @@ export class HTMLView<TSource = any, TParent = any>
         SyntheticView<TSource, TParent>,
         ExecutionContext<TParent> {
     private behaviors: ViewBehavior[] | null = null;
-    private unbindables: Set<{
-        unbind(controller: ViewController<TSource, TParent>);
-    }> | null = null;
+    private unbindables: { unbind(controller: ViewController) }[] = [];
 
     /**
      * The data that the view is bound to.
@@ -285,11 +283,7 @@ export class HTMLView<TSource = any, TParent = any>
     public onUnbind(behavior: {
         unbind(controller: ViewController<TSource, TParent>);
     }): void {
-        if (this.unbindables === null) {
-            this.unbindables = new Set();
-        }
-
-        this.unbindables.add(behavior);
+        this.unbindables.push(behavior);
     }
 
     /**
@@ -342,13 +336,13 @@ export class HTMLView<TSource = any, TParent = any>
     }
 
     private evaluateUnbindables() {
-        if (this.unbindables === null) {
-            return;
+        const unbindables = this.unbindables;
+
+        for (let i = 0, ii = unbindables.length; i < ii; ++i) {
+            unbindables[i].unbind(this);
         }
 
-        for (const unbindable of this.unbindables) {
-            unbindable.unbind(this as any);
-        }
+        unbindables.length = 0;
     }
 
     /**
