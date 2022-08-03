@@ -66,7 +66,7 @@ export class FASTTooltip extends FASTElement {
      * @public
      * HTML Attribute: delay
      */
-    @attr({ converter: nullableNumberConverter })
+    @attr({ attribute: "delay", converter: nullableNumberConverter })
     public delay: number = 300;
 
     /**
