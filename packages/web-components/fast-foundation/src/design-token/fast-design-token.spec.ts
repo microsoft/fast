@@ -68,8 +68,7 @@ describe("A DesignToken", () => {
 
     describe("that is a CSSDesignToken", () => {
         it("should have a createCSS() method that returns a string with the name property formatted as a CSS variable", () => {
-            const add = () => void 0;
-            expect(DesignToken.create<number>("implicit").createCSS(add)).to.equal("var(--implicit)");
+            expect(DesignToken.create<number>("implicit").createCSS()).to.equal("var(--implicit)");
         });
         it("should have a readonly cssCustomProperty property that is the name formatted as a CSS custom property", () => {
             expect(DesignToken.create<number>("implicit").cssCustomProperty).to.equal("--implicit");

@@ -4,10 +4,8 @@
 
 ```ts
 
-import { AddBehavior } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
 import type { CaptureType } from '@microsoft/fast-element';
-import { ComposableStyles } from '@microsoft/fast-element';
 import { composedContains } from '@microsoft/fast-element/utilities';
 import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
@@ -265,10 +263,8 @@ export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElemen
 // @public (undocumented)
 export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
     constructor(configuration: CSSDesignTokenConfiguration);
-    // (undocumented)
-    createCSS(add: AddBehavior): ComposableStyles;
-    // (undocumented)
-    cssCustomProperty: string;
+    createCSS(): string;
+    readonly cssCustomProperty: string;
 }
 
 // @public (undocumented)
@@ -477,7 +473,6 @@ export type DerivedDesignTokenValue<T> = (resolve: DesignTokenResolver) => T;
 
 // @public (undocumented)
 export class DesignToken<T> {
-    // (undocumented)
     get $value(): T | undefined;
     constructor(configuration: DesignTokenConfiguration);
     // (undocumented)
@@ -486,29 +481,18 @@ export class DesignToken<T> {
     static create<T>(config: DesignTokenConfiguration): DesignToken<T>;
     // (undocumented)
     static create<T>(config: CSSDesignTokenConfiguration): CSSDesignToken<T>;
-    // (undocumented)
     get default(): T | undefined;
-    // (undocumented)
     deleteValueFor(target: FASTElement): this;
-    // (undocumented)
     getValueFor(target: FASTElement): T;
-    // (undocumented)
     name: string;
     static registerRoot(target?: FASTElement | Document): void;
     // Warning: (ae-forgotten-export) The symbol "DesignTokenValue" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
     setValueFor(target: FASTElement, value: DesignToken<T> | DesignTokenValue<T>): void;
-    // (undocumented)
     subscribe(subscriber: DesignTokenSubscriber<this>): void;
     static unregisterRoot(target?: FASTElement | Document): void;
-    // (undocumented)
     unsubscribe(subscriber: DesignTokenSubscriber<this>): void;
-    // (undocumented)
     withDefault(value: DesignToken<T> | DesignTokenValue<T>): this;
     // Warning: (ae-forgotten-export) The symbol "DesignTokenResolutionStrategy" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
     static withStrategy(strategy: DesignTokenResolutionStrategy): void;
 }
 

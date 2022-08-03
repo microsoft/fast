@@ -71,10 +71,21 @@ export interface CSSDesignTokenConfiguration extends DesignTokenConfiguration {
  * @public
  */
 export class DesignToken<T> {
+    /**
+     * The name of the {@link DesignToken}
+     */
     public name: string;
+
+    /**
+     * The default value of the token (alias of {@link DesignToken.default})
+     */
     public get $value() {
         return this.default;
     }
+
+    /**
+     * The default value of the token, or undefined if it has not been set.
+     */
     public get default(): T | undefined {
         return FASTDesignTokenNode.defaultNode.getTokenValue(this);
     }
@@ -103,6 +114,10 @@ export class DesignToken<T> {
         );
     }
 
+    /**
+     *
+     * @param name - Factory function for creating a {@link DesignToken} or {@link CSSDesignToken}
+     */
     public static create<T>(name: string): CSSDesignToken<T>;
     public static create<T>(config: DesignTokenConfiguration): DesignToken<T>;
     public static create<T>(config: CSSDesignTokenConfiguration): CSSDesignToken<T>;
@@ -116,6 +131,9 @@ export class DesignToken<T> {
         }
     }
 
+    /**
+     * Configures the strategy for resolving hierarchial relationships between FASTElement targets.
+     */
     public static withStrategy(strategy: DesignTokenResolutionStrategy): void {
         FASTDesignTokenNode.withStrategy(strategy);
     }
@@ -138,10 +156,17 @@ export class DesignToken<T> {
     public static unregisterRoot(target: FASTElement | Document = document) {
         RootStyleSheetTarget.unregisterRoot(target);
     }
+
+    /**
+     * Retrieves the value of the token for a target element.
+     */
     public getValueFor(target: FASTElement): T {
         return FASTDesignTokenNode.getOrCreate(target).getTokenValue(this);
     }
 
+    /**
+     * Sets the value of the token for a target element.
+     */
     public setValueFor(
         target: FASTElement,
         value: DesignToken<T> | DesignTokenValue<T>
@@ -152,20 +177,32 @@ export class DesignToken<T> {
         );
     }
 
+    /**
+     * Deletes the value of the token for a target element.
+     */
     public deleteValueFor(target: FASTElement): this {
         FASTDesignTokenNode.getOrCreate(target).deleteTokenValue(this);
         return this;
     }
 
+    /**
+     * Sets the default value of the token.
+     */
     public withDefault(value: DesignToken<T> | DesignTokenValue<T>): this {
         FASTDesignTokenNode.defaultNode.setTokenValue(this, this.normalizeValue(value));
         return this;
     }
 
+    /**
+     * Subscribes a subscriber to notifications for the token.
+     */
     public subscribe(subscriber: DesignTokenSubscriber<this>): void {
         this.subscribers.subscribe(subscriber);
     }
 
+    /**
+     * Unsubscribes a subscriber to notifications for the token.
+     */
     public unsubscribe(subscriber: DesignTokenSubscriber<this>): void {
         this.subscribers.unsubscribe(subscriber);
     }
@@ -209,10 +246,16 @@ export class DesignToken<T> {
  */
 @cssDirective()
 export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
-    public cssCustomProperty: string;
+    /**
+     * The CSS Custom property name of the token.
+     */
+    public readonly cssCustomProperty: string;
     private cssVar: string;
 
-    public createCSS(add: AddBehavior): ComposableStyles {
+    /**
+     * The DesignToken represented as a string that can be used in CSS.
+     */
+    public createCSS(): string {
         return this.cssVar;
     }
     private cssReflector: Subscriber = {
