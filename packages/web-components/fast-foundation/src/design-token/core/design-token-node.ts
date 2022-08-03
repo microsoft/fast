@@ -168,6 +168,9 @@ export class DesignTokenNode {
         return typeof value === "function";
     }
 
+    /**
+     * Determines if a token has a derived value for a node.
+     */
     private static isDerivedFor<T>(node: DesignTokenNode, token: DesignToken<T>) {
         return node._derived.has(token);
     }
@@ -208,7 +211,7 @@ export class DesignTokenNode {
     }
 
     /**
-     * Resolves the local value for a token if it exists, otherwise returns undefined.
+     * Resolves the local value for a token if it is assigned, otherwise returns undefined.
      */
     private static getLocalTokenValue<T>(
         node: DesignTokenNode,
@@ -294,7 +297,10 @@ export class DesignTokenNode {
         return node._values.has(token);
     }
 
-    public get parent() {
+    /**
+     * The parent node
+     */
+    public get parent(): DesignTokenNode | null {
         return this._parent;
     }
 
@@ -347,8 +353,9 @@ export class DesignTokenNode {
     }
 
     /**
-     * Dispose of the node, removes parent/child relationships and
-     * unsubscribes all binding subscribers.
+     * Dispose of the node, removing parent/child relationships and
+     * unsubscribing all observable binding subscribers. Does not emit
+     * notifications.
      */
     public dispose() {
         if (this.parent) {
@@ -361,6 +368,9 @@ export class DesignTokenNode {
         }
     }
 
+    /**
+     * Sets a token to a value
+     */
     public setTokenValue<T>(token: DesignToken<T>, value: DesignTokenValue<T>) {
         const changeType =
             DesignTokenNode.isAssigned(this, token) ||
@@ -426,6 +436,9 @@ export class DesignTokenNode {
         DesignTokenNode.notify();
     }
 
+    /**
+     * Returns the resolve value for a token
+     */
     public getTokenValue<T>(token: DesignToken<T>): T {
         /* eslint-disable-next-line */
         let node: DesignTokenNode | null = this;
@@ -452,6 +465,9 @@ export class DesignTokenNode {
         }
     }
 
+    /**
+     * Deletes the token value for a node
+     */
     public deleteTokenValue<T>(token: DesignToken<T>): void {
         if (DesignTokenNode.isAssigned(this, token)) {
             const prev = DesignTokenNode.getLocalTokenValue(this, token);
