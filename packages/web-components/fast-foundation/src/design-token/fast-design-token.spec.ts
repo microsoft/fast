@@ -577,52 +577,6 @@ describe("A DesignToken", () => {
                 expect(tokenC.getValueFor(child)).to.equal(16);
                 expect(window.getComputedStyle(child).getPropertyValue(tokenC.cssCustomProperty)).to.equal("16");
         });
-        it("should update tokens when an element for which a token with static dependencies is set is appended to the DOM", async () => {
-            const tokenA = DesignToken.create<number>("token-a");
-            const tokenB = DesignToken.create<number>("token-b");
-
-            tokenA.withDefault(6);
-            tokenB.withDefault(( resolve ) => resolve( tokenA ) * 2);
-
-            const element = createElement();
-
-            tokenA.setValueFor(element, 7);
-
-            document.body.appendChild(element);
-
-            await Updates.next();
-
-            expect(tokenB.getValueFor(element)).to.equal(14)
-            expect(window.getComputedStyle(element).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
-        });
-        it("should update tokens and notify when an element for which a token with dynamic dependencies is set is appended to the DOM", async () => {
-            const tokenA = DesignToken.create<number>("token-a");
-            const tokenB = DesignToken.create<number>("token-b");
-
-            tokenA.withDefault(() => 6);
-            tokenB.withDefault(resolve => resolve( tokenA ) * 2);
-
-            const parent = createElement();
-            const child = createElement();
-            parent.appendChild(child);
-
-            const handleChange = chia.spy(() => {});
-            const subscriber = { handleChange };
-            expect(tokenB.getValueFor(child)).to.equal(12);
-
-            tokenB.subscribe(subscriber/*, child*/);
-
-            document.body.appendChild(parent);
-
-            await Updates.next();
-
-            expect(handleChange).not.to.have.been.called();
-
-            tokenA.setValueFor(parent, () => 7);
-            expect(tokenB.getValueFor(child)).to.equal(14);
-            await Updates.next();
-            expect(handleChange).to.have.been.called.once;
-        });
     });
     describe("deleting simple values", () => {
         it("should throw when deleted and no parent token value is set", () => {
