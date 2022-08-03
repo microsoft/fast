@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Update design tokens to use new resolve function",
+  "packageName": "@microsoft/adaptive-ui",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

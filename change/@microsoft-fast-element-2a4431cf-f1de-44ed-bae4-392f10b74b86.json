@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Fix ExpressionObserer bug where watcher was not reset if the binding threw",
+  "packageName": "@microsoft/fast-element",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
