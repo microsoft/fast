@@ -100,7 +100,7 @@ export const myTooltip = Tooltip.compose({
 | -------------------------- | ---------------------- | -------------- |
 |                            | visible                |                |
 | `anchor`                   | anchor                 |                |
-| `delay`                    | delay                  |                |
+|                            | delay                  |                |
 | `position`                 | position               |                |
 | `auto-update-mode`         | autoUpdateMode         |                |
 | `horizontal-viewport-lock` | horizontalViewportLock |                |
