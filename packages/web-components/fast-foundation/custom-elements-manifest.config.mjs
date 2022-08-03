@@ -8,6 +8,7 @@ export default {
         "src/*.ts",
         "src/__test__/*",
         "src/di/*",
+        "src/design-token/*",
         "src/**/*.md",
         "src/**/*.spec.ts",
         "src/**/index.ts",
