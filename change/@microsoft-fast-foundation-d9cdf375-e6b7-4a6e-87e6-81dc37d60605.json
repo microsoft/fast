@@ -3,5 +3,5 @@
   "comment": "Refactor DesignToken to provide a resolve function to derived token values,  implements WebComponent implemnetation on top of isomporphic DesignToken infrastructure",
   "packageName": "@microsoft/fast-foundation",
   "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
