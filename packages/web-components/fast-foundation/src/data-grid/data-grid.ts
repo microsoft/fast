@@ -235,10 +235,10 @@ export class FASTDataGrid extends FASTElement {
      *
      * @public
      * @remarks
-     * HTML Attribute: click-select
+     * HTML Attribute: disable-click-select
      */
-    @attr({ attribute: "click-select", mode: "boolean" })
-    public clickSelect: boolean = true;
+    @attr({ attribute: "disable-click-select", mode: "boolean" })
+    public disableClickSelect: boolean = false;
 
     /**
      * Row indexes that are not selectable.
@@ -951,7 +951,7 @@ export class FASTDataGrid extends FASTElement {
             const thisRow = element as FASTDataGridRow;
             thisRow.rowIndex = index;
             thisRow.gridTemplateColumns = newGridTemplateColumns;
-            thisRow.clickSelect = this.clickSelect;
+            thisRow.disableClickSelect = this.disableClickSelect;
             if (
                 this.selectionMode === "single-row" ||
                 this.selectionMode === "multi-row"

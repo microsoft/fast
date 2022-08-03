@@ -234,7 +234,7 @@ export const myDataGrid = DataGrid.compose({
 | `generateHeader`         | public  | `GenerateHeaderOptions`      |          | Whether the grid should automatically generate a header row and its type                                                                                                                                                                                |                |
 | `gridTemplateColumns`    | public  | `string`                     |          | String that gets applied to the the css gridTemplateColumns attribute of child rows                                                                                                                                                                     |                |
 | `selectionMode`          | public  | `DataGridSelectionMode`      | `"none"` | Defines how the grid handles row or cell selection.                                                                                                                                                                                                     |                |
-| `clickSelect`            | public  | `boolean`                    | `true`   | Determines if clicks can automatically select                                                                                                                                                                                                           |                |
+| `disableClickSelect`     | public  | `boolean`                    | `false`  | Determines if clicks can automatically select                                                                                                                                                                                                           |                |
 | `unselectableRowIndexes` | public  | `number[]`                   |          | Row indexes that are not selectable. Includes header rows.                                                                                                                                                                                              |                |
 | `initialRowSelection`    | public  | `string`                     |          | The indexes of initially selected grid elements. Includes header rows. In the case of row selection the format should be a comma delimited list of row indexes. ie. "1,3,5"                                                                             |                |
 | `rowsData`               | public  | `object[]`                   | `[]`     | The data being displayed in the grid                                                                                                                                                                                                                    |                |
@@ -265,7 +265,7 @@ export const myDataGrid = DataGrid.compose({
 | `generate-header`          | generateHeader         |                |
 | `grid-template-columns`    | gridTemplateColumns    |                |
 | `selection-mode`           | selectionMode          |                |
-| `click-select`             | clickSelect            |                |
+| `disable-click-select`     | disableClickSelect     |                |
 | `unselectable-row-indexes` | unselectableRowIndexes |                |
 | `initial-row-selection`    | initialRowSelection    |                |
 

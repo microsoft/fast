@@ -148,7 +148,7 @@ Keyboard:
 #### "multi-row" selection mode: 
 When in single row selection mode a maximum of one row can be selected at a time.  All rows are labelled with `aria-selected' with any selected row having a value of "true".
 
-When the grid's `click-select` attribute is set to "true", which is the default, any click on a selectable row will select that row, or deselect if already selected.  It will additionally deselect all other selected rows.  Holding the control key while selecting prevents deselection of other rows, and holding shift while selecting selects the row and all the rows between it and the last non-shift selected row, if any. 
+When the grid's `disable-click-select` attribute is set to "false", which is the default, any click on a selectable row will select that row, or deselect if already selected.  It will additionally deselect all other selected rows.  Holding the control key while selecting prevents deselection of other rows, and holding shift while selecting selects the row and all the rows between it and the last non-shift selected row, if any. 
 
 Keyboard: 
 

@@ -974,7 +974,6 @@ export interface FASTCombobox extends StartEnd, DelegatesARIACombobox {
 // @public
 export class FASTDataGrid extends FASTElement {
     cellItemTemplate?: ViewTemplate;
-    clickSelect: boolean;
     columnDefinitions: ColumnDefinition[] | null;
     // (undocumented)
     protected columnDefinitionsChanged(): void;
@@ -982,6 +981,7 @@ export class FASTDataGrid extends FASTElement {
     connectedCallback(): void;
     // @internal
     defaultRowItemTemplate: ViewTemplate;
+    disableClickSelect: boolean;
     // @internal (undocumented)
     disconnectedCallback(): void;
     focusColumnIndex: number;
@@ -1050,8 +1050,6 @@ export class FASTDataGridRow extends FASTElement {
     // @internal
     cellElements: HTMLElement[];
     cellItemTemplate?: ViewTemplate;
-    // @internal
-    clickSelect: boolean;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1059,6 +1057,8 @@ export class FASTDataGridRow extends FASTElement {
     defaultCellItemTemplate?: ViewTemplate;
     // @internal
     defaultHeaderCellItemTemplate?: ViewTemplate;
+    // @internal
+    disableClickSelect: boolean;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // @internal (undocumented)
