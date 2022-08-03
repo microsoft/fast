@@ -1,6 +1,6 @@
 import {
-    BindingObserver,
     Disposable,
+    ExpressionNotifier,
     Observable,
     Subscriber,
 } from "@microsoft/fast-element";
@@ -13,7 +13,7 @@ import type { DesignToken } from "./design-token.js";
 export type DesignTokenResolver = <T>(token: DesignToken<T>) => T;
 
 /**
- * A {@link (DesignToken:interface)} value that is derived. These values can depend on other {@link (DesignToken:interface)}s
+ * A {@link DesignToken} value that is derived. These values can depend on other {@link DesignToken}s
  * or arbitrary observable properties.
  * @public
  */
@@ -28,13 +28,13 @@ export type StaticDesignTokenValue<T> = T extends (...args: any[]) => any
     : T;
 
 /**
- * The type that a {@link (DesignToken:interface)} can be set to.
+ * The type that a {@link DesignToken} can be set to.
  * @public
  */
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
 class DerivedValueEvaluator<T> {
-    private readonly binding: BindingObserver;
+    private readonly binding: ExpressionNotifier;
     private notifier = Observable.getNotifier(this);
     public readonly dependencies = new Set<DesignToken<any>>();
     private static cache = new WeakMap<
@@ -308,6 +308,9 @@ export class DesignTokenNode {
         return Array.from(this._children);
     }
 
+    /**
+     * Appends a child to the node, notifying for any tokens set for the node's context.
+     */
     public appendChild(child: DesignTokenNode) {
         if (child.parent !== null) {
             child.parent.removeChild(child);
@@ -331,6 +334,9 @@ export class DesignTokenNode {
         DesignTokenNode.notify();
     }
 
+    /**
+     * Appends a child to the node, notifying for any tokens set for the node's context.
+     */
     public removeChild(child: DesignTokenNode) {
         if (child.parent === this) {
             const context = DesignTokenNode.composeAssignedTokensForNode(this);

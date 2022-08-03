@@ -83,21 +83,21 @@ Observable.getNotifier(token).subscribe({
 
 #### Fields
 
-| Name       | Privacy | Type                | Default | Description | Inherited From |
-| ---------- | ------- | ------------------- | ------- | ----------- | -------------- |
-| `parent`   | public  |                     |         |             |                |
-| `children` | public  | `DesignTokenNode[]` |         |             |                |
+| Name       | Privacy | Type                      | Default | Description     | Inherited From |
+| ---------- | ------- | ------------------------- | ------- | --------------- | -------------- |
+| `parent`   | public  | `DesignTokenNode or null` |         | The parent node |                |
+| `children` | public  | `DesignTokenNode[]`       |         |                 |                |
 
 #### Methods
 
-| Name               | Privacy | Description                                                                                       | Parameters                                          | Return | Inherited From |
-| ------------------ | ------- | ------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ------ | -------------- |
-| `appendChild`      | public  |                                                                                                   | `child: DesignTokenNode`                            |        |                |
-| `removeChild`      | public  |                                                                                                   | `child: DesignTokenNode`                            |        |                |
-| `dispose`          | public  | Dispose of the node, removes parent/child relationships and unsubscribes all binding subscribers. |                                                     |        |                |
-| `setTokenValue`    | public  |                                                                                                   | `token: DesignToken<T>, value: DesignTokenValue<T>` |        |                |
-| `getTokenValue`    | public  |                                                                                                   | `token: DesignToken<T>`                             | `T`    |                |
-| `deleteTokenValue` | public  |                                                                                                   | `token: DesignToken<T>`                             | `void` |                |
+| Name               | Privacy | Description                                                                                                                                 | Parameters                                          | Return | Inherited From |
+| ------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ------ | -------------- |
+| `appendChild`      | public  | Appends a child to the node, notifying for any tokens set for the node's context.                                                           | `child: DesignTokenNode`                            |        |                |
+| `removeChild`      | public  | Appends a child to the node, notifying for any tokens set for the node's context.                                                           | `child: DesignTokenNode`                            |        |                |
+| `dispose`          | public  | Dispose of the node, removing parent/child relationships and unsubscribing all observable binding subscribers. Does not emit notifications. |                                                     |        |                |
+| `setTokenValue`    | public  | Sets a token to a value                                                                                                                     | `token: DesignToken<T>, value: DesignTokenValue<T>` |        |                |
+| `getTokenValue`    | public  | Returns the resolve value for a token                                                                                                       | `token: DesignToken<T>`                             | `T`    |                |
+| `deleteTokenValue` | public  | Deletes the token value for a node                                                                                                          | `token: DesignToken<T>`                             | `void` |                |
 
 <hr/>
 
