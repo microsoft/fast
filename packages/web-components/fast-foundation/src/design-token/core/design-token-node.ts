@@ -94,6 +94,7 @@ class DerivedValue<T> implements Disposable {
         private subscriber?: Subscriber
     ) {
         this.value = evaluator.evaluate(node, token);
+
         if (this.subscriber) {
             Observable.getNotifier(this.evaluator).subscribe(this.subscriber);
         }
@@ -342,6 +343,21 @@ export class DesignTokenNode {
             }
 
             DesignTokenNode.notify();
+        }
+    }
+
+    /**
+     * Dispose of the node, removes parent/child relationships and
+     * unsubscribes all binding subscribers.
+     */
+    public dispose() {
+        if (this.parent) {
+            this.parent._children.delete(this);
+            this._parent = null;
+        }
+
+        for (const [, derived] of this._derived) {
+            derived.dispose();
         }
     }
 

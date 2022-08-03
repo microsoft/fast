@@ -90,13 +90,14 @@ Observable.getNotifier(token).subscribe({
 
 #### Methods
 
-| Name               | Privacy | Description | Parameters                                          | Return | Inherited From |
-| ------------------ | ------- | ----------- | --------------------------------------------------- | ------ | -------------- |
-| `appendChild`      | public  |             | `child: DesignTokenNode`                            |        |                |
-| `removeChild`      | public  |             | `child: DesignTokenNode`                            |        |                |
-| `setTokenValue`    | public  |             | `token: DesignToken<T>, value: DesignTokenValue<T>` |        |                |
-| `getTokenValue`    | public  |             | `token: DesignToken<T>`                             | `T`    |                |
-| `deleteTokenValue` | public  |             | `token: DesignToken<T>`                             | `void` |                |
+| Name               | Privacy | Description                                                                                       | Parameters                                          | Return | Inherited From |
+| ------------------ | ------- | ------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ------ | -------------- |
+| `appendChild`      | public  |                                                                                                   | `child: DesignTokenNode`                            |        |                |
+| `removeChild`      | public  |                                                                                                   | `child: DesignTokenNode`                            |        |                |
+| `dispose`          | public  | Dispose of the node, removes parent/child relationships and unsubscribes all binding subscribers. |                                                     |        |                |
+| `setTokenValue`    | public  |                                                                                                   | `token: DesignToken<T>, value: DesignTokenValue<T>` |        |                |
+| `getTokenValue`    | public  |                                                                                                   | `token: DesignToken<T>`                             | `T`    |                |
+| `deleteTokenValue` | public  |                                                                                                   | `token: DesignToken<T>`                             | `void` |                |
 
 <hr/>
 

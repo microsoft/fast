@@ -307,18 +307,9 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
     public static defaultNode = new DesignTokenNode();
     public static rootStyleSheetTarget = new RootStyleSheetTarget();
     private static cache = new WeakMap<FASTElement, FASTDesignTokenNode>();
-    private bound = false;
+
     public bind(target: FASTElement) {
-        FASTDesignTokenNode.strategy.bind(target);
-        this.bound = true;
-
         let parent = FASTDesignTokenNode.findParent(target);
-
-        // Reset these methods to the super method do avoid
-        // state checking prior to token operations.
-        this.setTokenValue = super.setTokenValue;
-        this.getTokenValue = super.getTokenValue;
-        this.deleteTokenValue = super.deleteTokenValue;
 
         if (parent === null) {
             parent = FASTDesignTokenNode.defaultNode;
@@ -344,7 +335,8 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
     }
 
     public unbind(): void {
-        FASTDesignTokenNode.strategy.unbind(this.target);
+        FASTDesignTokenNode.cache.delete(this.target);
+        this.dispose();
     }
 
     public static getOrCreate(target: FASTElement) {
@@ -356,7 +348,7 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
 
         found = new FASTDesignTokenNode(target);
         FASTDesignTokenNode.cache.set(target, found);
-        target.$fastController.addBehaviors([found]);
+        target.$fastController.addBehaviors([FASTDesignTokenNode.strategy, found]);
 
         return found;
     }
@@ -382,32 +374,5 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
 
     constructor(public readonly target: FASTElement) {
         super();
-
-        /**
-         * Get, set, and delete operations should lazily append the node to the default node
-         * if they're called prior to the node getting bound to an element. This is a slight perf optimization
-         * over appending the node to the default node in all cases during construction, which would force the default
-         * node to notify the child of all tokens set for the default. In most cases, the node will be bound before any of these
-         * APIs are called, so skip that notification unless they're called.
-         *
-         * These methods get reset to the super method in {@link FASTDesignTokenNode.bind()}
-         */
-        this.getTokenValue = this.lazyAppendToDefaultNode(super.getTokenValue);
-        this.setTokenValue = this.lazyAppendToDefaultNode(super.setTokenValue);
-        this.deleteTokenValue = this.lazyAppendToDefaultNode(super.deleteTokenValue);
-    }
-
-    /**
-     * Appends the node to the 'default' node prior to executing the provided callback
-     * if the node has not been bound and parent is null.
-     */
-    private lazyAppendToDefaultNode<T extends Function>(fn: T): T {
-        return ((...args: any[]) => {
-            if (!this.bound && this.parent === null) {
-                FASTDesignTokenNode.defaultNode.appendChild(this);
-            }
-
-            return fn.apply(this, args);
-        }) as any;
     }
 }
