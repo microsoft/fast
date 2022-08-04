@@ -45,7 +45,8 @@
     "./dom-shim": {
       "types": "./dist/dts/dom-shim.d.ts",
       "default": "./dist/esm/dom-shim.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "parse5": "^6.0.1",

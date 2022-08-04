@@ -69,7 +69,8 @@
     "./di": {
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "unpkg": "dist/fast-element.min.js",
   "sideEffects": [
