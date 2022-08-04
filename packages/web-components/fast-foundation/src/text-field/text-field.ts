@@ -217,7 +217,7 @@ export class FASTTextField extends FormAssociatedTextField {
      *
      * @public
      */
-    protected select(): void {
+    public select(): void {
         this.control.select();
 
         /**
