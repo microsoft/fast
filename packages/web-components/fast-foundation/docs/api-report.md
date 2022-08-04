@@ -662,12 +662,7 @@ export class FASTAnchoredRegion extends FASTElement {
 
 // @public
 export class FASTAvatar extends FASTElement {
-    color: string;
-    connectedCallback(): void;
-    fill: string;
     link: string;
-    // Warning: (ae-forgotten-export) The symbol "AvatarShape" needs to be exported by the entry point index.d.ts
-    shape: AvatarShape;
 }
 
 // @public
@@ -1330,7 +1325,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
     minlength: number;
     placeholder: string;
     readOnly: boolean;
-    protected select(): void;
+    select(): void;
     size: number;
     step: number;
     stepDown(): void;
@@ -1864,7 +1859,7 @@ export class FASTTextArea extends FormAssociatedTextArea {
     protected readOnlyChanged(): void;
     resize: TextAreaResize;
     rows: number;
-    protected select(): void;
+    select(): void;
     spellcheck: boolean;
     // (undocumented)
     protected spellcheckChanged(): void;
@@ -1911,7 +1906,7 @@ export class FASTTextField extends FormAssociatedTextField {
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;
-    protected select(): void;
+    select(): void;
     size: number;
     // (undocumented)
     protected sizeChanged(): void;

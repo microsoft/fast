@@ -316,7 +316,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      *
      * @public
      */
-    protected select(): void {
+    public select(): void {
         this.control.select();
 
         /**

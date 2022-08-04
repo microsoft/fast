@@ -1,8 +1,30 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
+This log was last generated on Wed, 27 Jul 2022 17:36:33 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.6
+
+Wed, 27 Jul 2022 17:36:33 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.6
+
+## 1.0.0-beta.5
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- feat: update SSR to new binding APIs (roeisenb@microsoft.com)
+- feat: enable the render directive to work in SSR (roeisenb@microsoft.com)
+- fix: update server-side-rendering of the repeat directive to use the renamed dataBinding property of the repeat directive (roeisenb@microsoft.com)
+- feat: add request storage to support per-request context in server side rendering (roeisenb@microsoft.com)
+- fix: server side rendering foundation tests (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.4
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.5
 
 ## 1.0.0-beta.4
 

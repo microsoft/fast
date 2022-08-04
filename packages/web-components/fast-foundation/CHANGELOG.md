@@ -1,8 +1,36 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
+This log was last generated on Wed, 27 Jul 2022 17:36:33 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.6
+
+Wed, 27 Jul 2022 17:36:33 GMT
+
+### Changes
+
+- Using getBoundingClientRect for horizontal-scroll (robarb@microsoft.com)
+- Removed the `fill`, `color`, and `shape` attributes and styling from Avatar (47367562+bheston@users.noreply.github.com)
+
+## 3.0.0-alpha.5
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- add export for custom elements manifest (32497422+KingOfTac@users.noreply.github.com)
+- add start and end slots to tab (chhol@microsoft.com)
+- feat: update foundation to new binding APIs (roeisenb@microsoft.com)
+- feat: move testing and dependency injection to fast-element (roeisenb@microsoft.com)
+- feat: remove design system, foundation element & related infrastructure (roeisenb@microsoft.com)
+- update breadcrumb item to always use an anchor and ensure aria-current is applied correctly in breadcrumb (chhol@microsoft.com)
+- add activeid to accordion change event (chhol@microsoft.com)
+- Removed the `fill` and `color` attributes and styling from Badge (47367562+bheston@users.noreply.github.com)
+- feat: enable fallback container creation for dependency injection location APIs (roeisenb@microsoft.com)
+- accordion verifies change events (stephcomeau@msn.com)
+- add storybook to fast-foundation (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.4
 
 ## 3.0.0-alpha.4
 

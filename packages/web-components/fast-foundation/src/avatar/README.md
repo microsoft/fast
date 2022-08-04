@@ -68,32 +68,6 @@ provideFASTDesignSystem()
 </fast-avatar>
 ```
 
-### Filled, Colored, and Shaped
-
-The `fill` and `color` attributes of the *avatar* create CSS custom properties which can be used to style the control.
-
-```css
-fast-avatar {
-    --avatar-fill-primary: #00FF00;
-    --avatar-fill-danger: #FF0000;
-    --avatar-color-light: #FFFFFF;
-    --avatar-color-dark: #000000;
-}
-```
-
-While the `shape` attribute lets you choose between `circle` (default) or `square`:
-
-```html
-<fast-avatar 
-  src="..."
-  alt="..."
-  link="..."
-  fill="primary"
-  color="dark"
-  shape="square">
-</fast-avatar>
-```
-
 ## Create your own design
 
 ```ts
@@ -133,21 +107,15 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### Fields
 
-| Name    | Privacy | Type          | Default | Description                                                                  | Inherited From |
-| ------- | ------- | ------------- | ------- | ---------------------------------------------------------------------------- | -------------- |
-| `fill`  | public  | `string`      |         | Indicates the Avatar should have a color fill.                               |                |
-| `color` | public  | `string`      |         | Indicates the Avatar should have a text color.                               |                |
-| `link`  | public  | `string`      |         | Indicates the Avatar should have url link                                    |                |
-| `shape` | public  | `AvatarShape` |         | Indicates the Avatar shape should be. By default it will be set to "circle". |                |
+| Name   | Privacy | Type     | Default | Description                               | Inherited From |
+| ------ | ------- | -------- | ------- | ----------------------------------------- | -------------- |
+| `link` | public  | `string` |         | Indicates the Avatar should have url link |                |
 
 #### Attributes
 
-| Name    | Field | Inherited From |
-| ------- | ----- | -------------- |
-| `fill`  | fill  |                |
-| `color` | color |                |
-| `link`  | link  |                |
-| `shape` | shape |                |
+| Name   | Field | Inherited From |
+| ------ | ----- | -------------- |
+| `link` | link  |                |
 
 #### CSS Parts
 

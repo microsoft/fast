@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "add start and end slots to tab",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

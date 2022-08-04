@@ -98,6 +98,14 @@ export const _black: SwatchRGB;
 // @public
 export function blackOrWhiteByContrast(reference: Swatch, minContrast: number, defaultBlack: boolean): Swatch;
 
+// @public
+export function blackOrWhiteByContrastSet(restReference: Swatch, hoverReference: Swatch, activeReference: Swatch, focusReference: Swatch, minContrast: number, defaultBlack: boolean): {
+    rest: Swatch;
+    hover: Swatch;
+    active: Swatch;
+    focus: Swatch;
+};
+
 // @public (undocumented)
 export const bodyFont: CSSDesignToken<string>;
 
@@ -114,6 +122,12 @@ export function contrastAndDeltaSwatchSet(palette: Palette, reference: Swatch, m
 
 // @public
 export function contrastSwatch(palette: Palette, reference: Swatch, minContrast: number, direction?: PaletteDirection): Swatch;
+
+// @public
+export const ContrastTarget: Readonly<{
+    readonly NormalText: 4.5;
+    readonly LargeText: 3;
+}>;
 
 // @public (undocumented)
 export const controlCornerRadius: CSSDesignToken<number>;

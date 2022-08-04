@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "feat: extract all error messages from context and DI",
+  "comment": "make insertbefore noop in view",
   "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
+  "email": "prudepixie@users.noreply.github.com",
   "dependentChangeType": "prerelease"
 }
