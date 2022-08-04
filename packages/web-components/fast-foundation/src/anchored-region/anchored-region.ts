@@ -603,6 +603,12 @@ export class FASTAnchoredRegion extends FASTElement {
             return document.documentElement;
         }
 
+        const rootNode = this.getRootNode();
+
+        if (rootNode instanceof ShadowRoot) {
+            return rootNode.getElementById(this.viewport);
+        }
+
         return document.getElementById(this.viewport);
     };
 
@@ -610,6 +616,12 @@ export class FASTAnchoredRegion extends FASTElement {
      *  Gets the anchor element by id
      */
     private getAnchor = (): HTMLElement | null => {
+        const rootNode = this.getRootNode();
+
+        if (rootNode instanceof ShadowRoot) {
+            return rootNode.getElementById(this.anchor);
+        }
+
         return document.getElementById(this.anchor);
     };
 

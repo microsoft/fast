@@ -6,32 +6,30 @@ type AnchoredRegionArgs = Args & FASTAnchoredRegion;
 type AnchoredRegionMeta = Meta<AnchoredRegionArgs>;
 
 const storyTemplate = html<AnchoredRegionArgs>`
-    <div id="viewport" style="height: 100%; width: 100%;">
-        <div
+    <div style="height: 300%; width: 300%;">
+        <fast-button
             id="anchor"
             class="anchor"
             style="
-                transform: translate(120px, 120px);
-                height: 60px;
-                width: 60px;
-                background: yellow;"
+                    transform: translate(400px, 400px);"
         >
             Anchor
-        </div>
+        </fast-button>
         <fast-anchored-region
             class="region"
             id="region"
             anchor="anchor"
-            viewport="viewport"
             fixed-placement="${x => x.fixedPlacement}"
             vertical-positioning-mode="${x => x.verticalPositioningMode}"
             vertical-default-position="${x => x.verticalDefaultPosition}"
             vertical-inset="${x => x.verticalInset}"
             vertical-scaling="${x => x.verticalScaling}"
+            vertical-viewport-lock="${x => x.verticalViewportLock}"
             horizontal-positioning-mode="${x => x.horizontalPositioningMode}"
             horizontal-default-position="${x => x.horizontalDefaultPosition}"
             horizontal-scaling="${x => x.horizontalScaling}"
             horizontal-inset="${x => x.horizontalInset}"
+            horizontal-viewport-lock="${x => x.horizontalViewportLock}"
             auto-update-mode="${x => x.autoUpdateMode}"
         >
             ${x => x?.content}
@@ -42,12 +40,13 @@ const storyTemplate = html<AnchoredRegionArgs>`
 export default {
     title: "Anchored Region",
     args: {
+        autoUpdateMode: "auto",
         verticalPositioningMode: "locktodefault",
         horizontalPositioningMode: "locktodefault",
         verticalDefaultPosition: "top",
         horizontalDefaultPosition: "left",
         content: html`
-            <div style="background: green">
+            <div style="background: white; padding: 20px">
                 anchored-region
             </div>
         `,
@@ -67,6 +66,7 @@ export default {
             options: ["anchor", "fill", "content"],
             control: { type: "select" },
         },
+        verticalViewportLock: { control: { type: "boolean" } },
         horizontalPositioningMode: {
             options: ["uncontrolled", "locktodefault", "dynamic"],
             control: { type: "select" },
@@ -80,7 +80,8 @@ export default {
             control: { type: "select" },
         },
         horizontalInset: { control: { type: "boolean" } },
-        autoupdateMode: {
+        horizontalViewportLock: { control: { type: "boolean" } },
+        autoUpdateMode: {
             options: ["anchor", "auto"],
             control: { type: "select" },
         },
