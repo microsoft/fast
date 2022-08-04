@@ -1,4 +1,10 @@
-import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    nullableNumberConverter,
+    observable,
+    Updates,
+} from "@microsoft/fast-element";
 import { Direction, keyEscape } from "@microsoft/fast-web-utilities";
 import type {
     AutoUpdateMode,
@@ -60,7 +66,7 @@ export class FASTTooltip extends FASTElement {
      * @public
      * HTML Attribute: delay
      */
-    @attr
+    @attr({ attribute: "delay", converter: nullableNumberConverter })
     public delay: number = 300;
 
     /**
