@@ -1049,6 +1049,7 @@ export class FASTHorizontalScroll extends FASTElement {
     scrollToPosition(newPosition: number, position?: number): void;
     scrollToPrevious(): void;
     speed: number;
+    validateStops(reinit?: boolean): boolean;
     view: HorizontalScrollView;
 }
 
