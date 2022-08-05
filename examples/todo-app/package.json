@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "build": "webpack --mode=production && tsc -p tsconfig.json",
-    "dev": "webpack serve",
+    "start": "webpack serve",
     "prepare": "yarn build",
     "test": "yarn build"
   },

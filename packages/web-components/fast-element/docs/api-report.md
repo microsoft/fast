@@ -239,7 +239,7 @@ export interface Disposable {
 export const DOM: Readonly<{
     queueUpdate: (callable: Callable) => void;
     nextUpdate: () => Promise<void>;
-    processUpdates: () => void;
+    processUpdates: (time?: number | undefined) => void;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>;
@@ -540,7 +540,9 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
     // (undocumented)
-    tryDefer(): boolean;
+    tryDefer(item: {
+        continue(): void;
+    }): boolean;
     unbind(): void;
 }
 
@@ -850,7 +852,7 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
 export interface UpdateQueue {
     enqueue(callable: Callable): void;
     next(): Promise<void>;
-    process(): void;
+    process(time?: DOMHighResTimeStamp): void;
     setMode(isAsync: boolean): void;
 }
 

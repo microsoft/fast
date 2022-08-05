@@ -1,3 +1,4 @@
+import { Updates } from "../index.js";
 import type { Disposable } from "../interfaces.js";
 import { ExecutionContext, Observable } from "../observation/observable.js";
 import type {
@@ -88,6 +89,39 @@ function removeNodeSequence(firstNode: Node, lastNode: Node): void {
     }
 
     parent.removeChild(lastNode);
+}
+
+const deferQueue: { continue(): void }[] = [];
+const noDeferThreshold = 100;
+const deferFrameBudget = 15;
+let isDeferFlushRequested = false;
+let notDeferredCount = 0;
+
+function flushDeferQueue(time: DOMHighResTimeStamp) {
+    const length = deferQueue.length;
+    let i = 0;
+
+    while (i < length) {
+        const binding = deferQueue[i];
+
+        binding.continue();
+        i++;
+
+        // periodically check whether the frame budget has been hit.
+        // this ensures we don't call performance.now a lot and prevents starving the queue.
+        if (i % 100 === 0 && performance.now() - time > deferFrameBudget) {
+            break;
+        }
+    }
+
+    deferQueue.splice(0, i);
+
+    if (deferQueue.length) {
+        Updates.enqueue(flushDeferQueue);
+    } else {
+        isDeferFlushRequested = false;
+        notDeferredCount = 0;
+    }
 }
 
 /**
@@ -282,8 +316,20 @@ export class HTMLView<TSource = any, TParent = any>
         this.unbind();
     }
 
-    public tryDefer(): boolean {
-        return false;
+    public tryDefer(item: { continue(): void }): boolean {
+        if (notDeferredCount < noDeferThreshold) {
+            notDeferredCount++;
+            return false;
+        }
+
+        deferQueue.push(item);
+
+        if (!isDeferFlushRequested) {
+            isDeferFlushRequested = true;
+            Updates.enqueue(flushDeferQueue);
+        }
+
+        return true;
     }
 
     public onUnbind(behavior: {
