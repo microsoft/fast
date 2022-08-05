@@ -23,7 +23,7 @@
     "directory": "examples/todo-app"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.3",
+    "@microsoft/fast-element": "^2.0.0-beta.4",
     "tslib": "^2.4.0"
   },
   "devDependencies": {
