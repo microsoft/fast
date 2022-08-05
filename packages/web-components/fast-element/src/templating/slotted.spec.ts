@@ -60,6 +60,10 @@ describe("The slotted", () => {
                 source,
                 targets,
                 context: Fake.executionContext(),
+                isBound: false,
+                tryDefer() {
+                    return false;
+                },
                 onUnbind() {
 
                 }

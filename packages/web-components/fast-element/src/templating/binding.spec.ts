@@ -98,9 +98,13 @@ describe("The HTML binding directive", () => {
         const unbindables = new Set<{ unbind(controller: ViewController) }>();
 
         return {
+            isBound: false,
             context: Fake.executionContext(),
             onUnbind(object) {
                 unbindables.add(object);
+            },
+            tryDefer() {
+                return false;
             },
             source,
             targets,

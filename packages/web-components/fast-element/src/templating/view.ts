@@ -107,6 +107,8 @@ export class HTMLView<TSource = any, TParent = any>
      */
     public source: TSource | null = null;
 
+    public isBound = false;
+
     /**
      * The execution context the view is running within.
      */
@@ -280,6 +282,10 @@ export class HTMLView<TSource = any, TParent = any>
         this.unbind();
     }
 
+    public tryDefer(): boolean {
+        return false;
+    }
+
     public onUnbind(behavior: {
         unbind(controller: ViewController<TSource, TParent>);
     }): void {
@@ -292,13 +298,13 @@ export class HTMLView<TSource = any, TParent = any>
      * @param context - The execution context to run the behaviors within.
      */
     public bind(source: TSource): void {
-        let behaviors = this.behaviors;
         const oldSource = this.source;
 
         if (oldSource === source) {
             return;
         }
 
+        let behaviors = this.behaviors;
         this.source = source;
 
         if (behaviors === null) {
@@ -319,12 +325,18 @@ export class HTMLView<TSource = any, TParent = any>
                 behaviors[i].bind(this);
             }
         }
+
+        this.isBound = true;
     }
 
     /**
      * Unbinds a view's behaviors from its binding source.
      */
     public unbind(): void {
+        if (!this.isBound) {
+            return;
+        }
+
         const oldSource = this.source;
 
         if (oldSource === null) {
@@ -333,6 +345,7 @@ export class HTMLView<TSource = any, TParent = any>
 
         this.evaluateUnbindables();
         this.source = null;
+        this.isBound = false;
     }
 
     private evaluateUnbindables() {

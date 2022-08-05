@@ -341,11 +341,17 @@ export interface ExpressionController<TSource = any, TParent = any> {
     // (undocumented)
     readonly context: ExecutionContext<TParent>;
     // (undocumented)
+    readonly isBound: boolean;
+    // (undocumented)
     onUnbind(behavior: {
         unbind(controller: ExpressionController<TSource, TParent>): any;
     }): void;
     // (undocumented)
     readonly source: TSource;
+    // (undocumented)
+    tryDefer(behavior: {
+        continue(): void;
+    }): boolean;
 }
 
 // @public
@@ -514,6 +520,8 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     firstChild: Node;
     index: number;
     insertBefore(node: Node): void;
+    // (undocumented)
+    isBound: boolean;
     get isEven(): boolean;
     get isFirst(): boolean;
     get isInMiddle(): boolean;
@@ -531,6 +539,8 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     source: TSource | null;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
+    // (undocumented)
+    tryDefer(): boolean;
     unbind(): void;
 }
 
@@ -894,15 +904,7 @@ export type ViewBehaviorTargets = {
 };
 
 // @public (undocumented)
-export interface ViewController<TSource = any, TParent = any> {
-    // (undocumented)
-    readonly context: ExecutionContext<TParent>;
-    // (undocumented)
-    onUnbind(behavior: {
-        unbind(controller: ViewController<TSource, TParent>): any;
-    }): void;
-    // (undocumented)
-    readonly source: TSource;
+export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent> {
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
 }

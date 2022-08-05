@@ -4,6 +4,7 @@ import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
     Expression,
+    ExpressionController,
     ExpressionObserver,
 } from "../observation/observable.js";
 import { createTypeRegistry } from "../platform.js";
@@ -18,12 +19,9 @@ export type ViewBehaviorTargets = {
     [id: string]: Node;
 };
 
-export interface ViewController<TSource = any, TParent = any> {
-    readonly source: TSource;
-    readonly context: ExecutionContext<TParent>;
+export interface ViewController<TSource = any, TParent = any>
+    extends ExpressionController<TSource, TParent> {
     readonly targets: ViewBehaviorTargets;
-
-    onUnbind(behavior: { unbind(controller: ViewController<TSource, TParent>) }): void;
 }
 
 export interface ViewBehaviorOrchestrator<TSource = any, TParent = any>
@@ -47,6 +45,12 @@ export const ViewBehaviorOrchestrator = Object.freeze({
             source,
             context: ExecutionContext.default,
             targets,
+            get isBound() {
+                return isConnected;
+            },
+            tryDefer() {
+                return false;
+            },
             addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void {
                 const nodeId = factory.nodeId || (factory.nodeId = nextId());
                 factory.id || (factory.id = nextId());

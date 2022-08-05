@@ -151,12 +151,16 @@ describe("The repeat", () => {
             const unbindables: { unbind(controller: ViewController) }[] = [];
 
             return {
+                isBound: false,
                 context: Fake.executionContext(),
                 onUnbind(object) {
                     unbindables.push(object);
                 },
                 source,
                 targets,
+                tryDefer(){
+                    return false;
+                },
                 unbind() {
                     unbindables.forEach(x => x.unbind(this))
                 }

@@ -68,7 +68,9 @@ interface SubscriptionRecord extends ObservationRecord {
 export interface ExpressionController<TSource = any, TParent = any> {
     readonly source: TSource;
     readonly context: ExecutionContext<TParent>;
+    readonly isBound: boolean;
 
+    tryDefer(behavior: { continue(): void }): boolean;
     onUnbind(behavior: {
         unbind(controller: ExpressionController<TSource, TParent>);
     }): void;
@@ -199,7 +201,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         public needsRefresh: boolean = true;
         private needsQueue: boolean = true;
         private isAsync = true;
-        private isNotBound = true;
 
         private first: SubscriptionRecord = this as any;
         private last: SubscriptionRecord | null = null;
@@ -207,6 +208,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         private propertyName: string | undefined = void 0;
         private notifier: Notifier | undefined = void 0;
         private next: SubscriptionRecord | undefined = void 0;
+        private controller: ExpressionController;
 
         constructor(
             private binding: Expression<TSource, TReturn>,
@@ -221,16 +223,28 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         }
 
         public bind(controller: ExpressionController) {
-            if (this.isNotBound) {
-                controller.onUnbind(this);
-                this.isNotBound = false;
+            this.controller = controller;
+
+            if (controller.isBound) {
+                return this.observe(controller.source, controller.context);
             }
 
-            return this.observe(controller.source, controller.context);
+            if (controller.tryDefer(this)) {
+                return this.binding(controller.source, controller.context);
+            }
+
+            controller.onUnbind(this);
+            return this.observe(this.controller.source, this.controller.context);
+        }
+
+        public continue() {
+            if (this.controller.isBound) {
+                this.controller.onUnbind(this);
+                this.observe(this.controller.source, this.controller.context);
+            }
         }
 
         public unbind(controller: ExpressionController) {
-            this.isNotBound = true;
             this.dispose();
         }
 

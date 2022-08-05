@@ -53,6 +53,10 @@ describe("The children", () => {
                 source,
                 targets,
                 context: Fake.executionContext(),
+                isBound: false,
+                tryDefer() {
+                    return false;
+                },
                 onUnbind() {
 
                 }
