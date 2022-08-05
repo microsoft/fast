@@ -135,6 +135,24 @@ export class FASTDataGrid extends FASTElement {
     }
 
     /**
+     * Default callback to determine if a row is selectable (also depends on selectionMode)
+     * By default all rows except for header rows are selectable
+     */
+    private static defaultRowSelectableCallback(
+        rowIndex: number,
+        grid: FASTDataGrid
+    ): boolean {
+        if (
+            grid.rowElements.length < rowIndex ||
+            (grid.rowElements[rowIndex] as FASTDataGridRow).rowType !==
+                DataGridRowTypes.default
+        ) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * When true the component will not add itself to the tab queue.
      * Default is false.
      *
@@ -241,13 +259,6 @@ export class FASTDataGrid extends FASTElement {
     public disableClickSelect: boolean = false;
 
     /**
-     * Row indexes that are not selectable.
-     * Includes header rows.
-     */
-    @attr({ attribute: "unselectable-row-indexes" })
-    public unselectableRowIndexes: number[];
-
-    /**
      * The indexes of initially selected grid elements. Includes header rows.
      * In the case of row selection the format should be a comma delimited list of row indexes. ie. "1,3,5"
      *
@@ -257,6 +268,16 @@ export class FASTDataGrid extends FASTElement {
      */
     @attr({ attribute: "initial-row-selection" })
     public initialRowSelection: string;
+
+    /**
+     * Callback that determines whether a particular row is selectable or not (depends on selectionMode also)
+     * By default all rows except header rows are selectable.
+     *
+     * @public
+     */
+    @observable
+    public rowSelectableCallback: (rowIndex: number, grid: FASTDataGrid) => boolean =
+        FASTDataGrid.defaultRowSelectableCallback;
 
     /**
      * The data being displayed in the grid
@@ -402,13 +423,7 @@ export class FASTDataGrid extends FASTElement {
         }
 
         // cull unselectable rows
-        if (this.unselectableRowIndexes) {
-            this.unselectableRowIndexes.forEach(rowIndex => {
-                if (next.includes(rowIndex)) {
-                    next.splice(next.indexOf(rowIndex), 1);
-                }
-            });
-        }
+        next = next.filter(rowIndex => this.rowSelectableCallback(rowIndex, this));
 
         if (this.selectionMode === "single-row" && next.length > 1) {
             this._selectedRowIndexes.splice(0, this.selectedRowIndexes.length, next[0]);
@@ -490,25 +505,20 @@ export class FASTDataGrid extends FASTElement {
             this.setAttribute("tabindex", "-1");
         }
 
-        if (this.selectionMode !== "none" && this.initialRowSelection) {
-            const selectionAsArray: string[] = this.initialRowSelection.split(",");
-            const initialSelection: number[] = [];
-            selectionAsArray.forEach((element: string): void => {
-                initialSelection.push(parseInt(element.trim()));
-            });
+        // apply initial selection after the grid is populated
+        Updates.enqueue(() => {
+            if (this.selectionMode !== "none" && this.initialRowSelection) {
+                const selectionAsArray: string[] = this.initialRowSelection.split(",");
+                const initialSelection: number[] = [];
+                selectionAsArray.forEach((element: string): void => {
+                    initialSelection.push(parseInt(element.trim()));
+                });
 
-            this.updateSelectedRows(initialSelection);
-        }
+                this.updateSelectedRows(initialSelection);
+            }
+        });
 
-        // default to not selecting generated header rows
-        if (
-            !this.unselectableRowIndexes &&
-            this.generateHeader !== GenerateHeaderOptions.none
-        ) {
-            this.unselectableRowIndexes = [0];
-        }
-
-        Updates.enqueue(this.queueRowIndexUpdate);
+        this.queueRowIndexUpdate();
     }
 
     /**
@@ -765,18 +775,7 @@ export class FASTDataGrid extends FASTElement {
      * Validates that new selected rows are selectable and updates the selectedRowIndexes prop
      */
     private updateSelectedRows(newSelection: number[]): void {
-        if (!this.unselectableRowIndexes) {
-            this.selectedRowIndexes = newSelection;
-            return;
-        }
-
-        const validSelection: number[] = [];
-        newSelection.forEach(rowIndex => {
-            if (!this.unselectableRowIndexes.includes(rowIndex)) {
-                validSelection.push(rowIndex);
-            }
-        });
-        this.selectedRowIndexes = validSelection;
+        this.selectedRowIndexes = newSelection;
     }
 
     private selectAllRows(): void {
@@ -784,13 +783,22 @@ export class FASTDataGrid extends FASTElement {
             return;
         }
 
-        let selectableRowCount = this.rowElements.length;
-        if (this.unselectableRowIndexes) {
-            selectableRowCount = Math.max(
-                selectableRowCount - this.unselectableRowIndexes.length,
-                0
-            );
+        const unselectableRowIndexes = [];
+
+        for (
+            let index: number = 0, maxIndex = this.rowElements.length;
+            index < maxIndex;
+            index++
+        ) {
+            if (!this.rowSelectableCallback(index, this)) {
+                unselectableRowIndexes.push(index);
+            }
         }
+
+        const selectableRowCount: number = Math.max(
+            this.rowElements.length - unselectableRowIndexes.length,
+            0
+        );
 
         if (this._selectedRowIndexes.length === selectableRowCount) {
             // deselect all if all are already selected

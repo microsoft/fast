@@ -15,7 +15,6 @@ const storyTemplate = html<StoryArgs<FASTDataGrid>>`
         click-select="${x => x.clickSelect}"
         disable-click-select="${x => x.disableClickSelect}"
         selection-mode="${x => x.selectionMode}"
-        unselectable-row-indexes="${x => x.unselectableRowIndexes}"
         initial-row-selection="${x => x.initialRowSelection}"
     >
         ${x => x.content}
@@ -73,9 +72,6 @@ export default {
         },
         disableClickSelect: {
             control: { type: "boolean" },
-        },
-        unselectableRowIndexes: {
-            control: { type: "text" },
         },
         initialRowSelection: {
             control: { type: "text" },

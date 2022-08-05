@@ -1014,11 +1014,11 @@ export class FASTDataGrid extends FASTElement {
     rowsData: object[];
     // (undocumented)
     protected rowsDataChanged(): void;
+    rowSelectableCallback: (rowIndex: number, grid: FASTDataGrid) => boolean;
     get selectedRowIndexes(): number[];
     set selectedRowIndexes(next: number[]);
     // Warning: (ae-forgotten-export) The symbol "DataGridSelectionMode" needs to be exported by the entry point index.d.ts
     selectionMode: DataGridSelectionMode;
-    unselectableRowIndexes: number[];
 }
 
 // @public
