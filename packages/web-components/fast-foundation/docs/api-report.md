@@ -1345,7 +1345,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
     minlength: number;
     placeholder: string;
     readOnly: boolean;
-    protected select(): void;
+    select(): void;
     size: number;
     step: number;
     stepDown(): void;
@@ -1879,7 +1879,7 @@ export class FASTTextArea extends FormAssociatedTextArea {
     protected readOnlyChanged(): void;
     resize: TextAreaResize;
     rows: number;
-    protected select(): void;
+    select(): void;
     spellcheck: boolean;
     // (undocumented)
     protected spellcheckChanged(): void;
@@ -1926,7 +1926,7 @@ export class FASTTextField extends FormAssociatedTextField {
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;
-    protected select(): void;
+    select(): void;
     size: number;
     // (undocumented)
     protected sizeChanged(): void;

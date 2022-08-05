@@ -30,7 +30,8 @@
     "./design-token-core": {
       "types": "./dist/dts/design-token/core/exports.d.ts",
       "default": "./dist/esm/design-token/core/exports.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
