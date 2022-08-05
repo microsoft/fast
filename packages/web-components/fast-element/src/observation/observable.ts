@@ -1,7 +1,7 @@
-import { DOM } from "../dom";
-import { PropertyChangeNotifier, SubscriberSet } from "./notifier";
-import type { Notifier, Subscriber } from "./notifier";
-import { FAST, KernelServiceId } from "../platform";
+import { DOM } from "../dom.js";
+import { FAST, KernelServiceId } from "../platform.js";
+import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
+import type { Notifier, Subscriber } from "./notifier.js";
 
 /**
  * Represents a getter/setter property accessor on an object.
@@ -518,7 +518,7 @@ export class ExecutionContext<TParent = any, TGrandparent = any> {
      * @param event - The event to set.
      * @internal
      */
-    public static setEvent(event: Event | null) {
+    public static setEvent(event: Event | null): void {
         contextEvent.set(event);
     }
 }

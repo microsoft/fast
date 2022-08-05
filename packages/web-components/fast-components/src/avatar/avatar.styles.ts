@@ -12,8 +12,8 @@ import {
     designUnit,
     neutralForegroundRest,
     typeRampBaseFontSize,
-} from "../design-tokens";
-import { DirectionalStyleSheetBehavior } from "../styles";
+} from "../design-tokens.js";
+import { DirectionalStyleSheetBehavior } from "../styles/direction.js";
 
 const rtl = (context, definition) => css`
     ::slotted(${context.tagFor(Badge)}) {

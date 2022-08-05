@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-web-utilities
 
-This log was last generated on Tue, 25 Jan 2022 07:11:53 GMT and should not be manually modified.
+This log was last generated on Sun, 03 Apr 2022 07:12:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 5.2.0
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Minor changes
+
+- Declare package as using ES modules (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- update exenv-es6 to 1.1.0 to ensure we lock to es module support (chhol@microsoft.com)
 
 ## 5.1.0
 

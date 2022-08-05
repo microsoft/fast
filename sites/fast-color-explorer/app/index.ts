@@ -2,7 +2,7 @@ import {
     allComponents as fastComponents,
     provideFASTDesignSystem,
 } from "@microsoft/fast-components";
-import { fastToolingColorPicker } from "@microsoft/fast-tooling";
+import { fastToolingColorPicker } from "../app/components/color-picker";
 import { App } from "./app";
 import { appComponents } from "./custom-elements";
 

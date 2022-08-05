@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-web-utilities",
   "description": "FAST web utilities",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "sideEffects": false,
   "author": {
     "name": "Microsoft",
@@ -17,6 +17,7 @@
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "clean:dist": "node ../../../build/clean.js dist",
@@ -26,27 +27,24 @@
     "test": "yarn eslint && yarn build && yarn test-chrome:verbose",
     "test-node": "mocha --reporter min --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-node:verbose": "mocha --reporter spec --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
-    "test-chrome": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --single-run --coverage",
-    "test-chrome:verbose": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --single-run --coverage --reporter=mocha",
-    "test-chrome:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js",
-    "test-chrome:debugger": "karma start karma.conf.js --browsers=ChromeDebugging",
-    "test-chrome:verbose:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha",
-    "test-chrome:verbose:debugger": "karma start karma.conf.js --browsers=ChromeDebugging --reporter=mocha",
-    "test-firefox": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage",
-    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
-    "test-firefox:watch": "karma start karma.conf.js --browsers=FirefoxHeadless   --coverage --watch-extensions js",
+    "test-chrome": "karma start karma.conf.ts --browsers=ChromeHeadlessOpt --single-run --coverage",
+    "test-chrome:verbose": "karma start karma.conf.ts --browsers=ChromeHeadlessOpt --single-run --coverage --reporter=mocha",
+    "test-chrome:watch": "karma start karma.conf.ts --browsers=ChromeHeadlessOpt --coverage --watch-extensions js",
+    "test-chrome:debugger": "karma start karma.conf.ts --browsers=ChromeDebugging",
+    "test-chrome:verbose:watch": "karma start karma.conf.ts --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha",
+    "test-chrome:verbose:debugger": "karma start karma.conf.ts --browsers=ChromeDebugging --reporter=mocha",
+    "test-firefox": "karma start karma.conf.ts --browsers=FirefoxHeadless --single-run --coverage",
+    "test-firefox:verbose": "karma start karma.conf.ts --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
+    "test-firefox:watch": "karma start karma.conf.ts --browsers=FirefoxHeadless   --coverage --watch-extensions js",
     "eslint": "eslint . --ext .ts,.tsx",
     "eslint:fix": "eslint . --ext .ts,.tsx --fix",
     "watch": "yarn build -- -w --preserveWatchOutput"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.13",
-    "@babel/preset-env": "^7.12.13",
     "@types/chai": "^4.2.11",
     "@types/karma": "^5.0.0",
     "@types/mocha": "^7.0.2",
     "@microsoft/eslint-config-fast-dna": "^2.0.0",
-    "babel-core": "^7.0.0-bridge.0",
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",
     "eslint-config-prettier": "^6.10.1",
@@ -71,6 +69,6 @@
     "typescript": "^3.9.0"
   },
   "dependencies": {
-    "exenv-es6": "^1.0.0"
+    "exenv-es6": "^1.1.1"
   }
 }

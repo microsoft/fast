@@ -4,5 +4,5 @@
         "outDir": "temp",
         "resolveJsonModule": true
     },
-    "include": ["src/**/*.definition.json"]
+    "include": ["src/**/*.definition.ts"]
 }

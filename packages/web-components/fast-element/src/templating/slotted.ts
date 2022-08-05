@@ -1,6 +1,6 @@
-import { AttachedBehaviorHTMLDirective } from "./html-directive";
-import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation";
-import type { CaptureType } from "./template";
+import { AttachedBehaviorHTMLDirective } from "./html-directive.js";
+import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation.js";
+import type { CaptureType } from "./template.js";
 
 /**
  * The options used to configure slotted node observation.

@@ -5,7 +5,7 @@ import {
     designUnit,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
+} from "../design-tokens.js";
 
 /**
  * Styles for Tab Panel

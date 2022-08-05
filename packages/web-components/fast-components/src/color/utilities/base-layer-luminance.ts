@@ -1,4 +1,4 @@
-import { SwatchRGB } from "../swatch";
+import { SwatchRGB } from "../swatch.js";
 
 export function baseLayerLuminanceSwatch(luminance: number) {
     return SwatchRGB.create(luminance, luminance, luminance);

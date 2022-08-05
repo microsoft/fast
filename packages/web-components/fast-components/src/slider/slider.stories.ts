@@ -2,7 +2,7 @@ import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
 import type { Slider as FoundationSlider } from "@microsoft/fast-foundation";
 import Examples from "./fixtures/base.html";
-import "./index";
+import "./index.js";
 
 function valueTextFormatter(value: string): string {
     return `${value} degrees celsius`;

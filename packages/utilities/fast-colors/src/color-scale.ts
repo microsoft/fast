@@ -1,6 +1,9 @@
-import { contrastRatio } from "./color-converters";
-import { ColorInterpolationSpace, interpolateByColorSpace } from "./color-interpolation";
-import { ColorRGBA64 } from "./color-rgba-64";
+import { contrastRatio } from "./color-converters.js";
+import {
+    ColorInterpolationSpace,
+    interpolateByColorSpace,
+} from "./color-interpolation.js";
+import { ColorRGBA64 } from "./color-rgba-64.js";
 
 /**
  * @public

@@ -14,7 +14,7 @@ import {
     foregroundOnAccentRest,
     strokeWidth,
     typeRampBaseFontSize,
-} from "../design-tokens";
+} from "../design-tokens.js";
 
 /**
  * Styles for Disclosure

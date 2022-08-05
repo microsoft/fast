@@ -3,7 +3,7 @@ import {
     CheckboxOptions,
     checkboxTemplate as template,
 } from "@microsoft/fast-foundation";
-import { checkboxStyles as styles } from "./checkbox.styles";
+import { checkboxStyles as styles } from "./checkbox.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Checkbox} registration for configuring the component with a DesignSystem.

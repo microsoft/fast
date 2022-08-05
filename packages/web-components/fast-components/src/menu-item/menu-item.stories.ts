@@ -1,5 +1,5 @@
 import MenuItemTemplate from "./fixtures/menu-item.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Menu Item",

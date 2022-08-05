@@ -1,5 +1,5 @@
 import ButtonTemplate from "./fixtures/button.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Button",

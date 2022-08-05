@@ -3,9 +3,9 @@ import {
     Toolbar as FoundationToolbar,
     toolbarTemplate as template,
 } from "@microsoft/fast-foundation";
-import { Swatch } from "../color/swatch";
-import { fillColor, neutralFillLayerRecipe } from "../design-tokens";
-import { toolbarStyles as styles } from "./toolbar.styles";
+import { Swatch } from "../color/swatch.js";
+import { fillColor, neutralFillLayerRecipe } from "../design-tokens.js";
+import { toolbarStyles as styles } from "./toolbar.styles.js";
 
 /**
  * @internal

@@ -5,7 +5,7 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { heightNumber } from "../styles/index";
+import { heightNumber } from "../styles/index.js";
 import {
     accentForegroundActive,
     bodyFont,
@@ -18,7 +18,7 @@ import {
     typeRampBaseLineHeight,
     typeRampPlus3FontSize,
     typeRampPlus3LineHeight,
-} from "../design-tokens";
+} from "../design-tokens.js";
 
 /**
  * Styles for Calendar

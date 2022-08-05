@@ -78,6 +78,63 @@ export const myToolbar = Toolbar.compose({
 });
 ```
 
+## API
+
+
+
+### class: `Toolbar`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `activeIndex`   |         |                                       |         |                                                                                                                                                                                     |                   |
+| `orientation`   | public  | `Orientation`                         |         | The orientation of the toolbar.                                                                                                                                                     |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name                  | Privacy   | Description | Parameters | Return | Inherited From    |
+| --------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `slottedItemsChanged` | protected |             |            | `void` |                   |
+| `templateChanged`     | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`       | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `orientation` | orientation |                |
+
+<hr/>
+
+### class: `DelegatesARIAToolbar`
+
+#### Fields
+
+| Name             | Privacy | Type     | Default | Description                                   | Inherited From |
+| ---------------- | ------- | -------- | ------- | --------------------------------------------- | -------------- |
+| `ariaLabelledby` | public  | `string` |         | The id of the element labeling the toolbar.   |                |
+| `ariaLabel`      | public  | `string` |         | The label surfaced to assistive technologies. |                |
+
+#### Attributes
+
+| Name              | Field          | Inherited From |
+| ----------------- | -------------- | -------------- |
+| `aria-labelledby` | ariaLabelledby |                |
+| `aria-label`      | ariaLabel      |                |
+
+<hr/>
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-toolbar)

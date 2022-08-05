@@ -3,7 +3,7 @@ import {
     denormalize,
     getHexStringForByte,
     roundToPrecisionSmall,
-} from "./math-utilities";
+} from "./math-utilities.js";
 
 /**
  * Configuration object for {@link ColorRGBA64}

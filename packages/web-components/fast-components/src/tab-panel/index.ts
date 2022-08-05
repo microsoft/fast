@@ -1,5 +1,5 @@
 import { TabPanel, tabPanelTemplate as template } from "@microsoft/fast-foundation";
-import { tabPanelStyles as styles } from "./tab-panel.styles";
+import { tabPanelStyles as styles } from "./tab-panel.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#TabPanel} registration for configuring the component with a DesignSystem.

@@ -3,7 +3,7 @@ import {
     FlipperOptions,
     flipperTemplate as template,
 } from "@microsoft/fast-foundation";
-import { flipperStyles as styles } from "./flipper.styles";
+import { flipperStyles as styles } from "./flipper.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Flipper} registration for configuring the component with a DesignSystem.

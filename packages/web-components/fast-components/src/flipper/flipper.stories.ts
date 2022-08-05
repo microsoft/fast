@@ -1,5 +1,5 @@
 import FlipperTemplate from "./fixtures/flipper.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Flipper",

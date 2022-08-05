@@ -5,7 +5,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display } from "@microsoft/fast-foundation";
-import { controlCornerRadius, neutralFillRest } from "../design-tokens";
+import { controlCornerRadius, neutralFillRest } from "../design-tokens.js";
 
 /**
  * Styles for Skeleton

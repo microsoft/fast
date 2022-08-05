@@ -1,15 +1,15 @@
 import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { DelegatesARIAListbox } from "../listbox";
-import type { ListboxOption } from "../listbox-option/listbox-option";
-import { StartEnd } from "../patterns/start-end";
-import type { StartEndOptions } from "../patterns/start-end";
-import { SelectPosition } from "../select/select.options";
-import { applyMixins } from "../utilities/apply-mixins";
-import { FormAssociatedCombobox } from "./combobox.form-associated";
-import { ComboboxAutocomplete } from "./combobox.options";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { DelegatesARIAListbox } from "../listbox/listbox.js";
+import type { ListboxOption } from "../listbox-option/listbox-option.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { SelectPosition } from "../select/select.options.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { FormAssociatedCombobox } from "./combobox.form-associated.js";
+import { ComboboxAutocomplete } from "./combobox.options.js";
 
 /**
  * Combobox configuration options

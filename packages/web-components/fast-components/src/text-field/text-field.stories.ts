@@ -1,7 +1,7 @@
 import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
 import TextFieldTemplate from "./fixtures/text-field.html";
-import "./index";
+import "./index.js";
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("text-field")) {

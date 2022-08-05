@@ -1,4 +1,4 @@
-import { roundToPrecisionSmall } from "./math-utilities";
+import { roundToPrecisionSmall } from "./math-utilities.js";
 /**
  * {@link https://en.wikipedia.org/wiki/CIELAB_color_space | CIELAB color space}
  * This implementation uses the D65 constants for 2 degrees. That determines the constants used for the pure white point of the XYZ space of 0.95047, 1.0, 1.08883.

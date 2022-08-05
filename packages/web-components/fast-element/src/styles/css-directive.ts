@@ -1,5 +1,5 @@
-import type { Behavior } from "../observation/behavior";
-import type { ComposableStyles } from "./element-styles";
+import type { Behavior } from "../observation/behavior.js";
+import type { ComposableStyles } from "./element-styles.js";
 
 /**
  * Directive for use in {@link css}.

@@ -3,7 +3,7 @@ import {
     Button as FoundationButton,
     buttonTemplate as template,
 } from "@microsoft/fast-foundation";
-import { buttonStyles as styles } from "./button.styles";
+import { buttonStyles as styles } from "./button.styles.js";
 
 /**
  * Types of button appearance.

@@ -14,7 +14,7 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
+} from "../design-tokens.js";
 
 /**
  * Styles for Tooltip

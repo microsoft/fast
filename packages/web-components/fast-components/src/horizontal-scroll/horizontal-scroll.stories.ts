@@ -1,5 +1,5 @@
 import HorizontalScrollTemplate from "./fixtures/horizontal-scroll.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Horizontal Scroll",

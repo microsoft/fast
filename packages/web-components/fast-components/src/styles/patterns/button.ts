@@ -5,7 +5,7 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { heightNumber } from "../size";
+import { heightNumber } from "../size.js";
 import {
     accentFillActive,
     accentFillHover,
@@ -33,7 +33,7 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../../design-tokens";
+} from "../../design-tokens.js";
 
 /**
  * @internal

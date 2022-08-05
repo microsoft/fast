@@ -5,10 +5,10 @@ import type {
     AutoUpdateMode,
     AxisPositioningMode,
     AxisScalingMode,
-} from "../anchored-region";
-import { getDirection } from "../utilities/";
-import { FoundationElement } from "../foundation-element";
-import { TooltipPosition } from "./tooltip.options";
+} from "../anchored-region/anchored-region.js";
+import { getDirection } from "../utilities/direction.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { TooltipPosition } from "./tooltip.options.js";
 
 export { TooltipPosition };
 

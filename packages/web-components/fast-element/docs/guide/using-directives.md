@@ -330,7 +330,7 @@ const template = html<MyElement>`
   <ul>
     ${repeat(x => x.items, html`
       <li>
-        ${(x, c) = c.parent.selectTemplate(x)}
+        ${(x, c) => c.parent.selectTemplate(x)}
       </li>
     `)}
   </ul>

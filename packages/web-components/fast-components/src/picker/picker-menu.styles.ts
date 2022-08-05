@@ -9,8 +9,8 @@ import {
     designUnit,
     neutralLayerFloating,
     strokeWidth,
-} from "../design-tokens";
-import { elevation } from "../styles/index";
+} from "../design-tokens.js";
+import { elevation } from "../styles/index.js";
 
 /**
  * Styles for Picker menu

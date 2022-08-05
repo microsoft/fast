@@ -1,4 +1,4 @@
-import { ColorRGBA64Config } from "./color-rgba-64";
+import { ColorRGBA64Config } from "./color-rgba-64.js";
 
 /**
  * Browser {@link https://www.w3schools.com/colors/colors_names.asp | named colors}.

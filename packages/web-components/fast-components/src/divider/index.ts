@@ -1,5 +1,5 @@
 import { Divider, dividerTemplate as template } from "@microsoft/fast-foundation";
-import { dividerStyles as styles } from "./divider.styles";
+import { dividerStyles as styles } from "./divider.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Divider} registration for configuring the component with a DesignSystem.

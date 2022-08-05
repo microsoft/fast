@@ -3,7 +3,7 @@ import {
     TreeItem,
     TreeItemOptions,
 } from "@microsoft/fast-foundation";
-import { treeItemStyles as styles } from "./tree-item.styles";
+import { treeItemStyles as styles } from "./tree-item.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#TreeItem} registration for configuring the component with a DesignSystem.

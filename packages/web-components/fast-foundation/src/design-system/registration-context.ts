@@ -2,8 +2,8 @@ import type {
     Constructable,
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
-import type { Container } from "../di/di";
-import type { ComponentPresentation } from "./component-presentation";
+import type { Container } from "../di/di.js";
+import type { ComponentPresentation } from "./component-presentation.js";
 
 /**
  * Enables defining an element within the context of a design system.

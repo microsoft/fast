@@ -1,7 +1,7 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { BaseProgress, ProgressRingOptions } from "../progress/base-progress";
-import type { FoundationElementTemplate } from "../foundation-element";
+import type { BaseProgress, ProgressRingOptions } from "../progress/base-progress.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 
 const progressSegments: number = 44;
 

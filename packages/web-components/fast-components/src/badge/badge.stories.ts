@@ -1,5 +1,5 @@
 import BadgeTemplate from "./fixtures/base.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Badge",

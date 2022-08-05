@@ -1,3 +1,3 @@
-export * from "./disabled";
-export * from "./display";
-export * from "./focus";
+export * from "./disabled.js";
+export * from "./display.js";
+export * from "./focus.js";

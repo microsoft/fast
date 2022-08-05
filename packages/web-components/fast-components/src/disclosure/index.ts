@@ -3,7 +3,7 @@ import {
     Disclosure as FoundationDisclosure,
     disclosureTemplate as template,
 } from "@microsoft/fast-foundation";
-import { disclosureStyles as styles } from "./disclosure.styles";
+import { disclosureStyles as styles } from "./disclosure.styles.js";
 /**
  * Types of anchor appearance.
  * @public
@@ -23,6 +23,12 @@ export class Disclosure extends FoundationDisclosure {
      */
     private totalHeight: number = 0;
 
+    public connectedCallback(): void {
+        if (!this.appearance) {
+            this.appearance = "accent";
+        }
+    }
+
     /**
      * The appearance the anchor should have.
      *
@@ -31,7 +37,7 @@ export class Disclosure extends FoundationDisclosure {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: DisclosureAppearance = "accent";
+    public appearance?: DisclosureAppearance;
     public appearanceChanged(
         oldValue: DisclosureAppearance,
         newValue: DisclosureAppearance

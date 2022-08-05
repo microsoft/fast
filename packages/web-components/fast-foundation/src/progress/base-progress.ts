@@ -4,7 +4,10 @@ import {
     observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
 
 /**
  * Progress configuration options

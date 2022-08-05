@@ -1,5 +1,5 @@
-import { Swatch } from "../swatch";
-import { Palette } from "../palette";
+import { Swatch } from "../swatch.js";
+import { Palette } from "../palette.js";
 
 /**
  * The neutralForegroundHint color recipe

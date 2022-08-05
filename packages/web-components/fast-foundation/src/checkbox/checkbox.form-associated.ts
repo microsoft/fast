@@ -1,5 +1,5 @@
-import { CheckableFormAssociated } from "../form-associated/form-associated";
-import { FoundationElement } from "../foundation-element";
+import { CheckableFormAssociated } from "../form-associated/form-associated.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 class _Checkbox extends FoundationElement {}
 interface _Checkbox extends CheckableFormAssociated {}

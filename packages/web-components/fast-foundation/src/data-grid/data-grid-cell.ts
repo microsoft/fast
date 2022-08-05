@@ -7,9 +7,9 @@ import {
     keyEscape,
     keyFunction2,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import type { ColumnDefinition } from "./data-grid";
-import { DataGridCellTypes } from "./data-grid.options";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import type { ColumnDefinition } from "./data-grid.js";
+import { DataGridCellTypes } from "./data-grid.options.js";
 
 export { DataGridCellTypes };
 

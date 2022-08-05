@@ -1,7 +1,7 @@
-import { PixelBlob } from "./pixel-blob";
-import { Histogram } from "./histogram";
-import { insertIntoSortedList, PixelBox } from "./pixel-box";
-import { ColorRGBA64 } from "./color-rgba-64";
+import { PixelBlob } from "./pixel-blob.js";
+import { Histogram } from "./histogram.js";
+import { insertIntoSortedList, PixelBox } from "./pixel-box.js";
+import { ColorRGBA64 } from "./color-rgba-64.js";
 
 function countValidBoxes(
     queue: PixelBox[],

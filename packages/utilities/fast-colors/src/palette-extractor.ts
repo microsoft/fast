@@ -1,6 +1,6 @@
-import { QuantizedColor } from "./color-quantization";
-import { ColorHSL } from "./color-hsl";
-import { rgbToHSL } from "./color-converters";
+import { QuantizedColor } from "./color-quantization.js";
+import { ColorHSL } from "./color-hsl.js";
+import { rgbToHSL } from "./color-converters.js";
 
 /**
  * @public

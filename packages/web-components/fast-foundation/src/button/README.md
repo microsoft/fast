@@ -54,6 +54,78 @@ export const myButton = Button.compose({
 This component is built with the expectation that focus is delegated to the button element rendered into the shadow DOM.
 :::
 
+## API
+
+
+
+### class: `Button`
+
+#### Superclass
+
+| Name                   | Module                                | Package |
+| ---------------------- | ------------------------------------- | ------- |
+| `FormAssociatedButton` | /src/button/button.form-associated.js |         |
+
+#### Fields
+
+| Name                    | Privacy | Type                                         | Default | Description                                                                                                                                                                         | Inherited From       |
+| ----------------------- | ------- | -------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `autofocus`             | public  | `boolean`                                    |         | Determines if the element should receive document focus on page load.                                                                                                               |                      |
+| `formId`                | public  | `string`                                     |         | The id of a form to associate the element to.                                                                                                                                       |                      |
+| `formaction`            | public  | `string`                                     |         | See [`<button>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) for more details.                                                       |                      |
+| `formenctype`           | public  | `string`                                     |         | See [`<button>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) for more details.                                                       |                      |
+| `formmethod`            | public  | `string`                                     |         | See [`<button>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) for more details.                                                       |                      |
+| `formnovalidate`        | public  | `boolean`                                    |         | See [`<button>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) for more details.                                                       |                      |
+| `formtarget`            | public  | `"_self" or "_blank" or "_parent" or "_top"` |         | See [`<button>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) for more details.                                                       |                      |
+| `type`                  | public  | `"submit" or "reset" or "button"`            |         | The button type.                                                                                                                                                                    |                      |
+| `defaultSlottedContent` | public  | `HTMLElement[]`                              |         | Default slotted content                                                                                                                                                             |                      |
+| `control`               | public  | `HTMLButtonElement`                          |         |                                                                                                                                                                                     |                      |
+| `proxy`                 |         |                                              |         |                                                                                                                                                                                     | FormAssociatedButton |
+| `$presentation`         | public  | `ComponentPresentation or null`              |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement    |
+| `template`              | public  | `ElementViewTemplate or void or null`        |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement    |
+| `styles`                | public  | `ElementStyles or void or null`              |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement    |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name          | Field          | Inherited From |
+| ------------- | -------------- | -------------- |
+|               | autofocus      |                |
+| `form`        | formId         |                |
+| `formaction`  | formaction     |                |
+| `formenctype` | formenctype    |                |
+| `formmethod`  | formmethod     |                |
+|               | formnovalidate |                |
+| `formtarget`  | formtarget     |                |
+| `type`        | type           |                |
+
+<hr/>
+
+### class: `DelegatesARIAButton`
+
+#### Fields
+
+| Name           | Privacy | Type                                        | Default | Description                                                            | Inherited From |
+| -------------- | ------- | ------------------------------------------- | ------- | ---------------------------------------------------------------------- | -------------- |
+| `ariaExpanded` | public  | `"true" or "false" or undefined`            |         | See https://www.w3.org/WAI/PF/aria/roles#button for more information |                |
+| `ariaPressed`  | public  | `"true" or "false" or "mixed" or undefined` |         | See https://www.w3.org/WAI/PF/aria/roles#button for more information |                |
+
+#### Attributes
+
+| Name            | Field        | Inherited From |
+| --------------- | ------------ | -------------- |
+| `aria-expanded` | ariaExpanded |                |
+| `aria-pressed`  | ariaPressed  |                |
+
+<hr/>
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-button)

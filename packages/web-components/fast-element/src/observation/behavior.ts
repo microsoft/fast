@@ -1,4 +1,4 @@
-import type { ExecutionContext } from "./observable";
+import type { ExecutionContext } from "./observable.js";
 
 /**
  * Represents and object that can contribute behavior to a view or

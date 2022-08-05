@@ -14,10 +14,10 @@ import {
     keyHome,
     Orientation,
 } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { getDirection } from "../utilities/direction";
-import { convertPixelToPercent } from "./slider-utilities";
-import { FormAssociatedSlider } from "./slider.form-associated";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { getDirection } from "../utilities/direction.js";
+import { convertPixelToPercent } from "./slider-utilities.js";
+import { FormAssociatedSlider } from "./slider.form-associated.js";
 
 /**
  * The selection modes of a {@link @microsoft/fast-foundation#(Slider:class)}.

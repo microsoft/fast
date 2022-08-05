@@ -73,6 +73,48 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 });
 ```
 
+## API
+
+
+
+### class: `Flipper`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                       | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `disabled`      | public  | `boolean`                                  |         | The disabled state of the flipper.                                                                                                                                                  |                   |
+| `hiddenFromAT`  | public  | `boolean`                                  | `true`  | Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology.             |                   |
+| `direction`     | public  | `FlipperDirection or "next" or "previous"` |         | The direction that the flipper implies navigating.                                                                                                                                  |                   |
+| `$presentation` | public  | `ComponentPresentation or null`            |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null`      |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`            |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description                                                                                                                    | Parameters                 | Return | Inherited From    |
+| ----------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------- | ------ | ----------------- |
+| `keyupHandler`    | public    | Simulate a click event when the flipper has focus and the user hits enter or space keys Blur focus if the user hits escape key | `e: Event & KeyboardEvent` |        |                   |
+| `templateChanged` | protected |                                                                                                                                |                            | `void` | FoundationElement |
+| `stylesChanged`   | protected |                                                                                                                                |                            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name          | Field        | Inherited From |
+| ------------- | ------------ | -------------- |
+|               | disabled     |                |
+| `aria-hidden` | hiddenFromAT |                |
+| `direction`   | direction    |                |
+
+<hr/>
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-flipper)

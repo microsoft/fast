@@ -1,5 +1,5 @@
 import { parseColorHexRGB } from "@microsoft/fast-colors";
-import { SwatchRGB } from "../swatch";
+import { SwatchRGB } from "../swatch.js";
 
 /**
  * @internal

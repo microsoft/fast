@@ -1,4 +1,4 @@
-import { PixelBlob } from "./pixel-blob";
+import { PixelBlob } from "./pixel-blob.js";
 
 /**
  * For each possible color, this counts how many pixels in the source image match that color.

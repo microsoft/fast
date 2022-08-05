@@ -3,9 +3,12 @@ import {
     nullableNumberConverter,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
+import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Accordion Item configuration options

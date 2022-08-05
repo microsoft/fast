@@ -9,8 +9,8 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
-import { selectStyles } from "../select/select.styles";
+} from "../design-tokens.js";
+import { selectStyles } from "../select/select.styles.js";
 
 /**
  * Styles for Combobox

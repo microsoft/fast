@@ -1,4 +1,4 @@
-import { emptyArray } from "../platform";
+import { emptyArray } from "../platform.js";
 
 /**
  * Represents a set of splice-based changes against an Array.

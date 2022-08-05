@@ -6,7 +6,7 @@ import {
 } from "@microsoft/fast-element";
 import { DesignTokenChangeRecord } from "@microsoft/fast-foundation";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { direction as directionDesignToken } from "../design-tokens";
+import { direction as directionDesignToken } from "../design-tokens.js";
 /**
  * Behavior to conditionally apply LTR and RTL stylesheets. To determine which to apply,
  * the behavior will use the nearest DesignSystemProvider's 'direction' design system value.

@@ -1,7 +1,7 @@
 import { Accordion, accordionTemplate as template } from "@microsoft/fast-foundation";
-import { accordionStyles as styles } from "./accordion.styles";
+import { accordionStyles as styles } from "./accordion.styles.js";
 
-export * from "../accordion-item/index";
+export * from "../accordion-item/index.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Accordion} registration for configuring the component with a DesignSystem.

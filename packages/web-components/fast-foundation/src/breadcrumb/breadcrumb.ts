@@ -1,6 +1,6 @@
 import { observable } from "@microsoft/fast-element";
-import { BreadcrumbItem } from "../breadcrumb-item";
-import { FoundationElement } from "../foundation-element";
+import { BreadcrumbItem } from "../breadcrumb-item/breadcrumb-item.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Breadcrumb Custom HTML Element.
@@ -26,24 +26,22 @@ export class Breadcrumb extends FoundationElement {
                 this.slottedBreadcrumbItems.length - 1
             ];
 
-            this.setItemSeparator(lastNode);
-            this.setLastItemAriaCurrent(lastNode);
+            this.slottedBreadcrumbItems.forEach((item: HTMLElement) => {
+                const itemIsLastNode: boolean = item === lastNode;
+
+                this.setItemSeparator(item, itemIsLastNode);
+                this.setAriaCurrent(item, itemIsLastNode);
+            });
         }
     }
 
-    private setItemSeparator(lastNode: HTMLElement): void {
-        this.slottedBreadcrumbItems.forEach((item: HTMLElement) => {
-            if (item instanceof BreadcrumbItem) {
-                (item as BreadcrumbItem).separator = true;
-            }
-        });
-        if (lastNode instanceof BreadcrumbItem) {
-            (lastNode as BreadcrumbItem).separator = false;
+    private setItemSeparator(item: HTMLElement, isLastNode: boolean): void {
+        if (item instanceof BreadcrumbItem) {
+            (item as BreadcrumbItem).separator = !isLastNode;
         }
     }
 
     /**
-     * @internal
      * Finds href on childnodes in the light DOM or shadow DOM.
      * We look in the shadow DOM because we insert an anchor when breadcrumb-item has an href.
      */
@@ -56,19 +54,25 @@ export class Breadcrumb extends FoundationElement {
     }
 
     /**
-     *  If child node with an anchor tag and with href is found then apply aria-current to child node otherwise apply aria-current to the host element, with an href
+     *  Sets ARIA Current for the current node
+     * If child node with an anchor tag and with href is found then set aria-current to correct value for the child node,
+     * otherwise apply aria-current to the host element, with an href
      */
-    private setLastItemAriaCurrent(lastNode: HTMLElement): void {
-        const childNodeWithHref: HTMLElement | null = this.findChildWithHref(lastNode);
+    private setAriaCurrent(item: HTMLElement, isLastNode: boolean): void {
+        const childNodeWithHref: HTMLElement | null = this.findChildWithHref(item);
 
         if (
             childNodeWithHref === null &&
-            lastNode.hasAttribute("href") &&
-            lastNode instanceof BreadcrumbItem
+            item.hasAttribute("href") &&
+            item instanceof BreadcrumbItem
         ) {
-            (lastNode as BreadcrumbItem).ariaCurrent = "page";
+            isLastNode
+                ? (item as BreadcrumbItem).setAttribute("aria-current", "page")
+                : (item as BreadcrumbItem).removeAttribute("aria-current");
         } else if (childNodeWithHref !== null) {
-            childNodeWithHref.setAttribute("aria-current", "page");
+            isLastNode
+                ? childNodeWithHref.setAttribute("aria-current", "page")
+                : childNodeWithHref.removeAttribute("aria-current");
         }
     }
 }

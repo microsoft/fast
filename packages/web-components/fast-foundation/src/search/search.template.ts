@@ -1,9 +1,9 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns";
-import { whitespaceFilter } from "../utilities";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { Search, SearchOptions } from "./search";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import { whitespaceFilter } from "../utilities/whitespace-filter.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { Search, SearchOptions } from "./search.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Search:class)} component.

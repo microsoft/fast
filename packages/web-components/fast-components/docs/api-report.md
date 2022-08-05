@@ -545,9 +545,11 @@ export const allComponents: {
 
 // @public
 export class Anchor extends Anchor_2 {
-    appearance: AnchorAppearance;
+    appearance?: AnchorAppearance;
     // (undocumented)
     appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
+    // (undocumented)
+    connectedCallback(): void;
     // @internal
     defaultSlottedContentChanged(oldValue: any, newValue: any): void;
 }
@@ -779,9 +781,11 @@ export const disabledOpacity: import("@microsoft/fast-foundation").CSSDesignToke
 // @internal (undocumented)
 export class Disclosure extends Disclosure_2 {
     // @public
-    appearance: DisclosureAppearance;
+    appearance?: DisclosureAppearance;
     // (undocumented)
     appearanceChanged(oldValue: DisclosureAppearance, newValue: DisclosureAppearance): void;
+    // (undocumented)
+    connectedCallback(): void;
     // (undocumented)
     get disclosureHeight(): number;
     // @override
@@ -1697,7 +1701,7 @@ export interface Recipe<T> {
 export class Search extends Search_2 {
     // @public
     appearance: SearchAppearance;
-    }
+}
 
 // @public
 export type SearchAppearance = "filled" | "outline";

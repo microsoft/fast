@@ -1,6 +1,6 @@
-import type { Behavior } from "../observation/behavior";
-import type { CaptureType } from "./template";
-import { AttachedBehaviorHTMLDirective } from "./html-directive";
+import type { Behavior } from "../observation/behavior.js";
+import type { CaptureType } from "./template.js";
+import { AttachedBehaviorHTMLDirective } from "./html-directive.js";
 
 /**
  * The runtime behavior for template references.

@@ -34,9 +34,9 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
-import { elevation } from "../styles/elevation";
-import { heightNumber } from "../styles/size";
+} from "../design-tokens.js";
+import { elevation } from "../styles/elevation.js";
+import { heightNumber } from "../styles/size.js";
 
 /**
  * Styles for Select

@@ -1,5 +1,5 @@
 import { tooltipTemplate as template, Tooltip } from "@microsoft/fast-foundation";
-import { tooltipStyles as styles } from "./tooltip.styles";
+import { tooltipStyles as styles } from "./tooltip.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Tooltip} registration for configuring the component with a DesignSystem.

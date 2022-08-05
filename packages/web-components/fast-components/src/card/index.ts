@@ -3,9 +3,9 @@ import {
     Card as FoundationCard,
     cardTemplate as template,
 } from "@microsoft/fast-foundation";
-import { Swatch } from "../color/swatch";
-import { fillColor, neutralFillLayerRecipe } from "../design-tokens";
-import { cardStyles as styles } from "./card.styles";
+import { Swatch } from "../color/swatch.js";
+import { fillColor, neutralFillLayerRecipe } from "../design-tokens.js";
+import { cardStyles as styles } from "./card.styles.js";
 
 /**
  * @internal

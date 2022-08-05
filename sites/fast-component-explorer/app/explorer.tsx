@@ -174,7 +174,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                                 onUpdateHeight={this.handleUpdateHeight}
                                 onUpdateWidth={this.handleUpdateWidth}
                                 responsive={true}
-                                messageSystem={this.fastMessageSystem as MessageSystem}
+                                messageSystem={this.fastMessageSystem as any}
                             />
                             {renderDevToolToggle(
                                 this.state.devToolsVisible,
@@ -211,7 +211,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                 </div>
                 <div className={this.paneEndClassNames}>
                     <ModularForm
-                        messageSystem={this.fastMessageSystem}
+                        messageSystem={this.fastMessageSystem as any}
                         categories={componentCategories}
                     />
                 </div>

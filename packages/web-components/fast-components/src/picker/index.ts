@@ -10,11 +10,11 @@ import {
     pickerMenuTemplate,
     pickerTemplate,
 } from "@microsoft/fast-foundation";
-import { pickerStyles } from "./picker.styles";
-import { pickerMenuStyles } from "./picker-menu.styles";
-import { pickerMenuOptionStyles } from "./picker-menu-option.styles";
-import { pickerListStyles } from "./picker-list.styles";
-import { pickerListItemStyles } from "./picker-list-item.styles";
+import { pickerStyles } from "./picker.styles.js";
+import { pickerMenuStyles } from "./picker-menu.styles.js";
+import { pickerMenuOptionStyles } from "./picker-menu-option.styles.js";
+import { pickerListStyles } from "./picker-list.styles.js";
+import { pickerListItemStyles } from "./picker-list-item.styles.js";
 
 /**
  * The FAST  Picker Custom Element. Implements {@link @microsoft/fast-foundation#Picker},

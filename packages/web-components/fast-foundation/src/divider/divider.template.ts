@@ -1,7 +1,7 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { Divider } from "./divider";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { Divider } from "./divider.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Divider} component.

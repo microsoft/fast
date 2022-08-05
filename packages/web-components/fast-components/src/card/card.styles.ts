@@ -5,8 +5,8 @@ import {
     FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { controlCornerRadius, fillColor } from "../design-tokens";
-import { elevation } from "../styles/index";
+import { controlCornerRadius, fillColor } from "../design-tokens.js";
+import { elevation } from "../styles/index.js";
 
 /**
  * Styles for Card

@@ -20,8 +20,8 @@ import {
     strokeWidth,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
-} from "../design-tokens";
-import { heightNumber } from "../styles/size";
+} from "../design-tokens.js";
+import { heightNumber } from "../styles/size.js";
 
 /**
  * Styles for AccordionItem

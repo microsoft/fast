@@ -1,5 +1,5 @@
 import TextAreaTemplate from "./fixtures/text-area.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Text Area",

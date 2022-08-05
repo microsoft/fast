@@ -11,7 +11,7 @@ import {
     designUnit,
     neutralFillRest,
     neutralForegroundHint,
-} from "../design-tokens";
+} from "../design-tokens.js";
 
 /**
  * Styles for Progress

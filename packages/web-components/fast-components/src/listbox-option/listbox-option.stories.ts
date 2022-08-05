@@ -1,7 +1,7 @@
 import { addons } from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
 import Examples from "./fixtures/base.html";
-import type { ListboxOption as ListboxOptionType } from "./index";
+import type { ListboxOption as ListboxOptionType } from "./index.js";
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("listbox-option")) {

@@ -1,4 +1,4 @@
-import { roundToPrecisionSmall } from "./math-utilities";
+import { roundToPrecisionSmall } from "./math-utilities.js";
 /**
  *
  * {@link https://en.wikipedia.org/wiki/CIELAB_color_space | CIELCH color space}

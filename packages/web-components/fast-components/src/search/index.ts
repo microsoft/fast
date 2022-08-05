@@ -1,11 +1,9 @@
-import { attr, DOM } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element";
 import {
     Search as FoundationSearch,
     searchTemplate as template,
 } from "@microsoft/fast-foundation";
-import { Swatch } from "../color/swatch";
-import { fillColor, neutralFillRecipe } from "../design-tokens";
-import { searchStyles as styles } from "./search.styles";
+import { searchStyles as styles } from "./search.styles.js";
 
 /**
  * Search appearances

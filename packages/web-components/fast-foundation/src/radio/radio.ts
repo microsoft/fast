@@ -1,7 +1,7 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { FormAssociatedRadio } from "./radio.form-associated";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { FormAssociatedRadio } from "./radio.form-associated.js";
 
 /**
  * A structure representing a {@link @microsoft/fast-foundation#(Radio:class)} element

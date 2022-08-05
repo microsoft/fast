@@ -1,5 +1,5 @@
-import { Swatch } from "../swatch";
-import { isDark } from "./is-dark";
+import { Swatch } from "../swatch.js";
+import { isDark } from "./is-dark.js";
 
 /**
  * @internal

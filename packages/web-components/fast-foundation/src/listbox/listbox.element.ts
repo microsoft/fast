@@ -9,8 +9,8 @@ import {
     keySpace,
     keyTab,
 } from "@microsoft/fast-web-utilities";
-import type { ListboxOption } from "../listbox-option/listbox-option";
-import { Listbox } from "./listbox";
+import type { ListboxOption } from "../listbox-option/listbox-option.js";
+import { Listbox } from "./listbox.js";
 
 /**
  * A Listbox Custom HTML Element.

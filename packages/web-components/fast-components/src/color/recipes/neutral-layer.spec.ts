@@ -1,15 +1,15 @@
 import { expect } from "chai";
-import { PaletteRGB } from "../palette";
-import { StandardLuminance } from "../utilities/base-layer-luminance";
-import { middleGrey } from "../utilities/color-constants";
+import { PaletteRGB } from "../palette.js";
+import { StandardLuminance } from "../utilities/base-layer-luminance.js";
+import { middleGrey } from "../utilities/color-constants.js";
 import {
     neutralLayerFloating
 } from './neutral-layer-floating';
-import { neutralLayer1 } from "./neutral-layer-1";
-import { neutralLayer2 } from "./neutral-layer-2";
-import { neutralLayer3 } from "./neutral-layer-3";
-import { neutralLayer4 } from "./neutral-layer-4";
-import { SwatchRGB } from "../swatch";
+import { neutralLayer1 } from "./neutral-layer-1.js";
+import { neutralLayer2 } from "./neutral-layer-2.js";
+import { neutralLayer3 } from "./neutral-layer-3.js";
+import { neutralLayer4 } from "./neutral-layer-4.js";
+import { SwatchRGB } from "../swatch.js";
 
 const neutralPalette = PaletteRGB.create(middleGrey);
 

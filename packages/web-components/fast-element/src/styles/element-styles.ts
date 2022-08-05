@@ -1,5 +1,5 @@
-import type { Behavior } from "../observation/behavior";
-import { DOM } from "../dom";
+import type { Behavior } from "../observation/behavior.js";
+import { DOM } from "../dom.js";
 
 /**
  * A node that can be targeted by styles.

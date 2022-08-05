@@ -1,5 +1,5 @@
 import { cssPartial } from "@microsoft/fast-element";
-import { baseHeightMultiplier, density, designUnit } from "../design-tokens";
+import { baseHeightMultiplier, density, designUnit } from "../design-tokens.js";
 
 /**
  * A formula to retrieve the control height.

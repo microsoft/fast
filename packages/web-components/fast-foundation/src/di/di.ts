@@ -3,7 +3,7 @@
  * for the bulk of this code and many of the associated tests.
  */
 import { Constructable, emptyArray, FASTElement } from "@microsoft/fast-element";
-import type { Class } from "../interfaces";
+import type { Class } from "../interfaces.js";
 
 // Tiny polyfill for TypeScript's Reflect metadata API.
 const metadataByTarget = new Map<any, Map<any, any>>();

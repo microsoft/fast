@@ -1,6 +1,10 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { display, FoundationElementTemplate } from "@microsoft/fast-foundation";
-import { bodyFont, typeRampBaseFontSize, typeRampBaseLineHeight } from "../design-tokens";
+import {
+    bodyFont,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens.js";
 
 /**
  * Styles for Breadcrumb

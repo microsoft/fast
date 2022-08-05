@@ -4,7 +4,7 @@ import {
     ElementViewTemplate,
     FASTElement,
 } from "@microsoft/fast-element";
-import { Container, DI, Registration } from "../di/di";
+import { Container, DI, Registration } from "../di/di.js";
 
 /**
  * Applies presentation details, such as template and styles, to a component instance.

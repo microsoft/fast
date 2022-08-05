@@ -1,5 +1,5 @@
-import { ColorRGBA64 } from "./color-rgba-64";
-import { PixelBlob } from "./pixel-blob";
+import { ColorRGBA64 } from "./color-rgba-64.js";
+import { PixelBlob } from "./pixel-blob.js";
 
 /**
  * Implements the PixelBlob interfaces using a a massive, ineffecient number array for pixel data. Not recomended for production use but comes in handy in unit tests or environments where creating a canvas drawing context isn't an option.

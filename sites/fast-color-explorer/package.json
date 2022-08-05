@@ -30,7 +30,6 @@
     "@babel/preset-env": "^7.12.13",
     "@microsoft/eslint-config-fast-dna": "^2.0.0",
     "@microsoft/site-utilities": "^0.9.0",
-    "@types/lodash": "^4.14.120",
     "@types/node": "^15.0.1",
     "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^6.0.3",
@@ -38,10 +37,9 @@
     "csstype": "^2.5.8",
     "ejs-loader": "^0.5.0",
     "eslint-config-prettier": "6.10.1",
-    "exenv-es6": "^1.0.0",
+    "exenv-es6": "^1.1.1",
     "focus-visible": "^4.1.5",
     "html-webpack-plugin": "^3.2.0",
-    "lodash-es": "4.17.15",
     "mini-css-extract-plugin": "^0.10.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier": "2.0.2",
@@ -56,11 +54,10 @@
   },
   "dependencies": {
     "@fluentui/svg-icons": "^1.1.0",
-    "@microsoft/fast-colors": "^5.1.5",
-    "@microsoft/fast-components": "^2.25.3",
-    "@microsoft/fast-element": "^1.8.0",
-    "@microsoft/fast-foundation": "^2.38.0",
-    "@microsoft/fast-tooling": "^0.37.6",
-    "@microsoft/fast-web-utilities": "^5.1.0"
+    "@microsoft/fast-colors": "^5.2.0",
+    "@microsoft/fast-components": "^2.27.0",
+    "@microsoft/fast-element": "^1.9.0",
+    "@microsoft/fast-foundation": "^2.41.1",
+    "@microsoft/fast-web-utilities": "^5.2.0"
   }
 }

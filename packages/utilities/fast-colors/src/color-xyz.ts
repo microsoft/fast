@@ -1,4 +1,4 @@
-import { roundToPrecisionSmall } from "./math-utilities";
+import { roundToPrecisionSmall } from "./math-utilities.js";
 /**
  * {@link https://en.wikipedia.org/wiki/CIE_1931_color_space | XYZ color space}
  *

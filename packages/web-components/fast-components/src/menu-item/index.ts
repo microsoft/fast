@@ -3,7 +3,7 @@ import {
     MenuItemOptions,
     menuItemTemplate as template,
 } from "@microsoft/fast-foundation";
-import { menuItemStyles as styles } from "./menu-item.styles";
+import { menuItemStyles as styles } from "./menu-item.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#MenuItem} registration for configuring the component with a DesignSystem.

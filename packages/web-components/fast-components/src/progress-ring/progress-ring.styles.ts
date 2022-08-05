@@ -10,8 +10,8 @@ import {
     accentForegroundRest,
     neutralFillRest,
     neutralForegroundHint,
-} from "../design-tokens";
-import { heightNumber } from "../styles";
+} from "../design-tokens.js";
+import { heightNumber } from "../styles/size.js";
 
 /**
  * Styles for Progress Ring

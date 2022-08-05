@@ -1,9 +1,9 @@
 import {
     AttachedBehaviorHTMLDirective,
     Behavior,
+    DOM,
     Subscriber,
     SubscriberSet,
-    DOM,
 } from "@microsoft/fast-element";
 import type { CaptureType } from "@microsoft/fast-element";
 

@@ -1,12 +1,11 @@
 *.spec.ts
 *.spec.tsx
-**/__test-images__
 **/__tests__
+**/__test__
 **/.tmp
 **/bootstrap
 **/coverage
 **/dist
 **/temp
 default-palette.ts
-testData.ts
 packages/tooling/fast-vscode-syntax-highlighting/test

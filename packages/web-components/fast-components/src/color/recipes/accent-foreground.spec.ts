@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
-import { PaletteRGB } from "../palette";
-import { SwatchRGB } from "../swatch";
-import { accentBase, black, middleGrey, white } from "../utilities/color-constants";
-import { accentForeground } from "./accent-foreground";
+import { PaletteRGB } from "../palette.js";
+import { SwatchRGB } from "../swatch.js";
+import { accentBase, black, middleGrey, white } from "../utilities/color-constants.js";
+import { accentForeground } from "./accent-foreground.js";
 
 describe("accentForeground", (): void => {
     const neutralPalette = PaletteRGB.create(middleGrey)

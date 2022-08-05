@@ -9,16 +9,19 @@ import {
     Observable,
     Subscriber,
 } from "@microsoft/fast-element";
-import { composedParent } from "../utilities";
-import { composedContains } from "../utilities/composed-contains";
-import { PropertyTargetManager, RootStyleSheetTarget } from "./custom-property-manager";
+import { composedParent } from "../utilities/composed-parent.js";
+import { composedContains } from "../utilities/composed-contains.js";
+import {
+    PropertyTargetManager,
+    RootStyleSheetTarget,
+} from "./custom-property-manager.js";
 import type {
     DerivedDesignTokenValue,
     DesignTokenConfiguration,
     DesignTokenValue,
     StaticDesignTokenValue,
-} from "./interfaces";
-import { defaultElement } from "./custom-property-manager";
+} from "./interfaces.js";
+import { defaultElement } from "./custom-property-manager.js";
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /**
  * Describes a DesignToken instance.

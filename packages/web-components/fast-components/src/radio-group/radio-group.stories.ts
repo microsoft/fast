@@ -1,6 +1,6 @@
 import Examples from "./fixtures/base.html";
 
-import "./index";
+import "./index.js";
 
 export default {
     title: "Radio Group",

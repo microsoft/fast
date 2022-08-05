@@ -1,8 +1,8 @@
 import { elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns";
-import type { Toolbar, ToolbarOptions } from "./toolbar";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { Toolbar, ToolbarOptions } from "./toolbar.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Toolbar:class)} component.

@@ -1,7 +1,7 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { Menu } from "./menu";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { Menu } from "./menu.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Menu} component.

@@ -1,6 +1,6 @@
-import { Palette } from "../palette";
-import { Swatch } from "../swatch";
-import { directionByIsDark } from "../utilities/direction-by-is-dark";
+import { Palette } from "../palette.js";
+import { Swatch } from "../swatch.js";
+import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
 
 /** @internal */
 export function focusStrokeOuter(palette: Palette, reference: Swatch) {

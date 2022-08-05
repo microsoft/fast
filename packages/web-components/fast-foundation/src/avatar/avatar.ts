@@ -1,5 +1,8 @@
 import { attr, SyntheticViewTemplate } from "@microsoft/fast-element";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
 
 type AvatarShape = "circle" | "square";
 

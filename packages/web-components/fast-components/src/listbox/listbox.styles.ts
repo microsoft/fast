@@ -17,8 +17,8 @@ import {
     neutralLayerFloating,
     neutralStrokeRest,
     strokeWidth,
-} from "../design-tokens";
-import { heightNumber } from "../styles/size";
+} from "../design-tokens.js";
+import { heightNumber } from "../styles/size.js";
 
 /**
  * Styles for Listbox

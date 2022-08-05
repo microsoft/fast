@@ -1,2 +1,2 @@
-export * from "./listbox-option";
-export * from "./listbox-option.template";
+export * from "./listbox-option.js";
+export * from "./listbox-option.template.js";

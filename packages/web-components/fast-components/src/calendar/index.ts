@@ -3,7 +3,7 @@ import {
     calendarTemplate,
     CalendarTitleTemplate,
 } from "@microsoft/fast-foundation";
-import { CalendarStyles as styles } from "./calendar.styles";
+import { CalendarStyles as styles } from "./calendar.styles.js";
 
 /**
  * The FAST Calendar Element. Implements {@link @microsoft/fast-foundation#Calendar},

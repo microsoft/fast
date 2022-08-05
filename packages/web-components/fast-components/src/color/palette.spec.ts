@@ -1,7 +1,7 @@
 
 import { expect } from "chai";
-import { PaletteRGB } from "./palette";
-import { SwatchRGB, isSwatchRGB } from "./swatch";
+import { PaletteRGB } from "./palette.js";
+import { SwatchRGB, isSwatchRGB } from "./swatch.js";
 
 const test: SwatchRGB = {
 	r: 0,

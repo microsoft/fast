@@ -1,6 +1,6 @@
 import { html, ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { PickerMenuOption } from "./picker-menu-option";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { PickerMenuOption } from "./picker-menu-option.js";
 
 /**
  *

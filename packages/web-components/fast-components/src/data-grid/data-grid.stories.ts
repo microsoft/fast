@@ -6,11 +6,11 @@ import type {
     DataGridCell,
     DataGridRow,
 } from "@microsoft/fast-foundation";
-import { GenerateHeaderOptions } from "@microsoft/fast-foundation/dist/esm/data-grid/data-grid.options";
+import { GenerateHeaderOptions } from "@microsoft/fast-foundation/dist/esm/data-grid/data-grid.options.js";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
 import DataGridTemplate from "./fixtures/base.html";
-import "./index";
+import "./index.js";
 
 let defaultGridElement: DataGrid | null = null;
 

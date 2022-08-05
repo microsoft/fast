@@ -3,10 +3,10 @@ import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
     StartEndOptions,
-} from "../patterns/index";
-import { applyMixins } from "../utilities/apply-mixins";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { FormAssociatedButton } from "./button.form-associated";
+} from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { FormAssociatedButton } from "./button.form-associated.js";
 
 /**
  * Button configuration options
@@ -255,7 +255,7 @@ export class DelegatesARIAButton {
      * @remarks
      * HTML Attribute: aria-expanded
      */
-    @attr({ attribute: "aria-expanded", mode: "fromView" })
+    @attr({ attribute: "aria-expanded" })
     public ariaExpanded: "true" | "false" | undefined;
 
     /**
@@ -264,7 +264,7 @@ export class DelegatesARIAButton {
      * @remarks
      * HTML Attribute: aria-pressed
      */
-    @attr({ attribute: "aria-pressed", mode: "fromView" })
+    @attr({ attribute: "aria-pressed" })
     public ariaPressed: "true" | "false" | "mixed" | undefined;
 }
 

@@ -1,5 +1,5 @@
 import CalendarTemplate from "./fixtures/calendar.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Calendar",

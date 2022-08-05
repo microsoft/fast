@@ -6,3 +6,5 @@ dist
 coverage
 # don't lint tests
 *.spec.*
+#
+karma.conf.cjs

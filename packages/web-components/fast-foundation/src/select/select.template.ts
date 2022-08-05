@@ -1,9 +1,9 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import { Listbox } from "../listbox/listbox";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { Select, SelectOptions } from "./select";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import { Listbox } from "../listbox/listbox.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { Select, SelectOptions } from "./select.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Select:class)} component.

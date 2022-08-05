@@ -1,8 +1,8 @@
 import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { AccordionItem, AccordionItemOptions } from "./accordion-item";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { AccordionItem, AccordionItemOptions } from "./accordion-item.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(AccordionItem:class)} component.
@@ -28,8 +28,8 @@ export const accordionItemTemplate: FoundationElementTemplate<
                 id="${x => x.id}"
                 @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
             >
-                <span class="heading">
-                    <slot name="heading" part="heading"></slot>
+                <span class="heading-content" part="heading-content">
+                    <slot name="heading"></slot>
                 </span>
             </button>
             ${startSlotTemplate(context, definition)}

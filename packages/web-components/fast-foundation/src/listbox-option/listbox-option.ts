@@ -1,11 +1,11 @@
 import { attr, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { ARIAGlobalStatesAndProperties } from "../patterns";
-import { StartEnd } from "../patterns/start-end";
-import type { StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Listbox option configuration options

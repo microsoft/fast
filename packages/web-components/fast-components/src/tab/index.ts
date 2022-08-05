@@ -1,5 +1,5 @@
 import { Tab, tabTemplate as template } from "@microsoft/fast-foundation";
-import { tabStyles as styles } from "./tab.styles";
+import { tabStyles as styles } from "./tab.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Tab} registration for configuring the component with a DesignSystem.

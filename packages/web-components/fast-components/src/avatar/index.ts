@@ -4,7 +4,7 @@ import {
     Avatar as FoundationAvatar,
     avatarTemplate as template,
 } from "@microsoft/fast-foundation";
-import { avatarStyles as styles } from "./avatar.styles";
+import { avatarStyles as styles } from "./avatar.styles.js";
 
 /**
  * The FAST Avatar Class

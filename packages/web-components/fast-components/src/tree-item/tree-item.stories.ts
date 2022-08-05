@@ -1,5 +1,5 @@
 import TreeItemTemplate from "./fixtures/tree-item.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Tree Item",

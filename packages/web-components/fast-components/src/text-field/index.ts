@@ -3,7 +3,7 @@ import {
     TextField as FoundationTextField,
     textFieldTemplate as template,
 } from "@microsoft/fast-foundation";
-import { textFieldStyles as styles } from "./text-field.styles";
+import { textFieldStyles as styles } from "./text-field.styles.js";
 
 /**
  * Text field appearances

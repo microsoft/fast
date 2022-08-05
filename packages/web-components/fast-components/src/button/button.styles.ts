@@ -12,15 +12,15 @@ import {
     disabledOpacity,
     neutralFillRest,
     neutralFillStealthRest,
-} from "../design-tokens";
+} from "../design-tokens.js";
 import {
     AccentButtonStyles,
     BaseButtonStyles,
     LightweightButtonStyles,
     OutlineButtonStyles,
     StealthButtonStyles,
-} from "../styles/index";
-import { appearanceBehavior } from "../utilities/behaviors";
+} from "../styles/index.js";
+import { appearanceBehavior } from "../utilities/behaviors.js";
 
 /**
  * Styles for Button

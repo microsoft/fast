@@ -3,8 +3,8 @@ import {
     Anchor as FoundationAnchor,
     anchorTemplate as template,
 } from "@microsoft/fast-foundation";
-import { ButtonAppearance } from "../button";
-import { anchorStyles as styles } from "./anchor.styles";
+import { ButtonAppearance } from "../button/index.js";
+import { anchorStyles as styles } from "./anchor.styles.js";
 
 /**
  * Types of anchor appearance.
@@ -25,7 +25,7 @@ export class Anchor extends FoundationAnchor {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: AnchorAppearance = "neutral";
+    public appearance?: AnchorAppearance;
     public appearanceChanged(
         oldValue: AnchorAppearance,
         newValue: AnchorAppearance
@@ -33,6 +33,14 @@ export class Anchor extends FoundationAnchor {
         if (this.$fastController.isConnected) {
             this.classList.remove(oldValue);
             this.classList.add(newValue);
+        }
+    }
+
+    public connectedCallback() {
+        super.connectedCallback();
+
+        if (!this.appearance) {
+            this.appearance = "neutral";
         }
     }
 

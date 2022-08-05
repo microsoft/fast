@@ -1,9 +1,9 @@
 // TODO: Is exporting Foundation still necessary with the updated API's?
 // export * from "@microsoft/fast-element";
-import { allComponents } from "./custom-elements";
-import { provideFASTDesignSystem } from "./fast-design-system";
+import { allComponents } from "./custom-elements.js";
+import { provideFASTDesignSystem } from "./fast-design-system.js";
 
-export * from "./index";
+export * from "./index.js";
 
 /**
  * The global FAST Design System.

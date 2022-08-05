@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components",
   "description": "A library of Web Components",
   "sideEffects": false,
-  "version": "2.25.3",
+  "version": "2.27.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -17,6 +17,7 @@
   },
   "main": "dist/esm/index.js",
   "types": "dist/fast-components.d.ts",
+  "type": "module",
   "unpkg": "dist/fast-components.min.js",
   "scripts": {
     "build-storybook": "build-storybook",
@@ -33,30 +34,30 @@
     "doc": "api-extractor run --local",
     "eslint:fix": "eslint . --ext .ts --fix",
     "eslint": "eslint . --ext .ts",
-    "generate-open-ui-definition": "tsc -p ./tsconfig.definitions.json && node -r esm build/generate-open-ui-definition",
-    "validate-component-definitions": "node -r esm build/validate-component-definitions",
+    "generate-open-ui-definition": "tsc -p ./tsconfig.definitions.json && node ./build/generate-open-ui-definition.cjs",
+    "validate-component-definitions": "node ./build/validate-component-definitions.cjs",
     "prepare": "yarn clean:dist && yarn build",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,html}\" --list-different",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,html}\"",
     "start": "start-storybook -p 6006",
     "tdd": "yarn dev & yarn test-chrome:watch",
-    "test-chrome:debugger": "karma start karma.conf.js --browsers=ChromeDebugging",
-    "test-chrome:verbose:debugger": "karma start karma.conf.js --browsers=ChromeDebugging --reporter=mocha",
-    "test-chrome:verbose:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha ",
-    "test-chrome:verbose": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --single-run --coverage --reporter=mocha",
-    "test-chrome:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js",
-    "test-chrome": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --single-run --coverage",
+    "test-chrome:debugger": "karma start karma.conf.cjs --browsers=ChromeDebugging",
+    "test-chrome:verbose:debugger": "karma start karma.conf.cjs --browsers=ChromeDebugging --reporter=mocha",
+    "test-chrome:verbose:watch": "karma start karma.conf.cjs --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha ",
+    "test-chrome:verbose": "karma start karma.conf.cjs --browsers=ChromeHeadlessOpt --single-run --coverage --reporter=mocha",
+    "test-chrome:watch": "karma start karma.conf.cjs --browsers=ChromeHeadlessOpt --coverage --watch-extensions js",
+    "test-chrome": "karma start karma.conf.cjs --browsers=ChromeHeadlessOpt --single-run --coverage",
     "test-chromium:pw": "yarn cross-env PLAYWRIGHT_BROWSER=chromium yarn test-pw:full",
     "test-firefox:pw": "yarn cross-env PLAYWRIGHT_BROWSER=firefox yarn test-pw:full",
-    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
-    "test-firefox": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage",
+    "test-firefox:verbose": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
+    "test-firefox": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage",
     "test-node:verbose": "mocha --reporter spec --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-node:watch": "mocha --reporter min --exit dist/esm/__test__/setup-node.js --watch './dist/esm/**/*.spec.js'",
     "test-node": "mocha --reporter min --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-pw:full": "yarn clean:test && yarn build:pw && yarn test-pw",
     "test-pw": "mocha --config ./__test__/.mocharc.json ./__test__/**/*.spec.js",
     "test-webkit:pw": "yarn cross-env PLAYWRIGHT_BROWSER=webkit yarn test-pw:full",
-    "test": "yarn test-chrome:verbose && yarn validate-component-definitions && yarn doc:ci"
+    "test": "yarn eslint && yarn test-chrome:verbose && yarn validate-component-definitions && yarn doc:ci"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.8.1",
@@ -93,6 +94,7 @@
     "mocha": "^8.2.1",
     "playwright": "^1.16.3",
     "prettier": "2.0.2",
+    "resolve-typescript-plugin": "^1.1.5",
     "rollup": "^2.7.6",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-filesize": "^9.1.2",
@@ -110,10 +112,10 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.1.5",
-    "@microsoft/fast-element": "^1.8.0",
-    "@microsoft/fast-foundation": "^2.38.0",
-    "@microsoft/fast-web-utilities": "^5.1.0",
+    "@microsoft/fast-colors": "^5.2.0",
+    "@microsoft/fast-element": "^1.9.0",
+    "@microsoft/fast-foundation": "^2.41.1",
+    "@microsoft/fast-web-utilities": "^5.2.0",
     "tslib": "^1.13.0"
   }
 }

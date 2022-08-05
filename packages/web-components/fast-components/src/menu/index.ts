@@ -1,5 +1,5 @@
 import { Menu, menuTemplate as template } from "@microsoft/fast-foundation";
-import { menuStyles as styles } from "./menu.styles";
+import { menuStyles as styles } from "./menu.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Menu} registration for configuring the component with a DesignSystem.

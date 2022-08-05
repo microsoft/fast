@@ -1,9 +1,9 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns";
-import { whitespaceFilter } from "../utilities";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { TextField, TextFieldOptions } from "./text-field";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import { whitespaceFilter } from "../utilities/whitespace-filter.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { TextField, TextFieldOptions } from "./text-field.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(TextField:class)} component.

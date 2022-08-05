@@ -1,10 +1,10 @@
-import { ColorHSL } from "./color-hsl";
-import { ColorHSV } from "./color-hsv";
-import { ColorLAB } from "./color-lab";
-import { ColorLCH } from "./color-lch";
-import { ColorRGBA64 } from "./color-rgba-64";
-import { ColorXYZ } from "./color-xyz";
-import { degreesToRadians, radiansToDegrees } from "./math-utilities";
+import { ColorHSL } from "./color-hsl.js";
+import { ColorHSV } from "./color-hsv.js";
+import { ColorLAB } from "./color-lab.js";
+import { ColorLCH } from "./color-lch.js";
+import { ColorRGBA64 } from "./color-rgba-64.js";
+import { ColorXYZ } from "./color-xyz.js";
+import { degreesToRadians, radiansToDegrees } from "./math-utilities.js";
 
 // All hue values are in degrees rather than radians or normalized
 // All conversions use the D65 2 degree white point for XYZ

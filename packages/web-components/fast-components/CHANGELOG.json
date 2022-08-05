@@ -2,6 +2,123 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 10 Apr 2022 07:11:09 GMT",
+      "tag": "@microsoft/fast-components_v2.27.0",
+      "version": "2.27.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Converted the fast-components package to type:module",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ce036beba8bad7ae1875f0d7f3bbb7c304757b9c",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "set disclosure appearance attribute in connected callback to ensure the element can be constructed without error",
+            "author": "chhol@microsoft.com",
+            "commit": "b5a3dbbeba7182f2ac5f93d36d90a292ad558d5f",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 07 Apr 2022 07:12:06 GMT",
+      "tag": "@microsoft/fast-components_v2.26.2",
+      "version": "2.26.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Added the picker to the component explorer site",
+            "author": "scomea@microsoft.com",
+            "commit": "c9bd1b900afa95b47e0f79a6409f256dd2827fdb",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 06 Apr 2022 07:12:42 GMT",
+      "tag": "@microsoft/fast-components_v2.26.1",
+      "version": "2.26.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ead7f7340654236f2503359e2fc6f0b41639b507",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 03 Apr 2022 07:12:01 GMT",
+      "tag": "@microsoft/fast-components_v2.26.0",
+      "version": "2.26.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "assign appearance in connectedCallback instead of constructor to support document.createElement",
+            "author": "chhol@microsoft.com",
+            "commit": "e262781f170c817f7bbab00bb80daafefeac6a45",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "fix a bug on breadcrumb stories where multiple items were added when the button was clicked",
+            "author": "chhol@microsoft.com",
+            "commit": "77cd8a472f4e898245d3da91dbe40e2771a439e5",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.8.0",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "35913ce3a2dcba83bebb63cce2b8edf4e9da7df9",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.40.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f6107c448ab6446667f4d9e86d9f9c11fff075aa",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.2.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f6107c448ab6446667f4d9e86d9f9c11fff075aa",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-colors to v5.2.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "317400b3f9bb9d0c74030af60472a931aee464ea",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 31 Mar 2022 07:13:31 GMT",
+      "tag": "@microsoft/fast-components_v2.25.4",
+      "version": "2.25.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix hidden menu items should not be included in the tabindex",
+            "author": "chhol@microsoft.com",
+            "commit": "3739c60925bc91dada3aaa71a72af5392c731fc1",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 27 Mar 2022 07:11:50 GMT",
       "tag": "@microsoft/fast-components_v2.25.3",
       "version": "2.25.3",

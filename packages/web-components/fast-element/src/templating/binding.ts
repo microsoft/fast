@@ -1,13 +1,13 @@
-import { DOM } from "../dom";
-import type { Behavior } from "../observation/behavior";
+import { DOM } from "../dom.js";
+import type { Behavior } from "../observation/behavior.js";
 import {
     Binding,
     BindingObserver,
     ExecutionContext,
     Observable,
-} from "../observation/observable";
-import { TargetedHTMLDirective } from "./html-directive";
-import type { SyntheticView } from "./view";
+} from "../observation/observable.js";
+import { TargetedHTMLDirective } from "./html-directive.js";
+import type { SyntheticView } from "./view.js";
 
 function normalBind(
     this: BindingBehavior,

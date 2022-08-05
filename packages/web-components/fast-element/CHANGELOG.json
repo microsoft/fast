@@ -2,6 +2,48 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 06 Apr 2022 07:12:42 GMT",
+      "tag": "@microsoft/fast-element_v1.9.0",
+      "version": "1.9.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "convert fast-element to type:module",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ead7f7340654236f2503359e2fc6f0b41639b507",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 03 Apr 2022 07:12:01 GMT",
+      "tag": "@microsoft/fast-element_v1.8.0",
+      "version": "1.8.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Fixed a typo in a doc example",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "35913ce3a2dcba83bebb63cce2b8edf4e9da7df9",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "add comment-style tags for syntax highlighting (#5561)",
+            "author": "chhol@microsoft.com",
+            "commit": "7495a63e6e89b6e92e2d7f289eea063a8a354108",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "Update binding documentation to have an accurate example. Changes \"Bindings\" to \"Volatile Properties\".",
+            "author": "tgoze@ntst.com",
+            "commit": "1ffb431816f418864d2385b29ba494efcb3fa844",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 08 Mar 2022 07:12:45 GMT",
       "tag": "@microsoft/fast-element_v1.8.0",
       "version": "1.8.0",

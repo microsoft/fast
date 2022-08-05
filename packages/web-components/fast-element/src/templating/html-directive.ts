@@ -1,5 +1,5 @@
-import { DOM } from "../dom";
-import type { Behavior } from "../observation/behavior";
+import { DOM } from "../dom.js";
+import type { Behavior } from "../observation/behavior.js";
 
 /**
  * A factory that can create a {@link Behavior} associated with a particular

@@ -1,5 +1,5 @@
 import Examples from "./fixtures/linear.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Progress",

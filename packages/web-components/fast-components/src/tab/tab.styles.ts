@@ -26,8 +26,8 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
-import { heightNumber } from "../styles";
+} from "../design-tokens.js";
+import { heightNumber } from "../styles/size.js";
 
 /**
  * Styles for Tab

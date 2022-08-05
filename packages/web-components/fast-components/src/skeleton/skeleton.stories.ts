@@ -1,5 +1,5 @@
 import SkeletonTemplate from "./fixtures/base.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Skeleton",

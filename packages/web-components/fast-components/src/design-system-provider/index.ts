@@ -17,7 +17,7 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { Direction, SystemColors } from "@microsoft/fast-web-utilities";
-import { Swatch, SwatchRGB } from "../color/swatch";
+import { Swatch, SwatchRGB } from "../color/swatch.js";
 import {
     accentColor,
     accentFillActiveDelta,
@@ -80,7 +80,7 @@ import {
     typeRampPlus5LineHeight,
     typeRampPlus6FontSize,
     typeRampPlus6LineHeight,
-} from "../design-tokens";
+} from "../design-tokens.js";
 
 /**
  * A {@link ValueConverter} that converts to and from `Swatch` values.

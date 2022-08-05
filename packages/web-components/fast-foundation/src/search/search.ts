@@ -3,10 +3,10 @@ import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
     StartEndOptions,
-} from "../patterns/index";
-import { applyMixins } from "../utilities/index";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { FormAssociatedSearch } from "./search.form-associated";
+} from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { FormAssociatedSearch } from "./search.form-associated.js";
 /**
  * Search configuration options
  * @public

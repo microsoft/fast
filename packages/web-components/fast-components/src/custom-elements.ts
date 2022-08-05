@@ -1,72 +1,75 @@
 /**
  * Export all custom element definitions
  */
-import type { Container } from "@microsoft/fast-foundation";
-import { fastAccordion, fastAccordionItem } from "./accordion/index";
-import { fastAnchor } from "./anchor/index";
-import { fastAnchoredRegion } from "./anchored-region/index";
-import { fastAvatar } from "./avatar/index";
-import { fastBadge } from "./badge/index";
-import { fastBreadcrumbItem } from "./breadcrumb-item/index";
-import { fastBreadcrumb } from "./breadcrumb/index";
-import { fastButton } from "./button/index";
-import { fastCalendar } from "./calendar/index";
-import { fastCard } from "./card/index";
-import { fastCheckbox } from "./checkbox/index";
-import { fastCombobox } from "./combobox/index";
-import { fastDataGrid, fastDataGridCell, fastDataGridRow } from "./data-grid/index";
-import { fastDatePicker } from "./date-picker/index";
-import { fastDesignSystemProvider } from "./design-system-provider/index";
-import { fastDialog } from "./dialog/index";
-import { fastDisclosure } from "./disclosure/index";
-import { fastDivider } from "./divider/index";
-import { fastFlipper } from "./flipper/index";
-import { fastHorizontalScroll } from "./horizontal-scroll/index";
-import { fastOption } from "./listbox-option/index";
-import { fastListbox } from "./listbox/index";
-import { fastMenuItem } from "./menu-item/index";
-import { fastMenu } from "./menu/index";
-import { fastNumberField } from "./number-field/index";
+
+import { fastAccordion, fastAccordionItem } from "./accordion/index.js";
+import { fastDataGrid, fastDataGridCell, fastDataGridRow } from "./data-grid/index.js";
 import {
     fastPicker,
     fastPickerList,
     fastPickerListItem,
     fastPickerMenu,
     fastPickerMenuOption,
-} from "./picker/index";
-import { fastProgressRing } from "./progress-ring/index";
-import { fastProgress } from "./progress/index";
-import { fastRadioGroup } from "./radio-group/index";
-import { fastRadio } from "./radio/index";
-import { fastSearch } from "./search/index";
-import { fastSelect } from "./select/index";
-import { fastSkeleton } from "./skeleton/index";
-import { fastSliderLabel } from "./slider-label/index";
-import { fastSlider } from "./slider/index";
-import { fastSwitch } from "./switch/index";
-import { fastTab, fastTabPanel, fastTabs } from "./tabs/index";
-import { fastTextArea } from "./text-area/index";
-import { fastTextField } from "./text-field/index";
-import { fastToolbar } from "./toolbar/index";
-import { fastTooltip } from "./tooltip/index";
-import { fastTreeItem } from "./tree-item/index";
-import { fastTreeView } from "./tree-view/index";
+} from "./picker/index.js";
+import { fastTab, fastTabPanel, fastTabs } from "./tabs/index.js";
+
+import type { Anchor } from "./anchor/index.js";
+import type { Button } from "./button/index.js";
+import type { Card } from "./card/index.js";
+import type { Container } from "@microsoft/fast-foundation";
+import type { DesignSystemProvider } from "./design-system-provider/index.js";
+import type { Disclosure } from "./disclosure/index.js";
+import { fastAnchor } from "./anchor/index.js";
+import { fastAnchoredRegion } from "./anchored-region/index.js";
+import { fastAvatar } from "./avatar/index.js";
+import { fastBadge } from "./badge/index.js";
+import { fastBreadcrumb } from "./breadcrumb/index.js";
+import { fastBreadcrumbItem } from "./breadcrumb-item/index.js";
+import { fastButton } from "./button/index.js";
+import { fastCalendar } from "./calendar/index.js";
+import { fastCard } from "./card/index.js";
+import { fastCheckbox } from "./checkbox/index.js";
+import { fastCombobox } from "./combobox/index.js";
+import { fastDatePicker } from "./date-picker/index.js";
+import { fastDesignSystemProvider } from "./design-system-provider/index.js";
+import { fastDialog } from "./dialog/index.js";
+import { fastDisclosure } from "./disclosure/index.js";
+import { fastDivider } from "./divider/index.js";
+import { fastFlipper } from "./flipper/index.js";
+import { fastHorizontalScroll } from "./horizontal-scroll/index.js";
+import { fastListbox } from "./listbox/index.js";
+import { fastMenu } from "./menu/index.js";
+import { fastMenuItem } from "./menu-item/index.js";
+import { fastNumberField } from "./number-field/index.js";
+import { fastOption } from "./listbox-option/index.js";
+import { fastProgress } from "./progress/index.js";
+import { fastProgressRing } from "./progress-ring/index.js";
+import { fastRadio } from "./radio/index.js";
+import { fastRadioGroup } from "./radio-group/index.js";
+import { fastSearch } from "./search/index.js";
+import { fastSelect } from "./select/index.js";
+import { fastSkeleton } from "./skeleton/index.js";
+import { fastSlider } from "./slider/index.js";
+import { fastSliderLabel } from "./slider-label/index.js";
+import { fastSwitch } from "./switch/index.js";
+import { fastTextArea } from "./text-area/index.js";
+import { fastTextField } from "./text-field/index.js";
+import { fastToolbar } from "./toolbar/index.js";
+import { fastTooltip } from "./tooltip/index.js";
+import { fastTreeItem } from "./tree-item/index.js";
+import { fastTreeView } from "./tree-view/index.js";
+import type { HorizontalScroll } from "./horizontal-scroll/index.js";
+import type { Listbox } from "./listbox/index.js";
+import type { Search } from "./search/index.js";
+import type { SliderLabel } from "./slider-label/index.js";
+import type { TextArea } from "./text-area/index.js";
+import type { TextField } from "./text-field/index.js";
+import type { Toolbar } from "./toolbar/index.js";
 
 // Don't delete these. They're needed so that API-extractor doesn't add import types
 // with improper pathing
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { Anchor } from "./anchor/index";
-import type { Button } from "./button/index";
-import type { Card } from "./card/index";
-import type { DesignSystemProvider } from "./design-system-provider/index";
-import type { Disclosure } from "./disclosure/index";
-import type { HorizontalScroll } from "./horizontal-scroll/index";
-import type { Listbox } from "./listbox/index";
-import type { Search } from "./search/index";
-import type { SliderLabel } from "./slider-label/index";
-import type { TextArea } from "./text-area/index";
-import type { TextField } from "./text-field/index";
-import type { Toolbar } from "./toolbar/index";
+
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 // When adding new components, make sure to add the component to the `allComponents` object

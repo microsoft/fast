@@ -1,5 +1,5 @@
 import { RadioGroup, radioGroupTemplate as template } from "@microsoft/fast-foundation";
-import { radioGroupStyles as styles } from "./radio-group.styles";
+import { radioGroupStyles as styles } from "./radio-group.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#RadioGroup} registration for configuring the component with a DesignSystem.

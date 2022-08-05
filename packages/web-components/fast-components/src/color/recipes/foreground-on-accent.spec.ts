@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { SwatchRGB } from "../swatch";
-import { black } from "../utilities/color-constants";
+import { SwatchRGB } from "../swatch.js";
+import { black } from "../utilities/color-constants.js";
 import { foregroundOnAccent } from './foreground-on-accent';
 
 describe("Cut text", (): void => {

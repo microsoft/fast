@@ -7,8 +7,8 @@ import {
     LightweightButtonStyles,
     OutlineButtonStyles,
     StealthButtonStyles,
-} from "../styles/index";
-import { appearanceBehavior } from "../utilities/behaviors";
+} from "../styles/index.js";
+import { appearanceBehavior } from "../utilities/behaviors.js";
 
 /**
  * Styles for Anchor

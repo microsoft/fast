@@ -6,8 +6,8 @@ import {
     keyHome,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import { AccordionItem } from "../accordion-item";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { AccordionItem } from "../accordion-item/accordion-item.js";
 
 /**
  * Expand mode for {@link Accordion}
