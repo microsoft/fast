@@ -101,6 +101,12 @@ const styles = css`
         background: var(--neutral-fill-rest);
         color: var(--neutral-foreground-rest);
     }
+
+    :host(.expanded) {
+        position: relative;
+        z-index: 1;
+    }
+
     :host([disabled]) {
         cursor: var(--disabled-cursor);
         opacity: var(--disabled-opacity);
