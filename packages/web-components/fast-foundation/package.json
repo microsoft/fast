@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
-  "version": "3.0.0-alpha.4",
+  "version": "3.0.0-alpha.6",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -25,7 +25,9 @@
     ".": {
       "types": "./dist/dts/index.d.ts",
       "default": "./dist/esm/index.js"
-    }
+    },
+    "./custom-elements.json": "./dist/custom-elements.json",
+    "./package.json": "./package.json"
   },
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
@@ -114,7 +116,7 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.3",
+    "@microsoft/fast-element": "^2.0.0-beta.4",
     "@microsoft/fast-web-utilities": "^6.0.0",
     "tabbable": "^5.2.0",
     "tslib": "^2.4.0"

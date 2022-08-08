@@ -2,6 +2,80 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Wed, 27 Jul 2022 17:36:33 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.6",
+      "version": "1.0.0-beta.6",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.6",
+            "commit": "7df4548954621d6247ab7fe3fae1a1ba0d33294b"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 18 Jul 2022 21:10:01 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.5",
+      "version": "1.0.0-beta.5",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "27dc848327b25328e428f67505684d2171b58711",
+            "comment": "feat: update SSR to new binding APIs"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "a44a5497dd3210b5bc3ed0568f31505f9b93a312",
+            "comment": "feat: enable the render directive to work in SSR"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "4567188a47598b3d2589b05f039bea695f2b8875",
+            "comment": "fix: update server-side-rendering of the repeat directive to use the renamed dataBinding property of the repeat directive"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "7f4d6b5587f6eff52e5b7f414e27543bb4d7772d",
+            "comment": "feat: add request storage to support per-request context in server side rendering"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "b32eb1004960da95b74dba7f111ee859b6655896",
+            "comment": "fix: server side rendering foundation tests"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.4",
+            "commit": "2ff46a32cdd9af12b236d0e2f3436a4de782e8ee"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.5",
+            "commit": "2ff46a32cdd9af12b236d0e2f3436a4de782e8ee"
+          }
+        ],
+        "none": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "a27daf24a7117a6ccf1db673c1adfadff8548512",
+            "comment": "adds the render directive to the directive support table"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 22 Jun 2022 20:17:50 GMT",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.4",
       "version": "1.0.0-beta.4",

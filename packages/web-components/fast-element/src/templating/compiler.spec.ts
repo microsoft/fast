@@ -44,7 +44,7 @@ describe("The template compiler", () => {
     }
 
     function binding(result = "result") {
-        return bind(() => result) as HTMLBindingDirective;
+        return new HTMLBindingDirective(bind(() => result));
     }
 
     const scope = {};
@@ -210,7 +210,7 @@ describe("The template compiler", () => {
                 return id;
             };
 
-            const binding = bind(x => x) as HTMLBindingDirective;
+            const binding = new HTMLBindingDirective(bind(x => x));
             Aspect.assign(binding, "a"); // mimic the html function, which will think it's an attribute
             const html = `a=${binding.createHTML(add)}`;
 
@@ -367,7 +367,7 @@ describe("The template compiler", () => {
 
                 if (x.result) {
                     expect(
-                        (factories[0] as HTMLBindingDirective).binding(
+                        (factories[0] as HTMLBindingDirective).dataBinding.evaluate(
                             scope,
                             ExecutionContext.default
                         )
@@ -528,7 +528,7 @@ describe("The template compiler", () => {
 
                 if (x.result) {
                     expect(
-                        (factories[0] as HTMLBindingDirective).binding(
+                        (factories[0] as HTMLBindingDirective).dataBinding.evaluate(
                             scope,
                             ExecutionContext.default
                         )

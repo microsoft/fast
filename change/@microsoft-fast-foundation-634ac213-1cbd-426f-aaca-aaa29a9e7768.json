@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "add activeid to accordion change event",
+  "comment": "use nullableNumberConverter for tooltip delay attribute",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",
   "dependentChangeType": "prerelease"

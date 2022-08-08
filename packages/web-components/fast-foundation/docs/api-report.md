@@ -662,12 +662,7 @@ export class FASTAnchoredRegion extends FASTElement {
 
 // @public
 export class FASTAvatar extends FASTElement {
-    color: string;
-    connectedCallback(): void;
-    fill: string;
     link: string;
-    // Warning: (ae-forgotten-export) The symbol "AvatarShape" needs to be exported by the entry point index.d.ts
-    shape: AvatarShape;
 }
 
 // @public
@@ -1330,7 +1325,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
     minlength: number;
     placeholder: string;
     readOnly: boolean;
-    protected select(): void;
+    select(): void;
     size: number;
     step: number;
     stepDown(): void;
@@ -1779,9 +1774,16 @@ export class FASTSwitch extends FormAssociatedSwitch {
     protected readOnlyChanged(): void;
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FASTTab" because one of its declarations is marked as @internal
+//
 // @public
 export class FASTTab extends FASTElement {
     disabled: boolean;
+}
+
+// @internal
+export interface FASTTab extends StartEnd {
 }
 
 // @public
@@ -1857,7 +1859,7 @@ export class FASTTextArea extends FormAssociatedTextArea {
     protected readOnlyChanged(): void;
     resize: TextAreaResize;
     rows: number;
-    protected select(): void;
+    select(): void;
     spellcheck: boolean;
     // (undocumented)
     protected spellcheckChanged(): void;
@@ -1904,7 +1906,7 @@ export class FASTTextField extends FormAssociatedTextField {
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;
-    protected select(): void;
+    select(): void;
     size: number;
     // (undocumented)
     protected sizeChanged(): void;
@@ -2523,6 +2525,9 @@ export type SwitchOptions = {
 export function switchTemplate(options?: SwitchOptions): ElementViewTemplate<FASTSwitch>;
 
 // @public
+export type TabOptionOptions = StartEndOptions;
+
+// @public
 export function tabPanelTemplate(): ElementViewTemplate<FASTTabPanel>;
 
 // @public
@@ -2541,7 +2546,7 @@ export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientatio
 export function tabsTemplate(options?: TabsOptions): ElementViewTemplate<FASTTabs>;
 
 // @public
-export function tabTemplate(): ElementViewTemplate<FASTTab>;
+export function tabTemplate(options?: StartEndOptions): ElementViewTemplate<FASTTab>;
 
 // @beta
 export function tagFor(dependency: TemplateElementDependency): string;

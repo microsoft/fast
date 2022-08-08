@@ -36,10 +36,10 @@ export interface Accessor {
 
 /**
  * The signature of an arrow function capable of being evaluated
- * as part of a template binding update.
+ * against source data and within an execution context.
  * @public
  */
-export type Binding<TSource = any, TReturn = any, TParent = any> = (
+export type Expression<TSource = any, TReturn = any, TParent = any> = (
     source: TSource,
     context: ExecutionContext<TParent>
 ) => TReturn;
@@ -66,22 +66,29 @@ interface SubscriptionRecord extends ObservationRecord {
 }
 
 /**
+ * Observes a binding for changes.
+ *
+ * @public
+ */
+export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any>
+    extends Disposable {
+    /**
+     * Begins observing the binding.
+     * @param source - The source to pass to the binding.
+     * @param context - The context to pass to the binding.
+     */
+    observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
+}
+
+/**
  * Enables evaluation of and subscription to a binding.
  * @public
  */
-export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
+export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any>
     extends Notifier,
-        Disposable {
+        ExpressionObserver<TSource, TReturn, TParent> {
     /**
-     * Begins observing the binding for the source and returns the current value.
-     * @param source - The source that the binding is based on.
-     * @param context - The execution context to execute the binding within.
-     * @returns The value of the binding.
-     */
-    observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
-
-    /**
-     * Gets {@link ObservationRecord|ObservationRecords} that the {@link BindingObserver}
+     * Gets {@link ObservationRecord|ObservationRecords} that the {@link ExpressionNotifier}
      * is observing.
      */
     records(): IterableIterator<ObservationRecord>;
@@ -106,7 +113,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
     const volatileRegex = /(:|&&|\|\||if)/;
     const notifierLookup = new WeakMap<any, Notifier>();
     const accessorLookup = new WeakMap<any, Accessor[]>();
-    let watcher: BindingObserverImplementation | undefined = void 0;
+    let watcher: ExpressionNotifierImplementation | undefined = void 0;
     let createArrayObserver = (array: any[]): Notifier => {
         throw FAST.error(Message.needsArrayObservation);
     };
@@ -180,9 +187,9 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         }
     }
 
-    class BindingObserverImplementation<TSource = any, TReturn = any>
+    class ExpressionNotifierImplementation<TSource = any, TReturn = any>
         extends SubscriberSet
-        implements BindingObserver<TSource, TReturn> {
+        implements ExpressionNotifier<TSource, TReturn> {
         public needsRefresh: boolean = true;
         private needsQueue: boolean = true;
         private isAsync = true;
@@ -195,7 +202,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         private next: SubscriptionRecord | undefined = void 0;
 
         constructor(
-            private binding: Binding<TSource, TReturn>,
+            private binding: Expression<TSource, TReturn>,
             initialSubscriber?: Subscriber,
             private isVolatileBinding: boolean = false
         ) {
@@ -368,18 +375,18 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         getAccessors,
 
         /**
-         * Creates a {@link BindingObserver} that can watch the
-         * provided {@link Binding} for changes.
+         * Creates a {@link ExpressionNotifier} that can watch the
+         * provided {@link Expression} for changes.
          * @param binding - The binding to observe.
          * @param initialSubscriber - An initial subscriber to changes in the binding value.
          * @param isVolatileBinding - Indicates whether the binding's dependency list must be re-evaluated on every value evaluation.
          */
         binding<TSource = any, TReturn = any>(
-            binding: Binding<TSource, TReturn>,
+            binding: Expression<TSource, TReturn>,
             initialSubscriber?: Subscriber,
             isVolatileBinding: boolean = this.isVolatileBinding(binding)
-        ): BindingObserver<TSource, TReturn> {
-            return new BindingObserverImplementation(
+        ): ExpressionNotifier<TSource, TReturn> {
+            return new ExpressionNotifierImplementation(
                 binding,
                 initialSubscriber,
                 isVolatileBinding
@@ -392,7 +399,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
          * @param binding - The binding to inspect.
          */
         isVolatileBinding<TSource = any, TReturn = any>(
-            binding: Binding<TSource, TReturn>
+            binding: Expression<TSource, TReturn>
         ): boolean {
             return volatileRegex.test(binding.toString());
         },

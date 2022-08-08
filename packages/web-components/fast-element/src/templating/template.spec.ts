@@ -316,7 +316,7 @@ describe(`The html tag template helper`, () => {
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
-        expect(factory!.binding(null, ExecutionContext.default)).equals(stringValue);
+        expect(factory!.dataBinding.evaluate(null, ExecutionContext.default)).equals(stringValue);
     });
 
     it(`captures an attribute with an interpolated number`, () => {
@@ -336,7 +336,7 @@ describe(`The html tag template helper`, () => {
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
-        expect(factory!.binding(null, ExecutionContext.default)).equals(numberValue);
+        expect(factory!.dataBinding.evaluate(null, ExecutionContext.default)).equals(numberValue);
     });
 
     it(`captures a boolean attribute with an expression`, () => {
@@ -390,7 +390,7 @@ describe(`The html tag template helper`, () => {
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
-        expect(factory!.binding(null, ExecutionContext.default)).equals(true);
+        expect(factory!.dataBinding.evaluate(null, ExecutionContext.default)).equals(true);
     });
 
     it(`captures a case-sensitive property with an expression`, () => {
@@ -444,7 +444,7 @@ describe(`The html tag template helper`, () => {
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
-        expect(factory!.binding(null, ExecutionContext.default)).equals(stringValue);
+        expect(factory!.dataBinding.evaluate(null, ExecutionContext.default)).equals(stringValue);
     });
 
     it(`captures a case-sensitive property with an interpolated number`, () => {
@@ -464,7 +464,7 @@ describe(`The html tag template helper`, () => {
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
-        expect(factory!.binding(null, ExecutionContext.default)).equals(numberValue);
+        expect(factory!.dataBinding.evaluate(null, ExecutionContext.default)).equals(numberValue);
     });
 
     it(`captures a case-sensitive property with an inline directive`, () => {

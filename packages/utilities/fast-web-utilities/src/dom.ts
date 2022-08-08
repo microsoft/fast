@@ -31,7 +31,9 @@ export function getDisplayedNodes(
  * Based on https://github.com/cssinjs/jss/blob/master/packages/jss/src/DomRenderer.js
  */
 function getNonce(): string | null {
-    const node = document.querySelector('meta[property="csp-nonce"]');
+    const node = document.querySelector(
+        'meta[property="csp-nonce"], meta[name="csp-nonce"]'
+    );
     if (node) {
         return node.getAttribute("content");
     } else {

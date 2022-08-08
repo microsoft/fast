@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "adds the render directive to the directive support table",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

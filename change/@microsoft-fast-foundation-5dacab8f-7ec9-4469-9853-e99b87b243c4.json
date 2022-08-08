@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "feat: move testing and dependency injection to fast-element",
+  "comment": "anchored-region checks local shadow dom",
   "packageName": "@microsoft/fast-foundation",
-  "email": "roeisenb@microsoft.com",
+  "email": "stephcomeau@msn.com",
   "dependentChangeType": "prerelease"
 }
