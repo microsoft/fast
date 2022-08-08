@@ -34,10 +34,6 @@
       "types": "./dist/dts/debug.d.ts",
       "default": "./dist/esm/debug.js"
     },
-    "./observation/splice-strategies": {
-      "types": "./dist/dts/observation/splice-strategies.d.ts",
-      "default": "./dist/esm/observation/splice-strategies.js"
-    },
     "./binding/two-way": {
       "types": "./dist/dts/templating/binding-two-way.d.ts",
       "default": "./dist/esm/templating/binding-two-way.js"
@@ -73,7 +69,8 @@
     "./di": {
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "unpkg": "dist/fast-element.min.js",
   "sideEffects": [

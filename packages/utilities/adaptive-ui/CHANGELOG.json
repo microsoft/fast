@@ -2,6 +2,33 @@
   "name": "@microsoft/adaptive-ui",
   "entries": [
     {
+      "date": "Wed, 27 Jul 2022 17:36:33 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.6",
+      "version": "1.0.0-alpha.6",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "349a30c989da19b377e627fdb6e64974345a4b1b",
+            "comment": "Fixed missing export and incorrect min-contrast token values"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "0bc551cbe2db1a31adc31b3f69db08184da77dfa",
+            "comment": "Fix a bug in Swatch where blue and green values were being flipped"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.6",
+            "commit": "7df4548954621d6247ab7fe3fae1a1ba0d33294b"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 18 Jul 2022 21:10:01 GMT",
       "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.5",
       "version": "1.0.0-alpha.5",

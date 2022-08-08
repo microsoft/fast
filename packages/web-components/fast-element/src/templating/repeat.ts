@@ -146,6 +146,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
             );
 
             this.refreshAllViews(true);
+        } else if (!args[0]) {
+            return;
         } else if (args[0].reset) {
             this.refreshAllViews();
         } else {

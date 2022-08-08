@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Mon, 18 Jul 2022 21:10:01 GMT and should not be manually modified.
+This log was last generated on Wed, 27 Jul 2022 17:36:33 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.6
+
+Wed, 27 Jul 2022 17:36:33 GMT
+
+### Changes
+
+- Using getBoundingClientRect for horizontal-scroll (robarb@microsoft.com)
+- Removed the `fill`, `color`, and `shape` attributes and styling from Avatar (47367562+bheston@users.noreply.github.com)
 
 ## 3.0.0-alpha.5
 

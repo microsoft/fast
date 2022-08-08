@@ -3364,14 +3364,6 @@
     tabbable "^5.2.0"
     tslib "^1.13.0"
 
-"@microsoft/fast-ssr@1.0.0-beta.4":
-  version "1.0.0-beta.4"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-ssr/-/fast-ssr-1.0.0-beta.4.tgz#bfff391ff32a616fd69383709727cb891dab37e4"
-  integrity sha512-KJZ6z2TVr1yC3vY1NPztrNHHAIsJk7Dy6VtOf4VykxsZUkiJa+EStYEna3mxqkxfijmPwAsX4bwIUBXaTWOYSQ==
-  dependencies:
-    parse5 "^6.0.1"
-    tslib "^2.4.0"
-
 "@microsoft/fast-tooling@0.37.9", "@microsoft/fast-tooling@^0.37.7":
   version "0.37.9"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.37.9.tgz#76454362f84e4ea82ec3f9f2aababae29c1b8936"
@@ -22544,9 +22536,9 @@ terser-webpack-plugin@^5.0.3, terser-webpack-plugin@^5.1.3, terser-webpack-plugi
     terser "^5.7.2"
 
 terser@^4.1.2, terser@^4.6.3:
-  version "4.8.0"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-4.8.0.tgz#63056343d7c70bb29f3af665865a46fe03a0df17"
-  integrity sha512-EAPipTNeWsb/3wLPeup1tVPaXfIaU68xMnVdPafIL1TV05OhASArYyIfFvnvJCNrR2NIOvDVNNTFRa+Re2MWyw==
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-4.8.1.tgz#a00e5634562de2239fd404c649051bf6fc21144f"
+  integrity sha512-4GnLC0x667eJG0ewJTa6z/yXrbLGv80D9Ru6HIpCQmO+Q4PfEtBFi0ObSckqwL6VyQv/7ENJieXHo2ANmdQwgw==
   dependencies:
     commander "^2.20.0"
     source-map "~0.6.1"
