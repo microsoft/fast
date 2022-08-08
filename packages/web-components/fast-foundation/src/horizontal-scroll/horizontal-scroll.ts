@@ -316,10 +316,10 @@ export class FASTHorizontalScroll extends FASTElement {
      * Checks to see if the stops are returning values
      *  otherwise it will try to reinitialize them
      *
-     * @returns boolean for the current state of scrollStops are non-zero values
-     * @public
+     * @returns boolean indicating that current scrollStops are valid non-zero values
+     * @internal
      */
-    public validateStops(reinit: boolean = true): boolean {
+    private validateStops(reinit: boolean = true): boolean {
         const hasStops: () => boolean = (): boolean =>
             !!this.scrollStops.find((stop: number) => stop > 0);
         if (!hasStops() && reinit) {
