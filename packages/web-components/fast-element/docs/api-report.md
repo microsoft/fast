@@ -392,13 +392,11 @@ export interface FASTElement extends HTMLElement {
 }
 
 // @public
-export const FASTElement: (new () => HTMLElement & FASTElement) & {
-    from<TBase extends {
-        new (): HTMLElement;
-        prototype: HTMLElement;
-    }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
+export const FASTElement: {
+    new (): FASTElement;
     define: typeof define;
     compose: typeof compose;
+    from: typeof from;
 };
 
 // @public
@@ -862,8 +860,9 @@ export function when<TSource = any, TReturn = any>(condition: Expression<TSource
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/components/fast-element.d.ts:73:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:78:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:60:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:61:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
