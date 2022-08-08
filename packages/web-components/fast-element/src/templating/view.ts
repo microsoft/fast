@@ -1,4 +1,3 @@
-import { Updates } from "../index.js";
 import type { Disposable } from "../interfaces.js";
 import { ExecutionContext, Observable } from "../observation/observable.js";
 import type {
@@ -117,7 +116,7 @@ function flushDeferQueue(time: DOMHighResTimeStamp) {
     deferQueue.splice(0, i);
 
     if (deferQueue.length) {
-        Updates.enqueue(flushDeferQueue);
+        requestAnimationFrame(flushDeferQueue);
     } else {
         isDeferFlushRequested = false;
         notDeferredCount = 0;
@@ -326,7 +325,7 @@ export class HTMLView<TSource = any, TParent = any>
 
         if (!isDeferFlushRequested) {
             isDeferFlushRequested = true;
-            Updates.enqueue(flushDeferQueue);
+            requestAnimationFrame(flushDeferQueue);
         }
 
         return true;

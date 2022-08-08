@@ -20,12 +20,11 @@ export interface UpdateQueue {
     /**
      * Immediately processes all work previously scheduled
      * through enqueue.
-     * @param time - The start time of the task frame.
      * @remarks
      * This also forces next() promises
      * to resolve.
      */
-    process(time?: DOMHighResTimeStamp): void;
+    process(): void;
 
     /**
      * Sets the update mode used by enqueue.
@@ -56,9 +55,9 @@ export const Updates: UpdateQueue = FAST.getById(KernelServiceId.updateQueue, ()
         }
     }
 
-    function tryRunTask(task: Callable, time: DOMHighResTimeStamp): void {
+    function tryRunTask(task: Callable): void {
         try {
-            (task as any).call(time);
+            (task as any).call();
         } catch (error) {
             if (updateAsync) {
                 pendingErrors.push(error);
@@ -70,12 +69,12 @@ export const Updates: UpdateQueue = FAST.getById(KernelServiceId.updateQueue, ()
         }
     }
 
-    function process(time: DOMHighResTimeStamp = 0): void {
+    function process(): void {
         const capacity = 1024;
         let index = 0;
 
         while (index < tasks.length) {
-            tryRunTask(tasks[index], time);
+            tryRunTask(tasks[index]);
             index++;
 
             // Prevent leaking memory for long chains of recursive calls to `enqueue`.
