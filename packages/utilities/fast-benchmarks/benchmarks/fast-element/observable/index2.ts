@@ -44,7 +44,7 @@ export class Pupil {
     }
 }
 
-(window as any).runFunction = () => {
+window.runFunction = () => {
     const pupil = new Pupil(
         adjectives[_random(adjectives.length)],
         nouns[_random(nouns.length)]
