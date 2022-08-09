@@ -132,7 +132,7 @@ export class DesignToken<T> {
     }
 
     /**
-     * Configures the strategy for resolving hierarchial relationships between FASTElement targets.
+     * Configures the strategy for resolving hierarchical relationships between FASTElement targets.
      */
     public static withStrategy(strategy: DesignTokenResolutionStrategy): void {
         FASTDesignTokenNode.withStrategy(strategy);
