@@ -1,4 +1,4 @@
-import { DesignToken } from "@microsoft/fast-foundation";
+import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
 import { create } from "./create.js";
 
 /**
@@ -30,10 +30,10 @@ export const fontWeight = create<number>("font-weight").withDefault(
 
 function fontVariations(
     sizeToken: DesignToken<string>
-): (element: HTMLElement) => string {
-    return (element: HTMLElement): string => {
-        const size = sizeToken.getValueFor(element);
-        const weight = fontWeight.getValueFor(element);
+): (resolve: DesignTokenResolver) => string {
+    return (resolve: DesignTokenResolver): string => {
+        const size = resolve(sizeToken);
+        const weight = resolve(fontWeight);
         if (size.endsWith("px")) {
             const px = Number.parseFloat(size.replace("px", ""));
             if (px <= 12) {
