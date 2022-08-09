@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { Button, buttonTemplate } from "../button";
-import { Calendar, calendarTemplate } from "../calendar";
+import { Button, buttonTemplate } from "../button/index.js";
+import { Calendar, calendarTemplate } from "../calendar/index.js";
 import {
     dataGridTemplate,
     DataGrid,
@@ -9,11 +9,11 @@ import {
     DataGridRow,
     dataGridRowTemplate,
     dataGridCellTemplate
-} from "../data-grid/index";
-import { DateFormatter } from "../calendar/date-formatter";
-import { DatePicker, datePickerTemplate } from "./index";
-import { ListboxElement, listboxTemplate } from "../listbox";
-import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
+} from "../data-grid/index.js";
+import { DateFormatter } from "../calendar/date-formatter.js";
+import { DatePicker, datePickerTemplate } from "./index.js";
+import { ListboxElement, listboxTemplate } from "../listbox/index.js";
+import { ListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
 import { DOM } from "@microsoft/fast-element";
 
 /**

@@ -1,16 +1,15 @@
 import { html, ref, repeat, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
-import { whitespaceFilter } from "../utilities";
-import { AnchoredRegion } from "../anchored-region";
-import { Button } from "../button";
-import { Calendar } from "../calendar";
-import { DataGrid, DataGridCell, DataGridRow } from "../data-grid";
-import { ListboxElement } from "../listbox/";
-import { ListboxOption } from "../listbox-option";
-import { TextField } from "../text-field";
-import type { DatePicker, DatePickerOptions } from "./date-picker";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { ElementDefinitionContext } from "../design-system/registration-context.js";
+import { AnchoredRegion } from "../anchored-region/anchored-region.js";
+import { Button } from "../button/button.js";
+import { Calendar } from "../calendar/calendar.js";
+import { DataGrid, DataGridCell, DataGridRow } from "../data-grid/index.js";
+import { ListboxElement } from "../listbox/listbox.element.js";
+import { ListboxOption } from "../listbox-option/listbox-option.js";
+import { TextField } from "../text-field/text-field.js";
+import type { DatePicker, DatePickerOptions } from "./date-picker.js";
 
 /**
  *  Generic template for handling a time element selection
@@ -222,7 +221,6 @@ export const datePickerTemplate: FoundationElementTemplate<
        <${textField}
             class="text-field"
             part="text-field"
-            ${ref("textField")}
             name=${x => x.name}
             @click="${x => (!x.readonly ? x.toggleFlyout(true) : () => true)}"
             ?readonly="${x => x.readonly}"
@@ -232,6 +230,7 @@ export const datePickerTemplate: FoundationElementTemplate<
             ?required="${x => x.required}"
             @blur="${x => x.handleBlur()}"
             @keyup="${(x, c) => x.handleKeyup(c.event as KeyboardEvent)}"
+            ${ref("textField")}
         >
             <slot slot="start" name="start" part="start"></slot>
             <slot></slot>

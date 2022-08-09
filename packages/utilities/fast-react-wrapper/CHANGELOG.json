@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Tue, 12 Apr 2022 07:13:35 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Converted package to be of type:module",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "606ad41e2af9f547d2c18342389b2d9b50902b0f",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "yinon@hotmail.com",
+            "commit": "3e4d72447520f40d234b1df2cc70446dcef8bb47",
+            "package": "@microsoft/fast-react-wrapper"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.41.1",
+            "author": "yinon@hotmail.com",
+            "commit": "3e4d72447520f40d234b1df2cc70446dcef8bb47",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 07 Apr 2022 07:12:06 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.1.48",
       "version": "0.1.48",

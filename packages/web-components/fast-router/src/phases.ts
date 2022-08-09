@@ -1,5 +1,5 @@
-import { RecognizedRoute } from "./recognizer";
-import { Router } from "./router";
+import { RecognizedRoute } from "./recognizer.js";
+import { Router } from "./router.js";
 
 /**
  * @alpha

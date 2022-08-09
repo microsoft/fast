@@ -5,13 +5,13 @@ import {
     RecognizedRoute,
     RouteParameterConverter,
     RouteRecognizer,
-} from "./recognizer";
-import { Ignore, NavigationCommand, Redirect, Render } from "./commands";
-import { Layout, Transition } from "./view";
-import { RouterConfiguration } from "./configuration";
-import { Router } from "./router";
-import { QueryString } from "./query-string";
-import { Route } from "./navigation";
+} from "./recognizer.js";
+import { Ignore, NavigationCommand, Redirect, Render } from "./commands.js";
+import { Layout, Transition } from "./view.js";
+import { RouterConfiguration } from "./configuration.js";
+import { Router } from "./router.js";
+import { QueryString } from "./query-string.js";
+import { Route } from "./navigation.js";
 
 /**
  * @internal

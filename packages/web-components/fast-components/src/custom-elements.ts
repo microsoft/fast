@@ -1,24 +1,8 @@
 /**
  * Export all custom element definitions
  */
-
-import { fastAccordion, fastAccordionItem } from "./accordion/index.js";
-import { fastDataGrid, fastDataGridCell, fastDataGridRow } from "./data-grid/index.js";
-import {
-    fastPicker,
-    fastPickerList,
-    fastPickerListItem,
-    fastPickerMenu,
-    fastPickerMenuOption,
-} from "./picker/index.js";
-import { fastTab, fastTabPanel, fastTabs } from "./tabs/index.js";
-
-import type { Anchor } from "./anchor/index.js";
-import type { Button } from "./button/index.js";
-import type { Card } from "./card/index.js";
 import type { Container } from "@microsoft/fast-foundation";
-import type { DesignSystemProvider } from "./design-system-provider/index.js";
-import type { Disclosure } from "./disclosure/index.js";
+import { fastAccordion, fastAccordionItem } from "./accordion/index.js";
 import { fastAnchor } from "./anchor/index.js";
 import { fastAnchoredRegion } from "./anchored-region/index.js";
 import { fastAvatar } from "./avatar/index.js";
@@ -30,6 +14,7 @@ import { fastCalendar } from "./calendar/index.js";
 import { fastCard } from "./card/index.js";
 import { fastCheckbox } from "./checkbox/index.js";
 import { fastCombobox } from "./combobox/index.js";
+import { fastDataGrid, fastDataGridCell, fastDataGridRow } from "./data-grid/index.js";
 import { fastDatePicker } from "./date-picker/index.js";
 import { fastDesignSystemProvider } from "./design-system-provider/index.js";
 import { fastDialog } from "./dialog/index.js";
@@ -41,10 +26,15 @@ import { fastListbox } from "./listbox/index.js";
 import { fastMenu } from "./menu/index.js";
 import { fastMenuItem } from "./menu-item/index.js";
 import { fastNumberField } from "./number-field/index.js";
-import { fastOption } from "./listbox-option/index.js";
-import { fastProgress } from "./progress/index.js";
+import {
+    fastPicker,
+    fastPickerList,
+    fastPickerListItem,
+    fastPickerMenu,
+    fastPickerMenuOption,
+} from "./picker/index.js";
 import { fastProgressRing } from "./progress-ring/index.js";
-import { fastRadio } from "./radio/index.js";
+import { fastProgress } from "./progress/index.js";
 import { fastRadioGroup } from "./radio-group/index.js";
 import { fastSearch } from "./search/index.js";
 import { fastSelect } from "./select/index.js";

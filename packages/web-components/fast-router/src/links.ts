@@ -1,4 +1,4 @@
-import { Route } from "./navigation";
+import { Route } from "./navigation.js";
 
 interface AnchorEventInfo {
     shouldHandleEvent: boolean;

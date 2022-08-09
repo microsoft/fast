@@ -1,7 +1,7 @@
 ---
 title: Components QuickStart
 sidebar_label: QuickStart
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/fast-foundation/getting-started.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/components/getting-started.md
 ---
 [![License: MIT](/badges/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](/badges/fast-components.svg)](https://www.npmjs.com/package/@microsoft/fast-components)

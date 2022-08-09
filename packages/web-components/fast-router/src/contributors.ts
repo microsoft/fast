@@ -3,9 +3,9 @@ import {
     NavigationCommitPhaseHook,
     NavigationPhaseHook,
     NavigationPhaseName,
-} from "./phases";
-import { Router } from "./router";
-import { RouterExecutionContext } from "./view";
+} from "./phases.js";
+import { Router } from "./router.js";
+import { RouterExecutionContext } from "./view.js";
 
 /**
  * @alpha

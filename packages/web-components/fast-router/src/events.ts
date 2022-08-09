@@ -1,8 +1,8 @@
-import { NavigationCommand } from "./commands";
-import { NavigationMessage } from "./navigation";
-import { NavigationPhase } from "./phases";
-import { RecognizedRoute } from "./recognizer";
-import { Router } from "./router";
+import { NavigationCommand } from "./commands.js";
+import { NavigationMessage } from "./navigation.js";
+import { NavigationPhase } from "./phases.js";
+import { RecognizedRoute } from "./recognizer.js";
+import { Router } from "./router.js";
 
 /**
  * @alpha

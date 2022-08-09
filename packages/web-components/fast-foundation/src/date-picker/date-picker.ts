@@ -17,17 +17,17 @@ import {
 import type {
     FoundationElementDefinition,
     FoundationElementTemplate,
-} from "../foundation-element";
-import type { ListboxElement } from "../listbox";
+} from "../foundation-element/foundation-element.js";
+import type { ListboxElement } from "../listbox/listbox.element.js";
 import {
     DateFormatter,
     DayFormat,
     MonthFormat,
     WeekdayFormat,
     YearFormat,
-} from "../calendar/date-formatter";
-import type { TextField } from "../text-field";
-import { FormAssociatedDatePicker } from "./date-picker.form-associated";
+} from "../calendar/date-formatter.js";
+import type { TextField } from "../text-field/text-field.js";
+import { FormAssociatedDatePicker } from "./date-picker.form-associated.js";
 
 /**
  * Date picker options
@@ -67,6 +67,7 @@ export type DateData = {
     day?: number;
     hour?: number;
     minute?: number;
+    seconds?: number;
     meridian?: "AM" | "PM";
 };
 
@@ -127,9 +128,9 @@ export class DatePicker extends FormAssociatedDatePicker {
 
     /**
      * date formatter utitlity for getting localized strings
-     * @public
+     * @internal
      */
-    public dateFormatter: DateFormatter = new DateFormatter();
+    private dateFormatter: DateFormatter = new DateFormatter();
 
     /**
      * Locale information including market(language and country), calendar type and numbering system
@@ -258,14 +259,7 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @public
      */
     @observable
-    private selectedDate: {
-        day?: number;
-        month?: number;
-        year?: number;
-        hour?: number;
-        minute?: number;
-        meridian?: "AM" | "PM";
-    };
+    private selectedDate: DateData;
 
     /**
      * Currently selected date
@@ -297,16 +291,10 @@ export class DatePicker extends FormAssociatedDatePicker {
 
     /**
      * The text field used for date entry
-     * @public
-     */
-    @observable
-    public textField: TextField;
-
-    /**
      * @internal
      */
     @observable
-    public defaultSlottedNodes: Node[];
+    private textField: TextField;
 
     /**
      * Adds the value to the textfield when it's attached to the dom

@@ -1,12 +1,12 @@
-import { NavigationMessage } from "./navigation";
-import { isNavigationPhaseContributor } from "./contributors";
+import { NavigationMessage } from "./navigation.js";
+import { isNavigationPhaseContributor } from "./contributors.js";
 import {
     NavigationCommitPhase,
     NavigationPhaseFollowupAction,
     NavigationPhaseName,
-} from "./phases";
-import { RecognizedRoute } from "./recognizer";
-import { Router } from "./router";
+} from "./phases.js";
+import { RecognizedRoute } from "./recognizer.js";
+import { Router } from "./router.js";
 
 class NavigationPhaseImpl<TSettings = any> implements NavigationCommitPhase<TSettings> {
     private routes: RecognizedRoute<TSettings>[] = [];

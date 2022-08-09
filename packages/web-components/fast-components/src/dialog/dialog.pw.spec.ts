@@ -1,5 +1,7 @@
 import type { Dialog as FASTDialogType } from "@microsoft/fast-foundation";
-import { expect } from "chai";
+import chai from "chai";
+
+const { expect } = chai;
 
 type FASTDialog = HTMLElement & FASTDialogType;
 
@@ -46,7 +48,7 @@ describe("FASTDialog", function () {
     // FASTDialog should focus on the first element
     it("should focus on first element", async function () {
         const element = await this.page.$("fast-dialog");
-    
+
         expect(
             await this.page.evaluate(
                 () => document.activeElement?.id

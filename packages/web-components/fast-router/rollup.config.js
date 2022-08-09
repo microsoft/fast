@@ -7,7 +7,7 @@ import typescript from "rollup-plugin-typescript2";
 import {
     transformCSSFragment,
     transformHTMLFragment,
-} from "../../../build/transform-fragments";
+} from "../../../build/transform-fragments.js";
 
 const parserOptions = {
     sourceType: "module",

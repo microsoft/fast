@@ -2,8 +2,10 @@ import type {
     ListboxElement as FASTListboxType,
     ListboxOption as FASTOption,
 } from "@microsoft/fast-foundation";
-import { expect } from "chai";
 import type { ElementHandle } from "playwright";
+import chai from "chai";
+
+const { expect } = chai;
 
 type FASTListbox = HTMLElement & FASTListboxType;
 
@@ -51,11 +53,11 @@ describe("FASTListbox", function () {
                 "fast-listbox"
             )) as ElementHandle<FASTListbox>;
 
-            expect(await element.evaluate(node => node.selectedIndex)).to.equal(0);
+            expect(await element.evaluate(node => node.selectedIndex)).to.equal(-1);
 
             await element.press("ArrowDown");
 
-            expect(await element.evaluate(node => node.selectedIndex)).to.equal(1);
+            expect(await element.evaluate(node => node.selectedIndex)).to.equal(0);
         });
 
         it("via arrow up key", async function () {
@@ -91,7 +93,7 @@ describe("FASTListbox", function () {
                 "fast-listbox"
             )) as ElementHandle<FASTListbox>;
 
-            expect(await element.evaluate(node => node.selectedIndex)).to.equal(0);
+            expect(await element.evaluate(node => node.selectedIndex)).to.equal(-1);
 
             await element.press("End");
 

@@ -3,8 +3,7 @@
   "recursive": true,
   "timeout": 5000,
   "require": [
-    "esm",
-    "./__test__/server.js",
-    "./__test__/harness.js"
+    "./__test__/server.mjs",
+    "./__test__/harness.mjs"
   ]
 }
