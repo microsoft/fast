@@ -1,12 +1,12 @@
 import { css, customElement, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
-import chia, { expect } from "chai";
+import chai, { expect } from "chai";
 import spies from "chai-spies";
 import { uniqueElementName } from "@microsoft/fast-element/testing";
 import type { DesignTokenResolver } from "./core/design-token-node.js";
 import { CSSDesignToken, DesignToken, DesignTokenSubscriber } from "./fast-design-token.js";
 import type { PropertyTarget } from "./custom-property-manager.js";
 
-chia.use(spies);
+chai.use(spies);
 const elementName = uniqueElementName();
 
 function uniqueTokenName() {
@@ -763,7 +763,7 @@ describe("A DesignToken", () => {
                 const target = addElement(parent);
                 const token = DesignToken.create<number>(uniqueTokenName());
 
-                const handleChange = chia.spy(() => {});
+                const handleChange = chai.spy(() => {});
                 const subscriber: DesignTokenSubscriber<typeof token>  = {
                     handleChange
                 }
@@ -819,7 +819,7 @@ describe("A DesignToken", () => {
             tokenA.withDefault(6);
             tokenB.withDefault((resolve) => resolve( tokenA ) * 2);
 
-            const handleChange = chia.spy(() => {})
+            const handleChange = chai.spy(() => {})
             const subscriber = {
                 handleChange
             }
@@ -841,7 +841,7 @@ describe("A DesignToken", () => {
             tokenB.withDefault((resolve) => resolve( tokenA ) * 2);
             tokenC.withDefault((resolve) => resolve( tokenB ) * 2);
 
-            const handleChange = chia.spy(() => {})
+            const handleChange = chai.spy(() => {})
             const subscriber = {
                 handleChange
             }
@@ -863,7 +863,7 @@ describe("A DesignToken", () => {
             tokenA.withDefault(6);
             tokenB.withDefault((resolve) => resolve( tokenA ) * 2);
 
-            const handleChange = chia.spy(() => {})
+            const handleChange = chai.spy(() => {})
             const subscriber = {
                 handleChange
             }
@@ -885,7 +885,7 @@ describe("A DesignToken", () => {
             tokenA.withDefault(6);
             tokenB.withDefault((resolve) => resolve( tokenA ) * 2);
 
-            const handleChange = chia.spy(() => {})
+            const handleChange = chai.spy(() => {})
             const subscriber = {
                 handleChange
             }
@@ -907,7 +907,7 @@ describe("A DesignToken", () => {
             tokenA.withDefault(() => 6);
             tokenB.withDefault((resolve) => resolve( tokenA ) * 2);
 
-            const handleChange = chia.spy(() => {})
+            const handleChange = chai.spy(() => {})
             const subscriber = {
                 handleChange
             }
@@ -931,7 +931,7 @@ describe("A DesignToken", () => {
             tokenA.withDefault(() => 6);
             tokenB.withDefault((resolve) => resolve( tokenA ) * 2);
 
-            const handleChange = chia.spy(() => {})
+            const handleChange = chai.spy(() => {})
             const subscriber = {
                 handleChange
             }
@@ -1024,8 +1024,8 @@ describe("A DesignToken", () => {
             const tokenName = uniqueTokenName();
             const token = DesignToken.create<number>(tokenName).withDefault(12);
             const root: PropertyTarget = {
-                setProperty: chia.spy() ,
-                removeProperty: chia.spy(),
+                setProperty: chai.spy() ,
+                removeProperty: chai.spy(),
             }
 
             DesignToken.registerRoot(root);
