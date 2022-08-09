@@ -261,7 +261,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             this.dispose();
         }
 
-        public observe(source: TSource, context?: ExecutionContext): TReturn {
+        public observe(source: TSource, context: ExecutionContext): TReturn {
             if (this.needsRefresh && this.last !== null) {
                 this.dispose();
             }
@@ -271,7 +271,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             this.needsRefresh = this.isVolatileBinding;
             let result;
             try {
-                result = this.binding(source, context ?? ExecutionContext.default);
+                result = this.binding(source, context);
             } finally {
                 watcher = previousWatcher;
             }
