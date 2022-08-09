@@ -1,7 +1,5 @@
 import {
-    AddBehavior,
     Behavior,
-    ComposableStyles,
     CSSDirective,
     cssDirective,
     FASTElement,
