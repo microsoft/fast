@@ -4,6 +4,7 @@ import spies from "chai-spies";
 import { uniqueElementName } from "@microsoft/fast-element/testing";
 import type { DesignTokenResolver } from "./core/design-token-node.js";
 import { CSSDesignToken, DesignToken, DesignTokenSubscriber } from "./fast-design-token.js";
+import type { PropertyTarget } from "./custom-property-manager.js";
 
 chia.use(spies);
 const elementName = uniqueElementName();
@@ -945,7 +946,7 @@ describe("A DesignToken", () => {
     });
 
     describe("with root registration", () => {
-        it("should not emit CSS custom properties for the default value", () => {
+        it("should not emit CSS custom properties for the default value if a root is not registered", () => {
             DesignToken.unregisterRoot();
             const token = DesignToken.create<number>('default-no-root').withDefault(12);
             const styles = window.getComputedStyle(document.body);
@@ -1017,6 +1018,24 @@ describe("A DesignToken", () => {
             expect(window.getComputedStyle(a).getPropertyValue(token.cssCustomProperty)).to.equal("12");
             expect(window.getComputedStyle(b).getPropertyValue(token.cssCustomProperty)).to.equal("12");
             expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+        });
+
+        it("should set properties for a PropertyTarget registered as the root", () => {
+            const tokenName = uniqueTokenName();
+            const token = DesignToken.create<number>(tokenName).withDefault(12);
+            const root: PropertyTarget = {
+                setProperty: chia.spy() ,
+                removeProperty: chia.spy(),
+            }
+
+            DesignToken.registerRoot(root);
+
+            expect(root.setProperty).to.have.been.called.with(token.cssCustomProperty, 12)
+
+            token.withDefault(14);
+
+            expect(root.setProperty).to.have.been.called.with(token.cssCustomProperty, 14)
+            DesignToken.unregisterRoot(root);
         });
     });
 });
