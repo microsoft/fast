@@ -26,6 +26,8 @@ const styles = css`
     :host([slot="submenu"]) {
         margin: 0 calc(var(--design-unit) * 1px);
         width: max-content;
+        max-height: 94vh;
+        overflow-y: auto;
     }
 
     ::slotted(hr) {
