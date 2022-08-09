@@ -15,7 +15,6 @@ const styles = css`
         border: calc(var(--focus-stroke-width) * 1px) solid transparent;
         box-sizing: border-box;
         color: var(--neutral-foreground-rest);
-        contain: layout;
         cursor: pointer;
         display: grid;
         fill: currentcolor;
@@ -35,8 +34,6 @@ const styles = css`
     :host(:hover) {
         background: var(--neutral-fill-stealth-hover);
         color: var(--neutral-foreground-rest);
-        position: relative;
-        z-index: 1;
     }
 
     :host(:active) {
@@ -100,11 +97,6 @@ const styles = css`
     :host(.expanded) {
         background: var(--neutral-fill-rest);
         color: var(--neutral-foreground-rest);
-    }
-
-    :host(.expanded) {
-        position: relative;
-        z-index: 1;
     }
 
     :host([disabled]) {
@@ -197,7 +189,6 @@ const styles = css`
         display: flex;
         align-items: center;
         justify-content: center;
-        position: relative;
         width: 20px;
         height: 20px;
         box-sizing: border-box;
@@ -250,18 +241,10 @@ const styles = css`
     :host([aria-checked="true"]) .radio-indicator {
         background: var(--foreground-on-accent-rest);
         border-radius: 999px;
-        bottom: 4px;
-        display: block;
-        left: 4px;
-        pointer-events: none;
-        position: absolute;
-        right: 4px;
-        top: 4px;
-    }
-
-    :host([aria-checked="true"]) ::slotted([slot="radio-indicator"]) {
         display: block;
         pointer-events: none;
+        height: 50%;
+        width: 50%;
     }
 `;
 
