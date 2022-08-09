@@ -69,6 +69,7 @@ export interface ExpressionController<TSource = any, TParent = any> {
     readonly source: TSource;
     readonly context: ExecutionContext<TParent>;
     readonly isBound: boolean;
+    readonly selfContained?: boolean;
 
     tryDefer(behavior: { continue(): void }): boolean;
     onUnbind(behavior: {
@@ -233,15 +234,27 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
                 return this.binding(controller.source, controller.context);
             }
 
-            controller.onUnbind(this);
-            return this.observe(this.controller.source, this.controller.context);
+            return this.bindCore(controller);
         }
 
         public continue() {
             if (this.controller.isBound) {
-                this.controller.onUnbind(this);
-                this.observe(this.controller.source, this.controller.context);
+                this.bindCore(this.controller);
             }
+        }
+
+        private bindCore(controller: ExpressionController) {
+            const value = this.observe(controller.source, controller.context);
+
+            if (
+                !controller.selfContained ||
+                this.first !== this.last ||
+                this.first.propertySource !== controller.source
+            ) {
+                controller.onUnbind(this);
+            }
+
+            return value;
         }
 
         public unbind(controller: ExpressionController) {

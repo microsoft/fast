@@ -347,6 +347,8 @@ export interface ExpressionController<TSource = any, TParent = any> {
         unbind(controller: ExpressionController<TSource, TParent>): any;
     }): void;
     // (undocumented)
+    readonly selfContained?: boolean;
+    // (undocumented)
     readonly source: TSource;
     // (undocumented)
     tryDefer(behavior: {
@@ -536,6 +538,8 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     readonly parent: TParent;
     readonly parentContext: ExecutionContext<TParent>;
     remove(): void;
+    // (undocumented)
+    selfContained: boolean;
     source: TSource | null;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;

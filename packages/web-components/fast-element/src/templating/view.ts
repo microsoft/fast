@@ -142,6 +142,8 @@ export class HTMLView<TSource = any, TParent = any>
 
     public isBound = false;
 
+    public selfContained = false;
+
     /**
      * The execution context the view is running within.
      */
