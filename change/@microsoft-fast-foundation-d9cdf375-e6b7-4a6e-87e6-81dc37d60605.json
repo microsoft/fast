@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Refactor DesignToken to provide a resolve function to derived token values, implements WebComponent implementation on top of isomorphic DesignToken infrastructure",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}
