@@ -27,6 +27,10 @@
       "default": "./dist/esm/index.js"
     },
     "./custom-elements.json": "./dist/custom-elements.json",
+    "./design-token-core": {
+      "types": "./dist/dts/design-token/core/exports.d.ts",
+      "default": "./dist/esm/design-token/core/exports.js"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {

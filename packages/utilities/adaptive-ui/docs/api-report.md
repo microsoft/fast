@@ -7,6 +7,7 @@
 import { CSSDesignToken } from '@microsoft/fast-foundation';
 import { CSSDirective } from '@microsoft/fast-element';
 import { DesignToken } from '@microsoft/fast-foundation';
+import { DesignTokenResolver } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
 
 // @public (undocumented)
@@ -111,7 +112,7 @@ export const bodyFont: CSSDesignToken<string>;
 
 // @public
 export interface ColorRecipe {
-    evaluate(element: HTMLElement, reference?: Swatch): Swatch;
+    evaluate(resolver: DesignTokenResolver, reference?: Swatch): Swatch;
 }
 
 // @public
@@ -185,7 +186,7 @@ export const elevationFlyoutSize: DesignToken<number>;
 
 // @public
 export interface ElevationRecipe {
-    evaluate(element: HTMLElement, size: number): string;
+    evaluate(resolver: DesignTokenResolver, size: number): string;
 }
 
 // @public (undocumented)
@@ -238,7 +239,7 @@ export function idealColorDeltaSwatchSet(palette: Palette, reference: Swatch, mi
 
 // @public
 export interface InteractiveColorRecipe {
-    evaluate(element: HTMLElement, reference?: Swatch): InteractiveSwatchSet;
+    evaluate(resolver: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet;
 }
 
 // @public

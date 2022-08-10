@@ -221,8 +221,12 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             const previousWatcher = watcher;
             watcher = this.needsRefresh ? this : void 0;
             this.needsRefresh = this.isVolatileBinding;
-            const result = this.binding(source, context ?? ExecutionContext.default);
-            watcher = previousWatcher;
+            let result;
+            try {
+                result = this.binding(source, context ?? ExecutionContext.default);
+            } finally {
+                watcher = previousWatcher;
+            }
 
             return result;
         }

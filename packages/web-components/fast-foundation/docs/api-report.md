@@ -260,11 +260,16 @@ export { composedParent }
 // @beta
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
-// @public
-export interface CSSDesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | ({
-    createCSS?(): string;
-} & Record<PropertyKey, any>)> extends DesignToken<T>, CSSDirective {
+// @public (undocumented)
+export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
+    constructor(configuration: CSSDesignTokenConfiguration);
+    createCSS(): string;
     readonly cssCustomProperty: string;
+}
+
+// @public (undocumented)
+export interface CSSDesignTokenConfiguration extends DesignTokenConfiguration {
+    cssCustomPropertyName: string;
 }
 
 // @public @deprecated
@@ -464,49 +469,64 @@ export interface DelegatesARIAToolbar extends ARIAGlobalStatesAndProperties {
 }
 
 // @public
-export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: HTMLElement) => T;
+export type DerivedDesignTokenValue<T> = (resolve: DesignTokenResolver) => T;
 
-// @public
-export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
-    readonly appliedTo: HTMLElement[];
-    deleteValueFor(element: HTMLElement): this;
-    getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
-    readonly name: string;
-    setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
-    subscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
-    unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
-    withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
+// @public (undocumented)
+export class DesignToken<T> {
+    get $value(): T | undefined;
+    constructor(configuration: DesignTokenConfiguration);
+    // (undocumented)
+    static create<T>(name: string): CSSDesignToken<T>;
+    // (undocumented)
+    static create<T>(config: DesignTokenConfiguration): DesignToken<T>;
+    // (undocumented)
+    static create<T>(config: CSSDesignTokenConfiguration): CSSDesignToken<T>;
+    get default(): T | undefined;
+    deleteValueFor(target: FASTElement): this;
+    getValueFor(target: FASTElement): T;
+    name: string;
+    static registerRoot(target?: FASTElement | Document): void;
+    // Warning: (ae-forgotten-export) The symbol "DesignTokenValue" needs to be exported by the entry point index.d.ts
+    setValueFor(target: FASTElement, value: DesignToken<T> | DesignTokenValue<T>): void;
+    subscribe(subscriber: DesignTokenSubscriber<this>): void;
+    static unregisterRoot(target?: FASTElement | Document): void;
+    unsubscribe(subscriber: DesignTokenSubscriber<this>): void;
+    withDefault(value: DesignToken<T> | DesignTokenValue<T>): this;
+    // Warning: (ae-forgotten-export) The symbol "DesignTokenResolutionStrategy" needs to be exported by the entry point index.d.ts
+    static withStrategy(strategy: DesignTokenResolutionStrategy): void;
 }
 
-// @public
-export const DesignToken: Readonly<{
-    create: typeof create;
-    notifyConnection(element: HTMLElement): boolean;
-    notifyDisconnection(element: HTMLElement): boolean;
-    registerRoot(target?: HTMLElement | Document): void;
-    unregisterRoot(target?: HTMLElement | Document): void;
-}>;
-
-// @public
+// @public (undocumented)
 export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
-    target: HTMLElement;
+    target: FASTElement | "default";
     token: T;
 }
 
 // @public
 export interface DesignTokenConfiguration {
-    cssCustomPropertyName?: string | null;
     name: string;
 }
+
+// @public (undocumented)
+export const enum DesignTokenMutationType {
+    // (undocumented)
+    add = 0,
+    // (undocumented)
+    change = 1,
+    // (undocumented)
+    delete = 2
+}
+
+// Warning: (ae-forgotten-export) The symbol "DesignToken" needs to be exported by the entry point index.d.ts
+//
+// @public
+export type DesignTokenResolver = <T>(token: DesignToken_2<T>) => T;
 
 // @public
 export interface DesignTokenSubscriber<T extends DesignToken<any>> {
     // (undocumented)
-    handleChange(record: DesignTokenChangeRecord<T>): void;
+    handleChange(token: T, record: DesignTokenChangeRecord<T>): void;
 }
-
-// @public
-export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
 // @public
 export function dialogTemplate(): ElementViewTemplate<FASTDialog>;
@@ -2511,7 +2531,7 @@ export type StartOptions = {
 export function startSlotTemplate(options: StartOptions): ViewTemplate<StartEnd>;
 
 // @public
-export type StaticDesignTokenValue<T> = T extends Function ? never : T;
+export type StaticDesignTokenValue<T> = T extends (...args: any[]) => any ? DerivedDesignTokenValue<T> : T;
 
 // @alpha (undocumented)
 export const supportsElementInternals: boolean;
@@ -2670,7 +2690,6 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/menu-item/menu-item.d.ts:20:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
