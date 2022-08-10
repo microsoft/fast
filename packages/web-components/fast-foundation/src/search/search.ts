@@ -201,6 +201,7 @@ export class Search extends FormAssociatedSearch {
     public handleClearInput(): void {
         this.value = "";
         this.control.focus();
+        this.handleChange();
     }
 
     /**
