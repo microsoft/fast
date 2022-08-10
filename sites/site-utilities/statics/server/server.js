@@ -1,8 +1,8 @@
+var fs = require("fs");
+var path = require("path");
 var express = require("express");
 var fallback = require("express-history-api-fallback");
 var helmet = require("helmet");
-var fs = require("fs");
-var path = require("path");
 
 // Create application
 var app = express();
@@ -48,11 +48,11 @@ app.use(fallback("index.html", { root: publicDir }));
 // Manage search engine crawlers if staging add robots.txt, otherwise delete
 if (process.env.WEBSITE_HOSTNAME.indexOf("-stage") > -1) {
     fs.writeFile("robots.txt", "User-agent: *\r\nDisallow: /", function (err) {
-        if (err) throw err;
+        if (err) console.error(err);
     });
 } else {
     fs.unlink("robots.txt", function (err) {
-        if (err) throw err;
+        if (err) console.error(err);
     });
 }
 

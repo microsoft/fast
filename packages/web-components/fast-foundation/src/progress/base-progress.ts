@@ -1,37 +1,15 @@
 import {
     attr,
+    FASTElement,
     nullableNumberConverter,
     observable,
-    SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
 
 /**
- * Progress configuration options
+ * A base class for progress components.
  * @public
  */
-export type ProgressOptions = FoundationElementDefinition & {
-    indeterminateIndicator1?: string | SyntheticViewTemplate;
-    indeterminateIndicator2?: string | SyntheticViewTemplate;
-};
-
-/**
- * ProgressRing configuration options
- * @public
- */
-export type ProgressRingOptions = FoundationElementDefinition & {
-    indeterminateIndicator?: string | SyntheticViewTemplate;
-};
-/**
- * An Progress HTML Element.
- * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#progressbar | ARIA progressbar }.
- *
- * @public
- */
-export class BaseProgress extends FoundationElement {
+export class FASTBaseProgress extends FASTElement {
     /**
      * The value of the progress
      * @public
@@ -40,7 +18,7 @@ export class BaseProgress extends FoundationElement {
      */
     @attr({ converter: nullableNumberConverter })
     public value: number | null;
-    private valueChanged(): void {
+    protected valueChanged(): void {
         if (this.$fastController.isConnected) {
             this.updatePercentComplete();
         }
@@ -54,7 +32,7 @@ export class BaseProgress extends FoundationElement {
      */
     @attr({ converter: nullableNumberConverter })
     public min: number;
-    private minChanged(): void {
+    protected minChanged(): void {
         if (this.$fastController.isConnected) {
             this.updatePercentComplete();
         }
@@ -68,7 +46,7 @@ export class BaseProgress extends FoundationElement {
      */
     @attr({ converter: nullableNumberConverter })
     public max: number;
-    private maxChanged(): void {
+    protected maxChanged(): void {
         if (this.$fastController.isConnected) {
             this.updatePercentComplete();
         }

@@ -2,11 +2,12 @@
   "name": "@microsoft/eslint-config-fast-dna",
   "description": "eslint rules for FAST projects",
   "sideEffects": false,
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
   },
+  "homepage": "https://www.fast.design/",
   "keywords": [
     "eslint",
     "typescript"
@@ -14,13 +15,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/microsoft/fast.git"
+    "url": "git+https://github.com/microsoft/fast.git",
+    "directory": "packages/utilities/fast-eslint-rules"
   },
   "bugs": {
     "url": "https://github.com/microsoft/fast/issues"
   },
   "main": ".eslintrc.js",
-  "homepage": "https://github.com/Microsoft/fast-eslint-rules#readme",
   "beachball": {
     "disallowedChangeTypes": []
   },
@@ -29,6 +30,6 @@
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^8.0.0",
     "eslint-plugin-import": "^2.25.0",
-    "typescript": "~3.9.0 || ~4.3.5"
+    "typescript": "~3.9.0 || ~4.3.5 || ^4.7.0"
   }
 }

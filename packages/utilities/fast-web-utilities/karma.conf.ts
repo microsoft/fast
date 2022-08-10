@@ -44,9 +44,9 @@ module.exports = function (config: any) {
             require("karma-chrome-launcher"),
             require("karma-firefox-launcher"),
         ],
-        files: [`dist/__test__/${setup}.js`],
+        files: [`dist/__test__/${setup}.cjs`],
         preprocessors: {
-            [`dist/__test__/${setup}.js`]: ["webpack", "sourcemap"],
+            [`dist/__test__/${setup}.cjs`]: ["webpack", "sourcemap"],
         },
         webpackMiddleware: {
             // webpack-dev-middleware configuration
@@ -65,12 +65,9 @@ module.exports = function (config: any) {
                 hints: false,
             },
             optimization: {
-                namedModules: false,
-                namedChunks: false,
                 nodeEnv: false,
                 usedExports: true,
                 flagIncludedChunks: false,
-                occurrenceOrder: false,
                 sideEffects: true,
                 concatenateModules: true,
                 splitChunks: {

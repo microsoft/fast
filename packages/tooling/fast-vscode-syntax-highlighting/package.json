@@ -6,6 +6,7 @@
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
   },
+  "homepage": "https://www.fast.design/",
   "version": "0.1.0",
   "license": "MIT",
   "engines": {
@@ -40,7 +41,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/microsoft/fast.git"
+    "url": "https://github.com/microsoft/fast.git",
+    "directory": "packages/tooling/fast-vscode-syntax-highlighting"
   },
   "bugs": {
     "url": "https://github.com/Microsoft/fast/issues/new/choose"

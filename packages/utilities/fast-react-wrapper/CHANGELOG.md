@@ -1,8 +1,155 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Tue, 12 Apr 2022 07:13:35 GMT and should not be manually modified.
+This log was last generated on Mon, 18 Jul 2022 21:10:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.5
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- fix: update react wrapper to remove foundation dependency (roeisenb@microsoft.com)
+- chore: update tests to use testing helpers from fast-element (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.4
+
+## 1.0.0-alpha.4
+
+Wed, 22 Jun 2022 20:17:50 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.3 (nicholasrice@users.noreply.github.com)
+
+## 1.0.0-alpha.3
+
+Wed, 15 Jun 2022 17:41:10 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.2 (roeisenb@microsoft.com)
+
+## 1.0.0-alpha.2
+
+Wed, 01 Jun 2022 22:21:24 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.2 (nicholasrice@users.noreply.github.com)
+
+## 1.0.0-alpha.1
+
+Wed, 01 Jun 2022 17:53:14 GMT
+
+### Changes
+
+- fix: update React wrapper lib to use latest APIs (roeisenb@microsoft.com)
+- chore: remove rollup of react-wrapper (roeisenb@microsoft.com)
+- chore: update fast-react-wrapper to latest core APIs (roeisenb@microsoft.com)
+- Set prerelease version (nicholasrice@users.noreply.github.com)
+- fix: update fast-react-wrapper to not use deprecated APIs (roeisenb@microsoft.com)
+
+## 0.3.9
+
+Thu, 26 May 2022 07:11:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.8 (burtonsmith@microsoft.com)
+
+## 0.3.8
+
+Wed, 25 May 2022 07:09:21 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.7 (chhol@microsoft.com)
+
+## 0.3.7
+
+Tue, 24 May 2022 07:10:02 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.10.2 (roeisenb@microsoft.com)
+
+## 0.3.6
+
+Thu, 19 May 2022 07:09:40 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.4 (20542556+mollykreis@users.noreply.github.com)
+
+## 0.3.5
+
+Tue, 10 May 2022 07:11:04 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.3 (scomea@microsoft.com)
+
+## 0.3.4
+
+Thu, 05 May 2022 07:11:41 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.2 (abris96@gmail.com)
+
+## 0.3.3
+
+Tue, 03 May 2022 07:15:44 GMT
+
+### Patches
+
+- Upgraded api-extractor (44823142+williamw2@users.noreply.github.com)
+
+## 0.3.2
+
+Sun, 01 May 2022 07:12:05 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.45.0 (chhol@microsoft.com)
+
+## 0.3.1
+
+Thu, 28 Apr 2022 07:12:47 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.44.0 (john.kreitlow@microsoft.com)
+
+## 0.3.0
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Minor changes
+
+- update to typescript 4.6.2 and update ARIAMixin typings (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.43.0 (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v1.10.0 (chhol@microsoft.com)
+
+## 0.2.2
+
+Thu, 21 Apr 2022 07:13:54 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.42.2 (47367562+bheston@users.noreply.github.com)
+
+## 0.2.1
+
+Thu, 14 Apr 2022 07:12:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.42.0 (web@bennypowers.com)
 
 ## 0.2.0
 

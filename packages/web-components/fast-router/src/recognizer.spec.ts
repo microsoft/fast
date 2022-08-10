@@ -3,7 +3,7 @@ import {
     DefaultRouteRecognizer,
     Endpoint,
     RecognizedRoute,
-} from "./recognizer";
+} from "./recognizer.js";
 import { expect } from "chai";
 
 describe(DefaultRouteRecognizer.name, function () {

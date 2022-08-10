@@ -3,6 +3,9 @@ id: design-tokens
 title: Design Tokens
 sidebar_label: Design Tokens
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/design-tokens.md
+description: The FAST Design Token implementation is designed to provide first-class support for Design Tokens and make setting, getting, and using Design Tokens simple.
+keywords:
+    - design tokens
 ---
 
 The FAST Design Token implementation is designed to provide first-class support for Design Tokens and make setting, getting, and using Design Tokens simple.
@@ -13,12 +16,12 @@ A Design Token is a semantic, named variable used to describe a Design System. T
 
 ## FAST Frame Design Tokens
 
-The `@microsoft/fast-components` have extensive support for predefined design tokens. See [configuring styles](/docs/design-systems/fast-frame#configuring-styles) for details on adjusting or using the existing tokens, or read on to create your own.
+The `@microsoft/fast-components` have extensive support for predefined design tokens. See [configuring styles](./fast-frame.md#configuring-styles) for details on adjusting or using the existing tokens, or read on to create your own.
 
 ## Create a Token
 
 :::note
-Note that this example uses color because it's an easy concept to describe, but we generally discourage the use of fixed colors as they don't benefit from the [adaptive color system](/docs/design-systems/fast-frame#adaptive-color-system) with support for light and dark mode and other adjustments.
+Note that this example uses color because it's an easy concept to describe, but we generally discourage the use of fixed colors as they don't benefit from the [adaptive color system](./fast-frame.md#adaptive-color-system) with support for light and dark mode and other adjustments.
 :::
 
 The first step to using a token is to create it:
@@ -45,7 +48,7 @@ specialColor.setValueFor(descendent, "#F7F7F7");
 
 ## Setting a Default Value
 
-A default value can be set for a token, so that the default value is returned from `getValueFor()` in cases where no other token value is found for a node tree.
+A default value can be set for a token so that the default value is returned from `getValueFor()` in cases where no other token value is found for a node tree.
 
 ```ts
 specialColor.withDefault("#FFFFFF");
@@ -247,7 +250,7 @@ themeManager.theme = "red"; // Forces the derived tokens to re-evaluate and CSS 
 ```
 
 > Note: *volatile* token values that conditionally access DesignTokens or other observable properties are currently not supported by DesignToken. If you need to use conditionals,
-ensure all DesignTokens or observable properties are accessed outside of conditional blocks. See (Observables and State)[/docs/fast-element/observables-and-state#observable-features] for more information.
+ensure all DesignTokens or observable properties are accessed outside of conditional blocks. See [Observables and State](../fast-element/observables-and-state.md#observable-features) for more information.
 
 ## Aliasing Design Tokens
 

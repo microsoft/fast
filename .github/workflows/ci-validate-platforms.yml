@@ -43,16 +43,16 @@ jobs:
         run: echo '::set-output name=dir::$(yarn cache dir)'
 
       - name: Set up node_modules cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: yarn-cache
         with:
           path: |
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
             node_modules
             */*/node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-yarn_cache-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-yarn_cache-
 
       - name: Install package dependencies
         run: yarn install --frozen-lockfile --ignore-scripts --network-timeout=360000 --prefer-offline
@@ -63,6 +63,11 @@ jobs:
       - name: Prepare workspaces
         run: yarn prepare
 
+      - name: Install playwright dependencies and browsers
+        run: |
+          yarn playwright install-deps
+          yarn playwright install
+
       - name: Run tests in changed packages
         if: ${{ github.event_name == 'pull_request' }}
         run: yarn lerna run test --stream --since=origin/master
@@ -70,35 +75,6 @@ jobs:
       - name: Run tests in all Lerna Packages
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         run: yarn lerna run test --stream
-
-      - name: Install playwright dependencies and browsers
-        run: |
-          yarn playwright install-deps
-          yarn playwright install
-
-      - name: Build Playwright tests
-        run: yarn workspace @microsoft/fast-components build:pw
-
-      - name: Test Playwright (chromium)
-        run: yarn workspace @microsoft/fast-components test-pw
-        continue-on-error: true
-        timeout-minutes: 2
-        env:
-          PLAYWRIGHT_BROWSER: chromium
-
-      - name: Test Playwright (firefox)
-        run: yarn workspace @microsoft/fast-components test-pw
-        continue-on-error: true
-        timeout-minutes: 2
-        env:
-          PLAYWRIGHT_BROWSER: firefox
-
-      - name: Test Playwright (webkit)
-        run: yarn workspace @microsoft/fast-components test-pw
-        continue-on-error: true
-        timeout-minutes: 2
-        env:
-          PLAYWRIGHT_BROWSER: webkit
 
       - name: Initialize CodeQL
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}

@@ -1,8 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
-import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
@@ -14,15 +10,21 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * Anchor configuration options
  * @public
  */
-export type AnchorOptions = FoundationElementDefinition & StartEndOptions;
+export type AnchorOptions = StartEndOptions;
 
 /**
  * An Anchor Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element }.
  *
+ * @slot start - Content which can be provided before the anchor content
+ * @slot end - Content which can be provided after the anchor content
+ * @slot - The default slot for anchor content
+ * @csspart control - The anchor element
+ * @csspart content - The element wrapping anchor content
+ *
  * @public
  */
-export class Anchor extends FoundationElement {
+export class FASTAnchor extends FASTElement {
     /**
      * Prompts the user to save the linked URL. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
      * @public
@@ -150,7 +152,7 @@ export class DelegatesARIALink {
      * HTML Attribute: aria-expanded
      */
     @attr({ attribute: "aria-expanded" })
-    public ariaExpanded: "true" | "false" | undefined;
+    public ariaExpanded: "true" | "false" | string | null;
 }
 
 /**
@@ -168,5 +170,5 @@ applyMixins(DelegatesARIALink, ARIAGlobalStatesAndProperties);
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Anchor extends StartEnd, DelegatesARIALink {}
-applyMixins(Anchor, StartEnd, DelegatesARIALink);
+export interface FASTAnchor extends StartEnd, DelegatesARIALink {}
+applyMixins(FASTAnchor, StartEnd, DelegatesARIALink);

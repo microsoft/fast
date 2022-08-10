@@ -3,11 +3,17 @@ name: Deploy Color Explorer
 on:
   push:
     branches:
-    - master
+      - master
+    paths:
+      - '.github/workflows/cd-deploy-color-staging.yml'
+      - 'sites/fast-color-explorer/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
+    paths:
+      - '.github/workflows/cd-deploy-color-staging.yml'
+      - 'sites/fast-color-explorer/**'
 
 env:
   AZURE_WEBAPP_ACTIVE_STAGE_NAME: color-west-app
@@ -96,6 +102,18 @@ jobs:
         app_location: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         output_location: ''
         skip_app_build: true
+
+  destroy_pr:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Destroy PR
+      id: closepullrequest
+      uses: Azure/static-web-apps-deploy@v1
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_COLOR_PR_TOKEN }}
+        action: "close"
 
   notify:
     runs-on: ubuntu-latest

@@ -3,6 +3,7 @@ id: using-directives
 title: Using Directives
 sidebar_label: Using Directives
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/guide/using-directives.md
+description: In addition to declaring dynamic parts of templates with expressions, you also have access to several powerful directives, which aid in common scenarios.
 ---
 
 In addition to declaring dynamic parts of templates with expressions, you also have access to several powerful *directives*, which aid in common scenarios.
@@ -508,7 +509,7 @@ If using the `subtree` option for `children` then a `selector` is *required* in 
 
 ### The `slotted` directive
 
-Sometimes you may want references to all nodes that are assigned to a particular slot. To accomplish this, use the `slotted` directive. (For more on slots, see [Working with Shadow DOM](./working-with-shadow-dom).)
+Sometimes you may want references to all nodes that are assigned to a particular slot. To accomplish this, use the `slotted` directive. (For more on slots, see [Working with Shadow DOM](./working-with-shadow-dom.md).)
 
 ```ts
 import { FASTElement, customElement, html, slotted } from '@microsoft/fast-element';

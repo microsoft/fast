@@ -1,14 +1,13 @@
 import {
     attr,
-    DOM,
     nullableNumberConverter,
     observable,
     SyntheticViewTemplate,
+    Updates,
 } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { DelegatesARIATextbox } from "../text-field/text-field.js";
 import { FormAssociatedNumberField } from "./number-field.form-associated.js";
 
@@ -16,19 +15,32 @@ import { FormAssociatedNumberField } from "./number-field.form-associated.js";
  * Number Field configuration options
  * @public
  */
-export type NumberFieldOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        stepDownGlyph?: string | SyntheticViewTemplate;
-        stepUpGlyph?: string | SyntheticViewTemplate;
-    };
+export type NumberFieldOptions = StartEndOptions & {
+    stepDownGlyph?: string | SyntheticViewTemplate;
+    stepUpGlyph?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Number Field Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number | <input type="number" /> element }.
  *
+ * @slot start - Content which can be provided before the number field input
+ * @slot end - Content which can be provided after the number field input
+ * @slot - The default slot for the label
+ * @slot step-up-glyph - The glyph for the step up control
+ * @slot step-down-glyph - The glyph for the step down control
+ * @csspart label - The label
+ * @csspart root - The element wrapping the control, including start and end slots
+ * @csspart control - The element representing the input
+ * @csspart controls - The step up and step down controls
+ * @csspart step-up - The step up control
+ * @csspart step-down - The step down control
+ * @fires input - Fires a custom 'input' event when the value has changed
+ * @fires change - Fires a custom 'change' event when the value has changed
+ *
  * @public
  */
-export class NumberField extends FormAssociatedNumberField {
+export class FASTNumberField extends FormAssociatedNumberField {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -293,10 +305,27 @@ export class NumberField extends FormAssociatedNumberField {
         this.control.value = this.value;
 
         if (this.autofocus) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 this.focus();
             });
         }
+    }
+
+    /**
+     * Selects all the text in the number field
+     *
+     * @public
+     */
+    public select(): void {
+        this.control.select();
+
+        /**
+         * The select event does not permeate the shadow DOM boundary.
+         * This fn effectively proxies the select event,
+         * emitting a `select` event whenever the internal
+         * control emits a `select` event
+         */
+        this.$emit("select");
     }
 
     /**
@@ -358,5 +387,5 @@ export class NumberField extends FormAssociatedNumberField {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface NumberField extends StartEnd, DelegatesARIATextbox {}
-applyMixins(NumberField, StartEnd, DelegatesARIATextbox);
+export interface FASTNumberField extends StartEnd, DelegatesARIATextbox {}
+applyMixins(FASTNumberField, StartEnd, DelegatesARIATextbox);

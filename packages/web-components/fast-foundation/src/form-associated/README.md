@@ -21,7 +21,7 @@ For more information view the [specification](https://github.com/microsoft/fast/
 | Name                      | Description                                                  | Parameters    | Return |
 | ------------------------- | ------------------------------------------------------------ | ------------- | ------ |
 | `FormAssociated`          | Base function for providing Custom Element Form Association. | `BaseCtor: T` | `T`    |
-| `CheckableFormAssociated` |                                                              | `BaseCtor: T` | `T`    |
+| `CheckableFormAssociated` | Creates a checkable form associated component.               | `BaseCtor: T` | `T`    |
 
 <hr/>
 

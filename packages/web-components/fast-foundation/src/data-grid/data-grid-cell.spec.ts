@@ -1,36 +1,34 @@
 import { expect } from "chai";
-import { customElement, html, ViewTemplate } from "@microsoft/fast-element";
-import { fixture } from "../test-utilities/fixture";
-import { dataGridCellTemplate, DataGridCell } from "./index";
-import { newDataRow } from "./data-grid.spec";
-import { DataGridCellTypes } from "./data-grid.options";
+import { html, ViewTemplate } from "@microsoft/fast-element";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { dataGridCellTemplate, FASTDataGridCell } from "./index.js";
+import { newDataRow } from "./data-grid.spec.js";
+import { DataGridCellTypes } from "./data-grid.options.js";
 
+const dataGridCellName = uniqueElementName();
+FASTDataGridCell.define({
+    name: dataGridCellName,
+    template: dataGridCellTemplate()
+});
 
-const FASTDataGridCell = DataGridCell.compose({
-    baseName: "data-grid-cell",
-    template: dataGridCellTemplate
-})
-
-const testCellContentsTemplate: ViewTemplate = html<DataGridCell>`
+const testCellContentsTemplate: ViewTemplate = html<FASTDataGridCell>`
     <template>
         Test template
     </template>
 `;
 
-const testFocusableCellContentsTemplate: ViewTemplate = html<DataGridCell>`
+const testFocusableCellContentsTemplate: ViewTemplate = html<FASTDataGridCell>`
     <template>
         <button>Test button</button>
     </template>
 `;
 
-function getFocusTarget(cell: DataGridCell): HTMLElement {
+function getFocusTarget(cell: FASTDataGridCell): HTMLElement {
     return cell.querySelector("button") as HTMLElement;
 }
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture(
-        FASTDataGridCell()
-    );
+    const { element, connect, disconnect, parent } = await fixture<FASTDataGridCell>(dataGridCellName);
     return { element, connect, disconnect, parent };
 }
 
@@ -121,7 +119,7 @@ describe("Data grid cell", () => {
     it("should not render data if no columndefinition provided", async () => {
         const { element, connect, disconnect } = await setup();
 
-        (element as DataGridCell).rowData = newDataRow("test");
+        (element as FASTDataGridCell).rowData = newDataRow("test");
         await connect();
 
         expect(element.textContent).to.equal("");
@@ -132,8 +130,8 @@ describe("Data grid cell", () => {
     it("should render data if a column definition provided", async () => {
         const { element, connect, disconnect } = await setup();
 
-        (element as DataGridCell).columnDefinition = { columnDataKey: "item2" };
-        (element as DataGridCell).rowData = newDataRow("test");
+        (element as FASTDataGridCell).columnDefinition = { columnDataKey: "item2" };
+        (element as FASTDataGridCell).rowData = newDataRow("test");
         await connect();
 
         expect(element.textContent).to.include("value 2-test");
@@ -144,11 +142,11 @@ describe("Data grid cell", () => {
     it("should render a custom cell template if provided", async () => {
         const { element, connect, disconnect } = await setup();
 
-        (element as DataGridCell).columnDefinition = {
+        (element as FASTDataGridCell).columnDefinition = {
             columnDataKey: "item2",
             cellTemplate: testCellContentsTemplate,
         };
-        (element as DataGridCell).rowData = newDataRow("test");
+        (element as FASTDataGridCell).rowData = newDataRow("test");
         await connect();
 
         expect(element.textContent).to.include("Test template");
@@ -159,12 +157,12 @@ describe("Data grid cell", () => {
     it("should render a custom header cell template if provided", async () => {
         const { element, connect, disconnect } = await setup();
 
-        (element as DataGridCell).columnDefinition = {
+        (element as FASTDataGridCell).columnDefinition = {
             columnDataKey: "item2",
             headerCellTemplate: testCellContentsTemplate,
         };
-        (element as DataGridCell).rowData = newDataRow("test");
-        (element as DataGridCell).cellType = DataGridCellTypes.columnHeader;
+        (element as FASTDataGridCell).rowData = newDataRow("test");
+        (element as FASTDataGridCell).cellType = DataGridCellTypes.columnHeader;
 
         await connect();
 
@@ -178,7 +176,7 @@ describe("Data grid cell", () => {
 
         let wasInvoked: boolean = false;
 
-        (element as DataGridCell).columnDefinition = {
+        (element as FASTDataGridCell).columnDefinition = {
             columnDataKey: "item2",
         };
         element.addEventListener("cell-focused", e => {
@@ -197,12 +195,12 @@ describe("Data grid cell", () => {
     it("should focus on custom cell template if focus target callback provided", async () => {
         const { element, connect, disconnect } = await setup();
 
-        (element as DataGridCell).columnDefinition = {
+        (element as FASTDataGridCell).columnDefinition = {
             columnDataKey: "item2",
             cellTemplate: testFocusableCellContentsTemplate,
             cellFocusTargetCallback: getFocusTarget,
         };
-        (element as DataGridCell).rowData = newDataRow("test");
+        (element as FASTDataGridCell).rowData = newDataRow("test");
         await connect();
 
         element.focus();
@@ -214,13 +212,13 @@ describe("Data grid cell", () => {
     it("should focus on custom header cell template if focus target callback provided", async () => {
         const { element, connect, disconnect } = await setup();
 
-        (element as DataGridCell).columnDefinition = {
+        (element as FASTDataGridCell).columnDefinition = {
             columnDataKey: "item2",
             headerCellTemplate: testFocusableCellContentsTemplate,
             headerCellFocusTargetCallback: getFocusTarget,
         };
-        (element as DataGridCell).cellType = DataGridCellTypes.columnHeader;
-        (element as DataGridCell).rowData = newDataRow("test");
+        (element as FASTDataGridCell).cellType = DataGridCellTypes.columnHeader;
+        (element as FASTDataGridCell).rowData = newDataRow("test");
         await connect();
 
         element.focus();

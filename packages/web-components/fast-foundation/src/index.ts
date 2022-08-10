@@ -13,27 +13,13 @@ export * from "./checkbox/index.js";
 export * from "./combobox/index.js";
 export * from "./data-grid/index.js";
 export * from "./date-picker/index.js";
-export * from "./design-system/index.js";
-export {
-    DesignToken,
-    CSSDesignToken,
-    DesignTokenChangeRecord,
-    DesignTokenSubscriber,
-} from "./design-token/design-token.js";
-export {
-    StaticDesignTokenValue,
-    DerivedDesignTokenValue,
-    DesignTokenValue,
-    DesignTokenConfiguration,
-} from "./design-token/interfaces.js";
-export * from "./di/index.js";
+export * from "./design-token/exports.js";
 export * from "./dialog/index.js";
 export { reflectAttributes } from "./directives/reflect-attributes.js";
 export * from "./disclosure/index.js";
 export * from "./divider/index.js";
 export * from "./flipper/index.js";
 export * from "./form-associated/index.js";
-export * from "./foundation-element/index.js";
 export * from "./listbox-option/index.js";
 export * from "./listbox/index.js";
 export * from "./picker/index.js";
@@ -64,3 +50,6 @@ export * from "./tree-view/index.js";
 
 // export our utilities
 export * from "./utilities/index.js";
+
+// TODO: remove this before final release once site and CLI are ready
+export { composedParent, composedContains } from "@microsoft/fast-element/utilities";

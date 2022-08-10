@@ -4,22 +4,22 @@
  */
 export interface Subscriber {
     /**
-     * Called when a source this instance has subscribed to changes.
-     * @param source - The source of the change.
+     * Called when a subject this instance has subscribed to changes.
+     * @param subject - The subject of the change.
      * @param args - The event args detailing the change that occurred.
      */
-    handleChange(source: any, args: any): void;
+    handleChange(subject: any, args: any): void;
 }
 
 /**
- * Provides change notification for a source object.
+ * Provides change notifications for an observed subject.
  * @public
  */
 export interface Notifier {
     /**
-     * The source object that this notifier provides change notification for.
+     * The object that subscribers will receive notifications for.
      */
-    readonly source: any;
+    readonly subject: any;
 
     /**
      * Notifies all subscribers, based on the args.
@@ -49,41 +49,10 @@ export interface Notifier {
     unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
 }
 
-function spilloverSubscribe(this: SubscriberSet, subscriber: Subscriber): void {
-    const spillover = (this as any).spillover as Subscriber[];
-    const index = spillover.indexOf(subscriber);
-
-    if (index === -1) {
-        spillover.push(subscriber);
-    }
-}
-
-function spilloverUnsubscribe(this: SubscriberSet, subscriber: Subscriber): void {
-    const spillover = (this as any).spillover as Subscriber[];
-    const index = spillover.indexOf(subscriber);
-
-    if (index !== -1) {
-        spillover.splice(index, 1);
-    }
-}
-
-function spilloverNotifySubscribers(this: SubscriberSet, args: any): void {
-    const spillover = (this as any).spillover as Subscriber[];
-    const source = this.source;
-
-    for (let i = 0, ii = spillover.length; i < ii; ++i) {
-        spillover[i].handleChange(source, args);
-    }
-}
-
-function spilloverHas(this: SubscriberSet, subscriber: Subscriber): boolean {
-    return ((this as any).spillover as Subscriber[]).indexOf(subscriber) !== -1;
-}
-
 /**
  * An implementation of {@link Notifier} that efficiently keeps track of
  * subscribers interested in a specific change notification on an
- * observable source.
+ * observable subject.
  *
  * @remarks
  * This set is optimized for the most common scenario of 1 or 2 subscribers.
@@ -97,17 +66,17 @@ export class SubscriberSet implements Notifier {
     private spillover: Subscriber[] | undefined = void 0;
 
     /**
-     * The source that this subscriber set is reporting changes for.
+     * The object that subscribers will receive notifications for.
      */
-    public readonly source: any;
+    public readonly subject: any;
 
     /**
-     * Creates an instance of SubscriberSet for the specified source.
-     * @param source - The object source that subscribers will receive notifications from.
+     * Creates an instance of SubscriberSet for the specified subject.
+     * @param subject - The subject that subscribers will receive notifications from.
      * @param initialSubscriber - An initial subscriber to changes.
      */
-    public constructor(source: any, initialSubscriber?: Subscriber) {
-        this.source = source;
+    public constructor(subject: any, initialSubscriber?: Subscriber) {
+        this.subject = subject;
         this.sub1 = initialSubscriber;
     }
 
@@ -116,7 +85,9 @@ export class SubscriberSet implements Notifier {
      * @param subscriber - The subscriber to test for inclusion in this set.
      */
     public has(subscriber: Subscriber): boolean {
-        return this.sub1 === subscriber || this.sub2 === subscriber;
+        return this.spillover === void 0
+            ? this.sub1 === subscriber || this.sub2 === subscriber
+            : this.spillover.indexOf(subscriber) !== -1;
     }
 
     /**
@@ -124,28 +95,32 @@ export class SubscriberSet implements Notifier {
      * @param subscriber - The object that is subscribing for change notification.
      */
     public subscribe(subscriber: Subscriber): void {
-        if (this.has(subscriber)) {
-            return;
+        const spillover = this.spillover;
+
+        if (spillover === void 0) {
+            if (this.has(subscriber)) {
+                return;
+            }
+
+            if (this.sub1 === void 0) {
+                this.sub1 = subscriber;
+                return;
+            }
+
+            if (this.sub2 === void 0) {
+                this.sub2 = subscriber;
+                return;
+            }
+
+            this.spillover = [this.sub1, this.sub2, subscriber];
+            this.sub1 = void 0;
+            this.sub2 = void 0;
+        } else {
+            const index = spillover.indexOf(subscriber);
+            if (index === -1) {
+                spillover.push(subscriber);
+            }
         }
-
-        if (this.sub1 === void 0) {
-            this.sub1 = subscriber;
-            return;
-        }
-
-        if (this.sub2 === void 0) {
-            this.sub2 = subscriber;
-            return;
-        }
-
-        this.spillover = [this.sub1, this.sub2, subscriber];
-        this.subscribe = spilloverSubscribe;
-        this.unsubscribe = spilloverUnsubscribe;
-        this.notify = spilloverNotifySubscribers;
-        this.has = spilloverHas;
-
-        this.sub1 = void 0;
-        this.sub2 = void 0;
     }
 
     /**
@@ -153,10 +128,19 @@ export class SubscriberSet implements Notifier {
      * @param subscriber - The object that is unsubscribing from change notification.
      */
     public unsubscribe(subscriber: Subscriber): void {
-        if (this.sub1 === subscriber) {
-            this.sub1 = void 0;
-        } else if (this.sub2 === subscriber) {
-            this.sub2 = void 0;
+        const spillover = this.spillover;
+
+        if (spillover === void 0) {
+            if (this.sub1 === subscriber) {
+                this.sub1 = void 0;
+            } else if (this.sub2 === subscriber) {
+                this.sub2 = void 0;
+            }
+        } else {
+            const index = spillover.indexOf(subscriber);
+            if (index !== -1) {
+                spillover.splice(index, 1);
+            }
         }
     }
 
@@ -165,16 +149,24 @@ export class SubscriberSet implements Notifier {
      * @param args - Data passed along to subscribers during notification.
      */
     public notify(args: any): void {
-        const sub1 = this.sub1;
-        const sub2 = this.sub2;
-        const source = this.source;
+        const spillover = this.spillover;
+        const subject = this.subject;
 
-        if (sub1 !== void 0) {
-            sub1.handleChange(source, args);
-        }
+        if (spillover === void 0) {
+            const sub1 = this.sub1;
+            const sub2 = this.sub2;
 
-        if (sub2 !== void 0) {
-            sub2.handleChange(source, args);
+            if (sub1 !== void 0) {
+                sub1.handleChange(subject, args);
+            }
+
+            if (sub2 !== void 0) {
+                sub2.handleChange(subject, args);
+            }
+        } else {
+            for (let i = 0, ii = spillover.length; i < ii; ++i) {
+                spillover[i].handleChange(subject, args);
+            }
         }
     }
 }
@@ -186,19 +178,19 @@ export class SubscriberSet implements Notifier {
  */
 export class PropertyChangeNotifier implements Notifier {
     private subscribers: Record<string, SubscriberSet> = {};
-    private sourceSubscribers: SubscriberSet | null = null;
+    private subjectSubscribers: SubscriberSet | null = null;
 
     /**
-     * The source that property changes are being notified for.
+     * The subject that property changes are being notified for.
      */
-    public readonly source: any;
+    public readonly subject: any;
 
     /**
-     * Creates an instance of PropertyChangeNotifier for the specified source.
-     * @param source - The object source that subscribers will receive notifications from.
+     * Creates an instance of PropertyChangeNotifier for the specified subject.
+     * @param subject - The object that subscribers will receive notifications for.
      */
-    public constructor(source: any) {
-        this.source = source;
+    public constructor(subject: any) {
+        this.subject = subject;
     }
 
     /**
@@ -206,13 +198,8 @@ export class PropertyChangeNotifier implements Notifier {
      * @param propertyName - The property name, passed along to subscribers during notification.
      */
     public notify(propertyName: string): void {
-        const subscribers = this.subscribers[propertyName];
-
-        if (subscribers !== void 0) {
-            subscribers.notify(propertyName);
-        }
-
-        this.sourceSubscribers?.notify(propertyName);
+        this.subscribers[propertyName]?.notify(propertyName);
+        this.subjectSubscribers?.notify(propertyName);
     }
 
     /**
@@ -221,22 +208,19 @@ export class PropertyChangeNotifier implements Notifier {
      * @param propertyToWatch - The name of the property that the subscriber is interested in watching for changes.
      */
     public subscribe(subscriber: Subscriber, propertyToWatch?: string): void {
+        let subscribers: SubscriberSet;
+
         if (propertyToWatch) {
-            let subscribers = this.subscribers[propertyToWatch];
-
-            if (subscribers === void 0) {
-                this.subscribers[propertyToWatch] = subscribers = new SubscriberSet(
-                    this.source
-                );
-            }
-
-            subscribers.subscribe(subscriber);
+            subscribers =
+                this.subscribers[propertyToWatch] ??
+                (this.subscribers[propertyToWatch] = new SubscriberSet(this.subject));
         } else {
-            this.sourceSubscribers =
-                this.sourceSubscribers ?? new SubscriberSet(this.source);
-
-            this.sourceSubscribers.subscribe(subscriber);
+            subscribers =
+                this.subjectSubscribers ??
+                (this.subjectSubscribers = new SubscriberSet(this.subject));
         }
+
+        subscribers.subscribe(subscriber);
     }
 
     /**
@@ -246,12 +230,9 @@ export class PropertyChangeNotifier implements Notifier {
      */
     public unsubscribe(subscriber: Subscriber, propertyToUnwatch?: string): void {
         if (propertyToUnwatch) {
-            const subscribers = this.subscribers[propertyToUnwatch];
-            if (subscribers !== void 0) {
-                subscribers.unsubscribe(subscriber);
-            }
+            this.subscribers[propertyToUnwatch]?.unsubscribe(subscriber);
         } else {
-            this.sourceSubscribers?.unsubscribe(subscriber);
+            this.subjectSubscribers?.unsubscribe(subscriber);
         }
     }
 }

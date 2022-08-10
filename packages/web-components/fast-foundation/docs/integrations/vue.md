@@ -3,6 +3,9 @@ id: vue
 title: Vue
 sidebar_label: Vue
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/vue.md
+description: FAST works great with Vue. Let's take a look at how you can set up a Vue project, starting from scratch.
+keywords:
+  - vue
 ---
 
 FAST works great with Vue. Let's take a look at how you can set up a Vue project, starting from scratch.

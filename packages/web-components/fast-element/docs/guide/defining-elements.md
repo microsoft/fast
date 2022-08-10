@@ -3,6 +3,7 @@ id: defining-elements
 title: Defining Elements
 sidebar_label: Defining Elements
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/guide/defining-elements.md
+description: To define a custom element, begin by creating a class that extends FASTElement and decorate it with the @customElement decorator, providing the element name.
 ---
 
 ## Basic elements
@@ -57,7 +58,7 @@ export class NameTag extends FASTElement {
 To add attributes to your HTML element, create properties decorated by the `@attr` decorator. All attributes defined this way will be automatically registered with the platform so that they can be updated through the browser's native `setAttribute` API as well as the property. You can optionally add a method with the naming convention *propertyName*Changed to your class (e.g. `greeting` and `greetingChanged()`), and this method will be called whenever your property changes, whether it changes through the property or the attribute API.
 
 :::note
-All properties decorated with `@attr` are also *observable*. See [observables and state](./observables-and-state) for information about how observables enable efficient rendering.
+All properties decorated with `@attr` are also *observable*. See [observables and state](./observables-and-state.md) for information about how observables enable efficient rendering.
 :::
 
 By default, anything extending from `FASTElement` will automatically have a `ShadowRoot` attached in order to enable encapsulated rendering. 
@@ -141,7 +142,7 @@ export class MyCounter extends FASTElement {
 
 ## The element lifecycle
 
-All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. `FASTElement` implements several of these callbacks automatically in order to enable features of its templating engine (described in [declaring templates](./declaring-templates)). However, you can override them to provide your own code. Here's an example of how you would execute custom code when your element is inserted into the DOM.
+All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. `FASTElement` implements several of these callbacks automatically in order to enable features of its templating engine (described in [declaring templates](./declaring-templates.md)). However, you can override them to provide your own code. Here's an example of how you would execute custom code when your element is inserted into the DOM.
 
 **Example: Tapping into the Custom Element Lifecycle**
 

@@ -8,7 +8,7 @@
       "strings": "off",
       "other": "off"
     },
-    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrap": "off",
     "editor.wordWrapColumn": 90,
     "files.insertFinalNewline": false,
     "files.trimTrailingWhitespace": false
@@ -33,5 +33,6 @@
   "npm.packageManager": "yarn",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.format.enable": false,
-  "typescript.preferences.quoteStyle": "double"
+  "typescript.preferences.quoteStyle": "double",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

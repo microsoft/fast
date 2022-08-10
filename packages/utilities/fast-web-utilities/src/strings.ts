@@ -45,23 +45,6 @@ export function startsWith(
 }
 
 /**
- * Matches all instances of the RegExp in the string. Operates similarly to the
- * native `String.matchAll`, which is not yet available on all supported
- * browsers. Note that the regex *must* be global.
- */
-function matchAll(re: RegExp, str: string): string[] {
-    const matches: string[] = [];
-
-    let match: RegExpExecArray | null;
-    while ((match = re.exec(str))) {
-        matches.push(match[1]);
-    }
-
-    re.lastIndex = 0;
-    return matches;
-}
-
-/**
  * Determines if the specified string is undefined, null, empty, or whitespace.
  * True if the value is undefined, null, empty, or whitespace, otherwise false.
  */
@@ -69,18 +52,40 @@ export function isNullOrWhiteSpace(value: string): boolean {
     return !value || !value.trim();
 }
 
-const wordRe = /([A-Z]+[a-z0-9]*|[A-Z]*[a-z0-9]+)/g;
-
 /**
  * Converts a string to Pascal Case
+ * where the first letter of each compound word is capitalized.
  */
 export function pascalCase(value: string): string {
-    return matchAll(wordRe, value)
-        .map(
-            (word: string) =>
-                `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`
+    let newValue: string = `${value}`
+        .replace(new RegExp(/[-_]+/, "g"), " ")
+        .replace(new RegExp(/[^\w\s]/, "g"), "")
+        .replace(/^\s+|\s+$|\s+(?=\s)/g, "")
+        .replace(
+            new RegExp(/\s+(.)(\w*)/, "g"),
+            ($1, $2, $3) => `${$2.toUpperCase() + $3.toLowerCase()}`
         )
-        .join("");
+        .replace(new RegExp(/\w/), s => s.toUpperCase());
+
+    let firstLowerIdx: number = 0;
+
+    for (let i = 0; i < newValue.length; i++) {
+        const currChar: string = newValue.charAt(i);
+
+        if (currChar == currChar.toLowerCase()) {
+            firstLowerIdx = i;
+            break;
+        }
+    }
+
+    if (firstLowerIdx > 1) {
+        newValue =
+            `${newValue.charAt(0).toUpperCase()}${newValue
+                .slice(1, firstLowerIdx - 1)
+                .toLowerCase()}` + newValue.slice(firstLowerIdx - 1);
+    }
+
+    return newValue;
 }
 
 /**
@@ -94,7 +99,7 @@ export function spinalCase(value: string): string {
         .charAt(0)
         .toLowerCase()}${value.slice(1)}`;
 
-    return valueWithLowerCaseFirstLetter.replace(/([A-Z])/g, function (
+    return valueWithLowerCaseFirstLetter.replace(/([A-Z]|[0-9])/g, function (
         match: string,
         group1: string
     ): string {

@@ -2,6 +2,123 @@
   "name": "@microsoft/fast-web-utilities",
   "entries": [
     {
+      "date": "Wed, 15 Jun 2022 17:41:10 GMT",
+      "tag": "@microsoft/fast-web-utilities_v6.0.0",
+      "version": "6.0.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Updated README for usage of keyboard event keys",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "a6b2a570c1cb592bc92b4c9d8366d197658819ae",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 01 Jun 2022 17:53:14 GMT",
+      "tag": "@microsoft/fast-web-utilities_v6.0.0",
+      "version": "6.0.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "chore: update package.json metadata",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-web-utilities"
+          },
+          {
+            "comment": "update api extractor and typescript to use the latest versions",
+            "author": "chhol@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-web-utilities"
+          },
+          {
+            "comment": "Bump @microsoft/eslint-config-fast-dna to v2.1.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "chore: fix broken build",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-web-utilities"
+          },
+          {
+            "comment": "Upgrade TypeScript",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ],
+        "major": [
+          {
+            "comment": "remove deprecated keycodes and add additional keys",
+            "author": "chhol@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 04 May 2022 07:14:00 GMT",
+      "tag": "@microsoft/fast-web-utilities_v5.4.1",
+      "version": "5.4.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "convert orientation enum to const object with corresponding type",
+            "author": "chhol@microsoft.com",
+            "commit": "d39284193f6d476b5b40b0fad75d3dbd836d55da",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 27 Apr 2022 07:21:09 GMT",
+      "tag": "@microsoft/fast-web-utilities_v5.4.0",
+      "version": "5.4.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "update to typescript 4.6.2 and update ARIAMixin typings",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/eslint-config-fast-dna to v2.1.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 17 Apr 2022 07:11:18 GMT",
+      "tag": "@microsoft/fast-web-utilities_v5.3.0",
+      "version": "5.3.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Instead of matchAll, used regex replace for pascalCase and added number to add to spinalCase",
+            "author": "74849806+wannieman98@users.noreply.github.com",
+            "commit": "14bc5d5f2ae608328eb16ad7e619bab00415f60a",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 03 Apr 2022 07:12:01 GMT",
       "tag": "@microsoft/fast-web-utilities_v5.2.0",
       "version": "5.2.0",

@@ -5,7 +5,7 @@ import {
     pascalCase,
     spinalCase,
     startsWith,
-} from "./strings";
+} from "./strings.js";
 
 describe("format", (): void => {
     it("should correctly manage undefined by returning an unformatted string", (): void => {
@@ -94,6 +94,18 @@ describe("pascalCase", (): void => {
     it("should no-op on existing pascal case", (): void => {
         expect(pascalCase("StringExtensions")).to.equal("StringExtensions");
     });
+
+    it("should correctly manage one capital case with no whitespace", (): void => {
+        expect(pascalCase("thinkIAm")).to.equal("ThinkIAm");
+    });
+
+    it("should correctly manage strings with dashes", (): void => {
+        expect(pascalCase("--foo bar--")).to.equal("FooBar");
+    });
+
+    it("should correctly manage strings with underscores", (): void => {
+        expect(pascalCase("__foo bar__")).to.equal("FooBar");
+    });
 });
 
 describe("spinalCase", () => {
@@ -102,6 +114,11 @@ describe("spinalCase", () => {
     });
     it("should convert CamelCase strings", (): void => {
         expect(spinalCase("StringExtensions")).to.equal("string-extensions");
+    });
+    it("should convert CamelCase with numbers", (): void => {
+        expect(spinalCase("typeRampMinus1FontSize")).to.equal(
+            "type-ramp-minus-1-font-size"
+        );
     });
 });
 

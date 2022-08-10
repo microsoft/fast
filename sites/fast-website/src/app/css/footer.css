@@ -22,6 +22,10 @@
     margin-inline-end: 50px;
 }
 
+.copyright {
+    padding-top: 13px;
+}
+
 @media screen and (min-width: 900px) {
     .footer {
         padding: 0 0 84px;

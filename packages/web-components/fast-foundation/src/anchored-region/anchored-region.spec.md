@@ -164,7 +164,7 @@ A region that renders below the anchor until that space is less than 100px.
 
 The anchored region can be configured to scale to either the size of the content in its slot, to the size of the element it is anchored to, or the available space between the anchor and the edge of the viewport element by setting the vertical/horizontal scaling attribute:
 - "anchor" - size to match anchor
-- "fill" - size to match space between the anchor and the viewport edge
+- "fill" - size to match space between the anchor and the viewport edge.  When the region is centered it will scale to remain centered on the anchor but remain inside the viewport, when centered with viewport lock the region will fill the viewport on that axis.
 - "content" - the default, matches the size of the content in the region's slot. 
 
 The dimensions of the anchored region will match the dimensions of the content unless scaling is enabled on a particular axis (verticalscalingenabled & horizontalscalingenabled) in which case it will fill all available space between the anchor and viewport.
@@ -182,7 +182,7 @@ NOTE: this component api will not be exposed outside of the fast-components pack
 - `fast-anchored-region`
 
 *Attributes:*
-- anchor - The html id of the HTMLElement used as the anchor around which the positioning region is placed.  This must be set for the component's positioning logic to be active.
+- anchor - The html id of the HTMLElement used as the anchor around which the positioning region is placed.  This must be set for the component's positioning logic to be active. The component will first check for the element id in the local shadow DOM followed by the document light DOM.
 
 - viewport - The ID of the HTMLElement to be used as the viewport used to determine available layout space around the anchor element.  If unset the parent element of the anchored region is used.
 

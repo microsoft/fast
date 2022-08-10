@@ -3,6 +3,9 @@ id: glossary
 title: Glossary
 sidebar_label: Glossary
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/glossary.md
+description: A glossary of terms.
+keywords:
+  - glossary of terms
 ---
 #### Design System
 
@@ -34,7 +37,7 @@ The amount of time it takes a web page to become interactive. The smaller the TT
 
 #### Transpiler
 
-Similar to a compiler, but rather than transforming a high-level language to machine instructions, it transforms one high-level language to another high-level language. E.g. TypeScript to JavaScript or ES2015 to ES5. On the web, this allows new JavaScript syntax to be used even if not supported by all target browsers, as the new syntax can sometimes be converted to a more verbose version of the old syntax. However, transpilers often produce output that is not only less performant than the native language feature but often exhibiting spec-compliance issues in particularly nuanced ways. 
+Similar to a compiler, but rather than transforming a high-level language to machine instructions, it transforms one high-level language to another high-level language. E.g. TypeScript to JavaScript or ES2015 to ES5. On the web, this allows new JavaScript syntax to be used even if not supported by all target browsers, as the new syntax can sometimes be converted to a more verbose version of the old syntax. However, transpilers often produce output that is not only less performant than the native language feature, but often exhibit spec-compliance issues in particularly nuanced ways. 
 
 #### Web Components
 

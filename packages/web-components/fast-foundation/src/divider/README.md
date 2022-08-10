@@ -3,6 +3,7 @@ id: divider
 title: fast-divider
 sidebar_label: divider
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/divider/README.md
+description: fast-divider is a web component implementation of a horizontal rule.
 ---
 
 A web component implementation of a [horizontal rule](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr).
@@ -44,30 +45,30 @@ export const myDivider = Divider.compose({
 
 
 
-### class: `Divider`
+### Variables
+
+| Name          | Description   | Type                                                        |
+| ------------- | ------------- | ----------------------------------------------------------- |
+| `DividerRole` | Divider roles | `{ separator: "separator", presentation: "presentation", }` |
+
+<hr/>
+
+
+
+### class: `FASTDivider`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name            | Privacy | Type                                           | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | ---------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `role`          | public  | `DividerRole or "separator" or "presentation"` |         | The role of the element.                                                                                                                                                            |                   |
-| `orientation`   | public  | `Orientation`                                  |         | The orientation of the divider.                                                                                                                                                     |                   |
-| `$presentation` | public  | `ComponentPresentation or null`                |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null`          |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`                |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
-
-#### Methods
-
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name          | Privacy | Type          | Default | Description                     | Inherited From |
+| ------------- | ------- | ------------- | ------- | ------------------------------- | -------------- |
+| `role`        | public  | `DividerRole` |         | The role of the element.        |                |
+| `orientation` | public  | `Orientation` |         | The orientation of the divider. |                |
 
 #### Attributes
 

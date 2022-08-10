@@ -1,8 +1,61 @@
 # Change Log - @microsoft/fast-animation
 
-This log was last generated on Sun, 03 Apr 2022 07:12:01 GMT and should not be manually modified.
+This log was last generated on Mon, 18 Jul 2022 21:10:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 4.2.4
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Patches
+
+- Updates a security vulnerability on dependency (16669785+awentzel@users.noreply.github.com)
+
+## 4.2.3
+
+Wed, 01 Jun 2022 17:53:14 GMT
+
+### Patches
+
+- Upgrade TypeScript (nicholasrice@users.noreply.github.com)
+
+## 4.2.2
+
+Wed, 04 May 2022 07:14:00 GMT
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.4.1 (chhol@microsoft.com)
+
+## 4.2.1
+
+Tue, 03 May 2022 07:15:44 GMT
+
+### Patches
+
+- Upgraded api-extractor (44823142+williamw2@users.noreply.github.com)
+
+## 4.2.0
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Minor changes
+
+- update to typescript 4.6.2 and update ARIAMixin typings (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/eslint-config-fast-dna to v2.1.0 (chhol@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.4.0 (chhol@microsoft.com)
+
+## 4.1.10
+
+Sun, 17 Apr 2022 07:11:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.3.0 (74849806+wannieman98@users.noreply.github.com)
 
 ## 4.1.9
 

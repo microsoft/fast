@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": ".",
+    "outDir": "../dist/esm",
+    "declarationDir": "../dist/dts",
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+  },
+}

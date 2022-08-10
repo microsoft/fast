@@ -38,32 +38,37 @@ export class FASTTreeItem extends TreeItem {}
 
 
 
-### class: `TreeItem`
+### class: `FASTTreeItem`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                 | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `expanded`      | public  | `boolean`                             | `false` | When true, the control will be appear expanded by user interaction.                                                                                                                         |                   |
-| `selected`      | public  | `boolean`                             |         | When true, the control will appear selected by user interaction.                                                                                                                            |                   |
-| `disabled`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [disabled HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) for more information. |                   |
-| `isNestedItem`  | public  |                                       |         | Whether the tree is nested                                                                                                                                                                  |                   |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                     | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                  | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.         | FoundationElement |
+| Name           | Privacy | Type      | Default | Description                                                                                                                                                                                 | Inherited From |
+| -------------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `expanded`     | public  | `boolean` | `false` | When true, the control will be appear expanded by user interaction.                                                                                                                         |                |
+| `selected`     | public  | `boolean` |         | When true, the control will appear selected by user interaction.                                                                                                                            |                |
+| `disabled`     | public  | `boolean` |         | When true, the control will be immutable by user interaction. See [disabled HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) for more information. |                |
+| `isNestedItem` | public  |           |         | Whether the tree is nested                                                                                                                                                                  |                |
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name              | Privacy   | Description | Parameters                                   | Return | Inherited From |
+| ----------------- | --------- | ----------- | -------------------------------------------- | ------ | -------------- |
+| `expandedChanged` | protected |             |                                              | `void` |                |
+| `selectedChanged` | protected |             |                                              | `void` |                |
+| `itemsChanged`    | protected |             | `oldValue: unknown, newValue: HTMLElement[]` | `void` |                |
+
+#### Events
+
+| Name              | Type | Description                                                            | Inherited From |
+| ----------------- | ---- | ---------------------------------------------------------------------- | -------------- |
+| `expanded-change` |      | Fires a custom 'expanded-change' event when the expanded state changes |                |
+| `selected-change` |      | Fires a custom 'selected-change' event when the selected state changes |                |
 
 #### Attributes
 
@@ -72,6 +77,25 @@ export class FASTTreeItem extends TreeItem {}
 |      | expanded |                |
 |      | selected |                |
 |      | disabled |                |
+
+#### CSS Parts
+
+| Name                     | Description                                                                          |
+| ------------------------ | ------------------------------------------------------------------------------------ |
+| `positioning-region`     | The element used to position the tree item content with exception of any child nodes |
+| `content-region`         | The element containing the expand/collapse, start, and end slots                     |
+| `items`                  | The element wrapping any child items                                                 |
+| `expand-collapse-button` | The expand/collapse button                                                           |
+
+#### Slots
+
+| Name                     | Description                                                                 |
+| ------------------------ | --------------------------------------------------------------------------- |
+| `start`                  | Content which can be provided before the tree item content                  |
+| `end`                    | Content which can be provided after the tree item content                   |
+|                          | The default slot for tree item text content                                 |
+| `item`                   | The slot for tree items (fast tree items manage this assignment themselves) |
+| `expand-collapse-button` | The expand/collapse button                                                  |
 
 <hr/>
 

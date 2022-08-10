@@ -3,6 +3,7 @@ id: badge
 title: fast-badge
 sidebar_label: badge
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/badge/README.md
+description: fast-badge is a web component used to highlight an item and attract attention or flag status.
 ---
 
 The `fast-badge` component is used to highlight an item and attract attention or flag status.
@@ -23,19 +24,8 @@ provideFASTDesignSystem()
 
 ## Usage
 
-The `fill` and `color` attributes of the *badge* create CSS custom properties which can be used to style the control.
-
-```css
-fast-badge {
-    --badge-fill-primary: #00FF00;
-    --badge-fill-danger: #FF0000;
-    --badge-color-light: #FFFFFF;
-    --badge-color-dark: #000000;
-}
-```
-
 ```html live
-<fast-badge fill="danger" color="dark">Danger</fast-badge>
+<fast-badge>New</fast-badge>
 ```
 
 ## Create your own design
@@ -55,40 +45,25 @@ export const myBadge = Badge.compose({
 
 
 
-### class: `Badge`
+### class: `FASTBadge`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
-#### Fields
+#### CSS Parts
 
-| Name                 | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| -------------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `fill`               | public  | `string`                              |         | Indicates the badge should have a filled style.                                                                                                                                     |                   |
-| `color`              | public  | `string`                              |         | Indicates the badge should have a filled style.                                                                                                                                     |                   |
-| `circular`           | public  | `boolean`                             |         | Indicates the element should be circular                                                                                                                                            |                   |
-| `generateBadgeStyle` | public  |                                       |         |                                                                                                                                                                                     |                   |
-| `$presentation`      | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`           | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`             | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name      | Description                                                      |
+| --------- | ---------------------------------------------------------------- |
+| `control` | The element representing the badge, which wraps the default slot |
 
-#### Methods
+#### Slots
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
-
-#### Attributes
-
-| Name    | Field    | Inherited From |
-| ------- | -------- | -------------- |
-| `fill`  | fill     |                |
-| `color` | color    |                |
-|         | circular |                |
+| Name | Description                    |
+| ---- | ------------------------------ |
+|      | The default slot for the badge |
 
 <hr/>
 

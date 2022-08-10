@@ -14,21 +14,26 @@ import {
     keyHome,
     Orientation,
 } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { getDirection } from "../utilities/direction.js";
 import { convertPixelToPercent } from "./slider-utilities.js";
 import { FormAssociatedSlider } from "./slider.form-associated.js";
 
 /**
- * The selection modes of a {@link @microsoft/fast-foundation#(Slider:class)}.
+ * The selection modes of a {@link @microsoft/fast-foundation#(FASTSlider:class)}.
  * @public
  */
-export enum SliderMode {
-    singleValue = "single-value",
-}
+export const SliderMode = {
+    singleValue: "single-value",
+} as const;
 
 /**
- * The configuration structure of {@link @microsoft/fast-foundation#(Slider:class)}.
+ * The types for the selection mode of the slider
+ * @public
+ */
+export type SliderMode = typeof SliderMode[keyof typeof SliderMode];
+
+/**
+ * The configuration structure of {@link @microsoft/fast-foundation#(FASTSlider:class)}.
  * @public
  */
 export interface SliderConfiguration {
@@ -43,7 +48,7 @@ export interface SliderConfiguration {
  * Slider configuration options
  * @public
  */
-export type SliderOptions = FoundationElementDefinition & {
+export type SliderOptions = {
     thumb?: string | SyntheticViewTemplate;
 };
 
@@ -51,9 +56,19 @@ export type SliderOptions = FoundationElementDefinition & {
  * A Slider Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#slider | ARIA slider }.
  *
+ * @slot track - The track of the slider
+ * @slot track-start - The track-start visual indicator
+ * @slot thumb - The slider thumb
+ * @slot - The default slot for labels
+ * @csspart positioning-region - The region used to position the elements of the slider
+ * @csspart track-container - The region containing the track elements
+ * @csspart track-start - The element wrapping the track start slot
+ * @csspart thumb-container - The thumb container element which is programatically positioned
+ * @fires change - Fires a custom 'change' event when the slider value changes
+ *
  * @public
  */
-export class Slider extends FormAssociatedSlider implements SliderConfiguration {
+export class FASTSlider extends FormAssociatedSlider implements SliderConfiguration {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      *
@@ -63,7 +78,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
-    private readOnlyChanged(): void {
+    protected readOnlyChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
@@ -299,6 +314,10 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     }
 
     protected keypressHandler = (e: KeyboardEvent) => {
+        if (this.readOnly) {
+            return;
+        }
+
         if (e.key === keyHome) {
             e.preventDefault();
             this.value = `${this.min}`;

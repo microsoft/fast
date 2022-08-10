@@ -3,6 +3,9 @@ id: aspnet
 title: ASP.NET
 sidebar_label: ASP.NET
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/aspnet.md
+description: FAST works naturally with ASP.NET server-side development, by simply adding a script tag and using the custom HTML elements. Let's take a look at how to set things up.
+keywords:
+  - asp.net
 ---
 
 FAST works naturally with ASP.NET server-side development, by simply adding a script tag and using the custom HTML elements. Let's take a look at how to set things up.
@@ -35,7 +38,11 @@ The markup above always references the latest release of the components. When de
 <script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-components@2.16.0/dist/fast-components.min.js"></script>
 ```
 
-The best place to put this is typically in your `_Layout.cshtml` file in the script section at the bottom of the `<body>`.
+The best place to put this is typically in your `_Layout.cshtml` file in the script section at the bottom of the `<body>`. Be sure to use double `@` if you are placing this script in any of the files with `cshtml` extension as compiler will treat it with Razor directive:
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@@microsoft/fast-components/dist/fast-components.min.js"></script>
+```
 
 If you wish to leverage NPM instead, run the following command:
 
@@ -51,13 +58,13 @@ node_modules/@microsoft/fast-components/dist/fast-components.min.js
 
 Copy this to your `wwwroot/js` folder and reference it with a script tag as described above.
 
-Should you wish to go one step further and leverage a client-side bundler, such as Webpack, there is some additional setup to integrate with ASP.NET that is beyond the scope of this tutorial. Basic Webpack instructions for FAST can be found [here](./webpack). The most important detail with respect to FAST is that you'll want to install a few more packages. Use the following command if this is your preferred setup:
+Should you wish to go one step further and leverage a client-side bundler, such as Webpack, there is some additional setup to integrate with ASP.NET that is beyond the scope of this tutorial. Basic Webpack instructions for FAST can be found [here](./webpack.md). The most important detail with respect to FAST is that you'll want to install a few more packages. Use the following command if this is your preferred setup:
 
 ```shell
 npm install --save @microsoft/fast-components @microsoft/fast-element
 ```
 
-In this case, because Webpack can tree-shake unused components, you'll also want to be sure to register the components you want to use somewhere in your own JavaScript code. See [our Webpack guide](./webpack) for an example.
+In this case, because Webpack can tree-shake unused components, you'll also want to be sure to register the components you want to use somewhere in your own JavaScript code. See [our Webpack guide](./webpack.md) for an example.
 
 ## Using the components
 

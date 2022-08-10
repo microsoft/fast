@@ -1,45 +1,46 @@
+import type { Disposable } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { ExecutionContext } from "../observation/observable.js";
+import type {
+    ViewBehavior,
+    ViewBehaviorFactory,
+    ViewBehaviorTargets,
+} from "./html-directive.js";
 
 /**
  * Represents a collection of DOM nodes which can be bound to a data source.
  * @public
  */
-export interface View {
+export interface View<TSource = any, TParent = any> extends Disposable {
     /**
      * The execution context the view is running within.
      */
-    readonly context: ExecutionContext | null;
+    readonly context: ExecutionContext<TParent> | null;
 
     /**
      * The data that the view is bound to.
      */
-    readonly source: any | null;
+    readonly source: TSource | null;
 
     /**
      * Binds a view's behaviors to its binding source.
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the view within.
      */
-    bind(source: unknown, context: ExecutionContext): void;
+    bind(source: TSource, context: ExecutionContext<TParent>): void;
 
     /**
      * Unbinds a view's behaviors from its binding source and context.
      */
     unbind(): void;
-
-    /**
-     * Removes the view and unbinds its behaviors, disposing of DOM nodes afterward.
-     * Once a view has been disposed, it cannot be inserted or bound again.
-     */
-    dispose(): void;
 }
 
 /**
  * A View representing DOM nodes specifically for rendering the view of a custom element.
  * @public
  */
-export interface ElementView extends View {
+export interface ElementView<TSource = any, TParent = any>
+    extends View<TSource, TParent> {
     /**
      * Appends the view's DOM nodes to the referenced node.
      * @param node - The parent node to append the view's DOM nodes to.
@@ -51,7 +52,8 @@ export interface ElementView extends View {
  * A view representing a range of DOM nodes which can be added/removed ad hoc.
  * @public
  */
-export interface SyntheticView extends View {
+export interface SyntheticView<TSource = any, TParent = any>
+    extends View<TSource, TParent> {
     /**
      * The first DOM node in the range of nodes that make up the view.
      */
@@ -73,32 +75,39 @@ export interface SyntheticView extends View {
      * The nodes are not disposed and the view can later be re-inserted.
      */
     remove(): void;
-
-    /**
-     * Removes the view and unbinds its behaviors, disposing of DOM nodes afterward.
-     * Once a view has been disposed, it cannot be inserted or bound again.
-     */
-    dispose(): void;
 }
 
-// A singleton Range instance used to efficiently remove ranges of DOM nodes.
-// See the implementation of HTMLView below for further details.
-const range = document.createRange();
+function removeNodeSequence(firstNode: Node, lastNode: Node): void {
+    const parent = firstNode.parentNode!;
+    let current = firstNode;
+    let next: ChildNode | null;
+
+    while (current !== lastNode) {
+        next = current.nextSibling;
+        parent.removeChild(current);
+        current = next!;
+    }
+
+    parent.removeChild(lastNode);
+}
 
 /**
  * The standard View implementation, which also implements ElementView and SyntheticView.
  * @public
  */
-export class HTMLView implements ElementView, SyntheticView {
+export class HTMLView<TSource = any, TParent = any>
+    implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent> {
+    private behaviors: ViewBehavior[] | null = null;
+
     /**
      * The data that the view is bound to.
      */
-    public source: any | null = null;
+    public source: TSource | null = null;
 
     /**
      * The execution context the view is running within.
      */
-    public context: ExecutionContext | null = null;
+    public context: ExecutionContext<TParent> | null = null;
 
     /**
      * The first DOM node in the range of nodes that make up the view.
@@ -117,7 +126,8 @@ export class HTMLView implements ElementView, SyntheticView {
      */
     public constructor(
         private fragment: DocumentFragment,
-        private behaviors: Behavior[]
+        private factories: ReadonlyArray<ViewBehaviorFactory>,
+        private targets: ViewBehaviorTargets
     ) {
         this.firstChild = fragment.firstChild!;
         this.lastChild = fragment.lastChild!;
@@ -139,8 +149,10 @@ export class HTMLView implements ElementView, SyntheticView {
         if (this.fragment.hasChildNodes()) {
             node.parentNode!.insertBefore(this.fragment, node);
         } else {
-            const parentNode = node.parentNode!;
             const end = this.lastChild!;
+            if (node.previousSibling === end) return;
+
+            const parentNode = node.parentNode!;
             let current = this.firstChild!;
             let next;
 
@@ -178,25 +190,8 @@ export class HTMLView implements ElementView, SyntheticView {
      * Once a view has been disposed, it cannot be inserted or bound again.
      */
     public dispose(): void {
-        const parent = this.firstChild.parentNode!;
-        const end = this.lastChild!;
-        let current = this.firstChild!;
-        let next;
-
-        while (current !== end) {
-            next = current.nextSibling;
-            parent.removeChild(current);
-            current = next!;
-        }
-
-        parent.removeChild(end);
-
-        const behaviors = this.behaviors;
-        const oldSource = this.source;
-
-        for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-            behaviors[i].unbind(oldSource);
-        }
+        removeNodeSequence(this.firstChild, this.lastChild);
+        this.unbind();
     }
 
     /**
@@ -204,28 +199,36 @@ export class HTMLView implements ElementView, SyntheticView {
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the behaviors within.
      */
-    public bind(source: unknown, context: ExecutionContext): void {
-        const behaviors = this.behaviors;
+    public bind(source: TSource, context: ExecutionContext<TParent>): void {
+        let behaviors = this.behaviors;
+        const oldSource = this.source;
 
-        if (this.source === source) {
+        if (oldSource === source) {
             return;
-        } else if (this.source !== null) {
-            const oldSource = this.source;
+        }
 
-            this.source = source;
-            this.context = context;
+        this.source = source;
+        this.context = context;
+        const targets = this.targets;
 
-            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                const current = behaviors[i];
-                current.unbind(oldSource);
-                current.bind(source, context);
+        if (oldSource !== null) {
+            for (let i = 0, ii = behaviors!.length; i < ii; ++i) {
+                const current = behaviors![i];
+                current.unbind(oldSource, context, targets);
+                current.bind(source, context, targets);
+            }
+        } else if (behaviors === null) {
+            this.behaviors = behaviors = new Array<Behavior>(this.factories.length);
+            const factories = this.factories;
+
+            for (let i = 0, ii = factories.length; i < ii; ++i) {
+                const behavior = factories[i].createBehavior(targets);
+                behavior.bind(source, context, targets);
+                behaviors[i] = behavior;
             }
         } else {
-            this.source = source;
-            this.context = context;
-
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].bind(source, context);
+                behaviors[i].bind(source, context, targets);
             }
         }
     }
@@ -234,18 +237,22 @@ export class HTMLView implements ElementView, SyntheticView {
      * Unbinds a view's behaviors from its binding source.
      */
     public unbind(): void {
-        if (this.source === null) {
+        const oldSource = this.source;
+
+        if (oldSource === null) {
             return;
         }
 
-        const behaviors = this.behaviors;
-        const oldSource = this.source;
+        const targets = this.targets;
+        const context = this.context;
+        const behaviors = this.behaviors!;
 
         for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-            behaviors[i].unbind(oldSource);
+            behaviors[i].unbind(oldSource, context!, targets);
         }
 
         this.source = null;
+        this.context = null;
     }
 
     /**
@@ -257,18 +264,10 @@ export class HTMLView implements ElementView, SyntheticView {
             return;
         }
 
-        range.setStartBefore(views[0].firstChild);
-        range.setEndAfter(views[views.length - 1].lastChild);
-        range.deleteContents();
+        removeNodeSequence(views[0].firstChild, views[views.length - 1].lastChild);
 
         for (let i = 0, ii = views.length; i < ii; ++i) {
-            const view = views[i] as any;
-            const behaviors = view.behaviors as Behavior[];
-            const oldSource = view.source;
-
-            for (let j = 0, jj = behaviors.length; j < jj; ++j) {
-                behaviors[j].unbind(oldSource);
-            }
+            views[i].unbind();
         }
     }
 }

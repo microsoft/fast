@@ -1,8 +1,120 @@
 # Change Log - @microsoft/fast-figma-plugin-msft
 
-This log was last generated on Tue, 12 Apr 2022 07:13:35 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Jun 2022 17:41:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.16
+
+Wed, 15 Jun 2022 17:41:10 GMT
+
+### Changes
+
+- Bump @microsoft/fast-react-wrapper to v1.0.0-alpha.3 (7559015+janechu@users.noreply.github.com)
+
+## 0.8.16
+
+Wed, 01 Jun 2022 22:21:24 GMT
+
+### Changes
+
+- Bump @microsoft/fast-react-wrapper to v1.0.0-alpha.2 (nicholasrice@users.noreply.github.com)
+
+## 0.8.16
+
+Thu, 26 May 2022 07:11:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-react-wrapper to v0.3.9 (burtonsmith@microsoft.com)
+
+## 0.8.16
+
+Wed, 25 May 2022 07:09:21 GMT
+
+### Patches
+
+- Bump @microsoft/fast-react-wrapper to v0.3.8 (chhol@microsoft.com)
+
+## 0.8.16
+
+Tue, 24 May 2022 07:10:02 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.10.2 (roeisenb@microsoft.com)
+
+## 0.8.16
+
+Thu, 19 May 2022 07:09:40 GMT
+
+### Patches
+
+- Bump @microsoft/fast-react-wrapper to v0.3.6 (20542556+mollykreis@users.noreply.github.com)
+
+## 0.8.16
+
+Tue, 10 May 2022 07:11:04 GMT
+
+### Patches
+
+- Bump @microsoft/fast-react-wrapper to v0.3.5 (scomea@microsoft.com)
+
+## 0.8.16
+
+Thu, 05 May 2022 07:11:41 GMT
+
+### Patches
+
+- Bump @microsoft/fast-react-wrapper to v0.3.4 (abris96@gmail.com)
+
+## 0.8.16
+
+Tue, 03 May 2022 07:15:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.10.1 (44823142+williamw2@users.noreply.github.com)
+
+## 0.8.16
+
+Sun, 01 May 2022 07:12:05 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.30.2 (chhol@microsoft.com)
+
+## 0.8.16
+
+Thu, 28 Apr 2022 07:12:47 GMT
+
+### Patches
+
+- Bump @microsoft/fast-react-wrapper to v0.3.1 (john.kreitlow@microsoft.com)
+
+## 0.8.16
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Patches
+
+- Bump @microsoft/fast-colors to v5.3.0 (chhol@microsoft.com)
+
+## 0.8.16
+
+Thu, 21 Apr 2022 07:13:54 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.29.1 (47367562+bheston@users.noreply.github.com)
+
+## 0.8.16
+
+Thu, 14 Apr 2022 07:12:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.28.0 (john.kreitlow@microsoft.com)
 
 ## 0.8.16
 

@@ -10,9 +10,7 @@ Typical use cases include, but are not limited to, denoting a sale or new item, 
   
 ### Features
 
-A badge should allow the following properties:
-- `fill`, a string that maps to author defined variables.
-- `circular`, if circular styling is desired.
+A badge has no functionality and no properties:
 
 ### Prior Art/Examples
 - [FAST Badge (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
@@ -30,8 +28,7 @@ A badge should allow the following properties:
 - `fast-badge`
 
 *Attributes:*
-- `fill`: string
-- `circular`: boolean
+- N/A
 
 *Slots:*
 - `default`
@@ -45,27 +42,15 @@ A badge should allow the following properties:
 
 ## Implementation
 
-```
-fast-badge {
-   --badge-fill-primary: rgba(255, 0, 0, 1);
-   --badge-fill-secondary: #00FF00;
-   --badge-fill-transparent: transparent;
-}
-```
 
 ```
-<fast-badge
-    fill="primary"
->
+<fast-badge>
     New
 </fast-badge>
 ```
 
 ```
-<fast-badge
-    fill="secondary"
-    circular=true
->
+<fast-badge>
     99
 </fast-badge>
 ```

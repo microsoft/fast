@@ -1,41 +1,6 @@
 import type { Behavior } from "../observation/behavior.js";
-import { DOM } from "../dom.js";
-
-/**
- * A node that can be targeted by styles.
- * @public
- */
-export interface StyleTarget {
-    /**
-     * Stylesheets to be adopted by the node.
-     */
-    adoptedStyleSheets?: CSSStyleSheet[];
-
-    /**
-     * Adds styles to the target by appending the styles.
-     * @param styles - The styles element to add.
-     */
-    append(styles: HTMLStyleElement): void;
-
-    /**
-     * Adds styles to the target by prepending the styles.
-     * @param styles - The styles element to add.
-     * @deprecated - use append()
-     */
-    prepend(styles: HTMLStyleElement): void;
-
-    /**
-     * Removes styles from the target.
-     * @param styles - The styles element to remove.
-     */
-    removeChild(styles: HTMLStyleElement): void;
-
-    /**
-     * Returns all element descendants of node that match selectors.
-     * @param selectors - The CSS selector to use for the query.
-     */
-    querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
-}
+import { FAST } from "../platform.js";
+import { KernelServiceId, StyleStrategy, StyleTarget } from "../interfaces.js";
 
 /**
  * Represents styles that can be composed into the ShadowDOM of a custom element.
@@ -44,33 +9,81 @@ export interface StyleTarget {
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
 
 /**
- * Creates an ElementStyles instance for an array of ComposableStyles.
+ * A type that instantiates a StyleStrategy.
  * @public
  */
-export type ElementStyleFactory = (
+export type ConstructibleStyleStrategy = {
+    /**
+     * Creates an instance of the strategy.
+     * @param styles - The styles to initialize the strategy with.
+     */
+    new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
+};
+
+const styleSheetCache = new Map<string, CSSStyleSheet>();
+let DefaultStyleStrategy: ConstructibleStyleStrategy;
+
+function reduceStyles(
     styles: ReadonlyArray<ComposableStyles>
-) => ElementStyles;
+): (string | CSSStyleSheet)[] {
+    return styles
+        .map((x: ComposableStyles) =>
+            x instanceof ElementStyles ? reduceStyles(x.styles) : [x]
+        )
+        .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
+}
 
 /**
  * Represents styles that can be applied to a custom element.
  * @public
  */
-export abstract class ElementStyles {
+export class ElementStyles {
     private targets: WeakSet<StyleTarget> = new WeakSet();
+    private _strategy: StyleStrategy | null = null;
 
-    /** @internal */
-    public abstract readonly styles: ReadonlyArray<ComposableStyles>;
+    /**
+     * The behaviors associated with this set of styles.
+     */
+    public readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
 
-    /** @internal */
-    public abstract readonly behaviors: ReadonlyArray<Behavior> | null = null;
+    /**
+     * Gets the StyleStrategy associated with these element styles.
+     */
+    public get strategy(): StyleStrategy {
+        if (this._strategy === null) {
+            this.withStrategy(DefaultStyleStrategy);
+        }
+
+        return this._strategy!;
+    }
+
+    /**
+     * Creates an instance of ElementStyles.
+     * @param styles - The styles that will be associated with elements.
+     */
+    public constructor(public readonly styles: ReadonlyArray<ComposableStyles>) {
+        this.behaviors = styles
+            .map((x: ComposableStyles) =>
+                x instanceof ElementStyles ? x.behaviors : null
+            )
+            .reduce(
+                (
+                    prev: Behavior<HTMLElement>[] | null,
+                    curr: Behavior<HTMLElement>[] | null
+                ) => (curr === null ? prev : prev === null ? curr : prev.concat(curr)),
+                null as Behavior<HTMLElement>[] | null
+            );
+    }
 
     /** @internal */
     public addStylesTo(target: StyleTarget): void {
+        this.strategy.addStylesTo(target);
         this.targets.add(target);
     }
 
     /** @internal */
     public removeStylesFrom(target: StyleTarget): void {
+        this.strategy.removeStylesFrom(target);
         this.targets.delete(target);
     }
 
@@ -83,7 +96,7 @@ export abstract class ElementStyles {
      * Associates behaviors with this set of styles.
      * @param behaviors - The behaviors to associate.
      */
-    public withBehaviors(...behaviors: Behavior[]): this {
+    public withBehaviors(...behaviors: Behavior<HTMLElement>[]): this {
         (this.behaviors as any) =
             this.behaviors === null ? behaviors : this.behaviors.concat(behaviors);
 
@@ -91,47 +104,45 @@ export abstract class ElementStyles {
     }
 
     /**
-     * Create ElementStyles from ComposableStyles.
+     * Sets the strategy that handles adding/removing these styles for an element.
+     * @param strategy - The strategy to use.
      */
-    public static readonly create: ElementStyleFactory = (() => {
-        if (DOM.supportsAdoptedStyleSheets) {
-            const styleSheetCache = new Map();
-            return (styles: ComposableStyles[]) =>
-                // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                new AdoptedStyleSheetsStyles(styles, styleSheetCache);
-        }
+    public withStrategy(Strategy: ConstructibleStyleStrategy): this {
+        this._strategy = new Strategy(reduceStyles(this.styles));
+        return this;
+    }
 
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        return (styles: ComposableStyles[]) => new StyleElementStyles(styles);
-    })();
-}
+    /**
+     * Sets the default strategy type to use when creating style strategies.
+     * @param Strategy - The strategy type to construct.
+     */
+    public static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void {
+        DefaultStyleStrategy = Strategy;
+    }
 
-function reduceStyles(
-    styles: ReadonlyArray<ComposableStyles>
-): (string | CSSStyleSheet)[] {
-    return styles
-        .map((x: ComposableStyles) =>
-            x instanceof ElementStyles ? reduceStyles(x.styles) : [x]
-        )
-        .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
-}
+    /**
+     * Normalizes a set of composable style options.
+     * @param styles - The style options to normalize.
+     * @returns A singular ElementStyles instance or undefined.
+     */
+    public static normalize(
+        styles: ComposableStyles | ComposableStyles[] | undefined
+    ): ElementStyles | undefined {
+        return styles === void 0
+            ? void 0
+            : Array.isArray(styles)
+            ? new ElementStyles(styles)
+            : styles instanceof ElementStyles
+            ? styles
+            : new ElementStyles([styles]);
+    }
 
-function reduceBehaviors(
-    styles: ReadonlyArray<ComposableStyles>
-): ReadonlyArray<Behavior> | null {
-    return styles
-        .map((x: ComposableStyles) => (x instanceof ElementStyles ? x.behaviors : null))
-        .reduce((prev: Behavior[] | null, curr: Behavior[] | null) => {
-            if (curr === null) {
-                return prev;
-            }
-
-            if (prev === null) {
-                prev = [];
-            }
-
-            return prev.concat(curr);
-        }, null as Behavior[] | null);
+    /**
+     * Indicates whether the DOM supports the adoptedStyleSheets feature.
+     */
+    public static readonly supportsAdoptedStyleSheets =
+        Array.isArray((document as any).adoptedStyleSheets) &&
+        "replace" in CSSStyleSheet.prototype;
 }
 
 /**
@@ -140,113 +151,40 @@ function reduceBehaviors(
  *
  * @internal
  */
-export class AdoptedStyleSheetsStyles extends ElementStyles {
-    private _styleSheets: CSSStyleSheet[] | undefined = void 0;
+export class AdoptedStyleSheetsStrategy implements StyleStrategy {
+    /** @internal */
+    public readonly sheets: CSSStyleSheet[];
 
-    private get styleSheets(): CSSStyleSheet[] {
-        if (this._styleSheets === void 0) {
-            const styles = this.styles;
-            const styleSheetCache = this.styleSheetCache;
-            this._styleSheets = reduceStyles(styles).map((x: string | CSSStyleSheet) => {
-                if (x instanceof CSSStyleSheet) {
-                    return x;
-                }
+    public constructor(styles: (string | CSSStyleSheet)[]) {
+        this.sheets = styles.map((x: string | CSSStyleSheet) => {
+            if (x instanceof CSSStyleSheet) {
+                return x;
+            }
 
-                let sheet = styleSheetCache.get(x);
+            let sheet = styleSheetCache.get(x);
 
-                if (sheet === void 0) {
-                    sheet = new CSSStyleSheet();
-                    (sheet as any).replaceSync(x);
-                    styleSheetCache.set(x, sheet);
-                }
+            if (sheet === void 0) {
+                sheet = new CSSStyleSheet();
+                (sheet as any).replaceSync(x);
+                styleSheetCache.set(x, sheet);
+            }
 
-                return sheet;
-            });
-        }
-
-        return this._styleSheets;
-    }
-
-    public readonly behaviors: ReadonlyArray<Behavior> | null;
-
-    public constructor(
-        public styles: ComposableStyles[],
-        private styleSheetCache: Map<string, CSSStyleSheet>
-    ) {
-        super();
-        this.behaviors = reduceBehaviors(styles);
+            return sheet;
+        });
     }
 
     public addStylesTo(target: StyleTarget): void {
-        target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...this.styleSheets];
-        super.addStylesTo(target);
+        target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...this.sheets];
     }
 
     public removeStylesFrom(target: StyleTarget): void {
-        const sourceSheets = this.styleSheets;
+        const sheets = this.sheets;
         target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-            (x: CSSStyleSheet) => sourceSheets.indexOf(x) === -1
+            (x: CSSStyleSheet) => sheets.indexOf(x) === -1
         );
-        super.removeStylesFrom(target);
     }
 }
 
-let styleClassId = 0;
-
-function getNextStyleClass(): string {
-    return `fast-style-class-${++styleClassId}`;
-}
-
-/**
- * @internal
- */
-export class StyleElementStyles extends ElementStyles {
-    private readonly styleSheets: string[];
-    private readonly styleClass: string;
-    public readonly behaviors: ReadonlyArray<Behavior> | null = null;
-
-    public constructor(public styles: ComposableStyles[]) {
-        super();
-        this.behaviors = reduceBehaviors(styles);
-        this.styleSheets = reduceStyles(styles) as string[];
-        this.styleClass = getNextStyleClass();
-    }
-
-    public addStylesTo(target: StyleTarget): void {
-        const styleSheets = this.styleSheets;
-        const styleClass = this.styleClass;
-
-        target = this.normalizeTarget(target);
-
-        for (let i = 0; i < styleSheets.length; i++) {
-            const element = document.createElement("style");
-            element.innerHTML = styleSheets[i];
-            element.className = styleClass;
-            target.append(element);
-        }
-
-        super.addStylesTo(target);
-    }
-
-    public removeStylesFrom(target: StyleTarget): void {
-        target = this.normalizeTarget(target);
-
-        const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
-            `.${this.styleClass}`
-        );
-
-        for (let i = 0, ii = styles.length; i < ii; ++i) {
-            target.removeChild(styles[i]);
-        }
-
-        super.removeStylesFrom(target);
-    }
-
-    public isAttachedTo(target: StyleTarget): boolean {
-        return super.isAttachedTo(this.normalizeTarget(target));
-    }
-
-    private normalizeTarget(target: StyleTarget): StyleTarget {
-        return target === document ? document.body : target;
-    }
-}
+ElementStyles.setDefaultStrategy(
+    FAST.getById(KernelServiceId.styleSheetStrategy, () => AdoptedStyleSheetsStrategy)
+);

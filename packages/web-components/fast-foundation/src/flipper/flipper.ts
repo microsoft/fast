@@ -1,8 +1,9 @@
-import { attr, booleanConverter, SyntheticViewTemplate } from "@microsoft/fast-element";
 import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
+    attr,
+    booleanConverter,
+    FASTElement,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 import { FlipperDirection } from "./flipper.options.js";
 
 export { FlipperDirection };
@@ -11,7 +12,7 @@ export { FlipperDirection };
  * Flipper configuration options
  * @public
  */
-export type FlipperOptions = FoundationElementDefinition & {
+export type FlipperOptions = {
     next?: string | SyntheticViewTemplate;
     previous?: string | SyntheticViewTemplate;
 };
@@ -20,9 +21,15 @@ export type FlipperOptions = FoundationElementDefinition & {
  * A Flipper Custom HTML Element.
  * Flippers are a form of button that implies directional content navigation, such as in a carousel.
  *
+ * @slot next - The next flipper content
+ * @slot previous - The previous flipper content
+ * @csspart next - Wraps the next flipper content
+ * @csspart previous - Wraps the previous flipper content
+ * @fires click - Fires a custom 'click' event when Enter or Space is invoked via keyboard and the flipper is exposed to assistive technologies.
+ *
  * @public
  */
-export class Flipper extends FoundationElement {
+export class FASTFlipper extends FASTElement {
     /**
      * The disabled state of the flipper.
      * @public
@@ -51,7 +58,7 @@ export class Flipper extends FoundationElement {
      * HTML Attribute: direction
      */
     @attr
-    public direction: FlipperDirection | "next" | "previous" = FlipperDirection.next;
+    public direction: FlipperDirection = FlipperDirection.next;
 
     /**
      * Simulate a click event when the flipper has focus and the user hits enter or space keys
@@ -63,7 +70,7 @@ export class Flipper extends FoundationElement {
         if (!this.hiddenFromAT) {
             const key = e.key;
 
-            if (key === "Enter") {
+            if (key === "Enter" || key === "Space") {
                 this.$emit("click", e);
             }
 

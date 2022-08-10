@@ -1,5 +1,7 @@
 import {
     attr,
+    bind,
+    FASTElement,
     observable,
     RepeatBehavior,
     RepeatDirective,
@@ -13,16 +15,17 @@ import {
     keyEnd,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 import type { ColumnDefinition } from "./data-grid.js";
 import { DataGridRowTypes } from "./data-grid.options.js";
 
 /**
  * A Data Grid Row Custom HTML Element.
  *
+ * @fires row-focused - Fires a custom 'row-focused' event when focus is on an element (usually a cell or its contents) in the row
+ * @slot - The default slot for custom cell elements
  * @public
  */
-export class DataGridRow extends FoundationElement {
+export class FASTDataGridRow extends FASTElement {
     /**
      * String that gets applied to the the css gridTemplateColumns attribute for the row
      *
@@ -32,7 +35,7 @@ export class DataGridRow extends FoundationElement {
      */
     @attr({ attribute: "grid-template-columns" })
     public gridTemplateColumns: string;
-    private gridTemplateColumnsChanged(): void {
+    protected gridTemplateColumnsChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateRowStyle();
         }
@@ -46,8 +49,7 @@ export class DataGridRow extends FoundationElement {
      * HTML Attribute: row-type
      */
     @attr({ attribute: "row-type" })
-    public rowType: DataGridRowTypes | "default" | "header" | "sticky-header" =
-        DataGridRowTypes.default;
+    public rowType: DataGridRowTypes = DataGridRowTypes.default;
     private rowTypeChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateItemTemplate();
@@ -61,7 +63,7 @@ export class DataGridRow extends FoundationElement {
      */
     @observable
     public rowData: object | null = null;
-    private rowDataChanged(): void {
+    protected rowDataChanged(): void {
         if (this.rowData !== null && this.isActiveRow) {
             this.refocusOnLoad = true;
             return;
@@ -176,11 +178,14 @@ export class DataGridRow extends FoundationElement {
 
             this.updateItemTemplate();
 
-            this.cellsRepeatBehavior = new RepeatDirective(
-                x => x.columnDefinitions,
-                x => x.activeCellItemTemplate,
+            const cellsRepeatDirective = new RepeatDirective<FASTDataGridRow>(
+                bind(x => x.columnDefinitions, false),
+                bind(x => x.activeCellItemTemplate, false),
                 { positioning: true }
-            ).createBehavior(this.cellsPlaceholder);
+            );
+            this.cellsRepeatBehavior = cellsRepeatDirective.createBehavior({
+                [cellsRepeatDirective.nodeId]: this.cellsPlaceholder,
+            });
             /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
             this.$fastController.addBehaviors([this.cellsRepeatBehavior!]);
         }

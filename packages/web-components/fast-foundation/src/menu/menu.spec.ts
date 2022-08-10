@@ -1,19 +1,30 @@
 import { expect } from "chai";
-import { Menu, menuTemplate as template } from "./index";
-import { MenuItem, menuItemTemplate as itemTemplate, MenuItemRole } from "../menu-item";
-import { fixture } from "../test-utilities/fixture";
-import { DOM, html } from "@microsoft/fast-element";
+import { FASTMenu, menuTemplate } from "./index.js";
+import { FASTMenuItem, menuItemTemplate, MenuItemRole } from "../menu-item/index.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
+import { FASTAnchoredRegion, anchoredRegionTemplate } from "../anchored-region/index.js";
 
-const FASTMenu = Menu.compose({
-    baseName: "menu",
-    template,
-})
+const anchoredRegionName = uniqueElementName();
+FASTAnchoredRegion.compose({
+    name: anchoredRegionName,
+    template: anchoredRegionTemplate()
+});
 
-const FASTMenuItem = MenuItem.compose({
-    baseName: "menu-item",
-    template: itemTemplate,
-})
+const menuItemName = uniqueElementName();
+FASTMenuItem.define({
+    name: menuItemName,
+    template: menuItemTemplate({
+        anchoredRegion: anchoredRegionName
+    })
+});
+
+const menuName = uniqueElementName();
+FASTMenu.define({
+    name: menuName,
+    template: menuTemplate(),
+});
 
 const arrowUpEvent = new KeyboardEvent("keydown", {
     key: keyArrowUp,
@@ -26,23 +37,23 @@ const arrowDownEvent = new KeyboardEvent("keydown", {
 } as KeyboardEventInit);
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture([FASTMenu(), FASTMenuItem()]);
+    const { element, connect, disconnect } = await fixture<FASTMenu>(menuName);
 
-    const menuItem1 = document.createElement("fast-menu-item");
-    (menuItem1 as MenuItem).textContent = "Foo";
-    (menuItem1 as MenuItem).id = "id1";
+    const menuItem1 = document.createElement(menuItemName);
+    (menuItem1 as FASTMenuItem).textContent = "Foo";
+    (menuItem1 as FASTMenuItem).id = "id1";
 
-    const menuItem2 = document.createElement("fast-menu-item");
-    (menuItem2 as MenuItem).textContent = "Bar";
-    (menuItem2 as MenuItem).id = "id2";
+    const menuItem2 = document.createElement(menuItemName);
+    (menuItem2 as FASTMenuItem).textContent = "Bar";
+    (menuItem2 as FASTMenuItem).id = "id2";
 
-    const menuItem3 = document.createElement("fast-menu-item");
-    (menuItem3 as MenuItem).textContent = "Baz";
-    (menuItem3 as MenuItem).id = "id3";
+    const menuItem3 = document.createElement(menuItemName);
+    (menuItem3 as FASTMenuItem).textContent = "Baz";
+    (menuItem3 as FASTMenuItem).id = "id3";
 
-    const menuItem4 = document.createElement("fast-menu-item");
-    (menuItem4 as MenuItem).textContent = "Bat";
-    (menuItem4 as MenuItem).id = "id4";
+    const menuItem4 = document.createElement(menuItemName);
+    (menuItem4 as FASTMenuItem).textContent = "Bat";
+    (menuItem4 as FASTMenuItem).id = "id4";
 
     element.appendChild(menuItem1);
     element.appendChild(menuItem2);
@@ -54,7 +65,7 @@ async function setup() {
 
 describe("Menu", () => {
     it("should include a role of menu", async () => {
-        const { element, connect, disconnect } = await fixture([FASTMenu(), FASTMenuItem()]);
+        const { element, connect, disconnect } = await fixture<FASTMenu>(menuName);
 
         await connect();
 
@@ -67,7 +78,7 @@ describe("Menu", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         element.focus();
         expect(document.activeElement?.id).to.equal("id1");
@@ -76,10 +87,10 @@ describe("Menu", () => {
     });
 
     it("should not throw when focus is called with no items", async () => {
-        const { element, connect, disconnect } = await fixture(FASTMenu());
+        const { element, connect, disconnect } = await fixture<FASTMenu>(menuName);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         element.focus();
         expect(document.activeElement?.id).to.equal("");
@@ -104,7 +115,7 @@ describe("Menu", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(document.getElementById("id1")?.getAttribute("tabindex")).to.equal("0");
 
@@ -121,7 +132,7 @@ describe("Menu", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(document.getElementById("not-an-item")?.hasAttribute("tabindex")).to.equal(false);
 
@@ -131,10 +142,10 @@ describe("Menu", () => {
     it("should focus disabled items", async () => {
         const { element, connect, disconnect, menuItem1 } = await setup();
 
-        (menuItem1 as MenuItem).disabled = true;
+        (menuItem1 as FASTMenuItem).disabled = true;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(document.getElementById("id1")?.getAttribute("tabindex")).to.equal("0");
 
@@ -163,7 +174,7 @@ describe("Menu", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.querySelector("[role='menuitem']")?.getAttribute("tabindex")
@@ -173,7 +184,7 @@ describe("Menu", () => {
     });
 
     it("should accept elements with role of `menuitemcheckbox` as focusable child", async () => {
-        const { element, connect, disconnect } = await fixture(FASTMenu());
+        const { element, connect, disconnect } = await fixture<FASTMenu>(menuName);
 
         const menuItem1 = document.createElement("div");
         const menuItem2 = document.createElement("div");
@@ -192,7 +203,7 @@ describe("Menu", () => {
         menuItem3.setAttribute("role", "menuitemcheckbox");
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.querySelector("[role='menuitemcheckbox']")?.getAttribute("tabindex")
@@ -202,7 +213,7 @@ describe("Menu", () => {
     });
 
     it("should accept elements with role of `menuitemradio` as focusable child", async () => {
-        const { element, connect, disconnect } = await fixture(FASTMenu());
+        const { element, connect, disconnect } = await fixture<FASTMenu>(menuName);
 
         const menuItem1 = document.createElement("div");
         const menuItem2 = document.createElement("div");
@@ -221,7 +232,7 @@ describe("Menu", () => {
         menuItem3.setAttribute("role", "menuitemradio");
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.querySelector("[role='menuitemradio']")?.getAttribute("tabindex")
@@ -240,7 +251,7 @@ describe("Menu", () => {
         hr.setAttribute("id", "hrid");
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(document.getElementById("hrid")?.className).to.not.contain("indent");
 
@@ -251,7 +262,7 @@ describe("Menu", () => {
         const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
 
@@ -269,7 +280,7 @@ describe("Menu", () => {
         element.insertBefore(anchor, menuItem2);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
 
@@ -281,10 +292,10 @@ describe("Menu", () => {
     it("should set class on menu items to 1 column", async () => {
         const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
 
-        (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem3 as FASTMenuItem).role = MenuItemRole.menuitemradio;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
 
@@ -298,14 +309,14 @@ describe("Menu", () => {
 
         const startSlot = document.createElement("div");
 
-        (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem3 as FASTMenuItem).role = MenuItemRole.menuitemradio;
 
         startSlot.setAttribute("slot", "start");
 
         menuItem3.appendChild(startSlot);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
 
@@ -317,17 +328,17 @@ describe("Menu", () => {
     it("should not navigate to hidden items", async () => {
         const { element, connect, disconnect, menuItem3, menuItem4 } = await setup();
 
-        const hiddenItem1 = document.createElement("fast-menu-item");
-        const hiddenItem2 = document.createElement("fast-menu-item");
+        const hiddenItem1 = document.createElement(menuItemName);
+        const hiddenItem2 = document.createElement(menuItemName);
 
-        (hiddenItem1 as MenuItem).setAttribute("hidden", "");
-        (hiddenItem2 as MenuItem).setAttribute("hidden", "");
+        (hiddenItem1 as FASTMenuItem).setAttribute("hidden", "");
+        (hiddenItem2 as FASTMenuItem).setAttribute("hidden", "");
 
         element.insertBefore(hiddenItem1, menuItem3);
         element.insertBefore(hiddenItem2, menuItem4);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
         (item1 as HTMLElement).focus();
@@ -366,14 +377,14 @@ describe("Menu", () => {
         const notMenuItem1 = document.createElement("div");
         const notMenuItem2 = document.createElement("div");
 
-        (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
-        (menuItem4 as MenuItem).role = MenuItemRole.menuitemcheckbox;
+        (menuItem3 as FASTMenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem4 as FASTMenuItem).role = MenuItemRole.menuitemcheckbox;
 
         element.insertBefore(notMenuItem1, menuItem3);
         element.insertBefore(notMenuItem2, menuItem4);
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
         (item1 as HTMLElement).focus();
@@ -409,12 +420,12 @@ describe("Menu", () => {
     it("should treat all checkbox menu items as individually selectable items", async () => {
         const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
 
-        (menuItem1 as MenuItem).role = MenuItemRole.menuitemcheckbox;
-        (menuItem2 as MenuItem).role = MenuItemRole.menuitemcheckbox;
-        (menuItem3 as MenuItem).role = MenuItemRole.menuitemcheckbox;
+        (menuItem1 as FASTMenuItem).role = MenuItemRole.menuitemcheckbox;
+        (menuItem2 as FASTMenuItem).role = MenuItemRole.menuitemcheckbox;
+        (menuItem3 as FASTMenuItem).role = MenuItemRole.menuitemcheckbox;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
         const item2 = element.querySelector('[id="id2"]');
@@ -425,25 +436,25 @@ describe("Menu", () => {
         expect(item3?.getAttribute("aria-checked")).to.equal(null);
 
         (item1 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("true");
         expect(item2?.getAttribute("aria-checked")).to.equal(null);
         expect(item3?.getAttribute("aria-checked")).to.equal(null);
 
         (item2 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("true");
         expect(item2?.getAttribute("aria-checked")).to.equal("true");
         expect(item3?.getAttribute("aria-checked")).to.equal(null);
 
         (item3 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("true");
         expect(item2?.getAttribute("aria-checked")).to.equal("true");
         expect(item3?.getAttribute("aria-checked")).to.equal("true");
 
         (item3 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("true");
         expect(item2?.getAttribute("aria-checked")).to.equal("true");
         expect(item3?.getAttribute("aria-checked")).to.equal("false");
@@ -456,12 +467,12 @@ describe("Menu", () => {
 
         element.removeChild(menuItem4);
 
-        (menuItem1 as MenuItem).role = MenuItemRole.menuitemradio;
-        (menuItem2 as MenuItem).role = MenuItemRole.menuitemradio;
-        (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem1 as FASTMenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem2 as FASTMenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem3 as FASTMenuItem).role = MenuItemRole.menuitemradio;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
         const item2 = element.querySelector('[id="id2"]');
@@ -472,19 +483,19 @@ describe("Menu", () => {
         expect(item3?.getAttribute("aria-checked")).to.equal(null);
 
         (item1 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("true");
         expect(item2?.getAttribute("aria-checked")).to.equal("false");
         expect(item3?.getAttribute("aria-checked")).to.equal("false");
 
         (item2 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("false");
         expect(item2?.getAttribute("aria-checked")).to.equal("true");
         expect(item3?.getAttribute("aria-checked")).to.equal("false");
 
         (item3 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("false");
         expect(item2?.getAttribute("aria-checked")).to.equal("false");
         expect(item3?.getAttribute("aria-checked")).to.equal("true");
@@ -495,10 +506,10 @@ describe("Menu", () => {
     it("should use elements with role='separator' to divide radio menu items into different radio groups ", async () => {
         const { element, connect, disconnect, menuItem1, menuItem2, menuItem3, menuItem4 } = await setup();
 
-        (menuItem1 as MenuItem).role = MenuItemRole.menuitemradio;
-        (menuItem2 as MenuItem).role = MenuItemRole.menuitemradio;
-        (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
-        (menuItem4 as MenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem1 as FASTMenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem2 as FASTMenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem3 as FASTMenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem4 as FASTMenuItem).role = MenuItemRole.menuitemradio;
 
         const separator = document.createElement("div");
 
@@ -507,7 +518,7 @@ describe("Menu", () => {
         separator.setAttribute("role", "separator");
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         const item1 = element.querySelector('[id="id1"]');
         const item2 = element.querySelector('[id="id2"]');
@@ -520,21 +531,21 @@ describe("Menu", () => {
         expect(item4?.getAttribute("aria-checked")).to.equal(null);
 
         (item1 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("true");
         expect(item2?.getAttribute("aria-checked")).to.equal("false");
         expect(item3?.getAttribute("aria-checked")).to.equal(null);
         expect(item4?.getAttribute("aria-checked")).to.equal(null);
 
         (item2 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("false");
         expect(item2?.getAttribute("aria-checked")).to.equal("true");
         expect(item3?.getAttribute("aria-checked")).to.equal(null);
         expect(item4?.getAttribute("aria-checked")).to.equal(null);
 
         (item3 as HTMLElement).click();
-        await DOM.nextUpdate();
+        await Updates.next();
         expect(item1?.getAttribute("aria-checked")).to.equal("false");
         expect(item2?.getAttribute("aria-checked")).to.equal("true");
         expect(item3?.getAttribute("aria-checked")).to.equal("true");

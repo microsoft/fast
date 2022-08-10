@@ -5,22 +5,27 @@ import {
     StartEndOptions,
 } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { FormAssociatedButton } from "./button.form-associated.js";
 
 /**
  * Button configuration options
  * @public
  */
-export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
+export type ButtonOptions = StartEndOptions;
 
 /**
  * A Button Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element }.
  *
+ * @slot start - Content which can be provided before the button content
+ * @slot end - Content which can be provided after the button content
+ * @slot - The default slot for button content
+ * @csspart control - The button element
+ * @csspart content - The element wrapping button content
+ *
  * @public
  */
-export class Button extends FormAssociatedButton {
+export class FASTButton extends FormAssociatedButton {
     /**
      * Determines if the element should receive document focus on page load.
      *
@@ -50,7 +55,7 @@ export class Button extends FormAssociatedButton {
      */
     @attr
     public formaction: string;
-    private formactionChanged(): void {
+    protected formactionChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.formAction = this.formaction;
         }
@@ -65,7 +70,7 @@ export class Button extends FormAssociatedButton {
      */
     @attr
     public formenctype: string;
-    private formenctypeChanged(): void {
+    protected formenctypeChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.formEnctype = this.formenctype;
         }
@@ -80,7 +85,7 @@ export class Button extends FormAssociatedButton {
      */
     @attr
     public formmethod: string;
-    private formmethodChanged(): void {
+    protected formmethodChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.formMethod = this.formmethod;
         }
@@ -95,7 +100,7 @@ export class Button extends FormAssociatedButton {
      */
     @attr({ mode: "boolean" })
     public formnovalidate: boolean;
-    private formnovalidateChanged(): void {
+    protected formnovalidateChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.formNoValidate = this.formnovalidate;
         }
@@ -110,7 +115,7 @@ export class Button extends FormAssociatedButton {
      */
     @attr
     public formtarget: "_self" | "_blank" | "_parent" | "_top";
-    private formtargetChanged(): void {
+    protected formtargetChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.formTarget = this.formtarget;
         }
@@ -125,7 +130,7 @@ export class Button extends FormAssociatedButton {
      */
     @attr
     public type: "submit" | "reset" | "button";
-    private typeChanged(
+    protected typeChanged(
         previous: "submit" | "reset" | "button" | void,
         next: "submit" | "reset" | "button"
     ): void {
@@ -256,7 +261,7 @@ export class DelegatesARIAButton {
      * HTML Attribute: aria-expanded
      */
     @attr({ attribute: "aria-expanded" })
-    public ariaExpanded: "true" | "false" | undefined;
+    public ariaExpanded: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
@@ -265,7 +270,7 @@ export class DelegatesARIAButton {
      * HTML Attribute: aria-pressed
      */
     @attr({ attribute: "aria-pressed" })
-    public ariaPressed: "true" | "false" | "mixed" | undefined;
+    public ariaPressed: "true" | "false" | "mixed" | string | null;
 }
 
 /**
@@ -283,5 +288,5 @@ applyMixins(DelegatesARIAButton, ARIAGlobalStatesAndProperties);
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Button extends StartEnd, DelegatesARIAButton {}
-applyMixins(Button, StartEnd, DelegatesARIAButton);
+export interface FASTButton extends StartEnd, DelegatesARIAButton {}
+applyMixins(FASTButton, StartEnd, DelegatesARIAButton);

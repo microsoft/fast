@@ -94,6 +94,37 @@
     grid-column: 2;
 }
 
+.community-subsection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.community-subsection h3 {
+    min-width: 270px;
+    text-align: center;
+    font-size: var(--type-ramp-plus-2-font-size);
+}
+
+.community-subsection .description {
+    text-align: center;
+    max-width: 500px;
+    margin-bottom: 2rem;
+}
+
+.community-subsection a {
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid white;
+    padding-bottom: 1px;
+}
+
+.community-subsection a:hover {
+    border-bottom-color: var(--accent-foreground-rest);
+}
+
 @media screen and (max-width: 899px) {
     .hero-section {
         margin-top: 150px;

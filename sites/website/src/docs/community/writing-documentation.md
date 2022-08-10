@@ -3,6 +3,10 @@ id: writing-documentation
 title: Writing documentation
 sidebar_label: Writing documentation
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/community/writing-documentation.md
+description: Thank you for your interest in contributing to our documentation. We put together this guide to help you get started.
+keywords:
+  - contributing
+  - writing documentation
 ---
 
 Thank you for your interest in contributing to our documentation. We put together this guide to help you get started, whether you want to fix minor spelling/grammar issues or have a more ambitious goal to write a new article.
@@ -31,7 +35,7 @@ The required fields are:
 * **sidebar_label**: The label displayed in the table of contents.
 * **custom_edit_url**: A URL where the document source can be edited.
 
-Beneath the YAML metadata block, the article's body is written with [GitHub-flavored Markdown syntax](https://github.github.com/gfm/). Since our documentation system will turn the `title` metadata into the article header, the content should begin with a short introductory paragraph, followed by an h2 header for each section of the document. You may use h3 headers beneath h2 headers, but avoid deeper sub-sections.
+Beneath the YAML metadata block, the article's body is written with [GitHub-flavored Markdown syntax](https://github.github.com/gfm/). Since our documentation system will turn the `title` metadata into the article header, the content should begin with a short introductory paragraph, followed by an h2 header for each section of the document. You may use h3 headers beneath h2 headers but avoid deeper sub-sections.
 
 In addition to [GitHub-flavored Markdown syntax](https://github.github.com/gfm/), you may use the admonitions `note`, `tip`, `important`, `caution`, and `warning`. Here's an example of the syntax for a `note`:
 
@@ -77,7 +81,7 @@ export class Statistics {
 
 ## Building and testing the docs
 
-To test documentation changes, clone and build the documentation as described in [the contributor guide](./contributor-guide). Next, open a terminal and navigate to `sites/website` and run the documentation site with `yarn start`. This will allow you to preview the site at `localhost:3000` and validate that your changes are rendering.
+To test documentation changes, clone and build the documentation as described in [the contributor guide](./contributor-guide.md). Next, open a terminal and navigate to `sites/website` and run the documentation site with `yarn start`. This will allow you to preview the site at `localhost:3000` and validate that your changes are rendering.
 
 ## Style guide
 

@@ -1,14 +1,14 @@
 import { expect } from "chai";
-import { BreadcrumbItem, breadcrumbItemTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
+import { FASTBreadcrumbItem, breadcrumbItemTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 
-const FASTBreadcrumbItem = BreadcrumbItem.compose({
-    baseName: "breadcrumb-item",
-    template
-})
+const BreadcrumbItem = FASTBreadcrumbItem.define({
+    name: uniqueElementName("breadcrumb-item"),
+    template: breadcrumbItemTemplate()
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTBreadcrumbItem());
+    const { element, connect, disconnect } = await fixture(BreadcrumbItem);
 
     return { element, connect, disconnect };
 }
@@ -40,12 +40,12 @@ describe("Breadcrumb item", () => {
         await disconnect();
     });
 
-    it("should NOT render `anchor` when `href` is not provided", async () => {
+    it("should render `anchor` when `href` is not provided", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
 
-        expect(element.shadowRoot?.querySelector("a")).to.equal(null);
+        expect(element.shadowRoot?.querySelector("a")).not.to.equal(null);
 
         await disconnect();
     });

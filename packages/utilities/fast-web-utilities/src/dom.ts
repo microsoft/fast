@@ -26,20 +26,14 @@ export function getDisplayedNodes(
 }
 
 /**
- * Gets the numeric key code associated with a keyboard event. This method is for use with DOM level 3 events
- * that still use the deprecated keyCode property.
- */
-export function getKeyCode(event: KeyboardEvent | null): number | null {
-    return event === null ? null : event.which || event.keyCode || event.charCode;
-}
-
-/**
  * Returns the nonce used in the page, if any.
  *
  * Based on https://github.com/cssinjs/jss/blob/master/packages/jss/src/DomRenderer.js
  */
 function getNonce(): string | null {
-    const node = document.querySelector('meta[property="csp-nonce"]');
+    const node = document.querySelector(
+        'meta[property="csp-nonce"], meta[name="csp-nonce"]'
+    );
     if (node) {
         return node.getAttribute("content");
     } else {

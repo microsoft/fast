@@ -2,20 +2,22 @@ const path = require("path");
 const { createInterface } = require("readline");
 const { exec } = require("child_process");
 const fs = require("fs-extra");
+const { getPackageJsonDir } = require("../../../build/get-package-json");
 
-const fastFoundation = path.dirname(
-    require.resolve("@microsoft/fast-foundation/package.json")
-);
-const fastElement = path.dirname(require.resolve("@microsoft/fast-element/package.json"));
-const fastComponents = path.dirname(
-    require.resolve("@microsoft/fast-components/package.json")
-);
+const fastFoundation = getPackageJsonDir("@microsoft/fast-foundation"); // path.dirname( require.resolve("@microsoft/fast-foundation/package.json"));
+const fastElement = getPackageJsonDir("@microsoft/fast-element"); // path.dirname(require.resolve("@microsoft/fast-element/package.json"));
+const fastComponents = getPackageJsonDir("@microsoft/fast-components", {
+    paths: [
+        path.resolve(
+            path.dirname(require.resolve("@microsoft/fast-website/package.json")),
+            "node_modules"
+        ),
+    ],
+});
 
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");
-
 const root = path.resolve(projectRoot, "../../");
-
 const outputDir = path.resolve(projectRoot, "docs");
 
 function findFiles(startPath, filter, paths = []) {
@@ -46,6 +48,7 @@ const packages = [
     "fast-element",
     "fast-foundation",
     "fast-components",
+    "fast-ssr",
 ];
 
 function identifyPackage(path) {
@@ -95,11 +98,8 @@ async function copyArticleMarkdown() {
         path.resolve(fastFoundation, "docs/integrations"),
         "integrations"
     );
-
     await moveMarkdownFiles(path.resolve(fastFoundation, "docs/tools"), "tools");
-
     await moveMarkdownFiles(path.resolve(fastElement, "docs/guide"), "fast-element");
-
     await moveMarkdownFiles(path.resolve(fastComponents, "docs/design"), "design");
 
     const componentDocs = findFiles(path.resolve(fastFoundation, "src"), "README.md");
@@ -124,6 +124,9 @@ async function copyArticleMarkdown() {
                 sidebar_label: "Code of Conduct",
                 custom_edit_url:
                     "https://github.com/microsoft/fast/edit/master/CODE_OF_CONDUCT.md",
+                description:
+                    "In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to making participation in our project and our community a harassment-free experience for everyone.",
+                keywords: ["code of conduct"],
             },
         },
         {
@@ -135,6 +138,21 @@ async function copyArticleMarkdown() {
                 sidebar_label: "Contributor Guide",
                 custom_edit_url:
                     "https://github.com/microsoft/fast/edit/master/CONTRIBUTING.md",
+                description: "Guide for contributing to FAST.",
+                keywords: ["contributing"],
+            },
+        },
+        {
+            src: path.resolve(root, "BRANCH_GUIDE.md"),
+            dest: path.resolve(outputDir, "community/branch-guide.md"),
+            metadata: {
+                id: "branch-guide",
+                title: "Branch Guide",
+                sidebar_label: "Branch Guide",
+                custom_edit_url:
+                    "https://github.com/microsoft/fast/blob/master/BRANCH_GUIDE.md",
+                desciption: "A branch guide for the FAST repository.",
+                keywords: ["branch guide"],
             },
         },
         {
@@ -145,6 +163,8 @@ async function copyArticleMarkdown() {
                 title: "License",
                 sidebar_label: "License",
                 custom_edit_url: "https://github.com/microsoft/fast/edit/master/LICENSE",
+                description: "MIT License",
+                keywords: ["mit license"],
             },
         },
         {
@@ -156,10 +176,16 @@ async function copyArticleMarkdown() {
                 sidebar_label: "Security",
                 custom_edit_url:
                     "https://github.com/microsoft/fast/edit/master/SECURITY.md",
+                description:
+                    "Microsoft takes the security of our software products and services seriously, which includes all source code repositories managed through our GitHub organizations.",
+                keywords: ["security"],
             },
         },
         {
-            src: require.resolve("@microsoft/fast-element/docs/ACKNOWLEDGEMENTS.md"),
+            src: path.resolve(
+                getPackageJsonDir("@microsoft/fast-element"),
+                "./docs/ACKNOWLEDGEMENTS.md"
+            ), // require.resolve("@microsoft/fast-element/docs/ACKNOWLEDGEMENTS.md"),
             dest: path.resolve(outputDir, "resources/acknowledgements.md"),
             metadata: {
                 id: "acknowledgements",
@@ -167,10 +193,16 @@ async function copyArticleMarkdown() {
                 sidebar_label: "Acknowledgements",
                 custom_edit_url:
                     "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
+                description:
+                    "There are many great open source projects that have inspired us and enabled us to build FAST.",
+                keywords: ["acknowlegements"],
             },
         },
         {
-            src: require.resolve("@microsoft/fast-element/README.md"),
+            src: path.resolve(
+                getPackageJsonDir("@microsoft/fast-element"),
+                "./README.md"
+            ),
             dest: path.resolve(outputDir, "fast-element/getting-started.md"),
             metadata: {
                 id: "getting-started",
@@ -178,19 +210,11 @@ async function copyArticleMarkdown() {
                 sidebar_label: "Getting Started",
                 custom_edit_url:
                     "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/README.md",
+                description:
+                    "The fast-element library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.",
+                keywords: ["fast-element", "web components"],
             },
         },
-        // {
-        //     src: path.resolve(root, "examples/site-rebrand-tutorial/README.md"),
-        //     dest: path.resolve(outputDir, "tutorials/site-rebrand.md"),
-        //     metadata: {
-        //         id: "site-rebrand",
-        //         title: "Using FAST to Rebrand an Existing Website",
-        //         sidebar_label: "Rebranding an Existing Site",
-        //         custom_edit_url:
-        //             "https://github.com/microsoft/fast/blob/master/examples/site-rebrand-tutorial/README.md",
-        //     },
-        // },
     ];
 
     for (const file of mergeDocs) {
@@ -235,6 +259,7 @@ async function copyArticleMarkdown() {
                 `title: ${file.metadata.title}`,
                 `sidebar_label: ${file.metadata.sidebar_label}`,
                 `custom_edit_url: ${file.metadata.custom_edit_url}`,
+                `description: ${file.metadata.description}`,
                 "---",
             ];
 
@@ -260,7 +285,11 @@ async function copyArticleMarkdown() {
 async function copyAPI() {
     for (const pkg of packages) {
         await safeCopy(
-            require.resolve(`@microsoft/${pkg}/dist/${pkg}.api.json`),
+            path.resolve(
+                getPackageJsonDir(`@microsoft/${pkg}`),
+                `./dist/${pkg}.api.json`
+            ),
+            // require.resolve(`@microsoft/${pkg}/dist/${pkg}.api.json`),
             `./src/docs/api/${pkg}.api.json`
         );
     }
@@ -353,54 +382,8 @@ async function buildAPIMarkdown() {
     }
 }
 
-async function copyImages() {
-    // const images = [
-    //     {
-    //         src: path.resolve(root, "examples/site-rebrand-tutorial/website.png"),
-    //         dest: path.resolve(
-    //             staticOutputDir,
-    //             "examples/site-rebrand-tutorial/website.png"
-    //         ),
-    //     },
-    //     {
-    //         src: path.resolve(root, "examples/site-rebrand-tutorial/site-structure.png"),
-    //         dest: path.resolve(
-    //             staticOutputDir,
-    //             "examples/site-rebrand-tutorial/site-structure.png"
-    //         ),
-    //     },
-    //     {
-    //         src: path.resolve(
-    //             root,
-    //             "examples/site-rebrand-tutorial/example-controls.png"
-    //         ),
-    //         dest: path.resolve(
-    //             staticOutputDir,
-    //             "examples/site-rebrand-tutorial/example-controls.png"
-    //         ),
-    //     },
-    //     {
-    //         src: path.resolve(root, "examples/site-rebrand-tutorial/side-by-side.png"),
-    //         dest: path.resolve(
-    //             staticOutputDir,
-    //             "examples/site-rebrand-tutorial/side-by-side.png"
-    //         ),
-    //     },
-    //     {
-    //         src: path.resolve(root, "examples/site-rebrand-tutorial/design-panel.png"),
-    //         dest: path.resolve(
-    //             staticOutputDir,
-    //             "examples/site-rebrand-tutorial/design-panel.png"
-    //         ),
-    //     },
-    // ];
-    // for (const img of images) {
-    //     await safeCopy(img.src, img.dest);
-    // }
-}
-
 async function main() {
-    await Promise.all([copyArticleMarkdown(), copyImages(), buildAPIMarkdown()]);
+    await Promise.all([copyArticleMarkdown(), buildAPIMarkdown()]);
 }
 
 main();

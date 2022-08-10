@@ -5,7 +5,7 @@ import { RecognizedRoute } from "./recognizer.js";
 import { Router } from "./router.js";
 
 /**
- * @alpha
+ * @beta
  */
 export interface RoutingEventSink {
     onUnhandledNavigationMessage(router: Router, message: NavigationMessage): void;
@@ -24,7 +24,7 @@ export interface RoutingEventSink {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class DefaultRoutingEventSink implements RoutingEventSink {
     onUnhandledNavigationMessage(router: Router, message: NavigationMessage): void {}

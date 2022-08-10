@@ -1,18 +1,12 @@
 import {
     Constructable,
     Controller,
-    DOM,
     ElementStyles,
     FASTElement,
     observable,
     Observable,
+    Updates,
 } from "@microsoft/fast-element";
-
-export const defaultElement = document.createElement("div");
-
-function isFastElement(element: HTMLElement | FASTElement): element is FASTElement {
-    return element instanceof FASTElement;
-}
 
 interface PropertyTarget {
     setProperty(name: string, value: string | null): void;
@@ -23,10 +17,10 @@ abstract class QueuedStyleSheetTarget implements PropertyTarget {
     protected abstract target: PropertyTarget;
 
     public setProperty(name: string, value: string) {
-        DOM.queueUpdate(() => this.target.setProperty(name, value));
+        Updates.enqueue(() => this.target.setProperty(name, value));
     }
     public removeProperty(name: string) {
-        DOM.queueUpdate(() => this.target.removeProperty(name));
+        Updates.enqueue(() => this.target.removeProperty(name));
     }
 }
 /**
@@ -34,12 +28,12 @@ abstract class QueuedStyleSheetTarget implements PropertyTarget {
  */
 class ConstructableStyleSheetTarget extends QueuedStyleSheetTarget {
     protected target: PropertyTarget;
-    constructor(source: HTMLElement & FASTElement) {
+    constructor(source: FASTElement) {
         super();
 
         const sheet = new CSSStyleSheet();
         this.target = (sheet.cssRules[sheet.insertRule(":host{}")] as CSSStyleRule).style;
-        source.$fastController.addStyles(ElementStyles.create([sheet]));
+        source.$fastController.addStyles(new ElementStyles([sheet]));
     }
 }
 
@@ -97,7 +91,7 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
         }
     }
 
-    constructor(target: HTMLElement & FASTElement) {
+    constructor(target: FASTElement) {
         const controller = target.$fastController;
         this.style = document.createElement("style") as HTMLStyleElement;
 
@@ -110,7 +104,7 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
     public setProperty(name: string, value: string) {
         this.store.set(name, value);
 
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             if (this.target !== null) {
                 this.target.setProperty(name, value);
             }
@@ -120,7 +114,7 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
     public removeProperty(name: string) {
         this.store.delete(name);
 
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             if (this.target !== null) {
                 this.target.removeProperty(name);
             }
@@ -149,24 +143,6 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
 }
 
 /**
- * Handles setting properties for a normal HTMLElement
- */
-class ElementStyleSheetTarget implements PropertyTarget {
-    private target: PropertyTarget;
-    constructor(source: HTMLElement) {
-        this.target = source.style;
-    }
-
-    setProperty(name: string, value: any) {
-        DOM.queueUpdate(() => this.target.setProperty(name, value));
-    }
-
-    removeProperty(name: string) {
-        DOM.queueUpdate(() => this.target.removeProperty(name));
-    }
-}
-
-/**
  * Controls emission for default values. This control is capable
  * of emitting to multiple {@link PropertyTarget | PropertyTargets},
  * and only emits if it has at least one root.
@@ -174,70 +150,55 @@ class ElementStyleSheetTarget implements PropertyTarget {
  * @internal
  */
 export class RootStyleSheetTarget implements PropertyTarget {
-    private static roots = new Set<HTMLElement | Document>();
+    private static roots = new Set<FASTElement | Document>();
     private static properties: Record<string, string> = {};
     public setProperty(name: string, value: any): void {
         RootStyleSheetTarget.properties[name] = value;
 
         for (const target of RootStyleSheetTarget.roots.values()) {
-            PropertyTargetManager.getOrCreate(
-                RootStyleSheetTarget.normalizeRoot(target)
-            ).setProperty(name, value);
+            PropertyTargetManager.getOrCreate(target).setProperty(name, value);
         }
     }
 
     public removeProperty(name: string): void {
         delete RootStyleSheetTarget.properties[name];
         for (const target of RootStyleSheetTarget.roots.values()) {
-            PropertyTargetManager.getOrCreate(
-                RootStyleSheetTarget.normalizeRoot(target)
-            ).removeProperty(name);
+            PropertyTargetManager.getOrCreate(target).removeProperty(name);
         }
     }
 
-    public static registerRoot(root: HTMLElement | Document) {
+    public static registerRoot(root: FASTElement | Document) {
         const { roots } = RootStyleSheetTarget;
         if (!roots.has(root)) {
             roots.add(root);
-            const target = PropertyTargetManager.getOrCreate(this.normalizeRoot(root));
+            const target = PropertyTargetManager.getOrCreate(root);
             for (const key in RootStyleSheetTarget.properties) {
                 target.setProperty(key, RootStyleSheetTarget.properties[key]);
             }
         }
     }
 
-    public static unregisterRoot(root: HTMLElement | Document) {
+    public static unregisterRoot(root: FASTElement | Document) {
         const { roots } = RootStyleSheetTarget;
         if (roots.has(root)) {
             roots.delete(root);
 
-            const target = PropertyTargetManager.getOrCreate(
-                RootStyleSheetTarget.normalizeRoot(root)
-            );
+            const target = PropertyTargetManager.getOrCreate(root);
             for (const key in RootStyleSheetTarget.properties) {
                 target.removeProperty(key);
             }
         }
     }
-
-    /**
-     * Returns the document when provided the default element,
-     * otherwise is a no-op
-     * @param root - the root to normalize
-     */
-    private static normalizeRoot(root: HTMLElement | Document) {
-        return root === defaultElement ? document : root;
-    }
 }
 
 // Caches PropertyTarget instances
 const propertyTargetCache: WeakMap<
-    HTMLElement | Document,
+    FASTElement | Document,
     PropertyTarget
 > = new WeakMap();
 // Use Constructable StyleSheets for FAST elements when supported, otherwise use
 // HTMLStyleElement instances
-const propertyTargetCtor: Constructable<PropertyTarget> = DOM.supportsAdoptedStyleSheets
+const propertyTargetCtor: Constructable<PropertyTarget> = ElementStyles.supportsAdoptedStyleSheets
     ? ConstructableStyleSheetTarget
     : StyleElementStyleSheetTarget;
 
@@ -247,7 +208,7 @@ const propertyTargetCtor: Constructable<PropertyTarget> = DOM.supportsAdoptedSty
  * @internal
  */
 export const PropertyTargetManager = Object.freeze({
-    getOrCreate(source: HTMLElement | Document): PropertyTarget {
+    getOrCreate(source: FASTElement | Document): PropertyTarget {
         if (propertyTargetCache.has(source)) {
             /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
             return propertyTargetCache.get(source)!;
@@ -255,16 +216,12 @@ export const PropertyTargetManager = Object.freeze({
 
         let target: PropertyTarget;
 
-        if (source === defaultElement) {
-            target = new RootStyleSheetTarget();
-        } else if (source instanceof Document) {
-            target = DOM.supportsAdoptedStyleSheets
+        if (source instanceof Document) {
+            target = ElementStyles.supportsAdoptedStyleSheets
                 ? new DocumentStyleSheetTarget()
                 : new HeadStyleElementStyleSheetTarget();
-        } else if (isFastElement(source as HTMLElement)) {
-            target = new propertyTargetCtor(source);
         } else {
-            target = new ElementStyleSheetTarget(source as HTMLElement);
+            target = new propertyTargetCtor(source);
         }
 
         propertyTargetCache.set(source, target);

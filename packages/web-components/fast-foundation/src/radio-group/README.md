@@ -3,6 +3,7 @@ id: radio-group
 title: fast-radio-group
 sidebar_label: radio-group
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/radio-group/README.md
+description: fast-radio-group is a web component implementation of a radio-group.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#radiobutton):
@@ -54,36 +55,40 @@ export const myRadioGroup = RadioGroup.compose({
 
 
 
-### class: `RadioGroup`
+### class: `FASTRadioGroup`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name            | Privacy | Type                                        | Default | Description                                                                                                                                                                                      | Inherited From    |
-| --------------- | ------- | ------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
-| `readOnly`      | public  | `boolean`                                   |         | When true, the child radios will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                   |
-| `disabled`      | public  | `boolean`                                   |         | Disables the radio group and child radios.                                                                                                                                                       |                   |
-| `name`          | public  | `string`                                    |         | The name of the radio group. Setting this value will set the name value for all child radio elements.                                                                                            |                   |
-| `value`         | public  | `string`                                    |         | The value of the checked radio                                                                                                                                                                   |                   |
-| `orientation`   | public  | `Orientation or "horizontal" or "vertical"` |         | The orientation of the group                                                                                                                                                                     |                   |
-| `childItems`    | public  | `HTMLElement[]`                             |         |                                                                                                                                                                                                  |                   |
-| `$presentation` | public  | `ComponentPresentation or null`             |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                          | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null`       |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                       | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`             |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.              | FoundationElement |
+| Name          | Privacy | Type                                        | Default | Description                                                                                                                                                                                      | Inherited From |
+| ------------- | ------- | ------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
+| `readOnly`    | public  | `boolean`                                   |         | When true, the child radios will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                |
+| `disabled`    | public  | `boolean`                                   |         | Disables the radio group and child radios.                                                                                                                                                       |                |
+| `name`        | public  | `string`                                    |         | The name of the radio group. Setting this value will set the name value for all child radio elements.                                                                                            |                |
+| `value`       | public  | `string`                                    |         | The value of the checked radio                                                                                                                                                                   |                |
+| `orientation` | public  | `Orientation or "horizontal" or "vertical"` |         | The orientation of the group                                                                                                                                                                     |                |
+| `childItems`  | public  | `HTMLElement[]`                             |         |                                                                                                                                                                                                  |                |
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `nameChanged`     | protected |             |            | `void` |                   |
-| `valueChanged`    | protected |             |            | `void` |                   |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name                         | Privacy   | Description | Parameters                                   | Return | Inherited From |
+| ---------------------------- | --------- | ----------- | -------------------------------------------- | ------ | -------------- |
+| `readOnlyChanged`            | protected |             |                                              | `void` |                |
+| `disabledChanged`            | protected |             |                                              | `void` |                |
+| `nameChanged`                | protected |             |                                              | `void` |                |
+| `valueChanged`               | protected |             |                                              | `void` |                |
+| `slottedRadioButtonsChanged` | protected |             | `oldValue: unknown, newValue: HTMLElement[]` | `void` |                |
+
+#### Events
+
+| Name     | Type | Description                                          | Inherited From |
+| -------- | ---- | ---------------------------------------------------- | -------------- |
+| `change` |      | Fires a custom 'change' event when the value changes |                |
 
 #### Attributes
 
@@ -94,6 +99,19 @@ export const myRadioGroup = RadioGroup.compose({
 | `name`        | name        |                |
 | `value`       | value       |                |
 | `orientation` | orientation |                |
+
+#### CSS Parts
+
+| Name                 | Description                                      |
+| -------------------- | ------------------------------------------------ |
+| `positioning-region` | The positioning region for laying out the radios |
+
+#### Slots
+
+| Name    | Description                        |
+| ------- | ---------------------------------- |
+| `label` | The slot for the label             |
+|         | The default slot for radio buttons |
 
 <hr/>
 

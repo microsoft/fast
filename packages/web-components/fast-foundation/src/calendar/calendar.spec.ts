@@ -1,50 +1,60 @@
-import { customElement, DOM, html } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../test-utilities/fixture";
-import { Calendar, calendarTemplate } from "./index";
-import { DateFormatter } from "./date-formatter";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { FASTCalendar, calendarTemplate } from "./index.js";
+import { DateFormatter } from "./date-formatter.js";
 import {
     dataGridTemplate,
-    DataGrid,
-    DataGridCell,
-    DataGridRow,
+    FASTDataGrid,
+    FASTDataGridCell,
+    FASTDataGridRow,
     dataGridRowTemplate,
     dataGridCellTemplate
-} from "../data-grid/index";
+} from "../data-grid/index.js";
 
 
-const FASTDataGridCell = DataGridCell.compose({
-    baseName: "data-grid-cell",
-    template: dataGridCellTemplate
+const dataGridCellName = uniqueElementName();
+FASTDataGridCell.define({
+    name: dataGridCellName,
+    template: dataGridCellTemplate()
 });
 
-const FASTDataGridRow = DataGridRow.compose({
-    baseName: "data-grid-row",
-    template: dataGridRowTemplate
+const dataGridRowName = uniqueElementName();
+FASTDataGridRow.define({
+    name: dataGridRowName,
+    template: dataGridRowTemplate({
+        dataGridCell: dataGridCellName
+    })
 });
 
-const FASTDataGrid = DataGrid.compose({
-    baseName: "data-grid",
-    template: dataGridTemplate
+const dataGridName = uniqueElementName();
+FASTDataGrid.compose({
+    name: dataGridName,
+    template: dataGridTemplate({
+        dataGridRow: dataGridRowName
+    })
 });
 
 /**
- * initialization of the custome <fast-calendar/> element
+ * initialization of the custom <fast-calendar/> element
  */
-const FASTCalendar = Calendar.compose({
-    baseName: "calendar",
-    template: calendarTemplate
-})
+const calendarName = uniqueElementName();
+FASTCalendar.define({
+    name: calendarName,
+    template: calendarTemplate({
+        dataGrid: dataGridName,
+        dataGridRow: dataGridRowName,
+        dataGridCell: dataGridCellName
+    })
+});
 
 async function setup(props?: {}) {
     const { document, element, connect, disconnect }: {
         document: Document,
-        element: HTMLElement & Calendar,
+        element: HTMLElement & FASTCalendar,
         connect: () => void,
         disconnect: () => void
-    } = await fixture(
-        [FASTCalendar(), FASTDataGrid(), FASTDataGridRow(), FASTDataGridCell()]
-    );
+    } = await fixture<FASTCalendar>(calendarName);
 
     element.locale = "en-US";
 
@@ -54,7 +64,7 @@ async function setup(props?: {}) {
 
     await connect();
 
-    await DOM.nextUpdate();
+    await Updates.next();
 
     return { document, element, connect, disconnect };
 }
@@ -217,8 +227,8 @@ describe("Calendar", () => {
             const today = new Date();
             const formatter = new DateFormatter();
 
-            expect((element as Calendar).month).to.equal(today.getMonth() + 1 );
-            expect((element as Calendar).year).to.equal(today.getFullYear());
+            expect((element as FASTCalendar).month).to.equal(today.getMonth() + 1 );
+            expect((element as FASTCalendar).year).to.equal(today.getFullYear());
 
             await disconnect();
         });
@@ -226,7 +236,7 @@ describe("Calendar", () => {
         it("Should return 5 weeks of days for August 2021", async () => {
             const { element, disconnect } = await setup({month: 8, year: 2021});
 
-            expect((element as Calendar).getDays().length).to.equal(5);
+            expect((element as FASTCalendar).getDays().length).to.equal(5);
             expect(element.shadowRoot?.querySelectorAll("[part='week']").length).to.equal(5);
             expect(element.shadowRoot?.querySelectorAll("[part='day']").length).to.equal(35);
 
@@ -236,7 +246,7 @@ describe("Calendar", () => {
         it("Should return 6 weeks of days for August 2021 when min-weeks is set to 6", async () => {
             const { element, disconnect } = await setup({month: 8, year: 2021, 'min-weeks': 6});
 
-            expect((element as Calendar).getDays().length).to.equal(6);
+            expect((element as FASTCalendar).getDays().length).to.equal(6);
             expect(element.shadowRoot?.querySelectorAll("[part='week']").length).to.equal(6);
             expect(element.shadowRoot?.querySelectorAll("[part='day']").length).to.equal(42);
 
@@ -251,7 +261,7 @@ describe("Calendar", () => {
             const month = today.getMonth() + 1;
             const year = today.getFullYear();
             const dateString = `${month}-${day}-${year}`;
-            const classNames = (element as Calendar).getDayClassNames({day, month, year}, dateString);
+            const classNames = (element as FASTCalendar).getDayClassNames({day, month, year}, dateString);
 
             expect(classNames.indexOf("today") >= 0).to.equal(true);
             expect(element.shadowRoot?.querySelector(".today .date")?.innerHTML?.trim()).to.equal(day.toString());
@@ -264,8 +274,8 @@ describe("Calendar", () => {
         it("Should be 31 days in January", async () => {
             const { element, disconnect } = await setup({month: 1, year: 2021});
 
-            await DOM.nextUpdate();
-            const info = (element as Calendar).getMonthInfo();
+            await Updates.next();
+            const info = (element as FASTCalendar).getMonthInfo();
             expect(info.length).to.equal(31);
 
             const daysTotal = element.shadowRoot?.querySelectorAll(".day");
@@ -278,7 +288,7 @@ describe("Calendar", () => {
         it("Should be 28 days in February", async () => {
             const { element, disconnect } = await setup({month: 2, year: 2021});
 
-            const info = (element as Calendar).getMonthInfo();
+            const info = (element as FASTCalendar).getMonthInfo();
             expect(info.length).to.equal(28);
 
             const daysTotal = element.shadowRoot?.querySelectorAll(".day");
@@ -291,7 +301,7 @@ describe("Calendar", () => {
         it("Should be 29 days in February for a leap year", async () => {
             const { element, disconnect } = await setup({month: 2, year: 2020});
 
-            const info = (element as Calendar).getMonthInfo();
+            const info = (element as FASTCalendar).getMonthInfo();
             expect(info.length).to.equal(29);
 
             const daysTotal = element.shadowRoot?.querySelectorAll(".day");
@@ -304,7 +314,7 @@ describe("Calendar", () => {
         it("Should start on Friday for January 2021", async () => {
             const { element, disconnect } = await setup({month: 1, year: 2021});
 
-            const info = (element as Calendar).getMonthInfo();
+            const info = (element as FASTCalendar).getMonthInfo();
             expect(info.start).to.equal(5);
 
             const days = element.shadowRoot?.querySelectorAll(".date");
@@ -316,7 +326,7 @@ describe("Calendar", () => {
         it("Should start on Monday for February 2021", async () => {
             const { element, disconnect } = await setup({month: 2, year: 2021});
 
-            const info = (element as Calendar).getMonthInfo();
+            const info = (element as FASTCalendar).getMonthInfo();
             expect(info.start).to.equal(1);
 
             const days = element.shadowRoot?.querySelectorAll(".date");
@@ -330,7 +340,7 @@ describe("Calendar", () => {
         it("Should return January for month 1", async () => {
             const { element, disconnect } = await setup({month: 1, year: 2021});
 
-            const month = (element as Calendar).dateFormatter.getMonth((element as Calendar).month);
+            const month = (element as FASTCalendar).dateFormatter.getMonth((element as FASTCalendar).month);
             expect(month).to.equal("January");
 
             await disconnect();
@@ -339,7 +349,7 @@ describe("Calendar", () => {
         it("Should return Jan for month 1 and short format", async () => {
             const { element, disconnect } = await setup({month: 1, year: 2021, 'month-format': 'short'});
 
-            const month = (element as Calendar).dateFormatter.getMonth((element as Calendar).month);
+            const month = (element as FASTCalendar).dateFormatter.getMonth((element as FASTCalendar).month);
             expect(month).to.equal("Jan");
 
             await disconnect();
@@ -348,7 +358,7 @@ describe("Calendar", () => {
         it("Should return Mon for Monday by default", async () => {
             const { element, disconnect } = await setup({month: 1, year: 2021});
 
-            const weekdays = (element as Calendar).dateFormatter.getWeekdays();
+            const weekdays = (element as FASTCalendar).dateFormatter.getWeekdays();
             expect(weekdays[1]).to.equal("Mon");
 
             const weekdayLabel = element.shadowRoot?.querySelectorAll(".week-day")[1].innerHTML?.trim();
@@ -360,7 +370,7 @@ describe("Calendar", () => {
         it("Should return Monday weekday for long format", async () => {
             const { element, disconnect } = await setup({month: 1, year: 2021, 'weekday-format': 'long'});
 
-            const weekdays = (element as Calendar).dateFormatter.getWeekdays();
+            const weekdays = (element as FASTCalendar).dateFormatter.getWeekdays();
             expect(weekdays[1]).to.equal("Monday");
 
             const weekdayLabel = element.shadowRoot?.querySelectorAll(".week-day")[1].innerHTML?.trim();
@@ -372,7 +382,7 @@ describe("Calendar", () => {
         it("Should return M for Monday for narrow format", async () => {
             const { element, disconnect } = await setup({month: 1, year: 2021, 'weekday-format': 'narrow'});
 
-            const weekdays = (element as Calendar).dateFormatter.getWeekdays();
+            const weekdays = (element as FASTCalendar).dateFormatter.getWeekdays();
             expect(weekdays[1]).to.equal("M");
 
             const weekdayLabel = element.shadowRoot?.querySelectorAll(".week-day")[1].innerHTML?.trim();
@@ -386,7 +396,7 @@ describe("Calendar", () => {
         it("Should be mai for the month May in French", async () => {
             const { element, disconnect } = await setup({month: 5, year: 2021, locale: 'fr-FR'});
 
-            const month = (element as Calendar).dateFormatter.getMonth((element as Calendar).month);
+            const month = (element as FASTCalendar).dateFormatter.getMonth((element as FASTCalendar).month);
             expect(month).to.equal("mai");
 
             await disconnect();
@@ -396,7 +406,7 @@ describe("Calendar", () => {
             const { element, disconnect } = await setup({month: 5, year: 2021, locale: 'fr-FR'});
 
             const frenchWeekdays = [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ];
-            const weekdays = (element as Calendar).dateFormatter.getWeekdays();
+            const weekdays = (element as FASTCalendar).dateFormatter.getWeekdays();
             const matchedDays = weekdays.filter((day, index) => day === frenchWeekdays[index]);
             expect(matchedDays.length).to.equal(7);
 
@@ -411,7 +421,7 @@ describe("Calendar", () => {
         it("Should be 1943 for the year 2021 for the Hindu calendar", async () => {
             const { element, disconnect } = await setup({month: 6, year: 2021, locale: 'hi-IN-u-ca-indian'});
 
-            const year = (element as Calendar).dateFormatter.getYear((element as Calendar).year);
+            const year = (element as FASTCalendar).dateFormatter.getYear((element as FASTCalendar).year);
             expect(parseInt(year)).to.equal(1942);
 
             await disconnect();
@@ -420,7 +430,7 @@ describe("Calendar", () => {
         it("Should be 2564 for the year 2021 for the buddhist calendar", async () => {
             const { element, disconnect } = await setup({month: 6, year: 2021, locale: 'th-TH-u-ca-buddhist'});
 
-            const year = (element as Calendar).dateFormatter.getYear((element as Calendar).year);
+            const year = (element as FASTCalendar).dateFormatter.getYear((element as FASTCalendar).year);
             const match = year.match(/\d+/);
             expect(match && parseInt(match[0])).to.equal(2564);
 
@@ -453,8 +463,8 @@ describe("Calendar", () => {
         it("Should not show date as disabled by default", async () => {
             const { element, disconnect } = await setup({month: 5, year: 2021});
 
-            expect((element as Calendar).dateInString(`5-7-2021`, (element as Calendar).disabledDates)).to.equal(false);
-            expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021}).indexOf("disabled") < 0).to.equal(true);
+            expect((element as FASTCalendar).dateInString(`5-7-2021`, (element as FASTCalendar).disabledDates)).to.equal(false);
+            expect((element as FASTCalendar).getDayClassNames({month: 5, day: 7, year: 2021}).indexOf("disabled") < 0).to.equal(true);
 
             const disabled = element.shadowRoot?.querySelectorAll(".disabled");
             expect(disabled && disabled.length).to.equal(0);
@@ -465,8 +475,8 @@ describe("Calendar", () => {
         it("Should show date as disabled when added to disabled-dates attribute", async () => {
             const { element, disconnect } = await setup({month: 5, year: 2021, 'disabled-dates': '5-6-2021,5-7-2021,5-8-2021'});
 
-            expect((element as Calendar).dateInString("5-7-2021", (element as Calendar).disabledDates)).to.equal(true);
-            expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021, disabled: true}).indexOf("disabled") >= 0).to.equal(true);
+            expect((element as FASTCalendar).dateInString("5-7-2021", (element as FASTCalendar).disabledDates)).to.equal(true);
+            expect((element as FASTCalendar).getDayClassNames({month: 5, day: 7, year: 2021, disabled: true}).indexOf("disabled") >= 0).to.equal(true);
 
             const disabled = element.shadowRoot?.querySelectorAll(".disabled");
             expect(disabled && disabled.length).to.equal(3);
@@ -477,8 +487,8 @@ describe("Calendar", () => {
         it("Should not show date as selected by default", async () => {
             const { element, disconnect } = await setup({month: 5, year: 2021});
 
-            expect((element as Calendar).dateInString(`5-7-2021`, (element as Calendar).selectedDates)).to.equal(false);
-            expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021}).indexOf("selected") < 0).to.equal(true);
+            expect((element as FASTCalendar).dateInString(`5-7-2021`, (element as FASTCalendar).selectedDates)).to.equal(false);
+            expect((element as FASTCalendar).getDayClassNames({month: 5, day: 7, year: 2021}).indexOf("selected") < 0).to.equal(true);
 
             const selected = element.shadowRoot?.querySelectorAll(".selected");
             expect(selected && selected.length).to.equal(0);
@@ -489,8 +499,8 @@ describe("Calendar", () => {
         it("Should show date as selected when added to selected-dates attribute", async () => {
             const { element, disconnect } = await setup({month: 5, year: 2021, 'selected-dates': '5-6-2021,5-7-2021,5-8-2021'});
 
-            expect((element as Calendar).dateInString(`5-7-2021`, (element as Calendar).selectedDates)).to.equal(true);
-            expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021, selected: true}).indexOf("selected") >= 0).to.equal(true);
+            expect((element as FASTCalendar).dateInString(`5-7-2021`, (element as FASTCalendar).selectedDates)).to.equal(true);
+            expect((element as FASTCalendar).getDayClassNames({month: 5, day: 7, year: 2021, selected: true}).indexOf("selected") >= 0).to.equal(true);
 
             const selected = element.shadowRoot?.querySelectorAll(".selected");
             expect(selected && selected.length).to.equal(3);
