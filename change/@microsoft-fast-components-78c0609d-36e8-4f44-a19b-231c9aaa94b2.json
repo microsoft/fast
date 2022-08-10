@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "feat: add date-picker component",
-  "packageName": "@microsoft/fast-components",
-  "email": "robarb@microsoft.com",
-  "dependentChangeType": "patch"
-}
