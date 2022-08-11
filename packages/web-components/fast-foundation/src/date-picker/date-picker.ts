@@ -1,10 +1,4 @@
-import {
-    attr,
-    booleanConverter,
-    DOM,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, DOM, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowLeft,
@@ -14,47 +8,24 @@ import {
     keyEscape,
     keySpace,
 } from "@microsoft/fast-web-utilities";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element/foundation-element.js";
-import type { ListboxElement } from "../listbox/listbox.element.js";
+import type { FASTListboxElement, FASTTextField } from "@microsoft/fast-foundation";
 import {
     DateFormatter,
     DayFormat,
     MonthFormat,
     WeekdayFormat,
     YearFormat,
-} from "../calendar/date-formatter.js";
-import type { TextField } from "../text-field/text-field.js";
+} from "@microsoft/fast-foundation";
 import { FormAssociatedDatePicker } from "./date-picker.form-associated.js";
 
 /**
  * Date picker options
  * @alpha
  */
-export type DatePickerOptions = FoundationElementDefinition & {
-    calendarIcon?:
-        | FoundationElementTemplate<
-              SyntheticViewTemplate<any, DatePicker>,
-              DatePickerOptions
-          >
-        | SyntheticViewTemplate
-        | string;
-    previousIcon?:
-        | FoundationElementTemplate<
-              SyntheticViewTemplate<any, DatePicker>,
-              DatePickerOptions
-          >
-        | SyntheticViewTemplate
-        | string;
-    nextIcon?:
-        | FoundationElementTemplate<
-              SyntheticViewTemplate<any, DatePicker>,
-              DatePickerOptions
-          >
-        | SyntheticViewTemplate
-        | string;
+export type DatePickerOptions = {
+    calendarIcon?: SyntheticViewTemplate | string;
+    previousIcon?: SyntheticViewTemplate | string;
+    nextIcon?: SyntheticViewTemplate | string;
 };
 
 /**
@@ -75,7 +46,7 @@ export type DateData = {
  * A Date picker component
  * @alpha
  */
-export class DatePicker extends FormAssociatedDatePicker {
+export class FASTDatePicker extends FormAssociatedDatePicker {
     /**
      * Date picker type
      * @public
@@ -87,20 +58,13 @@ export class DatePicker extends FormAssociatedDatePicker {
      * Ensures that the value is valid for the updated type
      * @param previous - previous type
      * @param next - updated type
-     * @public
+     * @internal
      */
-    public typeChanged(previous: string, next: string): void {
+    private typeChanged(previous: string, next: string): void {
         if (next && this.value) {
             this.valueChanged("", this.value);
         }
     }
-
-    /**
-     * Value for the date-picker
-     * @public
-     */
-    @attr
-    public value: string;
 
     /**
      * Validates that the value is a valid date
@@ -110,13 +74,11 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     public valueChanged(previous: string, next: string): void {
         super.valueChanged(previous, next);
-        if (previous !== next) {
-            if (!previous) {
-                this.setValue(next);
-            }
-            this.$emit("change");
-            this.$emit("input");
+        if (!previous) {
+            this.setValue(next);
         }
+        this.$emit("change");
+        this.$emit("input");
     }
 
     /**
@@ -167,21 +129,21 @@ export class DatePicker extends FormAssociatedDatePicker {
      * If the date is editable
      * @public
      */
-    @attr({ converter: booleanConverter })
+    @attr({ mode: "boolean" })
     public readonly: boolean;
 
     /**
      * If the form element is disabled
      * @public
      */
-    @attr({ converter: booleanConverter })
+    @attr({ mode: "boolean" })
     public disabled: boolean;
 
     /**
      * If the form element is required
      * @public
      */
-    @attr({ converter: booleanConverter })
+    @attr({ mode: "boolean" })
     public required: boolean;
 
     /**
@@ -202,7 +164,7 @@ export class DatePicker extends FormAssociatedDatePicker {
      * Should the text field be editable or only the picker allowed
      * @public
      */
-    @attr({ attribute: "allow-text-input", converter: booleanConverter })
+    @attr({ attribute: "allow-text-input", mode: "boolean" })
     public allowTextInput: boolean = true;
 
     /**
@@ -251,36 +213,36 @@ export class DatePicker extends FormAssociatedDatePicker {
      * Whether there should time output should be 24hour formatted
      * @public
      */
-    @attr({ attribute: "hour-12", converter: booleanConverter })
+    @attr({ attribute: "hour-12", mode: "boolean" })
     public hour12: boolean = true;
 
     /**
      * Selected date object
-     * @public
+     * @internal
      */
     @observable
     private selectedDate: DateData;
 
     /**
      * Currently selected date
-     * @public
+     * @internal
      */
     @observable
-    public date: string;
+    private date: string;
 
     /**
      * The month of the calendar to show
-     * @public
+     * @internal
      */
     @observable
-    public monthView: number = new Date().getFullYear();
+    private monthView: number = new Date().getFullYear();
 
     /**
      * The year for the month selector
-     * @public
+     * @internal
      */
     @observable
-    public yearView: number = Math.floor(new Date().getFullYear() / 10) * 10;
+    private yearView: number = Math.floor(new Date().getFullYear() / 10) * 10;
 
     /**
      * Dates that are not selectable
@@ -294,15 +256,15 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @internal
      */
     @observable
-    private textField: TextField;
+    private textField: FASTTextField;
 
     /**
      * Adds the value to the textfield when it's attached to the dom
      * @param previous - previous textfield element
      * @param next - updated textfield
-     * @public
+     * @internal
      */
-    public textFieldChanged(previous: TextField, next: TextField) {
+    private textFieldChanged(previous: FASTTextField, next: FASTTextField) {
         // Once the textfield is loaded, format its value
         if (!previous && !!next && this.value) {
             this.textField.value = this.value;
@@ -311,36 +273,36 @@ export class DatePicker extends FormAssociatedDatePicker {
 
     /**
      * The hour select listbox
-     * @public
+     * @internal
      */
-    public hourSelect: ListboxElement;
+    private hourSelect: FASTListboxElement;
 
     /**
      * The minute select listbox
-     * @public
+     * @internal
      */
-    public minuteSelect: ListboxElement;
+    private minuteSelect: FASTListboxElement;
 
     /**
      * The meridian select listbox
-     * @public
+     * @internal
      */
-    public meridianSelect: ListboxElement;
+    private meridianSelect: FASTListboxElement;
 
     /**
      * The Calendar month
-     * @public
+     * @internal
      */
     @observable
-    public calendarMonth: number = new Date().getMonth() + 1;
+    private calendarMonth: number = new Date().getMonth() + 1;
 
     /**
      * Handles changing the calendar view month
      * @param previous - the current month value
      * @param next - the next month value
-     * @public
+     * @internal
      */
-    public calendarMonthChanged(previous: number, next: number) {
+    private calendarMonthChanged(previous: number, next: number) {
         this.setCalendarTitle();
     }
 
@@ -357,7 +319,7 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @param next - the next calendar year view
      * @public
      */
-    public calendarYearChanged(previous: number, next: number) {
+    private calendarYearChanged(previous: number, next: number) {
         this.setCalendarTitle();
     }
 
@@ -664,9 +626,9 @@ export class DatePicker extends FormAssociatedDatePicker {
      * Handles opening and closing of the picker flyout
      * @param previous - current state of the flyout
      * @param next - flyout state to update to
-     * @public
+     * @internal
      */
-    public flyoutOpenChanged(previous: boolean, next: boolean) {
+    private flyoutOpenChanged(previous: boolean, next: boolean) {
         window[`${next ? "add" : "remove"}EventListener`]("click", () =>
             this.closeFlyout()
         );
@@ -1088,16 +1050,7 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @param date - a Date object or string, defaults to the current date
      * @returns an object representing the date
      */
-    private getDateAsObject(
-        date: Date | string = new Date()
-    ): {
-        day?: number;
-        month?: number;
-        year?: number;
-        hour?: number;
-        minute?: number;
-        meridian?: "AM" | "PM";
-    } {
+    private getDateAsObject(date: Date | string = new Date()): DateData {
         if (typeof date === "string") {
             date = new Date(date);
         }

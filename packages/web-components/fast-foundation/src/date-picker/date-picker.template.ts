@@ -1,15 +1,18 @@
 import { html, ref, repeat, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { ElementDefinitionContext } from "../design-system/registration-context.js";
-import { AnchoredRegion } from "../anchored-region/anchored-region.js";
-import { Button } from "../button/button.js";
-import { Calendar } from "../calendar/calendar.js";
-import { DataGrid, DataGridCell, DataGridRow } from "../data-grid/index.js";
-import { ListboxElement } from "../listbox/listbox.element.js";
-import { ListboxOption } from "../listbox-option/listbox-option.js";
-import { TextField } from "../text-field/text-field.js";
-import type { DatePicker, DatePickerOptions } from "./date-picker.js";
+import {
+    FASTAnchoredRegion,
+    FASTButton,
+    FASTCalendar,
+    FASTDataGrid,
+    FASTDataGridCell,
+    FASTDataGridRow,
+    FASTListboxElement,
+    FASTListboxOption,
+    FASTTextField,
+} from "@microsoft/fast-foundation";
+import { tagFor } from "../patterns/tag-for.js";
+import type { DatePickerOptions, FASTDatePicker } from "./date-picker.js";
 
 /**
  *  Generic template for handling a time element selection
@@ -20,13 +23,12 @@ import type { DatePicker, DatePickerOptions } from "./date-picker.js";
  * @returns template
  */
 const timeElementSelect = (
-    context: ElementDefinitionContext,
     keydownHandler: (type: string, event: Event) => {},
     values: {}[],
     type: string
 ) => {
-    const listbox = context.tagFor(ListboxElement);
-    const listboxOption = context.tagFor(ListboxOption);
+    const listbox = tagFor(FASTListboxElement);
+    const listboxOption = tagFor(FASTListboxOption);
 
     return html`
             <${listbox}
@@ -56,7 +58,6 @@ const timeElementSelect = (
  * @public
  */
 export const timePickerTemplate = (
-    context: ElementDefinitionContext,
     times: {
         hours: {}[];
         minutes: {}[];
@@ -64,7 +65,7 @@ export const timePickerTemplate = (
     },
     timeKeydown: (unit: string, event: KeyboardEvent) => boolean
 ) => {
-    const timeSelectTemplate = timeElementSelect.bind(this, context, timeKeydown);
+    const timeSelectTemplate = timeElementSelect.bind(this, timeKeydown);
     return html`
         <div class="time-picker" part="time-picker">
             ${x => timeSelectTemplate(times.hours, "hour")}
@@ -82,12 +83,8 @@ export const timePickerTemplate = (
  * @param showYears - should show the year menu on click
  * @returns - title template
  */
-const pickerTitleTemplate = (
-    context: ElementDefinitionContext,
-    text: string,
-    showYears: boolean
-) => {
-    const button = context.tagFor(Button);
+const pickerTitleTemplate = (text: string, showYears: boolean) => {
+    const button = tagFor(FASTButton);
 
     return html`
         <${button}
@@ -109,11 +106,10 @@ const pickerTitleTemplate = (
  * @returns changer template
  */
 const pickerChangeControlsTemplate = (
-    context: ElementDefinitionContext,
-    definition: any,
+    options: DatePickerOptions,
     changeAction: (direction: number, event?: Event) => boolean
 ) => {
-    const button = context.tagFor(Button);
+    const button = tagFor(FASTButton);
 
     return html`
         <${button}
@@ -123,9 +119,9 @@ const pickerChangeControlsTemplate = (
             @keydown="${(x, c) => changeAction(-1, c.event)}"
         >
             ${
-                definition.previousIcon instanceof Function
-                    ? definition.previousIcon(context, definition)
-                    : definition.previousIcon ?? ""
+                options.previousIcon instanceof Function
+                    ? options.previousIcon
+                    : options.previousIcon ?? ""
             }
         </${button}>
         <${button}
@@ -135,9 +131,9 @@ const pickerChangeControlsTemplate = (
             @keydown="${(x, c) => changeAction(1, c.event)}"
         >
             ${
-                definition.nextIcon instanceof Function
-                    ? definition.nextIcon(context, definition)
-                    : definition.nextIcon ?? ""
+                options.nextIcon instanceof Function
+                    ? options.nextIcon
+                    : options.nextIcon ?? ""
             }
         </${button}>
     `;
@@ -149,10 +145,10 @@ const pickerChangeControlsTemplate = (
  * @param items - Items to display in the grid
  * @returns grid template
  */
-const pickerGridTemplate = (context: ElementDefinitionContext, items: {}[]) => {
-    const grid = context.tagFor(DataGrid);
-    const row = context.tagFor(DataGridRow);
-    const cell = context.tagFor(DataGridCell);
+const pickerGridTemplate = (items: {}[]) => {
+    const grid = tagFor(FASTDataGrid);
+    const row = tagFor(FASTDataGridRow);
+    const cell = tagFor(FASTDataGridCell);
 
     return html`
         <${grid}
@@ -200,18 +196,15 @@ const pickerGridTemplate = (context: ElementDefinitionContext, items: {}[]) => {
  * @returns - A ViewTemplate
  * @public
  */
-export const datePickerTemplate: FoundationElementTemplate<
-    ViewTemplate<DatePicker>,
-    DatePickerOptions
-> = (context, definition) => {
-    const textField: string = context.tagFor(TextField);
-    const anchoredRegion: string = context.tagFor(AnchoredRegion);
-    const button: string = context.tagFor(Button);
-    const calendar: string = context.tagFor(Calendar);
-    const resetButton: ViewTemplate<DatePicker> = html`<${button} class="reset-text" part="reset-text" @click="${x =>
+export function datePickerTemplate(options: DatePickerOptions) {
+    const textField: string = tagFor(FASTTextField);
+    const anchoredRegion: string = tagFor(FASTAnchoredRegion);
+    const button: string = tagFor(FASTButton);
+    const calendar: string = tagFor(FASTCalendar);
+    const resetButton: ViewTemplate<FASTDatePicker> = html`<${button} class="reset-text" part="reset-text" @click="${x =>
         x.resetCalendar()}">${x => x.resetText}</${button}>`;
 
-    return html`
+    return html<FASTDatePicker>`
     <template
         @mouseover="${x => (x.overFlyout = true)}"
         @mouseout="${x => (x.overFlyout = false)}"
@@ -236,9 +229,9 @@ export const datePickerTemplate: FoundationElementTemplate<
             <slot></slot>
             <slot name="end" slot="end" part="end">
                 ${
-                    definition.calendarIcon instanceof Function
-                        ? definition.calendarIcon(context, definition)
-                        : definition.calendarIcon ?? ""
+                    options.calendarIcon instanceof Function
+                        ? options.calendarIcon
+                        : options.calendarIcon ?? ""
                 }
             </slot>
         </${textField}>
@@ -260,11 +253,7 @@ export const datePickerTemplate: FoundationElementTemplate<
                     x => x.type === "datetime-local" || x.type === "time",
                     html`
                         ${x =>
-                            timePickerTemplate(
-                                context,
-                                x.getTimes(),
-                                x.handleTimeKeydown.bind(x)
-                            )}
+                            timePickerTemplate(x.getTimes(), x.handleTimeKeydown.bind(x))}
                     `
                 )}
                 ${when(
@@ -303,9 +292,9 @@ export const datePickerTemplate: FoundationElementTemplate<
                                         @keydown="${(x, c) =>
                                             x.handleCalendarChange(-1, c.event)}"
                                     >${
-                                        definition.previousIcon instanceof Function
-                                            ? definition.previousIcon(context, definition)
-                                            : definition.previousIcon ?? ""
+                                        options.previousIcon instanceof Function
+                                            ? options.previousIcon
+                                            : options.previousIcon ?? ""
                                     }</${button}>
                                     <${button} class="calendar-control"
                                         @click="${(x, c) =>
@@ -313,9 +302,9 @@ export const datePickerTemplate: FoundationElementTemplate<
                                         @keydown="${(x, c) =>
                                             x.handleCalendarChange(1, c.event)}"
                                     >${
-                                        definition.nextIcon instanceof Function
-                                            ? definition.nextIcon(context, definition)
-                                            : definition.nextIcon ?? ""
+                                        options.nextIcon instanceof Function
+                                            ? options.nextIcon
+                                            : options.nextIcon ?? ""
                                     }</${button}>
                                 </div>
                             </div>
@@ -329,19 +318,16 @@ export const datePickerTemplate: FoundationElementTemplate<
                             <div class="picker-title" part="picker-title">
                                 ${x =>
                                     pickerTitleTemplate(
-                                        context,
                                         x.dateFormatter.getYear(x.monthView),
                                         true
                                     )}
                                 ${x =>
                                     pickerChangeControlsTemplate(
-                                        context,
-                                        definition,
+                                        options,
                                         x.handleMonthChange.bind(x)
                                     )}
                             </div>
-                            ${x => pickerGridTemplate(context, x.getMonths())}
-                            ${resetButton}
+                            ${x => pickerGridTemplate(x.getMonths())} ${resetButton}
                         </div>
                     `
                 )}
@@ -353,7 +339,6 @@ export const datePickerTemplate: FoundationElementTemplate<
                                 ${x => {
                                     const years = x.getYears();
                                     return pickerTitleTemplate(
-                                        context,
                                         `${years[0].text} - ${
                                             years[years.length - 1].text
                                         }`,
@@ -362,13 +347,11 @@ export const datePickerTemplate: FoundationElementTemplate<
                                 }}
                                 ${x =>
                                     pickerChangeControlsTemplate(
-                                        context,
-                                        definition,
+                                        options,
                                         x.handleYearsChange.bind(x)
                                     )}
                             </div>
-                            ${x => pickerGridTemplate(context, x.getYears())}
-                            ${resetButton}
+                            ${x => pickerGridTemplate(x.getYears())} ${resetButton}
                         </div>
                     `
                 )}
@@ -377,4 +360,4 @@ export const datePickerTemplate: FoundationElementTemplate<
         )}
     </template>
 `;
-};
+}

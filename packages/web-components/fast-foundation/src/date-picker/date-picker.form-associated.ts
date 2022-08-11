@@ -1,7 +1,7 @@
-import { FormAssociated } from "../form-associated/form-associated";
-import { FoundationElement } from "../foundation-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { FormAssociated } from "../form-associated/form-associated.js";
 
-class _DatePicker extends FoundationElement {}
+class _DatePicker extends FASTElement {}
 interface _DatePicker extends FormAssociated {}
 
 /**
