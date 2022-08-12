@@ -13,7 +13,7 @@ jobs:
   setup:
     name: Setup Tachometer Reporting
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Initialize tachometer comment
         uses: andrewiggins/tachometer-reporter-action@v2
@@ -91,7 +91,7 @@ jobs:
         with:
             name: results
             path: packages/utilities/fast-benchmarks/results/fast-element-render-createDelete5x.json
-            
+
   observable_run1k:
     name: Run observable benchmark with decorator 1k times
     needs: [setup]
@@ -235,10 +235,33 @@ jobs:
           with:
               name: results
               path: packages/utilities/fast-benchmarks/results/fast-element-repeat-splice_clickTrigger10x.json
+  default_attr_assignment:
+    name: Run default attribute assignment rendering benchmark with create 10k elements operation
+    needs: [setup]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=default-attr-assignment --versions master ${GITHUB_HEAD_REF} --operations=create10k
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element-default-attr-assignment-create10k.json
 
   report_results:
     name: Report Results
-    needs: [render_create10k, render_update10th, render_createDelete5x, observable_run1k, repeat_reverse, repeat_push, repeat_unshift, repeat_shift, repeat_splice]
+    needs: [default_attr_assignment, render_create10k, render_update10th, render_createDelete5x, observable_run1k, repeat_reverse, repeat_push, repeat_unshift, repeat_shift, repeat_splice]
     runs-on: ubuntu-latest
 
     steps:
@@ -246,7 +269,7 @@ jobs:
           with:
               name: results
               path: packages/utilities/fast-benchmarks/results
-              
+
         - name: Report Tachometer Result
           uses: andrewiggins/tachometer-reporter-action@v2
           with:
