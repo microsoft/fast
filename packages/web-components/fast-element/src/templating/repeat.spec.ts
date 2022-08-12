@@ -1,4 +1,4 @@
-import { ExecutionContext, observable } from "../observation/observable.js";
+import { observable } from "../observation/observable.js";
 import { RepeatBehavior, RepeatDirective, repeat } from "./repeat.js";
 import { expect } from "chai";
 import { html } from "./template.js";
@@ -158,7 +158,7 @@ describe("The repeat", () => {
                 },
                 source,
                 targets,
-                tryDefer(){
+                defer(){
                     return false;
                 },
                 unbind() {

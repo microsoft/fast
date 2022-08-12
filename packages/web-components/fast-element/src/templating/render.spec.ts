@@ -620,7 +620,7 @@ describe("The render", () => {
                 source,
                 targets,
                 isBound: false,
-                tryDefer() {
+                defer() {
                     return false;
                 },
                 unbind() {

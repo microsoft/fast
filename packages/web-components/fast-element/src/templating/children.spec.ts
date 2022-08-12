@@ -54,7 +54,7 @@ describe("The children", () => {
                 targets,
                 context: Fake.executionContext(),
                 isBound: false,
-                tryDefer() {
+                defer() {
                     return false;
                 },
                 onUnbind() {

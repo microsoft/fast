@@ -341,6 +341,10 @@ export interface ExpressionController<TSource = any, TParent = any> {
     // (undocumented)
     readonly context: ExecutionContext<TParent>;
     // (undocumented)
+    defer(behavior: {
+        continue(): void;
+    }): boolean;
+    // (undocumented)
     readonly isBound: boolean;
     // (undocumented)
     onUnbind(behavior: {
@@ -350,10 +354,6 @@ export interface ExpressionController<TSource = any, TParent = any> {
     readonly selfContained?: boolean;
     // (undocumented)
     readonly source: TSource;
-    // (undocumented)
-    tryDefer(behavior: {
-        continue(): void;
-    }): boolean;
 }
 
 // @public
@@ -514,6 +514,10 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     appendTo(node: Node): void;
     bind(source: TSource): void;
     get context(): ExecutionContext<TParent>;
+    // (undocumented)
+    defer(item: {
+        continue(): void;
+    }): boolean;
     dispose(): void;
     static disposeContiguousBatch(views: SyntheticView[]): void;
     get event(): Event;
@@ -543,10 +547,6 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     source: TSource | null;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
-    // (undocumented)
-    tryDefer(item: {
-        continue(): void;
-    }): boolean;
     unbind(): void;
 }
 

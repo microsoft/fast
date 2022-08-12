@@ -48,7 +48,7 @@ export const ViewBehaviorOrchestrator = Object.freeze({
             get isBound() {
                 return isConnected;
             },
-            tryDefer() {
+            defer() {
                 return false;
             },
             addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void {
