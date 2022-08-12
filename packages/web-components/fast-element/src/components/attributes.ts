@@ -193,9 +193,7 @@ export class AttributeDefinition implements Accessor, Behavior {
                 source[this.callbackName](oldValue, newValue);
             }
 
-            if (source instanceof FASTElement) {
-                source.$fastController.notify(this.name);
-            }
+            (source as any).$fastController.notify(this.name);
         }
     }
 
