@@ -199,6 +199,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 }
             }
         }
+
+        this.addBehaviors(this.definition.attributes);
     }
 
     /**
