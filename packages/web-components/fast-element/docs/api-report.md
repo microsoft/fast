@@ -82,9 +82,11 @@ export type AttributeConfiguration = {
 };
 
 // @public
-export class AttributeDefinition implements Accessor {
+export class AttributeDefinition implements Accessor, Behavior {
     constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter);
     readonly attribute: string;
+    // (undocumented)
+    bind(source: HTMLElement): void;
     // @internal
     static collect(Owner: Function, ...attributeLists: (ReadonlyArray<string | AttributeConfiguration> | undefined)[]): ReadonlyArray<AttributeDefinition>;
     readonly converter?: ValueConverter;
@@ -95,6 +97,8 @@ export class AttributeDefinition implements Accessor {
     onAttributeChangedCallback(element: HTMLElement, value: any): void;
     readonly Owner: Function;
     setValue(source: HTMLElement, newValue: any): void;
+    // (undocumented)
+    unbind(): void;
 }
 
 // Warning: (ae-forgotten-export) The symbol "reflectMode" needs to be exported by the entry point index.d.ts

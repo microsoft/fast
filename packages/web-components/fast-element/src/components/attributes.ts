@@ -1,8 +1,9 @@
-import { Accessor, Observable } from "../observation/observable.js";
-import type { Notifier } from "../observation/notifier.js";
 import { isString } from "../interfaces.js";
+import type { Behavior } from "../observation/behavior.js";
+import { Accessor, Observable } from "../observation/observable.js";
 import { Updates } from "../observation/update-queue.js";
 import { DOM } from "../templating/dom.js";
+import { FASTElement } from "./fast-element.js";
 
 /**
  * Represents objects that can convert values to and from
@@ -108,7 +109,7 @@ export const nullableNumberConverter: ValueConverter = {
  * custom elements.
  * @public
  */
-export class AttributeDefinition implements Accessor {
+export class AttributeDefinition implements Accessor, Behavior {
     private readonly fieldName: string;
     private readonly callbackName: string;
     private readonly hasCallback: boolean;
@@ -192,7 +193,9 @@ export class AttributeDefinition implements Accessor {
                 source[this.callbackName](oldValue, newValue);
             }
 
-            ((source as any).$fastController as Notifier).notify(this.name);
+            if (source instanceof FASTElement) {
+                source.$fastController.notify(this.name);
+            }
         }
     }
 
@@ -220,7 +223,11 @@ export class AttributeDefinition implements Accessor {
         const mode = this.mode;
         const guards = this.guards;
 
-        if (guards.has(element) || mode === "fromView") {
+        if (
+            guards.has(element) ||
+            mode === "fromView" ||
+            (element instanceof FASTElement && !element.$fastController.isConnected)
+        ) {
             return;
         }
 
@@ -289,6 +296,14 @@ export class AttributeDefinition implements Accessor {
 
         return attributes;
     }
+
+    public bind(source: HTMLElement) {
+        if (source[this.fieldName] !== undefined) {
+            this.tryReflectToAttribute(source);
+        }
+    }
+
+    public unbind(): void {}
 }
 
 /**

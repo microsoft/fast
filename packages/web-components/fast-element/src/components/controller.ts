@@ -198,6 +198,8 @@ export class Controller<
                 }
             }
         }
+
+        this.addBehaviors(this.definition.attributes);
     }
 
     /**
