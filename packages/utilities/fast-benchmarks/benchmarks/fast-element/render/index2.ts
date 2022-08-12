@@ -1,6 +1,5 @@
 import {
     attr,
-    bind,
     css,
     customElement,
     FASTElement,
@@ -40,7 +39,7 @@ const xAppTemplate = html<XApp>`
             x => x.items,
             html<RandomItem>`
                 <x-item
-                    :value="${bind((x: { label: string }) => x.label, oneTime)}"
+                    :value="${oneTime((x: { label: string }) => x.label)}"
                 ></x-item>
             `
         )}
