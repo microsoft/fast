@@ -61,9 +61,6 @@ describe("The slotted", () => {
                 targets,
                 context: Fake.executionContext(),
                 isBound: false,
-                defer() {
-                    return false;
-                },
                 onUnbind() {
 
                 }

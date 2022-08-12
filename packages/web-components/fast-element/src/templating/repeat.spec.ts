@@ -158,9 +158,6 @@ describe("The repeat", () => {
                 },
                 source,
                 targets,
-                defer(){
-                    return false;
-                },
                 unbind() {
                     unbindables.forEach(x => x.unbind(this))
                 }

@@ -71,7 +71,6 @@ export interface ExpressionController<TSource = any, TParent = any> {
     readonly isBound: boolean;
     readonly selfContained?: boolean;
 
-    defer(behavior: { continue(): void }): boolean;
     onUnbind(behavior: {
         unbind(controller: ExpressionController<TSource, TParent>);
     }): void;
@@ -210,7 +209,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         private notifier: Notifier | undefined = void 0;
         private next: SubscriptionRecord | undefined = void 0;
         private controller: ExpressionController;
-        private initialValue;
 
         constructor(
             private binding: Expression<TSource, TReturn>,
@@ -231,27 +229,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
                 return this.observe(controller.source, controller.context);
             }
 
-            if (controller.defer(this)) {
-                return (this.initialValue = this.binding(
-                    controller.source,
-                    controller.context
-                ));
-            }
-
-            return this.bindCore(controller);
-        }
-
-        public continue() {
-            if (this.controller.isBound) {
-                const value = this.bindCore(this.controller);
-
-                if (value !== this.initialValue) {
-                    this.notify(this);
-                }
-            }
-        }
-
-        private bindCore(controller: ExpressionController) {
             const value = this.observe(controller.source, controller.context);
 
             if (

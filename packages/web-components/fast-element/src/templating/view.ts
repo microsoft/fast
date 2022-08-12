@@ -1,4 +1,3 @@
-import { Updates } from "../observation/update-queue.js";
 import type { Disposable } from "../interfaces.js";
 import { ExecutionContext, Observable } from "../observation/observable.js";
 import type {
@@ -89,22 +88,6 @@ function removeNodeSequence(firstNode: Node, lastNode: Node): void {
     }
 
     parent.removeChild(lastNode);
-}
-
-const deferQueue: { continue(): void }[] = [];
-const noDeferThreshold = 100;
-let notDeferredCount = 0;
-
-function flushDeferQueue() {
-    let index = 0;
-
-    while (index < deferQueue.length) {
-        deferQueue[index].continue();
-        index++;
-    }
-
-    deferQueue.length = 0;
-    notDeferredCount = 0;
 }
 
 /**
@@ -299,21 +282,6 @@ export class HTMLView<TSource = any, TParent = any>
     public dispose(): void {
         removeNodeSequence(this.firstChild, this.lastChild);
         this.unbind();
-    }
-
-    public defer(item: { continue(): void }): boolean {
-        if (notDeferredCount < noDeferThreshold) {
-            notDeferredCount++;
-            return false;
-        }
-
-        deferQueue.push(item);
-
-        if (deferQueue.length === 1) {
-            Updates.enqueue(flushDeferQueue);
-        }
-
-        return true;
     }
 
     public onUnbind(behavior: {

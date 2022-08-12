@@ -103,9 +103,6 @@ describe("The HTML binding directive", () => {
             onUnbind(object) {
                 unbindables.add(object);
             },
-            defer() {
-                return false;
-            },
             source,
             targets,
             unbind() {

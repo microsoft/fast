@@ -620,9 +620,6 @@ describe("The render", () => {
                 source,
                 targets,
                 isBound: false,
-                defer() {
-                    return false;
-                },
                 unbind() {
                     unbindables.forEach(x => x.unbind(this))
                 }
