@@ -235,11 +235,7 @@ export class AttributeDefinition implements Accessor, Behavior {
         const mode = this.mode;
         const guards = this.guards;
 
-        if (
-            guards.has(element) ||
-            mode === "fromView" ||
-            (element instanceof FASTElement && !element.$fastController.isConnected)
-        ) {
+        if (guards.has(element) || mode === "fromView" || !element.isConnected) {
             return;
         }
 
