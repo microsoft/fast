@@ -199,7 +199,11 @@ export class AttributeDefinition implements Accessor, Behavior {
         if (oldValue !== newValue) {
             source[this.fieldName] = newValue;
 
-            this.tryReflectToAttribute(source);
+            if (source.isConnected) {
+                this.tryReflectToAttribute(source);
+            } else {
+                (source as FASTElement).$fastController.addBehaviors([this]);
+            }
 
             if (this.hasCallback) {
                 source[this.callbackName](oldValue, newValue);
@@ -233,7 +237,7 @@ export class AttributeDefinition implements Accessor, Behavior {
         const mode = this.mode;
         const guards = this.guards;
 
-        if (guards.has(element) || mode === "fromView" || !element.isConnected) {
+        if (guards.has(element) || mode === "fromView") {
             return;
         }
 
@@ -304,12 +308,16 @@ export class AttributeDefinition implements Accessor, Behavior {
     }
 
     public bind(source: HTMLElement) {
-        if (source[this.fieldName] !== undefined) {
-            this.tryReflectToAttribute(source);
-        }
+        // if (source[this.fieldName] !== undefined) {
+        this.tryReflectToAttribute(source);
+        // }
     }
 
-    public unbind(): void {}
+    public unbind(source): void {
+        if (source instanceof FASTElement) {
+            source.$fastController.removeBehaviors([this]);
+        }
+    }
 }
 
 /**

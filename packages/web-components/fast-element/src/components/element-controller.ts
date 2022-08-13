@@ -200,7 +200,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             }
         }
 
-        this.addBehaviors(this.definition.attributes);
+        // this.addBehaviors(this.definition.attributes);
     }
 
     /**
