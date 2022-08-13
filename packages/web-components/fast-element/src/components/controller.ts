@@ -199,7 +199,7 @@ export class Controller<
             }
         }
 
-        this.addBehaviors(this.definition.attributes);
+        // this.addBehaviors(this.definition.attributes);
     }
 
     /**
