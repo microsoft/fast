@@ -1,5 +1,6 @@
 import { isString } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
+import type { Notifier } from "../observation/notifier.js";
 import { Accessor, Observable } from "../observation/observable.js";
 import { Updates } from "../observation/update-queue.js";
 import { DOM } from "../templating/dom.js";
@@ -208,8 +209,7 @@ export class AttributeDefinition implements Accessor, Behavior {
             if (this.hasCallback) {
                 source[this.callbackName](oldValue, newValue);
             }
-
-            (source as any).$fastController.notify(this.name);
+            ((source as any).$fastController as Notifier).notify(this.name);
         }
     }
 
