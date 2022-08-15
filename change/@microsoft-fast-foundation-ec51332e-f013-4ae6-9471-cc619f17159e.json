@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "chore: call change when clear button is clicked",
   "packageName": "@microsoft/fast-foundation",
   "email": "jes@microsoft.com",
