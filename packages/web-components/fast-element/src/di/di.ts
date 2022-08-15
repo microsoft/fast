@@ -778,6 +778,11 @@ export const DI = Object.freeze({
 
                     if (respectConnection) {
                         const notifier = (this as any).$fastController;
+
+                        if (!notifier) {
+                            throw FAST.error(Message.connectUpdateRequiresController);
+                        }
+
                         const handleChange = () => {
                             const newContainer = DI.findResponsibleContainer(this);
                             const newValue = newContainer.get(key) as any;
