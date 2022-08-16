@@ -6,20 +6,24 @@ const styles = css`
     :host([hidden]) {
         display: none;
     }
+
     :host {
         align-items: flex-start;
         display: flex;
         flex-direction: column;
         margin: calc(var(--design-unit) * 1px) 0;
     }
-    .positioning-region {
+
+    .radiogroup {
         display: flex;
         flex-wrap: wrap;
     }
-    :host([orientation="vertical"]) .positioning-region {
+
+    :host([orientation="vertical"]) .radiogroup {
         flex-direction: column;
     }
-    :host([orientation="horizontal"]) .positioning-region {
+
+    :host([orientation="horizontal"]) .radiogroup {
         flex-direction: row;
     }
 `;

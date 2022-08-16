@@ -16,8 +16,8 @@ import { FormAssociatedNumberField } from "./number-field.form-associated.js";
  * @public
  */
 export type NumberFieldOptions = StartEndOptions & {
-    stepDownGlyph?: string | SyntheticViewTemplate;
-    stepUpGlyph?: string | SyntheticViewTemplate;
+    stepDownIcon?: string | SyntheticViewTemplate;
+    stepUpIcon?: string | SyntheticViewTemplate;
 };
 
 /**
@@ -31,8 +31,8 @@ export type NumberFieldOptions = StartEndOptions & {
  * @slot step-down-glyph - The glyph for the step down control
  * @csspart label - The label
  * @csspart root - The element wrapping the control, including start and end slots
- * @csspart control - The element representing the input
- * @csspart controls - The step up and step down controls
+ * @csspart input - The element representing the input
+ * @csspart step-buttons - The step up and step down controls
  * @csspart step-up - The step up control
  * @csspart step-down - The step down control
  * @fires input - Fires a custom 'input' event when the value has changed
@@ -186,7 +186,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * A reference to the internal input element
      * @internal
      */
-    public control: HTMLInputElement;
+    public input: HTMLInputElement;
 
     /**
      * Flag to indicate that the value change is from the user input
@@ -211,7 +211,6 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * Validates that the value is a number between the min and max
      * @param previous - previous stored value
      * @param next - value being updated
-     * @param updateControl - should the text field be updated with value, defaults to true
      * @internal
      */
     public valueChanged(previous: string, next: string): void {
@@ -222,8 +221,8 @@ export class FASTNumberField extends FormAssociatedNumberField {
             return;
         }
 
-        if (this.$fastController.isConnected && this.control?.value !== value) {
-            this.control.value = this.value;
+        if (this.$fastController.isConnected && this.input?.value !== value) {
+            this.input.value = this.value;
         }
 
         super.valueChanged(previous, this.value);
@@ -238,7 +237,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
 
     /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
-        super.validate(this.control);
+        super.validate(this.input);
     }
 
     /**
@@ -308,7 +307,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
 
         this.proxy.setAttribute("type", "number");
         this.validate();
-        this.control.value = this.value;
+        this.input.value = this.value;
 
         if (this.autofocus) {
             Updates.enqueue(() => {
@@ -323,7 +322,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @public
      */
     public select(): void {
-        this.control.select();
+        this.input.select();
 
         /**
          * The select event does not permeate the shadow DOM boundary.
@@ -339,9 +338,9 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleTextInput(): void {
-        this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
+        this.input.value = this.input.value.replace(/[^0-9\-+e.]/g, "");
         this.isUserInput = true;
-        this.value = this.control.value;
+        this.value = this.input.value;
     }
 
     /**
@@ -383,7 +382,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleBlur(): void {
-        this.control.value = this.value;
+        this.input.value = this.value;
     }
 }
 

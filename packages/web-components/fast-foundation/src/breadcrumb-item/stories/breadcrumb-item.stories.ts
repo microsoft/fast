@@ -94,7 +94,7 @@ export const BreadcrumbItemWithSlottedStart: Story<FASTBreadcrumbItem> = Breadcr
 BreadcrumbItemWithSlottedStart.args = {
     storyContent: html`
         Breadcrumb Item with slotted start icon
-        <svg slot="start"><use href="#test-icon"></svg>
+        <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
     `,
 };
 
@@ -104,7 +104,7 @@ export const BreadcrumbItemWithSlottedEnd: Story<FASTBreadcrumbItem> = Breadcrum
 BreadcrumbItemWithSlottedEnd.args = {
     storyContent: html`
         Breadcrumb item with slotted end icon
-        <svg slot="end"><use href="#test-icon"></svg>
+        <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
     `,
 };
 
@@ -114,6 +114,16 @@ export const BreadcrumbItemWithSlottedSeparator: Story<FASTBreadcrumbItem> = Bre
 BreadcrumbItemWithSlottedSeparator.args = {
     storyContent: html`
         Breadcrumb item with slotted separator icon
-        <svg slot="separator"><use href="#test-icon"></svg>
+        <svg
+            slot="separator"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M5.64645 3.14645C5.45118 3.34171 5.45118 3.65829 5.64645 3.85355L9.79289 8L5.64645 12.1464C5.45118 12.3417 5.45118 12.6583 5.64645 12.8536C5.84171 13.0488 6.15829 13.0488 6.35355 12.8536L10.8536 8.35355C11.0488 8.15829 11.0488 7.84171 10.8536 7.64645L6.35355 3.14645C6.15829 2.95118 5.84171 2.95118 5.64645 3.14645Z"
+            />
+        </svg>
     `,
 };

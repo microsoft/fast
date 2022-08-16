@@ -114,9 +114,9 @@ export const myToolbar = Toolbar.compose({
 
 #### CSS Parts
 
-| Name                 | Description                                           |
-| -------------------- | ----------------------------------------------------- |
-| `positioning-region` | The element containing the items, start and end slots |
+| Name      | Description                                           |
+| --------- | ----------------------------------------------------- |
+| `toolbar` | The element containing the items, start and end slots |
 
 #### Slots
 

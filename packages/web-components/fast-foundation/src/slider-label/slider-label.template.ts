@@ -13,17 +13,20 @@ export function sliderLabelTemplate<T extends FASTSliderLabel>(): ElementViewTem
             class="${x => x.sliderOrientation || Orientation.horizontal}
             ${x => (x.disabled ? "disabled" : "")}"
         >
-            <div ${ref("root")} part="root" class="root" style="${x => x.positionStyle}">
-                <div class="container">
-                    ${when(
-                        x => !x.hideMark,
-                        html`
-                            <div class="mark"></div>
-                        `
-                    )}
-                    <div class="label">
-                        <slot></slot>
-                    </div>
+            <div
+                ${ref("container")}
+                part="container"
+                class="container"
+                style="${x => x.positionStyle}"
+            >
+                ${when(
+                    x => !x.hideMark,
+                    html`
+                        <div class="mark"></div>
+                    `
+                )}
+                <div class="content">
+                    <slot></slot>
                 </div>
             </div>
         </template>

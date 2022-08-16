@@ -64,22 +64,20 @@ Web components complicate the dialog focus queue implementation as the typical m
 ### Anatomy and Appearance
 **Structure:**
 ```
-<div class="root">
-    <div class="positioning-region">
-        <div class="overlay">
-        <div
-            role="dialog"
-            aria-modal="true"
-            tabindex="-1"
-            class="content-region"
-            aria-describedby="foo"
-            aria-labelledby="bar"
-            aria-label="baz"
-        >
-            <slot></slot>
-        </div>
+<template>
+    <div class="overlay">
+    <div
+        role="dialog"
+        aria-modal="true"
+        tabindex="-1"
+        class="content-region"
+        aria-describedby="foo"
+        aria-labelledby="bar"
+        aria-label="baz"
+    >
+        <slot></slot>
     </div>
-</div>
+</template>
 ```
 
 **Appearance:**
@@ -89,10 +87,9 @@ Web components complicate the dialog focus queue implementation as the typical m
 | dark mode | ![](./images/dialog-dark.png) |
 
 Parts:
-- root - the root of the dialog
-- positioning-region - ensuring the dialog is centered correctly requires a certain structure. Centering with absolute positioning can cause blurry content within the dialog itself. After investigating several implementations, the best and most common way of ensuring the dialog can be centered is to include a div to position the actual dialog itself using something like flexbox or css-grid. This ensures that the blurry content issue does not happen and the dialog centers easily within the screen.
-- modal-overlay - the modal overlay
-- content-region - the region where content is actually rendered. This part is where the `role="dialog"` will actually exist
+- root - ensuring the dialog is centered correctly requires a certain structure. Centering with absolute positioning can cause blurry content within the dialog itself. After investigating several implementations, the best and most common way of ensuring the dialog can be centered is to include a div to position the actual dialog itself using something like flexbox or css-grid. This ensures that the blurry content issue does not happen and the dialog centers easily within the screen.
+- overlay - the modal overlay
+- dialog - the region where content is actually rendered. This part is where the `role="dialog"` will actually exist
 
 Animation:
 The current working model (assumption) is that animation will be taken up as part of the adaptive ui story in the design system at some point. This will provide configurability to users. From a dialog standpoint, I think we'll have a default animation baked in, though this would be configurable through the design system.

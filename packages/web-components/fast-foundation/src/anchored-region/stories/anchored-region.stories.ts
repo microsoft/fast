@@ -42,7 +42,7 @@ export default {
     title: "Anchored Region",
     args: {
         storyContent: html`
-            <div id="content" style="background: var(--neutral-fill-rest); padding: 10px">
+            <div id="content" style="background: var(--neutral-fill-rest); padding: 10px; border: solid 1px var(--neutral-stroke-rest);">
                 anchored region
             </div>
         `,

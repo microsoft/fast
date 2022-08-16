@@ -8,8 +8,8 @@ const styles = css`
         box-sizing: border-box;
         font-family: var(--body-font);
         flex-direction: column;
-        font-size: var(--type-ramp-minus-1-font-size);
-        line-height: var(--type-ramp-minus-1-line-height);
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
         border-bottom: calc(var(--stroke-width) * 1px) solid
             var(--neutral-stroke-divider-rest);
     }
@@ -21,6 +21,7 @@ const styles = css`
 
     .heading {
         display: grid;
+        align-items: center;
         position: relative;
         grid-template-columns: auto 1fr auto calc(
                 (var(--base-height-multiplier) + var(--density)) * var(--design-unit) *
@@ -28,7 +29,7 @@ const styles = css`
             );
     }
 
-    .button {
+    .control {
         appearance: none;
         border: none;
         background: none;
@@ -45,25 +46,26 @@ const styles = css`
         font-family: inherit;
     }
 
-    .button:hover {
+    .control:hover {
         color: var(--neutral-foreground-rest);
     }
 
-    .button:active {
+    .control:active {
         color: var(--neutral-foreground-rest);
     }
 
-    .button::before {
+    .control::before {
         content: "";
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
+        z-index: 1;
         cursor: pointer;
     }
 
-    .button:focus-visible::before {
+    .control:focus-visible::before {
         outline: none;
         border: calc(var(--focus-stroke-width) * 1px) solid var(--focus-stroke-outer);
         border-radius: calc(var(--control-corner-radius) * 1px);
@@ -73,7 +75,7 @@ const styles = css`
         display: block;
     }
 
-    .icon {
+    .expand-collapse-icon {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -103,7 +105,7 @@ const styles = css`
         display: flex;
     }
 
-    .start {
+    ::slotted([slot="start"]) {
         display: flex;
         align-items: center;
         padding-inline-start: calc(var(--design-unit) * 1px);
@@ -112,7 +114,7 @@ const styles = css`
         position: relative;
     }
 
-    .end {
+    ::slotted([slot="end"]) {
         display: flex;
         align-items: center;
         justify-content: center;

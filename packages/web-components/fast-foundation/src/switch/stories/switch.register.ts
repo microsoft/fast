@@ -19,11 +19,11 @@ const styles = css`
     }
     :host([disabled]) .label,
     :host([readonly]) .label,
-    :host([readonly]) .switch,
-    :host([disabled]) .switch {
+    :host([readonly]) .control,
+    :host([disabled]) .control {
         cursor: var(--disabled-cursor);
     }
-    .switch {
+    .control {
         position: relative;
         outline: none;
         box-sizing: border-box;
@@ -33,25 +33,25 @@ const styles = css`
         border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-rest);
     }
-    .switch:hover {
+    .control:hover {
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutralStrokeHover);
         cursor: pointer;
     }
-    host([disabled]) .switch:hover,
-    host([readonly]) .switch:hover {
+    host([disabled]) .control:hover,
+    host([readonly]) .control:hover {
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutral-stroke-hover);
         cursor: var(--disabled-cursor);
     }
-    :host(:not([disabled])) .switch:active {
+    :host(:not([disabled])) .control:active {
         background: var(--neutral-fill-input-active);
         border-color: var(--neutral-stroke-active);
     }
-    :host(:focus-visible) .switch {
+    :host(:focus-visible) .control {
         box-shadow: 0 0 0 2px var(--fill-color), 0 0 0 4px var(--focusStrokeOuter);
     }
-    .checked-indicator {
+    .thumb {
         position: absolute;
         top: 5px;
         bottom: 5px;
@@ -84,28 +84,28 @@ const styles = css`
     ::slotted([slot="unchecked-message"]) {
         margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
-    :host([aria-checked="true"]) .checked-indicator {
+    :host([aria-checked="true"]) .thumb {
         background: var(--foreground-on-accent-rest);
     }
-    :host([aria-checked="true"]) .switch {
+    :host([aria-checked="true"]) .control {
         background: var(--accent-fill-rest);
         border-color: var(--accent-fill-rest);
     }
-    :host([aria-checked="true"]:not([disabled])) .switch:hover {
+    :host([aria-checked="true"]:not([disabled])) .control:hover {
         background: var(--accent-fill-hover);
         border-color: var(--accent-fill-hover);
     }
-    :host([aria-checked="true"]:not([disabled])) .switch:hover .checked-indicator {
+    :host([aria-checked="true"]:not([disabled])) .control:hover .thumb {
         background: var(--foreground-on-accent-hover);
     }
-    :host([aria-checked="true"]:not([disabled])) .switch:active {
+    :host([aria-checked="true"]:not([disabled])) .control:active {
         background: var(--accent-fill-active);
         border-color: var(--accentt-fill-active);
     }
-    :host([aria-checked="true"]:not([disabled])) .switch:active .checked-indicator {
+    :host([aria-checked="true"]:not([disabled])) .control:active .thumb {
         background: var(--foreground-on-accent-active);
     }
-    :host([aria-checked="true"]:focus-visible:not([disabled])) .switch {
+    :host([aria-checked="true"]:focus-visible:not([disabled])) .control {
         box-shadow: 0 0 0 2px var(--fill-color), 0 0 0 4px var(--focus-stroke-outer);
     }
     .unchecked-message {
@@ -121,11 +121,11 @@ const styles = css`
         display: block;
     }
 
-    .checked-indicator {
+    .thumb {
         left: 5px;
         right: calc(((var(--height-number) / 2) + 1) * 1px);
     }
-    :host([aria-checked="true"]) .checked-indicator {
+    :host([aria-checked="true"]) .thumb {
         left: calc(((var(--height-number) / 2) + 1) * 1px);
         right: 5px;
     }
@@ -133,10 +133,6 @@ const styles = css`
 
 FASTSwitch.define({
     name: "fast-switch",
-    template: switchTemplate({
-        switch: /* html */ `
-            <span class="checked-indicator" part="checked-indicator"></span>
-        `,
-    }),
+    template: switchTemplate(),
     styles,
 });

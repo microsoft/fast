@@ -15,10 +15,10 @@ const styles = css`
         display: none;
     }
 
-    .root {
-        align-items: baseline;
+    .control {
+        align-items: center;
         background: var(--neutral-fill-input-rest);
-        border-radius: calc(var(--control-corner-radius) * 1px);
+        border-radius: calc(var(--input-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         box-sizing: border-box;
         color: var(--neutral-foreground-rest);
@@ -30,7 +30,7 @@ const styles = css`
         position: relative;
     }
 
-    .control {
+    .input {
         appearance: none;
         background: transparent;
         border: 0;
@@ -41,17 +41,16 @@ const styles = css`
         margin-bottom: auto;
         margin-top: auto;
         padding: 0 calc(var(--design-unit) * 2px + 1px);
-        width: 100%;
     }
 
-    .control:hover,
-    .control:focus-visible,
-    .control:disabled,
-    .control:active {
+    .input:hover,
+    .input:focus-visible,
+    .input:disabled,
+    .input:active {
         outline: none;
     }
 
-    .controls {
+    .step-buttons {
         opacity: 0;
     }
 
@@ -68,87 +67,79 @@ const styles = css`
         visibility: hidden;
     }
 
-    .start,
-    .control,
-    .controls,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]),
+    .input,
+    .step-buttons {
         align-self: center;
     }
 
-    .start,
-    .end {
-        fill: currentcolor;
-        margin: auto;
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
+        display: flex;
+        margin-inline: 11px;
     }
 
-    .step-up-glyph,
-    .step-down-glyph {
+    .input.icon-only {
+        line-height: 0;
+        padding: 0;
+    }
+
+    .step-up-icon,
+    .step-down-icon {
         cursor: pointer;
         display: block;
         padding: 4px 10px;
     }
 
-    .step-up-glyph:before,
-    .step-down-glyph:before {
+    .step-up-icon:before,
+    .step-down-icon:before {
         border: solid transparent 6px;
         content: "";
         display: block;
     }
 
-    .step-up-glyph:before {
+    .step-up-icon:before {
         border-bottom-color: var(--neutral-foreground-rest);
     }
 
-    .step-down-glyph:before {
+    .step-down-icon:before {
         border-top-color: var(--neutral-foreground-rest);
     }
 
-    ::slotted(svg) {
-        height: 16px;
-        width: 16px;
-    }
-
-    .start {
-        margin-inline-start: 11px;
-    }
-
-    .end {
-        margin-inline-end: 11px;
-    }
-
-    :host(:hover:not([disabled])) .root {
+    :host(:hover:not([disabled])) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--accent-fill-hover);
     }
 
-    :host(:active:not([disabled])) .root {
+    :host(:active:not([disabled])) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--accent-fill-active);
     }
 
-    :host(:focus-within:not([disabled])) .root {
+    :host(:focus-within:not([disabled])) .control {
         border-color: var(--focus-stroke-outer);
         box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 1px) var(--focus-stroke-outer)
             inset;
     }
 
-    :host(:hover:not([disabled])) .controls,
-    :host(:focus-within:not([disabled])) .controls {
+    :host(:hover:not([disabled])) .step-buttons,
+    :host(:focus-within:not([disabled])) .step-buttons {
         opacity: 1;
     }
 
-    :host([appearance="filled"]) .root {
+    :host([appearance="filled"]) .control {
         background: var(--neutral-fill-rest);
     }
 
-    :host([appearance="filled"]:hover:not([disabled])) .root {
+    :host([appearance="filled"]:hover:not([disabled])) .control {
         background: var(--neutral-fill-hover);
     }
 
     :host([disabled]) .label,
     :host([readonly]) .label,
-    :host([readonly]) .control,
-    :host([disabled]) .control {
+    :host([readonly]) .input,
+    :host([disabled]) .input {
         cursor: not-allowed;
     }
 
@@ -156,7 +147,7 @@ const styles = css`
         opacity: var(--disabled-opacity);
     }
 
-    :host([disabled]) .control {
+    :host([disabled]) .input {
         border-color: var(--neutral-stroke-rest);
     }
 `;
@@ -165,8 +156,8 @@ FASTNumberField.define({
     name: "fast-number-field",
     styles,
     template: numberFieldTemplate({
-        stepDownGlyph: /* html */ `<span class="step-down-glyph" part="step-down-glyph"></span>`,
-        stepUpGlyph: /* html */ `<span class="step-up-glyph" part="step-up-glyph"></span>`,
+        stepDownIcon: /* html */ `<span class="step-down-icon" part="step-down-icon"></span>`,
+        stepUpIcon: /* html */ `<span class="step-up-icon" part="step-up-icon"></span>`,
     }),
     shadowOptions: {
         delegatesFocus: true,

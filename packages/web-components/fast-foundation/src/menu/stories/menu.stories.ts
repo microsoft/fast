@@ -148,22 +148,69 @@ MenuWithItemsWithIcons.args = {
     storyItems: [
         {
             storyContent: html`
-                <svg slot="start"><use href="#test-icon" /></svg>
+                <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
+                <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
                 Slotted start icon
             `,
         },
         {
             storyContent: html`
-                <svg slot="end"><use href="#test-icon" /></svg>
+                <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
+                <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
                 Slotted end icon
             `,
         },
         {
             storyContent: html`
-                <svg slot="start"><use href="#test-icon" /></svg>
-                <svg slot="end"><use href="#test-icon" /></svg>
+                <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
+                <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
                 Slotted start and end icons
             `,
         },
+    ],
+};
+
+export const MenuWithEverything = Menu.bind({});
+MenuWithEverything.args = {
+    storyItems: [
+        {
+            storyContent: html`
+                <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
+                <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
+                Menu Item 1
+            `,
+        },
+        {
+            storyContent: html`
+                <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
+                <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
+                Menu Item 2
+                ${repeat(x => x.storyItems, storyTemplate)}
+            `,
+            storyItems: [
+                {
+                    slot: "submenu",
+                    storyContent: storyContentTemplate,
+                    storyItems: [
+                        { storyContent: "Menu Item 2.1" },
+                        { storyContent: "Menu Item 2.2" },
+                        { storyContent: "Menu Item 2.3" },
+                    ],
+                },
+            ],
+        },
+        { template: dividerStoryTemplate },
+        { storyContent: html`
+            <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
+            <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
+            Checkbox 1
+        `, role: "menuitemcheckbox" },
+        { storyContent: "Checkbox 2", role: "menuitemcheckbox" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Radio 1.1", role: "menuitemradio" },
+        { storyContent: "Radio 1.2", role: "menuitemradio" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Radio 2.1", role: "menuitemradio" },
+        { storyContent: "Radio 2.2", role: "menuitemradio" },
     ],
 };

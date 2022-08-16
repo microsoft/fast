@@ -17,23 +17,18 @@ const styles = css`
         display: none;
     }
 
-    .link {
-        align-items: center;
-        color: var(--foreground-on-accent-rest);
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        min-width: 100%;
-        text-decoration: none;
-    }
-
     .backplate {
         display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
         position: relative;
         border-radius: 100%;
         min-width: 100%;
         overflow: hidden;
         background-color: var(--accent-fill-rest);
+        color: var(--foreground-on-accent-rest);
     }
 
     .media,

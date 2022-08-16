@@ -134,7 +134,7 @@ export const mySwitch = Switch.compose<SwitchOptions>({
 | Name                | Description                                                    |
 | ------------------- | -------------------------------------------------------------- |
 | `label`             | The label                                                      |
-| `switch`            | The element representing the switch, which wraps the indicator |
+| `control`           | The element representing the switch, which wraps the indicator |
 | `status-message`    | The wrapper for the status messages                            |
 | `checked-message`   | The checked message                                            |
 | `unchecked-message` | The unchecked message                                          |

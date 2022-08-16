@@ -26,7 +26,7 @@ import { SliderConfiguration, SliderMode } from "./slider.options.js";
  * @csspart positioning-region - The region used to position the elements of the slider
  * @csspart track-container - The region containing the track elements
  * @csspart track-start - The element wrapping the track start slot
- * @csspart thumb-container - The thumb container element which is programatically positioned
+ * @csspart thumb-position - The thumb container element which is programmatically positioned
  * @fires change - Fires a custom 'change' event when the slider value changes
  *
  * @public
@@ -55,7 +55,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     /**
      * @internal
      */
-    public thumb: HTMLDivElement;
+    public thumbPosition: HTMLDivElement;
 
     /**
      * @internal
@@ -369,10 +369,10 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         const eventAction = `${remove ? "remove" : "add"}EventListener`;
         this[eventAction]("keydown", this.keypressHandler);
         this[eventAction]("mousedown", this.handleMouseDown);
-        this.thumb[eventAction]("mousedown", this.handleThumbMouseDown, {
+        this.thumbPosition[eventAction]("mousedown", this.handleThumbMouseDown, {
             passive: true,
         });
-        this.thumb[eventAction]("touchstart", this.handleThumbMouseDown, {
+        this.thumbPosition[eventAction]("touchstart", this.handleThumbMouseDown, {
             passive: true,
         });
         // removes handlers attached by mousedown handlers

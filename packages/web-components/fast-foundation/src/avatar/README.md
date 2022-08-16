@@ -105,25 +105,11 @@ This component is built with the expectation that focus is delegated to the anch
 | ------------- | ------ | ----------------------- |
 | `FASTElement` |        | @microsoft/fast-element |
 
-#### Fields
-
-| Name   | Privacy | Type     | Default | Description                               | Inherited From |
-| ------ | ------- | -------- | ------- | ----------------------------------------- | -------------- |
-| `link` | public  | `string` |         | Indicates the Avatar should have url link |                |
-
-#### Attributes
-
-| Name   | Field | Inherited From |
-| ------ | ----- | -------------- |
-| `link` | link  |                |
-
 #### CSS Parts
 
 | Name        | Description                           |
 | ----------- | ------------------------------------- |
 | `backplate` | The wrapping container for the avatar |
-| `link`      | The avatar link                       |
-| `content`   | The default slot                      |
 
 #### Slots
 

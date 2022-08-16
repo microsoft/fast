@@ -1,5 +1,13 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
 import { FASTBreadcrumbItem } from "../breadcrumb-item/breadcrumb-item.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+
+/**
+ * Breadcrumb configuration options
+ * @public
+ */
+export type BreadcrumbOptions = StartEndOptions;
 
 /**
  * A Breadcrumb Custom HTML Element.
@@ -68,3 +76,12 @@ export class FASTBreadcrumb extends FASTElement {
         }
     }
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface FASTBreadcrumb extends StartEnd {}
+applyMixins(FASTBreadcrumb, StartEnd);

@@ -141,8 +141,8 @@ This component is built with the expectation that focus is delegated to the inpu
 | Name           | Description                                                     |
 | -------------- | --------------------------------------------------------------- |
 | `label`        | The label                                                       |
-| `root`         | The element wrapping the control, including start and end slots |
-| `control`      | The element representing the input                              |
+| `control`      | The element wrapping the control, including start and end slots |
+| `input`        | The element representing the input                              |
 | `clear-button` | The button to clear the input                                   |
 
 #### Slots

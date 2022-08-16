@@ -5,6 +5,6 @@ import type { SyntheticViewTemplate } from "@microsoft/fast-element";
  * @public
  */
 export type ProgressOptions = {
-    indeterminateIndicator1?: string | SyntheticViewTemplate;
-    indeterminateIndicator2?: string | SyntheticViewTemplate;
+    determinateIndicator?: string | SyntheticViewTemplate;
+    indeterminateIndicator?: string | SyntheticViewTemplate;
 };

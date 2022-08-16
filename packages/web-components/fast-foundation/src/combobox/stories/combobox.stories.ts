@@ -16,7 +16,9 @@ const storyTemplate = html<StoryArgs<FASTCombobox>>`
         placeholder="${x => x.placeholder}"
         value="${x => x.value}"
     >
+        <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
         ${x => x.storyContent}
+        <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
     </fast-combobox>
 `;
 

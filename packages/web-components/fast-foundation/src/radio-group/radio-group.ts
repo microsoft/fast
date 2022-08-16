@@ -17,7 +17,7 @@ import { getDirection } from "../utilities/direction.js";
  *
  * @slot label - The slot for the label
  * @slot - The default slot for radio buttons
- * @csspart positioning-region - The positioning region for laying out the radios
+ * @csspart radiogroup - The container for laying out the radios
  * @fires change - Fires a custom 'change' event when the value changes
  *
  * @public

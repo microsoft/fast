@@ -27,8 +27,8 @@ export type SearchOptions = StartEndOptions;
  * @slot clear-button - The clear button
  * @slot clear-glyph - The clear glyph
  * @csspart label - The label
- * @csspart root - The element wrapping the control, including start and end slots
- * @csspart control - The element representing the input
+ * @csspart control - The element wrapping the control, including start and end slots
+ * @csspart input - The element representing the input
  * @csspart clear-button - The button to clear the input
  *
  * @public
@@ -174,16 +174,10 @@ export class FASTSearch extends FormAssociatedSearch {
     public defaultSlottedNodes: Node[];
 
     /**
-     * A reference to the internal close button element
-     * @internal
-     */
-    public root: HTMLDivElement;
-
-    /**
      * A reference to the internal input element
      * @internal
      */
-    public control: HTMLInputElement;
+    public input: HTMLInputElement;
 
     /**
      * @internal
@@ -202,15 +196,15 @@ export class FASTSearch extends FormAssociatedSearch {
 
     /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
-        super.validate(this.control);
+        super.validate(this.input);
     }
 
     /**
-     * Handles the internal control's `input` event
+     * Handles the internal input's `input` event
      * @internal
      */
     public handleTextInput(): void {
-        this.value = this.control.value;
+        this.value = this.input.value;
     }
 
     /**
@@ -219,7 +213,7 @@ export class FASTSearch extends FormAssociatedSearch {
      */
     public handleClearInput(): void {
         this.value = "";
-        this.control.focus();
+        this.input.focus();
         this.handleChange();
     }
 

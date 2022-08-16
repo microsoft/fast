@@ -14,9 +14,6 @@ const styles = css`
         min-width: calc(var(--height-number) * 1px);
         outline: none;
         color: var(--neutral-foreground-rest);
-    }
-
-    .listitem {
         display: flex;
         align-items: center;
         width: max-content;
@@ -84,22 +81,23 @@ const styles = css`
         background: none;
     }
 
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]),
+    .content {
+        align-self: center;
+    }
+
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
         display: flex;
     }
 
-    ::slotted(svg) {
-        width: 16px;
-        height: 16px;
+    ::slotted([slot="start"]) {
+        margin-inline-end: 11px;
     }
 
-    .start {
-        margin-inline-end: 6px;
-    }
-
-    .end {
-        margin-inline-start: 6px;
+    ::slotted([slot="end"]) {
+        margin-inline-start: 11px;
     }
 `;
 

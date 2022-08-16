@@ -10,7 +10,6 @@ export function listboxTemplate<T extends FASTListboxElement>(): ElementViewTemp
         <template
             aria-activedescendant="${x => x.ariaActiveDescendant}"
             aria-multiselectable="${x => x.ariaMultiSelectable}"
-            class="listbox"
             role="listbox"
             tabindex="${x => (!x.disabled ? "0" : null)}"
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"

@@ -15,34 +15,36 @@ const styles = css`
         fill: currentcolor;
         padding: var(--toolbar-item-gap);
     }
+
     :host(var(--focus-visible)) {
         outline: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-focus);
     }
-    .positioning-region {
+
+    .toolbar {
         align-items: flex-start;
         display: inline-flex;
         flex-flow: row wrap;
         justify-content: flex-start;
     }
-    :host([orientation="vertical"]) .positioning-region {
+
+    :host([orientation="vertical"]) .toolbar {
         flex-direction: column;
     }
+
     ::slotted(:not([slot])) {
         flex: 0 0 auto;
         margin: 0 var(--toolbar-item-gap);
     }
+
     :host([orientation="vertical"]) ::slotted(:not([slot])) {
         margin: var(--toolbar-item-gap) 0;
     }
-    .start,
-    .end {
+
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
         display: flex;
         margin: auto;
         margin-inline: 0;
-    }
-    ::slotted(svg) {
-        width: 16px;
-        height: 16px;
     }
 `;
 

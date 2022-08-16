@@ -161,14 +161,14 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### CSS Parts
 
-| Name        | Description                                                     |
-| ----------- | --------------------------------------------------------------- |
-| `label`     | The label                                                       |
-| `root`      | The element wrapping the control, including start and end slots |
-| `control`   | The element representing the input                              |
-| `controls`  | The step up and step down controls                              |
-| `step-up`   | The step up control                                             |
-| `step-down` | The step down control                                           |
+| Name           | Description                                                     |
+| -------------- | --------------------------------------------------------------- |
+| `label`        | The label                                                       |
+| `root`         | The element wrapping the control, including start and end slots |
+| `input`        | The element representing the input                              |
+| `step-buttons` | The step up and step down controls                              |
+| `step-up`      | The step up control                                             |
+| `step-down`    | The step down control                                           |
 
 #### Slots
 

@@ -7,7 +7,7 @@ import { FormAssociatedSwitch } from "./switch.form-associated.js";
  * @public
  */
 export type SwitchOptions = {
-    switch?: string | SyntheticViewTemplate;
+    control?: string | SyntheticViewTemplate;
 };
 
 /**
@@ -18,7 +18,7 @@ export type SwitchOptions = {
  * @slot checked-message - The message when in a checked state
  * @slot unchecked-message - The message when in an unchecked state
  * @csspart label - The label
- * @csspart switch - The element representing the switch, which wraps the indicator
+ * @csspart control - The element representing the switch, which wraps the indicator
  * @csspart status-message - The wrapper for the status messages
  * @csspart checked-message - The checked message
  * @csspart unchecked-message - The unchecked message

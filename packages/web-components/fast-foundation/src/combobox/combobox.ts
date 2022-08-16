@@ -14,7 +14,7 @@ import { ComboboxAutocomplete } from "./combobox.options.js";
  * @public
  */
 export type ComboboxOptions = StartEndOptions & {
-    indicator?: string | SyntheticViewTemplate;
+    openIcon?: string | SyntheticViewTemplate;
 };
 
 /**

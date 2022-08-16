@@ -23,12 +23,23 @@ const styles = css`
         position: relative;
         width: max-content;
         align-self: end;
-        padding: calc(var(--design-unit) * 4px) calc(var(--design-unit) * 4px) 0;
+        padding: calc(var(--design-unit) * 4px) 0;
         box-sizing: border-box;
     }
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]),
+    .content {
         align-self: center;
+    }
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
+        display: flex;
+    }
+    ::slotted([slot="start"]) {
+        margin-inline-end: 11px;
+    }
+    ::slotted([slot="end"]) {
+        margin-inline-start: 11px;
     }
     .active-indicator {
         grid-row: 2;

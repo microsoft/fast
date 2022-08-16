@@ -38,11 +38,11 @@ const styles = css`
         grid-template-columns: calc(var(--thumb-size) * 1px) 1fr;
     }
 
-    :host(:focus-visible) .thumb-cursor {
+    :host(:focus-visible) .thumb {
         box-shadow: 0 0 0 2px var(--fill-color), 0 0 0 4px var(--focus-stroke-outer);
     }
 
-    .thumb-container {
+    .thumb-position {
         position: absolute;
         height: calc(var(--thumb-size) * 1px);
         width: calc(var(--thumb-size) * 1px);
@@ -50,18 +50,18 @@ const styles = css`
         color: var(--neutral-foreground-rest);
         fill: currentcolor;
     }
-    .thumb-cursor {
+    .thumb {
         border: none;
         width: calc(var(--thumb-size) * 1px);
         height: calc(var(--thumb-size) * 1px);
         background: var(--neutral-foreground-rest);
         border-radius: calc(var(--control-corner-radius) * 1px);
     }
-    .thumb-cursor:hover {
+    .thumb:hover {
         background: var(--neutral-foreground-rest);
         border-color: var(--neutral-stroke-hover);
     }
-    .thumb-cursor:active {
+    .thumb:active {
         background: var(--neutral-foreground-rest);
     }
     .track-start {
@@ -74,11 +74,11 @@ const styles = css`
     .track-start {
         left: 0;
     }
-    :host([orientation="horizontal"]) .thumb-container {
+    :host([orientation="horizontal"]) .thumb-position {
         transform: translateX(calc(var(--thumb-size) * 0.5px))
             translateY(calc(var(--thumb-translate) * 1px));
     }
-    :host([orientation="vertical"]) .thumb-container {
+    :host([orientation="vertical"]) .thumb-position {
         transform: translateX(calc(var(--thumb-translate) * 1px))
             translateY(calc(var(--thumb-size) * 0.5px));
     }
@@ -125,8 +125,6 @@ const styles = css`
 
 FASTSlider.define({
     name: "fast-slider",
-    template: sliderTemplate({
-        thumb: /* html */ `<div class="thumb-cursor"></div>`,
-    }),
+    template: sliderTemplate(),
     styles,
 });

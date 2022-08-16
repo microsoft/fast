@@ -66,7 +66,7 @@ const styles = css`
         margin-inline-start: 10px;
     }
 
-    :host(.indent-0) .expand-collapse-glyph-container {
+    :host(.indent-0) .submenu-icon {
         grid-column: 5;
         grid-row: 1;
     }
@@ -83,16 +83,16 @@ const styles = css`
         margin-inline-start: 10px;
     }
 
-    :host(.indent-2) .expand-collapse-glyph-container {
+    :host(.indent-2) .submenu-icon {
         grid-column: 5;
         grid-row: 1;
     }
 
-    :host(.indent-2) .start {
+    :host(.indent-2) slot[name="start"] {
         grid-column: 2;
     }
 
-    :host(.indent-2) .end {
+    :host(.indent-2) slot[name="end"] {
         grid-column: 4;
     }
 
@@ -112,33 +112,27 @@ const styles = css`
         background: var(--neutral-fill-stealth-rest);
     }
 
-    :host([disabled]:hover) .start,
-    :host([disabled]:hover) .end,
+    :host([disabled]:hover) slot[name="start"],
+    :host([disabled]:hover) slot[name="end"],
     :host([disabled]:hover)::slotted(svg) {
         fill: var(--neutral-foreground-rest);
-    }
-
-    .expand-collapse-glyph,
-    ::slotted(svg) {
-        width: 16px;
-        height: 16px;
     }
 
     ::slotted(svg) {
         fill: currentcolor;
     }
 
-    .start,
-    .end {
+    slot[name="start"],
+    slot[name="end"] {
         display: flex;
         justify-content: center;
     }
 
-    :host(:hover) .start,
-    :host(:hover) .end,
+    :host(:hover) slot[name="start"],
+    :host(:hover) slot[name="end"],
     :host(:hover)::slotted(svg),
-    :host(:active) .start,
-    :host(:active) .end,
+    :host(:active) slot[name="start"],
+    :host(:active) slot[name="end"],
     :host(:active)::slotted(svg) {
         fill: var(--neutral-foreground-rest);
     }
@@ -153,20 +147,8 @@ const styles = css`
         min-height: 32px;
     }
 
-    :host(.indent-2:not([aria-haspopup="menu"])) .end {
+    :host(.indent-2:not([aria-haspopup="menu"])) slot[name="end"] {
         grid-column: 5;
-    }
-
-    .input-container,
-    .expand-collapse-glyph-container {
-        display: none;
-    }
-
-    :host([aria-haspopup="menu"]) .expand-collapse-glyph-container,
-    :host([role="menuitemcheckbox"]) .input-container,
-    :host([role="menuitemradio"]) .input-container {
-        display: grid;
-        margin-inline-end: 10px;
     }
 
     :host([aria-haspopup="menu"]) .content,
@@ -179,52 +161,24 @@ const styles = css`
         grid-column-start: 1;
     }
 
-    :host([aria-haspopup="menu"]) .end,
-    :host([role="menuitemcheckbox"]) .end,
-    :host([role="menuitemradio"]) .end {
+    :host([aria-haspopup="menu"]) slot[name="end"],
+    :host([role="menuitemcheckbox"]) slot[name="end"],
+    :host([role="menuitemradio"]) slot[name="end"] {
         grid-column-start: 4;
-    }
-
-    .expand-collapse,
-    .checkbox,
-    .radio {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        width: 20px;
-        height: 20px;
-        box-sizing: border-box;
-        outline: none;
-        margin-inline-start: 10px;
-    }
-
-    .checkbox,
-    .radio {
-        border: calc(var(--stroke-width) * 1px) solid var(--neutral-foreground-rest);
-    }
-
-    :host([aria-checked="true"]) .checkbox,
-    :host([aria-checked="true"]) .radio {
-        background: var(--accent-fill-rest);
-        border-color: var(--accent-fill-rest);
-    }
-
-    .checkbox {
-        border-radius: calc(var(--control-corner-radius) * 1px);
-    }
-
-    .radio {
-        border-radius: 999px;
     }
 
     .checkbox-indicator,
     .radio-indicator,
-    .expand-collapse-indicator,
-    ::slotted([slot="checkbox-indicator"]),
-    ::slotted([slot="radio-indicator"]),
-    ::slotted([slot="expand-collapse-indicator"]) {
-        display: none;
+    .submenu-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        box-sizing: border-box;
+        margin-inline: 10px;
+        height: 100%;
+        pointer-events: none;
+        width: 100%;
     }
 
     ::slotted([slot="end"]:not(svg)) {
@@ -232,30 +186,14 @@ const styles = css`
         margin-inline-end: 10px;
     }
 
+    .checkbox-indicator,
+    .radio-indicator {
+        display: none;
+    }
+
     :host([aria-checked="true"]) .checkbox-indicator,
-    :host([aria-checked="true"]) ::slotted([slot="checkbox-indicator"]) {
-        display: block;
-        fill: var(--foreground-on-accent-rest);
-        height: 100%;
-        pointer-events: none;
-        width: 100%;
-    }
-
     :host([aria-checked="true"]) .radio-indicator {
-        background: var(--foreground-on-accent-rest);
-        border-radius: 999px;
-        bottom: 4px;
-        display: block;
-        left: 4px;
-        pointer-events: none;
-        position: absolute;
-        right: 4px;
-        top: 4px;
-    }
-
-    :host([aria-checked="true"]) ::slotted([slot="radio-indicator"]) {
-        display: block;
-        pointer-events: none;
+        display: flex;
     }
 `;
 
@@ -263,29 +201,6 @@ FASTMenuItem.define({
     name: "fast-menu-item",
     template: menuItemTemplate({
         anchoredRegion: "fast-anchored-region",
-        checkboxIndicator: /* html */ `
-            <svg
-                part="checkbox-indicator"
-                class="checkbox-indicator"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <path fill-rule="evenodd" clip-rule="evenodd" d="m8.1 12.7 7.1-8.2 1.6 1.4-8.6 9.9-4.4-4.5 1.5-1.5L8 12.7Z"/>
-            </svg>
-        `,
-        expandCollapseGlyph: /* html */ `
-            <svg
-                viewBox="0 0 16 16"
-                xmlns="http://www.w3.org/2000/svg"
-                class="expand-collapse-glyph"
-                part="expand-collapse-glyph"
-            >
-                <path d="M5 12.3a1 1 0 0 0 1.6.8L11 8.8a1.5 1.5 0 0 0 0-2.3L6.6 2.2A1 1 0 0 0 5 3v9.3Z"/>
-            </svg>
-        `,
-        radioIndicator: /* html */ `
-            <span part="radio-indicator" class="radio-indicator"></span>
-        `,
     }),
     styles,
 });

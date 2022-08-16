@@ -21,24 +21,23 @@ export function progressTemplate<T extends FASTProgress>(
             ${when(
                 x => typeof x.value === "number",
                 html<T>`
-                    <div class="progress" part="progress" slot="determinate">
-                        <div
-                            class="determinate"
-                            part="determinate"
-                            style="width: ${x => x.percentComplete}%"
-                        ></div>
-                    </div>
+                    <span
+                        class="determinate"
+                        part="determinate"
+                        style="--percent-complete: ${x => x.percentComplete}"
+                    >
+                        ${options.determinateIndicator ||
+                        `<div class="indicator" part="indicator"></div>`}
+                    </span>
                 `
             )}
             ${when(
                 x => typeof x.value !== "number",
-                html<T>`
-                    <div class="progress" part="progress" slot="indeterminate">
-                        <slot name="indeterminate">
-                            ${options.indeterminateIndicator1 ?? ""}
-                            ${options.indeterminateIndicator2 ?? ""}
-                        </slot>
-                    </div>
+                html<FASTProgress>`
+                    <span class="indeterminate" part="indeterminate">
+                        ${options.indeterminateIndicator ||
+                        `<div class="indicator" part="indicator"></div>`}
+                    </span>
                 `
             )}
         </template>

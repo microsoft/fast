@@ -13,7 +13,9 @@ export function tabTemplate<T extends FASTTab>(
     return html<T>`
         <template slot="tab" role="tab" aria-disabled="${x => x.disabled}">
             ${startSlotTemplate(options)}
-            <slot></slot>
+            <span class="content" part="content">
+                <slot></slot>
+            </span>
             ${endSlotTemplate(options)}
         </template>
     `;

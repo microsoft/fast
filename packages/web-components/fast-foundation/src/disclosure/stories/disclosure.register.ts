@@ -3,13 +3,13 @@ import { FASTDisclosure } from "../disclosure.js";
 import { disclosureTemplate } from "../disclosure.template.js";
 
 const styles = css`
-    .disclosure {
+    .details {
         transition: height 0.35s;
     }
-    .invoker::-webkit-details-marker {
+    .summary::-webkit-details-marker {
         display: none;
     }
-    .invoker {
+    .summary {
         list-style-type: none;
         background: var(--accent-fill-rest);
         color: var(--foreground-accent-rest);
@@ -22,16 +22,16 @@ const styles = css`
         padding: 12px;
         max-width: max-content;
     }
-    .invoker:focus-visible,
-    .invoker:active {
+    .summary:focus-visible,
+    .summary:active {
         background: var(--accent-fill-active);
         color: var(--foreground-accent-active);
     }
-    .invoker:hover {
+    .summary:hover {
         background: var(--accent-fill-hover);
         color: var(--foreground-on-accent-hover);
     }
-    .invoker {
+    .summary {
         background: transparent;
         color: var(--accent-foreground-rest);
         cursor: pointer;
@@ -39,7 +39,7 @@ const styles = css`
         margin: 16px 0;
     }
 
-    .disclosure[open] .invoker ~ * {
+    .details[open] .summary ~ * {
         animation: fadeIn 0.5s ease-in-out;
     }
 

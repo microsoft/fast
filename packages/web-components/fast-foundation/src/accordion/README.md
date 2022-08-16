@@ -140,12 +140,6 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | ------------- | ---------- | -------------- |
 | `expand-mode` | expandmode |                |
 
-#### CSS Parts
-
-| Name   | Description                      |
-| ------ | -------------------------------- |
-| `item` | The slot for the accordion items |
-
 <hr/>
 
 

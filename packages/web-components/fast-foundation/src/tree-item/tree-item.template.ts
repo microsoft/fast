@@ -3,6 +3,10 @@ import { children, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { FASTTreeItem, TreeItemOptions } from "./tree-item.js";
 
+const expandCollapseIcon = `<svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4.65 2.15a.5.5 0 0 0 0 .7L7.79 6 4.65 9.15a.5.5 0 1 0 .7.7l3.5-3.5a.5.5 0 0 0 0-.7l-3.5-3.5a.5.5 0 0 0-.7 0Z"/>
+</svg>`;
+
 /**
  * The template for the {@link @microsoft/fast-foundation#(FASTTreeItem:class)} component.
  * @public
@@ -34,31 +38,34 @@ export function treeItemTemplate<T extends FASTTreeItem>(
                 filter: elements(),
             })}
         >
-            <div class="positioning-region" part="positioning-region">
-                <div class="content-region" part="content-region">
-                    ${when(
-                        x => x.childItems && x.childItemLength(),
-                        html<T>`
-                            <div
-                                aria-hidden="true"
-                                class="expand-collapse-button"
-                                part="expand-collapse-button"
-                                @click="${(x, c) =>
-                                    x.handleExpandCollapseButtonClick(
-                                        c.event as MouseEvent
-                                    )}"
-                                ${ref("expandCollapseButton")}
+            <div class="treeitem" part="treeitem">
+                ${when(
+                    x => x.childItems && x.childItemLength(),
+                    html<T>`
+                        <div
+                            aria-hidden="true"
+                            class="expand-collapse-button"
+                            part="expand-collapse-button"
+                            @click="${(x, c) =>
+                                x.handleExpandCollapseButtonClick(c.event as MouseEvent)}"
+                            ${ref("expandCollapseButton")}
+                        >
+                            <span
+                                class="expand-collapse-icon"
+                                part="expand-collapse-icon"
                             >
-                                <slot name="expand-collapse-glyph">
-                                    ${options.expandCollapseGlyph ?? ""}
+                                <slot name="expand-collapse-icon">
+                                    ${options.expandCollapseIcon ?? expandCollapseIcon}
                                 </slot>
-                            </div>
-                        `
-                    )}
-                    ${startSlotTemplate(options)}
+                            </span>
+                        </div>
+                    `
+                )}
+                ${startSlotTemplate(options)}
+                <span class="content" part="content">
                     <slot></slot>
-                    ${endSlotTemplate(options)}
-                </div>
+                </span>
+                ${endSlotTemplate(options)}
             </div>
             ${when(
                 x => x.childItems && x.childItemLength() && x.expanded,

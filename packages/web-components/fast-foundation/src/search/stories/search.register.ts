@@ -8,33 +8,29 @@ const styles = css`
     }
     :host {
         display: inline-block;
-    }
-
-    :host {
         font-family: var(--body-font);
         outline: none;
         user-select: none;
     }
-    .root {
+    .control {
         box-sizing: border-box;
         position: relative;
         display: flex;
         flex-direction: row;
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-input-rest);
-        border-radius: calc(var(--control-corner-radius) * 1px);
+        border-radius: calc(var(--input-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         height: calc(var(--height-number) * 1px);
         align-items: baseline;
     }
-    .control {
+    .input {
         -webkit-appearance: none;
         font: inherit;
         background: transparent;
         border: 0;
         color: inherit;
         height: calc(100% - 4px);
-        width: 100%;
         margin-top: auto;
         margin-bottom: auto;
         border: none;
@@ -42,13 +38,13 @@ const styles = css`
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
     }
-    .control::-webkit-search-cancel-button {
+    .input::-webkit-search-cancel-button {
         -webkit-appearance: none;
     }
-    .control:hover,
-    .control:focus-visible,
-    .control:disabled,
-    .control:active {
+    .input:hover,
+    .input:focus-visible,
+    .input:disabled,
+    .input:active {
         outline: none;
     }
     .clear-button {
@@ -59,7 +55,7 @@ const styles = css`
         color: var(--neutral-foreground-rest);
         fill: currentcolor;
         border: none;
-        border-radius: calc(var(--control-corner-radius) * 1px);
+        border-radius: calc(var(--input-corner-radius) * 1px);
         min-width: calc(var(--height-number) * 1px);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
@@ -79,12 +75,6 @@ const styles = css`
     :host([appearance="filled"]) .clear-button:active {
         background: var(--clear-button-active);
     }
-    .input-wrapper {
-        display: flex;
-        position: relative;
-        width: 100%;
-        height: 100%;
-    }
     .label {
         display: block;
         color: var(--neutral-foreground-rest);
@@ -97,41 +87,25 @@ const styles = css`
         display: none;
         visibility: hidden;
     }
-    .input-wrapper,
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]),
+    .input {
         align-self: center;
     }
-    .start,
-    .end {
-        display: flex;
-        margin: 1px;
-        fill: currentcolor;
-    }
+    ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
-        height: 100%;
+        display: flex;
+        margin-inline: 11px;
     }
-    .end {
-        margin-inline-end: 1px;
-        height: calc(100% - 2px);
-    }
-    ::slotted(svg) {
-        width: 16px;
-        height: 16px;
-        margin-inline-end: 11px;
-        margin-inline-start: 11px;
-        margin-top: auto;
-        margin-bottom: auto;
-    }
-    :host(:hover:not([disabled])) .root {
+    :host(:hover:not([disabled])) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--accent-fill-hover);
     }
-    :host(:active:not([disabled])) .root {
+    :host(:active:not([disabled])) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--accent-fill-active);
     }
-    :host(:focus-within:not([disabled])) .root {
+    :host(:focus-within:not([disabled])) .control {
         border-color: var(--focus-stroke-outer);
         box-shadow: 0 0 0 1px var(--focus-stroke-outer) inset;
     }
@@ -148,22 +122,22 @@ const styles = css`
     :host(:focus-within:not([disabled], [readonly])) .clear-button__hidden {
         opacity: 0;
     }
-    :host([appearance="filled"]) .root {
+    :host([appearance="filled"]) .control {
         background: var(--fill-color);
     }
-    :host([appearance="filled"]:hover:not([disabled])) .root {
+    :host([appearance="filled"]:hover:not([disabled])) .control {
         background: var(--neutral-fill-hover);
     }
     :host([disabled]) .label,
     :host([readonly]) .label,
-    :host([readonly]) .control,
-    :host([disabled]) .control {
+    :host([readonly]) .input,
+    :host([disabled]) .input {
         cursor: var(--disabled-cursor);
     }
     :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
-    :host([disabled]) .control {
+    :host([disabled]) .input {
         border-color: var(--neutral-stroke-rest);
     }
 `;

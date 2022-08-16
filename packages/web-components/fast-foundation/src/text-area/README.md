@@ -153,11 +153,11 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### CSS Parts
 
-| Name      | Description                      |
-| --------- | -------------------------------- |
-| `label`   | The label                        |
-| `root`    | The element wrapping the control |
-| `control` | The textarea element             |
+| Name    | Description                    |
+| ------- | ------------------------------ |
+| `label` | The label                      |
+| `root`  | The element wrapping the input |
+| `input` | The textarea element           |
 
 #### Slots
 

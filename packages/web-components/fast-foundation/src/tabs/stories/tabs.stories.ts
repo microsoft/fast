@@ -12,7 +12,9 @@ const storyTemplate = html<StoryArgs<FASTTabs>>`
         activeid="${x => x.activeid}"
         orientation="${x => x.orientation}"
     >
+        <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
         ${x => x.storyContent}
+        <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
     </fast-tabs>
 `;
 

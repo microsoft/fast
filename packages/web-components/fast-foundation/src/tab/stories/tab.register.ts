@@ -31,6 +31,27 @@ const styles = css`
         color: var(--neutral-foreground-rest);
         fill: currentcolor;
     }
+    slot:not([name]) {
+        display: block;
+        max-width: 100px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
+        align-self: center;
+    }
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
+        display: flex;
+    }
+    ::slotted([slot="start"]) {
+        margin-inline-end: 11px;
+    }
+    ::slotted([slot="end"]) {
+        margin-inline-start: 11px;
+    }
     :host([disabled]) {
         cursor: var(--disabled-cursor);
         opacity: var(--disabled-opacity);

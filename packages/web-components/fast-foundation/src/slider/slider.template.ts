@@ -26,7 +26,7 @@ export function sliderTemplate<T extends FASTSlider>(
             class="${x => x.orientation}"
         >
             <div part="positioning-region" class="positioning-region">
-                <div ${ref("track")} part="track-container" class="track">
+                <div ${ref("track")} part="track" class="track">
                     <slot name="track"></slot>
                     <div
                         part="track-start"
@@ -38,12 +38,14 @@ export function sliderTemplate<T extends FASTSlider>(
                 </div>
                 <slot></slot>
                 <div
-                    ${ref("thumb")}
-                    part="thumb-container"
-                    class="thumb-container"
+                    ${ref("thumbPosition")}
+                    part="thumb-position"
+                    class="thumb-position"
                     style="${x => x.position}"
                 >
-                    <slot name="thumb">${options.thumb ?? ""}</slot>
+                    <slot name="thumb">
+                        ${options.thumb || `<div class="thumb"></div>`}
+                    </slot>
                 </div>
             </div>
         </template>

@@ -1,4 +1,12 @@
 import { FASTElement } from "@microsoft/fast-element";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+
+/**
+ * Badge configuration options
+ * @public
+ */
+export type BadgeOptions = StartEndOptions;
 
 /**
  * A Badge Custom HTML Element.
@@ -8,3 +16,12 @@ import { FASTElement } from "@microsoft/fast-element";
  * @public
  */
 export class FASTBadge extends FASTElement {}
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface FASTBadge extends StartEnd {}
+applyMixins(FASTBadge, StartEnd);

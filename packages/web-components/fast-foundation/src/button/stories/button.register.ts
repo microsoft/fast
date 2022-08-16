@@ -67,33 +67,27 @@ const styles = css`
         border: 0;
     }
 
-    .start,
-    .content,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]),
+    .content {
         align-self: center;
     }
 
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
         display: flex;
     }
 
     .control.icon-only {
-        padding: 0;
         line-height: 0;
+        padding: 0;
     }
 
-    ::slotted(svg) {
-        height: 16px;
-        pointer-events: none;
-        width: 16px;
-    }
-
-    .start {
+    ::slotted([slot="start"]) {
         margin-inline-end: 11px;
     }
 
-    .end {
+    ::slotted([slot="end"]) {
         margin-inline-start: 11px;
     }
 `;

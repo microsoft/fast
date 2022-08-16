@@ -35,7 +35,7 @@ export class FASTSliderLabel extends FASTElement {
     /**
      * @internal
      */
-    public root: HTMLDivElement;
+    public container: HTMLDivElement;
 
     /**
      * The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#(FASTSlider:class)}.

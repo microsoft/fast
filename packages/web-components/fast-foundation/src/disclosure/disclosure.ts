@@ -1,4 +1,13 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+
+/**
+ * Disclosure configuration options
+ * @public
+ */
+export type DisclosureOptions = StartEndOptions;
+
 /**
  * A Disclosure Custom HTML Element.
  * Based largely on the {@link https://w3c.github.io/aria-practices/#disclosure | disclosure element }.
@@ -89,3 +98,12 @@ export class FASTDisclosure extends FASTElement {
         this.$emit("toggle");
     }
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface FASTDisclosure extends StartEnd {}
+applyMixins(FASTDisclosure, StartEnd);

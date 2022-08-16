@@ -26,11 +26,15 @@ export const Accordion: Story<FASTAccordion> = renderComponent(storyTemplate).bi
 Accordion.args = {
     storyContent: html`
         <fast-accordion-item>
-            <div slot="heading">Accordion Item 1 Heading</div>
+            <fast-badge slot="start">start</fast-badge>
+            <span slot="heading">Accordion Item 1 Heading</span>
+            <fast-badge slot="end">end</fast-badge>
             Accordion Item 1 Content
         </fast-accordion-item>
         <fast-accordion-item>
-            <div slot="heading">Accordion Item 2 Heading</div>
+            <fast-badge slot="start">start</fast-badge>
+            <span slot="heading">Accordion Item 2 Heading</span>
+            <fast-badge slot="end">end</fast-badge>
             <fast-checkbox>A checkbox as content</fast-checkbox>
         </fast-accordion-item>
     `,

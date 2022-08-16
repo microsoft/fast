@@ -69,22 +69,14 @@ const styles = css`
         background-color: inherit;
     }
 
-    .content {
-        grid-column-start: 2;
+    ::slotted(*) {
         justify-self: start;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    .start,
-    .end,
     ::slotted(svg) {
         display: flex;
-    }
-
-    ::slotted(svg) {
-        height: calc(var(--design-unit) * 4px);
-        width: calc(var(--design-unit) * 4px);
     }
 
     ::slotted([slot="end"]) {

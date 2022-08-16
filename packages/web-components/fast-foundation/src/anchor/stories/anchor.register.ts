@@ -21,6 +21,14 @@ const styles = css`
         outline: none;
     }
 
+    :host(:hover) {
+        background-color: var(--neutral-fill-hover);
+    }
+
+    :host(:active) {
+        background-color: var(--neutral-fill-active);
+    }
+
     .control {
         all: inherit;
         background: transparent;
@@ -36,14 +44,6 @@ const styles = css`
         border: calc(var(--stroke-width) * 1px) solid transparent;
     }
 
-    :host(:hover) {
-        background-color: var(--neutral-fill-hover);
-    }
-
-    :host(:active) {
-        background-color: var(--neutral-fill-active);
-    }
-
     .control:focus-visible {
         border-color: var(--focus-stroke-outer);
         box-shadow: 0 0 0 var(--shadow-spread) var(--focus-stroke-outer) inset;
@@ -53,14 +53,14 @@ const styles = css`
         border: 0;
     }
 
-    .start,
-    .content,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]),
+    .content {
         align-self: center;
     }
 
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
         display: flex;
     }
 
@@ -69,17 +69,11 @@ const styles = css`
         padding: 0;
     }
 
-    ::slotted(svg) {
-        height: 16px;
-        pointer-events: none;
-        width: 16px;
-    }
-
-    .start {
+    ::slotted([slot="start"]) {
         margin-inline-end: 11px;
     }
 
-    .end {
+    ::slotted([slot="end"]) {
         margin-inline-start: 11px;
     }
 

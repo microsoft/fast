@@ -9,15 +9,12 @@ const styles = css`
         color: var(--neutral-foreground-rest);
         fill: currentcolor;
     }
-    .root {
-        position: absolute;
-        display: grid;
-    }
     .container {
+        position: absolute;
         display: grid;
         justify-self: center;
     }
-    .label {
+    .content {
         justify-self: center;
         align-self: center;
         white-space: nowrap;
@@ -46,7 +43,7 @@ const horizontalSliderLabelStyles = css`
         grid-template-rows: auto auto;
         grid-template-columns: 0;
     }
-    .label {
+    .content {
         margin: 2px 0;
     }
 `;
@@ -69,7 +66,7 @@ const verticalSliderLabelStyles = css`
         transform: rotate(90deg);
         align-self: center;
     }
-    .label {
+    .content {
         margin-left: calc((var(--design-unit) / 2) * 3px);
         align-self: center;
     }

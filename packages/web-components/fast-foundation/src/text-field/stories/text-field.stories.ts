@@ -41,7 +41,9 @@ const storyTemplate = html<StoryArgs<FASTTextField>>`
         :ariaRelevant="${x => x.ariaRelevant}"
         :ariaRoledescription="${x => x.ariaRoledescription}"
     >
+        <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
         ${x => x.storyContent}
+        <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
     </fast-text-field>
 `;
 
