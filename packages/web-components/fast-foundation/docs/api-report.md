@@ -485,11 +485,12 @@ export class DesignToken<T> {
     deleteValueFor(target: FASTElement): this;
     getValueFor(target: FASTElement): T;
     name: string;
-    static registerRoot(target?: FASTElement | Document): void;
+    // Warning: (ae-forgotten-export) The symbol "PropertyTarget" needs to be exported by the entry point index.d.ts
+    static registerRoot(target?: FASTElement | Document | PropertyTarget): void;
     // Warning: (ae-forgotten-export) The symbol "DesignTokenValue" needs to be exported by the entry point index.d.ts
     setValueFor(target: FASTElement, value: DesignToken<T> | DesignTokenValue<T>): void;
     subscribe(subscriber: DesignTokenSubscriber<this>): void;
-    static unregisterRoot(target?: FASTElement | Document): void;
+    static unregisterRoot(target?: FASTElement | Document | PropertyTarget): void;
     unsubscribe(subscriber: DesignTokenSubscriber<this>): void;
     withDefault(value: DesignToken<T> | DesignTokenValue<T>): this;
     // Warning: (ae-forgotten-export) The symbol "DesignTokenResolutionStrategy" needs to be exported by the entry point index.d.ts
