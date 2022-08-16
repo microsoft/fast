@@ -2,7 +2,6 @@
  * Big thanks to https://github.com/fkleuver and the https://github.com/aurelia/aurelia project
  * for the bulk of this code and many of the associated tests.
  */
-import { FASTElement } from "../components/fast-element.js";
 import { Context, ContextDecorator, ContextEvent, UnknownContext } from "../context.js";
 import { Class, Constructable, Message } from "../interfaces.js";
 import { Metadata } from "../metadata.js";
@@ -777,8 +776,13 @@ export const DI = Object.freeze({
                     value = container.get(key);
                     this[diPropertyKey] = value;
 
-                    if (respectConnection && this instanceof FASTElement) {
-                        const notifier = (this as FASTElement).$fastController;
+                    if (respectConnection) {
+                        const notifier = (this as any).$fastController;
+
+                        if (!notifier) {
+                            throw FAST.error(Message.connectUpdateRequiresController);
+                        }
+
                         const handleChange = () => {
                             const newContainer = DI.findResponsibleContainer(this);
                             const newValue = newContainer.get(key) as any;
