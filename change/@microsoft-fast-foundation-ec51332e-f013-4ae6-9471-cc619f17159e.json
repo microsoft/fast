@@ -3,5 +3,5 @@
   "comment": "chore: call change when clear button is clicked",
   "packageName": "@microsoft/fast-foundation",
   "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
