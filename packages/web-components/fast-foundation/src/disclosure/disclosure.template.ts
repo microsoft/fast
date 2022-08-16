@@ -10,18 +10,23 @@ export function disclosureTemplate<T extends FASTDisclosure>(
     options: DisclosureOptions = {}
 ): ElementViewTemplate<T> {
     return html<T>`
-        <details class="disclosure" ${ref("details")}>
+        <details class="details" part="details" ${ref("details")}>
             <summary
-                class="invoker"
+                class="summary"
                 role="button"
-                aria-controls="disclosure-content"
+                part="summary"
+                aria-controls="content"
                 aria-expanded="${x => x.expanded}"
             >
                 ${startSlotTemplate(options)}
-                <slot name="summary">${x => x.summary}</slot>
+                <span class="summary-content" part="summary-content">
+                    <slot name="summary">${x => x.summary}</slot>
+                </span>
                 ${endSlotTemplate(options)}
             </summary>
-            <div id="disclosure-content"><slot></slot></div>
+            <div id="content" class="content" part="content">
+                <slot></slot>
+            </div>
         </details>
     `;
 }

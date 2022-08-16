@@ -93,14 +93,23 @@ export const myDisclosure = Disclosure.compose({
 |           | expanded |                |
 | `summary` | summary  |                |
 
+#### CSS Parts
+
+| Name              | Description                                    |
+| ----------------- | ---------------------------------------------- |
+| `details`         | The outer container element                    |
+| `summary`         | The outer \`summary\` container                |
+| `summary-content` | The container for the \`summary\` slot content |
+| `content`         | The container for the default slot content     |
+
 #### Slots
 
-| Name    | Description                                              |
-| ------- | -------------------------------------------------------- |
-| `start` | Content which can be provided before the summary content |
-| `end`   | Content which can be provided after the summary content  |
-| `title` | The summary content                                      |
-|         | The default slot for the disclosure content              |
+| Name      | Description                                              |
+| --------- | -------------------------------------------------------- |
+| `start`   | Content which can be provided before the summary content |
+| `end`     | Content which can be provided after the summary content  |
+| `summary` | The summary content                                      |
+|           | The default slot for the disclosure content              |
 
 <hr/>
 

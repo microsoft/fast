@@ -23,7 +23,7 @@ export function comboboxTemplate<T extends FASTCombobox>(
         >
             <div class="control" part="control">
                 ${startSlotTemplate(options)}
-                <slot name="control">
+                <slot name="field">
                     <input
                         aria-activedescendant="${x =>
                             x.open ? x.ariaActiveDescendant : null}"
@@ -32,8 +32,8 @@ export function comboboxTemplate<T extends FASTCombobox>(
                         aria-disabled="${x => x.ariaDisabled}"
                         aria-expanded="${x => x.ariaExpanded}"
                         aria-haspopup="listbox"
-                        class="selected-value"
-                        part="selected-value"
+                        class="field"
+                        part="field"
                         placeholder="${x => x.placeholder}"
                         role="combobox"
                         type="text"
@@ -41,33 +41,35 @@ export function comboboxTemplate<T extends FASTCombobox>(
                         :value="${x => x.value}"
                         @input="${(x, c) => x.inputHandler(c.event as InputEvent)}"
                         @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
-                        ${ref("control")}
+                        ${ref("field")}
                     />
-                    <div class="indicator" part="indicator" aria-hidden="true">
-                        <slot name="indicator">
-                            ${staticallyCompose(options.indicator)}
-                        </slot>
-                    </div>
                 </slot>
                 ${endSlotTemplate(options)}
+                <div class="open-close-icon" part="open-close-icon" aria-hidden="true">
+                    <slot name="open-close-icon">
+                        ${staticallyCompose(options.openCloseIcon)}
+                    </slot>
+                </div>
             </div>
-            <div
-                class="listbox"
-                id="${x => x.listboxId}"
-                part="listbox"
-                role="listbox"
-                ?disabled="${x => x.disabled}"
-                ?hidden="${x => !x.open}"
-                ${ref("listbox")}
-            >
-                <slot
-                    ${slotted({
-                        filter: FASTListbox.slottedOptionFilter,
-                        flatten: true,
-                        property: "slottedOptions",
-                    })}
-                ></slot>
-            </div>
+            <slot name="listbox-container">
+                <div
+                    id="${x => x.listboxId}"
+                    class="listbox"
+                    part="listbox"
+                    role="listbox"
+                    ?disabled="${x => x.disabled}"
+                    ?hidden="${x => !x.open}"
+                    ${ref("listbox")}
+                >
+                    <slot
+                        ${slotted({
+                            filter: FASTListbox.slottedOptionFilter,
+                            flatten: true,
+                            property: "slottedOptions",
+                        })}
+                    ></slot>
+                </div>
+            </slot>
         </template>
     `;
 }

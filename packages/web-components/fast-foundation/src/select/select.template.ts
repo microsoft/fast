@@ -31,44 +31,50 @@ export function selectTemplate<T extends FASTSelect>(
             ${when(
                 x => x.collapsible,
                 html<T>`
-                    <div
-                        class="control"
-                        part="control"
-                        ?disabled="${x => x.disabled}"
-                        ${ref("control")}
-                    >
-                        ${startSlotTemplate(options)}
-                        <slot name="button-container">
+                    <slot name="button-container">
+                        <div
+                            class="button"
+                            part="button"
+                            ?disabled="${x => x.disabled}"
+                            ${ref("button")}
+                        >
+                            ${startSlotTemplate(options)}
                             <div class="selected-value" part="selected-value">
                                 <slot name="selected-value">${x => x.displayValue}</slot>
                             </div>
-                            <div aria-hidden="true" class="indicator" part="indicator">
-                                <slot name="indicator">
-                                    ${staticallyCompose(options.indicator)}
+                            ${endSlotTemplate(options)}
+                            <div
+                                class="open-close-icon"
+                                part="open-close-icon"
+                                aria-hidden="true"
+                            >
+                                <slot name="open-close-icon">
+                                    ${staticallyCompose(options.openCloseIcon)}
                                 </slot>
                             </div>
-                        </slot>
-                        ${endSlotTemplate(options)}
-                    </div>
+                        </div>
+                    </slot>
                 `
             )}
-            <div
-                class="listbox"
-                id="${x => x.listboxId}"
-                part="listbox"
-                role="listbox"
-                ?disabled="${x => x.disabled}"
-                ?hidden="${x => (x.collapsible ? !x.open : false)}"
-                ${ref("listbox")}
-            >
-                <slot
-                    ${slotted({
-                        filter: FASTListbox.slottedOptionFilter,
-                        flatten: true,
-                        property: "slottedOptions",
-                    })}
-                ></slot>
-            </div>
+            <slot name="listbox-container">
+                <div
+                    id="${x => x.listboxId}"
+                    class="listbox"
+                    part="listbox"
+                    role="listbox"
+                    ?disabled="${x => x.disabled}"
+                    ?hidden="${x => (x.collapsible ? !x.open : false)}"
+                    ${ref("listbox")}
+                >
+                    <slot
+                        ${slotted({
+                            filter: FASTListbox.slottedOptionFilter,
+                            flatten: true,
+                            property: "slottedOptions",
+                        })}
+                    ></slot>
+                </div>
+            </slot>
         </template>
     `;
 }

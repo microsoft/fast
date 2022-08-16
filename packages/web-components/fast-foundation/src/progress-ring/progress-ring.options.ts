@@ -6,5 +6,6 @@ import type { FASTProgressRing } from "./progress-ring.js";
  * @public
  */
 export type ProgressRingOptions = {
+    determinateIndicator?: StaticallyComposableHTML<FASTProgressRing>;
     indeterminateIndicator?: StaticallyComposableHTML<FASTProgressRing>;
 };

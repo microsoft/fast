@@ -1,19 +1,19 @@
 <style>
     :root {
         --accent-color: #da1a5f;
-        --accent-fill-active: #df3c77;
-        --accent-fill-focus: #dc2969;
-        --accent-fill-hover: #da1a5f;
-        --accent-fill-rest: #dc2969;
-        --accent-foreground-active: #dc2969;
-        --accent-foreground-focus: #da1a5f;
-        --accent-foreground-hover: #b3154e;
-        --accent-foreground-rest: #da1a5f;
+        --accent-fill-active: #e63d79;
+        --accent-fill-focus: #cf1c54;
+        --accent-fill-hover: #e01e5e;
+        --accent-fill-rest: #cf1c54;
+        --accent-foreground-active: #c71b4f;
+        --accent-foreground-focus: #880f28;
+        --accent-foreground-hover: #720919;
+        --accent-foreground-rest: #880f28;
         --ambient-shadow-alpha: calc(0.11 * (2 - var(--background-luminance, 1)));
         --ambient-shadow-color: rgba(0, 0, 0, var(--ambient-shadow-alpha));
         --ambient-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px)
             var(--ambient-shadow-color);
-        --base-height-multiplier: 10;
+        --base-height-multiplier: 8;
         --base-horizontal-spacing-multiplier: 3;
         --base-layer-luminance: 1;
         --body-font: Arial, Helvetica, sans-serif;
@@ -27,6 +27,7 @@
             calc((var(--elevation) * 0.9px)) var(--directional-shadow-color);
         --directional-shadow-alpha: calc(0.13 * (2 - var(--background-luminance, 1)));
         --directional-shadow-color: rgba(0, 0, 0, var(--directional-shadow-alpha));
+        --disabled-cursor: not-allowed;
         --disabled-opacity: 0.3;
         --elevation: 14;
         --elevation-shadow: var(--ambient-shadow), var(--directional-shadow);

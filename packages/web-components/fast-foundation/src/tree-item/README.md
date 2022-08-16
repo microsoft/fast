@@ -84,20 +84,20 @@ export class FASTTreeItem extends TreeItem {}
 
 | Name                     | Description                                                                          |
 | ------------------------ | ------------------------------------------------------------------------------------ |
-| `positioning-region`     | The element used to position the tree item content with exception of any child nodes |
-| `content-region`         | The element containing the expand/collapse, start, and end slots                     |
+| `control`                | The element used to position the tree item content with exception of any child nodes |
+| `content`                | The element containing the expand/collapse, start, and end slots                     |
 | `items`                  | The element wrapping any child items                                                 |
 | `expand-collapse-button` | The expand/collapse button                                                           |
 
 #### Slots
 
-| Name                     | Description                                                                 |
-| ------------------------ | --------------------------------------------------------------------------- |
-| `start`                  | Content which can be provided before the tree item content                  |
-| `end`                    | Content which can be provided after the tree item content                   |
-|                          | The default slot for tree item text content                                 |
-| `item`                   | The slot for tree items (fast tree items manage this assignment themselves) |
-| `expand-collapse-button` | The expand/collapse button                                                  |
+| Name                   | Description                                                                 |
+| ---------------------- | --------------------------------------------------------------------------- |
+| `start`                | Content which can be provided before the tree item content                  |
+| `end`                  | Content which can be provided after the tree item content                   |
+|                        | The default slot for tree item text content                                 |
+| `item`                 | The slot for tree items (fast tree items manage this assignment themselves) |
+| `expand-collapse-icon` | The expand/collapse button icon                                             |
 
 <hr/>
 

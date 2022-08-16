@@ -27,31 +27,29 @@ export function treeItemTemplate<T extends FASTTreeItem>(
                 filter: elements(),
             })}
         >
-            <div class="positioning-region" part="positioning-region">
-                <div class="content-region" part="content-region">
-                    ${when(
-                        x => x.childItems && x.childItemLength > 0,
-                        html<T>`
-                            <div
-                                aria-hidden="true"
-                                class="expand-collapse-button"
-                                part="expand-collapse-button"
-                                @click="${(x, c) =>
-                                    x.handleExpandCollapseButtonClick(
-                                        c.event as MouseEvent
-                                    )}"
-                                ${ref("expandCollapseButton")}
-                            >
-                                <slot name="expand-collapse-glyph">
-                                    ${staticallyCompose(options.expandCollapseGlyph)}
-                                </slot>
-                            </div>
-                        `
-                    )}
-                    ${startSlotTemplate(options)}
+            <div class="control" part="control">
+                ${when(
+                    x => x.childItems && x.childItemLength > 0,
+                    html<T>`
+                        <div
+                            aria-hidden="true"
+                            class="expand-collapse-button"
+                            part="expand-collapse-button"
+                            @click="${(x, c) =>
+                                x.handleExpandCollapseButtonClick(c.event as MouseEvent)}"
+                            ${ref("expandCollapseButton")}
+                        >
+                            <slot name="expand-collapse-icon">
+                                ${staticallyCompose(options.expandCollapseIcon)}
+                            </slot>
+                        </div>
+                    `
+                )}
+                ${startSlotTemplate(options)}
+                <span class="content" part="content">
                     <slot></slot>
-                    ${endSlotTemplate(options)}
-                </div>
+                </span>
+                ${endSlotTemplate(options)}
             </div>
             ${when(
                 x => x.childItems && x.childItemLength > 0 && x.expanded,

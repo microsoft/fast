@@ -11,44 +11,41 @@ const styles = css`
         height: var(--avatar-size, var(--avatar-size-default));
         max-width: var(--avatar-size, var(--avatar-size-default));
         position: relative;
+        text-decoration: none;
+        border-radius: 100%;
+        background-color: var(--accent-fill-rest);
         color: var(--foreground-on-accent-rest);
+        outline: solid 2px green;
+        outline-offset: 2px;
     }
 
     :host([hidden]) {
         display: none;
     }
 
-    .backplate {
-        display: flex;
-        position: relative;
-        align-items: center;
-        justify-content: center;
-        border-radius: 100%;
-        min-width: 100%;
-        overflow: hidden;
-        background-color: var(--accent-fill-rest);
-    }
-
-    .media,
     ::slotted(img) {
         display: block;
         max-width: 100%;
         position: absolute;
+        border-radius: 100%;
     }
 
     .content {
-        --avatar-size: var(--avatar-size, var(--avatar-size-default));
-        display: block;
+        position: absolute;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: calc(
             (var(--avatar-text-size) + var(--avatar-size)) / var(--avatar-text-ratio)
         );
-        line-height: var(--avatar-size);
-        min-height: var(--avatar-size);
     }
 
     ::slotted(fast-badge) {
         display: block;
         position: absolute;
+        bottom: -2px;
+        right: -2px;
     }
 `;
 

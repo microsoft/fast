@@ -41,7 +41,7 @@ const ToolbarArrowKeyMap = Object.freeze({
  * @slot end - Content which can be provided after the slotted items
  * @slot - The default slot for slotted items
  * @slot label - The toolbar label
- * @csspart positioning-region - The element containing the items, start and end slots
+ * @csspart control - The element containing the items, start and end slots
  *
  * @public
  */

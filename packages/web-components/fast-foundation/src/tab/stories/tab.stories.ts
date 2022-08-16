@@ -4,7 +4,9 @@ import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTTab } from "../tab.js";
 
 export const storyTemplate = html<StoryArgs<FASTTab>>`
-    <fast-tab ?disabled="${x => x.disabled}">${x => x.storyContent}</fast-tab>
+    <fast-tab ?disabled="${x => x.disabled}">
+        ${x => x.storyContent}
+    </fast-tab>
 `;
 
 export default {

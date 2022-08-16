@@ -186,23 +186,24 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### CSS Parts
 
-| Name             | Description                                          |
-| ---------------- | ---------------------------------------------------- |
-| `control`        | The element representing the select invoking element |
-| `selected-value` | The element wrapping the selected value              |
-| `indicator`      | The element wrapping the visual indicator            |
-| `listbox`        | The listbox element                                  |
+| Name              | Description                                          |
+| ----------------- | ---------------------------------------------------- |
+| `button`          | The element representing the select invoking element |
+| `selected-value`  | The element wrapping the selected value              |
+| `open-close-icon` | The element wrapping the visual indicator            |
+| `listbox`         | The listbox element                                  |
 
 #### Slots
 
-| Name               | Description                                                      |
-| ------------------ | ---------------------------------------------------------------- |
-| `start`            | Content which can be provided before the button content          |
-| `end`              | Content which can be provided after the button content           |
-| `button-container` | The element representing the select button                       |
-| `selected-value`   | The selected value                                               |
-| `indicator`        | The visual indicator for the expand/collapse state of the button |
-|                    | The default slot for slotted options                             |
+| Name                | Description                                                      |
+| ------------------- | ---------------------------------------------------------------- |
+| `start`             | Content which can be provided before the button content          |
+| `end`               | Content which can be provided after the button content           |
+| `button-container`  | The container for the button element                             |
+| `selected-value`    | The selected value                                               |
+| `open-close-icon`   | The visual indicator for the expand/collapse state of the button |
+| `listbox-container` | The container for the listbox element                            |
+|                     | The default slot for slotted options                             |
 
 <hr/>
 

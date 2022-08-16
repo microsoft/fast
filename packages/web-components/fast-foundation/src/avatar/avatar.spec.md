@@ -49,7 +49,7 @@ None
     <slot name="media" part="media">${definition.media || ""}</slot>
     <slot class="content" part="content"></slot>
 </div>
-<slot name="badge" part="badge"></slot>
+<slot name="badge"></slot>
 ```
 
 ---

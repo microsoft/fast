@@ -7,31 +7,29 @@ import type { FASTDialog } from "./dialog.js";
  */
 export function dialogTemplate<T extends FASTDialog>(): ElementViewTemplate<T> {
     return html<T>`
-        <div class="positioning-region" part="positioning-region">
-            ${when(
-                x => x.modal,
-                html<T>`
-                    <div
-                        class="overlay"
-                        part="overlay"
-                        role="presentation"
-                        @click="${x => x.dismiss()}"
-                    ></div>
-                `
-            )}
-            <div
-                role="dialog"
-                tabindex="-1"
-                class="control"
-                part="control"
-                aria-modal="${x => (x.modal ? x.modal : void 0)}"
-                aria-describedby="${x => x.ariaDescribedby}"
-                aria-labelledby="${x => x.ariaLabelledby}"
-                aria-label="${x => x.ariaLabel}"
-                ${ref("dialog")}
-            >
-                <slot></slot>
-            </div>
+        ${when(
+            x => x.modal,
+            html<T>`
+                <div
+                    class="overlay"
+                    part="overlay"
+                    role="presentation"
+                    @click="${x => x.dismiss()}"
+                ></div>
+            `
+        )}
+        <div
+            role="dialog"
+            tabindex="-1"
+            class="control"
+            part="control"
+            aria-modal="${x => (x.modal ? x.modal : void 0)}"
+            aria-describedby="${x => x.ariaDescribedby}"
+            aria-labelledby="${x => x.ariaLabelledby}"
+            aria-label="${x => x.ariaLabel}"
+            ${ref("dialog")}
+        >
+            <slot></slot>
         </div>
     `;
 }

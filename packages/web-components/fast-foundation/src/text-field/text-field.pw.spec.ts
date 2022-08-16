@@ -18,7 +18,7 @@ test.describe("TextField", () => {
 
         root = page.locator("#root");
 
-        control = element.locator(".control");
+        control = element.locator(".field");
 
         label = element.locator(".label");
 

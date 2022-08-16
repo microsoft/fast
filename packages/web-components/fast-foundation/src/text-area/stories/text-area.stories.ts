@@ -98,6 +98,15 @@ export default {
 
 export const TextArea: Story<FASTTextArea> = renderComponent(storyTemplate).bind({});
 
+export const TextAreaWithSlottedStartEnd: Story<FASTTextArea> = TextArea.bind({});
+TextAreaWithSlottedStartEnd.args = {
+    storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        Text Area
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
+};
+
 export const TextAreaInForm: Story<FASTTextArea> = renderComponent(html`
     <form @submit="${() => false}">
         ${storyTemplate}

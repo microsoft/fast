@@ -173,6 +173,53 @@ MenuWithNestedItems.args = {
     ],
 };
 
+export const MenuWithEverything = Menu.bind({});
+MenuWithEverything.args = {
+    storyItems: [
+        {
+            storyContent: html`
+                <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+                Menu Item 1
+                <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+            `,
+        },
+        {
+            storyContent: html`
+                <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+                Menu Item 2 ${repeat(x => x.storyItems, storyTemplate)}
+                <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+            `,
+            storyItems: [
+                {
+                    slot: "submenu",
+                    storyContent: storyContentTemplate,
+                    storyItems: [
+                        { storyContent: "Menu Item 2.1" },
+                        { storyContent: "Menu Item 2.2" },
+                        { storyContent: "Menu Item 2.3" },
+                    ],
+                },
+            ],
+        },
+        { template: dividerStoryTemplate },
+        {
+            storyContent: html`
+                <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+                Checkbox 1
+                <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+            `,
+            role: "menuitemcheckbox",
+        },
+        { storyContent: "Checkbox 2", role: "menuitemcheckbox" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Radio 1.1", role: "menuitemradio" },
+        { storyContent: "Radio 1.2", role: "menuitemradio" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Radio 2.1", role: "menuitemradio" },
+        { storyContent: "Radio 2.2", role: "menuitemradio" },
+    ],
+};
+
 export const FancyMenu: Story<MyFancyMenu> = renderComponent(fancyStoryTemplate).bind({});
 FancyMenu.args = {
     storyContent: html`
@@ -190,8 +237,8 @@ FancyMenu.args = {
     ],
 };
 
-export const FancyMenuWithItemsWithIcons: Story<MyFancyMenu> = FancyMenu.bind({});
-FancyMenuWithItemsWithIcons.args = {
+export const FancyMenuWithSlottedStartEnd: Story<MyFancyMenu> = FancyMenu.bind({});
+FancyMenuWithSlottedStartEnd.args = {
     storyContent: html`
         ${repeat(
             x => x.storyItems,
@@ -236,6 +283,54 @@ FancyMenuWithFormControls.args = {
     storyItems: [
         { storyContent: "Fancy Menu Item 1" },
         { storyContent: "Fancy Menu Item 2" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Fancy Checkbox 1", role: "menuitemcheckbox" },
+        { storyContent: "Fancy Checkbox 2", role: "menuitemcheckbox" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Fancy Radio 1.1", role: "menuitemradio" },
+        { storyContent: "Fancy Radio 1.2", role: "menuitemradio" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Fancy Radio 2.1", role: "menuitemradio" },
+        { storyContent: "Fancy Radio 2.2", role: "menuitemradio" },
+    ],
+};
+
+export const FancyMenuWithEverything: Story<MyFancyMenu> = FancyMenu.bind({});
+FancyMenuWithEverything.args = {
+    storyContent: html`
+        ${repeat(
+            x => x.storyItems,
+            html<StoryArgs<FASTMenuItem>>`
+                ${x => x.template ?? fancyMenuItemStoryTemplate}
+            `
+        )}
+    `,
+    storyItems: [
+        {
+            storyContent: html`
+                <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+                Fancy Menu Item 1
+                <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+            `,
+        },
+        {
+            storyContent: html`
+                <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+                Fancy Menu Item 2 ${repeat(x => x.storyItems, storyTemplate)}
+                <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+            `,
+            storyItems: [
+                {
+                    slot: "submenu",
+                    storyContent: storyContentTemplate,
+                    storyItems: [
+                        { storyContent: "Menu Item 2.1" },
+                        { storyContent: "Menu Item 2.2" },
+                        { storyContent: "Menu Item 2.3" },
+                    ],
+                },
+            ],
+        },
         { template: dividerStoryTemplate },
         { storyContent: "Fancy Checkbox 1", role: "menuitemcheckbox" },
         { storyContent: "Fancy Checkbox 2", role: "menuitemcheckbox" },

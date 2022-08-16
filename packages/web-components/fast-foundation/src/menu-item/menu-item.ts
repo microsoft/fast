@@ -9,8 +9,8 @@ import {
     keySpace,
 } from "@microsoft/fast-web-utilities";
 import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
+import { StartEnd } from "../patterns/index.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
-import { StartEnd } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { MenuItemRole, roleForMenuItem } from "./menu-item.options.js";
 
@@ -22,7 +22,7 @@ export { MenuItemRole, roleForMenuItem };
  */
 export type MenuItemOptions = StartEndOptions<FASTMenuItem> & {
     checkboxIndicator?: StaticallyComposableHTML<FASTMenuItem>;
-    expandCollapseGlyph?: StaticallyComposableHTML<FASTMenuItem>;
+    submenuIcon?: StaticallyComposableHTML<FASTMenuItem>;
     radioIndicator?: StaticallyComposableHTML<FASTMenuItem>;
 };
 
@@ -30,20 +30,18 @@ export type MenuItemOptions = StartEndOptions<FASTMenuItem> & {
  * A Switch Custom HTML Element.
  * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#menuitem | ARIA menuitem }, {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemcheckbox | ARIA menuitemcheckbox}, or {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemradio | ARIA menuitemradio }.
  *
- * @slot checked-indicator - The checked indicator
+ * @slot checkbox-indicator - The checked indicator
  * @slot radio-indicator - The radio indicator
  * @slot start - Content which can be provided before the menu item content
  * @slot end - Content which can be provided after the menu item content
  * @slot - The default slot for menu item content
- * @slot expand-collapse-indicator - The expand/collapse indicator
+ * @slot submenu-icon - The submenu indicator
  * @slot submenu - Used to nest menu's within menu items
- * @csspart input-container - The element representing the visual checked or radio indicator
- * @csspart checkbox - The element wrapping the `menuitemcheckbox` indicator
- * @csspart radio - The element wrapping the `menuitemradio` indicator
+ * @csspart checkbox-indicator - The element wrapping the `menuitemcheckbox` indicator
+ * @csspart radio-indicator - The element wrapping the `menuitemradio` indicator
  * @csspart content - The element wrapping the menu item content
- * @csspart expand-collapse-glyph-container - The element wrapping the expand collapse element
- * @csspart expand-collapse - The expand/collapse element
- * @csspart submenu-region - The container for the submenu, used for positioning
+ * @csspart submenu-icon - The expand/collapse element
+ * @csspart submenu-container - The container for the submenu, used for positioning
  * @fires expanded-change - Fires a custom 'expanded-change' event when the expanded state changes
  * @fires change - Fires a custom 'change' event when a non-submenu item with a role of `menuitemcheckbox`, `menuitemradio`, or `menuitem` is invoked
  *

@@ -24,7 +24,7 @@ test.describe("Disclosure", () => {
         });
 
         test("should set the `aria-controls` attribute on the internal summary element", async () => {
-            await expect(summary).toHaveAttribute("aria-controls", "disclosure-content");
+            await expect(summary).toHaveAttribute("aria-controls", "content");
         });
 
         test("should toggle the `expanded` attribute based on the value of the `expanded` property", async () => {

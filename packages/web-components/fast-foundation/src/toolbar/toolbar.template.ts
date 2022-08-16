@@ -35,7 +35,7 @@ export function toolbarTemplate<T extends FASTToolbar>(
             })}
         >
             <slot name="label"></slot>
-            <div class="positioning-region" part="positioning-region">
+            <div class="control" part="control">
                 ${startSlotTemplate(options)}
                 <slot
                     ${slotted({
