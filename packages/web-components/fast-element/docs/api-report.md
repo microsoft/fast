@@ -19,7 +19,7 @@ export class AttachedBehaviorHTMLDirective<T = any> extends HTMLDirective {
     constructor(name: string, behavior: AttachedBehaviorType<T>, options: T);
     createBehavior(target: Node): Behavior;
     createPlaceholder(index: number): string;
-    }
+}
 
 // @public
 export type AttachedBehaviorType<T = any> = new (target: any, options: T) => Behavior;
@@ -52,7 +52,7 @@ export class AttributeDefinition implements Accessor {
     onAttributeChangedCallback(element: HTMLElement, value: any): void;
     readonly Owner: Function;
     setValue(source: HTMLElement, newValue: any): void;
-    }
+}
 
 // @public
 export type AttributeMode = "reflect" | "boolean" | "fromView";
@@ -135,7 +135,7 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
     disconnect(): void;
     protected getNodes(): ChildNode[];
     observe(): void;
-    }
+}
 
 // @public
 export type ChildrenBehaviorOptions<T = any> = ChildListBehaviorOptions<T> | SubtreeBehaviorOptions<T>;
@@ -352,7 +352,7 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
     targetAtContent(): void;
     get targetName(): string | undefined;
     set targetName(value: string | undefined);
-    }
+}
 
 // @public
 export abstract class HTMLDirective implements NodeBehaviorFactory {
@@ -482,14 +482,20 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     // @internal (undocumented)
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
-    }
+}
 
 // @public
 export class RepeatDirective<TSource = any> extends HTMLDirective {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(target: Node): RepeatBehavior<TSource>;
     createPlaceholder: (index: number) => string;
-    }
+    // (undocumented)
+    readonly itemsBinding: Binding;
+    // (undocumented)
+    readonly options: RepeatOptions;
+    // (undocumented)
+    readonly templateBinding: Binding<TSource, SyntheticViewTemplate>;
+}
 
 // @public
 export interface RepeatOptions {
@@ -605,14 +611,13 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     readonly directives: ReadonlyArray<HTMLDirective>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node | string, hostBindingTarget?: Element): HTMLView;
-    }
+}
 
 // @public
 export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
-
 
 // (No @packageDocumentation comment for this package)
 
