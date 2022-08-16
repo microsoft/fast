@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "hidden horizontal-scroll fix",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
