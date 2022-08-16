@@ -8,7 +8,10 @@ import {
     Updates,
 } from "@microsoft/fast-element";
 
-interface PropertyTarget {
+/**
+ * A target that can have key/value pairs set and removed.
+ */
+export interface PropertyTarget {
     setProperty(name: string, value: string | null): void;
     removeProperty(name: string): void;
 }
@@ -150,42 +153,40 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
  * @internal
  */
 export class RootStyleSheetTarget implements PropertyTarget {
-    private static roots = new Set<FASTElement | Document>();
+    private static roots = new Set<PropertyTarget>();
     private static properties: Record<string, string> = {};
     public setProperty(name: string, value: any): void {
         RootStyleSheetTarget.properties[name] = value;
 
         for (const target of RootStyleSheetTarget.roots.values()) {
-            PropertyTargetManager.getOrCreate(target).setProperty(name, value);
+            target.setProperty(name, value);
         }
     }
 
     public removeProperty(name: string): void {
         delete RootStyleSheetTarget.properties[name];
         for (const target of RootStyleSheetTarget.roots.values()) {
-            PropertyTargetManager.getOrCreate(target).removeProperty(name);
+            target.removeProperty(name);
         }
     }
 
-    public static registerRoot(root: FASTElement | Document) {
+    public static registerRoot(root: PropertyTarget) {
         const { roots } = RootStyleSheetTarget;
         if (!roots.has(root)) {
             roots.add(root);
-            const target = PropertyTargetManager.getOrCreate(root);
             for (const key in RootStyleSheetTarget.properties) {
-                target.setProperty(key, RootStyleSheetTarget.properties[key]);
+                root.setProperty(key, RootStyleSheetTarget.properties[key]);
             }
         }
     }
 
-    public static unregisterRoot(root: FASTElement | Document) {
+    public static unregisterRoot(root: PropertyTarget) {
         const { roots } = RootStyleSheetTarget;
         if (roots.has(root)) {
             roots.delete(root);
 
-            const target = PropertyTargetManager.getOrCreate(root);
             for (const key in RootStyleSheetTarget.properties) {
-                target.removeProperty(key);
+                root.removeProperty(key);
             }
         }
     }
