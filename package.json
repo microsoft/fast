@@ -45,7 +45,7 @@
     "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'yarn change' to generate a change file\"",
     "check": "beachball check ",
     "publish": "beachball publish",
-    "publish-ci": "beachball publish -y --access public",
+    "publish-ci": "beachball publish -y --access public -b origin/archives/fast-element-1",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
