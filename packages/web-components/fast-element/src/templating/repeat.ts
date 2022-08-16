@@ -323,9 +323,9 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
      * @param options - Options used to turn on special repeat features.
      */
     public constructor(
-        private itemsBinding: Binding,
-        private templateBinding: Binding<TSource, SyntheticViewTemplate>,
-        private options: RepeatOptions
+        public readonly itemsBinding: Binding,
+        public readonly templateBinding: Binding<TSource, SyntheticViewTemplate>,
+        public readonly options: RepeatOptions
     ) {
         super();
         enableArrayObservation();
@@ -369,5 +369,8 @@ export function repeat<TSource = any, TItem = any>(
             ? templateOrTemplateBinding
             : (): SyntheticViewTemplate => templateOrTemplateBinding;
 
-    return new RepeatDirective<TSource>(itemsBinding, templateBinding, options);
+    return new RepeatDirective<TSource>(itemsBinding, templateBinding, {
+        ...defaultRepeatOptions,
+        ...options,
+    });
 }
