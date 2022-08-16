@@ -19,9 +19,9 @@ import {
         const button = shadowRoot.querySelector("button");
         performance.mark(start);
         // click on button to trigger event
-        for (let i = 0; i < 1; i++) {
-            button.click();
-        }
+        button.click();
+        // for (let i = 0; i < 10; i++) {
+        // }
         await updateComplete();
         performance.measure(test, start);
         destroy(container);
