@@ -313,6 +313,23 @@ export class FASTHorizontalScroll extends FASTElement {
     }
 
     /**
+     * Checks to see if the stops are returning values
+     *  otherwise it will try to reinitialize them
+     *
+     * @returns boolean indicating that current scrollStops are valid non-zero values
+     * @internal
+     */
+    private validateStops(reinit: boolean = true): boolean {
+        const hasStops: () => boolean = (): boolean =>
+            !!this.scrollStops.find((stop: number) => stop > 0);
+        if (!hasStops() && reinit) {
+            this.setStops();
+        }
+
+        return hasStops();
+    }
+
+    /**
      *
      */
     private fixScrollMisalign(stops: number[]) {
@@ -340,7 +357,7 @@ export class FASTHorizontalScroll extends FASTElement {
 
             this.nextFlipperContainer?.classList.toggle(
                 "disabled",
-                Math.abs(position) + this.width >= lastStop
+                this.validateStops(false) && Math.abs(position) + this.width >= lastStop
             );
         }
     }
@@ -411,6 +428,7 @@ export class FASTHorizontalScroll extends FASTElement {
      * @public
      */
     public scrollToPrevious(): void {
+        this.validateStops();
         const scrollPosition = this.scrollContainer.scrollLeft;
 
         const current = this.scrollStops.findIndex(
@@ -439,6 +457,7 @@ export class FASTHorizontalScroll extends FASTElement {
      * @public
      */
     public scrollToNext(): void {
+        this.validateStops();
         const scrollPosition = this.scrollContainer.scrollLeft;
 
         const current = this.scrollStops.findIndex(

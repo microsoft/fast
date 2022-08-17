@@ -32,6 +32,7 @@ const debugMessages = {
     [1511 /* invalidKey */]: "Key/value cannot be null or undefined. Are you trying to inject/register something that doesn't exist with DI?",
     [1512 /* noDefaultResolver */]: "'${key}' not registered. Did you forget to add @singleton()?",
     [1513 /* cyclicDependency */]: "Cyclic dependency found '${name}'.",
+    [1514 /* connectUpdateRequiresController */]: "Injected properties that are updated on changes to DOM connectivity require the target object to be an instance of FASTElement.",
 };
 
 const allPlaceholders = /(\$\{\w+?})/g;
