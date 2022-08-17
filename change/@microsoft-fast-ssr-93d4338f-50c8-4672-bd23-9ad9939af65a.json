@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: implement Declarative Shadow DOM polyfill as an optional plugin for FAST Server Side Rendering",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
