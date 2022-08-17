@@ -11,9 +11,9 @@ export function badgeTemplate<T extends FASTBadge>(
 ): ElementViewTemplate<T> {
     return html<T>`
         ${startSlotTemplate(options)}
-        <div class="content" part="content">
+        <span class="content" part="content">
             <slot></slot>
-        </div>
+        </span>
         ${endSlotTemplate(options)}
     `;
 }

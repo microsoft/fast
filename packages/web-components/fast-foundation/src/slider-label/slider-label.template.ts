@@ -25,9 +25,9 @@ export function sliderLabelTemplate<T extends FASTSliderLabel>(): ElementViewTem
                         <div class="mark"></div>
                     `
                 )}
-                <div class="content">
+                <span class="content">
                     <slot></slot>
-                </div>
+                </span>
             </div>
         </template>
     `;
