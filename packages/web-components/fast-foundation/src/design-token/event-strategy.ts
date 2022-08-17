@@ -1,8 +1,8 @@
 import type { FASTElement } from "@microsoft/fast-element";
 import type { DesignTokenResolutionStrategy } from "./fast-design-token.js";
 
-const parentLocatorEventName = "$$designToken__locate__parent";
-const containsEventName = "$$designToken__contains";
+const parentLocatorEventName = "$$designToken__locate__parent$$";
+const containsEventName = "$$designToken__contains$$";
 type ParentLocatorEvent = CustomEvent<{ parent: FASTElement | null }>;
 type ContainsEvent = CustomEvent<{ contains: boolean }>;
 function parentLocatorHandler(event: ParentLocatorEvent) {
