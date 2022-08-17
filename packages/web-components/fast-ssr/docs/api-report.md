@@ -19,6 +19,12 @@ export type ComponentDOMEmissionMode = "shadow";
 // @beta (undocumented)
 export type ConstructableElementRenderer = (new (tagName: string, renderInfo: RenderInfo) => ElementRenderer) & typeof ElementRenderer;
 
+// @public
+export const DeclarativeShadowDOMPolyfill: Readonly<{
+    undefinedElementStyles: ":not(:defined) > template[shadowroot] ~ *  {\n    display: none;\n}";
+    nonStreamingTemplateUpgrade: "if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRoot')) {\n    (function attachShadowRoots(root) {\n        root.querySelectorAll(\"template[shadowroot]\").forEach(template => {\n            const mode = template.getAttribute(\"shadowroot\");\n            const shadowRoot = template.parentNode.attachShadow({ mode });\n            shadowRoot.appendChild(template.content);\n            template.remove();\n            attachShadowRoots(shadowRoot);\n        });\n    })(document);\n}";
+}>;
+
 // @beta (undocumented)
 export abstract class ElementRenderer {
     constructor(tagName: string, renderInfo: RenderInfo);
