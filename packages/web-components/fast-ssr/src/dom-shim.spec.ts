@@ -4,7 +4,6 @@ import  { createWindow } from "./dom-shim.js";
 import * as Foundation from "@microsoft/fast-foundation";
 import { ElementViewTemplate, FASTElement } from "@microsoft/fast-element";
 import fastSSR from "./exports.js";
-import exp from "constants";
 
 test.describe("createWindow", () => {
     test("should create a window with a document property that is an instance of the window's Document constructor", () => {
