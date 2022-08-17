@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 17 Aug 2022 16:41:39 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.12",
+      "version": "2.46.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "26874831+atmgrifter00@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "5718acc6f4d0c54dbe6d6b0bc6913d58392347d7",
+            "comment": "Various Combobox fixes with tests."
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v1.10.5",
+            "commit": "818bea15a2e2b2cfd8d92180135a7e231579f69b"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 29 May 2022 07:08:52 GMT",
       "tag": "@microsoft/fast-foundation_v2.46.9",
       "version": "2.46.9",

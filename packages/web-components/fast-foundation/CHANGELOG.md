@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 29 May 2022 07:08:52 GMT and should not be manually modified.
+This log was last generated on Wed, 17 Aug 2022 16:41:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.12
+
+Wed, 17 Aug 2022 16:41:39 GMT
+
+### Patches
+
+- Various Combobox fixes with tests. (26874831+atmgrifter00@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.10.5
 
 ## 2.46.9
 

@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 17 Aug 2022 16:41:39 GMT",
+      "tag": "@microsoft/fast-element_v1.10.5",
+      "version": "1.10.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "3d7f8e4e8a7f9e3c1d9d997d510eafd0dc220f97",
+            "comment": "default options in repeat should be set in various scenarios"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 29 May 2022 07:08:52 GMT",
       "tag": "@microsoft/fast-element_v1.10.2",
       "version": "1.10.2",

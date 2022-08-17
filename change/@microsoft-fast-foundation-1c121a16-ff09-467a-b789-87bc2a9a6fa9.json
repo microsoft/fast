@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Various Combobox fixes with tests.",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "26874831+atmgrifter00@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

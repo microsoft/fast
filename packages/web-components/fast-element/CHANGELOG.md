@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Tue, 24 May 2022 07:10:02 GMT and should not be manually modified.
+This log was last generated on Wed, 17 Aug 2022 16:41:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.10.5
+
+Wed, 17 Aug 2022 16:41:39 GMT
+
+### Patches
+
+- default options in repeat should be set in various scenarios (prudepixie@users.noreply.github.com)
 
 ## 1.10.2
 
