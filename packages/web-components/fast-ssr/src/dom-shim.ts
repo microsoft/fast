@@ -120,8 +120,8 @@ class CustomEvent<T = any> extends Event {
 }
 
 class CSSStyleRule {
-    public style = new CSSStyleDeclaration();
-    constructor(public readonly selectorText: string) {}
+    public readonly style = new CSSStyleDeclaration();
+    constructor(public selectorText: string) {}
 
     public get cssText(): string {
         return `${this.selectorText} { ${this.style.cssText} }`;
