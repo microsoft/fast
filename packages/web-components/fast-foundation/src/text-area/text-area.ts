@@ -207,6 +207,10 @@ export class FASTTextArea extends FormAssociatedTextArea {
     public handleChange(): void {
         this.$emit("change");
     }
+
+    public validate(): void {
+        super.validate(this.control);
+    }
 }
 
 /**
