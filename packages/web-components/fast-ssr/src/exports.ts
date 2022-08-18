@@ -81,6 +81,7 @@ export default function fastSSR(): {
 }
 
 export * from "./request-storage.js";
+export * from "./declarative-shadow-dom-polyfill.js";
 export type {
     ComponentDOMEmissionMode,
     ElementRenderer,
