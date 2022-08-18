@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "make sure default options for recycle gets set in different scenarios",
+  "packageName": "@microsoft/fast-element",
+  "email": "prudepixie@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}
