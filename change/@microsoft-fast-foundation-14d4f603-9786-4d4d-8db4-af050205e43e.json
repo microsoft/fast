@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "change select() method to public on number field, text field, and text area",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "7282195+m-akinc@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

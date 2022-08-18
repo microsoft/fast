@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Reverts PR #6253",
-  "packageName": "@microsoft/fast-web-utilities",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

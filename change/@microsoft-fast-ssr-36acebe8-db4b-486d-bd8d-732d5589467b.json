@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "implement CSSStyleSheet behavior to support DesignToken in SSR",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}
