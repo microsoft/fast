@@ -200,6 +200,10 @@ export class FASTSearch extends FormAssociatedSearch {
         }
     }
 
+    public validate(): void {
+        super.validate(this.control);
+    }
+
     /**
      * Handles the internal control's `input` event
      * @internal
