@@ -437,7 +437,7 @@ describe("The ArrayObserver", () => {
 
 describe("The array length observer", () => {
     class Model {
-        items: any[];
+        items: any[] = [];
     }
 
     it("returns zero length if the array is undefined", async () => {

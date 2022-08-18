@@ -50,7 +50,7 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     target!: HTMLElement;
     source!: any;
     context!: ExecutionContext;
-    changeEvent: string;
+    changeEvent = "";
 
     constructor(
         private directive: HTMLBindingDirective,

@@ -111,7 +111,7 @@ describe(`The DI object`, function () {
             const elementName = uniqueElementName();
 
             class TestElement extends HTMLElement {
-                @TestContext test: string;
+                @TestContext test = '';
             }
 
             customElements.define(elementName, TestElement);
@@ -149,7 +149,7 @@ describe(`The DI object`, function () {
             class TestChild extends FASTElement {}
             @customElement({name: "test-parent", template: html`<test-child ${ref("child")}></test-child>`})
             class TestParent extends FASTElement {
-                public child: TestChild;
+                public child: TestChild = {} as TestChild;
             }
 
             const parent = document.createElement("test-parent") as TestParent;
@@ -336,9 +336,9 @@ describe(`The inject decorator`, function () {
     it(`can decorate properties explicitly`, function () {
         // @ts-ignore
         class Foo {
-            @inject(Dep1) public dep1: Dep1;
-            @inject(Dep2) public dep2: Dep2;
-            @inject(Dep3) public dep3: Dep3;
+            @inject(Dep1) public dep1: Dep1 = {};
+            @inject(Dep2) public dep2: Dep2 = {};
+            @inject(Dep3) public dep3: Dep3 = {};
         }
 
         const instance = new Foo();
@@ -544,8 +544,8 @@ describe(`The Factory class`, function () {
         it(`registers the transformer`, function () {
             const container = DI.createContainer();
             class Foo {
-                public bar: string;
-                public baz: string;
+                public bar = '';
+                public baz = '';
             }
             const sut = new FactoryImpl(Foo, DI.getDependencies(Foo));
             // eslint-disable-next-line prefer-object-spread

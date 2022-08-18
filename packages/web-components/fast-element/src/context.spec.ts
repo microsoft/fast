@@ -88,7 +88,7 @@ describe("Context", () => {
             const elementName = uniqueElementName();
 
             class TestElement extends HTMLElement {
-                @TestContext test: string;
+                @TestContext test = '';
             }
 
             customElements.define(elementName, TestElement);
@@ -280,7 +280,7 @@ describe("Context", () => {
             const elementName = uniqueElementName();
 
             class TestElement extends HTMLElement {
-                @TestContext test: string;
+                @TestContext test = '';
             }
 
             customElements.define(elementName, TestElement);
