@@ -21,8 +21,8 @@ export type ConstructableElementRenderer = (new (tagName: string, renderInfo: Re
 
 // @public
 export const DeclarativeShadowDOMPolyfill: Readonly<{
-    undefinedElementStyles: ":not(:defined) > template[shadowroot] ~ *  {\n    display: none;\n}";
-    nonStreamingTemplateUpgrade: "if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRoot')) {\n    (function attachShadowRoots(root) {\n        root.querySelectorAll(\"template[shadowroot]\").forEach(template => {\n            const mode = template.getAttribute(\"shadowroot\");\n            const shadowRoot = template.parentNode.attachShadow({ mode });\n            shadowRoot.appendChild(template.content);\n            template.remove();\n            attachShadowRoots(shadowRoot);\n        });\n    })(document);\n}";
+    undefinedElementStyles: string;
+    nonStreamingTemplateUpgrade: string;
 }>;
 
 // @beta (undocumented)

@@ -15,7 +15,7 @@ export const DeclarativeShadowDOMPolyfill = Object.freeze({
     undefinedElementStyles:
 `:not(:defined) > template[shadowroot] ~ *  {
     display: none;
-}`,
+}` as string,
     /**
      * A JavaScript polyfill for DSD that recursively converts all templates
      * in the document with the shadowroot attribute into actual shadow roots.
@@ -34,5 +34,5 @@ export const DeclarativeShadowDOMPolyfill = Object.freeze({
             attachShadowRoots(shadowRoot);
         });
     })(document);
-}`
+}` as string
 });
