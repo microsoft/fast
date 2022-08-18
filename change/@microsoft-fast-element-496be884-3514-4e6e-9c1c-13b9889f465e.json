@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "enable strictPropertyInitialization in element",
+  "packageName": "@microsoft/fast-element",
+  "email": "mathieulavoie94@gmail.com",
+  "dependentChangeType": "none"
+}
