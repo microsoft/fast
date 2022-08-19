@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix(tabs): home and end navigation",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "mathieulavoie94@gmail.com",
+  "dependentChangeType": "patch"
+}
