@@ -544,12 +544,12 @@ export class FASTDataGrid extends FASTElement {
         );
 
         const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
-
         const focusTarget: HTMLElement = cells[focusColumnIndex] as HTMLElement;
+
+        const isScrollableContainer: boolean = this.scrollHeight > this.clientHeight;
 
         if (
             scrollIntoView &&
-            this.scrollHeight !== this.clientHeight &&
             ((focusRowIndex < this.focusRowIndex && this.scrollTop > 0) ||
                 (focusRowIndex > this.focusRowIndex &&
                     this.scrollTop < this.scrollHeight - this.clientHeight))
