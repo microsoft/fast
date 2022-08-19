@@ -364,6 +364,22 @@ export class FASTTabs extends FASTElement {
             this.tabs.length - 1,
             this.activeTabIndex + adjustment
         );
+
+        if (this.activeTabIndex > this.prevActiveTabIndex) {
+            while (
+                !this.isFocusableElement(this.tabs[this.activeTabIndex]) &&
+                this.activeTabIndex > this.prevActiveTabIndex
+            ) {
+                this.activeTabIndex--;
+            }
+        } else if (this.activeTabIndex < this.prevActiveTabIndex) {
+            while (
+                !this.isFocusableElement(this.tabs[this.activeTabIndex]) &&
+                this.activeTabIndex < this.prevActiveTabIndex
+            ) {
+                this.activeTabIndex++;
+            }
+        }
         this.setComponent();
     }
 
