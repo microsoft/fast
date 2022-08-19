@@ -111,7 +111,7 @@ describe(`The DI object`, function () {
             const elementName = uniqueElementName();
 
             class TestElement extends HTMLElement {
-                @TestContext test = '';
+                @TestContext test!: string;
             }
 
             customElements.define(elementName, TestElement);
@@ -336,9 +336,9 @@ describe(`The inject decorator`, function () {
     it(`can decorate properties explicitly`, function () {
         // @ts-ignore
         class Foo {
-            @inject(Dep1) public dep1: Dep1 = {};
-            @inject(Dep2) public dep2: Dep2 = {};
-            @inject(Dep3) public dep3: Dep3 = {};
+            @inject(Dep1) public dep1!: Dep1;
+            @inject(Dep2) public dep2!: Dep2;
+            @inject(Dep3) public dep3!: Dep3;
         }
 
         const instance = new Foo();
