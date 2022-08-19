@@ -2,6 +2,57 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 18 Aug 2022 20:46:10 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.5",
+      "version": "2.0.0-beta.5",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "218cfc014f5c76464493725f83bd883e8b07defa",
+            "comment": "Fix ExpressionObserer bug where watcher was not reset if the binding threw"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "fdd4514664691021a5673934c95acf31a8e73416",
+            "comment": "make insertbefore noop in view"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "eb8d5a59f645b85567adadac41a3bfa66001f941",
+            "comment": "make sure default options for recycle gets set in different scenarios"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "ac3954c97acd3bd549a27829593855c431a24027",
+            "comment": "refactor: remove dependency of DI on FASTElement"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "29308db7920baaaac5b31b206d551669e165bc06",
+            "comment": "add subpath export for package.json to packages"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "775d51602cba544347ec1e57fdb4fea248d1b1b5",
+            "comment": "change default array strategy to merge strategy, update repeat directive"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "aeac1198f427c33f789a2d869f58549ea5bfea57",
+            "comment": "assert FASTElement's type so that instanceof behavior is consistent with other class implementations"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 18 Jul 2022 21:10:01 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.4",
       "version": "2.0.0-beta.4",

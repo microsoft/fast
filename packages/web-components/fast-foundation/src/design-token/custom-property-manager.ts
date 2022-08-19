@@ -10,6 +10,7 @@ import {
 
 /**
  * A target that can have key/value pairs set and removed.
+ * @public
  */
 export interface PropertyTarget {
     setProperty(name: string, value: string | null): void;

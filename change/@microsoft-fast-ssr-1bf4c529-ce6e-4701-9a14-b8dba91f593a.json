@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "add subpath export for package.json to packages",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "32497422+KingOfTac@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

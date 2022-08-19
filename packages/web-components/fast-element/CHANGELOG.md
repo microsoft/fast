@@ -1,8 +1,22 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Mon, 18 Jul 2022 21:10:01 GMT and should not be manually modified.
+This log was last generated on Thu, 18 Aug 2022 20:46:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.5
+
+Thu, 18 Aug 2022 20:46:10 GMT
+
+### Changes
+
+- Fix ExpressionObserer bug where watcher was not reset if the binding threw (nicholasrice@users.noreply.github.com)
+- make insertbefore noop in view (prudepixie@users.noreply.github.com)
+- make sure default options for recycle gets set in different scenarios (prudepixie@users.noreply.github.com)
+- refactor: remove dependency of DI on FASTElement (roeisenb@microsoft.com)
+- add subpath export for package.json to packages (32497422+KingOfTac@users.noreply.github.com)
+- change default array strategy to merge strategy, update repeat directive (prudepixie@users.noreply.github.com)
+- assert FASTElement's type so that instanceof behavior is consistent with other class implementations (nicholasrice@users.noreply.github.com)
 
 ## 2.0.0-beta.4
 

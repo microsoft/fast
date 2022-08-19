@@ -282,10 +282,10 @@ export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
                     : null;
             if (target) {
                 if (record.type === DesignTokenMutationType.delete) {
-                    target.removeProperty(this.cssCustomProperty!);
+                    target.removeProperty(this.cssCustomProperty);
                 } else {
                     target.setProperty(
-                        this.cssCustomProperty!,
+                        this.cssCustomProperty,
                         this.resolveCSSValue(record.target.getTokenValue(this)) as any
                     );
                 }
