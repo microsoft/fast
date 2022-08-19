@@ -184,6 +184,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 | Name                 | Privacy   | Description                                                                | Parameters                                                             | Return | Inherited From |
 | -------------------- | --------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------ | -------------- |
+| `validate`           | public    |                                                                            |                                                                        | `void` |                |
 | `positionChanged`    | protected |                                                                            | `prev: SelectPosition or undefined, next: SelectPosition or undefined` | `void` |                |
 | `filterOptions`      | public    | Filter available options by text value.                                    |                                                                        | `void` |                |
 | `setPositioning`     | public    | Calculate and apply listbox positioning based on available viewport space. | `force`                                                                | `void` |                |

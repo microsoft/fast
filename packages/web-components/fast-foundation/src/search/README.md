@@ -119,6 +119,7 @@ This component is built with the expectation that focus is delegated to the inpu
 | `patternChanged`     | protected |                                         |            | `void` |                |
 | `sizeChanged`        | protected |                                         |            | `void` |                |
 | `spellcheckChanged`  | protected |                                         |            | `void` |                |
+| `validate`           | public    |                                         |            | `void` |                |
 | `handleClearInput`   | public    | Handles the control's clear value event |            | `void` |                |
 
 #### Attributes

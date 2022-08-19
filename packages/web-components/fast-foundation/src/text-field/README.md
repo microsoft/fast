@@ -132,6 +132,7 @@ This component is built with the expectation that focus is delegated to the inpu
 | `sizeChanged`        | protected |                                        |            | `void` |                |
 | `spellcheckChanged`  | protected |                                        |            | `void` |                |
 | `select`             | public    | Selects all the text in the text field |            | `void` |                |
+| `validate`           | public    |                                        |            | `void` |                |
 
 #### Events
 

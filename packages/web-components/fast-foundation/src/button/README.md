@@ -117,6 +117,7 @@ This component is built with the expectation that focus is delegated to the butt
 | `formnovalidateChanged` | protected |             |                                                                                            | `void` |                |
 | `formtargetChanged`     | protected |             |                                                                                            | `void` |                |
 | `typeChanged`           | protected |             | `previous: "submit" or "reset" or "button" or void, next: "submit" or "reset" or "button"` | `void` |                |
+| `validate`              | public    |             |                                                                                            | `void` |                |
 
 #### Attributes
 
