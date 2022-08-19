@@ -36,7 +36,7 @@ function removeElement(...els: HTMLElement[]) {
 
 describe("A DesignToken", () => {
     beforeEach(async () => {
-        DesignToken.registerRoot();
+        DesignToken.registerDefaultStyleTarget();
         await Updates.next();
     });
 
@@ -958,7 +958,7 @@ describe("A DesignToken", () => {
             const token = DesignToken.create<number>('default-with-root').withDefault(12);
             const styles = window.getComputedStyle(document.body);
 
-            DesignToken.registerRoot();
+            DesignToken.registerDefaultStyleTarget();
 
             await Updates.next();
 
@@ -970,7 +970,7 @@ describe("A DesignToken", () => {
             const token = DesignToken.create<number>('deregistered-root').withDefault(12);
             const styles = window.getComputedStyle(document.body);
 
-            DesignToken.registerRoot();
+            DesignToken.registerDefaultStyleTarget();
 
             await Updates.next();
 
@@ -986,7 +986,7 @@ describe("A DesignToken", () => {
             const token = DesignToken.create<number>('default-with-element-root').withDefault(12);
             const element = addElement();
 
-            DesignToken.registerRoot(element);
+            DesignToken.registerDefaultStyleTarget(element);
 
             await Updates.next();
             const styles = window.getComputedStyle(element);
@@ -1000,20 +1000,20 @@ describe("A DesignToken", () => {
             const a = addElement();
             const b = addElement();
 
-            DesignToken.registerRoot(a);
+            DesignToken.registerDefaultStyleTarget(a);
             await Updates.next();
 
             expect(window.getComputedStyle(a).getPropertyValue(token.cssCustomProperty)).to.equal("12");
             expect(window.getComputedStyle(b).getPropertyValue(token.cssCustomProperty)).to.equal("");
             expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
 
-            DesignToken.registerRoot(b);
+            DesignToken.registerDefaultStyleTarget(b);
             await Updates.next();
             expect(window.getComputedStyle(a).getPropertyValue(token.cssCustomProperty)).to.equal("12");
             expect(window.getComputedStyle(b).getPropertyValue(token.cssCustomProperty)).to.equal("12");
             expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
 
-            DesignToken.registerRoot();
+            DesignToken.registerDefaultStyleTarget();
             await Updates.next();
             expect(window.getComputedStyle(a).getPropertyValue(token.cssCustomProperty)).to.equal("12");
             expect(window.getComputedStyle(b).getPropertyValue(token.cssCustomProperty)).to.equal("12");
@@ -1028,7 +1028,7 @@ describe("A DesignToken", () => {
                 removeProperty: chai.spy(),
             }
 
-            DesignToken.registerRoot(root);
+            DesignToken.registerDefaultStyleTarget(root);
 
             expect(root.setProperty).to.have.been.called.with(token.cssCustomProperty, 12)
 
