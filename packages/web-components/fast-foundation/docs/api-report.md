@@ -2155,34 +2155,46 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
 //
 // @beta
 export interface FormAssociated extends Omit<ElementInternals_2, "labels"> {
+    // (undocumented)
     attachProxy(): void;
+    // (undocumented)
     currentValue: string;
+    // (undocumented)
     detachProxy(): void;
+    // (undocumented)
     dirtyValue: boolean;
+    // (undocumented)
     disabled: boolean;
     // (undocumented)
     disabledChanged?(previous: boolean, next: boolean): void;
+    // (undocumented)
     readonly elementInternals: ElementInternals_2 | null;
     // (undocumented)
     readonly formAssociated: boolean;
+    // (undocumented)
     formDisabledCallback?(disabled: boolean): void;
     // (undocumented)
     formResetCallback(): void;
+    // (undocumented)
     initialValue: string;
     // (undocumented)
     initialValueChanged?(previous: string, next: string): void;
     // (undocumented)
     readonly labels: ReadonlyArray<Node[]>;
+    // (undocumented)
     name: string;
     // (undocumented)
     nameChanged?(previous: string, next: string): void;
+    // (undocumented)
     required: boolean;
     // (undocumented)
     requiredChanged(prev: boolean, next: boolean): void;
     // (undocumented)
     stopPropagation(e: Event): void;
-    validate(target?: HTMLElement): void;
+    validate(anchor?: HTMLElement): void;
+    // (undocumented)
     value: string;
+    // (undocumented)
     valueChanged(previous: string, next: string): void;
 }
 
