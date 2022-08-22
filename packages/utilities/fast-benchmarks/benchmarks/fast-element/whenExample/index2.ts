@@ -16,9 +16,9 @@ const templates = {
             <span>I'm so happy :)</span>
         </div>
     `,
-    estatic: html`
+    ecstatic: html`
         <div>
-            <span>I'm so estatic :D</span>
+            <span>I'm so ecstatic :D</span>
         </div>
     `,
     indifferent: html`
@@ -36,7 +36,7 @@ const templates = {
             ${x => {
                 switch (true) {
                     case x.emotionLevel > 8:
-                        return templates.estatic;
+                        return templates.ecstatic;
                     case x.emotionLevel >= 6:
                         return templates.happy;
                     case x.emotionLevel <= 1:

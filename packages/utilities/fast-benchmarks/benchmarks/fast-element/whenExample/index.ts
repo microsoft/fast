@@ -22,9 +22,9 @@ const templates = {
             <span>I'm so happy :)</span>
         </div>
     `,
-    estatic: html`
+    ecstatic: html`
         <div>
-            <span>I'm so estatic :D</span>
+            <span>I'm so ecstatic :D</span>
         </div>
     `,
     indifferent: html`
@@ -46,7 +46,10 @@ const templates = {
                 templates.indifferent
             )}
             ${when(x => x.emotionLevel >= 6 && x.emotionLevel < 9, templates.happy)}
-            ${when(x => x.emotionLevel === 9 || x.emotionLevel === 10, templates.estatic)}
+            ${when(
+                x => x.emotionLevel === 9 || x.emotionLevel === 10,
+                templates.ecstatic
+            )}
         </div>
     `,
 })
