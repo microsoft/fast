@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Wed, 27 Jul 2022 17:36:33 GMT and should not be manually modified.
+This log was last generated on Thu, 18 Aug 2022 20:46:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.7
+
+Thu, 18 Aug 2022 20:46:10 GMT
+
+### Changes
+
+- add subpath export for package.json to packages (32497422+KingOfTac@users.noreply.github.com)
+- implement CSSStyleSheet behavior to support DesignToken in SSR (nicholasrice@users.noreply.github.com)
+- feat: implement Declarative Shadow DOM polyfill as an optional plugin for FAST Server Side Rendering (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.5
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.7
 
 ## 1.0.0-beta.6
 

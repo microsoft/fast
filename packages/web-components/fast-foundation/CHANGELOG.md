@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 27 Jul 2022 17:36:33 GMT and should not be manually modified.
+This log was last generated on Thu, 18 Aug 2022 20:46:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.7
+
+Thu, 18 Aug 2022 20:46:10 GMT
+
+### Changes
+
+- change select() method to public on number field, text field, and text area (7282195+m-akinc@users.noreply.github.com)
+- add subpath export for package.json to packages (32497422+KingOfTac@users.noreply.github.com)
+- anchored-region checks local shadow dom (stephcomeau@msn.com)
+- use nullableNumberConverter for tooltip delay attribute (chhol@microsoft.com)
+- adding event-based resolution strategy export (nicholasrice@users.noreply.github.com)
+- refactor to allow arbitrary PropertyTarget types for DesignToken roots (nicholasrice@users.noreply.github.com)
+- hidden horizontal-scroll fix (robarb@microsoft.com)
+- Refactor DesignToken to provide a resolve function to derived token values, implements WebComponent implementation on top of isomorphic DesignToken infrastructure (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.5
 
 ## 3.0.0-alpha.6
 

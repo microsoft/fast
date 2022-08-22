@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "ensures dist files aren't used as ts source files",
-  "packageName": "@microsoft/fast-colors",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

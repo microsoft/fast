@@ -19,6 +19,12 @@ export type ComponentDOMEmissionMode = "shadow";
 // @beta (undocumented)
 export type ConstructableElementRenderer = (new (tagName: string, renderInfo: RenderInfo) => ElementRenderer) & typeof ElementRenderer;
 
+// @public
+export const DeclarativeShadowDOMPolyfill: Readonly<{
+    undefinedElementStyles: string;
+    nonStreamingTemplateUpgrade: string;
+}>;
+
 // @beta (undocumented)
 export abstract class ElementRenderer {
     constructor(tagName: string, renderInfo: RenderInfo);

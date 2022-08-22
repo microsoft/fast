@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "refactor to allow arbitrary PropertyTarget types for DesignToken roots",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

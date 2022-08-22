@@ -216,6 +216,7 @@ export const enum Message {
     invalidKey = 1511,
     noDefaultResolver = 1512,
     cyclicDependency = 1513,
+    connectUpdateRequiresController = 1514,
 }
 
 /**

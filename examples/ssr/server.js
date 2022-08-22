@@ -2,7 +2,7 @@
 import "@microsoft/fast-ssr/install-dom-shim";
 import fs from "fs";
 import { html } from "@microsoft/fast-element";
-import fastSSR, { RequestStorageManager } from "@microsoft/fast-ssr";
+import fastSSR, { RequestStorageManager, DeclarativeShadowDOMPolyfill } from "@microsoft/fast-ssr";
 import express from "express";
 import { DefaultTodoList, app as todoApp, TodoList } from "fast-todo-app";
 
@@ -22,8 +22,10 @@ const template = html`
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>SSR Example</title>
+            <style>${DeclarativeShadowDOMPolyfill.undefinedElementStyles}</style>
         <body>
             <todo-app></todo-app>
+            <script>${DeclarativeShadowDOMPolyfill.nonStreamingTemplateUpgrade}</script>
             <!--
                 Use caution in production environments embedding JSON.
                 In general the JSON should be sanitized to prevent
