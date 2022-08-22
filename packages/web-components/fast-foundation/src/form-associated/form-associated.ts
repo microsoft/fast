@@ -130,7 +130,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
      * Sets the validity of the custom element. By default this uses the proxy element to determine
      * validity, but this can be extended or replaced in implementation.
      *
-     * @param anchor - The anchor element to provide to {@link (FormAssociated:interface).setValidity} for surfacing the browser's constraint validation UI
+     * @param anchor - The anchor element to provide to ElementInternals.setValidity for surfacing the browser's constraint validation UI
      */
     validate(anchor?: HTMLElement): void;
     valueChanged(previous: string, next: string): void;
