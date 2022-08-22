@@ -208,11 +208,14 @@ export class FASTTextArea extends FormAssociatedTextArea {
         this.$emit("change");
     }
 
+    /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
         super.validate(this.control);
     }
 }
 
+const foo = new FASTTextArea();
+foo.disabled;
 /**
  * Mark internal because exporting class and interface of the same name
  * confuses API documenter.

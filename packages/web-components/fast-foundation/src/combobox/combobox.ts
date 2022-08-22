@@ -98,6 +98,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
         this.updateValue();
     }
 
+    /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
         super.validate(this.control);
     }

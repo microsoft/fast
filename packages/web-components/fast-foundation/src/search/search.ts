@@ -200,6 +200,7 @@ export class FASTSearch extends FormAssociatedSearch {
         }
     }
 
+    /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
         super.validate(this.control);
     }

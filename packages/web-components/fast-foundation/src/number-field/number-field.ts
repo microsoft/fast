@@ -235,6 +235,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
         this.isUserInput = false;
     }
 
+    /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
         super.validate(this.control);
     }

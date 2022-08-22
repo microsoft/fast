@@ -764,7 +764,6 @@ export class FASTButton extends FormAssociatedButton {
     type: "submit" | "reset" | "button";
     // (undocumented)
     protected typeChanged(previous: "submit" | "reset" | "button" | void, next: "submit" | "reset" | "button"): void;
-    // (undocumented)
     validate(): void;
 }
 
@@ -886,7 +885,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
     setPositioning(): void;
     // @internal
     slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void;
-    // (undocumented)
     validate(): void;
     get value(): string;
     set value(next: string);
@@ -1357,7 +1355,6 @@ export class FASTNumberField extends FormAssociatedNumberField {
     step: number;
     stepDown(): void;
     stepUp(): void;
-    // (undocumented)
     validate(): void;
     get valueAsNumber(): number;
     set valueAsNumber(next: number);
@@ -1627,7 +1624,6 @@ export class FASTSearch extends FormAssociatedSearch {
     spellcheck: boolean;
     // (undocumented)
     protected spellcheckChanged(): void;
-    // (undocumented)
     validate(): void;
 }
 
@@ -1894,7 +1890,6 @@ export class FASTTextArea extends FormAssociatedTextArea {
     spellcheck: boolean;
     // (undocumented)
     protected spellcheckChanged(): void;
-    // (undocumented)
     validate(): void;
 }
 
@@ -1947,7 +1942,6 @@ export class FASTTextField extends FormAssociatedTextField {
     // (undocumented)
     protected spellcheckChanged(): void;
     type: TextFieldType;
-    // (undocumented)
     validate(): void;
 }
 
@@ -2161,47 +2155,34 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
 //
 // @beta
 export interface FormAssociated extends Omit<ElementInternals_2, "labels"> {
-    // (undocumented)
     attachProxy(): void;
-    // (undocumented)
     currentValue: string;
-    // (undocumented)
     detachProxy(): void;
-    // (undocumented)
     dirtyValue: boolean;
-    // (undocumented)
     disabled: boolean;
     // (undocumented)
     disabledChanged?(previous: boolean, next: boolean): void;
-    // (undocumented)
     readonly elementInternals: ElementInternals_2 | null;
     // (undocumented)
     readonly formAssociated: boolean;
-    // (undocumented)
     formDisabledCallback?(disabled: boolean): void;
     // (undocumented)
     formResetCallback(): void;
-    // (undocumented)
     initialValue: string;
     // (undocumented)
     initialValueChanged?(previous: string, next: string): void;
     // (undocumented)
     readonly labels: ReadonlyArray<Node[]>;
-    // (undocumented)
     name: string;
     // (undocumented)
     nameChanged?(previous: string, next: string): void;
-    // (undocumented)
     required: boolean;
     // (undocumented)
     requiredChanged(prev: boolean, next: boolean): void;
     // (undocumented)
     stopPropagation(e: Event): void;
-    // (undocumented)
     validate(target?: HTMLElement): void;
-    // (undocumented)
     value: string;
-    // (undocumented)
     valueChanged(previous: string, next: string): void;
 }
 

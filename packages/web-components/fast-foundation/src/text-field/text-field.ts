@@ -250,6 +250,7 @@ export class FASTTextField extends FormAssociatedTextField {
         this.$emit("change");
     }
 
+    /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
         super.validate(this.control);
     }
