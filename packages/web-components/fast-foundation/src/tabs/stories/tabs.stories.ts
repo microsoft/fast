@@ -15,7 +15,7 @@ const componentTemplate = html<TabsStoryArgs>`
         ${repeat(
             x => x.items,
             html`
-                <fast-tab ?disabled=${x => x.disabled}>${x => x.tab}</fast-tab>
+                <fast-tab ?disabled="${x => x.disabled}">${x => x.tab}</fast-tab>
                 <fast-tab-panel>
                     ${x => x.panel}
                 </fast-tab-panel>
