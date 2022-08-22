@@ -108,15 +108,6 @@ export abstract class FASTElementRenderer extends ElementRenderer {
     }
 
     /**
-     * Renders the component internals to light DOM instead of shadow DOM.
-     * @param renderInfo - information about the current rendering context.
-     */
-    public *renderLight(renderInfo: RenderInfo): IterableIterator<string> {
-        // TODO - this will yield out the element's template using the template renderer, skipping any shadow-DOM specific emission.
-        yield "";
-    }
-
-    /**
      * Render the component internals to shadow DOM.
      * @param renderInfo - information about the current rendering context.
      */
