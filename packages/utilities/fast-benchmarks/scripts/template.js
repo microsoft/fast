@@ -58,15 +58,15 @@ async function generateHtmlTemplate(operationFile, compiledJsBench, fileName) {
     const benchScript = readFileSync(`./src/${operationFile}`, "utf8");
     const defaultHtml = `<!DOCTYPE html>
     <html>
-    <head></head>
-    <body>
-    <div id="container"></div>
-    <script type="module" src="${compiledJsBench}"></script>
-    <script type="module">
-        const test = "${name}"
-        ${benchScript}
-    </script>
-    </body>
+        <head></head>
+        <body>
+            <div id="container"></div>
+            <script type="module" src="${compiledJsBench}"></script>
+            <script type="module">
+                const test = "${name}"
+                ${benchScript}
+            </script>
+        </body>
     </html>`;
     // generate html template of all default suite for benchmark
     const htmlFileName = fileName + "-" + name;
@@ -181,11 +181,15 @@ function generateBenchmark(
     const queryStr = queryParams?.join("&");
     const fullUrl = queryParams
         ? `${url}?template=${template}&method=${method}&${queryStr}`
-        : `${url}?template=${template}&method=${method}`;
+        : method
+        ? `${url}?template=${template}&method=${method}`
+        : `${url}?template=${template}`;
     newBench.url = fullUrl;
     newBench.name = queryParams
         ? `${name}-${template}-${method}-${queryStr}`
-        : `${name}-${template}-${method}`;
+        : method
+        ? `${name}-${template}-${method}`
+        : `${name}`;
     benchmarks.push(newBench);
     return benchmarks;
 }
@@ -280,10 +284,10 @@ export async function generateBenchmarks(
                 };
             }
 
-            if (method) {
-                benchmarkName = `${method}_${operation}`;
+            if (templates || method) {
                 for (let i = 0; i < templates.length; i++) {
                     const template = templates[i];
+                    benchmarkName = method ? `${method}_${operation}` : `${operation}`;
                     // TODO: revist custom scripts, currently not very extensible
                     if (customQueryParams) {
                         const queryParams = JSON.parse(customQueryParams);

@@ -6,7 +6,6 @@ import {
     updateComplete,
 } from "../utils/index.js";
 (async () => {
-    const test = "clickTrigger10x";
     const container = document.getElementById("container");
     const el = document.createElement("x-app");
     const create = async () => {
@@ -19,9 +18,9 @@ import {
         const button = shadowRoot.querySelector("button");
         performance.mark(start);
         // click on button to trigger event
-        button.click();
-        // for (let i = 0; i < 10; i++) {
-        // }
+        for (let i = 0; i <= 10; i++) {
+            button.click();
+        }
         await updateComplete();
         performance.measure(test, start);
         destroy(container);
