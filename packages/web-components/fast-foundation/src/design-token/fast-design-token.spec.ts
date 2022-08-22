@@ -41,7 +41,7 @@ describe("A DesignToken", () => {
     });
 
     after(async () => {
-        DesignToken.unregisterRoot();
+        DesignToken.unregisterDefaultStyleTarget();
         await Updates.next();
     });
     it("should support declared types", () => {
@@ -947,7 +947,7 @@ describe("A DesignToken", () => {
 
     describe("with root registration", () => {
         it("should not emit CSS custom properties for the default value if a root is not registered", () => {
-            DesignToken.unregisterRoot();
+            DesignToken.unregisterDefaultStyleTarget();
             const token = DesignToken.create<number>('default-no-root').withDefault(12);
             const styles = window.getComputedStyle(document.body);
 
@@ -963,7 +963,7 @@ describe("A DesignToken", () => {
             await Updates.next();
 
             expect(styles.getPropertyValue(token.cssCustomProperty)).to.equal("12");
-            DesignToken.unregisterRoot();
+            DesignToken.unregisterDefaultStyleTarget();
         });
 
         it("should remove emitted CSS custom properties for a root when the root is deregistered", async () => {
@@ -975,7 +975,7 @@ describe("A DesignToken", () => {
             await Updates.next();
 
             expect(styles.getPropertyValue(token.cssCustomProperty)).to.equal("12");
-            DesignToken.unregisterRoot();
+            DesignToken.unregisterDefaultStyleTarget();
 
             await Updates.next();
 
@@ -992,10 +992,10 @@ describe("A DesignToken", () => {
             const styles = window.getComputedStyle(element);
 
             expect(styles.getPropertyValue(token.cssCustomProperty)).to.equal("12");
-            DesignToken.unregisterRoot(element);
+            DesignToken.unregisterDefaultStyleTarget(element);
         });
         it("should emit CSS custom properties to multiple roots", async () => {
-            DesignToken.unregisterRoot();
+            DesignToken.unregisterDefaultStyleTarget();
             const token = DesignToken.create<number>('default-with-multiple-roots').withDefault(12);
             const a = addElement();
             const b = addElement();
@@ -1035,7 +1035,7 @@ describe("A DesignToken", () => {
             token.withDefault(14);
 
             expect(root.setProperty).to.have.been.called.with(token.cssCustomProperty, 14)
-            DesignToken.unregisterRoot(root);
+            DesignToken.unregisterDefaultStyleTarget(root);
         });
     });
 });
