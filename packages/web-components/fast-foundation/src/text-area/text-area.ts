@@ -214,8 +214,6 @@ export class FASTTextArea extends FormAssociatedTextArea {
     }
 }
 
-const foo = new FASTTextArea();
-foo.disabled;
 /**
  * Mark internal because exporting class and interface of the same name
  * confuses API documenter.

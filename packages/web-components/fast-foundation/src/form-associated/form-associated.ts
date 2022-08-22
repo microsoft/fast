@@ -125,7 +125,14 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     nameChanged?(previous: string, next: string): void;
     requiredChanged(prev: boolean, next: boolean): void;
     stopPropagation(e: Event): void;
-    validate(target?: HTMLElement): void;
+
+    /**
+     * Sets the validity of the custom element. By default this uses the proxy element to determine
+     * validity, but this can be extended or replaced in implementation.
+     *
+     * @param anchor - The anchor element to provide to {@link (FormAssociated:interface).setValidity} for surfacing the browser's constraint validation UI
+     */
+    validate(anchor?: HTMLElement): void;
     valueChanged(previous: string, next: string): void;
 }
 
@@ -625,10 +632,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
             this.shadowRoot?.removeChild(this.proxySlot as HTMLSlotElement);
         }
 
-        /**
-         * Sets the validity of the custom element. By default this uses the proxy element to determine
-         * validity, but this can be extended or replaced in implementation.
-         */
+        /** {@inheritDoc (FormAssociated:interface).validate} */
         public validate(anchor?: HTMLElement): void {
             if (this.proxy instanceof HTMLElement) {
                 this.setValidity(
