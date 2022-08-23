@@ -185,6 +185,19 @@ export class FASTDataGrid extends FASTElement {
     }
 
     /**
+     * The number of rows to move selection on page up/down keystrokes.
+     * When undefined the grid will use viewport height/the height of the first non-header row.
+     * If the grid itself is a scrolling container it will be considered the viewport for this purpose,
+     * otherwise the document will be used.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: page-size
+     */
+    @attr({ attribute: "page-size" })
+    public pageSize: number | undefined;
+
+    /**
      * The data being displayed in the grid
      *
      * @public
@@ -398,7 +411,7 @@ export class FASTDataGrid extends FASTElement {
      * @internal
      */
     public handleFocus(e: FocusEvent): void {
-        this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, true);
+        this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, "nearest");
     }
 
     /**
@@ -419,84 +432,52 @@ export class FASTDataGrid extends FASTElement {
         }
 
         let newFocusRowIndex: number;
-        const maxIndex = this.rowElements.length - 1;
-        const currentGridBottom: number = this.offsetHeight + this.scrollTop;
-        const lastRow: HTMLElement = this.rowElements[maxIndex] as HTMLElement;
 
         switch (e.key) {
             case keyArrowUp:
                 e.preventDefault();
                 // focus up one row
-                this.focusOnCell(this.focusRowIndex - 1, this.focusColumnIndex, true);
+                this.focusOnCell(
+                    this.focusRowIndex - 1,
+                    this.focusColumnIndex,
+                    "nearest"
+                );
                 break;
 
             case keyArrowDown:
                 e.preventDefault();
                 // focus down one row
-                this.focusOnCell(this.focusRowIndex + 1, this.focusColumnIndex, true);
+                this.focusOnCell(
+                    this.focusRowIndex + 1,
+                    this.focusColumnIndex,
+                    "nearest"
+                );
                 break;
 
             case keyPageUp:
                 e.preventDefault();
                 if (this.rowElements.length === 0) {
-                    this.focusOnCell(0, 0, false);
+                    this.focusOnCell(0, 0, "nearest");
                     break;
                 }
-                if (this.focusRowIndex === 0) {
-                    this.focusOnCell(0, this.focusColumnIndex, false);
-                    return;
-                }
 
-                newFocusRowIndex = this.focusRowIndex - 1;
+                newFocusRowIndex = Math.max(0, this.focusRowIndex - this.getPageSize());
 
-                for (newFocusRowIndex; newFocusRowIndex >= 0; newFocusRowIndex--) {
-                    const thisRow: HTMLElement = this.rowElements[newFocusRowIndex];
-                    if (thisRow.offsetTop < this.scrollTop) {
-                        this.scrollTop =
-                            thisRow.offsetTop + thisRow.clientHeight - this.clientHeight;
-                        break;
-                    }
-                }
-
-                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, false);
+                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, "start");
                 break;
 
             case keyPageDown:
                 e.preventDefault();
                 if (this.rowElements.length === 0) {
-                    this.focusOnCell(0, 0, false);
+                    this.focusOnCell(0, 0, "nearest");
                     break;
                 }
 
-                // focus down one "page"
-                if (
-                    this.focusRowIndex >= maxIndex ||
-                    lastRow.offsetTop + lastRow.offsetHeight <= currentGridBottom
-                ) {
-                    this.focusOnCell(maxIndex, this.focusColumnIndex, false);
-                    return;
-                }
-
-                newFocusRowIndex = this.focusRowIndex + 1;
-
-                for (newFocusRowIndex; newFocusRowIndex <= maxIndex; newFocusRowIndex++) {
-                    const thisRow: HTMLElement = this.rowElements[
-                        newFocusRowIndex
-                    ] as HTMLElement;
-                    if (thisRow.offsetTop + thisRow.offsetHeight > currentGridBottom) {
-                        let stickyHeaderOffset: number = 0;
-                        if (
-                            this.generateHeader === GenerateHeaderOptions.sticky &&
-                            this.generatedHeader !== null
-                        ) {
-                            stickyHeaderOffset = this.generatedHeader.clientHeight;
-                        }
-                        this.scrollTop = thisRow.offsetTop - stickyHeaderOffset;
-                        break;
-                    }
-                }
-
-                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, false);
+                newFocusRowIndex = Math.min(
+                    this.rowElements.length - 1,
+                    this.focusRowIndex + this.getPageSize()
+                );
+                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, "end");
 
                 break;
 
@@ -504,7 +485,7 @@ export class FASTDataGrid extends FASTElement {
                 if (e.ctrlKey) {
                     e.preventDefault();
                     // focus first cell of first row
-                    this.focusOnCell(0, 0, true);
+                    this.focusOnCell(0, 0, "nearest");
                 }
                 break;
 
@@ -515,17 +496,48 @@ export class FASTDataGrid extends FASTElement {
                     this.focusOnCell(
                         this.rowElements.length - 1,
                         this.columnDefinitions.length - 1,
-                        true
+                        "nearest"
                     );
                 }
                 break;
         }
     }
 
+    private getPageSize(): number {
+        if (this.pageSize) {
+            return this.pageSize;
+        }
+
+        let rowHeight = 50;
+        this.rowElements.forEach(element => {
+            if (
+                !element.hasAttribute("rowType") ||
+                !element.getAttribute("rowType")?.includes("header")
+            ) {
+                rowHeight = element.clientHeight;
+            }
+        });
+
+        let pageSize: number = 1;
+
+        if (rowHeight === 0) {
+            return pageSize;
+        }
+
+        if (this.clientHeight < this.scrollHeight) {
+            pageSize = this.clientHeight / rowHeight;
+        } else {
+            pageSize = document.body.clientHeight / rowHeight;
+        }
+
+        pageSize = Math.max(Math.round(pageSize), 1);
+        return pageSize;
+    }
+
     private focusOnCell = (
         rowIndex: number,
         columnIndex: number,
-        scrollIntoView: boolean
+        alignment: "start" | "center" | "end" | "nearest"
     ): void => {
         if (this.rowElements.length === 0) {
             this.focusRowIndex = 0;
@@ -544,19 +556,10 @@ export class FASTDataGrid extends FASTElement {
         );
 
         const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
+
         const focusTarget: HTMLElement = cells[focusColumnIndex] as HTMLElement;
 
-        const isScrollableContainer: boolean = this.scrollHeight > this.clientHeight;
-
-        if (
-            scrollIntoView &&
-            ((focusRowIndex < this.focusRowIndex && this.scrollTop > 0) ||
-                (focusRowIndex > this.focusRowIndex &&
-                    this.scrollTop < this.scrollHeight - this.clientHeight))
-        ) {
-            focusTarget.scrollIntoView({ block: "center", inline: "center" });
-        }
-
+        focusTarget.scrollIntoView({ block: alignment });
         focusTarget.focus();
     };
 
@@ -575,7 +578,7 @@ export class FASTDataGrid extends FASTElement {
 
     private updateFocus(): void {
         this.pendingFocusUpdate = false;
-        this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, true);
+        this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, "nearest");
     }
 
     private toggleGeneratedHeader(): void {
