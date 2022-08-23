@@ -47,6 +47,7 @@ export class TemplateRenderer {
      * @param template - The template to render.
      * @param renderInfo - Information about the rendering context.
      * @param source - Any source data to render the template and evaluate bindings with.
+     * @param context - The {@link @microsoft/fast-element#ExecutionContext} to render with.
      */
     public *render(
         template: ViewTemplate | string,
@@ -54,6 +55,27 @@ export class TemplateRenderer {
         source: unknown = undefined,
         context: ExecutionContext = ExecutionContext.default
     ): IterableIterator<string> {
+        const codes =
+            template instanceof ViewTemplate
+                ? parseTemplateToOpCodes(template)
+                : parseStringToOpCodes(template, {});
+
+        yield* this.renderOpCodes(codes, renderInfo, source, context);
+    }
+
+    /**
+     * Renders a {@link @microsoft/fast-element#ViewTemplate} or HTML string, accounting for async component rendering.
+     * @param template - The template to render.
+     * @param renderInfo - Information about the rendering context.
+     * @param source - Any source data to render the template and evaluate bindings with.
+     * @param context - The {@link @microsoft/fast-element#ExecutionContext} to render with.
+     */
+    public *renderAsync(
+        template: ViewTemplate | string,
+        renderInfo: RenderInfo,
+        source: unknown = undefined,
+        context: ExecutionContext = ExecutionContext.default
+    ): IterableIterator<string | Promise<string>> {
         const codes =
             template instanceof ViewTemplate
                 ? parseTemplateToOpCodes(template)
