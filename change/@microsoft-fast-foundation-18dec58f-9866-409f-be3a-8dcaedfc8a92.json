@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "rework scroll into view",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "patch"
+}
