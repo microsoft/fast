@@ -3,6 +3,7 @@ import {
     attr,
     bind,
     FASTElement,
+    nullableNumberConverter,
     observable,
     RepeatDirective,
     Updates,
@@ -194,7 +195,7 @@ export class FASTDataGrid extends FASTElement {
      * @remarks
      * HTML Attribute: page-size
      */
-    @attr({ attribute: "page-size" })
+    @attr({ attribute: "page-size", converter: nullableNumberConverter })
     public pageSize: number | undefined;
 
     /**
@@ -460,7 +461,9 @@ export class FASTDataGrid extends FASTElement {
                     this.focusOnCell(0, 0, "nearest");
                     break;
                 }
-
+                console.log(this.getPageSize());
+                console.log(this.focusRowIndex);
+                console.log(this.focusRowIndex - this.getPageSize());
                 newFocusRowIndex = Math.max(0, this.focusRowIndex - this.getPageSize());
 
                 this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, "start");
@@ -473,6 +476,9 @@ export class FASTDataGrid extends FASTElement {
                     break;
                 }
 
+                console.log(this.getPageSize());
+                console.log(this.focusRowIndex);
+                console.log(this.focusRowIndex + this.getPageSize());
                 newFocusRowIndex = Math.min(
                     this.rowElements.length - 1,
                     this.focusRowIndex + this.getPageSize()

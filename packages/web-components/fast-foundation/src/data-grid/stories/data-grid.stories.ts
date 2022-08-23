@@ -9,6 +9,7 @@ const storyTemplate = html<StoryArgs<FASTDataGrid>>`
         ?no-tabbing="${x => x.noTabbing}"
         generate-header="${x => x.generateHeader}"
         grid-template-columns="${x => x.gridTemplateColumns}"
+        page-size="${x => x.pageSize}"
     >
         ${x => x.storyContent}
     </fast-data-grid>
