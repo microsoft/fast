@@ -29,7 +29,7 @@ export class Controller<
     TElement extends HTMLElement = HTMLElement
 > extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;
-    private behaviors: Map<Behavior<TElement>, number> | null = null;
+    private _behaviors: Map<Behavior<TElement>, number> | null = null;
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
@@ -150,6 +150,10 @@ export class Controller<
         }
     }
 
+    public get behaviors() {
+        return this._behaviors?.keys() || null;
+    }
+
     /**
      * Creates a Controller to control the specified element.
      * @param element - The element to be controlled by this controller.
@@ -258,7 +262,7 @@ export class Controller<
      * @param behaviors - The behaviors to add.
      */
     public addBehaviors(behaviors: ReadonlyArray<Behavior<TElement>>): void {
-        const targetBehaviors = this.behaviors ?? (this.behaviors = new Map());
+        const targetBehaviors = this._behaviors ?? (this._behaviors = new Map());
         const length = behaviors.length;
         const behaviorsToBind: Behavior<TElement>[] = [];
 
@@ -292,7 +296,7 @@ export class Controller<
         behaviors: ReadonlyArray<Behavior<TElement>>,
         force: boolean = false
     ): void {
-        const targetBehaviors = this.behaviors;
+        const targetBehaviors = this._behaviors;
 
         if (targetBehaviors === null) {
             return;
@@ -340,7 +344,7 @@ export class Controller<
             this.view.bind(element, context);
         }
 
-        const behaviors = this.behaviors;
+        const behaviors = this._behaviors;
 
         if (behaviors !== null) {
             for (const behavior of behaviors.keys()) {
@@ -367,7 +371,7 @@ export class Controller<
             view.unbind();
         }
 
-        const behaviors = this.behaviors;
+        const behaviors = this._behaviors;
 
         if (behaviors !== null) {
             const element = this.element;

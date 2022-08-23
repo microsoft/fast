@@ -215,6 +215,8 @@ export class Controller<TElement extends HTMLElement = HTMLElement> extends Prop
     constructor(element: TElement, definition: FASTElementDefinition);
     addBehaviors(behaviors: ReadonlyArray<Behavior<TElement>>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+    // (undocumented)
+    get behaviors(): IterableIterator<Behavior<TElement, any>> | null;
     readonly definition: FASTElementDefinition;
     readonly element: TElement;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
