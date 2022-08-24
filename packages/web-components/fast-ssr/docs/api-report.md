@@ -19,7 +19,7 @@ export type ComponentDOMEmissionMode = "shadow";
 // @beta (undocumented)
 export type ConstructableElementRenderer = (new (tagName: string, renderInfo: RenderInfo) => ElementRenderer) & typeof ElementRenderer;
 
-// @public
+// @beta
 export const DeclarativeShadowDOMPolyfill: Readonly<{
     undefinedElementStyles: string;
     nonStreamingTemplateUpgrade: string;
@@ -56,7 +56,6 @@ export abstract class FASTElementRenderer extends ElementRenderer {
     connectedCallback(): void;
     readonly element: FASTElement;
     static matchesClass(ctor: typeof HTMLElement): boolean;
-    renderLight(renderInfo: RenderInfo): IterableIterator<string>;
     renderShadow(renderInfo: RenderInfo): IterableIterator<string>;
     protected abstract styleRenderer: StyleRenderer;
     protected abstract templateRenderer: TemplateRenderer;
@@ -116,10 +115,13 @@ export interface StyleRenderer {
 export class TemplateRenderer {
     readonly componentDOMEmissionMode: ComponentDOMEmissionMode;
     render(template: ViewTemplate | string, renderInfo: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
+    renderAsync(template: ViewTemplate | string, renderInfo: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string | Promise<string>>;
     // Warning: (ae-forgotten-export) The symbol "Op" needs to be exported by the entry point exports.d.ts
     //
     // @internal
     renderOpCodes(codes: Op[], renderInfo: RenderInfo, source: unknown, context: ExecutionContext): IterableIterator<string>;
+    // (undocumented)
+    renderOpCodes(codes: Op[], renderInfo: RenderInfo, source: unknown, context: ExecutionContext, async: true): IterableIterator<string | Promise<string>>;
     // @internal
     withViewBehaviorFactoryRenderers(...renderers: ViewBehaviorFactoryRenderer<any>[]): void;
 }

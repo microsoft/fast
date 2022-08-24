@@ -5,6 +5,8 @@ import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
 import { TemplateRenderer } from "./template-renderer.js";
 import { render } from "@microsoft/fast-element/render";
+import { uniqueElementName } from "@microsoft/fast-element/testing";
+import { AsyncBehavior, asyncRender } from "../async-behavior/behavior.js";
 
 @customElement("hello-world")
 class HelloWorld extends FASTElement {}
@@ -320,4 +322,42 @@ test.describe("TemplateRenderer", () => {
             });
         });
     }
+
+    test.describe.only("rendering async", () => {
+        test("should allow async rendering", async () => {
+            const name = uniqueElementName();
+
+            @asyncRender
+            class Async implements AsyncBehavior {
+                bind(source: FASTElement, context: ExecutionContext<any>): void {
+                    this.ready = new Promise((resolve) => {
+                        window.setTimeout(() => {
+                            source.setAttribute("async-attr", "")
+                            resolve(undefined)
+                        }, 3000)
+                    });
+                }
+                unbind(source: any, context: ExecutionContext<any>): void {
+
+                }
+
+                ready!: Promise<any>;
+            }
+            @customElement(name)
+            class HelloWorld extends FASTElement {
+                public connectedCallback(): void {
+                    super.connectedCallback();
+                    this.$fastController.addBehaviors([new Async()])
+                }
+            }
+
+            const template = html`<${name}><${name}></${name}></${name}>`;
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.renderAsync(template, defaultRenderInfo);
+
+            for await (const part of result ) {
+                console.log(part);
+            }
+        });
+    });
 });

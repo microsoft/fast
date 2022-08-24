@@ -5,8 +5,10 @@ import {
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { RenderInfo } from "../render-info.js";
+import { getAsyncBehaviors } from "../async-behavior/behavior.js";
 import { getElementRenderer } from "../element-renderer/element-renderer.js";
+import { FASTElementRenderer } from "../element-renderer/fast-element-renderer.js";
+import { RenderInfo } from "../render-info.js";
 import { AttributeBindingOp, Op, OpType } from "../template-parser/op-codes.js";
 import {
     parseStringToOpCodes,
@@ -81,7 +83,7 @@ export class TemplateRenderer {
                 ? parseTemplateToOpCodes(template)
                 : parseStringToOpCodes(template, {});
 
-        yield* this.renderOpCodes(codes, renderInfo, source, context);
+        yield* this.renderOpCodes(codes, renderInfo, source, context, true);
     }
 
     /**
@@ -92,12 +94,26 @@ export class TemplateRenderer {
      *
      * @internal
      */
-    public *renderOpCodes(
+    public renderOpCodes(
         codes: Op[],
         renderInfo: RenderInfo,
         source: unknown,
         context: ExecutionContext
-    ): IterableIterator<string> {
+    ): IterableIterator<string>;
+    public renderOpCodes(
+        codes: Op[],
+        renderInfo: RenderInfo,
+        source: unknown,
+        context: ExecutionContext,
+        async: true
+    ): IterableIterator<string | Promise<string>>;
+    public *renderOpCodes(
+        codes: Op[],
+        renderInfo: RenderInfo,
+        source: unknown,
+        context: ExecutionContext,
+        async?: true
+    ): IterableIterator<string | Promise<string>> {
         for (const code of codes) {
             switch (code.type) {
                 case OpType.text:
@@ -173,6 +189,20 @@ export class TemplateRenderer {
                     if (currentRenderer) {
                         // simulate DOM connection
                         currentRenderer.connectedCallback();
+
+                        // After connection, if any async behaviors exist for the element,
+                        // await their resolution before continuing rendering.
+                        if (async && currentRenderer instanceof FASTElementRenderer) {
+                            const asyncBehaviors = getAsyncBehaviors(
+                                currentRenderer.element
+                            );
+                            if (asyncBehaviors?.length) {
+                                // Block rendering until all async behaviors are resolved, then continue
+                                yield Promise.all(asyncBehaviors.map(x => x.ready)).then(
+                                    () => ""
+                                );
+                            }
+                        }
 
                         // Allow the renderer to hoist any attribute values it needs to
                         yield* currentRenderer.renderAttributes();
