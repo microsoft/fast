@@ -18,20 +18,17 @@ export default {
     title: "Progress",
     args: {
         paused: false,
+        indeterminate: false,
         value: 75,
     },
     argTypes: {
+        indeterminate: { control: "boolean" },
         min: { control: "number" },
         max: { control: "number" },
         paused: { control: "boolean" },
         storyContent: { table: { disable: true } },
-        value: { control: "number" },
+        value: { control: "number", if: { arg: "indeterminate", truthy: false } },
     },
 } as Meta<FASTProgress>;
 
 export const Progress: Story<FASTProgress> = renderComponent(storyTemplate).bind({});
-
-export const ProgressIndeterminate: Story<FASTProgress> = Progress.bind({});
-ProgressIndeterminate.args = {
-    value: null,
-};
