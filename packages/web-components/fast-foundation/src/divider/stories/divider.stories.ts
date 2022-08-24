@@ -1,13 +1,11 @@
 import { html } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTDivider } from "../divider.js";
 import { DividerRole } from "../divider.options.js";
 
-type DividerStoryArgs = Args & FASTDivider;
-type DividerStoryMeta = Meta<DividerStoryArgs>;
-
-const componentTemplate = html<DividerStoryArgs>`
+const storyTemplate = html<StoryArgs<FASTDivider>>`
     <fast-divider
         orientation="${x => x.orientation}"
         role="${x => x.role}"
@@ -17,30 +15,9 @@ const componentTemplate = html<DividerStoryArgs>`
 export default {
     title: "Divider",
     argTypes: {
-        orientation: {
-            options: Object.values(Orientation),
-            control: { type: "select" },
-        },
-        role: {
-            options: Object.values(DividerRole),
-            control: { type: "select" },
-        },
+        orientation: { control: "radio", options: Object.values(Orientation) },
+        role: { control: "select", options: Object.values(DividerRole) },
     },
-} as DividerStoryMeta;
+} as Meta<FASTDivider>;
 
-export const Divider = (args: DividerStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    componentTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-
-export const DividerPresentation = Divider.bind({});
-DividerPresentation.storyName = "Divider (presentation role)";
-DividerPresentation.args = {
-    role: DividerRole.presentation,
-};
-
-export const DividerVertical = Divider.bind({});
-DividerVertical.args = {
-    orientation: Orientation.vertical,
-};
+export const Divider: Story<FASTDivider> = renderComponent(storyTemplate).bind({});
