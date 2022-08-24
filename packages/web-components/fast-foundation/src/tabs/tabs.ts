@@ -6,8 +6,8 @@ import {
     keyArrowUp,
     keyEnd,
     keyHome,
-    limit,
     uniqueId,
+    wrapInBounds,
 } from "@microsoft/fast-web-utilities";
 import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
@@ -358,29 +358,71 @@ export class FASTTabs extends FASTElement {
      * This method allows the active index to be adjusted by numerical increments
      */
     public adjust(adjustment: number): void {
-        const focusableTabs = this.tabs.filter(tab => !this.isDisabledElement(tab));
-        const currentActiveTabIndex = focusableTabs.indexOf(this.activetab);
-
-        const nextTabIndex = limit(
+        this.prevActiveTabIndex = this.activeTabIndex;
+        this.activeTabIndex = wrapInBounds(
             0,
-            focusableTabs.length - 1,
-            currentActiveTabIndex + adjustment
+            this.tabs.length - 1,
+            this.activeTabIndex + adjustment
         );
 
-        // the index of the next focusable tab within the context of all available tabs
-        const nextIndex = this.tabs.indexOf(focusableTabs[nextTabIndex]);
-
-        if (nextIndex > -1) {
-            this.moveToTabByIndex(this.tabs, nextIndex);
+        if (this.activeTabIndex > this.prevActiveTabIndex) {
+            while (
+                !this.isFocusableElement(this.tabs[this.activeTabIndex]) &&
+                this.activeTabIndex > this.prevActiveTabIndex
+            ) {
+                this.activeTabIndex--;
+            }
+        } else if (this.activeTabIndex < this.prevActiveTabIndex) {
+            while (
+                !this.isFocusableElement(this.tabs[this.activeTabIndex]) &&
+                this.activeTabIndex < this.prevActiveTabIndex
+            ) {
+                this.activeTabIndex++;
+            }
         }
+        this.setComponent();
     }
 
     private adjustForward = (e: KeyboardEvent): void => {
-        this.adjust(1);
+        const group: HTMLElement[] = this.tabs;
+        let index: number = 0;
+
+        index = this.activetab ? group.indexOf(this.activetab) + 1 : 1;
+        if (index === group.length) {
+            index = 0;
+        }
+
+        while (index < group.length && group.length > 1) {
+            if (this.isFocusableElement(group[index])) {
+                this.moveToTabByIndex(group, index);
+                break;
+            } else if (this.activetab && index === group.indexOf(this.activetab)) {
+                break;
+            } else if (index + 1 >= group.length) {
+                index = 0;
+            } else {
+                index += 1;
+            }
+        }
     };
 
     private adjustBackward = (e: KeyboardEvent): void => {
-        this.adjust(-1);
+        const group: HTMLElement[] = this.tabs;
+        let index: number = 0;
+
+        index = this.activetab ? group.indexOf(this.activetab) - 1 : 0;
+        index = index < 0 ? group.length - 1 : index;
+
+        while (index >= 0 && group.length > 1) {
+            if (this.isFocusableElement(group[index])) {
+                this.moveToTabByIndex(group, index);
+                break;
+            } else if (index - 1 < 0) {
+                index = group.length - 1;
+            } else {
+                index -= 1;
+            }
+        }
     };
 
     private moveToTabByIndex = (group: HTMLElement[], index: number) => {
