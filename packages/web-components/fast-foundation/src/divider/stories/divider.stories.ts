@@ -5,7 +5,7 @@ import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTDivider } from "../divider.js";
 import { DividerRole } from "../divider.options.js";
 
-const storyTemplate = html<StoryArgs<FASTDivider>>`
+export const storyTemplate = html<StoryArgs<FASTDivider>>`
     <fast-divider
         orientation="${x => x.orientation}"
         role="${x => x.role}"
@@ -14,6 +14,7 @@ const storyTemplate = html<StoryArgs<FASTDivider>>`
 
 export default {
     title: "Divider",
+    excludeStories: ["storyTemplate"],
     argTypes: {
         orientation: { control: "radio", options: Object.values(Orientation) },
         role: { control: "select", options: Object.values(DividerRole) },

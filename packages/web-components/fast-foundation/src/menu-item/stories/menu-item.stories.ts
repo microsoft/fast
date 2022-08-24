@@ -3,14 +3,12 @@ import type { Args, Meta } from "@storybook/html";
 import type { FASTMenuItem } from "../menu-item.js";
 import { MenuItemRole } from "../menu-item.options.js";
 
-type MenuItemStoryArgs = Args & FASTMenuItem;
-type MenuItemStoryMeta = Meta<MenuItemStoryArgs>;
-
-const componentTemplate = html<MenuItemStoryArgs>`
+export const storyTemplate = html<StoryArgs<FASTMenuItem>>`
     <fast-menu-item
         ?expanded="${x => x.expanded}"
         ?checked="${x => x.checked}"
         ?disabled="${x => x.disabled}"
+        id="${x => x.id}"
         role="${x => x.role}"
     >
         ${x => x.content}
@@ -18,7 +16,8 @@ const componentTemplate = html<MenuItemStoryArgs>`
 `;
 
 export default {
-    title: "Menu/Menu Item",
+    title: "Menu Item",
+    excludeStories: ["storyTemplate"],
     args: {
         content: "Menu Item",
     },
