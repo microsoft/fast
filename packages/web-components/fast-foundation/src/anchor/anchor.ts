@@ -5,6 +5,7 @@ import {
     StartEndOptions,
 } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
+import type { AnchorTarget } from "./anchor.options.js";
 
 /**
  * Anchor configuration options
@@ -86,7 +87,7 @@ export class FASTAnchor extends FASTElement {
      * HTML Attribute: target
      */
     @attr
-    public target: "_self" | "_blank" | "_parent" | "_top";
+    public target: AnchorTarget;
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
