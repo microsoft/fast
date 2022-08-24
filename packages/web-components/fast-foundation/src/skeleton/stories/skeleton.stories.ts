@@ -1,104 +1,95 @@
-import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import { css, html, repeat } from "@microsoft/fast-element";
 import type { FASTCard } from "../../card/card.js";
+import { storyTemplate as cardStoryTemplate } from "../../card/stories/card.stories.js";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import { FASTSkeleton, SkeletonShape } from "../skeleton.js";
 
-type SkeletonStoryArgs = Args & FASTSkeleton;
-type SkeletonStoryMeta = Meta<SkeletonStoryArgs>;
-
-const componentTemplate = html<SkeletonStoryArgs>`
+const storyTemplate = html<StoryArgs<FASTSkeleton>>`
     <fast-skeleton
         ?shimmer="${x => x.shimmer}"
         fill="${x => x.fill}"
         pattern="${x => x.pattern}"
         shape="${x => x.shape}"
-    ></fast-skeleton>
+    >
+        ${x => x.storyContent}
+    </fast-skeleton>
 `;
 
 export default {
     title: "Skeleton",
     args: {
-        shape: "rect",
         shimmer: true,
     },
     argTypes: {
-        fill: { control: { type: "text" } },
-        pattern: { control: { type: "text" } },
-        shape: {
-            options: Object.values(SkeletonShape),
-            control: { type: "radio" },
-        },
-        shimmer: { control: { type: "boolean" } },
+        fill: { control: "text" },
+        pattern: { control: "text" },
+        shape: { control: "radio", options: Object.values(SkeletonShape) },
+        shimmer: { control: "boolean" },
+        storyContent: { table: { disable: true } },
+        storyItems: { table: { disable: true } },
     },
-} as SkeletonStoryMeta;
+} as Meta<FASTSkeleton>;
 
-export const Skeleton: SkeletonStoryMeta = (args: SkeletonStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    componentTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
+export const Skeleton: Story<FASTSkeleton> = renderComponent(storyTemplate).bind({});
 Skeleton.decorators = [
-    (Story, { id }) => {
+    Story => {
         const renderedStory = Story() as FASTSkeleton;
-        renderedStory.id = id;
-
-        const styles = document.createElement("style");
-        styles.innerHTML = /* css */ `
-            #${id} {
+        renderedStory.$fastController.addStyles(css`
+            :host(fast-skeleton) {
                 height: 100px;
                 width: 100px;
             }
-        `;
-        renderedStory.append(styles);
+        `);
         return renderedStory;
     },
 ];
 
-export const SkeletonExample: SkeletonStoryMeta = (args: SkeletonStoryArgs) => {
-    const componentTemplate = html<SkeletonStoryArgs>`
-        <fast-card>
-            <fast-skeleton
-                style="width: 50px; height: 50px;"
-                shape="circle"
-                :shimmer="${x => x.shimmer}"
-            ></fast-skeleton>
-            <fast-skeleton :shimmer="${x => x.shimmer}" shape="rect"></fast-skeleton>
-            <fast-skeleton :shimmer="${x => x.shimmer}" shape="rect"></fast-skeleton>
-            <fast-skeleton :shimmer="${x => x.shimmer}" shape="rect"></fast-skeleton>
-            <fast-skeleton :shimmer="${x => x.shimmer}" shape="rect"></fast-skeleton>
-        </fast-card>
-    `;
-    const storyFragment = new DocumentFragment();
-    componentTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-SkeletonExample.args = {
+export const SkeletonCardExample: Story<FASTSkeleton> = renderComponent(
+    cardStoryTemplate
+).bind({});
+SkeletonCardExample.args = {
     shimmer: true,
+    storyContent: html`
+        ${repeat(x => x.storyItems, storyTemplate)}
+    `,
+    storyItems: [
+        { shimmer: true, shape: SkeletonShape.circle },
+        { shape: SkeletonShape.rect, shimmer: true },
+        { shape: SkeletonShape.rect, shimmer: true },
+        { shape: SkeletonShape.rect, shimmer: true },
+        { shape: SkeletonShape.rect, shimmer: true },
+    ],
 };
-SkeletonExample.decorators = [
-    (Story, { id }) => {
+SkeletonCardExample.parameters = { controls: { disable: true } };
+SkeletonCardExample.decorators = [
+    Story => {
         const renderedStory = Story() as FASTCard;
-        renderedStory.id = id;
-
-        const styles = document.createElement("style");
-        styles.innerHTML = /* css */ `
-            #${id} {
-                width: 300px;
+        renderedStory.$fastController.addStyles(css`
+            :host(fast-card) {
+                height: auto;
                 padding: 1rem;
+                width: 300px;
             }
-            #${id} fast-skeleton[shape="rect"]:not(:first-of-type) {
+
+            ::slotted(fast-skeleton[shape="circle"]) {
+                height: 50px;
+                width: 50px;
+            }
+
+            ::slotted(fast-skeleton[shape="rect"]:not(:first-of-type)) {
                 border-radius: 4px;
                 height: 10px;
                 margin: 10px 0;
             }
-            #${id} fast-skeleton[shape="rect"]:last-of-type {
+
+            ::slotted(fast-skeleton[shape="rect"]:last-of-type) {
                 height: 30px;
                 margin: 20px 0 0;
                 width: 75px;
             }
-        `;
+        `);
 
-        renderedStory.append(styles);
         return renderedStory;
     },
 ];
