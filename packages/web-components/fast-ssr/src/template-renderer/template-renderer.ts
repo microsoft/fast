@@ -196,6 +196,7 @@ export class TemplateRenderer {
                             const asyncBehaviors = getAsyncBehaviors(
                                 currentRenderer.element
                             );
+
                             if (asyncBehaviors?.length) {
                                 // Block rendering until all async behaviors are resolved, then continue
                                 yield Promise.all(asyncBehaviors.map(x => x.ready)).then(

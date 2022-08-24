@@ -112,6 +112,7 @@ export abstract class FASTElementRenderer extends ElementRenderer {
      * @param renderInfo - information about the current rendering context.
      */
     public *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
+        // TODO We need to render async when in async mode here
         const view = this.element.$fastController.view;
         const styles = FASTSSRStyleStrategy.getStylesFor(this.element);
 
