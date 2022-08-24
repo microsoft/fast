@@ -1,89 +1,71 @@
 import { html, repeat } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type { Args, Meta } from "@storybook/html";
+import { storyTemplate as tabPanelStoryTemplate } from "../../tab-panel/stories/tab-panel.stories.js";
+import { storyTemplate as tabStoryTemplate } from "../../tab/stories/tab.stories.js";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTTabs } from "../tabs.js";
 
-type TabsStoryArgs = Args & FASTTabs;
-type TabsStoryMeta = Meta<TabsStoryArgs>;
-
-const componentTemplate = html<TabsStoryArgs>`
+const storyTemplate = html<StoryArgs<FASTTabs>>`
     <fast-tabs
-        activeId="${x => x.activeId}"
-        orientation="${x => x.orientation}"
         ?hide-active-indicator="${x => x.hideActiveIndicator}"
+        activeid="${x => x.activeid}"
+        orientation="${x => x.orientation}"
     >
-        ${repeat(
-            x => x.items,
-            html`
-                <fast-tab ?disabled="${x => x.disabled}">${x => x.tab}</fast-tab>
-                <fast-tab-panel>
-                    ${x => x.panel}
-                </fast-tab-panel>
-            `
-        )}
+        ${x => x.storyContent}
     </fast-tabs>
 `;
 
 export default {
     title: "Tabs",
-    argTypes: {
-        disabled: { control: { type: "boolean" } },
-        orientation: { options: Object.values(Orientation), control: { type: "radio" } },
+    args: {
+        hideActiveIndicator: false,
+        storyContent: html<StoryArgs<FASTTabs>>`
+            ${repeat(x => x.storyItems.tabs, tabStoryTemplate)}
+            ${repeat(x => x.storyItems.tabPanels, tabPanelStoryTemplate)}
+        `,
     },
-} as TabsStoryMeta;
+    argTypes: {
+        activeid: { control: "text" },
+        hideActiveIndicator: { control: "boolean" },
+        orientation: { control: "radio", options: Object.values(Orientation) },
+        storyContent: { table: { disable: true } },
+        storyItems: { table: { disable: true } },
+    },
+} as Meta<FASTTabs>;
 
-export const Tabs = (args: TabsStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    componentTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-
+export const Tabs: Story<FASTTabs> = renderComponent(storyTemplate).bind({});
 Tabs.args = {
-    items: [
-        {
-            tab: "Tab one",
-            panel: "Tab one content",
-        },
-        {
-            tab: "Tab two",
-            panel: "Tab two content",
-        },
-        {
-            tab: "Tab three",
-            panel: "Tab three content",
-        },
-    ],
+    storyItems: {
+        tabs: [
+            { storyContent: "Tab one" },
+            { storyContent: "Tab two" },
+            { storyContent: "Tab three" },
+        ],
+        tabPanels: [
+            { storyContent: "Tab panel one" },
+            { storyContent: "Tab panel two" },
+            { storyContent: "Tab panel three" },
+        ],
+    },
 };
 
-export const DisabledTabs = (args: TabsStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    componentTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-
+export const DisabledTabs: Story<FASTTabs> = Tabs.bind({});
 DisabledTabs.args = {
-    items: [
-        {
-            tab: "Tab one",
-            panel: "Tab one content",
-            disabled: true,
-        },
-        {
-            tab: "Tab two",
-            panel: "Tab two content",
-        },
-        {
-            tab: "Tab three",
-            panel: "Tab three content",
-        },
-        {
-            tab: "Tab four",
-            panel: "Tab four content",
-        },
-        {
-            tab: "Tab five",
-            panel: "Tab five content",
-            disabled: true,
-        },
-    ],
+    storyItems: {
+        tabs: [
+            { storyContent: "Tab one", disabled: true },
+            { storyContent: "Tab two" },
+            { storyContent: "Tab three" },
+            { storyContent: "Tab four" },
+            { storyContent: "Tab five", disabled: true },
+        ],
+        tabPanels: [
+            { storyContent: "Tab panel one" },
+            { storyContent: "Tab panel two" },
+            { storyContent: "Tab panel three" },
+            { storyContent: "Tab panel four" },
+            { storyContent: "Tab panel five" },
+        ],
+    },
 };
