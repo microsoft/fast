@@ -3,5 +3,5 @@
   "comment": "After install DOM Shim, globals will now return the original global instead of the shimmed version in async local storage if code is not in storage scope.",
   "packageName": "@microsoft/fast-ssr",
   "email": "erhuan@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
