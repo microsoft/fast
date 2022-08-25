@@ -56,7 +56,7 @@ Updates.setMode(false);
  */
 export default function fastSSR(): {
     templateRenderer: TemplateRenderer;
-    elementRenderer: typeof FASTElementRenderer;
+    elementRenderer: ConstructableElementRenderer;
 } {
     const templateRenderer = new TemplateRenderer();
     const elementRenderer = class extends FASTElementRenderer {
