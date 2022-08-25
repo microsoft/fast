@@ -57,7 +57,6 @@ Updates.setMode(false);
 export default function fastSSR(): {
     templateRenderer: TemplateRenderer;
     elementRenderer: typeof FASTElementRenderer;
-    defaultRenderInfo: RenderInfo;
 } {
     const templateRenderer = new TemplateRenderer();
     const elementRenderer = class extends FASTElementRenderer {
@@ -65,6 +64,7 @@ export default function fastSSR(): {
         protected styleRenderer = new StyleElementStyleRenderer();
     };
 
+    templateRenderer.withDefaultElementRenderers(elementRenderer);
     templateRenderer.withViewBehaviorFactoryRenderers(
         ...defaultViewBehaviorFactoryRenderers
     );
@@ -72,11 +72,6 @@ export default function fastSSR(): {
     return {
         templateRenderer,
         elementRenderer,
-        defaultRenderInfo: {
-            elementRenderers: [elementRenderer],
-            customElementHostStack: [],
-            customElementInstanceStack: [],
-        },
     };
 }
 

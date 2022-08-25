@@ -19,7 +19,7 @@ export type ComponentDOMEmissionMode = "shadow";
 // @beta (undocumented)
 export type ConstructableElementRenderer = (new (tagName: string, renderInfo: RenderInfo) => ElementRenderer) & typeof ElementRenderer;
 
-// @public
+// @beta
 export const DeclarativeShadowDOMPolyfill: Readonly<{
     undefinedElementStyles: string;
     nonStreamingTemplateUpgrade: string;
@@ -66,7 +66,6 @@ export abstract class FASTElementRenderer extends ElementRenderer {
 function fastSSR(): {
     templateRenderer: TemplateRenderer;
     elementRenderer: typeof FASTElementRenderer;
-    defaultRenderInfo: RenderInfo;
 };
 export default fastSSR;
 
@@ -115,11 +114,13 @@ export interface StyleRenderer {
 // @beta
 export class TemplateRenderer {
     readonly componentDOMEmissionMode: ComponentDOMEmissionMode;
-    render(template: ViewTemplate | string, renderInfo: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
+    createRenderInfo(renderers?: ConstructableElementRenderer[]): RenderInfo;
+    render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
     // Warning: (ae-forgotten-export) The symbol "Op" needs to be exported by the entry point exports.d.ts
     //
     // @internal
     renderOpCodes(codes: Op[], renderInfo: RenderInfo, source: unknown, context: ExecutionContext): IterableIterator<string>;
+    withDefaultElementRenderers(...renderers: ConstructableElementRenderer[]): void;
     // @internal
     withViewBehaviorFactoryRenderers(...renderers: ViewBehaviorFactoryRenderer<any>[]): void;
 }
