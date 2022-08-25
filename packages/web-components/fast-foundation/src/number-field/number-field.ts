@@ -237,6 +237,11 @@ export class NumberField extends FormAssociatedNumberField {
         this.isUserInput = false;
     }
 
+    /** {@inheritDoc (FormAssociated:interface).validate} */
+    public validate(): void {
+        super.validate(this.control);
+    }
+
     /**
      * Sets the internal value to a valid number between the min and max properties
      * @param value - user input

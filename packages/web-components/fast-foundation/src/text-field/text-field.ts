@@ -245,6 +245,11 @@ export class TextField extends FormAssociatedTextField {
     public handleChange(): void {
         this.$emit("change");
     }
+
+    /** {@inheritDoc (FormAssociated:interface).validate} */
+    public validate(): void {
+        super.validate(this.control);
+    }
 }
 
 /**
