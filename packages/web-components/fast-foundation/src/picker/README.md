@@ -169,6 +169,16 @@ export class FASTTextField extends TextField {}
 
 
 
+### Variables
+
+| Name            | Description                                        | Type                                                                                                                                 |
+| --------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `MenuPlacement` | vertical positioning values for an anchored region | `{ bottom: "bottom", bottomFill: "bottom-fill", tallest: "tallest", tallestFill: "tallest-fill", top: "top", topFill: "top-fill", }` |
+
+<hr/>
+
+
+
 ### class: `FASTPicker`
 
 #### Superclass
@@ -192,7 +202,7 @@ export class FASTTextField extends TextField {}
 | `label`                      | public  | `string`                    |                              | Applied to the aria-label attribute of the input element                                                                      |                      |
 | `labelledBy`                 | public  | `string`                    |                              | Applied to the aria-labelledby attribute of the input element                                                                 |                      |
 | `placeholder`                | public  | `string`                    |                              | Applied to the placeholder attribute of the input element                                                                     |                      |
-| `menuPlacement`              | public  | `menuConfigs`               | `"bottom-fill"`              | Controls menu placement                                                                                                       |                      |
+| `menuPlacement`              | public  | `MenuPlacement`             |                              | Controls menu placement                                                                                                       |                      |
 | `showLoading`                | public  | `boolean`                   | `false`                      | Whether to display a loading state if the menu is opened.                                                                     |                      |
 | `listItemTemplate`           | public  | `ViewTemplate`              |                              | Template used to generate selected items. This is used in a repeat directive.                                                 |                      |
 | `defaultListItemTemplate`    | public  | `ViewTemplate or undefined` |                              | Default template to use for selected items (usually specified in the component template). This is used in a repeat directive. |                      |
