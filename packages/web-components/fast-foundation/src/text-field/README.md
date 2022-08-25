@@ -120,18 +120,19 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### Methods
 
-| Name                 | Privacy   | Description                            | Parameters | Return | Inherited From |
-| -------------------- | --------- | -------------------------------------- | ---------- | ------ | -------------- |
-| `readOnlyChanged`    | protected |                                        |            | `void` |                |
-| `autofocusChanged`   | protected |                                        |            | `void` |                |
-| `placeholderChanged` | protected |                                        |            | `void` |                |
-| `listChanged`        | protected |                                        |            | `void` |                |
-| `maxlengthChanged`   | protected |                                        |            | `void` |                |
-| `minlengthChanged`   | protected |                                        |            | `void` |                |
-| `patternChanged`     | protected |                                        |            | `void` |                |
-| `sizeChanged`        | protected |                                        |            | `void` |                |
-| `spellcheckChanged`  | protected |                                        |            | `void` |                |
-| `select`             | public    | Selects all the text in the text field |            | `void` |                |
+| Name                 | Privacy   | Description                                       | Parameters | Return | Inherited From |
+| -------------------- | --------- | ------------------------------------------------- | ---------- | ------ | -------------- |
+| `readOnlyChanged`    | protected |                                                   |            | `void` |                |
+| `autofocusChanged`   | protected |                                                   |            | `void` |                |
+| `placeholderChanged` | protected |                                                   |            | `void` |                |
+| `listChanged`        | protected |                                                   |            | `void` |                |
+| `maxlengthChanged`   | protected |                                                   |            | `void` |                |
+| `minlengthChanged`   | protected |                                                   |            | `void` |                |
+| `patternChanged`     | protected |                                                   |            | `void` |                |
+| `sizeChanged`        | protected |                                                   |            | `void` |                |
+| `spellcheckChanged`  | protected |                                                   |            | `void` |                |
+| `select`             | public    | Selects all the text in the text field            |            | `void` |                |
+| `validate`           | public    | {@inheritDoc (FormAssociated:interface).validate} |            | `void` |                |
 
 #### Events
 

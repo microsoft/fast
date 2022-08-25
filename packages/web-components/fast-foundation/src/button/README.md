@@ -109,14 +109,15 @@ This component is built with the expectation that focus is delegated to the butt
 
 #### Methods
 
-| Name                    | Privacy   | Description | Parameters                                                                                 | Return | Inherited From |
-| ----------------------- | --------- | ----------- | ------------------------------------------------------------------------------------------ | ------ | -------------- |
-| `formactionChanged`     | protected |             |                                                                                            | `void` |                |
-| `formenctypeChanged`    | protected |             |                                                                                            | `void` |                |
-| `formmethodChanged`     | protected |             |                                                                                            | `void` |                |
-| `formnovalidateChanged` | protected |             |                                                                                            | `void` |                |
-| `formtargetChanged`     | protected |             |                                                                                            | `void` |                |
-| `typeChanged`           | protected |             | `previous: "submit" or "reset" or "button" or void, next: "submit" or "reset" or "button"` | `void` |                |
+| Name                    | Privacy   | Description                                       | Parameters                                                                                 | Return | Inherited From |
+| ----------------------- | --------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------ | -------------- |
+| `formactionChanged`     | protected |                                                   |                                                                                            | `void` |                |
+| `formenctypeChanged`    | protected |                                                   |                                                                                            | `void` |                |
+| `formmethodChanged`     | protected |                                                   |                                                                                            | `void` |                |
+| `formnovalidateChanged` | protected |                                                   |                                                                                            | `void` |                |
+| `formtargetChanged`     | protected |                                                   |                                                                                            | `void` |                |
+| `typeChanged`           | protected |                                                   | `previous: "submit" or "reset" or "button" or void, next: "submit" or "reset" or "button"` | `void` |                |
+| `validate`              | public    | {@inheritDoc (FormAssociated:interface).validate} |                                                                                            | `void` |                |
 
 #### Attributes
 
