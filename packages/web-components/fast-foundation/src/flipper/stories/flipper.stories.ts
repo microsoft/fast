@@ -6,9 +6,9 @@ import { FlipperDirection } from "../flipper.options.js";
 
 const storyTemplate = html<StoryArgs<FASTFlipper>>`
     <fast-flipper
-        direction="${x => x.direction}"
         ?disabled="${x => x.disabled}"
         :hiddenFromAT="${x => x.hiddenFromAT}"
+        direction="${x => x.direction}"
     ></fast-flipper>
 `;
 
