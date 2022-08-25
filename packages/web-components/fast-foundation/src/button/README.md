@@ -83,6 +83,16 @@ This component is built with the expectation that focus is delegated to the butt
 
 
 
+### Variables
+
+| Name         | Description         | Type                                                      |
+| ------------ | ------------------- | --------------------------------------------------------- |
+| `ButtonType` | Button type values. | `{ submit: "submit", reset: "reset", button: "button", }` |
+
+<hr/>
+
+
+
 ### class: `FASTButton`
 
 #### Superclass
@@ -102,22 +112,22 @@ This component is built with the expectation that focus is delegated to the butt
 | `formmethod`            | public  | `string`                                     |         | See [`<button>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) for more details. |                      |
 | `formnovalidate`        | public  | `boolean`                                    |         | See [`<button>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) for more details. |                      |
 | `formtarget`            | public  | `"_self" or "_blank" or "_parent" or "_top"` |         | See [`<button>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) for more details. |                      |
-| `type`                  | public  | `"submit" or "reset" or "button"`            |         | The button type.                                                                                                              |                      |
+| `type`                  | public  | `ButtonType`                                 |         | The button type.                                                                                                              |                      |
 | `defaultSlottedContent` | public  | `HTMLElement[]`                              |         |  Default slotted content                                                                                                      |                      |
 | `control`               | public  | `HTMLButtonElement`                          |         |                                                                                                                               |                      |
 | `proxy`                 |         |                                              |         |                                                                                                                               | FormAssociatedButton |
 
 #### Methods
 
-| Name                    | Privacy   | Description                                       | Parameters                                                                                 | Return | Inherited From |
-| ----------------------- | --------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------ | -------------- |
-| `formactionChanged`     | protected |                                                   |                                                                                            | `void` |                |
-| `formenctypeChanged`    | protected |                                                   |                                                                                            | `void` |                |
-| `formmethodChanged`     | protected |                                                   |                                                                                            | `void` |                |
-| `formnovalidateChanged` | protected |                                                   |                                                                                            | `void` |                |
-| `formtargetChanged`     | protected |                                                   |                                                                                            | `void` |                |
-| `typeChanged`           | protected |                                                   | `previous: "submit" or "reset" or "button" or void, next: "submit" or "reset" or "button"` | `void` |                |
-| `validate`              | public    | {@inheritDoc (FormAssociated:interface).validate} |                                                                                            | `void` |                |
+| Name                    | Privacy   | Description                                       | Parameters                                            | Return | Inherited From |
+| ----------------------- | --------- | ------------------------------------------------- | ----------------------------------------------------- | ------ | -------------- |
+| `formactionChanged`     | protected |                                                   |                                                       | `void` |                |
+| `formenctypeChanged`    | protected |                                                   |                                                       | `void` |                |
+| `formmethodChanged`     | protected |                                                   |                                                       | `void` |                |
+| `formnovalidateChanged` | protected |                                                   |                                                       | `void` |                |
+| `formtargetChanged`     | protected |                                                   |                                                       | `void` |                |
+| `typeChanged`           | protected |                                                   | `previous: ButtonType or undefined, next: ButtonType` | `void` |                |
+| `validate`              | public    | {@inheritDoc (FormAssociated:interface).validate} |                                                       | `void` |                |
 
 #### Attributes
 

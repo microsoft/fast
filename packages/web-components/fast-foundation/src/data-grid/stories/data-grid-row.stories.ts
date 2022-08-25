@@ -1,37 +1,34 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTDataGridRow } from "../data-grid-row.js";
+import { DataGridRowTypes } from "../data-grid.options.js";
 
-type DataGridRowArgs = Args & FASTDataGridRow;
-type DataGridRowMeta = Meta<DataGridRowArgs>;
-
-const storyTemplate = html<DataGridRowArgs>`
+const storyTemplate = html<StoryArgs<FASTDataGridRow>>`
     <fast-data-grid-row
-        grid-template-columns="${x => x.gridTemplateColumns}"
-        :rowData="${x => x.rowData}"
-        row-type="${x => x.rowType}"
         :columnDefinitions="${x => x.columnDefinitions}"
-    ></fast-data-grid-row>
+        :rowData="${x => x.rowData}"
+        grid-template-columns="${x => x.gridTemplateColumns}"
+        row-type="${x => x.rowType}"
+    >
+        ${x => x.storyContent}
+    </fast-data-grid-row>
 `;
 
 export default {
     title: "Data Grid/Data Grid Row",
-    includeStories: ["DataGridRow"],
     args: {
-        rowData: { name: "row 1", value1: "Value 1" },
-        gridTemplateColumns: "1fr 1fr",
         columnDefinitions: [{ columnDataKey: "name" }, { columnDataKey: "value1" }],
+        rowData: { name: "row 1", value1: "Value 1" },
     },
     argTypes: {
-        rowType: {
-            options: ["default", "header", "sticky-header"],
-            control: { type: "select" },
-        },
+        columnDefinitions: { control: "object" },
+        gridTemplateColumns: { control: "text" },
+        rowType: { control: "select", options: Object.values(DataGridRowTypes) },
+        storyContent: { table: { disable: true } },
     },
-} as DataGridRowMeta;
+} as Meta<FASTDataGridRow>;
 
-export const DataGridRow = (args: DataGridRowArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
+export const DataGridRow: Story<FASTDataGridRow> = renderComponent(storyTemplate).bind(
+    {}
+);

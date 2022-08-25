@@ -6,12 +6,12 @@ import {
     Updates,
 } from "@microsoft/fast-element";
 import { Direction, keyEscape } from "@microsoft/fast-web-utilities";
+import type { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
 import type {
     AutoUpdateMode,
     AxisPositioningMode,
     AxisScalingMode,
-    FASTAnchoredRegion,
-} from "../anchored-region/anchored-region.js";
+} from "../anchored-region/anchored-region.options.js";
 import { getDirection } from "../utilities/direction.js";
 import { TooltipPosition } from "./tooltip.options.js";
 
@@ -467,9 +467,24 @@ export class FASTTooltip extends FASTElement {
                 this.horizontalDefaultPosition = this.position;
                 break;
 
+            case TooltipPosition.center:
+                this.verticalDefaultPosition = "center";
+                this.horizontalDefaultPosition = "center";
+                break;
+
             case TooltipPosition.topLeft:
                 this.verticalDefaultPosition = "top";
                 this.horizontalDefaultPosition = "left";
+                break;
+
+            case TooltipPosition.topCenter:
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "center";
+                break;
+
+            case TooltipPosition.bottomCenter:
+                this.verticalDefaultPosition = "bottom";
+                this.horizontalDefaultPosition = "center";
                 break;
 
             case TooltipPosition.topRight:
