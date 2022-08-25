@@ -485,7 +485,6 @@ export class DesignToken<T> {
     deleteValueFor(target: FASTElement): this;
     getValueFor(target: FASTElement): T;
     name: string;
-    // Warning: (ae-forgotten-export) The symbol "PropertyTarget" needs to be exported by the entry point index.d.ts
     static registerRoot(target?: FASTElement | Document | PropertyTarget): void;
     // Warning: (ae-forgotten-export) The symbol "DesignTokenValue" needs to be exported by the entry point index.d.ts
     setValueFor(target: FASTElement, value: DesignToken<T> | DesignTokenValue<T>): void;
@@ -507,6 +506,9 @@ export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
 export interface DesignTokenConfiguration {
     name: string;
 }
+
+// @public
+export const DesignTokenEventResolutionStrategy: DesignTokenResolutionStrategy;
 
 // @public (undocumented)
 export const enum DesignTokenMutationType {
@@ -2412,6 +2414,14 @@ export class PropertyStyleSheetBehavior implements Behavior {
     // @internal
     handleChange(source: FASTElement, key: string): void;
     unbind(source: typeof FASTElement & HTMLElement): void;
+}
+
+// @public
+export interface PropertyTarget {
+    // (undocumented)
+    removeProperty(name: string): void;
+    // (undocumented)
+    setProperty(name: string, value: string | null): void;
 }
 
 // @beta

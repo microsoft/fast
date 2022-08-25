@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "refactor: remove dependency of DI on FASTElement",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}
