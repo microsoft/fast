@@ -52,7 +52,7 @@ test.describe("RequestStorageManager", () => {
         expect(() => RequestStorage.get("hello")).toThrow(noStorageError);
     });
 
-    test("can get value from global without being in a storage context", () => {
+    test("can get value from global without being in a storage scope", () => {
         // window is part of perRequestGlobals setup by installDOMShim
         (window as any)["hello"] = "world";
         RequestStorageManager.installDOMShim();
@@ -60,7 +60,7 @@ test.describe("RequestStorageManager", () => {
         expect((window as any)["hello"]).toBe("world");
     });
 
-    test("can get different value from global in a storage context", () => {
+    test("can get different value from global in a storage scope", () => {
 
         // window is part of perRequestGlobals setup by installDOMShim
         (window as any)["hello"] = "world";
