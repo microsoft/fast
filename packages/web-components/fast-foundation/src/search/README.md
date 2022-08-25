@@ -87,11 +87,12 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### Methods
 
-| Name               | Privacy   | Description                             | Parameters | Return | Inherited From    |
-| ------------------ | --------- | --------------------------------------- | ---------- | ------ | ----------------- |
-| `handleClearInput` | public    | Handles the control's clear value event |            | `void` |                   |
-| `templateChanged`  | protected |                                         |            | `void` | FoundationElement |
-| `stylesChanged`    | protected |                                         |            | `void` | FoundationElement |
+| Name               | Privacy   | Description                                       | Parameters | Return | Inherited From    |
+| ------------------ | --------- | ------------------------------------------------- | ---------- | ------ | ----------------- |
+| `validate`         | public    | {@inheritDoc (FormAssociated:interface).validate} |            | `void` |                   |
+| `handleClearInput` | public    | Handles the control's clear value event           |            | `void` |                   |
+| `templateChanged`  | protected |                                                   |            | `void` | FoundationElement |
+| `stylesChanged`    | protected |                                                   |            | `void` | FoundationElement |
 
 #### Attributes
 

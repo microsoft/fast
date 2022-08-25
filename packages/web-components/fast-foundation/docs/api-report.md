@@ -287,6 +287,7 @@ export class Button extends FormAssociatedButton {
     formnovalidate: boolean;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
     type: "submit" | "reset" | "button";
+    validate(): void;
 }
 
 // @internal
@@ -491,6 +492,7 @@ export class Combobox extends FormAssociatedCombobox {
     setPositioning(): void;
     // @internal
     slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void;
+    validate(): void;
     get value(): string;
     set value(next: string);
 }
@@ -1212,8 +1214,7 @@ export interface FormAssociated extends Omit<ElementInternals_2, "labels"> {
     requiredChanged(prev: boolean, next: boolean): void;
     // (undocumented)
     stopPropagation(e: Event): void;
-    // (undocumented)
-    validate(): void;
+    validate(anchor?: HTMLElement): void;
     // (undocumented)
     value: string;
     // (undocumented)
@@ -1740,6 +1741,7 @@ export class NumberField extends FormAssociatedNumberField {
     step: number;
     stepDown(): void;
     stepUp(): void;
+    validate(): void;
     get valueAsNumber(): number;
     set valueAsNumber(next: number);
     // @internal
@@ -2138,6 +2140,7 @@ export class Search extends FormAssociatedSearch {
     root: HTMLDivElement;
     size: number;
     spellcheck: boolean;
+    validate(): void;
 }
 
 // @internal
@@ -2530,6 +2533,7 @@ export class TextArea extends FormAssociatedTextArea {
     rows: number;
     protected select(): void;
     spellcheck: boolean;
+    validate(): void;
 }
 
 // @internal
@@ -2577,6 +2581,7 @@ export class TextField extends FormAssociatedTextField {
     size: number;
     spellcheck: boolean;
     type: TextFieldType;
+    validate(): void;
 }
 
 // @internal

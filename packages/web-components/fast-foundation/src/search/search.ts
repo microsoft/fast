@@ -196,6 +196,11 @@ export class Search extends FormAssociatedSearch {
         }
     }
 
+    /** {@inheritDoc (FormAssociated:interface).validate} */
+    public validate(): void {
+        super.validate(this.control);
+    }
+
     /**
      * Handles the internal control's `input` event
      * @internal

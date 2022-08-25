@@ -108,13 +108,14 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### Methods
 
-| Name              | Privacy   | Description                               | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------------------------------------- | ---------- | ------ | ----------------- |
-| `stepUp`          | public    | Increments the value using the step value |            | `void` |                   |
-| `stepDown`        | public    | Decrements the value using the step value |            | `void` |                   |
-| `select`          | public    | Selects all the text in the number field  |            | `void` |                   |
-| `templateChanged` | protected |                                           |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |                                           |            | `void` | FoundationElement |
+| Name              | Privacy   | Description                                       | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ------------------------------------------------- | ---------- | ------ | ----------------- |
+| `validate`        | public    | {@inheritDoc (FormAssociated:interface).validate} |            | `void` |                   |
+| `stepUp`          | public    | Increments the value using the step value         |            | `void` |                   |
+| `stepDown`        | public    | Decrements the value using the step value         |            | `void` |                   |
+| `select`          | public    | Selects all the text in the number field          |            | `void` |                   |
+| `templateChanged` | protected |                                                   |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |                                                   |            | `void` | FoundationElement |
 
 #### Events
 
