@@ -5,6 +5,8 @@ import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
 import { TemplateRenderer } from "./template-renderer.js";
 import { render } from "@microsoft/fast-element/render";
+import { ElementRenderer } from "../element-renderer/element-renderer.js";
+import { RenderInfo } from "../render-info.js";
 
 @customElement("hello-world")
 class HelloWorld extends FASTElement {}
@@ -30,6 +32,26 @@ test.describe("TemplateRenderer", () => {
             expect(instance.componentDOMEmissionMode).toBe("light");
         });
     });
+
+    test.describe("should have a createRenderInfo method", () => {
+        test("that returns unique object instances for every invocation", () => {
+            const renderer = new TemplateRenderer();
+            expect(renderer.createRenderInfo()).not.toBe(renderer.createRenderInfo())
+        });
+        test("that can be populated with ElementRenderers with the 'withDefaultElementRenderer()' method", () => {
+            const renderer = new TemplateRenderer();
+            class MyRenderer extends ElementRenderer {
+                element?: HTMLElement | undefined;
+                attributeChangedCallback(name: string, prev: string | null, next: string | null): void {}
+                connectedCallback(): void {}
+                public *renderAttributes(): IterableIterator<string> {}
+                public *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {}
+            }
+
+            renderer.withDefaultElementRenderers(MyRenderer);
+            expect(renderer.createRenderInfo().elementRenderers.includes(MyRenderer)).toBe(true);
+        });
+    })
 
     test.describe("rendering <template> elements", () => {
         test("should render a template element without attributes", () => {
