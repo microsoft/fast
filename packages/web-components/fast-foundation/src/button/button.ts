@@ -154,6 +154,11 @@ export class FASTButton extends FormAssociatedButton {
     @observable
     public defaultSlottedContent: HTMLElement[];
 
+    /** {@inheritDoc (FormAssociated:interface).validate} */
+    public validate(): void {
+        super.validate(this.control);
+    }
+
     /**
      * @internal
      */

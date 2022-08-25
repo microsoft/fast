@@ -764,6 +764,7 @@ export class FASTButton extends FormAssociatedButton {
     type: "submit" | "reset" | "button";
     // (undocumented)
     protected typeChanged(previous: "submit" | "reset" | "button" | void, next: "submit" | "reset" | "button"): void;
+    validate(): void;
 }
 
 // @internal
@@ -884,6 +885,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
     setPositioning(): void;
     // @internal
     slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void;
+    validate(): void;
     get value(): string;
     set value(next: string);
 }
@@ -1353,6 +1355,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
     step: number;
     stepDown(): void;
     stepUp(): void;
+    validate(): void;
     get valueAsNumber(): number;
     set valueAsNumber(next: number);
     // @internal
@@ -1621,6 +1624,7 @@ export class FASTSearch extends FormAssociatedSearch {
     spellcheck: boolean;
     // (undocumented)
     protected spellcheckChanged(): void;
+    validate(): void;
 }
 
 // @internal
@@ -1886,6 +1890,7 @@ export class FASTTextArea extends FormAssociatedTextArea {
     spellcheck: boolean;
     // (undocumented)
     protected spellcheckChanged(): void;
+    validate(): void;
 }
 
 // @internal
@@ -1937,6 +1942,7 @@ export class FASTTextField extends FormAssociatedTextField {
     // (undocumented)
     protected spellcheckChanged(): void;
     type: TextFieldType;
+    validate(): void;
 }
 
 // @internal
@@ -2185,8 +2191,7 @@ export interface FormAssociated extends Omit<ElementInternals_2, "labels"> {
     requiredChanged(prev: boolean, next: boolean): void;
     // (undocumented)
     stopPropagation(e: Event): void;
-    // (undocumented)
-    validate(): void;
+    validate(anchor?: HTMLElement): void;
     // (undocumented)
     value: string;
     // (undocumented)
