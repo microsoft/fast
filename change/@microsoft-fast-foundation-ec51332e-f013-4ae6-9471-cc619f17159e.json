@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "chore: call change when clear button is clicked",
+  "comment": "call change when search component clear button is clicked",
   "packageName": "@microsoft/fast-foundation",
   "email": "jes@microsoft.com",
   "dependentChangeType": "prerelease"
