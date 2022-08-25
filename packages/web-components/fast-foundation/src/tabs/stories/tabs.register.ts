@@ -30,7 +30,7 @@ const styles = css`
     .end {
         align-self: center;
     }
-    .activeIndicator {
+    .active-indicator {
         grid-row: 2;
         grid-column: 1;
         width: 100%;

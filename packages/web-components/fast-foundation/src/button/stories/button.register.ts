@@ -22,7 +22,7 @@ const styles = css`
         cursor: pointer;
     }
 
-    :host([disabled]) {
+    :host([hidden]) {
         display: none;
     }
 

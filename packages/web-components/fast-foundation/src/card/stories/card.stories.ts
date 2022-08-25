@@ -1,30 +1,26 @@
 import { css, html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTCard } from "../card.js";
 
-type CardStoryMeta = Meta<Args & FASTCard>;
-type CardStoryArgs = CardStoryMeta["args"];
-
-const storyTemplate = html<CardStoryArgs>`
-    <fast-card>
-        ${x => x?.content}
-    </fast-card>
+export const storyTemplate = html<StoryArgs<FASTCard>>`
+    <fast-card>${x => x.storyContent}</fast-card>
 `;
 
 export default {
     title: "Card",
+    excludeStories: ["storyTemplate"],
     args: {
-        content: "You got a fast card",
+        storyContent: "You got a fast card",
     },
-} as CardStoryMeta;
+    argTypes: {
+        storyContent: { table: { disable: true } },
+    },
+} as Meta<FASTCard>;
 
-export const Card = (args: CardStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
+export const Card: Story<FASTCard> = renderComponent(storyTemplate).bind({});
 
-export const CardWithCustomDimensions: CardStoryMeta = Card.bind({});
+export const CardWithCustomDimensions: Story<FASTCard> = Card.bind({});
 CardWithCustomDimensions.decorators = [
     Story => {
         const renderedStory = Story() as FASTCard;
@@ -34,17 +30,16 @@ CardWithCustomDimensions.decorators = [
     },
 ];
 
-export const CardWithControls: CardStoryMeta = Card.bind({});
-CardWithControls.args = {
-    content: html`
+export const CardWithSlottedControls: Story<FASTCard> = Card.bind({});
+CardWithSlottedControls.args = {
+    storyContent: html`
         <fast-button>Test Button</fast-button>
     `,
 };
-
-CardWithControls.decorators = [
+CardWithSlottedControls.decorators = [
     Story => {
         const renderedStory = Story() as FASTCard;
-        const style = css`
+        renderedStory.$fastController?.addStyles(css`
             :host {
                 --card-height: 400px;
                 --card-width: 500px;
@@ -52,9 +47,7 @@ CardWithControls.decorators = [
                 flex-direction: column;
                 padding: 20px;
             }
-        `;
-
-        renderedStory.$fastController.addStyles(style);
+        `);
         return renderedStory;
     },
 ];

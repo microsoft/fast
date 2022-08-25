@@ -1,16 +1,15 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTPicker } from "../picker.js";
+import { MenuPlacement } from "../picker.options.js";
 
-type PickerArgs = Args & FASTPicker;
-type PickerMeta = Meta<PickerArgs>;
-
-const storyTemplate = html<PickerArgs>`
+const storyTemplate = html<StoryArgs<FASTPicker>>`
     <fast-picker
         selection="${x => x.selection}"
         options="${x => x.options}"
-        filter-selected="${x => x.filterSelected}"
-        filter-query="${x => x.filterQuery}"
+        ?filter-selected="${x => x.filterSelected}"
+        ?filter-query="${x => x.filterQuery}"
         max-selected="${x => x.maxSelected}"
         no-suggestions-text="${x => x.noSuggestionsText}"
         suggestions-available-text="${x => x.suggestionsAvailableText}"
@@ -25,40 +24,31 @@ const storyTemplate = html<PickerArgs>`
 export default {
     title: "Picker",
     args: {
-        selection: "apple",
-        options: "apple, orange, banana, mango, strawberry, raspberry, blueberry",
-        placeholder: "Choose fruit",
-        noSuggestionsText: "No such fruit",
-        suggestionsAvailableText: "Found some fruit",
-        loadingText: "Loading",
-        label: "Fruit picker",
+        // TODO: These are always true https://github.com/microsoft/fast/issues/6311
+        filterQuery: true,
+        filterSelected: true,
     },
     argTypes: {
-        filterSelected: { control: { type: "boolean" } },
-        filterQuery: { control: { type: "boolean" } },
-        maxSelected: { control: { type: "number" } },
-        noSuggestionsText: { control: { type: "text" } },
-        suggestionsAvailableText: { control: { type: "text" } },
-        loadingText: { control: { type: "text" } },
-        label: { control: { type: "text" } },
-        labelledBy: { control: { type: "text" } },
-        placeholder: { control: { type: "text" } },
-        menuPlacement: {
-            options: [
-                "bottom",
-                "bottom-fill",
-                "tallest",
-                "tallest-fill",
-                "top",
-                "top-fill",
-            ],
-            control: { type: "select" },
-        },
+        filterQuery: { control: "boolean" },
+        filterSelected: { control: "boolean" },
+        label: { control: "text" },
+        labelledBy: { control: "text" },
+        loadingText: { control: "text" },
+        maxSelected: { control: "number" },
+        menuPlacement: { control: "select", options: Object.values(MenuPlacement) },
+        noSuggestionsText: { control: "text" },
+        placeholder: { control: "text" },
+        suggestionsAvailableText: { control: "text" },
     },
-} as PickerMeta;
+} as Meta<FASTPicker>;
 
-export const Picker = (args: PickerArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+export const Picker: Story<FASTPicker> = renderComponent(storyTemplate).bind({});
+Picker.args = {
+    label: "Fruit picker",
+    loadingText: "Loading",
+    noSuggestionsText: "No such fruit",
+    options: "apple, orange, banana, mango, strawberry, raspberry, blueberry",
+    placeholder: "Choose fruit",
+    selection: "apple",
+    suggestionsAvailableText: "Found some fruit",
 };
