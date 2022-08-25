@@ -1,36 +1,31 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTBreadcrumb } from "../breadcrumb.js";
 
-type BreadcrumbStoryArgs = Args & FASTBreadcrumb;
-type BreadcrumbStoryMeta = Meta<BreadcrumbStoryArgs>;
-
-const storyTemplate = html<BreadcrumbStoryArgs>`
-    <fast-breadcrumb>
-        ${x => x.content}
-    </fast-breadcrumb>
+const storyTemplate = html<StoryArgs<FASTBreadcrumb>>`
+    <fast-breadcrumb>${x => x.storyContent}</fast-breadcrumb>
 `;
 
 export default {
     title: "Breadcrumb",
-    args: {
-        content: html`
-            <fast-breadcrumb-item href="#">Breadcrumb Item 1</fast-breadcrumb-item>
-            <fast-breadcrumb-item href="#">Breadcrumb Item 2</fast-breadcrumb-item>
-            <fast-breadcrumb-item>Breadcrumb Item 3</fast-breadcrumb-item>
-        `,
+    argTypes: {
+        storyContent: { table: { disable: true } },
     },
-} as BreadcrumbStoryMeta;
+} as Meta<FASTBreadcrumb>;
 
-export const Breadcrumb = (args: BreadcrumbStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+export const Breadcrumb: Story<FASTBreadcrumb> = renderComponent(storyTemplate).bind({});
+Breadcrumb.args = {
+    storyContent: html`
+        <fast-breadcrumb-item href="#">Breadcrumb Item 1</fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">Breadcrumb Item 2</fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">Breadcrumb Item 3</fast-breadcrumb-item>
+    `,
 };
 
-export const BreadcrumbsWithSeparators: BreadcrumbStoryMeta = Breadcrumb.bind({});
-BreadcrumbsWithSeparators.args = {
-    content: html`
+export const BreadcrumbWithSeparators: Story<FASTBreadcrumb> = Breadcrumb.bind({});
+BreadcrumbWithSeparators.args = {
+    storyContent: html`
         <fast-breadcrumb-item href="#">
             Breadcrumb Item 1
             <svg slot="separator"><use href="#test-icon" /></svg>
@@ -39,18 +34,18 @@ BreadcrumbsWithSeparators.args = {
             Breadcrumb Item 2
             <svg slot="separator"><use href="#test-icon" /></svg>
         </fast-breadcrumb-item>
-        <fast-breadcrumb-item>
+        <fast-breadcrumb-item href="#">
             Breadcrumb Item 3
             <svg slot="separator"><use href="#test-icon" /></svg>
         </fast-breadcrumb-item>
     `,
 };
 
-export const BreadcrumbsWithAnchors: BreadcrumbStoryMeta = Breadcrumb.bind({});
-BreadcrumbsWithAnchors.args = {
-    content: html`
-        <a href="#">Breadcrumb Item 1</a>
-        <a href="#">Breadcrumb Item 2</a>
-        <a href="#">Breadcrumb Item 3</a>
+export const BreadcrumbWithAnchors: Story<FASTBreadcrumb> = Breadcrumb.bind({});
+BreadcrumbWithAnchors.args = {
+    storyContent: html`
+        <a href="#">Anchor 1</a>
+        <a href="#">Anchor 2</a>
+        <a href="#">Anchor 3</a>
     `,
 };
