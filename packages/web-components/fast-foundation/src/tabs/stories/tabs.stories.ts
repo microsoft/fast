@@ -15,7 +15,7 @@ const componentTemplate = html<TabsStoryArgs>`
         ${repeat(
             x => x.items,
             html`
-                <fast-tab>${x => x.tab}</fast-tab>
+                <fast-tab ?disabled="${x => x.disabled}">${x => x.tab}</fast-tab>
                 <fast-tab-panel>
                     ${x => x.panel}
                 </fast-tab-panel>
@@ -51,6 +51,39 @@ Tabs.args = {
         {
             tab: "Tab three",
             panel: "Tab three content",
+        },
+    ],
+};
+
+export const DisabledTabs = (args: TabsStoryArgs) => {
+    const storyFragment = new DocumentFragment();
+    componentTemplate.render(args, storyFragment);
+    return storyFragment.firstElementChild;
+};
+
+DisabledTabs.args = {
+    items: [
+        {
+            tab: "Tab one",
+            panel: "Tab one content",
+            disabled: true,
+        },
+        {
+            tab: "Tab two",
+            panel: "Tab two content",
+        },
+        {
+            tab: "Tab three",
+            panel: "Tab three content",
+        },
+        {
+            tab: "Tab four",
+            panel: "Tab four content",
+        },
+        {
+            tab: "Tab five",
+            panel: "Tab five content",
+            disabled: true,
         },
     ],
 };
