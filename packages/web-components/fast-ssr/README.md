@@ -121,20 +121,20 @@ const result = templateRenderer.render(html`
 `TemplateRenderer.render()` must be invoked with a `RenderInfo` object. Its purpose is to provide different element renderers to the process, as well as metadata about the rendering process. It can be used to render custom elements from different templating libraries in the same process. By default, `TemplateRenderer.render()` will create a `RenderInfo` object for you, but you can also easily construct your own using `TemplateRenderer.createRenderInfo()`: 
 
 ```js
-const { templateRenderer, elementRenderer } = fastSSR();
+const { templateRenderer, ElementRenderer } = fastSSR();
 templateRenderer.render(html`<some-fast-element></some-fast-element>`, templateRenderer.createRenderInfo());
 ```
 
-By default, `TemplateRenderer.createRenderInfo()` returns a `RenderInfo` object hydrated with only the `elementRenderer` returned from `fastSSR()`. To configure this method to return a `RenderInfo` with *additional* or *different* elementRenderers, use the `TemplateRenderer.withDefaultElementRenderers()` method:
+By default, `TemplateRenderer.createRenderInfo()` returns a `RenderInfo` object hydrated with only the `ElementRenderer` returned from `fastSSR()`. To configure this method to return a `RenderInfo` with *additional* or *different* elementRenderers, use the `TemplateRenderer.withDefaultElementRenderers()` method:
 
 ```ts
     import { AnotherElementRenderer } from "somewhere";
-    const { templateRenderer, elementRenderer } = fastSSR();
+    const { templateRenderer, ElementRenderer } = fastSSR();
 
-    templateRenderer.withDefaultElementRenderers(elementRenderer, AnotherElementRenderer);
+    templateRenderer.withDefaultElementRenderers(ElementRenderer, AnotherElementRenderer);
 
     const renderInfo = templateRenderer.createRenderInfo();
-    renderInfo.elementRenderers.includes(elementRenderer); // true
+    renderInfo.elementRenderers.includes(ElementRenderer); // true
     renderInfo.elementRenderers.includes(AnotherElementRenderer); // true
 ```
 
@@ -145,9 +145,9 @@ import fastSSR from "@microsoft/fast-ssr";
 import { html } from "@microsoft/fast-element";
 import { LitElementRenderer } from "@lit-labs/ssr/lib/lit-element-renderer.js"
 
-const { templateRenderer, elementRenderer } = fastSSR();
+const { templateRenderer, ElementRenderer } = fastSSR();
 
-templateRenderer.withDefaultElementRenderers(elementRenderer, LitElementRenderer);
+templateRenderer.withDefaultElementRenderers(ElementRenderer, LitElementRenderer);
 // Some implementation that defines both FAST and Lit components
 defineComponents();
 
@@ -164,7 +164,7 @@ import fastSSR from "@microsoft/fast-ssr";
 import { html } from "@microsoft/fast-element";
 import { LitElementRenderer } from "@lit-labs/ssr/lib/lit-element-renderer.js"
 
-const { templateRenderer, elementRenderer } = fastSSR();
+const { templateRenderer, ElementRenderer } = fastSSR();
 
 // Some implementation that defines both FAST and Lit components
 defineComponents();
@@ -172,7 +172,7 @@ defineComponents();
 const result = templateRenderer.render(html`
     <my-fast-element></my-fast-element>
     <my-lit-element></my-lit-element>
-`, templateRenderer.createRenderInfo([elementRenderer, LitElementRenderer]));
+`, templateRenderer.createRenderInfo([ElementRenderer, LitElementRenderer]));
 ```
 
 

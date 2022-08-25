@@ -65,7 +65,7 @@ export abstract class FASTElementRenderer extends ElementRenderer {
 // @beta
 function fastSSR(): {
     templateRenderer: TemplateRenderer;
-    elementRenderer: ConstructableElementRenderer;
+    ElementRenderer: ConstructableElementRenderer;
 };
 export default fastSSR;
 
