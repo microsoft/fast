@@ -81,7 +81,7 @@ export class DefaultNavigationQueue implements NavigationQueue, NavigationHandle
 
 // @beta (undocumented)
 export class DefaultRouter implements Router {
-    constructor(host: HTMLElement);
+    constructor(host: any);
     // (undocumented)
     addContributor(contributor: NavigationContributor): void;
     // (undocumented)
@@ -97,7 +97,7 @@ export class DefaultRouter implements Router {
     // (undocumented)
     disconnect(): void;
     // (undocumented)
-    readonly host: HTMLElement;
+    readonly host: any;
     // (undocumented)
     get level(): number;
     // (undocumented)
@@ -246,7 +246,7 @@ export interface NavigationCommand {
 // @beta (undocumented)
 export interface NavigationCommitPhase<TSettings = any> extends Omit<NavigationPhase<TSettings>, "cancel" | "canceled" | "onCancel"> {
     // (undocumented)
-    setTitle(title: string): any;
+    setTitle(title: string): void;
 }
 
 // @beta (undocumented)
@@ -340,7 +340,7 @@ export type PathedRouteDefinition<TSettings = any> = SupportsSettings<TSettings>
 // @beta (undocumented)
 export const QueryString: Readonly<{
     readonly current: string;
-    build(params: Object, traditional?: boolean): string;
+    build(params: object, traditional?: boolean): string;
     separate(path: string): Readonly<{
         path: string;
         queryString: string;
@@ -502,8 +502,8 @@ export interface Router<TSettings = any> {
 
 // @beta (undocumented)
 export const Router: Readonly<{
-    getOrCreateFor(element: HTMLElement): Router<any> | DefaultRouter;
-    find(element: HTMLElement): Router | null;
+    getOrCreateFor(element: any): Router<any> | DefaultRouter;
+    find(element: any): Router | null;
     from<TBase extends {
         new (): HTMLElement;
         prototype: HTMLElement;
@@ -575,9 +575,9 @@ export interface RouterElement extends HTMLElement {
     // (undocumented)
     config: RouterConfiguration | null;
     // (undocumented)
-    connectedCallback(): any;
+    connectedCallback(): void;
     // (undocumented)
-    disconnectedCallback(): any;
+    disconnectedCallback(): void;
 }
 
 // @beta (undocumented)

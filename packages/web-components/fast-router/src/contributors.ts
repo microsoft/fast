@@ -46,8 +46,8 @@ const defaultOptions: ContributorOptions = {
 };
 
 class NavigationContributorDirective implements HTMLDirective {
-    id: string;
-    nodeId: string;
+    id: string = "";
+    nodeId: string = "";
 
     constructor(private options: Required<ContributorOptions>) {}
 

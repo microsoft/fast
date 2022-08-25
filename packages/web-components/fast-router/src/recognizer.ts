@@ -376,6 +376,10 @@ export interface RouteRecognizer<TSettings> {
     generateFromPath(path: string, params: object): string | null;
 }
 
+interface ObjectParams {
+    [key: string]: any;
+}
+
 /**
  * @beta
  */
@@ -519,7 +523,7 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
         const paramNames = endpoint.paramNames;
         const paramTypes = endpoint.paramTypes;
         const params = candidate.getParams();
-        const typedParams = {};
+        const typedParams: ObjectParams = {};
 
         for (let i = 0, ii = paramNames.length; i < ii; ++i) {
             const name = paramNames[i];
@@ -564,7 +568,7 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
             return null;
         }
 
-        const routeParams = Object.assign({}, params);
+        const routeParams: ObjectParams = Object.assign({}, params);
         const consumed = {};
         let output = "";
 
@@ -815,7 +819,7 @@ class DynamicSegment<T> {
         return state;
     }
 
-    public generate(params: Object, consumed: Object): string {
+    public generate(params: ObjectParams, consumed: ObjectParams): string {
         consumed[this.name] = true;
         return params[this.name];
     }
@@ -841,7 +845,7 @@ class StarSegment<T> {
         return state;
     }
 
-    public generate(params: Object, consumed: Object): string {
+    public generate(params: ObjectParams, consumed: ObjectParams): string {
         consumed[this.name] = true;
         return params[this.name];
     }

@@ -87,13 +87,15 @@ export const QueryString = Object.freeze({
      * @param traditional - Boolean Use the old URI template standard (RFC6570)
      * @returns The generated query string, excluding leading '?'.
      */
-    build(params: Object, traditional?: boolean): string {
+    build(params: object, traditional?: boolean): string {
         let pairs: string[] = [];
         const keys = Object.keys(params || {}).sort();
 
         for (let i = 0, len = keys.length; i < len; i++) {
             const key = keys[i];
-            pairs = pairs.concat(buildParam(key, params[key], traditional));
+            pairs = pairs.concat(
+                buildParam(key, params[key as keyof typeof params], traditional)
+            );
         }
 
         if (pairs.length === 0) {
@@ -129,7 +131,9 @@ export const QueryString = Object.freeze({
      * @returns Object with keys and values mapped from the query string.
      */
     parse(queryString: string): Readonly<Record<string, string>> {
-        const queryParams = {};
+        const queryParams: {
+            [key: string]: any;
+        } = {};
         if (!queryString || typeof queryString !== "string") {
             return queryParams;
         }

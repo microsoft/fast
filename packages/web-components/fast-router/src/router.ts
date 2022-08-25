@@ -60,15 +60,15 @@ function findParentRouterForElement(element: HTMLElement) {
 export interface RouterElement extends HTMLElement {
     readonly [routerProperty]: Router;
     config: RouterConfiguration | null;
-    connectedCallback();
-    disconnectedCallback();
+    connectedCallback(): void;
+    disconnectedCallback(): void;
 }
 
 /**
  * @beta
  */
 export const Router = Object.freeze({
-    getOrCreateFor(element: HTMLElement) {
+    getOrCreateFor(element: any) {
         const router: Router = element[routerProperty];
 
         if (router !== void 0) {
@@ -78,7 +78,7 @@ export const Router = Object.freeze({
         return (element[routerProperty] = new DefaultRouter(element));
     },
 
-    find(element: HTMLElement): Router | null {
+    find(element: any): Router | null {
         return element[routerProperty] || findParentRouterForElement(element);
     },
 
@@ -161,7 +161,7 @@ export class DefaultRouter implements Router {
 
     public route: RecognizedRoute | null = null;
 
-    public constructor(public readonly host: HTMLElement) {
+    public constructor(public readonly host: any) {
         host[routerProperty] = this;
     }
 

@@ -224,7 +224,7 @@ export type ParameterConverter =
     | ConverterObject
     | Constructable<ConverterObject>;
 
-const booleanConverter = value => {
+const booleanConverter = (value: string | null | undefined) => {
     if (value === void 0 || value === null) {
         return false;
     }
@@ -240,11 +240,12 @@ const booleanConverter = value => {
 };
 
 const defaultConverters = {
-    number: value => (value === void 0 ? NaN : parseFloat(value)),
-    float: value => (value === void 0 ? NaN : parseFloat(value)),
-    int: value => (value === void 0 ? NaN : parseInt(value)),
-    integer: value => (value === void 0 ? NaN : parseInt(value)),
-    Date: value => (value === void 0 ? new Date(Date.now()) : new Date(value)),
+    number: (value: string | undefined) => (value === void 0 ? NaN : parseFloat(value)),
+    float: (value: string | undefined) => (value === void 0 ? NaN : parseFloat(value)),
+    int: (value: string | undefined) => (value === void 0 ? NaN : parseInt(value)),
+    integer: (value: string | undefined) => (value === void 0 ? NaN : parseInt(value)),
+    Date: (value: string | number | Date | undefined) =>
+        value === void 0 ? new Date(Date.now()) : new Date(value),
     boolean: booleanConverter,
     bool: booleanConverter,
 };
@@ -433,7 +434,7 @@ export class RouteCollection<TSettings = any> {
         return this.recognizer.generateFromPath(path, params);
     }
 
-    private aggregateConverters() {
+    private aggregateConverters(): any {
         if (this.owner.parent === null) {
             return {
                 ...defaultConverters,
