@@ -1,5 +1,5 @@
 import "./install-dom-shim.js";
-import fastSSR from "@microsoft/fast-ssr";
+import fastSSR from "./exports.js";
 import { test, expect } from "@playwright/test";
 
 
