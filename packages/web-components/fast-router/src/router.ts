@@ -68,18 +68,18 @@ export interface RouterElement extends HTMLElement {
  * @beta
  */
 export const Router = Object.freeze({
-    getOrCreateFor(element: any) {
-        const router: Router = element[routerProperty];
+    getOrCreateFor(element: HTMLElement) {
+        const router: Router = (element as any)[routerProperty];
 
         if (router !== void 0) {
             return router;
         }
 
-        return (element[routerProperty] = new DefaultRouter(element));
+        return ((element as any)[routerProperty] = new DefaultRouter(element));
     },
 
-    find(element: any): Router | null {
-        return element[routerProperty] || findParentRouterForElement(element);
+    find(element: HTMLElement): Router | null {
+        return (element as any)[routerProperty] || findParentRouterForElement(element);
     },
 
     from<TBase extends typeof HTMLElement>(
@@ -161,8 +161,8 @@ export class DefaultRouter implements Router {
 
     public route: RecognizedRoute | null = null;
 
-    public constructor(public readonly host: any) {
-        host[routerProperty] = this;
+    public constructor(public readonly host: HTMLElement) {
+        (host as any)[routerProperty] = this;
     }
 
     public get config(): RouterConfiguration | null {
