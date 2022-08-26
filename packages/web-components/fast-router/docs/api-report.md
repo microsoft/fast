@@ -81,7 +81,7 @@ export class DefaultNavigationQueue implements NavigationQueue, NavigationHandle
 
 // @beta (undocumented)
 export class DefaultRouter implements Router {
-    constructor(host: any);
+    constructor(host: HTMLElement);
     // (undocumented)
     addContributor(contributor: NavigationContributor): void;
     // (undocumented)
@@ -97,7 +97,7 @@ export class DefaultRouter implements Router {
     // (undocumented)
     disconnect(): void;
     // (undocumented)
-    readonly host: any;
+    readonly host: HTMLElement;
     // (undocumented)
     get level(): number;
     // (undocumented)
@@ -502,8 +502,8 @@ export interface Router<TSettings = any> {
 
 // @beta (undocumented)
 export const Router: Readonly<{
-    getOrCreateFor(element: any): Router<any> | DefaultRouter;
-    find(element: any): Router | null;
+    getOrCreateFor(element: HTMLElement): Router<any> | DefaultRouter;
+    find(element: HTMLElement): Router | null;
     from<TBase extends {
         new (): HTMLElement;
         prototype: HTMLElement;
