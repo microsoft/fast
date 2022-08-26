@@ -23,8 +23,14 @@ export function menuItemTemplate<T extends FASTMenuItem>(
         @click="${(x, c) => x.handleMenuItemClick(c.event as MouseEvent)}"
         @mouseover="${(x, c) => x.handleMouseOver(c.event as MouseEvent)}"
         @mouseout="${(x, c) => x.handleMouseOut(c.event as MouseEvent)}"
-        class="${x => (x.disabled ? "disabled" : "")} ${x =>
-        x.expanded ? "expanded" : ""} ${x => `indent-${x.startColumnCount}`}"
+        class="${x =>
+            [
+                x.disabled && "disabled",
+                x.expanded && "expanded",
+                `indent-${x.startColumnCount}`,
+            ]
+                .filter(Boolean)
+                .join(" ")}"
     >
             ${when(
                 x => x.role === MenuItemRole.menuitemcheckbox,
