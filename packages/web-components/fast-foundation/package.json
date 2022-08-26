@@ -54,10 +54,8 @@
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
-    "pretest": "yarn eslint",
+    "pretest": "yarn eslint && yarn build-storybook --quiet",
     "test": "playwright test",
-    "pretest:ci": "yarn build-storybook",
-    "test:ci": "yarn test",
     "posttest:ci": "yarn doc:ci",
     "start": "yarn start:storybook",
     "start:storybook": "start-storybook -p 6006"
