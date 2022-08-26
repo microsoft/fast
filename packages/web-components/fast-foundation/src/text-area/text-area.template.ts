@@ -9,17 +9,21 @@ import type { FASTTextArea } from "./text-area.js";
 export function textAreaTemplate(): ElementViewTemplate<FASTTextArea> {
     return html<FASTTextArea>`
         <template
-            class="
-            ${x => (x.readOnly ? "readonly" : "")}
-            ${x => (x.resize !== TextAreaResize.none ? `resize-${x.resize}` : "")}"
+            class="${x =>
+                [
+                    x.readOnly && "readonly",
+                    x.resize !== TextAreaResize.none && `resize-${x.resize}`,
+                ]
+                    .filter(Boolean)
+                    .join(" ")}"
         >
             <label
                 part="label"
                 for="control"
                 class="${x =>
-                    x.defaultSlottedNodes && x.defaultSlottedNodes.length
-                        ? "label"
-                        : "label label__hidden"}"
+                    ["label", !x.defaultSlottedNodes?.length && "label__hidden"]
+                        .filter(Boolean)
+                        .join(" ")}"
             >
                 <slot ${slotted("defaultSlottedNodes")}></slot>
             </label>
