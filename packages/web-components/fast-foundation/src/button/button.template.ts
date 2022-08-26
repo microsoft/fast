@@ -19,7 +19,7 @@ export function buttonTemplate<T extends FASTButton>(
             formaction="${x => x.formaction}"
             formenctype="${x => x.formenctype}"
             formmethod="${x => x.formmethod}"
-            formnovalidate="${x => x.formnovalidate}"
+            ?formnovalidate="${x => x.formnovalidate}"
             formtarget="${x => x.formtarget}"
             name="${x => x.name}"
             type="${x => x.type}"
