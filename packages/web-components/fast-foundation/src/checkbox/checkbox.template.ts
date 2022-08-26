@@ -1,4 +1,5 @@
 import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import { whitespaceFilter } from "../utilities/whitespace-filter.js";
 import type { CheckboxOptions, FASTCheckbox } from "./checkbox.js";
 
 /**
@@ -18,9 +19,14 @@ export function checkboxTemplate<T extends FASTCheckbox>(
             tabindex="${x => (x.disabled ? null : 0)}"
             @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
-            class="${x => (x.readOnly ? "readonly" : "")} ${x =>
-                x.checked ? "checked" : ""} ${x =>
-                x.indeterminate ? "indeterminate" : ""}"
+            class="${x =>
+                [
+                    x.readOnly && "readonly",
+                    x.checked && "checked",
+                    x.indeterminate && "indeterminate",
+                ]
+                    .filter(Boolean)
+                    .join(" ")}"
         >
             <div part="control" class="control">
                 <slot name="checked-indicator">
@@ -33,11 +39,16 @@ export function checkboxTemplate<T extends FASTCheckbox>(
             <label
                 part="label"
                 class="${x =>
-                    x.defaultSlottedNodes && x.defaultSlottedNodes.length
-                        ? "label"
-                        : "label label__hidden"}"
+                    ["label", x.defaultSlottedNodes?.length ? false : "label__hidden"]
+                        .filter(Boolean)
+                        .join(" ")}"
             >
-                <slot ${slotted("defaultSlottedNodes")}></slot>
+                <slot
+                    ${slotted({
+                        property: "defaultSlottedNodes",
+                        filter: whitespaceFilter,
+                    })}
+                ></slot>
             </label>
         </template>
     `;
