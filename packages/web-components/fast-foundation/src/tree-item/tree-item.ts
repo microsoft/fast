@@ -5,7 +5,8 @@ import {
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
+import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
@@ -14,7 +15,7 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * @remarks
  * determines if element is an HTMLElement and if it has the role treeitem
  */
-export function isTreeItemElement(el: Element): el is HTMLElement {
+export function isTreeItemElement(el: Element): el is FASTTreeItem {
     return (
         isHTMLElement(el) &&
         (el.getAttribute("role") === "treeitem" || el.tagName.includes("TREE-ITEM"))
@@ -55,8 +56,9 @@ export class FASTTreeItem extends FASTElement {
      */
     @attr({ mode: "boolean" })
     public expanded: boolean = false;
-    protected expandedChanged(): void {
+    protected expandedChanged(prev: boolean | undefined, next: boolean): void {
         if (this.$fastController.isConnected) {
+            this.ariaExpanded = next && this.childItems.length ? "true" : "false";
             this.$emit("expanded-change", this);
         }
     }
@@ -69,8 +71,9 @@ export class FASTTreeItem extends FASTElement {
      */
     @attr({ mode: "boolean" })
     public selected: boolean;
-    protected selectedChanged(): void {
+    protected selectedChanged(prev: boolean | undefined, next: boolean): void {
         if (this.$fastController.isConnected) {
+            this.ariaSelected = next ? "true" : "false";
             this.$emit("selected-change", this);
         }
     }
@@ -83,6 +86,11 @@ export class FASTTreeItem extends FASTElement {
      */
     @attr({ mode: "boolean" })
     public disabled: boolean;
+    protected disabledChanged(prev: boolean | undefined, next: boolean): void {
+        if (this.$fastController.isConnected) {
+            this.ariaDisabled = next ? "true" : "false";
+        }
+    }
 
     /**
      *  Reference to the expand/collapse button
@@ -114,9 +122,9 @@ export class FASTTreeItem extends FASTElement {
      */
     @observable
     public items: HTMLElement[];
-    protected itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
+    protected itemsChanged(prev: HTMLElement[] | undefined, next: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
-            this.items.forEach((node: HTMLElement) => {
+            next.forEach(node => {
                 if (isTreeItemElement(node)) {
                     // TODO: maybe not require it to be a TreeItem?
                     (node as FASTTreeItem).nested = true;
@@ -166,7 +174,7 @@ export class FASTTreeItem extends FASTElement {
      *
      * @internal
      */
-    public handleExpandCollapseButtonClick = (e: MouseEvent): void => {
+    public handleExpandCollapseButtonClick = (e: MouseEvent): boolean | void => {
         if (!this.disabled && !e.defaultPrevented) {
             this.expanded = !this.expanded;
         }
@@ -189,21 +197,50 @@ export class FASTTreeItem extends FASTElement {
     public handleBlur = (e: FocusEvent): void => {
         this.setAttribute("tabindex", "-1");
     };
+}
+
+/**
+ * Includes ARIA states and properties relating to the ARIA textbox role
+ *
+ * @public
+ */
+export class DelegatesARIATreeItem {
+    /**
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#treeitem} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-disabled`
+     */
+    @observable
+    public ariaDisabled: "true" | "false" | string | null;
 
     /**
-     * Gets number of children
-     *
-     * @internal
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#treeitem} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-expanded`
      */
-    public childItemLength(): number {
-        const treeChildren: HTMLElement[] = this.childItems.filter(
-            (item: HTMLElement) => {
-                return isTreeItemElement(item);
-            }
-        );
-        return treeChildren ? treeChildren.length : 0;
-    }
+    @observable
+    public ariaExpanded: "true" | "false" | string | null;
+
+    /**
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#treeitem} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-expanded`
+     */
+    @observable
+    public ariaSelected: "true" | "false" | string | null;
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface DelegatesARIATreeItem extends ARIAGlobalStatesAndProperties {}
+applyMixins(DelegatesARIATreeItem, ARIAGlobalStatesAndProperties);
 
 /**
  * Mark internal because exporting class and interface of the same name
@@ -212,5 +249,5 @@ export class FASTTreeItem extends FASTElement {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface FASTTreeItem extends StartEnd {}
-applyMixins(FASTTreeItem, StartEnd);
+export interface FASTTreeItem extends StartEnd, DelegatesARIATreeItem {}
+applyMixins(FASTTreeItem, StartEnd, DelegatesARIATreeItem);

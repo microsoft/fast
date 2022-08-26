@@ -57,11 +57,12 @@ export class FASTTreeItem extends TreeItem {}
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters                                   | Return | Inherited From |
-| ----------------- | --------- | ----------- | -------------------------------------------- | ------ | -------------- |
-| `expandedChanged` | protected |             |                                              | `void` |                |
-| `selectedChanged` | protected |             |                                              | `void` |                |
-| `itemsChanged`    | protected |             | `oldValue: unknown, newValue: HTMLElement[]` | `void` |                |
+| Name              | Privacy   | Description | Parameters                                              | Return | Inherited From |
+| ----------------- | --------- | ----------- | ------------------------------------------------------- | ------ | -------------- |
+| `expandedChanged` | protected |             | `prev: boolean or undefined, next: boolean`             | `void` |                |
+| `selectedChanged` | protected |             | `prev: boolean or undefined, next: boolean`             | `void` |                |
+| `disabledChanged` | protected |             | `prev: boolean or undefined, next: boolean`             | `void` |                |
+| `itemsChanged`    | protected |             | `prev: HTMLElement[] or undefined, next: HTMLElement[]` | `void` |                |
 
 #### Events
 
@@ -99,11 +100,23 @@ export class FASTTreeItem extends TreeItem {}
 
 <hr/>
 
+### class: `DelegatesARIATreeItem`
+
+#### Fields
+
+| Name           | Privacy | Type                                  | Default | Description                                                             | Inherited From |
+| -------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------- | -------------- |
+| `ariaDisabled` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#treeitem for more information |                |
+| `ariaExpanded` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#treeitem for more information |                |
+| `ariaSelected` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#treeitem for more information |                |
+
+<hr/>
+
 ### Functions
 
-| Name                | Description                      | Parameters    | Return              |
-| ------------------- | -------------------------------- | ------------- | ------------------- |
-| `isTreeItemElement` | check if the item is a tree item | `el: Element` | `el is HTMLElement` |
+| Name                | Description                      | Parameters    | Return               |
+| ------------------- | -------------------------------- | ------------- | -------------------- |
+| `isTreeItemElement` | check if the item is a tree item | `el: Element` | `el is FASTTreeItem` |
 
 <hr/>
 

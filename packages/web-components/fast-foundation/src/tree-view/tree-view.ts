@@ -152,7 +152,7 @@ export class FASTTreeView extends FASTElement {
 
                     if (
                         item instanceof FASTTreeItem &&
-                        item.childItemLength() > 0 &&
+                        item.childItems?.length > 0 &&
                         item.expanded
                     ) {
                         item.expanded = false;
@@ -169,13 +169,13 @@ export class FASTTreeView extends FASTElement {
                     const item = e.target as HTMLElement;
                     if (
                         item instanceof FASTTreeItem &&
-                        item.childItemLength() > 0 &&
+                        item.childItems?.length > 0 &&
                         !item.expanded
                     ) {
                         item.expanded = true;
                     } else if (
                         item instanceof FASTTreeItem &&
-                        item.childItemLength() > 0
+                        item.childItems?.length > 0
                     ) {
                         this.focusNextNode(1, e.target as FASTTreeItem);
                     }
