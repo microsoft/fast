@@ -50,9 +50,9 @@ export const myTooltip = Tooltip.compose({
 
 ### Variables
 
-| Name              | Description                           | Type                                                                                                                                                                                                                                                                                              |
-| ----------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `TooltipPosition` | Enumerates possible tooltip positions | `{ top: "top", right: "right", bottom: "bottom", left: "left", start: "start", end: "end", topLeft: "top-left", topRight: "top-right", bottomLeft: "bottom-left", bottomRight: "bottom-right", topStart: "top-start", topEnd: "top-end", bottomStart: "bottom-start", bottomEnd: "bottom-end", }` |
+| Name              | Description                           | Type                                                                                                                                                                                                                                                                                                                                                                        |
+| ----------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TooltipPosition` | Enumerates possible tooltip positions | `{ top: "top", right: "right", bottom: "bottom", left: "left", center: "center", start: "start", end: "end", topLeft: "top-left", topCenter: "top-center", topRight: "top-right", bottomLeft: "bottom-left", bottomCenter: "bottom-center", bottomRight: "bottom-right", topStart: "top-start", topEnd: "top-end", bottomStart: "bottom-start", bottomEnd: "bottom-end", }` |
 
 <hr/>
 

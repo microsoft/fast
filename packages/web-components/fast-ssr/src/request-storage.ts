@@ -137,7 +137,7 @@ export const RequestStorageManager = Object.freeze({
             const original = (globalThis as any)[key];
             Reflect.defineProperty(globalThis, key, {
                 get() {
-                    // Return original global variable if currently not in the request scope
+                    // Return original global variable if currently not in the storage scope
                     const store = asyncLocalStorage.getStore() as Map<string, any>;
                     return store ? store.get("window")[key] : original;
                 },

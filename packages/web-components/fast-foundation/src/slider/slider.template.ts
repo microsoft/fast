@@ -1,6 +1,7 @@
 import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type { FASTSlider, SliderOptions } from "./slider.js";
+import type { FASTSlider } from "./slider.js";
+import type { SliderOptions } from "./slider.options.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(FASTSlider:class)} component.

@@ -6,77 +6,15 @@ import type {
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
 } from "../utilities/resize-observer.js";
-
-/**
- * Defines the base behavior of an anchored region on a particular axis
- *
- * @public
- */
-export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
-
-/**
- * Defines the scaling behavior of an anchored region on a particular axis
- *
- * @public
- */
-export type AxisScalingMode = "anchor" | "fill" | "content";
-
-/**
- * Defines the horizontal positioning options for an anchored region
- *
- * @public
- */
-export type HorizontalPosition = "start" | "end" | "left" | "right" | "center" | "unset";
-
-/**
- * Defines the vertical positioning options for an anchored region
- *
- * @public
- */
-export type VerticalPosition = "top" | "bottom" | "center" | "unset";
-
-/**
- * Defines if the component updates its position automatically. Calling update() always provokes an update.
- * anchor - the component only updates its position when the anchor resizes (default)
- * auto - the component updates its position when:
- * - update() is called
- * - the anchor resizes
- * - the window resizes
- * - the viewport resizes
- * - any scroll event in the document
- *
- * @public
- */
-export const AutoUpdateMode = {
-    anchor: "anchor",
-    auto: "auto",
-} as const;
-
-/**
- * @public
- */
-export type AutoUpdateMode = typeof AutoUpdateMode[keyof typeof AutoUpdateMode];
-
-/**
- * Describes the possible positions of the region relative
- * to its anchor. Depending on the axis start = left/top, end = right/bottom
- *
- * @public
- */
-export type AnchoredRegionPositionLabel =
-    | "start"
-    | "insetStart"
-    | "insetEnd"
-    | "end"
-    | "center";
-
-/**
- * @internal
- */
-interface Dimension {
-    height: number;
-    width: number;
-}
+import type {
+    AnchoredRegionPositionLabel,
+    AutoUpdateMode,
+    AxisPositioningMode,
+    AxisScalingMode,
+    Dimension,
+    HorizontalPosition,
+    VerticalPosition,
+} from "./anchored-region.options.js";
 
 /**
  * An anchored region Custom HTML Element.
