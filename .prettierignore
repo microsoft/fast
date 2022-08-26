@@ -1,4 +1,5 @@
 *.spec.ts
+!*.pw.spec.ts
 *.spec.tsx
 **/__tests__
 **/__test__
