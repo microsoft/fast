@@ -134,9 +134,12 @@ export const RequestStorageManager = Object.freeze({
      */
     installDOMShim(): void {
         for (const key of perRequestGlobals) {
+            const original = (globalThis as any)[key];
             Reflect.defineProperty(globalThis, key, {
                 get() {
-                    return RequestStorage.get("window")[key];
+                    // Return original global variable if currently not in the storage scope
+                    const store = asyncLocalStorage.getStore() as Map<string, any>;
+                    return store ? store.get("window")[key] : original;
                 },
             });
         }
