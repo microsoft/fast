@@ -2,7 +2,26 @@ import { AsyncLocalStorage } from "async_hooks";
 import { DI, DOMContainer } from "@microsoft/fast-element/di";
 import { createWindow } from "./dom-shim.js";
 
-const asyncLocalStorage = new AsyncLocalStorage();
+let asyncLocalStorage: AsyncLocalStorage<unknown>;
+
+/**
+ * Initialize asyncLocalStorage singleton before RequestStorage can be called
+ * @param storage Preexisting async local storage to be reused. If not defined, new one will be created.
+ * @beta
+ */
+export function initAsyncLocalStorage(storage?: AsyncLocalStorage<unknown>) {
+    asyncLocalStorage = storage ? storage : new AsyncLocalStorage();
+}
+
+/**
+ * Get the current asyncLocalStorage singleton
+ * @returns The current asyncLocalStorage
+ * @beta
+ */
+export function getAsyncLocalStorage(): AsyncLocalStorage<unknown> {
+    return asyncLocalStorage;
+}
+
 const defaultOptions = {};
 
 function getStore() {
@@ -195,6 +214,7 @@ export const RequestStorageManager = Object.freeze({
      * functions in the pipeline are processed in the context of this storage.
      */
     middleware(options: StorageOptions = defaultOptions): Middleware {
+        initAsyncLocalStorage();
         RequestStorageManager.installDOMShim();
 
         return (req: any, res: any, next: () => any): void => {

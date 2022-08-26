@@ -1,11 +1,15 @@
 import "./install-dom-shim.js";
 import { expect, test } from "@playwright/test";
 import { createWindow } from "./dom-shim.js";
-import { RequestStorage, RequestStorageManager } from "./request-storage.js";
+import { initAsyncLocalStorage, RequestStorage, RequestStorageManager } from "./request-storage.js";
 
 const noStorageError = "Storage must be accessed from within a request.";
 
 test.describe("RequestStorageManager", () => {
+    test.beforeAll(() => {
+        initAsyncLocalStorage();
+    });
+
     test("can create basic backing storage", () => {
         const storage = RequestStorageManager.createStorage();
 
@@ -77,6 +81,10 @@ test.describe("RequestStorageManager", () => {
 });
 
 test.describe("RequestStorage", () => {
+    test.beforeAll(() => {
+        initAsyncLocalStorage();
+    });
+
     test("provides a DOM container", () => {
         const storage = RequestStorageManager.createStorage();
 
