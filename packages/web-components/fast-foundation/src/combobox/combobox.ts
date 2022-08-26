@@ -95,6 +95,12 @@ export class FASTCombobox extends FormAssociatedCombobox {
     public formResetCallback(): void {
         super.formResetCallback();
         this.setDefaultSelectedOption();
+
+        if (!this.firstSelectedOption) {
+            this.resetValue();
+            return;
+        }
+
         this.updateValue();
     }
 
@@ -316,10 +322,8 @@ export class FASTCombobox extends FormAssociatedCombobox {
      * @internal
      */
     public disabledChanged(prev: boolean, next: boolean): void {
-        if (super.disabledChanged) {
-            super.disabledChanged(prev, next);
-        }
-        this.ariaDisabled = this.disabled ? "true" : "false";
+        super.disabledChanged?.(prev, next);
+        this.ariaDisabled = next ? "true" : "false";
     }
 
     /**
@@ -568,12 +572,14 @@ export class FASTCombobox extends FormAssociatedCombobox {
     public setDefaultSelectedOption(): void {
         if (this.$fastController.isConnected && this.options) {
             const selectedIndex = this.options.findIndex(
-                el => el.getAttribute("selected") !== null || el.selected
+                el => el.hasAttribute("selected") || el.selected
             );
 
             this.selectedIndex = selectedIndex;
             if (!this.dirtyValue && this.firstSelectedOption) {
                 this.value = this.firstSelectedOption.text;
+            } else {
+                this.value = "";
             }
             this.setSelectedOptions();
         }
@@ -671,6 +677,15 @@ export class FASTCombobox extends FormAssociatedCombobox {
         if (shouldEmit) {
             this.$emit("change");
         }
+    }
+
+    /**
+     * Resets the value to the initial value.
+     *
+     * @internal
+     */
+    private resetValue() {
+        this.value = this.initialValue ?? "";
     }
 
     /**
