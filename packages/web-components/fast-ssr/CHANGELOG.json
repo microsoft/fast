@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Fri, 26 Aug 2022 18:06:43 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.8",
+      "version": "1.0.0-beta.8",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "erhuan@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "4fe1bc5f1be71e2e0ea3bb46871c597fc993dc5f",
+            "comment": "After install DOM Shim, globals will now return the original global instead of the shimmed version in async local storage if code is not in storage scope."
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.8",
+            "commit": "4fe1bc5f1be71e2e0ea3bb46871c597fc993dc5f"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 18 Aug 2022 20:46:10 GMT",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.7",
       "version": "1.0.0-beta.7",
