@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "remove alt and src from avatar spec as they do not exist as attributes",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}

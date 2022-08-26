@@ -66,8 +66,6 @@ A common use case would be to display an image or text (usually initials) of a u
 
 ```html
 <fast-avatar 
-  src="..."
-  alt="..."
   link="...">
 </fast-avatar>
 ```
@@ -75,8 +73,6 @@ A common use case would be to display an image or text (usually initials) of a u
 With `fast-badge` Component:
 ```html
 <fast-avatar
-  src="..." 
-  alt="..."
   link="...">
   <fast-badge slot="badge">&nbsp</fast-badge>
 </fast-avatar>
