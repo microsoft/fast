@@ -201,11 +201,13 @@ export const myDataGrid = DataGrid.compose({
 
 ### Variables
 
-| Name                    | Description                                                                                             | Type                                                                            |
-| ----------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `GenerateHeaderOptions` | Enumerates the data grid auto generated header options default option generates a non-sticky header row | `{ none: "none", default: "default", sticky: "sticky", }`                       |
-| `DataGridCellTypes`     | Enumerates possible data grid cell types.                                                               | `{ default: "default", columnHeader: "columnheader", rowHeader: "rowheader", }` |
-| `DataGridRowTypes`      | Enumerates possible data grid row types                                                                 | `{ default: "default", header: "header", stickyHeader: "sticky-header", }`      |
+| Name                    | Description                                                                                             | Type                                                                             |
+| ----------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `GenerateHeaderOptions` | Enumerates the data grid auto generated header options default option generates a non-sticky header row | `{ none: "none", default: "default", sticky: "sticky", }`                        |
+| `DataGridCellTypes`     | Enumerates possible data grid cell types.                                                               | `{ default: "default", columnHeader: "columnheader", rowHeader: "rowheader", }`  |
+| `DataGridRowTypes`      | Enumerates possible data grid row types                                                                 | `{ default: "default", header: "header", stickyHeader: "sticky-header", }`       |
+| `DataGridCellTypeClass` | Class names for the data grid cell                                                                      | `{ columnheader: "column-header", default: "", rowheader: "row-header", }`       |
+| `DataGridCellRole`      | Roles for the data grid cell                                                                            | `{ columnheader: "columnheader", rowheader: "rowheader", default: "gridcell", }` |
 
 <hr/>
 
