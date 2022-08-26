@@ -29,7 +29,7 @@ test.describe("Breadcrumb item", () => {
 
         const href = "foo";
 
-        await page.goto(fixtureURL("breadcrumb-breadcrumb-item", { href }));
+        await page.goto(fixtureURL("breadcrumb-item--breadcrumb-item", { href }));
 
         const a = page.locator("fast-breadcrumb-item a");
 
