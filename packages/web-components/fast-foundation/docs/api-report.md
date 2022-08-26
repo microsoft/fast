@@ -11,6 +11,7 @@ import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
+import type { ElementsFilter } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
@@ -268,12 +269,12 @@ export function checkboxTemplate(options?: CheckboxOptions): ElementViewTemplate
 export interface ColumnDefinition {
     cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
     cellInternalFocusQueue?: boolean;
-    cellTemplate?: ViewTemplate;
+    cellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
     columnDataKey: string;
     gridColumn?: string;
     headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
     headerCellInternalFocusQueue?: boolean;
-    headerCellTemplate?: ViewTemplate;
+    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
     isRowHeader?: boolean;
     title?: string;
 }
@@ -510,6 +511,20 @@ export class DelegatesARIAToolbar {
 
 // @internal
 export interface DelegatesARIAToolbar extends ARIAGlobalStatesAndProperties {
+}
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIATreeItem" because one of its declarations is marked as @internal
+//
+// @public
+export class DelegatesARIATreeItem {
+    ariaDisabled: "true" | "false" | string | null;
+    ariaExpanded: "true" | "false" | string | null;
+    ariaSelected: "true" | "false" | string | null;
+}
+
+// @internal
+export interface DelegatesARIATreeItem extends ARIAGlobalStatesAndProperties {
 }
 
 // @public
@@ -776,10 +791,11 @@ export class FASTBaseProgress extends FASTElement {
 
 // @public
 export class FASTBreadcrumb extends FASTElement {
+    static slottedBreadcrumbItemFilter: (n: HTMLElement) => boolean;
     // @internal (undocumented)
     slottedBreadcrumbItems: HTMLElement[];
     // (undocumented)
-    protected slottedBreadcrumbItemsChanged(): void;
+    protected slottedBreadcrumbItemsChanged(prev: Element[] | undefined, next: Element[] | undefined): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1326,6 +1342,8 @@ export class FASTMenu extends FASTElement {
     // @internal (undocumented)
     disconnectedCallback(): void;
     focus(): void;
+    // (undocumented)
+    handleChange(source: any, propertyName: string): void;
     // @internal
     handleFocusOut: (e: FocusEvent) => void;
     // @internal (undocumented)
@@ -1333,7 +1351,7 @@ export class FASTMenu extends FASTElement {
     // @internal (undocumented)
     readonly isNestedMenu: () => boolean;
     // @internal (undocumented)
-    items: HTMLSlotElement;
+    items: HTMLElement[];
     // (undocumented)
     protected itemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
 }
@@ -1366,6 +1384,7 @@ export class FASTMenuItem extends FASTElement {
     handleMouseOver: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     hasSubmenu: boolean;
+    hidden: boolean;
     role: MenuItemRole;
     // @internal (undocumented)
     startColumnCount: MenuItemColumnCount;
@@ -1769,6 +1788,8 @@ export class FASTSkeleton extends FASTElement {
 //
 // @public
 export class FASTSlider extends FormAssociatedSlider implements SliderConfiguration {
+    // @internal
+    calculateNewValue(rawValue: number): number;
     // @internal (undocumented)
     connectedCallback(): void;
     decrement(): void;
@@ -2107,41 +2128,41 @@ export class FASTTooltip extends FASTElement {
 //
 // @public
 export class FASTTreeItem extends FASTElement {
-    // @internal
-    childItemLength(): number;
     // @internal (undocumented)
     childItems: HTMLElement[];
     disabled: boolean;
+    // (undocumented)
+    protected disabledChanged(prev: boolean | undefined, next: boolean): void;
     // @internal
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
     // (undocumented)
-    protected expandedChanged(): void;
+    protected expandedChanged(prev: boolean | undefined, next: boolean): void;
     // @internal
     focusable: boolean;
     static focusItem(el: HTMLElement): void;
     // @internal
     handleBlur: (e: FocusEvent) => void;
     // @internal
-    handleExpandCollapseButtonClick: (e: MouseEvent) => void;
+    handleExpandCollapseButtonClick: (e: MouseEvent) => boolean | void;
     // @internal
     handleFocus: (e: FocusEvent) => void;
     readonly isNestedItem: () => boolean;
     // @internal
     items: HTMLElement[];
     // (undocumented)
-    protected itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void;
+    protected itemsChanged(prev: HTMLElement[] | undefined, next: HTMLElement[]): void;
     // @internal
     nested: boolean;
     // @internal (undocumented)
     renderCollapsedChildren: boolean;
     selected: boolean;
     // (undocumented)
-    protected selectedChanged(): void;
+    protected selectedChanged(prev: boolean | undefined, next: boolean): void;
 }
 
 // @internal
-export interface FASTTreeItem extends StartEnd {
+export interface FASTTreeItem extends StartEnd, DelegatesARIATreeItem {
 }
 
 // @public
@@ -2336,10 +2357,13 @@ export type HorizontalScrollView = typeof HorizontalScrollView[keyof typeof Hori
 export function interactiveCalendarGridTemplate(options: CalendarOptions, todayString: string): ViewTemplate<FASTCalendar>;
 
 // @public
+export function isBreadcrumbItem(element: Element): element is FASTBreadcrumbItem;
+
+// @public
 export function isListboxOption(el: Element): el is FASTListboxOption;
 
 // @public
-export function isTreeItemElement(el: Element): el is HTMLElement;
+export function isTreeItemElement(el: Element): el is FASTTreeItem;
 
 // @public
 export const lightModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
@@ -2797,7 +2821,7 @@ export type WeekdayText = {
 };
 
 // @public
-export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;
+export const whitespaceFilter: ElementsFilter;
 
 // @public
 export const YearFormat: {
