@@ -31,8 +31,6 @@ A common use case would be to display an image or text (usually initials) of a u
 #### Attributes
 |   Name    | Description                                                 | Type                                |
 |-----------|-------------------------------------------------------------|-------------------------------------|
-| `src`     | Accepts URL string of image to be displayed                 | `string`                            |
-| `alt`     | Accepts alt text for image                                  | `string`                            |
 | `link`    | Accepts a URL for the anchor source                         | `string`                            |
 
 #### Slots
