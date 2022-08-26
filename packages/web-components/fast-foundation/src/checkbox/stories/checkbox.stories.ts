@@ -1,18 +1,18 @@
 import { html, repeat } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTCheckbox } from "../checkbox.js";
 
-type CheckboxStoryArgs = Args & FASTCheckbox;
-type CheckboxStoryMeta = Meta<CheckboxStoryArgs>;
-
-const storyTemplate = html<CheckboxStoryArgs>`
+const storyTemplate = html<StoryArgs<FASTCheckbox>>`
     <fast-checkbox
         ?checked="${x => x.checked}"
         ?disabled="${x => x.disabled}"
-        :indeterminate="${x => x.indeterminate}"
         ?required="${x => x.required}"
+        ?readonly="${x => x.readOnly}"
+        :indeterminate="${x => x.indeterminate}"
+        value="${x => x.value}"
     >
-        ${x => x.label}
+        ${x => x.storyContent}
     </fast-checkbox>
 `;
 
@@ -20,128 +20,88 @@ export default {
     title: "Checkbox",
     args: {
         checked: false,
+        disabled: false,
         indeterminate: false,
-        label: "Checkbox",
+        storyContent: "Checkbox",
+        readOnly: false,
         required: false,
     },
     argTypes: {
         checked: { control: "boolean" },
         disabled: { control: "boolean" },
         indeterminate: { control: "boolean" },
+        readOnly: { control: "boolean" },
         required: { control: "boolean" },
+        value: { control: "text" },
+        storyContent: { table: { disable: true } },
+        storyItems: { table: { disable: true } },
     },
-} as CheckboxStoryMeta;
+} as Meta<FASTCheckbox>;
 
-export const Checkbox = (args: CheckboxStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
+export const Checkbox: Story<FASTCheckbox> = renderComponent(storyTemplate).bind({});
 
-export const DisabledCheckbox: CheckboxStoryMeta = (args: CheckboxStoryArgs) => {
-    const disabledStoryTemplate = html<CheckboxStoryArgs>`
-        ${repeat(x => x.items, storyTemplate)}
-    `;
-
-    const storyFragment = new DocumentFragment();
-    disabledStoryTemplate.render(args, storyFragment);
-    return storyFragment;
-};
-DisabledCheckbox.args = {
-    items: [
-        { label: "Disabled (unchecked)", checked: false, disabled: true },
+export const CheckboxDisabled: Story<FASTCheckbox> = renderComponent(
+    html<StoryArgs<FASTCheckbox>>`
+        <div style="align-items: start; display: flex; flex-direction: column">
+            ${repeat(x => x.storyItems, storyTemplate)}
+        </div>
+    `
+).bind({});
+CheckboxDisabled.args = {
+    storyItems: [
+        { storyContent: "Disabled (unchecked)", disabled: true },
         {
-            label: "Disabled (indeterminate, unchecked)",
-            checked: false,
+            storyContent: "Disabled (indeterminate, unchecked)",
             disabled: true,
             indeterminate: true,
         },
         {
-            label: "Disabled (indeterminate, checked)",
+            storyContent: "Disabled (indeterminate, checked)",
             checked: true,
             disabled: true,
             indeterminate: true,
         },
-        { label: "Disabled (checked)", checked: true, disabled: true },
+        { storyContent: "Disabled (checked)", checked: true, disabled: true },
     ],
 };
-DisabledCheckbox.decorators = [
-    Story => {
-        const renderedStory = Story() as DocumentFragment;
-        const styles = document.createElement("style");
-        styles.innerHTML = /* css */ `
-            fast-checkbox {
-                display: flex;
-            }
-        `;
-        renderedStory.append(styles);
-        return renderedStory;
-    },
-];
 
-export const IndeterminateCheckbox = Checkbox.bind({});
-IndeterminateCheckbox.storyName = "Indeterminate";
-IndeterminateCheckbox.args = {
-    label: "Indeterminate",
+export const CheckboxIndeterminate: Story<FASTCheckbox> = Checkbox.bind({});
+CheckboxIndeterminate.args = {
+    checked: true,
     indeterminate: true,
+    storyContent: "Indeterminate",
 };
 
-export const Required: CheckboxStoryMeta = (args: CheckboxStoryArgs) => {
-    const requiredStoryTemplate = html<CheckboxStoryArgs>`
+export const CheckboxInForm: Story<FASTCheckbox> = renderComponent(
+    html<StoryArgs<FASTCheckbox>>`
         <form @submit="${() => false}">
             ${storyTemplate}
             <fast-button type="submit">Submit</fast-button>
         </form>
-    `;
+    `
+).bind({});
 
-    const storyFragment = new DocumentFragment();
-    requiredStoryTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-Required.args = {
-    required: true,
-};
-
-export const Fieldset: CheckboxStoryMeta = (args: CheckboxStoryArgs) => {
-    const fieldsetStoryTemplate = html<CheckboxStoryArgs>`
-        <fieldset>
-            <legend>${x => x.label}</legend>
-            ${repeat(x => x.items, storyTemplate)}
+export const CheckboxInFieldset: Story<FASTCheckbox> = renderComponent(
+    html<StoryArgs<FASTCheckbox>>`
+        <fieldset style="align-items: start; display: flex; flex-direction: column">
+            <legend>${x => x.legendLabel}</legend>
+            ${repeat(x => x.storyItems, storyTemplate)}
         </fieldset>
-    `;
-
-    const storyFragment = new DocumentFragment();
-    fieldsetStoryTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-Fieldset.args = {
-    label: "Fruit",
-    items: [
-        { label: "Apples", checked: true },
-        { label: "Bananas", checked: true },
-        { label: "Honeydew" },
-        { label: "Oranges", checked: true },
+    `
+).bind({});
+CheckboxInFieldset.args = {
+    legendLabel: "Fruit",
+    storyItems: [
+        { storyContent: "Apples", checked: true },
+        { storyContent: "Bananas", checked: true },
+        { storyContent: "Honeydew" },
+        { storyContent: "Oranges", checked: true },
     ],
 };
-Fieldset.decorators = [
-    Story => {
-        const renderedStory = Story() as DocumentFragment;
-        const styles = document.createElement("style");
-        styles.innerHTML = /* css */ `
-            fieldset {
-                align-items: start;
-                display: flex;
-                flex-direction: column;
-            }
-        `;
-        renderedStory.append(styles);
-        return renderedStory;
-    },
-];
 
-export const VisualVsAudioLabel = Checkbox.bind({});
-VisualVsAudioLabel.args = {
-    label: html`
+export const CheckboxVisualVsAudioLabel = Checkbox.bind({});
+CheckboxVisualVsAudioLabel.args = {
+    storyContent: html`
         <span aria-label="Audio label">Visible label</span>
     `,
 };

@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 26 Aug 2022 18:06:43 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.8",
+      "version": "3.0.0-alpha.8",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "6fae6f01978c40a52121aed6700f4429e12e69af",
+            "comment": "normalize storybook stories"
+          },
+          {
+            "author": "mathieulavoie94@gmail.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "84726aa1312068d10df176709d760764d577420f",
+            "comment": "fix(tabs): home and end navigation"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7ca925b4dba0cf2f376cb8e1a639b31bac8bdd1f",
+            "comment": "Fix constraint validation in focus-delegated components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 18 Aug 2022 20:46:10 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.7",
       "version": "3.0.0-alpha.7",
