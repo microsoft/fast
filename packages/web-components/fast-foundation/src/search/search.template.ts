@@ -11,18 +11,14 @@ export function searchTemplate<T extends FASTSearch>(
     options: SearchOptions = {}
 ): ElementViewTemplate<T> {
     return html<T>`
-        <template
-            class="
-            ${x => (x.readOnly ? "readonly" : "")}
-        "
-        >
+        <template class="${x => (x.readOnly ? "readonly" : "")}">
             <label
                 part="label"
                 for="control"
                 class="${x =>
-                    x.defaultSlottedNodes && x.defaultSlottedNodes.length
-                        ? "label"
-                        : "label label__hidden"}"
+                    ["label", !x.defaultSlottedNodes?.length && "label__hidden"]
+                        .filter(Boolean)
+                        .join(" ")}"
             >
                 <slot
                     ${slotted({
