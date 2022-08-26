@@ -7,6 +7,7 @@ const config: PlaywrightTestConfig = {
     testMatch: /.*\.pw\.spec\.ts$/,
     retries: 3,
     fullyParallel: process.env.CI ? false : true,
+    timeout: process.env.CI ? 10000 : 30000,
     use: {
         baseURL: "http://localhost:6006/iframe.html",
         viewport: {
