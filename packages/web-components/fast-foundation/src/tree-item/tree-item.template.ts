@@ -62,10 +62,7 @@ export function treeItemTemplate(
                 </div>
             </div>
             ${when(
-                x =>
-                    x.childItems &&
-                    x.childItemLength() &&
-                    (x.expanded || x.renderCollapsedChildren),
+                x => x.childItems && x.childItemLength() && x.expanded,
                 html<FASTTreeItem>`
                     <div role="group" class="items" part="items">
                         <slot name="item" ${slotted("items")}></slot>
