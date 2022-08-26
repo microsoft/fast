@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Added initializer and getter for AsyncLocalStorage so the same object could be reused for isolated scope without the same module cache",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "erhuan@microsoft.com",
+  "dependentChangeType": "patch"
+}
