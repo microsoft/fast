@@ -2,6 +2,96 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 26 Aug 2022 18:06:43 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.8",
+      "version": "3.0.0-alpha.8",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "6fae6f01978c40a52121aed6700f4429e12e69af",
+            "comment": "normalize storybook stories"
+          },
+          {
+            "author": "mathieulavoie94@gmail.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "84726aa1312068d10df176709d760764d577420f",
+            "comment": "fix(tabs): home and end navigation"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7ca925b4dba0cf2f376cb8e1a639b31bac8bdd1f",
+            "comment": "Fix constraint validation in focus-delegated components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 18 Aug 2022 20:46:10 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.7",
+      "version": "3.0.0-alpha.7",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "03fed0cd16ad25a294f5890555dbeb2348eb251e",
+            "comment": "change select() method to public on number field, text field, and text area"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "29308db7920baaaac5b31b206d551669e165bc06",
+            "comment": "add subpath export for package.json to packages"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "16cc1d791b4a2e02459cdf9ccf42d6c2d516fd02",
+            "comment": "anchored-region checks local shadow dom"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7934089e4b161ea5a14da817ef2439c0fb47786b",
+            "comment": "use nullableNumberConverter for tooltip delay attribute"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "d1492e8e378c30b684f4ff4bed5f86b99a88934f",
+            "comment": "adding event-based resolution strategy export"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "ef35c85812c742aea0d53087174a059109e83731",
+            "comment": "refactor to allow arbitrary PropertyTarget types for DesignToken roots"
+          },
+          {
+            "author": "robarb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "fb8f6e34953499631fee7b6087135c4d979ad651",
+            "comment": "hidden horizontal-scroll fix"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "218cfc014f5c76464493725f83bd883e8b07defa",
+            "comment": "Refactor DesignToken to provide a resolve function to derived token values, implements WebComponent implementation on top of isomorphic DesignToken infrastructure"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.5",
+            "commit": "0b57f1bc812e8e6371b7d27bb625f99a25bfaa66"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 27 Jul 2022 17:36:33 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.6",
       "version": "3.0.0-alpha.6",

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "change default array strategy to merge strategy, update repeat directive",
-  "packageName": "@microsoft/fast-element",
-  "email": "prudepixie@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

@@ -10,6 +10,7 @@ import {
 } from "@microsoft/fast-element";
 import { composedContains, composedParent } from "@microsoft/fast-element/utilities";
 import {
+    PropertyTarget,
     PropertyTargetManager,
     RootStyleSheetTarget,
 } from "./custom-property-manager.js";
@@ -144,7 +145,13 @@ export class DesignToken<T> {
      * registered roots.
      * @param target - The root to register
      */
-    public static registerRoot(target: FASTElement | Document = document) {
+    public static registerRoot(
+        target: FASTElement | Document | PropertyTarget = document
+    ) {
+        if (target instanceof FASTElement || target instanceof Document) {
+            target = PropertyTargetManager.getOrCreate(target);
+        }
+
         RootStyleSheetTarget.registerRoot(target);
     }
 
@@ -152,7 +159,13 @@ export class DesignToken<T> {
      * Unregister an element or document as a DesignToken root.
      * @param target - The root to deregister
      */
-    public static unregisterRoot(target: FASTElement | Document = document) {
+    public static unregisterRoot(
+        target: FASTElement | Document | PropertyTarget = document
+    ) {
+        if (target instanceof FASTElement || target instanceof Document) {
+            target = PropertyTargetManager.getOrCreate(target);
+        }
+
         RootStyleSheetTarget.unregisterRoot(target);
     }
 
@@ -270,10 +283,10 @@ export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
                     : null;
             if (target) {
                 if (record.type === DesignTokenMutationType.delete) {
-                    target.removeProperty(this.cssCustomProperty!);
+                    target.removeProperty(this.cssCustomProperty);
                 } else {
                     target.setProperty(
-                        this.cssCustomProperty!,
+                        this.cssCustomProperty,
                         this.resolveCSSValue(record.target.getTokenValue(this)) as any
                     );
                 }

@@ -1,37 +1,40 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTDataGridCell } from "../data-grid-cell.js";
+import { DataGridCellTypes } from "../data-grid-cell.js";
 
-type DataGridCellArgs = Args & FASTDataGridCell;
-type DataGridCellMeta = Meta<DataGridCellArgs>;
-
-export const storyTemplate = html<DataGridCellArgs>`
+const storyTemplate = html<StoryArgs<FASTDataGridCell>>`
     <fast-data-grid-cell
-        grid-column="1"
-        cell-type="${x => x.cellType}"
         :columnDefinition="${x => x.columnDefinition}"
         :rowData="${x => x.rowData}"
-    ></fast-data-grid-cell>
+        cell-type="${x => x.cellType}"
+        grid-column="${x => x.gridColumn}"
+    >
+        ${x => x.storyContent}
+    </fast-data-grid-cell>
 `;
 
 export default {
     title: "Data Grid/Data Grid Cell",
-    includeStories: ["DataGridCell"],
-    args: {
-        rowData: { name: "row 1", value1: "Value 1" },
-        columnDefinition: { columnDataKey: "value1" },
-        gridColumn: "1",
-    },
     argTypes: {
-        cellType: {
-            options: ["default", "columnheader", "rowheader"],
-            control: { type: "select" },
-        },
+        cellType: { control: "select", options: Object.values(DataGridCellTypes) },
+        columnDefinition: { control: "object" },
+        gridColumn: { control: "text" },
+        rowData: { control: "object" },
+        storyContent: { table: { disable: true } },
     },
-} as DataGridCellMeta;
+} as Meta<FASTDataGridCell>;
 
-export const DataGridCell = (args: DataGridCellArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+export const DataGridCell: Story<FASTDataGridCell> = renderComponent(storyTemplate).bind(
+    {}
+);
+DataGridCell.args = {
+    columnDefinition: { columnDataKey: "item1" },
+    rowData: {
+        item1: "data grid cell value 1",
+        item2: "data grid cell value 2",
+        item3: "data grid cell value 3",
+        item4: "data grid cell value 4",
+    },
 };

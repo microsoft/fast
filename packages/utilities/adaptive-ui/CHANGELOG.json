@@ -2,6 +2,42 @@
   "name": "@microsoft/adaptive-ui",
   "entries": [
     {
+      "date": "Fri, 26 Aug 2022 18:06:44 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.8",
+      "version": "1.0.0-alpha.8",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.8",
+            "commit": "4fe1bc5f1be71e2e0ea3bb46871c597fc993dc5f"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 18 Aug 2022 20:46:10 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.7",
+      "version": "1.0.0-alpha.7",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "218cfc014f5c76464493725f83bd883e8b07defa",
+            "comment": "Update design tokens to use new resolve function"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.7",
+            "commit": "0b57f1bc812e8e6371b7d27bb625f99a25bfaa66"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 27 Jul 2022 17:36:33 GMT",
       "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.6",
       "version": "1.0.0-alpha.6",

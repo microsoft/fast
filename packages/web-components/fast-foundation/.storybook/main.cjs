@@ -3,7 +3,7 @@ const path = require("path");
 
 module.exports = {
     addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
-    stories: ["../src/**/stories/*.stories.ts"],
+    stories: ["../src/**/stories/*.stories.ts", "debug.stories.ts"],
     framework: "@storybook/html",
     features: {
         babelModeV7: true,

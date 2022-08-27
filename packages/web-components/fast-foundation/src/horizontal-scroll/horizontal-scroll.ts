@@ -6,30 +6,9 @@ import {
     observable,
     Updates,
 } from "@microsoft/fast-element";
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import type { StartEndOptions } from "../patterns/index.js";
 import type { ResizeObserverClassDefinition } from "../utilities/resize-observer.js";
-
-/**
- * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)}
- * @public
- */
-export type HorizontalScrollView = "default" | "mobile";
-
-/**
- * The easing types available for the horizontal-scroll {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)}
- * @public
- */
-export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | string;
-
-/**
- * Horizontal scroll configuration options
- * @public
- */
-export type HorizontalScrollOptions = StartEndOptions & {
-    nextFlipper?: SyntheticViewTemplate | string;
-    previousFlipper?: SyntheticViewTemplate | string;
-};
+import type { HorizontalScrollView } from "./horizontal-scroll.options.js";
+import { ScrollEasing } from "./horizontal-scroll.options.js";
 
 /**
  * A HorizontalScroll Custom HTML Element
@@ -131,7 +110,7 @@ export class FASTHorizontalScroll extends FASTElement {
      * @public
      */
     @attr
-    public easing: ScrollEasing = "ease-in-out";
+    public easing: ScrollEasing | string = ScrollEasing.easeInOut;
 
     /**
      * Attribute to hide flippers from assistive technology
@@ -313,6 +292,23 @@ export class FASTHorizontalScroll extends FASTElement {
     }
 
     /**
+     * Checks to see if the stops are returning values
+     *  otherwise it will try to reinitialize them
+     *
+     * @returns boolean indicating that current scrollStops are valid non-zero values
+     * @internal
+     */
+    private validateStops(reinit: boolean = true): boolean {
+        const hasStops: () => boolean = (): boolean =>
+            !!this.scrollStops.find((stop: number) => stop > 0);
+        if (!hasStops() && reinit) {
+            this.setStops();
+        }
+
+        return hasStops();
+    }
+
+    /**
      *
      */
     private fixScrollMisalign(stops: number[]) {
@@ -340,7 +336,7 @@ export class FASTHorizontalScroll extends FASTElement {
 
             this.nextFlipperContainer?.classList.toggle(
                 "disabled",
-                Math.abs(position) + this.width >= lastStop
+                this.validateStops(false) && Math.abs(position) + this.width >= lastStop
             );
         }
     }
@@ -411,6 +407,7 @@ export class FASTHorizontalScroll extends FASTElement {
      * @public
      */
     public scrollToPrevious(): void {
+        this.validateStops();
         const scrollPosition = this.scrollContainer.scrollLeft;
 
         const current = this.scrollStops.findIndex(
@@ -439,6 +436,7 @@ export class FASTHorizontalScroll extends FASTElement {
      * @public
      */
     public scrollToNext(): void {
+        this.validateStops();
         const scrollPosition = this.scrollContainer.scrollLeft;
 
         const current = this.scrollStops.findIndex(

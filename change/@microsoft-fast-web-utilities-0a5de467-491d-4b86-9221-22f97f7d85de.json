@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Added meta name to getNonce function",
-  "packageName": "@microsoft/fast-web-utilities",
-  "email": "mcentola@appliedengdesign.com",
-  "dependentChangeType": "patch"
-}

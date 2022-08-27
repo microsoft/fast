@@ -55,42 +55,10 @@ describe("canUseFocusVisible", () => {
     it("should return true if the environment supports focus-visible selectors", () => {
         expect(canUseFocusVisible()).to.equal(true);
     });
-    it("should use a nonce if meta property is present on the page", () => {
+    it("should use a nonce if once is present on the page", () => {
         const nonce: string = "foo-nonce";
         const metaEl: HTMLMetaElement = document.createElement("meta");
         metaEl.setAttribute("property", "csp-nonce");
-        metaEl.setAttribute("content", nonce);
-        document.head.appendChild(metaEl);
-
-        // Run the function and intercept its appendChild call
-        const realAppendChild = document.head.appendChild;
-        const mockAppendChild = chai.spy(realAppendChild);
-        Object.defineProperty(document.head, "appendChild", {
-            value: mockAppendChild,
-            configurable: true,
-        });
-        const mutationObserverCallback = (mutationsList: MutationRecord[]): void => {
-            expect(mutationsList).to.have.length.greaterThan(0);
-            expect(mutationsList[0].addedNodes).to.have.length.greaterThan(0);
-            expect(mutationsList[0].addedNodes.item(0)).not.to.equal(undefined);
-            expect(
-                (mutationsList[0].addedNodes.item(0) as HTMLStyleElement).nonce
-            ).to.equal(nonce);
-        };
-        const mutationObserver = new MutationObserver(mutationObserverCallback);
-        mutationObserver.observe(document.head, { childList: true, subtree: true });
-        canUseFocusVisible();
-
-        expect(mockAppendChild).to.have.been.called.exactly(1);
-        Object.defineProperty(document.head, "appendChild", {
-            value: realAppendChild,
-            configurable: true,
-        });
-    });
-    it("should use a nonce if meta name is present on the page", () => {
-        const nonce: string = "foo-nonce";
-        const metaEl: HTMLMetaElement = document.createElement("meta");
-        metaEl.setAttribute("name", "csp-nonce");
         metaEl.setAttribute("content", nonce);
         document.head.appendChild(metaEl);
 

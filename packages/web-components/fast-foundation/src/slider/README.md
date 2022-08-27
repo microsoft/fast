@@ -145,6 +145,16 @@ export const mySliderLabel = SliderLabel.compose({
 
 
 
+### Variables
+
+| Name         | Description                                                             | Type                               |
+| ------------ | ----------------------------------------------------------------------- | ---------------------------------- |
+| `SliderMode` | The selection modes of a @microsoft/fast-foundation#(FASTSlider:class). | `{ singleValue: "single-value", }` |
+
+<hr/>
+
+
+
 ### class: `FASTSlider`
 
 #### Superclass
@@ -211,14 +221,6 @@ export const mySliderLabel = SliderLabel.compose({
 | `track-start` | The track-start visual indicator |
 | `thumb`       | The slider thumb                 |
 |               | The default slot for labels      |
-
-<hr/>
-
-### Variables
-
-| Name         | Description                                                             | Type                               |
-| ------------ | ----------------------------------------------------------------------- | ---------------------------------- |
-| `SliderMode` | The selection modes of a @microsoft/fast-foundation#(FASTSlider:class). | `{ singleValue: "single-value", }` |
 
 <hr/>
 

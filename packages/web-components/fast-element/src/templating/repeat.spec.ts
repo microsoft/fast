@@ -32,6 +32,35 @@ describe("The repeat", () => {
             expect(directive).to.be.instanceOf(RepeatDirective);
         });
 
+        it("returns a RepeatDirective with optional properties set to default values", () => {
+            const directive = repeat(
+                () => [],
+                html`test`
+            ) as RepeatDirective;
+            expect(directive).to.be.instanceOf(RepeatDirective);
+            expect(directive.options).to.deep.equal({positioning: false, recycle: true})
+        });
+
+        it("returns a RepeatDirective with recycle property set to default value when positioning is set to different value", () => {
+            const directive = repeat(
+                () => [],
+                html`test`,
+                {positioning: true}
+            ) as RepeatDirective;
+            expect(directive).to.be.instanceOf(RepeatDirective);
+            expect(directive.options).to.deep.equal({positioning: true, recycle: true})
+        });
+
+        it("returns a RepeatDirective with positioning property set to default value when recycle is set to different value", () => {
+            const directive = repeat(
+                () => [],
+                html`test`,
+                {recycle: false}
+            ) as RepeatDirective;
+            expect(directive).to.be.instanceOf(RepeatDirective);
+            expect(directive.options).to.deep.equal({positioning: false, recycle: false})
+        });
+
         it("returns a RepeatDirective with optional properties set to different values", () => {
             const directive = repeat(
                 () => [],

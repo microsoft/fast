@@ -362,5 +362,8 @@ export function repeat<
 ): CaptureType<TSource> {
     const dataBinding = normalizeBinding(items);
     const templateBinding = normalizeBinding(template);
-    return new RepeatDirective(dataBinding, templateBinding, options) as any;
+    return new RepeatDirective(dataBinding, templateBinding, {
+        ...defaultRepeatOptions,
+        ...options,
+    }) as any;
 }

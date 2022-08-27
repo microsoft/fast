@@ -1,16 +1,8 @@
-import {
-    elements,
-    ElementViewTemplate,
-    html,
-    ref,
-    slotted,
-    when,
-} from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
-import type {
-    FASTHorizontalScroll,
-    HorizontalScrollOptions,
-} from "./horizontal-scroll.js";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { FASTHorizontalScroll } from "./horizontal-scroll.js";
+import type { HorizontalScrollOptions } from "./horizontal-scroll.options.js";
 
 /**
  * @public

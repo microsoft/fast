@@ -31,11 +31,12 @@ import {
     FlyoutPosTop,
     FlyoutPosTopFill,
 } from "../anchored-region/index.js";
-import type { FASTPickerMenu } from "./picker-menu.js";
-import { FASTPickerMenuOption } from "./picker-menu-option.js";
 import { FASTPickerListItem } from "./picker-list-item.js";
-import { FormAssociatedPicker } from "./picker.form-associated.js";
 import type { FASTPickerList } from "./picker-list.js";
+import { FASTPickerMenuOption } from "./picker-menu-option.js";
+import type { FASTPickerMenu } from "./picker-menu.js";
+import { FormAssociatedPicker } from "./picker.form-associated.js";
+import { MenuPlacement } from "./picker.options.js";
 
 const pickerInputTemplate: ViewTemplate = html<FASTPicker>`
     <input
@@ -51,19 +52,6 @@ const pickerInputTemplate: ViewTemplate = html<FASTPicker>`
         ${ref("inputElement")}
     />
 `;
-
-/**
- * Defines the vertical positioning options for an anchored region
- *
- * @beta
- */
-export type menuConfigs =
-    | "bottom"
-    | "bottom-fill"
-    | "tallest"
-    | "tallest-fill"
-    | "top"
-    | "top-fill";
 
 /**
  * A Picker Custom HTML Element.  This is an early "alpha" version of the component.
@@ -193,7 +181,7 @@ export class FASTPicker extends FormAssociatedPicker {
      * HTML Attribute: menu-placement
      */
     @attr({ attribute: "menu-placement" })
-    public menuPlacement: menuConfigs = "bottom-fill";
+    public menuPlacement: MenuPlacement = MenuPlacement.bottomFill;
     protected menuPlacementChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateMenuConfig();
