@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sat, 27 Aug 2022 16:53:58 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.13",
+      "version": "2.46.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "53a94096aedcb28fbc46429402575b31710697f6",
+            "comment": "Fix constraint validation in focus-delegated components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 17 Aug 2022 16:41:39 GMT",
       "tag": "@microsoft/fast-foundation_v2.46.12",
       "version": "2.46.12",

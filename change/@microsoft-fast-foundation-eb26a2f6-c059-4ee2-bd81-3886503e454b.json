@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix constraint validation in focus-delegated components",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

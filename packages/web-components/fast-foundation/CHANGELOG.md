@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 17 Aug 2022 16:41:39 GMT and should not be manually modified.
+This log was last generated on Sat, 27 Aug 2022 16:53:58 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.13
+
+Sat, 27 Aug 2022 16:53:58 GMT
+
+### Patches
+
+- Fix constraint validation in focus-delegated components (nicholasrice@users.noreply.github.com)
 
 ## 2.46.12
 
