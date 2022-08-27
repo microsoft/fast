@@ -2,7 +2,7 @@ import { AsyncLocalStorage } from "async_hooks";
 import { DI, DOMContainer } from "@microsoft/fast-element/di";
 import { createWindow } from "./dom-shim.js";
 
-const asyncLocalStorage = new AsyncLocalStorage();
+let asyncLocalStorage = new AsyncLocalStorage();
 const defaultOptions = {};
 
 function getStore() {
@@ -128,6 +128,32 @@ const perRequestGlobals = [
  * @beta
  */
 export const RequestStorageManager = Object.freeze({
+    /**
+     * Gets the current AsyncLocalStorage instance that provides
+     * the backend for the RequestStorageManager.
+     */
+    get backend(): AsyncLocalStorage<unknown> {
+        return asyncLocalStorage;
+    },
+
+    /**
+     * Sets an AsyncLocalStorage instance to provide
+     * a pre-existing backend for the RequestStorageManager.
+     * @remarks
+     * Replacing the default AsyncLocalStorage backend should not be
+     * done under normal circumstances. This capability is intended for
+     * advanced integration scenarios only.
+     *
+     * Avoid calling this API after middleware is installed or in the
+     * middle of a RequestStorageManager#run operation. In the event that
+     * this timing is necessary, then you must provide a window instance
+     * available through the "window" key of your storage, otherwise the
+     * necessary requirements for RequestStorage to function will not be met.
+     */
+    set backend(localStorage: AsyncLocalStorage<unknown>) {
+        asyncLocalStorage = localStorage;
+    },
+
     /**
      * Installs a DOM shim that ensures that window, document,
      * and other globals are scoped per-request.
