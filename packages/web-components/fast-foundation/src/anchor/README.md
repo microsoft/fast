@@ -59,6 +59,16 @@ This component is built with the expectation that focus is delegated to the anch
 
 
 
+### Variables
+
+| Name           | Description           | Type                                                                      |
+| -------------- | --------------------- | ------------------------------------------------------------------------- |
+| `AnchorTarget` | Anchor target values. | `{ _self: "_self", _blank: "_blank", _parent: "_parent", _top: "_top", }` |
+
+<hr/>
+
+
+
 ### class: `FASTAnchor`
 
 #### Superclass
@@ -69,17 +79,17 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### Fields
 
-| Name             | Privacy | Type                                         | Default | Description                                                                                                                                                               | Inherited From |
-| ---------------- | ------- | -------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `download`       | public  | `string`                                     |         | Prompts the user to save the linked URL. See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.          |                |
-| `href`           | public  | `string`                                     |         | The URL the hyperlink references. See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                 |                |
-| `hreflang`       | public  | `string`                                     |         | Hints at the language of the referenced resource. See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information. |                |
-| `ping`           | public  | `string`                                     |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   |                |
-| `referrerpolicy` | public  | `string`                                     |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   |                |
-| `rel`            | public  | `string`                                     |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   |                |
-| `target`         | public  | `"_self" or "_blank" or "_parent" or "_top"` |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   |                |
-| `type`           | public  | `string`                                     |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   |                |
-| `control`        | public  | `HTMLAnchorElement`                          |         | References the root element                                                                                                                                               |                |
+| Name             | Privacy | Type                | Default | Description                                                                                                                                                               | Inherited From |
+| ---------------- | ------- | ------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `download`       | public  | `string`            |         | Prompts the user to save the linked URL. See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.          |                |
+| `href`           | public  | `string`            |         | The URL the hyperlink references. See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                 |                |
+| `hreflang`       | public  | `string`            |         | Hints at the language of the referenced resource. See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information. |                |
+| `ping`           | public  | `string`            |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   |                |
+| `referrerpolicy` | public  | `string`            |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   |                |
+| `rel`            | public  | `string`            |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   |                |
+| `target`         | public  | `AnchorTarget`      |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   |                |
+| `type`           | public  | `string`            |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   |                |
+| `control`        | public  | `HTMLAnchorElement` |         | References the root element                                                                                                                                               |                |
 
 #### Attributes
 

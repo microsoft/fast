@@ -1,27 +1,23 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTTab } from "../tab.js";
 
-type TabStoryArgs = Args & FASTTab;
-type TabStoryMeta = Meta<TabStoryArgs>;
-
-const componentTemplate = html<TabStoryArgs>`
-    <fast-tab ?disabled="${x => x.disabled}">${x => x.content}</fast-tab>
+export const storyTemplate = html<StoryArgs<FASTTab>>`
+    <fast-tab ?disabled="${x => x.disabled}">${x => x.storyContent}</fast-tab>
 `;
 
 export default {
     title: "Tabs/Tab",
-    argTypes: {
-        disabled: { control: { type: "boolean" } },
+    excludeStories: ["storyTemplate"],
+    args: {
+        disabled: false,
+        storyContent: "Tab",
     },
-} as TabStoryMeta;
+    argTypes: {
+        disabled: { control: "boolean" },
+        storyContent: { table: { disable: true } },
+    },
+} as Meta<FASTTab>;
 
-export const Tab = (args: TabStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    componentTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-
-Tab.args = {
-    content: "Tab",
-};
+export const Tab: Story<FASTTab> = renderComponent(storyTemplate).bind({});

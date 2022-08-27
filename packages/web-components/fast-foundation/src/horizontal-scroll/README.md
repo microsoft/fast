@@ -129,6 +129,17 @@ export const myHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptio
 
 
 
+### Variables
+
+| Name                   | Description                                                                                                    | Type                                                                                      |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `HorizontalScrollView` | View options for the @microsoft/fast-foundation#(FASTHorizontalScroll:class)orFASTHorizontalScroll component.  | `{ default: "default", mobile: "mobile", }`                                               |
+| `ScrollEasing`         | Easing values for the @microsoft/fast-foundation#(FASTHorizontalScroll:class)orFASTHorizontalScroll component. | `{ linear: "linear", easeIn: "ease-in", easeOut: "ease-out", easeInOut: "ease-in-out", }` |
+
+<hr/>
+
+
+
 ### class: `FASTHorizontalScroll`
 
 #### Superclass
@@ -139,18 +150,18 @@ export const myHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptio
 
 #### Fields
 
-| Name                       | Privacy | Type                   | Default         | Description                                                                               | Inherited From |
-| -------------------------- | ------- | ---------------------- | --------------- | ----------------------------------------------------------------------------------------- | -------------- |
-| `scrollContainer`          | public  | `HTMLDivElement`       |                 | Reference to DOM element that scrolls the content                                         |                |
-| `content`                  | public  | `HTMLDivElement`       |                 | Reference to DOM element that holds the slotted content                                   |                |
-| `previousFlipperContainer` | public  | `HTMLDivElement`       |                 | Reference to flipper to scroll to previous content                                        |                |
-| `nextFlipperContainer`     | public  | `HTMLDivElement`       |                 | Reference to flipper to scroll to the next content                                        |                |
-| `speed`                    | public  | `number`               | `600`           | Speed of scroll in pixels per second                                                      |                |
-| `duration`                 | public  | `string`               |                 | The CSS time value for the scroll transition duration. Overrides the \`speed\` attribute. |                |
-| `easing`                   | public  | `ScrollEasing`         | `"ease-in-out"` | Attribute used for easing, defaults to ease-in-out                                        |                |
-| `flippersHiddenFromAT`     | public  | `boolean`              | `false`         | Attribute to hide flippers from assistive technology                                      |                |
-| `scrollItems`              | public  | `HTMLElement[]`        |                 | The default slotted items placed in the scrolling container.                              |                |
-| `view`                     | public  | `HorizontalScrollView` |                 | View: default or mobile                                                                   |                |
+| Name                       | Privacy | Type                     | Default | Description                                                                               | Inherited From |
+| -------------------------- | ------- | ------------------------ | ------- | ----------------------------------------------------------------------------------------- | -------------- |
+| `scrollContainer`          | public  | `HTMLDivElement`         |         | Reference to DOM element that scrolls the content                                         |                |
+| `content`                  | public  | `HTMLDivElement`         |         | Reference to DOM element that holds the slotted content                                   |                |
+| `previousFlipperContainer` | public  | `HTMLDivElement`         |         | Reference to flipper to scroll to previous content                                        |                |
+| `nextFlipperContainer`     | public  | `HTMLDivElement`         |         | Reference to flipper to scroll to the next content                                        |                |
+| `speed`                    | public  | `number`                 | `600`   | Speed of scroll in pixels per second                                                      |                |
+| `duration`                 | public  | `string`                 |         | The CSS time value for the scroll transition duration. Overrides the \`speed\` attribute. |                |
+| `easing`                   | public  | `ScrollEasing or string` |         | Attribute used for easing, defaults to ease-in-out                                        |                |
+| `flippersHiddenFromAT`     | public  | `boolean`                | `false` | Attribute to hide flippers from assistive technology                                      |                |
+| `scrollItems`              | public  | `HTMLElement[]`          |         | The default slotted items placed in the scrolling container.                              |                |
+| `view`                     | public  | `HorizontalScrollView`   |         | View: default or mobile                                                                   |                |
 
 #### Methods
 

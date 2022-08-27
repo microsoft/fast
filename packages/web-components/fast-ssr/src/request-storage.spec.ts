@@ -51,6 +51,29 @@ test.describe("RequestStorageManager", () => {
         expect(captured).toBe("world");
         expect(() => RequestStorage.get("hello")).toThrow(noStorageError);
     });
+
+    test("can get value from global without being in a storage scope", () => {
+        // window is part of perRequestGlobals setup by installDOMShim
+        (window as any)["hello"] = "world";
+        RequestStorageManager.installDOMShim();
+
+        expect((window as any)["hello"]).toBe("world");
+    });
+
+    test("can get different value from global in a storage scope", () => {
+
+        // window is part of perRequestGlobals setup by installDOMShim
+        (window as any)["hello"] = "world";
+        RequestStorageManager.installDOMShim();
+
+        let captured;
+        const storage = RequestStorageManager.createStorage();
+        RequestStorageManager.run(storage, () => {
+            captured = (window as any)["hello"];
+        });
+
+        expect(captured).not.toBe("world");
+    });
 });
 
 test.describe("RequestStorage", () => {
