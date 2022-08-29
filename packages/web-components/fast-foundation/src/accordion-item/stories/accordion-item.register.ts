@@ -30,7 +30,7 @@ const styles = css`
             );
     }
 
-    .control {
+    .button {
         appearance: none;
         border: none;
         background: none;
@@ -47,15 +47,15 @@ const styles = css`
         font-family: inherit;
     }
 
-    .control:hover {
+    .button:hover {
         color: var(--neutral-foreground-rest);
     }
 
-    .control:active {
+    .button:active {
         color: var(--neutral-foreground-rest);
     }
 
-    .control::before {
+    .button::before {
         content: "";
         position: absolute;
         top: 0;
@@ -66,7 +66,7 @@ const styles = css`
         cursor: pointer;
     }
 
-    .control:focus-visible::before {
+    .button:focus-visible::before {
         outline: none;
         border: calc(var(--focus-stroke-width) * 1px) solid var(--focus-stroke-outer);
         border-radius: calc(var(--control-corner-radius) * 1px);

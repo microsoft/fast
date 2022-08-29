@@ -7,7 +7,7 @@ import { FormAssociatedSwitch } from "./switch.form-associated.js";
  * @public
  */
 export type SwitchOptions = {
-    control?: string | SyntheticViewTemplate;
+    thumb: string | SyntheticViewTemplate;
 };
 
 /**

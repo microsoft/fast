@@ -3,12 +3,16 @@ import { html, when } from "@microsoft/fast-element";
 import type { FASTProgress } from "./progress.js";
 import type { ProgressOptions } from "./progress.options.js";
 
+export const progressIndicatorTemplate = html<FASTProgress>`
+    <div class="indicator" part="indicator"></div>
+`;
+
 /**
  * The template for the {@link @microsoft/fast-foundation#FASTProgress} component.
  * @public
  */
 export function progressTemplate<T extends FASTProgress>(
-    options: ProgressOptions = {}
+    options: ProgressOptions
 ): ElementViewTemplate<T> {
     return html`
         <template
@@ -26,8 +30,7 @@ export function progressTemplate<T extends FASTProgress>(
                         part="determinate"
                         style="--percent-complete: ${x => x.percentComplete}"
                     >
-                        ${options.determinateIndicator ||
-                        `<div class="indicator" part="indicator"></div>`}
+                        ${x => options.determinateIndicator}
                     </span>
                 `
             )}
@@ -35,8 +38,7 @@ export function progressTemplate<T extends FASTProgress>(
                 x => typeof x.value !== "number",
                 html<FASTProgress>`
                     <span class="indeterminate" part="indeterminate">
-                        ${options.indeterminateIndicator ||
-                        `<div class="indicator" part="indicator"></div>`}
+                        ${x => options.indeterminateIndicator}
                     </span>
                 `
             )}

@@ -31,13 +31,6 @@ const styles = css`
         color: var(--neutral-foreground-rest);
         fill: currentcolor;
     }
-    slot:not([name]) {
-        display: block;
-        max-width: 100px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
     ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
         align-self: center;

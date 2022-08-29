@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { FASTSlider } from "../slider.js";
-import { sliderTemplate } from "../slider.template.js";
+import { sliderTemplate, thumbTemplate } from "../slider.template.js";
 
 const styles = css`
     :host([hidden]) {
@@ -125,6 +125,8 @@ const styles = css`
 
 FASTSlider.define({
     name: "fast-slider",
-    template: sliderTemplate(),
+    template: sliderTemplate({
+        thumb: thumbTemplate,
+    }),
     styles,
 });

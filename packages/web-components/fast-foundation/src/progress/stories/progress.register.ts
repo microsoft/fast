@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { FASTProgress } from "../progress.js";
-import { progressTemplate } from "../progress.template.js";
+import { progressIndicatorTemplate, progressTemplate } from "../progress.template.js";
 
 const styles = css`
     :host {
@@ -73,6 +73,9 @@ const styles = css`
 
 FASTProgress.define({
     name: "fast-progress",
-    template: progressTemplate(),
+    template: progressTemplate({
+        determinateIndicator: progressIndicatorTemplate,
+        indeterminateIndicator: progressIndicatorTemplate,
+    }),
     styles,
 });

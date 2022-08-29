@@ -1,6 +1,9 @@
 import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
 import type { FASTSwitch, SwitchOptions } from "./switch.js";
 
+export const thumbTemplate = html`
+    <span class="thumb" part="thumb"></span>
+`;
 /**
  * The template for the {@link @microsoft/fast-foundation#(FASTSwitch:class)} component.
  * @public
@@ -30,7 +33,7 @@ export function switchTemplate<T extends FASTSwitch>(
             </label>
             <div part="control" class="control">
                 <slot name="control">
-                    ${options.control || `<span class="thumb" part="thumb"></span>`}
+                    ${x => options.thumb}
                 </slot>
             </div>
             <span class="status-message" part="status-message">

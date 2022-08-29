@@ -1,6 +1,9 @@
 import { css } from "@microsoft/fast-element";
 import { FASTProgressRing } from "../progress-ring.js";
-import { progressRingTemplate } from "../progress-ring.template.js";
+import {
+    progressRingIndicatorTemplate,
+    progressRingTemplate,
+} from "../progress-ring.template.js";
 
 const styles = css`
     :host {
@@ -76,6 +79,9 @@ const styles = css`
 
 FASTProgressRing.define({
     name: "fast-progress-ring",
-    template: progressRingTemplate(),
+    template: progressRingTemplate({
+        determinateIndicator: progressRingIndicatorTemplate,
+        indeterminateIndicator: progressRingIndicatorTemplate,
+    }),
     styles,
 });

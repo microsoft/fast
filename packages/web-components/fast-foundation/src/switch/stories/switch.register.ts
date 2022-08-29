@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { FASTSwitch } from "../switch.js";
-import { switchTemplate } from "../switch.template.js";
+import { switchTemplate, thumbTemplate } from "../switch.template.js";
 
 const styles = css`
     :host([hidden]) {
@@ -133,6 +133,8 @@ const styles = css`
 
 FASTSwitch.define({
     name: "fast-switch",
-    template: switchTemplate(),
+    template: switchTemplate({
+        thumb: thumbTemplate,
+    }),
     styles,
 });

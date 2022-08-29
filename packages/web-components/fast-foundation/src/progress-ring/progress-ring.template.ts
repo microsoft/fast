@@ -3,7 +3,7 @@ import { html, when } from "@microsoft/fast-element";
 import type { FASTProgressRing } from "./progress-ring.js";
 import type { ProgressRingOptions } from "./progress-ring.options.js";
 
-const defaultRingTemplate = html<FASTProgressRing>`
+export const progressRingIndicatorTemplate = html<FASTProgressRing>`
     <svg viewBox="0 0 16 16" class="progress">
         <circle class="background" part="background" cx="8px" cy="8px" r="7px"></circle>
         <circle class="indicator" part="indicator" cx="8px" cy="8px" r="7px"></circle>
@@ -14,10 +14,10 @@ const defaultRingTemplate = html<FASTProgressRing>`
  * The template for the {@link @microsoft/fast-foundation#FASTProgressRing} component.
  * @public
  */
-export function progressRingTemplate<T extends FASTProgressRing>(
-    options: ProgressRingOptions = {}
-): ElementViewTemplate<T> {
-    return html<T>`
+export function progressRingTemplate(
+    options: ProgressRingOptions
+): ElementViewTemplate<FASTProgressRing> {
+    return html`
         <template
             role="progressbar"
             aria-valuenow="${x => x.value}"
@@ -33,7 +33,7 @@ export function progressRingTemplate<T extends FASTProgressRing>(
                         part="determinate"
                         style="--percent-complete: ${x => x.percentComplete}"
                     >
-                        ${x => options.determinateIndicator ?? defaultRingTemplate}
+                        ${x => options.determinateIndicator}
                     </span>
                 `
             )}
@@ -41,7 +41,7 @@ export function progressRingTemplate<T extends FASTProgressRing>(
                 x => typeof x.value !== "number",
                 html<FASTProgressRing>`
                     <span class="indeterminate" part="indeterminate">
-                        ${x => options.indeterminateIndicator ?? defaultRingTemplate}
+                        ${x => options.indeterminateIndicator}
                     </span>
                 `
             )}
