@@ -20,12 +20,6 @@ function getLast<T>(arr: T[]): T | undefined {
 }
 
 /**
- * The mode for which a component's internals should be rendered.
- * @beta
- */
-export type ComponentDOMEmissionMode = "shadow";
-
-/**
  * A class designed to render HTML templates. The renderer supports
  * rendering {@link @microsoft/fast-element#ViewTemplate} instances as well
  * as arbitrary HTML strings.
@@ -39,11 +33,6 @@ export class TemplateRenderer {
     > = new Map();
 
     private defaultElementRenderers: ConstructableElementRenderer[] = [];
-
-    /**
-     * Controls how the {@link TemplateRenderer} will emit component DOM internals.
-     */
-    public readonly componentDOMEmissionMode: ComponentDOMEmissionMode = "shadow";
 
     /**
      * Renders a {@link @microsoft/fast-element#ViewTemplate} or HTML string.

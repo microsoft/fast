@@ -12,10 +12,7 @@ import {
     defaultViewBehaviorFactoryRenderers,
     ViewBehaviorFactoryRenderer,
 } from "./template-renderer/directives.js";
-import {
-    ComponentDOMEmissionMode,
-    TemplateRenderer,
-} from "./template-renderer/template-renderer.js";
+import { TemplateRenderer } from "./template-renderer/template-renderer.js";
 import { SSRView } from "./view.js";
 import {
     ConstructableElementRenderer,
@@ -78,9 +75,7 @@ export default function fastSSR(): {
 export * from "./request-storage.js";
 export * from "./declarative-shadow-dom-polyfill.js";
 export type {
-    ComponentDOMEmissionMode,
     ElementRenderer,
-    FASTElementRenderer,
     StyleRenderer,
     TemplateRenderer,
     ViewBehaviorFactoryRenderer,

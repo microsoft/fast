@@ -9,12 +9,8 @@ import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { DOMContainer } from '@microsoft/fast-element/di';
 import { ExecutionContext } from '@microsoft/fast-element';
-import { FASTElement } from '@microsoft/fast-element';
 import { ViewBehaviorFactory } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
-
-// @beta
-export type ComponentDOMEmissionMode = "shadow";
 
 // Warning: (ae-forgotten-export) The symbol "AsyncElementRenderer" needs to be exported by the entry point exports.d.ts
 //
@@ -50,21 +46,6 @@ export interface ElementRenderer {
     setAttribute(name: string, value: string): void;
     // (undocumented)
     setProperty(name: string, value: unknown): void;
-}
-
-// Warning: (ae-forgotten-export) The symbol "DefaultElementRenderer" needs to be exported by the entry point exports.d.ts
-//
-// @beta
-export abstract class FASTElementRenderer extends DefaultElementRenderer {
-    constructor(tagName: string, renderInfo: RenderInfo);
-    attributeChangedCallback(name: string, old: string | null, value: string | null): void;
-    connectedCallback(): void;
-    readonly element: FASTElement;
-    static matchesClass(ctor: typeof HTMLElement): boolean;
-    renderLight(renderInfo: RenderInfo): IterableIterator<string>;
-    renderShadow(renderInfo: RenderInfo): IterableIterator<string>;
-    protected abstract styleRenderer: StyleRenderer;
-    protected abstract templateRenderer: TemplateRenderer;
 }
 
 // @beta
@@ -118,7 +99,6 @@ export interface StyleRenderer {
 
 // @beta
 export class TemplateRenderer {
-    readonly componentDOMEmissionMode: ComponentDOMEmissionMode;
     createRenderInfo(renderers?: ConstructableElementRenderer[]): RenderInfo;
     render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
     // Warning: (ae-forgotten-export) The symbol "Op" needs to be exported by the entry point exports.d.ts

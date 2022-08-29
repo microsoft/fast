@@ -19,19 +19,6 @@ class WithHostAttributes extends FASTElement {}
 
 
 test.describe("TemplateRenderer", () => {
-    test.describe("should have an initial configuration", () => {
-        test("that emits to shadow DOM", () => {
-            const instance = new TemplateRenderer();
-            expect(instance.componentDOMEmissionMode).toBe("shadow")
-        });
-    });
-
-    test.describe.skip("should allow configuration", () => {
-        test("that emits to light DOM", () => {
-            const instance = new TemplateRenderer(/* Re-implement w/ light mode emission is finished {componentDOMEmissionMode: "light"} */);
-            expect(instance.componentDOMEmissionMode).toBe("light");
-        });
-    });
 
     test.describe("should have a createRenderInfo method", () => {
         test("that returns unique object instances for every invocation", () => {
