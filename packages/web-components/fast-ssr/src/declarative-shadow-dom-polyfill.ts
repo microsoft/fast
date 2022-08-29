@@ -3,7 +3,6 @@
 /**
  * Provides style and JavaScript code snippets for polyfills related
  * to Declarative Shadow DOM (DSD).
- *
  * @beta
  */
 export const DeclarativeShadowDOMPolyfill = Object.freeze({
