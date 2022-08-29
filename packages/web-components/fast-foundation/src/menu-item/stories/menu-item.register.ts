@@ -4,7 +4,7 @@ import { menuItemTemplate } from "../menu-item.template.js";
 
 const styles = css`
     :host([hidden]) {
-        display: none;
+        display: none !important;
     }
 
     :host {

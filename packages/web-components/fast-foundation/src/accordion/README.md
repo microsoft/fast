@@ -104,6 +104,16 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 
 
+### Variables
+
+| Name                  | Description                   | Type                                    |
+| --------------------- | ----------------------------- | --------------------------------------- |
+| `AccordionExpandMode` | Expand mode for FASTAccordion | `{ single: "single", multi: "multi", }` |
+
+<hr/>
+
+
+
 ### class: `FASTAccordion`
 
 #### Superclass
@@ -135,14 +145,6 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | Name   | Description                      |
 | ------ | -------------------------------- |
 | `item` | The slot for the accordion items |
-
-<hr/>
-
-### Variables
-
-| Name                  | Description                   | Type                                    |
-| --------------------- | ----------------------------- | --------------------------------------- |
-| `AccordionExpandMode` | Expand mode for FASTAccordion | `{ single: "single", multi: "multi", }` |
 
 <hr/>
 

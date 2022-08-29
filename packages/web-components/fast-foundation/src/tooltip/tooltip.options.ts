@@ -25,6 +25,11 @@ export const TooltipPosition = {
     left: "left",
 
     /**
+     * The tooltip is positioned in the center of the element
+     */
+    center: "center",
+
+    /**
      * The tooltip is positioned before the element
      */
     start: "start",
@@ -40,6 +45,11 @@ export const TooltipPosition = {
     topLeft: "top-left",
 
     /**
+     * The tooltip is positioned above the element and horizontally centered
+     */
+    topCenter: "top-center",
+
+    /**
      * The tooltip is positioned above the element and to the right
      */
     topRight: "top-right",
@@ -48,6 +58,11 @@ export const TooltipPosition = {
      * The tooltip is positioned below the element and to the left
      */
     bottomLeft: "bottom-left",
+
+    /**
+     * The tooltip is positioned below the element and horizontally centered
+     */
+    bottomCenter: "bottom-center",
 
     /**
      * The tooltip is positioned below the element and to the right

@@ -1,37 +1,32 @@
 import { html } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTToolbar } from "../toolbar.js";
 
-type ToolbarStoryArgs = Args & FASTToolbar;
-type ToolbarStoryMeta = Meta<ToolbarStoryArgs>;
-
-const componentTemplate = html<ToolbarStoryArgs>`
-    <fast-toolbar orientation="${x => x.orientation}">
-        ${x => x.content}
+const storyTemplate = html<StoryArgs<FASTToolbar>>`
+    <fast-toolbar
+        orientation="${x => x.orientation}"
+        :ariaLabel="${x => x.ariaLabel}"
+        :ariaLabelledby="${x => x.ariaLabelledby}"
+    >
+        ${x => x.storyContent}
     </fast-toolbar>
 `;
 
 export default {
     title: "Toolbar",
     argTypes: {
-        content: { control: { type: "string" } },
-        orientation: { options: Object.values(Orientation), control: { type: "radio" } },
+        orientation: { control: "radio", options: Object.values(Orientation) },
+        ariaLabel: { control: "text" },
+        ariaLabelledby: { control: "text" },
+        storyContent: { table: { disable: true } },
     },
-} as ToolbarStoryMeta;
+} as Meta<FASTToolbar>;
 
-export const Toolbar = (args: ToolbarStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    componentTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-
-Toolbar.argTypes = {
-    content: { table: { disable: true } },
-};
-
+export const Toolbar: Story<FASTToolbar> = renderComponent(storyTemplate).bind({});
 Toolbar.args = {
-    content: html`
+    storyContent: html`
         <button>Button</button>
         <button slot="end">End Slot Button</button>
         <button slot="start">Start Slot Button</button>
@@ -53,5 +48,18 @@ Toolbar.args = {
             Checkbox 3
         </label>
         <input type="text" name="text" id="text-input" />
+    `,
+};
+
+export const ToolbarButtonFocusTest: Story<FASTToolbar> = Toolbar.bind({});
+ToolbarButtonFocusTest.args = {
+    storyContent: html`
+        <button>Button 1</button>
+        <button>Button 2</button>
+        <button>Button 3</button>
+        <button>Button 4</button>
+        <button>Button 5</button>
+        <button slot="start">Start Slot Button</button>
+        <button slot="end">End Slot Button</button>
     `,
 };

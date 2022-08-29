@@ -59,13 +59,33 @@ export interface AnchoredRegionConfig {
 }
 
 // @public
-export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end" | "center";
+export const AnchoredRegionPositionLabel: {
+    readonly start: "start";
+    readonly insetStart: "insetStart";
+    readonly insetEnd: "insetEnd";
+    readonly end: "end";
+    readonly center: "center";
+};
+
+// @public
+export type AnchoredRegionPositionLabel = typeof AnchoredRegionPositionLabel[keyof typeof AnchoredRegionPositionLabel];
 
 // @public
 export function anchoredRegionTemplate(): ElementViewTemplate<FASTAnchoredRegion>;
 
 // @public
 export type AnchorOptions = StartEndOptions;
+
+// @public
+export const AnchorTarget: {
+    readonly _self: "_self";
+    readonly _blank: "_blank";
+    readonly _parent: "_parent";
+    readonly _top: "_top";
+};
+
+// @public
+export type AnchorTarget = typeof AnchorTarget[keyof typeof AnchorTarget];
 
 // @public
 export function anchorTemplate(options?: AnchorOptions): ElementViewTemplate<FASTAnchor>;
@@ -102,7 +122,7 @@ export const AutoUpdateMode: {
     readonly auto: "auto";
 };
 
-// @public (undocumented)
+// @public
 export type AutoUpdateMode = typeof AutoUpdateMode[keyof typeof AutoUpdateMode];
 
 // @public
@@ -114,10 +134,24 @@ export type AvatarOptions = {
 export function avatarTemplate(options?: AvatarOptions): ElementViewTemplate<FASTAvatar>;
 
 // @public
-export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
+export const AxisPositioningMode: {
+    readonly uncontrolled: "uncontrolled";
+    readonly locktodefault: "locktodefault";
+    readonly dynamic: "dynamic";
+};
 
 // @public
-export type AxisScalingMode = "anchor" | "fill" | "content";
+export type AxisPositioningMode = typeof AxisPositioningMode[keyof typeof AxisPositioningMode];
+
+// @public
+export const AxisScalingMode: {
+    readonly anchor: "anchor";
+    readonly content: "content";
+    readonly fill: "fill";
+};
+
+// @public
+export type AxisScalingMode = typeof AxisScalingMode[keyof typeof AxisScalingMode];
 
 // @public
 export function badgeTemplate(): ElementViewTemplate<FASTBadge>;
@@ -138,6 +172,16 @@ export type ButtonOptions = StartEndOptions;
 
 // @public
 export function buttonTemplate(options?: ButtonOptions): ElementViewTemplate<FASTButton>;
+
+// @public
+export const ButtonType: {
+    readonly submit: "submit";
+    readonly reset: "reset";
+    readonly button: "button";
+};
+
+// @public
+export type ButtonType = typeof ButtonType[keyof typeof ButtonType];
 
 // @public
 export function calendarCellTemplate(options: CalendarOptions, todayString: string): ViewTemplate<CalendarDateInfo>;
@@ -544,6 +588,16 @@ export interface DesignTokenSubscriber<T extends DesignToken<any>> {
 // @public
 export function dialogTemplate(): ElementViewTemplate<FASTDialog>;
 
+// Warning: (ae-internal-missing-underscore) The name "Dimension" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export interface Dimension {
+    // (undocumented)
+    height: number;
+    // (undocumented)
+    width: number;
+}
+
 // @public @deprecated
 export const disabledCursor = "not-allowed";
 
@@ -616,7 +670,7 @@ export class FASTAnchor extends FASTElement {
     ping: string;
     referrerpolicy: string;
     rel: string;
-    target: "_self" | "_blank" | "_parent" | "_top";
+    target: AnchorTarget;
     type: string;
 }
 
@@ -771,9 +825,10 @@ export class FASTButton extends FormAssociatedButton {
     formtarget: "_self" | "_blank" | "_parent" | "_top";
     // (undocumented)
     protected formtargetChanged(): void;
-    type: "submit" | "reset" | "button";
+    type: ButtonType;
     // (undocumented)
-    protected typeChanged(previous: "submit" | "reset" | "button" | void, next: "submit" | "reset" | "button"): void;
+    protected typeChanged(previous: ButtonType | undefined, next: ButtonType): void;
+    validate(): void;
 }
 
 // @internal
@@ -894,6 +949,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
     setPositioning(): void;
     // @internal
     slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void;
+    validate(): void;
     get value(): string;
     set value(next: string);
 }
@@ -1065,7 +1121,7 @@ export class FASTHorizontalScroll extends FASTElement {
     // (undocumented)
     disconnectedCallback(): void;
     duration: string;
-    easing: ScrollEasing;
+    easing: ScrollEasing | string;
     flippersHiddenFromAT: boolean;
     keyupHandler(e: Event & KeyboardEvent): void;
     nextFlipperContainer: HTMLDivElement;
@@ -1363,6 +1419,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
     step: number;
     stepDown(): void;
     stepUp(): void;
+    validate(): void;
     get valueAsNumber(): number;
     set valueAsNumber(next: number);
     // @internal
@@ -1437,7 +1494,7 @@ export class FASTPicker extends FormAssociatedPicker {
     menuOptionTemplate: ViewTemplate;
     // (undocumented)
     protected menuOptionTemplateChanged(): void;
-    menuPlacement: menuConfigs;
+    menuPlacement: MenuPlacement;
     // (undocumented)
     protected menuPlacementChanged(): void;
     // @internal
@@ -1631,6 +1688,7 @@ export class FASTSearch extends FormAssociatedSearch {
     spellcheck: boolean;
     // (undocumented)
     protected spellcheckChanged(): void;
+    validate(): void;
 }
 
 // @internal
@@ -1896,6 +1954,7 @@ export class FASTTextArea extends FormAssociatedTextArea {
     spellcheck: boolean;
     // (undocumented)
     protected spellcheckChanged(): void;
+    validate(): void;
 }
 
 // @internal
@@ -1947,6 +2006,7 @@ export class FASTTextField extends FormAssociatedTextField {
     // (undocumented)
     protected spellcheckChanged(): void;
     type: TextFieldType;
+    validate(): void;
 }
 
 // @internal
@@ -2195,8 +2255,7 @@ export interface FormAssociated extends Omit<ElementInternals_2, "labels"> {
     requiredChanged(prev: boolean, next: boolean): void;
     // (undocumented)
     stopPropagation(e: Event): void;
-    // (undocumented)
-    validate(): void;
+    validate(anchor?: HTMLElement): void;
     // (undocumented)
     value: string;
     // (undocumented)
@@ -2241,7 +2300,17 @@ export const getDirection: (rootNode: HTMLElement) => Direction;
 export const hidden = ":host([hidden]){display:none}";
 
 // @public
-export type HorizontalPosition = "start" | "end" | "left" | "right" | "center" | "unset";
+export const HorizontalPosition: {
+    readonly start: "start";
+    readonly end: "end";
+    readonly left: "left";
+    readonly right: "right";
+    readonly center: "center";
+    readonly unset: "unset";
+};
+
+// @public
+export type HorizontalPosition = typeof HorizontalPosition[keyof typeof HorizontalPosition];
 
 // @public
 export type HorizontalScrollOptions = StartEndOptions & {
@@ -2253,7 +2322,13 @@ export type HorizontalScrollOptions = StartEndOptions & {
 export function horizontalScrollTemplate(options?: HorizontalScrollOptions): ElementViewTemplate<FASTHorizontalScroll>;
 
 // @public
-export type HorizontalScrollView = "default" | "mobile";
+export const HorizontalScrollView: {
+    readonly default: "default";
+    readonly mobile: "mobile";
+};
+
+// @public
+export type HorizontalScrollView = typeof HorizontalScrollView[keyof typeof HorizontalScrollView];
 
 // Warning: (ae-internal-missing-underscore) The name "interactiveCalendarGridTemplate" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -2301,9 +2376,6 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
 // @public
 export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListEvent) => void;
 
-// @beta
-export type menuConfigs = "bottom" | "bottom-fill" | "tallest" | "tallest-fill" | "top" | "top-fill";
-
 // @public
 export type MenuItemColumnCount = 0 | 1 | 2;
 
@@ -2327,6 +2399,19 @@ export type MenuItemRole = typeof MenuItemRole[keyof typeof MenuItemRole];
 
 // @public
 export function menuItemTemplate(options: MenuItemOptions): ElementViewTemplate<FASTMenuItem>;
+
+// @beta
+export const MenuPlacement: {
+    readonly bottom: "bottom";
+    readonly bottomFill: "bottom-fill";
+    readonly tallest: "tallest";
+    readonly tallestFill: "tallest-fill";
+    readonly top: "top";
+    readonly topFill: "top-fill";
+};
+
+// @beta
+export type MenuPlacement = typeof MenuPlacement[keyof typeof MenuPlacement];
 
 // @public
 export function menuTemplate(): ElementViewTemplate<FASTMenu>;
@@ -2462,7 +2547,15 @@ export const roleForMenuItem: {
 };
 
 // @public
-export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | string;
+export const ScrollEasing: {
+    readonly linear: "linear";
+    readonly easeIn: "ease-in";
+    readonly easeOut: "ease-out";
+    readonly easeInOut: "ease-in-out";
+};
+
+// @public
+export type ScrollEasing = typeof ScrollEasing[keyof typeof ScrollEasing];
 
 // @public
 export type SearchOptions = StartEndOptions;
@@ -2644,11 +2737,14 @@ export const TooltipPosition: {
     readonly right: "right";
     readonly bottom: "bottom";
     readonly left: "left";
+    readonly center: "center";
     readonly start: "start";
     readonly end: "end";
     readonly topLeft: "top-left";
+    readonly topCenter: "top-center";
     readonly topRight: "top-right";
     readonly bottomLeft: "bottom-left";
+    readonly bottomCenter: "bottom-center";
     readonly bottomRight: "bottom-right";
     readonly topStart: "top-start";
     readonly topEnd: "top-end";
@@ -2674,7 +2770,15 @@ export function treeItemTemplate(options?: TreeItemOptions): ElementViewTemplate
 export function treeViewTemplate(): ElementViewTemplate<FASTTreeView>;
 
 // @public
-export type VerticalPosition = "top" | "bottom" | "center" | "unset";
+export const VerticalPosition: {
+    readonly top: "top";
+    readonly bottom: "bottom";
+    readonly center: "center";
+    readonly unset: "unset";
+};
+
+// @public
+export type VerticalPosition = typeof VerticalPosition[keyof typeof VerticalPosition];
 
 // @public
 export const WeekdayFormat: {

@@ -1,44 +1,37 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
-import type { FASTAccordion } from "../accordion.js";
-import { AccordionExpandMode } from "../accordion.js";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
+import { FASTAccordion } from "../accordion.js";
+import { AccordionExpandMode } from "../accordion.options.js";
 
-type AccordionArgs = Args & FASTAccordion;
-type AccordionMeta = Meta<AccordionArgs>;
-
-const storyTemplate = html<AccordionArgs>`
+const storyTemplate = html<StoryArgs<FASTAccordion>>`
     <fast-accordion expand-mode="${x => x.expandmode}">
-        ${x => x?.content}
+        ${x => x.storyContent}
     </fast-accordion>
 `;
 
 export default {
     title: "Accordion",
+    component: FASTAccordion,
     args: {
-        content: html`
-            <fast-accordion-item>
-                <div slot="heading">Accordion Item 1 Heading</div>
-                Accordion Item 1 Content
-            </fast-accordion-item>
-            <fast-accordion-item>
-                <div slot="heading">Accordion Item 2 Heading</div>
-                <fast-checkbox>A checkbox as content</fast-checkbox
-            </fast-accordion-item>
-        `,
+        expandmode: AccordionExpandMode.multi,
     },
-
     argTypes: {
-        expandmode: {
-            options: Object.values(AccordionExpandMode),
-            control: {
-                type: "select",
-            },
-        },
+        expandmode: { control: "select", options: Object.values(AccordionExpandMode) },
+        storyContent: { table: { disable: true } },
     },
-} as AccordionMeta;
+} as Meta<FASTAccordion>;
 
-export const Accordion = (args: AccordionArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+export const Accordion: Story<FASTAccordion> = renderComponent(storyTemplate).bind({});
+Accordion.args = {
+    storyContent: html`
+        <fast-accordion-item>
+            <div slot="heading">Accordion Item 1 Heading</div>
+            Accordion Item 1 Content
+        </fast-accordion-item>
+        <fast-accordion-item>
+            <div slot="heading">Accordion Item 2 Heading</div>
+            <fast-checkbox>A checkbox as content</fast-checkbox>
+        </fast-accordion-item>
+    `,
 };
