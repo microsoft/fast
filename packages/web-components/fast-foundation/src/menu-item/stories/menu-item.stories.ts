@@ -41,7 +41,7 @@ export const MenuItemWithSlottedStart: Story<FASTMenuItem> = MenuItem.bind({});
 MenuItemWithSlottedStart.args = {
     storyContent: html`
         Menu item with slotted start icon
-        <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
+        <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
     `,
 };
 
@@ -49,7 +49,7 @@ export const MenuItemWithSlottedEnd: Story<FASTMenuItem> = MenuItem.bind({});
 MenuItemWithSlottedEnd.args = {
     storyContent: html`
         Menu item with slotted end icon
-        <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
+        <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
     `,
 };
 

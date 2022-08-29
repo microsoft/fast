@@ -148,22 +148,22 @@ MenuWithItemsWithIcons.args = {
     storyItems: [
         {
             storyContent: html`
-                <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
-                <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
+                <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
+                <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
                 Slotted start icon
             `,
         },
         {
             storyContent: html`
-                <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
-                <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
+                <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
+                <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
                 Slotted end icon
             `,
         },
         {
             storyContent: html`
-                <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
-                <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
+                <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
+                <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
                 Slotted start and end icons
             `,
         },
@@ -175,17 +175,16 @@ MenuWithEverything.args = {
     storyItems: [
         {
             storyContent: html`
-                <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
-                <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
+                <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
+                <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
                 Menu Item 1
             `,
         },
         {
             storyContent: html`
-                <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
-                <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
-                Menu Item 2
-                ${repeat(x => x.storyItems, storyTemplate)}
+                <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
+                <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
+                Menu Item 2 ${repeat(x => x.storyItems, storyTemplate)}
             `,
             storyItems: [
                 {
@@ -200,11 +199,14 @@ MenuWithEverything.args = {
             ],
         },
         { template: dividerStoryTemplate },
-        { storyContent: html`
-            <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
-            <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
-            Checkbox 1
-        `, role: "menuitemcheckbox" },
+        {
+            storyContent: html`
+                <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
+                <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
+                Checkbox 1
+            `,
+            role: "menuitemcheckbox",
+        },
         { storyContent: "Checkbox 2", role: "menuitemcheckbox" },
         { template: dividerStoryTemplate },
         { storyContent: "Radio 1.1", role: "menuitemradio" },

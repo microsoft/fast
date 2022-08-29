@@ -59,19 +59,19 @@ export const TreeViewFlat: Story<FASTTreeView> = renderComponent(storyTemplate).
 TreeViewFlat.args = {
     storyContent: html`
         <fast-tree-item>
-            <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
+            <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
             Tree item 1
-            <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
+            <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
         </fast-tree-item>
         <fast-tree-item>
-            <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
+            <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
             Tree item 2
-            <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
+            <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
         </fast-tree-item>
         <fast-tree-item>
-            <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
+            <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
             Tree item 3
-            <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
+            <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
         </fast-tree-item>
     `,
 };
