@@ -10,7 +10,7 @@ import {
 } from "@microsoft/fast-element";
 import { RenderDirective } from "@microsoft/fast-element/render";
 import { RenderInfo } from "../render-info.js";
-import { TemplateRenderer } from "./template-renderer.js";
+import { DefaultTemplateRenderer } from "./template-renderer.js";
 
 /**
  * Describes an implementation that can render a directive.
@@ -30,7 +30,7 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
         behavior: T,
         renderInfo: RenderInfo,
         source: any,
-        renderer: TemplateRenderer,
+        renderer: DefaultTemplateRenderer,
         context: ExecutionContext
     ): IterableIterator<string>;
 
@@ -47,7 +47,7 @@ export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirectiv
             directive: RepeatDirective,
             renderInfo: RenderInfo,
             source: any,
-            renderer: TemplateRenderer,
+            renderer: DefaultTemplateRenderer,
             context: ExecutionContext
         ): IterableIterator<string> {
             const items = directive.dataBinding.evaluate(source, context);
@@ -88,7 +88,7 @@ export const RenderDirectiveRenderer: ViewBehaviorFactoryRenderer<RenderDirectiv
             directive: RenderDirective,
             renderInfo: RenderInfo,
             source: any,
-            renderer: TemplateRenderer,
+            renderer: DefaultTemplateRenderer,
             context: ExecutionContext
         ): IterableIterator<string> {
             const data = directive.dataBinding.evaluate(source, context);

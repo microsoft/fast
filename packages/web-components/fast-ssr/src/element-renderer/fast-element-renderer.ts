@@ -1,7 +1,7 @@
 import { Aspect, DOM, ExecutionContext, FASTElement } from "@microsoft/fast-element";
 import { RenderInfo } from "../render-info.js";
 import { StyleRenderer } from "../styles/style-renderer.js";
-import { TemplateRenderer } from "../template-renderer/template-renderer.js";
+import { DefaultTemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
 import { DefaultElementRenderer } from "./element-renderer.js";
 import { FASTSSRStyleStrategy } from "./style-strategy.js";
@@ -21,7 +21,7 @@ export abstract class FASTElementRenderer extends DefaultElementRenderer {
     /**
      * The template renderer to use when rendering a component template
      */
-    protected abstract templateRenderer: TemplateRenderer;
+    protected abstract templateRenderer: DefaultTemplateRenderer;
 
     /**
      * Responsible for rendering stylesheets

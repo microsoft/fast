@@ -3,7 +3,7 @@ import { children, customElement, ExecutionContext, FASTElement, html, ref, repe
 import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
-import { TemplateRenderer } from "./template-renderer.js";
+import { DefaultTemplateRenderer } from "./template-renderer.js";
 import { render } from "@microsoft/fast-element/render";
 import { DefaultElementRenderer } from "../element-renderer/element-renderer.js";
 import { RenderInfo } from "../render-info.js";
@@ -19,14 +19,13 @@ class WithHostAttributes extends FASTElement {}
 
 
 test.describe("TemplateRenderer", () => {
-
     test.describe("should have a createRenderInfo method", () => {
         test("that returns unique object instances for every invocation", () => {
-            const renderer = new TemplateRenderer();
+            const renderer = new DefaultTemplateRenderer();
             expect(renderer.createRenderInfo()).not.toBe(renderer.createRenderInfo())
         });
         test("that can be populated with ElementRenderers with the 'withDefaultElementRenderer()' method", () => {
-            const renderer = new TemplateRenderer();
+            const renderer = new DefaultTemplateRenderer();
             class MyRenderer extends DefaultElementRenderer {
                 element?: HTMLElement | undefined;
                 attributeChangedCallback(name: string, prev: string | null, next: string | null): void {}

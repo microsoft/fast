@@ -97,23 +97,27 @@ export interface StyleRenderer {
     render(styles: ComposableStyles): string;
 }
 
-// @beta
-export class TemplateRenderer {
-    createRenderInfo(renderers?: ConstructableElementRenderer[]): RenderInfo;
-    render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
-    // Warning: (ae-forgotten-export) The symbol "Op" needs to be exported by the entry point exports.d.ts
+// @public (undocumented)
+export interface TemplateRenderer {
+    // Warning: (ae-incompatible-release-tags) The symbol "createRenderInfo" is marked as @public, but its signature references "RenderInfo" which is marked as @beta
     //
-    // @internal
-    renderOpCodes(codes: Op[], renderInfo: RenderInfo, source: unknown, context: ExecutionContext): IterableIterator<string>;
+    // (undocumented)
+    createRenderInfo(): RenderInfo;
+    // Warning: (ae-incompatible-release-tags) The symbol "render" is marked as @public, but its signature references "RenderInfo" which is marked as @beta
+    //
+    // (undocumented)
+    render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
+    // Warning: (ae-incompatible-release-tags) The symbol "withDefaultElementRenderers" is marked as @public, but its signature references "ConstructableElementRenderer" which is marked as @beta
+    //
+    // (undocumented)
     withDefaultElementRenderers(...renderers: ConstructableElementRenderer[]): void;
-    // @internal
-    withViewBehaviorFactoryRenderers(...renderers: ViewBehaviorFactoryRenderer<any>[]): void;
 }
 
 // @beta
 export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
     matcher: Constructable<T>;
-    render(behavior: T, renderInfo: RenderInfo, source: any, renderer: TemplateRenderer, context: ExecutionContext): IterableIterator<string>;
+    // Warning: (ae-forgotten-export) The symbol "DefaultTemplateRenderer" needs to be exported by the entry point exports.d.ts
+    render(behavior: T, renderInfo: RenderInfo, source: any, renderer: DefaultTemplateRenderer, context: ExecutionContext): IterableIterator<string>;
 }
 
 // Warnings were encountered during analysis:

@@ -12,7 +12,10 @@ import {
     defaultViewBehaviorFactoryRenderers,
     ViewBehaviorFactoryRenderer,
 } from "./template-renderer/directives.js";
-import { TemplateRenderer } from "./template-renderer/template-renderer.js";
+import {
+    DefaultTemplateRenderer,
+    TemplateRenderer,
+} from "./template-renderer/template-renderer.js";
 import { SSRView } from "./view.js";
 import {
     ConstructableElementRenderer,
@@ -55,9 +58,9 @@ export default function fastSSR(): {
     templateRenderer: TemplateRenderer;
     ElementRenderer: ConstructableElementRenderer;
 } {
-    const templateRenderer = new TemplateRenderer();
+    const templateRenderer = new DefaultTemplateRenderer();
     const ElementRenderer = class extends FASTElementRenderer {
-        protected templateRenderer: TemplateRenderer = templateRenderer;
+        protected templateRenderer: DefaultTemplateRenderer = templateRenderer;
         protected styleRenderer = new StyleElementStyleRenderer();
     };
 
