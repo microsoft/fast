@@ -4,6 +4,7 @@ import {
     html,
     observable,
     repeat,
+    ViewTemplate,
 } from "@microsoft/fast-element";
 import {
     generateData,
@@ -29,7 +30,10 @@ const deleteCount = parseInt(count3 as string);
 const addCount = parseInt(count4 as string);
 const startIndex = parseInt(count5 as string);
 
-const templates = {
+type Templates = {
+    [TemplateName: string]: ViewTemplate;
+};
+const templates: Templates = {
     basic: html<XApp>`
         ${repeat(
             x => x.items,
@@ -128,7 +132,7 @@ const templates = {
             { positioning: true, recycle: false }
         )}
     `,
-} as any;
+};
 
 @customElement({
     name: "x-app",
