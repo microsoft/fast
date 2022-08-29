@@ -2,13 +2,16 @@
 import "@microsoft/fast-ssr/install-dom-shim";
 import fs from "fs";
 import { html } from "@microsoft/fast-element";
-import fastSSR, { RequestStorageManager, DeclarativeShadowDOMPolyfill } from "@microsoft/fast-ssr";
+import fastSSR, {
+    DeclarativeShadowDOMPolyfill,
+    RequestStorageManager,
+} from "@microsoft/fast-ssr";
 import express from "express";
 import { DefaultTodoList, app as todoApp, TodoList } from "fast-todo-app";
 
 const app = express();
 const port = 8080;
-const { templateRenderer, defaultRenderInfo } = fastSSR();
+const { templateRenderer } = fastSSR();
 
 todoApp.define();
 
@@ -43,7 +46,7 @@ app.get("/", (req, res) => {
     const todoData = JSON.parse(fs.readFileSync("./todo-data.json").toString());
     TodoList.provide(document, new DefaultTodoList(todoData));
 
-    const stream = templateRenderer.render(template, defaultRenderInfo);
+    const stream = templateRenderer.render(template);
 
     for (const part of stream) {
         res.write(part);

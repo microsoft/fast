@@ -5,8 +5,12 @@ import {
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { RenderInfo } from "../render-info.js";
-import { getElementRenderer } from "../element-renderer/element-renderer.js";
+import { DefaultRenderInfo, RenderInfo } from "../render-info.js";
+import {
+    ConstructableElementRenderer,
+    ElementRenderer,
+    getElementRenderer,
+} from "../element-renderer/element-renderer.js";
 import { AttributeBindingOp, Op, OpType } from "../template-parser/op-codes.js";
 import {
     parseStringToOpCodes,
@@ -37,6 +41,8 @@ export class TemplateRenderer {
         ViewBehaviorFactoryRenderer<any>
     > = new Map();
 
+    private defaultElementRenderers: ConstructableElementRenderer[] = [];
+
     /**
      * Controls how the {@link TemplateRenderer} will emit component DOM internals.
      */
@@ -47,10 +53,11 @@ export class TemplateRenderer {
      * @param template - The template to render.
      * @param renderInfo - Information about the rendering context.
      * @param source - Any source data to render the template and evaluate bindings with.
+     * @param context - The {@link @microsoft/fast-element#ExecutionContext} to render with.
      */
     public *render(
         template: ViewTemplate | string,
-        renderInfo: RenderInfo,
+        renderInfo: RenderInfo = this.createRenderInfo(),
         source: unknown = undefined,
         context: ExecutionContext = ExecutionContext.default
     ): IterableIterator<string> {
@@ -220,6 +227,26 @@ export class TemplateRenderer {
                     throw new Error(`Unable to interpret op code '${code}'`);
             }
         }
+    }
+
+    /**
+     * Constructs a new {@link RenderInfo } object.
+     * @param renderers - the ElementRenderer constructors the RenderInfo should contain
+     * @returns
+     */
+    public createRenderInfo(
+        renderers: ConstructableElementRenderer[] = this.defaultElementRenderers
+    ): RenderInfo {
+        return new DefaultRenderInfo(renderers.concat());
+    }
+
+    /**
+     * Configures the ElementRenderers used during RenderInfo construction by {@link TemplateRenderer.createRenderInfo}
+     * and the default RenderInfo argument used by {@link TemplateRenderer.render}.
+     * @param renderers - The ElementRenderers to use by default.
+     */
+    public withDefaultElementRenderers(...renderers: ConstructableElementRenderer[]) {
+        this.defaultElementRenderers = renderers;
     }
 
     /**

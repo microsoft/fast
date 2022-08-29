@@ -56,27 +56,22 @@ Updates.setMode(false);
  */
 export default function fastSSR(): {
     templateRenderer: TemplateRenderer;
-    elementRenderer: typeof FASTElementRenderer;
-    defaultRenderInfo: RenderInfo;
+    ElementRenderer: ConstructableElementRenderer;
 } {
     const templateRenderer = new TemplateRenderer();
-    const elementRenderer = class extends FASTElementRenderer {
+    const ElementRenderer = class extends FASTElementRenderer {
         protected templateRenderer: TemplateRenderer = templateRenderer;
         protected styleRenderer = new StyleElementStyleRenderer();
     };
 
+    templateRenderer.withDefaultElementRenderers(ElementRenderer);
     templateRenderer.withViewBehaviorFactoryRenderers(
         ...defaultViewBehaviorFactoryRenderers
     );
 
     return {
         templateRenderer,
-        elementRenderer,
-        defaultRenderInfo: {
-            elementRenderers: [elementRenderer],
-            customElementHostStack: [],
-            customElementInstanceStack: [],
-        },
+        ElementRenderer,
     };
 }
 
