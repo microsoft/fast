@@ -5,7 +5,7 @@ import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
 import { TemplateRenderer } from "./template-renderer.js";
 import { render } from "@microsoft/fast-element/render";
-import { ElementRenderer } from "../element-renderer/element-renderer.js";
+import { DefaultElementRenderer } from "../element-renderer/element-renderer.js";
 import { RenderInfo } from "../render-info.js";
 
 @customElement("hello-world")
@@ -40,7 +40,7 @@ test.describe("TemplateRenderer", () => {
         });
         test("that can be populated with ElementRenderers with the 'withDefaultElementRenderer()' method", () => {
             const renderer = new TemplateRenderer();
-            class MyRenderer extends ElementRenderer {
+            class MyRenderer extends DefaultElementRenderer {
                 element?: HTMLElement | undefined;
                 attributeChangedCallback(name: string, prev: string | null, next: string | null): void {}
                 connectedCallback(): void {}

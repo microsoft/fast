@@ -16,8 +16,17 @@ import { ViewTemplate } from '@microsoft/fast-element';
 // @beta
 export type ComponentDOMEmissionMode = "shadow";
 
+// Warning: (ae-forgotten-export) The symbol "AsyncElementRenderer" needs to be exported by the entry point exports.d.ts
+//
 // @beta (undocumented)
-export type ConstructableElementRenderer = (new (tagName: string, renderInfo: RenderInfo) => ElementRenderer) & typeof ElementRenderer;
+export interface ConstructableElementRenderer<T extends ElementRenderer | AsyncElementRenderer = ElementRenderer> {
+    // (undocumented)
+    new (tagName: string, renderInfo: RenderInfo): T;
+    // Warning: (ae-forgotten-export) The symbol "AttributesMap" needs to be exported by the entry point exports.d.ts
+    //
+    // (undocumented)
+    matchesClass(ctor: typeof HTMLElement, tagName: string, attributes: AttributesMap): boolean;
+}
 
 // @beta
 export const DeclarativeShadowDOMPolyfill: Readonly<{
@@ -26,31 +35,27 @@ export const DeclarativeShadowDOMPolyfill: Readonly<{
 }>;
 
 // @beta (undocumented)
-export abstract class ElementRenderer {
-    constructor(tagName: string, renderInfo: RenderInfo);
+export interface ElementRenderer {
     // (undocumented)
-    abstract attributeChangedCallback(name: string, prev: string | null, next: string | null): void;
+    attributeChangedCallback(name: string, prev: string | null, next: string | null): void;
     // (undocumented)
-    abstract connectedCallback(): void;
+    connectedCallback(): void;
     // (undocumented)
     dispatchEvent(event: Event): boolean;
     // (undocumented)
-    abstract readonly element?: HTMLElement;
-    // (undocumented)
-    elementChanged(): void;
-    // Warning: (ae-forgotten-export) The symbol "AttributesMap" needs to be exported by the entry point exports.d.ts
-    static matchesClass(ctor: typeof HTMLElement, tagName: string, attributes: AttributesMap): boolean;
     renderAttributes(): IterableIterator<string>;
     // (undocumented)
-    abstract renderShadow(renderInfo: RenderInfo): IterableIterator<string>;
-    setAttribute(name: string, value: string): void;
-    setProperty(name: string, value: unknown): void;
+    renderShadow(renderInfo: RenderInfo): IterableIterator<string>;
     // (undocumented)
-    readonly tagName: string;
+    setAttribute(name: string, value: string): void;
+    // (undocumented)
+    setProperty(name: string, value: unknown): void;
 }
 
+// Warning: (ae-forgotten-export) The symbol "DefaultElementRenderer" needs to be exported by the entry point exports.d.ts
+//
 // @beta
-export abstract class FASTElementRenderer extends ElementRenderer {
+export abstract class FASTElementRenderer extends DefaultElementRenderer {
     constructor(tagName: string, renderInfo: RenderInfo);
     attributeChangedCallback(name: string, old: string | null, value: string | null): void;
     connectedCallback(): void;

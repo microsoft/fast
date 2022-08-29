@@ -7,17 +7,7 @@ import { RenderInfo } from "../render-info.js";
 import { escapeHtml } from "../escape-html.js";
 import { HTMLElement as ShimHTMLElement } from "../dom-shim.js";
 import { shouldBubble } from "../event-utilities.js";
-
-type AttributesMap = Map<string, string>;
-
-/**
- * @beta
- */
-export type ConstructableElementRenderer = (new (
-    tagName: string,
-    renderInfo: RenderInfo
-) => ElementRenderer) &
-    typeof ElementRenderer;
+import { AttributesMap, ElementRenderer } from "./interfaces.js";
 
 export const getElementRenderer = (
     renderInfo: RenderInfo,
@@ -41,7 +31,7 @@ export const getElementRenderer = (
 /**
  * @beta
  */
-export abstract class ElementRenderer {
+export abstract class DefaultElementRenderer {
     private parent: ElementRenderer | null = null;
     @observable
     abstract readonly element?: HTMLElement;
@@ -150,7 +140,7 @@ export abstract class ElementRenderer {
  * An ElementRenderer used as a fallback in the case where a custom element is
  * either unregistered or has no other matching renderer.
  */
-class FallbackRenderer extends ElementRenderer {
+class FallbackRenderer extends DefaultElementRenderer {
     public element?: HTMLElement | undefined;
     private readonly _attributes: { [name: string]: string } = {};
 

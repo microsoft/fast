@@ -6,11 +6,8 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { DefaultRenderInfo, RenderInfo } from "../render-info.js";
-import {
-    ConstructableElementRenderer,
-    ElementRenderer,
-    getElementRenderer,
-} from "../element-renderer/element-renderer.js";
+import { getElementRenderer } from "../element-renderer/element-renderer.js";
+import { ConstructableElementRenderer } from "../element-renderer/interfaces.js";
 import { AttributeBindingOp, Op, OpType } from "../template-parser/op-codes.js";
 import {
     parseStringToOpCodes,

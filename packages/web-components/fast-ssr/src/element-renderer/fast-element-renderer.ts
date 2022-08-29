@@ -3,7 +3,7 @@ import { RenderInfo } from "../render-info.js";
 import { StyleRenderer } from "../styles/style-renderer.js";
 import { TemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
-import { ElementRenderer } from "./element-renderer.js";
+import { DefaultElementRenderer } from "./element-renderer.js";
 import { FASTSSRStyleStrategy } from "./style-strategy.js";
 
 /**
@@ -12,7 +12,7 @@ import { FASTSSRStyleStrategy } from "./style-strategy.js";
  *
  * @beta
  */
-export abstract class FASTElementRenderer extends ElementRenderer {
+export abstract class FASTElementRenderer extends DefaultElementRenderer {
     /**
      * The element instance represented by the {@link FASTElementRenderer}.
      */

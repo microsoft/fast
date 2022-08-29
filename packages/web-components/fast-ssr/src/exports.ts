@@ -20,7 +20,7 @@ import { SSRView } from "./view.js";
 import {
     ConstructableElementRenderer,
     ElementRenderer,
-} from "./element-renderer/element-renderer.js";
+} from "./element-renderer/interfaces.js";
 
 Compiler.setDefaultStrategy(
     (
