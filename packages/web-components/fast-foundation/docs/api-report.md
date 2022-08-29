@@ -529,11 +529,11 @@ export class DesignToken<T> {
     deleteValueFor(target: FASTElement): this;
     getValueFor(target: FASTElement): T;
     name: string;
-    static registerRoot(target?: FASTElement | Document | PropertyTarget): void;
+    static registerDefaultStyleTarget(target?: FASTElement | Document | PropertyTarget): void;
     // Warning: (ae-forgotten-export) The symbol "DesignTokenValue" needs to be exported by the entry point index.d.ts
     setValueFor(target: FASTElement, value: DesignToken<T> | DesignTokenValue<T>): void;
     subscribe(subscriber: DesignTokenSubscriber<this>): void;
-    static unregisterRoot(target?: FASTElement | Document | PropertyTarget): void;
+    static unregisterDefaultStyleTarget(target?: FASTElement | Document | PropertyTarget): void;
     unsubscribe(subscriber: DesignTokenSubscriber<this>): void;
     withDefault(value: DesignToken<T> | DesignTokenValue<T>): this;
     // Warning: (ae-forgotten-export) The symbol "DesignTokenResolutionStrategy" needs to be exported by the entry point index.d.ts
@@ -568,6 +568,16 @@ export const enum DesignTokenMutationType {
 //
 // @public
 export type DesignTokenResolver = <T>(token: DesignToken_2<T>) => T;
+
+// @public
+export class DesignTokenStyleTarget implements PropertyTarget {
+    get cssText(): string;
+    // (undocumented)
+    removeProperty(name: string): void;
+    // (undocumented)
+    setProperty(name: string, value: string): void;
+    get values(): Array<[string, string]>;
+}
 
 // @public
 export interface DesignTokenSubscriber<T extends DesignToken<any>> {
@@ -2506,7 +2516,7 @@ export interface PropertyTarget {
     // (undocumented)
     removeProperty(name: string): void;
     // (undocumented)
-    setProperty(name: string, value: string | null): void;
+    setProperty(name: string, value: string): void;
 }
 
 // @beta
