@@ -144,7 +144,7 @@ export const RequestStorageManager = Object.freeze({
      * done under normal circumstances. This capability is intended for
      * advanced integration scenarios only.
      *
-     * Avoid calling this API after middleware is installed or in the
+     * Avoid setting this property after middleware is installed or in the
      * middle of a RequestStorageManager#run operation. In the event that
      * this timing is necessary, then you must provide a window instance
      * available through the "window" key of your storage, otherwise the
