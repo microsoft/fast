@@ -1,11 +1,8 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
 import { isFocusable } from "tabbable";
-import {
-    ARIAGlobalStatesAndProperties,
-    StartEnd,
-    StartEndOptions,
-} from "../patterns/index.js";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { getDirection } from "../utilities/direction.js";
 

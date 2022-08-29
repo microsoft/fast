@@ -54,13 +54,10 @@ const styles = css`
     }
 
     ::slotted([slot="start"]),
+    ::slotted([slot="content"]),
     ::slotted([slot="end"]),
     .content {
         align-self: center;
-    }
-
-    ::slotted([slot="start"]),
-    ::slotted([slot="end"]) {
         display: flex;
     }
 

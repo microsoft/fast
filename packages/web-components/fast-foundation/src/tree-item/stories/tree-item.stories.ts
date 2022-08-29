@@ -10,9 +10,7 @@ const storyTemplate = html<StoryArgs<FASTTreeItem>>`
         ?disabled="${x => x.disabled}"
         :nested="${x => x.nested}"
     >
-        <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
         ${x => x.storyContent}
-        <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
     </fast-tree-item>
 `;
 
@@ -36,6 +34,15 @@ export default {
 export const TreeItem: Story<FASTTreeItem> = renderComponent(storyTemplate).bind({});
 TreeItem.args = {
     storyContent: "Tree Item",
+};
+
+export const TreeItemWithIcons: Story<FASTTreeItem> = TreeItem.bind({});
+TreeItemWithIcons.args = {
+    storyContent: html`
+        <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
+        Tree Item
+        <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
+    `,
 };
 
 export const TreeItemWithNestedItems: Story<FASTTreeItem> = TreeItem.bind({});

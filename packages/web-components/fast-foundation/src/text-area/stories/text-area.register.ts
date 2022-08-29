@@ -20,7 +20,7 @@ const styles = css`
         display: flex;
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-input-rest);
-        border-radius: calc(var(--input-corner-radius) * 1px);
+        border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         font: inherit;
         font-size: var(--type-ramp-base-font-size);

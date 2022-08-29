@@ -16,9 +16,7 @@ const storyTemplate = html<StoryArgs<FASTCombobox>>`
         placeholder="${x => x.placeholder}"
         value="${x => x.value}"
     >
-        <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
         ${x => x.storyContent}
-        <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
     </fast-combobox>
 `;
 
@@ -83,6 +81,15 @@ ComboboxWithListAutocomplete.args = {
 export const ComboboxWithBothAutocomplete: Story<FASTCombobox> = Combobox.bind({});
 ComboboxWithBothAutocomplete.args = {
     autocomplete: ComboboxAutocomplete.both,
+};
+
+export const ComboboxWithIcons: Story<FASTCombobox> = Combobox.bind({});
+ComboboxWithIcons.args = {
+    storyContent: html`
+        <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
+        ${repeat(x => x.storyItems, listboxOptionTemplate)}
+        <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
+    `,
 };
 
 export const ComboboxInForm: Story<FASTCombobox> = renderComponent(

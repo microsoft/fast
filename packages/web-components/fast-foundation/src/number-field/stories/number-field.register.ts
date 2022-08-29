@@ -18,7 +18,7 @@ const styles = css`
     .control {
         align-items: center;
         background: var(--neutral-fill-input-rest);
-        border-radius: calc(var(--input-corner-radius) * 1px);
+        border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         box-sizing: border-box;
         color: var(--neutral-foreground-rest);

@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { FASTCombobox } from "../combobox.js";
 import { comboboxTemplate } from "../combobox.template.js";
+import { chevronDownIcon } from "../../utilities/style/icons.js";
 
 const styles = css`
     :host {
@@ -194,7 +195,9 @@ const styles = css`
 
 FASTCombobox.define({
     name: "fast-combobox",
-    template: comboboxTemplate(),
+    template: comboboxTemplate({
+        openIcon: chevronDownIcon,
+    }),
     styles,
     shadowOptions: {
         delegatesFocus: true,

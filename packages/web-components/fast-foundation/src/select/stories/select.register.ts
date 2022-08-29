@@ -1,6 +1,7 @@
 import { css, ElementStyles, observable } from "@microsoft/fast-element";
 import { FASTSelect } from "../select.js";
 import { selectTemplate } from "../select.template.js";
+import { chevronDownIcon } from "../../utilities/style/icons.js";
 
 const styles = css`
     :host {
@@ -243,6 +244,8 @@ export class Select extends FASTSelect {
 
 Select.define({
     name: "fast-select",
-    template: selectTemplate(),
+    template: selectTemplate({
+        openIcon: chevronDownIcon,
+    }),
     styles,
 });

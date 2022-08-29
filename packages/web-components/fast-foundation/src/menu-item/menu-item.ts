@@ -14,11 +14,8 @@ import {
 } from "@microsoft/fast-web-utilities";
 import type { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
 import type { FASTMenu } from "../menu/menu.js";
-import {
-    StartEnd,
-    StartEndOptions,
-    TemplateElementDependency,
-} from "../patterns/index.js";
+import { StartEnd, TemplateElementDependency } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { getDirection } from "../utilities/direction.js";
 import { MenuItemRole, roleForMenuItem } from "./menu-item.options.js";

@@ -272,6 +272,24 @@ export type CheckboxOptions = {
 // @public
 export function checkboxTemplate<T extends FASTCheckbox>(options?: CheckboxOptions): ElementViewTemplate<T>;
 
+// @public (undocumented)
+export const checkmarkIcon = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M3.37 10.17a.5.5 0 0 0-.74.66l4 4.5c.19.22.52.23.72.02l10.5-10.5a.5.5 0 0 0-.7-.7L7.02 14.27l-3.65-4.1Z\"/>\n</svg>";
+
+// @public (undocumented)
+export const chevronDownIcon = "<svg width=\"12\" height=\"12\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M2.15 4.65c.2-.2.5-.2.7 0L6 7.79l3.15-3.14a.5.5 0 1 1 .7.7l-3.5 3.5a.5.5 0 0 1-.7 0l-3.5-3.5a.5.5 0 0 1 0-.7Z\"/>\n</svg>";
+
+// @public (undocumented)
+export const chevronLeftIcon = "<svg width=\"12\" height=\"12\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M7.35 2.15c.2.2.2.5 0 .7L4.21 6l3.14 3.15a.5.5 0 1 1-.7.7l-3.5-3.5a.5.5 0 0 1 0-.7l3.5-3.5c.2-.2.5-.2.7 0Z\"/>\n</svg>";
+
+// @public (undocumented)
+export const chevronRightIcon = "<svg width=\"12\" height=\"12\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M4.65 2.15a.5.5 0 0 0 0 .7L7.79 6 4.65 9.15a.5.5 0 1 0 .7.7l3.5-3.5a.5.5 0 0 0 0-.7l-3.5-3.5a.5.5 0 0 0-.7 0Z\"/>\n</svg>";
+
+// @public (undocumented)
+export const chevronUpIcon = "<svg width=\"12\" height=\"12\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M2.15 7.35c.2.2.5.2.7 0L6 4.21l3.15 3.14a.5.5 0 1 0 .7-.7l-3.5-3.5a.5.5 0 0 0-.7 0l-3.5 3.5a.5.5 0 0 0 0 .7Z\"/>\n</svg>";
+
+// @public (undocumented)
+export const circleSmallIcon = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M13 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z\"/>\n</svg>";
+
 // @public
 export interface ColumnDefinition {
     cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
@@ -628,6 +646,9 @@ export type DisclosureOptions = StartEndOptions;
 
 // @public
 export function disclosureTemplate<T extends FASTDisclosure>(options?: DisclosureOptions): ElementViewTemplate<T>;
+
+// @public (undocumented)
+export const dismissIcon = "<svg width=\"12\" height=\"12\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"m2.09 2.22.06-.07a.5.5 0 0 1 .63-.06l.07.06L6 5.29l3.15-3.14a.5.5 0 1 1 .7.7L6.71 6l3.14 3.15c.18.17.2.44.06.63l-.06.07a.5.5 0 0 1-.63.06l-.07-.06L6 6.71 2.85 9.85a.5.5 0 0 1-.7-.7L5.29 6 2.15 2.85a.5.5 0 0 1-.06-.63l.06-.07-.06.07Z\"/>\n</svg>";
 
 // @public @deprecated
 export function display(displayValue: CSSDisplayPropertyValue): string;
@@ -2606,7 +2627,9 @@ export const ScrollEasing: {
 export type ScrollEasing = typeof ScrollEasing[keyof typeof ScrollEasing];
 
 // @public
-export type SearchOptions = StartEndOptions;
+export type SearchOptions = StartEndOptions & {
+    clearIcon?: string | SyntheticViewTemplate;
+};
 
 // @public
 export function searchTemplate<T extends FASTSearch>(options?: SearchOptions): ElementViewTemplate<T>;
@@ -2866,7 +2889,7 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/menu-item/menu-item.d.ts:20:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/menu-item/menu-item.d.ts:21:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:11:5 - (ae-incompatible-release-tags) The symbol "pickerMenuOption" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

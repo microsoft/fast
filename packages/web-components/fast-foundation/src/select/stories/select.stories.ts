@@ -1,5 +1,5 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { storyTemplate as ListboxOptionTemplate } from "../../listbox-option/stories/listbox-option.stories.js";
+import { storyTemplate as listboxOptionTemplate } from "../../listbox-option/stories/listbox-option.stories.js";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTSelect } from "../select.js";
@@ -14,9 +14,7 @@ const storyTemplate = html<StoryArgs<FASTSelect>>`
         position="${x => x.position}"
         value="${x => x.value}"
     >
-        <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
         ${x => x.storyContent}
-        <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
     </fast-select>
 `;
 
@@ -27,7 +25,7 @@ export default {
         multiple: false,
         open: false,
         storyContent: html<StoryArgs<FASTSelect>>`
-            ${repeat(x => x.storyItems, ListboxOptionTemplate)}
+            ${repeat(x => x.storyItems, listboxOptionTemplate)}
         `,
         storyItems: [
             { storyContent: "William Hartnell" },
@@ -77,6 +75,15 @@ SelectWithSize.args = {
 export const SelectDisabled: Story<FASTSelect> = Select.bind({});
 SelectDisabled.args = {
     disabled: true,
+};
+
+export const SelectWithIcons: Story<FASTSelect> = Select.bind({});
+SelectWithIcons.args = {
+    storyContent: html`
+        <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
+        ${repeat(x => x.storyItems, listboxOptionTemplate)}
+        <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
+    `,
 };
 
 export const SelectInForm: Story<FASTSelect> = renderComponent(html<Meta<FASTSelect>>`

@@ -9,9 +9,7 @@ const storyTemplate = html<StoryArgs<FASTAccordionItem>>`
         heading-level="${x => x.headinglevel}"
         id="${x => x.id}"
     >
-        <fast-badge slot="start">start</fast-badge>
         ${x => x.storyContent}
-        <fast-badge slot="end">end</fast-badge>
     </fast-accordion-item>
 `;
 
@@ -33,7 +31,9 @@ export const AccordionItem: Story<FASTAccordionItem> = renderComponent(
 ).bind({});
 AccordionItem.args = {
     storyContent: html`
+        <fast-badge slot="start">start</fast-badge>
         Accordion Item Content
         <span slot="heading">Accordion Item Heading</span>
+        <fast-badge slot="end">end</fast-badge>
     `,
 };

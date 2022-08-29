@@ -43,9 +43,7 @@ const storyTemplate = html<StoryArgs<FASTTextArea>>`
         :ariaRelevant="${x => x.ariaRelevant}"
         :ariaRoledescription="${x => x.ariaRoledescription}"
     >
-        <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
         ${x => x.storyContent}
-        <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
     </fast-text-area>
 `;
 
@@ -99,6 +97,15 @@ export default {
 } as Meta<FASTTextArea>;
 
 export const TextArea: Story<FASTTextArea> = renderComponent(storyTemplate).bind({});
+
+export const TextAreaWithIcons: Story<FASTTextArea> = TextArea.bind({});
+TextAreaWithIcons.args = {
+    storyContent: html`
+        <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
+        Text Area
+        <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
+    `,
+};
 
 export const TextAreaInForm: Story<FASTTextArea> = renderComponent(html`
     <form @submit="${() => false}">

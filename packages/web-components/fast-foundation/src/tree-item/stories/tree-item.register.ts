@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { FASTTreeItem } from "../tree-item.js";
 import { treeItemTemplate } from "../tree-item.template.js";
+import { chevronRightIcon } from "../../utilities/style/icons.js";
 
 const styles = css`
     :host([hidden]) {
@@ -172,5 +173,7 @@ const styles = css`
 FASTTreeItem.define({
     name: "fast-tree-item",
     styles,
-    template: treeItemTemplate(),
+    template: treeItemTemplate({
+        expandCollapseIcon: chevronRightIcon,
+    }),
 });

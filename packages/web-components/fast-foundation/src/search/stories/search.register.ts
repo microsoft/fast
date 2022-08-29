@@ -19,7 +19,7 @@ const styles = css`
         flex-direction: row;
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-input-rest);
-        border-radius: calc(var(--input-corner-radius) * 1px);
+        border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         height: calc(var(--height-number) * 1px);
         align-items: baseline;
@@ -55,7 +55,7 @@ const styles = css`
         color: var(--neutral-foreground-rest);
         fill: currentcolor;
         border: none;
-        border-radius: calc(var(--input-corner-radius) * 1px);
+        border-radius: calc(var(--control-corner-radius) * 1px);
         min-width: calc(var(--height-number) * 1px);
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);

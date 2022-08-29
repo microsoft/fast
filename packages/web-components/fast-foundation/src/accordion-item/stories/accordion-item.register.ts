@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { FASTAccordionItem } from "../accordion-item.js";
 import { accordionItemTemplate } from "../accordion-item.template.js";
+import { chevronDownIcon, chevronUpIcon } from "../../utilities/style/icons.js";
 
 const styles = css`
     :host {
@@ -125,6 +126,9 @@ const styles = css`
 
 FASTAccordionItem.define({
     name: "fast-accordion-item",
-    template: accordionItemTemplate(),
+    template: accordionItemTemplate({
+        expandedIcon: chevronUpIcon,
+        collapsedIcon: chevronDownIcon,
+    }),
     styles,
 });

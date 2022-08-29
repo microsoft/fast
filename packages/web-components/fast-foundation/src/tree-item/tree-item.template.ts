@@ -3,10 +3,6 @@ import { children, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { FASTTreeItem, TreeItemOptions } from "./tree-item.js";
 
-const expandCollapseIcon = `<svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4.65 2.15a.5.5 0 0 0 0 .7L7.79 6 4.65 9.15a.5.5 0 1 0 .7.7l3.5-3.5a.5.5 0 0 0 0-.7l-3.5-3.5a.5.5 0 0 0-.7 0Z"/>
-</svg>`;
-
 /**
  * The template for the {@link @microsoft/fast-foundation#(FASTTreeItem:class)} component.
  * @public
@@ -55,7 +51,7 @@ export function treeItemTemplate<T extends FASTTreeItem>(
                                 part="expand-collapse-icon"
                             >
                                 <slot name="expand-collapse-icon">
-                                    ${options.expandCollapseIcon ?? expandCollapseIcon}
+                                    ${options.expandCollapseIcon ?? ""}
                                 </slot>
                             </span>
                         </div>

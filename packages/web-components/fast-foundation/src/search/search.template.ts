@@ -82,16 +82,7 @@ export function searchTemplate<T extends FASTSearch>(
                         @click=${x => x.handleClearInput()}
                     >
                         <slot name="clear-icon">
-                            <svg
-                                width="9"
-                                height="9"
-                                viewBox="0 0 9 9"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M.15.15c.19-.2.5-.18.7 0L4.5 3.79 8.15.15a.5.5 0 1 1 .7.7L5.21 4.5l3.64 3.65c.2.2.18.53 0 .7-.17.18-.5.18-.7 0L4.5 5.21.85 8.85a.5.5 0 1 1-.7-.7L3.79 4.5.15.85a.52.52 0 0 1 0-.7Z"
-                                />
-                            </svg>
+                            ${options.clearIcon ?? ""}
                         </slot>
                     </button>
                 </slot>

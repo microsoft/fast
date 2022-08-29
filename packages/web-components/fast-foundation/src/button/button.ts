@@ -1,9 +1,6 @@
 import { attr, observable } from "@microsoft/fast-element";
-import {
-    ARIAGlobalStatesAndProperties,
-    StartEnd,
-    StartEndOptions,
-} from "../patterns/index.js";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedButton } from "./button.form-associated.js";
 import { ButtonType } from "./button.options.js";

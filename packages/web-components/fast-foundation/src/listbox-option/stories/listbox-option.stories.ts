@@ -10,9 +10,7 @@ export const storyTemplate = html<StoryArgs<FASTListboxOption>>`
         id="${x => x.id}"
         value="${x => x.value}"
     >
-        <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
         ${x => x.storyContent}
-        <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
     </fast-option>
 `;
 
@@ -40,3 +38,12 @@ export default {
 export const ListboxOption: Story<FASTListboxOption> = renderComponent(
     storyTemplate
 ).bind({});
+
+export const ListboxOptionWithIcons: Story<FASTListboxOption> = ListboxOption.bind({});
+ListboxOptionWithIcons.args = {
+    storyContent: html`
+        <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
+        Listbox option
+        <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
+    `,
+};

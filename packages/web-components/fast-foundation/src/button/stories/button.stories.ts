@@ -39,9 +39,7 @@ const storyTemplate = html<StoryArgs<FASTButton>>`
         :ariaRelevant="${x => x.ariaRelevant}"
         :ariaRoledescription="${x => x.ariaRoledescription}"
     >
-        <svg width="20" height="20" slot="start"><use href="#test-icon"/></svg>
         ${x => x.storyContent}
-        <svg width="20" height="20" slot="end"><use href="#test-icon-2"/></svg>
     </fast-button>
 `;
 
@@ -92,6 +90,22 @@ export default {
 } as Meta<FASTButton>;
 
 export const Button: Story<FASTButton> = renderComponent(storyTemplate).bind({});
+
+export const ButtonWithIcons: Story<FASTButton> = Button.bind({});
+ButtonWithIcons.args = {
+    storyContent: html`
+        <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
+        Button
+        <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
+    `,
+};
+
+export const ButtonWithIconOnly: Story<FASTButton> = Button.bind({});
+ButtonWithIconOnly.args = {
+    storyContent: html`
+        <svg width="20" height="20"><use href="#test-icon" /></svg>
+    `,
+};
 
 export const ButtonInForm: Story<FASTButton> = renderComponent(
     html<StoryArgs<FASTButton>>`

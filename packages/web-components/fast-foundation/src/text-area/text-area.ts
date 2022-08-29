@@ -1,6 +1,7 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { DelegatesARIATextbox } from "../text-field/text-field.js";
-import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedTextArea } from "./text-area.form-associated.js";
 import { TextAreaResize } from "./text-area.options.js";

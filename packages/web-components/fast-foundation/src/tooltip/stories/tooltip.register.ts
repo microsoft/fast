@@ -12,8 +12,7 @@ const styles = css`
     .tooltip {
         box-sizing: border-box;
         border-radius: calc(var(--control-corner-radius) * 1px);
-        border: calc(var(--stroke-width) * 1px) solid var(--focus-stroke-outer);
-        box-shadow: 0 0 0 1px var(--focus-stroke-outer) inset;
+        border: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-outer);
         background: var(--neutral-fill-rest);
         color: var(--neutral-foreground-rest);
         padding: 4px;
