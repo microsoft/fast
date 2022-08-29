@@ -38,22 +38,22 @@ test.describe("FASTElementRenderer", () => {
 
     test.describe("rendering stylesheets", () => {
         test(`should render stylesheets as 'style' elements by default`, () => {
-            const { templateRenderer, defaultRenderInfo} = fastSSR();
-            const result = consolidate(templateRenderer.render(html`<styled-element></styled-element>`, defaultRenderInfo));
+            const { templateRenderer } = fastSSR();
+            const result = consolidate(templateRenderer.render(html`<styled-element></styled-element>`));
             expect(result).toBe("<styled-element><template shadowroot=\"open\"><style>:host { display: block; }</style><style>:host { color: red; }</style></template></styled-element>");
         });
         test.skip(`should render stylesheets as 'fast-style' elements when configured`, () => {
-            const { templateRenderer, defaultRenderInfo} = fastSSR(/* Replace w/ configuration when fast-style work is complete{useFASTStyle: true}*/);
-            const result = consolidate(templateRenderer.render(html`<styled-element></styled-element>`, defaultRenderInfo));
+            const { templateRenderer } = fastSSR(/* Replace w/ configuration when fast-style work is complete{useFASTStyle: true}*/);
+            const result = consolidate(templateRenderer.render(html`<styled-element></styled-element>`));
             expect(result).toBe(`<styled-element><template shadowroot=\"open\"><fast-style style-id="fast-style-0" css=":host { display: block; }\"></fast-style><fast-style style-id=\"fast-style-1\" css=\":host { color: red; }"></fast-style></template></styled-element>`);
         });
     });
 
     test("should render attributes on the root of a template element to the host element", () => {
-        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const { templateRenderer } = fastSSR();
         const result = consolidate(templateRenderer.render(html`
             <host-binding-element></host-binding-element>
-        `, defaultRenderInfo));
+        `));
         expect(result).toBe(`
             <host-binding-element attr="attr" bool-attr><template shadowroot=\"open\"></template></host-binding-element>
         `);
@@ -61,29 +61,29 @@ test.describe("FASTElementRenderer", () => {
 
     test.describe("rendering an element with attributes", () => {
         test("should not render the attribute when binding evaluates null", () => {
-            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const { templateRenderer } = fastSSR();
             const result = consolidate(templateRenderer.render(html`
                 <bare-element attr="${x => null}"></bare-element>
-            `, defaultRenderInfo));
+            `));
             expect(result).toBe(`
                 <bare-element ><template shadowroot=\"open\"></template></bare-element>
             `);
         });
         test("should not render the attribute when the binding evaluates undefined", () => {
-            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const { templateRenderer } = fastSSR();
             const result = consolidate(templateRenderer.render(html`
                 <bare-element attr="${x => undefined}"></bare-element>
-            `, defaultRenderInfo));
+            `));
             expect(result).toBe(`
                 <bare-element ><template shadowroot=\"open\"></template></bare-element>
             `);
         });
 
         test("should render an attribute with no value when a boolean attr evaluates true", () => {
-            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const { templateRenderer } = fastSSR();
             const result = consolidate(templateRenderer.render(html`
                 <bare-element ?attr="${x => true}"></bare-element>
-            `, defaultRenderInfo));
+            `));
             expect(result).toBe(`
                 <bare-element  attr><template shadowroot=\"open\"></template></bare-element>
             `);
@@ -152,44 +152,44 @@ test.describe("FASTElementRenderer", () => {
         }
     }
         test("An element dispatching an event should get it's own handler fired", () => {
-            const { templateRenderer, defaultRenderInfo } = fastSSR();
-            const result = consolidate(templateRenderer.render(html`<test-event-dispatch listen-self></test-event-dispatch>`, defaultRenderInfo));
+            const { templateRenderer } = fastSSR();
+            const result = consolidate(templateRenderer.render(html`<test-event-dispatch listen-self></test-event-dispatch>` ));
             expect(result).toBe(`<test-event-dispatch  event-detail=\"listen-self-success\" listen-self><template shadowroot="open"></template></test-event-dispatch>`)
         });
         test("An ancestor with a handler should get it's handler invoked if the event bubbles", () => {
-            const { templateRenderer, defaultRenderInfo } = fastSSR();
+            const { templateRenderer } = fastSSR();
 
-            const result = consolidate(templateRenderer.render(html`<test-event-listener data="bubble-success"><test-event-dispatch></test-event-dispatch></test-event-listener>`, defaultRenderInfo));
+            const result = consolidate(templateRenderer.render(html`<test-event-listener data="bubble-success"><test-event-dispatch></test-event-dispatch></test-event-listener>`));
             expect(result).toBe(`<test-event-listener  data=\"bubble-success\"><template shadowroot=\"open\"></template><test-event-dispatch event-detail=\"bubble-success\"><template shadowroot=\"open\"></template></test-event-dispatch></test-event-listener>`)
         });
         test("Should bubble events to the document", () => {
             document.addEventListener("test-event", (e) => {
                 (e as any).detail.data = "document-success";
             });
-            const { templateRenderer, defaultRenderInfo } = fastSSR();
+            const { templateRenderer } = fastSSR();
 
-            const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`, defaultRenderInfo));
+            const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`));
             expect(result).toBe(`<test-event-dispatch event-detail=\"document-success\"><template shadowroot=\"open\"></template></test-event-dispatch>`);
         });
         test("Should bubble events to the window", () => {
             window.addEventListener("test-event", (e) => {
                 (e as any).detail.data = "window-success";
             });
-            const { templateRenderer, defaultRenderInfo } = fastSSR();
+            const { templateRenderer } = fastSSR();
 
-            const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`, defaultRenderInfo));
+            const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`));
             expect(result).toBe(`<test-event-dispatch event-detail=\"window-success\"><template shadowroot=\"open\"></template></test-event-dispatch>`);
         });
         test("Should not bubble an event that invokes event.stopImmediatePropagation()", () => {
-            const { templateRenderer, defaultRenderInfo } = fastSSR();
+            const { templateRenderer } = fastSSR();
 
-            const result = consolidate(templateRenderer.render(html`<test-event-listener data="stop-immediate-propagation-failure"><test-event-dispatch stop-immediate-prop></test-event-dispatch></test-event-listener>`, defaultRenderInfo));
+            const result = consolidate(templateRenderer.render(html`<test-event-listener data="stop-immediate-propagation-failure"><test-event-dispatch stop-immediate-prop></test-event-dispatch></test-event-listener>`));
             expect(result).toBe(`<test-event-listener  data=\"stop-immediate-propagation-failure\"><template shadowroot=\"open\"></template><test-event-dispatch  event-detail=\"stop-immediate-prop-success\" stop-immediate-prop><template shadowroot=\"open\"></template></test-event-dispatch></test-event-listener>`)
         });
         test("Should not bubble an event that invokes event.stopPropagation()", () => {
-            const { templateRenderer, defaultRenderInfo } = fastSSR();
+            const { templateRenderer } = fastSSR();
 
-            const result = consolidate(templateRenderer.render(html`<test-event-listener data="stop-propagation-failure"><test-event-dispatch stop-prop></test-event-dispatch></test-event-listener>`, defaultRenderInfo));
+            const result = consolidate(templateRenderer.render(html`<test-event-listener data="stop-propagation-failure"><test-event-dispatch stop-prop></test-event-dispatch></test-event-listener>`));
             expect(result).toBe(`<test-event-listener  data=\"stop-propagation-failure\"><template shadowroot=\"open\"></template><test-event-dispatch  event-detail=\"stop-prop-success\" stop-prop><template shadowroot=\"open\"></template></test-event-dispatch></test-event-listener>`)
         });
     })
