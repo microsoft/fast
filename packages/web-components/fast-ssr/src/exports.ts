@@ -5,7 +5,7 @@ import {
     ViewBehaviorFactory,
 } from "@microsoft/fast-element";
 import { RenderInfo } from "./render-info.js";
-import { FASTElementRenderer } from "./element-renderer/fast-element-renderer.js";
+import { SyncFASTElementRenderer } from "./element-renderer/fast-element-renderer.js";
 import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
 import { StyleElementStyleRenderer, StyleRenderer } from "./styles/style-renderer.js";
 import {
@@ -59,7 +59,7 @@ export default function fastSSR(): {
     ElementRenderer: ConstructableElementRenderer;
 } {
     const templateRenderer = new DefaultTemplateRenderer();
-    const ElementRenderer = class extends FASTElementRenderer {
+    const ElementRenderer = class extends SyncFASTElementRenderer {
         protected templateRenderer: DefaultTemplateRenderer = templateRenderer;
         protected styleRenderer = new StyleElementStyleRenderer();
     };
