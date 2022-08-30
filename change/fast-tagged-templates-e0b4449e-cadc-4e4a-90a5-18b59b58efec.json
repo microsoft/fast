@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add package publisher",
-  "packageName": "fast-tagged-templates",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
