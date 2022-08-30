@@ -12,8 +12,30 @@ import { ExecutionContext } from '@microsoft/fast-element';
 import { ViewBehaviorFactory } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
-// Warning: (ae-forgotten-export) The symbol "AsyncElementRenderer" needs to be exported by the entry point exports.d.ts
-//
+// @beta (undocumented)
+export interface AsyncElementRenderer extends Omit<ElementRenderer, "renderShadow" | "renderAttributes"> {
+    // (undocumented)
+    renderAttributes(): IterableIterator<string | Promise<string>>;
+    // (undocumented)
+    renderShadow(renderInfo: RenderInfo): IterableIterator<string | Promise<string>>;
+}
+
+// @beta (undocumented)
+export interface AsyncTemplateRenderer {
+    // (undocumented)
+    createRenderInfo(): RenderInfo;
+    // (undocumented)
+    render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string | Promise<string>>;
+    // (undocumented)
+    withDefaultElementRenderers(...renderers: ConstructableElementRenderer<AsyncElementRenderer>[]): void;
+}
+
+// @beta
+export interface Configuration {
+    // (undocumented)
+    renderMode: "sync" | "async";
+}
+
 // @beta (undocumented)
 export interface ConstructableElementRenderer<T extends ElementRenderer | AsyncElementRenderer = ElementRenderer> {
     // (undocumented)
@@ -48,10 +70,22 @@ export interface ElementRenderer {
     setProperty(name: string, value: unknown): void;
 }
 
-// @beta
+// @beta (undocumented)
 function fastSSR(): {
     templateRenderer: TemplateRenderer;
     ElementRenderer: ConstructableElementRenderer;
+};
+
+// @beta (undocumented)
+function fastSSR(config: Configuration & Record<"renderMode", "sync">): {
+    templateRenderer: TemplateRenderer;
+    ElementRenderer: ConstructableElementRenderer;
+};
+
+// @beta (undocumented)
+function fastSSR(config: Configuration & Record<"renderMode", "async">): {
+    templateRenderer: AsyncTemplateRenderer;
+    ElementRenderer: ConstructableElementRenderer<AsyncElementRenderer>;
 };
 export default fastSSR;
 
@@ -97,18 +131,12 @@ export interface StyleRenderer {
     render(styles: ComposableStyles): string;
 }
 
-// @public (undocumented)
+// @beta (undocumented)
 export interface TemplateRenderer {
-    // Warning: (ae-incompatible-release-tags) The symbol "createRenderInfo" is marked as @public, but its signature references "RenderInfo" which is marked as @beta
-    //
     // (undocumented)
     createRenderInfo(): RenderInfo;
-    // Warning: (ae-incompatible-release-tags) The symbol "render" is marked as @public, but its signature references "RenderInfo" which is marked as @beta
-    //
     // (undocumented)
     render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
-    // Warning: (ae-incompatible-release-tags) The symbol "withDefaultElementRenderers" is marked as @public, but its signature references "ConstructableElementRenderer" which is marked as @beta
-    //
     // (undocumented)
     withDefaultElementRenderers(...renderers: ConstructableElementRenderer[]): void;
 }

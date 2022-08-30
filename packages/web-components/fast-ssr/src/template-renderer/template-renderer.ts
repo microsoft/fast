@@ -22,6 +22,7 @@ function getLast<T>(arr: T[]): T | undefined {
     return arr[arr.length - 1];
 }
 
+/** @beta */
 export interface TemplateRenderer {
     render(
         template: ViewTemplate | string,
@@ -32,6 +33,8 @@ export interface TemplateRenderer {
     createRenderInfo(): RenderInfo;
     withDefaultElementRenderers(...renderers: ConstructableElementRenderer[]): void;
 }
+
+/** @beta */
 export interface AsyncTemplateRenderer {
     render(
         template: ViewTemplate | string,
@@ -50,7 +53,7 @@ export interface AsyncTemplateRenderer {
  * rendering {@link @microsoft/fast-element#ViewTemplate} instances as well
  * as arbitrary HTML strings.
  *
- * @beta
+ * @internal
  */
 export class DefaultTemplateRenderer implements TemplateRenderer {
     private viewBehaviorFactoryRenderers: Map<

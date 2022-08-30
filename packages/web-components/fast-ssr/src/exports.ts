@@ -5,7 +5,10 @@ import {
     ViewBehaviorFactory,
 } from "@microsoft/fast-element";
 import { RenderInfo } from "./render-info.js";
-import { SyncFASTElementRenderer } from "./element-renderer/fast-element-renderer.js";
+import {
+    AsyncFASTElementRenderer,
+    SyncFASTElementRenderer,
+} from "./element-renderer/fast-element-renderer.js";
 import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
 import { StyleElementStyleRenderer, StyleRenderer } from "./styles/style-renderer.js";
 import {
@@ -13,11 +16,13 @@ import {
     ViewBehaviorFactoryRenderer,
 } from "./template-renderer/directives.js";
 import {
+    AsyncTemplateRenderer,
     DefaultTemplateRenderer,
     TemplateRenderer,
 } from "./template-renderer/template-renderer.js";
 import { SSRView } from "./view.js";
 import {
+    AsyncElementRenderer,
     ConstructableElementRenderer,
     ElementRenderer,
 } from "./element-renderer/interfaces.js";
@@ -41,6 +46,33 @@ ElementStyles.setDefaultStrategy(FASTSSRStyleStrategy);
 Updates.setMode(false);
 
 /**
+ * Configuration for SSR factory.
+ * @beta
+ */
+export interface Configuration {
+    renderMode: "sync" | "async";
+}
+
+/** @beta */
+function fastSSR(): {
+    templateRenderer: TemplateRenderer;
+    ElementRenderer: ConstructableElementRenderer;
+};
+/** @beta */
+function fastSSR(
+    config: Configuration & Record<"renderMode", "sync">
+): {
+    templateRenderer: TemplateRenderer;
+    ElementRenderer: ConstructableElementRenderer;
+};
+/** @beta */
+function fastSSR(
+    config: Configuration & Record<"renderMode", "async">
+): {
+    templateRenderer: AsyncTemplateRenderer;
+    ElementRenderer: ConstructableElementRenderer<AsyncElementRenderer>;
+};
+/**
  * Factory for creating SSR rendering assets.
  * @example
  * ```ts
@@ -54,33 +86,41 @@ Updates.setMode(false);
  *
  * @beta
  */
-export default function fastSSR(): {
-    templateRenderer: TemplateRenderer;
-    ElementRenderer: ConstructableElementRenderer;
-} {
+function fastSSR(config?: Configuration): any {
+    const async = config && config.renderMode === "async";
     const templateRenderer = new DefaultTemplateRenderer();
-    const ElementRenderer = class extends SyncFASTElementRenderer {
-        protected templateRenderer: DefaultTemplateRenderer = templateRenderer;
-        protected styleRenderer = new StyleElementStyleRenderer();
-    };
+    const elementRenderer = !async
+        ? class extends SyncFASTElementRenderer {
+              protected templateRenderer: DefaultTemplateRenderer = templateRenderer;
+              protected styleRenderer = new StyleElementStyleRenderer();
+          }
+        : class extends AsyncFASTElementRenderer {
+              protected templateRenderer: DefaultTemplateRenderer = templateRenderer;
+              protected styleRenderer = new StyleElementStyleRenderer();
+          };
 
-    templateRenderer.withDefaultElementRenderers(ElementRenderer);
+    templateRenderer.withDefaultElementRenderers(
+        elementRenderer as ConstructableElementRenderer
+    );
     templateRenderer.withViewBehaviorFactoryRenderers(
         ...defaultViewBehaviorFactoryRenderers
     );
 
     return {
         templateRenderer,
-        ElementRenderer,
+        ElementRenderer: elementRenderer,
     };
 }
 
+export default fastSSR;
 export * from "./request-storage.js";
 export * from "./declarative-shadow-dom-polyfill.js";
 export type {
     ElementRenderer,
+    AsyncElementRenderer,
     StyleRenderer,
     TemplateRenderer,
+    AsyncTemplateRenderer,
     ViewBehaviorFactoryRenderer,
     RenderInfo,
     ConstructableElementRenderer,
