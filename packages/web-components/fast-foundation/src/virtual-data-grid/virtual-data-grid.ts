@@ -27,6 +27,22 @@ export class VirtualDataGrid extends Virtualizing(_VirtualDataGrid) {}
  * @public
  */
 export class FASTVirtualDataGrid extends VirtualDataGrid {
+    /**
+     *
+     *
+     * @public
+     */
+    @observable
+    public virtualizedIndexOffset: number = 0;
+
+    /**
+     *
+     *
+     * @public
+     */
+    @observable
+    public authoredRowCount: number = 0;
+
     protected rowsDataChanged(): void {
         this.sourceItems = this.rowsData;
         super.rowsDataChanged();

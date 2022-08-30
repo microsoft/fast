@@ -68,11 +68,11 @@ export function dataGridTemplate(
                     class="container"
                     part="container"
                     style="
-                        height: ${x => x.totalListSpan}px;
+                        height: ${x => x.totalListSize}px;
                         grid-template-rows:
-                            ${x => x.startSpacerSpan}px
-                            repeat(${x => x.visibleItems.length}, ${x => x.itemSpan}px)
-                            ${x => x.endSpacerSpan}px;"
+                            ${x => x.startSpacerSize}px
+                            repeat(${x => x.renderItems.length}, ${x => x.itemSize}px)
+                            ${x => x.endSpacerSize}px;"
                     ${ref("containerElement")}
                 >
                 <slot name="generated-items"></slot>
