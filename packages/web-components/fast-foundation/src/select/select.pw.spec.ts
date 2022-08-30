@@ -1,53 +1,59 @@
 import { expect, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import type { FASTListboxOption } from "../listbox-option/index.js";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTSelect } from "./select.js";
 
 test.describe("Select", () => {
-    test("should have a role of `combobox`", async ({ page }) => {
-        await page.goto(fixtureURL("select--select"));
+    test.describe("synchronous tests", () => {
+        let page: Page;
+        let element: Locator;
 
-        const element = page.locator("fast-select");
+        test.beforeAll(async ({ browser }) => {
+            page = await browser.newPage();
 
-        await expect(element).toHaveAttribute("role", "combobox");
-    });
+            element = page.locator("fast-select");
 
-    test("should set the `aria-disabled` attribute equal to the `disabled` value", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("select--select", { disabled: true }));
-
-        const element = page.locator("fast-select");
-
-        await element.evaluate<void, FASTSelect>(node => {
-            node.disabled = true;
+            await page.goto(fixtureURL("select--select"));
         });
 
-        await expect(element).toHaveAttribute("aria-disabled", "true");
-
-        await element.evaluate<void, FASTSelect>(node => {
-            node.disabled = false;
+        test.afterAll(async () => {
+            await page.close();
         });
 
-        await expect(element).toHaveAttribute("aria-disabled", "false");
-    });
+        test("should have a role of `combobox`", async () => {
+            await expect(element).toHaveAttribute("role", "combobox");
+        });
 
-    test("should have a tabindex of 0 when `disabled` is not defined", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("select--select"));
+        test("should have a tabindex of 0 when `disabled` is not defined", async () => {
+            await expect(element).toHaveAttribute("tabindex", "0");
+        });
 
-        const element = page.locator("fast-select");
+        test("should set the `aria-disabled` attribute equal to the `disabled` value", async () => {
+            await expect(element).toHaveAttribute("aria-disabled", "false");
 
-        await expect(element).toHaveAttribute("tabindex", "0");
-    });
+            await element.evaluate<void, FASTSelect>(node => {
+                node.disabled = true;
+            });
 
-    test("should have the attribute aria-expanded set to false", async ({ page }) => {
-        await page.goto(fixtureURL("select--select"));
+            await expect(element).toHaveAttribute("aria-disabled", "true");
 
-        const element = page.locator("fast-select");
+            await element.evaluate<void, FASTSelect>(node => {
+                node.disabled = false;
+            });
 
-        await expect(element).toHaveAttribute("aria-expanded", "false");
+            await expect(element).toHaveAttribute("aria-disabled", "false");
+        });
+
+        test("should have the attribute aria-expanded set to false", async () => {
+            await expect(element).toHaveAttribute("aria-expanded", "false");
+        });
+
+        test("should set its value to the first enabled option", async () => {
+            await expect(element).toHaveJSProperty("value", "William Hartnell");
+
+            await expect(element).toHaveJSProperty("selectedIndex", 0);
+        });
     });
 
     test("should NOT have a tabindex when `disabled` is true", async ({ page }) => {
@@ -56,16 +62,6 @@ test.describe("Select", () => {
         const element = page.locator("fast-select");
 
         expect(await element.getAttribute("tabindex")).toBeNull();
-    });
-
-    test("should set its value to the first enabled option", async ({ page }) => {
-        await page.goto(fixtureURL("select--select"));
-
-        const element = page.locator("fast-select");
-
-        await expect(element).toHaveJSProperty("value", "William Hartnell");
-
-        await expect(element).toHaveJSProperty("selectedIndex", 0);
     });
 
     test("should set its value to the first enabled option when disabled", async ({

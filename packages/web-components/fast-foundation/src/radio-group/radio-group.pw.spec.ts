@@ -1,4 +1,5 @@
 import { Orientation } from "@microsoft/fast-web-utilities";
+import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import type { FASTRadio } from "../radio/index.js";
 import { fixtureURL } from "../__test__/helpers.js";
@@ -13,36 +14,7 @@ test.describe("Radio Group", () => {
         await expect(element).toHaveAttribute("role", "radiogroup");
     });
 
-    test("should set a `horizontal` class on the `positioning-region` when an orientation of `horizontal` is provided", async ({
-        page,
-    }) => {
-        const orientation = Orientation.horizontal;
-        await page.goto(fixtureURL("radio-group--radio-group", { orientation }));
-
-        const element = page.locator("fast-radio-group");
-
-        const positioningRegion = element.locator(".positioning-region");
-
-        await expect(positioningRegion).toHaveClass(/horizontal/);
-    });
-
-    test("should set a `vertical` class on the `positioning-region` when an orientation of `vertical` is provided", async ({
-        page,
-    }) => {
-        await page.goto(
-            fixtureURL("radio-group--radio-group", {
-                orientation: Orientation.vertical,
-            })
-        );
-
-        const element = page.locator("fast-radio-group");
-
-        const positioningRegion = element.locator(".positioning-region");
-
-        await expect(positioningRegion).toHaveClass(/vertical/);
-    });
-
-    test("should set a default class on the `positioning-region` of `horizontal` when no orientation is provided", async ({
+    test("should set a matching class on the `positioning-region` when an orientation is provided", async ({
         page,
     }) => {
         await page.goto(fixtureURL("radio-group--radio-group"));
@@ -51,7 +23,67 @@ test.describe("Radio Group", () => {
 
         const positioningRegion = element.locator(".positioning-region");
 
+        // Horizontal by default
         await expect(positioningRegion).toHaveClass(/horizontal/);
+
+        await element.evaluate<void, typeof Orientation, FASTRadioGroup>(
+            (node, Orientation) => {
+                node.orientation = Orientation.vertical;
+            },
+            Orientation
+        );
+
+        await expect(positioningRegion).toHaveClass(/vertical/);
+
+        await element.evaluate<void, typeof Orientation, FASTRadioGroup>(
+            (node, Orientation) => {
+                node.orientation = Orientation.horizontal;
+            },
+            Orientation
+        );
+
+        await expect(positioningRegion).toHaveClass(/horizontal/);
+    });
+
+    test.describe("should set an ARIA attribute to match the state", () => {
+        let page: Page;
+
+        test.beforeAll(async ({ browser }) => {
+            page = await browser.newPage();
+            await page.goto(fixtureURL("radio-group--radio-group"));
+        });
+
+        test.afterAll(async () => {
+            await page.close();
+        });
+
+        test("disabled", async () => {
+            const element = page.locator("fast-radio-group");
+
+            await expect(element).not.hasAttribute("aria-disabled");
+
+            await element.evaluate((node: FASTRadioGroup) => (node.disabled = true));
+
+            await expect(element).toHaveAttribute("aria-disabled", "true");
+
+            await element.evaluate((node: FASTRadioGroup) => (node.disabled = false));
+
+            await expect(element).toHaveAttribute("aria-disabled", "false");
+        });
+
+        test("readonly", async () => {
+            const element = page.locator("fast-radio-group");
+
+            await expect(element).not.hasAttribute("aria-disabled");
+
+            await element.evaluate((node: FASTRadioGroup) => (node.disabled = true));
+
+            await expect(element).toHaveAttribute("aria-disabled", "true");
+
+            await element.evaluate((node: FASTRadioGroup) => (node.disabled = false));
+
+            await expect(element).toHaveAttribute("aria-disabled", "false");
+        });
     });
 
     test("should set the `aria-disabled` attribute equal to the `disabled` value", async ({

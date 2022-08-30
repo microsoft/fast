@@ -1648,7 +1648,9 @@ export class FASTRadioGroup extends FASTElement {
     name: string;
     // (undocumented)
     protected nameChanged(): void;
-    orientation: Orientation | "horizontal" | "vertical";
+    orientation: Orientation;
+    // (undocumented)
+    positioningRegion: HTMLDivElement;
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;

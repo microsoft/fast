@@ -1,87 +1,75 @@
+import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import { DataGridCellTypes } from "./data-grid.options.js";
 
 test.describe("Data grid cell", () => {
-    test("should set role to 'gridcell' by default", async ({ page }) => {
-        await page.goto(fixtureURL("data-grid-data-grid-cell--data-grid-cell"));
-        const element = page.locator("fast-data-grid-cell");
+    test.describe("States, Attributes, and Properties", () => {
+        let page: Page;
+        let element: Locator;
 
-        await expect(element).toHaveAttribute("role", "gridcell");
-    });
+        test.beforeAll(async ({ browser }) => {
+            page = await browser.newPage();
 
-    test("should set role to 'columnheader' when cell-type is 'columnheader'", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("data-grid-data-grid-cell--data-grid-cell"));
+            element = page.locator("fast-data-grid-cell");
 
-        const element = page.locator("fast-data-grid-cell");
-
-        await element.evaluate(node => {
-            node.setAttribute("cell-type", "columnheader");
+            await page.goto(fixtureURL("data-grid-data-grid-cell--data-grid-cell"));
         });
 
-        await expect(element).toHaveAttribute("role", "columnheader");
-    });
-
-    test("should set role to 'rowheader' when cell-type is 'rowheader'", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("data-grid-data-grid-cell--data-grid-cell"));
-
-        const element = page.locator("fast-data-grid-cell");
-
-        await element.evaluate(node => node.setAttribute("cell-type", "rowheader"));
-
-        await expect(element).toHaveAttribute("role", "rowheader");
-    });
-
-    test("should apply 'column-header' css class when cell-type is 'columnheader'", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("data-grid-data-grid-cell--data-grid-cell"));
-
-        const element = page.locator("fast-data-grid-cell");
-
-        await element.evaluate(node => {
-            node.setAttribute("cell-type", "columnheader");
+        test.afterAll(async () => {
+            await page.close();
         });
 
-        await expect(element).toHaveClass("column-header");
-    });
-
-    test("should apply 'row-header' css class when cell-type is 'rowheader'", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("data-grid-data-grid-cell--data-grid-cell"));
-
-        const element = page.locator("fast-data-grid-cell");
-
-        await element.evaluate(node => {
-            node.setAttribute("cell-type", "rowheader");
+        test('should set the `role` attribute to "gridcell" by default', async () => {
+            await expect(element).toHaveAttribute("role", "gridcell");
         });
 
-        await expect(element).toHaveClass("row-header");
-    });
+        test("should have a tabIndex of -1 by default", async () => {
+            await expect(element).toHaveAttribute("tabindex", "-1");
+        });
 
-    test("should have a tabIndex of -1 by default", async ({ page }) => {
-        await page.goto(fixtureURL("data-grid-data-grid-cell--data-grid-cell"));
+        test('should set the `role` attribute to "columnheader" when the `cell-type` attribute is "columnheader"', async () => {
+            await element.evaluate(node => {
+                node.setAttribute("cell-type", "columnheader");
+            });
 
-        const element = page.locator("fast-data-grid-cell");
+            await expect(element).toHaveAttribute("role", "columnheader");
+        });
 
-        await expect(element).toHaveAttribute("tabindex", "-1");
-    });
+        test('should add the "column-header" class when the `cell-type` attribute is "columnheader"', async () => {
+            await element.evaluate(node => {
+                node.setAttribute("cell-type", "columnheader");
+            });
 
-    test("should set css grid-column style to match attribute", async ({ page }) => {
-        await page.goto(
-            fixtureURL("data-grid-data-grid-cell--data-grid-cell", { gridColumn: "2" })
-        );
+            await expect(element).toHaveClass(/column-header/);
+        });
 
-        const element = page.locator("fast-data-grid-cell");
+        test('should set the `role` attribute to "rowheader" when the `cell-type` attribute is "rowheader"', async () => {
+            await element.evaluate(node => {
+                node.setAttribute("cell-type", "rowheader");
+            });
 
-        await expect(element).toHaveCSS("grid-column-start", "2");
-        await expect(element).toHaveCSS("grid-column-end", "auto");
+            await expect(element).toHaveAttribute("role", "rowheader");
+        });
+
+        test('should add the "row-header" class when the `cell-type` attribute is "rowheader"', async () => {
+            await element.evaluate(node => {
+                node.setAttribute("cell-type", "rowheader");
+            });
+
+            await expect(element).toHaveClass(/row-header/);
+        });
+
+        test("should set the `grid-column` CSS property to match the `grid-column` attribute", async () => {
+            await element.evaluate(node => {
+                node.setAttribute("grid-column", "2");
+            });
+
+            await expect(element).toHaveCSS("grid-column-start", "2");
+
+            await expect(element).toHaveCSS("grid-column-end", "auto");
+        });
     });
 
     test("should not render data if no columndefinition provided", async ({ page }) => {

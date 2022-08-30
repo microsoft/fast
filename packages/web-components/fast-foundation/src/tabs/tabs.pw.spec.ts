@@ -363,6 +363,8 @@ test.describe("Tabs", () => {
         test("should not allow selecting a tab that has been disabled after it has been connected", async ({
             page,
         }) => {
+            test.slow();
+
             await page.goto(fixtureURL("tabs--tabs", { activeid: "tab-0" }));
 
             const element = page.locator("fast-tabs");

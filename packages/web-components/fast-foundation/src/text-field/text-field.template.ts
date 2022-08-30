@@ -39,6 +39,7 @@ export function textFieldTemplate(
                     ?disabled="${x => x.disabled}"
                     list="${x => x.list}"
                     maxlength="${x => x.maxlength}"
+                    name="${x => x.name}"
                     minlength="${x => x.minlength}"
                     pattern="${x => x.pattern}"
                     placeholder="${x => x.placeholder}"

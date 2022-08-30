@@ -1,103 +1,203 @@
 import { spinalCase } from "@microsoft/fast-web-utilities";
+import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTNumberField } from "./number-field.js";
 
 test.describe("NumberField", () => {
-    test.describe("should set the boolean attribute on the internal control", () => {
-        Object.entries({
-            autofocus: "true",
-            disabled: "true",
-            readOnly: "true",
-            required: "true",
-        }).forEach(([key, value]) => {
-            test(`${key}`, async ({ page }) => {
-                await page.goto(
-                    fixtureURL("number-field--number-field", { [key]: value })
-                );
+    test.describe("States, Attributes, and Properties", () => {
+        // Syncronous tests all run on the same page instance
+        let page: Page;
+        let element: Locator;
+        let control: Locator;
 
-                const element = page.locator("fast-number-field");
+        test.beforeAll(async ({ browser }) => {
+            page = await browser.newPage();
 
-                const control = element.locator(".control");
+            element = page.locator("fast-number-field");
 
-                expect(
-                    await control.evaluate((node, key) => node.hasAttribute(key), key)
-                ).toBeTruthy();
+            control = element.locator(".control");
+
+            await page.goto(fixtureURL("number-field--number-field"));
+        });
+
+        test.afterAll(async () => {
+            await page.close();
+        });
+
+        test("should initialize to the initial value when no `value` property is set", async () => {
+            const { value, initialValue } = await element.evaluate(
+                ({ value, initialValue }: FASTNumberField) => ({
+                    value,
+                    initialValue,
+                })
+            );
+
+            expect(value).toMatch(initialValue);
+        });
+
+        test.describe(() => {
+            const attributes = {
+                autofocus: "true",
+                disabled: "true",
+                readOnly: "true",
+                required: "true",
+            };
+
+            test.beforeAll(async () => {
+                await page.goto(fixtureURL("number-field--number-field", attributes));
             });
+
+            for (const attribute of Object.keys(attributes)) {
+                test(`should set the \`${attribute}\` boolean attribute on the internal control`, async () => {
+                    await expect(control).toHaveBooleanAttribute(attribute);
+                });
+            }
+        });
+
+        test.describe(() => {
+            const attributes = {
+                min: 0,
+                max: 10,
+                list: "listId",
+                maxlength: 14,
+                minlength: 8,
+                placeholder: "placeholder",
+                size: 8,
+                ariaAtomic: "true",
+                ariaBusy: "false",
+                ariaControls: "testId",
+                ariaCurrent: "page",
+                ariaDescribedby: "testId",
+                ariaDetails: "testId",
+                ariaDisabled: "true",
+                ariaErrormessage: "test",
+                ariaFlowto: "testId",
+                ariaHaspopup: "true",
+                ariaHidden: "true",
+                ariaInvalid: "spelling",
+                ariaKeyshortcuts: "F4",
+                ariaLabel: "Foo label",
+                ariaLabelledby: "testId",
+                ariaLive: "polite",
+                ariaOwns: "testId",
+                ariaRelevant: "removals",
+                ariaRoledescription: "slide",
+            };
+
+            test.beforeAll(async () => {
+                await page.goto(fixtureURL("number-field--number-field", attributes));
+            });
+
+            for (const [attribute, value] of Object.entries(attributes)) {
+                const attrToken = spinalCase(attribute);
+
+                test(`should set the \`${attrToken}\` attribute to \`${value}\` on the internal control`, async () => {
+                    await expect(control).toHaveAttribute(attrToken, `${value}`);
+                });
+            }
         });
     });
 
-    test.describe("should set the ARIA attribute on the internal control", () => {
-        Object.entries({
-            ariaAtomic: "true",
-            ariaBusy: "false",
-            ariaControls: "testId",
-            ariaCurrent: "page",
-            ariaDescribedby: "testId",
-            ariaDetails: "testId",
-            ariaDisabled: "true",
-            ariaErrormessage: "test",
-            ariaFlowto: "testId",
-            ariaHaspopup: "true",
-            ariaHidden: "true",
-            ariaInvalid: "spelling",
-            ariaKeyshortcuts: "F4",
-            ariaLabel: "Foo label",
-            ariaLabelledby: "testId",
-            ariaLive: "polite",
-            ariaOwns: "testId",
-            ariaRelevant: "removals",
-            ariaRoledescription: "slide",
-        }).forEach(([key, value]) => {
-            test(key, async ({ page }) => {
-                await page.goto(
-                    fixtureURL("number-field--number-field", { [key]: value })
-                );
+    test.describe("min and max values", () => {
+        let page: Page;
+        let element: Locator;
+        let control: Locator;
 
-                await expect(page.locator("fast-number-field .control")).toHaveAttribute(
-                    spinalCase(key),
-                    `${value}`
-                );
-            });
+        test.beforeAll(async ({ browser }) => {
+            page = await browser.newPage();
+
+            element = page.locator("fast-number-field");
+
+            control = element.locator(".control");
         });
-    });
 
-    test.describe("should set the attribute on the internal control", () => {
-        Object.entries({
-            list: "listId",
-            maxlength: 14,
-            minlength: 8,
-            placeholder: "placeholder",
-            size: 8,
-        }).forEach(([key, value]) => {
-            test(key, async ({ page }) => {
-                await page.goto(
-                    fixtureURL("number-field--number-field", { [key]: value })
-                );
+        test("should set value to max when value is greater than max", async () => {
+            await page.goto(
+                fixtureURL("number-field--number-field", {
+                    max: 10,
+                    value: 20,
+                })
+            );
 
-                await expect(page.locator("fast-number-field .control")).toHaveAttribute(
-                    key,
-                    `${value}`
-                );
-            });
+            await expect(control).toHaveValue("10");
+
+            await expect(element).toHaveJSProperty("value", "10");
         });
-    });
 
-    test("should initialize to the initial value if no value property is set", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("number-field--number-field"));
+        test("should set `value` property equal to the `max` property when max is less than the value", async () => {
+            const max = "10";
+            const value = "20";
+            await page.goto(fixtureURL("number-field--number-field", { value }));
 
-        const element = page.locator("fast-number-field");
+            const element = page.locator("fast-number-field");
 
-        const { value, initialValue } = await element.evaluate(
-            ({ value, initialValue }: FASTNumberField) => ({
-                value,
-                initialValue,
-            })
-        );
+            const control = element.locator(".control");
 
-        expect(value).toMatch(initialValue);
+            await expect(control).toHaveValue(value);
+
+            await element.evaluate((node: FASTNumberField) => {
+                node.max = 10;
+            });
+
+            await expect(control).toHaveValue(max);
+
+            await expect(element).toHaveJSProperty("value", max);
+        });
+
+        test("should set value to min when value is less than min", async ({ page }) => {
+            const min = "10";
+            const value = "5";
+            await page.goto(fixtureURL("number-field--number-field", { value }));
+
+            const element = page.locator("fast-number-field");
+
+            const control = element.locator(".control");
+
+            await expect(control).toHaveValue(value);
+
+            await element.evaluate((node: FASTNumberField) => {
+                node.min = 10;
+            });
+
+            await expect(control).toHaveValue(min);
+
+            await expect(element).toHaveJSProperty("value", min);
+        });
+
+        test("should update the `value` property when the `min` property is greater than the `value`", async ({
+            page,
+        }) => {
+            const min = "20";
+            const value = "10";
+            await page.goto(fixtureURL("number-field--number-field", { value }));
+
+            const element = page.locator("fast-number-field");
+
+            const control = element.locator(".control");
+
+            await element.evaluate((node: FASTNumberField) => {
+                node.min = 20;
+            });
+
+            await expect(control).toHaveValue(min);
+
+            await expect(element).toHaveJSProperty("value", min);
+        });
+
+        test("should set the `max` property to `min` when `min` is greater than `max`", async ({
+            page,
+        }) => {
+            await page.goto(
+                fixtureURL("number-field--number-field", { min: 10, max: 1 })
+            );
+
+            const element = page.locator("fast-number-field");
+
+            const control = element.locator(".control");
+
+            await expect(control).toHaveAttribute("max", "1");
+        });
     });
 
     test("should initialize to the provided value attribute if set pre-connection", async ({
@@ -276,126 +376,6 @@ test.describe("NumberField", () => {
             await element.evaluate(node => node.setAttribute("value", "30"));
 
             await expect(element).toHaveJSProperty("value", "30");
-        });
-    });
-
-    test.describe("min and max values", () => {
-        test("should set min value", async ({ page }) => {
-            const min = 1;
-            await page.goto(fixtureURL("number-field--number-field", { min }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("min", min.toString());
-
-            await expect(element).toHaveJSProperty("min", min);
-        });
-
-        test("should set max value", async ({ page }) => {
-            const max = 10;
-            await page.goto(fixtureURL("number-field--number-field", { max }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("max", max.toString());
-
-            await expect(element).toHaveJSProperty("max", max);
-        });
-
-        test("should set value to max when value is greater than max", async ({
-            page,
-        }) => {
-            const max = "10";
-            const value = "20";
-            await page.goto(fixtureURL("number-field--number-field", { max, value }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveValue(max);
-
-            await expect(element).toHaveJSProperty("value", max);
-        });
-
-        test("should set value to max if the max changes to a value less than the value", async ({
-            page,
-        }) => {
-            const max = "10";
-            const value = "20";
-            await page.goto(fixtureURL("number-field--number-field", { value }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveValue(value);
-
-            await element.evaluate((node: FASTNumberField) => {
-                node.max = 10;
-            });
-
-            await expect(control).toHaveValue(max);
-
-            await expect(element).toHaveJSProperty("value", max);
-        });
-
-        test("should set value to min when value is less than min", async ({ page }) => {
-            const min = "10";
-            const value = "5";
-            await page.goto(fixtureURL("number-field--number-field", { value }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveValue(value);
-
-            await element.evaluate((node: FASTNumberField) => {
-                node.min = 10;
-            });
-
-            await expect(control).toHaveValue(min);
-
-            await expect(element).toHaveJSProperty("value", min);
-        });
-
-        test("should update the `value` property when the `min` property is greater than the `value`", async ({
-            page,
-        }) => {
-            const min = "20";
-            const value = "10";
-            await page.goto(fixtureURL("number-field--number-field", { value }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await element.evaluate((node: FASTNumberField) => {
-                node.min = 20;
-            });
-
-            await expect(control).toHaveValue(min);
-
-            await expect(element).toHaveJSProperty("value", min);
-        });
-
-        test("should set the `max` property to `min` when `min` is greater than `max`", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("number-field--number-field", { min: 10, max: 1 })
-            );
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("max", "1");
         });
     });
 

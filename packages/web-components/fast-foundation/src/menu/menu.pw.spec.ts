@@ -1,13 +1,50 @@
 import { expect, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 
 test.describe("Menu", () => {
-    test("should include a role of menu", async ({ page }) => {
-        await page.goto(fixtureURL("menu--menu"));
+    test.describe("default properties and attributes", () => {
+        let page: Page;
+        let element: Locator;
 
-        const element = page.locator("fast-menu");
+        test.beforeAll(async ({ browser }) => {
+            page = await browser.newPage();
 
-        await expect(element).toHaveAttribute("role", "menu");
+            element = page.locator("fast-menu");
+
+            await page.goto(fixtureURL("menu--menu"));
+        });
+
+        test.afterAll(async () => {
+            await page.close();
+        });
+
+        test("should have a role of `menu`", async () => {
+            await expect(element).toHaveAttribute("role", "menu");
+        });
+
+        test("should set `tabindex` of the first focusable menu item to 0", async () => {
+            await expect(element.locator("fast-menu-item").first()).toHaveAttribute(
+                "tabindex",
+                "0"
+            );
+        });
+
+        test("should set class on menu items to 0 columns", async () => {
+            await expect(element.locator("fast-menu-item").first()).toHaveClass(
+                /indent-0/
+            );
+        });
+
+        test("should NOT set any `tabindex` on non-menu-item elements", async () => {
+            await page.goto(fixtureURL("menu--menu-with-divider"));
+
+            const element = page.locator("fast-menu");
+
+            const divider = element.locator("fast-divider");
+
+            expect(await divider.getAttribute("tabindex")).toBeNull();
+        });
     });
 
     test("should focus on first menu item when focus is called", async ({ page }) => {
@@ -48,28 +85,6 @@ test.describe("Menu", () => {
         });
 
         expect(await page.evaluate(() => document.activeElement?.id)).toBe("");
-    });
-
-    test("should set tabindex of the first focusable menu item to 0", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("menu--menu"));
-
-        const element = page.locator("fast-menu");
-
-        const menuItems = element.locator("fast-menu-item");
-
-        await expect(menuItems.first()).toHaveAttribute("tabindex", "0");
-    });
-
-    test("should NOT set any `tabindex` on non-menu-item elements", async ({ page }) => {
-        await page.goto(fixtureURL("menu--menu-with-divider"));
-
-        const element = page.locator("fast-menu");
-
-        const divider = element.locator("fast-divider");
-
-        expect(await divider.getAttribute("tabindex")).toBeNull();
     });
 
     test("should focus disabled items", async ({ page }) => {
@@ -114,14 +129,6 @@ test.describe("Menu", () => {
         await page.goto(fixtureURL("menu--menu-with-divider"));
 
         await expect(page.locator("fast-menu fast-divider")).not.toHaveClass("indent");
-    });
-
-    test("should set class on menu items to 0 columns", async ({ page }) => {
-        await page.goto(fixtureURL("menu--menu"));
-
-        await expect(page.locator("fast-menu fast-menu-item").first()).toHaveClass(
-            /indent-0/
-        );
     });
 
     test("should set class on menu items to 0 columns when non fast-menu-item is present", async ({

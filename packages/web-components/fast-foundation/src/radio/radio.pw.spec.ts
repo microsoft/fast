@@ -11,48 +11,26 @@ test.describe("Radio", () => {
         await expect(element).toHaveAttribute("role", "radio");
     });
 
-    test("should set the `aria-checked` attribute equal to the `checked` value", async ({
-        page,
-    }) => {
+    test("should set ARIA attributes to match the state", async ({ page }) => {
         await page.goto(fixtureURL("radio--radio"));
 
         const element = page.locator("fast-radio");
+
+        // Checked
+        await expect(element).toHaveAttribute("aria-checked", "false");
 
         await element.evaluate((node: FASTRadio) => (node.checked = true));
 
         await expect(element).toHaveAttribute("aria-checked", "true");
 
+        await expect(element).toHaveClass(/checked/);
+
         await element.evaluate((node: FASTRadio) => (node.checked = false));
 
         await expect(element).toHaveAttribute("aria-checked", "false");
-    });
 
-    test("should add a class of `checked` when checked is true", async ({ page }) => {
-        await page.goto(fixtureURL("radio--radio"));
-
-        const element = page.locator("fast-radio");
-
-        await element.evaluate((node: FASTRadio) => (node.checked = true));
-
-        await expect(element).toHaveClass(/checked/);
-    });
-
-    test("should set a default `aria-checked` value when `checked` is not defined", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("radio--radio"));
-
-        const element = page.locator("fast-radio");
-
-        await expect(element).toHaveAttribute("aria-checked", "false");
-    });
-
-    test("should set the `aria-required` attribute equal to the `required` value", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("radio--radio"));
-
-        const element = page.locator("fast-radio");
+        // Required
+        await expect(element).toHaveAttribute("aria-required", "false");
 
         await element.evaluate((node: FASTRadio) => (node.required = true));
 
@@ -61,24 +39,9 @@ test.describe("Radio", () => {
         await element.evaluate((node: FASTRadio) => (node.required = false));
 
         await expect(element).toHaveAttribute("aria-required", "false");
-    });
 
-    test("should set a default `aria-required` value when `required` is not defined", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("radio--radio"));
-
-        const element = page.locator("fast-radio");
-
-        await expect(element).toHaveAttribute("aria-required", "false");
-    });
-
-    test("should set the `aria-disabled` attribute equal to the `disabled` value", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("radio--radio"));
-
-        const element = page.locator("fast-radio");
+        // Disabled
+        await expect(element).toHaveAttribute("aria-disabled", "false");
 
         await element.evaluate((node: FASTRadio) => (node.disabled = true));
 
@@ -87,52 +50,21 @@ test.describe("Radio", () => {
         await element.evaluate((node: FASTRadio) => (node.disabled = false));
 
         await expect(element).toHaveAttribute("aria-disabled", "false");
-    });
 
-    test("should set a default `aria-disabled` value when `disabled` is not defined", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("radio--radio"));
-
-        const element = page.locator("fast-radio");
-
-        await expect(element).toHaveAttribute("aria-disabled", "false");
-    });
-
-    test("should set the `aria-readonly` attribute equal to the `readonly` value", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("radio--radio"));
-
-        const element = page.locator("fast-radio");
+        // Readonly
+        await expect(element).not.hasAttribute("aria-readonly");
 
         await element.evaluate((node: FASTRadio) => (node.readOnly = true));
 
         await expect(element).toHaveAttribute("aria-readonly", "true");
 
+        await expect(element).toHaveClass(/readonly/);
+
         await element.evaluate((node: FASTRadio) => (node.readOnly = false));
 
         await expect(element).toHaveAttribute("aria-readonly", "false");
-    });
 
-    test("should NOT set a default `aria-readonly` value when `readonly` is not defined", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("radio--radio"));
-
-        const element = page.locator("fast-radio");
-
-        expect(await element.getAttribute("aria-readonly")).toBeNull();
-    });
-
-    test("should add a class of `readonly` when readonly is true", async ({ page }) => {
-        await page.goto(fixtureURL("radio--radio"));
-
-        const element = page.locator("fast-radio");
-
-        await element.evaluate((node: FASTRadio) => (node.readOnly = true));
-
-        await expect(element).toHaveClass(/readonly/);
+        await expect(element).not.toHaveClass(/readonly/);
     });
 
     test("should set a tabindex of 0 on the element", async ({ page }) => {
@@ -196,75 +128,59 @@ test.describe("Radio", () => {
         await expect(element).toHaveJSProperty("value", "foobar");
     });
 
-    test.describe("label", () => {
-        test("should add a class of `label` to the internal label when default slotted content exists", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("radio--radio"));
+    test("should set the `label__hidden` class on the internal label when default slotted content does not exist", async ({
+        page,
+    }) => {
+        await page.goto(fixtureURL("radio--radio"));
 
-            const element = page.locator("fast-radio");
+        const element = page.locator("fast-radio");
 
-            const label = element.locator("label");
+        const label = element.locator("label");
 
-            await expect(label).toHaveClass("label");
+        await expect(label).toHaveClass("label");
+
+        await element.evaluate(node => {
+            node.textContent = "";
         });
 
-        test("should add classes of `label` and `label__hidden` to the internal label when default slotted content exists", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("radio--radio", {
-                    storyContent: "",
-                })
-            );
-
-            const element = page.locator("fast-radio");
-
-            const label = element.locator("label");
-
-            await expect(label).toHaveClass("label label__hidden");
-        });
+        await expect(label).toHaveClass("label label__hidden");
     });
 
-    test.describe("events", () => {
-        test("should fire an event on click", async ({ page }) => {
-            await page.goto(fixtureURL("radio--radio"));
+    test("should fire events when clicked and spacebar is pressed", async ({ page }) => {
+        await page.goto(fixtureURL("radio--radio"));
 
-            const element = page.locator("fast-radio");
+        const element = page.locator("fast-radio");
 
-            const [wasClicked] = await Promise.all([
-                element.evaluate(
-                    (node: FASTRadio) =>
-                        new Promise(resolve =>
-                            node.addEventListener("click", () => resolve(true))
-                        )
-                ),
-                element.click(),
-            ]);
+        const [wasClicked] = await Promise.all([
+            element.evaluate(
+                (node: FASTRadio) =>
+                    new Promise(resolve =>
+                        node.addEventListener("click", () => resolve(true), {
+                            once: true,
+                        })
+                    )
+            ),
+            element.click(),
+        ]);
 
-            expect(wasClicked).toBeTruthy();
-        });
+        expect(wasClicked).toBeTruthy();
 
-        test("should fire an event when spacebar is invoked", async ({ page }) => {
-            await page.goto(fixtureURL("radio--radio"));
+        const [wasPressed] = await Promise.all([
+            element.evaluate(
+                (node: FASTRadio) =>
+                    new Promise(resolve =>
+                        node.addEventListener("keydown", () => resolve(true), {
+                            once: true,
+                        })
+                    )
+            ),
+            // FIXME: Playwright's keyboard API is not working as expected.
+            element.evaluate(node =>
+                node.dispatchEvent(new KeyboardEvent("keydown", { key: " " }))
+            ),
+        ]);
 
-            const element = page.locator("fast-radio");
-
-            const [wasPressed] = await Promise.all([
-                element.evaluate(
-                    (node: FASTRadio) =>
-                        new Promise(resolve =>
-                            node.addEventListener("keydown", () => resolve(true))
-                        )
-                ),
-                // FIXME: Playwright's keyboard API is not working as expected.
-                element.evaluate(node =>
-                    node.dispatchEvent(new KeyboardEvent("keydown", { key: " " }))
-                ),
-            ]);
-
-            expect(wasPressed).toBeTruthy();
-        });
+        expect(wasPressed).toBeTruthy();
     });
 
     test("should handle validity when the `required` attribute is present", async ({

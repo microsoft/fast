@@ -1,215 +1,52 @@
 import { expect, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTHorizontalScroll } from "./horizontal-scroll.js";
 
 test.describe("HorizontalScroll", () => {
     test.describe("Flippers", () => {
-        test("should enable the next flipper when content exceeds horizontal-scroll width", async ({
-            page,
-        }) => {
+        let cards: Locator;
+        let element: Locator;
+        let page: Page;
+        let scrollNext: Locator;
+        let scrollPrevious: Locator;
+        let scrollView: Locator;
+
+        test.beforeAll(async ({ browser }) => {
+            page = await browser.newPage();
+
+            element = page.locator("fast-horizontal-scroll");
+            scrollNext = element.locator(".scroll-next");
+            scrollPrevious = element.locator(".scroll-prev");
+            scrollView = element.locator(".scroll-view");
+            cards = element.locator("fast-card");
+
             await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
-
-            const element = page.locator("fast-horizontal-scroll");
-
-            const scrollNext = element.locator(".scroll-next");
-
-            expect(
-                await scrollNext.evaluate(node => node.classList.contains("disabled"))
-            ).toBeFalsy();
-        });
-
-        test("should hide the next flipper if content is less than horizontal-scroll width", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
-
-            const element = page.locator("fast-horizontal-scroll");
-
-            const scrollNext = element.locator(".scroll-next");
-
-            await element.evaluate((node: FASTHorizontalScroll) => {
-                node.querySelectorAll("fast-card:nth-child(n + 5)").forEach(card =>
-                    card.remove()
-                );
-            });
-
-            await expect(scrollNext).toBeHidden();
-        });
-
-        test("should disable the previous flipper by default", async ({ page }) => {
-            await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
-
-            const element = page.locator("fast-horizontal-scroll");
-
-            const scrollPrevious = element.locator(".scroll-prev");
-
-            expect(
-                await scrollPrevious.evaluate(node => node.classList.contains("disabled"))
-            ).toBeTruthy();
-        });
-
-        test("should enable the previous flipper when content is scrolled", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
-
-            const element = page.locator("fast-horizontal-scroll");
-
-            const scrollPrevious = element.locator(".scroll-prev");
 
             await element.evaluate((node: FASTHorizontalScroll) => {
                 node.speed = 0;
-                node.scrollToNext();
             });
-
-            expect(
-                await scrollPrevious.evaluate(node => node.classList.contains("disabled"))
-            ).toBeFalsy();
         });
 
-        test("should disable the previous flipper when scrolled back to the beginning", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
-
-            const element = page.locator("fast-horizontal-scroll");
-
-            const scrollPrevious = element.locator(".scroll-prev");
-
-            await element.evaluate((node: FASTHorizontalScroll) => {
-                node.speed = 0;
-                node.scrollToNext();
-            });
-
-            await element.evaluate((node: FASTHorizontalScroll) => {
-                node.scrollToPrevious();
-            });
-
-            expect(
-                await scrollPrevious.evaluate(node => node.classList.contains("disabled"))
-            ).toBeTruthy();
+        test.afterAll(async () => {
+            await page.close();
         });
 
-        test("should disable the next flipper when it reaches the end of the content", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
-
-            const element = page.locator("fast-horizontal-scroll");
-
-            const scrollNext = element.locator(".scroll-next");
-
+        test.beforeEach(async () => {
             await element.evaluate((node: FASTHorizontalScroll) => {
-                node.speed = 0;
-                node.scrollToNext();
-                node.scrollToNext();
-                node.scrollToNext();
-                node.scrollToNext();
+                node.scrollToPosition(0);
             });
-
-            expect(
-                await scrollNext.evaluate(node => node.classList.contains("disabled"))
-            ).toBeTruthy();
         });
 
-        test("should re-enable the next flipper when its scrolled back from the end", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
-
-            const element = page.locator("fast-horizontal-scroll");
-
-            const scrollNext = element.locator(".scroll-next");
-
-            await element.evaluate((node: FASTHorizontalScroll) => {
-                node.speed = 0;
-                node.scrollToNext();
-            });
-
-            await element.evaluate((node: FASTHorizontalScroll) => {
-                node.scrollToNext();
-                node.scrollToNext();
-                node.scrollToNext();
-                node.scrollToPrevious();
-            });
-
-            expect(
-                await scrollNext.evaluate(node => node.classList.contains("disabled"))
-            ).toBeFalsy();
+        test("should enable the next flipper element when content exceeds horizontal-scroll width", async () => {
+            await expect(scrollNext).not.toHaveClass(/disabled/);
         });
 
-        test("should disable the next flipper when it's scrolled back from the end and scrolled forward", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
-
-            const element = page.locator("fast-horizontal-scroll");
-
-            const scrollNext = element.locator(".scroll-next");
-
-            await element.evaluate((node: FASTHorizontalScroll) => {
-                node.speed = 0;
-                node.scrollToNext();
-            });
-
-            await element.evaluate((node: FASTHorizontalScroll) => {
-                node.scrollToNext();
-            });
-
-            await element.evaluate((node: FASTHorizontalScroll) => {
-                node.scrollToNext();
-            });
-
-            await element.evaluate((node: FASTHorizontalScroll) => {
-                node.scrollToNext();
-            });
-
-            expect(
-                await scrollNext.evaluate(node => node.classList.contains("disabled"))
-            ).toBeTruthy();
-
-            await element.evaluate((node: FASTHorizontalScroll) => {
-                node.scrollToPrevious();
-            });
-
-            expect(
-                await scrollNext.evaluate(node => node.classList.contains("disabled"))
-            ).toBeFalsy();
-
-            await element.evaluate((node: FASTHorizontalScroll) => {
-                node.scrollToNext();
-            });
-
-            expect(
-                await scrollNext.evaluate(node => node.classList.contains("disabled"))
-            ).toBeTruthy();
-        });
-    });
-
-    test.describe("Scrolling", () => {
-        test("should start in the 0 position", async ({ page }) => {
-            await page.goto(
-                fixtureURL("horizontal-scroll--horizontal-scroll", { speed: 0 })
-            );
-
-            const element = page.locator("fast-horizontal-scroll");
-
-            expect(
-                await element.locator(".scroll-view").evaluate(node => node.scrollLeft)
-            ).toBe(0);
+        test("should start in the 0 position", async () => {
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 0);
         });
 
-        test("should scroll to the beginning of the last element in full view", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("horizontal-scroll--horizontal-scroll", { speed: 0 })
-            );
-
-            const element = page.locator("fast-horizontal-scroll");
-
-            const scrollView = element.locator(".scroll-view");
-
+        test("should scroll to the beginning of the last element in full view", async () => {
             await element.evaluate((node: FASTHorizontalScroll) => {
                 node.scrollToNext();
             });
@@ -217,14 +54,8 @@ test.describe("HorizontalScroll", () => {
             await expect(scrollView).toHaveJSProperty("scrollLeft", 375);
         });
 
-        test("should not scroll past the beginning", async ({ page }) => {
-            await page.goto(
-                fixtureURL("horizontal-scroll--horizontal-scroll", { speed: 0 })
-            );
-
-            const element = page.locator("fast-horizontal-scroll");
-
-            const scrollView = element.locator(".scroll-view");
+        test("should not scroll past the beginning", async () => {
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 0);
 
             await element.evaluate((node: FASTHorizontalScroll) => {
                 node.scrollToPrevious();
@@ -233,17 +64,7 @@ test.describe("HorizontalScroll", () => {
             await expect(scrollView).toHaveJSProperty("scrollLeft", 0);
         });
 
-        test("should not scroll past the last in view element", async ({ page }) => {
-            await page.goto(
-                fixtureURL("horizontal-scroll--horizontal-scroll", { speed: 0 })
-            );
-
-            const element = page.locator("fast-horizontal-scroll");
-
-            const cards = element.locator("fast-card");
-
-            const scrollView = element.locator(".scroll-view");
-
+        test("should not scroll past the last in view element", async () => {
             await element.evaluate((node: FASTHorizontalScroll) => {
                 const scrollView = (node.shadowRoot as ShadowRoot).querySelector(
                     ".scroll-view"
@@ -266,6 +87,58 @@ test.describe("HorizontalScroll", () => {
             );
         });
 
+        test('should set the "disabled" class on the previous flipper when the scroll position is at the beginning of the content', async () => {
+            await expect(scrollPrevious).toHaveClass(/disabled/);
+
+            await element.evaluate((node: FASTHorizontalScroll) => {
+                node.scrollToNext();
+            });
+
+            await expect(scrollPrevious).not.toHaveClass(/disabled/);
+
+            await element.evaluate((node: FASTHorizontalScroll) => {
+                node.scrollToPosition(0);
+            });
+
+            await expect(scrollPrevious).toHaveClass(/disabled/);
+        });
+
+        test('should set the "disabled" class on the next flipper when the scroll position is at the end of the content', async () => {
+            await expect(scrollNext).not.toHaveClass(/disabled/);
+
+            await element.evaluate((node: FASTHorizontalScroll) => {
+                node.scrollToPosition(node.scrollContainer.scrollWidth);
+            });
+
+            await expect(scrollNext).toHaveClass(/disabled/);
+
+            await element.evaluate((node: FASTHorizontalScroll) => {
+                node.scrollToPrevious();
+            });
+
+            await expect(scrollNext).not.toHaveClass(/disabled/);
+        });
+    });
+
+    test("should hide the next flipper if content is less than horizontal-scroll width", async ({
+        page,
+    }) => {
+        await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
+
+        const element = page.locator("fast-horizontal-scroll");
+
+        const scrollNext = element.locator(".scroll-next");
+
+        await element.evaluate((node: FASTHorizontalScroll) => {
+            node.querySelectorAll("fast-card:nth-child(n + 5)").forEach(card =>
+                card.remove()
+            );
+        });
+
+        await expect(scrollNext).toBeHidden();
+    });
+
+    test.describe("Scrolling", () => {
         test("should change scroll stop on resize", async ({ page }) => {
             await page.goto(
                 fixtureURL("horizontal-scroll--horizontal-scroll", { speed: 0 })
@@ -321,7 +194,7 @@ test.describe("HorizontalScroll", () => {
             await expect(scrollView).toHaveJSProperty("scrollLeft", 0);
         });
 
-        test("should scroll item into view when using `scrollInView()`", async ({
+        test("should scroll item into view when the `scrollInView()` method is invoked", async ({
             page,
         }) => {
             await page.goto(

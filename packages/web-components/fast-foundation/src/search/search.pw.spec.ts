@@ -1,127 +1,87 @@
 import { spinalCase } from "@microsoft/fast-web-utilities";
 import { expect, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTSearch } from "./search.js";
 
 test.describe("Search", () => {
-    test("should set the `autofocus` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { autofocus: true }));
+    test.describe("should set the boolean attribute on the internal input", () => {
+        let page: Page;
+        let element: Locator;
 
-        const element = page.locator("fast-search");
+        const attributes = {
+            autofocus: true,
+            disabled: true,
+            readonly: true,
+            required: true,
+            spellcheck: true,
+        };
 
-        const control = element.locator(".control");
+        test.beforeAll(async ({ browser }) => {
+            page = await browser.newPage();
 
-        expect(await control.getAttribute("autofocus")).toBe("");
+            element = page.locator("fast-search .control");
+
+            await page.goto(fixtureURL("search--search", attributes));
+        });
+
+        test.afterAll(async () => {
+            await page.close();
+        });
+
+        for (const attribute of Object.keys(attributes)) {
+            test(`should set ${attribute}`, async () => {
+                await expect(element).toHaveBooleanAttribute(attribute);
+            });
+        }
     });
 
-    test("should set the `disabled` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { disabled: true }));
+    test.describe("should set the attribute on the internal control", () => {
+        let page: Page;
 
-        const element = page.locator("fast-search");
+        const attributes = {
+            maxlength: 14,
+            minlength: 14,
+            placeholder: "foo",
+            size: 8,
+            list: "listId",
+            ariaAtomic: "true",
+            ariaBusy: "false",
+            ariaControls: "testId",
+            ariaCurrent: "page",
+            ariaDescribedby: "testId",
+            ariaDetails: "testId",
+            ariaDisabled: "true",
+            ariaErrormessage: "test",
+            ariaFlowto: "testId",
+            ariaHaspopup: "true",
+            ariaHidden: "true",
+            ariaInvalid: "spelling",
+            ariaKeyshortcuts: "F4",
+            ariaLabel: "Foo label",
+            ariaLabelledby: "testId",
+            ariaLive: "polite",
+            ariaOwns: "testId",
+            ariaRelevant: "removals",
+            ariaRoledescription: "search",
+        };
 
-        const control = element.locator(".control");
+        test.beforeAll(async ({ browser }) => {
+            page = await browser.newPage();
+            await page.goto(fixtureURL("search--search", attributes));
+        });
 
-        expect(await control.getAttribute("disabled")).toBe("");
-    });
+        test.afterAll(async () => {
+            await page.close();
+        });
 
-    test("should set the `list` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { list: "listId" }));
+        for (const [attribute, value] of Object.entries(attributes)) {
+            test(`should set ${attribute} to ${value}`, async () => {
+                const control = page.locator("fast-search .control");
 
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("list", "listId");
-    });
-
-    test("should set the `maxlength` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { maxlength: 14 }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("maxlength", "14");
-    });
-
-    test("should set the `minlength` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { minlength: 14 }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("minlength", "14");
-    });
-
-    test("should set the `placeholder` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { placeholder: "placeholder" }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("placeholder", "placeholder");
-    });
-
-    test("should set the `readonly` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { readonly: true }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        expect(await control.getAttribute("readonly")).toBe("");
-    });
-
-    test("should set the `required` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { required: true }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        expect(await control.getAttribute("required")).toBe("");
-    });
-
-    test("should set the `size` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { size: 8 }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        expect(await control.getAttribute("size")).toBe("8");
-    });
-
-    test("should set the `spellcheck` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { spellcheck: true }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        expect(await control.getAttribute("spellcheck")).toBe("");
+                await expect(control).toHaveAttribute(spinalCase(attribute), `${value}`);
+            });
+        }
     });
 
     test("should initialize to the initial value if no value property is set", async ({
@@ -247,41 +207,6 @@ test.describe("Search", () => {
         });
 
         await expect(label).toHaveClass(/label__hidden/);
-    });
-
-    test.describe("should set the ARIA attribute on the internal control", () => {
-        const attributes = {
-            ariaAtomic: "true",
-            ariaBusy: "false",
-            ariaControls: "testId",
-            ariaCurrent: "page",
-            ariaDescribedby: "testId",
-            ariaDetails: "testId",
-            ariaDisabled: "true",
-            ariaErrormessage: "test",
-            ariaFlowto: "testId",
-            ariaHaspopup: "true",
-            ariaHidden: "true",
-            ariaInvalid: "spelling",
-            ariaKeyshortcuts: "F4",
-            ariaLabel: "Foo label",
-            ariaLabelledby: "testId",
-            ariaLive: "polite",
-            ariaOwns: "testId",
-            ariaRelevant: "removals",
-            ariaRoledescription: "search",
-        };
-        Object.entries(attributes).forEach(([key, value]) => {
-            test(key, async ({ page }) => {
-                await page.goto(fixtureURL("search--search", { [key]: value }));
-
-                const element = page.locator("fast-search");
-
-                const control = element.locator(".control");
-
-                await expect(control).toHaveAttribute(spinalCase(key), value);
-            });
-        });
     });
 
     test.describe("events", () => {

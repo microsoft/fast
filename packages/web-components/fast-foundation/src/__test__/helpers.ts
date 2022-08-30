@@ -4,6 +4,7 @@ import type {
     Args,
     ComponentAnnotations,
     StoryAnnotations,
+    StoryContext,
 } from "@storybook/csf";
 import qs from "qs";
 
@@ -48,10 +49,10 @@ export function fixtureURL(
  */
 export function renderComponent<TArgs = Args>(
     template: ViewTemplate
-): (args: TArgs) => Element | DocumentFragment | null {
-    return function (args) {
+): (args: TArgs, context: StoryContext) => Element | DocumentFragment | null {
+    return function (args, { updateArgs }) {
         const storyFragment = new DocumentFragment();
-        template.render(args, storyFragment);
+        template.render({...args, updateArgs }, storyFragment);
         if (storyFragment.childElementCount === 1) {
             return storyFragment.firstElementChild;
         }

@@ -11,28 +11,13 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveAttribute("role", "option");
     });
 
-    test("should set the `aria-selected` attribute equal to the `selected` value", async ({
-        page,
-    }) => {
+    test("should set matching ARIA attributes", async ({ page }) => {
         await page.goto(fixtureURL("listbox-option--listbox-option"));
 
         const element = page.locator("fast-option");
 
-        await element.evaluate((node: FASTListboxOption) => (node.selected = true));
-
-        await expect(element).toHaveAttribute("aria-selected", "true");
-
-        await element.evaluate((node: FASTListboxOption) => (node.selected = false));
-
-        await expect(element).toHaveAttribute("aria-selected", "false");
-    });
-
-    test("should set the `aria-disabled` attribute equal to the `disabled` value", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("listbox-option--listbox-option"));
-
-        const element = page.locator("fast-option");
+        // Disabled
+        await expect(element).not.hasAttribute("aria-disabled");
 
         await element.evaluate((node: FASTListboxOption) => (node.disabled = true));
 
@@ -41,30 +26,34 @@ test.describe("ListboxOption", () => {
         await element.evaluate((node: FASTListboxOption) => (node.disabled = false));
 
         await expect(element).toHaveAttribute("aria-disabled", "false");
-    });
 
-    test("should set the `aria-checked` attribute to match the `checked` property", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("listbox-option--listbox-option"));
+        await page.reload();
 
-        const element = page.locator("fast-option");
+        // Selected
+        await expect(element).toHaveAttribute("aria-selected", "false");
 
-        expect(await element.getAttribute("aria-checked")).toBeNull();
+        await element.evaluate((node: FASTListboxOption) => (node.selected = true));
+
+        await expect(element).toHaveAttribute("aria-selected", "true");
+
+        await expect(element).toHaveClass(/selected/);
+
+        await element.evaluate((node: FASTListboxOption) => (node.selected = false));
+
+        await expect(element).toHaveAttribute("aria-selected", "false");
+
+        // Checked
+        await expect(element).not.hasAttribute("aria-checked");
 
         await element.evaluate((node: FASTListboxOption) => (node.checked = true));
 
         await expect(element).toHaveAttribute("aria-checked", "true");
 
+        await expect(element).toHaveClass(/checked/);
+
         await element.evaluate((node: FASTListboxOption) => (node.checked = false));
 
         await expect(element).toHaveAttribute("aria-checked", "false");
-
-        await element.evaluate((node: FASTListboxOption) => (node.checked = undefined));
-
-        await page.evaluate(() => new Promise(requestAnimationFrame));
-
-        expect(await element.getAttribute("aria-checked")).toBeNull();
     });
 
     test("should have an empty string `value` when the `value` attribute exists and is empty", async ({

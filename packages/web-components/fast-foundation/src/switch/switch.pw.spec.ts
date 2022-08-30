@@ -1,60 +1,120 @@
+import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTSwitch } from "./switch.js";
 
 test.describe("Switch", () => {
-    test("should have a role of `switch`", async ({ page }) => {
-        await page.goto(fixtureURL("switch--switch"));
+    test.describe("States, attributes, and properties", () => {
+        let page: Page;
+        let element: Locator;
 
-        const element = page.locator("fast-switch");
+        test.beforeAll(async ({ browser }) => {
+            page = await browser.newPage();
 
-        await expect(element).toHaveAttribute("role", "switch");
-    });
+            await page.goto(fixtureURL("switch--switch"));
 
-    test("should set the `aria-checked` attribute equal to the `checked` value", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("switch--switch"));
-
-        const element = page.locator("fast-switch");
-
-        await element.evaluate<void, FASTSwitch>(node => {
-            node.checked = true;
+            element = page.locator("fast-switch");
         });
 
-        await expect(element).toHaveAttribute("aria-checked", "true");
-
-        await element.evaluate<void, FASTSwitch>(node => {
-            node.checked = false;
+        test.afterAll(async () => {
+            await page.close();
         });
 
-        await expect(element).toHaveAttribute("aria-checked", "false");
-    });
-
-    test("should add a class of `checked` when checked is true", async ({ page }) => {
-        await page.goto(fixtureURL("switch--switch"));
-
-        const element = page.locator("fast-switch");
-
-        await element.evaluate<void, FASTSwitch>(node => {
-            node.checked = true;
+        test("should have a role of `switch`", async () => {
+            await expect(element).toHaveAttribute("role", "switch");
         });
 
-        await expect(element).toHaveClass(/checked/);
-    });
+        test("should set a tabindex of 0 on the element", async () => {
+            await expect(element).toHaveAttribute("tabindex", "0");
+        });
 
-    test("should set a default `aria-checked` value when `checked` is not defined", async ({
-        page,
-    }) => {
-        await page.goto(
-            fixtureURL("switch--switch", {
-                checked: false,
-            })
-        );
+        test("should set a default `aria-checked` value when `checked` is not defined", async () => {
+            await expect(element).toHaveAttribute("aria-checked", "false");
+        });
 
-        const element = page.locator("fast-switch");
+        test("should set a default `aria-disabled` value when `disabled` is not defined", async () => {
+            await expect(element).toHaveAttribute("aria-disabled", "false");
+        });
 
-        await expect(element).toHaveAttribute("aria-checked", "false");
+        test("should NOT set a default `aria-readonly` value when `readonly` is not defined", async () => {
+            await expect(element).not.hasAttribute("aria-readonly");
+        });
+
+        test("should set the `aria-checked` attribute equal to the `checked` property", async () => {
+            await element.evaluate<void, FASTSwitch>(node => {
+                node.checked = true;
+            });
+
+            await expect(element).toHaveAttribute("aria-checked", "true");
+
+            await element.evaluate<void, FASTSwitch>(node => {
+                node.checked = false;
+            });
+
+            await expect(element).toHaveAttribute("aria-checked", "false");
+        });
+
+        test("should set the `aria-readonly` attribute equal to the `readonly` value", async () => {
+            await element.evaluate<void, FASTSwitch>(node => {
+                node.readOnly = true;
+            });
+
+            await expect(element).toHaveAttribute("aria-readonly", "true");
+
+            await element.evaluate<void, FASTSwitch>(node => {
+                node.readOnly = false;
+            });
+
+            await expect(element).toHaveAttribute("aria-readonly", "false");
+        });
+
+        test('should add a class of "checked" when the `checked` property is true', async () => {
+            await element.evaluate<void, FASTSwitch>(node => {
+                node.checked = true;
+            });
+
+            await expect(element).toHaveClass(/checked/);
+
+            await element.evaluate<void, FASTSwitch>(node => {
+                node.checked = false;
+            });
+
+            await expect(element).not.toHaveClass(/checked/);
+        });
+
+        test("should initialize to the initial value if no value property is set", async () => {
+            const initialValue = await element.evaluate<string, FASTSwitch>(
+                node => node.initialValue
+            );
+
+            await expect(element).toHaveJSProperty("value", initialValue);
+        });
+
+        test.describe("label", () => {
+            test("should add a class of `label` to the internal label when default slotted content exists", async () => {
+                const label = element.locator(".label");
+
+                await element.evaluate(node => {
+                    node.innerHTML = "Label";
+                });
+
+                await expect(label).toHaveClass(/label/);
+
+                await expect(label).not.toHaveClass(/label__hidden/);
+            });
+
+            test("should add classes of `label` and `label__hidden` to the internal label when default slotted content exists", async () => {
+                const label = element.locator(".label");
+
+                await element.evaluate(node => {
+                    node.innerHTML = "";
+                });
+
+                await expect(label).toHaveClass(/label/);
+
+                await expect(label).toHaveClass(/label__hidden/);
+            });
+        });
     });
 
     test("should set the `aria-disabled` attribute equal to the `disabled` value", async ({
@@ -77,54 +137,6 @@ test.describe("Switch", () => {
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });
 
-    test("should set a default `aria-disabled` value when `disabled` is not defined", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("switch--switch"));
-
-        const element = page.locator("fast-switch");
-
-        await expect(element).toHaveAttribute("aria-disabled", "false");
-    });
-
-    test("should set the `aria-readonly` attribute equal to the `readonly` value", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("switch--switch"));
-
-        const element = page.locator("fast-switch");
-
-        await element.evaluate<void, FASTSwitch>(node => {
-            node.readOnly = true;
-        });
-
-        await expect(element).toHaveAttribute("aria-readonly", "true");
-
-        await element.evaluate<void, FASTSwitch>(node => {
-            node.readOnly = false;
-        });
-
-        await expect(element).toHaveAttribute("aria-readonly", "false");
-    });
-
-    test("should NOT set a default `aria-readonly` value when `readonly` is not defined", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("switch--switch"));
-
-        const element = page.locator("fast-switch");
-
-        expect(await element.getAttribute("aria-readonly")).toBeNull();
-    });
-
-    test("should set a tabindex of 0 on the element", async ({ page }) => {
-        await page.goto(fixtureURL("switch--switch"));
-
-        const element = page.locator("fast-switch");
-
-        await expect(element).toHaveAttribute("tabindex", "0");
-    });
-
     test("should NOT set a tabindex when disabled is `true`", async ({ page }) => {
         await page.goto(fixtureURL("switch--switch"));
 
@@ -134,23 +146,13 @@ test.describe("Switch", () => {
             node.disabled = true;
         });
 
-        await expect(element).toHaveAttribute("tabindex", "");
-    });
+        await expect(element).not.hasAttribute("tabindex");
 
-    test("should initialize to the initial value if no value property is set", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("switch--switch"));
+        await element.evaluate<void, FASTSwitch>(node => {
+            node.disabled = false;
+        });
 
-        const element = page.locator("fast-switch");
-
-        const initialValue = await element.evaluate<string, FASTSwitch>(
-            node => node.initialValue
-        );
-
-        expect(await element.evaluate<string, FASTSwitch>(node => node.value)).toBe(
-            initialValue
-        );
+        await expect(element).toHaveAttribute("tabindex", "0");
     });
 
     test("should initialize to the provided value attribute if set pre-connection", async ({
@@ -195,36 +197,6 @@ test.describe("Switch", () => {
         });
 
         await expect(element).toHaveJSProperty("value", "foobar");
-    });
-
-    test.describe("label", () => {
-        test("should add a class of `label` to the internal label when default slotted content exists", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("switch--switch", { storyContent: "label" }));
-
-            const element = page.locator("fast-switch");
-
-            const label = element.locator(".label");
-
-            await expect(label).toHaveClass(/label/);
-
-            await expect(label).not.toHaveClass(/label__hidden/);
-        });
-
-        test("should add classes of `label` and `label__hidden` to the internal label when default slotted content exists", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("switch--switch", { storyContent: "" }));
-
-            const element = page.locator("fast-switch");
-
-            const label = element.locator(".label");
-
-            await expect(label).toHaveClass(/label/);
-
-            await expect(label).toHaveClass(/label__hidden/);
-        });
     });
 
     test.describe("events", () => {
