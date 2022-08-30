@@ -7,7 +7,7 @@ import { reactive } from "./reactive.js";
 
 export type StateOptions = {
     deep?: boolean;
-    description?: string;
+    name?: string;
 };
 
 const defaultStateOptions: StateOptions = {
@@ -30,7 +30,7 @@ export function state<T>(
     options: string | StateOptions = defaultStateOptions
 ): State<T> {
     if (isString(options)) {
-        options = { deep: false, description: options }
+        options = { deep: false, name: options }
     }
 
     const host = reactive({ value }, options.deep);
@@ -42,7 +42,7 @@ export function state<T>(
     });
 
     Object.defineProperty(state, "name", {
-        value: options.description ?? "SharedState"
+        value: options.name ?? "SharedState"
     });
 
     state.set = (value: T) => host.value = value;
@@ -77,7 +77,7 @@ export function ownedState<T>(
     options: string | StateOptions = defaultStateOptions
 ): OwnedState<T> {
     if (isString(options)) {
-        options = { deep: false, description: options }
+        options = { deep: false, name: options }
     }
 
     if (!isFunction(value)) {
@@ -105,7 +105,7 @@ export function ownedState<T>(
         getHost(owner).value) as OwnedState<T>;
 
     Object.defineProperty(state, "name", {
-        value: options.description ?? "OwnedState"
+        value: options.name ?? "OwnedState"
     });
 
     state.set = (owner: any, value: T) => getHost(owner).value = value;
@@ -154,7 +154,7 @@ export type ComputedInitializer<T> = {
 
 export function computedState<T>(
     initialize: ComputedInitializer<T>,
-    description = "ComputedState"
+    name = "ComputedState"
 ) {
     let setupCallback: ComputedSetupCallback | null = null;
     const builder: ComputedBuilder  = {
@@ -174,7 +174,7 @@ export function computedState<T>(
     });
 
     Object.defineProperty(output, "name", {
-        value: description
+        value: name
     });
 
     // eslint-disable-next-line prefer-const
