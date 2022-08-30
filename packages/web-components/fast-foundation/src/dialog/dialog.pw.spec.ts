@@ -1,213 +1,170 @@
+import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTDialog } from "./index.js";
 
 test.describe("Dialog", () => {
-    test("should include a role of `dialog` on the control", async ({ page }) => {
-        await page.goto(fixtureURL("dialog--dialog"));
+    test.describe("States, Attributes, and Properties", () => {
+        let page: Page;
+        let element: Locator;
+        let control: Locator;
 
-        const element = page.locator("fast-dialog");
+        test.beforeAll(async ({ browser }) => {
+            page = await browser.newPage();
 
-        const control = element.locator(`[role="dialog"]`);
+            element = page.locator("fast-dialog");
 
-        await expect(control).toHaveClass("control");
-    });
+            control = element.locator(`[role="dialog"]`);
 
-    test("should add an attribute of `hidden` when passed", async ({ page }) => {
-        await page.goto(fixtureURL("dialog--dialog"));
-
-        const element = page.locator("fast-dialog");
-
-        await element.evaluate((node: FASTDialog) => {
-            node.hidden = true;
-            return new Promise(requestAnimationFrame);
+            await page.goto(fixtureURL("dialog--dialog"));
         });
 
-        expect(await element.evaluate(node => node.hasAttribute("hidden"))).toBeTruthy();
-
-        await element.evaluate((node: FASTDialog) => {
-            node.hidden = false;
-            return new Promise(requestAnimationFrame);
+        test.afterAll(async () => {
+            await page.close();
         });
 
-        expect(await element.evaluate(node => node.hasAttribute("hidden"))).toBeFalsy();
-    });
-
-    test("should NOT add an attribute of `hidden` when passed", async ({ page }) => {
-        await page.goto(fixtureURL("dialog--dialog"));
-
-        const element = page.locator("fast-dialog");
-
-        expect(await element.evaluate(node => node.hasAttribute("hidden"))).toBeFalsy();
-    });
-
-    test("should add an attribute of `aria-modal` with a value equal to the modal attribute", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("dialog--dialog"));
-
-        const element = page.locator("fast-dialog");
-
-        await element.evaluate((node: FASTDialog) => {
-            node.modal = true;
+        test("should include a role of `dialog` on the control", async () => {
+            await expect(control).toHaveClass("control");
         });
 
-        await expect(element.locator(`[role="dialog"]`)).toHaveAttribute(
-            "aria-modal",
-            "true"
-        );
-
-        await element.evaluate((node: FASTDialog) => {
-            node.modal = false;
-        });
-
-        const dialog = element.locator(`[role="dialog"]`);
-
-        await expect(dialog).toHaveAttribute("aria-modal", "");
-    });
-
-    test("should NOT add the `aria-modal` attribute when the `modal` attribute is not provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("dialog--dialog"));
-
-        const element = page.locator("fast-dialog");
-
-        await expect(element.locator(`[role="dialog"]`)).toHaveAttribute(
-            "aria-modal",
-            ""
-        );
-    });
-
-    test("should add an overlay element with a role of `presentation` when `modal` is true", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("dialog--dialog", { modal: true }));
-
-        const element = page.locator("fast-dialog");
-
-        await expect(element.locator(".overlay")).toHaveAttribute("role", "presentation");
-    });
-
-    test("should add a tabindex of -1 to the dialog control", async ({ page }) => {
-        await page.goto(fixtureURL("dialog--dialog"));
-
-        const element = page.locator(`fast-dialog [role="dialog"]`);
-
-        await expect(element).toHaveAttribute("tabindex", "-1");
-    });
-
-    test("should add an attribute of `no-focus-trap` when `noFocusTrap` is true", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("dialog--dialog", { noFocusTrap: true }));
-
-        const element = page.locator("fast-dialog");
-
-        expect(await element.getAttribute("no-focus-trap")).toBe("");
-    });
-
-    test("should NOT add a default attribute of `no-focus-trap` when noFocusTrap not defined", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("dialog--dialog"));
-
-        const element = page.locator("fast-dialog");
-
-        await expect(element).toHaveJSProperty("noFocusTrap", false);
-
-        expect(await element.getAttribute("no-focus-trap")).toBeFalsy();
-    });
-
-    test("should set the `aria-describedby` attribute on the dialog control when provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("dialog--dialog"));
-
-        const element = page.locator("fast-dialog");
-
-        const dialog = element.locator(`[role="dialog"]`);
-
-        const ariaDescribedby = "testId";
-
-        await element.evaluate((node: FASTDialog, ariaDescribedby) => {
-            node.ariaDescribedby = ariaDescribedby;
-        }, ariaDescribedby);
-
-        await expect(dialog).toHaveAttribute("aria-describedby", ariaDescribedby);
-    });
-
-    test("should set the `aria-labelledby` attribute on the dialog control when provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("dialog--dialog"));
-
-        const element = page.locator("fast-dialog");
-
-        const dialog = element.locator(`[role="dialog"]`);
-
-        const ariaLabelledby = "testId";
-
-        await element.evaluate((node: FASTDialog, ariaLabelledby) => {
-            node.ariaLabelledby = ariaLabelledby;
-        }, ariaLabelledby);
-
-        await expect(dialog).toHaveAttribute("aria-labelledby", ariaLabelledby);
-    });
-
-    test("should set the `aria-label` attribute on the dialog control when provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("dialog--dialog"));
-
-        const element = page.locator("fast-dialog");
-
-        const dialog = element.locator(`[role="dialog"]`);
-
-        const ariaLabel = "test label";
-
-        await element.evaluate((node: FASTDialog, ariaLabel) => {
-            node.ariaLabel = ariaLabel;
-        }, ariaLabel);
-
-        await expect(dialog).toHaveAttribute("aria-label", ariaLabel);
-    });
-
-    test.describe("methods", () => {
-        test("should set the hidden attribute to `false` when the `show()` method is invoked", async ({
+        test('should set the `tabindex` attribute on the control to "-1" by default', async ({
             page,
         }) => {
             await page.goto(fixtureURL("dialog--dialog"));
 
-            const element = page.locator("fast-dialog");
+            const element = page.locator(`fast-dialog [role="dialog"]`);
 
+            await expect(element).toHaveAttribute("tabindex", "-1");
+        });
+
+        test("should set the `hidden` attribute to equal the value of the `hidden` property", async () => {
             await element.evaluate((node: FASTDialog) => {
                 node.hidden = true;
+                return new Promise(requestAnimationFrame);
             });
 
-            await expect(element).toHaveJSProperty("hidden", true);
+            await expect(element).toHaveBooleanAttribute("hidden");
 
             await element.evaluate((node: FASTDialog) => {
-                node.show();
+                node.hidden = false;
+                return new Promise(requestAnimationFrame);
+            });
+
+            await expect(element).not.toHaveBooleanAttribute("hidden");
+        });
+
+        test("should set the `aria-describedby` attribute on the control when provided", async () => {
+            const ariaDescribedby = "testId";
+
+            await element.evaluate((node: FASTDialog, ariaDescribedby) => {
+                node.ariaDescribedby = ariaDescribedby;
+            }, ariaDescribedby);
+
+            await expect(control).toHaveAttribute("aria-describedby", ariaDescribedby);
+        });
+
+        test("should set the `aria-labelledby` attribute on the dialog control when provided", async () => {
+            const ariaLabelledby = "testId";
+
+            await element.evaluate((node: FASTDialog, ariaLabelledby) => {
+                node.ariaLabelledby = ariaLabelledby;
+            }, ariaLabelledby);
+
+            await expect(control).toHaveAttribute("aria-labelledby", ariaLabelledby);
+        });
+
+        test("should set the `aria-label` attribute on the dialog control when provided", async () => {
+            const ariaLabel = "test label";
+
+            await element.evaluate((node: FASTDialog, ariaLabel) => {
+                node.ariaLabel = ariaLabel;
+            }, ariaLabel);
+
+            await expect(control).toHaveAttribute("aria-label", ariaLabel);
+        });
+
+        test("should add an attribute of `aria-modal` with a value equal to the `modal` attribute", async () => {
+            await expect(control).not.hasAttribute("aria-modal");
+
+            await element.evaluate((node: FASTDialog) => {
+                node.modal = true;
+                return new Promise(requestAnimationFrame);
+            });
+
+            await expect(control).toHaveAttribute("aria-modal", "true");
+
+            await element.evaluate((node: FASTDialog) => {
+                node.modal = false;
+                return new Promise(requestAnimationFrame);
+            });
+
+            await expect(control).not.hasAttribute("aria-modal");
+        });
+
+        test('should add an overlay element with a `role` attribute of "presentation" when the `modal` property is true', async () => {
+            const overlay = element.locator(".overlay");
+
+            await element.evaluate((node: FASTDialog) => {
+                node.modal = true;
+            });
+
+            await expect(overlay).toHaveAttribute("role", "presentation");
+
+            await element.evaluate((node: FASTDialog) => {
+                node.modal = false;
+            });
+
+            await expect(overlay).toHaveCount(0);
+        });
+
+        test("should add an attribute of `no-focus-trap` when `noFocusTrap` is true", async () => {
+            await element.evaluate((node: FASTDialog) => {
+                node.noFocusTrap = true;
+                return new Promise(requestAnimationFrame);
+            });
+
+            await expect(element).toHaveBooleanAttribute("no-focus-trap");
+
+            await element.evaluate((node: FASTDialog) => {
+                node.noFocusTrap = false;
+                return new Promise(requestAnimationFrame);
+            });
+
+            await expect(element).not.toHaveBooleanAttribute("no-focus-trap");
+        });
+
+        test("should add the `hidden` attribute when the `hide()` method is invoked", async () => {
+            await element.evaluate((node: FASTDialog) => {
+                node.hidden = false;
             });
 
             await expect(element).toHaveJSProperty("hidden", false);
-        });
 
-        test("should set the hidden attribute to `true` when the `hide()` method is invoked", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("dialog--dialog"));
-
-            const element = page.locator("fast-dialog");
-
-            await expect(element).toHaveJSProperty("hidden", false);
+            await expect(element).not.hasAttribute("hidden");
 
             await element.evaluate((node: FASTDialog) => {
                 node.hide();
             });
 
             await expect(element).toHaveJSProperty("hidden", true);
+        });
+
+        test("should remove the `hidden` attribute when the `show()` method is invoked", async () => {
+            await element.evaluate((node: FASTDialog) => {
+                node.hidden = true;
+            });
+
+            await expect(element).toHaveJSProperty("hidden", true);
+
+            await expect(element).toHaveBooleanAttribute("hidden");
+
+            await element.evaluate((node: FASTDialog) => {
+                node.show();
+            });
+
+            await expect(element).toHaveJSProperty("hidden", false);
+
+            await expect(element).not.toHaveBooleanAttribute("hidden");
         });
     });
 

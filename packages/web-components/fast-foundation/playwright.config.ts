@@ -27,34 +27,42 @@ export default config;
 
 expect.extend({
     async toHaveBooleanAttribute(recieved: Locator, name: string) {
+        const options = {
+            comment: "Object.is equality",
+            isNot: this.isNot,
+            promise: this.promise,
+        };
+
         name = name.trim();
 
-        const [hasAttr, value] = await recieved.evaluate((node, name) => {
-            if (!node.hasAttribute(name)) {
-                return [false, null];
-            }
+        const hasAttribute = await recieved.evaluate(
+            (node, name) => node.hasAttribute(name),
+            name
+        );
 
-            return [true, node.getAttribute(name)];
-        }, name);
+        const attributeValue = await recieved.evaluate(
+            (node, name) => node.getAttribute(name),
+            name
+        );
 
-        if (!hasAttr) {
+        if (this.isNot) {
             return {
-                message: () => `expected ${name} to exist on ${recieved.toString()}`,
-                pass: false,
-            };
-        }
-
-        if (!this.isNot && value !== "" && value !== name) {
-            return {
-                message: () =>
-                    `expected attribute \`${name}\` to have a value of \`''\` or \`${name}\` on ${recieved}`,
-                pass: false,
+                pass: !!hasAttribute,
+                message: () => `expected ${name} to not be present`,
             };
         }
 
         return {
-            message: () => `expected ${recieved} to have boolean attribute ${name}`,
-            pass: true,
+            pass: hasAttribute && (attributeValue === "" || attributeValue === name),
+            message: () => `${this.utils.matcherHint(
+                "toHaveBooleanAttribute",
+                undefined,
+                undefined,
+                options
+            )}
+
+Expected: not ${this.utils.printExpected(name)}
+Received: ${this.utils.printReceived(attributeValue)}`,
         };
     },
 

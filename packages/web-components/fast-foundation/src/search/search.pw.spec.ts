@@ -1,256 +1,53 @@
 import { spinalCase } from "@microsoft/fast-web-utilities";
 import { expect, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTSearch } from "./search.js";
 
 test.describe("Search", () => {
-    test("should set the `autofocus` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { autofocus: true }));
+    let page: Page;
+    let element: Locator;
+    let control: Locator;
 
-        const element = page.locator("fast-search");
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
+        element = page.locator("fast-search");
+        control = element.locator(".control");
 
-        const control = element.locator(".control");
-
-        expect(await control.getAttribute("autofocus")).toBe("");
-    });
-
-    test("should set the `disabled` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { disabled: true }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        expect(await control.getAttribute("disabled")).toBe("");
-    });
-
-    test("should set the `list` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { list: "listId" }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("list", "listId");
-    });
-
-    test("should set the `maxlength` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { maxlength: 14 }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("maxlength", "14");
-    });
-
-    test("should set the `minlength` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { minlength: 14 }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("minlength", "14");
-    });
-
-    test("should set the `placeholder` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { placeholder: "placeholder" }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("placeholder", "placeholder");
-    });
-
-    test("should set the `readonly` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { readonly: true }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        expect(await control.getAttribute("readonly")).toBe("");
-    });
-
-    test("should set the `required` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { required: true }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        expect(await control.getAttribute("required")).toBe("");
-    });
-
-    test("should set the `size` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { size: 8 }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        expect(await control.getAttribute("size")).toBe("8");
-    });
-
-    test("should set the `spellcheck` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { spellcheck: true }));
-
-        const element = page.locator("fast-search");
-
-        const control = element.locator(".control");
-
-        expect(await control.getAttribute("spellcheck")).toBe("");
-    });
-
-    test("should initialize to the initial value if no value property is set", async ({
-        page,
-    }) => {
         await page.goto(fixtureURL("search--search"));
-
-        const element = page.locator("fast-search");
-
-        await expect(element).toHaveJSProperty("value", "");
     });
 
-    test("should initialize to the provided value attribute if set pre-connection", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("debug--blank"));
-
-        const element = page.locator("fast-search");
-
-        await page.evaluate(() => {
-            const node = document.createElement("fast-search");
-            node.setAttribute("value", "initial value");
-
-            document.getElementById("root")?.append(node);
-        });
-
-        await expect(element).toHaveJSProperty("value", "initial value");
+    test.afterAll(async () => {
+        await page.close();
     });
 
-    test("should initialize to the provided value attribute if set post-connection", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search"));
-
-        const element = page.locator("fast-search");
-
-        await element.evaluate(node => {
-            node.setAttribute("value", "foobar");
-        });
-
-        await expect(element).toHaveJSProperty("value", "foobar");
-    });
-
-    test("should initialize to the provided value property if set pre-connection", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("debug--blank"));
-
-        const element = page.locator("fast-search");
-
-        await page.evaluate(() => {
-            const node = document.createElement("fast-search") as FASTSearch;
-
-            node.value = "foobar";
-
-            document.getElementById("root")?.append(node);
-        });
-
-        await expect(element).toHaveJSProperty("value", "foobar");
-    });
-
-    test("should hide the label when no default slotted content is provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { storyContent: "" }));
-
-        const element = page.locator("fast-search");
-
-        const label = element.locator(".label");
-
-        await expect(label).toHaveClass(/label__hidden/);
-    });
-
-    test("should hide the label when start or end content is provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search", { storyContent: "" }));
-
-        const element = page.locator("fast-search");
-
-        await element.evaluate(node => {
-            const svg = document.createElement("svg");
-            svg.id = "start-end-content";
-            svg.setAttribute("slot", "start");
-            svg.setAttribute("height", "100px");
-            svg.setAttribute("width", "100px");
-
-            node.append(svg);
-        });
-
-        const label = element.locator(".label");
-
-        await expect(label).toHaveClass(/label__hidden/);
-
-        const svg = element.locator("#start-end-content");
-
-        await svg.evaluate(node => {
-            node.setAttribute("slot", "end");
-        });
-
-        await expect(label).toHaveClass(/label__hidden/);
-
-        await element.evaluate(node => {
-            node.innerHTML = "label";
-        });
-
-        await expect(label).not.toHaveClass(/label__hidden/);
-    });
-
-    test("should hide the label when space-only text nodes are slotted", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("search--search"));
-
-        const element = page.locator("fast-search");
-
-        const label = element.locator(".label");
-
-        await expect(label).not.toHaveClass(/label__hidden/);
-
-        await element.evaluate(node => {
-            node.innerHTML = `    \r    `;
-        });
-
-        await expect(label).toHaveClass(/label__hidden/);
-    });
-
-    test.describe("should set the ARIA attribute on the internal control", () => {
+    test.describe("should set the boolean attribute on the internal input", () => {
         const attributes = {
+            autofocus: true,
+            disabled: true,
+            readonly: true,
+            required: true,
+            spellcheck: true,
+        };
+
+        for (const attribute of Object.keys(attributes)) {
+            test(`should set ${attribute}`, async () => {
+                await page.setContent(/* html */ `
+                    <fast-search ${attribute}>Search</fast-search>
+                `);
+
+                await expect(element).toHaveBooleanAttribute(attribute);
+            });
+        }
+    });
+
+    test.describe("should set the attribute on the internal control", () => {
+        const attributes = {
+            maxlength: 14,
+            minlength: 14,
+            placeholder: "foo",
+            size: 8,
+            list: "listId",
             ariaAtomic: "true",
             ariaBusy: "false",
             ariaControls: "testId",
@@ -271,52 +68,156 @@ test.describe("Search", () => {
             ariaRelevant: "removals",
             ariaRoledescription: "search",
         };
-        Object.entries(attributes).forEach(([key, value]) => {
-            test(key, async ({ page }) => {
-                await page.goto(fixtureURL("search--search", { [key]: value }));
 
-                const element = page.locator("fast-search");
+        for (const [attribute, value] of Object.entries(attributes)) {
+            const attrToken = spinalCase(attribute);
+            test(`should set ${attrToken} to ${value}`, async () => {
+                await page.setContent(/* html */ `
+                    <fast-search>Search</fast-search>
+                `);
 
-                const control = element.locator(".control");
+                await element.evaluate(
+                    (node: FASTSearch, { attrToken, value }) => {
+                        node.setAttribute(attrToken, `${value}`);
+                    },
+                    { attrToken, value }
+                );
 
-                await expect(control).toHaveAttribute(spinalCase(key), value);
+                await expect(control).toHaveAttribute(spinalCase(attribute), `${value}`);
             });
-        });
+        }
     });
 
-    test.describe("events", () => {
-        test("should fire a change event when the internal control emits a change event", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("search--search"));
+    test("should initialize to the initial value if no value property is set", async () => {
+        await page.setContent(/* html */ `
+            <fast-search>Search</fast-search>
+        `);
 
-            const element = page.locator("fast-search");
+        await expect(element).toHaveJSProperty("value", "");
+    });
 
-            const control = element.locator(".control");
+    test("should initialize to the provided value attribute if set pre-connection", async () => {
+        await page.setContent(/* html */ `
+            <fast-search value="foo">Search</fast-search>
+        `);
 
-            const [wasChanged] = await Promise.all([
-                element.evaluate(
-                    node =>
-                        new Promise(resolve => {
-                            node.addEventListener("change", () => resolve(true));
-                        })
-                ),
-                control.evaluate(node => {
-                    node.dispatchEvent(new KeyboardEvent("change"));
-                }),
-            ]);
+        await expect(element).toHaveJSProperty("value", "foo");
+    });
 
-            expect(wasChanged).toBeTruthy();
+    test("should initialize to the provided value attribute if set post-connection", async () => {
+        await page.setContent(/* html */ `
+            <fast-search>Search</fast-search>
+        `);
+
+        await element.evaluate(node => {
+            node.setAttribute("value", "foo");
         });
+
+        await expect(element).toHaveJSProperty("value", "foo");
+    });
+
+    test("should initialize to the provided value property if set pre-connection", async () => {
+        await page.setContent("");
+
+        await page.evaluate(() => {
+            const node = document.createElement("fast-search") as FASTSearch;
+
+            node.value = "foo";
+
+            document.body.append(node);
+        });
+
+        await expect(element).toHaveJSProperty("value", "foo");
+    });
+
+    test("should hide the label when no default slotted content is provided", async () => {
+        await page.setContent(/* html */ `
+            <fast-search></fast-search>
+        `);
+
+        const label = element.locator(".label");
+
+        await expect(label).toHaveClass(/label__hidden/);
+    });
+
+    test("should hide the label when start content is provided", async () => {
+        await page.setContent(/* html */ `
+            <fast-search><span slot="start">Start</span></fast-search>
+        `);
+
+        const label = element.locator(".label");
+
+        await expect(label).toHaveClass(/label__hidden/);
+    });
+
+    test("should hide the label when end content is provided", async () => {
+        await page.setContent(/* html */ `
+            <fast-search><span slot="end">End</span></fast-search>
+        `);
+
+        const label = element.locator(".label");
+
+        await expect(label).toHaveClass(/label__hidden/);
+    });
+
+    test("should hide the label when start and end content is provided", async () => {
+        await page.setContent(/* html */ `
+            <fast-search>
+                <span slot="start">Start</span>
+                <span slot="end">End</span>
+            </fast-search>
+        `);
+
+        const label = element.locator(".label");
+
+        await expect(label).toHaveClass(/label__hidden/);
+    });
+
+    test("should hide the label when space-only text nodes are slotted", async () => {
+        await page.setContent(/* html */ `
+            <fast-search>label</fast-search>
+        `);
+
+        const label = element.locator(".label");
+
+        await expect(label).not.toHaveClass(/label__hidden/);
+
+        await element.evaluate(node => {
+            node.innerHTML = `    \r    `;
+        });
+
+        await expect(label).toHaveClass(/label__hidden/);
+    });
+
+    test("should fire a change event when the internal control emits a change event", async () => {
+        await page.setContent(/* html */ `
+            <fast-search>Search</fast-search>
+        `);
+
+        const control = element.locator(".control");
+
+        const [wasChanged] = await Promise.all([
+            element.evaluate(
+                node =>
+                    new Promise(resolve => {
+                        node.addEventListener("change", () => resolve(true));
+                    })
+            ),
+            control.evaluate(node => {
+                node.dispatchEvent(new KeyboardEvent("change"));
+            }),
+        ]);
+
+        expect(wasChanged).toBeTruthy();
     });
 
     test.describe("when the owning form's reset() method is invoked", () => {
-        test("should reset its `value` property to an empty string when no value attribute is set", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("search--search-in-form"));
-
-            const element = page.locator("fast-search");
+        test("should reset its `value` property to an empty string when no value attribute is set", async () => {
+            await page.setContent(/* html */ `
+                <form>
+                    <fast-search>Search</fast-search>
+                </form>
+            `);
 
             const form = page.locator("form");
 
@@ -337,14 +238,12 @@ test.describe("Search", () => {
             expect(await element.getAttribute("value")).toBeNull();
         });
 
-        test("should reset its `value` property to the value of the value attribute if it is set", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("search--search-in-form", { value: "test value" })
-            );
-
-            const element = page.locator("fast-search");
+        test("should reset its `value` property to the value of the value attribute if it is set", async () => {
+            await page.setContent(/* html */ `
+                <form>
+                    <fast-search value="test value">Search</fast-search>
+                </form>
+            `);
 
             const form = page.locator("form");
 
@@ -361,12 +260,12 @@ test.describe("Search", () => {
             await expect(element).toHaveJSProperty("value", "test value");
         });
 
-        test("should put the control into a clean state, where `value` attribute modifications change the `value` property prior to user or programmatic interaction", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("search--search-in-form"));
-
-            const element = page.locator("fast-search");
+        test("should put the control into a clean state, where `value` attribute modifications change the `value` property prior to user or programmatic interaction", async () => {
+            await page.setContent(/* html */ `
+                <form>
+                    <fast-search>Search</fast-search>
+                </form>
+            `);
 
             const form = page.locator("form");
 

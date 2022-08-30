@@ -64,11 +64,7 @@ test.describe("Accordion", () => {
     });
 
     test("should only have one expanded item in single mode", async ({ page }) => {
-        await page.goto(
-            fixtureURL("accordion--accordion", {
-                expandmode: "single",
-            })
-        );
+        await page.goto(fixtureURL("accordion--accordion", { expandmode: "single" }));
 
         const element = page.locator("fast-accordion");
 
@@ -78,23 +74,24 @@ test.describe("Accordion", () => {
 
         const secondItem = items.nth(1);
 
-        await firstItem.locator(`[part="button"]`).click();
+        await firstItem.click();
 
-        expect(
-            await firstItem.evaluate(node => node.hasAttribute("expanded"))
-        ).toBeTruthy();
+        await expect(firstItem).toHaveBooleanAttribute("expanded");
 
-        expect(
-            await secondItem.evaluate(node => node.hasAttribute("expanded"))
-        ).toBeFalsy();
+        await expect(secondItem).not.toHaveBooleanAttribute("expanded");
 
         const secondItemButton = secondItem.locator(`[part="button"]`);
 
         await secondItemButton.click();
 
-        await expect(firstItem.locator("[expanded]")).toHaveCount(0);
+        await secondItemButton.evaluate(node => {
+            node.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+            return new Promise(requestAnimationFrame);
+        });
 
-        await expect(secondItem).toHaveAttribute("expanded", "");
+        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+
+        await expect(secondItem).toHaveBooleanAttribute("expanded");
     });
 
     test("should ignore `change` events from components other than accordion items", async ({

@@ -1,118 +1,88 @@
+import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
+import type { FASTAccordionItem } from "./accordion-item.js";
 
 test.describe("Accordion item", () => {
-    test("should set an `aria-level` to the heading when provided", async ({ page }) => {
-        await page.goto(
-            fixtureURL("accordion-item--accordion-item", {
-                headinglevel: 4,
-            })
-        );
+    test.describe("States, Attributes, and Properties", () => {
+        let page: Page;
+        let element: Locator;
+        let heading: Locator;
 
-        const element = page.locator("fast-accordion-item");
+        test.beforeAll(async ({ browser }) => {
+            page = await browser.newPage();
 
-        await expect(element).toHaveJSProperty("headinglevel", 4);
+            element = page.locator("fast-accordion-item");
 
-        const heading = element.locator(`[role="heading"]`);
+            heading = page.locator(`[role="heading"]`);
 
-        await expect(heading).toHaveAttribute("aria-level", "4");
-    });
-
-    test("should set a default heading level of 2 when NOT provided a `headinglevel`", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("accordion-item--accordion-item"));
-
-        const element = page.locator("fast-accordion-item");
-
-        await expect(element).toHaveJSProperty("headinglevel", 2);
-
-        const heading = page.locator(`[role="heading"]`);
-
-        await expect(heading).toHaveAttribute("aria-level", "2");
-    });
-
-    test("should set `aria-expanded` value to false on the internal button when expanded is undefined", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("accordion-item--accordion-item"));
-
-        const element = page.locator("fast-accordion-item button");
-
-        await expect(element).toHaveAttribute("aria-expanded", "false");
-    });
-
-    test.describe("when not expanded", () => {
-        test("should NOT have a class of `expanded`", async ({ page }) => {
-            await page.goto(
-                fixtureURL("accordion-item--accordion-item", {
-                    expanded: false,
-                })
-            );
-
-            const element = page.locator("fast-accordion-item");
-
-            await expect(element).not.toHaveClass("expanded");
+            await page.goto(fixtureURL("accordion-item--accordion-item"));
         });
 
-        test("should set `aria-expanded` value to false on the internal button", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("accordion-item--accordion-item", {
-                    expanded: false,
-                })
-            );
-
-            const element = page.locator("fast-accordion-item button");
-
-            await expect(element).toHaveAttribute("aria-expanded", "false");
-        });
-    });
-
-    test.describe("when expanded", () => {
-        test("should have a class of `expanded`", async ({ page }) => {
-            await page.goto(
-                fixtureURL("accordion-item--accordion-item", {
-                    expanded: true,
-                })
-            );
-
-            const element = page.locator("fast-accordion-item");
-
-            await expect(element).toHaveClass("expanded");
+        test.afterAll(async () => {
+            await page.close();
         });
 
-        test("should set `aria-expanded` value to true on the internal button", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("accordion-item--accordion-item", {
-                    expanded: true,
-                })
-            );
+        test("should set a default heading level of 2 when `headinglevel` is not provided", async () => {
+            await expect(element).not.hasAttribute("headinglevel");
 
-            const element = page.locator("fast-accordion-item button");
-
-            await expect(element).toHaveAttribute("aria-expanded", "true");
+            await expect(element).toHaveJSProperty("headinglevel", 2);
         });
-    });
 
-    test("should set internal properties to match the id when provided", async ({
-        page,
-    }) => {
-        const id = "testId";
+        test("should set the `aria-level` attribute on the internal heading element equal to the heading level", async () => {
+            await expect(heading).toHaveAttribute("aria-level", "2");
 
-        await page.goto(fixtureURL("accordion-item--accordion-item", { id }));
+            await element.evaluate<void, FASTAccordionItem>(node => {
+                node.headinglevel = 3;
+            });
 
-        const element = page.locator("fast-accordion-item");
+            await expect(heading).toHaveAttribute("aria-level", "3");
+        });
 
-        const region = element.locator(`[role="region"]`);
+        test("should NOT have a class of `expanded` when the `expanded` property is false", async () => {
+            await element.evaluate<void, FASTAccordionItem>(node => {
+                node.expanded = false;
+            });
 
-        await expect(region).toHaveAttribute("aria-labelledby", id);
+            await expect(element).not.toHaveClass(/expanded/);
+        });
 
-        const button = element.locator("button");
+        test("should have a class of `expanded` when the `expanded` property is true", async () => {
+            await element.evaluate<void, FASTAccordionItem>(node => {
+                node.expanded = true;
+            });
 
-        await expect(button).toHaveId(id);
+            await expect(element).toHaveClass(/expanded/);
+        });
+
+        test("should set `aria-expanded` property on the internal control equal to the `expanded` property", async () => {
+            const button = element.locator("button");
+
+            await element.evaluate<void, FASTAccordionItem>(node => {
+                node.expanded = true;
+            });
+
+            await expect(button).toHaveAttribute("aria-expanded", "true");
+
+            await element.evaluate<void, FASTAccordionItem>(node => {
+                node.expanded = false;
+            });
+
+            await expect(button).toHaveAttribute("aria-expanded", "false");
+        });
+
+        test("should set internal properties to match the id when provided", async () => {
+            await element.evaluate<void, FASTAccordionItem>(node => {
+                node.id = "testId";
+            });
+
+            const region = element.locator(`[role="region"]`);
+
+            await expect(region).toHaveAttribute("aria-labelledby", "testId");
+
+            const button = element.locator("button");
+
+            await expect(button).toHaveId("testId");
+        });
     });
 });

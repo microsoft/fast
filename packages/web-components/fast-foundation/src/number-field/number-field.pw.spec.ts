@@ -1,203 +1,517 @@
 import { spinalCase } from "@microsoft/fast-web-utilities";
+import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTNumberField } from "./number-field.js";
 
 test.describe("NumberField", () => {
-    test.describe("should set the boolean attribute on the internal control", () => {
-        Object.entries({
-            autofocus: "true",
-            disabled: "true",
-            readOnly: "true",
-            required: "true",
-        }).forEach(([key, value]) => {
-            test(`${key}`, async ({ page }) => {
-                await page.goto(
-                    fixtureURL("number-field--number-field", { [key]: value })
-                );
+    let page: Page;
+    let element: Locator;
+    let control: Locator;
 
-                const element = page.locator("fast-number-field");
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
 
-                const control = element.locator(".control");
+        element = page.locator("fast-number-field");
 
-                expect(
-                    await control.evaluate((node, key) => node.hasAttribute(key), key)
-                ).toBeTruthy();
-            });
-        });
-    });
+        control = element.locator(".control");
 
-    test.describe("should set the ARIA attribute on the internal control", () => {
-        Object.entries({
-            ariaAtomic: "true",
-            ariaBusy: "false",
-            ariaControls: "testId",
-            ariaCurrent: "page",
-            ariaDescribedby: "testId",
-            ariaDetails: "testId",
-            ariaDisabled: "true",
-            ariaErrormessage: "test",
-            ariaFlowto: "testId",
-            ariaHaspopup: "true",
-            ariaHidden: "true",
-            ariaInvalid: "spelling",
-            ariaKeyshortcuts: "F4",
-            ariaLabel: "Foo label",
-            ariaLabelledby: "testId",
-            ariaLive: "polite",
-            ariaOwns: "testId",
-            ariaRelevant: "removals",
-            ariaRoledescription: "slide",
-        }).forEach(([key, value]) => {
-            test(key, async ({ page }) => {
-                await page.goto(
-                    fixtureURL("number-field--number-field", { [key]: value })
-                );
-
-                await expect(page.locator("fast-number-field .control")).toHaveAttribute(
-                    spinalCase(key),
-                    `${value}`
-                );
-            });
-        });
-    });
-
-    test.describe("should set the attribute on the internal control", () => {
-        Object.entries({
-            list: "listId",
-            maxlength: 14,
-            minlength: 8,
-            placeholder: "placeholder",
-            size: 8,
-        }).forEach(([key, value]) => {
-            test(key, async ({ page }) => {
-                await page.goto(
-                    fixtureURL("number-field--number-field", { [key]: value })
-                );
-
-                await expect(page.locator("fast-number-field .control")).toHaveAttribute(
-                    key,
-                    `${value}`
-                );
-            });
-        });
-    });
-
-    test("should initialize to the initial value if no value property is set", async ({
-        page,
-    }) => {
         await page.goto(fixtureURL("number-field--number-field"));
+    });
 
-        const element = page.locator("fast-number-field");
+    test.afterAll(async () => {
+        await page.close();
+    });
 
-        const { value, initialValue } = await element.evaluate(
-            ({ value, initialValue }: FASTNumberField) => ({
-                value,
-                initialValue,
-            })
+    test("should initialize to the provided value attribute if set pre-connection", async () => {
+        await page.setContent(`<fast-number-field value="10"></fast-number-field>`);
+
+        await expect(element).toHaveJSProperty("value", "10");
+    });
+
+    test("should set the `autofocus` attribute on the internal control", async () => {
+        await page.setContent(`<fast-number-field autofocus></fast-number-field>`);
+
+        await expect(control).toHaveBooleanAttribute("autofocus");
+    });
+
+    test("should set the `disabled` attribute on the internal control", async () => {
+        await page.setContent(`<fast-number-field disabled></fast-number-field>`);
+        await expect(control).toHaveBooleanAttribute("disabled");
+    });
+
+    test("should set the `readonly` attribute on the internal control", async () => {
+        await page.setContent(`<fast-number-field readonly></fast-number-field>`);
+        await expect(control).toHaveBooleanAttribute("readonly");
+    });
+
+    test("should set the `required` attribute on the internal control", async () => {
+        await page.setContent(`<fast-number-field required></fast-number-field>`);
+        await expect(control).toHaveBooleanAttribute("required");
+    });
+
+    for (const [attribute, value] of Object.entries({
+        min: 0,
+        max: 10,
+        list: "listId",
+        maxlength: 14,
+        minlength: 8,
+        placeholder: "placeholder",
+        size: 8,
+        ariaAtomic: "true",
+        ariaBusy: "false",
+        ariaControls: "testId",
+        ariaCurrent: "page",
+        ariaDescribedby: "testId",
+        ariaDetails: "testId",
+        ariaDisabled: "true",
+        ariaErrormessage: "test",
+        ariaFlowto: "testId",
+        ariaHaspopup: "true",
+        ariaHidden: "true",
+        ariaInvalid: "spelling",
+        ariaKeyshortcuts: "F4",
+        ariaLabel: "Foo label",
+        ariaLabelledby: "testId",
+        ariaLive: "polite",
+        ariaOwns: "testId",
+        ariaRelevant: "removals",
+        ariaRoledescription: "slide",
+    })) {
+        const attrToken = spinalCase(attribute);
+
+        test(`should set the \`${attrToken}\` attribute to "${value}" on the internal control`, async () => {
+            await page.setContent(
+                `<fast-number-field ${attrToken}="${value}"></fast-number-field>`
+            );
+
+            await expect(control).toHaveAttribute(attrToken, `${value}`);
+        });
+    }
+
+    test("should set `value` property equal to the `max` property when value is greater than max", async () => {
+        await page.setContent(`<fast-number-field max="10"></fast-number-field>`);
+
+        await control.fill("11");
+
+        await expect(element).toHaveJSProperty("value", "10");
+    });
+
+    test("should set `value` property equal to the `max` property when max is less than the value", async () => {
+        await page.setContent(`<fast-number-field value="20"></fast-number-field>`);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.max = 10;
+            return new Promise(requestAnimationFrame);
+        });
+
+        await expect(element).toHaveJSProperty("value", "10");
+    });
+
+    test("should set the `value` property equal to the `min` property when value is less than min", async () => {
+        await page.setContent(`<fast-number-field min="10"></fast-number-field>`);
+
+        await control.fill("9");
+
+        await expect(element).toHaveJSProperty("value", "10");
+
+        await expect(control).toHaveValue("10");
+    });
+
+    test("should update the `value` property when the `min` property is greater than the `value`", async () => {
+        await page.setContent(`<fast-number-field value="10"></fast-number-field>`);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.min = 20;
+        });
+
+        await expect(element).toHaveJSProperty("value", "20");
+
+        await expect(control).toHaveValue("20");
+    });
+
+    test("should set the `max` property equal to the `min` property when min is greater than max", async () => {
+        await page.setContent(`<fast-number-field min="10" max="5"></fast-number-field>`);
+
+        await expect(element).toHaveJSProperty("max", 10);
+
+        await expect(control).toHaveJSProperty("max", "10");
+    });
+
+    test("should initialize to the provided `value` attribute if set post-connection", async () => {
+        await page.setContent(`<fast-number-field></fast-number-field>`);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.value = "10";
+        });
+
+        await expect(element).toHaveJSProperty("value", "10");
+    });
+
+    test('should fire a "change" event when the internal control emits a "change" event', async () => {
+        await page.setContent(`<fast-number-field></fast-number-field>`);
+
+        const [wasChanged] = await Promise.all([
+            element.evaluate(
+                node =>
+                    new Promise(resolve => {
+                        node.addEventListener("change", () => resolve(true));
+                    })
+            ),
+
+            // FIXME: Playwright's keyboard API is not working as expected.
+            control.evaluate(node =>
+                node.dispatchEvent(new KeyboardEvent("change", { key: "1" }))
+            ),
+        ]);
+
+        expect(wasChanged).toBeTruthy();
+    });
+
+    test('should fire an "input" event when incrementing or decrementing', async () => {
+        await page.setContent(`<fast-number-field></fast-number-field>`);
+
+        const [wasIncreased] = await Promise.all([
+            element.evaluate(
+                node =>
+                    new Promise(resolve => {
+                        node.addEventListener("input", () => resolve(true), {
+                            once: true,
+                        });
+                    })
+            ),
+            element.evaluate((node: FASTNumberField) => node.stepUp()),
+        ]);
+
+        expect(wasIncreased).toBeTruthy();
+
+        const [wasDecreased] = await Promise.all([
+            element.evaluate(
+                node =>
+                    new Promise(resolve => {
+                        node.addEventListener("input", () => resolve(true), {
+                            once: true,
+                        });
+                    })
+            ),
+            element.evaluate((node: FASTNumberField) => node.stepDown()),
+        ]);
+
+        expect(wasDecreased).toBeTruthy();
+    });
+
+    test("should allow positive float numbers", async () => {
+        await page.setContent(`<fast-number-field></fast-number-field>`);
+
+        await control.fill("1.1");
+
+        await expect(element).toHaveJSProperty("value", "1.1");
+
+        await expect(control).toHaveValue("1.1");
+    });
+
+    test("should allow negative float numbers", async () => {
+        await page.setContent(`<fast-number-field></fast-number-field>`);
+
+        await control.fill("-1.1");
+
+        await expect(element).toHaveJSProperty("value", "-1.1");
+
+        await expect(control).toHaveValue("-1.1");
+    });
+
+    test("should allow positive integer numbers", async () => {
+        await page.setContent(`<fast-number-field></fast-number-field>`);
+
+        await control.fill("1");
+
+        await expect(element).toHaveJSProperty("value", "1");
+
+        await expect(control).toHaveValue("1");
+    });
+
+    test("should allow negative integer numbers", async () => {
+        await page.setContent(`<fast-number-field></fast-number-field>`);
+
+        await control.fill("-1");
+
+        await expect(element).toHaveJSProperty("value", "-1");
+
+        await expect(control).toHaveValue("-1");
+    });
+
+    // TODO: This test doesn't account for the `e` character.
+    // See https://github.com/microsoft/fast/issues/6251
+    test("should disallow non-numeric characters", async () => {
+        await page.setContent(`<fast-number-field></fast-number-field>`);
+
+        await control.fill("a");
+
+        await expect(element).toHaveJSProperty("value", "");
+
+        await expect(control).toHaveValue("");
+    });
+
+    test('should set the `step` property to "1" by default', async () => {
+        await page.setContent(`<fast-number-field></fast-number-field>`);
+
+        await expect(control).toHaveAttribute("step", "1");
+    });
+
+    test("should update the `step` attribute on the internal control when the `step` property is changed", async () => {
+        await page.setContent(`<fast-number-field></fast-number-field>`);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.step = 2;
+        });
+
+        await expect(control).toHaveAttribute("step", "2");
+    });
+
+    test("should increment the `value` property by the step amount when the `stepUp()` method is invoked", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field step="2" value="5"></fast-number-field>
+        `);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepUp();
+        });
+
+        await expect(element).toHaveJSProperty("value", "7");
+
+        await expect(control).toHaveValue("7");
+    });
+
+    test("should decrement the `value` property by the step amount when the `stepDown()` method is invoked", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field step="2" value="5"></fast-number-field>
+        `);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepDown();
+        });
+
+        await expect(element).toHaveJSProperty("value", "3");
+
+        await expect(control).toHaveValue("3");
+    });
+
+    test("should offset an undefined `value` from zero when stepped down", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field step="2"></fast-number-field>
+        `);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepDown();
+        });
+
+        await expect(element).toHaveJSProperty("value", "-2");
+
+        await expect(control).toHaveValue("-2");
+    });
+
+    test("should offset an undefined `value` from zero when stepped up", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field step="2"></fast-number-field>
+        `);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepUp();
+        });
+
+        await expect(element).toHaveJSProperty("value", "2");
+
+        await expect(control).toHaveValue("2");
+    });
+
+    test("should offset the `value` from zero after stepping down when `min` is a negative value", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field min="-10"></fast-number-field>
+        `);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepDown();
+        });
+
+        await expect(element).toHaveJSProperty("value", "0");
+
+        await expect(control).toHaveValue("0");
+    });
+
+    test("should offset the `value` from zero after stepping up when `min` is a negative value", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field min="-10"></fast-number-field>
+        `);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepUp();
+        });
+
+        await expect(element).toHaveJSProperty("value", "0");
+
+        await expect(control).toHaveValue("0");
+    });
+
+    test("should set `value` to match `min` after stepping down when `min` is greater than 0", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field min="10"></fast-number-field>
+        `);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepDown();
+        });
+
+        await expect(element).toHaveJSProperty("value", "10");
+
+        await expect(control).toHaveValue("10");
+    });
+
+    test("should set `value` to match `min` after stepping up when `min` is greater than 0", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field min="10"></fast-number-field>
+        `);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepUp();
+        });
+
+        await expect(element).toHaveJSProperty("value", "10");
+
+        await expect(control).toHaveValue("10");
+    });
+
+    test("should set the `value` to match `max` after stepping down when `value` is undefined and `min` and `max` are less than zero", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field min="-10" max="-5"></fast-number-field>
+        `);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepDown();
+        });
+
+        await expect(element).toHaveJSProperty("value", "-5");
+
+        await expect(control).toHaveValue("-5");
+    });
+
+    test("should set the `value` to match `max` after stepping up when `value` is undefined and `min` and `max` are less than zero", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field min="-10" max="-5"></fast-number-field>
+        `);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepUp();
+        });
+
+        await expect(element).toHaveJSProperty("value", "-5");
+
+        await expect(control).toHaveValue("-5");
+    });
+
+    test("should update the proxy value when stepping down", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field step="2" value="5"></fast-number-field>
+        `);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepDown();
+        });
+
+        await expect(control).toHaveValue("3");
+
+        await expect(element).toHaveJSProperty("value", "3");
+
+        expect(await element.evaluate((node: FASTNumberField) => node.proxy.value)).toBe(
+            "3"
         );
-
-        expect(value).toMatch(initialValue);
     });
 
-    test("should initialize to the provided value attribute if set pre-connection", async ({
-        page,
-    }) => {
-        const value = "10";
+    test("should update the proxy value when stepping up", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field step="2" value="5"></fast-number-field>
+        `);
 
-        await page.goto(fixtureURL("number-field--number-field", { value }));
-
-        await expect(page.locator("fast-number-field")).toHaveJSProperty("value", value);
-    });
-
-    test("should initialize to the provided value attribute if set post-connection", async ({
-        page,
-    }) => {
-        const value = "10";
-        await page.goto(fixtureURL("number-field--number-field"));
-
-        const element = page.locator("fast-number-field");
-
-        await element.evaluate((node, value) => node.setAttribute("value", value), value);
-
-        await expect(element).toHaveJSProperty("value", value);
-    });
-
-    test.describe("events", () => {
-        test("should fire a change event when the internal control emits a change event", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("number-field--number-field"));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            const [wasChanged] = await Promise.all([
-                element.evaluate(
-                    node =>
-                        new Promise(resolve => {
-                            node.addEventListener("change", () => resolve(true));
-                        })
-                ),
-
-                // FIXME: Playwright's keyboard API is not working as expected.
-                control.evaluate(node =>
-                    node.dispatchEvent(new KeyboardEvent("change", { key: "1" }))
-                ),
-            ]);
-
-            expect(wasChanged).toBeTruthy();
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepUp();
         });
 
-        test("should fire an input event when incrementing or decrementing", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("number-field--number-field"));
+        await expect(control).toHaveValue("7");
 
-            const element = page.locator("fast-number-field");
+        await expect(element).toHaveJSProperty("value", "7");
 
-            // const control = element.locator(".control");
+        expect(await element.evaluate((node: FASTNumberField) => node.proxy.value)).toBe(
+            "7"
+        );
+    });
 
-            const [wasIncreased] = await Promise.all([
-                element.evaluate(
-                    node =>
-                        new Promise(resolve => {
-                            node.addEventListener("input", () => resolve(true), {
-                                once: true,
-                            });
-                        })
-                ),
-                element.evaluate((node: FASTNumberField) => node.stepUp()),
-            ]);
+    test("should correct rounding errors when stepping down", async () => {
+        const step = 0.1;
+        const value = 0.2;
 
-            expect(wasIncreased).toBeTruthy();
+        await page.setContent(/* html */ `
+            <fast-number-field step="${step}" value="${value}"></fast-number-field>
+        `);
 
-            const [wasDecreased] = await Promise.all([
-                element.evaluate(
-                    node =>
-                        new Promise(resolve => {
-                            node.addEventListener("input", () => resolve(true), {
-                                once: true,
-                            });
-                        })
-                ),
-                element.evaluate((node: FASTNumberField) => node.stepDown()),
-            ]);
+        for (let i = 1; i < 10; i++) {
+            await element.evaluate((node: FASTNumberField) => {
+                node.stepUp();
+            });
 
-            expect(wasDecreased).toBeTruthy();
+            await expect(control).toHaveValue(
+                (value + step * i).toPrecision(2).replace(/\.?0+$/, "")
+            );
+        }
+    });
+
+    test("should not render step controls when `hide-step` attribute is present", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field hide-step></fast-number-field>
+        `);
+
+        const controls = element.locator(".controls");
+
+        await expect(controls).toBeHidden();
+    });
+
+    test("should not render step controls when `readonly` attribute is present", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field readonly></fast-number-field>
+        `);
+
+        const controls = element.locator(".controls");
+
+        await expect(controls).toHaveCount(0);
+    });
+
+    test("should allow setting `valueAsNumber` property with a number", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field></fast-number-field>
+        `);
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.valueAsNumber = 18;
         });
+
+        await expect(element).toHaveJSProperty("value", "18");
+    });
+
+    test("should allow reading the `valueAsNumber` property as number", async () => {
+        await page.setContent(/* html */ `
+            <fast-number-field value="18"></fast-number-field>
+        `);
+
+        await expect(element).toHaveJSProperty("valueAsNumber", 18);
     });
 
     test.describe("when the owning form's reset() method is invoked", () => {
-        test('should reset its `value` property to "" if no `value` attribute is set', async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("number-field--number-field-in-form"));
-
-            const element = page.locator("fast-number-field");
-
+        test('should reset its `value` property to "" if no `value` attribute is set', async () => {
             const form = page.locator("form");
+
+            await page.setContent(/* html */ `
+                <form>
+                    <fast-number-field></fast-number-field>
+                </form>
+            `);
 
             await element.evaluate((node: FASTNumberField) => {
                 node.value = "10";
@@ -210,56 +524,14 @@ test.describe("NumberField", () => {
             await expect(element).toHaveJSProperty("value", "");
         });
 
-        test("should reset it's value property to the value of the value attribute if it is set", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("number-field--number-field-in-form", { value: 20 })
-            );
-
-            const element = page.locator("fast-number-field");
-
+        test("should reset the `value` property to match the `value` attribute", async () => {
             const form = page.locator("form");
 
-            await expect(element).toHaveJSProperty("value", "20");
-
-            await element.evaluate((node: FASTNumberField) => {
-                node.value = "10";
-            });
-
-            await expect(element).toHaveJSProperty("value", "10");
-
-            await form.evaluate((node: HTMLFormElement) => node.reset());
-
-            await expect(element).toHaveJSProperty("value", "20");
-        });
-
-        test("should update input field when script sets value", async ({ page }) => {
-            await page.goto(fixtureURL("number-field--number-field"));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveValue("");
-
-            await element.evaluate(node => {
-                node.setAttribute("value", "10");
-            });
-
-            await expect(control).toHaveValue("10");
-        });
-
-        test("should put the control into a clean state, where value attribute changes the property value prior to user or programmatic interaction", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("number-field--number-field-in-form", { value: 10 })
-            );
-
-            const element = page.locator("fast-number-field");
-
-            const form = page.locator("form");
+            await page.setContent(/* html */ `
+                <form>
+                    <fast-number-field value="10"></fast-number-field>
+                </form>
+            `);
 
             await expect(element).toHaveJSProperty("value", "10");
 
@@ -272,492 +544,36 @@ test.describe("NumberField", () => {
             await form.evaluate((node: HTMLFormElement) => node.reset());
 
             await expect(element).toHaveJSProperty("value", "10");
+        });
 
-            await element.evaluate(node => node.setAttribute("value", "30"));
+        test("should put the control into a clean state, where `value` attribute modifications change the `value` property prior to user or programmatic interaction", async () => {
+            const form = page.locator("form");
+
+            await page.setContent(/* html */ `
+                <form>
+                    <fast-number-field value="10"></fast-number-field>
+                </form>
+            `);
+
+            await expect(element).toHaveJSProperty("value", "10");
+
+            await element.evaluate((node: FASTNumberField) => {
+                node.value = "20";
+            });
+
+            await expect(element).toHaveJSProperty("value", "20");
+
+            await form.evaluate((node: HTMLFormElement) => {
+                node.reset();
+            });
+
+            await expect(element).toHaveJSProperty("value", "10");
+
+            await element.evaluate(node => {
+                node.setAttribute("value", "30");
+            });
 
             await expect(element).toHaveJSProperty("value", "30");
         });
-    });
-
-    test.describe("min and max values", () => {
-        test("should set min value", async ({ page }) => {
-            const min = 1;
-            await page.goto(fixtureURL("number-field--number-field", { min }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("min", min.toString());
-
-            await expect(element).toHaveJSProperty("min", min);
-        });
-
-        test("should set max value", async ({ page }) => {
-            const max = 10;
-            await page.goto(fixtureURL("number-field--number-field", { max }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("max", max.toString());
-
-            await expect(element).toHaveJSProperty("max", max);
-        });
-
-        test("should set value to max when value is greater than max", async ({
-            page,
-        }) => {
-            const max = "10";
-            const value = "20";
-            await page.goto(fixtureURL("number-field--number-field", { max, value }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveValue(max);
-
-            await expect(element).toHaveJSProperty("value", max);
-        });
-
-        test("should set value to max if the max changes to a value less than the value", async ({
-            page,
-        }) => {
-            const max = "10";
-            const value = "20";
-            await page.goto(fixtureURL("number-field--number-field", { value }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveValue(value);
-
-            await element.evaluate((node: FASTNumberField) => {
-                node.max = 10;
-            });
-
-            await expect(control).toHaveValue(max);
-
-            await expect(element).toHaveJSProperty("value", max);
-        });
-
-        test("should set value to min when value is less than min", async ({ page }) => {
-            const min = "10";
-            const value = "5";
-            await page.goto(fixtureURL("number-field--number-field", { value }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveValue(value);
-
-            await element.evaluate((node: FASTNumberField) => {
-                node.min = 10;
-            });
-
-            await expect(control).toHaveValue(min);
-
-            await expect(element).toHaveJSProperty("value", min);
-        });
-
-        test("should update the `value` property when the `min` property is greater than the `value`", async ({
-            page,
-        }) => {
-            const min = "20";
-            const value = "10";
-            await page.goto(fixtureURL("number-field--number-field", { value }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await element.evaluate((node: FASTNumberField) => {
-                node.min = 20;
-            });
-
-            await expect(control).toHaveValue(min);
-
-            await expect(element).toHaveJSProperty("value", min);
-        });
-
-        test("should set the `max` property to `min` when `min` is greater than `max`", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("number-field--number-field", { min: 10, max: 1 })
-            );
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("max", "1");
-        });
-    });
-
-    test.describe("step and increment/decrement", () => {
-        test("should set step to a default of 1", async ({ page }) => {
-            await page.goto(fixtureURL("number-field--number-field"));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("step", "1");
-        });
-
-        test("should update the internal control `step` attribute when `step` is changed", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("number-field--number-field"));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await element.evaluate((node: FASTNumberField) => {
-                node.step = 2;
-            });
-
-            await expect(control).toHaveAttribute("step", "2");
-        });
-
-        test("should increment the `value` by the step amount", async ({ page }) => {
-            await page.goto(
-                fixtureURL("number-field--number-field", { step: 2, value: 5 })
-            );
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await element.evaluate((node: FASTNumberField) => {
-                node.stepUp();
-            });
-
-            await expect(control).toHaveValue("7");
-        });
-
-        test("should decrement the value by the step amount", async ({ page }) => {
-            await page.goto(
-                fixtureURL("number-field--number-field", { step: 2, value: 5 })
-            );
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            await element.evaluate((node: FASTNumberField) => {
-                node.stepDown();
-            });
-
-            await expect(control).toHaveValue("3");
-        });
-
-        test.describe("should offset an undefined `value` from zero", () => {
-            test("when stepped down", async ({ page }) => {
-                await page.goto(fixtureURL("number-field--number-field", { step: 2 }));
-
-                const element = page.locator("fast-number-field");
-
-                const control = element.locator(".control");
-
-                await element.evaluate((node: FASTNumberField) => {
-                    node.stepDown();
-                });
-
-                await expect(control).toHaveValue("-2");
-            });
-
-            test("when stepped up", async ({ page }) => {
-                await page.goto(fixtureURL("number-field--number-field", { step: 2 }));
-
-                const element = page.locator("fast-number-field");
-
-                const control = element.locator(".control");
-
-                await element.evaluate((node: FASTNumberField) => {
-                    node.stepUp();
-                });
-
-                await expect(control).toHaveValue("2");
-            });
-        });
-
-        test.describe(
-            "should offset the `value` from zero when `min` is a negative value",
-            () => {
-                test("when stepped down", async ({ page }) => {
-                    await page.goto(
-                        fixtureURL("number-field--number-field", { min: -10 })
-                    );
-
-                    const element = page.locator("fast-number-field");
-
-                    const control = element.locator(".control");
-
-                    await element.evaluate((node: FASTNumberField) => {
-                        node.stepDown();
-                    });
-
-                    await expect(control).toHaveValue("0");
-                });
-
-                test("when stepped up", async ({ page }) => {
-                    await page.goto(
-                        fixtureURL("number-field--number-field", { min: -10 })
-                    );
-
-                    const element = page.locator("fast-number-field");
-
-                    const control = element.locator(".control");
-
-                    await element.evaluate((node: FASTNumberField) => {
-                        node.stepUp();
-                    });
-
-                    await expect(control).toHaveValue("0");
-                });
-            }
-        );
-
-        test.describe(
-            "should set `value` to match `min` when `min` is greater than zero and `value` is undefined",
-            () => {
-                test("when stepped down", async ({ page }) => {
-                    await page.goto(
-                        fixtureURL("number-field--number-field", { min: 10 })
-                    );
-
-                    const element = page.locator("fast-number-field");
-
-                    const control = element.locator(".control");
-
-                    await element.evaluate((node: FASTNumberField) => {
-                        node.stepDown();
-                    });
-
-                    await expect(control).toHaveValue("10");
-                });
-
-                test("`stepUp()`", async ({ page }) => {
-                    await page.goto(
-                        fixtureURL("number-field--number-field", { min: 10 })
-                    );
-
-                    const element = page.locator("fast-number-field");
-
-                    const control = element.locator(".control");
-
-                    await element.evaluate((node: FASTNumberField) => {
-                        node.stepDown();
-                    });
-
-                    await expect(control).toHaveValue("10");
-                });
-            }
-        );
-
-        test.describe(
-            "should set the `value` to `max` when `value` is undefined and `min` and `max` are less than zero",
-            () => {
-                test("when stepped down", async ({ page }) => {
-                    await page.goto(
-                        fixtureURL("number-field--number-field", { min: -100, max: -10 })
-                    );
-
-                    const element = page.locator("fast-number-field");
-
-                    const control = element.locator(".control");
-
-                    await element.evaluate((node: FASTNumberField) => {
-                        node.stepDown();
-                    });
-
-                    await expect(control).toHaveValue("-10");
-                });
-
-                test("when stepped up", async ({ page }) => {
-                    await page.goto(
-                        fixtureURL("number-field--number-field", { min: -100, max: -10 })
-                    );
-
-                    const element = page.locator("fast-number-field");
-
-                    const control = element.locator(".control");
-
-                    await element.evaluate((node: FASTNumberField) => {
-                        node.stepUp();
-                    });
-
-                    await expect(control).toHaveValue("-10");
-                });
-            }
-        );
-
-        test.describe("should update the proxy value", () => {
-            test("when stepping down", async ({ page }) => {
-                await page.goto(
-                    fixtureURL("number-field--number-field", { step: 2, value: 5 })
-                );
-
-                const element = page.locator("fast-number-field");
-
-                const control = element.locator(".control");
-
-                await element.evaluate((node: FASTNumberField) => {
-                    node.stepDown();
-                });
-
-                await expect(control).toHaveValue("3");
-
-                expect(
-                    await element.evaluate((node: FASTNumberField) => node.proxy.value)
-                ).toBe("3");
-            });
-
-            test("when stepping up", async ({ page }) => {
-                await page.goto(
-                    fixtureURL("number-field--number-field", { step: 2, value: 5 })
-                );
-
-                const element = page.locator("fast-number-field");
-
-                const control = element.locator(".control");
-
-                await element.evaluate((node: FASTNumberField) => {
-                    node.stepUp();
-                });
-
-                await expect(control).toHaveValue("7");
-
-                expect(
-                    await element.evaluate((node: FASTNumberField) => node.proxy.value)
-                ).toBe("7");
-            });
-        });
-
-        test("should correct rounding errors", async ({ page }) => {
-            const step = 0.1;
-            const value = 0.2;
-
-            await page.goto(fixtureURL("number-field--number-field", { step, value }));
-
-            const element = page.locator("fast-number-field");
-
-            const control = element.locator(".control");
-
-            for (let i = 1; i < 10; i++) {
-                await element.evaluate((node: FASTNumberField) => {
-                    node.stepUp();
-                });
-
-                await expect(control).toHaveValue(
-                    (value + step * i).toPrecision(2).replace(/\.?0+$/, "")
-                );
-            }
-        });
-    });
-
-    test.describe("value entry", () => {
-        test.describe("should handle number entry", () => {
-            const tests = [
-                {
-                    title: "allow positive float numbers",
-                    value: "18.2",
-                    expected: "18.2",
-                },
-                {
-                    title: "allow negative float numbers",
-                    value: "-18.2",
-                    expected: "-18.2",
-                },
-                {
-                    title: "allow positive integer numbers",
-                    value: "18",
-                    expected: "18",
-                },
-                {
-                    title: "allow negative integer numbers",
-                    value: "-18",
-                    expected: "-18",
-                },
-                {
-                    // TODO: This test doesn't account for the `e` character.
-                    // See https://github.com/microsoft/fast/issues/6251
-                    title: "disallow non-numeric characters",
-                    value: "18abcdfg",
-                    expected: "18",
-                },
-            ];
-
-            tests.forEach(({ title, value, expected }) => {
-                test(title, async ({ page }) => {
-                    await page.goto(fixtureURL("number-field--number-field"));
-
-                    const element = page.locator("fast-number-field");
-
-                    const control = element.locator(".control");
-
-                    await element.type(value);
-
-                    await expect(element).toHaveJSProperty("value", expected);
-
-                    await expect(control).toHaveValue(expected);
-                });
-            });
-        });
-    });
-
-    test("should not render step controls when `hide-step` attribute is present", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("number-field--number-field", { hideStep: true }));
-
-        const element = page.locator("fast-number-field");
-
-        const controls = element.locator(".controls");
-
-        await expect(controls).toBeHidden();
-    });
-
-    test("should not render step controls when `readonly` attribute is present", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("number-field--number-field", { readonly: true }));
-
-        const element = page.locator("fast-number-field");
-
-        const controls = element.locator(".controls");
-
-        await expect(controls).toBeEmpty();
-    });
-
-    test("should allow setting `value` with a number", async ({ page }) => {
-        const valueAsNumber = 18;
-
-        await page.goto(fixtureURL("number-field--number-field"));
-
-        const element = page.locator("fast-number-field");
-
-        await element.evaluate((node: FASTNumberField, valueAsNumber) => {
-            node.valueAsNumber = valueAsNumber;
-        }, valueAsNumber);
-
-        await expect(element).toHaveJSProperty("value", `${valueAsNumber}`);
-    });
-
-    test("should allow reading value as number", async ({ page }) => {
-        const value = 18;
-
-        await page.goto(fixtureURL("number-field--number-field", { value }));
-
-        const element = page.locator("fast-number-field");
-
-        await expect(element).toHaveJSProperty("valueAsNumber", value);
     });
 });

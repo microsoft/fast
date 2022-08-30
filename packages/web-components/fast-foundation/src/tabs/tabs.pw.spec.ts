@@ -1,4 +1,5 @@
 import { Orientation } from "@microsoft/fast-web-utilities";
+import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import type { FASTTab } from "../tab/tab.js";
 import { fixtureURL } from "../__test__/helpers.js";
@@ -6,30 +7,56 @@ import type { FASTTabs } from "./tabs.js";
 
 // TODO: Need to add tests for keyboard handling, activeIndicator position, and focus management
 test.describe("Tabs", () => {
-    test("should have an internal element with a role of `tablist`", async ({ page }) => {
+    let page: Page;
+    let element: Locator;
+    let tablist: Locator;
+    let tabs: Locator;
+
+    const template = /* html */ `
+        <fast-tabs>
+            <fast-tab>Tab one</fast-tab>
+            <fast-tab>Tab two</fast-tab>
+            <fast-tab>Tab three</fast-tab>
+            <fast-tab-panel>Tab panel one</fast-tab-panel>
+            <fast-tab-panel>Tab panel two</fast-tab-panel>
+            <fast-tab-panel>Tab panel three</fast-tab-panel>
+        </fast-tabs>
+    `;
+
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
+
+        element = page.locator("fast-tabs");
+        tablist = element.locator(".tablist");
+        tabs = element.locator("fast-tab");
+
         await page.goto(fixtureURL("tabs--tabs"));
+    });
 
-        const element = page.locator("fast-tabs");
+    test.afterAll(async () => {
+        await page.close();
+    });
 
-        const tablist = element.locator(".tablist");
+    test("should have an internal element with a role of `tablist`", async () => {
+        await page.setContent(/* html */ `
+            <fast-tabs></fast-tabs>
+        `);
 
         await expect(tablist).toHaveAttribute("role", "tablist");
     });
 
-    test("should set a default orientation value of `horizontal` when `orientation` is not provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("tabs--tabs"));
-
-        const element = page.locator("fast-tabs");
+    test("should set a default orientation value of `horizontal` when `orientation` is not provided", async () => {
+        await page.setContent(/* html */ `
+            <fast-tabs></fast-tabs>
+        `);
 
         await expect(element).toHaveJSProperty("orientation", "horizontal");
     });
 
-    test("should add a class equal to the `orientation` value", async ({ page }) => {
-        await page.goto(fixtureURL("tabs--tabs"));
-
-        const element = page.locator("fast-tabs");
+    test("should add a class equal to the `orientation` value", async () => {
+        await page.setContent(/* html */ `
+            <fast-tabs></fast-tabs>
+        `);
 
         await expect(element).toHaveClass(/horizontal/);
 
@@ -43,50 +70,38 @@ test.describe("Tabs", () => {
         await expect(element).toHaveClass(/vertical/);
     });
 
-    test("should set the `hideActiveIndicator` property when the `hide-active-indicator` attribute is present", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("tabs--tabs", { hideActiveIndicator: true }));
-
-        const element = page.locator("fast-tabs");
-
-        await expect(element).toHaveBooleanAttribute("hide-active-indicator");
-
-        await expect(element).toHaveJSProperty("hideActiveIndicator", true);
-    });
-
-    test("should default the `hideActiveIndicator` property to false", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("tabs--tabs"));
-
-        const element = page.locator("fast-tabs");
+    test("should set the `hideActiveIndicator` property to false by default", async () => {
+        await page.setContent(/* html */ `
+            <fast-tabs></fast-tabs>
+        `);
 
         await expect(element).not.toHaveBooleanAttribute("hide-active-indicator");
 
         await expect(element).toHaveJSProperty("hideActiveIndicator", false);
     });
 
-    test("should render an internal element with a class of 'active-indicator' when `hide-active-indicator` is false", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("tabs--tabs"));
+    test("should set the `hideActiveIndicator` property when the `hide-active-indicator` attribute is present", async () => {
+        await page.setContent(/* html */ `
+            <fast-tabs hide-active-indicator></fast-tabs>
+        `);
 
-        const element = page.locator("fast-tabs");
+        await expect(element).toHaveBooleanAttribute("hide-active-indicator");
 
-        const activeIndicator = element.locator(".active-indicator");
-
-        await expect(activeIndicator).toHaveCount(1);
+        await expect(element).toHaveJSProperty("hideActiveIndicator", true);
     });
 
-    test("should set an `id` attribute on the active tab when an `id` is provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("tabs--tabs"));
+    test('should render an internal element with a class of "active-indicator" when `hide-active-indicator` is false', async () => {
+        await page.setContent(/* html */ `
+            <fast-tabs></fast-tabs>
+        `);
 
-        const element = page.locator("fast-tabs");
+        await expect(element.locator(".active-indicator")).toHaveCount(1);
+    });
 
-        const tabs = element.locator("fast-tab");
+    test("should set an `id` attribute on the active tab when an `id` is provided", async () => {
+        await page.setContent(/* html */ `
+            <fast-tabs></fast-tabs>
+        `);
 
         const tabCount = await tabs.count();
 
@@ -101,32 +116,27 @@ test.describe("Tabs", () => {
         }
     });
 
-    test("should set an `id` attribute on tab items with a unique ID when an `id` is NOT provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("tabs--tabs"));
-
-        const element = page.locator("fast-tabs");
-
-        const tabs = element.locator("fast-tab");
+    test("should set an `id` attribute on tab items with a unique ID when an `id` is NOT provided", async () => {
+        await page.setContent(template);
 
         const tabCount = await tabs.count();
 
         for (let i = 0; i < tabCount; i++) {
             const tab = tabs.nth(i);
 
-            await expect(tab).toHaveAttribute("id", `tab-${i}`);
+            const id = await tab.getAttribute("id");
+
+            // The ID function may not start at 0 so we need to check that the ID is unique
+            expect(id).toMatch(/tab-\d+/);
+
+            const tabPanel = element.locator(`#${id}`);
+
+            await expect(tabPanel).toHaveCount(1);
         }
     });
 
-    test("should set `aria-labelledby` on the tab panel and `aria-controls` on the tab which corresponds to the matching ID when IDs are NOT provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("tabs--tabs"));
-
-        const element = page.locator("fast-tabs");
-
-        const tabs = element.locator("fast-tab");
+    test("should set `aria-labelledby` on the tab panel and `aria-controls` on the tab which corresponds to the matching ID when IDs are NOT provided", async () => {
+        await page.setContent(template);
 
         const tabCount = await tabs.count();
 
@@ -151,14 +161,8 @@ test.describe("Tabs", () => {
         }
     });
 
-    test("should set `aria-labelledby` on the tab panel and `aria-controls` on the tab which corresponds to the matching ID when IDs are NOT provided and additional tabs and panels are added", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("tabs--tabs"));
-
-        const element = page.locator("fast-tabs");
-
-        const tabs = element.locator("fast-tab");
+    test("should set `aria-labelledby` on the tab panel and `aria-controls` on the tab which corresponds to the matching ID when IDs are NOT provided and additional tabs and panels are added", async () => {
+        await page.setContent(template);
 
         let tabCount = await tabs.count();
 
@@ -184,8 +188,6 @@ test.describe("Tabs", () => {
 
         await element.evaluate<void, FASTTabs>(node => {
             const tabs = Array.from(node.querySelectorAll("fast-tab"));
-
-            // const panels = Array.from(node.querySelectorAll("fast-tab-panel"));
 
             const newTab = document.createElement("fast-tab");
             newTab.textContent = "New Tab";
@@ -220,191 +222,203 @@ test.describe("Tabs", () => {
     });
 
     test.describe("active tab", () => {
-        test("should set an `aria-selected` attribute on the active tab when `activeId` is provided", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("tabs--tabs", { activeid: "tab-1" }));
+        test("should set an `aria-selected` attribute on the active tab when `activeid` is provided", async () => {
+            await page.setContent(template);
 
-            const element = page.locator("fast-tabs");
+            const secondTab = tabs.nth(1);
 
-            const tabs = element.locator("fast-tab");
+            const secondTabId = (await secondTab.getAttribute("id")) ?? "";
 
-            await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");
+            await element.evaluate((node: FASTTabs, secondTabId) => {
+                node.activeid = secondTabId;
+                return new Promise(requestAnimationFrame);
+            }, secondTabId);
+
+            await expect(secondTab).toHaveAttribute("aria-selected", "true");
         });
 
-        test("should default the first tab as the active index if `activeid` is NOT provided", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("tabs--tabs"));
-
-            const element = page.locator("fast-tabs");
-
-            const tabs = element.locator("fast-tab");
+        test("should default the first tab as the active index if `activeid` is NOT provided", async () => {
+            await page.setContent(template);
 
             await expect(tabs.nth(0)).toHaveAttribute("aria-selected", "true");
 
             await expect(element).toHaveJSProperty("activeTabIndex", 0);
         });
 
-        test("should update `aria-selected` attribute on the active tab when `activeId` is updated", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("tabs--tabs", { activeid: "tab-1" }));
+        test("should update `aria-selected` attribute on the active tab when `activeId` is updated", async () => {
+            await page.setContent(template);
 
-            const element = page.locator("fast-tabs");
+            await expect(tabs.nth(0)).toHaveAttribute("aria-selected", "true");
 
-            const tabs = element.locator("fast-tab");
+            const secondTab = tabs.nth(1);
 
-            await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");
+            const secondTabId = (await secondTab.getAttribute("id")) ?? "";
 
-            await element.evaluate(node => {
-                node.setAttribute("activeId", "tab-2");
-            });
+            await element.evaluate((node: FASTTabs, secondTabId) => {
+                node.setAttribute("activeId", secondTabId);
+            }, secondTabId);
 
-            await expect(tabs.nth(2)).toHaveAttribute("aria-selected", "true");
+            await expect(secondTab).toHaveAttribute("aria-selected", "true");
         });
 
-        test("should skip updating the active indicator if the same tab is clicked twice", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("tabs--tabs", { activeid: "tab-2" }));
-
-            const element = page.locator("fast-tabs");
+        test("should skip updating the active indicator if the same tab is clicked twice", async () => {
+            await page.setContent(template);
 
             const activeIndicator = element.locator(".active-indicator");
 
-            const [wasTransitioned] = await Promise.all([
-                activeIndicator.evaluate(
-                    node =>
-                        new Promise(resolve => {
-                            node.addEventListener("transitionend", () => resolve(true));
-                        })
-                ),
-                activeIndicator.click(),
-            ]);
+            const x = (await activeIndicator.boundingBox())!.x;
 
-            expect(wasTransitioned).toBe(true);
+            await tabs.nth(1).click();
 
-            const [wasTransitionedAgain] = await Promise.all([
-                activeIndicator.evaluate(node =>
-                    Promise.race([
-                        new Promise(resolve => {
-                            node.addEventListener("transitionend", () => resolve(true));
-                        }),
-                        new Promise(resolve => setTimeout(() => resolve(false), 20)),
-                    ])
-                ),
-                activeIndicator.click(),
-            ]);
+            const newX = (await activeIndicator.boundingBox())!.x;
 
-            expect(wasTransitionedAgain).toBe(false);
+            expect(newX).toBeGreaterThan(x);
+
+            await tabs.nth(1).click();
+
+            const newX2 = (await activeIndicator.boundingBox())!.x;
+
+            expect(newX2).toBe(newX);
         });
     });
 
     test.describe("active tabpanel", () => {
-        test("should set an `aria-labelledby` attribute on the tabpanel with a value of the tab id when `activeid` is provided", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("tabs--tabs", { activeid: "tab-1" }));
+        test("should set an `aria-labelledby` attribute on the tabpanel with a value of the tab id when `activeid` is provided", async () => {
+            await page.setContent(template);
 
-            const element = page.locator("fast-tabs");
+            const secondTab = tabs.nth(1);
+
+            const secondTabId = (await secondTab.getAttribute("id")) ?? "";
+
+            await element.evaluate((node: FASTTabs, secondTabId) => {
+                node.activeid = secondTabId;
+                return new Promise(requestAnimationFrame);
+            }, secondTabId);
 
             const tabPanels = element.locator("fast-tab-panel");
 
-            await expect(tabPanels.nth(1)).toHaveAttribute("aria-labelledby", "tab-1");
+            await expect(tabPanels.nth(1)).toHaveAttribute(
+                "aria-labelledby",
+                secondTabId
+            );
         });
 
-        test("should set an attribute of hidden if the tabpanel is not active", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("tabs--tabs", { activeid: "tab-1" }));
-
-            const element = page.locator("fast-tabs");
+        test("should set an attribute of hidden if the tabpanel is not active", async () => {
+            await page.setContent(template);
 
             const tabPanels = element.locator("fast-tab-panel");
 
-            await expect(tabPanels.nth(0)).toHaveBooleanAttribute("hidden");
+            await expect(tabPanels.nth(0)).not.toHaveBooleanAttribute("hidden");
 
-            await expect(tabPanels.nth(1)).not.toHaveBooleanAttribute("hidden");
+            await expect(tabPanels.nth(1)).toHaveBooleanAttribute("hidden");
 
             await expect(tabPanels.nth(2)).toHaveBooleanAttribute("hidden");
         });
     });
 
-    test.describe("disabled tab", () => {
-        test("should not display an active indicator if all tabs are disabled", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("tabs--tabs", {
-                    "storyItems.tabs.[0].disabled": true,
-                    "storyItems.tabs.[1].disabled": true,
-                    "storyItems.tabs.[2].disabled": true,
-                })
-            );
+    test("should not display an active indicator if all tabs are disabled", async () => {
+        await page.setContent(/* html */ `
+            <fast-tabs>
+                <fast-tab disabled>Tab one</fast-tab>
+                <fast-tab disabled>Tab two</fast-tab>
+                <fast-tab disabled>Tab three</fast-tab>
+                <fast-tab-panel>Tab panel one</fast-tab-panel>
+                <fast-tab-panel>Tab panel two</fast-tab-panel>
+                <fast-tab-panel>Tab panel three</fast-tab-panel>
+            </fast-tabs>
+        `);
 
-            const element = page.locator("fast-tabs");
+        const activeIndicator = element.locator(".active-indicator");
 
-            const activeIndicator = element.locator(".active-indicator");
+        await expect(activeIndicator).not.toBeVisible();
+    });
 
-            await expect(activeIndicator).not.toBeVisible();
+    test("should display an active indicator if the last tab is disabled", async () => {
+        await page.setContent(/* html */ `
+            <fast-tabs>
+                <fast-tab>Tab one</fast-tab>
+                <fast-tab>Tab two</fast-tab>
+                <fast-tab disabled>Tab three</fast-tab>
+            </fast-tabs>
+        `);
+
+        await expect(element).toHaveJSProperty("showActiveIndicator", true);
+    });
+
+    test("should not allow selecting a tab that has been disabled after it has been connected", async () => {
+        test.slow();
+
+        await page.setContent(/* html */ `
+            <fast-tabs>
+                <fast-tab>Tab one</fast-tab>
+                <fast-tab>Tab two</fast-tab>
+                <fast-tab>Tab three</fast-tab>
+                <fast-tab-panel>Tab panel one</fast-tab-panel>
+                <fast-tab-panel>Tab panel two</fast-tab-panel>
+                <fast-tab-panel>Tab panel three</fast-tab-panel>
+            </fast-tabs>
+        `);
+
+        const firstTab = tabs.nth(0);
+
+        const firstTabId = (await firstTab.getAttribute("id")) ?? "";
+
+        await element.evaluate((node: FASTTabs, firstTabId) => {
+            node.activeid = firstTabId;
+        }, firstTabId);
+
+        await expect(element).toHaveJSProperty("activeid", firstTabId);
+
+        const secondTab = tabs.nth(1);
+
+        await secondTab.evaluate((node: FASTTab) => {
+            node.disabled = true;
         });
 
-        test("should display an active indicator if the last tab is disabled", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("tabs--tabs", { "storyItems[2].disabled": true }));
+        await secondTab.click({ force: true });
 
-            const element = page.locator("fast-tabs");
+        await expect(element).toHaveJSProperty("activeid", firstTabId);
+    });
 
-            await expect(element).toHaveJSProperty("showActiveIndicator", true);
+    test("should allow selecting tab that has been enabled after it has been connected", async () => {
+        test.slow();
+
+        await page.setContent(/* html */ `
+            <fast-tabs>
+                <fast-tab>Tab one</fast-tab>
+                <fast-tab disabled>Tab two</fast-tab>
+                <fast-tab>Tab three</fast-tab>
+                <fast-tab-panel>Tab panel one</fast-tab-panel>
+                <fast-tab-panel>Tab panel two</fast-tab-panel>
+                <fast-tab-panel>Tab panel three</fast-tab-panel>
+            </fast-tabs>
+        `);
+
+        const firstTab = tabs.nth(0);
+
+        const secondTab = tabs.nth(1);
+
+        const firstTabId = (await firstTab.getAttribute("id")) ?? "";
+
+        const secondTabId = (await secondTab.getAttribute("id")) ?? "";
+
+        await element.evaluate((node: FASTTabs, firstTabId) => {
+            node.activeid = firstTabId;
+        }, firstTabId);
+
+        await expect(element).toHaveJSProperty("activeid", firstTabId);
+
+        await secondTab.click({ force: true });
+
+        await expect(element).toHaveJSProperty("activeid", firstTabId);
+
+        await secondTab.evaluate((node: FASTTab) => {
+            node.disabled = false;
+            return new Promise(requestAnimationFrame);
         });
 
-        test("should not allow selecting a tab that has been disabled after it has been connected", async ({
-            page,
-        }) => {
-            await page.goto(fixtureURL("tabs--tabs", { activeid: "tab-0" }));
+        await secondTab.click({ force: true });
 
-            const element = page.locator("fast-tabs");
-
-            const tabs = element.locator("fast-tab");
-
-            await expect(element).toHaveJSProperty("activeid", "tab-0");
-
-            await tabs.nth(2).evaluate<void, FASTTab>(node => {
-                node.disabled = true;
-            });
-
-            await tabs.nth(2).click({ force: true });
-
-            await expect(element).toHaveJSProperty("activeid", "tab-0");
-        });
-
-        test("should allow selecting tab that has been enabled after it has been connected", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("tabs--tabs", {
-                    activeid: "tab-0",
-                    "storyItems.tabs.[2].disabled": true,
-                })
-            );
-
-            const element = page.locator("fast-tabs");
-
-            const tabs = element.locator("fast-tab");
-
-            await expect(element).toHaveJSProperty("activeid", "tab-0");
-
-            await expect(tabs.nth(2)).toHaveBooleanAttribute("disabled");
-
-            await tabs.nth(2).evaluate<void, FASTTab>(node => {
-                node.disabled = false;
-            });
-
-            await tabs.nth(2).click();
-
-            await expect(element).toHaveJSProperty("activeid", "tab-2");
-        });
+        await expect(element).toHaveJSProperty("activeid", secondTabId);
     });
 });

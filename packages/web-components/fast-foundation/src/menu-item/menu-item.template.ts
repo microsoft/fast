@@ -27,7 +27,7 @@ export function menuItemTemplate<T extends FASTMenuItem>(
             [
                 x.disabled && "disabled",
                 x.expanded && "expanded",
-                `indent-${x.startColumnCount}`,
+                typeof x.startColumnCount === "number" && `indent-${x.startColumnCount}`,
             ]
                 .filter(Boolean)
                 .join(" ")}"

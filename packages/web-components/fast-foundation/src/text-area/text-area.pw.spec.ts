@@ -1,154 +1,64 @@
+import { spinalCase } from "@microsoft/fast-web-utilities";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTTextArea } from "./text-area.js";
 
 test.describe("TextArea", () => {
-    test("should set the `autofocus` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(
-            fixtureURL("text-area--text-area", {
-                autofocus: true,
-            })
-        );
+    test("should set the boolean attribute on the internal input", async ({ page }) => {
+        const attributes = {
+            autofocus: true,
+            disabled: true,
+            readOnly: true,
+            required: true,
+            spellcheck: true,
+        };
 
-        const element = page.locator("fast-text-area");
+        await page.goto(fixtureURL("text-area--text-area", attributes));
 
-        const control = element.locator(".control");
+        const control = page.locator("fast-text-area .control");
 
-        await expect(control).toHaveBooleanAttribute("autofocus");
+        for (const attribute of Object.keys(attributes)) {
+            await expect(control).toHaveBooleanAttribute(attribute);
+        }
     });
 
-    test("should set the `disabled` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("text-area--text-area", { disabled: true }));
+    test("should set the attribute on the internal control", async ({ page }) => {
+        const attributes = {
+            cols: 4,
+            maxlength: 14,
+            minlength: 14,
+            name: "foo",
+            placeholder: "foo",
+            rows: 4,
+            list: "listId",
+            ariaAtomic: "true",
+            ariaBusy: "false",
+            ariaControls: "testId",
+            ariaCurrent: "page",
+            ariaDescribedby: "testId",
+            ariaDetails: "testId",
+            ariaDisabled: "true",
+            ariaErrormessage: "test",
+            ariaFlowto: "testId",
+            ariaHaspopup: "true",
+            ariaHidden: "true",
+            ariaInvalid: "spelling",
+            ariaKeyshortcuts: "F4",
+            ariaLabel: "Foo label",
+            ariaLabelledby: "testId",
+            ariaLive: "polite",
+            ariaOwns: "testId",
+            ariaRelevant: "removals",
+            ariaRoledescription: "search",
+        };
 
-        const element = page.locator("fast-text-area");
+        await page.goto(fixtureURL("text-area--text-area", attributes));
 
-        const control = element.locator(".control");
+        const control = page.locator("fast-text-area .control");
 
-        await expect(control).toHaveBooleanAttribute("disabled");
-    });
-
-    test("should set the `cols` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("text-area--text-area", { cols: 4 }));
-
-        const element = page.locator("fast-text-area");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("cols", "4");
-    });
-
-    test("should set the `list` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("text-area--text-area", { list: "listId" }));
-
-        const element = page.locator("fast-text-area");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("list", "listId");
-    });
-
-    test("should set the `maxlength` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("text-area--text-area", { maxlength: 14 }));
-
-        const element = page.locator("fast-text-area");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("maxlength", "14");
-    });
-
-    test("should set the `minlength` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("text-area--text-area", { minlength: 8 }));
-
-        const element = page.locator("fast-text-area");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("minlength", "8");
-    });
-
-    test("should set the `name` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("text-area--text-area", { name: "foo" }));
-
-        const element = page.locator("fast-text-area");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("name", "foo");
-    });
-
-    test("should set the `placeholder` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("text-area--text-area", { placeholder: "foo" }));
-
-        const element = page.locator("fast-text-area");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("placeholder", "foo");
-    });
-
-    test("should set the `readonly` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("text-area--text-area", { readOnly: true }));
-
-        const element = page.locator("fast-text-area");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveBooleanAttribute("readonly");
-    });
-
-    test("should set the `required` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("text-area--text-area", { required: true }));
-
-        const element = page.locator("fast-text-area");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveBooleanAttribute("required");
-    });
-
-    test("should set the `rows` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("text-area--text-area", { rows: 4 }));
-
-        const element = page.locator("fast-text-area");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveAttribute("rows", "4");
-    });
-
-    test("should set the `spellcheck` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("text-area--text-area", { spellcheck: true }));
-
-        const element = page.locator("fast-text-area");
-
-        const control = element.locator(".control");
-
-        await expect(control).toHaveBooleanAttribute("spellcheck");
+        for (const [attribute, value] of Object.entries(attributes)) {
+            await expect(control).toHaveAttribute(spinalCase(attribute), `${value}`);
+        }
     });
 
     test("should initialize to the initial value if no value property is set", async ({
@@ -179,24 +89,6 @@ test.describe("TextArea", () => {
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
-    test("should initialize to the provided value attribute if set post-connection", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("debug--blank"));
-
-        const element = page.locator("fast-text-area");
-
-        await page.evaluate(() => {
-            const node = document.createElement("fast-text-area");
-
-            document.getElementById("root")?.append(node);
-
-            node.setAttribute("value", "foo");
-        });
-
-        await expect(element).toHaveJSProperty("value", "foo");
-    });
-
     test("should initialize to the provided value property if set pre-connection", async ({
         page,
     }) => {
@@ -215,310 +107,22 @@ test.describe("TextArea", () => {
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
-    test.describe("Delegates ARIA textbox", () => {
-        test("should set the `aria-atomic` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaAtomic: "true",
-                })
-            );
+    test("should initialize to the provided value attribute if set post-connection", async ({
+        page,
+    }) => {
+        await page.goto(fixtureURL("debug--blank"));
 
-            const element = page.locator("fast-text-area");
+        const element = page.locator("fast-text-area");
 
-            const control = element.locator(".control");
+        await page.evaluate(() => {
+            const node = document.createElement("fast-text-area");
 
-            await expect(control).toHaveAttribute("aria-atomic", "true");
+            document.getElementById("root")?.append(node);
+
+            node.setAttribute("value", "foo");
         });
 
-        test("should set the `aria-busy` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaBusy: "false",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-busy", "false");
-        });
-
-        test("should set the `aria-controls` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaControls: "testId",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-controls", "testId");
-        });
-
-        test("should set the `aria-current` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaCurrent: "page",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-current", "page");
-        });
-
-        test("should set the `aria-describedby` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaDescribedby: "testId",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-describedby", "testId");
-        });
-
-        test("should set the `aria-details` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaDetails: "testId",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-details", "testId");
-        });
-
-        test("should set the `aria-disabled` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaDisabled: "true",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-disabled", "true");
-        });
-
-        test("should set the `aria-errormessage` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaErrormessage: "test",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-errormessage", "test");
-        });
-
-        test("should set the `aria-flowto` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaFlowto: "testId",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-flowto", "testId");
-        });
-
-        test("should set the `aria-haspopup` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaHaspopup: "true",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-haspopup", "true");
-        });
-
-        test("should set the `aria-hidden` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaHidden: "true",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-hidden", "true");
-        });
-
-        test("should set the `aria-invalid` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaInvalid: "spelling",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-invalid", "spelling");
-        });
-
-        test("should set the `aria-keyshortcuts` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaKeyshortcuts: "F4",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-keyshortcuts", "F4");
-        });
-
-        test("should set the `aria-label` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaLabel: "Foo label",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-label", "Foo label");
-        });
-
-        test("should set the `aria-labelledby` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaLabelledby: "testId",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-labelledby", "testId");
-        });
-
-        test("should set the `aria-live` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaLive: "polite",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-live", "polite");
-        });
-
-        test("should set the `aria-owns` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaOwns: "testId",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-owns", "testId");
-        });
-
-        test("should set the `aria-relevant` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaRelevant: "removals",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-relevant", "removals");
-        });
-
-        test("should set the `aria-roledescription` attribute on the internal control when provided", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("text-area--text-area", {
-                    ariaRoledescription: "slide",
-                })
-            );
-
-            const element = page.locator("fast-text-area");
-
-            const control = element.locator(".control");
-
-            await expect(control).toHaveAttribute("aria-roledescription", "slide");
-        });
+        await expect(element).toHaveJSProperty("value", "foo");
     });
 
     test("should fire a `change` event when the internal control emits a `change` event", async ({

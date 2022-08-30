@@ -1,75 +1,181 @@
 import { expect, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTCombobox } from "./combobox.js";
 
 test.describe("Combobox", () => {
-    test("should include a control with a role of `combobox`", async ({ page }) => {
-        await page.goto(fixtureURL("combobox--combobox"));
-        const element = page.locator("fast-combobox");
+    let page: Page;
+    let element: Locator;
+    let control: Locator;
 
-        expect(
-            await element.evaluate((node: FASTCombobox) =>
-                node.control?.getAttribute("role")
-            )
-        ).toBe("combobox");
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
+
+        element = page.locator("fast-combobox");
+
+        control = element.locator(`input[role="combobox"]`);
+
+        await page.goto(fixtureURL("combobox--combobox"));
     });
 
-    test("should set the `aria-disabled` attribute equal to the `disabled` value", async ({
-        page,
-    }) => {
-        await page.goto(
-            fixtureURL("combobox--combobox", {
-                disabled: true,
-            })
-        );
+    test.afterAll(async () => {
+        await page.close();
+    });
 
-        const element = page.locator("fast-combobox");
+    test('should include a control with a `role` attribute equal to "combobox"', async () => {
+        await page.setContent(/* html */ `
+            <fast-combobox>
+                <fast-option>Option 1</fast-option>
+                <fast-option>Option 2</fast-option>
+                <fast-option>Option 3</fast-option>
+            </fast-combobox>
+        `);
+
+        await expect(control).toHaveCount(1);
+    });
+
+    test("should set the `aria-disabled` attribute equal to the `disabled` property", async () => {
+        await page.setContent(/* html */ `
+            <fast-combobox>
+                <fast-option>Option 1</fast-option>
+                <fast-option>Option 2</fast-option>
+                <fast-option>Option 3</fast-option>
+            </fast-combobox>
+        `);
+
+        await expect(element).toHaveAttribute("aria-disabled", "false");
+
+        await element.evaluate((node: FASTCombobox) => {
+            node.disabled = true;
+        });
 
         await expect(element).toHaveAttribute("aria-disabled", "true");
 
-        await element.evaluate((node: FASTCombobox) => (node.disabled = false));
+        await element.evaluate((node: FASTCombobox) => {
+            node.disabled = false;
+        });
 
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });
 
-    test("should have a tabindex of 0 when `disabled` is not defined", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("combobox--combobox"));
+    test("should set and remove the `tabindex` attribute based on the value of the `disabled` property", async () => {
+        await page.setContent(/* html */ `
+            <fast-combobox disabled>
+                <fast-option>Option 1</fast-option>
+                <fast-option>Option 2</fast-option>
+                <fast-option>Option 3</fast-option>
+            </fast-combobox>
+        `);
 
-        const element = page.locator("fast-combobox");
+        await expect(element).not.hasAttribute("tabindex");
+
+        await element.evaluate((node: FASTCombobox) => {
+            node.disabled = false;
+        });
 
         await expect(element).toHaveAttribute("tabindex", "0");
     });
 
-    test("should NOT have a tabindex when `disabled` is true", async ({ page }) => {
-        await page.goto(
-            fixtureURL("combobox--combobox", {
-                disabled: true,
-            })
-        );
-
-        const element = page.locator("fast-combobox");
-
-        await expect(element).toHaveAttribute("tabindex", "");
-    });
-
-    test("should NOT set its value to the first available option", async ({ page }) => {
-        await page.goto(fixtureURL("combobox--combobox"));
-
-        const element = page.locator("fast-combobox");
-
-        const input = element.locator(`input[role="combobox"]`);
+    test("should NOT set the `value` property to the first available option", async () => {
+        await page.setContent(/* html */ `
+            <fast-combobox>
+                <fast-option>Option 1</fast-option>
+                <fast-option>Option 2</fast-option>
+                <fast-option>Option 3</fast-option>
+            </fast-combobox>
+        `);
 
         await expect(element).toHaveJSProperty("value", "");
 
-        await expect(input).toHaveValue("");
+        await expect(control).toHaveValue("");
     });
 
-    test("should set its value to the first option with the `selected` attribute present", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("debug--blank"));
+    test("should set the `placeholder` attribute on the internal control equal to the `placeholder` attribute", async () => {
+        await page.setContent(/* html */ `
+            <fast-combobox placeholder="placeholder text">
+                <fast-option>Option 1</fast-option>
+                <fast-option>Option 2</fast-option>
+                <fast-option>Option 3</fast-option>
+            </fast-combobox>
+        `);
+
+        await expect(element).toHaveJSProperty("placeholder", "placeholder text");
+
+        await expect(control).toHaveAttribute("placeholder", "placeholder text");
+    });
+
+    test("should set the control's `aria-controls` attribute to the ID of the internal listbox element while open", async () => {
+        await page.setContent(/* html */ `
+            <fast-combobox>
+                <fast-option>Option 1</fast-option>
+                <fast-option>Option 2</fast-option>
+                <fast-option>Option 3</fast-option>
+            </fast-combobox>
+        `);
+
+        const listbox = element.locator(".listbox");
+
+        const listboxId = (await listbox.getAttribute("id")) as string;
+
+        await expect(control).toHaveAttribute("aria-controls", "");
+
+        await element.evaluate((node: FASTCombobox) => {
+            node.open = true;
+        });
+
+        await expect(control).toHaveAttribute("aria-controls", listboxId);
+
+        await element.evaluate((node: FASTCombobox) => {
+            node.open = false;
+        });
+
+        await expect(control).toHaveAttribute("aria-controls", "");
+    });
+
+    test("should set the control's `aria-activedescendant` property to the ID of the currently selected option while open", async () => {
+        await page.setContent(/* html */ `
+            <fast-combobox>
+                <fast-option>Option 1</fast-option>
+                <fast-option>Option 2</fast-option>
+                <fast-option>Option 3</fast-option>
+            </fast-combobox>
+        `);
+
+        const options = element.locator("fast-option");
+
+        await expect(control).not.hasAttribute("aria-activedescendant");
+
+        await element.evaluate((node: FASTCombobox) => {
+            node.open = true;
+        });
+
+        await expect(element).toHaveAttribute("aria-activedescendant", "");
+
+        const optionsCount = await options.count();
+
+        for (let i = 0; i < optionsCount; i++) {
+            const option = options.nth(i);
+
+            await element.evaluate((node: FASTCombobox) => {
+                node.selectNextOption();
+            });
+
+            const optionId = await option.evaluate(node => node.id);
+
+            await expect(control).toHaveAttribute("aria-activedescendant", optionId);
+        }
+
+        await element.evaluate((node: FASTCombobox) => {
+            node.value = "other";
+        });
+
+        await expect(control).hasAttribute("aria-activedescendant");
+
+        await expect(element).toHaveAttribute("aria-activedescendant", "");
+    });
+
+    test("should set its value to the first option with the `selected` attribute present", async () => {
+        await page.setContent("");
 
         await page.evaluate(() => {
             const combobox = document.createElement("fast-combobox");
@@ -83,10 +189,8 @@ test.describe("Combobox", () => {
 
             combobox.append(...options);
 
-            document.getElementById("root")?.append(combobox);
+            document.body.append(combobox);
         });
-
-        const element = page.locator("fast-combobox");
 
         const option2 = element.locator("fast-option:nth-of-type(2)");
 
@@ -95,45 +199,41 @@ test.describe("Combobox", () => {
         await expect(element).toHaveJSProperty("value", "two");
     });
 
-    test("should return the same value when the value property is set before connect", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("debug--blank"));
+    test("should return the same value when the `value` property is set before connecting", async () => {
+        await page.setContent("");
 
         await page.evaluate(() => {
             const combobox = document.createElement("fast-combobox") as FASTCombobox;
             combobox.value = "test";
-            document.getElementById("root")?.append(combobox);
+            document.body.append(combobox);
         });
-
-        const element = page.locator("fast-combobox");
 
         expect(await element.evaluate((node: FASTCombobox) => node.value)).toBe("test");
     });
 
-    test("should return the same value when the value property is set after connect", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("debug--blank"));
+    test("should return the same value when the `value` property is set after connecting", async () => {
+        await page.setContent("");
 
         await page.evaluate(() => {
             const combobox = document.createElement("fast-combobox") as FASTCombobox;
-            document.getElementById("root")?.append(combobox);
+            document.body.append(combobox);
         });
 
-        const element = page.locator("fast-combobox");
-
-        await element.evaluate((node: FASTCombobox) => (node.value = "test"));
+        await element.evaluate((node: FASTCombobox) => {
+            node.value = "test";
+        });
 
         await expect(element).toHaveJSProperty("value", "test");
     });
 
-    test("should display the listbox when the `open` property is true before connecting", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("combobox--combobox"));
-
-        const element = page.locator("fast-combobox");
+    test("should display the listbox when the `open` property is true before connecting", async () => {
+        await page.setContent(/* html */ `
+            <fast-combobox>
+                <fast-option>Option 1</fast-option>
+                <fast-option>Option 2</fast-option>
+                <fast-option>Option 3</fast-option>
+            </fast-combobox>
+        `);
 
         const listbox = element.locator(".listbox");
 
@@ -151,10 +251,14 @@ test.describe("Combobox", () => {
     test.describe(
         "should NOT emit a 'change' event when the value changes by user input while open",
         () => {
-            test("via arrow down key", async ({ page }) => {
-                await page.goto(fixtureURL("combobox--combobox"));
-
-                const element = page.locator("fast-combobox");
+            test("via arrow down key", async () => {
+                await page.setContent(/* html */ `
+                    <fast-combobox>
+                        <fast-option>Option 1</fast-option>
+                        <fast-option>Option 2</fast-option>
+                        <fast-option>Option 3</fast-option>
+                    </fast-combobox>
+                `);
 
                 await element.click();
 
@@ -177,12 +281,18 @@ test.describe("Combobox", () => {
                 expect(wasChanged).toBeFalsy();
             });
 
-            test("via arrow up key", async ({ page }) => {
-                await page.goto(fixtureURL("combobox--combobox"));
+            test("via arrow up key", async () => {
+                await page.setContent(/* html */ `
+                    <fast-combobox>
+                        <fast-option>Option 1</fast-option>
+                        <fast-option>Option 2</fast-option>
+                        <fast-option>Option 3</fast-option>
+                    </fast-combobox>
+                `);
 
-                const element = page.locator("fast-combobox");
-
-                await element.evaluate((node: FASTCombobox) => (node.value = "two"));
+                await element.evaluate((node: FASTCombobox) => {
+                    node.value = "two";
+                });
 
                 await element.click();
 
@@ -212,12 +322,18 @@ test.describe("Combobox", () => {
     test.describe(
         "should NOT emit a 'change' event when the value changes by programmatic interaction",
         () => {
-            test("via end key", async ({ page }) => {
-                await page.goto(fixtureURL("combobox--combobox"));
+            test("via end key", async () => {
+                await page.setContent(/* html */ `
+                    <fast-combobox>
+                        <fast-option>Option 1</fast-option>
+                        <fast-option>Option 2</fast-option>
+                        <fast-option>Option 3</fast-option>
+                    </fast-combobox>
+                `);
 
-                const element = page.locator("fast-combobox");
-
-                await element.evaluate((node: FASTCombobox) => (node.value = "two"));
+                await element.evaluate((node: FASTCombobox) => {
+                    node.value = "two";
+                });
 
                 const [wasChanged] = await Promise.all([
                     element.evaluate(node =>
@@ -238,39 +354,25 @@ test.describe("Combobox", () => {
         }
     );
 
-    test("should set the `placeholder` attribute on the internal control equal to the value provided", async ({
-        page,
-    }) => {
-        await page.goto(
-            fixtureURL("combobox--combobox", {
-                placeholder: "test",
-            })
-        );
-
-        const element = page.locator("fast-combobox");
-
-        const input = element.locator(`input[role="combobox"]`);
-
-        await expect(element).toHaveJSProperty("placeholder", "test");
-
-        await expect(input).toHaveAttribute("placeholder", "test");
-    });
-
     test.describe("when the owning form's reset() function is invoked", () => {
-        test("should reset the value property to its initial value", async ({ page }) => {
-            await page.goto(
-                fixtureURL("combobox--combobox-in-form", {
-                    value: "one",
-                })
-            );
-
-            const element = page.locator("fast-combobox");
+        test("should reset the value property to its initial value", async () => {
+            await page.setContent(/* html */ `
+                <form>
+                    <fast-combobox value="one">
+                        <fast-option>Option 1</fast-option>
+                        <fast-option>Option 2</fast-option>
+                        <fast-option>Option 3</fast-option>
+                    </fast-combobox>
+                </form>
+            `);
 
             const form = page.locator("form");
 
             await expect(element).toHaveJSProperty("value", "one");
 
-            await element.evaluate((node: FASTCombobox) => (node.value = "two"));
+            await element.evaluate((node: FASTCombobox) => {
+                node.value = "two";
+            });
 
             await expect(element).toHaveJSProperty("value", "two");
 
@@ -279,42 +381,48 @@ test.describe("Combobox", () => {
             await expect(element).toHaveJSProperty("value", "one");
         });
 
-        test("should reset its value property to the first option with the `selected` attribute present", async ({
-            page,
-        }) => {
-            await page.goto(
-                fixtureURL("combobox--combobox-in-form", {
-                    "storyItems[9].selected": true,
-                })
-            );
-
-            const element = page.locator("fast-combobox");
+        test("should reset its value property to the first option with the `selected` attribute present", async () => {
+            await page.setContent(/* html */ `
+                <form>
+                    <fast-combobox>
+                        <fast-option>Option 1</fast-option>
+                        <fast-option selected>Option 2</fast-option>
+                        <fast-option>Option 3</fast-option>
+                    </fast-combobox>
+                </form>
+            `);
 
             const form = page.locator("form");
 
-            await expect(element).toHaveJSProperty("value", "David Tenant");
+            await expect(element).toHaveJSProperty("value", "Option 2");
 
-            await element.evaluate((node: FASTCombobox) => (node.value = "two"));
+            await element.evaluate((node: FASTCombobox) => {
+                node.value = "two";
+            });
 
             await expect(element).toHaveJSProperty("value", "two");
 
-            await form.evaluate((node: HTMLFormElement) => node.reset());
+            await form.evaluate((node: HTMLFormElement) => {
+                node.reset();
+            });
 
-            await expect(element).toHaveJSProperty("value", "David Tenant");
+            await expect(element).toHaveJSProperty("value", "Option 2");
         });
     });
 
-    test("should focus the control when an associated label is clicked", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("combobox--combobox"));
+    test("should focus the control when an associated label is clicked", async () => {
+        await page.setContent(/* html */ `
+            <fast-combobox>
+                <fast-option>Option 1</fast-option>
+                <fast-option>Option 2</fast-option>
+                <fast-option>Option 3</fast-option>
+            </fast-combobox>
+        `);
 
         // Skip this test if the browser if ElementInternals isn't supported
         if (!(await page.evaluate(() => window.hasOwnProperty("ElementInternals")))) {
             test.skip();
         }
-
-        const element = page.locator("fast-combobox");
 
         const label = page.locator("label");
 
@@ -329,69 +437,5 @@ test.describe("Combobox", () => {
         await label.click();
 
         await expect(element).toBeFocused();
-    });
-
-    test("should set the control's `aria-activedescendant` property to the ID of the currently selected option while open", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("combobox--combobox"));
-
-        const element = page.locator("fast-combobox");
-
-        const options = element.locator("fast-option");
-
-        const control = element.locator(`input[role="combobox"]`);
-
-        expect(await control.getAttribute("aria-activedescendant")).toBeNull();
-
-        await element.evaluate((node: FASTCombobox) => {
-            node.open = true;
-        });
-
-        await expect(element).toHaveAttribute("aria-activedescendant", "");
-
-        const optionsCount = await options.count();
-
-        for (let i = 0; i < optionsCount; i++) {
-            const option = options.nth(i);
-
-            await element.evaluate((node: FASTCombobox) => {
-                node.selectNextOption();
-            });
-
-            const optionId = await option.evaluate(node => node.id);
-
-            await expect(control).toHaveAttribute("aria-activedescendant", optionId);
-        }
-
-        await element.evaluate((node: FASTCombobox) => {
-            node.value = "other";
-        });
-
-        await expect(element).toHaveAttribute("aria-activedescendant", "");
-    });
-
-    test("should set the control's `aria-controls` attribute to the ID of the internal listbox element while open", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("combobox--combobox"));
-
-        const element = page.locator("fast-combobox");
-
-        const control = element.locator(`input[role="combobox"]`);
-
-        const listboxId = (await element
-            .locator(".listbox")
-            .getAttribute("id")) as string;
-
-        await expect(control).toHaveAttribute("aria-controls", "");
-
-        await element.evaluate((node: FASTCombobox) => (node.open = true));
-
-        await expect(control).toHaveAttribute("aria-controls", listboxId);
-
-        await element.evaluate((node: FASTCombobox) => (node.open = false));
-
-        await expect(control).toHaveAttribute("aria-controls", "");
     });
 });

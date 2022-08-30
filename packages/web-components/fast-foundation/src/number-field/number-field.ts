@@ -5,7 +5,7 @@ import {
     SyntheticViewTemplate,
     Updates,
 } from "@microsoft/fast-element";
-import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
+import { keyArrowDown, keyArrowUp, limit } from "@microsoft/fast-web-utilities";
 import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { DelegatesARIATextbox } from "../text-field/text-field.js";
@@ -141,7 +141,11 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public maxChanged(previous: number, next: number): void {
-        this.max = Math.max(next, this.min ?? next);
+        const max = Math.max(next, this.min ?? next);
+        if (this.max !== max) {
+            this.max = max;
+            return;
+        }
         const min = Math.min(this.min, this.max);
         if (this.min !== undefined && this.min !== min) {
             this.min = min;
@@ -215,14 +219,16 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public valueChanged(previous: string, next: string): void {
-        this.value = this.getValidValue(next);
+        const value = this.getValidValue(next);
 
-        if (next !== this.value) {
+        if (next !== value) {
+            this.value = value;
             return;
         }
 
-        if (this.control && !this.isUserInput) {
+        if (this.$fastController.isConnected && this.control?.value !== value) {
             this.control.value = this.value;
+            ``;
         }
 
         super.valueChanged(previous, this.value);
@@ -247,15 +253,21 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     private getValidValue(value: string): string {
-        let validValue: number | string = parseFloat(parseFloat(value).toPrecision(12));
-        if (isNaN(validValue)) {
-            validValue = "";
-        } else {
-            validValue = Math.min(validValue, this.max ?? validValue);
-            validValue = Math.max(validValue, this.min ?? validValue).toString();
+        const numberValue = parseFloat(parseFloat(value).toPrecision(12));
+
+        if (isNaN(numberValue)) {
+            return "";
         }
 
-        return validValue;
+        if (this.min !== undefined && numberValue < this.min) {
+            return this.min.toString();
+        }
+
+        if (this.max !== undefined && numberValue > this.max) {
+            return this.max.toString();
+        }
+
+        return numberValue.toString();
     }
 
     /**

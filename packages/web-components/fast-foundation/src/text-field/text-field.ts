@@ -44,9 +44,9 @@ export class FASTTextField extends FormAssociatedTextField {
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
-    protected readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.readOnly = this.readOnly;
+    protected readOnlyChanged(prev: boolean | undefined, next: boolean): void {
+        if (this.$fastController.isConnected) {
+            this.proxy?.toggleAttribute("readonly", next);
             this.validate();
         }
     }
@@ -59,11 +59,9 @@ export class FASTTextField extends FormAssociatedTextField {
      */
     @attr({ mode: "boolean" })
     public autofocus: boolean;
-    protected autofocusChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.autofocus = this.autofocus;
-            this.validate();
-        }
+    protected autofocusChanged(prev: boolean | undefined, next: boolean): void {
+        this.proxy?.toggleAttribute("autofocus", next);
+        this.validate();
     }
 
     /**
@@ -75,10 +73,8 @@ export class FASTTextField extends FormAssociatedTextField {
      */
     @attr
     public placeholder: string;
-    protected placeholderChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.placeholder = this.placeholder;
-        }
+    protected placeholderChanged(prev: string | undefined, next: string): void {
+        this.proxy?.setAttribute("placeholder", next);
     }
 
     /**
@@ -89,11 +85,9 @@ export class FASTTextField extends FormAssociatedTextField {
      */
     @attr
     public type: TextFieldType = TextFieldType.text;
-    private typeChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.type = this.type;
-            this.validate();
-        }
+    private typeChanged(prev: TextFieldType | undefined, next: TextFieldType): void {
+        this.proxy?.setAttribute("type", next);
+        this.validate();
     }
 
     /**
@@ -104,11 +98,9 @@ export class FASTTextField extends FormAssociatedTextField {
      */
     @attr
     public list: string;
-    protected listChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.setAttribute("list", this.list);
-            this.validate();
-        }
+    protected listChanged(prev: string | undefined, next: string): void {
+        this.proxy?.setAttribute("list", next);
+        this.validate();
     }
 
     /**
@@ -118,12 +110,18 @@ export class FASTTextField extends FormAssociatedTextField {
      * HTMLAttribute: maxlength
      */
     @attr({ converter: nullableNumberConverter })
-    public maxlength: number;
-    protected maxlengthChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.maxLength = this.maxlength;
-            this.validate();
+    public maxlength: number | null;
+    protected maxlengthChanged(
+        prev: number | null | undefined,
+        next: number | null
+    ): void {
+        if (typeof next === "number") {
+            this.proxy?.setAttribute("maxlength", next.toString());
+        } else {
+            this.proxy?.removeAttribute("maxlength");
         }
+
+        this.validate();
     }
 
     /**
@@ -133,12 +131,18 @@ export class FASTTextField extends FormAssociatedTextField {
      * HTMLAttribute: minlength
      */
     @attr({ converter: nullableNumberConverter })
-    public minlength: number;
-    protected minlengthChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.minLength = this.minlength;
-            this.validate();
+    public minlength: number | null;
+    protected minlengthChanged(
+        prev: number | null | undefined,
+        next: number | null
+    ): void {
+        if (typeof next === "number") {
+            this.proxy?.setAttribute("minlength", next.toString());
+        } else {
+            this.proxy?.removeAttribute("minlength");
         }
+
+        this.validate();
     }
 
     /**
@@ -149,11 +153,9 @@ export class FASTTextField extends FormAssociatedTextField {
      */
     @attr
     public pattern: string;
-    protected patternChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.pattern = this.pattern;
-            this.validate();
-        }
+    protected patternChanged(prev: string | undefined, next: string): void {
+        this.proxy?.setAttribute("pattern", next);
+        this.validate();
     }
 
     /**
@@ -163,10 +165,12 @@ export class FASTTextField extends FormAssociatedTextField {
      * HTMLAttribute: size
      */
     @attr({ converter: nullableNumberConverter })
-    public size: number;
-    protected sizeChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.size = this.size;
+    public size: number | null;
+    protected sizeChanged(prev: number | null | undefined, next: number | null): void {
+        if (typeof next === "number") {
+            this.proxy?.setAttribute("size", next.toString());
+        } else {
+            this.proxy?.removeAttribute("size");
         }
     }
 
@@ -178,10 +182,8 @@ export class FASTTextField extends FormAssociatedTextField {
      */
     @attr({ mode: "boolean" })
     public spellcheck: boolean;
-    protected spellcheckChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.spellcheck = this.spellcheck;
-        }
+    protected spellcheckChanged(prev: boolean | undefined, next: boolean): void {
+        this.proxy?.toggleAttribute("spellcheck", next);
     }
 
     /**

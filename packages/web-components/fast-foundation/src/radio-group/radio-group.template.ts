@@ -1,5 +1,10 @@
-import { elements, ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import {
+    elements,
+    ElementViewTemplate,
+    html,
+    ref,
+    slotted,
+} from "@microsoft/fast-element";
 import type { FASTRadioGroup } from "./radio-group.js";
 
 /**
@@ -18,9 +23,9 @@ export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTempl
         >
             <slot name="label"></slot>
             <div
-                class="positioning-region ${x =>
-                    x.orientation === Orientation.horizontal ? "horizontal" : "vertical"}"
+                class="positioning-region ${x => x.orientation}"
                 part="positioning-region"
+                ${ref("positioningRegion")}
             >
                 <slot
                     ${slotted({

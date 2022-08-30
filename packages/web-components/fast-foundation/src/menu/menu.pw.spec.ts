@@ -1,43 +1,109 @@
+import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
+import type { FASTMenu } from "./menu.js";
 
 test.describe("Menu", () => {
-    test("should include a role of menu", async ({ page }) => {
-        await page.goto(fixtureURL("menu--menu"));
+    let page: Page;
+    let element: Locator;
+    let menuItems: Locator;
 
-        const element = page.locator("fast-menu");
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
+
+        element = page.locator("fast-menu");
+
+        menuItems = element.locator("fast-menu-item");
+
+        await page.goto(fixtureURL("menu--menu"));
+    });
+
+    test.afterAll(async () => {
+        await page.close();
+    });
+
+    test("should have a role of `menu`", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item>Menu item</fast-menu-item>
+            </fast-menu>
+        `);
 
         await expect(element).toHaveAttribute("role", "menu");
     });
 
-    test("should focus on first menu item when focus is called", async ({ page }) => {
-        await page.goto(fixtureURL("menu--menu"));
+    test("should set `tabindex` of the first focusable menu item to 0", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item>Menu item</fast-menu-item>
+                <fast-menu-item>Menu item</fast-menu-item>
+            </fast-menu>
+        `);
 
-        const element = page.locator("fast-menu");
-
-        await element.evaluate(node => node.focus());
-
-        await expect(element.locator("fast-menu-item").first()).toBeFocused();
+        await expect(menuItems.first()).toHaveAttribute("tabindex", "0");
     });
 
-    test("should not throw when focus is called with no items", async ({ page }) => {
-        await page.goto(fixtureURL("debug--blank"));
+    test("should set class on menu items to 0 columns", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item>Menu item</fast-menu-item>
+                <fast-menu-item>Menu item</fast-menu-item>
+            </fast-menu>
+        `);
 
-        page.evaluate(() => {
-            const menu = document.createElement("fast-menu");
+        await expect(menuItems.first()).toHaveClass(/indent-0/);
+    });
 
-            document.getElementById("root")?.append(menu);
+    test("should NOT set any `tabindex` on non-menu-item elements", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item>Menu item</fast-menu-item>
+                <div>Not a menu item</div>
+            </fast-menu>
+        `);
 
-            menu.focus();
+        const divider = element.locator("div");
+
+        expect(await divider.getAttribute("tabindex")).toBeNull();
+    });
+
+    test("should focus on first menu item when focus is called", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item>Menu item</fast-menu-item>
+                <fast-menu-item>Menu item</fast-menu-item>
+            </fast-menu>
+        `);
+
+        await element.waitFor({ state: "attached" });
+
+        await expect(menuItems.first()).toHaveAttribute("tabindex", "0");
+
+        await page.evaluate(() => {
+            document.querySelector<FASTMenu>("fast-menu")?.focus();
+        });
+
+        expect(
+            await menuItems.first().evaluate(node => {
+                return node.isSameNode(document.activeElement);
+            })
+        ).toBeTruthy();
+    });
+
+    test("should not throw when focus is called with no items", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu></fast-menu>
+        `);
+
+        await page.evaluate(() => {
+            document.querySelector<FASTMenu>("fast-menu")?.focus();
         });
 
         expect(await page.evaluate(() => document.activeElement?.id)).toBe("");
     });
 
-    test("should not throw when focus is called before initialization is complete", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("debug--blank"));
+    test("should not throw when focus is called before initialization is complete", async () => {
+        await page.setContent("");
 
         await page.evaluate(() => {
             const menu = document.createElement("fast-menu");
@@ -50,39 +116,15 @@ test.describe("Menu", () => {
         expect(await page.evaluate(() => document.activeElement?.id)).toBe("");
     });
 
-    test("should set tabindex of the first focusable menu item to 0", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("menu--menu"));
+    test("should focus disabled items", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item disabled>Menu item</fast-menu-item>
+                <fast-menu-item>Menu item</fast-menu-item>
+            </fast-menu>
+        `);
 
-        const element = page.locator("fast-menu");
-
-        const menuItems = element.locator("fast-menu-item");
-
-        await expect(menuItems.first()).toHaveAttribute("tabindex", "0");
-    });
-
-    test("should NOT set any `tabindex` on non-menu-item elements", async ({ page }) => {
-        await page.goto(fixtureURL("menu--menu-with-divider"));
-
-        const element = page.locator("fast-menu");
-
-        const divider = element.locator("fast-divider");
-
-        expect(await divider.getAttribute("tabindex")).toBeNull();
-    });
-
-    test("should focus disabled items", async ({ page }) => {
-        await page.goto(
-            fixtureURL("menu--menu", {
-                "storyItems[0].id": "menu-item-1",
-                "storyItems[0].disabled": true,
-            })
-        );
-
-        const element = page.locator("fast-menu");
-
-        const firstMenuItem = element.locator("fast-menu-item:first-of-type");
+        const firstMenuItem = menuItems.first();
 
         await expect(firstMenuItem).toBeDisabled();
 
@@ -93,216 +135,134 @@ test.describe("Menu", () => {
         await expect(firstMenuItem).toBeFocused();
     });
 
-    test.describe("should accept elements as focusable child with role", () => {
-        ["menuitem", "menuitemcheckbox", "menuitemradio"].forEach(role => {
-            test(role, async ({ page }) => {
-                await page.goto(
-                    fixtureURL("menu--menu", {
-                        "storyItems[0].tag": "div",
-                        "storyItems[0].role": role,
-                    })
-                );
+    ["menuitem", "menuitemcheckbox", "menuitemradio"].forEach(role => {
+        test(`should accept elements as focusable child with "${role}" role`, async () => {
+            await page.setContent(/* html */ `
+                <fast-menu>
+                    <div role="${role}">Menu item</div>
+                </fast-menu>
+            `);
 
-                await expect(
-                    page.locator(`fast-menu [role="${role}"]`).first()
-                ).toHaveAttribute("tabindex", "0");
-            });
+            await expect(
+                page.locator(`fast-menu [role="${role}"]`).first()
+            ).toHaveAttribute("tabindex", "0");
         });
     });
 
-    test("should NOT set `indent` class on non-menu items", async ({ page }) => {
-        await page.goto(fixtureURL("menu--menu-with-divider"));
+    test("should NOT set `indent` class on non-menu items", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item>Menu item</fast-menu-item>
+                <div>Not a menu item</div>
+            </fast-menu>
+        `);
 
-        await expect(page.locator("fast-menu fast-divider")).not.toHaveClass("indent");
+        await expect(element.locator("div")).not.toHaveClass(/indent/);
     });
 
-    test("should set class on menu items to 0 columns", async ({ page }) => {
-        await page.goto(fixtureURL("menu--menu"));
+    test("should set class on menu items to 0 columns when non fast-menu-item is present", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item>Menu item</fast-menu-item>
+                <div>Not a menu item</div>
+            </fast-menu>
+        `);
 
-        await expect(page.locator("fast-menu fast-menu-item").first()).toHaveClass(
-            /indent-0/
-        );
+        await expect(menuItems.first()).toHaveClass(/indent-0/);
     });
 
-    test("should set class on menu items to 0 columns when non fast-menu-item is present", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("menu--menu-with-divider"));
+    test("should set class on menu items to 1 column", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item>Menu item</fast-menu-item>
+                <fast-menu-item>Menu item</fast-menu-item>
+                <fast-menu-item role="menuitemradio">Menu item</fast-menu-item>
+            </fast-menu>
+        `);
 
-        const element = page.locator("fast-menu");
-
-        const menuItems = element.locator("fast-menu-item");
-
-        expect(
-            await menuItems.evaluateAll(items =>
-                items.every(item => item.classList.contains("indent-0"))
-            )
-        ).toBeTruthy();
+        await expect(menuItems.first()).toHaveClass(/indent-1/);
     });
 
-    test("should set class on menu items to 1 column", async ({ page }) => {
-        await page.goto(
-            fixtureURL("menu--menu", { "storyItems[2].role": "menuitemradio" })
-        );
+    test("should set class on menu items to 2 columns", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item role="menuitemradio">
+                    <div slot="start">Start</div>
+                    Menu item
+                </fast-menu-item>
+                <fast-menu-item>Menu item</fast-menu-item>
+                <fast-menu-item>Menu item</fast-menu-item>
+                <fast-menu-item>Menu item</fast-menu-item>
+            </fast-menu>
+        `);
 
-        await expect(page.locator("fast-menu-item").first()).toHaveClass(/indent-1/);
+        await expect(menuItems.nth(0)).toHaveClass(/indent-2/);
     });
 
-    test("should set class on menu items to 2 columns", async ({ page }) => {
-        await page.goto(
-            fixtureURL("menu--menu-with-items-with-icons", {
-                "storyItems[0].role": "menuitemradio",
-                "storyItems[0].start": true,
-            })
-        );
+    test("should not navigate to hidden items when changed after connection", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item>Menu item 1</fast-menu-item>
+                <fast-menu-item>Menu item 2</fast-menu-item>
+                <fast-menu-item>Menu item 3</fast-menu-item>
+                <fast-menu-item>Menu item 4</fast-menu-item>
+            </fast-menu>
+        `);
 
-        await expect(page.locator("fast-menu fast-menu-item").first()).toHaveClass(
-            /indent-2/
-        );
-    });
+        await expect.soft(menuItems).toHaveCount(4);
 
-    test("should navigate the menu on arrow up/down keys", async ({ page }) => {
-        await page.goto(
-            fixtureURL("menu--menu", {
-                "storyItems[0].id": "menu-item-1",
-                "storyItems[1].id": "menu-item-2",
-                "storyItems[2].id": "menu-item-3",
-                "storyItems[3].id": "menu-item-4",
-                "storyItems[3].storyContent": "Menu item 4",
-            })
-        );
+        await menuItems.nth(2).evaluate(node => node.toggleAttribute("hidden"));
 
-        const element = page.locator("fast-menu");
-
-        const menuItems = element.locator("fast-menu-item");
-
-        const menuItemsCount = await menuItems.count();
-
-        await element.evaluate(node => node.focus());
-
-        const activeElement = () => page.evaluate(() => document.activeElement?.id);
-
-        expect(await activeElement()).toBe("menu-item-1");
-
-        for (let i = 1; i < menuItemsCount; i++) {
-            await element.press("ArrowDown");
-
-            expect(await activeElement()).toBe(`menu-item-${i + 1}`);
-        }
-
-        for (let i = menuItemsCount; i > 1; i--) {
-            await element.press("ArrowUp");
-
-            expect(await activeElement()).toBe(`menu-item-${i - 1}`);
-        }
-    });
-
-    test.describe("should not navigate to hidden items", () => {
-        test("when changed after connection", async ({ page }) => {
-            await page.goto(
-                fixtureURL("menu--menu", {
-                    "storyItems[3].storyContent": "Menu item 4",
-                })
-            );
-
-            const element = page.locator("fast-menu");
-
-            const menuItems = element.locator("fast-menu-item");
-
-            await menuItems.nth(2).evaluate(node => node.setAttribute("hidden", ""));
-
-            await element.evaluate(node => node.focus());
-
-            await expect(menuItems.nth(0)).toBeFocused();
-
-            await element.press("ArrowDown");
-
-            await expect(menuItems.nth(1)).toBeFocused();
-
-            await element.press("ArrowDown");
-
-            await expect(menuItems.nth(2)).not.toBeFocused();
-
-            await expect(menuItems.nth(3)).toBeFocused();
-
-            await element.press("ArrowUp");
-
-            await expect(menuItems.nth(2)).not.toBeFocused();
-
-            await expect(menuItems.nth(1)).toBeFocused();
-
-            await element.press("ArrowUp");
-
-            await expect(menuItems.nth(0)).toBeFocused();
-
-            await menuItems.nth(2).evaluate(node => node.removeAttribute("hidden"));
-
-            await element.press("ArrowDown");
-
-            await expect(menuItems.nth(1)).toBeFocused();
-
-            await element.press("ArrowDown");
-
-            await expect(menuItems.nth(2)).toBeFocused();
+        await element.evaluate(node => {
+            node.focus();
+            return new Promise(requestAnimationFrame);
         });
 
-        test("when set before connection", async ({ page }) => {
-            await page.goto(fixtureURL("debug--blank"));
+        await expect(menuItems.nth(0)).toBeFocused();
 
-            const element = page.locator("fast-menu");
+        await element.press("ArrowDown");
 
-            await page.evaluate(() => {
-                const menu = document.createElement("fast-menu");
+        await expect(menuItems.nth(1)).toBeFocused();
 
-                for (let i = 0; i < 4; i++) {
-                    const menuItem = document.createElement("fast-menu-item");
-                    menuItem.textContent = `Foo ${i}`;
-                    menuItem.id = `menu-item-${i}`;
+        await element.press("ArrowDown");
 
-                    if (i === 2) {
-                        menuItem.setAttribute("hidden", "");
-                    }
+        await expect(menuItems.nth(2)).not.toBeFocused();
 
-                    menu.append(menuItem);
-                }
+        await expect(menuItems.nth(3)).toBeFocused();
 
-                document.getElementById("root")?.append(menu);
-            });
+        await element.press("ArrowUp");
 
-            await element.evaluate(node => node.focus());
+        await expect(menuItems.nth(2)).not.toBeFocused();
 
-            expect(await page.evaluate(() => document.activeElement?.id)).toBe(
-                "menu-item-0"
-            );
+        await expect(menuItems.nth(1)).toBeFocused();
 
-            await element.press("ArrowDown");
+        await element.press("ArrowUp");
 
-            expect(await page.evaluate(() => document.activeElement?.id)).toBe(
-                "menu-item-1"
-            );
+        await expect(menuItems.nth(0)).toBeFocused();
 
-            await element.press("ArrowDown");
-
-            expect(await page.evaluate(() => document.activeElement?.id)).toBe(
-                "menu-item-3"
-            );
-
-            await element.press("ArrowUp");
-
-            expect(await page.evaluate(() => document.activeElement?.id)).toBe(
-                "menu-item-1"
-            );
+        await menuItems.nth(2).evaluate(node => {
+            node.removeAttribute("hidden");
+            return new Promise(requestAnimationFrame);
         });
+
+        await element.press("ArrowDown");
+
+        await expect(menuItems.nth(1)).toBeFocused();
+
+        await element.press("ArrowDown");
+
+        await expect(menuItems.nth(2)).toBeFocused();
     });
 
-    test("should treat all checkbox menu items as individually selectable items", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("menu--menu-with-checkboxes"));
-
-        const element = page.locator("fast-menu");
-
-        const menuItems = element.locator("fast-menu-item");
+    test("should treat all checkbox menu items as individually selectable items", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item role="menuitemcheckbox">Menu item 1</fast-menu-item>
+                <fast-menu-item role="menuitemcheckbox">Menu item 2</fast-menu-item>
+                <fast-menu-item role="menuitemcheckbox">Menu item 3</fast-menu-item>
+                <fast-menu-item role="menuitemcheckbox">Menu item 4</fast-menu-item>
+            </fast-menu>
+        `);
 
         const menuItemsCount = await menuItems.count();
 
@@ -321,65 +281,173 @@ test.describe("Menu", () => {
         }
     });
 
-    test(`should treat all radio menu items as a radiogroup and limit selection to one item within the group`, async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("menu--menu-with-radios"));
+    test(`should treat all radio menu items as a radiogroup and limit selection to one item within the group`, async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item role="menuitemradio">Menu item 1</fast-menu-item>
+                <fast-menu-item role="menuitemradio">Menu item 2</fast-menu-item>
+                <fast-menu-item role="menuitemradio">Menu item 3</fast-menu-item>
+            </fast-menu>
+        `);
 
-        const element = page.locator("fast-menu");
+        await menuItems.first().click();
 
-        const menuItems = element.locator("fast-menu-item");
+        await expect(menuItems.first()).toHaveAttribute("aria-checked", "true");
 
-        const checkedMenuItems = element.locator(`fast-menu-item[aria-checked="true"]`);
+        await expect(menuItems.nth(1)).toHaveAttribute("aria-checked", "false");
 
-        const menuItemsCount = await menuItems.count();
+        await expect(menuItems.nth(2)).toHaveAttribute("aria-checked", "false");
 
-        for (let i = 0; i < menuItemsCount; i++) {
-            const item = menuItems.nth(i);
+        await menuItems.nth(1).click();
 
-            await item.click();
+        await expect(menuItems.first()).toHaveAttribute("aria-checked", "false");
 
-            await expect(item).toHaveAttribute("aria-checked", "true");
+        await expect(menuItems.nth(1)).toHaveAttribute("aria-checked", "true");
 
-            await expect(checkedMenuItems).toHaveCount(1);
-        }
+        await expect(menuItems.nth(2)).toHaveAttribute("aria-checked", "false");
+
+        await menuItems.nth(2).click();
+
+        await expect(menuItems.first()).toHaveAttribute("aria-checked", "false");
+
+        await expect(menuItems.nth(1)).toHaveAttribute("aria-checked", "false");
+
+        await expect(menuItems.nth(2)).toHaveAttribute("aria-checked", "true");
     });
 
-    test('should use elements with `[role="separator"]` to divide radio menu items into different radio groups', async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("menu--menu-with-form-controls"));
+    test('should use elements with `[role="separator"]` to divide radio menu items into different radio groups', async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item role="menuitemradio">Menu item 1</fast-menu-item>
+                <fast-menu-item role="menuitemradio">Menu item 2</fast-menu-item>
+                <fast-divider role="separator"></fast-divider>
+                <fast-menu-item role="menuitemradio">Menu item 3</fast-menu-item>
+                <fast-menu-item role="menuitemradio">Menu item 4</fast-menu-item>
+            </fast-menu>
+        `);
 
-        const element = page.locator("fast-menu");
+        await menuItems.nth(0).click();
 
-        const menuItems = element.locator("fast-menu-item");
+        await expect(menuItems.nth(0)).toHaveAttribute("aria-checked", "true");
+        await expect(menuItems.nth(1)).toHaveAttribute("aria-checked", "false");
+        await expect(menuItems.nth(2)).toHaveAttribute("aria-checked", "");
+        await expect(menuItems.nth(3)).toHaveAttribute("aria-checked", "");
 
-        await menuItems.nth(4).click();
+        await menuItems.nth(1).click();
 
-        await expect(menuItems.nth(4)).toHaveAttribute("aria-checked", "true");
-        await expect(menuItems.nth(5)).toHaveAttribute("aria-checked", "false");
-        await expect(menuItems.nth(6)).toHaveAttribute("aria-checked", "");
-        await expect(menuItems.nth(7)).toHaveAttribute("aria-checked", "");
+        await expect(menuItems.nth(0)).toHaveAttribute("aria-checked", "false");
+        await expect(menuItems.nth(1)).toHaveAttribute("aria-checked", "true");
+        await expect(menuItems.nth(2)).toHaveAttribute("aria-checked", "");
+        await expect(menuItems.nth(3)).toHaveAttribute("aria-checked", "");
 
-        await menuItems.nth(5).click();
+        await menuItems.nth(2).click();
 
-        await expect(menuItems.nth(4)).toHaveAttribute("aria-checked", "false");
-        await expect(menuItems.nth(5)).toHaveAttribute("aria-checked", "true");
-        await expect(menuItems.nth(6)).toHaveAttribute("aria-checked", "");
-        await expect(menuItems.nth(7)).toHaveAttribute("aria-checked", "");
+        await expect(menuItems.nth(0)).toHaveAttribute("aria-checked", "false");
+        await expect(menuItems.nth(1)).toHaveAttribute("aria-checked", "true");
+        await expect(menuItems.nth(2)).toHaveAttribute("aria-checked", "true");
+        await expect(menuItems.nth(3)).toHaveAttribute("aria-checked", "false");
 
-        await menuItems.nth(6).click();
+        await menuItems.nth(3).click();
 
-        await expect(menuItems.nth(4)).toHaveAttribute("aria-checked", "false");
-        await expect(menuItems.nth(5)).toHaveAttribute("aria-checked", "true");
-        await expect(menuItems.nth(6)).toHaveAttribute("aria-checked", "true");
-        await expect(menuItems.nth(7)).toHaveAttribute("aria-checked", "false");
+        await expect(menuItems.nth(0)).toHaveAttribute("aria-checked", "false");
+        await expect(menuItems.nth(1)).toHaveAttribute("aria-checked", "true");
+        await expect(menuItems.nth(2)).toHaveAttribute("aria-checked", "false");
+        await expect(menuItems.nth(3)).toHaveAttribute("aria-checked", "true");
+    });
 
-        await menuItems.nth(7).click();
+    test("should navigate the menu on arrow up/down keys", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item>Menu item 1</fast-menu-item>
+                <fast-menu-item>Menu item 2</fast-menu-item>
+                <fast-menu-item>Menu item 3</fast-menu-item>
+                <fast-menu-item>Menu item 4</fast-menu-item>
+            </fast-menu>
+        `);
 
-        await expect(menuItems.nth(4)).toHaveAttribute("aria-checked", "false");
-        await expect(menuItems.nth(5)).toHaveAttribute("aria-checked", "true");
-        await expect(menuItems.nth(6)).toHaveAttribute("aria-checked", "false");
-        await expect(menuItems.nth(7)).toHaveAttribute("aria-checked", "true");
+        await element.waitFor({ state: "attached" });
+
+        await element.evaluate(node => {
+            node.focus();
+        });
+
+        await expect(menuItems).toHaveCount(4);
+
+        await expect(menuItems.first()).toBeFocused();
+
+        await element.press("ArrowDown");
+
+        await expect(menuItems.nth(1)).toBeFocused();
+
+        await element.press("ArrowDown");
+
+        await expect(menuItems.nth(2)).toBeFocused();
+
+        await element.press("ArrowDown");
+
+        await expect(menuItems.nth(3)).toBeFocused();
+    });
+
+    test("should not navigate to hidden items when set before connection", async () => {
+        await page.setContent(/* html */ `
+            <fast-menu>
+                <fast-menu-item>Menu item 1</fast-menu-item>
+                <fast-menu-item hidden="hidden">Menu item 2</fast-menu-item>
+                <fast-menu-item>Menu item 3</fast-menu-item>
+                <fast-menu-item>Menu item 4</fast-menu-item>
+            </fast-menu>
+        `);
+
+        // reset the focus to the window to help with flakiness
+        await page.evaluate(() => {
+            window.focus();
+        });
+
+        await element.evaluate(node => {
+            node.focus();
+            return new Promise(requestAnimationFrame);
+        });
+
+        await expect(menuItems.nth(0)).toBeFocused({ timeout: 500 });
+
+        await element.evaluate(node => {
+            node.dispatchEvent(
+                new KeyboardEvent("keydown", {
+                    key: "ArrowDown",
+                })
+            );
+        });
+
+        await expect(menuItems.nth(2)).toBeFocused();
+
+        await element.evaluate(node => {
+            node.dispatchEvent(
+                new KeyboardEvent("keydown", {
+                    key: "ArrowDown",
+                })
+            );
+        });
+
+        await expect(menuItems.nth(3)).toBeFocused();
+
+        await element.evaluate(node => {
+            node.dispatchEvent(
+                new KeyboardEvent("keydown", {
+                    key: "ArrowUp",
+                })
+            );
+        });
+
+        await expect(menuItems.nth(2)).toBeFocused();
+
+        await element.evaluate(node => {
+            node.dispatchEvent(
+                new KeyboardEvent("keydown", {
+                    key: "ArrowUp",
+                })
+            );
+        });
+
+        await expect(menuItems.nth(0)).toBeFocused();
     });
 });

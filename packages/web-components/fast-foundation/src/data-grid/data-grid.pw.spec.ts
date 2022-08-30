@@ -1,145 +1,74 @@
 import { expect, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import type { FASTDataGrid } from "./data-grid.js";
 import { DataGridRowTypes } from "./data-grid.options.js";
 
 test.describe("Data grid", () => {
-    test("should set role to 'grid'", async ({ page }) => {
-        await page.goto(fixtureURL("data-grid--data-grid"));
+    let page: Page;
+    let element: Locator;
 
-        const element = page.locator("fast-data-grid");
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
+
+        element = page.locator("fast-data-grid");
+
+        await page.goto(fixtureURL("data-grid-data-grid--data-grid"));
+    });
+
+    test.afterAll(async () => {
+        await page.close();
+    });
+
+    test("should set role to 'grid'", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid></fast-data-grid>
+        `);
 
         await expect(element).toHaveAttribute("role", "grid");
     });
 
-    test("should have a tabIndex of 0 by default", async ({ page }) => {
-        await page.goto(fixtureURL("data-grid--data-grid"));
-
-        const element = page.locator("fast-data-grid");
+    test("should have a tabIndex of 0 by default", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid></fast-data-grid>
+        `);
 
         await expect(element).toHaveAttribute("tabindex", "0");
     });
 
-    test("should have a tabIndex of -1 when no-tabbing is true", async ({ page }) => {
-        await page.goto(fixtureURL("data-grid--data-grid", { noTabbing: true }));
-
-        const element = page.locator("fast-data-grid");
-
-        await expect(element).toHaveAttribute("tabindex", "-1");
-    });
-
-    test("should have a tabIndex of -1 when a cell is focused", async ({ page }) => {
-        await page.goto(fixtureURL("debug--blank"));
-
-        await page.evaluate(() => {
-            const node = document.createElement("fast-data-grid") as FASTDataGrid;
-            node.generateHeader = "none";
-            node.rowsData = [
-                {
-                    item1: "value 1-1",
-                    item2: "value 2-1",
-                    item3: "value 3-1",
-                    item4: "value 4-1",
-                },
-                {
-                    item1: "value 1-2",
-                    item2: "value 2-2",
-                    item3: "value 3-2",
-                    item4: "value 4-2",
-                },
-                {
-                    item1: "value 1-3",
-                    item2: "value 2-3",
-                    item3: "value 3-3",
-                    item4: "value 4-3",
-                },
-            ];
-
-            document.getElementById("root")?.append(node);
-        });
-
-        const element = page.locator("fast-data-grid");
-
-        const rows = element.locator("fast-data-grid-row");
-
-        await expect(rows).toHaveCount(3);
-
-        const cells = rows.nth(0).locator("fast-data-grid-cell");
-
-        await expect(cells).toHaveCount(4);
-
-        await cells.nth(0).focus();
+    test("should have a tabIndex of -1 when no-tabbing is true", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid no-tabbing></fast-data-grid>
+        `);
 
         await expect(element).toHaveAttribute("tabindex", "-1");
     });
 
-    test("should generate a basic grid with a row header based on rowsdata only", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("data-grid--data-grid"));
+    test("should have a tabIndex of -1 when a cell is focused", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>Cell 1</fast-data-grid-cell>
+                    <fast-data-grid-cell>Cell 2</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+        `);
 
-        const element = page.locator("fast-data-grid");
+        await element.locator("fast-data-grid-cell").first().focus();
 
-        await element.evaluate((node: FASTDataGrid) => {
-            node.rowsData = [
-                {
-                    item1: "value 1-1",
-                    item2: "value 2-1",
-                    item3: "value 3-1",
-                    item4: "value 4-1",
-                },
-                {
-                    item1: "value 1-2",
-                    item2: "value 2-2",
-                    item3: "value 3-2",
-                    item4: "value 4-2",
-                },
-                {
-                    item1: "value 1-3",
-                    item2: "value 2-3",
-                    item3: "value 3-3",
-                    item4: "value 4-3",
-                },
-            ];
-        });
-
-        const rows = element.locator("fast-data-grid-row");
-
-        await expect(rows).toHaveCount(4);
-
-        expect(await rows.nth(0).evaluate((node: FASTDataGridRow) => node.rowType)).toBe(
-            DataGridRowTypes.header
-        );
+        await expect(element).toHaveAttribute("tabindex", "-1");
     });
 
-    test("should not generate a header when `generateHeader` is `none`", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("data-grid--data-grid", { generateHeader: "none" }));
+    test("should generate a basic grid with a row header based on rowsData only", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid></fast-data-grid>
+        `);
 
-        const element = page.locator("fast-data-grid");
-
-        await element.evaluate((node: FASTDataGrid) => {
+        element.evaluate((node: FASTDataGrid) => {
             node.rowsData = [
-                {
-                    item1: "value 1-1",
-                    item2: "value 2-1",
-                    item3: "value 3-1",
-                    item4: "value 4-1",
-                },
-                {
-                    item1: "value 1-2",
-                    item2: "value 2-2",
-                    item3: "value 3-2",
-                    item4: "value 4-2",
-                },
-                {
-                    item1: "value 1-3",
-                    item2: "value 2-3",
-                    item3: "value 3-3",
-                    item4: "value 4-3",
-                },
+                { id: "1", name: "Person 1" },
+                { id: "2", name: "Person 2" },
             ];
         });
 
@@ -147,47 +76,166 @@ test.describe("Data grid", () => {
 
         await expect(rows).toHaveCount(3);
 
-        expect(await rows.nth(0).evaluate((node: FASTDataGridRow) => node.rowType)).toBe(
-            DataGridRowTypes.default
-        );
+        const row1 = rows.nth(0);
+
+        await expect(row1).toHaveAttribute("row-type", DataGridRowTypes.header);
+
+        const row1Cells = row1.locator("fast-data-grid-cell");
+
+        await expect(row1Cells).toHaveCount(2);
+
+        await expect(row1Cells.nth(0)).toHaveText("id");
+
+        await expect(row1Cells.nth(1)).toHaveText("name");
+
+        const row2 = rows.nth(1);
+
+        await expect(row2).toHaveAttribute("row-type", DataGridRowTypes.default);
+
+        const row2Cells = row2.locator("fast-data-grid-cell");
+
+        await expect(row2Cells).toHaveCount(2);
+
+        await expect(row2Cells.nth(0)).toHaveText("1");
+
+        await expect(row2Cells.nth(1)).toHaveText("Person 1");
+
+        const row3 = rows.nth(2);
+
+        await expect(row3).toHaveAttribute("row-type", DataGridRowTypes.default);
+
+        const row3Cells = row3.locator("fast-data-grid-cell");
+
+        await expect(row3Cells).toHaveCount(2);
+
+        await expect(row3Cells.nth(0)).toHaveText("2");
+
+        await expect(row3Cells.nth(1)).toHaveText("Person 2");
     });
 
-    test("should not generate a header when rowsData is empty", async ({ page }) => {
-        await page.goto(fixtureURL("debug--blank"));
+    test("should not generate a header when `generateHeader` is `none`", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid generate-header="none"></fast-data-grid>
+        `);
 
-        await page.evaluate(() => {
-            const node = document.createElement("fast-data-grid") as FASTDataGrid;
+        element.evaluate((node: FASTDataGrid) => {
+            node.rowsData = [
+                { id: "1", name: "Person 1" },
+                { id: "2", name: "Person 2" },
+            ];
+        });
+
+        const rows = element.locator("fast-data-grid-row");
+
+        await expect(rows).toHaveCount(2);
+
+        const row1 = rows.nth(0);
+
+        await expect(row1).toHaveAttribute("row-type", DataGridRowTypes.default);
+
+        const row1Cells = row1.locator("fast-data-grid-cell");
+
+        await expect(row1Cells).toHaveCount(2);
+
+        await expect(row1Cells.nth(0)).toHaveText("1");
+
+        await expect(row1Cells.nth(1)).toHaveText("Person 1");
+
+        const row2 = rows.nth(1);
+
+        await expect(row2).toHaveAttribute("row-type", DataGridRowTypes.default);
+
+        const row2Cells = row2.locator("fast-data-grid-cell");
+
+        await expect(row2Cells).toHaveCount(2);
+
+        await expect(row2Cells.nth(0)).toHaveText("2");
+
+        await expect(row2Cells.nth(1)).toHaveText("Person 2");
+    });
+
+    test("should not generate a header when rowsData is empty", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid></fast-data-grid>
+        `);
+
+        element.evaluate((node: FASTDataGrid) => {
             node.rowsData = [];
-            document.getElementById("root")?.append(node);
         });
-
-        const element = page.locator("fast-data-grid");
 
         const rows = element.locator("fast-data-grid-row");
 
         await expect(rows).toHaveCount(0);
     });
 
-    test("should generate a sticky header when generateHeader is set to 'sticky'", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("data-grid--data-grid", { generateHeader: "sticky" }));
+    test("should generate a sticky header when generateHeader is set to 'sticky'", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid generate-header="sticky"></fast-data-grid>
+        `);
 
-        const rows = page.locator("fast-data-grid fast-data-grid-row").nth(0);
-
-        expect(await rows.nth(0).evaluate((node: FASTDataGridRow) => node.rowType)).toBe(
-            DataGridRowTypes.stickyHeader
-        );
-    });
-
-    test("should set the row index attribute of child rows'", async ({ page }) => {
-        await page.goto(fixtureURL("data-grid--data-grid", { generateHeader: "sticky" }));
-
-        const element = page.locator("fast-data-grid");
+        element.evaluate((node: FASTDataGrid) => {
+            node.rowsData = [
+                { id: "1", name: "Person 1" },
+                { id: "2", name: "Person 2" },
+            ];
+        });
 
         const rows = element.locator("fast-data-grid-row");
 
-        expect(rows).toHaveCount(6);
+        await expect(rows).toHaveCount(3);
+
+        const row1 = rows.nth(0);
+
+        await expect(row1).toHaveAttribute("row-type", DataGridRowTypes.stickyHeader);
+
+        const row1Cells = row1.locator("fast-data-grid-cell");
+
+        await expect(row1Cells).toHaveCount(2);
+
+        await expect(row1Cells.nth(0)).toHaveText("id");
+
+        await expect(row1Cells.nth(1)).toHaveText("name");
+
+        const row2 = rows.nth(1);
+
+        await expect(row2).toHaveAttribute("row-type", DataGridRowTypes.default);
+
+        const row2Cells = row2.locator("fast-data-grid-cell");
+
+        await expect(row2Cells).toHaveCount(2);
+
+        await expect(row2Cells.nth(0)).toHaveText("1");
+
+        await expect(row2Cells.nth(1)).toHaveText("Person 1");
+
+        const row3 = rows.nth(2);
+
+        await expect(row3).toHaveAttribute("row-type", DataGridRowTypes.default);
+
+        const row3Cells = row3.locator("fast-data-grid-cell");
+
+        await expect(row3Cells).toHaveCount(2);
+
+        await expect(row3Cells.nth(0)).toHaveText("2");
+
+        await expect(row3Cells.nth(1)).toHaveText("Person 2");
+    });
+
+    test("should set the row index attribute of child rows'", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid generate-header="sticky"></fast-data-grid>
+        `);
+
+        element.evaluate((node: FASTDataGrid) => {
+            node.rowsData = [
+                { id: "1", name: "Person 1" },
+                { id: "2", name: "Person 2" },
+            ];
+        });
+
+        const rows = element.locator("fast-data-grid-row");
+
+        await expect(rows).toHaveCount(3);
 
         const rowsCount = await rows.count();
         for (let i = 0; i < rowsCount; i++) {
@@ -197,181 +245,177 @@ test.describe("Data grid", () => {
         }
     });
 
-    test("should move focus with up/down arrow key strokes", async ({ page }) => {
-        await page.goto(fixtureURL("data-grid--data-grid", { generateHeader: "none" }));
+    test("should move focus with up/down arrow key strokes", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid generate-header="none"></fast-data-grid>
+        `);
 
-        const element = page.locator("fast-data-grid");
+        element.evaluate((node: FASTDataGrid) => {
+            node.rowsData = [
+                { id: "1", name: "Person 1" },
+                { id: "2", name: "Person 2" },
+                { id: "3", name: "Person 3" },
+            ];
+        });
 
         const rows = element.locator("fast-data-grid-row");
 
-        const cells = rows.nth(0).locator("fast-data-grid-cell");
+        await expect(rows).toHaveCount(3);
 
-        await expect(cells).toHaveCount(5);
+        const row1 = rows.nth(0);
 
-        await cells.nth(0).focus();
+        const row2 = rows.nth(1);
 
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 1-1"
-        );
+        const row3 = rows.nth(2);
 
-        await page.keyboard.press("ArrowDown");
+        const row1Cells = row1.locator("fast-data-grid-cell");
 
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 1-2"
-        );
+        const row2Cells = row2.locator("fast-data-grid-cell");
 
-        await page.keyboard.press("ArrowDown");
+        const row3Cells = row3.locator("fast-data-grid-cell");
 
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 1-3"
-        );
+        await row1Cells.nth(0).click();
 
-        await page.keyboard.press("ArrowDown");
+        await expect(row1Cells.nth(0)).toBeFocused();
 
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 1-4"
-        );
+        await row1Cells.nth(0).press("ArrowDown");
 
-        await page.keyboard.press("ArrowUp");
+        await expect(row2Cells.nth(0)).toBeFocused();
 
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 1-3"
-        );
+        await row2Cells.nth(0).press("ArrowDown");
 
-        await page.keyboard.press("ArrowUp");
+        await expect(row3Cells.nth(0)).toBeFocused();
 
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 1-2"
-        );
+        await row3Cells.nth(0).press("ArrowUp");
+
+        await expect(row2Cells.nth(0)).toBeFocused();
     });
 
-    test("should move focus to first/last cells with ctrl + home/end key strokes", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("data-grid--data-grid", { generateHeader: "none" }));
+    test("should move focus to first/last cells with ctrl + home/end key strokes", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid generate-header="none"></fast-data-grid>
+        `);
 
-        const element = page.locator("fast-data-grid");
+        element.evaluate((node: FASTDataGrid) => {
+            node.rowsData = [
+                { id: "1", name: "item 1", shape: "circle" },
+                { id: "2", name: "item 2", shape: "square" },
+                { id: "3", name: "item 3", shape: "triangle" },
+            ];
+        });
 
         const rows = element.locator("fast-data-grid-row");
 
-        const cells = rows.nth(0).locator("fast-data-grid-cell");
+        const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
 
-        await expect(cells).toHaveCount(5);
+        const lastCell = rows.nth(2).locator("fast-data-grid-cell").nth(2);
 
-        await cells.nth(0).focus();
+        await firstCell.focus();
 
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 1-1"
-        );
+        await expect(firstCell).toBeFocused();
 
         await page.keyboard.press("Control+End");
 
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 5-5"
-        );
+        await expect(lastCell).toBeFocused();
 
         await page.keyboard.press("Control+Home");
 
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 1-1"
-        );
+        await expect(firstCell).toBeFocused();
     });
 
-    test("should move focus by setting `focusRowIndex`", async ({ page }) => {
-        await page.goto(fixtureURL("data-grid--data-grid", { generateHeader: "none" }));
+    test("should move focus by setting the `focusRowIndex` property", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid generate-header="none"></fast-data-grid>
+        `);
 
-        const element = page.locator("fast-data-grid");
-
-        const rows = element.locator("fast-data-grid-row");
-
-        const cells = rows.nth(0).locator("fast-data-grid-cell");
-
-        await expect(cells).toHaveCount(5);
-
-        await cells.nth(0).focus();
-
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 1-1"
-        );
-
-        await element.evaluate((node: FASTDataGrid) => (node.focusRowIndex = 1));
-
-        await page.evaluate(() => new Promise(requestAnimationFrame));
-
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 1-2"
-        );
-
-        await element.evaluate((node: FASTDataGrid) => (node.focusRowIndex = 2));
-
-        await page.evaluate(() => new Promise(requestAnimationFrame));
-
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 1-3"
-        );
-    });
-
-    test("should move focus by setting `focusColumnIndex`", async ({ page }) => {
-        await page.goto(fixtureURL("data-grid--data-grid", { generateHeader: "none" }));
-
-        const element = page.locator("fast-data-grid");
-
-        const rows = element.locator("fast-data-grid-row");
-
-        const cells = rows.nth(0).locator("fast-data-grid-cell");
-
-        await expect(cells).toHaveCount(5);
-
-        await cells.nth(0).focus();
-
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 1-1"
-        );
-
-        await element.evaluate((node: FASTDataGrid) => (node.focusColumnIndex = 1));
-
-        await page.evaluate(() => new Promise(requestAnimationFrame));
-
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 2-1"
-        );
-
-        await element.evaluate((node: FASTDataGrid) => (node.focusColumnIndex = 2));
-
-        await page.evaluate(() => new Promise(requestAnimationFrame));
-
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 3-1"
-        );
-
-        await element.evaluate((node: FASTDataGrid) => (node.focusColumnIndex = 3));
-
-        await page.evaluate(() => new Promise(requestAnimationFrame));
-
-        expect(await page.evaluate(() => document.activeElement?.textContent)).toContain(
-            "value 4-1"
-        );
-    });
-
-    test("should auto generate grid-columns from a manual row", async ({ page }) => {
-        await page.goto(fixtureURL("debug--blank"));
-
-        page.evaluate(() => {
-            const node = document.createElement("fast-data-grid");
-            const row = document.createElement("fast-data-grid-row");
-            row.append(
-                document.createElement("fast-data-grid-cell"),
-                document.createElement("fast-data-grid-cell")
-            );
-
-            node.append(row);
-            document.getElementById("root")?.append(node);
+        element.evaluate((node: FASTDataGrid) => {
+            node.rowsData = [
+                { id: "1", name: "item 1", shape: "circle" },
+                { id: "2", name: "item 2", shape: "square" },
+                { id: "3", name: "item 3", shape: "triangle" },
+            ];
         });
 
-        const element = page.locator("fast-data-grid");
+        const cells = element.locator("fast-data-grid-cell");
 
-        const lastRow = element.locator("fast-data-grid-row").last();
+        await expect(cells).toHaveCount(9);
 
-        await expect(lastRow).toHaveJSProperty("gridTemplateColumns", "1fr 1fr");
+        await cells.nth(0).focus();
+
+        await expect(cells.nth(0)).toBeFocused();
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.focusRowIndex = 1;
+        });
+
+        await expect(cells.nth(3)).toBeFocused();
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.focusRowIndex = 2;
+        });
+
+        await expect(cells.nth(6)).toBeFocused();
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.focusRowIndex = 0;
+        });
+
+        await expect(cells.nth(0)).toBeFocused();
+    });
+
+    test("should move focus by setting `focusColumnIndex`", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid generate-header="none"></fast-data-grid>
+        `);
+
+        element.evaluate((node: FASTDataGrid) => {
+            node.rowsData = [
+                { id: "1", name: "item 1", shape: "circle" },
+                { id: "2", name: "item 2", shape: "square" },
+                { id: "3", name: "item 3", shape: "triangle" },
+            ];
+        });
+
+        const cells = element.locator("fast-data-grid-cell");
+
+        await expect(cells).toHaveCount(9);
+
+        await cells.nth(0).focus();
+
+        await expect(cells.nth(0)).toBeFocused();
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.focusColumnIndex = 1;
+        });
+
+        await expect(cells.nth(1)).toBeFocused();
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.focusColumnIndex = 2;
+        });
+
+        await expect(cells.nth(2)).toBeFocused();
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.focusColumnIndex = 0;
+        });
+
+        await expect(cells.nth(0)).toBeFocused();
+    });
+
+    test("should auto generate grid-columns from a manual row", async () => {
+        await page.setContent(/* html */ `
+            <fast-data-grid generate-header="none">
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>1</fast-data-grid-cell>
+                    <fast-data-grid-cell>2</fast-data-grid-cell>
+                    <fast-data-grid-cell>3</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+        `);
+
+        const lastRow = element.locator("fast-data-grid-row");
+
+        await expect(lastRow).toHaveJSProperty("gridTemplateColumns", "1fr 1fr 1fr");
     });
 });
