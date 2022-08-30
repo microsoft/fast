@@ -282,7 +282,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-posinset`
      */
     @observable
-    ariaPosInSet: string | null;
+    public ariaPosInSet: string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -291,7 +291,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-selected`
      */
     @observable
-    ariaSelected: "true" | "false" | string | null;
+    public ariaSelected: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -300,7 +300,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-setsize`
      */
     @observable
-    ariaSetSize: string | null;
+    public ariaSetSize: string | null;
 }
 
 /**

@@ -19,9 +19,7 @@ export class FASTBaseProgress extends FASTElement {
     @attr({ converter: nullableNumberConverter })
     public value: number | null;
     protected valueChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.updatePercentComplete();
-        }
+        this.updatePercentComplete();
     }
 
     /**

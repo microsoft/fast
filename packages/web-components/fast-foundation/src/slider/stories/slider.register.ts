@@ -15,7 +15,6 @@ const styles = css`
         --track-width: var(--design-unit);
         --fast-slider-height: calc(var(--thumb-size) * 10);
         align-items: center;
-        width: 100%;
         margin: calc(var(--design-unit) * 1px) 0;
         user-select: none;
         box-sizing: border-box;
@@ -23,12 +22,14 @@ const styles = css`
         outline: none;
         cursor: pointer;
     }
+
     :host([orientation="horizontal"]) .positioning-region {
         position: relative;
         margin: 0 8px;
         display: grid;
         grid-template-rows: calc(var(--thumb-size) * 1px) 1fr;
     }
+
     :host([orientation="vertical"]) .positioning-region {
         position: relative;
         margin: 0 8px;
@@ -82,7 +83,9 @@ const styles = css`
             translateY(calc(var(--thumb-size) * 0.5px));
     }
     :host([orientation="horizontal"]) {
+        touch-action: pan-y;
         min-width: calc(var(--thumb-size) * 1px);
+        width: 100%;
     }
     :host([orientation="horizontal"]) .track {
         right: calc(var(--track-overhang) * 1px);
@@ -104,7 +107,7 @@ const styles = css`
     :host([orientation="vertical"]) {
         height: calc(var(--fast-slider-height) * 1px);
         min-height: calc(var(--thumb-size) * 1px);
-        min-width: calc(var(--design-unit) * 20px);
+        touch-action: pan-x;
     }
     :host([orientation="vertical"]) .track-start {
         height: auto;

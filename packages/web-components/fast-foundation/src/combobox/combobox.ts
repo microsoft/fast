@@ -98,6 +98,11 @@ export class FASTCombobox extends FormAssociatedCombobox {
         this.updateValue();
     }
 
+    /** {@inheritDoc (FormAssociated:interface).validate} */
+    public validate(): void {
+        super.validate(this.control);
+    }
+
     private get isAutocompleteInline(): boolean {
         return (
             this.autocomplete === ComboboxAutocomplete.inline || this.isAutocompleteBoth
