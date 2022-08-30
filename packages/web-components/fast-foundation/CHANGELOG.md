@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 18 Aug 2022 20:46:10 GMT and should not be manually modified.
+This log was last generated on Fri, 26 Aug 2022 18:06:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.8
+
+Fri, 26 Aug 2022 18:06:43 GMT
+
+### Changes
+
+- normalize storybook stories (863023+radium-v@users.noreply.github.com)
+- fix(tabs): home and end navigation (mathieulavoie94@gmail.com)
+- Fix constraint validation in focus-delegated components (nicholasrice@users.noreply.github.com)
 
 ## 3.0.0-alpha.7
 

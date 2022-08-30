@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "Fix constraint validation in focus-delegated components",
+  "comment": "Adds DesignTokenStyleTarget to support DesignToken style collection for SSR",
   "packageName": "@microsoft/fast-foundation",
   "email": "nicholasrice@users.noreply.github.com",
   "dependentChangeType": "prerelease"

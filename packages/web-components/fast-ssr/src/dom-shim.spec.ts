@@ -118,9 +118,9 @@ test.describe("The DOM shim", () => {
         ctor.define({ name, template });
 
         test(`should support construction and connection of the ${ctor.name} component and template during SSR rendering`, () => {
-            const { templateRenderer, defaultRenderInfo } = fastSSR();
+            const { templateRenderer } = fastSSR();
             const templateString = `<${name}></${name}>`;
-            expect(() => templateRenderer.render(templateString, defaultRenderInfo)).not.toThrow();
+            expect(() => templateRenderer.render(templateString)).not.toThrow();
         });
     });
 
