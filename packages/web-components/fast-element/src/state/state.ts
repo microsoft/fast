@@ -139,7 +139,7 @@ export type ComputedState<T> = ReadonlyState<T> & Disposable & {
 };
 
 export type ComputedSetupCallback = {
-    (): () => void;
+    (): (() => void) | void;
 };
 
 export type ComputedBuilder = {
@@ -232,26 +232,3 @@ export function computedState<T>(
 
     return output;
 }
-
-// const time = computedState(x => {
-//     const time = state(new Date());
-
-//     x.on.setup(() => {
-//         const interval = setInterval(() => {
-//           time.set(new Date());
-//         });
-
-//         return () => clearInterval(interval);
-//     });
-
-//     return () => {
-//         const now = time.current;
-
-//         return new Intl.DateTimeFormat("en-US", {
-//             hour: "numeric",
-//             minute: "numeric",
-//             second: "numeric",
-//             hour12: false,
-//         }).format(now);
-//     };
-// });
