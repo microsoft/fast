@@ -91,7 +91,10 @@ export interface Factory<T extends Constructable = any> {
      * @param container - The container the object is being constructor for.
      * @param dynamicDependencies - Dynamic dependencies supplied to the constructor.
      */
-    constructAsync(container: Container, dynamicDependencies?: Key[]): Promise<Resolved<T>>
+    constructAsync(
+        container: Container,
+        dynamicDependencies?: Key[]
+    ): Promise<Resolved<T>>;
 }
 
 /**
@@ -1360,14 +1363,14 @@ export class ResolverImpl implements Resolver, Registration {
                 this.resolving = true;
 
                 return handler
-                      .getFactory(this.state as Constructable)
-                      .constructAsync(requestor)
-                      .then(instance => {
-                        this.state = instance
+                    .getFactory(this.state as Constructable)
+                    .constructAsync(requestor)
+                    .then(instance => {
+                        this.state = instance;
                         this.strategy = ResolverStrategy.instance;
                         this.resolving = false;
                         return instance;
-                      });
+                    });
             }
             case ResolverStrategy.transient: {
                 // Always create transients from the requesting container
@@ -1446,7 +1449,10 @@ export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
     private transformers: ((instance: any) => any)[] | null = null;
     public constructor(public Type: T, private readonly dependencies: Key[]) {}
 
-    public async constructAsync(container: Container, dynamicDependencies?: Key[]): Promise<Resolved<T>> {
+    public async constructAsync(
+        container: Container,
+        dynamicDependencies?: Key[]
+    ): Promise<Resolved<T>> {
         const resolved = await Promise.all(
             this.dependencies.map(x => container.getAsync(x))
         );
@@ -1463,14 +1469,9 @@ export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
         let instance: Resolved<T>;
 
         if (dynamicDependencies === void 0) {
-            instance = new this.Type(
-                ...resolved
-            ) as Resolved<T>;
+            instance = new this.Type(...resolved) as Resolved<T>;
         } else {
-            instance = new this.Type(
-                ...resolved,
-                ...dynamicDependencies
-            ) as Resolved<T>;
+            instance = new this.Type(...resolved, ...dynamicDependencies) as Resolved<T>;
         }
 
         if (this.transformers === null) {
@@ -1492,7 +1493,7 @@ const containerResolver: Resolver = {
     },
     resolveAsync: function (handler: Container, requestor: Container): Promise<any> {
         return Promise.resolve(requestor);
-    }
+    },
 };
 
 function isRegistry(obj: Registry | Record<string, Registry>): obj is Registry {
@@ -1785,7 +1786,9 @@ export class ContainerImpl implements DOMContainer {
 
                     const handler = isRegisterInRequester(
                         (key as unknown) as RegisterSelf<Constructable>
-                    ) ? this : current;
+                    )
+                        ? this
+                        : current;
 
                     resolver = registration.register(handler);
                     return resolver.resolveAsync(current, this);
