@@ -17,7 +17,10 @@ program
         "-t, --templates [templates...]",
         "specify different templates you want to benchmark"
     )
-    .option("-m, --method <name>", "specify a single method you want to benchmark")
+    .option(
+        "-m, --method <name>",
+        "specify a single method you want to benchmark"
+    )
     .option("-q, --queryParam [queries...]", "add query params you want to add to url")
     .option(
         "-lb, --localBenchFile <name>",
