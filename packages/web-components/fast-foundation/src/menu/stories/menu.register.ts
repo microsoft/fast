@@ -27,6 +27,8 @@ const styles = css`
         margin: 0 calc(var(--design-unit) * 1px);
         width: max-content;
         position: absolute;
+        top: 0;
+        left: 0;
     }
 
     ::slotted(hr) {

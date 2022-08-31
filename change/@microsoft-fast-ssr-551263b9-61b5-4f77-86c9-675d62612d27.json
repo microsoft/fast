@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "update dom-shim test with menu item template changes",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}

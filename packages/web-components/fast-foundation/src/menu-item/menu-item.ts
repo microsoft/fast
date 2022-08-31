@@ -6,7 +6,7 @@ import {
     keyEnter,
     keySpace,
 } from "@microsoft/fast-web-utilities";
-import { computePosition, flip, autoUpdate } from "@floating-ui/dom";
+import { autoUpdate, computePosition, flip, hide, shift } from "@floating-ui/dom";
 import type { FASTMenu } from "../menu/menu.js";
 import { StartEnd } from "../patterns/index.js";
 import { getDirection } from "../utilities/direction.js";
@@ -257,7 +257,7 @@ export class FASTMenuItem extends FASTElement {
                     this.submenu as HTMLElement,
                     {
                         placement: this.submenuPositioning || SubmenuPosition.rightStart,
-                        middleware: [flip()],
+                        middleware: [flip(), shift()],
                     }
                 ).then(({ x, y }) => {
                     Object.assign((this.submenu as HTMLElement)!.style, {

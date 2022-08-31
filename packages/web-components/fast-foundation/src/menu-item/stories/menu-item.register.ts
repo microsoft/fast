@@ -271,7 +271,6 @@ const styles = css`
 FASTMenuItem.define({
     name: "fast-menu-item",
     template: menuItemTemplate({
-        anchoredRegion: "fast-anchored-region",
         checkboxIndicator: /* html */ `
             <svg
                 part="checkbox-indicator"

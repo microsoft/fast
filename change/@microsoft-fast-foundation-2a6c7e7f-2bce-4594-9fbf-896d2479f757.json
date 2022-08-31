@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "replace anchored region with floating-ui in menu item",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

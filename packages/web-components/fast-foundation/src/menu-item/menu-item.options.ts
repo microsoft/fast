@@ -1,5 +1,5 @@
-import type { StartEndOptions } from "../patterns/start-end.js";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import type { StartEndOptions } from "../patterns/start-end.js";
 
 /**
  * Types of menu item column count.
