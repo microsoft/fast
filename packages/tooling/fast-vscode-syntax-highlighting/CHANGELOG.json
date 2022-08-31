@@ -2,6 +2,21 @@
   "name": "fast-tagged-templates",
   "entries": [
     {
+      "date": "Tue, 30 Aug 2022 00:05:56 GMT",
+      "tag": "fast-tagged-templates_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "fast-tagged-templates",
+            "commit": "08585f91315898861a99d947b407d5596160d313",
+            "comment": "add package publisher"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 08 Mar 2022 07:12:45 GMT",
       "tag": "fast-tagged-templates_v0.1.0",
       "version": "0.1.0",

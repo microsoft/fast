@@ -13,7 +13,7 @@ import {
  * @public
  */
 export interface PropertyTarget {
-    setProperty(name: string, value: string | null): void;
+    setProperty(name: string, value: string): void;
     removeProperty(name: string): void;
 }
 

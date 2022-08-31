@@ -26,3 +26,14 @@ export type RenderInfo = {
      */
     customElementHostStack: ElementRenderer[];
 };
+
+/**
+ * Default RenderInfo implementation
+ *
+ * @internal
+ */
+export class DefaultRenderInfo implements RenderInfo {
+    public customElementHostStack: ElementRenderer[] = [];
+    public customElementInstanceStack: ElementRenderer[] = [];
+    constructor(public elementRenderers: ConstructableElementRenderer[] = []) {}
+}
