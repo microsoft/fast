@@ -268,9 +268,11 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         }
 
         private requiresUnbind(controller: ExpressionController) {
-            return !controller.selfContained
-                || this.first !== this.last
-                || this.first.propertySource !== controller.source;
+            return (
+                !controller.selfContained ||
+                this.first !== this.last ||
+                this.first.propertySource !== controller.source
+            );
         }
 
         public unbind(controller: ExpressionController) {
