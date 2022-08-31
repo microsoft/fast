@@ -2,27 +2,6 @@ import { ElementViewTemplate, html } from "@microsoft/fast-element";
 import type { FASTFlipper, FlipperOptions } from "./flipper.js";
 import type { FlipperDirection } from "./flipper.options.js";
 
-const templateCache = {};
-
-function setFlipperTemplateByDirection(
-    direction: FlipperDirection,
-    options: FlipperOptions
-) {
-    let existing = templateCache[direction];
-
-    if (!existing) {
-        templateCache[direction] = existing = html`
-            <span part="${direction}" class="${direction}">
-                <slot name="${direction}">
-                    ${options[direction] || ""}
-                </slot>
-            </span>
-        `;
-    }
-
-    return existing;
-}
-
 /**
  * The template for the {@link @microsoft/fast-foundation#FASTFlipper} component.
  * @public
@@ -30,6 +9,27 @@ function setFlipperTemplateByDirection(
 export function flipperTemplate<T extends FASTFlipper>(
     options: FlipperOptions = {}
 ): ElementViewTemplate<T> {
+    const templateCache = {};
+
+    function setFlipperTemplateByDirection(
+        direction: FlipperDirection,
+        options: FlipperOptions
+    ) {
+        let existing = templateCache[direction];
+
+        if (!existing) {
+            templateCache[direction] = existing = html`
+                <span part="${direction}" class="${direction}">
+                    <slot name="${direction}">
+                        ${options[direction] || ""}
+                    </slot>
+                </span>
+            `;
+        }
+
+        return existing;
+    }
+
     return html`
         <template
             role="button"
