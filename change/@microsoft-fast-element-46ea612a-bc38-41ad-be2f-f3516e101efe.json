@@ -3,5 +3,5 @@
   "comment": "feat: new behavior and context API design",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
