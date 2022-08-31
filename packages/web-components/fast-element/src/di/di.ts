@@ -411,10 +411,10 @@ function cloneArrayWithPossibleProps<T>(source: readonly T[]): T[] {
 export type ParentLocator = (owner: any) => Container | null;
 
 /**
- * A function capable of locating a resolver for a key.
+ * A function capable of asynchronously locating a resolver for a key.
  * @public
  */
-export type AsyncResolverLocator = (key: Key) => Promise<Resolver | null>;
+export type AsyncRegistrationLocator = (key: Key) => Promise<Registration | null>;
 
 /**
  * Configuration for a dependency injection container.
@@ -429,9 +429,9 @@ export interface ContainerConfiguration {
     /**
      * When an asynchronous get request is made to the container, if no
      * resolver is found for the key, this function is called to provide
-     * a resolver.
+     * a registration.
      */
-    asyncResolverLocator: AsyncResolverLocator;
+    asyncRegistrationLocator: AsyncRegistrationLocator;
 
     /**
      * Indicates whether this container should resolve dependencies that are directly made
@@ -492,7 +492,7 @@ export const ContainerConfiguration = Object.freeze({
      */
     default: Object.freeze({
         parentLocator: () => null,
-        asyncResolverLocator: async () => null,
+        asyncRegistrationLocator: async () => null,
         responsibleForOwnerRequests: false,
         defaultResolver: DefaultResolver.singleton,
     } as ContainerConfiguration),
@@ -1777,16 +1777,17 @@ export class ContainerImpl implements DOMContainer {
 
             if (resolver == null) {
                 if (current.parent == null) {
-                    resolver = await this.config.asyncResolverLocator(key);
+                    const registration = await this.config.asyncRegistrationLocator(key);
 
-                    if (!resolver) {
+                    if (!registration) {
                         throw FAST.error(Message.cannotResolveKey, { key });
                     }
 
                     const handler = isRegisterInRequester(
                         (key as unknown) as RegisterSelf<Constructable>
                     ) ? this : current;
-                    handler.resolvers.set(key, resolver)
+
+                    resolver = registration.register(handler);
                     return resolver.resolveAsync(current, this);
                 }
 
