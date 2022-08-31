@@ -3,9 +3,9 @@ import { children, customElement, ExecutionContext, FASTElement, html, ref, repe
 import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
-import { TemplateRenderer } from "./template-renderer.js";
+import { DefaultTemplateRenderer } from "./template-renderer.js";
 import { render } from "@microsoft/fast-element/render";
-import { ElementRenderer } from "../element-renderer/element-renderer.js";
+import { DefaultElementRenderer } from "../element-renderer/element-renderer.js";
 import { RenderInfo } from "../render-info.js";
 
 @customElement("hello-world")
@@ -19,28 +19,14 @@ class WithHostAttributes extends FASTElement {}
 
 
 test.describe("TemplateRenderer", () => {
-    test.describe("should have an initial configuration", () => {
-        test("that emits to shadow DOM", () => {
-            const instance = new TemplateRenderer();
-            expect(instance.componentDOMEmissionMode).toBe("shadow")
-        });
-    });
-
-    test.describe.skip("should allow configuration", () => {
-        test("that emits to light DOM", () => {
-            const instance = new TemplateRenderer(/* Re-implement w/ light mode emission is finished {componentDOMEmissionMode: "light"} */);
-            expect(instance.componentDOMEmissionMode).toBe("light");
-        });
-    });
-
     test.describe("should have a createRenderInfo method", () => {
         test("that returns unique object instances for every invocation", () => {
-            const renderer = new TemplateRenderer();
+            const renderer = new DefaultTemplateRenderer();
             expect(renderer.createRenderInfo()).not.toBe(renderer.createRenderInfo())
         });
         test("that can be populated with ElementRenderers with the 'withDefaultElementRenderer()' method", () => {
-            const renderer = new TemplateRenderer();
-            class MyRenderer extends ElementRenderer {
+            const renderer = new DefaultTemplateRenderer();
+            class MyRenderer extends DefaultElementRenderer {
                 element?: HTMLElement | undefined;
                 attributeChangedCallback(name: string, prev: string | null, next: string | null): void {}
                 connectedCallback(): void {}
