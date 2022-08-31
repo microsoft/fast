@@ -30,7 +30,10 @@ export const DesignTokenEventResolutionStrategy: DesignTokenResolutionStrategy =
         controller.source.addEventListener(parentLocatorEventName, parentLocatorHandler);
     },
     removedCallback(controller: HostController<FASTElement>) {
-        controller.source.removeEventListener(parentLocatorEventName, parentLocatorHandler);
+        controller.source.removeEventListener(
+            parentLocatorEventName,
+            parentLocatorHandler
+        );
     },
     contains(parent, child): boolean {
         parent.addEventListener(containsEventName, containsHandler);
