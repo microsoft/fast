@@ -65,12 +65,36 @@ interface SubscriptionRecord extends ObservationRecord {
     next: SubscriptionRecord | undefined;
 }
 
+/**
+ * Controls the lifecycle of an expression and provides relevant context.
+ * @public
+ */
 export interface ExpressionController<TSource = any, TParent = any> {
+    /**
+     * The source the expression is evaluated against.
+     */
     readonly source: TSource;
+
+    /**
+     * The context the expression is evaluated against.
+     */
     readonly context: ExecutionContext<TParent>;
+
+    /**
+     * Indicates whether the controller is bound.
+     */
     readonly isBound: boolean;
+
+    /**
+     * Indicates whether or not the source and its bindings are completely self-
+     * contained, without external references preventing GC.
+     */
     readonly selfContained?: boolean;
 
+    /**
+     * Registers an unbind handler with the controller.
+     * @param behavior - An object to call when the controller unbinds.
+     */
     onUnbind(behavior: {
         unbind(controller: ExpressionController<TSource, TParent>);
     }): void;
@@ -78,10 +102,14 @@ export interface ExpressionController<TSource = any, TParent = any> {
 
 /**
  * Observes an expression for changes.
- *
  * @public
  */
 export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any> {
+    /**
+     * Binds the expression to the source.
+     * @param controller - The controller that manages the lifecycle and related
+     * context for the expression.
+     */
     bind(controller: ExpressionController<TSource, TParent>): TReturn;
 }
 
@@ -93,6 +121,11 @@ export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any>
     extends Notifier,
         ExpressionObserver<TSource, TReturn, TParent>,
         Disposable {
+    /**
+     * Observes the expression.
+     * @param source - The source for the expression.
+     * @param context - The context for the expression.
+     */
     observe(source: TSource, context?: ExecutionContext): TReturn;
 
     /**
@@ -225,21 +258,19 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         public bind(controller: ExpressionController) {
             this.controller = controller;
 
-            if (controller.isBound) {
-                return this.observe(controller.source, controller.context);
-            }
-
             const value = this.observe(controller.source, controller.context);
 
-            if (
-                !controller.selfContained ||
-                this.first !== this.last ||
-                this.first.propertySource !== controller.source
-            ) {
+            if (!controller.isBound && this.requiresUnbind(controller)) {
                 controller.onUnbind(this);
             }
 
             return value;
+        }
+
+        private requiresUnbind(controller: ExpressionController) {
+            return !controller.selfContained
+                || this.first !== this.last
+                || this.first.propertySource !== controller.source;
         }
 
         public unbind(controller: ExpressionController) {
@@ -557,7 +588,14 @@ const contextEvent = FAST.getById(KernelServiceId.contextEvent, () => {
     };
 });
 
+/**
+ * Provides additional contextual information available to behaviors and expressions.
+ * @public
+ */
 export const ExecutionContext = Object.freeze({
+    /**
+     * A default execution context.
+     */
     default: {
         index: 0,
         length: 0,
@@ -572,10 +610,18 @@ export const ExecutionContext = Object.freeze({
         },
     } as ExecutionContext,
 
+    /**
+     * Gets the current event.
+     * @returns An event object.
+     */
     getEvent(): Event | null {
         return contextEvent.get();
     },
 
+    /**
+     * Sets the current event.
+     * @param event - An event object.
+     */
     setEvent(event: Event | null): void {
         contextEvent.set(event);
     },

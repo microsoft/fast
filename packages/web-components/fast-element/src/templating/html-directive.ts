@@ -19,20 +19,58 @@ export type ViewBehaviorTargets = {
     [id: string]: Node;
 };
 
+/**
+ * Controls the lifecycle of a view and provides relevant context.
+ * @public
+ */
 export interface ViewController<TSource = any, TParent = any>
     extends ExpressionController<TSource, TParent> {
+    /**
+     * The parts of the view that are targeted by view behaviors.
+     */
     readonly targets: ViewBehaviorTargets;
 }
 
+/**
+ * Bridges between ViewBehaviors and HostBehaviors, enabling a host to
+ * control ViewBehaviors.
+ * @public
+ */
 export interface ViewBehaviorOrchestrator<TSource = any, TParent = any>
     extends ViewController<TSource, TParent>,
         HostBehavior<TSource> {
+    /**
+     *
+     * @param nodeId - The structural id of the DOM node to which a behavior will apply.
+     * @param target - The DOM node associated with the id.
+     */
     addTarget(nodeId: string, target: Node): void;
+
+    /**
+     * Adds a behavior.
+     * @param behavior - The behavior to add.
+     */
     addBehavior(behavior: ViewBehavior): void;
+
+    /**
+     * Adds a behavior factory.
+     * @param factory - The behavior factory to add.
+     * @param target - The target the factory will create behaviors for.
+     */
     addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void;
 }
 
+/**
+ * Bridges between ViewBehaviors and HostBehaviors, enabling a host to
+ * control ViewBehaviors.
+ * @public
+ */
 export const ViewBehaviorOrchestrator = Object.freeze({
+    /**
+     * Creates a ViewBehaviorOrchestrator.
+     * @param source - The source to to associate behaviors with.
+     * @returns A ViewBehaviorOrchestrator.
+     */
     create<TSource = any, TParent = any>(
         source: TSource
     ): ViewBehaviorOrchestrator<TSource, TParent> {
@@ -103,7 +141,7 @@ export interface ViewBehavior<TSource = any, TParent = any> {
 }
 
 /**
- * A factory that can create a {@link Behavior} associated with a particular
+ * A factory that can create a {@link ViewBehavior} associated with a particular
  * location within a DOM fragment.
  * @public
  */
@@ -227,8 +265,8 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
 
     /**
      * Creates a binding.
-     * @param evaluate Evaluates the binding.
-     * @param isVolatile Indicates whether the binding is volatile.
+     * @param evaluate - Evaluates the binding.
+     * @param isVolatile - Indicates whether the binding is volatile.
      */
     public constructor(
         public evaluate: Expression<TSource, TReturn, TParent>,

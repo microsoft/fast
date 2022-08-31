@@ -6,6 +6,7 @@ import { FAST } from "../platform.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
 import type { ElementStyles } from "../styles/element-styles.js";
+import type { ViewController } from "../templating/html-directive.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
 
 const defaultEventOptions: CustomEventInit = {
@@ -18,7 +19,7 @@ const isConnectedPropertyName = "isConnected";
 
 const shadowRoots = new WeakMap<HTMLElement, ShadowRoot>();
 
-export function getShadowRoot(element: HTMLElement): ShadowRoot | null {
+function getShadowRoot(element: HTMLElement): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
 }
 
@@ -113,6 +114,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
     }
 
+    /**
+     * The main set of styles used for the component, independent
+     * of any behavior-specific styles.
+     */
     public get mainStyles(): ElementStyles | null {
         // 1. Styles overrides take top precedence.
         if (this._mainStyles === null) {
@@ -196,6 +201,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
     }
 
+    /**
+     * Adds the behavior to the component.
+     * @param behavior - The behavior to add.
+     */
     addBehavior(behavior: HostBehavior<TElement>) {
         const targetBehaviors = this.behaviors ?? (this.behaviors = new Map());
         const count = targetBehaviors.get(behavior) ?? 0;
@@ -212,6 +221,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
     }
 
+    /**
+     * Removes the behavior from the component.
+     * @param behavior - The behavior to remove.
+     * @param force - Forces removal even if this behavior was added more than once.
+     */
     removeBehavior(behavior: HostBehavior<TElement>, force: boolean = false) {
         const targetBehaviors = this.behaviors;
         if (targetBehaviors === null) {
@@ -421,7 +435,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (template) {
             // If a new template was provided, render it.
             (this as Mutable<this>).view = template.render(element, host, element);
-            (this.view as any).selfContained = true;
+            (this.view as any as Mutable<ViewController>).selfContained = true;
         }
     }
 

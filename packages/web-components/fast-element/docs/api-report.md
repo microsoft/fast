@@ -248,7 +248,6 @@ export const DOM: Readonly<{
 export class ElementController<TElement extends HTMLElement = HTMLElement> extends PropertyChangeNotifier implements HostController<TElement> {
     // @internal
     constructor(element: TElement, definition: FASTElementDefinition);
-    // (undocumented)
     addBehavior(behavior: HostBehavior<TElement>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     connect(): void;
@@ -257,11 +256,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement): ElementController;
     get isConnected(): boolean;
-    // (undocumented)
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
-    // (undocumented)
     removeBehavior(behavior: HostBehavior<TElement>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     readonly source: TElement;
@@ -326,7 +323,7 @@ export interface ExecutionContext<TParent = any> {
     parentContext: ExecutionContext<TParent>;
 }
 
-// @public (undocumented)
+// @public
 export const ExecutionContext: Readonly<{
     default: ExecutionContext<any>;
     getEvent(): Event | null;
@@ -336,25 +333,19 @@ export const ExecutionContext: Readonly<{
 // @public
 export type Expression<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
 
-// @public (undocumented)
+// @public
 export interface ExpressionController<TSource = any, TParent = any> {
-    // (undocumented)
     readonly context: ExecutionContext<TParent>;
-    // (undocumented)
     readonly isBound: boolean;
-    // (undocumented)
     onUnbind(behavior: {
         unbind(controller: ExpressionController<TSource, TParent>): any;
     }): void;
-    // (undocumented)
     readonly selfContained?: boolean;
-    // (undocumented)
     readonly source: TSource;
 }
 
 // @public
 export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any> extends Notifier, ExpressionObserver<TSource, TReturn, TParent>, Disposable {
-    // (undocumented)
     observe(source: TSource, context?: ExecutionContext): TReturn;
     records(): IterableIterator<ObservationRecord>;
     setMode(isAsync: boolean): void;
@@ -362,7 +353,6 @@ export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any>
 
 // @public
 export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any> {
-    // (undocumented)
     bind(controller: ExpressionController<TSource, TParent>): TReturn;
 }
 
@@ -419,9 +409,6 @@ export interface FASTGlobal {
     warn(code: number, values?: Record<string, any>): void;
 }
 
-// @public (undocumented)
-export function getShadowRoot(element: HTMLElement): ShadowRoot | null;
-
 // @public
 export interface HostBehavior<TSource = any> {
     addedCallback?(controller: HostController<TSource>): void;
@@ -430,21 +417,14 @@ export interface HostBehavior<TSource = any> {
     removedCallback?(controller: HostController<TSource>): void;
 }
 
-// @public (undocumented)
+// @public
 export interface HostController<TSource = any> {
-    // (undocumented)
     addBehavior(behavior: HostBehavior<TSource>): void;
-    // (undocumented)
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
-    // (undocumented)
     readonly isConnected: boolean;
-    // (undocumented)
     mainStyles: ElementStyles | null;
-    // (undocumented)
     removeBehavior(behavior: HostBehavior<TSource>, force?: boolean): void;
-    // (undocumented)
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
-    // (undocumented)
     readonly source: TSource;
 }
 
@@ -881,17 +861,15 @@ export interface ViewBehaviorFactory {
     nodeId: string;
 }
 
-// @public (undocumented)
+// @public
 export interface ViewBehaviorOrchestrator<TSource = any, TParent = any> extends ViewController<TSource, TParent>, HostBehavior<TSource> {
-    // (undocumented)
     addBehavior(behavior: ViewBehavior): void;
-    // (undocumented)
     addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void;
     // (undocumented)
     addTarget(nodeId: string, target: Node): void;
 }
 
-// @public (undocumented)
+// @public
 export const ViewBehaviorOrchestrator: Readonly<{
     create<TSource = any, TParent = any>(source: TSource): ViewBehaviorOrchestrator<TSource, TParent>;
 }>;
@@ -901,9 +879,8 @@ export type ViewBehaviorTargets = {
     [id: string]: Node;
 };
 
-// @public (undocumented)
+// @public
 export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent> {
-    // (undocumented)
     readonly targets: ViewBehaviorTargets;
 }
 
