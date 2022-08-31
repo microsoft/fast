@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AsyncLocalStorage } from 'async_hooks';
 import { Binding } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
@@ -19,7 +20,7 @@ export type ComponentDOMEmissionMode = "shadow";
 // @beta (undocumented)
 export type ConstructableElementRenderer = (new (tagName: string, renderInfo: RenderInfo) => ElementRenderer) & typeof ElementRenderer;
 
-// @public
+// @beta
 export const DeclarativeShadowDOMPolyfill: Readonly<{
     undefinedElementStyles: string;
     nonStreamingTemplateUpgrade: string;
@@ -65,8 +66,7 @@ export abstract class FASTElementRenderer extends ElementRenderer {
 // @beta
 function fastSSR(): {
     templateRenderer: TemplateRenderer;
-    elementRenderer: typeof FASTElementRenderer;
-    defaultRenderInfo: RenderInfo;
+    ElementRenderer: ConstructableElementRenderer;
 };
 export default fastSSR;
 
@@ -92,6 +92,7 @@ export const RequestStorage: Readonly<{
 
 // @beta
 export const RequestStorageManager: Readonly<{
+    backend: AsyncLocalStorage<unknown>;
     installDOMShim(): void;
     installDIContextRequestStrategy(): void;
     createStorage(options?: StorageOptions): Map<any, any>;
@@ -115,11 +116,13 @@ export interface StyleRenderer {
 // @beta
 export class TemplateRenderer {
     readonly componentDOMEmissionMode: ComponentDOMEmissionMode;
-    render(template: ViewTemplate | string, renderInfo: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
+    createRenderInfo(renderers?: ConstructableElementRenderer[]): RenderInfo;
+    render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
     // Warning: (ae-forgotten-export) The symbol "Op" needs to be exported by the entry point exports.d.ts
     //
     // @internal
     renderOpCodes(codes: Op[], renderInfo: RenderInfo, source: unknown, context: ExecutionContext): IterableIterator<string>;
+    withDefaultElementRenderers(...renderers: ConstructableElementRenderer[]): void;
     // @internal
     withViewBehaviorFactoryRenderers(...renderers: ViewBehaviorFactoryRenderer<any>[]): void;
 }
@@ -132,7 +135,7 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/request-storage.d.ts:31:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
+// dist/dts/request-storage.d.ts:32:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
 
 // (No @packageDocumentation comment for this package)
 

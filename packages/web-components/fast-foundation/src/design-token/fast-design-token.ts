@@ -139,13 +139,13 @@ export class DesignToken<T> {
     }
 
     /**
-     * Registers and element or document as a DesignToken root.
+     * Registers a target for emitting default style values.
      * {@link CSSDesignToken | CSSDesignTokens} with default values assigned via
      * {@link DesignToken.withDefault} will emit CSS custom properties to all
-     * registered roots.
-     * @param target - The root to register
+     * registered targets.
+     * @param target - The target to register, defaults to the document
      */
-    public static registerRoot(
+    public static registerDefaultStyleTarget(
         target: FASTElement | Document | PropertyTarget = document
     ) {
         if (target instanceof FASTElement || target instanceof Document) {
@@ -156,10 +156,10 @@ export class DesignToken<T> {
     }
 
     /**
-     * Unregister an element or document as a DesignToken root.
-     * @param target - The root to deregister
+     * Unregister a target for default style emission.
+     * @param target - The root to deregister, defaults to the document
      */
-    public static unregisterRoot(
+    public static unregisterDefaultStyleTarget(
         target: FASTElement | Document | PropertyTarget = document
     ) {
         if (target instanceof FASTElement || target instanceof Document) {

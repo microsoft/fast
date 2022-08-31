@@ -36,12 +36,12 @@ function removeElement(...els: HTMLElement[]) {
 
 describe("A DesignToken", () => {
     beforeEach(async () => {
-        DesignToken.registerRoot();
+        DesignToken.registerDefaultStyleTarget();
         await Updates.next();
     });
 
     after(async () => {
-        DesignToken.unregisterRoot();
+        DesignToken.unregisterDefaultStyleTarget();
         await Updates.next();
     });
     it("should support declared types", () => {
@@ -947,7 +947,7 @@ describe("A DesignToken", () => {
 
     describe("with root registration", () => {
         it("should not emit CSS custom properties for the default value if a root is not registered", () => {
-            DesignToken.unregisterRoot();
+            DesignToken.unregisterDefaultStyleTarget();
             const token = DesignToken.create<number>('default-no-root').withDefault(12);
             const styles = window.getComputedStyle(document.body);
 
@@ -958,24 +958,24 @@ describe("A DesignToken", () => {
             const token = DesignToken.create<number>('default-with-root').withDefault(12);
             const styles = window.getComputedStyle(document.body);
 
-            DesignToken.registerRoot();
+            DesignToken.registerDefaultStyleTarget();
 
             await Updates.next();
 
             expect(styles.getPropertyValue(token.cssCustomProperty)).to.equal("12");
-            DesignToken.unregisterRoot();
+            DesignToken.unregisterDefaultStyleTarget();
         });
 
         it("should remove emitted CSS custom properties for a root when the root is deregistered", async () => {
             const token = DesignToken.create<number>('deregistered-root').withDefault(12);
             const styles = window.getComputedStyle(document.body);
 
-            DesignToken.registerRoot();
+            DesignToken.registerDefaultStyleTarget();
 
             await Updates.next();
 
             expect(styles.getPropertyValue(token.cssCustomProperty)).to.equal("12");
-            DesignToken.unregisterRoot();
+            DesignToken.unregisterDefaultStyleTarget();
 
             await Updates.next();
 
@@ -986,34 +986,34 @@ describe("A DesignToken", () => {
             const token = DesignToken.create<number>('default-with-element-root').withDefault(12);
             const element = addElement();
 
-            DesignToken.registerRoot(element);
+            DesignToken.registerDefaultStyleTarget(element);
 
             await Updates.next();
             const styles = window.getComputedStyle(element);
 
             expect(styles.getPropertyValue(token.cssCustomProperty)).to.equal("12");
-            DesignToken.unregisterRoot(element);
+            DesignToken.unregisterDefaultStyleTarget(element);
         });
         it("should emit CSS custom properties to multiple roots", async () => {
-            DesignToken.unregisterRoot();
+            DesignToken.unregisterDefaultStyleTarget();
             const token = DesignToken.create<number>('default-with-multiple-roots').withDefault(12);
             const a = addElement();
             const b = addElement();
 
-            DesignToken.registerRoot(a);
+            DesignToken.registerDefaultStyleTarget(a);
             await Updates.next();
 
             expect(window.getComputedStyle(a).getPropertyValue(token.cssCustomProperty)).to.equal("12");
             expect(window.getComputedStyle(b).getPropertyValue(token.cssCustomProperty)).to.equal("");
             expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
 
-            DesignToken.registerRoot(b);
+            DesignToken.registerDefaultStyleTarget(b);
             await Updates.next();
             expect(window.getComputedStyle(a).getPropertyValue(token.cssCustomProperty)).to.equal("12");
             expect(window.getComputedStyle(b).getPropertyValue(token.cssCustomProperty)).to.equal("12");
             expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
 
-            DesignToken.registerRoot();
+            DesignToken.registerDefaultStyleTarget();
             await Updates.next();
             expect(window.getComputedStyle(a).getPropertyValue(token.cssCustomProperty)).to.equal("12");
             expect(window.getComputedStyle(b).getPropertyValue(token.cssCustomProperty)).to.equal("12");
@@ -1028,14 +1028,14 @@ describe("A DesignToken", () => {
                 removeProperty: chai.spy(),
             }
 
-            DesignToken.registerRoot(root);
+            DesignToken.registerDefaultStyleTarget(root);
 
             expect(root.setProperty).to.have.been.called.with(token.cssCustomProperty, 12)
 
             token.withDefault(14);
 
             expect(root.setProperty).to.have.been.called.with(token.cssCustomProperty, 14)
-            DesignToken.unregisterRoot(root);
+            DesignToken.unregisterDefaultStyleTarget(root);
         });
     });
 });

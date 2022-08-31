@@ -38,9 +38,7 @@ const xAppTemplate = html<XApp>`
         ${repeat(
             x => x.items,
             html<RandomItem>`
-                <x-item
-                    :value="${oneTime((x: { label: string }) => x.label)}"
-                ></x-item>
+                <x-item :value="${oneTime((x: { label: string }) => x.label)}"></x-item>
             `
         )}
     </div>
