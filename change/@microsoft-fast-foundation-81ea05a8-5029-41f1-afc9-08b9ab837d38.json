@@ -3,5 +3,5 @@
   "comment": "fix: update foundation to use new import paths",
   "packageName": "@microsoft/fast-foundation",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
