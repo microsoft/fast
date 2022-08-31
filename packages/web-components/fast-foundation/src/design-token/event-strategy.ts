@@ -1,4 +1,4 @@
-import type { FASTElement } from "@microsoft/fast-element";
+import type { FASTElement, HostController } from "@microsoft/fast-element";
 import type { DesignTokenResolutionStrategy } from "./fast-design-token.js";
 
 const parentLocatorEventName = "$$designToken__locate__parent$$";
@@ -26,11 +26,11 @@ function containsHandler(event: ContainsEvent) {
  * @public
  */
 export const DesignTokenEventResolutionStrategy: DesignTokenResolutionStrategy = {
-    bind(source: FASTElement) {
-        source.addEventListener(parentLocatorEventName, parentLocatorHandler);
+    addedCallback(controller: HostController<FASTElement>) {
+        controller.source.addEventListener(parentLocatorEventName, parentLocatorHandler);
     },
-    unbind(source: FASTElement) {
-        source.removeEventListener(parentLocatorEventName, parentLocatorHandler);
+    removedCallback(controller: HostController<FASTElement>) {
+        controller.source.removeEventListener(parentLocatorEventName, parentLocatorHandler);
     },
     contains(parent, child): boolean {
         parent.addEventListener(containsEventName, containsHandler);

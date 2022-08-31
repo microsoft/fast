@@ -306,7 +306,7 @@ export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
     }
 }
 
-export interface DesignTokenResolutionStrategy extends HostBehavior {
+export interface DesignTokenResolutionStrategy extends HostBehavior<FASTElement> {
     /**
      * Determines if a 'child' element is contained by a 'parent'.
      * @param child - The child element
