@@ -3,5 +3,5 @@
   "comment": "Refactor core components to support Promise return types",
   "packageName": "@microsoft/fast-ssr",
   "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
