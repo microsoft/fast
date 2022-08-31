@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: updae SSR to use the new behavior API",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
