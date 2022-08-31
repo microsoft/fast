@@ -229,3 +229,8 @@ export const isFunction = (object: any): object is Function =>
  * @internal
  */
 export const isString = (object: any): object is string => typeof object === "string";
+
+/**
+ * @internal
+ */
+export const noop = () => void 0;

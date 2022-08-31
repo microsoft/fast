@@ -1,5 +1,5 @@
 import { Observable, Subscriber } from "@microsoft/fast-element";
-import { makeObservable } from "@microsoft/fast-element/utilities";
+import { reactive } from "@microsoft/fast-element/state";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
 import { DesignTokenChangeRecordImpl as DesignTokenChangeRecord, DesignTokenMutationType, DesignTokenNode, DesignTokenResolver } from "./design-token-node.js";
@@ -783,7 +783,7 @@ describe("DesignTokenNode", () => {
         it("the token with the node assigned a derived value when an observable value used by the value is changed", () => {
             const node = createNode();
             const token = new DesignToken<number>();
-            const dependencies: { value: number } = makeObservable({ value: 6});
+            const dependencies: { value: number } = reactive({ value: 6});
             const { subscriber, handleChange} = createChangeHandler();
 
             const value = () => dependencies.value * 2;
@@ -804,7 +804,7 @@ describe("DesignTokenNode", () => {
             const descendent = createNode(parent);
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
-            const observableDependency: { value: number } = makeObservable({ value: 6});
+            const observableDependency: { value: number } = reactive({ value: 6});
             const { subscriber, handleChange} = createChangeHandler();
 
             ancestor.setTokenValue(dependency, 4);
@@ -913,7 +913,7 @@ describe("DesignTokenNode", () => {
             const handleChange = chai.spy(() => {})
             const subscriber: Subscriber = { handleChange }
             node.setTokenValue(token, 12);
-            const dependencies = makeObservable({value: 6});
+            const dependencies = reactive({value: 6});
 
             node.setTokenValue(token, () => dependencies.value * 2);
             node.deleteTokenValue(token);
@@ -929,7 +929,7 @@ describe("DesignTokenNode", () => {
             const handleChange = chai.spy(() => {})
             const subscriber: Subscriber = { handleChange }
             node.setTokenValue(token, 12);
-            const dependencies = makeObservable({value: 6});
+            const dependencies = reactive({value: 6});
 
             node.setTokenValue(token, () => dependencies.value * 2);
             node.setTokenValue(token, () => 14);
