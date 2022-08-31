@@ -5,7 +5,7 @@ import { html, ref, SyntheticViewTemplate, ViewTemplate } from "@microsoft/fast-
  * @public
  */
 export type StartOptions = {
-    start?: string | SyntheticViewTemplate;
+    start?: string | SyntheticViewTemplate | undefined;
 };
 
 /**
@@ -13,7 +13,7 @@ export type StartOptions = {
  * @public
  */
 export type EndOptions = {
-    end?: string | SyntheticViewTemplate;
+    end?: string | SyntheticViewTemplate | undefined;
 };
 
 /**
@@ -39,9 +39,9 @@ export class StartEnd {
  *
  * @public
  */
-export function endSlotTemplate(options: EndOptions): ViewTemplate<StartEnd> {
+export function endSlotTemplate(options?: EndOptions): ViewTemplate<StartEnd> {
     return html`
-        <slot name="end" ${ref("end")}>${options.end || ""}</slot>
+        <slot name="end" ${ref("end")}>${options?.end || ""}</slot>
     `;
 }
 
@@ -51,8 +51,8 @@ export function endSlotTemplate(options: EndOptions): ViewTemplate<StartEnd> {
  *
  * @public
  */
-export function startSlotTemplate(options: StartOptions): ViewTemplate<StartEnd> {
+export function startSlotTemplate(options?: StartOptions): ViewTemplate<StartEnd> {
     return html`
-        <slot name="start" ${ref("start")}>${options.start || ""}</slot>
+        <slot name="start" ${ref("start")}>${options?.start || ""}</slot>
     `;
 }

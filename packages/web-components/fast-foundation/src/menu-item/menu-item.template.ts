@@ -1,7 +1,8 @@
-import { ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
+import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate, tagFor } from "../patterns/index.js";
 import { MenuItemRole } from "./menu-item.js";
-import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
+import type { FASTMenuItem } from "./menu-item.js";
+import type { MenuItemOptions } from "./menu-item.options.js";
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#(FASTMenuItem:class)} component using
@@ -10,9 +11,8 @@ import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
  * @public
  */
 export function menuItemTemplate<T extends FASTMenuItem>(
-    options: MenuItemOptions
+    options?: MenuItemOptions
 ): ElementViewTemplate<T> {
-    const anchoredRegionTag = tagFor(options.anchoredRegion);
     return html<T>`
     <template
         role="${x => x.role}"
@@ -72,26 +72,7 @@ export function menuItemTemplate<T extends FASTMenuItem>(
                 </div>
             `
         )}
-        ${when(
-            x => x.expanded,
-            html<T>`
-                <${anchoredRegionTag}
-                    :anchorElement="${x => x}"
-                    vertical-positioning-mode="dynamic"
-                    vertical-default-position="bottom"
-                    vertical-inset="true"
-                    horizontal-positioning-mode="dynamic"
-                    horizontal-default-position="end"
-                    class="submenu-region"
-                    dir="${x => x.currentDirection}"
-                    @loaded="${x => x.submenuLoaded()}"
-                    ${ref("submenuRegion")}
-                    part="submenu-region"
-                >
-                    <slot name="submenu"></slot>
-                </${anchoredRegionTag}>
-            `
-        )}
+        <slot name="submenu"></slot>
     </template>
     `;
 }

@@ -74,9 +74,7 @@ const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTListbox as any as typeof FASTElement, Foundation.listboxTemplate()],
     [Foundation.FASTListboxOption, Foundation.listboxOptionTemplate()],
     [Foundation.FASTMenu, Foundation.menuTemplate()],
-    [Foundation.FASTMenuItem, Foundation.menuItemTemplate({
-        anchoredRegion
-    })],
+    [Foundation.FASTMenuItem, Foundation.menuItemTemplate()],
     [Foundation.FASTNumberField, Foundation.numberFieldTemplate()],
     [Foundation.FASTPicker, Foundation.pickerTemplate({
         anchoredRegion,

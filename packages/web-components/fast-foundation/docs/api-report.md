@@ -621,11 +621,11 @@ export function dividerTemplate<T extends FASTDivider>(): ElementViewTemplate<T>
 
 // @public
 export type EndOptions = {
-    end?: string | SyntheticViewTemplate;
+    end?: string | SyntheticViewTemplate | undefined;
 };
 
 // @public
-export function endSlotTemplate(options: EndOptions): ViewTemplate<StartEnd>;
+export function endSlotTemplate(options?: EndOptions): ViewTemplate<StartEnd>;
 
 // @public
 export class FASTAccordion extends FASTElement {
@@ -1346,6 +1346,8 @@ export class FASTMenuItem extends FASTElement {
     checked: boolean;
     // (undocumented)
     protected checkedChanged(oldValue: boolean, newValue: boolean): void;
+    // (undocumented)
+    cleanupSubmenuPosition: () => void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
@@ -1367,14 +1369,12 @@ export class FASTMenuItem extends FASTElement {
     // @internal (undocumented)
     hasSubmenu: boolean;
     role: MenuItemRole;
+    setSubmenuPosition: () => void;
     // @internal (undocumented)
     startColumnCount: MenuItemColumnCount;
     // @internal (undocumented)
     submenu: Element | undefined;
-    // @internal (undocumented)
-    submenuLoaded: () => void;
-    // @internal
-    submenuRegion: FASTAnchoredRegion;
+    submenuPositioning: SubmenuPosition;
 }
 
 // @internal
@@ -2381,7 +2381,6 @@ export type MenuItemOptions = StartEndOptions & {
     checkboxIndicator?: string | SyntheticViewTemplate;
     expandCollapseGlyph?: string | SyntheticViewTemplate;
     radioIndicator?: string | SyntheticViewTemplate;
-    anchoredRegion: TemplateElementDependency;
 };
 
 // @public
@@ -2395,7 +2394,11 @@ export const MenuItemRole: {
 export type MenuItemRole = typeof MenuItemRole[keyof typeof MenuItemRole];
 
 // @public
+<<<<<<< HEAD
 export function menuItemTemplate<T extends FASTMenuItem>(options: MenuItemOptions): ElementViewTemplate<T>;
+=======
+export function menuItemTemplate(options?: MenuItemOptions): ElementViewTemplate<FASTMenuItem>;
+>>>>>>> replace anchored region in menu item with floating-ui
 
 // @beta
 export const MenuPlacement: {
@@ -2635,14 +2638,33 @@ export type StartEndOptions = StartOptions & EndOptions;
 
 // @public
 export type StartOptions = {
-    start?: string | SyntheticViewTemplate;
+    start?: string | SyntheticViewTemplate | undefined;
 };
 
 // @public
-export function startSlotTemplate(options: StartOptions): ViewTemplate<StartEnd>;
+export function startSlotTemplate(options?: StartOptions): ViewTemplate<StartEnd>;
 
 // @public
 export type StaticDesignTokenValue<T> = T extends (...args: any[]) => any ? DerivedDesignTokenValue<T> : T;
+
+// @public
+export const SubmenuPosition: {
+    readonly top: "top";
+    readonly topStart: "top-start";
+    readonly topEnd: "top-end";
+    readonly right: "right";
+    readonly rightStart: "right-start";
+    readonly rightEnd: "right-end";
+    readonly bottom: "bottom";
+    readonly bottomStart: "bottom-start";
+    readonly bottomEnd: "bottom-end";
+    readonly left: "left";
+    readonly leftStart: "left-start";
+    readonly leftEnd: "left-end";
+};
+
+// @public
+export type SubmenuPosition = typeof SubmenuPosition[keyof typeof SubmenuPosition];
 
 // @alpha (undocumented)
 export const supportsElementInternals: boolean;
@@ -2812,7 +2834,6 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/menu-item/menu-item.d.ts:20:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:11:5 - (ae-incompatible-release-tags) The symbol "pickerMenuOption" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

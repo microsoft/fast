@@ -4,20 +4,11 @@ import { FASTMenuItem, menuItemTemplate, MenuItemRole } from "../menu-item/index
 import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
-import { FASTAnchoredRegion, anchoredRegionTemplate } from "../anchored-region/index.js";
-
-const anchoredRegionName = uniqueElementName();
-FASTAnchoredRegion.compose({
-    name: anchoredRegionName,
-    template: anchoredRegionTemplate()
-});
 
 const menuItemName = uniqueElementName();
 FASTMenuItem.define({
     name: menuItemName,
-    template: menuItemTemplate({
-        anchoredRegion: anchoredRegionName
-    })
+    template: menuItemTemplate()
 });
 
 const menuName = uniqueElementName();
