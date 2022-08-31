@@ -22,7 +22,7 @@ export type StateOptions = {
 };
 
 const defaultStateOptions: StateOptions = {
-    deep: false
+    deep: false,
 };
 
 /**
@@ -61,7 +61,7 @@ export type State<T> = ReadonlyState<T> & {
      * Creates a readonly version of the state.
      */
     asReadonly(): ReadonlyState<T>;
-}
+};
 
 /**
  * Creates a reactive state value.
@@ -75,7 +75,7 @@ export function state<T>(
     options: string | StateOptions = defaultStateOptions
 ): State<T> {
     if (isString(options)) {
-        options = { deep: false, name: options }
+        options = { deep: false, name: options };
     }
 
     const host = reactive({ value }, options.deep);
@@ -83,14 +83,14 @@ export function state<T>(
 
     Object.defineProperty(state, "current", {
         get: () => host.value,
-        set: (value: T) => host.value = value
+        set: (value: T) => (host.value = value),
     });
 
     Object.defineProperty(state, "name", {
-        value: options.name ?? "SharedState"
+        value: options.name ?? "SharedState",
     });
 
-    state.set = (value: T) => host.value = value;
+    state.set = (value: T) => (host.value = value);
     state.asReadonly = () => {
         const readonlyState = (() => host.value) as ReadonlyState<T>;
 
@@ -99,7 +99,7 @@ export function state<T>(
         });
 
         Object.defineProperty(readonlyState, "name", {
-            value: `${state.name} (Readonly)`
+            value: `${state.name} (Readonly)`,
         });
 
         return Object.freeze(readonlyState);
@@ -117,7 +117,7 @@ export type ReadonlyOwnedState<T> = {
      * Gets the current stateful value for the owner.
      */
     (owner: any): T;
-}
+};
 
 /**
  * A read/write stateful value associated with an owner.
@@ -135,7 +135,7 @@ export type OwnedState<T> = ReadonlyOwnedState<T> & {
      * Creates a readonly version of the state.
      */
     asReadonly(): ReadonlyOwnedState<T>;
-}
+};
 
 /**
  * Creates a reactive state that has its value associated with a specific owner.
@@ -149,7 +149,7 @@ export function ownedState<T>(
     options: string | StateOptions = defaultStateOptions
 ): OwnedState<T> {
     if (isString(options)) {
-        options = { deep: false, name: options }
+        options = { deep: false, name: options };
     }
 
     if (!isFunction(value)) {
@@ -171,23 +171,21 @@ export function ownedState<T>(
         }
 
         return host;
-    }
+    };
 
-    const state = ((owner: any) =>
-        getHost(owner).value) as OwnedState<T>;
+    const state = ((owner: any) => getHost(owner).value) as OwnedState<T>;
 
     Object.defineProperty(state, "name", {
-        value: options.name ?? "OwnedState"
+        value: options.name ?? "OwnedState",
     });
 
-    state.set = (owner: any, value: T) => getHost(owner).value = value;
+    state.set = (owner: any, value: T) => (getHost(owner).value = value);
 
     state.asReadonly = () => {
-        const readonlyState = ((owner: any) =>
-            getHost(owner).value) as OwnedState<T>;
+        const readonlyState = ((owner: any) => getHost(owner).value) as OwnedState<T>;
 
         Object.defineProperty(readonlyState, "name", {
-            value: `${state.name} (Readonly)`
+            value: `${state.name} (Readonly)`,
         });
 
         return Object.freeze(readonlyState);
@@ -200,26 +198,26 @@ export function ownedState<T>(
  * State whose value is computed from other dependencies.
  * @beta
  */
-export type ComputedState<T> = ReadonlyState<T> & Disposable & {
-    /**
-     * Subscribes to notification of changes in the state.
-     * @param subscriber - The object that is subscribing for change notification.
-     */
-     subscribe(subscriber: Subscriber): void;
+export type ComputedState<T> = ReadonlyState<T> &
+    Disposable & {
+        /**
+         * Subscribes to notification of changes in the state.
+         * @param subscriber - The object that is subscribing for change notification.
+         */
+        subscribe(subscriber: Subscriber): void;
 
-     /**
-      * Unsubscribes from notification of changes in the state.
-      * @param subscriber - The object that is unsubscribing from change notification.
-      */
-     unsubscribe(subscriber: Subscriber): void;
-};
+        /**
+         * Unsubscribes from notification of changes in the state.
+         * @param subscriber - The object that is unsubscribing from change notification.
+         */
+        unsubscribe(subscriber: Subscriber): void;
+    };
 
 /**
  * A callback that enables computation setup.
  * @beta
  */
-export type ComputedSetupCallback
-    = () => (() => void) | void;
+export type ComputedSetupCallback = () => (() => void) | void;
 
 /**
  * Provides computed state capabilities.
@@ -234,16 +232,15 @@ export type ComputedBuilder = {
          * Provides a setup callback for the computation.
          * @param callback The callback to run to setup the computation.
          */
-        setup(callback: ComputedSetupCallback): void
-    }
+        setup(callback: ComputedSetupCallback): void;
+    };
 };
 
 /**
  * A callback that initializes the computation.
  * @beta
  */
-export type ComputedInitializer<T>
-    = (builder: ComputedBuilder) => () => T;
+export type ComputedInitializer<T> = (builder: ComputedBuilder) => () => T;
 
 /**
  * Creates a ComputedState.
@@ -257,12 +254,12 @@ export function computedState<T>(
     name = "ComputedState"
 ): ComputedState<T> {
     let setupCallback: ComputedSetupCallback | null = null;
-    const builder: ComputedBuilder  = {
+    const builder: ComputedBuilder = {
         on: {
             setup(callback: ComputedSetupCallback) {
                 setupCallback = callback;
-            }
-        }
+            },
+        },
     };
 
     const computer = initialize(builder);
@@ -274,7 +271,7 @@ export function computedState<T>(
     });
 
     Object.defineProperty(output, "name", {
-        value: name
+        value: name,
     });
 
     // eslint-disable-next-line prefer-const

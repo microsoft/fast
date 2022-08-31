@@ -28,7 +28,7 @@ const watchVisitor: ObjectVisitor<WatchData> = {
  * @returns A disposable that can be used to unsubscribe from change updates.
  * @beta
  */
- export function watch(
+export function watch(
     object: any,
     subscriber: Subscriber | ((subject: any, args: any) => void)
 ): Disposable {
