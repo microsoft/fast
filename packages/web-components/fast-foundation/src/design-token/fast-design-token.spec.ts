@@ -1,4 +1,4 @@
-import { css, customElement, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
+import { Behavior, css, customElement, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
 import { uniqueElementName } from "@microsoft/fast-element/testing";
@@ -718,6 +718,28 @@ describe("A DesignToken", () => {
 
             expect(token.getValueFor(target)).to.equal(4);
             removeElement(target)
+        });
+        it("should return the default value if retrieved for an element that has not been connected", () => {
+            const token = DesignToken.create<number>(uniqueTokenName()).withDefault(12);
+
+            const element = createElement();
+
+            expect(token.getValueFor(element)).to.equal(12);
+        });
+        it("should set a derived value that uses a token's default value prior to connection", () => {
+            const dependency = DesignToken.create<number>(uniqueTokenName()).withDefault(12);
+            const token = DesignToken.create<number>(uniqueTokenName());
+            const element = createElement();
+
+            expect(() => token.setValueFor(element, (resolve) => resolve(dependency) * 2)).not.to.throw();
+        });
+        it("should delete a derived value that uses a token's default value prior to connection", () => {
+            const dependency = DesignToken.create<number>(uniqueTokenName()).withDefault(12);
+            const token = DesignToken.create<number>(uniqueTokenName());
+            const element = createElement();
+            token.setValueFor(element, (resolve) => resolve(dependency) * 2)
+
+            expect(() => token.deleteValueFor(element) ).not.to.throw();
         });
     });
 
