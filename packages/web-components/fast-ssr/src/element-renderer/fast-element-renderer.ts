@@ -150,8 +150,13 @@ export abstract class AsyncFASTElementRenderer extends FASTElementRenderer
     ) => IterableIterator<string | Promise<string>>;
 
     private async pauseRendering() {
-        for await (const awaiting of this.awaiting) {
-            continue;
+        for (const awaiting of this.awaiting) {
+            try {
+                await awaiting;
+            } catch (e) {
+                // Await will throw if the Promise is rejected. In that case,
+                // SSR should just continue rendering
+            }
         }
 
         this.awaiting.clear();
