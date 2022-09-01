@@ -5,10 +5,10 @@ import type { CheckboxOptions, FASTCheckbox } from "./checkbox.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTCheckbox:class)} component.
  * @public
  */
-export function checkboxTemplate(
+export function checkboxTemplate<T extends FASTCheckbox>(
     options: CheckboxOptions = {}
-): ElementViewTemplate<FASTCheckbox> {
-    return html<FASTCheckbox>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="checkbox"
             aria-checked="${x => x.checked}"
