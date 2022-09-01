@@ -6,10 +6,10 @@ import type { AccordionItemOptions, FASTAccordionItem } from "./accordion-item.j
  * The template for the {@link @microsoft/fast-foundation#(FASTAccordionItem:class)} component.
  * @public
  */
-export function accordionItemTemplate(
+export function accordionItemTemplate<T extends FASTAccordionItem>(
     options: AccordionItemOptions = {}
-): ElementViewTemplate<FASTAccordionItem> {
-    return html<FASTAccordionItem>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template class="${x => (x.expanded ? "expanded" : "")}">
             <div
                 class="heading"
