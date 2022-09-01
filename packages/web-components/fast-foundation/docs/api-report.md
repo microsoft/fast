@@ -2183,7 +2183,7 @@ export type FlipperOptions = {
 };
 
 // @public
-export function flipperTemplate(options?: FlipperOptions): ElementViewTemplate<FASTFlipper>;
+export function flipperTemplate<T extends FASTFlipper>(options?: FlipperOptions): ElementViewTemplate<T>;
 
 // @public
 export const FlyoutPosBottom: AnchoredRegionConfig;
