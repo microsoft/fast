@@ -22,16 +22,6 @@ import { FASTTreeItem, isTreeItemElement } from "../tree-item/tree-item.js";
  */
 export class FASTTreeView extends FASTElement {
     /**
-   /**
-    * When true, the control will be appear expanded by user interaction.
-    * @public
-    * @remarks
-    * HTML Attribute: render-collapsed-nodes
-    */
-    @attr({ attribute: "render-collapsed-nodes" })
-    public renderCollapsedNodes: boolean;
-
-    /**
      * The currently selected tree item
      * @public
      */

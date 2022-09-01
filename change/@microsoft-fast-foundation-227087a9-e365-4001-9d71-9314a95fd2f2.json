@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Lazily attach FASTDesignTokenNode to the default node to prevent errors\"",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}
