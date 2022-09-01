@@ -11,9 +11,11 @@ export type DataGridOptions = {
     dataGridRow: TemplateElementDependency;
 };
 
-function rowItemTemplate(options: DataGridOptions): ViewTemplate<any, FASTDataGrid> {
+function rowItemTemplate<T extends FASTDataGrid>(
+    options: DataGridOptions
+): ViewTemplate<any, T> {
     const rowTag = tagFor(options.dataGridRow);
-    return html<any, FASTDataGrid>`
+    return html<any, T>`
     <${rowTag}
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
@@ -28,11 +30,11 @@ function rowItemTemplate(options: DataGridOptions): ViewTemplate<any, FASTDataGr
  *
  * @public
  */
-export function dataGridTemplate(
+export function dataGridTemplate<T extends FASTDataGrid>(
     options: DataGridOptions
-): ElementViewTemplate<FASTDataGrid> {
+): ElementViewTemplate<T> {
     const rowTag = tagFor(options.dataGridRow);
-    return html<FASTDataGrid>`
+    return html<T>`
         <template
             role="grid"
             tabindex="0"

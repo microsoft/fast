@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "fix(tabs): home and end navigation",
+  "comment": "fix: update foundation to use new import paths",
   "packageName": "@microsoft/fast-foundation",
-  "email": "mathieulavoie94@gmail.com",
+  "email": "roeisenb@microsoft.com",
   "dependentChangeType": "prerelease"
 }

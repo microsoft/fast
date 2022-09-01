@@ -5,12 +5,12 @@ import type { FASTDialog } from "./dialog.js";
  * The template for the {@link @microsoft/fast-foundation#FASTDialog} component.
  * @public
  */
-export function dialogTemplate(): ElementViewTemplate<FASTDialog> {
-    return html<FASTDialog>`
+export function dialogTemplate<T extends FASTDialog>(): ElementViewTemplate<T> {
+    return html<T>`
         <div class="positioning-region" part="positioning-region">
             ${when(
                 x => x.modal,
-                html<FASTDialog>`
+                html<T>`
                     <div
                         class="overlay"
                         part="overlay"

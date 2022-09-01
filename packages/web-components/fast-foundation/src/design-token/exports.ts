@@ -8,6 +8,7 @@ export {
 } from "./fast-design-token.js";
 export { DesignTokenEventResolutionStrategy } from "./event-strategy.js";
 export { PropertyTarget } from "./custom-property-manager.js";
+export { DesignTokenStyleTarget } from "./design-token-style-target.js";
 export type {
     StaticDesignTokenValue,
     DerivedDesignTokenValue,

@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "normalize storybook stories",
+  "comment": "remove when directive from flipper",
   "packageName": "@microsoft/fast-foundation",
-  "email": "863023+radium-v@users.noreply.github.com",
+  "email": "chhol@microsoft.com",
   "dependentChangeType": "prerelease"
 }

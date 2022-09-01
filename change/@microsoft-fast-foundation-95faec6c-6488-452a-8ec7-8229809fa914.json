@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "remove boolean logical operator use for setting default slotted content in favor of nullish coalescing operator",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

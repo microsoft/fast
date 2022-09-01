@@ -107,22 +107,15 @@ export const myTreeView = TreeView.compose({
 
 #### Fields
 
-| Name                   | Privacy | Type                                  | Default | Description                                                                 | Inherited From |
-| ---------------------- | ------- | ------------------------------------- | ------- | --------------------------------------------------------------------------- | -------------- |
-| `renderCollapsedNodes` | public  | `boolean`                             |         | /\*\*   When true, the control will be appear expanded by user interaction. |                |
-| `currentSelected`      | public  | `HTMLElement or FASTTreeItem or null` |         | The currently selected tree item                                            |                |
+| Name              | Privacy | Type                                  | Default | Description                      | Inherited From |
+| ----------------- | ------- | ------------------------------------- | ------- | -------------------------------- | -------------- |
+| `currentSelected` | public  | `HTMLElement or FASTTreeItem or null` |         | The currently selected tree item |                |
 
 #### Methods
 
 | Name                      | Privacy   | Description | Parameters | Return | Inherited From |
 | ------------------------- | --------- | ----------- | ---------- | ------ | -------------- |
 | `slottedTreeItemsChanged` | protected |             |            | `void` |                |
-
-#### Attributes
-
-| Name                     | Field                | Inherited From |
-| ------------------------ | -------------------- | -------------- |
-| `render-collapsed-nodes` | renderCollapsedNodes |                |
 
 #### Slots
 

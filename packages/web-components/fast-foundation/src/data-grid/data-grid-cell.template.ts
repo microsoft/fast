@@ -6,8 +6,10 @@ import type { FASTDataGridCell } from "./data-grid-cell.js";
  * the provided prefix.
  * @public
  */
-export function dataGridCellTemplate(): ElementViewTemplate<FASTDataGridCell> {
-    return html<FASTDataGridCell>`
+export function dataGridCellTemplate<T extends FASTDataGridCell>(): ElementViewTemplate<
+    T
+> {
+    return html<T>`
         <template
             tabindex="-1"
             role="${x =>
