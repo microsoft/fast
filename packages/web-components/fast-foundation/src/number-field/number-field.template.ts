@@ -6,10 +6,10 @@ import type { FASTNumberField, NumberFieldOptions } from "./number-field.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTNumberField:class)} component.
  * @public
  */
-export function numberFieldTemplate(
+export function numberFieldTemplate<T extends FASTNumberField>(
     options: NumberFieldOptions = {}
-): ElementViewTemplate<FASTNumberField> {
-    return html<FASTNumberField>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template class="${x => (x.readOnly ? "readonly" : "")}">
             <label
                 part="label"
@@ -68,7 +68,7 @@ export function numberFieldTemplate(
                 />
                 ${when(
                     x => !x.hideStep && !x.readOnly && !x.disabled,
-                    html<FASTNumberField>`
+                    html<T>`
                         <div class="controls" part="controls">
                             <div
                                 class="step-up"

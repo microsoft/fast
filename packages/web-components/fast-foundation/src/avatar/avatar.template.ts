@@ -5,10 +5,10 @@ import type { AvatarOptions, FASTAvatar } from "./avatar.js";
  * The template for {@link @microsoft/fast-foundation#FASTAvatar} component.
  * @public
  */
-export function avatarTemplate(
+export function avatarTemplate<T extends FASTAvatar>(
     options: AvatarOptions = {}
-): ElementViewTemplate<FASTAvatar> {
-    return html<FASTAvatar>`
+): ElementViewTemplate<T> {
+    return html<T>`
     <div
         class="backplate"
         part="backplate"

@@ -9,11 +9,11 @@ import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
  *
  * @public
  */
-export function menuItemTemplate(
+export function menuItemTemplate<T extends FASTMenuItem>(
     options: MenuItemOptions
-): ElementViewTemplate<FASTMenuItem> {
+): ElementViewTemplate<T> {
     const anchoredRegionTag = tagFor(options.anchoredRegion);
-    return html<FASTMenuItem>`
+    return html<T>`
     <template
         role="${x => x.role}"
         aria-haspopup="${x => (x.hasSubmenu ? "menu" : void 0)}"
@@ -59,7 +59,7 @@ export function menuItemTemplate(
         ${endSlotTemplate(options)}
         ${when(
             x => x.hasSubmenu,
-            html<FASTMenuItem>`
+            html<T>`
                 <div
                     part="expand-collapse-glyph-container"
                     class="expand-collapse-glyph-container"
@@ -74,7 +74,7 @@ export function menuItemTemplate(
         )}
         ${when(
             x => x.expanded,
-            html<FASTMenuItem>`
+            html<T>`
                 <${anchoredRegionTag}
                     :anchorElement="${x => x}"
                     vertical-positioning-mode="dynamic"

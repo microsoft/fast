@@ -6,9 +6,9 @@ import { FlipperDirection } from "./flipper.options.js";
  * The template for the {@link @microsoft/fast-foundation#FASTFlipper} component.
  * @public
  */
-export function flipperTemplate(
+export function flipperTemplate<T extends FASTFlipper>(
     options: FlipperOptions = {}
-): ElementViewTemplate<FASTFlipper> {
+): ElementViewTemplate<T> {
     return html`
         <template
             role="button"
