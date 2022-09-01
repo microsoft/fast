@@ -2134,8 +2134,6 @@ export class FASTTreeItem extends FASTElement {
     protected itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void;
     // @internal
     nested: boolean;
-    // @internal (undocumented)
-    renderCollapsedChildren: boolean;
     selected: boolean;
     // (undocumented)
     protected selectedChanged(): void;
@@ -2162,7 +2160,6 @@ export class FASTTreeView extends FASTElement {
     handleKeyDown: (e: KeyboardEvent) => boolean | void;
     // @internal
     handleSelectedChange: (e: Event) => boolean | void;
-    renderCollapsedNodes: boolean;
     // @internal
     slottedTreeItems: HTMLElement[];
     // (undocumented)
