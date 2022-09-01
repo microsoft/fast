@@ -1,13 +1,21 @@
-import { children, elements, html } from "@microsoft/fast-element";
+import { children, elements, ElementViewTemplate, html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { ElementDefinitionContext } from "../design-system/registration-context.js";
-import type { DataGrid } from "./data-grid.js";
-import { DataGridRow } from "./data-grid-row.js";
+import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
+import type { FASTDataGrid } from "./data-grid.js";
 
-function createRowItemTemplate(context: ElementDefinitionContext): ViewTemplate {
-    const rowTag = context.tagFor(DataGridRow);
-    return html`
+/**
+ * Options for data grid templates.
+ * @public
+ */
+export type DataGridOptions = {
+    dataGridRow: TemplateElementDependency;
+};
+
+function rowItemTemplate<T extends FASTDataGrid>(
+    options: DataGridOptions
+): ViewTemplate<any, T> {
+    const rowTag = tagFor(options.dataGridRow);
+    return html<any, T>`
     <${rowTag}
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
@@ -17,23 +25,21 @@ function createRowItemTemplate(context: ElementDefinitionContext): ViewTemplate 
 }
 
 /**
- * Generates a template for the {@link @microsoft/fast-foundation#DataGrid} component using
+ * Generates a template for the {@link @microsoft/fast-foundation#FASTDataGrid} component using
  * the provided prefix.
  *
  * @public
  */
-export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>> = (
-    context,
-    definition
-) => {
-    const rowItemTemplate: ViewTemplate = createRowItemTemplate(context);
-    const rowTag = context.tagFor(DataGridRow);
-    return html<DataGrid>`
+export function dataGridTemplate<T extends FASTDataGrid>(
+    options: DataGridOptions
+): ElementViewTemplate<T> {
+    const rowTag = tagFor(options.dataGridRow);
+    return html<T>`
         <template
             role="grid"
             tabindex="0"
             :rowElementTag="${() => rowTag}"
-            :defaultRowItemTemplate="${rowItemTemplate}"
+            :defaultRowItemTemplate="${rowItemTemplate(options)}"
             ${children({
                 property: "rowElements",
                 filter: elements("[role=row]"),
@@ -42,4 +48,4 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
             <slot></slot>
         </template>
     `;
-};
+}

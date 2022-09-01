@@ -1,4 +1,9 @@
-import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    nullableNumberConverter,
+    observable,
+    Updates,
+} from "@microsoft/fast-element";
 import {
     inRange,
     keyArrowDown,
@@ -9,8 +14,8 @@ import {
     keySpace,
     keyTab,
 } from "@microsoft/fast-web-utilities";
-import type { ListboxOption } from "../listbox-option/listbox-option.js";
-import { Listbox } from "./listbox.js";
+import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
+import { FASTListbox } from "./listbox.js";
 
 /**
  * A Listbox Custom HTML Element.
@@ -18,7 +23,7 @@ import { Listbox } from "./listbox.js";
  *
  * @public
  */
-export class ListboxElement extends Listbox {
+export class FASTListboxElement extends FASTListbox {
     /**
      * The index of the most recently checked option.
      *
@@ -34,7 +39,7 @@ export class ListboxElement extends Listbox {
      *
      * @internal
      */
-    public get activeOption(): ListboxOption | null {
+    public get activeOption(): FASTListboxOption | null {
         return this.options[this.activeIndex];
     }
 
@@ -43,7 +48,7 @@ export class ListboxElement extends Listbox {
      *
      * @internal
      */
-    protected get checkedOptions(): ListboxOption[] {
+    protected get checkedOptions(): FASTListboxOption[] {
         return this.options?.filter(o => o.checked);
     }
 
@@ -260,7 +265,7 @@ export class ListboxElement extends Listbox {
             return super.clickHandler(e);
         }
 
-        const captured = (e.target as Element | null)?.closest<ListboxOption>(
+        const captured = (e.target as Element | null)?.closest<FASTListboxOption>(
             `[role=option]`
         );
 
@@ -419,7 +424,7 @@ export class ListboxElement extends Listbox {
      * @internal
      */
     public multipleChanged(prev: boolean | undefined, next: boolean): void {
-        this.ariaMultiSelectable = next ? "true" : undefined;
+        this.ariaMultiSelectable = next ? "true" : null;
         this.options?.forEach(o => {
             o.checked = next ? false : undefined;
         });
@@ -456,7 +461,7 @@ export class ListboxElement extends Listbox {
     protected sizeChanged(prev: number | unknown, next: number): void {
         const size = Math.max(0, parseInt(next?.toFixed() ?? "", 10));
         if (size !== next) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 this.size = size;
             });
         }

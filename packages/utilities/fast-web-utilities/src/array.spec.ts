@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { findLastIndex } from "./array";
+import { findLastIndex } from "./array.js";
 
 describe("findLastIndex", (): void => {
     it("should return -1 when array is empty", (): void => {

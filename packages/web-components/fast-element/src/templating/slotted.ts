@@ -1,12 +1,15 @@
-import { AttachedBehaviorHTMLDirective } from "./html-directive.js";
-import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation.js";
+import { isString } from "../interfaces.js";
+import { HTMLDirective } from "./html-directive.js";
+import { NodeBehaviorOptions, NodeObservationDirective } from "./node-observation.js";
 import type { CaptureType } from "./template.js";
+
+const slotEvent = "slotchange";
 
 /**
  * The options used to configure slotted node observation.
  * @public
  */
-export interface SlottedBehaviorOptions<T = any>
+export interface SlottedDirectiveOptions<T = any>
     extends NodeBehaviorOptions<T>,
         AssignedNodesOptions {}
 
@@ -14,37 +17,39 @@ export interface SlottedBehaviorOptions<T = any>
  * The runtime behavior for slotted node observation.
  * @public
  */
-export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOptions> {
-    /**
-     * Creates an instance of SlottedBehavior.
-     * @param target - The slot element target to observe.
-     * @param options - The options to use when observing the slot.
-     */
-    public constructor(target: HTMLSlotElement, options: SlottedBehaviorOptions) {
-        super(target, options);
-    }
-
+export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveOptions> {
     /**
      * Begins observation of the nodes.
+     * @param target - The target to observe.
      */
-    public observe(): void {
-        this.target.addEventListener("slotchange", this);
+    observe(target: EventSource): void {
+        target.addEventListener(slotEvent, this);
     }
 
     /**
      * Disconnects observation of the nodes.
+     * @param target - The target to unobserve.
      */
-    public disconnect(): void {
-        this.target.removeEventListener("slotchange", this);
+    disconnect(target: EventSource): void {
+        target.removeEventListener(slotEvent, this);
     }
 
     /**
-     * Retrieves the nodes that should be assigned to the target.
+     * Retrieves the raw nodes that should be assigned to the source property.
+     * @param target - The target to get the node to.
      */
-    protected getNodes(): Node[] {
-        return (this.target as HTMLSlotElement).assignedNodes(this.options);
+    getNodes(target: HTMLSlotElement): Node[] {
+        return target.assignedNodes(this.options);
+    }
+
+    /** @internal */
+    handleEvent(event: Event): void {
+        const target = event.currentTarget as any;
+        this.updateTarget(this.getSource(target), this.computeNodes(target));
     }
 }
+
+HTMLDirective.define(SlottedDirective);
 
 /**
  * A directive that observes the `assignedNodes()` of a slot and updates a property
@@ -53,15 +58,13 @@ export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOpti
  * @public
  */
 export function slotted<T = any>(
-    propertyOrOptions: (keyof T & string) | SlottedBehaviorOptions<keyof T & string>
+    propertyOrOptions: (keyof T & string) | SlottedDirectiveOptions<keyof T & string>
 ): CaptureType<T> {
-    if (typeof propertyOrOptions === "string") {
+    if (isString(propertyOrOptions)) {
         propertyOrOptions = { property: propertyOrOptions };
     }
 
-    return new AttachedBehaviorHTMLDirective(
-        "fast-slotted",
-        SlottedBehavior,
-        propertyOrOptions as any
+    return new SlottedDirective(
+        propertyOrOptions as SlottedDirectiveOptions<keyof T & string>
     );
 }

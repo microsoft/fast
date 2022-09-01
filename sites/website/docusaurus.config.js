@@ -25,6 +25,16 @@ module.exports = {
         colorMode: {
             defaultMode: "dark",
         },
+        prism: {
+            theme: require("prism-react-renderer/themes/github"),
+            darkTheme: require("prism-react-renderer/themes/palenight"),
+        },
+        docs: {
+            sidebar: {
+                hideable: true,
+                autoCollapseCategories: true,
+            },
+        },
         navbar: {
             logo: {
                 alt: `Line drawing of a small moon orbiting around a planet with the words FAST next to it`,
@@ -45,6 +55,11 @@ module.exports = {
                     label: "Docs",
                     position: "left",
                 },
+                // TODO: uncomment when ready to display dropdown for doc versions (lines 55-58)
+                // {
+                //     type: "docsVersionDropdown",
+                //     position: "left",
+                // },
                 {
                     href: "https://www.fast.design",
                     label: "Home",
@@ -73,10 +88,6 @@ module.exports = {
                 {
                     title: "Docs",
                     items: [
-                        {
-                            label: "FAST Components",
-                            to: "docs/components/getting-started",
-                        },
                         {
                             label: "FAST Element",
                             to: "docs/fast-element/getting-started",
@@ -110,7 +121,7 @@ module.exports = {
                     ],
                 },
                 {
-                    title: " ",
+                    title: "Legal",
                     items: [
                         {
                             label: "License",
@@ -140,8 +151,24 @@ module.exports = {
             {
                 docs: {
                     sidebarPath: require.resolve("./sidebars.js"),
-                    showLastUpdateTime: true,
+                    // Refer to https://github.com/microsoft/fast/issues/5865 effects of using true
+                    showLastUpdateTime: false,
                     remarkPlugins: [require("mdx-mermaid")],
+                    // The "includeCurrentVersion" plugin includes the ./docs folder of the docs - setting to false as current docs are in progress
+                    // TODO: remove when ready to display both the current and legacy versions (line 155)
+                    includeCurrentVersion: false,
+                    // The "lastVersion" plugin sets which version the /docs route refers to
+                    // TODO: update lastVersion to "current" when ready for /docs route to be set to the current version (line 158)
+                    lastVersion: "legacy",
+                    // TODO: Uncomment to begin displaying the doc versions labels (lines 160-167)
+                    // versions: {
+                    //     current: {
+                    //         label: "current version",
+                    //     },
+                    //     legacy: {
+                    //         label: "legacy version",
+                    //     },
+                    // },
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css"),

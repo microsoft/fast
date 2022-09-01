@@ -1,21 +1,21 @@
-import { html, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { AnchoredRegion } from "./anchored-region.js";
+import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
+import type { FASTAnchoredRegion } from "./anchored-region.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(AnchoredRegion:class)} component.
+ * The template for the {@link @microsoft/fast-foundation#(FASTAnchoredRegion:class)} component.
  * @public
  */
-export const anchoredRegionTemplate: FoundationElementTemplate<ViewTemplate<
-    AnchoredRegion
->> = (context, definition) => html`
-    <template class="${x => (x.initialLayoutComplete ? "loaded" : "")}">
-        ${when(
-            x => x.initialLayoutComplete,
-            html<AnchoredRegion>`
-                <slot></slot>
-            `
-        )}
-    </template>
-`;
+export function anchoredRegionTemplate<
+    T extends FASTAnchoredRegion
+>(): ElementViewTemplate<T> {
+    return html<T>`
+        <template class="${x => (x.initialLayoutComplete ? "loaded" : "")}">
+            ${when(
+                x => x.initialLayoutComplete,
+                html<T>`
+                    <slot></slot>
+                `
+            )}
+        </template>
+    `;
+}

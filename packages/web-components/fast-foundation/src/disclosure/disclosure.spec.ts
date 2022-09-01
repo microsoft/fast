@@ -1,47 +1,107 @@
+import { Updates } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
-import { Disclosure, disclosureTemplate as template } from "./index";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { FASTDisclosure, disclosureTemplate } from "./index.js";
 
-const FastDisclosure = Disclosure.compose({
-    baseName: "disclosure",
-    template
+const disclosureName = uniqueElementName();
+FASTDisclosure.define({
+    name: disclosureName,
+    template: disclosureTemplate()
 })
 
 async function createDisclosure() {
-    const { element, connect, disconnect } = await fixture(FastDisclosure());
+    const { element, connect, disconnect } = await fixture<FASTDisclosure>(disclosureName);
 
     return { element, connect, disconnect };
 }
 
-async function macrotask() {
-    return new Promise((resolve, reject) => {
-        window.setTimeout(() => {
-            resolve(void 0);
-        })
-    })
-}
-
 describe("Disclosure", () => {
+    it("should set the expanded attribute to false when no value is provided", async () => {
+        const { element, connect, disconnect } = await createDisclosure();
+        await connect();
+
+        await Updates.next();
+
+        expect(element.expanded).to.equal(false);
+
+        await disconnect();
+    });
+
+    it("should set the expanded attribute to true when set to true", async () => {
+        const { element, connect, disconnect } = await createDisclosure();
+
+        await connect();
+
+        element.expanded = true;
+
+        await Updates.next();
+
+        expect(element.expanded).to.equal(true);
+
+        await disconnect();
+    });
+
+    it("should set the expanded attribute to false when set to false", async () => {
+        const { element, connect, disconnect } = await createDisclosure();
+
+        await connect();
+
+        element.expanded = false;
+
+        await Updates.next();
+
+        expect(element.expanded).to.equal(false);
+
+        await disconnect();
+    });
+
+    it("should set summary slot content to the value of the summary attribute", async () => {
+        const { element, connect, disconnect } = await createDisclosure();
+
+        const summary: string = "Should set the summary slot content to the value of the summary attribute";
+
+        await connect();
+
+        element.summary = summary;
+
+        await Updates.next();
+
+        expect(element.shadowRoot?.querySelector("slot[name='summary']")?.innerHTML).to.equal(summary);
+
+        await disconnect();
+    });
     describe("User interaction", () => {
         it("should toggle the content using `toggle()`", async () => {
             const { element, connect, disconnect } = await createDisclosure();
+
             await connect();
+
             element.toggle();
-            await macrotask();
+
+            await Updates.next();
+
             expect(element.expanded).to.equal(true);
+
             await disconnect();
         });
 
         it("should expand and collapse the content using `show()` and `hide()`", async () => {
             const { element, connect, disconnect } = await createDisclosure();
+
             await connect();
+
             element.show();
-            await macrotask();
+
+            await Updates.next();
+
             expect(element.expanded).to.equal(true);
+
             element.hide();
-            await macrotask();
+
+            await Updates.next();
+
             expect(element.expanded).to.equal(false);
+
             await disconnect();
         });
     });

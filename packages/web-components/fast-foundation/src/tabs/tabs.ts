@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowLeft,
@@ -6,38 +6,49 @@ import {
     keyArrowUp,
     keyEnd,
     keyHome,
+    limit,
     uniqueId,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
-import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
 
 /**
  * Tabs option configuration options
  * @public
  */
-export type TabsOptions = FoundationElementDefinition & StartEndOptions;
+export type TabsOptions = StartEndOptions;
 
 /**
- * The orientation of the {@link @microsoft/fast-foundation#(Tabs:class)} component
+ * The orientation of the {@link @microsoft/fast-foundation#(FASTTabs:class)} component
  * @public
  */
-export enum TabsOrientation {
-    vertical = "vertical",
-    horizontal = "horizontal",
-}
+export const TabsOrientation = {
+    vertical: "vertical",
+    horizontal: "horizontal",
+} as const;
+
+/**
+ * The types for the Tabs component
+ * @public
+ */
+export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientation];
 
 /**
  * A Tabs Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#tablist | ARIA tablist }.
  *
+ * @slot start - Content which can be provided before the tablist element
+ * @slot end - Content which can be provided after the tablist element
+ * @slot tab - The slot for tabs
+ * @slot tabpanel - The slot for tabpanels
+ * @csspart tablist - The element wrapping for the tabs
+ * @csspart activeIndicator - The visual indicator
+ * @fires change - Fires a custom 'change' event when a tab is clicked or during keyboard navigation
+ *
  * @public
  */
-export class Tabs extends FoundationElement {
+export class FASTTabs extends FASTElement {
     /**
      * The orientation
      * @public
@@ -95,6 +106,9 @@ export class Tabs extends FoundationElement {
             this.$fastController.isConnected &&
             this.tabs.length <= this.tabpanels.length
         ) {
+            this.tabIds = this.getTabIds();
+            this.tabpanelIds = this.getTabPanelIds();
+
             this.setTabs();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
@@ -114,6 +128,9 @@ export class Tabs extends FoundationElement {
             this.$fastController.isConnected &&
             this.tabpanels.length <= this.tabs.length
         ) {
+            this.tabIds = this.getTabIds();
+            this.tabpanelIds = this.getTabPanelIds();
+
             this.setTabs();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
@@ -126,8 +143,8 @@ export class Tabs extends FoundationElement {
      * @remarks
      * HTML Attribute: activeindicator
      */
-    @attr({ mode: "boolean" })
-    public activeindicator = true;
+    @attr({ attribute: "hide-active-indicator", mode: "boolean" })
+    public hideActiveIndicator = false;
 
     /**
      * @internal
@@ -182,15 +199,14 @@ export class Tabs extends FoundationElement {
         const gridProperty: string = this.isHorizontal()
             ? gridHorizontalProperty
             : gridVerticalProperty;
-        this.tabIds = this.getTabIds();
-        this.tabpanelIds = this.getTabPanelIds();
+
         this.activeTabIndex = this.getActiveIndex();
         this.showActiveIndicator = false;
         this.tabs.forEach((tab: HTMLElement, index: number) => {
             if (tab.slot === "tab") {
                 const isActiveTab =
                     this.activeTabIndex === index && this.isFocusableElement(tab);
-                if (this.activeindicator && this.isFocusableElement(tab)) {
+                if (!this.hideActiveIndicator && this.isFocusableElement(tab)) {
                     this.showActiveIndicator = true;
                 }
                 const tabId: string = this.tabIds[index];
@@ -218,8 +234,6 @@ export class Tabs extends FoundationElement {
     };
 
     private setTabPanels = (): void => {
-        this.tabIds = this.getTabIds();
-        this.tabpanelIds = this.getTabPanelIds();
         this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
             const tabId: string = this.tabIds[index];
             const tabpanelId: string = this.tabpanelIds[index];
@@ -304,7 +318,7 @@ export class Tabs extends FoundationElement {
         // Ignore if we click twice on the same tab
         if (
             this.showActiveIndicator &&
-            this.activeindicator &&
+            !this.hideActiveIndicator &&
             this.activeTabIndex !== this.prevActiveTabIndex
         ) {
             if (this.ticking) {
@@ -345,13 +359,21 @@ export class Tabs extends FoundationElement {
      * This method allows the active index to be adjusted by numerical increments
      */
     public adjust(adjustment: number): void {
-        this.prevActiveTabIndex = this.activeTabIndex;
-        this.activeTabIndex = wrapInBounds(
+        const focusableTabs = this.tabs.filter(t => !this.isDisabledElement(t));
+        const currentActiveTabIndex = focusableTabs.indexOf(this.activetab);
+
+        const nextTabIndex = limit(
             0,
-            this.tabs.length - 1,
-            this.activeTabIndex + adjustment
+            focusableTabs.length - 1,
+            currentActiveTabIndex + adjustment
         );
-        this.setComponent();
+
+        // the index of the next focusable tab within the context of all available tabs
+        const nextIndex = this.tabs.indexOf(focusableTabs[nextTabIndex]);
+
+        if (nextIndex > -1) {
+            this.moveToTabByIndex(this.tabs, nextIndex);
+        }
     }
 
     private adjustForward = (e: KeyboardEvent): void => {
@@ -428,5 +450,5 @@ export class Tabs extends FoundationElement {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface Tabs extends StartEnd {}
-applyMixins(Tabs, StartEnd);
+export interface FASTTabs extends StartEnd {}
+applyMixins(FASTTabs, StartEnd);

@@ -2,9 +2,15 @@
  * Autocomplete values for combobox.
  * @public
  */
-export enum ComboboxAutocomplete {
-    inline = "inline",
-    list = "list",
-    both = "both",
-    none = "none",
-}
+export const ComboboxAutocomplete = {
+    inline: "inline",
+    list: "list",
+    both: "both",
+    none: "none",
+} as const;
+
+/**
+ * Autocomplete type for combobox.
+ * @public
+ */
+export type ComboboxAutocomplete = typeof ComboboxAutocomplete[keyof typeof ComboboxAutocomplete];

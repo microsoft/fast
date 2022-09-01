@@ -1,12 +1,13 @@
 import {
     attr,
-    DOM,
+    bind,
     html,
     HTMLView,
     observable,
     ref,
     RepeatBehavior,
     RepeatDirective,
+    Updates,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
@@ -21,8 +22,8 @@ import {
     uniqueId,
 } from "@microsoft/fast-web-utilities";
 import {
-    AnchoredRegion,
     AnchoredRegionConfig,
+    FASTAnchoredRegion,
     FlyoutPosBottom,
     FlyoutPosBottomFill,
     FlyoutPosTallest,
@@ -30,13 +31,14 @@ import {
     FlyoutPosTop,
     FlyoutPosTopFill,
 } from "../anchored-region/index.js";
-import type { PickerMenu } from "./picker-menu.js";
-import { PickerMenuOption } from "./picker-menu-option.js";
-import { PickerListItem } from "./picker-list-item.js";
+import { FASTPickerListItem } from "./picker-list-item.js";
+import type { FASTPickerList } from "./picker-list.js";
+import { FASTPickerMenuOption } from "./picker-menu-option.js";
+import type { FASTPickerMenu } from "./picker-menu.js";
 import { FormAssociatedPicker } from "./picker.form-associated.js";
-import type { PickerList } from "./picker-list.js";
+import { MenuPlacement } from "./picker.options.js";
 
-const pickerInputTemplate: ViewTemplate = html<Picker>`
+const pickerInputTemplate: ViewTemplate = html<FASTPicker>`
     <input
         slot="input-region"
         role="combobox"
@@ -48,39 +50,25 @@ const pickerInputTemplate: ViewTemplate = html<Picker>`
         aria-labelledby="${x => x.labelledBy}"
         placeholder="${x => x.placeholder}"
         ${ref("inputElement")}
-    ></input>
+    />
 `;
-
-/**
- * Defines the vertical positioning options for an anchored region
- *
- * @beta
- */
-export type menuConfigs =
-    | "bottom"
-    | "bottom-fill"
-    | "tallest"
-    | "tallest-fill"
-    | "top"
-    | "top-fill";
 
 /**
  * A Picker Custom HTML Element.  This is an early "alpha" version of the component.
  * Developers should expect the api to evolve, breaking changes are possible.
  *
- * @alpha
+ * @beta
  */
-export class Picker extends FormAssociatedPicker {
+export class FASTPicker extends FormAssociatedPicker {
     /**
      * Currently selected items. Comma delineated string ie. "apples,oranges".
      *
-     * @alpha
      * @remarks
      * HTML Attribute: selection
      */
     @attr({ attribute: "selection" })
     public selection: string = "";
-    private selectionChanged(): void {
+    protected selectionChanged(): void {
         if (this.$fastController.isConnected) {
             this.handleSelectionChange();
             if (this.proxy instanceof HTMLInputElement) {
@@ -93,13 +81,12 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Currently available options. Comma delineated string ie. "apples,oranges".
      *
-     * @alpha
      * @remarks
      * HTML Attribute: options
      */
     @attr({ attribute: "options" })
     public options: string;
-    private optionsChanged(): void {
+    protected optionsChanged(): void {
         this.optionsList = this.options
             .split(",")
             .map(opt => opt.trim())
@@ -109,7 +96,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Whether the component should remove an option from the list when it is in the selection
      *
-     * @alpha
      * @remarks
      * HTML Attribute: filter-selected
      */
@@ -119,7 +105,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Whether the component should remove options based on the current query
      *
-     * @alpha
      * @remarks
      * HTML Attribute: filter-query
      */
@@ -129,7 +114,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * The maximum number of items that can be selected.
      *
-     * @alpha
      * @remarks
      * HTML Attribute: max-selected
      */
@@ -139,7 +123,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * The text to present to assistive technolgies when no suggestions are available.
      *
-     * @alpha
      * @remarks
      * HTML Attribute: no-suggestions-text
      */
@@ -149,7 +132,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      *  The text to present to assistive technolgies when suggestions are available.
      *
-     * @alpha
      * @remarks
      * HTML Attribute: suggestions-available-text
      */
@@ -159,7 +141,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * The text to present to assistive technologies when suggestions are loading.
      *
-     * @alpha
      * @remarks
      * HTML Attribute: loading-text
      */
@@ -169,7 +150,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Applied to the aria-label attribute of the input element
      *
-     * @alpha
      * @remarks
      * HTML Attribute: label
      */
@@ -179,7 +159,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Applied to the aria-labelledby attribute of the input element
      *
-     * @alpha
      * @remarks
      * HTML Attribute: labelledby
      */
@@ -189,7 +168,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Applied to the placeholder attribute of the input element
      *
-     * @alpha
      * @remarks
      * HTML Attribute: placholder
      */
@@ -199,13 +177,12 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Controls menu placement
      *
-     * @alpha
      * @remarks
      * HTML Attribute: menu-placement
      */
     @attr({ attribute: "menu-placement" })
-    public menuPlacement: menuConfigs = "bottom-fill";
-    private menuPlacementChanged(): void {
+    public menuPlacement: MenuPlacement = MenuPlacement.bottomFill;
+    protected menuPlacementChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateMenuConfig();
         }
@@ -214,13 +191,12 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Whether to display a loading state if the menu is opened.
      *
-     * @alpha
      */
     @observable
     public showLoading: boolean = false;
-    private showLoadingChanged(): void {
+    protected showLoadingChanged(): void {
         if (this.$fastController.isConnected) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 this.setFocusedOption(0);
             });
         }
@@ -230,11 +206,10 @@ export class Picker extends FormAssociatedPicker {
      * Template used to generate selected items.
      * This is used in a repeat directive.
      *
-     * @alpha
      */
     @observable
     public listItemTemplate: ViewTemplate;
-    private listItemTemplateChanged(): void {
+    protected listItemTemplateChanged(): void {
         this.updateListItemTemplate();
     }
 
@@ -242,11 +217,10 @@ export class Picker extends FormAssociatedPicker {
      * Default template to use for selected items (usually specified in the component template).
      * This is used in a repeat directive.
      *
-     * @alpha
      */
     @observable
     public defaultListItemTemplate?: ViewTemplate;
-    private defaultListItemTemplateChanged(): void {
+    protected defaultListItemTemplateChanged(): void {
         this.updateListItemTemplate();
     }
 
@@ -262,11 +236,10 @@ export class Picker extends FormAssociatedPicker {
      * Template to use for available options.
      * This is used in a repeat directive.
      *
-     * @alpha
      */
     @observable
     public menuOptionTemplate: ViewTemplate;
-    private menuOptionTemplateChanged(): void {
+    protected menuOptionTemplateChanged(): void {
         this.updateOptionTemplate();
     }
 
@@ -274,11 +247,10 @@ export class Picker extends FormAssociatedPicker {
      * Default template to use for available options (usually specified in the template).
      * This is used in a repeat directive.
      *
-     * @alpha
      */
     @observable
     public defaultMenuOptionTemplate?: ViewTemplate;
-    private defaultMenuOptionTemplateChanged(): void {
+    protected defaultMenuOptionTemplateChanged(): void {
         this.updateOptionTemplate();
     }
 
@@ -293,7 +265,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      *  Template to use for the contents of a selected list item
      *
-     * @alpha
      */
     @observable
     public listItemContentsTemplate: ViewTemplate;
@@ -301,7 +272,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      *  Template to use for the contents of menu options
      *
-     * @alpha
      */
     @observable
     public menuOptionContentsTemplate: ViewTemplate;
@@ -309,7 +279,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      *  Current list of options in array form
      *
-     * @alpha
      */
     @observable
     public optionsList: string[] = [];
@@ -320,11 +289,10 @@ export class Picker extends FormAssociatedPicker {
     /**
      * The text value currently in the input field
      *
-     * @alpha
      */
     @observable
     public query: string;
-    private queryChanged(): void {
+    protected queryChanged(): void {
         if (this.$fastController.isConnected) {
             if (this.inputElement.value !== this.query) {
                 this.inputElement.value = this.query;
@@ -341,7 +309,7 @@ export class Picker extends FormAssociatedPicker {
      */
     @observable
     public filteredOptionsList: string[] = [];
-    private filteredOptionsListChanged(): void {
+    protected filteredOptionsListChanged(): void {
         if (this.$fastController.isConnected) {
             this.showNoOptions =
                 this.filteredOptionsList.length === 0 &&
@@ -357,9 +325,9 @@ export class Picker extends FormAssociatedPicker {
      */
     @observable
     public flyoutOpen: boolean = false;
-    private flyoutOpenChanged(): void {
+    protected flyoutOpenChanged(): void {
         if (this.flyoutOpen) {
-            DOM.queueUpdate(this.setRegionProps);
+            Updates.enqueue(this.setRegionProps);
             this.$emit("menuopening", { bubbles: false });
         } else {
             this.$emit("menuclosing", { bubbles: false });
@@ -415,7 +383,7 @@ export class Picker extends FormAssociatedPicker {
     public showNoOptions: boolean = false;
     private showNoOptionsChanged(): void {
         if (this.$fastController.isConnected) {
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 this.setFocusedOption(0);
             });
         }
@@ -432,7 +400,6 @@ export class Picker extends FormAssociatedPicker {
     /**
      *  Reference to the placeholder element for the repeat directive
      *
-     * @alpha
      */
     public itemsPlaceholderElement: Node;
 
@@ -448,21 +415,21 @@ export class Picker extends FormAssociatedPicker {
      *
      * @internal
      */
-    public listElement: PickerList;
+    public listElement: FASTPickerList;
 
     /**
      * reference to the menu element
      *
      * @internal
      */
-    public menuElement: PickerMenu;
+    public menuElement: FASTPickerMenu;
 
     /**
      * reference to the anchored region element
      *
      * @internal
      */
-    public region: AnchoredRegion;
+    public region: FASTAnchoredRegion;
 
     /**
      *
@@ -483,7 +450,7 @@ export class Picker extends FormAssociatedPicker {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        this.listElement = document.createElement(this.selectedListTag) as PickerList;
+        this.listElement = document.createElement(this.selectedListTag) as FASTPickerList;
         this.appendChild(this.listElement);
         this.itemsPlaceholderElement = document.createComment("");
         this.listElement.append(this.itemsPlaceholderElement);
@@ -493,10 +460,10 @@ export class Picker extends FormAssociatedPicker {
         const match: string = this.menuTag.toUpperCase();
         this.menuElement = Array.from(this.children).find((element: HTMLElement) => {
             return element.tagName === match;
-        }) as PickerMenu;
+        }) as FASTPickerMenu;
 
         if (this.menuElement === undefined) {
-            this.menuElement = document.createElement(this.menuTag) as PickerMenu;
+            this.menuElement = document.createElement(this.menuTag) as FASTPickerMenu;
             this.appendChild(this.menuElement);
         }
 
@@ -510,7 +477,7 @@ export class Picker extends FormAssociatedPicker {
 
         this.updateMenuConfig();
 
-        DOM.queueUpdate(() => this.initialize());
+        Updates.enqueue(() => this.initialize());
     }
 
     public disconnectedCallback() {
@@ -539,11 +506,14 @@ export class Picker extends FormAssociatedPicker {
         this.updateListItemTemplate();
         this.updateOptionTemplate();
 
-        this.itemsRepeatBehavior = new RepeatDirective(
-            x => x.selectedItems,
-            x => x.activeListItemTemplate,
+        const itemsRepeatDirective = new RepeatDirective(
+            bind(x => x.selectedItems, false),
+            bind(x => x.activeListItemTemplate, false),
             { positioning: true }
-        ).createBehavior(this.itemsPlaceholderElement);
+        );
+        this.itemsRepeatBehavior = itemsRepeatDirective.createBehavior({
+            [itemsRepeatDirective.nodeId]: this.itemsPlaceholderElement,
+        });
 
         this.inputElement.addEventListener("input", this.handleTextInput);
         this.inputElement.addEventListener("click", this.handleInputClick);
@@ -556,11 +526,14 @@ export class Picker extends FormAssociatedPicker {
             this.handleMenuOptionsUpdated
         );
 
-        this.optionsRepeatBehavior = new RepeatDirective(
-            x => x.filteredOptionsList,
-            x => x.activeMenuOptionTemplate,
+        const optionsRepeatDirective = new RepeatDirective(
+            bind(x => x.filteredOptionsList, false),
+            bind(x => x.activeMenuOptionTemplate, false),
             { positioning: true }
-        ).createBehavior(this.optionsPlaceholder);
+        );
+        this.optionsRepeatBehavior = optionsRepeatDirective.createBehavior({
+            [optionsRepeatDirective.nodeId]: this.optionsPlaceholder,
+        });
 
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.optionsRepeatBehavior!]);
@@ -578,7 +551,7 @@ export class Picker extends FormAssociatedPicker {
 
         if (open && document.activeElement === this.inputElement) {
             this.flyoutOpen = open;
-            DOM.queueUpdate(() => {
+            Updates.enqueue(() => {
                 if (this.menuElement !== undefined) {
                     this.setFocusedOption(0);
                 } else {
@@ -739,7 +712,7 @@ export class Picker extends FormAssociatedPicker {
                     this.selection = this.selectedItems
                         .splice(currentFocusedItemIndex, 1)
                         .toString();
-                    DOM.queueUpdate(() => {
+                    Updates.enqueue(() => {
                         (selectedItems[
                             Math.min(selectedItems.length, currentFocusedItemIndex)
                         ] as HTMLElement).focus();
@@ -786,7 +759,7 @@ export class Picker extends FormAssociatedPicker {
 
         this.updateFilteredOptions();
 
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             this.checkMaxItems();
         });
         this.$emit("selectionchange", { bubbles: false });
@@ -796,7 +769,7 @@ export class Picker extends FormAssociatedPicker {
      * Anchored region is loaded, menu and options exist in the DOM.
      */
     public handleRegionLoaded(e: Event): void {
-        DOM.queueUpdate(() => {
+        Updates.enqueue(() => {
             this.setFocusedOption(0);
             this.$emit("menuloaded", { bubbles: false });
         });
@@ -811,7 +784,7 @@ export class Picker extends FormAssociatedPicker {
         }
         if (this.region === null || this.region === undefined) {
             // TODO: limit this
-            DOM.queueUpdate(this.setRegionProps);
+            Updates.enqueue(this.setRegionProps);
             return;
         }
         this.region.anchorElement = this.inputElement;
@@ -849,7 +822,7 @@ export class Picker extends FormAssociatedPicker {
         if (e.defaultPrevented) {
             return false;
         }
-        if (e.target instanceof PickerListItem) {
+        if (e.target instanceof FASTPickerListItem) {
             const listItems: Element[] = Array.from(
                 this.listElement.querySelectorAll("[role='listitem']")
             );
@@ -858,7 +831,7 @@ export class Picker extends FormAssociatedPicker {
                 const newSelection: string[] = this.selectedItems.slice();
                 newSelection.splice(itemIndex, 1);
                 this.selection = newSelection.toString();
-                DOM.queueUpdate(() => this.incrementFocusedItem(0));
+                Updates.enqueue(() => this.incrementFocusedItem(0));
             }
             return false;
         }
@@ -873,7 +846,7 @@ export class Picker extends FormAssociatedPicker {
             return false;
         }
 
-        if (e.target instanceof PickerMenuOption) {
+        if (e.target instanceof FASTPickerMenuOption) {
             if (e.target.value !== undefined) {
                 this.selection = `${this.selection}${this.selection === "" ? "" : ","}${
                     e.target.value

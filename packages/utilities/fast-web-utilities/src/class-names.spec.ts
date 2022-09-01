@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { classNames } from "./class-names";
+import { classNames } from "./class-names.js";
 
 describe("classNames", (): void => {
     it("should return a string when invalid values are provided", (): void => {

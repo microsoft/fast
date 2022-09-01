@@ -3,6 +3,7 @@ id: declaring-templates
 title: Declaring Templates
 sidebar_label: Declaring Templates
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/guide/declaring-templates.md
+description: While you can create and update nodes in the Shadow DOM manually, FASTElement provides a streamlined templating system for the most common rendering scenarios.
 ---
 
 ## Basic templates
@@ -143,7 +144,7 @@ When binding to `class`, the underlying engine will not over-write classes added
 
 **Example: Nullish value**
 
-Some cases may occur where an attribute needs to have a value when used however not present if unused. These are different than boolean attributes by where their presence alone triggers their effect. In this situation a nullish value (`null` or `undefined`) may be provided so the attribute won't exist in that condition.
+Some cases may occur where an attribute needs to have a value when used however not present if unused. These are different than boolean attributes by where their presence alone triggers their effect. In this situation, a nullish value (`null` or `undefined`) may be provided so the attribute won't exist in that condition.
 
 ```html
 <div aria-hidden="${x => x.isViewable ? 'true' : null}"></div>
@@ -217,13 +218,13 @@ The second example demonstrates an important characteristic of the templating en
 It is during the `connectedCallback` phase of the Custom Element lifecycle that `FASTElement` creates templates and binds the resulting view. The creation of the template only occurs the first time the element is connected, while binding happens every time the element is connected (with unbinding happening during the `disconnectedCallback` for symmetry).
 
 :::note
-In the future we're planning new optimizations that will enable us to safely determine when we do not need to unbind/rebind certain views.
+In the future, we're planning new optimizations that will enable us to safely determine when we do not need to unbind/rebind certain views.
 :::
 
 In most cases, the template that `FASTElement` renders is determined by the `template` property of the Custom Element's configuration. However, you can also implement a method on your Custom Element class named `resolveTemplate()` that returns a template instance. If this method is present, it will be called during `connectedCallback` to obtain the template to use. This allows the element author to dynamically select completely different templates based on the state of the element at the time of connection.
 
-In addition to dynamic template selection during the `connectedCallback`, the `$fastController` property of `FASTElement` enables dynamically changing the template at any time through setting the controller's `template` property to any valid template.
+In addition to dynamic template selection during the `connectedCallback`, the `$fastController` property of `FASTElement` enables dynamically changing the template at any time by setting the controller's `template` property to any valid template.
 
 :::tip
-Check out [our Cheat Sheet](/docs/resources/cheat-sheet#bindings) for a quick guide on bindings.
+Check out [our Cheat Sheet](../resources/cheat-sheet.md#bindings) for a quick guide on bindings.
 :::

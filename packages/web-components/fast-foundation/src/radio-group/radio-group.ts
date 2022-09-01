@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
     ArrowKeys,
     Direction,
@@ -10,15 +10,19 @@ import {
     Orientation,
 } from "@microsoft/fast-web-utilities";
 import { getDirection } from "../utilities/direction.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * An Radio Group Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#radiogroup | ARIA radiogroup }.
  *
+ * @slot label - The slot for the label
+ * @slot - The default slot for radio buttons
+ * @csspart positioning-region - The positioning region for laying out the radios
+ * @fires change - Fires a custom 'change' event when the value changes
+ *
  * @public
  */
-export class RadioGroup extends FoundationElement {
+export class FASTRadioGroup extends FASTElement {
     /**
      * When true, the child radios will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -27,7 +31,7 @@ export class RadioGroup extends FoundationElement {
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
-    private readOnlyChanged(): void {
+    protected readOnlyChanged(): void {
         if (this.slottedRadioButtons !== undefined) {
             this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
                 if (this.readOnly) {
@@ -48,7 +52,7 @@ export class RadioGroup extends FoundationElement {
      */
     @attr({ attribute: "disabled", mode: "boolean" })
     public disabled: boolean;
-    private disabledChanged(): void {
+    protected disabledChanged(): void {
         if (this.slottedRadioButtons !== undefined) {
             this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
                 if (this.disabled) {
@@ -90,7 +94,7 @@ export class RadioGroup extends FoundationElement {
     protected valueChanged(): void {
         if (this.slottedRadioButtons) {
             this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
-                if (radio.getAttribute("value") === this.value) {
+                if (radio.value === this.value) {
                     radio.checked = true;
                     this.selectedRadio = radio;
                 }
@@ -117,7 +121,10 @@ export class RadioGroup extends FoundationElement {
      */
     @observable
     public slottedRadioButtons: HTMLElement[];
-    private slottedRadioButtonsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
+    protected slottedRadioButtonsChanged(
+        oldValue: unknown,
+        newValue: HTMLElement[]
+    ): void {
         if (this.slottedRadioButtons && this.slottedRadioButtons.length > 0) {
             this.setupRadioButtons();
         }

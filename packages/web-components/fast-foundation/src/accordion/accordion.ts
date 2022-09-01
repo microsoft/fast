@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowUp,
@@ -6,34 +6,21 @@ import {
     keyHome,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
-import { AccordionItem } from "../accordion-item/accordion-item.js";
-
-/**
- * Expand mode for {@link Accordion}
- * @public
- */
-export enum AccordionExpandMode {
-    /**
-     * Designates only a single {@link @microsoft/fast-foundation#(AccordionItem:class) } can be open a time.
-     */
-    single = "single",
-
-    /**
-     * Designates multiple {@link @microsoft/fast-foundation#(AccordionItem:class) | AccordionItems} can be open simultaneously.
-     */
-    multi = "multi",
-}
+import { FASTAccordionItem } from "../accordion-item/accordion-item.js";
+import { AccordionExpandMode } from "./accordion.options.js";
 
 /**
  * An Accordion Custom HTML Element
  * Implements {@link https://www.w3.org/TR/wai-aria-practices-1.1/#accordion | ARIA Accordion}.
+ *
+ * @fires change - Fires a custom 'change' event when the active item changes
+ * @csspart item - The slot for the accordion items
  * @public
  *
  * @remarks
- * Designed to be used with {@link @microsoft/fast-foundation#accordionTemplate} and {@link @microsoft/fast-foundation#(AccordionItem:class)}.
+ * Designed to be used with {@link @microsoft/fast-foundation#accordionTemplate} and {@link @microsoft/fast-foundation#(FASTAccordionItem:class)}.
  */
-export class Accordion extends FoundationElement {
+export class FASTAccordion extends FASTElement {
     /**
      * Controls the expand mode of the Accordion, either allowing
      * single or multiple item expansion.
@@ -66,13 +53,13 @@ export class Accordion extends FoundationElement {
     private accordionIds: Array<string | null>;
 
     private change = (): void => {
-        this.$emit("change");
+        this.$emit("change", this.activeid);
     };
 
-    private findExpandedItem(): AccordionItem | null {
+    private findExpandedItem(): FASTAccordionItem | null {
         for (let item: number = 0; item < this.accordionItems.length; item++) {
             if (this.accordionItems[item].getAttribute("expanded") === "true") {
-                return this.accordionItems[item] as AccordionItem;
+                return this.accordionItems[item] as FASTAccordionItem;
             }
         }
         return null;
@@ -84,7 +71,7 @@ export class Accordion extends FoundationElement {
         }
         this.accordionIds = this.getItemIds();
         this.accordionItems.forEach((item: HTMLElement, index: number) => {
-            if (item instanceof AccordionItem) {
+            if (item instanceof FASTAccordionItem) {
                 item.addEventListener("change", this.activeItemChange);
                 if (this.isSingleExpandMode()) {
                     this.activeItemIndex !== index
@@ -102,14 +89,14 @@ export class Accordion extends FoundationElement {
             item.addEventListener("focus", this.handleItemFocus);
         });
         if (this.isSingleExpandMode()) {
-            const expandedItem: AccordionItem | null =
-                this.findExpandedItem() ?? (this.accordionItems[0] as AccordionItem);
+            const expandedItem: FASTAccordionItem | null =
+                this.findExpandedItem() ?? (this.accordionItems[0] as FASTAccordionItem);
             expandedItem.setAttribute("aria-disabled", "true");
         }
     };
 
     private resetItems(): void {
-        this.accordionItems.forEach((item: AccordionItem, index: number) => {
+        this.accordionItems.forEach((item: FASTAccordionItem, index: number) => {
             item.expanded = false;
         });
     }
@@ -123,7 +110,12 @@ export class Accordion extends FoundationElement {
     };
 
     private activeItemChange = (event: Event): void => {
-        const selectedItem = event.target as AccordionItem;
+        if (event.defaultPrevented || event.target !== event.currentTarget) {
+            return;
+        }
+
+        event.preventDefault();
+        const selectedItem = event.target as FASTAccordionItem;
         this.activeid = selectedItem.getAttribute("id");
         if (this.isSingleExpandMode()) {
             this.resetItems();
@@ -202,7 +194,7 @@ export class Accordion extends FoundationElement {
 
     private focusItem(): void {
         const element: HTMLElement = this.accordionItems[this.activeItemIndex];
-        if (element instanceof AccordionItem) {
+        if (element instanceof FASTAccordionItem) {
             element.expandbutton.focus();
         }
     }

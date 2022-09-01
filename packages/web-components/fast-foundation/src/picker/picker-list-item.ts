@@ -1,8 +1,14 @@
-import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    html,
+    HTMLView,
+    observable,
+    ViewTemplate,
+} from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 
-const defaultContentsTemplate: ViewTemplate<PickerListItem> = html`
+const defaultContentsTemplate: ViewTemplate<FASTPickerListItem> = html`
     <template>
         ${x => x.value}
     </template>
@@ -11,13 +17,12 @@ const defaultContentsTemplate: ViewTemplate<PickerListItem> = html`
 /**
  * A picker list item Custom HTML Element.
  *
- * @alpha
+ * @beta
  */
-export class PickerListItem extends FoundationElement {
+export class FASTPickerListItem extends FASTElement {
     /**
      * The underlying string value of the item
      *
-     * @alpha
      * @remarks
      * HTML Attribute: value
      */
@@ -27,11 +32,10 @@ export class PickerListItem extends FoundationElement {
     /**
      *  The template used to render the contents of the list item
      *
-     * @alpha
      */
     @observable
     public contentsTemplate: ViewTemplate;
-    private contentsTemplateChanged(): void {
+    protected contentsTemplateChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateView();
         }

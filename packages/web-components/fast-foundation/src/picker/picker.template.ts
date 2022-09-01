@@ -1,15 +1,15 @@
-import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
-import { AnchoredRegion } from "../anchored-region/anchored-region.js";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { ElementDefinitionContext } from "../design-system/registration-context.js";
-import type { Picker } from "./picker.js";
-import { PickerMenu } from "./picker-menu.js";
-import { PickerMenuOption } from "./picker-menu-option.js";
-import { PickerList } from "./picker-list.js";
-import { PickerListItem } from "./picker-list-item.js";
+import {
+    ElementViewTemplate,
+    html,
+    ref,
+    ViewTemplate,
+    when,
+} from "@microsoft/fast-element";
+import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
+import type { FASTPicker } from "./picker.js";
 
-function createDefaultListItemTemplate(context: ElementDefinitionContext): ViewTemplate {
-    const pickerListItemTag: string = context.tagFor(PickerListItem);
+function defaultListItemTemplate(options: PickerOptions): ViewTemplate {
+    const pickerListItemTag: string = tagFor(options.pickerListItem);
     return html`
     <${pickerListItemTag}
         value="${x => x}"
@@ -19,10 +19,8 @@ function createDefaultListItemTemplate(context: ElementDefinitionContext): ViewT
     `;
 }
 
-function createDefaultMenuOptionTemplate(
-    context: ElementDefinitionContext
-): ViewTemplate {
-    const pickerMenuOptionTag: string = context.tagFor(PickerMenuOption);
+function defaultMenuOptionTemplate(options: PickerOptions): ViewTemplate {
+    const pickerMenuOptionTag: string = tagFor(options.pickerMenuOption);
     return html`
     <${pickerMenuOptionTag}
         value="${x => x}"
@@ -33,27 +31,36 @@ function createDefaultMenuOptionTemplate(
 }
 
 /**
+ * Picker configuration options
+ * @public
+ */
+export type PickerOptions = {
+    anchoredRegion: TemplateElementDependency;
+    pickerMenu: TemplateElementDependency;
+    pickerMenuOption: TemplateElementDependency;
+    pickerList: TemplateElementDependency;
+    pickerListItem: TemplateElementDependency;
+    progressRing: TemplateElementDependency;
+};
+
+/**
  * The template for the List Picker component.
  * @public
  */
-export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>> = (
-    context,
-    definition
-) => {
-    const anchoredRegionTag: string = context.tagFor(AnchoredRegion);
-    const pickerMenuTag: string = context.tagFor(PickerMenu);
-    const pickerListTag: string = context.tagFor(PickerList);
-    const progressRingTag: string = context.tagFor(PickerList);
-    const defaultListItemTemplate: ViewTemplate = createDefaultListItemTemplate(context);
-    const defaultMenuOptionTemplate: ViewTemplate = createDefaultMenuOptionTemplate(
-        context
-    );
-    return html<Picker>`
+export function pickerTemplate<T extends FASTPicker>(
+    options: PickerOptions
+): ElementViewTemplate<T> {
+    const anchoredRegionTag: string = tagFor(options.anchoredRegion);
+    const pickerMenuTag: string = tagFor(options.pickerMenu);
+    const pickerListTag: string = tagFor(options.pickerList);
+    const progressRingTag: string = tagFor(options.progressRing);
+
+    return html<T>`
         <template
             :selectedListTag="${() => pickerListTag}"
             :menuTag="${() => pickerMenuTag}"
-            :defaultListItemTemplate="${defaultListItemTemplate}"
-            :defaultMenuOptionTemplate="${defaultMenuOptionTemplate}"
+            :defaultListItemTemplate="${defaultListItemTemplate(options)}"
+            :defaultMenuOptionTemplate="${defaultMenuOptionTemplate(options)}"
             @focusin="${(x, c) => x.handleFocusIn(c.event as FocusEvent)}"
             @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"
             @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
@@ -64,7 +71,7 @@ export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>> = (
 
             ${when(
                 x => x.flyoutOpen,
-                html<Picker>`
+                html<T>`
                 <${anchoredRegionTag}
                     class="region"
                     part="region"
@@ -89,13 +96,13 @@ export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>> = (
                 >
                     ${when(
                         x => !x.showNoOptions && !x.showLoading,
-                        html<Picker>`
+                        html<T>`
                             <slot name="menu-region"></slot>
                         `
                     )}
                     ${when(
                         x => x.showNoOptions && !x.showLoading,
-                        html<Picker>`
+                        html<T>`
                             <div class="no-options-display" part="no-options-display">
                                 <slot name="no-options-region">
                                     ${x => x.noSuggestionsText}
@@ -105,7 +112,7 @@ export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>> = (
                     )}
                     ${when(
                         x => x.showLoading,
-                        html<Picker>`
+                        html<T>`
                             <div class="loading-display" part="loading-display">
                                 <slot name="loading-region">
                                     <${progressRingTag}
@@ -123,4 +130,4 @@ export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>> = (
             )}
         </template>
     `;
-};
+}

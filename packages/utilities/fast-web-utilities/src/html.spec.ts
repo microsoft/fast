@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { convertStylePropertyPixelsToNumber, getClientRectWithMargin } from "./html";
+import { convertStylePropertyPixelsToNumber, getClientRectWithMargin } from "./html.js";
 
 describe("getClientRectWithMargin", () => {
     const mockWidth: number = 120;

@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "remove references to renderCollapsedNodes and renderCollapsedChildren from tree view and tree item",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

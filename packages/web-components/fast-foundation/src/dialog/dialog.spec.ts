@@ -1,16 +1,17 @@
 import { expect } from "chai";
-import { Dialog, dialogTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { FASTDialog, dialogTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { Updates } from "@microsoft/fast-element";
 import { keyEscape } from "@microsoft/fast-web-utilities";
 
-const FASTDialog = Dialog.compose({
-    baseName: "dialog",
-    template,
-})
+const dialogName = uniqueElementName();
+FASTDialog.define({
+    name: dialogName,
+    template: dialogTemplate()
+});
 
 async function setup() {
-    const { connect, disconnect, document, element } = await fixture(FASTDialog());
+    const { connect, disconnect, document, element } = await fixture<FASTDialog>(dialogName);
 
     return { connect, disconnect, document, element };
 }
@@ -35,13 +36,13 @@ describe("Dialog", () => {
         element.hidden = true;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.hasAttribute("hidden")).to.equal(true);
 
         element.hidden = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.hasAttribute("hidden")).to.equal(false);
 
@@ -61,9 +62,11 @@ describe("Dialog", () => {
     it("should add an attribute of `aria-modal` with a value equal to the modal attribute", async () => {
         const { element, connect, disconnect } = await setup();
 
+        await connect();
+
         element.modal = true;
 
-        await connect();
+        await Updates.next();
 
         expect(
             element.shadowRoot
@@ -73,18 +76,18 @@ describe("Dialog", () => {
 
         element.modal = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(
             element.shadowRoot
                 ?.querySelector("[role='dialog']")
-                ?.getAttribute("aria-modal")
-        ).to.equal("false");
+                ?.hasAttribute("aria-modal")
+        ).to.equal(false);
 
         await disconnect();
     });
 
-    it("should add a default `aria-modal` value of TRUE when the modal attribute is not provided", async () => {
+    it("should NOT add a default `aria-modal` value of TRUE when the modal attribute is not provided", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
@@ -92,8 +95,8 @@ describe("Dialog", () => {
         expect(
             element.shadowRoot
                 ?.querySelector("[role='dialog']")
-                ?.getAttribute("aria-modal")
-        ).to.equal("true");
+                ?.hasAttribute("aria-modal")
+        ).to.equal(false);
 
         await disconnect();
     });
@@ -102,6 +105,10 @@ describe("Dialog", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
+
+        element.modal = true;
+
+        await Updates.next();
 
         expect(
             element.shadowRoot?.querySelector(".overlay")?.getAttribute("role")
@@ -122,27 +129,27 @@ describe("Dialog", () => {
         await disconnect();
     });
 
-    it("should add an attribute of `trap-focus` when trapFocus is true", async () => {
+    it("should add an attribute of `no-focus-trap` when noFocusTrap is true", async () => {
         const { element, connect, disconnect } = await setup();
 
-        element.trapFocus = true;
+        element.noFocusTrap = true;
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
-        expect(element.hasAttribute("trap-focus")).to.equal(true);
+        expect(element.hasAttribute("no-focus-trap")).to.equal(true);
 
         await disconnect();
     });
 
-    it("should add a default attribute of `trap-focus` when trapFocus not defined", async () => {
+    it("should NOT add a default attribute of `no-focus-trap` when noFocusTrap not defined", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
-        expect(element.trapFocus).to.equal(true);
-        expect(element.hasAttribute("trap-focus")).to.equal(true);
+        expect(element.noFocusTrap).to.equal(false);
+        expect(element.hasAttribute("no-focus-trap")).to.equal(false);
 
         await disconnect();
     });
@@ -241,10 +248,14 @@ describe("Dialog", () => {
 
     describe("events", () => {
         // TODO: test trap focus
-        it("should fire a 'dismiss' event when its overlay is clicked", async () => {
+        xit("should fire a 'dismiss' event when its overlay is clicked", async () => {
             const { element, connect, disconnect } = await setup();
 
             await connect();
+
+            element.modal = true;
+
+            await Updates.next();
 
             const overlay = element.shadowRoot!.querySelector(".overlay")! as HTMLElement;
 
@@ -254,7 +265,7 @@ describe("Dialog", () => {
                 overlay.click();
 
                 // Resolve false on the next update in case click hasn't happened
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasDismissed).to.equal(true);
@@ -264,6 +275,7 @@ describe("Dialog", () => {
 
         it("should fire a 'cancel' event when its overlay is clicked", async () => {
             const { element, connect, disconnect } = await setup();
+            element.modal = true;
 
             await connect();
 
@@ -275,7 +287,7 @@ describe("Dialog", () => {
                 overlay.click();
 
                 // Resolve false on the next update in case click hasn't happened
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasDismissed).to.equal(true);
@@ -288,7 +300,7 @@ describe("Dialog", () => {
 
             const button = document.createElement('button');
             button.textContent = 'close';
-            button.addEventListener("click", () => (element as unknown as Dialog).hide());
+            button.addEventListener("click", () => (element as unknown as FASTDialog).hide());
             element.append(button)
 
             await connect();
@@ -301,7 +313,7 @@ describe("Dialog", () => {
                 button.click();
 
                 // Resolve false on the next update in case click hasn't happened
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasDismissed).to.equal(true);
@@ -324,7 +336,7 @@ describe("Dialog", () => {
                 document.dispatchEvent(event);
 
                 // Resolve false on the next update in case the event hasn't happened
-                DOM.queueUpdate(() => resolve(false));
+                Updates.enqueue(() => resolve(false));
             });
 
             expect(wasDismissed).to.equal(true);

@@ -5,27 +5,8 @@
 ```ts
 
 import { Constructable } from '@microsoft/fast-element';
-import { DesignSystem } from '@microsoft/fast-foundation';
-import { FoundationElementDefinition } from '@microsoft/fast-foundation';
-import { FoundationElementRegistry } from '@microsoft/fast-foundation';
-import ReactModule from 'react';
-import { Registry } from '@microsoft/fast-foundation';
-
-// @public
-export type FoundationElementRegistryElement<TRegistry> = TRegistry extends FoundationElementRegistry<FoundationElementDefinition, infer TElement> ? TElement extends typeof HTMLElement ? InstanceType<TElement> : any : any;
-
-// @public (undocumented)
-export function provideReactWrapper(React: any, designSystem?: DesignSystem): {
-    wrap: {
-        <TRegistry extends FoundationElementRegistry<FoundationElementDefinition, any>, TEvents>(registry: TRegistry, config?: ReactWrapperConfig<TEvents> | undefined): Constructable<ReactModule.Component<ReactModule.PropsWithChildren<ReactModule.PropsWithRef<Partial<Pick<FoundationElementRegistryElement<TRegistry>, Exclude<keyof FoundationElementRegistryElement<TRegistry>, "style" | "children">>> & ReactEvents<TEvents> & ReactModule.HTMLAttributes<HTMLElement>> & {
-            style?: ReactModule.CSSProperties | undefined;
-        }>, {}, any>>;
-        <TElement extends HTMLElement, TEvents_1>(type: Constructable<TElement>, config?: ReactWrapperConfig<TEvents_1> | undefined): Constructable<ReactModule.Component<ReactModule.PropsWithChildren<ReactModule.PropsWithRef<Partial<Pick<TElement, Exclude<keyof TElement, "style" | "children">>> & ReactEvents<TEvents_1> & ReactModule.HTMLAttributes<HTMLElement>> & {
-            style?: ReactModule.CSSProperties | undefined;
-        }>, {}, any>>;
-    };
-    registry: Registry;
-};
+import { FASTElementDefinition } from '@microsoft/fast-element';
+import type ReactModule from 'react';
 
 // @public
 export type ReactEventMap<T> = {
@@ -40,6 +21,12 @@ export type ReactEvents<T> = {
 // @public
 export type ReactWrapper<TElement extends HTMLElement, TEvents> = Constructable<ReactModule.Component<ReactWrapperProps<TElement, TEvents>>>;
 
+// @public (undocumented)
+export function reactWrapper(React: any, registry?: CustomElementRegistry): {
+    <TElement extends HTMLElement, TEvents>(def: FASTElementDefinition<Constructable<TElement>>, config?: ReactWrapperConfig<TEvents> | undefined): ReactWrapper<TElement, TEvents>;
+    <TElement_1 extends HTMLElement, TEvents_1>(type: Constructable<TElement_1>, config?: ReactWrapperConfig<TEvents_1> | undefined): ReactWrapper<TElement_1, TEvents_1>;
+};
+
 // @public
 export type ReactWrapperConfig<TEvents> = {
     name?: string;
@@ -51,7 +38,6 @@ export type ReactWrapperConfig<TEvents> = {
 export type ReactWrapperProps<TElement extends HTMLElement, TEvents> = ReactModule.PropsWithChildren<ReactModule.PropsWithRef<Partial<Omit<TElement, "children" | "style">> & ReactEvents<TEvents> & ReactModule.HTMLAttributes<HTMLElement>> & {
     style?: ReactModule.CSSProperties;
 }>;
-
 
 // (No @packageDocumentation comment for this package)
 

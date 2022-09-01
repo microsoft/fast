@@ -1,28 +1,17 @@
-import { FAST, KernelServiceId } from "../platform.js";
+import { Constructable, isString, KernelServiceId } from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
+import { createTypeRegistry, FAST, TypeRegistry } from "../platform.js";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
-const fastRegistry = FAST.getById(KernelServiceId.elementRegistry, () => {
-    const typeToDefinition = new Map<Function, FASTElementDefinition>();
 
-    return Object.freeze({
-        register(definition: FASTElementDefinition): boolean {
-            if (typeToDefinition.has(definition.type)) {
-                return false;
-            }
-
-            typeToDefinition.set(definition.type, definition);
-            return true;
-        },
-        getByType<TType extends Function>(key: TType): FASTElementDefinition | undefined {
-            return typeToDefinition.get(key);
-        },
-    });
-});
+const fastElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.getById(
+    KernelServiceId.elementRegistry,
+    () => createTypeRegistry<FASTElementDefinition>()
+);
 
 /**
  * Represents metadata configuration for a custom element.
@@ -64,8 +53,10 @@ export interface PartialFASTElementDefinition {
  * Defines metadata for a FASTElement.
  * @public
  */
-export class FASTElementDefinition<TType extends Function = Function> {
-    private observedAttributes: string[];
+export class FASTElementDefinition<
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+> {
+    private platformDefined = false;
 
     /**
      * The type this element definition describes.
@@ -76,7 +67,7 @@ export class FASTElementDefinition<TType extends Function = Function> {
      * Indicates if this element has been defined in at least one registry.
      */
     public get isDefined(): boolean {
-        return !!fastRegistry.getByType(this.type);
+        return this.platformDefined;
     }
 
     /**
@@ -119,17 +110,11 @@ export class FASTElementDefinition<TType extends Function = Function> {
      */
     public readonly elementOptions?: ElementDefinitionOptions;
 
-    /**
-     * Creates an instance of FASTElementDefinition.
-     * @param type - The type this definition is being created for.
-     * @param nameOrConfig - The name of the element to define or a config object
-     * that describes the element to define.
-     */
-    public constructor(
+    private constructor(
         type: TType,
         nameOrConfig: PartialFASTElementDefinition | string = (type as any).definition
     ) {
-        if (typeof nameOrConfig === "string") {
+        if (isString(nameOrConfig)) {
             nameOrConfig = { name: nameOrConfig };
         }
 
@@ -137,6 +122,7 @@ export class FASTElementDefinition<TType extends Function = Function> {
         this.name = nameOrConfig.name;
         this.template = nameOrConfig.template;
 
+        const proto = type.prototype;
         const attributes = AttributeDefinition.collect(type, nameOrConfig.attributes);
         const observedAttributes = new Array<string>(attributes.length);
         const propertyLookup = {};
@@ -147,10 +133,15 @@ export class FASTElementDefinition<TType extends Function = Function> {
             observedAttributes[i] = current.attribute;
             propertyLookup[current.name] = current;
             attributeLookup[current.attribute] = current;
+            Observable.defineProperty(proto, current);
         }
 
+        Reflect.defineProperty(type, "observedAttributes", {
+            value: observedAttributes,
+            enumerable: true,
+        });
+
         this.attributes = attributes;
-        this.observedAttributes = observedAttributes;
         this.propertyLookup = propertyLookup;
         this.attributeLookup = attributeLookup;
 
@@ -166,38 +157,22 @@ export class FASTElementDefinition<TType extends Function = Function> {
                 ? defaultElementOptions
                 : { ...defaultElementOptions, ...nameOrConfig.elementOptions };
 
-        this.styles =
-            nameOrConfig.styles === void 0
-                ? void 0
-                : Array.isArray(nameOrConfig.styles)
-                ? ElementStyles.create(nameOrConfig.styles)
-                : nameOrConfig.styles instanceof ElementStyles
-                ? nameOrConfig.styles
-                : ElementStyles.create([nameOrConfig.styles]);
+        this.styles = ElementStyles.normalize(nameOrConfig.styles);
+
+        fastElementRegistry.register(this);
     }
 
     /**
      * Defines a custom element based on this definition.
      * @param registry - The element registry to define the element in.
+     * @remarks
+     * This operation is idempotent per registry.
      */
     public define(registry: CustomElementRegistry = customElements): this {
         const type = this.type;
 
-        if (fastRegistry.register(this)) {
-            const attributes = this.attributes;
-            const proto = type.prototype;
-
-            for (let i = 0, ii = attributes.length; i < ii; ++i) {
-                Observable.defineProperty(proto, attributes[i]);
-            }
-
-            Reflect.defineProperty(type, "observedAttributes", {
-                value: this.observedAttributes,
-                enumerable: true,
-            });
-        }
-
         if (!registry.get(this.name)) {
+            this.platformDefined = true;
             registry.define(this.name, type as any, this.elementOptions);
         }
 
@@ -205,8 +180,35 @@ export class FASTElementDefinition<TType extends Function = Function> {
     }
 
     /**
+     * Creates an instance of FASTElementDefinition.
+     * @param type - The type this definition is being created for.
+     * @param nameOrDef - The name of the element to define or a config object
+     * that describes the element to define.
+     */
+    public static compose<
+        TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+    >(
+        type: TType,
+        nameOrDef?: string | PartialFASTElementDefinition
+    ): FASTElementDefinition<TType> {
+        const found = fastElementRegistry.getByType(type);
+
+        if (found) {
+            return new FASTElementDefinition<TType>(class extends type {}, nameOrDef);
+        }
+
+        return new FASTElementDefinition<TType>(type, nameOrDef);
+    }
+
+    /**
      * Gets the element definition associated with the specified type.
      * @param type - The custom element type to retrieve the definition for.
      */
-    static readonly forType = fastRegistry.getByType;
+    static readonly getByType = fastElementRegistry.getByType;
+
+    /**
+     * Gets the element definition associated with the instance.
+     * @param instance - The custom element instance to retrieve the definition for.
+     */
+    static readonly getForInstance = fastElementRegistry.getForInstance;
 }

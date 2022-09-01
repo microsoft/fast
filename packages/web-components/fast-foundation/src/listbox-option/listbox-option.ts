@@ -1,25 +1,25 @@
-import { attr, observable, Observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
-import { StartEnd } from "../patterns/start-end.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
+import {
+    ARIAGlobalStatesAndProperties,
+    StartEnd,
+    StartEndOptions,
+} from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Listbox option configuration options
  * @public
  */
-export type ListboxOptionOptions = FoundationElementDefinition & StartEndOptions;
+export type ListboxOptionOptions = StartEndOptions;
 
 /**
- * Determines if the element is a {@link (ListboxOption:class)}
+ * Determines if the element is a {@link (FASTListboxOption:class)}
  *
  * @param element - the element to test.
  * @public
  */
-export function isListboxOption(el: Element): el is ListboxOption {
+export function isListboxOption(el: Element): el is FASTListboxOption {
     return (
         isHTMLElement(el) &&
         ((el.getAttribute("role") as string) === "option" ||
@@ -31,9 +31,14 @@ export function isListboxOption(el: Element): el is ListboxOption {
  * An Option Custom HTML Element.
  * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#option | ARIA option }.
  *
+ * @slot start - Content which can be provided before the listbox option content
+ * @slot end - Content which can be provided after the listbox option content
+ * @slot - The default slot for listbox option content
+ * @csspart content - Wraps the listbox option content
+ *
  * @public
  */
-export class ListboxOption extends FoundationElement {
+export class FASTListboxOption extends FASTElement {
     /**
      * @internal
      */
@@ -68,7 +73,30 @@ export class ListboxOption extends FoundationElement {
             return;
         }
 
-        this.ariaChecked = undefined;
+        this.ariaChecked = null;
+    }
+
+    /**
+     * The default slotted content.
+     *
+     * @public
+     */
+    @observable
+    public content: Node[];
+
+    /**
+     * Updates the proxy's text content when the default slot changes.
+     * @param prev - the previous content value
+     * @param next - the current content value
+     *
+     * @internal
+     */
+    protected contentChanged(prev: undefined | Node[], next: Node[]): void {
+        if (this.proxy instanceof HTMLOptionElement) {
+            this.proxy.textContent = this.textContent;
+        }
+
+        this.$emit("contentchange", null, { bubbles: true });
     }
 
     /**
@@ -169,20 +197,21 @@ export class ListboxOption extends FoundationElement {
     }
 
     public get label() {
-        return this.value ?? this.textContent ?? "";
+        return this.value ?? this.text;
     }
 
     public get text(): string {
-        return this.textContent as string;
+        return this.textContent?.replace(/\s+/g, " ").trim() ?? "";
     }
 
     public set value(next: string) {
-        this._value = next;
+        const newValue = `${next ?? ""}`;
+        this._value = newValue;
 
         this.dirtyValue = true;
 
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.value = next;
+        if (this.proxy instanceof HTMLOptionElement) {
+            this.proxy.value = newValue;
         }
 
         Observable.notify(this, "value");
@@ -190,7 +219,7 @@ export class ListboxOption extends FoundationElement {
 
     public get value(): string {
         Observable.track(this, "value");
-        return this._value ?? this.textContent ?? "";
+        return this._value ?? this.text;
     }
 
     public get form(): HTMLFormElement | null {
@@ -244,7 +273,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-checked`
      */
     @observable
-    public ariaChecked: "true" | "false" | undefined;
+    public ariaChecked: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -253,7 +282,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-posinset`
      */
     @observable
-    ariaPosInSet: string;
+    public ariaPosInSet: string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -262,7 +291,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-selected`
      */
     @observable
-    ariaSelected: "true" | "false" | undefined;
+    public ariaSelected: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -271,7 +300,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-setsize`
      */
     @observable
-    ariaSetSize: string;
+    public ariaSetSize: string | null;
 }
 
 /**
@@ -291,5 +320,5 @@ applyMixins(DelegatesARIAListboxOption, ARIAGlobalStatesAndProperties);
  * confuses API documenter.
  * TODO: https://github.com/microsoft/fast/issues/3317
  */
-export interface ListboxOption extends StartEnd, DelegatesARIAListboxOption {}
-applyMixins(ListboxOption, StartEnd, DelegatesARIAListboxOption);
+export interface FASTListboxOption extends StartEnd, DelegatesARIAListboxOption {}
+applyMixins(FASTListboxOption, StartEnd, DelegatesARIAListboxOption);

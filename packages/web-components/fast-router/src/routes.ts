@@ -19,24 +19,24 @@ import { Route } from "./navigation.js";
 export const childRouteParameter = "fast-child-route";
 
 /**
- * @alpha
+ * @beta
  */
 export type SupportsSettings<TSettings = any> = {
     settings?: TSettings;
 };
 
 /**
- * @alpha
+ * @beta
  */
 export type PathedRouteDefinition<TSettings = any> = SupportsSettings<TSettings> & Route;
 
 /**
- * @alpha
+ * @beta
  */
 export type IgnorableRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings>;
 
 /**
- * @alpha
+ * @beta
  */
 export type LayoutAndTransitionRouteDefinition = {
     layout?: Layout | ViewTemplate;
@@ -44,7 +44,7 @@ export type LayoutAndTransitionRouteDefinition = {
 };
 
 /**
- * @alpha
+ * @beta
  */
 export type RedirectRouteDefinition<TSettings = any> = PathedRouteDefinition<
     TSettings
@@ -53,14 +53,14 @@ export type RedirectRouteDefinition<TSettings = any> = PathedRouteDefinition<
 };
 
 /**
- * @alpha
+ * @beta
  */
 export type HasTitle = {
     title?: string;
 };
 
 /**
- * @alpha
+ * @beta
  */
 export type NavigableRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> &
     LayoutAndTransitionRouteDefinition &
@@ -69,12 +69,12 @@ export type NavigableRouteDefinition<TSettings = any> = PathedRouteDefinition<TS
     };
 
 /**
- * @alpha
+ * @beta
  */
 export type FASTElementConstructor = new () => FASTElement;
 
 /**
- * @alpha
+ * @beta
  */
 export type HasElement = {
     element:
@@ -85,7 +85,7 @@ export type HasElement = {
 };
 
 /**
- * @alpha
+ * @beta
  */
 export type ElementFallbackRouteDefinition<
     TSettings = any
@@ -95,7 +95,7 @@ export type ElementFallbackRouteDefinition<
     HasTitle;
 
 /**
- * @alpha
+ * @beta
  */
 export type ElementRouteDefinition<TSettings = any> = NavigableRouteDefinition<
     TSettings
@@ -103,14 +103,14 @@ export type ElementRouteDefinition<TSettings = any> = NavigableRouteDefinition<
     HasElement;
 
 /**
- * @alpha
+ * @beta
  */
 export type HasTemplate = {
     template: ViewTemplate | (() => Promise<ViewTemplate>);
 };
 
 /**
- * @alpha
+ * @beta
  */
 export type TemplateFallbackRouteDefinition<
     TSettings = any
@@ -120,7 +120,7 @@ export type TemplateFallbackRouteDefinition<
     HasTitle;
 
 /**
- * @alpha
+ * @beta
  */
 export type TemplateRouteDefinition<TSettings = any> = NavigableRouteDefinition<
     TSettings
@@ -128,28 +128,28 @@ export type TemplateRouteDefinition<TSettings = any> = NavigableRouteDefinition<
     HasTemplate;
 
 /**
- * @alpha
+ * @beta
  */
 export type HasCommand = {
     command: NavigationCommand;
 };
 
 /**
- * @alpha
+ * @beta
  */
 export type CommandRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> &
     HasCommand &
     HasTitle;
 
 /**
- * @alpha
+ * @beta
  */
 export type CommandFallbackRouteDefinition<TSettings = any> = HasCommand &
     SupportsSettings<TSettings> &
     HasTitle;
 
 /**
- * @alpha
+ * @beta
  */
 export type FallbackRouteDefinition<TSettings = any> =
     | ElementFallbackRouteDefinition<TSettings>
@@ -158,21 +158,21 @@ export type FallbackRouteDefinition<TSettings = any> =
     | CommandFallbackRouteDefinition<TSettings>;
 
 /**
- * @alpha
+ * @beta
  */
 export type DefinitionCallback = () =>
     | Promise<FallbackRouteDefinition>
     | FallbackRouteDefinition;
 
 /**
- * @alpha
+ * @beta
  */
 export type RenderableRouteDefinition<TSettings = any> =
     | ElementRouteDefinition<TSettings>
     | TemplateRouteDefinition<TSettings>;
 
 /**
- * @alpha
+ * @beta
  */
 export type MappableRouteDefinition<TSettings = any> =
     | RenderableRouteDefinition<TSettings>
@@ -181,7 +181,7 @@ export type MappableRouteDefinition<TSettings = any> =
     | ParentRouteDefinition<TSettings>;
 
 /**
- * @alpha
+ * @beta
  */
 export type ParentRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> &
     LayoutAndTransitionRouteDefinition & {
@@ -189,7 +189,7 @@ export type ParentRouteDefinition<TSettings = any> = PathedRouteDefinition<TSett
     };
 
 /**
- * @alpha
+ * @beta
  */
 export type RouteMatch<TSettings = any> = {
     route: RecognizedRoute<TSettings>;
@@ -210,14 +210,14 @@ function getFallbackCommand(
 }
 
 /**
- * @alpha
+ * @beta
  */
 export type ConverterObject = {
     convert: RouteParameterConverter;
 };
 
 /**
- * @alpha
+ * @beta
  */
 export type ParameterConverter =
     | RouteParameterConverter
@@ -250,7 +250,7 @@ const defaultConverters = {
 };
 
 /**
- * @alpha
+ * @beta
  */
 export class RouteCollection<TSettings = any> {
     private _recognizer: RouteRecognizer<TSettings> | null = null;

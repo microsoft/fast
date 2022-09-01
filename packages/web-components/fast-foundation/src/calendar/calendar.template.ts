@@ -1,43 +1,49 @@
-import { html, repeat, when } from "@microsoft/fast-element";
+import { ElementViewTemplate, html, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end.js";
-import { DataGrid, DataGridCell, DataGridRow } from "../data-grid/index.js";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { ElementDefinitionContext } from "../design-system/registration-context.js";
-import type { Calendar, CalendarDateInfo, CalendarOptions } from "./calendar.js";
+import { endSlotTemplate, startSlotTemplate, tagFor } from "../patterns/index.js";
+import type {
+    CalendarDateInfo,
+    CalendarOptions,
+    FASTCalendar,
+    WeekdayText,
+} from "./calendar.js";
 
 /**
  * A basic Calendar title template that includes the month and year
  * @returns - A calendar title template
  * @public
  */
-export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
-    <div
-        class="title"
-        part="title"
-        aria-label="${(x: Calendar) =>
-            x.dateFormatter.getDate(`${x.month}-2-${x.year}`, {
-                month: "long",
-                year: "numeric",
-            })}"
-    >
-        <span part="month">
-            ${(x: Calendar) => x.dateFormatter.getMonth(x.month)}
-        </span>
-        <span part="year">${(x: Calendar) => x.dateFormatter.getYear(x.year)}</span>
-    </div>
-`;
+export function calendarTitleTemplate<T extends FASTCalendar>(): ViewTemplate<T> {
+    return html`
+        <div
+            class="title"
+            part="title"
+            aria-label="${(x: T) =>
+                x.dateFormatter.getDate(`${x.month}-2-${x.year}`, {
+                    month: "long",
+                    year: "numeric",
+                })}"
+        >
+            <span part="month">
+                ${(x: T) => x.dateFormatter.getMonth(x.month)}
+            </span>
+            <span part="year">
+                ${(x: T) => x.dateFormatter.getYear(x.year)}
+            </span>
+        </div>
+    `;
+}
 
 /**
  * Calendar weekday label template
  * @returns - The weekday labels template
  * @public
  */
-export const calendarWeekdayTemplate: (
-    context: ElementDefinitionContext
-) => ViewTemplate = context => {
-    const cellTag = context.tagFor(DataGridCell);
-    return html`
+export function calendarWeekdayTemplate(
+    options: CalendarOptions
+): ViewTemplate<WeekdayText> {
+    const cellTag = tagFor(options.dataGridCell);
+    return html<WeekdayText>`
         <${cellTag}
             class="week-day"
             part="week-day"
@@ -48,7 +54,7 @@ export const calendarWeekdayTemplate: (
             ${x => x.text}
         </${cellTag}>
     `;
-};
+}
 
 /**
  * A calendar day template
@@ -57,15 +63,12 @@ export const calendarWeekdayTemplate: (
  * @returns - A calendar cell template for a given date
  * @public
  */
-export const calendarCellTemplate: (
-    context: ElementDefinitionContext,
+export function calendarCellTemplate(
+    options: CalendarOptions,
     todayString: string
-) => ViewTemplate<CalendarDateInfo> = (
-    context: ElementDefinitionContext,
-    todayString: string
-) => {
-    const cellTag: string = context.tagFor(DataGridCell);
-    return html`
+): ViewTemplate<CalendarDateInfo> {
+    const cellTag: string = tagFor(options.dataGridCell);
+    return html<CalendarDateInfo>`
         <${cellTag}
             class="${(x, c) => c.parentContext.parent.getDayClassNames(x, todayString)}"
             part="day"
@@ -90,7 +93,7 @@ export const calendarCellTemplate: (
             <slot name="${x => x.month}-${x => x.day}-${x => x.year}"></slot>
         </${cellTag}>
     `;
-};
+}
 
 /**
  *
@@ -99,11 +102,11 @@ export const calendarCellTemplate: (
  * @returns - A template for a week of days
  * @public
  */
-export const calendarRowTemplate: (
-    context: ElementDefinitionContext,
+export function calendarRowTemplate(
+    options: CalendarOptions,
     todayString: string
-) => ViewTemplate = (context: ElementDefinitionContext, todayString: string) => {
-    const rowTag = context.tagFor(DataGridRow);
+): ViewTemplate {
+    const rowTag = tagFor(options.dataGridRow);
     return html`
         <${rowTag}
             class="week"
@@ -112,12 +115,12 @@ export const calendarRowTemplate: (
             role-type="default"
             grid-template-columns="1fr 1fr 1fr 1fr 1fr 1fr 1fr"
         >
-        ${repeat(x => x, calendarCellTemplate(context, todayString), {
+        ${repeat(x => x, calendarCellTemplate(options, todayString), {
             positioning: true,
         })}
         </${rowTag}>
     `;
-};
+}
 
 /**
  * Interactive template using DataGrid
@@ -127,14 +130,14 @@ export const calendarRowTemplate: (
  *
  * @internal
  */
-export const interactiveCalendarGridTemplate: (
-    context: ElementDefinitionContext,
+export function interactiveCalendarGridTemplate<T extends FASTCalendar>(
+    options: CalendarOptions,
     todayString: string
-) => ViewTemplate = (context: ElementDefinitionContext, todayString: string) => {
-    const gridTag: string = context.tagFor(DataGrid);
-    const rowTag: string = context.tagFor(DataGridRow);
+): ViewTemplate<T> {
+    const gridTag: string = tagFor(options.dataGrid);
+    const rowTag: string = tagFor(options.dataGridRow);
 
-    return html`
+    return html<T>`
     <${gridTag} class="days interact" part="days" generate-header="none">
         <${rowTag}
             class="week-days"
@@ -143,14 +146,14 @@ export const interactiveCalendarGridTemplate: (
             row-type="header"
             grid-template-columns="1fr 1fr 1fr 1fr 1fr 1fr 1fr"
         >
-            ${repeat(x => x.getWeekdayText(), calendarWeekdayTemplate(context), {
+            ${repeat(x => x.getWeekdayText(), calendarWeekdayTemplate(options), {
                 positioning: true,
             })}
         </${rowTag}>
-        ${repeat(x => x.getDays(), calendarRowTemplate(context, todayString))}
+        ${repeat(x => x.getDays(), calendarRowTemplate(options, todayString))}
     </${gridTag}>
-`;
-};
+    `;
+}
 
 /**
  * Non-interactive calendar template used for a readonly calendar
@@ -159,28 +162,29 @@ export const interactiveCalendarGridTemplate: (
  *
  * @internal
  */
-export const noninteractiveCalendarTemplate: (todayString: string) => ViewTemplate = (
+export function noninteractiveCalendarTemplate<T extends FASTCalendar>(
+    options: CalendarOptions,
     todayString: string
-) => {
-    return html`
+): ViewTemplate<T> {
+    return html<T>`
         <div class="days" part="days">
             <div class="week-days" part="week-days">
                 ${repeat(
                     x => x.getWeekdayText(),
-                    html`
+                    html<WeekdayText>`
                         <div class="week-day" part="week-day" abbr="${x => x.abbr}">
                             ${x => x.text}
                         </div>
                     `
                 )}
             </div>
-            ${repeat(
+            ${repeat<T>(
                 x => x.getDays(),
-                html`
+                html<CalendarDateInfo[]>`
                     <div class="week">
                         ${repeat(
                             x => x,
-                            html`
+                            html<CalendarDateInfo>`
                                 <div
                                     class="${(x, c) =>
                                         c.parentContext.parent.getDayClassNames(
@@ -219,37 +223,36 @@ export const noninteractiveCalendarTemplate: (todayString: string) => ViewTempla
             )}
         </div>
     `;
-};
+}
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(Calendar:class)} component.
+ * The template for the {@link @microsoft/fast-foundation#(FASTCalendar:class)} component.
  *
  * @param context - Element definition context for getting the cell tag for calendar-cell
  * @param definition - Foundation element definition
  * @returns - a template for a calendar month
  * @public
  */
-export const calendarTemplate: FoundationElementTemplate<
-    ViewTemplate<Calendar>,
-    CalendarOptions
-> = (context, definition) => {
+export function calendarTemplate<T extends FASTCalendar>(
+    options: CalendarOptions
+): ElementViewTemplate<T> {
     const today: Date = new Date();
     const todayString: string = `${
         today.getMonth() + 1
     }-${today.getDate()}-${today.getFullYear()}`;
-    return html`
+    return html<T>`
         <template>
-            ${startTemplate}
-            ${definition.title instanceof Function
-                ? definition.title(context, definition)
-                : definition.title ?? ""}
+            ${startSlotTemplate(options)} ${options.title ?? ""}
             <slot></slot>
             ${when(
                 x => x.readonly === false,
-                interactiveCalendarGridTemplate(context, todayString)
+                interactiveCalendarGridTemplate(options, todayString)
             )}
-            ${when(x => x.readonly === true, noninteractiveCalendarTemplate(todayString))}
-            ${endTemplate}
+            ${when(
+                x => x.readonly === true,
+                noninteractiveCalendarTemplate(options, todayString)
+            )}
+            ${endSlotTemplate(options)}
         </template>
     `;
-};
+}

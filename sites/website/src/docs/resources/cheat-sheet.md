@@ -3,17 +3,19 @@ id: cheat-sheet
 title: Cheat Sheet
 sidebar_label: Cheat Sheet
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/cheat-sheet.md
+description: A quick reference guide to the documentation.
+keywords:
+  - cheat sheet
 ---
-
 # Cheat Sheet
 
 ## Packages
 
-### [@microsoft/fast-element](/docs/fast-element/getting-started)
+### [@microsoft/fast-element](../fast-element/getting-started.md)
 
 **A lightweight library for building performant, memory-efficient, standards-compliant Web Components.**
 
-* Provides a thin layer of opinion on top of [Web Components](/docs/resources/why-web-components), lifting the level of abstraction just enough to make it easier and faster to [build components](#building-components).
+* Provides a thin layer of opinion on top of [Web Components](./why-web-components.md), lifting the level of abstraction just enough to make it easier and faster to [build components](#building-components).
 * Use this library when you want to create new custom web components. 
 
 To install the `fast-element` library, use either `npm` or `yarn`:
@@ -34,7 +36,7 @@ import { FASTElement } from "@microsoft/fast-element";
 
 ---
 
-### [@microsoft/fast-foundation](/docs/introduction/#how-can-fast-help-me)
+### [@microsoft/fast-foundation](../introduction.md/#how-can-fast-help-me)
 
 **This package is a library of Web Component classes, templates, and other utilities intended to be composed into registered Web Components by design systems.**
 
@@ -73,9 +75,9 @@ export const myButton = MyButton.compose({
 
 ---
 
-### [@microsoft/fast-components](/docs/components/getting-started)     
+### [@microsoft/fast-components](../components/getting-started.md)     
 
-**The FAST component library and visual system [FAST Frame](/docs/design-systems/fast-frame/), which implements fast-foundation.**
+**The FAST component library and visual system [FAST Frame](../design-systems/fast-frame.md), which implements fast-foundation.**
 
 * Assembles the building blocks of `@microsoft/fast-foundation` to create its component set. 
 * Use this library when you want to integrate [FAST Components](#using-components) into an existing site or app.
@@ -109,7 +111,7 @@ provideFASTDesignSystem()
 ---
 
 
-## [Using components](/docs/components/getting-started)
+## [Using components](../components/getting-started.md)
 
 ### Setup
 
@@ -153,24 +155,27 @@ With the components registered, add any component to the HTML.
 Launch our [Component Explorer](https://explore.fast.design/) for a comprehensive list of FAST Components.
 
 ---
-### [Integrations](/docs/integrations/introduction)
+### [Integrations](../integrations/introduction.md)
 
 FAST libraries can also be used in combination with a wide variety of existing technologies:
 
-- [Angular](/docs/integrations/angular)
-- [ASP.NET](/docs/integrations/aspnet)
-- [Aurelia](/docs/integrations/aurelia)
-- [Blazor](/docs/integrations/blazor)
-- [Ember](/docs/integrations/ember)
-- [React](/docs/integrations/react)
-- [Vue](/docs/integrations/vue)
-- [Webpack](/docs/integrations/webpack)
+- [Angular](../integrations/angular.md)
+- [ASP.NET](../integrations/aspnet.md)
+- [Aurelia](../integrations/aurelia.md)
+- [Blazor](../integrations/blazor.md)
+- [Ember](../integrations/ember.md)
+- [React](../integrations/react.md)
+- [Rollup](../integrations/rollup.md)
+- [Svelte](../integrations/svelte.md)
+- [Vite](..integrations/vite.md)
+- [Vue](../integrations/vue.md)
+- [Webpack](../integrations/webpack.md)
 
 Not seeing an integration for your preferred technology?  Open an issue on [GitHub](https://github.com/microsoft/fast/issues/new/choose).
 
 ---
 
-## [Building components](/docs/fast-element/getting-started)
+## [Building components](../fast-element/getting-started.md)
 
 There are two main approaches to building a component:
 - The first approach is for simple declarations of non-shared components.
@@ -200,7 +205,7 @@ With this in place, you can now use your `<name-tag>` element anywhere in HTML w
 
 ---
 
-### [Attributes](/docs/fast-element/defining-elements#customizing-attributes)
+### [Attributes](../fast-element/defining-elements.md#customizing-attributes)
 
 To add attributes to your HTML element, create properties decorated by the `@attr` decorator.
 
@@ -232,7 +237,7 @@ export class NameTag extends FASTElement {
 
 ---
 
-#### [Customizing attributes](/docs/fast-element/defining-elements#customizing-attributes)
+#### [Customizing attributes](../fast-element/defining-elements.md#customizing-attributes)
 
 There are three modes available through the `mode` property of the attribute configuration:
 
@@ -304,7 +309,7 @@ export class MyCounter extends FASTElement {
 
 ---
 
-### [Templates](/docs/fast-element/declaring-templates)
+### [Templates](../fast-element/declaring-templates.md)
 
 To create an HTML template for an element, import and use the `html` tagged template helper and pass the template to the `@customElement` decorator.
 
@@ -335,7 +340,7 @@ export class NameTag extends FASTElement {
 
 ---
 
-### [Observables](/docs/fast-element/observables-and-state#observable-features)
+### [Observables](../fast-element/observables-and-state.md#observable-features)
 
 To enable binding tracking and change notification, properties must be decorated with either `@attr` or `@observable`. 
 
@@ -358,7 +363,7 @@ export class Person {
 
 ---
 
-### [Bindings](/docs/fast-element/declaring-templates#understanding-bindings)
+### [Bindings](../fast-element/declaring-templates.md#understanding-bindings)
 
 (`x` refers to the custom-element class instance in the examples below.)
 
@@ -375,9 +380,9 @@ export class Person {
 
 ---
 
-### [Directives](/docs/fast-element/using-directives)
+### [Directives](../fast-element/using-directives.md)
 
-Use the [`when`](/docs/fast-element/using-directives#the-when-directive) directive to conditionally render blocks of HTML.
+Use the [`when`](../fast-element/using-directives.md#the-when-directive) directive to conditionally render blocks of HTML.
 
 **Example**
 
@@ -403,7 +408,7 @@ export class MyApp extends FASTElement {
 
 ---
 
-Use the [`repeat`](/docs/fast-element/using-directives#the-repeat-directive) directive to render a list of data.
+Use the [`repeat`](../fast-element/using-directives.md#the-repeat-directive) directive to render a list of data.
 
 **Example**
 
@@ -463,7 +468,7 @@ To opt into the positioning properties, pass options to the `repeat` directive, 
 
 ---
 
-### [Styles](/docs/fast-element/leveraging-css#basic-styles)
+### [Styles](../fast-element/leveraging-css.md#basic-styles)
 
 `FASTElement` provides a css tagged template helper that allows for the creation of `ElementStyles`.
 
@@ -488,7 +493,7 @@ export class MyElement extends FASTElement {}
 
 ---
 
-#### [Composing styles](/docs/fast-element/leveraging-css#composing-styles)
+#### [Composing styles](../fast-element/leveraging-css.md#composing-styles)
 
 `ElementStyles` can be composed with other styles.
 
@@ -507,7 +512,7 @@ const styles = css`
 
 ---
 
-#### [Partial CSS](/docs/fast-element/leveraging-css#partial-css)
+#### [Partial CSS](../fast-element/leveraging-css.md#partial-css)
 
 Use the `cssPartial` tagged template literal to create reusable blocks of partial CSS.
 
@@ -522,7 +527,7 @@ const styles = css`:host{ ${partial} }`;
 
 ---
 
-### [CSSDirective](/docs/fast-element/leveraging-css#cssdirective)
+### [CSSDirective](../fast-element/leveraging-css.md#cssdirective)
 
 To create a `CSSDirective`, import and extend `CSSDirective` from `@microsoft/fast-element`.
 
@@ -536,7 +541,7 @@ class RandomWidth extends CSSDirective {}
 
 ---
 
-#### [createCSS method](/docs/fast-element/leveraging-css#createcss)
+#### [createCSS method](../fast-element/leveraging-css.md#createcss)
 
 
 `CSSDirective` has a `createCSS()` method that returns a string to be interpolated into an `ElementStyles`.
@@ -552,7 +557,7 @@ class RandomWidth extends CSSDirective {
 ```
 
 ---
-#### [createBehavior method](/docs/fast-element/leveraging-css#createbehavior)
+#### [createBehavior method](../fast-element/leveraging-css.md#createbehavior)
 
 The `createBehavior()` method can be used to create a `Behavior` that is bound to the element using the `CSSDirective`.
 
@@ -582,7 +587,7 @@ class RandomWidth extends CSSDirective {
 
 ## Design system
 
-### [Creating a design system](/docs/design-systems/creating-a-component-library#defining-a-design-system)
+### [Creating a design system](../design-systems/creating-a-component-library.md#defining-a-design-system)
 
 1. Start with the base components defined in `@microsoft/fast-foundation` and compose them with your own styles.
 
@@ -619,9 +624,9 @@ export function provideSpecialDesignSystem(element?: HTMLElement): DesignSystem 
 
 ---
 
-### [Design tokens](/docs/design-systems/design-tokens)
+### [Design tokens](../design-systems/design-tokens.md)
 
-**Example: [Creating a token](/docs/design-systems/design-tokens#create-a-token)**
+**Example: [Creating a token](../design-systems/design-tokens.md#create-a-token)**
 
 ```ts
 import { DesignToken } from "@microsoft/fast-foundation";
@@ -630,7 +635,7 @@ import { DesignToken } from "@microsoft/fast-foundation";
 export const specialColor = DesignToken.create<string>("special-color");
 ```
 
-**Example: [Using design tokens in CSS](/docs/design-systems/design-tokens#using-design-tokens-in-css)**
+**Example: [Using design tokens in CSS](../design-systems/design-tokens.md#using-design-tokens-in-css)**
 
 ```ts
 // use the design token to build styles
@@ -641,21 +646,21 @@ const styles = css`
 `;
 ```
 
-**Example: [Setting values](/docs/design-systems/design-tokens#setting-values)**
+**Example: [Setting values](../design-systems/design-tokens.md#setting-values)**
 ```ts
 // change the value for a given element
 specialColor.setValueFor(ancestor, "#FFF");
 specialColor.setValueFor(descendent, "#000");
 ```
 
-**Example: [Getting values](/docs/design-systems/design-tokens#getting-values)**
+**Example: [Getting values](../design-systems/design-tokens.md#getting-values)**
 ```ts
 // get the value
 specialColor.getValueFor(ancestor); // "#FFF"
 specialColor.getValueFor(descendent); // "#000"
 ```
 
-**Example: [Deleting values](/docs/design-systems/design-tokens#deleting-values)**
+**Example: [Deleting values](../design-systems/design-tokens.md#deleting-values)**
 ```ts
 // unset the value (inherits from ancestor)
 specialColor.deleteValueFor(descendent);
@@ -666,7 +671,7 @@ specialColor.getValueFor(descendent); // "#FFF"
 
 #### Configuring a FAST design token
 
-FAST exposes non-color related [Design Tokens](/docs/design-systems/fast-frame#fast-frame-design-tokens) that can be used to configure components stylistically.  For Design Tokens related to color, see the [adaptive color system](/docs/design-systems/fast-frame/#adaptive-color-system).
+FAST exposes non-color related [Design Tokens](../design-systems/fast-frame.md#fast-frame-design-tokens) that can be used to configure components stylistically.  For Design Tokens related to color, see the [adaptive color system](../design-systems/fast-frame.md/#adaptive-color-system).
 
 **Example: Changing the value for the `typeRampBaseFontSize` design token**
 
@@ -681,7 +686,7 @@ typeRampBaseFontSize.setValueFor(myElement, "20px");
 
 ---
 
-## [Contributing to FAST](/docs/community/join)
+## [Contributing to FAST](../community/join.md)
 
 **Connect with us**:
 
@@ -693,24 +698,24 @@ typeRampBaseFontSize.setValueFor(myElement, "20px");
 - Here are [good first issues](https://github.com/microsoft/fast/labels/community:good-first-issue).
 
 ---
-### [Contributor guide](/docs/community/contributor-guide/)
-- [Machine setup](/docs/community/contributor-guide/#machine-setup)
-- [Cloning the repository](/docs/community/contributor-guide/#cloning-the-repository)
-- [Installing & building](/docs/community/contributor-guide/#installing-and-building)
-- [Testing](/docs/community/contributor-guide/#testing)
-- [Submitting a pull request](/docs/community/contributor-guide/#submitting-a-pull-request)
-- [Merging a pull request](/docs/community/contributor-guide/#merging-a-pull-request)
+### [Contributor guide](../community/contributor-guide.md/)
+- [Machine setup](../community/contributor-guide.md#machine-setup)
+- [Cloning the repository](../community/contributor-guide.md#cloning-the-repository)
+- [Installing & building](../community/contributor-guide.md#installing-and-building)
+- [Testing](../community/contributor-guide.md/#testing)
+- [Submitting a pull request](../community/contributor-guide.md/#submitting-a-pull-request)
+- [Merging a pull request](../community/contributor-guide.md#merging-a-pull-request)
 
 ---
 
 
-### [Branch Guide](/docs/community/branch-guide)
+### [Branch Guide](../community/branch-guide.md)
 
 When contributing to the FAST repository, please follow the standards defined in this guide.
 
 ---
 
-### [Contributing to `fast-components`](/docs/community/contributor-guide/#developing-in-fast-components)
+### [Contributing to `fast-components`](../community/contributor-guide.md/#developing-in-fast-components)
 
 ```shell
 cd packages/web-components/fast-components
@@ -721,7 +726,7 @@ yarn start
 
 ---
 
-### [Contributing to documentation](/docs/community/writing-documentation)
+### [Contributing to documentation](../community/writing-documentation.md)
 
 ```shell
 cd sites/website

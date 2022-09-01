@@ -1,15 +1,14 @@
-import { html, ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { PickerListItem } from "./picker-list-item.js";
+import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { FASTPickerListItem } from "./picker-list-item.js";
 
 /**
  *
  * @public
  */
-export const pickerListItemTemplate: FoundationElementTemplate<ViewTemplate<
-    PickerListItem
->> = (context, definition) => {
-    return html<PickerListItem>`
+export function pickerListItemTemplate<
+    T extends FASTPickerListItem
+>(): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="listitem"
             tabindex="0"
@@ -19,4 +18,4 @@ export const pickerListItemTemplate: FoundationElementTemplate<ViewTemplate<
             <slot></slot>
         </template>
     `;
-};
+}

@@ -1,8 +1,246 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 21 Apr 2022 07:13:54 GMT and should not be manually modified.
+This log was last generated on Fri, 26 Aug 2022 18:06:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.8
+
+Fri, 26 Aug 2022 18:06:43 GMT
+
+### Changes
+
+- normalize storybook stories (863023+radium-v@users.noreply.github.com)
+- fix(tabs): home and end navigation (mathieulavoie94@gmail.com)
+- Fix constraint validation in focus-delegated components (nicholasrice@users.noreply.github.com)
+
+## 3.0.0-alpha.7
+
+Thu, 18 Aug 2022 20:46:10 GMT
+
+### Changes
+
+- change select() method to public on number field, text field, and text area (7282195+m-akinc@users.noreply.github.com)
+- add subpath export for package.json to packages (32497422+KingOfTac@users.noreply.github.com)
+- anchored-region checks local shadow dom (stephcomeau@msn.com)
+- use nullableNumberConverter for tooltip delay attribute (chhol@microsoft.com)
+- adding event-based resolution strategy export (nicholasrice@users.noreply.github.com)
+- refactor to allow arbitrary PropertyTarget types for DesignToken roots (nicholasrice@users.noreply.github.com)
+- hidden horizontal-scroll fix (robarb@microsoft.com)
+- Refactor DesignToken to provide a resolve function to derived token values, implements WebComponent implementation on top of isomorphic DesignToken infrastructure (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.5
+
+## 3.0.0-alpha.6
+
+Wed, 27 Jul 2022 17:36:33 GMT
+
+### Changes
+
+- Using getBoundingClientRect for horizontal-scroll (robarb@microsoft.com)
+- Removed the `fill`, `color`, and `shape` attributes and styling from Avatar (47367562+bheston@users.noreply.github.com)
+
+## 3.0.0-alpha.5
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- add export for custom elements manifest (32497422+KingOfTac@users.noreply.github.com)
+- add start and end slots to tab (chhol@microsoft.com)
+- feat: update foundation to new binding APIs (roeisenb@microsoft.com)
+- feat: move testing and dependency injection to fast-element (roeisenb@microsoft.com)
+- feat: remove design system, foundation element & related infrastructure (roeisenb@microsoft.com)
+- update breadcrumb item to always use an anchor and ensure aria-current is applied correctly in breadcrumb (chhol@microsoft.com)
+- add activeid to accordion change event (chhol@microsoft.com)
+- Removed the `fill` and `color` attributes and styling from Badge (47367562+bheston@users.noreply.github.com)
+- feat: enable fallback container creation for dependency injection location APIs (roeisenb@microsoft.com)
+- accordion verifies change events (stephcomeau@msn.com)
+- add storybook to fast-foundation (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.4
+
+## 3.0.0-alpha.4
+
+Wed, 22 Jun 2022 20:17:50 GMT
+
+### Changes
+
+- handle change for source.max set to sliderMaxPosition (email not defined)
+- fast-foundation checkbox - turn off indeterminate on user `checked` change (yinon@hotmail.com)
+- prevent keyboard events with space when checkbox is readonly (chhol@microsoft.com)
+- feat: horizontal-scroll scroll item into view (robarb@microsoft.com)
+
+## 3.0.0-alpha.3
+
+Wed, 15 Jun 2022 17:41:10 GMT
+
+### Changes
+
+- chore: fix package.json type fields (roeisenb@microsoft.com)
+- only rollup foundation after compiling with tsc (863023+radium-v@users.noreply.github.com)
+- Compare radio value property instead of attribute when value changes (sknoslo@gmail.com)
+- feat: simplify execution context to align closer with v1 (roeisenb@microsoft.com)
+- feat: implement W3C WC community context protocol and integrate with DI (roeisenb@microsoft.com)
+
+## 3.0.0-alpha.2
+
+Wed, 01 Jun 2022 22:21:24 GMT
+
+### Changes
+
+- Force version update (nicholasrice@users.noreply.github.com)
+
+## 3.0.0-alpha.1
+
+Wed, 01 Jun 2022 17:53:14 GMT
+
+### Changes
+
+- fix: update foundation and components template types (roeisenb@microsoft.com)
+- chore: update imports to match latest fast-element exports (roeisenb@microsoft.com)
+- fix incorrect and unsemantic slot names for search (chhol@microsoft.com)
+- fix: update to latest fast-element and change exports (roeisenb@microsoft.com)
+- update the default value of dialog's modal attribute to false (chhol@microsoft.com)
+- remove unnecessary DOM nodes from start/end slot templates (chhol@microsoft.com)
+- Updated to use the new FAST element 2.0 APIs for creating behaviors and creating element styles (7559015+janechu@users.noreply.github.com)
+- feat: officially expose testing helpers (roeisenb@microsoft.com)
+- chore: configure fast-foundation for internals stripping (roeisenb@microsoft.com)
+- change activeindicator attribute in tabs to hide-active-indicator to better support boolean attribute behavior (chhol@microsoft.com)
+- remove class and part names from slots in fast foundation templates (chhol@microsoft.com)
+- Deprecates style utilities and hard-codes focus-visible value (nicholasrice@users.noreply.github.com)
+- update attribute and observable change handlers with internal logic to be protected instead of private (chhol@microsoft.com)
+- fix: update foundation to new CSSDirective API (roeisenb@microsoft.com)
+- fix: update foundation to new APIs (roeisenb@microsoft.com)
+- fix: update fast-foundation to not use deprecated APIs (roeisenb@microsoft.com)
+- remove deprecated item slot name on accordion as it is the default slot (chhol@microsoft.com)
+- Set prerelease version (nicholasrice@users.noreply.github.com)
+- fix: update templates to use classList and fix classList bug (roeisenb@microsoft.com)
+- chore: fast-foundation package and build modernization (roeisenb@microsoft.com)
+- change trapFocus on dialog to noFocusTrap to better support boolean attributes (chhol@microsoft.com)
+- rename title attribute on disclosure to summary (chhol@microsoft.com)
+
+## 2.46.9
+
+Sun, 29 May 2022 07:08:52 GMT
+
+### Patches
+
+- fix: fast-foundation - 'get' and 'set' accessor must have the same type (#5964) (aagharat@dstworldwideservices.com)
+
+## 2.46.8
+
+Thu, 26 May 2022 07:11:44 GMT
+
+### Patches
+
+- Revert "fix: add missing required attribute binding to switch template (#6014)" (burtonsmith@microsoft.com)
+
+## 2.46.7
+
+Wed, 25 May 2022 07:09:21 GMT
+
+### Patches
+
+- add missing binding for required attribute in the switch template (chhol@microsoft.com)
+
+## 2.46.6
+
+Tue, 24 May 2022 07:10:02 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.10.2 (roeisenb@microsoft.com)
+
+## 2.46.5
+
+Sun, 22 May 2022 07:09:02 GMT
+
+### Patches
+
+- disable keyboard controls for readonly sliders (burtonsmith@microsoft.com)
+
+## 2.46.4
+
+Thu, 19 May 2022 07:09:40 GMT
+
+### Patches
+
+- Handle disabled and hidden items in toolbar (20542556+mollykreis@users.noreply.github.com)
+
+## 2.46.3
+
+Tue, 10 May 2022 07:11:04 GMT
+
+### Patches
+
+- select ignores l&r arrow keys (scomea@microsoft.com)
+
+## 2.46.2
+
+Thu, 05 May 2022 07:11:41 GMT
+
+### Patches
+
+- fix positioning of select dropdown (abris96@gmail.com)
+- reset selection range when selecting option with cursor (abris96@gmail.com)
+
+## 2.46.1
+
+Wed, 04 May 2022 07:14:00 GMT
+
+### Patches
+
+- convert enums to const objects and add supported typings (chhol@microsoft.com)
+
+## 2.46.0
+
+Tue, 03 May 2022 07:15:44 GMT
+
+### Minor changes
+
+- add slots and events documentation (scomea@microsoft.com)
+
+### Patches
+
+- reflect option value changes in select (john.kreitlow@microsoft.com)
+- fix: selectedIndex property ignores disabled options in listbox and select (john.kreitlow@microsoft.com)
+- viewport lock + fill behavior (scomea@microsoft.com)
+- Upgraded api-extractor (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.10.1 (44823142+williamw2@users.noreply.github.com)
+
+## 2.45.0
+
+Sun, 01 May 2022 07:12:05 GMT
+
+### Minor changes
+
+- add select method to number field, text field, and text area components (chhol@microsoft.com)
+
+### Patches
+
+- ensure that tabs and tabpanels without ids stay in sync (chhol@microsoft.com)
+- trim extra spaces from the text property for listbox-option (john.kreitlow@microsoft.com)
+- fix keyboarding behavior for right and left arrow keys in Tree View (chhol@microsoft.com)
+
+## 2.44.0
+
+Thu, 28 Apr 2022 07:12:47 GMT
+
+### Minor changes
+
+- update displayed selected value in select component when an option changes (john.kreitlow@microsoft.com)
+
+## 2.43.0
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Minor changes
+
+- update to typescript 4.6.2 and update ARIAMixin typings (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.4.0 (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v1.10.0 (chhol@microsoft.com)
 
 ## 2.42.2
 

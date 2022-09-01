@@ -2,6 +2,629 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 18 Aug 2022 20:46:10 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.5",
+      "version": "2.0.0-beta.5",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "218cfc014f5c76464493725f83bd883e8b07defa",
+            "comment": "Fix ExpressionObserer bug where watcher was not reset if the binding threw"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "fdd4514664691021a5673934c95acf31a8e73416",
+            "comment": "make insertbefore noop in view"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "eb8d5a59f645b85567adadac41a3bfa66001f941",
+            "comment": "make sure default options for recycle gets set in different scenarios"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "ac3954c97acd3bd549a27829593855c431a24027",
+            "comment": "refactor: remove dependency of DI on FASTElement"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "29308db7920baaaac5b31b206d551669e165bc06",
+            "comment": "add subpath export for package.json to packages"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "775d51602cba544347ec1e57fdb4fea248d1b1b5",
+            "comment": "change default array strategy to merge strategy, update repeat directive"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "aeac1198f427c33f789a2d869f58549ea5bfea57",
+            "comment": "assert FASTElement's type so that instanceof behavior is consistent with other class implementations"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 18 Jul 2022 21:10:01 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.4",
+      "version": "2.0.0-beta.4",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "f9fb9c88902bd81233fb927a7357d4bca7634f29",
+            "comment": "feat: extract all error messages from context and DI"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "27dc848327b25328e428f67505684d2171b58711",
+            "comment": "feat: introduce new binding API"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "7f4d6b5587f6eff52e5b7f414e27543bb4d7772d",
+            "comment": "Enabled DOM Container fallback functions when a container cannot be located."
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "0f57d55822bbf97ab69f90efc0a0d100b27e10eb",
+            "comment": "feat: add render directive, renderWith decorator, and RenderInstruction"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "94e6b0a0e7e1fd1167bd6453c3f7b27efdc91804",
+            "comment": "only store removed views if it can't be reused right away"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "11d5b4075118456b2e7c2a4f32a415eeea94ed7f",
+            "comment": "fix: enable createElementTemplate to have undefined attributes"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "31296ea2be3981d25f5feb773b2895dbedfaf2c2",
+            "comment": "use index to track reusable views"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "4567188a47598b3d2589b05f039bea695f2b8875",
+            "comment": "feat: enable render, repeat, and when template helpers to handle static data in addition to the already supported dynamic bindings"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "f164aa75e62ed71c9386902051c021f1fdfba364",
+            "comment": "fix: FASTElementDefinition#isDefined should be true only after define"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "aacfde6d1f52a20af5511c5e792f730bd091d452",
+            "comment": "feat: move testing and dependency injection to fast-element"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "04c51a17dde6d03dc2e2a4de3666cbbec950d900",
+            "comment": "fix: warn when host bindings are accidentally applied on non CE views"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "b32eb1004960da95b74dba7f111ee859b6655896",
+            "comment": "feat: perf and safety improvements to fast element definition"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 22 Jun 2022 20:17:50 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.3",
+      "version": "2.0.0-beta.3",
+      "comments": {
+        "prerelease": [
+          {
+            "comment": "fix: correct aspect type for content that looks like an attribute",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f28cdb9fdba9cb27904acfad7444de82d447f39e",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Jun 2022 17:41:10 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.2",
+      "version": "2.0.0-beta.2",
+      "comments": {
+        "prerelease": [
+          {
+            "comment": "doc: add note to FASTElement.metadata API",
+            "author": "roeisenb@microsoft.com",
+            "commit": "359467f9ae67c46a33dfc28ce86dfd908072695d",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "when recycle is set to false while itemBinding stays the same, views should be recreated",
+            "author": "wendy.hsu@microsoft.com",
+            "commit": "9c92b9bb5bc9bf221b439c0a776b3621fdd9d9aa",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: simplify execution context to align closer with v1",
+            "author": "roeisenb@microsoft.com",
+            "commit": "488d051999c43b93a0beef4db30a2bddd6bbdc64",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: ergo improvements to context, array length, and metadata",
+            "author": "roeisenb@microsoft.com",
+            "commit": "12f5671e215ebd2b95c9cc83f856e233e01e9c4a",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: move optional bindings out of rollup and list as exports",
+            "author": "roeisenb@microsoft.com",
+            "commit": "e86a638b9e84cbf36d950025889742944e68e512",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "fix: make SyntheticViewTemplate type a string so it is generally usable",
+            "author": "roeisenb@microsoft.com",
+            "commit": "de7f234ef871204fcac2b5df59433d919809341d",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: implement W3C WC community context protocol and integrate with DI",
+            "author": "roeisenb@microsoft.com",
+            "commit": "c45297c0ca48b7e5f4343ba48e5183f2bccdb946",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 01 Jun 2022 17:53:14 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.1",
+      "version": "2.0.0-beta.1",
+      "comments": {
+        "prerelease": [
+          {
+            "comment": "`DOM` - Tree Walker methods are no longer used and are thus removed. The API for removing child nodes has been removed as well since it was only used in one place and could be inlined. The helper `createCustomAttributePlaceholder()` no longer requires an attribute name. It will be uniquely generated internally.",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "`class` - Bindings to `class` are now more nuanced. Binding directly to `class` will simply set the `className` property. If you need to bind to `class` knowing that manual JS will also manipulate the `classList` in addition to the binding, then you should now bind to `:classList` instead. This allows for performance optimizations in the simple, most common case.",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "`Behavior` and `ViewBehavior` - `Behavior` now requires an `ExecutionContext` for `unbind`. Behaviors can be used for elements or views. `ViewBehavior` has been introduced for use exclusively with views, and provides some optimization opportunities.",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "`RefBehavior` has been replaced with `RefDirective`. The directive also implements `ViewBehavior` allowing a single directive instance to be shared across all template instances that use the ref.",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "Removed `SlottedBehavior` and `ChildrenBehavior` have been replaced with `SlottedDirective` and `ChildrenDirective`. These directives allow a single directive instance to be shared across all template instances that use the ref.",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "Removed `AttachedBehaviorHTMLDirective` and `AttachedBehaviorType` since they are no longer used in the new directive/behavior architecture for ref, slotted, and children.",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "Renamed `Notifier#source` to `Notifier#subject` to align with other observable terminology and prevent name clashes with `BindingObserver` properties.",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: create unified API for parsing markers",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "allow null values in attributeChangedCallback",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: add splice strategies for array observation",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: handle existing shadow roots when upgrading",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "fix: enable safer type inference on the repeat helper",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "Set prerelease version",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "5b313a3262b977acbee3c2efac87d0d14a82f792",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "refactor: separate update queue from DOM and fix architectural layers",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: aspected html directive exposes metadata",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "`HTMLDirective` - The `targetIndex: number` property has been replaced by a `targetId: string` property. The `createBehavior` method no longer takes a target `Node` but instead takes a `BehaviorTargets` instance. The actual target can be looked up on the `BehaviorTargets` instance by indexing with the `targetId` property.",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "`compileTemplate()` - Internals have been significantly changed. The implementation no longer uses a TreeWalker. The return type has change to an `HTMLTemplateCompilationResult` with different properties.",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "refactor: move template/style resolution to lazy getter",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "refactor: enable pluggable template compiler for SSR scenarios",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: enable pluggable style handling strategies",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "fix(fast-element): do not notify splices for changes pre-subscription",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: new directive registration/identification model",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "fix: prevent duplicative array observation patch",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "Adds Aspect as public export",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: expose official Markup and Parser APIs",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "refactor: refine binding mode types",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: add two-way binding",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "fix: defend against for/in use on arrays",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "fix: merge bug related to moved APIs",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: enable multiple instances of fast-element on a page at once",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "Upgrade TypeScript",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "enumerate fast-element package as a ES module package",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: enable array length observation",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: add utilities and hooks, and change exports",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "refactor: new design for execution context",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "chore: fast-element package and build modernization",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: new CSSDirective design",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "chore: configure fast-element for internal stripping",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: enable synchronous dom updates for SSR",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "refactor: extract polyfill and polyfill-like code to an optional module",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "feat: add warn/error message infrastructure",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "`View` and `HTMLView` - Type parameters added to enable strongly typed views based on their data source. The constructor of `HTMLView` has a new signature based on changes to the compiler's output. Internals have been cleaned up and no longer rely on the Range type.",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "`ElementViewTemplate`, `SyntheticViewTemplate`, and `ViewTemplate` - Added type parameters throughout. Logic to instantiate and apply behaviors moved out of the template and into the view where it can be lazily executed. Removed the ability of the `render` method to take a string id of the node to render to. You must provide a node.",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          }
+        ],
+        "none": [
+          {
+            "comment": "update api extractor and typescript to use the latest versions",
+            "author": "chhol@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "docs: add alpha tags to unfinished binding APIs",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "automated update of api-report.md",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "Fixed linting errors and warnings",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "remove unnecessary dependency on @types/ie11 package",
+            "author": "chhol@microsoft.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "Updated api-extractor version and exported markdown",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "4699e77715068f8610aae908ede6356a249574b6",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 29 May 2022 07:08:52 GMT",
+      "tag": "@microsoft/fast-element_v1.10.2",
+      "version": "1.10.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "add md extensions to referenced doc links for fast-element readme",
+            "author": "steph@huynhicode.dev",
+            "commit": "283b4838d46ed83c70ff4ad91f7f72a4936d59bf",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 24 May 2022 07:10:02 GMT",
+      "tag": "@microsoft/fast-element_v1.10.2",
+      "version": "1.10.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(fast-element): do not notify splices for changes pre-subscription",
+            "author": "roeisenb@microsoft.com",
+            "commit": "476be7672653b2e63b9ab771949718aa8f43df0d",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 08 May 2022 07:08:18 GMT",
+      "tag": "@microsoft/fast-element_v1.10.1",
+      "version": "1.10.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "adds missing types for chai-spies",
+            "author": "chhol@microsoft.com",
+            "commit": "890ff058b8771c84a9e669b4e9202c43f4d3e7fc",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 06 May 2022 20:58:02 GMT",
+      "tag": "@microsoft/fast-element_v1.10.1",
+      "version": "1.10.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "update api extractor to 7.23.1 to ensure we can support TS 4.7 internal API changes",
+            "author": "chhol@microsoft.com",
+            "commit": "fbc6a7fb670453322c93f8f12a223febad86f735",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 04 May 2022 07:14:00 GMT",
+      "tag": "@microsoft/fast-element_v1.10.1",
+      "version": "1.10.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "update markdown files",
+            "author": "steph@huynhicode.dev",
+            "commit": "c49a98f7f1bd8e167b0b7a96a181990f9a675f34",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 03 May 2022 07:15:44 GMT",
+      "tag": "@microsoft/fast-element_v1.10.1",
+      "version": "1.10.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Upgraded api-extractor",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "2341496a6fafe3051dc50333c21ca652026f725b",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 27 Apr 2022 07:21:09 GMT",
+      "tag": "@microsoft/fast-element_v1.10.0",
+      "version": "1.10.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "update to typescript 4.6.2 and update ARIAMixin typings",
+            "author": "chhol@microsoft.com",
+            "commit": "35bdab45550b5d8b8762041110eccb06de78add5",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 24 Apr 2022 07:13:26 GMT",
+      "tag": "@microsoft/fast-element_v1.9.0",
+      "version": "1.9.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Update to fix broken links and grammar.",
+            "author": "16669785+awentzel@users.noreply.github.com",
+            "commit": "ed08697132b639f3104562b16a0dcf5c5653a878",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Apr 2022 07:13:17 GMT",
       "tag": "@microsoft/fast-element_v1.9.0",
       "version": "1.9.0",

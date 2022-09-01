@@ -3,6 +3,7 @@ id: observables-and-state
 title: Observables and State
 sidebar_label: Observables and State
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/guide/observables-and-state.md
+description: To enable binding tracking and change notification, properties must be decorated with either @attr or @observable.
 ---
 
 ## Reactivity
@@ -122,7 +123,7 @@ export class Person {
 
 ### External observation
 
-Decorated properties can be subscribed to, to receive notification of changes in the property value. The templating engine uses this, but you can also directly subscribe as well. Here's how you would subscribe to changes in the `name` property of a `Person` class:
+Decorated properties can be subscribed to, to receive notification of changes in the property value. The templating engine uses this, but you can also directly subscribe. Here's how you would subscribe to changes in the `name` property of a `Person` class:
 
 **Example: Subscribing to an Observable**
 

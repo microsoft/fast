@@ -1,7 +1,8 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
+import { SyntheticViewTemplate, Updates } from "@microsoft/fast-element";
+import { attr, Observable, observable, volatile } from "@microsoft/fast-element";
 import {
-    ArrowKeys,
+    keyArrowDown,
+    keyArrowUp,
     keyEnd,
     keyEnter,
     keyEscape,
@@ -10,11 +11,9 @@ import {
     keyTab,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
-import type { ListboxOption } from "../listbox-option/listbox-option.js";
-import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
-import { StartEnd } from "../patterns/start-end.js";
+import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
+import { DelegatesARIAListbox, FASTListbox } from "../listbox/listbox.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedSelect } from "./select.form-associated.js";
 import { SelectPosition } from "./select.options.js";
@@ -23,18 +22,30 @@ import { SelectPosition } from "./select.options.js";
  * Select configuration options
  * @public
  */
-export type SelectOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        indicator?: string | SyntheticViewTemplate;
-    };
+export type SelectOptions = StartEndOptions & {
+    indicator?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Select Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#select | ARIA select }.
  *
+ * @slot start - Content which can be provided before the button content
+ * @slot end - Content which can be provided after the button content
+ * @slot button-container - The element representing the select button
+ * @slot selected-value - The selected value
+ * @slot indicator - The visual indicator for the expand/collapse state of the button
+ * @slot - The default slot for slotted options
+ * @csspart control - The element representing the select invoking element
+ * @csspart selected-value - The element wrapping the selected value
+ * @csspart indicator - The element wrapping the visual indicator
+ * @csspart listbox - The listbox element
+ * @fires input - Fires a custom 'input' event when the value updates
+ * @fires change - Fires a custom 'change' event when the value updates
+ *
  * @public
  */
-export class Select extends FormAssociatedSelect {
+export class FASTSelect extends FormAssociatedSelect {
     /**
      * The open attribute.
      *
@@ -67,7 +78,7 @@ export class Select extends FormAssociatedSelect {
             this.indexWhenOpened = this.selectedIndex;
 
             // focus is directed to the element when `open` is changed programmatically
-            DOM.queueUpdate(() => this.focus());
+            Updates.enqueue(() => this.focus());
 
             return;
         }
@@ -121,34 +132,24 @@ export class Select extends FormAssociatedSelect {
     public set value(next: string) {
         const prev = `${this._value}`;
 
-        if (this.options?.length) {
-            const selectedIndex = this.options.findIndex(el => el.value === next);
-
-            const prevSelectedOption = this.options[this.selectedIndex];
-            const nextSelectedOption = this.options[selectedIndex];
-
-            const prevSelectedValue = prevSelectedOption
-                ? prevSelectedOption.value
-                : null;
-
-            const nextSelectedValue = nextSelectedOption
-                ? nextSelectedOption.value
-                : null;
+        if (this._options?.length) {
+            const selectedIndex = this._options.findIndex(el => el.value === next);
+            const prevSelectedValue = this._options[this.selectedIndex]?.value ?? null;
+            const nextSelectedValue = this._options[selectedIndex]?.value ?? null;
 
             if (selectedIndex === -1 || prevSelectedValue !== nextSelectedValue) {
                 next = "";
                 this.selectedIndex = selectedIndex;
             }
 
-            if (this.firstSelectedOption) {
-                next = this.firstSelectedOption.value;
-            }
+            next = this.firstSelectedOption?.value ?? next;
         }
 
         if (prev !== next) {
             this._value = next;
             super.valueChanged(prev, next);
             Observable.notify(this, "value");
+            this.updateDisplayValue();
         }
     }
 
@@ -161,10 +162,7 @@ export class Select extends FormAssociatedSelect {
      */
     private updateValue(shouldEmit?: boolean) {
         if (this.$fastController.isConnected) {
-            this.value = this.firstSelectedOption ? this.firstSelectedOption.value : "";
-            this.displayValue = this.firstSelectedOption
-                ? this.firstSelectedOption.textContent || this.firstSelectedOption.value
-                : this.value;
+            this.value = this.firstSelectedOption?.value ?? "";
         }
 
         if (shouldEmit) {
@@ -195,7 +193,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition | "above" | "below";
+    public positionAttribute?: SelectPosition;
 
     /**
      * Indicates the initial state of the position attribute.
@@ -210,9 +208,12 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @observable
-    public position: SelectPosition | "above" | "below" = SelectPosition.below;
-    protected positionChanged() {
-        this.positionAttribute = this.position;
+    public position?: SelectPosition;
+    protected positionChanged(
+        prev: SelectPosition | undefined,
+        next: SelectPosition | undefined
+    ): void {
+        this.positionAttribute = next;
         this.setPositioning();
     }
 
@@ -267,8 +268,10 @@ export class Select extends FormAssociatedSelect {
      *
      * @public
      */
-    @observable
-    public displayValue: string = "";
+    public get displayValue(): string {
+        Observable.track(this, "displayValue");
+        return this.firstSelectedOption?.text ?? "";
+    }
 
     /**
      * Synchronize the `aria-disabled` property when the `disabled` property changes.
@@ -315,7 +318,7 @@ export class Select extends FormAssociatedSelect {
         if (this.open) {
             const captured = (e.target as HTMLElement).closest(
                 `option,[role=option]`
-            ) as ListboxOption;
+            ) as FASTListboxOption;
 
             if (captured && captured.disabled) {
                 return;
@@ -352,11 +355,27 @@ export class Select extends FormAssociatedSelect {
             return;
         }
 
-        if (!this.options?.includes(focusTarget as ListboxOption)) {
+        if (!this.options?.includes(focusTarget as FASTListboxOption)) {
             this.open = false;
             if (this.indexWhenOpened !== this.selectedIndex) {
                 this.updateValue(true);
             }
+        }
+    }
+
+    /**
+     * Updates the value when an option's value changes.
+     *
+     * @param source - the source object
+     * @param propertyName - the property to evaluate
+     *
+     * @internal
+     * @override
+     */
+    public handleChange(source: any, propertyName: string) {
+        super.handleChange(source, propertyName);
+        if (propertyName === "value") {
+            this.updateValue();
         }
     }
 
@@ -369,7 +388,17 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     public slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void {
+        this.options.forEach(o => {
+            const notifier = Observable.getNotifier(o);
+            notifier.unsubscribe(this, "value");
+        });
+
         super.slottedOptionsChanged(prev, next);
+
+        this.options.forEach(o => {
+            const notifier = Observable.getNotifier(o);
+            notifier.subscribe(this, "value");
+        });
         this.setProxyOptions();
         this.updateValue();
     }
@@ -414,8 +443,8 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     protected selectedOptionsChanged(
-        prev: ListboxOption[] | undefined,
-        next: ListboxOption[]
+        prev: FASTListboxOption[] | undefined,
+        next: FASTListboxOption[]
     ): void {
         super.selectedOptionsChanged(prev, next);
         this.options?.forEach((o, i) => {
@@ -434,8 +463,9 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     protected setDefaultSelectedOption(): void {
-        const options: ListboxOption[] =
-            this.options ?? Array.from(this.children).filter(Listbox.slottedOptionFilter);
+        const options: FASTListboxOption[] =
+            this.options ??
+            Array.from(this.children).filter(FASTListbox.slottedOptionFilter);
 
         const selectedIndex = options?.findIndex(
             el => el.hasAttribute("selected") || el.selected || el.value === this.value
@@ -523,12 +553,19 @@ export class Select extends FormAssociatedSelect {
             this.indexWhenOpened = this.selectedIndex;
         }
 
-        return !(key in ArrowKeys);
+        return !(key === keyArrowDown || key === keyArrowUp);
     }
 
     public connectedCallback() {
         super.connectedCallback();
         this.forcedPosition = !!this.positionAttribute;
+
+        this.addEventListener("contentchange", this.updateDisplayValue);
+    }
+
+    public disconnectedCallback() {
+        this.removeEventListener("contentchange", this.updateDisplayValue);
+        super.disconnectedCallback();
     }
 
     /**
@@ -547,6 +584,16 @@ export class Select extends FormAssociatedSelect {
             this.proxy.size = next;
         }
     }
+
+    /**
+     *
+     * @internal
+     */
+    private updateDisplayValue(): void {
+        if (this.collapsible) {
+            Observable.notify(this, "displayValue");
+        }
+    }
 }
 
 /**
@@ -562,7 +609,7 @@ export class DelegatesARIASelect {
      * HTML Attribute: `aria-controls`
      */
     @observable
-    public ariaControls: string;
+    public ariaControls: string | null;
 }
 
 /**
@@ -577,5 +624,5 @@ applyMixins(DelegatesARIASelect, DelegatesARIAListbox);
 /**
  * @internal
  */
-export interface Select extends StartEnd, DelegatesARIASelect {}
-applyMixins(Select, StartEnd, DelegatesARIASelect);
+export interface FASTSelect extends StartEnd, DelegatesARIASelect {}
+applyMixins(FASTSelect, StartEnd, DelegatesARIASelect);

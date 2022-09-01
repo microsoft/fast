@@ -1,31 +1,27 @@
-import { html } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
-import type { Avatar, AvatarOptions } from "./avatar.js";
+import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { AvatarOptions, FASTAvatar } from "./avatar.js";
 
 /**
- * The template for {@link @microsoft/fast-foundation#Avatar} component.
+ * The template for {@link @microsoft/fast-foundation#FASTAvatar} component.
  * @public
  */
-export const avatarTemplate: FoundationElementTemplate<
-    ViewTemplate<Avatar>,
-    AvatarOptions
-> = (context, definition) => html`
+export function avatarTemplate<T extends FASTAvatar>(
+    options: AvatarOptions = {}
+): ElementViewTemplate<T> {
+    return html<T>`
     <div
-        class="backplate ${x => x.shape}"
+        class="backplate"
         part="backplate"
-        style="${x =>
-            x.fill ? `background-color: var(--avatar-fill-${x.fill});` : void 0}"
     >
         <a
             class="link"
             part="link"
             href="${x => (x.link ? x.link : void 0)}"
-            style="${x => (x.color ? `color: var(--avatar-color-${x.color});` : void 0)}"
         >
-            <slot name="media" part="media">${definition.media || ""}</slot>
-            <slot class="content" part="content"><slot>
+            <slot name="media">${options.media ?? ""}</slot>
+            <slot><slot>
         </a>
     </div>
-    <slot name="badge" part="badge"></slot>
-`;
+    <slot name="badge"></slot>
+    `;
+}

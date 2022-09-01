@@ -1,15 +1,16 @@
-import { DOM } from "@microsoft/fast-element";
-import { expect, assert } from "chai";
-import { fixture } from "../test-utilities/fixture";
-import { NumberField, numberFieldTemplate as template } from "./index";
+import { Updates } from "@microsoft/fast-element";
+import { expect } from "chai";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { FASTNumberField, numberFieldTemplate } from "./index.js";
 
-const FASTNumberField = NumberField.compose({
-    baseName: "number-field",
-    template,
-})
+const numberFieldName = uniqueElementName();
+FASTNumberField.define({
+    name: numberFieldName,
+    template: numberFieldTemplate()
+});
 
-async function setup(props?: Partial<NumberField>) {
-    const { element, connect, disconnect, parent } = await fixture(FASTNumberField());
+async function setup(props?: Partial<FASTNumberField>) {
+    const { element, connect, disconnect, parent } = await fixture<FASTNumberField>(numberFieldName);
 
     if(props) {
         for(let key in props) {
@@ -483,7 +484,7 @@ describe("NumberField", () => {
 
             element.setAttribute('value', value);
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(
                 (element.shadowRoot?.querySelector(".control") as HTMLInputElement).value
@@ -554,7 +555,7 @@ describe("NumberField", () => {
             expect(element.value).to.equal(value.toString());
 
             element.setAttribute("max", max.toString());
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal(max.toString());
 
@@ -569,7 +570,7 @@ describe("NumberField", () => {
             expect(element.value).to.equal(min.toString());
 
             element.value = `${min - 100}`;
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal(min.toString());
             await disconnect();
@@ -583,7 +584,7 @@ describe("NumberField", () => {
             expect(element.value).to.equal(value.toString());
 
             element.setAttribute("min", min.toString());
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal(min.toString());
 
@@ -665,7 +666,7 @@ describe("NumberField", () => {
             const { element, disconnect } = await setup({step});
 
             element.stepDown();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal(`${0 - step}`);
 
@@ -677,7 +678,7 @@ describe("NumberField", () => {
             const { element, disconnect } = await setup({min});
 
             element.stepDown();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal(`0`);
 
@@ -689,7 +690,7 @@ describe("NumberField", () => {
             const { element, disconnect } = await setup({min});
 
             element.stepUp();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal(`0`);
 
@@ -701,7 +702,7 @@ describe("NumberField", () => {
             const { element, disconnect } = await setup({min});
 
             element.stepDown();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal(min.toString());
 
@@ -713,7 +714,7 @@ describe("NumberField", () => {
             const { element, disconnect } = await setup({min});
 
             element.stepUp();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal(min.toString());
 
@@ -726,7 +727,7 @@ describe("NumberField", () => {
             const { element, disconnect } = await setup({min, max});
 
             element.stepDown();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal(max.toString());
 
@@ -739,7 +740,7 @@ describe("NumberField", () => {
             const { element, disconnect } = await setup({min, max});
 
             element.stepUp();
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(element.value).to.equal(max.toString());
 
@@ -858,7 +859,7 @@ describe("NumberField", () => {
 
             element.setAttribute("hide-step", "");
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(
                 element.shadowRoot?.querySelector(".controls")).to.equal(null);
@@ -875,7 +876,7 @@ describe("NumberField", () => {
 
             element.setAttribute("readonly", "");
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             expect(
                 element.shadowRoot?.querySelector(".controls")).to.equal(null);

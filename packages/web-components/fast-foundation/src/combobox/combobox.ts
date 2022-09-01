@@ -1,11 +1,9 @@
-import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import { SyntheticViewTemplate, Updates } from "@microsoft/fast-element";
+import { attr, Observable, observable } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox } from "../listbox/listbox.js";
-import type { ListboxOption } from "../listbox-option/listbox-option.js";
-import { StartEnd } from "../patterns/start-end.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { SelectPosition } from "../select/select.options.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedCombobox } from "./combobox.form-associated.js";
@@ -15,18 +13,28 @@ import { ComboboxAutocomplete } from "./combobox.options.js";
  * Combobox configuration options
  * @public
  */
-export type ComboboxOptions = FoundationElementDefinition &
-    StartEndOptions & {
-        indicator?: string | SyntheticViewTemplate;
-    };
+export type ComboboxOptions = StartEndOptions & {
+    indicator?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Combobox Custom HTML Element.
  * Implements the {@link https://w3c.github.io/aria-practices/#combobox | ARIA combobox }.
  *
+ * @slot start - Content which can be provided before the input
+ * @slot end - Content which can be provided after the input
+ * @slot control - Used to replace the input element representing the combobox
+ * @slot indicator - The visual indicator representing the expanded state
+ * @slot - The default slot for the options
+ * @csspart control - The wrapper element containing the input area, including start and end
+ * @csspart selected-value - The input element representing the selected value
+ * @csspart indicator - The element wrapping the indicator slot
+ * @csspart listbox - The wrapper for the listbox slotted options
+ * @fires change - Fires a custom 'change' event when the value updates
+ *
  * @public
  */
-export class Combobox extends FormAssociatedCombobox {
+export class FASTCombobox extends FormAssociatedCombobox {
     /**
      * The internal value property.
      *
@@ -42,7 +50,7 @@ export class Combobox extends FormAssociatedCombobox {
      * HTML Attribute: autocomplete
      */
     @attr({ attribute: "autocomplete", mode: "fromView" })
-    autocomplete: ComboboxAutocomplete | "inline" | "list" | "both" | "none" | undefined;
+    autocomplete: ComboboxAutocomplete | undefined;
 
     /**
      * Reference to the internal text input element.
@@ -63,7 +71,7 @@ export class Combobox extends FormAssociatedCombobox {
      *
      * @public
      */
-    public filteredOptions: ListboxOption[] = [];
+    public filteredOptions: FASTListboxOption[] = [];
 
     /**
      * The current filter value.
@@ -88,6 +96,11 @@ export class Combobox extends FormAssociatedCombobox {
         super.formResetCallback();
         this.setDefaultSelectedOption();
         this.updateValue();
+    }
+
+    /** {@inheritDoc (FormAssociated:interface).validate} */
+    public validate(): void {
+        super.validate(this.control);
     }
 
     private get isAutocompleteInline(): boolean {
@@ -146,7 +159,7 @@ export class Combobox extends FormAssociatedCombobox {
             this.focusAndScrollOptionIntoView();
 
             // focus is directed to the element when `open` is changed programmatically
-            DOM.queueUpdate(() => this.focus());
+            Updates.enqueue(() => this.focus());
 
             return;
         }
@@ -162,12 +175,12 @@ export class Combobox extends FormAssociatedCombobox {
      * @remarks
      * Overrides `Listbox.options`.
      */
-    public get options(): ListboxOption[] {
+    public get options(): FASTListboxOption[] {
         Observable.track(this, "options");
         return this.filteredOptions.length ? this.filteredOptions : this._options;
     }
 
-    public set options(value: ListboxOption[]) {
+    public set options(value: FASTListboxOption[]) {
         this._options = value;
         Observable.notify(this, "options");
     }
@@ -198,7 +211,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition;
+    public positionAttribute?: SelectPosition;
 
     /**
      * The current state of the calculated position of the listbox.
@@ -206,9 +219,12 @@ export class Combobox extends FormAssociatedCombobox {
      * @public
      */
     @observable
-    public position: SelectPosition = SelectPosition.below;
-    protected positionChanged() {
-        this.positionAttribute = this.position;
+    public position?: SelectPosition;
+    protected positionChanged(
+        prev: SelectPosition | undefined,
+        next: SelectPosition | undefined
+    ): void {
+        this.positionAttribute = next;
         this.setPositioning();
     }
 
@@ -262,7 +278,7 @@ export class Combobox extends FormAssociatedCombobox {
         if (this.open) {
             const captured = (e.target as HTMLElement).closest(
                 `option,[role=option]`
-            ) as ListboxOption | null;
+            ) as FASTListboxOption | null;
 
             if (!captured || captured.disabled) {
                 return;
@@ -270,6 +286,7 @@ export class Combobox extends FormAssociatedCombobox {
 
             this.selectedOptions = [captured];
             this.control.value = captured.text;
+            this.clearSelectionRange();
             this.updateValue(true);
         }
 
@@ -369,7 +386,7 @@ export class Combobox extends FormAssociatedCombobox {
             return;
         }
 
-        if (!this.options || !this.options.includes(focusTarget as ListboxOption)) {
+        if (!this.options || !this.options.includes(focusTarget as FASTListboxOption)) {
             this.open = false;
         }
     }
@@ -422,8 +439,7 @@ export class Combobox extends FormAssociatedCombobox {
                 }
 
                 this.open = false;
-                const controlValueLength = this.control.value.length;
-                this.control.setSelectionRange(controlValueLength, controlValueLength);
+                this.clearSelectionRange();
                 break;
             }
 
@@ -617,8 +633,8 @@ export class Combobox extends FormAssociatedCombobox {
      * Overrides: `Listbox.selectedOptionsChanged`
      */
     public selectedOptionsChanged(
-        prev: ListboxOption[] | undefined,
-        next: ListboxOption[]
+        prev: FASTListboxOption[] | undefined,
+        next: FASTListboxOption[]
     ): void {
         if (this.$fastController.isConnected) {
             this._options.forEach(o => {
@@ -656,6 +672,14 @@ export class Combobox extends FormAssociatedCombobox {
             this.$emit("change");
         }
     }
+
+    /**
+     * @internal
+     */
+    private clearSelectionRange() {
+        const controlValueLength = this.control.value.length;
+        this.control.setSelectionRange(controlValueLength, controlValueLength);
+    }
 }
 
 /**
@@ -672,7 +696,7 @@ export class DelegatesARIACombobox {
      * HTML Attribute: `aria-autocomplete`
      */
     @observable
-    public ariaAutoComplete: "inline" | "list" | "both" | "none" | undefined;
+    public ariaAutoComplete: "inline" | "list" | "both" | "none" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#aria-controls} for more information.
@@ -682,7 +706,7 @@ export class DelegatesARIACombobox {
      * HTML Attribute: `aria-controls`
      */
     @observable
-    public ariaControls: string;
+    public ariaControls: string | null;
 }
 
 /**
@@ -700,5 +724,5 @@ applyMixins(DelegatesARIACombobox, DelegatesARIAListbox);
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Combobox extends StartEnd, DelegatesARIACombobox {}
-applyMixins(Combobox, StartEnd, DelegatesARIACombobox);
+export interface FASTCombobox extends StartEnd, DelegatesARIACombobox {}
+applyMixins(FASTCombobox, StartEnd, DelegatesARIACombobox);

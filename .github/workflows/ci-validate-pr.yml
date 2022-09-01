@@ -14,6 +14,8 @@ on:
 jobs:
   build_linux:
     runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: 0
 
     steps:
     - uses: actions/checkout@v2
@@ -25,16 +27,16 @@ jobs:
       run: echo '::set-output name=dir::$(yarn cache dir)'
 
     - name: Set up node_modules cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       id: yarn-cache
       with:
         path: |
           ${{ steps.yarn-cache-dir-path.outputs.dir }}
           node_modules
           */*/node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-yarn_cache-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-          ${{ runner.os }}-yarn-
+          ${{ runner.os }}-yarn_cache-
 
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
@@ -47,6 +49,11 @@ jobs:
 
     - name: Prepare workspaces
       run: yarn prepare
+
+    - name: Install playwright dependencies and browsers
+      run: |
+        yarn playwright install-deps
+        yarn playwright install
 
     - name: Testing unit tests
       run: yarn lerna run test --stream
@@ -63,7 +70,6 @@ jobs:
           ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
-          ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
 
     - name: Testing final validation

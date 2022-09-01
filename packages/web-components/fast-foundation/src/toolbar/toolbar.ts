@@ -2,11 +2,10 @@ import { attr, FASTElement, observable, Observable } from "@microsoft/fast-eleme
 import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
 import { isFocusable } from "tabbable";
 import {
-    FoundationElement,
-    FoundationElementDefinition,
-} from "../foundation-element/foundation-element.js";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+    ARIAGlobalStatesAndProperties,
+    StartEnd,
+    StartEndOptions,
+} from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { getDirection } from "../utilities/direction.js";
 
@@ -14,7 +13,7 @@ import { getDirection } from "../utilities/direction.js";
  * Toolbar configuration options
  * @public
  */
-export type ToolbarOptions = FoundationElementDefinition & StartEndOptions;
+export type ToolbarOptions = StartEndOptions;
 
 /**
  * A map for directionality derived from keyboard input strings,
@@ -47,9 +46,15 @@ const ToolbarArrowKeyMap = Object.freeze({
  * A Toolbar Custom HTML Element.
  * Implements the {@link https://w3c.github.io/aria-practices/#Toolbar|ARIA Toolbar}.
  *
+ * @slot start - Content which can be provided before the slotted items
+ * @slot end - Content which can be provided after the slotted items
+ * @slot - The default slot for slotted items
+ * @slot label - The toolbar label
+ * @csspart positioning-region - The element containing the items, start and end slots
+ *
  * @public
  */
-export class Toolbar extends FoundationElement {
+export class FASTToolbar extends FASTElement {
     /**
      * The internal index of the currently focused element.
      *
@@ -134,23 +139,20 @@ export class Toolbar extends FoundationElement {
         return true;
     }
 
+    @observable
+    public childItems: Element[];
+    protected childItemsChanged(prev: undefined | Element[], next: Element[]): void {
+        if (this.$fastController.isConnected) {
+            this.reduceFocusableElements();
+        }
+    }
+
     /**
      * @internal
      */
     public connectedCallback() {
         super.connectedCallback();
         this.direction = getDirection(this);
-        this.start.addEventListener("slotchange", this.startEndSlotChange);
-        this.end.addEventListener("slotchange", this.startEndSlotChange);
-    }
-
-    /**
-     * @internal
-     */
-    public disconnectedCallback() {
-        super.disconnectedCallback();
-        this.start.removeEventListener("slotchange", this.startEndSlotChange);
-        this.end.removeEventListener("slotchange", this.startEndSlotChange);
     }
 
     /**
@@ -227,10 +229,20 @@ export class Toolbar extends FoundationElement {
      * @internal
      */
     protected reduceFocusableElements(): void {
+        const previousFocusedElement = this.focusableElements?.[this.activeIndex];
+
         this.focusableElements = this.allSlottedItems.reduce(
-            Toolbar.reduceFocusableItems,
+            FASTToolbar.reduceFocusableItems,
             []
         );
+
+        // If the previously active item is still focusable, adjust the active index to the
+        // index of that item.
+        const adjustedActiveIndex = this.focusableElements.indexOf(
+            previousFocusedElement
+        );
+        this.activeIndex = Math.max(0, adjustedActiveIndex);
+
         this.setFocusableElements();
     }
 
@@ -266,10 +278,12 @@ export class Toolbar extends FoundationElement {
         ).some(x => isFocusable(x));
 
         if (
-            isFocusable(element) ||
-            isRoleRadio ||
-            isFocusableFastElement ||
-            hasFocusableShadow
+            !element.hasAttribute("disabled") &&
+            !element.hasAttribute("hidden") &&
+            (isFocusable(element) ||
+                isRoleRadio ||
+                isFocusableFastElement ||
+                hasFocusableShadow)
         ) {
             elements.push(element);
             return elements;
@@ -277,7 +291,7 @@ export class Toolbar extends FoundationElement {
 
         if (element.childElementCount) {
             return elements.concat(
-                Array.from(element.children).reduce(Toolbar.reduceFocusableItems, [])
+                Array.from(element.children).reduce(FASTToolbar.reduceFocusableItems, [])
             );
         }
 
@@ -294,12 +308,6 @@ export class Toolbar extends FoundationElement {
             });
         }
     }
-
-    private startEndSlotChange = (): void => {
-        if (this.$fastController.isConnected) {
-            this.reduceFocusableElements();
-        }
-    };
 }
 
 /**
@@ -315,7 +323,7 @@ export class DelegatesARIAToolbar {
      * HTML Attribute: aria-labelledby
      */
     @attr({ attribute: "aria-labelledby" })
-    public ariaLabelledby: string;
+    public ariaLabelledby: string | null;
 
     /**
      * The label surfaced to assistive technologies.
@@ -325,7 +333,7 @@ export class DelegatesARIAToolbar {
      * HTML Attribute: aria-label
      */
     @attr({ attribute: "aria-label" })
-    public ariaLabel: string;
+    public ariaLabel: string | null;
 }
 
 /**
@@ -340,5 +348,5 @@ applyMixins(DelegatesARIAToolbar, ARIAGlobalStatesAndProperties);
 /**
  * @internal
  */
-export interface Toolbar extends StartEnd, DelegatesARIAToolbar {}
-applyMixins(Toolbar, StartEnd, DelegatesARIAToolbar);
+export interface FASTToolbar extends StartEnd, DelegatesARIAToolbar {}
+applyMixins(FASTToolbar, StartEnd, DelegatesARIAToolbar);

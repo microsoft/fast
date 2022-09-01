@@ -1,13 +1,13 @@
+import { FASTElement } from "@microsoft/fast-element";
 import { CheckableFormAssociated } from "../form-associated/form-associated.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 
-class _Switch extends FoundationElement {}
+class _Switch extends FASTElement {}
 interface _Switch extends CheckableFormAssociated {}
 
 /**
- * A form-associated base class for the {@link @microsoft/fast-foundation#(Switch:class)} component.
+ * A form-associated base class for the {@link @microsoft/fast-foundation#(FASTSwitch:class)} component.
  *
- * @internal
+ * @beta
  */
 export class FormAssociatedSwitch extends CheckableFormAssociated(_Switch) {
     proxy = document.createElement("input");

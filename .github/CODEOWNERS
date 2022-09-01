@@ -25,7 +25,6 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel @EisenbergEffect
 
 # Sites
 /sites/fast-color-explorer/ @nicholasrice @janechu @bheston
-/sites/fast-component-explorer/ @janechu @nicholasrice
 /sites/website/ @awentzel @chrisdholt @falkicon @EisenbergEffect
 
 # Package specific owners
@@ -41,4 +40,4 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel @EisenbergEffect
 
 # Web components
 /packages/web-components/fast-element/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
-/packages/web-components/fast-components/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
+/packages/web-components/fast-foundation/ @EisenbergEffect @chrisdholt @nicholasrice

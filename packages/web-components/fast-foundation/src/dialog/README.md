@@ -3,6 +3,7 @@ id: dialog
 title: fast-dialog
 sidebar_label: dialog
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/dialog/README.md
+description: fast-dialog is a web component implementation of a dialog.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#dialog_modal):
@@ -52,36 +53,38 @@ export const myDialog = Dialog.compose({
 
 
 
-### class: `Dialog`
+### class: `FASTDialog`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name              | Privacy | Type                                  | Default | Description                                                                                                                                                                                                   | Inherited From    |
-| ----------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `modal`           | public  | `boolean`                             | `true`  | Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal overlay.  Clicks on the overlay will cause the dialog to emit a "dismiss" event. |                   |
-| `hidden`          | public  | `boolean`                             | `false` | The hidden state of the element.                                                                                                                                                                              |                   |
-| `trapFocus`       | public  | `boolean`                             | `true`  | Indicates that the dialog should trap focus.                                                                                                                                                                  |                   |
-| `ariaDescribedby` | public  | `string`                              |         | The id of the element describing the dialog.                                                                                                                                                                  |                   |
-| `ariaLabelledby`  | public  | `string`                              |         | The id of the element labeling the dialog.                                                                                                                                                                    |                   |
-| `ariaLabel`       | public  | `string`                              |         | The label surfaced to assistive technologies.                                                                                                                                                                 |                   |
-| `$presentation`   | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                       | FoundationElement |
-| `template`        | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                    | FoundationElement |
-| `styles`          | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                           | FoundationElement |
+| Name              | Privacy | Type      | Default | Description                                                                                                                                                                                                   | Inherited From |
+| ----------------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `modal`           | public  | `boolean` | `false` | Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal overlay.  Clicks on the overlay will cause the dialog to emit a "dismiss" event. |                |
+| `hidden`          | public  | `boolean` | `false` | The hidden state of the element.                                                                                                                                                                              |                |
+| `noFocusTrap`     | public  | `boolean` | `false` | Indicates that the dialog should not trap focus.                                                                                                                                                              |                |
+| `ariaDescribedby` | public  | `string`  |         | The id of the element describing the dialog.                                                                                                                                                                  |                |
+| `ariaLabelledby`  | public  | `string`  |         | The id of the element labeling the dialog.                                                                                                                                                                    |                |
+| `ariaLabel`       | public  | `string`  |         | The label surfaced to assistive technologies.                                                                                                                                                                 |                |
 
 #### Methods
 
-| Name              | Privacy   | Description                    | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ------------------------------ | ---------- | ------ | ----------------- |
-| `show`            | public    | The method to show the dialog. |            | `void` |                   |
-| `hide`            | public    | The method to hide the dialog. |            | `void` |                   |
-| `templateChanged` | protected |                                |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |                                |            | `void` | FoundationElement |
+| Name   | Privacy | Description                    | Parameters | Return | Inherited From |
+| ------ | ------- | ------------------------------ | ---------- | ------ | -------------- |
+| `show` | public  | The method to show the dialog. |            | `void` |                |
+| `hide` | public  | The method to hide the dialog. |            | `void` |                |
+
+#### Events
+
+| Name     | Type | Description                                                     | Inherited From |
+| -------- | ---- | --------------------------------------------------------------- | -------------- |
+| `cancel` |      | Fires a custom 'cancel' event when the modal overlay is clicked |                |
+| `close`  |      | Fires a custom 'close' event when the dialog is hidden          |                |
 
 #### Attributes
 
@@ -89,10 +92,24 @@ export const myDialog = Dialog.compose({
 | ------------------ | --------------- | -------------- |
 |                    | modal           |                |
 |                    | hidden          |                |
-| `trap-focus`       | trapFocus       |                |
+| `no-focus-trap`    | noFocusTrap     |                |
 | `aria-describedby` | ariaDescribedby |                |
 | `aria-labelledby`  | ariaLabelledby  |                |
 | `aria-label`       | ariaLabel       |                |
+
+#### CSS Parts
+
+| Name                 | Description                                                                 |
+| -------------------- | --------------------------------------------------------------------------- |
+| `positioning-region` | A wrapping element used to center the dialog and position the modal overlay |
+| `overlay`            | The modal dialog overlay                                                    |
+| `control`            | The dialog element                                                          |
+
+#### Slots
+
+| Name | Description                             |
+| ---- | --------------------------------------- |
+|      | The default slot for the dialog content |
 
 <hr/>
 

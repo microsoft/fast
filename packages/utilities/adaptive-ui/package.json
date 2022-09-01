@@ -1,0 +1,60 @@
+{
+  "name": "@microsoft/adaptive-ui",
+  "version": "1.0.0-alpha.8",
+  "description": "A collection of design utilities supporting basic styling and Adaptive UI",
+  "type": "module",
+  "main": "dist/esm/index.js",
+  "types": "dist/adaptive-ui.d.ts",
+  "unpkg": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/adaptive-ui.d.ts",
+      "default": "./dist/esm/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microsoft/fast.git",
+    "directory": "packages/utilities/adaptive-ui"
+  },
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/microsoft/fast/issues/new/choose"
+  },
+  "homepage": "https://fast.design",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json && yarn doc",
+    "build:tests": "tsc -p ./tsconfig.json",
+    "clean:dist": "node ../../../build/clean.js dist",
+    "clean:test": "node ../../../build/clean.js test",
+    "doc": "api-extractor run --local",
+    "doc:ci": "api-extractor run",
+    "prepare": "yarn clean:dist && yarn build",
+    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
+    "test": "yarn build:tests && yarn eslint && yarn unit-tests && yarn doc",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix",
+    "unit-tests": "mocha",
+    "unit-tests:watch": "mocha --watch"
+  },
+  "dependencies": {
+    "@microsoft/fast-colors": "^5.3.1",
+    "@microsoft/fast-foundation": "3.0.0-alpha.8"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "7.24.2",
+    "@microsoft/eslint-config-fast-dna": "^2.1.0",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "chai": "^4.2.0",
+    "eslint-config-prettier": "^6.10.1",
+    "mocha": "^7.1.2",
+    "prettier": "2.0.2",
+    "typescript": "^4.7.0"
+  }
+}

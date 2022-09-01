@@ -3,6 +3,7 @@ id: progress
 title: fast-progress
 sidebar_label: progress
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/progress/README.md
+description: fast-progress is a web component used to display the length of time a process will take or to visualize percentage value.
 ---
 
 *Progress* and *progress ring* are used to display the length of time a process will take or to visualize percentage value (referred to as a **determinate** state) and to represent an unspecified wait time (referred to as an **indeterminate** state). *Progress* components are typically visually represented by a circular or linear animation. When the `value` attribute is passed the state is **determinate**, otherwise it is **indeterminate**. 
@@ -105,32 +106,30 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 
 
 
-### class: `BaseProgress`
+### class: `FASTBaseProgress`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `value`         | public  | `number or null`                      |         | The value of the progress                                                                                                                                                           |                   |
-| `min`           | public  | `number`                              |         | The minimum value                                                                                                                                                                   |                   |
-| `max`           | public  | `number`                              |         | The maximum value                                                                                                                                                                   |                   |
-| `paused`        | public  | `boolean`                             |         | Indicates the progress is paused                                                                                                                                                    |                   |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name     | Privacy | Type             | Default | Description                      | Inherited From |
+| -------- | ------- | ---------------- | ------- | -------------------------------- | -------------- |
+| `value`  | public  | `number or null` |         | The value of the progress        |                |
+| `min`    | public  | `number`         |         | The minimum value                |                |
+| `max`    | public  | `number`         |         | The maximum value                |                |
+| `paused` | public  | `boolean`        |         | Indicates the progress is paused |                |
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name           | Privacy   | Description | Parameters | Return | Inherited From |
+| -------------- | --------- | ----------- | ---------- | ------ | -------------- |
+| `valueChanged` | protected |             |            | `void` |                |
+| `minChanged`   | protected |             |            | `void` |                |
+| `maxChanged`   | protected |             |            | `void` |                |
 
 #### Attributes
 
@@ -140,6 +139,55 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 |      | min    |                |
 |      | max    |                |
 |      | paused |                |
+
+<hr/>
+
+
+
+### class: `FASTProgress`
+
+#### Superclass
+
+| Name               | Module                         | Package |
+| ------------------ | ------------------------------ | ------- |
+| `FASTBaseProgress` | /src/progress/base-progress.js |         |
+
+#### Fields
+
+| Name     | Privacy | Type             | Default | Description                      | Inherited From   |
+| -------- | ------- | ---------------- | ------- | -------------------------------- | ---------------- |
+| `value`  | public  | `number or null` |         | The value of the progress        | FASTBaseProgress |
+| `min`    | public  | `number`         |         | The minimum value                | FASTBaseProgress |
+| `max`    | public  | `number`         |         | The maximum value                | FASTBaseProgress |
+| `paused` | public  | `boolean`        |         | Indicates the progress is paused | FASTBaseProgress |
+
+#### Methods
+
+| Name           | Privacy   | Description | Parameters | Return | Inherited From   |
+| -------------- | --------- | ----------- | ---------- | ------ | ---------------- |
+| `valueChanged` | protected |             |            | `void` | FASTBaseProgress |
+| `minChanged`   | protected |             |            | `void` | FASTBaseProgress |
+| `maxChanged`   | protected |             |            | `void` | FASTBaseProgress |
+
+#### Attributes
+
+| Name | Field | Inherited From   |
+| ---- | ----- | ---------------- |
+|      | value | FASTBaseProgress |
+
+#### CSS Parts
+
+| Name            | Description                     |
+| --------------- | ------------------------------- |
+| `progress`      | Represents the progress element |
+| `determinate`   | The determinate indicator       |
+| `indeterminate` | The indeterminate indicator     |
+
+#### Slots
+
+| Name            | Description                                   |
+| --------------- | --------------------------------------------- |
+| `indeterminate` | The slot for a custom indeterminate indicator |
 
 <hr/>
 

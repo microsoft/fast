@@ -1,13 +1,18 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    nullableNumberConverter,
+    observable,
+    Updates,
+} from "@microsoft/fast-element";
 import { Direction, keyEscape } from "@microsoft/fast-web-utilities";
+import type { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
 import type {
-    AnchoredRegion,
     AutoUpdateMode,
     AxisPositioningMode,
     AxisScalingMode,
-} from "../anchored-region/anchored-region.js";
+} from "../anchored-region/anchored-region.options.js";
 import { getDirection } from "../utilities/direction.js";
-import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { TooltipPosition } from "./tooltip.options.js";
 
 export { TooltipPosition };
@@ -15,9 +20,13 @@ export { TooltipPosition };
 /**
  * An Tooltip Custom HTML Element.
  *
+ * @slot - The default slot for the tooltip content
+ * @csspart tooltip - The tooltip element
+ * @fires dismiss - Fires a custom 'dismiss' event when the tooltip is visible and escape key is pressed
+ *
  * @public
  */
-export class Tooltip extends FoundationElement {
+export class FASTTooltip extends FASTElement {
     /**
      * Whether the tooltip is visible or not.
      * If undefined tooltip is shown when anchor element is hovered
@@ -28,7 +37,7 @@ export class Tooltip extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public visible: boolean;
-    private visibleChanged(): void {
+    protected visibleChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.updateTooltipVisibility();
             this.updateLayout();
@@ -44,7 +53,7 @@ export class Tooltip extends FoundationElement {
      */
     @attr
     public anchor: string = "";
-    private anchorChanged(): void {
+    protected anchorChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.anchorElement = this.getAnchor();
         }
@@ -57,7 +66,7 @@ export class Tooltip extends FoundationElement {
      * @public
      * HTML Attribute: delay
      */
-    @attr
+    @attr({ attribute: "delay", converter: nullableNumberConverter })
     public delay: number = 300;
 
     /**
@@ -69,22 +78,7 @@ export class Tooltip extends FoundationElement {
      * HTML Attribute: position
      */
     @attr
-    public position:
-        | TooltipPosition
-        | "top"
-        | "right"
-        | "bottom"
-        | "left"
-        | "start"
-        | "end"
-        | "top-left"
-        | "top-right"
-        | "bottom-left"
-        | "bottom-right"
-        | "top-start"
-        | "top-end"
-        | "bottom-start"
-        | "bottom-end";
+    public position: TooltipPosition;
     private positionChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.updateLayout();
@@ -128,7 +122,7 @@ export class Tooltip extends FoundationElement {
      */
     @observable
     public anchorElement: HTMLElement | null = null;
-    private anchorElementChanged(oldValue: HTMLElement | null): void {
+    protected anchorElementChanged(oldValue: HTMLElement | null): void {
         if ((this as FASTElement).$fastController.isConnected) {
             if (oldValue !== null && oldValue !== undefined) {
                 oldValue.removeEventListener("mouseover", this.handleAnchorMouseOver);
@@ -189,7 +183,7 @@ export class Tooltip extends FoundationElement {
      */
     @observable
     public viewportElement: HTMLElement | null = null;
-    private viewportElementChanged(): void {
+    protected viewportElementChanged(): void {
         if (this.region !== null && this.region !== undefined) {
             this.region.viewportElement = this.viewportElement;
         }
@@ -266,7 +260,7 @@ export class Tooltip extends FoundationElement {
      *
      * @internal
      */
-    public region: AnchoredRegion;
+    public region: FASTAnchoredRegion;
 
     /**
      * The timer that tracks delay time before the tooltip is shown on hover
@@ -473,9 +467,24 @@ export class Tooltip extends FoundationElement {
                 this.horizontalDefaultPosition = this.position;
                 break;
 
+            case TooltipPosition.center:
+                this.verticalDefaultPosition = "center";
+                this.horizontalDefaultPosition = "center";
+                break;
+
             case TooltipPosition.topLeft:
                 this.verticalDefaultPosition = "top";
                 this.horizontalDefaultPosition = "left";
+                break;
+
+            case TooltipPosition.topCenter:
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "center";
+                break;
+
+            case TooltipPosition.bottomCenter:
+                this.verticalDefaultPosition = "bottom";
+                this.horizontalDefaultPosition = "center";
                 break;
 
             case TooltipPosition.topRight:
@@ -578,7 +587,7 @@ export class Tooltip extends FoundationElement {
         this.currentDirection = getDirection(this);
         this.tooltipVisible = true;
         document.addEventListener("keydown", this.handleDocumentKeydown);
-        DOM.queueUpdate(this.setRegionProps);
+        Updates.enqueue(this.setRegionProps);
     };
 
     /**

@@ -1,33 +1,37 @@
-import { DOM } from "@microsoft/fast-element";
+import { Updates } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
-import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
-import { fixture } from "../test-utilities/fixture";
-import { timeout } from "../test-utilities/timeout";
-import { Select, selectTemplate as template } from "./index";
+import { FASTListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
+import { fixture, timeout, uniqueElementName } from "@microsoft/fast-element/testing";;
+import { FASTSelect, selectTemplate } from "./index.js";
 
 describe("Select", () => {
-    const FASTSelect = Select.compose({
-        baseName: "select",
-        template
-    })
+    const selectName = uniqueElementName();
+    FASTSelect.define({
+        name: selectName,
+        template: selectTemplate()
+    });
 
-    const FASTOption = ListboxOption.compose({
-        baseName: "option",
-        template: listboxOptionTemplate,
+    const optionName = uniqueElementName();
+    FASTListboxOption.define({
+        name: optionName,
+        template: listboxOptionTemplate()
     });
 
     async function setup() {
-        const { element, connect, disconnect, parent } = await fixture([FASTSelect(), FASTOption()]);
+        const { element, connect, disconnect, parent } = await fixture<FASTSelect>(selectName);
 
-        const option1 = document.createElement("fast-option") as ListboxOption;
+        const option1 = document.createElement(optionName) as FASTListboxOption;
         option1.value = "one";
+        option1.textContent = "option one";
 
-        const option2 = document.createElement("fast-option") as ListboxOption;
+        const option2 = document.createElement(optionName) as FASTListboxOption;
         option2.value = "two";
+        option2.textContent = "option two";
 
-        const option3 = document.createElement("fast-option") as ListboxOption;
+        const option3 = document.createElement(optionName) as FASTListboxOption;
         option3.value = "three";
+        option3.textContent = "option three";
 
         element.appendChild(option1);
         element.appendChild(option2);
@@ -57,7 +61,7 @@ describe("Select", () => {
 
         element.disabled = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-disabled")).to.equal("false");
 
@@ -193,6 +197,52 @@ describe("Select", () => {
         await disconnect();
     });
 
+    it("should select the next selectable option when the value is set to match a disabled option", async () => {
+        const { element, connect, disconnect, option2 } = await setup();
+
+        option2.disabled = true;
+
+        await connect();
+
+        expect(element.value).to.equal("one");
+        expect(element.selectedIndex).to.equal(0);
+
+        element.value = "two";
+
+        expect(element.value).to.equal("three");
+        expect(element.selectedIndex).to.equal(2);
+
+        await disconnect();
+    });
+
+    it("should update the value when the selected option's value changes", async () => {
+        const { element, connect, disconnect, option1 } = await setup();
+
+        await connect();
+
+        expect(element.value).to.equal("one");
+
+        option1.value = "new value";
+
+        expect(element.value).to.equal("new value");
+
+        await disconnect();
+    });
+
+    it("should return the value as a string", async () => {
+        const { element, connect, disconnect, option1 } = await setup();
+
+        await connect();
+
+        option1.value = 12345 as any;
+
+        expect(element.value).to.equal("12345");
+
+        expect(typeof element.value).to.equal("string");
+
+        await disconnect();
+    });
+
     it("should update the aria-expanded attribute when opened", async () => {
         const { element, connect, disconnect } = await setup();
 
@@ -200,7 +250,7 @@ describe("Select", () => {
 
         element.click();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-expanded")).to.equal("true");
 
@@ -238,7 +288,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -270,7 +320,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -298,7 +348,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -328,7 +378,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.false;
@@ -480,7 +530,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.true;
@@ -510,7 +560,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.true;
@@ -540,7 +590,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.true;
@@ -566,7 +616,7 @@ describe("Select", () => {
                     element.addEventListener("change", () => resolve(true));
                     element.dispatchEvent(event);
                 }),
-                DOM.nextUpdate().then(() => false),
+                Updates.next().then(() => false),
             ]);
 
             expect(wasChanged).to.be.true;
@@ -755,7 +805,7 @@ describe("Select", () => {
 
                 element.value = "two";
             }),
-            DOM.nextUpdate().then(() => false),
+            Updates.next().then(() => false),
         ]);
 
         expect(wasChanged).to.be.false;
@@ -780,7 +830,7 @@ describe("Select", () => {
 
                 element.value = "two";
             }),
-            DOM.nextUpdate().then(() => false),
+            Updates.next().then(() => false),
         ]);
 
         expect(wasChanged).to.be.false;
@@ -823,19 +873,19 @@ describe("Select", () => {
 
         await connect();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-activedescendant")).to.exist.and.equal(option1.id);
 
         element.selectNextOption();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-activedescendant")).to.equal(option2.id);
 
         element.selectNextOption();
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-activedescendant")).to.equal(option3.id);
 
@@ -855,16 +905,60 @@ describe("Select", () => {
 
         element.open = true;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-controls")).to.equal(listboxId);
 
         element.open = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-controls")).to.be.empty;
 
         await disconnect();
+    });
+
+    describe("should update the `displayValue` when the selected option's content changes", () => {
+        it("via innerHTML", async () => {
+            const { connect, disconnect, element, option1 } = await setup();
+
+            await connect();
+
+            expect(element.displayValue).to.equal("option one");
+
+            option1.innerHTML = "new value";
+
+            expect(element.displayValue).to.equal("new value");
+
+            await disconnect();
+        });
+
+        it("via innerText", async () => {
+            const { connect, disconnect, element, option1 } = await setup();
+
+            await connect();
+
+            expect(element.displayValue).to.equal("option one");
+
+            option1.innerText = "new value";
+
+            expect(element.displayValue).to.equal("new value");
+
+            await disconnect();
+        });
+
+        it("via textContent", async () => {
+            const { connect, disconnect, element, option1 } = await setup();
+
+            await connect();
+
+            expect(element.displayValue).to.equal("option one");
+
+            option1.textContent = "new value";
+
+            expect(element.displayValue).to.equal("new value");
+
+            await disconnect();
+        });
     });
 });

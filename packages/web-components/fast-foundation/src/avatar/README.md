@@ -3,6 +3,7 @@ id: avatar
 title: fast-avatar
 sidebar_label: avatar
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/avatar/README.md
+description: fast-avatar is a web component used to graphically represent a user or an object.
 ---
 
 The `fast-avatar` component is used to graphically represent a user or an object.
@@ -67,32 +68,6 @@ provideFASTDesignSystem()
 </fast-avatar>
 ```
 
-### Filled, Colored, and Shaped
-
-The `fill` and `color` attributes of the *avatar* create CSS custom properties which can be used to style the control.
-
-```css
-fast-avatar {
-    --avatar-fill-primary: #00FF00;
-    --avatar-fill-danger: #FF0000;
-    --avatar-color-light: #FFFFFF;
-    --avatar-color-dark: #000000;
-}
-```
-
-While the `shape` attribute lets you choose between `circle` (default) or `square`:
-
-```html
-<fast-avatar 
-  src="..."
-  alt="..."
-  link="..."
-  fill="primary"
-  color="dark"
-  shape="square">
-</fast-avatar>
-```
-
 ## Create your own design
 
 ```ts
@@ -122,41 +97,41 @@ This component is built with the expectation that focus is delegated to the anch
 
 
 
-### class: `Avatar`
+### class: `FASTAvatar`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `fill`          | public  | `string`                              |         | Indicates the Avatar should have a color fill.                                                                                                                                      |                   |
-| `color`         | public  | `string`                              |         | Indicates the Avatar should have a text color.                                                                                                                                      |                   |
-| `link`          | public  | `string`                              |         | Indicates the Avatar should have url link                                                                                                                                           |                   |
-| `shape`         | public  | `AvatarShape`                         |         | Indicates the Avatar shape should be. By default it will be set to "circle".                                                                                                        |                   |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
-
-#### Methods
-
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name   | Privacy | Type     | Default | Description                               | Inherited From |
+| ------ | ------- | -------- | ------- | ----------------------------------------- | -------------- |
+| `link` | public  | `string` |         | Indicates the Avatar should have url link |                |
 
 #### Attributes
 
-| Name    | Field | Inherited From |
-| ------- | ----- | -------------- |
-| `fill`  | fill  |                |
-| `color` | color |                |
-| `link`  | link  |                |
-| `shape` | shape |                |
+| Name   | Field | Inherited From |
+| ------ | ----- | -------------- |
+| `link` | link  |                |
+
+#### CSS Parts
+
+| Name        | Description                           |
+| ----------- | ------------------------------------- |
+| `backplate` | The wrapping container for the avatar |
+| `link`      | The avatar link                       |
+| `content`   | The default slot                      |
+
+#### Slots
+
+| Name    | Description                                                   |
+| ------- | ------------------------------------------------------------- |
+| `media` | Used for media such as an image                               |
+|         | The default slot for avatar text, commonly a name or initials |
+| `badge` | Used to provide a badge, such as a status badge               |
 
 <hr/>
 

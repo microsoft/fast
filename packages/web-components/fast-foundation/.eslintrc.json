@@ -20,16 +20,20 @@
                 },
                 "extendDefaults": true
             }
-        ],
-        "import/extensions": [
-            "error",
-            "always",
-            {
-                "template": "never",
-                "form-associated": "never",
-                "options": "never",
-                "element": "never"
-            }
         ]
-    }
+    },
+    "overrides": [
+        {
+            "files": ["**/*.ts"],
+            "excludedFiles": ["**/*.stories.ts"],
+            "rules": {
+                "no-restricted-imports": [
+                    "error",
+                    {
+                        "patterns": ["**/stories/**"]
+                    }
+                ]
+            }
+        }
+    ]
 }

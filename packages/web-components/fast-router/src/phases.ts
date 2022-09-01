@@ -2,31 +2,31 @@ import { RecognizedRoute } from "./recognizer.js";
 import { Router } from "./router.js";
 
 /**
- * @alpha
+ * @beta
  */
 export type NavigationPhaseName = "navigate" | "leave" | "construct" | "enter" | "commit";
 
 /**
- * @alpha
+ * @beta
  */
 export type NavigationPhaseHook<TSettings = any> = (
     phase: NavigationPhase<TSettings>
 ) => Promise<any> | any;
 
 /**
- * @alpha
+ * @beta
  */
 export type NavigationCommitPhaseHook<TSettings = any> = (
     phase: NavigationCommitPhase<TSettings>
 ) => Promise<any> | any;
 
 /**
- * @alpha
+ * @beta
  */
 export type NavigationPhaseFollowupAction = () => Promise<any> | any;
 
 /**
- * @alpha
+ * @beta
  */
 export interface NavigationPhase<TSettings = any> {
     readonly name: NavigationPhaseName;
@@ -46,7 +46,7 @@ export interface NavigationPhase<TSettings = any> {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export interface NavigationCommitPhase<TSettings = any>
     extends Omit<NavigationPhase<TSettings>, "cancel" | "canceled" | "onCancel"> {

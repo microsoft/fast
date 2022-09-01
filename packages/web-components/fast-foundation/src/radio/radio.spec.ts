@@ -1,16 +1,17 @@
 import { expect, assert } from "chai";
-import { Radio, radioTemplate as template } from "./index";
-import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { FASTRadio, radioTemplate } from "./index.js";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { Updates } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
 
-const FASTRadio = Radio.compose({
-    baseName: "radio",
-    template,
-})
+const radioName = uniqueElementName();
+FASTRadio.define({
+    name: radioName,
+    template: radioTemplate(),
+});
 
 async function setup() {
-    const { connect, disconnect, element, parent } = await fixture(FASTRadio());
+    const { connect, disconnect, element, parent } = await fixture<FASTRadio>(radioName);
 
     return { element, connect, disconnect, parent };
 }
@@ -37,7 +38,7 @@ describe("Radio", () => {
 
         element.checked = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-checked")).to.equal("false");
 
@@ -77,7 +78,7 @@ describe("Radio", () => {
 
         element.required = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-required")).to.equal("false");
 
@@ -105,7 +106,7 @@ describe("Radio", () => {
 
         element.disabled = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-disabled")).to.equal("false");
 
@@ -133,7 +134,7 @@ describe("Radio", () => {
 
         element.readOnly = false;
 
-        await DOM.nextUpdate();
+        await Updates.next();
 
         expect(element.getAttribute("aria-readonly")).to.equal("false");
 
@@ -272,7 +273,7 @@ describe("Radio", () => {
                 wasClicked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.click();
 
@@ -296,7 +297,7 @@ describe("Radio", () => {
                 wasInvoked = true;
             });
 
-            await DOM.nextUpdate();
+            await Updates.next();
 
             element.dispatchEvent(event);
 

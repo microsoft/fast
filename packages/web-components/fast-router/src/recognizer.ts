@@ -2,14 +2,14 @@ import { Route } from "./navigation.js";
 import { QueryString } from "./query-string.js";
 
 /**
- * @alpha
+ * @beta
  */
 export type RouteParameterConverter = (value: string | undefined) => any | Promise<any>;
 const defaultParameterConverter: RouteParameterConverter = (value: string | undefined) =>
     value;
 
 /**
- * @alpha
+ * @beta
  */
 export class ConfigurableRoute implements Route {
     public constructor(
@@ -20,7 +20,7 @@ export class ConfigurableRoute implements Route {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class Endpoint<TSettings = any> {
     public constructor(
@@ -36,7 +36,7 @@ export class Endpoint<TSettings = any> {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class RecognizedRoute<TSettings = any> {
     public readonly allParams: Readonly<Record<string, string | undefined>>;
@@ -364,7 +364,7 @@ class RecognizeResult<T> {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export interface RouteRecognizer<TSettings> {
     add(routeOrRoutes: Route | readonly Route[], settings?: TSettings): void;
@@ -377,7 +377,7 @@ export interface RouteRecognizer<TSettings> {
 }
 
 /**
- * @alpha
+ * @beta
  */
 export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSettings> {
     private names = new Map<string, AnySegment<any>[]>();

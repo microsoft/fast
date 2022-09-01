@@ -3,9 +3,10 @@ id: tooltip
 title: fast-tooltip
 sidebar_label: tooltip
 custom_edit_url: https://github.com/microsoft/fast-dna/edit/master/packages/web-components/fast-foundation/src/tooltip/README.md
+description: fast-tooltop is a web component used to provide extra information about another element when it is hovered.
 ---
 
-The `fast-tooltip` component is used provide extra information about another element when it is hovered.
+The `fast-tooltip` component is used to provide extra information about another element when it is hovered.
 
 ## Setup
 
@@ -47,36 +48,51 @@ export const myTooltip = Tooltip.compose({
 
 
 
-### class: `Tooltip`
+### Variables
+
+| Name              | Description                           | Type                                                                                                                                                                                                                                                                                                                                                                        |
+| ----------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TooltipPosition` | Enumerates possible tooltip positions | `{ top: "top", right: "right", bottom: "bottom", left: "left", center: "center", start: "start", end: "end", topLeft: "top-left", topCenter: "top-center", topRight: "top-right", bottomLeft: "bottom-left", bottomCenter: "bottom-center", bottomRight: "bottom-right", topStart: "top-start", topEnd: "top-end", bottomStart: "bottom-start", bottomEnd: "bottom-end", }` |
+
+<hr/>
+
+
+
+### class: `FASTTooltip`
 
 #### Superclass
 
-| Name                | Module                                        | Package |
-| ------------------- | --------------------------------------------- | ------- |
-| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name                     | Privacy | Type                                                                                                                                                                                                                                                                                                                             | Default    | Description                                                                                                                                                                                                      | Inherited From    |
-| ------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `visible`                | public  | `boolean`                                                                                                                                                                                                                                                                                                                        |            | Whether the tooltip is visible or not. If undefined tooltip is shown when anchor element is hovered                                                                                                              |                   |
-| `anchor`                 | public  | `string`                                                                                                                                                                                                                                                                                                                         | `""`       | The id of the element the tooltip is anchored to                                                                                                                                                                 |                   |
-| `delay`                  | public  | `number`                                                                                                                                                                                                                                                                                                                         | `300`      | The delay in milliseconds before a tooltip is shown after a hover event                                                                                                                                          |                   |
-| `position`               | public  | `or TooltipPosition         or "top"         or "right"         or "bottom"         or "left"         or "start"         or "end"         or "top-left"         or "top-right"         or "bottom-left"         or "bottom-right"         or "top-start"         or "top-end"         or "bottom-start"         or "bottom-end"` |            | Controls the placement of the tooltip relative to the anchor. When the position is undefined the tooltip is placed above or below the anchor based on available space.                                           |                   |
-| `autoUpdateMode`         | public  | `AutoUpdateMode`                                                                                                                                                                                                                                                                                                                 | `"anchor"` | Controls when the tooltip updates its position, default is 'anchor' which only updates when the anchor is resized.  'auto' will update on scroll/resize events. Corresponds to anchored-region auto-update-mode. |                   |
-| `horizontalViewportLock` | public  | `boolean`                                                                                                                                                                                                                                                                                                                        |            | Controls if the tooltip will always remain fully in the viewport on the horizontal axis                                                                                                                          |                   |
-| `verticalViewportLock`   | public  | `boolean`                                                                                                                                                                                                                                                                                                                        |            | Controls if the tooltip will always remain fully in the viewport on the vertical axis                                                                                                                            |                   |
-| `anchorElement`          | public  | `HTMLElement or null`                                                                                                                                                                                                                                                                                                            | `null`     | the html element currently being used as anchor. Setting this directly overrides the anchor attribute.                                                                                                           |                   |
-| `$presentation`          | public  | `ComponentPresentation or null`                                                                                                                                                                                                                                                                                                  |            | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                          | FoundationElement |
-| `template`               | public  | `ElementViewTemplate or void or null`                                                                                                                                                                                                                                                                                            |            | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                       | FoundationElement |
-| `styles`                 | public  | `ElementStyles or void or null`                                                                                                                                                                                                                                                                                                  |            | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                              | FoundationElement |
+| Name                     | Privacy | Type                  | Default    | Description                                                                                                                                                                                                      | Inherited From |
+| ------------------------ | ------- | --------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `visible`                | public  | `boolean`             |            | Whether the tooltip is visible or not. If undefined tooltip is shown when anchor element is hovered                                                                                                              |                |
+| `anchor`                 | public  | `string`              | `""`       | The id of the element the tooltip is anchored to                                                                                                                                                                 |                |
+| `delay`                  | public  | `number`              | `300`      | The delay in milliseconds before a tooltip is shown after a hover event                                                                                                                                          |                |
+| `position`               | public  | `TooltipPosition`     |            | Controls the placement of the tooltip relative to the anchor. When the position is undefined the tooltip is placed above or below the anchor based on available space.                                           |                |
+| `autoUpdateMode`         | public  | `AutoUpdateMode`      | `"anchor"` | Controls when the tooltip updates its position, default is 'anchor' which only updates when the anchor is resized.  'auto' will update on scroll/resize events. Corresponds to anchored-region auto-update-mode. |                |
+| `horizontalViewportLock` | public  | `boolean`             |            | Controls if the tooltip will always remain fully in the viewport on the horizontal axis                                                                                                                          |                |
+| `verticalViewportLock`   | public  | `boolean`             |            | Controls if the tooltip will always remain fully in the viewport on the vertical axis                                                                                                                            |                |
+| `anchorElement`          | public  | `HTMLElement or null` | `null`     | the html element currently being used as anchor. Setting this directly overrides the anchor attribute.                                                                                                           |                |
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
-| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `templateChanged` | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+| Name                     | Privacy   | Description | Parameters                      | Return | Inherited From |
+| ------------------------ | --------- | ----------- | ------------------------------- | ------ | -------------- |
+| `visibleChanged`         | protected |             |                                 | `void` |                |
+| `anchorChanged`          | protected |             |                                 | `void` |                |
+| `anchorElementChanged`   | protected |             | `oldValue: HTMLElement or null` | `void` |                |
+| `viewportElementChanged` | protected |             |                                 | `void` |                |
+
+#### Events
+
+| Name      | Type | Description                                                                          | Inherited From |
+| --------- | ---- | ------------------------------------------------------------------------------------ | -------------- |
+| `dismiss` |      | Fires a custom 'dismiss' event when the tooltip is visible and escape key is pressed |                |
 
 #### Attributes
 
@@ -89,6 +105,18 @@ export const myTooltip = Tooltip.compose({
 | `auto-update-mode`         | autoUpdateMode         |                |
 | `horizontal-viewport-lock` | horizontalViewportLock |                |
 | `vertical-viewport-lock`   | verticalViewportLock   |                |
+
+#### CSS Parts
+
+| Name      | Description         |
+| --------- | ------------------- |
+| `tooltip` | The tooltip element |
+
+#### Slots
+
+| Name | Description                              |
+| ---- | ---------------------------------------- |
+|      | The default slot for the tooltip content |
 
 <hr/>
 

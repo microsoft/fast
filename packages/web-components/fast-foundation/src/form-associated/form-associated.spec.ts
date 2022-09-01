@@ -1,7 +1,7 @@
-import { FormAssociated, CheckableFormAssociated } from "./form-associated";
+import { FormAssociated, CheckableFormAssociated } from "./form-associated.js";
 import { assert, expect } from "chai";
-import { fixture } from "../test-utilities/fixture";
-import { customElement, FASTElement, html, elements, DOM } from "@microsoft/fast-element";
+import { fixture } from "@microsoft/fast-element/testing";
+import { customElement, FASTElement, html, Updates } from "@microsoft/fast-element";
 
 const template = html`
     <slot></slot>
@@ -308,7 +308,7 @@ describe("FormAssociated:", () => {
 
             form.reset();
 
-            assert(element.value === "");
+            assert((element as TestElement).value === "");
             expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
@@ -334,7 +334,7 @@ describe("FormAssociated:", () => {
 
             form.reset();
 
-            assert(element.value === "attr-value");
+            assert((element as TestElement).value === "attr-value");
             expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
@@ -358,12 +358,12 @@ describe("FormAssociated:", () => {
 
             form.reset();
 
-            assert(element.value === "attr-value");
+            assert((element as TestElement).value === "attr-value");
             expect(element.currentValue).to.equal(element.value);
 
             element.setAttribute("value", "new-attr-value");
 
-            assert(element.value === "new-attr-value");
+            assert((element as TestElement).value === "new-attr-value");
             expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
@@ -383,7 +383,7 @@ describe("CheckableFormAssociated:", () => {
         const { connect, element } = await setup<Checkable>("checkable-form-associated");
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
 
         assertChecked(element)(false);
     });
@@ -391,36 +391,36 @@ describe("CheckableFormAssociated:", () => {
         const { connect, element } = await setup<Checkable>("checkable-form-associated");
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
         const test = assertChecked(element);
 
         test(false);
 
         element.checked = true;
 
-        await DOM.nextUpdate();
+        await Updates.next();
         test(true);
 
         element.checked = false;
-        await DOM.nextUpdate();
+        await Updates.next();
         test(false)
     });
     it("should align the `checked` property and `current-checked` attribute with `currentChecked` property changes", async () => {
         const { connect, element } = await setup<Checkable>("checkable-form-associated");
 
         await connect();
-        await DOM.nextUpdate();
+        await Updates.next();
         const test = assertChecked(element);
 
         test(false);
 
         element.setAttribute("current-checked", "true");
 
-        await DOM.nextUpdate();
+        await Updates.next();
         test(true);
 
         element.setAttribute("current-checked", "false");
-        await DOM.nextUpdate();
+        await Updates.next();
         test(false)
     });
 });

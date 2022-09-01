@@ -1,8 +1,112 @@
 # Change Log - @microsoft/site-utilities
 
-This log was last generated on Thu, 21 Apr 2022 07:13:54 GMT and should not be manually modified.
+This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.0
+
+Wed, 22 Jun 2022 20:17:50 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.4 (email not defined)
+
+## 0.9.0
+
+Wed, 15 Jun 2022 17:41:10 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.3 (7559015+janechu@users.noreply.github.com)
+
+## 0.9.0
+
+Wed, 01 Jun 2022 22:21:24 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.2 (nicholasrice@users.noreply.github.com)
+
+## 0.9.0
+
+Thu, 26 May 2022 07:11:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.8 (burtonsmith@microsoft.com)
+
+## 0.9.0
+
+Wed, 25 May 2022 07:09:21 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.7 (chhol@microsoft.com)
+
+## 0.9.0
+
+Tue, 24 May 2022 07:10:02 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.6 (roeisenb@microsoft.com)
+
+## 0.9.0
+
+Thu, 19 May 2022 07:09:40 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.4 (20542556+mollykreis@users.noreply.github.com)
+
+## 0.9.0
+
+Tue, 10 May 2022 07:11:04 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.3 (scomea@microsoft.com)
+
+## 0.9.0
+
+Thu, 05 May 2022 07:11:41 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.30.5 (abris96@gmail.com)
+
+## 0.9.0
+
+Tue, 03 May 2022 07:15:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.46.0 (44823142+williamw2@users.noreply.github.com)
+
+## 0.9.0
+
+Sun, 01 May 2022 07:12:05 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.30.2 (chhol@microsoft.com)
+
+## 0.9.0
+
+Thu, 28 Apr 2022 07:12:47 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.30.1 (john.kreitlow@microsoft.com)
+
+## 0.9.0
+
+Wed, 27 Apr 2022 07:21:09 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.30.0 (chhol@microsoft.com)
 
 ## 0.9.0
 

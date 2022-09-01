@@ -1,13 +1,12 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { FormAssociatedSwitch } from "./switch.form-associated.js";
 
 /**
  * Switch configuration options
  * @public
  */
-export type SwitchOptions = FoundationElementDefinition & {
+export type SwitchOptions = {
     switch?: string | SyntheticViewTemplate;
 };
 
@@ -15,9 +14,19 @@ export type SwitchOptions = FoundationElementDefinition & {
  * A Switch Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#switch | ARIA switch }.
  *
+ * @slot - The deafult slot for the label
+ * @slot checked-message - The message when in a checked state
+ * @slot unchecked-message - The message when in an unchecked state
+ * @csspart label - The label
+ * @csspart switch - The element representing the switch, which wraps the indicator
+ * @csspart status-message - The wrapper for the status messages
+ * @csspart checked-message - The checked message
+ * @csspart unchecked-message - The unchecked message
+ * @fires change - Emits a custom change event when the checked state changes
+ *
  * @public
  */
-export class Switch extends FormAssociatedSwitch {
+export class FASTSwitch extends FormAssociatedSwitch {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -26,7 +35,7 @@ export class Switch extends FormAssociatedSwitch {
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
-    private readOnlyChanged(): void {
+    protected readOnlyChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
@@ -60,6 +69,10 @@ export class Switch extends FormAssociatedSwitch {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent) => {
+        if (this.readOnly) {
+            return;
+        }
+
         switch (e.key) {
             case keyEnter:
             case keySpace:

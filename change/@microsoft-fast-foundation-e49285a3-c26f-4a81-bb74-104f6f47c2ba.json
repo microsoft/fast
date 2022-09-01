@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "remove when directive from flipper",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

@@ -1,0 +1,10 @@
+tsconfig.tsbuildinfo
+node_modules
+dist
+results
+utils/*.js
+utils/*.d.ts
+tsconfig.*.json
+tsconfig.*.tsbuildinfo
+benchmarks/**/*.d.ts
+benchmarks/**/*.js
