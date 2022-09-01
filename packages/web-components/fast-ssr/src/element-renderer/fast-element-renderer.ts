@@ -1,6 +1,5 @@
 import { Aspect, DOM, ExecutionContext, FASTElement } from "@microsoft/fast-element";
-import { PendingTask } from "@microsoft/fast-element/pending-task";
-import { reject } from "lodash-es";
+import { PendingTaskEvent } from "@microsoft/fast-element/pending-task";
 import { escapeHtml } from "../escape-html.js";
 import { RenderInfo } from "../render-info.js";
 import { StyleRenderer } from "../styles/style-renderer.js";
@@ -161,7 +160,7 @@ export abstract class AsyncFASTElementRenderer extends FASTElementRenderer
     private awaiting: Set<Promise<void>> = new Set();
 
     private pendingTaskHandler = (e: Event) => {
-        if (e instanceof PendingTask) {
+        if (e instanceof PendingTaskEvent) {
             this.awaiting.add(e.complete);
         }
     };
