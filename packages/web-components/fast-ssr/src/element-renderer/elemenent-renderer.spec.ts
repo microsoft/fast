@@ -1,5 +1,5 @@
 import "../install-dom-shim.js";
-import { FASTElement, customElement, css, html, attr, observable } from "@microsoft/fast-element";
+import { FASTElement, customElement, css, html, attr, observable, when } from "@microsoft/fast-element";
 import { expect, test } from '@playwright/test';
 import { SyncFASTElementRenderer } from "./fast-element-renderer.js";
 import fastSSR from "../exports.js";
@@ -233,7 +233,7 @@ test.describe("FASTElementRenderer", () => {
                         window.setTimeout(() => {
                             this.setAttribute("async-reject", "");
                             reject();
-                        }, 20000);
+                        }, 20);
                     })));
                 }
             }
@@ -242,6 +242,31 @@ test.describe("FASTElementRenderer", () => {
             const { templateRenderer } = fastSSR({renderMode: "async"});
 
             expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-reject><template shadowroot="open"></template></${name}>`)
-        })
+        });
+        test("should render template content only displayed after PendingTaskEvent is resolved", async () => {
+            const name = uniqueElementName();
+            @customElement({
+                name,
+                template: html`${when(x => x.renderContent, html`<h1>Async content success</h1>`)}`
+            })
+            class MyElement extends FASTElement {
+                @observable
+                renderContent: boolean = false;
+                connectedCallback(): void {
+                    super.connectedCallback();
+                    this.dispatchEvent(new PendingTaskEvent(new Promise((resolve) => {
+                        window.setTimeout(() => {
+                            this.renderContent = true;
+                            resolve();
+                        }, 20);
+                    })));
+                }
+            }
+
+            const template = html`<${name}></${name}>`;
+            const { templateRenderer } = fastSSR({renderMode: "async"});
+
+            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name}><template shadowroot="open"><h1>Async content success</h1></template></${name}>`)
+        });
     })
 });
