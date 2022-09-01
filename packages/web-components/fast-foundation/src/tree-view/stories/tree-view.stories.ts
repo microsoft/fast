@@ -15,7 +15,6 @@ export default {
         renderCollapsedNodes: true,
     },
     argTypes: {
-        renderCollapsedNodes: { control: "boolean" },
         storyContent: { table: { disable: true } },
     },
 } as Meta<FASTTreeView>;
