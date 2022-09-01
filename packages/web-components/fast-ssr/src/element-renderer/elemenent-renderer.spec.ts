@@ -243,6 +243,34 @@ test.describe("FASTElementRenderer", () => {
 
             expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-reject><template shadowroot="open"></template></${name}>`)
         });
+        test("should await multiple PendingTaskEvents", async () => {
+            const name = uniqueElementName();
+            @customElement({
+                name,
+            })
+            class MyElement extends FASTElement {
+                connectedCallback(): void {
+                    super.connectedCallback();
+                    this.dispatchEvent(new PendingTaskEvent(new Promise((resolve) => {
+                        window.setTimeout(() => {
+                            this.setAttribute("async-resolved-one", "");
+                            resolve();
+                        }, 20);
+                    })));
+                    this.dispatchEvent(new PendingTaskEvent(new Promise((resolve) => {
+                        window.setTimeout(() => {
+                            this.setAttribute("async-resolved-two", "");
+                            resolve();
+                        }, 30);
+                    })));
+                }
+            }
+
+            const template = html`<${name}></${name}>`;
+            const { templateRenderer } = fastSSR({renderMode: "async"});
+
+            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-resolved-one async-resolved-two><template shadowroot="open"></template></${name}>`)
+        });
         test("should render template content only displayed after PendingTaskEvent is resolved", async () => {
             const name = uniqueElementName();
             @customElement({
@@ -267,6 +295,31 @@ test.describe("FASTElementRenderer", () => {
             const { templateRenderer } = fastSSR({renderMode: "async"});
 
             expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name}><template shadowroot="open"><h1>Async content success</h1></template></${name}>`)
+        });
+        test("should support nested async rendering scenarios", async () => {
+            const name = uniqueElementName();
+            @customElement({
+                name,
+                template: html`<slot></slot>`
+            })
+            class MyElement extends FASTElement {
+                @observable
+                renderContent: boolean = false;
+                connectedCallback(): void {
+                    super.connectedCallback();
+                    this.dispatchEvent(new PendingTaskEvent(new Promise((resolve) => {
+                        window.setTimeout(() => {
+                            this.setAttribute("async-resolved", "")
+                            resolve();
+                        }, 20);
+                    })));
+                }
+            }
+
+            const template = html`<${name}><${name}></${name}></${name}>`;
+            const { templateRenderer } = fastSSR({renderMode: "async"});
+
+            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-resolved><template shadowroot="open"><slot></slot></template><${name} async-resolved><template shadowroot="open"><slot></slot></template></${name}></${name}>`)
         });
     })
 });
