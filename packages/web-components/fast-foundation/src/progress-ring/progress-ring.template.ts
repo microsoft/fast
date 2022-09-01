@@ -53,7 +53,7 @@ export function progressRingTemplate<T extends FASTProgressRing>(
                 x => typeof x.value !== "number",
                 html<T>`
                     <slot name="indeterminate">
-                        ${options.indeterminateIndicator || ""}
+                        ${options.indeterminateIndicator ?? ""}
                     </slot>
                 `
             )}

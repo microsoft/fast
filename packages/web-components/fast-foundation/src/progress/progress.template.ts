@@ -35,8 +35,8 @@ export function progressTemplate<T extends FASTProgress>(
                 html<T>`
                     <div class="progress" part="progress" slot="indeterminate">
                         <slot name="indeterminate">
-                            ${options.indeterminateIndicator1 || ""}
-                            ${options.indeterminateIndicator2 || ""}
+                            ${options.indeterminateIndicator1 ?? ""}
+                            ${options.indeterminateIndicator2 ?? ""}
                         </slot>
                     </div>
                 `

@@ -43,7 +43,7 @@ export function sliderTemplate<T extends FASTSlider>(
                     class="thumb-container"
                     style="${x => x.position}"
                 >
-                    <slot name="thumb">${options.thumb || ""}</slot>
+                    <slot name="thumb">${options.thumb ?? ""}</slot>
                 </div>
             </div>
         </template>

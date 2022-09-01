@@ -18,7 +18,7 @@ export function avatarTemplate<T extends FASTAvatar>(
             part="link"
             href="${x => (x.link ? x.link : void 0)}"
         >
-            <slot name="media">${options.media || ""}</slot>
+            <slot name="media">${options.media ?? ""}</slot>
             <slot><slot>
         </a>
     </div>

@@ -46,7 +46,7 @@ export function comboboxTemplate<T extends FASTCombobox>(
                     />
                     <div class="indicator" part="indicator" aria-hidden="true">
                         <slot name="indicator">
-                            ${options.indicator || ""}
+                            ${options.indicator ?? ""}
                         </slot>
                     </div>
                 </slot>

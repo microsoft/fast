@@ -21,7 +21,7 @@ export function flipperTemplate<T extends FASTFlipper>(
             templateCache[direction] = existing = html`
                 <span part="${direction}" class="${direction}">
                     <slot name="${direction}">
-                        ${options[direction] || ""}
+                        ${options[direction] ?? ""}
                     </slot>
                 </span>
             `;

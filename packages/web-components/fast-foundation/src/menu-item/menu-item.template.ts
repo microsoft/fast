@@ -33,7 +33,7 @@ export function menuItemTemplate<T extends FASTMenuItem>(
                     <div part="input-container" class="input-container">
                         <span part="checkbox" class="checkbox">
                             <slot name="checkbox-indicator">
-                                ${options.checkboxIndicator || ""}
+                                ${options.checkboxIndicator ?? ""}
                             </slot>
                         </span>
                     </div>
@@ -45,7 +45,7 @@ export function menuItemTemplate<T extends FASTMenuItem>(
                     <div part="input-container" class="input-container">
                         <span part="radio" class="radio">
                             <slot name="radio-indicator">
-                                ${options.radioIndicator || ""}
+                                ${options.radioIndicator ?? ""}
                             </slot>
                         </span>
                     </div>
@@ -66,7 +66,7 @@ export function menuItemTemplate<T extends FASTMenuItem>(
                 >
                     <span part="expand-collapse" class="expand-collapse">
                         <slot name="expand-collapse-indicator">
-                            ${options.expandCollapseGlyph || ""}
+                            ${options.expandCollapseGlyph ?? ""}
                         </slot>
                     </span>
                 </div>

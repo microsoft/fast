@@ -51,7 +51,7 @@ export function treeItemTemplate<T extends FASTTreeItem>(
                                 ${ref("expandCollapseButton")}
                             >
                                 <slot name="expand-collapse-glyph">
-                                    ${options.expandCollapseGlyph || ""}
+                                    ${options.expandCollapseGlyph ?? ""}
                                 </slot>
                             </div>
                         `
