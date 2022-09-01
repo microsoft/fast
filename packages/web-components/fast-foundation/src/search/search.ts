@@ -220,6 +220,7 @@ export class FASTSearch extends FormAssociatedSearch {
     public handleClearInput(): void {
         this.value = "";
         this.control.focus();
+        this.handleChange();
     }
 
     /**

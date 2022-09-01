@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "call change when search component clear button is clicked",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "jes@microsoft.com",
+  "dependentChangeType": "prerelease"
+}
