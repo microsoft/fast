@@ -34,10 +34,10 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
                 ${endSlotTemplate(options)}
                 <span class="icon" part="icon" aria-hidden="true">
                     <slot name="expanded-icon">
-                        ${options.expandedIcon || ""}
+                        ${options.expandedIcon ?? ""}
                     </slot>
                     <slot name="collapsed-icon">
-                        ${options.collapsedIcon || ""}
+                        ${options.collapsedIcon ?? ""}
                     </slot>
                 <span>
             </div>

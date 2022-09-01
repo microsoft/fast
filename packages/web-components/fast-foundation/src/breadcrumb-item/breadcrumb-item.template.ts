@@ -16,7 +16,7 @@ export function breadcrumbItemTemplate<T extends FASTBreadcrumbItem>(
                 x => x.separator,
                 html<T>`
                     <span class="separator" part="separator" aria-hidden="true">
-                        <slot name="separator">${options.separator || ""}</slot>
+                        <slot name="separator">${options.separator ?? ""}</slot>
                     </span>
                 `
             )}

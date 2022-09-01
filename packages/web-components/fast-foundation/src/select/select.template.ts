@@ -52,7 +52,7 @@ export function selectTemplate<T extends FASTSelect>(
                             </div>
                             <div aria-hidden="true" class="indicator" part="indicator">
                                 <slot name="indicator">
-                                    ${options.indicator || ""}
+                                    ${options.indicator ?? ""}
                                 </slot>
                             </div>
                         </slot>

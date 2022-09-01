@@ -24,10 +24,10 @@ export function checkboxTemplate<T extends FASTCheckbox>(
         >
             <div part="control" class="control">
                 <slot name="checked-indicator">
-                    ${options.checkedIndicator || ""}
+                    ${options.checkedIndicator ?? ""}
                 </slot>
                 <slot name="indeterminate-indicator">
-                    ${options.indeterminateIndicator || ""}
+                    ${options.indeterminateIndicator ?? ""}
                 </slot>
             </div>
             <label

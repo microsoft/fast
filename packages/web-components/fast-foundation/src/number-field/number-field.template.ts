@@ -76,7 +76,7 @@ export function numberFieldTemplate<T extends FASTNumberField>(
                                 @click="${x => x.stepUp()}"
                             >
                                 <slot name="step-up-glyph">
-                                    ${options.stepUpGlyph || ""}
+                                    ${options.stepUpGlyph ?? ""}
                                 </slot>
                             </div>
                             <div
@@ -85,7 +85,7 @@ export function numberFieldTemplate<T extends FASTNumberField>(
                                 @click="${x => x.stepDown()}"
                             >
                                 <slot name="step-down-glyph">
-                                    ${options.stepDownGlyph || ""}
+                                    ${options.stepDownGlyph ?? ""}
                                 </slot>
                             </div>
                         </div>
