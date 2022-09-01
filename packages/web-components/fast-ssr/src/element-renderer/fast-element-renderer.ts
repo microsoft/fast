@@ -121,7 +121,7 @@ export abstract class AsyncFASTElementRenderer extends FASTElementRenderer
     constructor(tagName: string, renderInfo: RenderInfo) {
         super(tagName, renderInfo);
 
-        this.element.addEventListener("pending-task", this.pendingTaskHandler);
+        this.element.addEventListener(PendingTaskEvent.type, this.pendingTaskHandler);
     }
     public *renderAttributes(
         this: AsyncFASTElementRenderer
@@ -160,7 +160,7 @@ export abstract class AsyncFASTElementRenderer extends FASTElementRenderer
     private awaiting: Set<Promise<void>> = new Set();
 
     private pendingTaskHandler = (e: Event) => {
-        if (e instanceof PendingTaskEvent) {
+        if (PendingTaskEvent.isPendingTask(e)) {
             this.awaiting.add(e.complete);
         }
     };
