@@ -3,5 +3,5 @@
   "comment": "update templates to ensure component classes can be extended",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
