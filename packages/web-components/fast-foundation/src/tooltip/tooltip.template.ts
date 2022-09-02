@@ -14,13 +14,13 @@ export type TooltipOptions = {
  * Creates a template for the {@link @microsoft/fast-foundation#(FASTTooltip:class)} component using the provided prefix.
  * @public
  */
-export function tooltipTemplate(
+export function tooltipTemplate<T extends FASTTooltip>(
     options: TooltipOptions
-): ElementViewTemplate<FASTTooltip> {
-    return html<FASTTooltip>`
+): ElementViewTemplate<T> {
+    return html<T>`
         ${when(
             x => x.tooltipVisible,
-            html<FASTTooltip>`
+            html<T>`
             <${tagFor(options.anchoredRegion)}
                 fixed-placement="true"
                 auto-update-mode="${x => x.autoUpdateMode}"

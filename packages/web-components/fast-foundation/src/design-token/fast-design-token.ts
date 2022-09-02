@@ -138,13 +138,13 @@ export class DesignToken<T> {
     }
 
     /**
-     * Registers and element or document as a DesignToken root.
+     * Registers a target for emitting default style values.
      * {@link CSSDesignToken | CSSDesignTokens} with default values assigned via
      * {@link DesignToken.withDefault} will emit CSS custom properties to all
-     * registered roots.
-     * @param target - The root to register
+     * registered targets.
+     * @param target - The target to register, defaults to the document
      */
-    public static registerRoot(
+    public static registerDefaultStyleTarget(
         target: FASTElement | Document | PropertyTarget = document
     ) {
         if (target instanceof FASTElement || target instanceof Document) {
@@ -155,10 +155,10 @@ export class DesignToken<T> {
     }
 
     /**
-     * Unregister an element or document as a DesignToken root.
-     * @param target - The root to deregister
+     * Unregister a target for default style emission.
+     * @param target - The root to deregister, defaults to the document
      */
-    public static unregisterRoot(
+    public static unregisterDefaultStyleTarget(
         target: FASTElement | Document | PropertyTarget = document
     ) {
         if (target instanceof FASTElement || target instanceof Document) {
@@ -428,5 +428,27 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
 
     constructor(public readonly target: FASTElement) {
         super();
+        // By default, nodes are not attached to the defaultNode for performance
+        // reasons. However, that behavior can throw if retrieval for a node
+        // happens before the bind() method is called. To guard against that,
+        //  lazily attach to the defaultNode when get/set/delete methods are called.
+        this.setTokenValue = this.lazyAttachToDefault(super.setTokenValue);
+        this.getTokenValue = this.lazyAttachToDefault(super.getTokenValue);
+        this.deleteTokenValue = this.lazyAttachToDefault(super.deleteTokenValue);
+    }
+
+    /**
+     * Creates a function from a function that lazily attaches the node to the default node.
+     */
+    private lazyAttachToDefault<T extends (...args: any) => any>(fn: T): T {
+        const cb = ((...args: Parameters<T>): ReturnType<T> => {
+            if (this.parent === null) {
+                FASTDesignTokenNode.defaultNode.appendChild(this);
+            }
+
+            return fn.apply(this, args);
+        }) as T;
+
+        return cb;
     }
 }

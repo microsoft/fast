@@ -7,9 +7,9 @@ import type { ComboboxOptions, FASTCombobox } from "./combobox.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTCombobox:class)} component.
  * @public
  */
-export function comboboxTemplate(
+export function comboboxTemplate<T extends FASTCombobox>(
     options: ComboboxOptions = {}
-): ElementViewTemplate<FASTCombobox> {
+): ElementViewTemplate<T> {
     return html`
         <template
             aria-disabled="${x => x.ariaDisabled}"
@@ -46,7 +46,7 @@ export function comboboxTemplate(
                     />
                     <div class="indicator" part="indicator" aria-hidden="true">
                         <slot name="indicator">
-                            ${options.indicator || ""}
+                            ${options.indicator ?? ""}
                         </slot>
                     </div>
                 </slot>

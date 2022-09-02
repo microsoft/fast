@@ -145,7 +145,7 @@ declare global {
 
 export function measureMemory() {
     if (window && performance && performance.memory) {
-        // Report results in MBs\
+        // Report results in MBs
         window.usedJSHeapSize = performance.memory.usedJSHeapSize / 1e6;
     } else {
         window.usedJSHeapSize = 0;

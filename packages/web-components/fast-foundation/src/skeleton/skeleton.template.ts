@@ -6,8 +6,8 @@ import { FASTSkeleton, SkeletonShape } from "./skeleton.js";
  * The template for the fast-skeleton component
  * @public
  */
-export function skeletonTemplate(): ElementViewTemplate<FASTSkeleton> {
-    return html<FASTSkeleton>`
+export function skeletonTemplate<T extends FASTSkeleton>(): ElementViewTemplate<T> {
+    return html<T>`
         <template
             class="${x => (x.shape in SkeletonShape ? x.shape : "rect")}"
             pattern="${x => x.pattern}"

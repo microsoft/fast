@@ -35,11 +35,11 @@ import "@microsoft/fast-ssr/install-dom-shim";
 Alternatively, a full DOM implementation such as [`jsdom`](https://github.com/jsdom/jsdom) or [`happy-dom`](https://github.com/capricorn86/happy-dom) can be used.
 
 ### Construct the Renderer
-Import the renderer factory and construct a `TemplateRenderer`. You will also need a `RenderInfo` object. A default is provided, more on this [here](#configuring-the-renderinfo-object).
+Import the renderer factory and construct a `TemplateRenderer`.
 ```js
 import fastSSR from "@microsoft/fast-ssr";
 
-const { templateRenderer, defaultRenderInfo } = fastSSR();
+const { templateRenderer } = fastSSR();
 ```
 
 ### Define Custom Elements
@@ -65,20 +65,20 @@ const result = templateRenderer.render(html`
             <my-element></my-element>
         </body>
     </html>
-`, defaultRenderInfo);
+`);
 ```
 
 The template being rendered can also be a fragment of HTML, it does not need to be a valid document:
 
 ```js
-const result = templateRenderer.render(html`<my-element></my-element>`, defaultRenderInfo);
+const result = templateRenderer.render(html`<my-element></my-element>`);
 ```
 
 #### Rendering Strings
 The template renderer can also render `string` types just as it would a template:
 
 ```js
-const result = templateRenderer.render("<!DOCTYPE HTML><html><body><my-element></my-element></body></html>", defaultRenderInfo);
+const result = templateRenderer.render("<!DOCTYPE HTML><html><body><my-element></my-element></body></html>");
 ```
 
 #### Rendering Templates with Bindings
@@ -87,7 +87,7 @@ A template can be rendered with arbitrary source data by providing that source a
 ```ts
 const result = templateRenderer.render(html`
     <h1>${x => x.message}</h1>
-`, defaultRenderInfo, { message: "hello world" });
+`, templateRenderer.createRenderInfo(), { message: "hello world" });
 ```
 
 #### Rendering Templates with Directives
@@ -101,7 +101,7 @@ const result = templateRenderer.render(html`
         <h1>Colors of a pixel</h1>
         ${repeat(x => x.data, html`<li>${color => color}</li>`)}
     `)}
-`, defaultRenderInfo, { shouldRender: true, data: ["red", "green", "blue"] });
+`, templateRenderer.createRenderInfo(), { shouldRender: true, data: ["red", "green", "blue"] });
 ```
 
 ##### Directive Support Matrix
@@ -118,37 +118,63 @@ const result = templateRenderer.render(html`
 > Unsupported directives are no-ops. To understand more about why, see the [Design Philosophy.](#design-philosophy)
 
 ### Configuring the RenderInfo Object
-`TemplateRenderer.render()` must be invoked with a `RenderInfo` object. Its purpose is to provide different element renderers to the process, as well as metadata about the rendering process. It can be used to render custom elements from different templating libraries in the same process. A pre-generated object is created for you by the factory function, but you can also easily construct your own: 
+`TemplateRenderer.render()` must be invoked with a `RenderInfo` object. Its purpose is to provide different element renderers to the process, as well as metadata about the rendering process. It can be used to render custom elements from different templating libraries in the same process. By default, `TemplateRenderer.render()` will create a `RenderInfo` object for you, but you can also easily construct your own using `TemplateRenderer.createRenderInfo()`: 
 
 ```js
-const { templateRenderer, elementRenderer } = fastSSR();
-templateRenderer.render(html`<some-fast-element></some-fast-element>`, {
-    elementRenderers: [elementRenderer],
-    customElementHostStack: [],
-    customElementInstanceStack: [],
-});
+const { templateRenderer, ElementRenderer } = fastSSR();
+templateRenderer.render(html`<some-fast-element></some-fast-element>`, templateRenderer.createRenderInfo());
 ```
 
-To render elements built with another library, that library will need to provide an `ElementRenderer` for the library. For example, to render a Lit element along-side a FAST element, provide the FAST `ElementRenderer` *and* the Lit `ElementRenderer` to the `RenderInfo` object:
+By default, `TemplateRenderer.createRenderInfo()` returns a `RenderInfo` object hydrated with only the `ElementRenderer` returned from `fastSSR()`. To configure this method to return a `RenderInfo` with *additional* or *different* elementRenderers, use the `TemplateRenderer.withDefaultElementRenderers()` method:
 
-```js
+```ts
+    import { AnotherElementRenderer } from "somewhere";
+    const { templateRenderer, ElementRenderer } = fastSSR();
+
+    templateRenderer.withDefaultElementRenderers(ElementRenderer, AnotherElementRenderer);
+
+    const renderInfo = templateRenderer.createRenderInfo();
+    renderInfo.elementRenderers.includes(ElementRenderer); // true
+    renderInfo.elementRenderers.includes(AnotherElementRenderer); // true
+```
+
+To render elements built with another library, that library will need to provide an `ElementRenderer` for the library. For example, to render a Lit element along-side a FAST element, provide the FAST `ElementRenderer` *and* the Lit `ElementRenderer` to the `RenderInfo` object. There are two ways to accomplish this. First, the `templateRenderer` itself can be configured to always create `RenderInfo` objects using both renderers:
+
+```ts
 import fastSSR from "@microsoft/fast-ssr";
 import { html } from "@microsoft/fast-element";
 import { LitElementRenderer } from "@lit-labs/ssr/lib/lit-element-renderer.js"
 
-const { templateRenderer, elementRenderer } = fastSSR();
+const { templateRenderer, ElementRenderer } = fastSSR();
+
+templateRenderer.withDefaultElementRenderers(ElementRenderer, LitElementRenderer);
 // Some implementation that defines both FAST and Lit components
 defineComponents();
 
 const result = templateRenderer.render(html`
     <my-fast-element></my-fast-element>
     <my-lit-element></my-lit-element>
-`, {
-    elementRenderers: [elementRenderer, LitElementRenderer],
-    customElementHostStack: [],
-    customElementInstanceStack: []
-});
+`);
 ```
+
+Alternatively, a `RenderInfo` can be created with both renderers for only a single rendering process:
+```ts
+// ...
+import fastSSR from "@microsoft/fast-ssr";
+import { html } from "@microsoft/fast-element";
+import { LitElementRenderer } from "@lit-labs/ssr/lib/lit-element-renderer.js"
+
+const { templateRenderer, ElementRenderer } = fastSSR();
+
+// Some implementation that defines both FAST and Lit components
+defineComponents();
+
+const result = templateRenderer.render(html`
+    <my-fast-element></my-fast-element>
+    <my-lit-element></my-lit-element>
+`, templateRenderer.createRenderInfo([ElementRenderer, LitElementRenderer]));
+```
+
 
 ### Scoping Requests
 
@@ -162,7 +188,7 @@ import express from "express";
 
 const app = express();
 const port = 8080;
-const { templateRenderer, defaultRenderInfo } = fastSSR();
+const { templateRenderer } = fastSSR();
 
 defineWebComponents();
 const template = pageTemplate();
@@ -176,10 +202,7 @@ app.get("/", (req, res) => {
     // and they will be scoped to the request
     // handler and cleaned up afterward.
 
-    const stream = templateRenderer.render(
-        template, 
-        defaultRenderInfo
-    );
+    const stream = templateRenderer.render(template);
 
     for (const part of stream) {
         res.write(part);

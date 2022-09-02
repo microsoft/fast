@@ -6,10 +6,10 @@ import type { ButtonOptions, FASTButton } from "./button.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTButton:class)} component.
  * @public
  */
-export function buttonTemplate(
+export function buttonTemplate<T extends FASTButton>(
     options: ButtonOptions = {}
-): ElementViewTemplate<FASTButton> {
-    return html<FASTButton>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <button
             class="control"
             part="control"
