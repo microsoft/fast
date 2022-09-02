@@ -30,4 +30,10 @@ export class FASTDivider extends FASTElement {
      */
     @attr
     public orientation: Orientation = Orientation.horizontal;
+
+    delayLoad() {
+        return new Promise(resolve => {
+            window.setTimeout(resolve, 6000);
+        });
+    }
 }

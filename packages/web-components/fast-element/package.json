@@ -46,6 +46,10 @@
       "types": "./dist/dts/templating/render.d.ts",
       "default": "./dist/esm/templating/render.js"
     },
+    "./async": {
+      "types": "./dist/dts/templating/async.d.ts",
+      "default": "./dist/esm/templating/async.js"
+    },
     "./utilities": {
       "types": "./dist/dts/utilities.d.ts",
       "default": "./dist/esm/utilities.js"
