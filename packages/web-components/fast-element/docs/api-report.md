@@ -340,8 +340,8 @@ export interface ExpressionController<TSource = any, TParent = any> {
     onUnbind(behavior: {
         unbind(controller: ExpressionController<TSource, TParent>): any;
     }): void;
-    readonly selfContained?: boolean;
     readonly source: TSource;
+    readonly sourceLifetime?: SourceLifetime;
 }
 
 // @public
@@ -688,6 +688,15 @@ export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveO
 // @public
 export interface SlottedDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, AssignedNodesOptions {
 }
+
+// @public
+export const SourceLifetime: Readonly<{
+    readonly unknown: undefined;
+    readonly coupled: 1;
+}>;
+
+// @public
+export type SourceLifetime = typeof SourceLifetime[keyof typeof SourceLifetime];
 
 // @public
 export class Splice {

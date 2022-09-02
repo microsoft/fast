@@ -1,7 +1,7 @@
 import { Message, Mutable, StyleTarget } from "../interfaces.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
-import { Observable } from "../observation/observable.js";
+import { Observable, SourceLifetime } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
@@ -435,7 +435,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (template) {
             // If a new template was provided, render it.
             (this as Mutable<this>).view = template.render(element, host, element);
-            ((this.view as any) as Mutable<ViewController>).selfContained = true;
+            ((this.view as any) as Mutable<ViewController>).sourceLifetime = SourceLifetime.coupled;
         }
     }
 

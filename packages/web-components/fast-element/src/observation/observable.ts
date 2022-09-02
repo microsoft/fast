@@ -66,6 +66,28 @@ interface SubscriptionRecord extends ObservationRecord {
 }
 
 /**
+ * Describes how the source's lifetime relates to its controller's lifetime.
+ * @public
+ */
+export const SourceLifetime = Object.freeze({
+    /**
+     * The source to controller lifetime relationship is unknown.
+     */
+    unknown: void 0,
+    /**
+     * The source and controller lifetimes are coupled to one another.
+     * They can/will be GC'd together.
+     */
+    coupled: 1
+} as const);
+
+/**
+ * Describes how the source's lifetime relates to its controller's lifetime.
+ * @public
+ */
+export type SourceLifetime = typeof SourceLifetime[keyof typeof SourceLifetime];
+
+/**
  * Controls the lifecycle of an expression and provides relevant context.
  * @public
  */
@@ -76,6 +98,11 @@ export interface ExpressionController<TSource = any, TParent = any> {
     readonly source: TSource;
 
     /**
+     * Indicates how the source's lifetime relates to the controller's lifetime.
+     */
+    readonly sourceLifetime?: SourceLifetime;
+
+    /**
      * The context the expression is evaluated against.
      */
     readonly context: ExecutionContext<TParent>;
@@ -84,12 +111,6 @@ export interface ExpressionController<TSource = any, TParent = any> {
      * Indicates whether the controller is bound.
      */
     readonly isBound: boolean;
-
-    /**
-     * Indicates whether or not the source and its bindings are completely self-
-     * contained, without external references preventing GC.
-     */
-    readonly selfContained?: boolean;
 
     /**
      * Registers an unbind handler with the controller.
@@ -269,7 +290,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
 
         private requiresUnbind(controller: ExpressionController) {
             return (
-                !controller.selfContained ||
+                controller.sourceLifetime !== SourceLifetime.coupled ||
                 this.first !== this.last ||
                 this.first.propertySource !== controller.source
             );
