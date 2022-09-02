@@ -66,13 +66,13 @@ export interface HostBehavior<TSource = any> {
     removedCallback?(controller: HostController<TSource>): void;
 
     /**
-     * Executed when this behavior is bound.
+     * Executed when this behavior's host is connected.
      * @param controller - Controls the behavior lifecycle.
      */
     connectedCallback?(controller: HostController<TSource>): void;
 
     /**
-     * Executed when this behavior is unbound.
+     * Executed when this behavior's host is disconnected.
      * @param controller - Controls the behavior lifecycle.
      */
     disconnectedCallback?(controller: HostController<TSource>): void;
