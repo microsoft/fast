@@ -6,8 +6,10 @@ import type { FASTTabs, TabsOptions } from "./tabs.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTTabs:class)} component.
  * @public
  */
-export function tabsTemplate(options: TabsOptions = {}): ElementViewTemplate<FASTTabs> {
-    return html<FASTTabs>`
+export function tabsTemplate<T extends FASTTabs>(
+    options: TabsOptions = {}
+): ElementViewTemplate<T> {
+    return html<T>`
         <template class="${x => x.orientation}">
             ${startSlotTemplate(options)}
             <div class="tablist" part="tablist" role="tablist">
@@ -15,7 +17,7 @@ export function tabsTemplate(options: TabsOptions = {}): ElementViewTemplate<FAS
 
                 ${when(
                     x => x.showActiveIndicator,
-                    html<FASTTabs>`
+                    html<T>`
                         <div
                             ${ref("activeIndicatorRef")}
                             class="active-indicator"

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: add new state, ownedState, and computedState APIs",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

@@ -418,5 +418,27 @@ class FASTDesignTokenNode extends DesignTokenNode implements HostBehavior {
 
     constructor(public readonly target: FASTElement) {
         super();
+        // By default, nodes are not attached to the defaultNode for performance
+        // reasons. However, that behavior can throw if retrieval for a node
+        // happens before the bind() method is called. To guard against that,
+        //  lazily attach to the defaultNode when get/set/delete methods are called.
+        this.setTokenValue = this.lazyAttachToDefault(super.setTokenValue);
+        this.getTokenValue = this.lazyAttachToDefault(super.getTokenValue);
+        this.deleteTokenValue = this.lazyAttachToDefault(super.deleteTokenValue);
+    }
+
+    /**
+     * Creates a function from a function that lazily attaches the node to the default node.
+     */
+    private lazyAttachToDefault<T extends (...args: any) => any>(fn: T): T {
+        const cb = ((...args: Parameters<T>): ReturnType<T> => {
+            if (this.parent === null) {
+                FASTDesignTokenNode.defaultNode.appendChild(this);
+            }
+
+            return fn.apply(this, args);
+        }) as T;
+
+        return cb;
     }
 }
