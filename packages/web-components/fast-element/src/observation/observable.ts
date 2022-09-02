@@ -78,7 +78,7 @@ export const SourceLifetime = Object.freeze({
      * The source and controller lifetimes are coupled to one another.
      * They can/will be GC'd together.
      */
-    coupled: 1
+    coupled: 1,
 } as const);
 
 /**

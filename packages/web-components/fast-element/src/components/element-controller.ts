@@ -435,7 +435,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (template) {
             // If a new template was provided, render it.
             (this as Mutable<this>).view = template.render(element, host, element);
-            ((this.view as any) as Mutable<ViewController>).sourceLifetime = SourceLifetime.coupled;
+            ((this.view as any) as Mutable<ViewController>).sourceLifetime =
+                SourceLifetime.coupled;
         }
     }
 
