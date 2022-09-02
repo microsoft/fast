@@ -57,3 +57,16 @@ export const AvatarCircleWithTextContent: Story<FASTAvatar> = Avatar.bind({});
 AvatarCircleWithTextContent.args = {
     storyContent: "CR",
 };
+
+export const AvatarCircleWithTextAndMediaContent: Story<FASTAvatar> = Avatar.bind({});
+AvatarCircleWithTextAndMediaContent.args = {
+    storyContent: html`
+        <img
+            class="image"
+            slot="media"
+            src="https://via.placeholder.com/32x32"
+            alt="Annie's profile image"
+        />
+        CR
+    `,
+};

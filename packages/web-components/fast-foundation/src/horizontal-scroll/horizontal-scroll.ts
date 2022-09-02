@@ -15,13 +15,16 @@ import { ScrollEasing } from "./horizontal-scroll.options.js";
  *
  * @slot start - Content which can be provided before the scroll area
  * @slot end - Content which can be provided after the scroll area
+ * @slot - Content in the scroll area
+ * @slot previous-flipper - The component for scrolling previous
+ * @slot next-flipper - The component for scrolling next
  * @csspart scroll-area - Wraps the entire scrollable region
  * @csspart scroll-view - The visible scroll area
- * @csspart content-container - The container for the content
- * @csspart scroll-prev - The previous flipper container
- * @csspart scroll-action-previous - The element wrapping the previous flipper
+ * @csspart content - The container for the content
+ * @csspart scroll-previous - The previous flipper container
+ * @csspart previous-flipper - The previous flipper
  * @csspart scroll-next - The next flipper container
- * @csspart scroll-action-next - The element wrapping the next flipper
+ * @csspart next-flipper - The next flipper
  * @fires scrollstart - Fires a custom 'scrollstart' event when scrolling
  * @fires scrollend - Fires a custom 'scrollend' event when scrolling stops
  *

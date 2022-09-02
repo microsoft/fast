@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import { dismissIcon } from "../../utilities/style/icons.js";
 import { FASTSearch } from "../search.js";
 import { searchTemplate } from "../search.template.js";
 
@@ -24,7 +25,7 @@ const styles = css`
         height: calc(var(--height-number) * 1px);
         align-items: baseline;
     }
-    .input {
+    .field {
         -webkit-appearance: none;
         font: inherit;
         background: transparent;
@@ -38,13 +39,13 @@ const styles = css`
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
     }
-    .input::-webkit-search-cancel-button {
+    .field::-webkit-search-cancel-button {
         -webkit-appearance: none;
     }
-    .input:hover,
-    .input:focus-visible,
-    .input:disabled,
-    .input:active {
+    .field:hover,
+    .field:focus-visible,
+    .field:disabled,
+    .field:active {
         outline: none;
     }
     .clear-button {
@@ -89,7 +90,7 @@ const styles = css`
     }
     ::slotted([slot="start"]),
     ::slotted([slot="end"]),
-    .input {
+    .field {
         align-self: center;
     }
     ::slotted([slot="start"]),
@@ -130,21 +131,23 @@ const styles = css`
     }
     :host([disabled]) .label,
     :host([readonly]) .label,
-    :host([readonly]) .input,
-    :host([disabled]) .input {
+    :host([readonly]) .field,
+    :host([disabled]) .field {
         cursor: var(--disabled-cursor);
     }
     :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
-    :host([disabled]) .input {
+    :host([disabled]) .field {
         border-color: var(--neutral-stroke-rest);
     }
 `;
 
 FASTSearch.define({
     name: "fast-search",
-    template: searchTemplate(),
+    template: searchTemplate({
+        clearIcon: dismissIcon,
+    }),
     shadowOptions: {
         delegatesFocus: true,
     },

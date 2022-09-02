@@ -22,12 +22,12 @@ export type TextFieldOptions = StartEndOptions;
  * A Text Field Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text | <input type="text" /> element }.
  *
- * @slot start - Content which can be provided before the number field input
- * @slot end - Content which can be provided after the number field input
+ * @slot start - Content which can be provided before the input field
+ * @slot end - Content which can be provided after the input field
  * @slot - The default slot for the label
  * @csspart label - The label
- * @csspart root - The element wrapping the input, including start and end slots
- * @csspart input - The text field element
+ * @csspart control - The logical control, the element wrapping the input field, including start and end slots
+ * @csspart field - The text field element
  * @fires change - Fires a custom 'change' event when the value has changed
  *
  * @public
@@ -188,10 +188,10 @@ export class FASTTextField extends FormAssociatedTextField {
     public defaultSlottedNodes: Node[];
 
     /**
-     * A reference to the internal input element
+     * A reference to the internal input field element
      * @internal
      */
-    public input: HTMLInputElement;
+    public field: HTMLInputElement;
 
     /**
      * @internal
@@ -215,7 +215,7 @@ export class FASTTextField extends FormAssociatedTextField {
      * @public
      */
     public select(): void {
-        this.input.select();
+        this.field.select();
 
         /**
          * The select event does not permeate the shadow DOM boundary.
@@ -227,11 +227,11 @@ export class FASTTextField extends FormAssociatedTextField {
     }
 
     /**
-     * Handles the internal input's `input` event
+     * Handles the internal input field's `input` event
      * @internal
      */
     public handleTextInput(): void {
-        this.value = this.input.value;
+        this.value = this.field.value;
     }
 
     /**
@@ -249,7 +249,7 @@ export class FASTTextField extends FormAssociatedTextField {
 
     /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
-        super.validate(this.input);
+        super.validate(this.field);
     }
 }
 

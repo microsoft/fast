@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import { radioIcon } from "../../utilities/style/icons.js";
 import { FASTRadio } from "../radio.js";
 import { radioTemplate } from "../radio.template.js";
 
@@ -6,6 +7,7 @@ const styles = css`
     :host([hidden]) {
         display: none;
     }
+
     :host {
         --input-size: calc(
             ((var(--base-height-multiplier) + var(--density)) * var(--design-unit) / 2) +
@@ -15,8 +17,6 @@ const styles = css`
         display: inline-flex;
         flex-direction: row;
         margin: calc(var(--design-unit) * 1px) 0;
-        /* Chromium likes to select label text or the default slot when
-            the radio is clicked. Maybe there is a better solution here? */
         outline: none;
         position: relative;
         user-select: none;
@@ -36,8 +36,12 @@ const styles = css`
         border-radius: 100%;
         border: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-rest);
         background: var(--neutral-fill-input-rest);
+        color: var(--neutral-foreground-rest);
         outline: none;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .label {
@@ -55,31 +59,19 @@ const styles = css`
         visibility: hidden;
     }
 
-    .control,
-    .checked-indicator {
-        flex-shrink: 0;
-    }
-
-    .checked-indicator {
+    slot[name="checked-indicator"] * {
         position: absolute;
-        top: 5px;
-        left: 5px;
-        right: 5px;
-        bottom: 5px;
-        border-radius: 100%;
-        display: inline-block;
-        background: var(--foreground-on-accent-rest);
-        fill: var(--foreground-on-accent-rest);
+        fill: currentcolor;
         opacity: 0;
         pointer-events: none;
     }
 
-    :host(:not([disabled])) .control:hover {
+    :host(:not([disabled]):hover) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutral-stroke-hover);
     }
 
-    :host(:not([disabled])) .control:active {
+    :host(:not([disabled]):active) .control {
         background: var(--neutral-fill-input-active);
         border-color: var(--neutral-stroke-active);
     }
@@ -91,26 +83,19 @@ const styles = css`
     :host([aria-checked="true"]) .control {
         background: var(--accent-fill-rest);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
+        color: var(--foreground-on-accent-rest);
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:hover {
+    :host([aria-checked="true"]:not([disabled]):hover) .control {
         background: var(--accent-fill-hover);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-hover);
+        color: var(--foreground-on-accent-hover);
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:hover .checked-indicator {
-        background: var(--foreground-on-accent-hover);
-        fill: var(--foreground-on-accent-hover);
-    }
-
-    :host([aria-checked="true"]:not([disabled])) .control:active {
+    :host([aria-checked="true"]:not([disabled]):active) .control {
         background: var(--accent-fill-active);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-active);
-    }
-
-    :host([aria-checked="true"]:not([disabled])) .control:active .checked-indicator {
-        background: var(--foreground-on-accent-active);
-        fill: var(--foreground-on-accent-active);
+        color: var(--foreground-on-accent-active);
     }
 
     :host([aria-checked="true"]:focus-visible:not([disabled])) .control {
@@ -124,7 +109,7 @@ const styles = css`
         cursor: not-allowed;
     }
 
-    :host([aria-checked="true"]) .checked-indicator {
+    :host([aria-checked="true"]) slot[name="checked-indicator"] * {
         opacity: 1;
     }
 
@@ -136,9 +121,7 @@ const styles = css`
 FASTRadio.define({
     name: "fast-radio",
     template: radioTemplate({
-        checkedIndicator: /* html */ `
-            <div part="checked-indicator" class="checked-indicator"></div>
-        `,
+        checkedIndicator: radioIcon,
     }),
     styles,
 });

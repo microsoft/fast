@@ -21,8 +21,8 @@ export function dialogTemplate<T extends FASTDialog>(): ElementViewTemplate<T> {
         <div
             role="dialog"
             tabindex="-1"
-            class="dialog"
-            part="dialog"
+            class="control"
+            part="control"
             aria-modal="${x => (x.modal ? x.modal : void 0)}"
             aria-describedby="${x => x.ariaDescribedby}"
             aria-labelledby="${x => x.ariaLabelledby}"

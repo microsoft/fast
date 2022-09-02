@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { FASTSlider } from "../slider.js";
-import { sliderTemplate, thumbTemplate } from "../slider.template.js";
+import { sliderTemplate } from "../slider.template.js";
 
 const styles = css`
     :host([hidden]) {
@@ -50,6 +50,7 @@ const styles = css`
         color: var(--neutral-foreground-rest);
         fill: currentcolor;
     }
+
     .thumb {
         border: none;
         width: calc(var(--thumb-size) * 1px);
@@ -57,13 +58,16 @@ const styles = css`
         background: var(--neutral-foreground-rest);
         border-radius: calc(var(--control-corner-radius) * 1px);
     }
+
     .thumb:hover {
         background: var(--neutral-foreground-rest);
         border-color: var(--neutral-stroke-hover);
     }
+
     .thumb:active {
         background: var(--neutral-foreground-rest);
     }
+
     .track-start {
         background: var(--accent-foreground-rest);
         position: absolute;
@@ -71,53 +75,64 @@ const styles = css`
         left: 0;
         border-radius: calc(var(--control-corner-radius) * 1px);
     }
+
     .track-start {
         left: 0;
     }
+
     :host([orientation="horizontal"]) .thumb-position {
         transform: translateX(calc(var(--thumb-size) * 0.5px))
             translateY(calc(var(--thumb-translate) * 1px));
     }
+
     :host([orientation="vertical"]) .thumb-position {
         transform: translateX(calc(var(--thumb-translate) * 1px))
             translateY(calc(var(--thumb-size) * 0.5px));
     }
+
     :host([orientation="horizontal"]) {
         touch-action: pan-y;
         min-width: calc(var(--thumb-size) * 1px);
         width: 100%;
     }
+
     :host([orientation="horizontal"]) .track {
         right: calc(var(--track-overhang) * 1px);
         left: calc(var(--track-overhang) * 1px);
         align-self: start;
         height: calc(var(--track-width) * 1px);
     }
+
     :host([orientation="vertical"]) .track {
         top: calc(var(--track-overhang) * 1px);
         bottom: calc(var(--track-overhang) * 1px);
         width: calc(var(--track-width) * 1px);
         height: 100%;
     }
+
     .track {
         background: var(--neutral-stroke-rest);
         position: absolute;
         border-radius: calc(var(--control-corner-radius) * 1px);
     }
+
     :host([orientation="vertical"]) {
         height: calc(var(--fast-slider-height) * 1px);
         min-height: calc(var(--thumb-size) * 1px);
         touch-action: pan-x;
     }
+
     :host([orientation="vertical"]) .track-start {
         height: auto;
         width: 100%;
         top: 0;
     }
+
     :host([disabled]),
     :host([readonly]) {
         cursor: var(--disabled-cursor);
     }
+
     :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
@@ -125,8 +140,6 @@ const styles = css`
 
 FASTSlider.define({
     name: "fast-slider",
-    template: sliderTemplate({
-        thumb: thumbTemplate,
-    }),
+    template: sliderTemplate(),
     styles,
 });

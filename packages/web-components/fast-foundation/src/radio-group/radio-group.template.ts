@@ -16,7 +16,7 @@ export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTempl
             @focusout="${(x, c) => x.focusOutHandler(c.event as FocusEvent)}"
         >
             <slot name="label"></slot>
-            <div class="radiogroup" part="radiogroup">
+            <div class="control" part="control">
                 <slot
                     ${slotted({
                         property: "slottedRadioButtons",

@@ -15,8 +15,11 @@ export type DisclosureOptions = StartEndOptions;
  *
  * @slot start - Content which can be provided before the summary content
  * @slot end - Content which can be provided after the summary content
- * @slot title - The summary content
+ * @slot summary - The summary content
  * @slot - The default slot for the disclosure content
+ * @csspart details - The outer container element
+ * @csspart summary-content - The container for the `summary` slot content
+ * @csspart content - The container for the default slot content
  * @fires toggle - fires a toggle event when the summary is toggled
  *
  * @public

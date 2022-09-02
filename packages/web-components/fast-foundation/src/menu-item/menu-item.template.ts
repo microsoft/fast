@@ -73,11 +73,11 @@ export function menuItemTemplate<T extends FASTMenuItem>(
                     vertical-inset="true"
                     horizontal-positioning-mode="dynamic"
                     horizontal-default-position="end"
-                    class="submenu-region"
+                    class="submenu"
                     dir="${x => x.currentDirection}"
                     @loaded="${x => x.submenuLoaded()}"
                     ${ref("submenuRegion")}
-                    part="submenu-region"
+                    part="submenu"
                 >
                     <slot name="submenu"></slot>
                 </${anchoredRegionTag}>

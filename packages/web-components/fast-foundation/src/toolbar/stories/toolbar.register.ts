@@ -20,7 +20,7 @@ const styles = css`
         outline: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-focus);
     }
 
-    .toolbar {
+    .control {
         align-items: flex-start;
         display: inline-flex;
         flex-flow: row wrap;

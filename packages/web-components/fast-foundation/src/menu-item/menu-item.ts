@@ -50,11 +50,11 @@ export type MenuItemOptions = StartEndOptions & {
  * @slot - The default slot for menu item content
  * @slot submenu-icon - The submenu indicator
  * @slot submenu - Used to nest menu's within menu items
- * @csspart checkbox - The element wrapping the `menuitemcheckbox` indicator
- * @csspart radio - The element wrapping the `menuitemradio` indicator
+ * @csspart checkbox-indicator - The element wrapping the `menuitemcheckbox` indicator
+ * @csspart radio-indicator - The element wrapping the `menuitemradio` indicator
  * @csspart content - The element wrapping the menu item content
  * @csspart submenu-item - The expand/collapse element
- * @csspart submenu-region - The container for the submenu, used for positioning
+ * @csspart submenu - The container for the submenu, used for positioning
  * @fires expanded-change - Fires a custom 'expanded-change' event when the expanded state changes
  * @fires change - Fires a custom 'change' event when a non-submenu item with a role of `menuitemcheckbox`, `menuitemradio`, or `menuitem` is invoked
  *

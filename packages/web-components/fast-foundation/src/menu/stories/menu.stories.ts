@@ -149,13 +149,11 @@ MenuWithItemsWithIcons.args = {
         {
             storyContent: html`
                 <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
-                <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
                 Slotted start icon
             `,
         },
         {
             storyContent: html`
-                <svg width="20" height="20" slot="start"><use href="#test-icon" /></svg>
                 <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
                 Slotted end icon
             `,

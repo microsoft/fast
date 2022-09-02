@@ -18,10 +18,6 @@ const styles = css`
     }
 
     .backplate {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
         text-decoration: none;
         position: relative;
         border-radius: 100%;
@@ -32,6 +28,12 @@ const styles = css`
     }
 
     .media,
+    .content {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
     ::slotted(img) {
         display: block;
         max-width: 100%;
@@ -39,13 +41,12 @@ const styles = css`
     }
 
     .content {
-        --avatar-size: var(--avatar-size, var(--avatar-size-default));
-        display: block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: calc(
             (var(--avatar-text-size) + var(--avatar-size)) / var(--avatar-text-ratio)
         );
-        line-height: var(--avatar-size);
-        min-height: var(--avatar-size);
     }
 
     ::slotted(fast-badge) {

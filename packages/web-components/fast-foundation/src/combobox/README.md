@@ -209,22 +209,22 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### CSS Parts
 
-| Name             | Description                                                            |
-| ---------------- | ---------------------------------------------------------------------- |
-| `control`        | The wrapper element containing the input area, including start and end |
-| `selected-value` | The input element representing the selected value                      |
-| `indicator`      | The element wrapping the indicator slot                                |
-| `listbox`        | The wrapper for the listbox slotted options                            |
+| Name              | Description                                                            |
+| ----------------- | ---------------------------------------------------------------------- |
+| `control`         | The wrapper element containing the input area, including start and end |
+| `field`           | The input element representing the selected value                      |
+| `open-close-icon` | The element wrapping the indicator slot                                |
+| `listbox`         | The wrapper for the listbox slotted options                            |
 
 #### Slots
 
-| Name        | Description                                                 |
-| ----------- | ----------------------------------------------------------- |
-| `start`     | Content which can be provided before the input              |
-| `end`       | Content which can be provided after the input               |
-| `control`   | Used to replace the input element representing the combobox |
-| `indicator` | The visual indicator representing the expanded state        |
-|             | The default slot for the options                            |
+| Name              | Description                                                 |
+| ----------------- | ----------------------------------------------------------- |
+| `start`           | Content which can be provided before the input              |
+| `end`             | Content which can be provided after the input               |
+| `field`           | Used to replace the input element representing the combobox |
+| `open-close-icon` | The visual indicator representing the expanded state        |
+|                   | The default slot for the options                            |
 
 <hr/>
 

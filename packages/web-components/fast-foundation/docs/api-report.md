@@ -32,8 +32,7 @@ export type AccordionExpandMode = typeof AccordionExpandMode[keyof typeof Accord
 
 // @public
 export type AccordionItemOptions = StartEndOptions & {
-    expandedIcon?: string | SyntheticViewTemplate;
-    collapsedIcon?: string | SyntheticViewTemplate;
+    expandCollapseIcon?: string | SyntheticViewTemplate;
 };
 
 // @public
@@ -263,6 +262,9 @@ export type CheckableFormAssociatedElement = FormAssociatedElement & CheckableFo
     proxy: HTMLInputElement;
 };
 
+// @public (undocumented)
+export const checkboxIcon = "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M13.86 3.66a.5.5 0 0 1-.02.7l-7.93 7.48a.6.6 0 0 1-.84-.02L2.4 9.1a.5.5 0 0 1 .72-.7l2.4 2.44 7.65-7.2a.5.5 0 0 1 .7.02Z\"/>\n</svg>";
+
 // @public
 export type CheckboxOptions = {
     checkedIndicator?: string | SyntheticViewTemplate;
@@ -273,22 +275,28 @@ export type CheckboxOptions = {
 export function checkboxTemplate<T extends FASTCheckbox>(options?: CheckboxOptions): ElementViewTemplate<T>;
 
 // @public (undocumented)
-export const checkmarkIcon = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M3.37 10.17a.5.5 0 0 0-.74.66l4 4.5c.19.22.52.23.72.02l10.5-10.5a.5.5 0 0 0-.7-.7L7.02 14.27l-3.65-4.1Z\"/>\n</svg>";
+export const chevronDownIcon = "<svg width=\"12\" height=\"12\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M2.15 4.65c.2-.2.5-.2.7 0L6 7.79l3.15-3.14a.5.5 0 1 1 .7.7l-3.5 3.5a.5.5 0 0 1-.7 0l-3.5-3.5a.5.5 0 0 1 0-.7Z\"/>\n</svg>";
 
 // @public (undocumented)
-export const chevronDownIcon = "<svg width=\"12\" height=\"12\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M2.15 4.65c.2-.2.5-.2.7 0L6 7.79l3.15-3.14a.5.5 0 1 1 .7.7l-3.5 3.5a.5.5 0 0 1-.7 0l-3.5-3.5a.5.5 0 0 1 0-.7Z\"/>\n</svg>";
+export const chevronDownIcon16 = "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M3.15 5.65c.2-.2.5-.2.7 0L8 9.79l4.15-4.14a.5.5 0 0 1 .7.7l-4.5 4.5a.5.5 0 0 1-.7 0l-4.5-4.5a.5.5 0 0 1 0-.7Z\"/>\n</svg>";
 
 // @public (undocumented)
 export const chevronLeftIcon = "<svg width=\"12\" height=\"12\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M7.35 2.15c.2.2.2.5 0 .7L4.21 6l3.14 3.15a.5.5 0 1 1-.7.7l-3.5-3.5a.5.5 0 0 1 0-.7l3.5-3.5c.2-.2.5-.2.7 0Z\"/>\n</svg>";
 
 // @public (undocumented)
+export const chevronLeftIcon16 = "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M10.35 3.15c.2.2.2.5 0 .7L6.21 8l4.14 4.15a.5.5 0 0 1-.7.7l-4.5-4.5a.5.5 0 0 1 0-.7l4.5-4.5c.2-.2.5-.2.7 0Z\"/>\n</svg>";
+
+// @public (undocumented)
 export const chevronRightIcon = "<svg width=\"12\" height=\"12\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M4.65 2.15a.5.5 0 0 0 0 .7L7.79 6 4.65 9.15a.5.5 0 1 0 .7.7l3.5-3.5a.5.5 0 0 0 0-.7l-3.5-3.5a.5.5 0 0 0-.7 0Z\"/>\n</svg>";
+
+// @public (undocumented)
+export const chevronRightIcon16 = "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M5.65 3.15a.5.5 0 0 0 0 .7L9.79 8l-4.14 4.15a.5.5 0 0 0 .7.7l4.5-4.5a.5.5 0 0 0 0-.7l-4.5-4.5a.5.5 0 0 0-.7 0Z\"/>\n</svg>";
 
 // @public (undocumented)
 export const chevronUpIcon = "<svg width=\"12\" height=\"12\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M2.15 7.35c.2.2.5.2.7 0L6 4.21l3.15 3.14a.5.5 0 1 0 .7-.7l-3.5-3.5a.5.5 0 0 0-.7 0l-3.5 3.5a.5.5 0 0 0 0 .7Z\"/>\n</svg>";
 
 // @public (undocumented)
-export const circleSmallIcon = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M13 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z\"/>\n</svg>";
+export const chevronUpIcon16 = "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M3.15 10.35c.2.2.5.2.7 0L8 6.21l4.15 4.14a.5.5 0 0 0 .7-.7l-4.5-4.5a.5.5 0 0 0-.7 0l-4.5 4.5a.5.5 0 0 0 0 .7Z\"/>\n</svg>";
 
 // @public
 export interface ColumnDefinition {
@@ -317,7 +325,7 @@ export type ComboboxAutocomplete = typeof ComboboxAutocomplete[keyof typeof Comb
 
 // @public
 export type ComboboxOptions = StartEndOptions & {
-    openIcon?: string | SyntheticViewTemplate;
+    openCloseIcon?: string | SyntheticViewTemplate;
 };
 
 // @public
@@ -962,9 +970,9 @@ export class FASTCombobox extends FormAssociatedCombobox {
     // (undocumented)
     connectedCallback(): void;
     // @internal
-    control: HTMLInputElement;
-    // @internal
     disabledChanged(prev: boolean, next: boolean): void;
+    // @internal
+    field: HTMLInputElement;
     filteredOptions: FASTListboxOption[];
     filterOptions(): void;
     // @internal
@@ -1462,6 +1470,8 @@ export class FASTNumberField extends FormAssociatedNumberField {
     // @internal
     defaultSlottedNodes: Node[];
     // @internal
+    field: HTMLInputElement;
+    // @internal
     handleBlur(): void;
     // @internal
     handleChange(): void;
@@ -1470,8 +1480,6 @@ export class FASTNumberField extends FormAssociatedNumberField {
     // @internal
     handleTextInput(): void;
     hideStep: boolean;
-    // @internal
-    input: HTMLInputElement;
     list: string;
     max: number;
     // @internal
@@ -1725,12 +1733,12 @@ export class FASTSearch extends FormAssociatedSearch {
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     // @internal
+    field: HTMLInputElement;
+    // @internal
     handleChange(): void;
     handleClearInput(): void;
     // @internal
     handleTextInput(): void;
-    // @internal
-    input: HTMLInputElement;
     list: string;
     // (undocumented)
     protected listChanged(): void;
@@ -1959,7 +1967,7 @@ export class FASTTabs extends FASTElement {
     // @internal (undocumented)
     activeidChanged(oldValue: string, newValue: string): void;
     // @internal (undocumented)
-    activeIndicatorRef: HTMLElement;
+    activeIndicator: HTMLElement;
     activetab: HTMLElement;
     adjust(adjustment: number): void;
     // @internal (undocumented)
@@ -1996,13 +2004,13 @@ export class FASTTextArea extends FormAssociatedTextArea {
     cols: number;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
+    // @internal
+    field: HTMLTextAreaElement;
     formId: string;
     // @internal
     handleChange(): void;
     // @internal (undocumented)
     handleTextInput: () => void;
-    // @internal
-    input: HTMLTextAreaElement;
     list: string;
     // (undocumented)
     protected listChanged(): void;
@@ -2044,11 +2052,11 @@ export class FASTTextField extends FormAssociatedTextField {
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     // @internal
+    field: HTMLInputElement;
+    // @internal
     handleChange(): void;
     // @internal
     handleTextInput(): void;
-    // @internal
-    input: HTMLInputElement;
     list: string;
     // (undocumented)
     protected listChanged(): void;
@@ -2249,8 +2257,8 @@ export type FlipperDirection = typeof FlipperDirection[keyof typeof FlipperDirec
 
 // @public
 export type FlipperOptions = {
-    next?: string | SyntheticViewTemplate;
-    previous?: string | SyntheticViewTemplate;
+    nextIcon?: string | SyntheticViewTemplate;
+    previousIcon?: string | SyntheticViewTemplate;
 };
 
 // @public
@@ -2384,10 +2392,11 @@ export type HorizontalPosition = typeof HorizontalPosition[keyof typeof Horizont
 export type HorizontalScrollOptions = StartEndOptions & {
     nextFlipper?: SyntheticViewTemplate | string;
     previousFlipper?: SyntheticViewTemplate | string;
+    flipper: TemplateElementDependency;
 };
 
 // @public (undocumented)
-export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(options?: HorizontalScrollOptions): ElementViewTemplate<T>;
+export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(options: HorizontalScrollOptions): ElementViewTemplate<T>;
 
 // @public
 export const HorizontalScrollView: {
@@ -2553,11 +2562,17 @@ export type PickerOptions = {
 // @public
 export function pickerTemplate<T extends FASTPicker>(options: PickerOptions): ElementViewTemplate<T>;
 
+// @public (undocumented)
+export const progressIndicatorTemplate: ViewTemplate<FASTProgress, any>;
+
 // @public
 export type ProgressOptions = {
     determinateIndicator?: string | SyntheticViewTemplate;
     indeterminateIndicator?: string | SyntheticViewTemplate;
 };
+
+// @public (undocumented)
+export const progressRingIndicatorTemplate: ViewTemplate<FASTProgressRing, any>;
 
 // @public
 export type ProgressRingOptions = {
@@ -2596,6 +2611,9 @@ export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "read
 
 // @public
 export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTemplate<T>;
+
+// @public (undocumented)
+export const radioIcon = "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z\"/>\n</svg>";
 
 // @public
 export type RadioOptions = {
@@ -2636,7 +2654,7 @@ export function searchTemplate<T extends FASTSearch>(options?: SearchOptions): E
 
 // @public
 export type SelectOptions = StartEndOptions & {
-    openIcon?: string | SyntheticViewTemplate;
+    openCloseIcon?: string | SyntheticViewTemplate;
 };
 
 // @public
@@ -2718,12 +2736,15 @@ export function startSlotTemplate(options: StartOptions): ViewTemplate<StartEnd>
 // @public
 export type StaticDesignTokenValue<T> = T extends (...args: any[]) => any ? DerivedDesignTokenValue<T> : T;
 
+// @public (undocumented)
+export const subtractIcon = "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\">\n    <rect x=\"3\" y=\"7.5\" width=\"10\" height=\"1\" rx=\".5\"/>\n</svg>";
+
 // @alpha (undocumented)
 export const supportsElementInternals: boolean;
 
 // @public
 export type SwitchOptions = {
-    control?: string | SyntheticViewTemplate;
+    thumb?: string | SyntheticViewTemplate;
 };
 
 // @public
@@ -2889,6 +2910,7 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/horizontal-scroll/horizontal-scroll.options.d.ts:38:5 - (ae-incompatible-release-tags) The symbol "flipper" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/menu-item/menu-item.d.ts:21:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

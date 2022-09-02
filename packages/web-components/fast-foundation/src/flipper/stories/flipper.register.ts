@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import { chevronLeftIcon16, chevronRightIcon16 } from "../../utilities/style/icons.js";
 import { FASTFlipper } from "../flipper.js";
 import { flipperTemplate } from "../flipper.template.js";
 
@@ -31,8 +32,8 @@ const styles = css`
         top: 0;
         transition: all 0.1s ease-in-out;
     }
-    .next,
-    .previous {
+    .next-icon,
+    .previous-icon {
         display: grid;
         position: relative;
     }
@@ -81,20 +82,8 @@ const styles = css`
 FASTFlipper.define({
     name: "fast-flipper",
     template: flipperTemplate({
-        next: /* html */ `
-            <svg width="16" height"16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M4.023 15.273L11.29 8 4.023.727l.704-.704L12.71 8l-7.984 7.977-.704-.704z"
-                />
-            </svg>
-        `,
-        previous: /* html */ `
-            <svg width="16" height"16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M11.273 15.977L3.29 8 11.273.023l.704.704L4.71 8l7.266 7.273-.704.704z"
-                />
-            </svg>
-        `,
+        nextIcon: chevronRightIcon16,
+        previousIcon: chevronLeftIcon16,
     }),
     styles,
 });

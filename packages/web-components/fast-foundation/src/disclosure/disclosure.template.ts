@@ -19,10 +19,14 @@ export function disclosureTemplate<T extends FASTDisclosure>(
                 aria-expanded="${x => x.expanded}"
             >
                 ${startSlotTemplate(options)}
-                <slot name="summary">${x => x.summary}</slot>
+                <span class="summary-content" part="summary-content">
+                    <slot name="summary">${x => x.summary}</slot>
+                </span>
                 ${endSlotTemplate(options)}
             </summary>
-            <div id="content" part="content"><slot></slot></div>
+            <div id="content" class="content" part="content">
+                <slot></slot>
+            </div>
         </details>
     `;
 }

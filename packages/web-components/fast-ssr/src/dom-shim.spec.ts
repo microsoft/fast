@@ -40,6 +40,7 @@ const pickerListItem = deriveName(Foundation.FASTPickerListItem);
 const pickerMenu = deriveName(Foundation.FASTPickerMenu);
 const pickerMenuOption = deriveName(Foundation.FASTPickerMenuOption);
 const progressRing = deriveName(Foundation.FASTProgressRing);
+const flipper = deriveName(Foundation.FASTFlipper);
 
 const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTAccordion, Foundation.accordionTemplate()],
@@ -70,7 +71,9 @@ const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTDisclosure, Foundation.disclosureTemplate()],
     [Foundation.FASTDivider, Foundation.dividerTemplate()],
     [Foundation.FASTFlipper, Foundation.flipperTemplate()],
-    [Foundation.FASTHorizontalScroll, Foundation.horizontalScrollTemplate()],
+    [Foundation.FASTHorizontalScroll, Foundation.horizontalScrollTemplate({
+        flipper
+    })],
     [Foundation.FASTListbox as any as typeof FASTElement, Foundation.listboxTemplate()],
     [Foundation.FASTListboxOption, Foundation.listboxOptionTemplate()],
     [Foundation.FASTMenu, Foundation.menuTemplate()],

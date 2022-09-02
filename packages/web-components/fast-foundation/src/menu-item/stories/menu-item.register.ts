@@ -2,9 +2,9 @@ import { css } from "@microsoft/fast-element";
 import { FASTMenuItem } from "../menu-item.js";
 import { menuItemTemplate } from "../menu-item.template.js";
 import {
-    checkmarkIcon,
+    checkboxIcon,
     chevronRightIcon,
-    circleSmallIcon,
+    radioIcon,
 } from "../../utilities/style/icons.js";
 
 const styles = css`
@@ -206,8 +206,8 @@ FASTMenuItem.define({
     name: "fast-menu-item",
     template: menuItemTemplate({
         anchoredRegion: "fast-anchored-region",
-        checkboxIndicator: checkmarkIcon,
-        radioIndicator: circleSmallIcon,
+        checkboxIndicator: checkboxIcon,
+        radioIndicator: radioIcon,
         submenuIcon: chevronRightIcon,
     }),
     styles,

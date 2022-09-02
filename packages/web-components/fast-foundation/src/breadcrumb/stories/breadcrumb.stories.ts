@@ -34,26 +34,20 @@ BreadcrumbWithIcons.args = {
     `,
 };
 
-export const BreadcrumbWithSeparators: Story<FASTBreadcrumb> = Breadcrumb.bind({});
-BreadcrumbWithSeparators.args = {
+export const BreadcrumbWithSlottedSeparators: Story<FASTBreadcrumb> = Breadcrumb.bind({});
+BreadcrumbWithSlottedSeparators.args = {
     storyContent: html`
         <fast-breadcrumb-item href="#">
             Breadcrumb Item 1
-            <svg width="12" height="12" slot="separator">
-                <use href="#chevron-right-icon" />
-            </svg>
+            <span slot="separator">/</span>
         </fast-breadcrumb-item>
         <fast-breadcrumb-item href="#">
             Breadcrumb Item 2
-            <svg width="12" height="12" slot="separator">
-                <use href="#chevron-right-icon" />
-            </svg>
+            <span slot="separator">/</span>
         </fast-breadcrumb-item>
         <fast-breadcrumb-item href="#">
             Breadcrumb Item 3
-            <svg width="12" height="12" slot="separator">
-                <use href="#chevron-right-icon" />
-            </svg>
+            <span slot="separator">/</span>
         </fast-breadcrumb-item>
     `,
 };

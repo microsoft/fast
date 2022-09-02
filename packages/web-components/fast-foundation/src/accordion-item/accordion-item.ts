@@ -13,8 +13,7 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * @public
  */
 export type AccordionItemOptions = StartEndOptions & {
-    expandedIcon?: string | SyntheticViewTemplate;
-    collapsedIcon?: string | SyntheticViewTemplate;
+    expandCollapseIcon?: string | SyntheticViewTemplate;
 };
 
 /**

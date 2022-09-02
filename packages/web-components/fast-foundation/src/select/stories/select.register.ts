@@ -6,21 +6,17 @@ import { chevronDownIcon } from "../../utilities/style/icons.js";
 const styles = css`
     :host {
         display: inline-flex;
-        --elevation: 14;
-        background: var(--neutral-fill-input-rest);
-        border-radius: calc(var(--control-corner-radius) * 1px);
-        border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         box-sizing: border-box;
         color: var(--neutral-foreground-rest);
         font-family: var(--body-font);
-        height: calc(var(--height-number) * 1px);
         position: relative;
         user-select: none;
         min-width: 250px;
         outline: none;
         vertical-align: top;
     }
-    :host(:not([aria-haspopup])) {
+
+    :host(:not([aria-haspopup])) .listbox {
         --elevation: 0;
         border: 0;
         height: auto;
@@ -28,6 +24,7 @@ const styles = css`
     }
 
     .listbox {
+        --elevation: 14;
         background: var(--fill-color);
         border: none;
         border-radius: calc(var(--control-corner-radius) * 1px);
@@ -59,15 +56,22 @@ const styles = css`
             (var(--listbox-max-height) * var(--height-number) + var(--stroke-size)) * 1px
         );
     }
+
     :host(:not([aria-haspopup])) .listbox {
         left: auto;
         position: static;
         z-index: auto;
     }
+
     .listbox[hidden] {
         display: none;
     }
+
     .control {
+        height: calc(var(--height-number) * 1px);
+        background: var(--neutral-fill-input-rest);
+        border-radius: calc(var(--control-corner-radius) * 1px);
+        border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         align-items: center;
         box-sizing: border-box;
         cursor: pointer;
@@ -79,18 +83,27 @@ const styles = css`
         padding: 0 calc(var(--design-unit) * 2.25px);
         width: 100%;
     }
-    :host(:not([disabled]):hover) {
+
+    :host(:not([disabled]):hover) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--accent-fill-hover);
     }
+
+    :host(:not([disabled]):active) .control {
+        background: var(--neutral-fill-input-active);
+        border-color: var(--accent-fill-active);
+    }
+
     :host(:focus-visible) {
         border-color: var(--focus-stroke-outer);
     }
+
     :host(:not([size]):not([multiple]):not([open]):focus-visible),
     :host([multiple]:focus-visible),
     :host([size]:focus-visible) {
         box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 1px) var(--focus-stroke-outer);
     }
+
     :host(:not([multiple]):not([size]):focus-visible)
         ::slotted(fast-option[aria-selected="true"]:not([disabled])) {
         box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 1px) inset
@@ -99,37 +112,38 @@ const styles = css`
         background: var(--accent-fill-focus);
         color: var(--foreground-on-accent-focus);
     }
+
     :host([disabled]) {
         cursor: var(--disabled-cursor);
         opacity: var(--disabled-opacity);
     }
+
     :host([disabled]) .control {
         cursor: var(--disabled-cursor);
         user-select: none;
     }
+
     :host([disabled]:hover) {
         background: var(--neutral-fill-stealth-rest);
         color: var(--neutral-foreground-rest);
         fill: currentcolor;
     }
-    :host(:not([disabled])) .control:active {
-        background: var(--neutral-fill-input-active);
-        border-color: var(--accent-fill-active);
-        border-radius: calc(var(--control-corner-radius) * 1px);
-    }
+
     :host([open][position="above"]) .listbox {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
         border-bottom: 0;
         bottom: calc(var(--height-number) * 1px);
     }
+
     :host([open][position="below"]) .listbox {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
         border-top: 0;
         top: calc(var(--height-number) * 1px);
     }
-    .selected-value {
+
+    .field {
         flex: 1 1 auto;
         font-family: inherit;
         min-width: calc(var(--listbox-scroll-width, 0) - (var(--design-unit) * 4) * 1px);
@@ -138,19 +152,23 @@ const styles = css`
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    .open-icon {
+
+    .open-close-icon {
         flex: 0 0 auto;
         margin-inline-start: 1em;
     }
+
     slot[name="listbox"] {
         display: none;
         width: 100%;
     }
+
     :host([open]) slot[name="listbox"] {
         display: flex;
         position: absolute;
         box-shadow: var(--elevation-shadow);
     }
+
     ::slotted([role="option"]),
     ::slotted(option) {
         flex: 0 0 auto;
@@ -245,7 +263,7 @@ export class Select extends FASTSelect {
 Select.define({
     name: "fast-select",
     template: selectTemplate({
-        openIcon: chevronDownIcon,
+        openCloseIcon: chevronDownIcon,
     }),
     styles,
 });

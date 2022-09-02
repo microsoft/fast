@@ -13,18 +13,18 @@ export { FlipperDirection };
  * @public
  */
 export type FlipperOptions = {
-    next?: string | SyntheticViewTemplate;
-    previous?: string | SyntheticViewTemplate;
+    nextIcon?: string | SyntheticViewTemplate;
+    previousIcon?: string | SyntheticViewTemplate;
 };
 
 /**
  * A Flipper Custom HTML Element.
  * Flippers are a form of button that implies directional content navigation, such as in a carousel.
  *
- * @slot next - The next flipper content
- * @slot previous - The previous flipper content
- * @csspart next - Wraps the next flipper content
- * @csspart previous - Wraps the previous flipper content
+ * @slot next-icon - The next flipper content
+ * @slot previous-icon - The previous flipper content
+ * @csspart next-icon - Wraps the next flipper content
+ * @csspart previous-icon - Wraps the previous flipper content
  * @fires click - Fires a custom 'click' event when Enter or Space is invoked via keyboard and the flipper is exposed to assistive technologies.
  *
  * @public

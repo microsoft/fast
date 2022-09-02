@@ -29,7 +29,7 @@ const styles = css`
         align-items: center;
     }
 
-    .input {
+    .field {
         -webkit-appearance: none;
         font: inherit;
         background: transparent;
@@ -44,10 +44,10 @@ const styles = css`
         line-height: var(--type-ramp-base-line-height);
     }
 
-    .input:hover,
-    .input:focus-visible,
-    .input:disabled,
-    .input:active {
+    .field:hover,
+    .field:focus-visible,
+    .field:disabled,
+    .field:active {
         outline: none;
     }
 
@@ -67,7 +67,7 @@ const styles = css`
 
     ::slotted([slot="start"]),
     ::slotted([slot="end"]),
-    .input {
+    .field {
         align-self: center;
     }
 

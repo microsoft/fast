@@ -14,16 +14,16 @@ const styles = css`
         margin: calc(var(--design-unit) * 1px) 0;
     }
 
-    .radiogroup {
+    .control {
         display: flex;
         flex-wrap: wrap;
     }
 
-    :host([orientation="vertical"]) .radiogroup {
+    :host([orientation="vertical"]) .control {
         flex-direction: column;
     }
 
-    :host([orientation="horizontal"]) .radiogroup {
+    :host([orientation="horizontal"]) .control {
         flex-direction: row;
     }
 `;

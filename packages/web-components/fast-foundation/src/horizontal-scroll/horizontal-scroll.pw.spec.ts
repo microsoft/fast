@@ -20,13 +20,13 @@ test.describe("HorizontalScroll", () => {
 
         root = page.locator("#root");
 
-        cards = element.locator("fast-card");
-
         scrollNext = element.locator(".scroll-next");
 
         scrollPrevious = element.locator(".scroll-prev");
 
         scrollView = element.locator(".scroll-view");
+
+        cards = element.locator("fast-card");
 
         await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
 

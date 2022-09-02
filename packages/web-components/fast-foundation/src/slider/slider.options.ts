@@ -32,5 +32,5 @@ export interface SliderConfiguration {
  * @public
  */
 export type SliderOptions = {
-    thumb: string | SyntheticViewTemplate;
+    thumb?: string | SyntheticViewTemplate;
 };

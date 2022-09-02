@@ -28,11 +28,11 @@ export type NumberFieldOptions = StartEndOptions & {
  * @slot start - Content which can be provided before the number field input
  * @slot end - Content which can be provided after the number field input
  * @slot - The default slot for the label
- * @slot step-up-glyph - The glyph for the step up control
- * @slot step-down-glyph - The glyph for the step down control
+ * @slot step-up-icon - The icon for the step up control
+ * @slot step-down-icon - The icon for the step down control
  * @csspart label - The label
- * @csspart root - The element wrapping the control, including start and end slots
- * @csspart input - The element representing the input
+ * @csspart control - The logical control, the element wrapping the input field, including start and end slots
+ * @csspart field - The element representing the input field
  * @csspart step-buttons - The step up and step down controls
  * @csspart step-up - The step up control
  * @csspart step-down - The step down control
@@ -184,10 +184,10 @@ export class FASTNumberField extends FormAssociatedNumberField {
     public defaultSlottedNodes: Node[];
 
     /**
-     * A reference to the internal input element
+     * A reference to the internal field element
      * @internal
      */
-    public input: HTMLInputElement;
+    public field: HTMLInputElement;
 
     /**
      * Flag to indicate that the value change is from the user input
@@ -222,8 +222,8 @@ export class FASTNumberField extends FormAssociatedNumberField {
             return;
         }
 
-        if (this.$fastController.isConnected && this.input?.value !== value) {
-            this.input.value = this.value;
+        if (this.$fastController.isConnected && this.field?.value !== value) {
+            this.field.value = this.value;
         }
 
         super.valueChanged(previous, this.value);
@@ -238,7 +238,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
 
     /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
-        super.validate(this.input);
+        super.validate(this.field);
     }
 
     /**
@@ -308,7 +308,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
 
         this.proxy.setAttribute("type", "number");
         this.validate();
-        this.input.value = this.value;
+        this.field.value = this.value;
 
         if (this.autofocus) {
             Updates.enqueue(() => {
@@ -323,7 +323,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @public
      */
     public select(): void {
-        this.input.select();
+        this.field.select();
 
         /**
          * The select event does not permeate the shadow DOM boundary.
@@ -335,13 +335,13 @@ export class FASTNumberField extends FormAssociatedNumberField {
     }
 
     /**
-     * Handles the internal control's `input` event
+     * Handles the internal input field's `input` event
      * @internal
      */
     public handleTextInput(): void {
-        this.input.value = this.input.value.replace(/[^0-9\-+e.]/g, "");
+        this.field.value = this.field.value.replace(/[^0-9\-+e.]/g, "");
         this.isUserInput = true;
-        this.value = this.input.value;
+        this.value = this.field.value;
     }
 
     /**
@@ -379,11 +379,11 @@ export class FASTNumberField extends FormAssociatedNumberField {
 
     /**
      * Handles populating the input field with a validated value when
-     *  leaving the input field.
+     * leaving the input field.
      * @internal
      */
     public handleBlur(): void {
-        this.input.value = this.value;
+        this.field.value = this.value;
     }
 }
 

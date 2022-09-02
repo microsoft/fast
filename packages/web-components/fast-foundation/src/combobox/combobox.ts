@@ -15,7 +15,7 @@ import { ComboboxAutocomplete } from "./combobox.options.js";
  * @public
  */
 export type ComboboxOptions = StartEndOptions & {
-    openIcon?: string | SyntheticViewTemplate;
+    openCloseIcon?: string | SyntheticViewTemplate;
 };
 
 /**
@@ -24,12 +24,12 @@ export type ComboboxOptions = StartEndOptions & {
  *
  * @slot start - Content which can be provided before the input
  * @slot end - Content which can be provided after the input
- * @slot control - Used to replace the input element representing the combobox
- * @slot indicator - The visual indicator representing the expanded state
+ * @slot field - Used to replace the input element representing the combobox
+ * @slot open-close-icon - The visual indicator representing the expanded state
  * @slot - The default slot for the options
  * @csspart control - The wrapper element containing the input area, including start and end
- * @csspart selected-value - The input element representing the selected value
- * @csspart indicator - The element wrapping the indicator slot
+ * @csspart field - The input element representing the selected value
+ * @csspart open-close-icon - The element wrapping the indicator slot
  * @csspart listbox - The wrapper for the listbox slotted options
  * @fires change - Fires a custom 'change' event when the value updates
  *
@@ -58,7 +58,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
      *
      * @internal
      */
-    public control: HTMLInputElement;
+    public field: HTMLInputElement;
 
     /**
      * Reference to the internal listbox element.
@@ -107,7 +107,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
 
     /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
-        super.validate(this.control);
+        super.validate(this.field);
     }
 
     private get isAutocompleteInline(): boolean {
@@ -292,7 +292,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
             }
 
             this.selectedOptions = [captured];
-            this.control.value = captured.text;
+            this.field.value = captured.text;
             this.clearSelectionRange();
             this.updateValue(true);
         }
@@ -300,7 +300,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
         this.open = !this.open;
 
         if (this.open) {
-            this.control.focus();
+            this.field.focus();
         }
 
         return true;
@@ -365,7 +365,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
      */
     protected focusAndScrollOptionIntoView(): void {
         if (this.contains(document.activeElement)) {
-            this.control.focus();
+            this.field.focus();
             if (this.firstSelectedOption) {
                 requestAnimationFrame(() => {
                     this.firstSelectedOption?.scrollIntoView({ block: "nearest" });
@@ -405,7 +405,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
      * @internal
      */
     public inputHandler(e: InputEvent): boolean | void {
-        this.filter = this.control.value;
+        this.filter = this.field.value;
         this.filterOptions();
 
         if (e.inputType === "deleteContentBackward" || !this.filter.length) {
@@ -461,7 +461,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
                 }
 
                 this.value = "";
-                this.control.value = "";
+                this.field.value = "";
                 this.filter = "";
                 this.filterOptions();
                 break;
@@ -522,7 +522,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
             case "Delete":
             case "Home":
             case "End": {
-                this.filter = this.control.value;
+                this.filter = this.field.value;
                 this.selectedIndex = -1;
                 this.filterOptions();
                 break;
@@ -596,11 +596,11 @@ export class FASTCombobox extends FormAssociatedCombobox {
      */
     private setInlineSelection(): void {
         if (this.firstSelectedOption) {
-            this.control.value = this.firstSelectedOption.text;
-            this.control.focus();
-            this.control.setSelectionRange(
+            this.field.value = this.firstSelectedOption.text;
+            this.field.focus();
+            this.field.setSelectionRange(
                 this.filter.length,
-                this.control.value.length,
+                this.field.value.length,
                 "backward"
             );
         }
@@ -674,7 +674,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
      */
     private updateValue(shouldEmit?: boolean) {
         if (this.$fastController.isConnected) {
-            this.value = this.firstSelectedOption?.text || this.control.value;
+            this.value = this.firstSelectedOption?.text || this.field.value;
         }
 
         if (shouldEmit) {
@@ -686,8 +686,8 @@ export class FASTCombobox extends FormAssociatedCombobox {
      * @internal
      */
     private clearSelectionRange() {
-        const controlValueLength = this.control.value.length;
-        this.control.setSelectionRange(controlValueLength, controlValueLength);
+        const controlValueLength = this.field.value.length;
+        this.field.setSelectionRange(controlValueLength, controlValueLength);
     }
 }
 

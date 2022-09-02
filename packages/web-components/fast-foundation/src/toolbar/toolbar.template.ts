@@ -34,7 +34,7 @@ export function toolbarTemplate<T extends FASTToolbar>(
             })}
         >
             <slot name="label"></slot>
-            <div class="toolbar" part="toolbar">
+            <div class="control" part="control">
                 ${startSlotTemplate(options)}
                 <slot
                     ${slotted({

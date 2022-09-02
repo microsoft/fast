@@ -107,15 +107,3 @@ BreadcrumbItemWithSlottedEnd.args = {
         <svg width="20" height="20" slot="end"><use href="#test-icon-2" /></svg>
     `,
 };
-
-export const BreadcrumbItemWithSlottedSeparator: Story<FASTBreadcrumbItem> = BreadcrumbItem.bind(
-    {}
-);
-BreadcrumbItemWithSlottedSeparator.args = {
-    storyContent: html`
-        Breadcrumb item with slotted separator icon
-        <svg width="12" height="12" slot="separator">
-            <use href="#chevron-right-icon" />
-        </svg>
-    `,
-};

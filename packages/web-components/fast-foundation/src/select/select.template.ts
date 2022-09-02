@@ -46,15 +46,17 @@ export function selectTemplate<T extends FASTSelect>(
                         ${ref("control")}
                     >
                         ${startSlotTemplate(options)}
-                        <slot name="control">
-                            <div class="selected-value" part="selected-value">
-                                <slot name="selected-value">${x => x.displayValue}</slot>
-                            </div>
-                        </slot>
+                        <div class="field" part="field">
+                            <slot name="field">${x => x.displayValue}</slot>
+                        </div>
                         ${endSlotTemplate(options)}
-                        <div aria-hidden="true" class="open-icon" part="open-icon">
-                            <slot name="open-icon">
-                                ${options.openIcon ?? ""}
+                        <div
+                            class="open-close-icon"
+                            part="open-close-icon"
+                            aria-hidden="true"
+                        >
+                            <slot name="open-close-icon">
+                                ${options.openCloseIcon ?? ""}
                             </slot>
                         </div>
                     </div>

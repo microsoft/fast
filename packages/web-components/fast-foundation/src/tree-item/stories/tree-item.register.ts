@@ -7,13 +7,12 @@ const styles = css`
     :host([hidden]) {
         display: none;
     }
+
     :host {
         display: block;
         contain: content;
         position: relative;
         outline: none;
-        color: var(--neutral-foreground-rest);
-        background: var(--neutral-fill-stealth-rest);
         cursor: pointer;
         font-family: var(--body-font);
         --expand-collapse-button-size: calc(
@@ -21,22 +20,24 @@ const styles = css`
         );
     }
 
-    :host(:focus) > .treeitem {
+    :host(:focus) .control {
         outline: none;
     }
 
-    :host(:focus-visible) .treeitem {
+    :host(:focus-visible) .control {
         border: var(--focus-stroke-outer) calc(var(--stroke-width) * 1px) solid;
-        border-radius: calc(var(--control-corner-radius) * 1px);
         color: var(--neutral-foreground-rest);
     }
 
-    .treeitem {
+    .control {
         display: flex;
         position: relative;
         align-items: center;
         white-space: nowrap;
         box-sizing: border-box;
+        color: var(--neutral-foreground-rest);
+        background: var(--neutral-fill-stealth-rest);
+        border-radius: calc(var(--control-corner-radius) * 1px);
         border: transparent calc(var(--stroke-width) * 1px) solid;
         height: calc(
             ((var(--base-height-multiplier) + var(--density)) * var(--design-unit) + 1) *
@@ -47,19 +48,19 @@ const styles = css`
         font-weight: 400;
     }
 
-    .treeitem:hover {
+    .control:hover {
         background: var(--neutral-fill-stealth-hover);
     }
 
-    .treeitem:active {
+    .control:active {
         background: var(--neutral-fill-stealth-active);
     }
 
-    .treeitem {
+    .control {
         padding-inline-start: 10px;
     }
 
-    :host(.nested) .treeitem {
+    :host(.nested) .control {
         padding-inline-start: calc(
             10px + var(--expand-collapse-button-size) + var(--tree-item-nested-width, 0px)
         );
@@ -102,8 +103,11 @@ const styles = css`
         transform: translateX(calc(-100% - 6px));
     }
 
+    slot[name="expand-collapse-icon"] *,
     ::slotted([slot="expand-collapse-icon"]) {
         transition: transform 0.1s linear;
+        transform-origin: center;
+        transform: rotate(0deg);
         pointer-events: none;
         fill: currentcolor;
     }
@@ -131,7 +135,7 @@ const styles = css`
         display: block;
     }
 
-    :host([disabled]) .treeitem {
+    :host([disabled]) .control {
         opacity: var(--disabled-opacity);
         cursor: not-allowed;
     }
@@ -140,7 +144,7 @@ const styles = css`
         background: var(--tree-item-expand-collapse-hover);
     }
 
-    :host([selected]) .treeitem {
+    :host([selected]) .control {
         background: var(--neutral-fill-rest);
     }
 
@@ -159,14 +163,13 @@ const styles = css`
         height: calc(((var(--base-height-multiplier)) * var(--design-unit) / 2) * 1px);
     }
 
-    .expand-collapse-icon {
-        transform: rotate(0deg);
-    }
     :host([selected])::after {
         left: calc(var(--focus-stroke-width) * 1px);
     }
-    :host([expanded]) > .treeitem .expand-collapse-icon {
-        transform: rotate(90deg);
+
+    :host([expanded]) slot[name="expand-collapse-icon"] *,
+    :host([expanded]) ::slotted([slot="expand-collapse-icon"]) {
+        transform: rotate(45deg);
     }
 `;
 

@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { FASTAccordionItem } from "../accordion-item.js";
 import { accordionItemTemplate } from "../accordion-item.template.js";
-import { chevronDownIcon, chevronUpIcon } from "../../utilities/style/icons.js";
+import { chevronUpIcon } from "../../utilities/style/icons.js";
 
 const styles = css`
     :host {
@@ -21,6 +21,12 @@ const styles = css`
     }
 
     .heading {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .button {
         display: grid;
         align-items: center;
         position: relative;
@@ -28,9 +34,6 @@ const styles = css`
                 (var(--base-height-multiplier) + var(--density)) * var(--design-unit) *
                     1px
             );
-    }
-
-    .button {
         appearance: none;
         border: none;
         background: none;
@@ -55,17 +58,6 @@ const styles = css`
         color: var(--neutral-foreground-rest);
     }
 
-    .button::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1;
-        cursor: pointer;
-    }
-
     .button:focus-visible::before {
         outline: none;
         border: calc(var(--focus-stroke-width) * 1px) solid var(--focus-stroke-outer);
@@ -85,31 +77,20 @@ const styles = css`
         position: relative;
     }
 
-    slot[name="expanded-icon"],
-    slot[name="collapsed-icon"] {
-        fill: var(--accent-fill-rest);
+    slot[name="expand-collapse-icon"] * {
+        transition: transform 0.1s linear;
+        transform: rotate(0deg);
+        transform-origin: center;
     }
 
-    slot[name="collapsed-icon"] {
-        display: flex;
-    }
-
-    :host([expanded]) slot[name="collapsed-icon"] {
-        display: none;
-    }
-
-    slot[name="expanded-icon"] {
-        display: none;
-    }
-
-    :host([expanded]) slot[name="expanded-icon"] {
-        display: flex;
+    :host([expanded]) slot[name="expand-collapse-icon"] * {
+        transform: rotate(90deg);
     }
 
     ::slotted([slot="start"]) {
         display: flex;
         align-items: center;
-        padding-inline-start: calc(var(--design-unit) * 1px);
+        margin-inline-end: calc(var(--design-unit) * 1px);
         justify-content: center;
         grid-column: 1;
         position: relative;
@@ -118,6 +99,7 @@ const styles = css`
     ::slotted([slot="end"]) {
         display: flex;
         align-items: center;
+        margin-inline-start: calc(var(--design-unit) * 1px);
         justify-content: center;
         grid-column: 3;
         position: relative;
@@ -127,8 +109,7 @@ const styles = css`
 FASTAccordionItem.define({
     name: "fast-accordion-item",
     template: accordionItemTemplate({
-        expandedIcon: chevronUpIcon,
-        collapsedIcon: chevronDownIcon,
+        expandCollapseIcon: chevronUpIcon,
     }),
     styles,
 });

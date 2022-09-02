@@ -18,7 +18,7 @@ export function searchTemplate<T extends FASTSearch>(
         >
             <label
                 part="label"
-                for="input"
+                for="field"
                 class="${x =>
                     x.defaultSlottedNodes && x.defaultSlottedNodes.length
                         ? "label"
@@ -34,9 +34,9 @@ export function searchTemplate<T extends FASTSearch>(
             <div class="control" part="control">
                 ${startSlotTemplate(options)}
                 <input
-                    class="input"
-                    part="input"
-                    id="input"
+                    class="field"
+                    part="field"
+                    id="field"
                     @input="${x => x.handleTextInput()}"
                     @change="${x => x.handleChange()}"
                     ?autofocus="${x => x.autofocus}"
@@ -71,7 +71,7 @@ export function searchTemplate<T extends FASTSearch>(
                     aria-owns="${x => x.ariaOwns}"
                     aria-relevant="${x => x.ariaRelevant}"
                     aria-roledescription="${x => x.ariaRoledescription}"
-                    ${ref("input")}
+                    ${ref("field")}
                 />
                 <slot name="clear-button">
                     <button

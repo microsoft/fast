@@ -40,7 +40,7 @@ const styles = css`
         border-color: var(--accent-fill-active);
     }
 
-    .input {
+    .field {
         -webkit-appearance: none;
         font: inherit;
         background: transparent;
@@ -55,10 +55,10 @@ const styles = css`
         line-height: var(--type-ramp-base-line-height);
     }
 
-    .input:hover,
-    .input:focus-visible,
-    .input:disabled,
-    .input:active {
+    .field:hover,
+    .field:focus-visible,
+    .field:disabled,
+    .field:active {
         outline: none;
     }
 
@@ -75,15 +75,15 @@ const styles = css`
         background: var(--neutral-fill-hover);
     }
 
-    :host([resize="both"]) .input {
+    :host([resize="both"]) .field {
         resize: both;
     }
 
-    :host([resize="horizontal"]) .input {
+    :host([resize="horizontal"]) .field {
         resize: horizontal;
     }
 
-    :host([resize="vertical"]) .input {
+    :host([resize="vertical"]) .field {
         resize: vertical;
     }
 
@@ -118,7 +118,7 @@ const styles = css`
         width: initial;
     }
 
-    :host([rows]) .input {
+    :host([rows]) .field {
         height: initial;
     }
 `;

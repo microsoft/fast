@@ -1,4 +1,4 @@
-import { css, html } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
 import { FASTHorizontalScroll } from "../horizontal-scroll.js";
 import { horizontalScrollTemplate } from "../horizontal-scroll.template.js";
 
@@ -12,54 +12,49 @@ const ActionsStyles = css`
     }
 
     .scroll {
-        bottom: 0;
-        pointer-events: none;
         position: absolute;
-        right: 0;
         top: 0;
+        bottom: 0;
         user-select: none;
         width: 100px;
+        display: flex;
+        align-items: center;
+    }
+
+    .scroll-next {
+        right: 0;
     }
 
     .scroll.disabled {
         display: none;
     }
 
-    .scroll::before,
-    .scroll-action {
-        left: 0;
-        position: absolute;
-    }
-
     .scroll::before {
         background: linear-gradient(to right, var(--scroll-fade-previous), transparent);
         content: "";
         display: block;
+        position: absolute;
         height: 100%;
         width: 100%;
+        pointer-events: none;
     }
 
-    .scroll-action {
-        pointer-events: auto;
-        right: auto;
-        top: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .scroll-prev {
-        right: auto;
-        left: 0;
-    }
-    .scroll.scroll-next::before,
-    .scroll-next .scroll-action {
-        left: auto;
-        right: 0;
-    }
-    .scroll.scroll-next::before {
+    .scroll-next.scroll::before {
         background: linear-gradient(to right, transparent, var(--scroll-fade-next));
     }
-    .scroll-next .scroll-action {
-        transform: translate(50%, -50%);
+
+    .scroll-next {
+        justify-content: flex-end;
+    }
+
+    slot[name="previous-flipper"] *,
+    ::slotted([slot="previous-flipper"]) {
+        transform: translateX(-50%);
+    }
+
+    slot[name="next-flipper"] *,
+    ::slotted([slot="next-flipper"]) {
+        transform: translateX(50%);
     }
 `;
 
@@ -75,24 +70,25 @@ const styles = css`
     .scroll-view {
         overflow-x: auto;
         scrollbar-width: none;
+        padding: 4px;
     }
 
     ::-webkit-scrollbar {
         display: none;
     }
 
-    .content-container {
+    .content {
         align-items: var(--scroll-align);
         display: inline-flex;
         flex-wrap: nowrap;
         position: relative;
     }
 
-    .content-container ::slotted(*) {
+    .content ::slotted(*) {
         margin-right: var(--scroll-item-spacing);
     }
 
-    .content-container ::slotted(*:last-child) {
+    .content ::slotted(*:last-child) {
         margin-right: 0;
     }
 `;
@@ -113,19 +109,7 @@ class HorizontalScroll extends FASTHorizontalScroll {
 HorizontalScroll.define({
     name: "fast-horizontal-scroll",
     template: horizontalScrollTemplate({
-        nextFlipper: html`
-            <fast-flipper
-                @click="${x => x.scrollToNext()}"
-                aria-hidden="${x => x.flippersHiddenFromAT}"
-            ></fast-flipper>
-        `,
-        previousFlipper: html`
-            <fast-flipper
-                @click="${x => x.scrollToPrevious()}"
-                direction="previous"
-                aria-hidden="${x => x.flippersHiddenFromAT}"
-            ></fast-flipper>
-        `,
+        flipper: "fast-flipper",
     }),
     styles,
 });

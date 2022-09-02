@@ -9,6 +9,7 @@ import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedSearch } from "./search.form-associated.js";
+
 /**
  * Search configuration options
  * @public
@@ -25,10 +26,10 @@ export type SearchOptions = StartEndOptions & {
  * @slot end - Content which can be provided after the search clear button
  * @slot - The default slot for the label
  * @slot clear-button - The clear button
- * @slot clear-glyph - The clear glyph
+ * @slot clear-icon - The clear icon
  * @csspart label - The label
- * @csspart control - The element wrapping the control, including start and end slots
- * @csspart input - The element representing the input
+ * @csspart control - The logical control, the element wrapping the input field, including start and end slots
+ * @csspart field - The element representing the input field
  * @csspart clear-button - The button to clear the input
  *
  * @public
@@ -174,10 +175,10 @@ export class FASTSearch extends FormAssociatedSearch {
     public defaultSlottedNodes: Node[];
 
     /**
-     * A reference to the internal input element
+     * A reference to the internal field element
      * @internal
      */
-    public input: HTMLInputElement;
+    public field: HTMLInputElement;
 
     /**
      * @internal
@@ -196,24 +197,24 @@ export class FASTSearch extends FormAssociatedSearch {
 
     /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
-        super.validate(this.input);
+        super.validate(this.field);
     }
 
     /**
-     * Handles the internal input's `input` event
+     * Handles the internal input field's `input` event
      * @internal
      */
     public handleTextInput(): void {
-        this.value = this.input.value;
+        this.value = this.field.value;
     }
 
     /**
-     * Handles the control's clear value event
+     * Clears the value
      * @public
      */
     public handleClearInput(): void {
         this.value = "";
-        this.input.focus();
+        this.field.focus();
         this.handleChange();
     }
 

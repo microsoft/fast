@@ -22,10 +22,10 @@ export function sliderLabelTemplate<T extends FASTSliderLabel>(): ElementViewTem
                 ${when(
                     x => !x.hideMark,
                     html`
-                        <div class="mark"></div>
+                        <div class="mark" part="mark"></div>
                     `
                 )}
-                <span class="content">
+                <span class="content" part="content">
                     <slot></slot>
                 </span>
             </div>

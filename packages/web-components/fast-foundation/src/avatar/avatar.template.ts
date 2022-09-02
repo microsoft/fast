@@ -9,10 +9,14 @@ export function avatarTemplate<T extends FASTAvatar>(
     options: AvatarOptions = {}
 ): ElementViewTemplate<T> {
     return html<T>`
-    <div class="backplate" part="backplate">
-        <slot name="media">${options.media || ""}</slot>
-        <slot><slot>
-    </div>
-    <slot name="badge"></slot>
+        <div class="backplate" part="backplate">
+            <div class="media" part="media">
+                <slot name="media">${options.media ?? ""}</slot>
+            </div>
+            <div class="content" part="content">
+                <slot></slot>
+            </div>
+        </div>
+        <slot name="badge"></slot>
     `;
 }

@@ -5,10 +5,6 @@ import { chevronDownIcon } from "../../utilities/style/icons.js";
 
 const styles = css`
     :host {
-        --elevation: 14;
-        background: var(--neutral-fill-input-rest);
-        border-radius: calc(var(--control-corner-radius) * 1px);
-        border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         box-sizing: border-box;
         color: var(--neutral-foreground-rest);
         fill: currentcolor;
@@ -25,6 +21,7 @@ const styles = css`
     }
 
     .listbox {
+        --elevation: 14;
         box-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px)
                 rgba(0, 0, 0, calc(0.11 * (2 - var(--background-luminance, 1)))),
             0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px))
@@ -55,6 +52,9 @@ const styles = css`
     }
 
     .control {
+        background: var(--neutral-fill-input-rest);
+        border-radius: calc(var(--control-corner-radius) * 1px);
+        border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         align-items: center;
         box-sizing: border-box;
         cursor: pointer;
@@ -66,12 +66,18 @@ const styles = css`
         padding: 0 calc(var(--design-unit) * 2.25px);
     }
 
-    :host(:not([disabled]):hover) {
+    :host(:not([disabled]):hover) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--accent-fill-hover);
     }
 
-    :host(:focus-visible) {
+    :host(:not([disabled]):active) .control {
+        background: var(--neutral-fill-input-active);
+        border-color: var(--accent-fill-active);
+        border-radius: calc(var(--control-corner-radius) * 1px);
+    }
+
+    :host(:focus-visible) .control {
         border-color: var(--focus-stroke-outer);
         box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 1px) var(--focus-stroke-outer);
     }
@@ -93,18 +99,6 @@ const styles = css`
     :host([disabled]) .control {
         cursor: not-allowed;
         user-select: none;
-    }
-
-    :host([disabled]:hover) {
-        background: var(--neutral-fill-stealth-rest);
-        color: var(--neutral-foreground-rest);
-        fill: currentcolor;
-    }
-
-    :host(:not([disabled])) .control:active {
-        background: var(--neutral-fill-input-active);
-        border-color: var(--accent-fill-active);
-        border-radius: calc(var(--control-corner-radius) * 1px);
     }
 
     :host([open][position="above"]) .listbox {
@@ -131,7 +125,7 @@ const styles = css`
         );
     }
 
-    .selected-value {
+    .field {
         flex: 1 1 auto;
         font-family: inherit;
         text-align: start;
@@ -140,7 +134,7 @@ const styles = css`
         overflow: hidden;
     }
 
-    .open-icon {
+    .open-close-icon {
         flex: 0 0 auto;
         margin-inline-start: 1em;
     }
@@ -174,7 +168,7 @@ const styles = css`
         user-select: none;
     }
 
-    .selected-value {
+    .field {
         appearance: none;
         background: transparent;
         border: none;
@@ -185,10 +179,10 @@ const styles = css`
         margin: auto 0;
     }
 
-    .selected-value:hover,
-    .selected-value:focus-visible,
-    .selected-value:disabled,
-    .selected-value:active {
+    .field:hover,
+    .field:focus-visible,
+    .field:disabled,
+    .field:active {
         outline: none;
     }
 `;
@@ -196,7 +190,7 @@ const styles = css`
 FASTCombobox.define({
     name: "fast-combobox",
     template: comboboxTemplate({
-        openIcon: chevronDownIcon,
+        openCloseIcon: chevronDownIcon,
     }),
     styles,
     shadowOptions: {

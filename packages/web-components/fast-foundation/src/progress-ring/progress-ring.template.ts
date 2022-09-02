@@ -14,9 +14,9 @@ export const progressRingIndicatorTemplate = html<FASTProgressRing>`
  * The template for the {@link @microsoft/fast-foundation#FASTProgressRing} component.
  * @public
  */
-export function progressRingTemplate(
-    options: ProgressRingOptions
-): ElementViewTemplate<FASTProgressRing> {
+export function progressRingTemplate<T extends FASTProgressRing>(
+    options: ProgressRingOptions = {}
+): ElementViewTemplate<T> {
     return html`
         <template
             role="progressbar"
@@ -33,15 +33,19 @@ export function progressRingTemplate(
                         part="determinate"
                         style="--percent-complete: ${x => x.percentComplete}"
                     >
-                        ${x => options.determinateIndicator}
+                        <slot name="determinate">
+                            ${options.determinateIndicator ?? ""}
+                        </slot>
                     </span>
                 `
             )}
             ${when(
                 x => typeof x.value !== "number",
-                html<FASTProgressRing>`
+                html<T>`
                     <span class="indeterminate" part="indeterminate">
-                        ${x => options.indeterminateIndicator}
+                        <slot name="indeterminate">
+                            ${options.indeterminateIndicator ?? ""}
+                        </span>
                     </span>
                 `
             )}

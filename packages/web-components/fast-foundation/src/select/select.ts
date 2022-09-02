@@ -24,7 +24,7 @@ import { SelectPosition } from "./select.options.js";
  * @public
  */
 export type SelectOptions = StartEndOptions & {
-    openIcon?: string | SyntheticViewTemplate;
+    openCloseIcon?: string | SyntheticViewTemplate;
 };
 
 /**

@@ -157,19 +157,19 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### CSS Parts
 
-| Name    | Description                                                   |
-| ------- | ------------------------------------------------------------- |
-| `label` | The label                                                     |
-| `root`  | The element wrapping the input, including start and end slots |
-| `input` | The text field element                                        |
+| Name      | Description                                                                              |
+| --------- | ---------------------------------------------------------------------------------------- |
+| `label`   | The label                                                                                |
+| `control` | The logical control, the element wrapping the input field, including start and end slots |
+| `field`   | The text field element                                                                   |
 
 #### Slots
 
-| Name    | Description                                                 |
-| ------- | ----------------------------------------------------------- |
-| `start` | Content which can be provided before the number field input |
-| `end`   | Content which can be provided after the number field input  |
-|         | The default slot for the label                              |
+| Name    | Description                                          |
+| ------- | ---------------------------------------------------- |
+| `start` | Content which can be provided before the input field |
+| `end`   | Content which can be provided after the input field  |
+|         | The default slot for the label                       |
 
 <hr/>
 

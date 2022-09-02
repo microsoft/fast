@@ -1,5 +1,5 @@
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import type { StartEndOptions } from "../patterns/index.js";
+import type { StartEndOptions, TemplateElementDependency } from "../patterns/index.js";
 
 /**
  * View options for the {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)|FASTHorizontalScroll} component.
@@ -40,4 +40,5 @@ export type ScrollEasing = typeof ScrollEasing[keyof typeof ScrollEasing];
 export type HorizontalScrollOptions = StartEndOptions & {
     nextFlipper?: SyntheticViewTemplate | string;
     previousFlipper?: SyntheticViewTemplate | string;
+    flipper: TemplateElementDependency;
 };

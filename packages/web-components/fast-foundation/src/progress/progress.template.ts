@@ -12,7 +12,7 @@ export const progressIndicatorTemplate = html<FASTProgress>`
  * @public
  */
 export function progressTemplate<T extends FASTProgress>(
-    options: ProgressOptions
+    options: ProgressOptions = {}
 ): ElementViewTemplate<T> {
     return html`
         <template
@@ -30,7 +30,9 @@ export function progressTemplate<T extends FASTProgress>(
                         part="determinate"
                         style="--percent-complete: ${x => x.percentComplete}"
                     >
-                        ${x => options.determinateIndicator}
+                        <slot name="determinate">
+                            ${options.determinateIndicator ?? ""}
+                        </slot>
                     </span>
                 `
             )}
@@ -38,7 +40,9 @@ export function progressTemplate<T extends FASTProgress>(
                 x => typeof x.value !== "number",
                 html<FASTProgress>`
                     <span class="indeterminate" part="indeterminate">
-                        ${x => options.indeterminateIndicator}
+                        <slot name="indeterminate">
+                            ${options.indeterminateIndicator ?? ""}
+                        </slot>
                     </span>
                 `
             )}

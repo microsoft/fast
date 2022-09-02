@@ -218,13 +218,13 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 #### CSS Parts
 
-| Name             | Description                                             |
-| ---------------- | ------------------------------------------------------- |
-| `checkbox`       | The element wrapping the \`menuitemcheckbox\` indicator |
-| `radio`          | The element wrapping the \`menuitemradio\` indicator    |
-| `content`        | The element wrapping the menu item content              |
-| `submenu-item`   | The expand/collapse element                             |
-| `submenu-region` | The container for the submenu, used for positioning     |
+| Name                 | Description                                             |
+| -------------------- | ------------------------------------------------------- |
+| `checkbox-indicator` | The element wrapping the \`menuitemcheckbox\` indicator |
+| `radio-indicator`    | The element wrapping the \`menuitemradio\` indicator    |
+| `content`            | The element wrapping the menu item content              |
+| `submenu-item`       | The expand/collapse element                             |
+| `submenu`            | The container for the submenu, used for positioning     |
 
 #### Slots
 

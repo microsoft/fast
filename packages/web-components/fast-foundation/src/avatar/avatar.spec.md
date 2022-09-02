@@ -12,7 +12,6 @@ A common use case would be to display an image or text (usually initials) of a u
 - A URL for an image can be passed to the component to be displayed in the backplate
 - Badge slot: Able to slot in a badge component
 - Media slot: Accepts an `img` or an `svg`
-- When a `link` is provided an `aria-link` attribute is added
 
 ### Prior Art/Examples
 
@@ -31,12 +30,14 @@ A common use case would be to display an image or text (usually initials) of a u
 #### Attributes
 |   Name    | Description                                                 | Type                                |
 |-----------|-------------------------------------------------------------|-------------------------------------|
-| `link`    | Accepts a URL for the anchor source                         | `string`                            |
+| `src`     | Accepts URL string of image to be displayed                 | `string`                            |
+| `alt`     | Accepts alt text for image                                  | `string`                            |
 
 #### Slots
 
 | Name  | Description               | Elements     |
 |-------|---------------------------|--------------|
+|-      | Slot for initials         | text         |
 |`badge`| Slot for fast badge       | `fast-badge` |
 |`media`| Slot for images and icons | `img`, `svg` |
 
@@ -48,16 +49,14 @@ A common use case would be to display an image or text (usually initials) of a u
     class="backplate"
     part="backplate"
 >
-    <a
-        class="link"
-        part="link"
-        href="${x => (x.link ? x.link : void 0)}"
-    >
-        <slot name="media" part="media">${definition.media || ""}</slot>
-        <slot class="content" part="content"></slot>
-    </a>
+    <div class="media" part="media">
+        <slot name="media">${options.media ?? ""}</slot>
+    </div>
+    <div class="content" part="content">
+        <slot></slot>
+    </div>
 </div>
-<slot name="badge" part="badge"></slot>
+<slot name="badge"></slot>
 ```
 
 ---
@@ -66,14 +65,16 @@ A common use case would be to display an image or text (usually initials) of a u
 
 ```html
 <fast-avatar 
-  link="...">
+  src="..."
+  alt="...">
 </fast-avatar>
 ```
 
 With `fast-badge` Component:
 ```html
 <fast-avatar
-  link="...">
+  src="..." 
+  alt="...">
   <fast-badge slot="badge">&nbsp</fast-badge>
 </fast-avatar>
 ```
@@ -81,8 +82,6 @@ With `fast-badge` Component:
 ### Accessibility
 
 It is important to ensure that when the contrast of text in the backplate meets [1.4.3 Contrast (Minimum)](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html).
-
-If there is a link the component should have an `aria-link` attribute.
 
 ### Globalization
 

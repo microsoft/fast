@@ -18,10 +18,12 @@ export type TextAreaOptions = StartEndOptions;
  * A Text Area Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea | <textarea> element }.
  *
+ * @slot start - Content which can be provided before the text area input
+ * @slot end - Content which can be provided after the text area input
  * @slot - The default slot for the label
  * @csspart label - The label
- * @csspart root - The element wrapping the input
- * @csspart input - The textarea element
+ * @csspart control - The logical control, the element wrapping the input field, including start and end slots
+ * @csspart field - The textarea element
  * @fires change - Emits a custom 'change' event when the textarea emits a change event
  *
  * @public
@@ -54,7 +56,7 @@ export class FASTTextArea extends FormAssociatedTextArea {
      * A reference to the internal textarea element
      * @internal
      */
-    public input: HTMLTextAreaElement;
+    public field: HTMLTextAreaElement;
 
     /**
      * Indicates that this element should get focus after the page finishes loading.
@@ -185,7 +187,7 @@ export class FASTTextArea extends FormAssociatedTextArea {
      * @public
      */
     public select(): void {
-        this.input.select();
+        this.field.select();
 
         /**
          * The select event does not permeate the shadow DOM boundary.
@@ -200,7 +202,7 @@ export class FASTTextArea extends FormAssociatedTextArea {
      * @internal
      */
     public handleTextInput = (): void => {
-        this.value = this.input.value;
+        this.value = this.field.value;
     };
 
     /**
@@ -218,7 +220,7 @@ export class FASTTextArea extends FormAssociatedTextArea {
 
     /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
-        super.validate(this.input);
+        super.validate(this.field);
     }
 }
 

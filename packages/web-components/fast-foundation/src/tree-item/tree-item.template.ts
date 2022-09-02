@@ -34,7 +34,7 @@ export function treeItemTemplate<T extends FASTTreeItem>(
                 filter: elements(),
             })}
         >
-            <div class="treeitem" part="treeitem">
+            <div class="control" part="control">
                 ${when(
                     x => x.childItems && x.childItemLength(),
                     html<T>`
@@ -46,14 +46,9 @@ export function treeItemTemplate<T extends FASTTreeItem>(
                                 x.handleExpandCollapseButtonClick(c.event as MouseEvent)}"
                             ${ref("expandCollapseButton")}
                         >
-                            <span
-                                class="expand-collapse-icon"
-                                part="expand-collapse-icon"
-                            >
-                                <slot name="expand-collapse-icon">
-                                    ${options.expandCollapseIcon ?? ""}
-                                </slot>
-                            </span>
+                            <slot name="expand-collapse-icon">
+                                ${options.expandCollapseIcon ?? ""}
+                            </slot>
                         </div>
                     `
                 )}
