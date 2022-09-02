@@ -184,12 +184,11 @@ function generateBenchmark(
         : method
         ? `${url}?template=${template}&method=${method}`
         : `${url}?template=${template}`;
+
     newBench.url = fullUrl;
     newBench.name = queryParams
         ? `${name}-${template}-${method}-${queryStr}`
-        : method
-        ? `${name}-${template}-${method}`
-        : `${name}`;
+        : `${name}-${template}-${method}`;
     benchmarks.push(newBench);
     return benchmarks;
 }
