@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "ensure switch cannot be invoked via keyboard when in readonly mode",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

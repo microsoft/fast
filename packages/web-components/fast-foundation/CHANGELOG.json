@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 02 Sep 2022 17:18:31 GMT",
+      "tag": "@microsoft/fast-foundation_v2.46.14",
+      "version": "2.46.14",
+      "comments": {
+        "patch": [
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "444a77fef693bef73a891d9130e7a13077c41154",
+            "comment": "accordion verifies change events"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "41dabe45c672a673e6cbe71fd9695614cb9a1db0",
+            "comment": "ensure switch cannot be invoked via keyboard when in readonly mode"
+          },
+          {
+            "author": "jes@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7201547210c5bced34a18561a9b98c08c2fdb2a7",
+            "comment": "call change when search component clear button is clicked"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 27 Aug 2022 16:53:58 GMT",
       "tag": "@microsoft/fast-foundation_v2.46.13",
       "version": "2.46.13",

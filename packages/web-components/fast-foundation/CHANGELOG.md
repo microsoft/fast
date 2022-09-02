@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sat, 27 Aug 2022 16:53:58 GMT and should not be manually modified.
+This log was last generated on Fri, 02 Sep 2022 17:18:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.46.14
+
+Fri, 02 Sep 2022 17:18:31 GMT
+
+### Patches
+
+- accordion verifies change events (stephcomeau@msn.com)
+- ensure switch cannot be invoked via keyboard when in readonly mode (chhol@microsoft.com)
+- call change when search component clear button is clicked (jes@microsoft.com)
 
 ## 2.46.13
 
