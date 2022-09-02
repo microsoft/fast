@@ -17,18 +17,16 @@ import { queryParams } from "../../../utils/query-params.js";
 const {
     template,
     method,
-    itemCount: count = 10,
-    loopCount: count2 = 1,
-    deleteCount: count3 = 1,
-    addCount: count4 = 1,
-    startIndex: count5 = 0,
+    itemCount: count = "11",
+    deleteCount: count2 = "1",
+    addCount: count3 = "10",
+    startIndex: count4 = "0",
 } = queryParams;
 
-const itemCount = parseInt(count as string);
-const loopCount = parseInt(count2 as string);
-const deleteCount = parseInt(count3 as string);
-const addCount = parseInt(count4 as string);
-const startIndex = parseInt(count5 as string);
+const itemCount = parseInt(count as string),
+    deleteCount = parseInt(count2 as string),
+    addCount = parseInt(count3 as string),
+    startIndex = parseInt(count4 as string);
 
 type Templates = {
     [TemplateName: string]: ViewTemplate;
@@ -37,8 +35,10 @@ const templates: Templates = {
     basic: html<XApp>`
         ${repeat(
             x => x.items,
-            html<RandomItem>`
-                <li>${x => x.label}</li>
+            html<RandomItem, XApp>`
+                <li>
+                    ${x => x.label}
+                </li>
             `
         )}
     `,
@@ -48,7 +48,7 @@ const templates: Templates = {
             html<RandomItem>`
                 <li>${x => x.label}</li>
             `,
-            { positioning: true, recycle: false }
+            { recycle: false }
         )}
     `,
     nested: html<XApp>`
@@ -107,7 +107,8 @@ const templates: Templates = {
                                     x => x.randomItemGroup1,
                                     html<RandomItem>`
                                         <li>${x => x.label}</li>
-                                    `
+                                    `,
+                                    { recycle: false }
                                 )}
                             </ul>
                             <ul>
@@ -115,7 +116,8 @@ const templates: Templates = {
                                     x => x.randomItemGroup2,
                                     html<RandomItem>`
                                         <li>${x => x.label}</li>
-                                    `
+                                    `,
+                                    { recycle: false }
                                 )}
                             </ul>
                             <ol>
@@ -123,13 +125,14 @@ const templates: Templates = {
                                     x => x.nestedGroup.randomItemGroup1,
                                     html<RandomItem>`
                                         <li>${x => x.label}</li>
-                                    `
+                                    `,
+                                    { recycle: false }
                                 )}
                             </ol>
                         `}
                 </li>
             `,
-            { positioning: true, recycle: false }
+            { recycle: false }
         )}
     `,
 };
@@ -145,7 +148,8 @@ const templates: Templates = {
 })
 class XApp extends FASTElement {
     @observable items: Array<RandomItem | NestedRandomData> = [];
-    @observable template: string = <string>template;
+    public template: string = <string>template;
+    public otherItems: Array<RandomItem | NestedRandomData> = [];
 
     private isNested: boolean = false;
     constructor() {
@@ -154,6 +158,7 @@ class XApp extends FASTElement {
         this.items = this.isNested
             ? generateNestedData(itemCount)
             : generateData(itemCount);
+        this.otherItems = generateData(addCount);
     }
 
     getTemplateType() {
@@ -163,86 +168,29 @@ class XApp extends FASTElement {
     getClickEvent() {
         switch (method) {
             case "splice":
-                this.splice();
+                this.items.splice(startIndex, deleteCount, ...this.otherItems);
                 break;
             case "reverse":
-                this.reverse();
+                this.items.reverse();
                 break;
             case "push":
-                this.push();
+                this.items.push(...this.otherItems);
                 break;
             case "unshift":
-                this.unshift();
+                this.items.unshift(...this.otherItems);
                 break;
             case "shift":
-                this.shift();
+                this.items.shift();
                 break;
             case "sort":
-                this.sort();
+                this.items.sort();
                 break;
             case "filter":
-                this.filter();
-                break;
-            case "combo":
-                this.combo();
+                this.items = this.items.filter(item => item !== this.items[0]);
                 break;
             default:
-                this.push();
+                this.items.push(...this.otherItems);
                 break;
-        }
-    }
-
-    splice() {
-        const otherData: Array<RandomItem | NestedRandomData> = generateData(addCount);
-        for (let i = startIndex; i < loopCount; i++) {
-            this.items.splice(i, deleteCount, ...otherData);
-        }
-    }
-
-    reverse() {
-        for (let i = startIndex; i <= loopCount; i++) {
-            this.items.reverse();
-        }
-    }
-
-    push() {
-        const otherData: Array<RandomItem | NestedRandomData> = generateData(addCount);
-        for (let i = startIndex; i < loopCount; i++) {
-            this.items.push(...otherData);
-        }
-    }
-
-    unshift() {
-        const otherData: Array<RandomItem | NestedRandomData> = generateData(addCount);
-        for (let i = startIndex; i < loopCount; i++) {
-            this.items.unshift(...otherData);
-        }
-    }
-
-    shift() {
-        for (let i = startIndex; i <= loopCount; i++) {
-            this.items.shift();
-        }
-    }
-
-    sort() {
-        for (let i = startIndex; i < loopCount; i++) {
-            this.items.sort();
-        }
-    }
-
-    filter() {
-        for (let i = startIndex; i < loopCount - 1; i++) {
-            this.items = this.items.filter(item => item !== this.items[0]);
-        }
-    }
-
-    combo() {
-        for (let i = startIndex; i < loopCount; i++) {
-            this.push();
-            this.reverse();
-            this.splice();
-            this.items = [];
         }
     }
 }
