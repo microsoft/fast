@@ -5,8 +5,8 @@ import type { FASTDisclosure } from "./disclosure.js";
  * The template for the {@link @microsoft/fast-foundation#FASTDisclosure} component.
  * @public
  */
-export function disclosureTemplate(): ElementViewTemplate<FASTDisclosure> {
-    return html<FASTDisclosure>`
+export function disclosureTemplate<T extends FASTDisclosure>(): ElementViewTemplate<T> {
+    return html<T>`
         <details class="disclosure" ${ref("details")}>
             <summary
                 class="invoker"

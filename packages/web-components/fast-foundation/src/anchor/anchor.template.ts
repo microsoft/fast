@@ -6,10 +6,10 @@ import type { AnchorOptions, FASTAnchor } from "./anchor.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTAnchor:class)} component.
  * @public
  */
-export function anchorTemplate(
+export function anchorTemplate<T extends FASTAnchor>(
     options: AnchorOptions = {}
-): ElementViewTemplate<FASTAnchor> {
-    return html<FASTAnchor>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <a
             class="control"
             part="control"

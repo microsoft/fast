@@ -7,8 +7,10 @@ import type { FASTTab } from "./tab.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTTab:class)} component.
  * @public
  */
-export function tabTemplate(options: StartEndOptions = {}): ElementViewTemplate<FASTTab> {
-    return html<FASTTab>`
+export function tabTemplate<T extends FASTTab>(
+    options: StartEndOptions = {}
+): ElementViewTemplate<T> {
+    return html<T>`
         <template slot="tab" role="tab" aria-disabled="${x => x.disabled}">
             ${startSlotTemplate(options)}
             <slot></slot>

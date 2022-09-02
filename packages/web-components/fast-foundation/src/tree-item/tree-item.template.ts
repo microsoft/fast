@@ -7,10 +7,10 @@ import type { FASTTreeItem, TreeItemOptions } from "./tree-item.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTTreeItem:class)} component.
  * @public
  */
-export function treeItemTemplate(
+export function treeItemTemplate<T extends FASTTreeItem>(
     options: TreeItemOptions = {}
-): ElementViewTemplate<FASTTreeItem> {
-    return html<FASTTreeItem>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="treeitem"
             slot="${x => (x.isNestedItem() ? "item" : void 0)}"
@@ -39,7 +39,7 @@ export function treeItemTemplate(
                 <div class="content-region" part="content-region">
                     ${when(
                         x => x.childItems && x.childItemLength(),
-                        html<FASTTreeItem>`
+                        html<T>`
                             <div
                                 aria-hidden="true"
                                 class="expand-collapse-button"
@@ -51,7 +51,7 @@ export function treeItemTemplate(
                                 ${ref("expandCollapseButton")}
                             >
                                 <slot name="expand-collapse-glyph">
-                                    ${options.expandCollapseGlyph || ""}
+                                    ${options.expandCollapseGlyph ?? ""}
                                 </slot>
                             </div>
                         `
@@ -63,7 +63,7 @@ export function treeItemTemplate(
             </div>
             ${when(
                 x => x.childItems && x.childItemLength() && x.expanded,
-                html<FASTTreeItem>`
+                html<T>`
                     <div role="group" class="items" part="items">
                         <slot name="item" ${slotted("items")}></slot>
                     </div>

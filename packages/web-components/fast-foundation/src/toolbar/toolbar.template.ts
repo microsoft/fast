@@ -13,10 +13,10 @@ import type { FASTToolbar, ToolbarOptions } from "./toolbar.js";
  *
  * @public
  */
-export function toolbarTemplate(
+export function toolbarTemplate<T extends FASTToolbar>(
     options: ToolbarOptions = {}
-): ElementViewTemplate<FASTToolbar> {
-    return html<FASTToolbar>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             aria-label="${x => x.ariaLabel}"
             aria-labelledby="${x => x.ariaLabelledby}"

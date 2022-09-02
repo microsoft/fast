@@ -6,8 +6,8 @@ import type { FASTTextArea } from "./text-area.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTTextArea:class)} component.
  * @public
  */
-export function textAreaTemplate(): ElementViewTemplate<FASTTextArea> {
-    return html<FASTTextArea>`
+export function textAreaTemplate<T extends FASTTextArea>(): ElementViewTemplate<T> {
+    return html<T>`
         <template
             class="
             ${x => (x.readOnly ? "readonly" : "")}

@@ -629,6 +629,32 @@ describe("Search", () => {
 
             await disconnect();
         });
+        it("should fire a change event when clear button is clicked", async () => {
+            const { element, connect, disconnect } = await setup();
+            const event = new Event("change", {
+                key: "a",
+            } as KeyboardEventInit);
+            let wasChanged: boolean = false;
+
+            await connect();
+
+            let textarea = element.shadowRoot?.querySelector("input");
+            textarea?.dispatchEvent(event)
+
+            element.addEventListener("change", e => {
+                e.preventDefault();
+
+                wasChanged = true;
+            });
+
+            let clearButton = element.shadowRoot!.querySelector("button") as HTMLElement
+
+            await clearButton.click();
+
+            expect(wasChanged).to.equal(true);
+
+            await disconnect();
+        })
     });
 
     describe("when the owning form's reset() method is invoked", () => {

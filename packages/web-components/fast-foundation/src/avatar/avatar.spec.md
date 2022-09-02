@@ -31,8 +31,6 @@ A common use case would be to display an image or text (usually initials) of a u
 #### Attributes
 |   Name    | Description                                                 | Type                                |
 |-----------|-------------------------------------------------------------|-------------------------------------|
-| `src`     | Accepts URL string of image to be displayed                 | `string`                            |
-| `alt`     | Accepts alt text for image                                  | `string`                            |
 | `link`    | Accepts a URL for the anchor source                         | `string`                            |
 
 #### Slots
@@ -68,8 +66,6 @@ A common use case would be to display an image or text (usually initials) of a u
 
 ```html
 <fast-avatar 
-  src="..."
-  alt="..."
   link="...">
 </fast-avatar>
 ```
@@ -77,8 +73,6 @@ A common use case would be to display an image or text (usually initials) of a u
 With `fast-badge` Component:
 ```html
 <fast-avatar
-  src="..." 
-  alt="..."
   link="...">
   <fast-badge slot="badge">&nbsp</fast-badge>
 </fast-avatar>
