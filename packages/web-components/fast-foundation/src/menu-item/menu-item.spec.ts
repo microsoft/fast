@@ -51,6 +51,8 @@ describe("Menu item", () => {
 
         await connect();
 
+        await Updates.next();
+
         expect(element.getAttribute("role")).to.equal(role);
 
         await disconnect();
@@ -63,6 +65,8 @@ describe("Menu item", () => {
         element.role = role;
 
         await connect();
+
+        await Updates.next();
 
         expect(element.getAttribute("role")).to.equal(role);
 
