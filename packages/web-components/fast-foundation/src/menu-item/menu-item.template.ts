@@ -74,6 +74,7 @@ export function menuItemTemplate<T extends FASTMenuItem>(
             html<T>`
                 <${anchoredRegionTag}
                     :anchorElement="${x => x}"
+                    auto-update-mode="auto"
                     vertical-positioning-mode="dynamic"
                     vertical-default-position="bottom"
                     vertical-viewport-lock="true"
