@@ -2665,31 +2665,6 @@ export type SelectPosition = typeof SelectPosition[keyof typeof SelectPosition];
 export function selectTemplate<T extends FASTSelect>(options?: SelectOptions): ElementViewTemplate<T>;
 
 // @public
-export interface ServiceLocator {
-    get<K extends Key>(key: K): Resolved<K>;
-    get<K extends Key>(key: Key): Resolved<K>;
-    get<K extends Key>(key: K | Key): Resolved<K>;
-    getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
-    getAll<K extends Key>(key: Key, searchAncestors?: boolean): readonly Resolved<K>[];
-    getAll<K extends Key>(key: K | Key, searchAncestors?: boolean): readonly Resolved<K>[];
-    has<K extends Key>(key: K | Key, searchAncestors: boolean): boolean;
-}
-
-// @public
-export const ServiceLocator: ContextDecorator<ServiceLocator>;
-
-// Warning: (ae-forgotten-export) The symbol "singletonDecorator" needs to be exported by the entry point index.d.ts
-//
-// @public
-export function singleton<T extends Constructable>(): typeof singletonDecorator;
-
-// @public (undocumented)
-export function singleton<T extends Constructable>(options?: SingletonOptions): typeof singletonDecorator;
-
-// @public
-export function singleton<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
-
-// @public
 export interface SizeMap {
     // (undocumented)
     end: number;

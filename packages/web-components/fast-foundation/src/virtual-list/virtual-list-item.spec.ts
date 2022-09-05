@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { FASTVirtualListItem, virtualListItemTemplate } from "./index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { DOM,html } from "@microsoft/fast-element";
 import { IdleCallbackQueue } from "../utilities/idle-callback-queue.js";
 
