@@ -1,7 +1,7 @@
 import { expect } from "chai";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
 import { FASTVirtualList, virtualListTemplate } from "./index.js";
 import { FASTVirtualListItem, virtualListItemTemplate } from "./index.js";
-import { fixture, uniqueElementName } from "../testing/fixture.js";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { DOM, html } from "@microsoft/fast-element";
 

@@ -1,5 +1,6 @@
 import {
     attr,
+    bind,
     DOM,
     FASTElement,
     Notifier,
@@ -713,9 +714,9 @@ export class FASTVirtualList extends FASTElement {
             return;
         }
 
-        const itemsRepeatDirective = new RepeatDirective(
-            x => x.visibleItems,
-            x => x.itemTemplate,
+        const itemsRepeatDirective = new RepeatDirective<FASTVirtualList>(
+            bind(x => x.visibleItems, false),
+            bind(x => x.itemTemplate, false),
             { positioning: true, recycle: this.recycle }
         );
         this.itemsRepeatBehavior = itemsRepeatDirective.createBehavior({
