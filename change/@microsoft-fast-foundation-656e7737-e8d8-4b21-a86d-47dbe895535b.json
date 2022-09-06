@@ -1,5 +1,5 @@
 {
-  "type": "none",
+  "type": "prerelease",
   "comment": "removed redundant role setting in fast foundation menu-item template",
   "packageName": "@microsoft/fast-foundation",
   "email": "yinon@hotmail.com",
