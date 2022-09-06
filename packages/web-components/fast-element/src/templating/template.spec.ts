@@ -14,8 +14,8 @@ describe(`The html tag template helper`, () => {
 
     @htmlDirective()
     class TestDirective implements HTMLDirective, ViewBehaviorFactory {
-        id: string;
-        nodeId: string;
+        id = '';
+        nodeId = '';
 
         createBehavior() {
             return {} as any;
@@ -27,8 +27,12 @@ describe(`The html tag template helper`, () => {
     }
 
     class Model {
-        value: "value";
         doSomething() {}
+        public value = '';
+
+        constructor() {
+            this.value = "value";
+        }
     }
 
     const FAKE = {
@@ -470,11 +474,11 @@ describe(`The html tag template helper`, () => {
     it(`captures a case-sensitive property with an inline directive`, () => {
         @htmlDirective({ aspected: true })
         class TestDirective implements HTMLDirective, Aspected {
-            sourceAspect: string;
-            targetAspect: string;
+            sourceAspect = '';
+            targetAspect = '';
             aspectType = Aspect.property;
-            id: string;
-            nodeId: string;
+            id = '';
+            nodeId = '';
 
             createBehavior(targets: ViewBehaviorTargets) {
                 return { bind() {}, unbind() {} };

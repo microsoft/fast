@@ -66,7 +66,7 @@ function bindWithPositioning(
 export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     private source: TSource | null = null;
     private views: SyntheticView[] = [];
-    private template: SyntheticViewTemplate;
+    private template: SyntheticViewTemplate | null = null;
     private templateBindingObserver: ExpressionObserver<TSource, SyntheticViewTemplate>;
     private items: readonly any[] | null = null;
     private itemsObserver: Notifier | null = null;
@@ -210,7 +210,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
                     }
                     availableViews--;
                 } else {
-                    view = template.create();
+                    view = template?.create();
                 }
 
                 views.splice(addIndex, 0, view);
@@ -255,7 +255,11 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
             this.views = views = new Array(itemsLength);
 
             for (let i = 0; i < itemsLength; ++i) {
-                const view = template.create();
+                const view = template?.create();
+                if (!view) {
+                    return;
+                }
+
                 bindView(view, items, i, childContext);
                 views[i] = view;
                 view.insertBefore(location);
@@ -269,7 +273,11 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
                     const view = views[i];
                     bindView(view, items, i, childContext);
                 } else {
-                    const view = template.create();
+                    const view = template?.create();
+                    if (!view) {
+                        return;
+                    }
+
                     bindView(view, items, i, childContext);
                     views.push(view);
                     view.insertBefore(location);
@@ -307,7 +315,7 @@ export class RepeatDirective<TSource = any>
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    nodeId: string;
+    nodeId = "";
 
     /**
      * Creates a placeholder string based on the directive's index within the template.

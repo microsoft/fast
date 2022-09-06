@@ -169,12 +169,12 @@ export class RenderDirective<TSource = any>
     /**
      * The unique id of the factory.
      */
-    public id: string;
+    public id = "";
 
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    public nodeId: string;
+    public nodeId = "";
 
     /**
      * Creates an instance of RenderDirective.

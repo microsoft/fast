@@ -26,7 +26,7 @@ describe("The composedParent function", () => {
 })
 class TestElement extends FASTElement {
     @observable
-    public root: HTMLElement;
+    public root: HTMLElement = {} as HTMLElement;
 }
 
 describe("The composedContains function", () => {

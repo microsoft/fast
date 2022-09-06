@@ -179,7 +179,7 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     /**
      * Evaluates the binding expression.
      */
-    evaluate: Expression<TSource, TReturn, TParent>;
+    evaluate!: Expression<TSource, TReturn, TParent>;
 
     /**
      * Creates an observer capable of notifying a subscriber when the output of a binding changes.
@@ -329,7 +329,7 @@ export abstract class StatelessAttachedAttributeDirective<T>
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    nodeId: string;
+    nodeId = "";
 
     /**
      * Creates an instance of RefDirective.

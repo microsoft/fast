@@ -488,17 +488,17 @@ export class HTMLBindingDirective
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    nodeId: string;
+    nodeId = "";
 
     /**
      * The original source aspect exactly as represented in markup.
      */
-    sourceAspect: string;
+    sourceAspect = "";
 
     /**
      * The evaluated target aspect, determined after processing the source.
      */
-    targetAspect: string;
+    targetAspect = "";
 
     /**
      * The type of aspect to target.
