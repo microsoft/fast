@@ -232,9 +232,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
-        const count = (targetBehaviors.get(behavior) ?? 0) - 1;
+        const count = targetBehaviors.get(behavior);
+        if (count === void 0) {
+            return;
+        }
 
-        if (count === 0 || force) {
+        if (count === 1 || force) {
             targetBehaviors.delete(behavior);
 
             if (behavior.disconnectedCallback && this.isConnected) {
@@ -243,7 +246,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
             behavior.removedCallback && behavior.removedCallback(this);
         } else {
-            targetBehaviors.set(behavior, count);
+            targetBehaviors.set(behavior, count - 1);
         }
     }
 
