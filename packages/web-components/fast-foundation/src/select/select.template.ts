@@ -51,9 +51,7 @@ export function selectTemplate<T extends FASTSelect>(
                                 <slot name="selected-value">${x => x.displayValue}</slot>
                             </div>
                             <div aria-hidden="true" class="indicator" part="indicator">
-                                <slot name="indicator">
-                                    ${options.indicator ?? ""}
-                                </slot>
+                                <slot name="indicator">${options.indicator ?? ""}</slot>
                             </div>
                         </slot>
                         ${endSlotTemplate(options)}

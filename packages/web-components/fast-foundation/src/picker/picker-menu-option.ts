@@ -8,9 +8,7 @@ import {
 } from "@microsoft/fast-element";
 
 const defaultContentsTemplate: ViewTemplate<FASTPickerMenuOption> = html`
-    <template>
-        ${x => x.value}
-    </template>
+    <template>${x => x.value}</template>
 `;
 
 /**

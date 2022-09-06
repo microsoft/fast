@@ -320,7 +320,8 @@ export interface Aspected {
  * @public
  */
 export abstract class StatelessAttachedAttributeDirective<T>
-    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
+    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior
+{
     /**
      * The unique id of the factory.
      */

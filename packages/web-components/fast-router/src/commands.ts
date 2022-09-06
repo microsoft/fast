@@ -220,13 +220,11 @@ export class Render implements RenderCommand {
                         }
                     }
                 } else if (element instanceof HTMLElement) {
-                    (definition as any).factory = factory = factoryFromElementInstance(
-                        element
-                    );
+                    (definition as any).factory = factory =
+                        factoryFromElementInstance(element);
                 } else {
-                    (definition as any).factory = factory = factoryFromElementName(
-                        element
-                    );
+                    (definition as any).factory = factory =
+                        factoryFromElementName(element);
                 }
 
                 return factory.create();

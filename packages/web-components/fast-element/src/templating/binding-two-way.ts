@@ -44,7 +44,8 @@ let twoWaySettings: TwoWaySettings = {
 };
 
 class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
-    implements ExpressionObserver<TSource, TReturn, TParent> {
+    implements ExpressionObserver<TSource, TReturn, TParent>
+{
     private notifier: ExpressionObserver;
 
     target!: HTMLElement;
@@ -114,9 +115,8 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
                 break;
         }
 
-        last.propertySource[last.propertyName] = this.dataBinding.options.fromView!(
-            value
-        );
+        last.propertySource[last.propertyName] =
+            this.dataBinding.options.fromView!(value);
     }
 }
 

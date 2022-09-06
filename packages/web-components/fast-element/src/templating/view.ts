@@ -96,7 +96,8 @@ function removeNodeSequence(firstNode: Node, lastNode: Node): void {
  * @public
  */
 export class HTMLView<TSource = any, TParent = any>
-    implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent> {
+    implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>
+{
     private behaviors: ViewBehavior[] | null = null;
 
     /**

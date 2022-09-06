@@ -55,7 +55,8 @@ class OnChangeBinding<TSource = any, TReturn = any, TParent = any> extends Bindi
 
 class OneTimeBinding<TSource = any, TReturn = any, TParent = any>
     extends Binding<TSource, TReturn, TParent>
-    implements ExpressionObserver<TSource, TReturn, TParent> {
+    implements ExpressionObserver<TSource, TReturn, TParent>
+{
     constructor(public readonly evaluate: Expression<TSource, TReturn, TParent>) {
         super();
     }
@@ -477,7 +478,8 @@ export class EventBehavior {
  * @public
  */
 export class HTMLBindingDirective
-    implements HTMLDirective, ViewBehaviorFactory, Aspected {
+    implements HTMLDirective, ViewBehaviorFactory, Aspected
+{
     private factory: Pick<ViewBehaviorFactory, "createBehavior"> | null = null;
 
     /**

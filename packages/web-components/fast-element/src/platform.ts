@@ -78,9 +78,9 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
  * Do not change. Part of shared kernel contract.
  * @internal
  */
-export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRegistry<
-    TDefinition
-> {
+export function createTypeRegistry<
+    TDefinition extends TypeDefinition
+>(): TypeRegistry<TDefinition> {
     const typeToDefinition = new Map<Function, TDefinition>();
 
     return Object.freeze({

@@ -42,9 +42,7 @@ export type ChildrenDirectiveOptions<T = any> =
  * The runtime behavior for child node observation.
  * @public
  */
-export class ChildrenDirective extends NodeObservationDirective<
-    ChildrenDirectiveOptions
-> {
+export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> {
     private observerProperty = `${this.id}-o`;
 
     /**

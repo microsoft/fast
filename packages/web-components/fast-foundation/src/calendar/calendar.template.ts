@@ -24,12 +24,8 @@ export function calendarTitleTemplate<T extends FASTCalendar>(): ViewTemplate<T>
                     year: "numeric",
                 })}"
         >
-            <span part="month">
-                ${(x: T) => x.dateFormatter.getMonth(x.month)}
-            </span>
-            <span part="year">
-                ${(x: T) => x.dateFormatter.getYear(x.year)}
-            </span>
+            <span part="month">${(x: T) => x.dateFormatter.getMonth(x.month)}</span>
+            <span part="year">${(x: T) => x.dateFormatter.getYear(x.year)}</span>
         </div>
     `;
 }

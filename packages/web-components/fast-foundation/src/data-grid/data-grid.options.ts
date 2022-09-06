@@ -15,7 +15,8 @@ export const GenerateHeaderOptions = {
  *
  * @public
  */
-export type GenerateHeaderOptions = typeof GenerateHeaderOptions[keyof typeof GenerateHeaderOptions];
+export type GenerateHeaderOptions =
+    typeof GenerateHeaderOptions[keyof typeof GenerateHeaderOptions];
 
 /**
  * Enumerates possible data grid cell types.

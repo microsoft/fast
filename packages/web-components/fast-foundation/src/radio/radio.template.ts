@@ -25,9 +25,7 @@ export function radioTemplate<T extends FASTRadio>(
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         >
             <div part="control" class="control">
-                <slot name="checked-indicator">
-                    ${options.checkedIndicator ?? ""}
-                </slot>
+                <slot name="checked-indicator">${options.checkedIndicator ?? ""}</slot>
             </div>
             <label
                 part="label"

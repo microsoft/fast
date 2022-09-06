@@ -177,7 +177,7 @@ export class FASTMenu extends FASTElement {
         }
 
         e.preventDefault();
-        const changedItem: FASTMenuItem = (e.target as any) as FASTMenuItem;
+        const changedItem: FASTMenuItem = e.target as any as FASTMenuItem;
 
         // closing an expanded item without opening another
         if (

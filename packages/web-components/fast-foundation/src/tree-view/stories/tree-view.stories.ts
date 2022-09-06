@@ -53,8 +53,6 @@ TreeView.args = {
             <fast-tree-item>Nested item 2</fast-tree-item>
             <fast-tree-item>Nested item 3</fast-tree-item>
         </fast-tree-item>
-        <fast-tree-item>
-            Root item 3
-        </fast-tree-item>
+        <fast-tree-item>Root item 3</fast-tree-item>
     `,
 };

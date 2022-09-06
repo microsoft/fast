@@ -189,7 +189,8 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
 
     class ExpressionNotifierImplementation<TSource = any, TReturn = any>
         extends SubscriberSet
-        implements ExpressionNotifier<TSource, TReturn> {
+        implements ExpressionNotifier<TSource, TReturn>
+    {
         public needsRefresh: boolean = true;
         private needsQueue: boolean = true;
         private isAsync = true;

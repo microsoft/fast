@@ -8,10 +8,8 @@ import type { Subscriber } from "../observation/notifier.js";
 import type { HTMLBindingDirective } from "./binding.js";
 import { Binding } from "./html-directive.js";
 
-const subscribers: Record<
-    string,
-    undefined | Subscriber | Set<Subscriber>
-> = Object.create(null);
+const subscribers: Record<string, undefined | Subscriber | Set<Subscriber>> =
+    Object.create(null);
 
 export const Signal = Object.freeze({
     subscribe(signal: string, subscriber: Subscriber) {

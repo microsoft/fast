@@ -18,10 +18,8 @@ const observer = new MutationObserver((mutations: MutationRecord[]) => {
 });
 
 class AttributeReflectionSubscriptionSet {
-    private static subscriberCache: WeakMap<
-        any,
-        AttributeReflectionSubscriptionSet
-    > = new WeakMap();
+    private static subscriberCache: WeakMap<any, AttributeReflectionSubscriptionSet> =
+        new WeakMap();
 
     private watchedAttributes: Set<Readonly<string[]>> = new Set();
     private subscribers = new SubscriberSet(this);

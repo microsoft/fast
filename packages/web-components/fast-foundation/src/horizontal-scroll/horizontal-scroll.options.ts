@@ -14,7 +14,8 @@ export const HorizontalScrollView = {
  * View option types for the {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)|FASTHorizontalScroll} component.
  * @public
  */
-export type HorizontalScrollView = typeof HorizontalScrollView[keyof typeof HorizontalScrollView];
+export type HorizontalScrollView =
+    typeof HorizontalScrollView[keyof typeof HorizontalScrollView];
 
 /**
  * Easing values for the {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)|FASTHorizontalScroll} component.

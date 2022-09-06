@@ -12,7 +12,8 @@ export const AxisPositioningMode = {
  * Type to define the base behavior of an anchored region on a particular axis
  * @public
  */
-export type AxisPositioningMode = typeof AxisPositioningMode[keyof typeof AxisPositioningMode];
+export type AxisPositioningMode =
+    typeof AxisPositioningMode[keyof typeof AxisPositioningMode];
 
 /**
  * Values to define the scaling behavior of an anchored region on a particular axis
@@ -49,7 +50,8 @@ export const HorizontalPosition = {
  *
  * @public
  */
-export type HorizontalPosition = typeof HorizontalPosition[keyof typeof HorizontalPosition];
+export type HorizontalPosition =
+    typeof HorizontalPosition[keyof typeof HorizontalPosition];
 
 /**
  * Values for the vertical positioning options for an anchored region
@@ -111,7 +113,8 @@ export const AnchoredRegionPositionLabel = {
  *
  * @public
  */
-export type AnchoredRegionPositionLabel = typeof AnchoredRegionPositionLabel[keyof typeof AnchoredRegionPositionLabel];
+export type AnchoredRegionPositionLabel =
+    typeof AnchoredRegionPositionLabel[keyof typeof AnchoredRegionPositionLabel];
 
 /**
  * @internal

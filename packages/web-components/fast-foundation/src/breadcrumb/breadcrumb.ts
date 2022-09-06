@@ -23,9 +23,8 @@ export class FASTBreadcrumb extends FASTElement {
                 return;
             }
 
-            const lastNode: HTMLElement = this.slottedBreadcrumbItems[
-                this.slottedBreadcrumbItems.length - 1
-            ];
+            const lastNode: HTMLElement =
+                this.slottedBreadcrumbItems[this.slottedBreadcrumbItems.length - 1];
 
             this.slottedBreadcrumbItems.forEach((item: HTMLElement) => {
                 const itemIsLastNode: boolean = item === lastNode;

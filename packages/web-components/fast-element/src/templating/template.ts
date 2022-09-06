@@ -69,7 +69,8 @@ export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
 export class ViewTemplate<TSource = any, TParent = any>
     implements
         ElementViewTemplate<TSource, TParent>,
-        SyntheticViewTemplate<TSource, TParent> {
+        SyntheticViewTemplate<TSource, TParent>
+{
     private result: HTMLTemplateCompilationResult<TSource, TParent> | null = null;
     /**
      * The html representing what this template will

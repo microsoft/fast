@@ -194,15 +194,14 @@ export class RootStyleSheetTarget implements PropertyTarget {
 }
 
 // Caches PropertyTarget instances
-const propertyTargetCache: WeakMap<
-    FASTElement | Document,
-    PropertyTarget
-> = new WeakMap();
+const propertyTargetCache: WeakMap<FASTElement | Document, PropertyTarget> =
+    new WeakMap();
 // Use Constructable StyleSheets for FAST elements when supported, otherwise use
 // HTMLStyleElement instances
-const propertyTargetCtor: Constructable<PropertyTarget> = ElementStyles.supportsAdoptedStyleSheets
-    ? ConstructableStyleSheetTarget
-    : StyleElementStyleSheetTarget;
+const propertyTargetCtor: Constructable<PropertyTarget> =
+    ElementStyles.supportsAdoptedStyleSheets
+        ? ConstructableStyleSheetTarget
+        : StyleElementStyleSheetTarget;
 
 /**
  * Manages creation and caching of PropertyTarget instances.

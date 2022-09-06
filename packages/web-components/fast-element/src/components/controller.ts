@@ -211,7 +211,7 @@ export class Controller<
 
         const target =
             getShadowRoot(this.element) ||
-            ((this.element.getRootNode() as any) as StyleTarget);
+            (this.element.getRootNode() as any as StyleTarget);
 
         if (styles instanceof HTMLElement) {
             target.append(styles);
@@ -238,7 +238,7 @@ export class Controller<
 
         const target =
             getShadowRoot(this.element) ||
-            ((this.element.getRootNode() as any) as StyleTarget);
+            (this.element.getRootNode() as any as StyleTarget);
 
         if (styles instanceof HTMLElement) {
             target.removeChild(styles);

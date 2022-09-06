@@ -111,7 +111,7 @@ export abstract class RouterConfiguration<TSettings = any> {
                 instance = new ElementType();
             }
 
-            return (instance as any) as HTMLElement;
+            return instance as any as HTMLElement;
         };
     }
 

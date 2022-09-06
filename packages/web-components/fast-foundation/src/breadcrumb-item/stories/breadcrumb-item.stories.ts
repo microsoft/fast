@@ -88,9 +88,8 @@ BreadcrumbItemWithHref.args = {
     href: "https://www.fast.design/",
 };
 
-export const BreadcrumbItemWithSlottedStart: Story<FASTBreadcrumbItem> = BreadcrumbItem.bind(
-    {}
-);
+export const BreadcrumbItemWithSlottedStart: Story<FASTBreadcrumbItem> =
+    BreadcrumbItem.bind({});
 BreadcrumbItemWithSlottedStart.args = {
     storyContent: html`
         Breadcrumb Item with slotted start icon
@@ -98,9 +97,8 @@ BreadcrumbItemWithSlottedStart.args = {
     `,
 };
 
-export const BreadcrumbItemWithSlottedEnd: Story<FASTBreadcrumbItem> = BreadcrumbItem.bind(
-    {}
-);
+export const BreadcrumbItemWithSlottedEnd: Story<FASTBreadcrumbItem> =
+    BreadcrumbItem.bind({});
 BreadcrumbItemWithSlottedEnd.args = {
     storyContent: html`
         Breadcrumb item with slotted end icon
@@ -108,9 +106,8 @@ BreadcrumbItemWithSlottedEnd.args = {
     `,
 };
 
-export const BreadcrumbItemWithSlottedSeparator: Story<FASTBreadcrumbItem> = BreadcrumbItem.bind(
-    {}
-);
+export const BreadcrumbItemWithSlottedSeparator: Story<FASTBreadcrumbItem> =
+    BreadcrumbItem.bind({});
 BreadcrumbItemWithSlottedSeparator.args = {
     storyContent: html`
         Breadcrumb item with slotted separator icon

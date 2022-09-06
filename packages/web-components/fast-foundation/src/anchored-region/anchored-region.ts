@@ -396,9 +396,9 @@ export class FASTAnchoredRegion extends FASTElement {
      */
     private initializeResizeDetector(): void {
         this.disconnectResizeDetector();
-        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
-            this.handleResize
-        );
+        this.resizeDetector = new (
+            window as unknown as WindowWithResizeObserver
+        ).ResizeObserver(this.handleResize);
     }
 
     /**
@@ -708,20 +708,18 @@ export class FASTAnchoredRegion extends FASTElement {
      */
     private updateLayout = (): void => {
         let desiredVerticalPosition: AnchoredRegionPositionLabel | undefined = undefined;
-        let desiredHorizontalPosition:
-            | AnchoredRegionPositionLabel
-            | undefined = undefined;
+        let desiredHorizontalPosition: AnchoredRegionPositionLabel | undefined =
+            undefined;
 
         if (this.horizontalPositioningMode !== "uncontrolled") {
-            const horizontalOptions: AnchoredRegionPositionLabel[] = this.getPositioningOptions(
-                this.horizontalInset
-            );
+            const horizontalOptions: AnchoredRegionPositionLabel[] =
+                this.getPositioningOptions(this.horizontalInset);
 
             if (this.horizontalDefaultPosition === "center") {
                 desiredHorizontalPosition = "center";
             } else if (this.horizontalDefaultPosition !== "unset") {
-                let dirCorrectedHorizontalDefaultPosition: string = this
-                    .horizontalDefaultPosition;
+                let dirCorrectedHorizontalDefaultPosition: string =
+                    this.horizontalDefaultPosition;
 
                 if (
                     dirCorrectedHorizontalDefaultPosition === "start" ||
@@ -816,9 +814,8 @@ export class FASTAnchoredRegion extends FASTElement {
         }
 
         if (this.verticalPositioningMode !== "uncontrolled") {
-            const verticalOptions: AnchoredRegionPositionLabel[] = this.getPositioningOptions(
-                this.verticalInset
-            );
+            const verticalOptions: AnchoredRegionPositionLabel[] =
+                this.getPositioningOptions(this.verticalInset);
             if (this.verticalDefaultPosition === "center") {
                 desiredVerticalPosition = "center";
             } else if (this.verticalDefaultPosition !== "unset") {

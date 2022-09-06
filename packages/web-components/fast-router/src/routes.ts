@@ -46,11 +46,10 @@ export type LayoutAndTransitionRouteDefinition = {
 /**
  * @beta
  */
-export type RedirectRouteDefinition<TSettings = any> = PathedRouteDefinition<
-    TSettings
-> & {
-    redirect: string;
-};
+export type RedirectRouteDefinition<TSettings = any> =
+    PathedRouteDefinition<TSettings> & {
+        redirect: string;
+    };
 
 /**
  * @beta
@@ -87,20 +86,17 @@ export type HasElement = {
 /**
  * @beta
  */
-export type ElementFallbackRouteDefinition<
-    TSettings = any
-> = LayoutAndTransitionRouteDefinition &
-    HasElement &
-    SupportsSettings<TSettings> &
-    HasTitle;
+export type ElementFallbackRouteDefinition<TSettings = any> =
+    LayoutAndTransitionRouteDefinition &
+        HasElement &
+        SupportsSettings<TSettings> &
+        HasTitle;
 
 /**
  * @beta
  */
-export type ElementRouteDefinition<TSettings = any> = NavigableRouteDefinition<
-    TSettings
-> &
-    HasElement;
+export type ElementRouteDefinition<TSettings = any> =
+    NavigableRouteDefinition<TSettings> & HasElement;
 
 /**
  * @beta
@@ -112,20 +108,17 @@ export type HasTemplate = {
 /**
  * @beta
  */
-export type TemplateFallbackRouteDefinition<
-    TSettings = any
-> = LayoutAndTransitionRouteDefinition &
-    HasTemplate &
-    SupportsSettings<TSettings> &
-    HasTitle;
+export type TemplateFallbackRouteDefinition<TSettings = any> =
+    LayoutAndTransitionRouteDefinition &
+        HasTemplate &
+        SupportsSettings<TSettings> &
+        HasTitle;
 
 /**
  * @beta
  */
-export type TemplateRouteDefinition<TSettings = any> = NavigableRouteDefinition<
-    TSettings
-> &
-    HasTemplate;
+export type TemplateRouteDefinition<TSettings = any> =
+    NavigableRouteDefinition<TSettings> & HasTemplate;
 
 /**
  * @beta

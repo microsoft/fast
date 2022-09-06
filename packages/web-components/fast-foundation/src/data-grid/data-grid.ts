@@ -596,7 +596,7 @@ export class FASTDataGrid extends FASTElement {
             const generatedHeaderElement: HTMLElement = document.createElement(
                 this.rowElementTag
             );
-            this.generatedHeader = (generatedHeaderElement as unknown) as FASTDataGridRow;
+            this.generatedHeader = generatedHeaderElement as unknown as FASTDataGridRow;
             this.generatedHeader.columnDefinitions = this.columnDefinitions;
             this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
             this.generatedHeader.rowType =
@@ -625,7 +625,8 @@ export class FASTDataGrid extends FASTElement {
                         newNode.nodeType === 1 &&
                         (newNode as Element).getAttribute("role") === "row"
                     ) {
-                        (newNode as FASTDataGridRow).columnDefinitions = this.columnDefinitions;
+                        (newNode as FASTDataGridRow).columnDefinitions =
+                            this.columnDefinitions;
                     }
                 });
             });

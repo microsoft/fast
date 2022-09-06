@@ -12,8 +12,7 @@ export interface FeatureCardData {
 export const featureCardData: FeatureCardData[] = [
     {
         header: "Composition",
-        body:
-            "Create new component compositions by nesting, styling foundation components, or extending existing components. The combinations are endless.",
+        body: "Create new component compositions by nesting, styling foundation components, or extending existing components. The combinations are endless.",
         links: [
             {
                 anchorText: "Get started",
@@ -23,8 +22,7 @@ export const featureCardData: FeatureCardData[] = [
     },
     {
         header: "Design Systems",
-        body:
-            "Use FAST, Microsoft's Fluent or customize design system properties to make it your own. You can also create your own design system to use with FAST foundation components.",
+        body: "Use FAST, Microsoft's Fluent or customize design system properties to make it your own. You can also create your own design system to use with FAST foundation components.",
         links: [
             {
                 anchorText: "Learn more",
@@ -34,8 +32,7 @@ export const featureCardData: FeatureCardData[] = [
     },
     {
         header: "Technology",
-        body:
-            "FAST web components are built on the core technologies of the web to work in any scenario. Use them as is or with your favorite framework.",
+        body: "FAST web components are built on the core technologies of the web to work in any scenario. Use them as is or with your favorite framework.",
         links: [
             {
                 anchorText: "View example integrations",
@@ -45,8 +42,7 @@ export const featureCardData: FeatureCardData[] = [
     },
     {
         header: "Web Standards",
-        body:
-            "All FAST components follow WCAG 2.1, are W3C spec-compliant and use the W3C interaction models when available.",
+        body: "All FAST components follow WCAG 2.1, are W3C spec-compliant and use the W3C interaction models when available.",
         links: [
             {
                 anchorText: "Visit WCAG",
@@ -56,8 +52,7 @@ export const featureCardData: FeatureCardData[] = [
     },
     {
         header: "Animation",
-        body:
-            "Design sophisticated animation sequences with the animation library, an interface for the Web Animations API.",
+        body: "Design sophisticated animation sequences with the animation library, an interface for the Web Animations API.",
         links: [
             {
                 anchorText: "View documentation",
@@ -67,8 +62,7 @@ export const featureCardData: FeatureCardData[] = [
     },
     {
         header: "Colors",
-        body:
-            "Create color palettes, extract colors from images, and handle other color operations using our color library.",
+        body: "Create color palettes, extract colors from images, and handle other color operations using our color library.",
         links: [
             {
                 anchorText: "View documentation",

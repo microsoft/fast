@@ -40,9 +40,7 @@ export const Tooltip: Story = renderComponent(
     html<StoryArgs<FASTTooltip>>`
         <div>
             ${storyTemplate}
-            <fast-button id="anchor-default">
-                Hover or focus me
-            </fast-button>
+            <fast-button id="anchor-default">Hover or focus me</fast-button>
         </div>
     `
 ).bind({});

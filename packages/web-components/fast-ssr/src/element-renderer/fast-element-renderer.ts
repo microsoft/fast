@@ -132,7 +132,7 @@ export abstract class FASTElementRenderer extends ElementRenderer {
 
         if (view !== null) {
             yield* this.templateRenderer.renderOpCodes(
-                ((view as unknown) as SSRView).codes,
+                (view as unknown as SSRView).codes,
                 renderInfo,
                 this.element,
                 ExecutionContext.default

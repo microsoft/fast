@@ -40,8 +40,8 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
     matcher: Constructable<T>;
 }
 
-export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirective> = Object.freeze(
-    {
+export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirective> =
+    Object.freeze({
         matcher: RepeatDirective,
         *render(
             directive: RepeatDirective,
@@ -78,11 +78,10 @@ export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirectiv
                 throw new Error("Unable to render Repeat Directive template");
             }
         },
-    }
-);
+    });
 
-export const RenderDirectiveRenderer: ViewBehaviorFactoryRenderer<RenderDirective> = Object.freeze(
-    {
+export const RenderDirectiveRenderer: ViewBehaviorFactoryRenderer<RenderDirective> =
+    Object.freeze({
         matcher: RenderDirective,
         *render(
             directive: RenderDirective,
@@ -101,33 +100,29 @@ export const RenderDirectiveRenderer: ViewBehaviorFactoryRenderer<RenderDirectiv
                 throw new Error("Unable to render Render Directive template");
             }
         },
-    }
-);
+    });
 
 function* noop() {
     yield "";
 }
 
-export const ChildrenDirectiveRenderer: ViewBehaviorFactoryRenderer<ChildrenDirective> = Object.freeze(
-    {
+export const ChildrenDirectiveRenderer: ViewBehaviorFactoryRenderer<ChildrenDirective> =
+    Object.freeze({
         matcher: ChildrenDirective,
         render: noop,
-    }
-);
+    });
 
-export const RefDirectiveRenderer: ViewBehaviorFactoryRenderer<RefDirective> = Object.freeze(
-    {
+export const RefDirectiveRenderer: ViewBehaviorFactoryRenderer<RefDirective> =
+    Object.freeze({
         matcher: RefDirective,
         render: noop,
-    }
-);
+    });
 
-export const SlottedDirectiveRenderer: ViewBehaviorFactoryRenderer<SlottedDirective> = Object.freeze(
-    {
+export const SlottedDirectiveRenderer: ViewBehaviorFactoryRenderer<SlottedDirective> =
+    Object.freeze({
         matcher: SlottedDirective,
         render: noop,
-    }
-);
+    });
 
 export const defaultViewBehaviorFactoryRenderers: ViewBehaviorFactoryRenderer<any>[] = [
     RepeatDirectiveRenderer,

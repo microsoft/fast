@@ -26,7 +26,8 @@ export const PaletteDirectionValue = Object.freeze({
  *
  * @public
  */
-export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof PaletteDirectionValue];
+export type PaletteDirectionValue =
+    typeof PaletteDirectionValue[keyof typeof PaletteDirectionValue];
 
 // I know we like to avoid enums so I tried to make it an object, but I'm not sure how to make this work with the type and function below.
 // export const PaletteDirectionValue = {

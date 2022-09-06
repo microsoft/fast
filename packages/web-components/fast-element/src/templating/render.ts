@@ -42,7 +42,8 @@ type ComposableView = ContentView & {
  * @public
  */
 export class RenderBehavior<TSource = any, TParent = any>
-    implements Behavior, Subscriber {
+    implements Behavior, Subscriber
+{
     private source: TSource | null = null;
     private view: ComposableView | null = null;
     private template!: ContentTemplate;
@@ -165,7 +166,8 @@ export class RenderBehavior<TSource = any, TParent = any>
  * @public
  */
 export class RenderDirective<TSource = any>
-    implements HTMLDirective, ViewBehaviorFactory {
+    implements HTMLDirective, ViewBehaviorFactory
+{
     /**
      * The unique id of the factory.
      */
@@ -367,7 +369,7 @@ function createElementTemplate<TSource = any, TParent = any>(
         markup[lastIndex] = `${markup[lastIndex]}${content ?? ""}</${tagName}>`;
     }
 
-    return html((markup as any) as TemplateStringsArray, ...values);
+    return html(markup as any as TemplateStringsArray, ...values);
 }
 
 function create(options: TagNameRenderOptions): RenderInstruction;

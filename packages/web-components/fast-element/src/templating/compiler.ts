@@ -42,7 +42,8 @@ const warningHost = new Proxy(document.createElement("div"), {
 });
 
 class CompilationContext<TSource = any, TParent = any>
-    implements TemplateCompilationResult<TSource, TParent> {
+    implements TemplateCompilationResult<TSource, TParent>
+{
     private proto: any = null;
     private nodeIds = new Set<string>();
     private descriptors: PropertyDescriptorMap = {};
@@ -148,7 +149,7 @@ function compileAttributes(
         if (parseResult === null) {
             if (includeBasicValues) {
                 result = new HTMLBindingDirective(oneTime(() => attrValue));
-                Aspect.assign((result as any) as Aspected, attr.name);
+                Aspect.assign(result as any as Aspected, attr.name);
             }
         } else {
             /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
@@ -197,7 +198,7 @@ function compileContent(
             currentNode.textContent = currentPart;
         } else {
             currentNode.textContent = " ";
-            Aspect.assign((currentPart as any) as Aspected);
+            Aspect.assign(currentPart as any as Aspected);
             context.addFactory(currentPart, parentId, nodeId, nodeIndex);
         }
 
@@ -393,10 +394,10 @@ export const Compiler = {
                 return (): string => x;
             }
 
-            sourceAspect = ((x as any) as Aspected).sourceAspect || sourceAspect;
-            binding = ((x as any) as Aspected).dataBinding || binding;
-            isVolatile = isVolatile || ((x as any) as Aspected).dataBinding!.isVolatile;
-            return ((x as any) as Aspected).dataBinding!.evaluate;
+            sourceAspect = (x as any as Aspected).sourceAspect || sourceAspect;
+            binding = (x as any as Aspected).dataBinding || binding;
+            isVolatile = isVolatile || (x as any as Aspected).dataBinding!.isVolatile;
+            return (x as any as Aspected).dataBinding!.evaluate;
         });
 
         const expression = (scope: unknown, context: ExecutionContext): string => {

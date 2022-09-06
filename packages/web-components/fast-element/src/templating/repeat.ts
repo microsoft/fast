@@ -298,7 +298,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
  * @public
  */
 export class RepeatDirective<TSource = any>
-    implements HTMLDirective, ViewBehaviorFactory {
+    implements HTMLDirective, ViewBehaviorFactory
+{
     /**
      * The unique id of the factory.
      */

@@ -845,9 +845,8 @@ export const DI = Object.freeze({
         ): void {
             if (typeof descriptor === "number") {
                 // It's a parameter decorator.
-                const annotationParamtypes = Metadata.getOrCreateAnnotationParamTypes(
-                    target
-                );
+                const annotationParamtypes =
+                    Metadata.getOrCreateAnnotationParamTypes(target);
                 const dep = dependencies[0];
                 if (dep !== void 0) {
                     annotationParamtypes[descriptor] = dep;
@@ -955,13 +954,13 @@ export const Container = DI.createContext<Container>("Container");
  * The key that resolves a DOMContainer itself.
  * @public
  */
-export const DOMContainer = (Container as unknown) as ContextDecorator<DOMContainer>;
+export const DOMContainer = Container as unknown as ContextDecorator<DOMContainer>;
 
 /**
  * The key that resolves the ServiceLocator itself.
  * @public
  */
-export const ServiceLocator = (Container as unknown) as ContextDecorator<ServiceLocator>;
+export const ServiceLocator = Container as unknown as ContextDecorator<ServiceLocator>;
 
 function createResolver(
     getter: (key: any, handler: Container, requestor: Container) => any
@@ -1615,7 +1614,7 @@ export class ContainerImpl implements DOMContainer {
             // type Constructable. So the return type of that optional method has this additional constraint, which
             // seems to confuse the type checker.
             factory.registerTransformer(
-                (transformer as unknown) as Transformer<Constructable>
+                transformer as unknown as Transformer<Constructable>
             );
 
             return true;
@@ -1630,8 +1629,8 @@ export class ContainerImpl implements DOMContainer {
     ): Resolver<T> | null {
         validateKey(key);
 
-        if (((key as unknown) as Resolver).resolve !== void 0) {
-            return (key as unknown) as Resolver;
+        if ((key as unknown as Resolver).resolve !== void 0) {
+            return key as unknown as Resolver;
         }
 
         /* eslint-disable-next-line @typescript-eslint/no-this-alias */
@@ -1644,7 +1643,7 @@ export class ContainerImpl implements DOMContainer {
             if (resolver == null) {
                 if (current.parent == null) {
                     const handler = isRegisterInRequester(
-                        (key as unknown) as RegisterSelf<Constructable>
+                        key as unknown as RegisterSelf<Constructable>
                     )
                         ? this
                         : current;
@@ -1685,7 +1684,7 @@ export class ContainerImpl implements DOMContainer {
             if (resolver == null) {
                 if (current.parent == null) {
                     const handler = isRegisterInRequester(
-                        (key as unknown) as RegisterSelf<Constructable>
+                        key as unknown as RegisterSelf<Constructable>
                     )
                         ? this
                         : current;

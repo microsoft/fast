@@ -19,10 +19,8 @@ export class Element extends Node {}
  * @beta
  */
 export abstract class HTMLElement extends Element {
-    private static elementAttributes: WeakMap<
-        HTMLElement,
-        Map<string, string>
-    > = new WeakMap();
+    private static elementAttributes: WeakMap<HTMLElement, Map<string, string>> =
+        new WeakMap();
     private static getOrCreateAttributesForElement(element: HTMLElement) {
         let attrs = HTMLElement.elementAttributes.get(element);
         if (!attrs) {
@@ -159,7 +157,7 @@ export class CSSStyleSheet {
         this.cssRules.splice(
             index,
             0,
-            (new CSSStyleRule(selectorText) as unknown) as CSSRule
+            new CSSStyleRule(selectorText) as unknown as CSSRule
         );
 
         return index;
@@ -217,9 +215,9 @@ export class MediaQueryList {
  *
  * @beta
  */
-export function createWindow(
-    props: { [key: string]: unknown } = {}
-): { [key: string]: unknown } {
+export function createWindow(props: { [key: string]: unknown } = {}): {
+    [key: string]: unknown;
+} {
     class Window extends EventTarget {
         public Node = Node;
         public Element = Element;
@@ -250,9 +248,8 @@ export function createWindow(
              */
             this.dispatchEvent = EventTarget.prototype.dispatchEvent.bind(this);
             this.addEventListener = EventTarget.prototype.addEventListener.bind(this);
-            this.removeEventListener = EventTarget.prototype.removeEventListener.bind(
-                this
-            );
+            this.removeEventListener =
+                EventTarget.prototype.removeEventListener.bind(this);
 
             Object.assign(this, props);
             this.window = this;
