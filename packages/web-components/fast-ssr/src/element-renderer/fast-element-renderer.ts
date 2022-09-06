@@ -1,4 +1,5 @@
 import { Aspect, DOM, ExecutionContext, FASTElement } from "@microsoft/fast-element";
+import { PendingTaskEvent } from "@microsoft/fast-element/pending-task";
 import { escapeHtml } from "../escape-html.js";
 import { RenderInfo } from "../render-info.js";
 import { StyleRenderer } from "../styles/style-renderer.js";
@@ -117,32 +118,60 @@ export abstract class SyncFASTElementRenderer extends FASTElementRenderer
 }
 export abstract class AsyncFASTElementRenderer extends FASTElementRenderer
     implements AsyncElementRenderer {
-    renderAttributes = renderAttributesAsync;
-    renderShadow = renderShadow as (
-        renderInfo: RenderInfo
-    ) => IterableIterator<string | Promise<string>>;
-}
+    constructor(tagName: string, renderInfo: RenderInfo) {
+        super(tagName, renderInfo);
 
-function* renderAttributesSync(this: FASTElementRenderer): IterableIterator<string> {
-    if (this.element !== undefined) {
-        const { attributes } = this.element;
-        for (
-            let i = 0, name, value;
-            i < attributes.length && ({ name, value } = attributes[i]);
-            i++
-        ) {
-            if (value === "" || value === undefined || value === null) {
-                yield ` ${name}`;
-            } else {
-                yield ` ${name}="${escapeHtml(value)}"`;
+        this.element.addEventListener(PendingTaskEvent.type, this.pendingTaskHandler);
+    }
+    public *renderAttributes(
+        this: AsyncFASTElementRenderer
+    ): IterableIterator<string | Promise<string>> {
+        if (this.element !== undefined) {
+            if (this.awaiting.size) {
+                yield this.pauseRendering().then(() => "");
+            }
+            const { attributes } = this.element;
+
+            for (
+                let i = 0, name, value;
+                i < attributes.length && ({ name, value } = attributes[i]);
+                i++
+            ) {
+                if (value === "" || value === undefined || value === null) {
+                    yield ` ${name}`;
+                } else {
+                    yield ` ${name}="${escapeHtml(value)}"`;
+                }
             }
         }
     }
+    renderShadow = renderShadow as (
+        renderInfo: RenderInfo
+    ) => IterableIterator<string | Promise<string>>;
+
+    private async pauseRendering() {
+        for (const awaiting of this.awaiting) {
+            try {
+                await awaiting;
+            } catch (e) {
+                // Await will throw if the Promise is rejected. In that case,
+                // SSR should just continue rendering
+            }
+        }
+
+        this.awaiting.clear();
+    }
+
+    private awaiting: Set<Promise<void>> = new Set();
+
+    private pendingTaskHandler = (e: Event) => {
+        if (PendingTaskEvent.isPendingTask(e)) {
+            this.awaiting.add(e.complete);
+        }
+    };
 }
 
-function* renderAttributesAsync(
-    this: FASTElementRenderer
-): IterableIterator<string | Promise<string>> {
+function* renderAttributesSync(this: FASTElementRenderer): IterableIterator<string> {
     if (this.element !== undefined) {
         const { attributes } = this.element;
         for (
