@@ -71,15 +71,27 @@ test.describe("Progress ring", () => {
         await expect(element).toHaveClass(/paused/);
     });
 
-    test("should render an element with a `determinate` slot when a value is provided", async () => {
+    test("should render an element with a `determinate` class when a value is provided", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-progress-ring value="50"></fast-progress-ring>
             `;
         });
 
-        const progress = element.locator(".progress");
+        const progress = element.locator(".determinate");
 
-        await expect(progress).toHaveAttribute("slot", "determinate");
+        await expect(progress).toHaveCount(1);
+    });
+
+    test("should render an element with an `indeterminate` class when no value is provided", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-progress-ring></fast-progress-ring>
+            `;
+        });
+
+        const progress = element.locator(".indeterminate");
+
+        await expect(progress).toHaveCount(1);
     });
 });

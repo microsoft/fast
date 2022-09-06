@@ -37,31 +37,6 @@ test.describe("Radio Group", () => {
         await expect(element).toHaveAttribute("role", "radiogroup");
     });
 
-    test("should set a matching class on the `positioning-region` when an orientation is provided", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-radio-group></fast-radio-group>
-            `;
-        });
-
-        const positioningRegion = element.locator(".positioning-region");
-
-        // Horizontal by default
-        await expect(positioningRegion).toHaveClass(/horizontal/);
-
-        await element.evaluate((node: FASTRadioGroup, Orientation) => {
-            node.orientation = Orientation.vertical;
-        }, Orientation);
-
-        await expect(positioningRegion).toHaveClass(/vertical/);
-
-        await element.evaluate((node: FASTRadioGroup, Orientation) => {
-            node.orientation = Orientation.horizontal;
-        }, Orientation);
-
-        await expect(positioningRegion).toHaveClass(/horizontal/);
-    });
-
     test("should set the `aria-disabled` attribute when disabled", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
