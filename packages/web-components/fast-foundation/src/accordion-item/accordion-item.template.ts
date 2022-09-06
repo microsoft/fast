@@ -39,8 +39,8 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
                 </button>
             </div>
             <div
-                class="region"
-                part="region"
+                class="panel"
+                part="panel"
                 id="${x => x.id}-panel"
                 role="region"
                 aria-labelledby="${x => x.id}"

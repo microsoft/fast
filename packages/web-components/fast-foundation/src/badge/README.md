@@ -61,9 +61,11 @@ export const myBadge = Badge.compose({
 
 #### Slots
 
-| Name | Description                    |
-| ---- | ------------------------------ |
-|      | The default slot for the badge |
+| Name    | Description                                           |
+| ------- | ----------------------------------------------------- |
+| `start` | Content which can be provided before the default slot |
+| `end`   | Content which can be provided after the default slot  |
+|         | The default slot for the badge                        |
 
 <hr/>
 

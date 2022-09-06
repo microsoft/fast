@@ -14,7 +14,8 @@ export type SwitchOptions = {
  * A Switch Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#switch | ARIA switch }.
  *
- * @slot - The deafult slot for the label
+ * @slot - The default slot for the label
+ * @slot thumb - The thumb inside the control
  * @slot checked-message - The message when in a checked state
  * @slot unchecked-message - The message when in an unchecked state
  * @csspart label - The label

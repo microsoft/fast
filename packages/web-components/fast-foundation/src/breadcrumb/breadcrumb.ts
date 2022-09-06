@@ -12,6 +12,9 @@ export type BreadcrumbOptions = StartEndOptions;
 
 /**
  * A Breadcrumb Custom HTML Element.
+ *
+ * @slot start - Content which can be provided before the breadcrumbs
+ * @slot end - Content which can be provided after the breadcrumbs
  * @slot - The default slot for the breadcrumb items
  * @csspart list - The element wrapping the slotted items
  *

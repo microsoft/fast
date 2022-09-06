@@ -3,6 +3,9 @@ import { html, when } from "@microsoft/fast-element";
 import type { FASTProgressRing } from "./progress-ring.js";
 import type { ProgressRingOptions } from "./progress-ring.options.js";
 
+/**
+ * @public
+ */
 export const progressRingIndicatorTemplate = html<FASTProgressRing>`
     <svg viewBox="0 0 16 16" class="progress">
         <circle class="background" part="background" cx="8px" cy="8px" r="7px"></circle>
@@ -17,7 +20,7 @@ export const progressRingIndicatorTemplate = html<FASTProgressRing>`
 export function progressRingTemplate<T extends FASTProgressRing>(
     options: ProgressRingOptions = {}
 ): ElementViewTemplate<T> {
-    return html`
+    return html<T>`
         <template
             role="progressbar"
             aria-valuenow="${x => x.value}"

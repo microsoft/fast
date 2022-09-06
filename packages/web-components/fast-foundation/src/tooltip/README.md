@@ -110,7 +110,7 @@ export const myTooltip = Tooltip.compose({
 
 | Name      | Description         |
 | --------- | ------------------- |
-| `tooltip` | The tooltip element |
+| `control` | The tooltip element |
 
 #### Slots
 

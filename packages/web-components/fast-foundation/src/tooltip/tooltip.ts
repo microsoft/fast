@@ -21,7 +21,7 @@ export { TooltipPosition };
  * An Tooltip Custom HTML Element.
  *
  * @slot - The default slot for the tooltip content
- * @csspart tooltip - The tooltip element
+ * @csspart control - The tooltip element
  * @fires dismiss - Fires a custom 'dismiss' event when the tooltip is visible and escape key is pressed
  *
  * @public

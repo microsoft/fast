@@ -37,9 +37,9 @@ export function sliderTemplate<T extends FASTSlider>(
                 </div>
                 <slot></slot>
                 <div
-                    ${ref("thumbPosition")}
-                    part="thumb-position"
-                    class="thumb-position"
+                    ${ref("thumbContainer")}
+                    part="thumb-container"
+                    class="thumb-container"
                     style="${x => x.position}"
                 >
                     <slot name="thumb">

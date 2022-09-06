@@ -143,7 +143,8 @@ export const mySwitch = Switch.compose<SwitchOptions>({
 
 | Name                | Description                            |
 | ------------------- | -------------------------------------- |
-|                     | The deafult slot for the label         |
+|                     | The default slot for the label         |
+| `thumb`             | The thumb inside the control           |
 | `checked-message`   | The message when in a checked state    |
 | `unchecked-message` | The message when in an unchecked state |
 

@@ -99,11 +99,10 @@ export const myDialog = Dialog.compose({
 
 #### CSS Parts
 
-| Name                 | Description                                                                 |
-| -------------------- | --------------------------------------------------------------------------- |
-| `positioning-region` | A wrapping element used to center the dialog and position the modal overlay |
-| `overlay`            | The modal dialog overlay                                                    |
-| `control`            | The dialog element                                                          |
+| Name      | Description              |
+| --------- | ------------------------ |
+| `overlay` | The modal dialog overlay |
+| `control` | The dialog element       |
 
 #### Slots
 

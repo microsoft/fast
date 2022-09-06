@@ -11,6 +11,8 @@ export type BadgeOptions = StartEndOptions;
 
 /**
  * A Badge Custom HTML Element.
+ * @slot start - Content which can be provided before the default slot
+ * @slot end - Content which can be provided after the default slot
  * @slot - The default slot for the badge
  * @csspart control - The element representing the badge, which wraps the default slot
  *

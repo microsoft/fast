@@ -102,9 +102,9 @@ export const myRadioGroup = RadioGroup.compose({
 
 #### CSS Parts
 
-| Name         | Description                             |
-| ------------ | --------------------------------------- |
-| `radiogroup` | The container for laying out the radios |
+| Name      | Description                             |
+| --------- | --------------------------------------- |
+| `control` | The container for laying out the radios |
 
 #### Slots
 

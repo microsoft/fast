@@ -42,7 +42,8 @@ export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientatio
  * @slot end - Content which can be provided after the tablist element
  * @slot tab - The slot for tabs
  * @slot tabpanel - The slot for tabpanels
- * @csspart tablist - The element wrapping for the tabs
+ * @csspart tablist - The element wrapping the tabs
+ * @csspart tabpanel - The element wrapping the tabpanels
  * @csspart active-indicator - The visual indicator
  * @fires change - Fires a custom 'change' event when a tab is clicked or during keyboard navigation
  *

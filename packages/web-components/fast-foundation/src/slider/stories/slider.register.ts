@@ -42,7 +42,7 @@ const styles = css`
         box-shadow: 0 0 0 2px var(--fill-color), 0 0 0 4px var(--focus-stroke-outer);
     }
 
-    .thumb-position {
+    .thumb-container {
         position: absolute;
         height: calc(var(--thumb-size) * 1px);
         width: calc(var(--thumb-size) * 1px);
@@ -80,12 +80,12 @@ const styles = css`
         left: 0;
     }
 
-    :host([orientation="horizontal"]) .thumb-position {
+    :host([orientation="horizontal"]) .thumb-container {
         transform: translateX(calc(var(--thumb-size) * 0.5px))
             translateY(calc(var(--thumb-translate) * 1px));
     }
 
-    :host([orientation="vertical"]) .thumb-position {
+    :host([orientation="vertical"]) .thumb-container {
         transform: translateX(calc(var(--thumb-translate) * 1px))
             translateY(calc(var(--thumb-size) * 0.5px));
     }

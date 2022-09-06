@@ -13,6 +13,7 @@ export type TabOptionOptions = StartEndOptions;
  * A Tab Component to be used with {@link @microsoft/fast-foundation#(FASTTabs:class)}
  *
  * @slot - The default slot for the tab content
+ * @csspart content - The container for the default slot content
  *
  * @public
  */

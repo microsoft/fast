@@ -145,10 +145,11 @@ export const myTabs = Tabs.compose({
 
 #### CSS Parts
 
-| Name               | Description                       |
-| ------------------ | --------------------------------- |
-| `tablist`          | The element wrapping for the tabs |
-| `active-indicator` | The visual indicator              |
+| Name               | Description                        |
+| ------------------ | ---------------------------------- |
+| `tablist`          | The element wrapping the tabs      |
+| `tabpanel`         | The element wrapping the tabpanels |
+| `active-indicator` | The visual indicator               |
 
 #### Slots
 
@@ -208,6 +209,12 @@ export const myTabs = Tabs.compose({
 | Name | Field    | Inherited From |
 | ---- | -------- | -------------- |
 |      | disabled |                |
+
+#### CSS Parts
+
+| Name      | Description                                |
+| --------- | ------------------------------------------ |
+| `content` | The container for the default slot content |
 
 #### Slots
 

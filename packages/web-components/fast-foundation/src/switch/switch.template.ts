@@ -29,7 +29,7 @@ export function switchTemplate<T extends FASTSwitch>(
                 <slot ${slotted("defaultSlottedNodes")}></slot>
             </label>
             <div part="control" class="control">
-                <slot name="control">
+                <slot name="thumb">
                     ${options.thumb ?? `<div class="thumb" class="thumb"></div>`}
                 </slot>
             </div>

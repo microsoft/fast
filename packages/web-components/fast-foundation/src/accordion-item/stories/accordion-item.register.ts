@@ -15,7 +15,7 @@ const styles = css`
             var(--neutral-stroke-divider-rest);
     }
 
-    .region {
+    .panel {
         display: none;
         padding: calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
     }
@@ -64,7 +64,7 @@ const styles = css`
         border-radius: calc(var(--control-corner-radius) * 1px);
     }
 
-    :host([expanded]) .region {
+    :host([expanded]) .panel {
         display: block;
     }
 

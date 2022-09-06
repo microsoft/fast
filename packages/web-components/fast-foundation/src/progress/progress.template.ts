@@ -3,6 +3,9 @@ import { html, when } from "@microsoft/fast-element";
 import type { FASTProgress } from "./progress.js";
 import type { ProgressOptions } from "./progress.options.js";
 
+/**
+ * @public
+ */
 export const progressIndicatorTemplate = html<FASTProgress>`
     <div class="indicator" part="indicator"></div>
 `;
@@ -14,7 +17,7 @@ export const progressIndicatorTemplate = html<FASTProgress>`
 export function progressTemplate<T extends FASTProgress>(
     options: ProgressOptions = {}
 ): ElementViewTemplate<T> {
-    return html`
+    return html<T>`
         <template
             role="progressbar"
             aria-valuenow="${x => x.value}"
@@ -38,7 +41,7 @@ export function progressTemplate<T extends FASTProgress>(
             )}
             ${when(
                 x => typeof x.value !== "number",
-                html<FASTProgress>`
+                html<T>`
                     <span class="indeterminate" part="indeterminate">
                         <slot name="indeterminate">
                             ${options.indeterminateIndicator ?? ""}
