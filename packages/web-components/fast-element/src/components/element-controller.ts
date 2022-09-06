@@ -116,7 +116,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
     /**
      * The main set of styles used for the component, independent
-     * of any behavior-specific styles.
+     * of any dynamically added styles.
      */
     public get mainStyles(): ElementStyles | null {
         // 1. Styles overrides take top precedence.
