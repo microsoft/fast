@@ -158,6 +158,17 @@ export type AxisScalingMode = typeof AxisScalingMode[keyof typeof AxisScalingMod
 export function badgeTemplate<T extends FASTBadge>(): ElementViewTemplate<T>;
 
 // @public
+export function baseListItemTemplate(): ElementViewTemplate<FASTBaseListItem>;
+
+// @public
+export type BaseListOptions = {
+    baseListItem: TemplateElementDependency;
+};
+
+// @public
+export function baseListTemplate(options: BaseListOptions): ElementViewTemplate<FASTBaseList>;
+
+// @public
 export type BreadcrumbItemOptions = StartEndOptions & {
     separator?: string | SyntheticViewTemplate;
 };
@@ -755,6 +766,55 @@ export class FASTAvatar extends FASTElement {
 
 // @public
 export class FASTBadge extends FASTElement {
+}
+
+// @public
+export class FASTBaseList extends FASTElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    containerElement: HTMLDivElement;
+    // @internal
+    defaultHorizontalItemTemplate: ViewTemplate;
+    // @internal
+    defaultVerticalItemTemplate: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // Warning: (ae-forgotten-export) The symbol "IdleCallbackQueue" needs to be exported by the entry point index.d.ts
+    //
+    // @internal
+    idleCallbackQueue: IdleCallbackQueue;
+    idleCallbackTimeout: number;
+    idleLoadMode: ListIdleLoadMode;
+    items: object[];
+    itemTemplate: ViewTemplate;
+    listItemContentsTemplate: ViewTemplate;
+    listItemContext: object;
+    listItemLoadMode: ListItemLoadMode;
+    orientation: Orientation;
+    recycle: boolean;
+}
+
+// @public
+export class FASTBaseListItem extends FASTElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    idleCallbackQueue: IdleCallbackQueue;
+    // @internal
+    itemData: object;
+    // @internal
+    itemIndex: number;
+    // @internal
+    listItemContentsTemplate: ViewTemplate;
+    // @internal
+    listItemContext: object;
+    // @internal
+    loadContent: boolean;
+    // @internal
+    loadMode: ListItemLoadMode;
 }
 
 // @public
@@ -2193,8 +2253,6 @@ export class FASTVirtualList extends FASTElement {
     handleListItemConnected(e: Event): void;
     // @internal (undocumented)
     handleListItemDisconnected(e: Event): void;
-    // Warning: (ae-forgotten-export) The symbol "IdleCallbackQueue" needs to be exported by the entry point index.d.ts
-    //
     // @internal
     idleCallbackQueue: IdleCallbackQueue;
     idleCallbackTimeout: number;
@@ -2435,6 +2493,12 @@ export function listboxOptionTemplate<T extends FASTListboxOption>(options?: Lis
 
 // @public
 export function listboxTemplate<T extends FASTListboxElement>(): ElementViewTemplate<T>;
+
+// @public
+export type ListIdleLoadMode = "auto" | "enabled" | "suspended";
+
+// @public
+export type ListItemLoadMode = "immediate" | "manual" | "idle";
 
 // @public
 export abstract class MatchMediaBehavior implements Behavior {
@@ -2923,6 +2987,7 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 
 // Warnings were encountered during analysis:
 //
+// dist/dts/base-list/base-list.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "baseListItem" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/calendar/calendar.d.ts:49:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/calendar/calendar.d.ts:50:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

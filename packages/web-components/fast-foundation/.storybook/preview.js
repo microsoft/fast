@@ -3,6 +3,8 @@ import "../src/anchor/stories/anchor.register.js";
 import "../src/anchored-region/stories/anchored-region.register.js";
 import "../src/avatar/stories/avatar.register.js";
 import "../src/badge/stories/badge.register.js";
+import "../src/base-list/stories/base-list-item.register";
+import "../src/base-list/stories/base-list.register";
 import "../src/button/stories/button.register.js";
 import "../src/card/stories/card.register.js";
 import "../src/checkbox/stories/checkbox.register.js";

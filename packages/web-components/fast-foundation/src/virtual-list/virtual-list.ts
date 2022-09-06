@@ -253,7 +253,7 @@ export class FASTVirtualList extends FASTElement {
     public itemTemplate: ViewTemplate;
 
     /**
-     * The ViewTemplate used to render a virtual list item contents
+     * The ViewTemplate used to render virtual list item contents
      *
      * @public
      */
@@ -498,6 +498,8 @@ export class FASTVirtualList extends FASTElement {
         }
 
         this.disconnectResizeDetector();
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+        this.$fastController.removeBehaviors([this.itemsRepeatBehavior!]);
     }
 
     /**
