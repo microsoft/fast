@@ -103,7 +103,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^5.0.0",
     "mocha": "^7.1.2",
-    "prettier": "2.0.2",
+    "prettier": "2.7.1",
     "rollup": "^2.71.1",
     "rollup-plugin-filesize": "^9.1.2",
     "rollup-plugin-terser": "^7.0.2",

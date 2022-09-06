@@ -69,7 +69,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^5.0.0",
     "mocha": "^7.1.2",
-    "prettier": "2.0.2",
+    "prettier": "2.7.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "source-map": "^0.7.3",

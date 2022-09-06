@@ -37,7 +37,7 @@
     "css-loader": "^6.7.1",
     "eslint-config-prettier": "^6.10.1",
     "html-webpack-inline-source-plugin": "^1.0.0-beta.2",
-    "prettier": "2.0.2",
+    "prettier": "2.7.1",
     "raw-loader": "^4.0.2",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.3.0",
