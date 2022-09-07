@@ -91,7 +91,7 @@ DesignToken.create<number>('my-token').withDefault(2); // This will not immediat
 DesignToken.registerDefaultStyleTarget();
 ```
 
-Invoking `DesignToken.registerDefaultStyleTarget()` will cause CSS custom properties to be emitted for the entire document. A FASTElement can also be provided so that CSS custom properties are scoped to that target, or an structure implementing `PropertyTarget` can be provided for complete control over emission.
+Invoking `DesignToken.registerDefaultStyleTarget()` will cause CSS custom properties to be emitted for the entire document. A FASTElement can also be provided so that CSS custom properties are scoped to that target, or a structure implementing `PropertyTarget` can be provided for complete control over emission.
 
 ```ts
 const target = document.querySelector("#style-target")! as FASTElement;
