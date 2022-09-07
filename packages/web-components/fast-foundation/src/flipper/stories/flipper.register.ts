@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { chevronLeftIcon16, chevronRightIcon16 } from "../../utilities/style/icons.js";
+import { chevronLeftIcon16, chevronRightIcon16 } from "../../icons.js";
 import { FASTFlipper } from "../flipper.js";
 import { flipperTemplate } from "../flipper.template.js";
 

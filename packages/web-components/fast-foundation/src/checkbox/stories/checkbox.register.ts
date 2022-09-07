@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { checkboxIcon, subtractIcon } from "../../utilities/style/icons.js";
+import { checkboxIcon, subtractIcon } from "../../icons.js";
 import { FASTCheckbox } from "../checkbox.js";
 import { checkboxTemplate } from "../checkbox.template.js";
 

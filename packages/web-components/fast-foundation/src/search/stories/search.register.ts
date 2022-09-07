@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { dismissIcon } from "../../utilities/style/icons.js";
+import { dismissIcon } from "../../icons.js";
 import { FASTSearch } from "../search.js";
 import { searchTemplate } from "../search.template.js";
 

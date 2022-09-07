@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { FASTCombobox } from "../combobox.js";
 import { comboboxTemplate } from "../combobox.template.js";
-import { chevronDownIcon } from "../../utilities/style/icons.js";
+import { chevronDownIcon } from "../../icons.js";
 
 const styles = css`
     :host {

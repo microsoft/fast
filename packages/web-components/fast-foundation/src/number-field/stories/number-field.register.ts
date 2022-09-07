@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { chevronDownIcon, chevronUpIcon } from "../../utilities/style/icons.js";
+import { chevronDownIcon, chevronUpIcon } from "../../icons.js";
 import { FASTNumberField } from "../number-field.js";
 import { numberFieldTemplate } from "../number-field.template.js";
 

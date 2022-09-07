@@ -1,11 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { FASTMenuItem } from "../menu-item.js";
 import { menuItemTemplate } from "../menu-item.template.js";
-import {
-    checkboxIcon,
-    chevronRightIcon,
-    radioIcon,
-} from "../../utilities/style/icons.js";
+import { checkboxIcon, chevronRightIcon, radioIcon } from "../../icons.js";
 
 const styles = css`
     :host([hidden]) {

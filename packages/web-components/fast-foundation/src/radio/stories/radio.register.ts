@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { radioIcon } from "../../utilities/style/icons.js";
+import { radioIcon } from "../../icons.js";
 import { FASTRadio } from "../radio.js";
 import { radioTemplate } from "../radio.template.js";
 

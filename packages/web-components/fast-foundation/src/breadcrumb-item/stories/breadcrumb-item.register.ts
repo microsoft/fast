@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { chevronRightIcon } from "../../utilities/style/icons.js";
+import { chevronRightIcon } from "../../icons.js";
 import { FASTBreadcrumbItem } from "../breadcrumb-item.js";
 import { breadcrumbItemTemplate } from "../breadcrumb-item.template.js";
 

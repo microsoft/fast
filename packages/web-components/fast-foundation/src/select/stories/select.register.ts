@@ -1,7 +1,7 @@
 import { css, ElementStyles, observable } from "@microsoft/fast-element";
 import { FASTSelect } from "../select.js";
 import { selectTemplate } from "../select.template.js";
-import { chevronDownIcon } from "../../utilities/style/icons.js";
+import { chevronDownIcon } from "../../icons.js";
 
 const styles = css`
     :host {
