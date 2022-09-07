@@ -12,7 +12,7 @@ FASTBaseListItem.define({
 
 const listItemTemplate = html`
     <template
-        title="${x => x.listItemContext.titleString} ${x => x.itemData.title}"
+        title="${x => x.itemData.title}"
     >
     </template>
 `;
@@ -25,14 +25,9 @@ interface customContext {
 async function setup() {
     const { document, element, connect, disconnect} = await fixture<FASTBaseListItem>(baseListItemName);
 
-    const myContext: customContext = {
-        titleString: "test custom context:"
-    }
-
     element.listItemContentsTemplate = listItemTemplate,
     element.itemIndex = 1;
     element.itemData = { title: "test title"};
-    element.listItemContext = myContext;
 
     return { element, connect, disconnect };
 }

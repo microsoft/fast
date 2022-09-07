@@ -28,7 +28,7 @@ const listItemContentsTemplate = html`
                 color: white;
             "
         >
-            ${x => x.listItemContext.titleString} ${x => x.itemData.title}
+            ${x => x.itemData.title}
         </div>
         ${when(
             x => x.loadContent,
@@ -76,9 +76,6 @@ const storyTemplate = html<VirtualListStoryArgs>`
         idle-callback-timeout="${x => x.idleCallbackTimeout}"
         list-item-load-mode="${x => x.listItemLoadMode}"
         :listItemContentsTemplate="${listItemContentsTemplate}"
-        :listItemContext="${{
-            titleString: "title:",
-        }}"
     ></fast-virtual-list>
 `;
 

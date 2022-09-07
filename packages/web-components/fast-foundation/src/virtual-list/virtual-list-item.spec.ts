@@ -12,7 +12,7 @@ FASTVirtualListItem.define({
 
 const listItemTemplate = html`
     <template
-        title="${x => x.listItemContext.titleString} ${x => x.itemData.title}"
+        title="${x => x.itemData.title}"
     >
     </template>
 `;
@@ -32,7 +32,6 @@ async function setup() {
     element.listItemContentsTemplate = listItemTemplate,
     element.itemIndex = 1;
     element.itemData = { title: "test title"};
-    element.listItemContext = myContext;
 
     return { element, connect, disconnect };
 }

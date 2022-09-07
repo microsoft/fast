@@ -9,6 +9,7 @@ import type { FASTDataGrid } from "./data-grid.js";
  */
 export type DataGridOptions = {
     dataGridRow: TemplateElementDependency;
+    baseList: TemplateElementDependency;
 };
 
 function rowItemTemplate<T extends FASTDataGrid>(
@@ -34,18 +35,26 @@ export function dataGridTemplate<T extends FASTDataGrid>(
     options: DataGridOptions
 ): ElementViewTemplate<T> {
     const rowTag = tagFor(options.dataGridRow);
+    const baseListTag = tagFor(options.baseList);
     return html<T>`
         <template
             role="grid"
             tabindex="0"
             :rowElementTag="${() => rowTag}"
             :defaultRowItemTemplate="${rowItemTemplate(options)}"
-            ${children({
-                property: "rowElements",
-                filter: elements("[role=row]"),
-            })}
         >
-            <slot></slot>
+            <${baseListTag}
+                :items="${x => x.rowsData}"
+                recycle="false"
+                list-item-load-mode="immediate"
+                :itemTemplate = "${x => x.rowItemTemplate}"
+                ${children({
+                    property: "rowElements",
+                    filter: elements("[role=row]"),
+                })}
+            >
+                <slot></slot>
+            </${baseListTag}>
         </template>
     `;
 }

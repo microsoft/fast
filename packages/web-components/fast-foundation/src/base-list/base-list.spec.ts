@@ -25,14 +25,6 @@ const itemTemplate = html`
         style="
             height:100%;
             width:100%;
-            grid-row: ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? c.index + c.parent.virtualizedIndexOffset
-                : 1};
-            grid-column: ${(x, c) =>
-            c.parent.orientation === Orientation.horizontal
-                ? c.index + c.parent.virtualizedIndexOffset
-                : 1};
         "
     >
         ${x => x.value}
@@ -58,16 +50,6 @@ async function setup() {
 }
 
 describe("BaseList", () => {
-    it("should have a default orientation of 'vertical'", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.orientation).to.equal(Orientation.vertical);
-
-        await disconnect();
-    });
-
     it("should have a default 'itemTemplate'", async () => {
         const { element, connect, disconnect } = await setup();
 

@@ -28,7 +28,7 @@ const listItemContentsTemplate = html`
                 color: white;
             "
         >
-            ${x => x.listItemContext.titleString} ${x => x.itemData.title}
+            ${x => x.itemData.title}
         </div>
         ${when(
             x => x.loadContent,
@@ -63,22 +63,11 @@ const listItemContentsTemplate = html`
 const storyTemplate = html<BaseListStoryArgs>`
     <fast-base-list
         :items="${newDataSet(100, 1)}"
-        :sizemap="${x => x.sizemap}"
-        virtualization-enabled="${x => x.virtualizationEnabled}"
-        viewport="${x => x.viewport}"
-        item-size="${x => x.itemSize}"
-        viewport-buffer="${x => x.viewportBuffer}"
-        orientation="${x => x.orientation}"
-        auto-update-mode="${x => x.autoUpdateMode}"
         recycle="${x => x.recycle}"
-        auto-resize-items="${x => x.autoResizeItems}"
         idle-load-mode="${x => x.idleLoadMode}"
         idle-callback-timeout="${x => x.idleCallbackTimeout}"
         list-item-load-mode="${x => x.listItemLoadMode}"
         :listItemContentsTemplate="${listItemContentsTemplate}"
-        :listItemContext="${{
-            titleString: "title:",
-        }}"
     ></fast-base-list>
 `;
 
@@ -86,10 +75,6 @@ export default {
     title: "Base List",
     args: {},
     argTypes: {
-        orientation: {
-            options: ["horizontal", "vertical"],
-            control: { type: "select" },
-        },
         recycle: { control: { type: "boolean" } },
         idleLoadMode: {
             options: ["auto", "enabled", "suspended"],

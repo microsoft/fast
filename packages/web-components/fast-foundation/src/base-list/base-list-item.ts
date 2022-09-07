@@ -33,14 +33,6 @@ export class FASTBaseListItem extends FASTElement {
     public itemIndex: number;
 
     /**
-     *  Custom context provided to the parent list
-     *
-     * @internal
-     */
-    @observable
-    public listItemContext: object;
-
-    /**
      *  idleCallbackQueue instance
      *
      * @internal

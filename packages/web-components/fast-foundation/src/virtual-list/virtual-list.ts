@@ -292,14 +292,6 @@ export class FASTVirtualList extends FASTElement {
     }
 
     /**
-     * Used to pass custom context objects to list items.
-     *
-     * @public
-     */
-    @observable
-    public listItemContext: object;
-
-    /**
      * The default ViewTemplate used to render items vertically.
      *
      * @internal

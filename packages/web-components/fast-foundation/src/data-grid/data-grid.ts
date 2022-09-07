@@ -336,22 +336,7 @@ export class FASTDataGrid extends FASTElement {
             this.rowItemTemplate = this.defaultRowItemTemplate;
         }
 
-        this.rowsPlaceholder = document.createComment("");
-        this.appendChild(this.rowsPlaceholder);
-
         this.toggleGeneratedHeader();
-
-        const rowsRepeatDirective = new RepeatDirective<FASTDataGrid>(
-            bind(x => x.rowsData, false),
-            bind(x => x.rowItemTemplate, false),
-            { positioning: true }
-        );
-        this.rowsRepeatBehavior = rowsRepeatDirective.createBehavior({
-            [rowsRepeatDirective.nodeId]: this.rowsPlaceholder,
-        });
-
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
 
         this.addEventListener("row-focused", this.handleRowFocus);
         this.addEventListener(eventFocus, this.handleFocus);
@@ -383,7 +368,6 @@ export class FASTDataGrid extends FASTElement {
         // disconnect observer
         this.observer.disconnect();
 
-        this.rowsPlaceholder = null;
         this.generatedHeader = null;
     }
 

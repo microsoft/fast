@@ -26,7 +26,6 @@ The item templates can then bind to the appropriate `SizeMap` using its index an
 const itemTemplate: ViewTemplate<any> = html`
     <fast-virtual-list-item
         :itemData="${x => x}"
-        :listItemContext="${(x, c) => c.parent.listItemContext}"
         style="
             height:  ${(x, c) => `${c.parent.visibleItemMap[c.index]?.size}px`};
             transform: ${(x, c) =>
@@ -37,8 +36,6 @@ const itemTemplate: ViewTemplate<any> = html`
 ```
 
 Authors can provide a custom 'itemTemplate` to specify what type of "items" are created and how they are positioned - although translate transforms are typically used other approaches, like a grid, could work. 
-
-If no itemTemplate is specifed the list will be populated by `fast-virtual-list-item` elements.  Authors will still need to specify a template to display the data provided in the items array.  This is done using the `listItemContext` property of the virtual list that should be populated with a `VirtualListItemContext` object to set the template:
 
 ```
 const myContentsTemplate = html`
@@ -58,10 +55,6 @@ const myContentsTemplate = html`
         ></div>
     </fast-card>
 `;
-
-myVirtualList.listItemContext = {
-    listItemContentsTemplate: myContentsTemplate,
-};
 ```
 
 ### Non-goals
@@ -105,8 +98,6 @@ _Properties:_
 
 -  `itemTemplate` -  The ViewTemplate used to generate list items in the repeat directive.
 
--  `listItemContext` -  Used to pass a custom context object to the child list items.  The default object type to pass here is a `VirtualListItemContext`.  Authors that specify custom child types could pass their own custom context objects here as well.
-
 _Slots:_
 
 -   `default`
@@ -129,13 +120,6 @@ _Properties:_
 - `itemData` - The data associated with this list item.  Properties can be bound to in the template as `${x => x.itemData.myProperty}`.
 
 - `itemIndex` - The index of the item in the items array. Properties can be bound to in the template as `${x => x.index}`.
-
--  `listItemContext` - The `listItemContext` assigned to the parent `virtual-list`. It has the following properties:
-
-    - `listItemContentsTemplate` - The `ViewTemplate` to use to use as the template for the `list-context-item`.
-
-    Note that authors can extend the `VirtualListItemContext` type that `virtual-list-item` expects to add their own properties that would then be accessible in the `listItemContentsTemplate` they have provided with a `${x => x.listItemContext.myCustomProp}` binding.
-
 
 
 #### The SizeMap interface

@@ -27,10 +27,12 @@ FASTDataGridRow.define({
     })
 });
 
+const baseListName = uniqueElementName();
 const dataGridName = uniqueElementName();
 FASTDataGrid.compose({
     name: dataGridName,
     template: dataGridTemplate({
+        baseList: baseListName,
         dataGridRow: dataGridRowName
     })
 });

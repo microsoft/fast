@@ -26,7 +26,6 @@ The item templates can then bind to the appropriate `SizeMap` using its index an
 const itemTemplate: ViewTemplate<any> = html`
     <fast-virtual-list-item
         :itemData="${x => x}"
-        :listItemContext="${(x, c) => c.parent.listItemContext}"
         style="
             height:  ${(x, c) => `${c.parent.visibleItemMap[c.index]?.size}px`};
             transform: ${(x, c) =>
@@ -37,8 +36,6 @@ const itemTemplate: ViewTemplate<any> = html`
 ```
 
 Authors can provide a custom 'itemTemplate` to specify what type of "items" are created and how they are positioned - although translate transforms are typically used other approaches, like a grid, could work. 
-
-If no itemTemplate is specifed the list will be populated by `fast-virtual-list-item` elements.  Authors will still need to specify a template to display the data provided in the items array.  This is done using the `listItemContext` property of the virtual list that should be populated with a `VirtualListItemContext` object to set the template:
 
 ```
 const myContentsTemplate = html`

@@ -24,7 +24,6 @@ function defaultVerticalItemTemplate(
     <${listItemTag}
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
-        :listItemContext="${(x, c) => c.parent.listItemContext}"
         :idleCallbackQueue="${(x, c) => c.parent.idleCallbackQueue}"
         :loadMode="${(x, c) => c.parent.listItemLoadMode}"
         :listItemContentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"
@@ -49,7 +48,6 @@ function defaultHorizontalItemTemplate(
     <${listItemTag}
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
-        :listItemContext="${(x, c) => c.parent.listItemContext}"
         :idleCallbackQueue="${(x, c) => c.parent.idleCallbackQueue}"
         :loadMode="${(x, c) => c.parent.listItemLoadMode}"
         :listItemContentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"

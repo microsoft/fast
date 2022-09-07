@@ -40,6 +40,7 @@ const pickerListItem = deriveName(Foundation.FASTPickerListItem);
 const pickerMenu = deriveName(Foundation.FASTPickerMenu);
 const pickerMenuOption = deriveName(Foundation.FASTPickerMenuOption);
 const progressRing = deriveName(Foundation.FASTProgressRing);
+const baseList = deriveName(Foundation.FASTBaseList);
 
 const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTAccordion, Foundation.accordionTemplate()],
@@ -60,6 +61,7 @@ const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTCheckbox, Foundation.checkboxTemplate()],
     [Foundation.FASTCombobox, Foundation.comboboxTemplate()],
     [Foundation.FASTDataGrid, Foundation.dataGridTemplate({
+        baseList,
         dataGridRow
     })],
     [Foundation.FASTDataGridCell, Foundation.dataGridCellTemplate()],

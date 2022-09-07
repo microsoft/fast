@@ -22,17 +22,6 @@ import type { ListIdleLoadMode, ListItemLoadMode } from "./base-list.options.js"
  */
 export class FASTBaseList extends FASTElement {
     /**
-     * Whether the list is oriented vertically or horizontally.
-     * Default is vertical.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: orientation
-     */
-    @attr({ attribute: "orientation" })
-    public orientation: Orientation = Orientation.vertical;
-
-    /**
      * Whether or not to recycle the html container used to display items.
      * May help performance but containers may retain artifacts from previous use that
      * developers will need to clear.
@@ -117,28 +106,12 @@ export class FASTBaseList extends FASTElement {
     }
 
     /**
-     * Used to pass custom context objects to list items.
-     *
-     * @public
-     */
-    @observable
-    public listItemContext: object;
-
-    /**
-     * The default ViewTemplate used to render items vertically.
+     * The default ViewTemplate used to render items
      *
      * @internal
      */
     @observable
-    public defaultVerticalItemTemplate: ViewTemplate;
-
-    /**
-     * The default ViewTemplate used to render items horizontally.
-     *
-     * @internal
-     */
-    @observable
-    public defaultHorizontalItemTemplate: ViewTemplate;
+    public defaultItemTemplate: ViewTemplate;
 
     /**
      * the idle callback queue for this list instance.
@@ -148,13 +121,6 @@ export class FASTBaseList extends FASTElement {
      */
     @observable
     public idleCallbackQueue: IdleCallbackQueue = new IdleCallbackQueue();
-
-    /**
-     * reference to the container element
-     *
-     * @internal
-     */
-    public containerElement: HTMLDivElement;
 
     // reference to the repeat behavior used to render items
     private itemsRepeatBehavior: RepeatBehavior | null = null;
@@ -179,10 +145,7 @@ export class FASTBaseList extends FASTElement {
         }
 
         if (!this.itemTemplate) {
-            this.itemTemplate =
-                this.orientation === Orientation.vertical
-                    ? this.defaultVerticalItemTemplate
-                    : this.defaultHorizontalItemTemplate;
+            this.itemTemplate = this.defaultItemTemplate;
         }
 
         this.initializeRepeatBehavior();

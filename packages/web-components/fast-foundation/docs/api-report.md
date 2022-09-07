@@ -350,6 +350,7 @@ export type DataGridCellTypes = typeof DataGridCellTypes[keyof typeof DataGridCe
 // @public
 export type DataGridOptions = {
     dataGridRow: TemplateElementDependency;
+    baseList: TemplateElementDependency;
 };
 
 // @public
@@ -773,11 +774,7 @@ export class FASTBaseList extends FASTElement {
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    containerElement: HTMLDivElement;
-    // @internal
-    defaultHorizontalItemTemplate: ViewTemplate;
-    // @internal
-    defaultVerticalItemTemplate: ViewTemplate;
+    defaultItemTemplate: ViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // Warning: (ae-forgotten-export) The symbol "IdleCallbackQueue" needs to be exported by the entry point index.d.ts
@@ -789,9 +786,7 @@ export class FASTBaseList extends FASTElement {
     items: object[];
     itemTemplate: ViewTemplate;
     listItemContentsTemplate: ViewTemplate;
-    listItemContext: object;
     listItemLoadMode: ListItemLoadMode;
-    orientation: Orientation;
     recycle: boolean;
 }
 
@@ -809,8 +804,6 @@ export class FASTBaseListItem extends FASTElement {
     itemIndex: number;
     // @internal
     listItemContentsTemplate: ViewTemplate;
-    // @internal
-    listItemContext: object;
     // @internal
     loadContent: boolean;
     // @internal
@@ -2263,7 +2256,6 @@ export class FASTVirtualList extends FASTElement {
     // @internal
     lastRenderedIndex: number;
     listItemContentsTemplate: ViewTemplate;
-    listItemContext: object;
     listItemLoadMode: VirtualListItemLoadMode;
     orientation: Orientation;
     recycle: boolean;
@@ -2301,8 +2293,6 @@ export class FASTVirtualListItem extends FASTElement {
     itemSizeMap: SizeMap;
     // @internal
     listItemContentsTemplate: ViewTemplate;
-    // @internal
-    listItemContext: object;
     // @internal
     loadContent: boolean;
     // @internal
@@ -2993,6 +2983,7 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/data-grid/data-grid.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "baseList" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/menu-item/menu-item.d.ts:20:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
