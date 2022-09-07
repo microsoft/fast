@@ -1,10 +1,13 @@
 import { css } from "@microsoft/fast-element";
+import { fontFamily, neutralForeground } from "./design-tokens.js";
 
 export const styles = css`
     :host {
         display: block;
         padding: 16px;
         max-width: 320px;
+        font-family: ${fontFamily};
+        color: ${neutralForeground};
     }
 
     h2 {
