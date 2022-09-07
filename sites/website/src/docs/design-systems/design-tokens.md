@@ -36,7 +36,7 @@ The type assertion informs what types the token can be set to (and what type wil
 
 ## Setting Values
 
-A `DesignToken` *value* is set for a `FASTElement` or `HTMLBodyElement` node. This allows tokens to be set to different values for distinct DOM trees:
+A `DesignToken` *value* can be set for any `FASTElement` instance. This allows tokens to be set to different values for distinct DOM trees:
 
 ```ts
 const ancestor = document.querySelector("my-element") as FASTElement;
@@ -56,13 +56,18 @@ specialColor.withDefault("#FFFFFF");
 
 ## Getting Values
 
-Once the value is set for a node, the value is available to use for that node or any descendent node. The value returned will be the value set for the nearest ancestor (or the element itself).
+Once the value is set for a node, the value is available to use for that node or any descendent node. The value returned will be the value set for the nearest ancestor (or the FASTElement itself).
 
 ```ts
 specialColor.getValueFor(ancestor); // "#FFFFFF"
 specialColor.getValueFor(descendent); // "#F7F7F7"
 ```
 
+The default value for a token can be retrieved directly from the token:
+
+```ts
+const value = specialColor.default;
+```
 ## Deleting Values
 
 Values can be deleted for a node. Doing so causes retrieval of the nearest ancestor's value instead:
@@ -74,45 +79,30 @@ specialColor.getValueFor(descendent); // "#FFFFFF"
 
 ## CSS Custom Property Emission
 
-Unless configured not to, a DesignToken emits a token to CSS automatically whenever the value is set for an element. In the case when a DesignToken is assigned a [derived value](#derived-design-token-values), the CSS custom property will also be emitted when any dependent tokens change.
+Unless configured not to, a DesignToken emits a token to CSS automatically whenever the value is set for a FASTElement. In the case when a DesignToken is assigned a [derived value](#derived-design-token-values), the CSS custom property will also be emitted when any dependent tokens change.
 
-### DesignToken Root Registration
-In order for *default* DesignToken values to be emitted to a CSS custom property, the
-DesignToken root will need to be configured:
+### DesignToken Default Style Roots
+In order for *default* DesignToken values to be emitted to a CSS custom property, 
+DesignToken will need to be configured:
 
 ```ts
 DesignToken.create<number>('my-token').withDefault(2); // This will not immediately emit to a CSS custom property
 
-DesignToken.registerRoot(); // Default values are now emitted
+DesignToken.registerDefaultStyleTarget();
 ```
 
-Invoking `DesignToken.registerRoot()` will cause CSS custom properties to be emitted for the entire document. A root element can also be provided so that CSS custom properties are scoped to that root.
+Invoking `DesignToken.registerDefaultStyleTarget()` will cause CSS custom properties to be emitted for the entire document. A FASTElement can also be provided so that CSS custom properties are scoped to that target, or an structure implementing `PropertyTarget` can be provided for complete control over emission.
 
 ```ts
-const root = document.querySelector("#root")! as HTMLDivElement;
-DesignToken.registerRoot(root);
+const target = document.querySelector("#style-target")! as FASTElement;
+DesignToken.registerDefaultStyleTarget(target);
 ```
 
-There also exists a `DesignToken.unregisterRoot()` method to remove default custom properties from a root.
+`DesignToken.unregisterDefaultStyleTarget()` can be invoked to remove default custom properties from a root and prevent further emission to that root.
 
 ```ts
 // ...
-DesignToken.unregisterRoot(root);
-```
-
-#### Usage With DesignSystem
-
-If you're using `DesignSystem` to register components and dependencies, then note that `DesignToken` root registration happens automatically when `DesignSystem.register()` is invoked. You can configure the root being registered with `DesignSystem.withDesignTokenRoot()` method:
-
-```ts
-const root = document.createElement("div");
-DesignSystem.getOrCreate().withDesignTokenRoot(root);
-```
-
-or you can disable registration by providing `null`:
-
-```ts
-DesignSystem.getOrCreate().withDesignTokenRoot(null);
+DesignToken.unregisterDefaultStyleTarget(target);
 ```
 
 ### Customizing CSS Custom Property Name
@@ -126,12 +116,11 @@ DesignToken.create<number>({
 ```
 ### Preventing CSS Custom Property Emission
 
-A DesignToken can be configured **not** to emit to a CSS custom property by passing a configuration with `cssCustomPropertyName` set to `null` during creation:
+A DesignToken can be configured **not** to emit to a CSS custom property by passing a configuration object without a `cssCustomPropertyName`:
 
 ```ts
 DesignToken.create<number>({ 
-    name: "my-token", 
-    cssCustomPropertyName: null 
+    name: "my-token"
 });
 ```
 
@@ -163,35 +152,18 @@ extraSpecialColor.setValueFor(descendent, value)
 
 ## Subscription
 
-`DesignToken` supports subscription, notifying a subscriber when a value changes. Subscriptions can subscribe to *any* change throughout the document tree or they can subscribe changes for specific elements.
+`DesignToken` supports subscription, notifying a subscriber when a value changes for a node.
 
-**Example: Subscribe to changes for any element**
+**Example: Subscribe to changes for any node**
 
 ```ts
 const subscriber = {
-    handleChange(record) {
-        console.log(`DesignToken ${record.token} changed for element ${record.target}`);
+    handleChange<T extends DesignToken<any>>(token: DesignToken<T>, record: DesignTokenChangeRecord<T>) {
+        console.log(`DesignToken ${record.token} changed for ${record.target}`);
     }
 };
 
 specialColor.subscribe(subscriber);
-```
-
-**Example: Subscribe to changes a specific element**
-
-```ts
-// ...
-const target = document.body.querySelector("#my-element");
-
-specialColor.subscribe(subscriber, target);
-```
-
-Subscribers can be unsubscribed using the `unsubscribe()` method:
-
-```ts
-// ...
-specialColor.unsubscribe(subscriber);
-specialColor.unsubscribe(subscriber, target);
 ```
 
 ## Using Design Tokens in CSS
@@ -212,21 +184,21 @@ At runtime, the directive is replaced with a CSS custom property, and the Direct
 
 ## Derived Design Token Values
 
-In the examples above, the design token is always being set to a simple string value. But, we can also set a Design Token to be a function that *derives* a value. A derived value receives the target element as its only argument and must return a value with a type matching the Design Token:
+In the examples above, the design token is always being set to a simple string value. But, we can also set a Design Token to be a function that *derives* a value. A derived value receives a `DesignTokenResolver` as its only argument and must return a value with a type matching the Design Token:
 
 ```ts
 const token = DesignToken.create<number>("token");
-token.setValueFor(target, (element) => 12);
+token.setValueFor(target, (resolve) => 12);
 ```
 
-The above example is contrived, but the target element can be used to retrieve *other* Design Tokens:
+The above example is contrived, but resolver can be used to retrieve *other* Design Token values:
 
 **Example: A derived token value that uses another design token**
 ```ts
 const foregroundColor = DesignToken.create<string>("foreground-color");
 
-foregroundColor.setValueFor(target, (element) => 
-     specialColor.getValueFor(element) === "#FFFFFF"
+foregroundColor.setValueFor(target, (resolve) => 
+     resolve(specialColor) === "#FFFFFF"
         ? "#2B2B2B" 
         : "#262626"
 );
@@ -264,4 +236,31 @@ specialColor.setValueFor(target, "#EDEDED");
 buttonSpecialColor.setValueFor(target, specialColor);
 
 buttonSpecialColor.getValueFor(target); // "#EDEDED"
+```
+
+## SSR
+`DesignToken` can be used with `@microsoft/fast-ssr`, but must be configured to do so.
+
+### Configuring the Resolution Strategy
+The resolution strategy is a configurable abstraction that allows `DesignToken` to build element hierarchies and resolve token values, and must be configured with a strategy supported by `@microsoft/fast-ssr`.
+
+```ts
+// server.js
+import { DesignToken, DesignTokenEventResolutionStrategy} from "@microsoft/fast-foundation";
+
+DesignToken.withStrategy(DesignTokenEventResolutionStrategy);
+```
+
+### Default Value CSS
+DesignToken is generally used to emit default values to the document. During template rendering in an SSR environment, there is no document to emit CSS to. Instead, a lightweight `PropertyTarget`, such as the provided `DesignTokenStyleTarget`, should be used to collect CSS values for tokens. The CSS can then be retrieved and interpolated into the SSR response.
+
+For more info on `@microsoft/fast-ssr` see the (SSR Documentation)[https://github.com/microsoft/fast/blob/master/packages/web-components/fast-ssr/README.md], and for an SSR example using `DesignToken` see the (SSR Example App)[https://github.com/microsoft/fast/tree/master/examples/ssr].
+
+```ts
+import { DesignTokenStyleTarget } from "@microsoft/fast-foundation";
+
+const styleTarget = new DesignTokenStyleTarget();
+DesignToken.registerDefaultStyleTarget(styleTarget);
+
+const defaultStyles = `<style>:root{${styleTarget.cssText}}</style>`;
 ```
