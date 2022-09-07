@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTProgress } from "./progress.js";
 
-test.describe("Progress ring", () => {
+test.describe("Progress", () => {
     let page: Page;
     let element: Locator;
     let root: Locator;
@@ -54,16 +54,6 @@ test.describe("Progress ring", () => {
         });
 
         await expect(element).toHaveAttribute("aria-valuemax", "50");
-    });
-
-    test("should add a `paused` class when `paused` is true", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-progress paused></fast-progress>
-            `;
-        });
-
-        await expect(element).toHaveClass(/paused/);
     });
 
     test("should render an element with a `determinate` class when a value is provided", async () => {

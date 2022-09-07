@@ -46,8 +46,6 @@ test.describe("Radio", () => {
 
         await expect(element).toHaveAttribute("aria-checked", "true");
 
-        await expect(element).toHaveClass(/checked/);
-
         await element.evaluate((node: FASTRadio) => (node.checked = false));
 
         await expect(element).toHaveAttribute("aria-checked", "false");
@@ -81,13 +79,9 @@ test.describe("Radio", () => {
 
         await expect(element).toHaveAttribute("aria-readonly", "true");
 
-        await expect(element).toHaveClass(/readonly/);
-
         await element.evaluate((node: FASTRadio) => (node.readOnly = false));
 
         await expect(element).toHaveAttribute("aria-readonly", "false");
-
-        await expect(element).not.toHaveClass(/readonly/);
     });
 
     test("should set a tabindex of 0 on the element", async () => {

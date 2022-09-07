@@ -67,15 +67,11 @@ test.describe("Checkbox", () => {
 
         await expect(element).toHaveAttribute("aria-checked", "true");
 
-        await expect(element).toHaveClass(/checked/);
-
         await element.evaluate((node: FASTCheckbox) => {
             node.checked = false;
         });
 
         await expect(element).toHaveAttribute("aria-checked", "false");
-
-        await expect(element).not.toHaveClass(/checked/);
     });
 
     test("should NOT set a default `aria-required` value when `required` is not defined", async () => {
@@ -192,22 +188,6 @@ test.describe("Checkbox", () => {
         });
 
         await expect(element).toHaveAttribute("aria-readonly", "false");
-    });
-
-    test("should add a class of `readonly` when `readonly` is true", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-checkbox readonly></fast-checkbox>
-            `;
-        });
-
-        await expect(element).toHaveClass(/readonly/);
-
-        await element.evaluate((node: FASTCheckbox) => {
-            node.readOnly = false;
-        });
-
-        await expect(element).not.toHaveClass(/readonly/);
     });
 
     test("should add a class of `indeterminate` when indeterminate is true", async () => {
