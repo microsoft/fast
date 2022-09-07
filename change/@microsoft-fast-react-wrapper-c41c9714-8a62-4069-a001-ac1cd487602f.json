@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "anchored region allows anchor overlay",
-  "packageName": "@microsoft/fast-react-wrapper",
-  "email": "stephcomeau@msn.com",
-  "dependentChangeType": "patch"
-}
