@@ -59,7 +59,7 @@ test.describe("Flipper", () => {
             `;
         });
 
-        await expect(element.locator("span")).toHaveClass(/next-icon/);
+        await expect(element.locator("span")).toHaveClass(/next/);
     });
 
     test("should toggle the `aria-disabled` attribute based on the value of the `disabled` property", async () => {
@@ -118,7 +118,7 @@ test.describe("Flipper", () => {
         await expect(element).toHaveAttribute("tabindex", "-1");
     });
 
-    test('should render a span with a class of "next-icon" when the `direction` attribute is "next"', async () => {
+    test('should render a span with a class of "next" when the `direction` attribute is "next"', async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-flipper direction="next"></fast-flipper>
@@ -129,10 +129,10 @@ test.describe("Flipper", () => {
 
         await expect(spans).toHaveCount(1);
 
-        await expect(spans).toHaveClass(/next-icon/);
+        await expect(spans).toHaveClass(/next/);
     });
 
-    test('should render a span with a class of "previous-icon" when the `direction` attribute is "previous"', async () => {
+    test('should render a span with a class of "previous" when the `direction` attribute is "previous"', async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-flipper direction="previous"></fast-flipper>
@@ -143,6 +143,6 @@ test.describe("Flipper", () => {
 
         await expect(spans).toHaveCount(1);
 
-        await expect(spans).toHaveClass(/previous-icon/);
+        await expect(spans).toHaveClass(/previous/);
     });
 });

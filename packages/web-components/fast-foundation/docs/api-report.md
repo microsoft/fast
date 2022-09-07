@@ -2257,8 +2257,8 @@ export type FlipperDirection = typeof FlipperDirection[keyof typeof FlipperDirec
 
 // @public
 export type FlipperOptions = {
-    nextIcon?: string | SyntheticViewTemplate;
-    previousIcon?: string | SyntheticViewTemplate;
+    next?: string | SyntheticViewTemplate;
+    previous?: string | SyntheticViewTemplate;
 };
 
 // @public

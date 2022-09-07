@@ -32,8 +32,8 @@ const styles = css`
         top: 0;
         transition: all 0.1s ease-in-out;
     }
-    .next-icon,
-    .previous-icon {
+    .next,
+    .previous {
         display: grid;
         position: relative;
     }
@@ -82,8 +82,8 @@ const styles = css`
 FASTFlipper.define({
     name: "fast-flipper",
     template: flipperTemplate({
-        nextIcon: chevronRightIcon16,
-        previousIcon: chevronLeftIcon16,
+        next: chevronRightIcon16,
+        previous: chevronLeftIcon16,
     }),
     styles,
 });

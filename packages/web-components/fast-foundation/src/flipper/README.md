@@ -126,17 +126,17 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 
 #### CSS Parts
 
-| Name            | Description                        |
-| --------------- | ---------------------------------- |
-| `next-icon`     | Wraps the next flipper content     |
-| `previous-icon` | Wraps the previous flipper content |
+| Name       | Description                        |
+| ---------- | ---------------------------------- |
+| `next`     | Wraps the next flipper content     |
+| `previous` | Wraps the previous flipper content |
 
 #### Slots
 
-| Name            | Description                  |
-| --------------- | ---------------------------- |
-| `next-icon`     | The next flipper content     |
-| `previous-icon` | The previous flipper content |
+| Name       | Description                  |
+| ---------- | ---------------------------- |
+| `next`     | The next flipper content     |
+| `previous` | The previous flipper content |
 
 <hr/>
 

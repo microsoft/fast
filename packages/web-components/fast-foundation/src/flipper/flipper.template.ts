@@ -18,11 +18,10 @@ export function flipperTemplate<T extends FASTFlipper>(
         let existing = templateCache[direction];
 
         if (!existing) {
-            const iconKey = direction + "Icon";
-            templateCache[direction] = existing = html`
-                <span part="${direction}-icon" class="${direction}-icon">
-                    <slot name="${direction}-icon">
-                        ${options[iconKey] ?? ""}
+            templateCache[direction] = existing = html<T>`
+                <span part="${direction}" class="${direction}">
+                    <slot name="${direction}">
+                        ${options[direction] ?? ""}
                     </slot>
                 </span>
             `;
