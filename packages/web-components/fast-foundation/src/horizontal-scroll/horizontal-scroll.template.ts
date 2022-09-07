@@ -11,7 +11,7 @@ export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
     options: HorizontalScrollOptions
 ): ElementViewTemplate<T> {
     const flipperTag = tagFor(options.flipper);
-    return html`
+    return html<T>`
         <template @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}">
             ${startSlotTemplate(options)}
             <div class="scroll-area" part="scroll-area">
@@ -40,7 +40,7 @@ export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
                         >
                             <slot name="previous-flipper">
                                 ${options.previousFlipper ??
-                                html`
+                                html<T>`
                                     <${flipperTag}
                                         part="previous-flipper"
                                         @click="${x => x.scrollToPrevious()}"
@@ -57,7 +57,7 @@ export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
                         >
                             <slot name="next-flipper">
                                 ${options.nextFlipper ??
-                                html`
+                                html<T>`
                                     <${flipperTag}
                                         part="next-flipper"
                                         @click="${x => x.scrollToNext()}"

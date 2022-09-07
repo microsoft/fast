@@ -2563,7 +2563,7 @@ export type PickerOptions = {
 export function pickerTemplate<T extends FASTPicker>(options: PickerOptions): ElementViewTemplate<T>;
 
 // @public (undocumented)
-export const progressIndicatorTemplate: ViewTemplate<FASTProgress, any>;
+export const progressIndicatorTemplate: ViewTemplate<any, any>;
 
 // @public
 export type ProgressOptions = {
@@ -2572,7 +2572,7 @@ export type ProgressOptions = {
 };
 
 // @public (undocumented)
-export const progressRingIndicatorTemplate: ViewTemplate<FASTProgressRing, any>;
+export const progressRingIndicatorTemplate: ViewTemplate<any, any>;
 
 // @public
 export type ProgressRingOptions = {

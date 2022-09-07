@@ -16,7 +16,6 @@ export function selectTemplate<T extends FASTSelect>(
                 [
                     x.collapsible && "collapsible",
                     x.collapsible && x.open && "open",
-                    x.disabled && "disabled",
                     x.collapsible && x.position,
                 ]
                     .filter(Boolean)

@@ -31,12 +31,11 @@ export function flipperTemplate<T extends FASTFlipper>(
         return existing;
     }
 
-    return html`
+    return html<T>`
         <template
             role="button"
             aria-disabled="${x => (x.disabled ? true : void 0)}"
             tabindex="${x => (x.hiddenFromAT ? -1 : 0)}"
-            class="${x => x.direction} ${x => (x.disabled ? "disabled" : "")}"
             @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
         >
             ${x => setFlipperTemplateByDirection(x.direction, options)}

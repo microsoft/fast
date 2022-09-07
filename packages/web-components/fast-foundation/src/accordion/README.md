@@ -192,14 +192,13 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 #### Slots
 
-| Name             | Description                                                                      |
-| ---------------- | -------------------------------------------------------------------------------- |
-| `start`          | Content which can be provided between the heading and the icon                   |
-| `end`            | Content which can be provided between the start slot and icon                    |
-| `heading`        | Content which serves as the accordion item heading and text of the expand button |
-|                  | The default slot for accordion item content                                      |
-| `expanded-icon`  | The expanded icon                                                                |
-| `collapsed-icon` | The collapsed icon                                                               |
+| Name                   | Description                                                                      |
+| ---------------------- | -------------------------------------------------------------------------------- |
+| `start`                | Content which can be provided between the heading and the icon                   |
+| `end`                  | Content which can be provided between the start slot and icon                    |
+| `heading`              | Content which serves as the accordion item heading and text of the expand button |
+|                        | The default slot for accordion item content                                      |
+| `expand-collapse-icon` | The expanded / collapsed icon                                                    |
 
 <hr/>
 

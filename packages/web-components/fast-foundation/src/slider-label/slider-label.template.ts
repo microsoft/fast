@@ -10,8 +10,7 @@ export function sliderLabelTemplate<T extends FASTSliderLabel>(): ElementViewTem
     return html<T>`
         <template
             aria-disabled="${x => x.disabled}"
-            class="${x => x.sliderOrientation || Orientation.horizontal}
-            ${x => (x.disabled ? "disabled" : "")}"
+            class="${x => x.sliderOrientation || Orientation.horizontal}"
         >
             <div
                 ${ref("container")}

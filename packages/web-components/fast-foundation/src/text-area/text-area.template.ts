@@ -12,9 +12,7 @@ export function textAreaTemplate<T extends FASTTextArea>(
 ): ElementViewTemplate<T> {
     return html<T>`
         <template
-            class="
-            ${x => (x.readOnly ? "readonly" : "")}
-            ${x => (x.resize !== TextAreaResize.none ? `resize-${x.resize}` : "")}"
+            class="${x => (x.resize !== TextAreaResize.none ? `resize-${x.resize}` : "")}"
         >
             <label
                 part="label"

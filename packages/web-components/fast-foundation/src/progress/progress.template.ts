@@ -6,7 +6,7 @@ import type { ProgressOptions } from "./progress.options.js";
 /**
  * @public
  */
-export const progressIndicatorTemplate = html<FASTProgress>`
+export const progressIndicatorTemplate = html`
     <div class="indicator" part="indicator"></div>
 `;
 
@@ -23,7 +23,6 @@ export function progressTemplate<T extends FASTProgress>(
             aria-valuenow="${x => x.value}"
             aria-valuemin="${x => x.min}"
             aria-valuemax="${x => x.max}"
-            class="${x => (x.paused ? "paused" : "")}"
         >
             ${when(
                 x => typeof x.value === "number",

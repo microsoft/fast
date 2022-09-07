@@ -17,11 +17,7 @@ export function listboxOptionTemplate<T extends FASTListboxOption>(
             aria-selected="${x => x.ariaSelected}"
             aria-setsize="${x => x.ariaSetSize}"
             class="${x =>
-                [
-                    x.checked && "checked",
-                    x.selected && "selected",
-                    x.disabled && "disabled",
-                ]
+                [x.checked && "checked", x.selected && "selected"]
                     .filter(Boolean)
                     .join(" ")}"
             role="option"

@@ -1,5 +1,4 @@
 import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
 import type { FASTSlider } from "./slider.js";
 import type { SliderOptions } from "./slider.options.js";
 
@@ -13,8 +12,6 @@ export function sliderTemplate<T extends FASTSlider>(
     return html<T>`
         <template
             role="slider"
-            class="${x => (x.readOnly ? "readonly" : "")}
-                ${x => x.orientation || Orientation.horizontal}"
             tabindex="${x => (x.disabled ? null : 0)}"
             aria-valuetext="${x => x.valueTextFormatter(x.value)}"
             aria-valuenow="${x => x.value}"

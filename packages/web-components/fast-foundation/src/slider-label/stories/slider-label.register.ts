@@ -26,7 +26,7 @@ const styles = css`
         background: var(--neutral-stroke-rest);
         justify-self: center;
     }
-    :host(.disabled) {
+    :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
 `;

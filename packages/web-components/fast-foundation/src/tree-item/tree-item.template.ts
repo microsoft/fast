@@ -15,15 +15,7 @@ export function treeItemTemplate<T extends FASTTreeItem>(
             role="treeitem"
             slot="${x => (x.isNestedItem() ? "item" : void 0)}"
             tabindex="-1"
-            class="${x =>
-                [
-                    x.expanded && "expanded",
-                    x.selected && "selected",
-                    x.nested && "nested",
-                    x.disabled && "disabled",
-                ]
-                    .filter(Boolean)
-                    .join(" ")}"
+            class="${x => [x.nested && "nested"].filter(Boolean).join(" ")}"
             aria-expanded="${x => x.ariaExpanded}"
             aria-selected="${x => x.ariaSelected}"
             aria-disabled="${x => x.ariaDisabled}"
