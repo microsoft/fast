@@ -4,6 +4,7 @@
 
 ```ts
 
+import { ColorRGBA64 } from '@microsoft/fast-colors';
 import { CSSDesignToken } from '@microsoft/fast-foundation';
 import { CSSDirective } from '@microsoft/fast-element';
 import { DesignToken } from '@microsoft/fast-foundation';
@@ -251,6 +252,9 @@ export interface InteractiveSwatchSet {
 }
 
 // @public
+export function interactiveSwatchSetAsOverlay(set: InteractiveSwatchSet, reference: Swatch, asOverlay: boolean): InteractiveSwatchSet;
+
+// @public
 export function isDark(color: RelativeLuminance): boolean;
 
 // @public (undocumented)
@@ -258,6 +262,9 @@ export const layerCornerRadius: CSSDesignToken<number>;
 
 // @public
 export function luminanceSwatch(luminance: number): Swatch;
+
+// @public (undocumented)
+export const neutralAsOverlay: DesignToken<boolean>;
 
 // @public (undocumented)
 export const neutralBaseColor: CSSDesignToken<string>;
@@ -600,9 +607,14 @@ export interface Swatch extends RelativeLuminance {
 }
 
 // @public
+export function swatchAsOverlay(swatch: Swatch, reference: Swatch, asOverlay: boolean): Swatch;
+
+// @public
 export class SwatchRGB implements Swatch {
-    constructor(red: number, green: number, blue: number);
+    constructor(red: number, green: number, blue: number, alpha?: number, intendedColor?: SwatchRGB);
+    static asOverlay(intendedColor: SwatchRGB, reference: SwatchRGB): SwatchRGB;
     readonly b: number;
+    readonly color: ColorRGBA64;
     contrast: any;
     createCSS: () => string;
     static from(obj: {
@@ -611,6 +623,7 @@ export class SwatchRGB implements Swatch {
         b: number;
     }): SwatchRGB;
     readonly g: number;
+    readonly intendedColor?: SwatchRGB;
     readonly r: number;
     readonly relativeLuminance: number;
     toColorString(): string;
