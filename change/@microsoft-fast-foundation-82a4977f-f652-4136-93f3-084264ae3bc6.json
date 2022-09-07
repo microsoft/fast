@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "anchored region allows anchor overlay",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "patch"
+}
