@@ -49,7 +49,7 @@ Updates.setMode(false);
  * Configuration for SSR factory.
  * @beta
  */
-export interface Configuration {
+export interface SSRConfiguration {
     renderMode: "sync" | "async";
 }
 
@@ -60,14 +60,14 @@ function fastSSR(): {
 };
 /** @beta */
 function fastSSR(
-    config: Configuration & Record<"renderMode", "sync">
+    config: SSRConfiguration & Record<"renderMode", "sync">
 ): {
     templateRenderer: TemplateRenderer;
     ElementRenderer: ConstructableElementRenderer;
 };
 /** @beta */
 function fastSSR(
-    config: Configuration & Record<"renderMode", "async">
+    config: SSRConfiguration & Record<"renderMode", "async">
 ): {
     templateRenderer: AsyncTemplateRenderer;
     ElementRenderer: ConstructableElementRenderer<AsyncElementRenderer>;
@@ -86,7 +86,7 @@ function fastSSR(
  *
  * @beta
  */
-function fastSSR(config?: Configuration): any {
+function fastSSR(config?: SSRConfiguration): any {
     const async = config && config.renderMode === "async";
     const templateRenderer = new DefaultTemplateRenderer();
     const elementRenderer = !async
