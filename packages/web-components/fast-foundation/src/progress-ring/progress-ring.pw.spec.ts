@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
+import type { FASTProgressRing } from "./progress-ring.js";
 
 test.describe("Progress ring", () => {
     let page: Page;
@@ -83,5 +84,45 @@ test.describe("Progress ring", () => {
         const progress = element.locator(".indeterminate");
 
         await expect(progress).toHaveCount(1);
+    });
+
+    test("should return the `percentComplete` property as a value between 0 and 100 when `min` and `max` are unset", async () => {
+        await page.setContent(/* html */ `
+            <fast-progress-ring value="50"></fast-progress-ring>
+        `);
+
+        await expect(element).toHaveJSProperty("percentComplete", 50);
+    });
+
+    test("should set the `percentComplete` property to match the current `value` in the range of `min` and `max`", async () => {
+        await page.setContent(/* html */ `
+            <fast-progress-ring value="0"></fast-progress-ring>
+        `);
+
+        await expect(element).toHaveJSProperty("percentComplete", 0);
+
+        await element.evaluate((node: FASTProgressRing) => {
+            node.value = 50;
+        });
+
+        await expect(element).toHaveJSProperty("percentComplete", 50);
+
+        await element.evaluate((node: FASTProgressRing) => {
+            node.value = 100;
+        });
+
+        await expect(element).toHaveJSProperty("percentComplete", 100);
+
+        await element.evaluate((node: FASTProgressRing) => {
+            node.max = 200;
+        });
+
+        await expect(element).toHaveJSProperty("percentComplete", 50);
+
+        await element.evaluate((node: FASTProgressRing) => {
+            node.min = 100;
+        });
+
+        await expect(element).toHaveJSProperty("percentComplete", 0);
     });
 });

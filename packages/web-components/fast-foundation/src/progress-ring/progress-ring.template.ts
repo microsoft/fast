@@ -47,7 +47,7 @@ export function progressRingTemplate<T extends FASTProgressRing>(
                     <span class="indeterminate" part="indeterminate">
                         <slot name="indeterminate">
                             ${options.indeterminateIndicator ?? ""}
-                        </span>
+                        </slot>
                     </span>
                 `
             )}
