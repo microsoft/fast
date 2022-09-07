@@ -1,4 +1,8 @@
-import { ColorRGBA64, rgbToRelativeLuminance } from "@microsoft/fast-colors";
+import {
+    calculateOverlayColor,
+    ColorRGBA64,
+    rgbToRelativeLuminance,
+} from "@microsoft/fast-colors";
 import { contrast, RelativeLuminance } from "./utilities/relative-luminance.js";
 
 /**
@@ -41,11 +45,19 @@ export class SwatchRGB implements Swatch {
     readonly b: number;
 
     /**
+     * The opaque color this Swatch represents if opacity is used.
+     */
+    readonly intendedColor?: SwatchRGB;
+
+    /**
      * {@inheritdoc RelativeLuminance.relativeLuminance}
      */
     readonly relativeLuminance: number;
 
-    private readonly color: ColorRGBA64;
+    /**
+     * Internal representation of the Swatch in the format used by fast-colors.
+     */
+    readonly color: ColorRGBA64;
 
     /**
      * Creates a new SwatchRGB.
@@ -53,14 +65,25 @@ export class SwatchRGB implements Swatch {
      * @param red - Red channel expressed as a number between 0 and 1
      * @param green - Green channel expressed as a number between 0 and 1
      * @param blue - Blue channel expressed as a number between 0 and 1
+     * @param alpha - Alpha channel expressed as a number between 0 and 1, default 1
+     * @param intendedColor - If `alpha` < 1 this tracks the intended opaque color value for dependent calculations
      */
-    constructor(red: number, green: number, blue: number) {
+    constructor(
+        red: number,
+        green: number,
+        blue: number,
+        alpha: number = 1,
+        intendedColor?: SwatchRGB
+    ) {
         this.r = red;
         this.g = green;
         this.b = blue;
-        this.color = new ColorRGBA64(red, green, blue);
+        this.color = new ColorRGBA64(red, green, blue, alpha);
 
-        this.relativeLuminance = rgbToRelativeLuminance(this.color);
+        this.intendedColor = intendedColor;
+        this.relativeLuminance = intendedColor
+            ? rgbToRelativeLuminance(intendedColor.color)
+            : rgbToRelativeLuminance(this.color);
     }
 
     /**
@@ -69,7 +92,9 @@ export class SwatchRGB implements Swatch {
      * @returns The color value in string format
      */
     toColorString() {
-        return this.color.toStringHexRGB();
+        return this.color.a < 1
+            ? this.color.toStringWebRGBA()
+            : this.color.toStringHexRGB();
     }
 
     /**
@@ -94,5 +119,29 @@ export class SwatchRGB implements Swatch {
      */
     static from(obj: { r: number; g: number; b: number }): SwatchRGB {
         return new SwatchRGB(obj.r, obj.g, obj.b);
+    }
+
+    /**
+     * Creates a new SwatchRGB as an overlay representation of the `intendedColor` over `reference`.
+     *
+     * Currently the overlay will only be black or white, so this works best with a plain grey neutral palette.
+     * Otherwise it will attempt to match the luminance value of the Swatch, so it will likely be close, but not an
+     * exact match to the color from another palette.
+     *
+     * @param intendedColor - The color the overlay should look like over the `reference` color
+     * @param reference - The color under the overlay color
+     * @returns A semitransparent color that implies the `intendedColor` over the `reference` color.
+     */
+    static asOverlay(intendedColor: SwatchRGB, reference: SwatchRGB): SwatchRGB {
+        const refColor = reference.intendedColor ?? reference;
+        const colorWithAlpha = calculateOverlayColor(intendedColor.color, refColor.color);
+
+        return new SwatchRGB(
+            colorWithAlpha.r,
+            colorWithAlpha.g,
+            colorWithAlpha.b,
+            colorWithAlpha.a,
+            intendedColor
+        );
     }
 }
