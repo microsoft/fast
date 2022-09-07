@@ -3,7 +3,7 @@ import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { BreadcrumbOptions, FASTBreadcrumb } from "./breadcrumb.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#FASTBreadcrumb} component.
+ * The template for the {@link @microsoft/fast-foundation#(FASTBreadcrumb:class)} component.
  * @public
  */
 export function breadcrumbTemplate<T extends FASTBreadcrumb>(

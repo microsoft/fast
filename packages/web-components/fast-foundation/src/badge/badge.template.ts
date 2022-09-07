@@ -3,7 +3,7 @@ import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { BadgeOptions, FASTBadge } from "./badge.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#FASTBadge} component.
+ * The template for the {@link @microsoft/fast-foundation#(FASTBadge:class)} component.
  * @public
  */
 export function badgeTemplate<T extends FASTBadge>(

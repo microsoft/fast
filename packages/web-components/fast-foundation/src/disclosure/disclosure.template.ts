@@ -3,7 +3,7 @@ import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { DisclosureOptions, FASTDisclosure } from "./disclosure.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#FASTDisclosure} component.
+ * The template for the {@link @microsoft/fast-foundation#(FASTDisclosure:class)} component.
  * @public
  */
 export function disclosureTemplate<T extends FASTDisclosure>(
