@@ -37,7 +37,6 @@ describe("Menu item", () => {
         await connect();
 
         await Updates.next();
-
         expect(element.getAttribute("role")).to.equal(role);
 
         await disconnect();
