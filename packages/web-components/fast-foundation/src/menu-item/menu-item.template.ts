@@ -79,11 +79,14 @@ export const menuItemTemplate: FoundationElementTemplate<
             html<MenuItem>`
                 <${context.tagFor(AnchoredRegion)}
                     :anchorElement="${x => x}"
+                    auto-update-mode="auto"
                     vertical-positioning-mode="dynamic"
                     vertical-default-position="bottom"
                     vertical-inset="true"
+                    vertical-viewport-lock="true"
                     horizontal-positioning-mode="dynamic"
                     horizontal-default-position="end"
+                    horizontal-viewport-lock="true"
                     class="submenu-region"
                     dir="${x => x.currentDirection}"
                     @loaded="${x => x.submenuLoaded()}"
