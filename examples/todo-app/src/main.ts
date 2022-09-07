@@ -1,3 +1,4 @@
+import { DesignToken } from "@microsoft/fast-foundation";
 import { DefaultTodoList, TodoList } from "./todo-list.js";
 import { app } from "./todo-app.js";
 
@@ -9,4 +10,9 @@ import { app } from "./todo-app.js";
 // app so that we can ensure that the context is available
 // in time.
 TodoList.provide(document, new DefaultTodoList());
+
+// Emit CSS for DesignToken default values
+DesignToken.registerDefaultStyleTarget();
+
+// Define the todo-app custom element
 app.define();
