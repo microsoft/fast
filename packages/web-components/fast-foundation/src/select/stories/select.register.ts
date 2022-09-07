@@ -50,7 +50,7 @@ const styles = css`
         max-height: none;
     }
 
-    .control + .listbox {
+    .button + .listbox {
         --stroke-size: calc(var(--design-unit) * var(--stroke-width) * 2);
         max-height: calc(
             (var(--listbox-max-height) * var(--height-number) + var(--stroke-size)) * 1px
@@ -67,7 +67,7 @@ const styles = css`
         display: none;
     }
 
-    .control {
+    .button {
         height: calc(var(--height-number) * 1px);
         background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--control-corner-radius) * 1px);
@@ -84,12 +84,12 @@ const styles = css`
         width: 100%;
     }
 
-    :host(:not([disabled]):hover) .control {
+    :host(:not([disabled]):hover) .button {
         background: var(--neutral-fill-input-hover);
         border-color: var(--accent-fill-hover);
     }
 
-    :host(:not([disabled]):active) .control {
+    :host(:not([disabled]):active) .button {
         background: var(--neutral-fill-input-active);
         border-color: var(--accent-fill-active);
     }
@@ -118,7 +118,7 @@ const styles = css`
         opacity: var(--disabled-opacity);
     }
 
-    :host([disabled]) .control {
+    :host([disabled]) .button {
         cursor: var(--disabled-cursor);
         user-select: none;
     }
@@ -143,7 +143,7 @@ const styles = css`
         top: calc(var(--height-number) * 1px);
     }
 
-    .field {
+    .selected-value {
         flex: 1 1 auto;
         font-family: inherit;
         min-width: calc(var(--listbox-scroll-width, 0) - (var(--design-unit) * 4) * 1px);

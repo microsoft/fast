@@ -201,20 +201,22 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 | Name              | Description                                          |
 | ----------------- | ---------------------------------------------------- |
-| `control`         | The element representing the select invoking element |
-| `field`           | The element wrapping the selected value              |
+| `button`          | The element representing the select invoking element |
+| `selected-value`  | The element wrapping the selected value              |
 | `open-close-icon` | The element wrapping the visual indicator            |
 | `listbox`         | The listbox element                                  |
 
 #### Slots
 
-| Name              | Description                                                      |
-| ----------------- | ---------------------------------------------------------------- |
-| `start`           | Content which can be provided before the button content          |
-| `end`             | Content which can be provided after the button content           |
-| `field`           | The selected value                                               |
-| `open-close-icon` | The visual indicator for the expand/collapse state of the button |
-|                   | The default slot for slotted options                             |
+| Name                | Description                                                      |
+| ------------------- | ---------------------------------------------------------------- |
+| `start`             | Content which can be provided before the button content          |
+| `end`               | Content which can be provided after the button content           |
+| `button-container`  | The container for the button element                             |
+| `selected-value`    | The selected value                                               |
+| `open-close-icon`   | The visual indicator for the expand/collapse state of the button |
+| `listbox-container` | The container for the listbox element                            |
+|                     | The default slot for slotted options                             |
 
 <hr/>
 

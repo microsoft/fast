@@ -1777,13 +1777,13 @@ export interface FASTSearch extends StartEnd, DelegatesARIASearch {
 // @public
 export class FASTSelect extends FormAssociatedSelect {
     // @internal
+    button: HTMLElement;
+    // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // @internal
     get collapsible(): boolean;
     // (undocumented)
     connectedCallback(): void;
-    // @internal
-    control: HTMLElement;
     // @internal
     disabledChanged(prev: boolean, next: boolean): void;
     // (undocumented)
