@@ -12,15 +12,16 @@ export const radioGroupTemplate: FoundationElementTemplate<ViewTemplate<RadioGro
     context,
     definition
 ) => html`
-    <template
+    <div
         role="radiogroup"
+        aria-labelledby="label"
         aria-disabled="${x => x.disabled}"
         aria-readonly="${x => x.readOnly}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
         @focusout="${(x, c) => x.focusOutHandler(c.event as FocusEvent)}"
     >
-        <slot name="label"></slot>
+        <label id="label"><slot name="label"></slot></label>
         <div
             class="positioning-region ${x =>
                 x.orientation === Orientation.horizontal ? "horizontal" : "vertical"}"
@@ -33,5 +34,5 @@ export const radioGroupTemplate: FoundationElementTemplate<ViewTemplate<RadioGro
                 })}
             ></slot>
         </div>
-    </template>
+    </div>
 `;
