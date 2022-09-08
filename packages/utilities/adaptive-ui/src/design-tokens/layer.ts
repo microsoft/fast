@@ -1,3 +1,4 @@
+import { DesignTokenResolver } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe, InteractiveSwatchSet } from "../color/recipe.js";
 import { deltaSwatch, deltaSwatchSet } from "../color/recipes/index.js";
 import { Swatch, SwatchRGB } from "../color/swatch.js";
@@ -19,7 +20,7 @@ export interface LayerRecipe {
      * @param element - The element for which to evaluate the recipe
      * @param index - The index of the layer, `0` for 'base', plus or minus relative to 'base'
      */
-    evaluate(element: HTMLElement, index: number): Swatch;
+    evaluate(resolve: DesignTokenResolver, index: number): Swatch;
 }
 
 /**
@@ -115,11 +116,11 @@ export const neutralFillLayerFocusDelta = createNonCss<number>(
 export const neutralFillLayerFixedRecipe = createNonCss<LayerRecipe>(
     "neutral-fill-layer-fixed-recipe"
 ).withDefault({
-    evaluate: (element: HTMLElement, index: number): Swatch =>
+    evaluate: (resolve: DesignTokenResolver, index: number): Swatch =>
         deltaSwatch(
-            neutralPalette.getValueFor(element),
-            luminanceSwatch(neutralFillLayerBaseLuminance.getValueFor(element)),
-            neutralFillLayerRestDelta.getValueFor(element) * index
+            resolve(neutralPalette),
+            luminanceSwatch(resolve(neutralFillLayerBaseLuminance)),
+            resolve(neutralFillLayerRestDelta) * index
         ),
 });
 
@@ -130,8 +131,8 @@ export const neutralFillLayerFixedRecipe = createNonCss<LayerRecipe>(
  */
 export const neutralFillLayerFixedBase = create<Swatch>(
     "neutral-fill-layer-fixed-base"
-).withDefault((element: HTMLElement) =>
-    neutralFillLayerFixedRecipe.getValueFor(element).evaluate(element, 0)
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 0)
 );
 
 /**
@@ -141,8 +142,8 @@ export const neutralFillLayerFixedBase = create<Swatch>(
  */
 export const neutralFillLayerFixedMinus1 = create<Swatch>(
     "neutral-fill-layer-fixed-minus-1"
-).withDefault((element: HTMLElement) =>
-    neutralFillLayerFixedRecipe.getValueFor(element).evaluate(element, -1)
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, -1)
 );
 
 /**
@@ -152,8 +153,8 @@ export const neutralFillLayerFixedMinus1 = create<Swatch>(
  */
 export const neutralFillLayerFixedMinus2 = create<Swatch>(
     "neutral-fill-layer-fixed-minus-2"
-).withDefault((element: HTMLElement) =>
-    neutralFillLayerFixedRecipe.getValueFor(element).evaluate(element, -2)
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, -2)
 );
 
 /**
@@ -163,8 +164,8 @@ export const neutralFillLayerFixedMinus2 = create<Swatch>(
  */
 export const neutralFillLayerFixedMinus3 = create<Swatch>(
     "neutral-fill-layer-fixed-minus-3"
-).withDefault((element: HTMLElement) =>
-    neutralFillLayerFixedRecipe.getValueFor(element).evaluate(element, -3)
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, -3)
 );
 
 /**
@@ -174,8 +175,8 @@ export const neutralFillLayerFixedMinus3 = create<Swatch>(
  */
 export const neutralFillLayerFixedMinus4 = create<Swatch>(
     "neutral-fill-layer-fixed-minus-4"
-).withDefault((element: HTMLElement) =>
-    neutralFillLayerFixedRecipe.getValueFor(element).evaluate(element, -4)
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, -4)
 );
 
 /**
@@ -185,8 +186,8 @@ export const neutralFillLayerFixedMinus4 = create<Swatch>(
  */
 export const neutralFillLayerFixedPlus1 = create<Swatch>(
     "neutral-fill-layer-fixed-minus-1"
-).withDefault((element: HTMLElement) =>
-    neutralFillLayerFixedRecipe.getValueFor(element).evaluate(element, 1)
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 1)
 );
 
 /**
@@ -196,8 +197,8 @@ export const neutralFillLayerFixedPlus1 = create<Swatch>(
  */
 export const neutralFillLayerFixedPlus2 = create<Swatch>(
     "neutral-fill-layer-fixed-minus-2"
-).withDefault((element: HTMLElement) =>
-    neutralFillLayerFixedRecipe.getValueFor(element).evaluate(element, 2)
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 2)
 );
 
 /**
@@ -207,8 +208,8 @@ export const neutralFillLayerFixedPlus2 = create<Swatch>(
  */
 export const neutralFillLayerFixedPlus3 = create<Swatch>(
     "neutral-fill-layer-fixed-minus-3"
-).withDefault((element: HTMLElement) =>
-    neutralFillLayerFixedRecipe.getValueFor(element).evaluate(element, 3)
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 3)
 );
 
 /**
@@ -218,8 +219,8 @@ export const neutralFillLayerFixedPlus3 = create<Swatch>(
  */
 export const neutralFillLayerFixedPlus4 = create<Swatch>(
     "neutral-fill-layer-fixed-minus-4"
-).withDefault((element: HTMLElement) =>
-    neutralFillLayerFixedRecipe.getValueFor(element).evaluate(element, 4)
+).withDefault((resolve: DesignTokenResolver) =>
+    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 4)
 );
 
 /**
@@ -233,14 +234,14 @@ export const neutralFillLayerFixedPlus4 = create<Swatch>(
 export const neutralFillLayerInteractiveRecipe = createNonCss<InteractiveColorRecipe>(
     "neutral-fill-layer-interactive-recipe"
 ).withDefault({
-    evaluate: (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
+    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         deltaSwatchSet(
-            neutralPalette.getValueFor(element),
-            reference || fillColor.getValueFor(element),
-            neutralFillLayerRestDelta.getValueFor(element),
-            neutralFillLayerHoverDelta.getValueFor(element),
-            neutralFillLayerActiveDelta.getValueFor(element),
-            neutralFillLayerFocusDelta.getValueFor(element)
+            resolve(neutralPalette),
+            reference || resolve(fillColor),
+            resolve(neutralFillLayerRestDelta),
+            resolve(neutralFillLayerHoverDelta),
+            resolve(neutralFillLayerActiveDelta),
+            resolve(neutralFillLayerFocusDelta)
         ),
 });
 
@@ -250,8 +251,8 @@ export const neutralFillLayerInteractiveRecipe = createNonCss<InteractiveColorRe
  * @public
  */
 export const neutralFillLayerRest = create<Swatch>("neutral-fill-layer-rest").withDefault(
-    (element: HTMLElement) =>
-        neutralFillLayerInteractiveRecipe.getValueFor(element).evaluate(element).rest
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralFillLayerInteractiveRecipe).evaluate(resolve).rest
 );
 
 /**
@@ -262,8 +263,8 @@ export const neutralFillLayerRest = create<Swatch>("neutral-fill-layer-rest").wi
 export const neutralFillLayerHover = create<Swatch>(
     "neutral-fill-layer-hover"
 ).withDefault(
-    (element: HTMLElement) =>
-        neutralFillLayerInteractiveRecipe.getValueFor(element).evaluate(element).hover
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralFillLayerInteractiveRecipe).evaluate(resolve).hover
 );
 
 /**
@@ -274,8 +275,8 @@ export const neutralFillLayerHover = create<Swatch>(
 export const neutralFillLayerActive = create<Swatch>(
     "neutral-fill-layer-active"
 ).withDefault(
-    (element: HTMLElement) =>
-        neutralFillLayerInteractiveRecipe.getValueFor(element).evaluate(element).active
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralFillLayerInteractiveRecipe).evaluate(resolve).active
 );
 
 /**
@@ -286,6 +287,6 @@ export const neutralFillLayerActive = create<Swatch>(
 export const neutralFillLayerFocus = create<Swatch>(
     "neutral-fill-layer-focus"
 ).withDefault(
-    (element: HTMLElement) =>
-        neutralFillLayerInteractiveRecipe.getValueFor(element).evaluate(element).focus
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralFillLayerInteractiveRecipe).evaluate(resolve).focus
 );
