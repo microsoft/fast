@@ -261,6 +261,11 @@ export function isDark(color: RelativeLuminance): boolean;
 export const layerCornerRadius: CSSDesignToken<number>;
 
 // @public
+export interface LayerRecipe {
+    evaluate(resolve: DesignTokenResolver, index: number): Swatch;
+}
+
+// @public
 export function luminanceSwatch(luminance: number): Swatch;
 
 // @public (undocumented)
@@ -316,6 +321,66 @@ export const neutralFillInputRest: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillInputRestDelta: DesignToken<number>;
+
+// @public
+export const neutralFillLayerActive: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerActiveDelta: DesignToken<number>;
+
+// @public
+export const neutralFillLayerBaseLuminance: DesignToken<number>;
+
+// @public
+export const neutralFillLayerFixedBase: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerFixedMinus1: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerFixedMinus2: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerFixedMinus3: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerFixedMinus4: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerFixedPlus1: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerFixedPlus2: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerFixedPlus3: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerFixedPlus4: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerFixedRecipe: DesignToken<LayerRecipe>;
+
+// @public
+export const neutralFillLayerFocus: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerFocusDelta: DesignToken<number>;
+
+// @public
+export const neutralFillLayerHover: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerHoverDelta: DesignToken<number>;
+
+// @public
+export const neutralFillLayerInteractiveRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public
+export const neutralFillLayerRest: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillLayerRestDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralFillRecipe: DesignToken<InteractiveColorRecipe>;
@@ -596,6 +661,15 @@ export const StandardFontWeight: {
     readonly ExtraBold: 800;
     readonly Black: 900;
 };
+
+// @public
+export const StandardLuminance: Readonly<{
+    readonly LightMode: 1;
+    readonly DarkMode: 0.23;
+}>;
+
+// @public
+export type StandardLuminance = typeof StandardLuminance[keyof typeof StandardLuminance];
 
 // @public (undocumented)
 export const strokeWidth: CSSDesignToken<number>;

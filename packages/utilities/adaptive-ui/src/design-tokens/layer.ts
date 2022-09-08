@@ -1,7 +1,8 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe, InteractiveSwatchSet } from "../color/recipe.js";
 import { deltaSwatch, deltaSwatchSet } from "../color/recipes/index.js";
-import { Swatch, SwatchRGB } from "../color/swatch.js";
+import { Swatch } from "../color/swatch.js";
+import { luminanceSwatch } from "../color/utilities/luminance-swatch.js";
 import { fillColor } from "./color.js";
 import { create, createNonCss } from "./create.js";
 import { neutralPalette } from "./palette.js";
@@ -21,18 +22,6 @@ export interface LayerRecipe {
      * @param index - The index of the layer, `0` for 'base', plus or minus relative to 'base'
      */
     evaluate(resolve: DesignTokenResolver, index: number): Swatch;
-}
-
-/**
- * Gets a grey {@link Swatch} for the requested `luminance`.
- *
- * @param luminance - The luminance value, 0...1, 0 = black, 1 = white
- * @returns A Swatch of the grey value for the requested `luminance`
- *
- * @public
- */
-export function luminanceSwatch(luminance: number): Swatch {
-    return new SwatchRGB(luminance, luminance, luminance);
 }
 
 /**
@@ -185,7 +174,7 @@ export const neutralFillLayerFixedMinus4 = create<Swatch>(
  * @public
  */
 export const neutralFillLayerFixedPlus1 = create<Swatch>(
-    "neutral-fill-layer-fixed-minus-1"
+    "neutral-fill-layer-fixed-plus-1"
 ).withDefault((resolve: DesignTokenResolver) =>
     resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 1)
 );
@@ -196,7 +185,7 @@ export const neutralFillLayerFixedPlus1 = create<Swatch>(
  * @public
  */
 export const neutralFillLayerFixedPlus2 = create<Swatch>(
-    "neutral-fill-layer-fixed-minus-2"
+    "neutral-fill-layer-fixed-plus-2"
 ).withDefault((resolve: DesignTokenResolver) =>
     resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 2)
 );
@@ -207,7 +196,7 @@ export const neutralFillLayerFixedPlus2 = create<Swatch>(
  * @public
  */
 export const neutralFillLayerFixedPlus3 = create<Swatch>(
-    "neutral-fill-layer-fixed-minus-3"
+    "neutral-fill-layer-fixed-plus-3"
 ).withDefault((resolve: DesignTokenResolver) =>
     resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 3)
 );
@@ -218,7 +207,7 @@ export const neutralFillLayerFixedPlus3 = create<Swatch>(
  * @public
  */
 export const neutralFillLayerFixedPlus4 = create<Swatch>(
-    "neutral-fill-layer-fixed-minus-4"
+    "neutral-fill-layer-fixed-plus-4"
 ).withDefault((resolve: DesignTokenResolver) =>
     resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 4)
 );
