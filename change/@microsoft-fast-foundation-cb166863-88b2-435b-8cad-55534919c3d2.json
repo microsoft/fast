@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Make radio group use label as accessible name",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "7282195+m-akinc@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
