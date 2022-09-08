@@ -3349,11 +3349,6 @@
     "@microsoft/fast-web-utilities" "^5.4.1"
     tslib "^1.13.0"
 
-"@microsoft/fast-element@2.0.0-beta.5":
-  version "2.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-2.0.0-beta.5.tgz#3f370c12685b85a2c952ba19ff74822536c96375"
-  integrity sha512-GYJC8x+a6KYIR3NaVJqlDvk61rhNkOAxq3m5VmJu1uYIfFowC1YFdgtZVGTME9Y9/gfbsNe1F1luzw98ES7QAg==
-
 "@microsoft/fast-element@^1.0.0", "@microsoft/fast-element@^1.10.0", "@microsoft/fast-element@^1.10.1", "@microsoft/fast-element@^1.10.3", "@microsoft/fast-element@^1.5.1":
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-1.10.3.tgz#0d513583207c2a33e6ec020c366d836c21423fca"
@@ -8031,10 +8026,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@^103.0.0:
-  version "103.0.0"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-103.0.0.tgz#2ef086d62076e3ff6df6cfb84895d11d2c18d9cf"
-  integrity sha512-7BHf6HWt0PeOHCzWO8qlnD13sARzr5AKTtG8Csn+czsuAsajwPxdLNtry5GPh8HYFyl+i0M+yg3bT43AGfgU9w==
+chromedriver@^105.0.0:
+  version "105.0.0"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-105.0.0.tgz#81a68e2bc0618a640defd7317ddf6ae9127fc5e4"
+  integrity sha512-BX3GOUW5m6eiW9cVVF8hw+EFxvrGqYCxbwOqnpk8PjbNFqL5xjy7yel+e6ilJPjckAYFutMKs8XJvOs/W85vvg==
   dependencies:
     "@testim/chrome-version" "^1.1.2"
     axios "^0.27.2"

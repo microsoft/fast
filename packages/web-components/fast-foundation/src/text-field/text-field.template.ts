@@ -7,10 +7,10 @@ import type { FASTTextField, TextFieldOptions } from "./text-field.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTTextField:class)} component.
  * @public
  */
-export function textFieldTemplate(
+export function textFieldTemplate<T extends FASTTextField>(
     options: TextFieldOptions = {}
-): ElementViewTemplate<FASTTextField> {
-    return html<FASTTextField>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             class="
             ${x => (x.readOnly ? "readonly" : "")}

@@ -1,8 +1,25 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 26 Aug 2022 18:06:43 GMT and should not be manually modified.
+This log was last generated on Thu, 01 Sep 2022 21:53:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.9
+
+Thu, 01 Sep 2022 21:53:34 GMT
+
+### Changes
+
+- remove boolean logical operator use for setting default slotted content in favor of nullish coalescing operator (chhol@microsoft.com)
+- update templates to ensure component classes can be extended (chhol@microsoft.com)
+- remove when directive from flipper (chhol@microsoft.com)
+- call change when search component clear button is clicked (jes@microsoft.com)
+- Lazily attach FASTDesignTokenNode to the default node to prevent errors" (nicholasrice@users.noreply.github.com)
+- fix: update foundation to use new import paths (roeisenb@microsoft.com)
+- remove references to renderCollapsedNodes and renderCollapsedChildren from tree view and tree item (chhol@microsoft.com)
+- ensure switch cannot be invoked via keyboard when in readonly mode (chhol@microsoft.com)
+- Adds DesignTokenStyleTarget to support DesignToken style collection for SSR (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.6
 
 ## 3.0.0-alpha.8
 
