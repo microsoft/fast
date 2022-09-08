@@ -15,7 +15,6 @@ export function menuItemTemplate<T extends FASTMenuItem>(
     const anchoredRegionTag = tagFor(options.anchoredRegion);
     return html<T>`
     <template
-        role="${x => x.role}"
         aria-haspopup="${x => (x.hasSubmenu ? "menu" : void 0)}"
         aria-checked="${x => (x.role !== MenuItemRole.menuitem ? x.checked : void 0)}"
         aria-disabled="${x => x.disabled}"
