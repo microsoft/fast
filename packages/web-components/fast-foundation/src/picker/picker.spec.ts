@@ -136,15 +136,13 @@ async function setupPickerMenuOption() {
     return { element, connect, disconnect };
 }
 
-
-
 describe("Picker", () => {
-
     /**
      *  Picker tests
      */
-     it("picker should create a list element when instanciated", async () => {
+     it("picker should create a list element when instantiated", async () => {
         const { element, connect, disconnect } = await setupPicker();
+
         await connect();
 
         expect(element.listElement).to.be.instanceof(FASTPickerList);

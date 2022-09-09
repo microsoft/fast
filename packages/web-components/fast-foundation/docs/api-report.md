@@ -4,7 +4,6 @@
 
 ```ts
 
-import { Behavior } from '@microsoft/fast-element';
 import type { CaptureType } from '@microsoft/fast-element';
 import { composedContains } from '@microsoft/fast-element/utilities';
 import { composedParent } from '@microsoft/fast-element/utilities';
@@ -15,6 +14,8 @@ import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
+import { HostBehavior } from '@microsoft/fast-element';
+import { HostController } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
@@ -2351,22 +2352,22 @@ export function listboxOptionTemplate<T extends FASTListboxOption>(options?: Lis
 export function listboxTemplate<T extends FASTListboxElement>(): ElementViewTemplate<T>;
 
 // @public
-export abstract class MatchMediaBehavior implements Behavior {
+export abstract class MatchMediaBehavior implements HostBehavior {
     constructor(query: MediaQueryList);
-    bind(source: typeof FASTElement & HTMLElement): void;
-    protected abstract constructListener(source: typeof FASTElement): MediaQueryListListener;
+    connectedCallback(controller: HostController): void;
+    protected abstract constructListener(controller: HostController): MediaQueryListListener;
+    disconnectedCallback(controller: HostController): void;
     readonly query: MediaQueryList;
-    unbind(source: typeof FASTElement & HTMLElement): void;
 }
 
 // @public
 export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
     constructor(query: MediaQueryList, styles: ElementStyles);
-    protected constructListener(source: typeof FASTElement): MediaQueryListListener;
+    protected constructListener(controller: HostController): MediaQueryListListener;
     readonly query: MediaQueryList;
-    readonly styles: ElementStyles;
     // @internal
-    unbind(source: typeof FASTElement & HTMLElement): void;
+    removedCallback(controller: HostController<any>): void;
+    readonly styles: ElementStyles;
     static with(query: MediaQueryList): (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 }
 
@@ -2500,12 +2501,12 @@ export function progressRingTemplate<T extends FASTProgressRing>(options?: Progr
 export function progressTemplate<T extends FASTProgress>(options?: ProgressOptions): ElementViewTemplate<T>;
 
 // @public
-export class PropertyStyleSheetBehavior implements Behavior {
+export class PropertyStyleSheetBehavior implements HostBehavior {
     constructor(propertyName: string, value: any, styles: ElementStyles);
-    bind(elementInstance: FASTElement): void;
+    addedCallback(controller: HostController): void;
     // @internal
     handleChange(source: FASTElement, key: string): void;
-    unbind(source: typeof FASTElement & HTMLElement): void;
+    removedCallback(controller: HostController): void;
 }
 
 // @public

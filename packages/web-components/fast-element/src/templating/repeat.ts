@@ -1,4 +1,3 @@
-import type { Behavior } from "../observation/behavior.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -13,8 +12,9 @@ import {
     AddViewBehaviorFactory,
     Binding,
     HTMLDirective,
+    ViewBehavior,
     ViewBehaviorFactory,
-    ViewBehaviorTargets,
+    ViewController,
 } from "./html-directive.js";
 import type { CaptureType, SyntheticViewTemplate, ViewTemplate } from "./template.js";
 import { HTMLView, SyntheticView } from "./view.js";
@@ -45,34 +45,39 @@ function bindWithoutPositioning(
     view: SyntheticView,
     items: readonly any[],
     index: number,
-    context: ExecutionContext
+    controller: ViewController
 ): void {
-    view.bind(items[index], context);
+    view.context.parent = controller!.source;
+    view.context.parentContext = controller!.context;
+    view.bind(items[index]);
 }
 
 function bindWithPositioning(
     view: SyntheticView,
     items: readonly any[],
     index: number,
-    context: ExecutionContext
+    controller: ViewController
 ): void {
-    view.bind(items[index], context.createItemContext(index, items.length));
+    view.context.parent = controller!.source;
+    view.context.parentContext = controller!.context;
+    view.context.length = items.length;
+    view.context.index = index;
+    view.bind(items[index]);
 }
 
 /**
  * A behavior that renders a template for each item in an array.
  * @public
  */
-export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
-    private source: TSource | null = null;
+export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
+    private location: Node;
+    private controller: ViewController;
     private views: SyntheticView[] = [];
     private template: SyntheticViewTemplate;
     private templateBindingObserver: ExpressionObserver<TSource, SyntheticViewTemplate>;
     private items: readonly any[] | null = null;
     private itemsObserver: Notifier | null = null;
     private itemsBindingObserver: ExpressionObserver<TSource, any[]>;
-    private context: ExecutionContext | undefined = void 0;
-    private childContext: ExecutionContext | undefined = void 0;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
 
     /**
@@ -84,7 +89,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
      * @param isTemplateBindingVolatile - Indicates whether the template binding has volatile dependencies.
      * @param options - Options used to turn on special repeat features.
      */
-    public constructor(private directive: RepeatDirective, private location: Node) {
+    public constructor(private directive: RepeatDirective) {
         this.itemsBindingObserver = directive.dataBinding.createObserver(directive, this);
         this.templateBindingObserver = directive.templateBinding.createObserver(
             directive,
@@ -97,36 +102,28 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     }
 
     /**
-     * Bind this behavior to the source.
-     * @param source - The source to bind to.
-     * @param context - The execution context that the binding is operating within.
+     * Bind this behavior.
+     * @param controller - The view controller that manages the lifecycle of this behavior.
      */
-    public bind(source: TSource, context: ExecutionContext): void {
-        this.source = source;
-        this.context = context;
-        this.childContext = context.createChildContext(source);
-
-        this.items = this.itemsBindingObserver.observe(source, this.context);
-        this.template = this.templateBindingObserver.observe(source, this.context);
+    public bind(controller: ViewController): void {
+        this.location = controller.targets[this.directive.nodeId];
+        this.controller = controller;
+        this.items = this.itemsBindingObserver.bind(controller);
+        this.template = this.templateBindingObserver.bind(controller);
         this.observeItems(true);
         this.refreshAllViews();
+        controller.onUnbind(this);
     }
 
     /**
-     * Unbinds this behavior from the source.
-     * @param source - The source to unbind from.
+     * Unbinds this behavior.
      */
     public unbind(): void {
-        this.source = null;
-        this.items = null;
-
         if (this.itemsObserver !== null) {
             this.itemsObserver.unsubscribe(this);
         }
 
         this.unbindAllViews();
-        this.itemsBindingObserver.dispose();
-        this.templateBindingObserver.dispose();
     }
 
     /**
@@ -136,14 +133,11 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
      */
     public handleChange(source: any, args: Splice[] | ExpressionObserver): void {
         if (args === this.itemsBindingObserver) {
-            this.items = this.itemsBindingObserver.observe(this.source!, this.context!);
+            this.items = this.itemsBindingObserver.bind(this.controller);
             this.observeItems();
             this.refreshAllViews();
         } else if (args === this.templateBindingObserver) {
-            this.template = this.templateBindingObserver.observe(
-                this.source!,
-                this.context!
-            );
+            this.template = this.templateBindingObserver.bind(this.controller);
 
             this.refreshAllViews(true);
         } else if (!args[0]) {
@@ -176,10 +170,10 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
     private updateViews(splices: Splice[]): void {
         const views = this.views;
-        const childContext = this.childContext!;
         const bindView = this.bindView;
         const items = this.items!;
         const template = this.template;
+        const controller = this.controller;
         const recycle: RepeatOptions["recycle"] = this.directive.options.recycle;
         const leftoverViews: SyntheticView[] = [];
         let leftoverIndex = 0;
@@ -214,7 +208,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
                 }
 
                 views.splice(addIndex, 0, view);
-                bindView(view, items, addIndex, childContext);
+                bindView(view, items, addIndex, controller);
                 view.insertBefore(location);
             }
 
@@ -229,7 +223,9 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
         if (this.directive.options.positioning) {
             for (let i = 0, ii = views.length; i < ii; ++i) {
-                views[i].context!.updatePosition(i, ii);
+                const context = views[i].context;
+                context.length = i;
+                context.index = ii;
             }
         }
     }
@@ -239,7 +235,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         const template = this.template;
         const location = this.location;
         const bindView = this.bindView;
-        const childContext = this.childContext!;
+        const controller = this.controller;
         let itemsLength = items.length;
         let views = this.views;
         let viewsLength = views.length;
@@ -256,7 +252,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 
             for (let i = 0; i < itemsLength; ++i) {
                 const view = template.create();
-                bindView(view, items, i, childContext);
+                bindView(view, items, i, controller);
                 views[i] = view;
                 view.insertBefore(location);
             }
@@ -267,10 +263,10 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
             for (; i < itemsLength; ++i) {
                 if (i < viewsLength) {
                     const view = views[i];
-                    bindView(view, items, i, childContext);
+                    bindView(view, items, i, controller);
                 } else {
                     const view = template.create();
-                    bindView(view, items, i, childContext);
+                    bindView(view, items, i, controller);
                     views.push(view);
                     view.insertBefore(location);
                 }
@@ -335,8 +331,8 @@ export class RepeatDirective<TSource = any>
      * Creates a behavior for the provided target node.
      * @param target - The node instance to create the behavior for.
      */
-    public createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource> {
-        return new RepeatBehavior<TSource>(this, targets[this.nodeId]);
+    public createBehavior(): RepeatBehavior<TSource> {
+        return new RepeatBehavior<TSource>(this);
     }
 }
 

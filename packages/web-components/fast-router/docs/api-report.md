@@ -5,13 +5,13 @@
 ```ts
 
 import { AddViewBehaviorFactory } from '@microsoft/fast-element';
-import { Behavior } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { ExecutionContext } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
-import { HTMLDirective } from '@microsoft/fast-element';
-import { ViewBehaviorTargets } from '@microsoft/fast-element';
+import { ViewBehavior } from '@microsoft/fast-element';
+import { ViewBehaviorFactory } from '@microsoft/fast-element';
+import { ViewController } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // Warning: (ae-internal-missing-underscore) The name "childRouteParameter" should be prefixed with an underscore because the declaration is marked as @internal
@@ -582,20 +582,17 @@ export interface RouterElement extends HTMLElement {
 
 // @beta (undocumented)
 export type RouterExecutionContext = ExecutionContext & {
-    router: Router;
+    router?: Router;
 };
-
-// @beta (undocumented)
-export const RouterExecutionContext: Readonly<{
-    create(router: Router): any;
-}>;
 
 // @beta (undocumented)
 export interface RouteView {
     // (undocumented)
     appendTo(host: HTMLElement): void;
     // (undocumented)
-    bind(allTypedParams: Readonly<Record<string, any>>, context: RouterExecutionContext): void;
+    bind(allTypedParams: Readonly<Record<string, any>>): void;
+    // (undocumented)
+    context: RouterExecutionContext;
     // (undocumented)
     dispose(): void;
 }

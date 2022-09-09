@@ -1,8 +1,10 @@
 import { expect } from "chai";
 import { slotted, SlottedDirective } from "./slotted.js";
-import { ExecutionContext, observable } from "../observation/observable.js";
+import { observable } from "../observation/observable.js";
 import { elements } from "./node-observation.js";
 import { Updates } from "../observation/update-queue.js";
+import type { ViewBehaviorTargets, ViewController } from "./html-directive.js";
+import { Fake } from "../testing/fakes.js";
 
 describe("The slotted", () => {
     context("template function", () => {
@@ -17,9 +19,7 @@ describe("The slotted", () => {
             const nodeId = 'r';
             const directive = slotted("test") as SlottedDirective;
             directive.nodeId = nodeId;
-            const target = document.createElement("slot");
-            const targets = { [nodeId]: target }
-            const behavior = directive.createBehavior(targets);
+            const behavior = directive.createBehavior();
 
             expect(behavior).to.equal(directive);
         });
@@ -55,13 +55,26 @@ describe("The slotted", () => {
             return { host, slot, children, targets, nodeId };
         }
 
+        function createController(source: any, targets: ViewBehaviorTargets): ViewController {
+            return {
+                source,
+                targets,
+                context: Fake.executionContext(),
+                isBound: false,
+                onUnbind() {
+
+                }
+            };
+        }
+
         it("gathers nodes from a slot", () => {
             const { children, targets, nodeId } = createDOM();
             const behavior = new SlottedDirective({ property: "nodes" });
             behavior.nodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children);
         });
@@ -74,8 +87,9 @@ describe("The slotted", () => {
             });
             behavior.nodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children.filter(elements("foo-bar")));
         });
@@ -85,8 +99,9 @@ describe("The slotted", () => {
             const behavior = new SlottedDirective({ property: "nodes" });
             behavior.nodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children);
 
@@ -105,8 +120,9 @@ describe("The slotted", () => {
             });
             behavior.nodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children);
 
@@ -122,12 +138,13 @@ describe("The slotted", () => {
             const behavior = new SlottedDirective({ property: "nodes" });
             behavior.nodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children);
 
-            behavior.unbind(model, ExecutionContext.default, targets);
+            behavior.unbind(controller);
 
             expect(model.nodes).members([]);
 

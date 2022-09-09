@@ -1,12 +1,14 @@
+import type { HostBehavior } from "../index.js";
 import type { Constructable, Mutable } from "../interfaces.js";
-import type { Behavior } from "../observation/behavior.js";
 import type { Subscriber } from "../observation/notifier.js";
-import type {
+import {
     ExecutionContext,
     Expression,
+    ExpressionController,
     ExpressionObserver,
 } from "../observation/observable.js";
 import { createTypeRegistry } from "../platform.js";
+import type { HostController } from "../styles/host.js";
 import { Markup, nextId } from "./markup.js";
 
 /**
@@ -18,37 +20,128 @@ export type ViewBehaviorTargets = {
 };
 
 /**
+ * Controls the lifecycle of a view and provides relevant context.
+ * @public
+ */
+export interface ViewController<TSource = any, TParent = any>
+    extends ExpressionController<TSource, TParent> {
+    /**
+     * The parts of the view that are targeted by view behaviors.
+     */
+    readonly targets: ViewBehaviorTargets;
+}
+
+/**
+ * Bridges between ViewBehaviors and HostBehaviors, enabling a host to
+ * control ViewBehaviors.
+ * @public
+ */
+export interface ViewBehaviorOrchestrator<TSource = any, TParent = any>
+    extends ViewController<TSource, TParent>,
+        HostBehavior<TSource> {
+    /**
+     *
+     * @param nodeId - The structural id of the DOM node to which a behavior will apply.
+     * @param target - The DOM node associated with the id.
+     */
+    addTarget(nodeId: string, target: Node): void;
+
+    /**
+     * Adds a behavior.
+     * @param behavior - The behavior to add.
+     */
+    addBehavior(behavior: ViewBehavior): void;
+
+    /**
+     * Adds a behavior factory.
+     * @param factory - The behavior factory to add.
+     * @param target - The target the factory will create behaviors for.
+     */
+    addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void;
+}
+
+/**
+ * Bridges between ViewBehaviors and HostBehaviors, enabling a host to
+ * control ViewBehaviors.
+ * @public
+ */
+export const ViewBehaviorOrchestrator = Object.freeze({
+    /**
+     * Creates a ViewBehaviorOrchestrator.
+     * @param source - The source to to associate behaviors with.
+     * @returns A ViewBehaviorOrchestrator.
+     */
+    create<TSource = any, TParent = any>(
+        source: TSource
+    ): ViewBehaviorOrchestrator<TSource, TParent> {
+        const behaviors: ViewBehavior[] = [];
+        const targets: ViewBehaviorTargets = {};
+        let unbindables: { unbind(controller: ViewController<TSource>) }[] | null = null;
+        let isConnected = false;
+
+        return {
+            source,
+            context: ExecutionContext.default,
+            targets,
+            get isBound() {
+                return isConnected;
+            },
+            addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void {
+                const nodeId = factory.nodeId || (factory.nodeId = nextId());
+                factory.id || (factory.id = nextId());
+                this.addTarget(nodeId, target);
+                this.addBehavior(factory.createBehavior());
+            },
+            addTarget(nodeId: string, target: Node) {
+                targets[nodeId] = target;
+            },
+            addBehavior(behavior: ViewBehavior): void {
+                behaviors.push(behavior);
+
+                if (isConnected) {
+                    behavior.bind(this);
+                }
+            },
+            onUnbind(unbindable: { unbind(controller: ViewController<TSource>) }) {
+                if (unbindables === null) {
+                    unbindables = [];
+                }
+
+                unbindables.push(unbindable);
+            },
+            connectedCallback(controller: HostController<TSource>) {
+                if (!isConnected) {
+                    isConnected = true;
+                    behaviors.forEach(x => x.bind(this));
+                }
+            },
+            disconnectedCallback(controller: HostController<TSource>) {
+                if (isConnected) {
+                    isConnected = false;
+
+                    if (unbindables !== null) {
+                        unbindables.forEach(x => x.unbind(this));
+                    }
+                }
+            },
+        };
+    },
+});
+
+/**
  * Represents an object that can contribute behavior to a view.
  * @public
  */
 export interface ViewBehavior<TSource = any, TParent = any> {
     /**
-     * Bind this behavior to the source.
-     * @param source - The source to bind to.
-     * @param context - The execution context that the binding is operating within.
-     * @param targets - The targets that behaviors in a view can attach to.
+     * Bind this behavior.
+     * @param controller - The view controller that manages the lifecycle of this behavior.
      */
-    bind(
-        source: TSource,
-        context: ExecutionContext<TParent>,
-        targets: ViewBehaviorTargets
-    ): void;
-
-    /**
-     * Unbinds this behavior from the source.
-     * @param source - The source to unbind from.
-     * @param context - The execution context that the binding is operating within.
-     * @param targets - The targets that behaviors in a view can attach to.
-     */
-    unbind(
-        source: TSource,
-        context: ExecutionContext<TParent>,
-        targets: ViewBehaviorTargets
-    ): void;
+    bind(controller: ViewController<TSource, TParent>): void;
 }
 
 /**
- * A factory that can create a {@link Behavior} associated with a particular
+ * A factory that can create a {@link ViewBehavior} associated with a particular
  * location within a DOM fragment.
  * @public
  */
@@ -65,9 +158,8 @@ export interface ViewBehaviorFactory {
 
     /**
      * Creates a behavior.
-     * @param targets - The targets available for behaviors to be attached to.
      */
-    createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
+    createBehavior(): ViewBehavior;
 }
 
 /**
@@ -172,14 +264,14 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     options?: any;
 
     /**
-     * Whether or not the binding is volatile.
+     * Creates a binding.
+     * @param evaluate - Evaluates the binding.
+     * @param isVolatile - Indicates whether the binding is volatile.
      */
-    isVolatile?: boolean;
-
-    /**
-     * Evaluates the binding expression.
-     */
-    evaluate: Expression<TSource, TReturn, TParent>;
+    public constructor(
+        public evaluate: Expression<TSource, TReturn, TParent>,
+        public isVolatile: boolean = false
+    ) {}
 
     /**
      * Creates an observer capable of notifying a subscriber when the output of a binding changes.
@@ -319,31 +411,23 @@ export interface Aspected {
  * A base class used for attribute directives that don't need internal state.
  * @public
  */
-export abstract class StatelessAttachedAttributeDirective<T>
+export abstract class StatelessAttachedAttributeDirective<TOptions>
     implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
     /**
      * The unique id of the factory.
      */
-    id: string = nextId();
+    public id: string = nextId();
 
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    nodeId: string;
+    public nodeId: string;
 
     /**
      * Creates an instance of RefDirective.
      * @param options - The options to use in configuring the directive.
      */
-    public constructor(protected options: T) {}
-
-    /**
-     * Creates a behavior.
-     * @param targets - The targets available for behaviors to be attached to.
-     */
-    createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
-        return this;
-    }
+    public constructor(protected options: TOptions) {}
 
     /**
      * Creates a placeholder string based on the directive's index within the template.
@@ -356,24 +440,16 @@ export abstract class StatelessAttachedAttributeDirective<T>
     }
 
     /**
-     * Bind this behavior to the source.
-     * @param source - The source to bind to.
-     * @param context - The execution context that the binding is operating within.
-     * @param targets - The targets that behaviors in a view can attach to.
+     * Creates a behavior.
+     * @param targets - The targets available for behaviors to be attached to.
      */
-    abstract bind(
-        source: any,
-        context: ExecutionContext,
-        targets: ViewBehaviorTargets
-    ): void;
+    public createBehavior(): ViewBehavior {
+        return this;
+    }
 
     /**
-     * Unbinds this behavior from the source.
-     * @param source - The source to unbind from.
+     * Bind this behavior.
+     * @param controller - The view controller that manages the lifecycle of this behavior.
      */
-    abstract unbind(
-        source: any,
-        context: ExecutionContext,
-        targets: ViewBehaviorTargets
-    ): void;
+    public abstract bind(controller: ViewController): void;
 }
