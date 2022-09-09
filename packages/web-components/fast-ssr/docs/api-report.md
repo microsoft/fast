@@ -31,12 +31,6 @@ export interface AsyncTemplateRenderer {
     withDefaultElementRenderers(...renderers: ConstructableElementRenderer<AsyncElementRenderer>[]): void;
 }
 
-// @beta
-export interface Configuration {
-    // (undocumented)
-    renderMode: "sync" | "async";
-}
-
 // @beta (undocumented)
 export interface ConstructableElementRenderer<T extends ElementRenderer | AsyncElementRenderer = ElementRenderer> {
     // (undocumented)
@@ -78,13 +72,13 @@ function fastSSR(): {
 };
 
 // @beta (undocumented)
-function fastSSR(config: Configuration & Record<"renderMode", "sync">): {
+function fastSSR(config: SSRConfiguration & Record<"renderMode", "sync">): {
     templateRenderer: TemplateRenderer;
     ElementRenderer: ConstructableElementRenderer;
 };
 
 // @beta (undocumented)
-function fastSSR(config: Configuration & Record<"renderMode", "async">): {
+function fastSSR(config: SSRConfiguration & Record<"renderMode", "async">): {
     templateRenderer: AsyncTemplateRenderer;
     ElementRenderer: ConstructableElementRenderer<AsyncElementRenderer>;
 };
@@ -119,6 +113,12 @@ export const RequestStorageManager: Readonly<{
     run<T = unknown>(storage: Map<any, any>, callback: () => T): T;
     middleware(options?: StorageOptions): Middleware;
 }>;
+
+// @beta
+export interface SSRConfiguration {
+    // (undocumented)
+    renderMode: "sync" | "async";
+}
 
 // @beta
 export type StorageOptions = {
