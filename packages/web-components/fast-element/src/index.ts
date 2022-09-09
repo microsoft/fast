@@ -38,6 +38,7 @@ export * from "./templating/slotted.js";
 export * from "./templating/children.js";
 export * from "./templating/view.js";
 export * from "./templating/node-observation.js";
+export * from "./templating/defer.js";
 
 // Components
 export * from "./components/fast-element.js";

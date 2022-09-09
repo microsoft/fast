@@ -1,7 +1,25 @@
-import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import {
+    defer,
+    ElementViewTemplate,
+    html,
+    ref,
+    slotted,
+    ViewTemplate,
+} from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { ButtonOptions, FASTButton } from "./button.js";
 
+const makeAsyncTemplate = (timeout: number = 3000): Promise<ViewTemplate> => {
+    return new Promise(resolve => {
+        window.setTimeout(() => {
+            resolve(
+                html`
+                    <p>Async rendering successful: ${timeout.toString()}</p>
+                `
+            );
+        }, timeout);
+    });
+};
 /**
  * The template for the {@link @microsoft/fast-foundation#(FASTButton:class)} component.
  * @public
@@ -52,6 +70,13 @@ export function buttonTemplate<T extends FASTButton>(
                 <slot ${slotted("defaultSlottedContent")}></slot>
             </span>
             ${endSlotTemplate(options)}
+            ${defer(
+                makeAsyncTemplate(2000),
+                makeAsyncTemplate(),
+                html`
+                    <p>Async pending</p>
+                `
+            )}
         </button>
     `;
 }

@@ -274,6 +274,21 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
+// Warning: (ae-forgotten-export) The symbol "DeferRenderable" needs to be exported by the entry point index.d.ts
+//
+// @beta (undocumented)
+export function defer<TSource = any, TParent = any>(...args: DeferRenderable[]): CaptureType<TSource>;
+
+// @public (undocumented)
+export class DeferDirective implements HTMLDirective, ViewBehaviorFactory {
+    constructor(values: DeferRenderable[]);
+    // (undocumented)
+    createBehavior(targets: ViewBehaviorTargets): Behavior<any, any> | ViewBehavior<any, any>;
+    createHTML(add: AddViewBehaviorFactory): string;
+    id: string;
+    nodeId: string;
+}
+
 // @public
 export interface Disposable {
     dispose(): void;
