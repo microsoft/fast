@@ -1,16 +1,16 @@
 import { expect } from "chai";
 import { ElementStyles } from "../index.debug.js";
-import type { Behavior } from "../observation/behavior.js";
+import type { HostBehavior, HostController } from "../styles/host.js";
 import { Observable } from "../observation/observable.js";
 import { css } from "../styles/css.js";
 import { html } from "../templating/template.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { toHTML } from "../__test__/helpers.js";
-import { Controller } from "./controller.js";
+import { ElementController } from "./element-controller.js";
 import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions.js";
 import { FASTElement } from "./fast-element.js";
 
-describe("The Controller", () => {
+describe("The ElementController", () => {
     const templateA = html`a`;
     const templateB = html`b`;
     const cssA = "class-a { color: red; }";
@@ -30,7 +30,7 @@ describe("The Controller", () => {
         ).define();
 
         const element = document.createElement(name);
-        const controller = Controller.forCustomElement(element);
+        const controller = ElementController.forCustomElement(element);
 
         return {
             name,
@@ -77,7 +77,7 @@ describe("The Controller", () => {
             const { shadowRoot, controller } = createController();
 
             expect(toHTML(shadowRoot)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(shadowRoot)).to.equal("");
         });
 
@@ -85,7 +85,7 @@ describe("The Controller", () => {
             const { element, controller } = createController({ shadowOptions: null });
 
             expect(toHTML(element)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(element)).to.equal("");
         });
 
@@ -93,7 +93,7 @@ describe("The Controller", () => {
             const { shadowRoot, controller } = createController({ template: templateA });
 
             expect(toHTML(shadowRoot)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(shadowRoot)).to.equal("a");
         });
 
@@ -104,7 +104,7 @@ describe("The Controller", () => {
             });
 
             expect(toHTML(element)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(element)).to.equal("a");
         });
 
@@ -114,7 +114,7 @@ describe("The Controller", () => {
             expect(toHTML(shadowRoot)).to.equal("");
             controller.template = templateB;
             expect(toHTML(shadowRoot)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(shadowRoot)).to.equal("b");
         });
 
@@ -127,7 +127,7 @@ describe("The Controller", () => {
             expect(toHTML(element)).to.equal("");
             controller.template = templateB;
             expect(toHTML(element)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(element)).to.equal("b");
         });
 
@@ -142,7 +142,7 @@ describe("The Controller", () => {
             );
 
             expect(toHTML(shadowRoot)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(shadowRoot)).to.equal("a");
         });
 
@@ -157,7 +157,7 @@ describe("The Controller", () => {
             );
 
             expect(toHTML(element)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(element)).to.equal("a");
         });
 
@@ -174,7 +174,7 @@ describe("The Controller", () => {
             expect(toHTML(shadowRoot)).to.equal("");
             controller.template = templateB;
             expect(toHTML(shadowRoot)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(shadowRoot)).to.equal("b");
         });
 
@@ -191,7 +191,7 @@ describe("The Controller", () => {
             expect(toHTML(element)).to.equal("");
             controller.template = templateB;
             expect(toHTML(element)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(element)).to.equal("b");
         });
 
@@ -200,7 +200,7 @@ describe("The Controller", () => {
                 const { shadowRoot, controller } = createController();
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.onConnectedCallback();
+                controller.connect();
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
             });
 
@@ -208,7 +208,7 @@ describe("The Controller", () => {
                 const { shadowRoot, controller } = createController({ styles: stylesA });
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.onConnectedCallback();
+                controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssA
                 );
@@ -218,9 +218,9 @@ describe("The Controller", () => {
                 const { shadowRoot, controller } = createController({ styles: stylesA });
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.styles = stylesB;
+                controller.mainStyles = stylesB;
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.onConnectedCallback();
+                controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssB
                 );
@@ -237,7 +237,7 @@ describe("The Controller", () => {
                 );
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.onConnectedCallback();
+                controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssA
                 );
@@ -254,9 +254,9 @@ describe("The Controller", () => {
                 );
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.styles = stylesB;
+                controller.mainStyles = stylesB;
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.onConnectedCallback();
+                controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssB
                 );
@@ -269,7 +269,7 @@ describe("The Controller", () => {
             const { shadowRoot, controller } = createController({ template: templateA });
 
             expect(toHTML(shadowRoot)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(shadowRoot)).to.equal("a");
 
             controller.template = templateB;
@@ -283,7 +283,7 @@ describe("The Controller", () => {
             });
 
             expect(toHTML(element)).to.equal("");
-            controller.onConnectedCallback();
+            controller.connect();
             expect(toHTML(element)).to.equal("a");
 
             controller.template = templateB;
@@ -295,12 +295,12 @@ describe("The Controller", () => {
                 const { shadowRoot, controller } = createController({ styles: stylesA });
 
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(0);
-                controller.onConnectedCallback();
+                controller.connect();
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssA
                 );
 
-                controller.styles = stylesB;
+                controller.mainStyles = stylesB;
                 expect(shadowRoot.adoptedStyleSheets.length).to.equal(1);
                 expect(shadowRoot.adoptedStyleSheets[0].cssRules[0].cssText).to.equal(
                     cssB
@@ -332,7 +332,7 @@ describe("The Controller", () => {
         const { controller, element } = createController();
         let cancelable = false;
 
-        controller.onConnectedCallback();
+        controller.connect();
         element.addEventListener('my-event', (e: Event) => {
             cancelable = e.cancelable;
         });
@@ -346,7 +346,7 @@ describe("The Controller", () => {
         const { controller, element } = createController();
         let bubbles = false;
 
-        controller.onConnectedCallback();
+        controller.connect();
         element.addEventListener('my-event', (e: Event) => {
             bubbles = e.bubbles;
         });
@@ -360,7 +360,7 @@ describe("The Controller", () => {
         const { controller, element } = createController();
         let composed = false;
 
-        controller.onConnectedCallback();
+        controller.connect();
         element.addEventListener('my-event', (e: Event) => {
             composed = e.composed;
         });
@@ -370,27 +370,7 @@ describe("The Controller", () => {
         expect(composed).to.be.true;
     });
 
-    it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
-        const { controller, element } = createController({
-            shadowOptions: {
-                mode: "open",
-            },
-            template: templateA,
-        });
-
-        const style = document.createElement("style") as HTMLStyleElement;
-        expect(element.shadowRoot?.contains(style)).to.equal(false);
-
-        controller.addStyles(style);
-
-        expect(element.shadowRoot?.contains(style)).to.equal(true);
-
-        controller.removeStyles(style);
-
-        expect(element.shadowRoot?.contains(style)).to.equal(false);
-    });
-
-    it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
+    it("should attach and detach the HTMLStyleElement supplied to styles.add() and styles.remove() to the shadowRoot", () => {
         const { controller, element } = createController({
             shadowOptions: {
                 mode: "open",
@@ -412,19 +392,20 @@ describe("The Controller", () => {
 
     context("with behaviors", () => {
         it("should bind all behaviors added prior to connection, during connection", () => {
-            class TestBehavior implements Behavior {
+            class TestBehavior implements HostBehavior {
                 public bound = false;
-                bind() {
+
+                connectedCallback() {
                     this.bound = true;
                 }
-                unbind() {
+                disconnectedCallback() {
                     this.bound = false;
                 }
             }
 
             const behaviors = [new TestBehavior(), new TestBehavior(), new TestBehavior()];
             const { controller, element } = createController();
-            controller.addBehaviors(behaviors);
+            behaviors.forEach(x => controller.addBehavior(x));
 
             behaviors.forEach(x => expect(x.bound).to.equal(false))
 
@@ -435,38 +416,34 @@ describe("The Controller", () => {
 
         it("should bind a behavior B that is added to the Controller by behavior A, where A is added prior to connection and B is added during A's bind()", () => {
             let childBehaviorBound = false;
-            class ParentBehavior implements Behavior {
-                bind(el: FASTElement) {
-                    el.$fastController.addBehaviors([new ChildBehavior()])
+            class ParentBehavior implements HostBehavior {
+                addedCallback(controller: HostController<any>): void {
+                    controller.addBehavior(new ChildBehavior())
                 }
-
-                unbind() {}
             }
 
-            class ChildBehavior implements Behavior {
-                bind(el: FASTElement) {
+            class ChildBehavior implements HostBehavior {
+                connectedCallback(controller: HostController<any>) {
                     childBehaviorBound = true;
                 }
-
-                unbind() {}
             }
 
-
-
             const { element, controller } = createController();
-            controller.addBehaviors([new ParentBehavior()]);
+            controller.addBehavior(new ParentBehavior());
             document.body.appendChild(element);
 
             expect(childBehaviorBound).to.equal(true);
         });
+
         it("should unbind a behavior only when the behavior is removed the number of times it has been added", () => {
-            class TestBehavior implements Behavior {
+            class TestBehavior implements HostBehavior {
                 public bound = false;
-                bind() {
+
+                connectedCallback() {
                     this.bound = true;
                 }
 
-                unbind() {
+                disconnectedCallback() {
                     this.bound = false;
                 }
             }
@@ -476,26 +453,27 @@ describe("The Controller", () => {
 
             document.body.appendChild(element);
 
-            controller.addBehaviors([behavior]);
-            controller.addBehaviors([behavior]);
-            controller.addBehaviors([behavior]);
+            controller.addBehavior(behavior);
+            controller.addBehavior(behavior);
+            controller.addBehavior(behavior);
 
             expect(behavior.bound).to.equal(true);
-            controller.removeBehaviors([behavior]);
+            controller.removeBehavior(behavior);
             expect(behavior.bound).to.equal(true);
-            controller.removeBehaviors([behavior]);
+            controller.removeBehavior(behavior);
             expect(behavior.bound).to.equal(true);
-            controller.removeBehaviors([behavior]);
+            controller.removeBehavior(behavior);
             expect(behavior.bound).to.equal(false);
         });
         it("should unbind a behavior whenever the behavior is removed with the force argument", () => {
-            class TestBehavior implements Behavior {
+            class TestBehavior implements HostBehavior {
                 public bound = false;
-                bind() {
+
+                connectedCallback() {
                     this.bound = true;
                 }
 
-                unbind() {
+                disconnectedCallback() {
                     this.bound = false;
                 }
             }
@@ -505,11 +483,11 @@ describe("The Controller", () => {
 
             document.body.appendChild(element);
 
-            controller.addBehaviors([behavior]);
-            controller.addBehaviors([behavior]);
+            controller.addBehavior(behavior);
+            controller.addBehavior(behavior);
 
             expect(behavior.bound).to.equal(true);
-            controller.removeBehaviors([behavior], true);
+            controller.removeBehavior(behavior, true);
             expect(behavior.bound).to.equal(false);
         });
     });

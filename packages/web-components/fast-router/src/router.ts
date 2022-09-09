@@ -8,7 +8,7 @@ import { NavigationMessage, NavigationQueue } from "./navigation.js";
 import { NavigationPhase } from "./phases.js";
 import { RecognizedRoute } from "./recognizer.js";
 import { childRouteParameter } from "./routes.js";
-import { Layout, RouterExecutionContext, RouteView, Transition } from "./view.js";
+import { Layout, RouteView, Transition } from "./view.js";
 
 /**
  * @beta
@@ -210,7 +210,8 @@ export class DefaultRouter implements Router {
     public async beginRender(route: RecognizedRoute, command: RenderCommand) {
         this.newRoute = route;
         this.newView = await command.createView();
-        this.newView.bind(route.allTypedParams, RouterExecutionContext.create(this));
+        this.newView.context.router = this;
+        this.newView.bind(route.allTypedParams);
         this.newView.appendTo(this.host);
 
         await command.transition.begin(this.host, this.view, this.newView);

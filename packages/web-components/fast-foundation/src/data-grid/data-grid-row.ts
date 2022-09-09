@@ -3,8 +3,8 @@ import {
     bind,
     FASTElement,
     observable,
-    RepeatBehavior,
     RepeatDirective,
+    ViewBehaviorOrchestrator,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
@@ -149,8 +149,7 @@ export class FASTDataGridRow extends FASTElement {
     @observable
     public cellElements: HTMLElement[];
 
-    private cellsRepeatBehavior: RepeatBehavior | null = null;
-    private cellsPlaceholder: Node | null = null;
+    private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
 
     /**
      * @internal
@@ -172,22 +171,19 @@ export class FASTDataGridRow extends FASTElement {
 
         // note that row elements can be reused with a different data object
         // as the parent grid's repeat behavior reacts to changes in the data set.
-        if (this.cellsRepeatBehavior === null) {
-            this.cellsPlaceholder = document.createComment("");
-            this.appendChild(this.cellsPlaceholder);
-
+        if (this.behaviorOrchestrator === null) {
             this.updateItemTemplate();
 
-            const cellsRepeatDirective = new RepeatDirective<FASTDataGridRow>(
-                bind(x => x.columnDefinitions, false),
-                bind(x => x.activeCellItemTemplate, false),
-                { positioning: true }
+            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
+            this.$fastController.addBehavior(this.behaviorOrchestrator);
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective<FASTDataGridRow>(
+                    bind(x => x.columnDefinitions, false),
+                    bind(x => x.activeCellItemTemplate, false),
+                    { positioning: true }
+                ),
+                this.appendChild(document.createComment(""))
             );
-            this.cellsRepeatBehavior = cellsRepeatDirective.createBehavior({
-                [cellsRepeatDirective.nodeId]: this.cellsPlaceholder,
-            });
-            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-            this.$fastController.addBehaviors([this.cellsRepeatBehavior!]);
         }
 
         this.addEventListener("cell-focused", this.handleCellFocus);

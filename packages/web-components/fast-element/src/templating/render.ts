@@ -1,7 +1,6 @@
 import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
 import { Constructable, isFunction, isString } from "../interfaces.js";
-import type { Behavior } from "../observation/behavior.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
     ExecutionContext,
@@ -19,8 +18,9 @@ import {
     AddViewBehaviorFactory,
     Binding,
     HTMLDirective,
+    ViewBehavior,
     ViewBehaviorFactory,
-    ViewBehaviorTargets,
+    ViewController,
 } from "./html-directive.js";
 import { Markup } from "./markup.js";
 import {
@@ -41,24 +41,20 @@ type ComposableView = ContentView & {
  * A Behavior that enables advanced rendering.
  * @public
  */
-export class RenderBehavior<TSource = any, TParent = any>
-    implements Behavior, Subscriber {
-    private source: TSource | null = null;
+export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
+    private location: Node | null = null;
+    private controller: ViewController | null = null;
     private view: ComposableView | null = null;
     private template!: ContentTemplate;
     private templateBindingObserver: ExpressionObserver<TSource, ContentTemplate>;
     private data: any | null = null;
     private dataBindingObserver: ExpressionObserver<TSource, any[]>;
-    private originalContext: ExecutionContext | undefined = void 0;
-    private childContext: ExecutionContext | undefined = void 0;
 
     /**
      * Creates an instance of RenderBehavior.
-     * @param location - A Node representing the location where this behavior will render.
-     * @param dataBinding - A binding expression that returns the data to render.
-     * @param templateBinding - A binding expression that returns the template to use with the data.
+     * @param directive - The render directive that created this behavior.
      */
-    public constructor(private directive: RenderDirective, private location: Node) {
+    public constructor(private directive: RenderDirective) {
         this.dataBindingObserver = directive.dataBinding.createObserver(directive, this);
         this.templateBindingObserver = directive.templateBinding.createObserver(
             directive,
@@ -67,59 +63,42 @@ export class RenderBehavior<TSource = any, TParent = any>
     }
 
     /**
-     * Bind this behavior to the source.
-     * @param source - The source to bind to.
-     * @param context - The execution context that the binding is operating within.
+     * Bind this behavior.
+     * @param controller - The view controller that manages the lifecycle of this behavior.
      */
-    public bind(source: TSource, context: ExecutionContext): void {
-        this.source = source;
-        this.originalContext = context;
-        this.childContext = context.createChildContext(source);
-        this.data = this.dataBindingObserver.observe(source, this.originalContext);
-        this.template = this.templateBindingObserver.observe(
-            source,
-            this.originalContext
-        );
-
+    public bind(controller: ViewController): void {
+        this.location = controller.targets[this.directive.nodeId];
+        this.controller = controller;
+        this.data = this.dataBindingObserver.bind(controller);
+        this.template = this.templateBindingObserver.bind(controller);
+        controller.onUnbind(this);
         this.refreshView();
     }
 
     /**
-     * Unbinds this behavior from the source.
-     * @param source - The source to unbind from.
+     * Unbinds this behavior.
+     * @param controller - The view controller that manages the lifecycle of this behavior.
      */
-    public unbind(source: TSource, context: ExecutionContext<TParent>): void {
-        this.source = null;
-        this.data = null;
-
+    public unbind(controller: ViewController): void {
         const view = this.view;
 
         if (view !== null && view.isComposed) {
             view.unbind();
             view.needsBindOnly = true;
         }
-
-        this.dataBindingObserver.dispose();
-        this.templateBindingObserver.dispose();
     }
 
     /** @internal */
     public handleChange(source: any, observer: ExpressionObserver): void {
         if (observer === this.dataBindingObserver) {
-            this.data = this.dataBindingObserver.observe(
-                this.source!,
-                this.originalContext!
-            );
+            this.data = this.dataBindingObserver.bind(this.controller!);
         }
 
         if (
             this.directive.templateBindingDependsOnData ||
             observer === this.templateBindingObserver
         ) {
-            this.template = this.templateBindingObserver.observe(
-                this.source!,
-                this.originalContext!
-            );
+            this.template = this.templateBindingObserver.bind(this.controller!);
         }
 
         this.refreshView();
@@ -131,6 +110,8 @@ export class RenderBehavior<TSource = any, TParent = any>
 
         if (view === null) {
             this.view = view = template.create();
+            this.view.context.parent = this.controller!.source;
+            this.view.context.parentContext = this.controller!.context;
         } else {
             // If there is a previous view, but it wasn't created
             // from the same template as the new value, then we
@@ -143,6 +124,8 @@ export class RenderBehavior<TSource = any, TParent = any>
                 }
 
                 this.view = view = template.create();
+                this.view.context.parent = this.controller!.source;
+                this.view.context.parentContext = this.controller!.context;
             }
         }
 
@@ -150,12 +133,12 @@ export class RenderBehavior<TSource = any, TParent = any>
         // and that there's actually no need to compose it.
         if (!view.isComposed) {
             view.isComposed = true;
-            view.bind(this.data, this.childContext!);
-            view.insertBefore(this.location);
+            view.bind(this.data);
+            view.insertBefore(this.location!);
             view.$fastTemplate = template;
         } else if (view.needsBindOnly) {
             view.needsBindOnly = false;
-            view.bind(this.data, this.childContext!);
+            view.bind(this.data);
         }
     }
 }
@@ -199,8 +182,8 @@ export class RenderDirective<TSource = any>
      * Creates a behavior.
      * @param targets - The targets available for behaviors to be attached to.
      */
-    public createBehavior(targets: ViewBehaviorTargets): RenderBehavior<TSource> {
-        return new RenderBehavior<TSource>(this, targets[this.nodeId]);
+    public createBehavior(): RenderBehavior<TSource> {
+        return new RenderBehavior<TSource>(this);
     }
 }
 
@@ -555,7 +538,12 @@ export class NodeTemplate implements ContentTemplate, ContentView {
         (node as any).$fastTemplate = this;
     }
 
-    bind(source: any, context: ExecutionContext<any>): void {}
+    get context(): ExecutionContext<any> {
+        // HACK
+        return this as any;
+    }
+
+    bind(source: any): void {}
 
     unbind(): void {}
 
