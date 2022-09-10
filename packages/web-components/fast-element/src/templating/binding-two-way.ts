@@ -3,6 +3,7 @@ import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
     Expression,
+    ExpressionController,
     ExpressionObserver,
     Observable,
     ObservationRecord,
@@ -43,9 +44,20 @@ let twoWaySettings: TwoWaySettings = {
     },
 };
 
+export const TwoWaySettings = Object.freeze({
+    /**
+     * Configures two-way binding.
+     * @param settings - The settings to use for the two-way binding system.
+     */
+    configure(settings: TwoWaySettings) {
+        twoWaySettings = settings;
+    },
+});
+
 class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     implements ExpressionObserver<TSource, TReturn, TParent> {
     private notifier: ExpressionObserver;
+    private isNotBound = true;
 
     target!: HTMLElement;
     source!: any;
@@ -64,29 +76,32 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
         );
     }
 
-    observe(source: TSource, context?: ExecutionContext<TParent> | undefined): TReturn {
+    bind(controller: ExpressionController<TSource, TParent>): TReturn {
         if (!this.changeEvent) {
             this.changeEvent =
                 this.dataBinding.options.changeEvent ??
                 twoWaySettings.determineChangeEvent(this.directive, this.target);
         }
 
-        this.target.addEventListener(this.changeEvent, this);
-        return this.notifier.observe(source, context);
+        if (this.isNotBound) {
+            this.target.addEventListener(this.changeEvent, this);
+            controller.onUnbind(this);
+            this.isNotBound = false;
+        }
+
+        return this.notifier.bind(controller);
     }
 
-    dispose(): void {
-        this.notifier.dispose();
+    unbind(controller: ExpressionController<TSource, TParent>): void {
+        this.isNotBound = true;
         this.target.removeEventListener(this.changeEvent, this);
     }
 
-    /** @internal */
-    public handleChange(subject: any, args: any) {
+    handleChange(subject: any, args: any) {
         this.subscriber.handleChange(this.dataBinding.evaluate, this);
     }
 
-    /** @internal */
-    public handleEvent(event: Event): void {
+    handleEvent(event: Event): void {
         const directive = this.directive;
         const target = event.currentTarget as HTMLElement;
         const notifier = this.notifier;
@@ -125,49 +140,38 @@ class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding
     TReturn,
     TParent
 > {
-    constructor(
-        public readonly evaluate: Expression<TSource, TReturn, TParent>,
-        public isVolatile: boolean,
-        public options: TwoWayBindingOptions = defaultOptions
-    ) {
-        super();
-
-        if (!options.fromView) {
-            options.fromView = defaultOptions.fromView;
-        }
-    }
-
     createObserver(
         directive: HTMLBindingDirective,
         subscriber: Subscriber
     ): ExpressionObserver<TSource, TReturn, TParent> {
         return new TwoWayObserver(directive, subscriber, this);
     }
-
-    /**
-     * Configures two-way binding.
-     * @param settings - The settings to use for the two-way binding system.
-     */
-    public static configure(settings: TwoWaySettings) {
-        twoWaySettings = settings;
-    }
 }
 
 /**
  * Creates a default binding.
- * @param binding - The binding to refresh when changed.
+ * @param expression - The binding to refresh when changed.
+ * @param optionsOrChangeEvent - The binding options or the name of the change event to use.
  * @param isBindingVolatile - Indicates whether the binding is volatile or not.
- * @returns A binding configuration.
+ * @returns A binding.
  * @public
  */
 export function twoWay<T = any>(
-    binding: Expression<T>,
+    expression: Expression<T>,
     optionsOrChangeEvent?: TwoWayBindingOptions | string,
-    isBindingVolatile = Observable.isVolatileBinding(binding)
+    isBindingVolatile = Observable.isVolatileBinding(expression)
 ): Binding<T> {
     if (isString(optionsOrChangeEvent)) {
         optionsOrChangeEvent = { changeEvent: optionsOrChangeEvent };
     }
 
-    return new TwoWayBinding(binding, isBindingVolatile, optionsOrChangeEvent);
+    if (!optionsOrChangeEvent) {
+        optionsOrChangeEvent = defaultOptions;
+    } else if (!optionsOrChangeEvent.fromView) {
+        optionsOrChangeEvent.fromView = defaultOptions.fromView;
+    }
+
+    const binding = new TwoWayBinding(expression, isBindingVolatile);
+    binding.options = optionsOrChangeEvent;
+    return binding;
 }

@@ -36,6 +36,8 @@ describe("Menu item", () => {
 
         await connect();
 
+        await Updates.next();
+
         expect(element.getAttribute("role")).to.equal(role);
 
         await disconnect();
@@ -48,6 +50,8 @@ describe("Menu item", () => {
         element.role = role;
 
         await connect();
+
+        await Updates.next();
 
         expect(element.getAttribute("role")).to.equal(role);
 
@@ -62,6 +66,8 @@ describe("Menu item", () => {
 
         await connect();
 
+        await Updates.next();
+
         expect(element.getAttribute("role")).to.equal(role);
 
         await disconnect();
@@ -71,6 +77,8 @@ describe("Menu item", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
+
+        await Updates.next();
 
         expect(element.getAttribute("role")).to.equal(MenuItemRole.menuitem);
 

@@ -52,17 +52,22 @@ export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirectiv
         ): IterableIterator<string> {
             const items = directive.dataBinding.evaluate(source, context);
             const template = directive.templateBinding.evaluate(source, context);
-            const childContext = context.createChildContext(source);
+            const childContext = Object.create(context, {
+                parent: { value: source },
+                parentContext: { value: context },
+            });
 
             if (template instanceof ViewTemplate) {
                 if (directive.options.positioning) {
                     for (let i = 0, length = items.length; i < length; i++) {
-                        // Match fast-element repeater item context code.
-                        const ctx: ExecutionContext = childContext.createItemContext(
-                            i,
-                            length
+                        childContext.index = i;
+                        childContext.length = length;
+                        yield* renderer.render(
+                            template,
+                            renderInfo,
+                            items[i],
+                            childContext
                         );
-                        yield* renderer.render(template, renderInfo, items[i], ctx);
                     }
                 } else {
                     for (let i = 0, length = items.length; i < length; i++) {
@@ -93,7 +98,10 @@ export const RenderDirectiveRenderer: ViewBehaviorFactoryRenderer<RenderDirectiv
         ): IterableIterator<string> {
             const data = directive.dataBinding.evaluate(source, context);
             const template = directive.templateBinding.evaluate(source, context);
-            const childContext = context.createChildContext(source);
+            const childContext = Object.create(context, {
+                parent: { value: source },
+                parentContext: { value: context },
+            });
 
             if (template instanceof ViewTemplate) {
                 yield* renderer.render(template, renderInfo, data, childContext);

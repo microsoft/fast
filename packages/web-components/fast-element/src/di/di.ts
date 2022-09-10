@@ -27,6 +27,7 @@ export type ResolveCallback<T = any> = (
 interface ResolverLike<C, K = any> {
     readonly $isResolver: true;
     resolve(handler: C, requestor: C): Resolved<K>;
+    resolveAsync(handler: C, requestor: C): Promise<Resolved<K>>;
     getFactory?(container: C): (K extends Constructable ? Factory<K> : never) | null;
 }
 
@@ -83,6 +84,17 @@ export interface Factory<T extends Constructable = any> {
      * @param dynamicDependencies - Dynamic dependencies supplied to the constructor.
      */
     construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
+
+    /**
+     * Constructs an instance of the factory's object, allowing for
+     * async resolution of dependencies.
+     * @param container - The container the object is being constructor for.
+     * @param dynamicDependencies - Dynamic dependencies supplied to the constructor.
+     */
+    constructAsync(
+        container: Container,
+        dynamicDependencies?: Key[]
+    ): Promise<Resolved<T>>;
 }
 
 /**
@@ -115,6 +127,27 @@ export interface ServiceLocator {
      * @param key - The key to lookup.
      */
     get<K extends Key>(key: K | Key): Resolved<K>;
+
+    /**
+     * Gets a dependency by key, allowing for asynchronously
+     * resolved dependencies.
+     * @param key - The key to lookup.
+     */
+    getAsync<K extends Key>(key: K): Promise<Resolved<K>>;
+
+    /**
+     * Gets a dependency by key, allowing for asynchronously
+     * resolved dependencies.
+     * @param key - The key to lookup.
+     */
+    getAsync<K extends Key>(key: Key): Promise<Resolved<K>>;
+
+    /**
+     * Gets a dependency by key, allowing for asynchronously
+     * resolved dependencies.
+     * @param key - The key to lookup.
+     */
+    getAsync<K extends Key>(key: K | Key): Promise<Resolved<K>>;
 
     /**
      * Gets an array of all dependencies by key.
@@ -381,6 +414,12 @@ function cloneArrayWithPossibleProps<T>(source: readonly T[]): T[] {
 export type ParentLocator = (owner: any) => Container | null;
 
 /**
+ * A function capable of asynchronously locating a resolver for a key.
+ * @public
+ */
+export type AsyncRegistrationLocator = (key: Key) => Promise<Registration | null>;
+
+/**
  * Configuration for a dependency injection container.
  * @public
  */
@@ -389,6 +428,13 @@ export interface ContainerConfiguration {
      * The locator function used to find the parent of the container.
      */
     parentLocator: ParentLocator;
+
+    /**
+     * When an asynchronous get request is made to the container, if no
+     * resolver is found for the key, this function is called to provide
+     * a registration.
+     */
+    asyncRegistrationLocator: AsyncRegistrationLocator;
 
     /**
      * Indicates whether this container should resolve dependencies that are directly made
@@ -449,6 +495,7 @@ export const ContainerConfiguration = Object.freeze({
      */
     default: Object.freeze({
         parentLocator: () => null,
+        asyncRegistrationLocator: async () => null,
         responsibleForOwnerRequests: false,
         defaultResolver: DefaultResolver.singleton,
     } as ContainerConfiguration),
@@ -1306,6 +1353,39 @@ export class ResolverImpl implements Resolver, Registration {
         return container.registerResolver(this.key, this);
     }
 
+    public resolveAsync(handler: Container, requestor: Container) {
+        switch (this.strategy) {
+            case ResolverStrategy.singleton: {
+                if (this.resolving) {
+                    throw FAST.error(Message.cyclicDependency, { name: this.state.name });
+                }
+
+                this.resolving = true;
+
+                return handler
+                    .getFactory(this.state as Constructable)
+                    .constructAsync(requestor)
+                    .then(instance => {
+                        this.state = instance;
+                        this.strategy = ResolverStrategy.instance;
+                        this.resolving = false;
+                        return instance;
+                    });
+            }
+            case ResolverStrategy.transient: {
+                // Always create transients from the requesting container
+                const factory = handler.getFactory(this.state as Constructable);
+                if (factory === null) {
+                    throw FAST.error(Message.noFactoryForResolver, { key: this.key });
+                }
+
+                return factory.constructAsync(requestor);
+            }
+            default:
+                return Promise.resolve(this.resolve(handler, requestor));
+        }
+    }
+
     public resolve(handler: Container, requestor: Container): any {
         switch (this.strategy) {
             case ResolverStrategy.instance:
@@ -1369,21 +1449,32 @@ export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
     private transformers: ((instance: any) => any)[] | null = null;
     public constructor(public Type: T, private readonly dependencies: Key[]) {}
 
+    public async constructAsync(
+        container: Container,
+        dynamicDependencies?: Key[]
+    ): Promise<Resolved<T>> {
+        const resolved = await Promise.all(
+            this.dependencies.map(x => container.getAsync(x))
+        );
+
+        return this.constructCore(resolved, dynamicDependencies);
+    }
+
     public construct(container: Container, dynamicDependencies?: Key[]): Resolved<T> {
+        const resolved = this.dependencies.map(containerGetKey, container);
+        return this.constructCore(resolved, dynamicDependencies);
+    }
+
+    private constructCore(resolved: any[], dynamicDependencies?: Key[]) {
         let instance: Resolved<T>;
 
         if (dynamicDependencies === void 0) {
-            instance = new this.Type(
-                ...this.dependencies.map(containerGetKey, container)
-            ) as Resolved<T>;
+            instance = new this.Type(...resolved) as Resolved<T>;
         } else {
-            instance = new this.Type(
-                ...this.dependencies.map(containerGetKey, container),
-                ...dynamicDependencies
-            ) as Resolved<T>;
+            instance = new this.Type(...resolved, ...dynamicDependencies) as Resolved<T>;
         }
 
-        if (this.transformers == null) {
+        if (this.transformers === null) {
             return instance;
         }
 
@@ -1399,6 +1490,9 @@ const containerResolver: Resolver = {
     $isResolver: true,
     resolve(handler: Container, requestor: Container): Container {
         return requestor;
+    },
+    resolveAsync: function (handler: Container, requestor: Container): Promise<any> {
+        return Promise.resolve(requestor);
     },
 };
 
@@ -1666,6 +1760,47 @@ export class ContainerImpl implements DOMContainer {
             : searchAncestors && this.parent != null
             ? this.parent.has(key, true)
             : false;
+    }
+
+    public async getAsync<K extends Key>(key: K): Promise<Resolved<K>> {
+        validateKey(key);
+
+        if ((key as Resolver).$isResolver) {
+            return (key as Resolver).resolveAsync(this, this);
+        }
+
+        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
+        let current: ContainerImpl = this;
+        let resolver: Resolver | undefined | null;
+
+        while (current != null) {
+            resolver = current.resolvers.get(key);
+
+            if (resolver == null) {
+                if (current.parent == null) {
+                    const registration = await this.config.asyncRegistrationLocator(key);
+
+                    if (!registration) {
+                        throw FAST.error(Message.cannotResolveKey, { key });
+                    }
+
+                    const handler = isRegisterInRequester(
+                        (key as unknown) as RegisterSelf<Constructable>
+                    )
+                        ? this
+                        : current;
+
+                    resolver = registration.register(handler);
+                    return resolver.resolveAsync(current, this);
+                }
+
+                current = current.parent;
+            } else {
+                return resolver.resolveAsync(current, this);
+            }
+        }
+
+        throw FAST.error(Message.cannotResolveKey, { key });
     }
 
     public get<K extends Key>(key: K): Resolved<K> {

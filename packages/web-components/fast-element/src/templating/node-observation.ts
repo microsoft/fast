@@ -1,9 +1,5 @@
-import type { ExecutionContext } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
-import {
-    StatelessAttachedAttributeDirective,
-    ViewBehaviorTargets,
-} from "./html-directive.js";
+import { StatelessAttachedAttributeDirective, ViewController } from "./html-directive.js";
 
 /**
  * Options for configuring node observation behavior.
@@ -61,11 +57,12 @@ export abstract class NodeObservationDirective<
      * @param context - The execution context that the binding is operating within.
      * @param targets - The targets that behaviors in a view can attach to.
      */
-    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.nodeId] as any;
-        target[this.sourceProperty] = source;
-        this.updateTarget(source, this.computeNodes(target));
+    bind(controller: ViewController): void {
+        const target = controller.targets[this.nodeId] as any;
+        target[this.sourceProperty] = controller.source;
+        this.updateTarget(controller.source, this.computeNodes(target));
         this.observe(target);
+        controller.onUnbind(this);
     }
 
     /**
@@ -74,9 +71,9 @@ export abstract class NodeObservationDirective<
      * @param context - The execution context that the binding is operating within.
      * @param targets - The targets that behaviors in a view can attach to.
      */
-    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.nodeId] as any;
-        this.updateTarget(source, emptyArray);
+    unbind(controller: ViewController): void {
+        const target = controller.targets[this.nodeId] as any;
+        this.updateTarget(controller.source, emptyArray);
         this.disconnect(target);
         target[this.sourceProperty] = null;
     }

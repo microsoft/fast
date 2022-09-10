@@ -1,5 +1,5 @@
 import { isFunction, isString } from "../interfaces.js";
-import { ExecutionContext, Expression } from "../observation/observable.js";
+import type { Expression } from "../observation/observable.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
 import {
@@ -117,11 +117,10 @@ export class ViewTemplate<TSource = any, TParent = any>
     public render(
         source: TSource,
         host: Node,
-        hostBindingTarget?: Element,
-        context?: ExecutionContext
+        hostBindingTarget?: Element
     ): HTMLView<TSource, TParent> {
-        const view = this.create(hostBindingTarget ?? (host as any));
-        view.bind(source, context ?? ExecutionContext.default);
+        const view = this.create(hostBindingTarget);
+        view.bind(source);
         view.appendTo(host);
         return view;
     }

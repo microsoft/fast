@@ -1,5 +1,5 @@
 
-import { css, customElement, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
+import { css, customElement, FASTElement, HostController, html, Observable, Updates } from "@microsoft/fast-element";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
 import { uniqueElementName } from "@microsoft/fast-element/testing";
@@ -31,18 +31,37 @@ function removeElement(...els: HTMLElement[]) {
 
 describe("The DesignTokenEventResolutionStrategy's", () => {
     describe("parent method", () => {
+        function createController(source: any): HostController {
+            return {
+                mainStyles: null,
+                isConnected: false,
+                source,
+                addStyles() {},
+                removeStyles(styles) {},
+                addBehavior() {},
+                removeBehavior() {},
+            };
+        }
+
         it("should return the nearest parent element that has been bound", () => {
             const parent = addElement()
             const child = addElement(parent);
 
-            DesignTokenEventResolutionStrategy.bind(parent);
-            DesignTokenEventResolutionStrategy.bind(child);
+            DesignTokenEventResolutionStrategy.addedCallback!(
+                createController(parent)
+            );
+
+            DesignTokenEventResolutionStrategy.addedCallback!(
+                createController(child)
+            );
 
             expect(DesignTokenEventResolutionStrategy.parent(child)).to.equal(parent);
         });
         it("should return null if no parent element exists", () => {
             const target = addElement();
-            DesignTokenEventResolutionStrategy.bind(target);
+            DesignTokenEventResolutionStrategy.addedCallback!(
+                createController(target)
+            );
 
             expect(DesignTokenEventResolutionStrategy.parent(target)).to.equal(null);
         });
