@@ -41,7 +41,7 @@ export function startsWith(
         return false;
     }
 
-    return stringToSearch.substr(position, searchFor.length) === searchFor;
+    return stringToSearch.substring(position, searchFor.length) === searchFor;
 }
 
 /**
