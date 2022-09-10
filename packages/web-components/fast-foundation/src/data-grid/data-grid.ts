@@ -1,10 +1,7 @@
 import {
     attr,
-    bind,
     FASTElement,
     observable,
-    RepeatBehavior,
-    RepeatDirective,
     Updates,
     ViewTemplate,
 } from "@microsoft/fast-element";
@@ -19,6 +16,7 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
+import { FASTBaseList } from "../index.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options.js";
@@ -100,7 +98,7 @@ export interface ColumnDefinition {
  * @slot - The default slot for custom row elements
  * @public
  */
-export class FASTDataGrid extends FASTElement {
+export class FASTDataGrid extends FASTBaseList {
     /**
      *  generates a basic column definition by examining sample row data
      */
@@ -192,6 +190,7 @@ export class FASTDataGrid extends FASTElement {
     @observable
     public rowsData: object[] = [];
     protected rowsDataChanged(): void {
+        this.items = this.rowsData;
         if (this.columnDefinitions === null && this.rowsData.length > 0) {
             this.columnDefinitions = FASTDataGrid.generateColumns(this.rowsData[0]);
         }
@@ -228,6 +227,9 @@ export class FASTDataGrid extends FASTElement {
      */
     @observable
     public rowItemTemplate: ViewTemplate;
+    private rowItemTemplateChanged(): void {
+        this.itemTemplate = this.rowItemTemplate;
+    }
 
     /**
      * The template used to render cells in generated rows.
@@ -291,6 +293,9 @@ export class FASTDataGrid extends FASTElement {
      */
     @observable
     public defaultRowItemTemplate: ViewTemplate;
+    private defaultRowItemTemplateChanged(): void {
+        this.defaultItemTemplate = this.defaultRowItemTemplate;
+    }
 
     /**
      * Set by the component templates.
@@ -306,9 +311,6 @@ export class FASTDataGrid extends FASTElement {
      */
     @observable
     public rowElements: HTMLElement[];
-
-    private rowsRepeatBehavior: RepeatBehavior | null;
-    private rowsPlaceholder: Node | null = null;
 
     private generatedHeader: FASTDataGridRow | null = null;
 
@@ -587,12 +589,7 @@ export class FASTDataGrid extends FASTElement {
                 this.generateHeader === GenerateHeaderOptions.sticky
                     ? DataGridRowTypes.stickyHeader
                     : DataGridRowTypes.header;
-            if (this.firstChild !== null || this.rowsPlaceholder !== null) {
-                this.insertBefore(
-                    generatedHeaderElement,
-                    this.firstChild !== null ? this.firstChild : this.rowsPlaceholder
-                );
-            }
+            this.prepend(generatedHeaderElement);
             return;
         }
     }

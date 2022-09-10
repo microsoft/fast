@@ -21,8 +21,6 @@ function defaultItemTemplate(options: BaseListOptions): ViewTemplate<any, FASTBa
     <${listItemTag}
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index}"
-        :idleCallbackQueue="${(x, c) => c.parent.idleCallbackQueue}"
-        :loadMode="${(x, c) => c.parent.listItemLoadMode}"
         :listItemContentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"
     ></${listItemTag}>
 `;
@@ -32,10 +30,10 @@ function defaultItemTemplate(options: BaseListOptions): ViewTemplate<any, FASTBa
  * Generates a template for the {@link @microsoft/fast-foundation#BaseList} component.
  * @public
  */
-export function baseListTemplate(
+export function baseListTemplate<T extends FASTBaseList>(
     options: BaseListOptions
-): ElementViewTemplate<FASTBaseList> {
-    return html<FASTBaseList>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template :defaultItemTemplate="${defaultItemTemplate(options)}">
             <slot></slot>
         </template>

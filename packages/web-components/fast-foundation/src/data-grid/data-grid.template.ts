@@ -2,6 +2,7 @@ import { children, elements, ElementViewTemplate, html } from "@microsoft/fast-e
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
 import type { FASTDataGrid } from "./data-grid.js";
+import type { FASTDataGridRow } from "./data-grid-row.js";
 
 /**
  * Options for data grid templates.
@@ -9,10 +10,9 @@ import type { FASTDataGrid } from "./data-grid.js";
  */
 export type DataGridOptions = {
     dataGridRow: TemplateElementDependency;
-    baseList: TemplateElementDependency;
 };
 
-function rowItemTemplate<T extends FASTDataGrid>(
+function rowItemTemplate<T extends FASTDataGridRow>(
     options: DataGridOptions
 ): ViewTemplate<any, T> {
     const rowTag = tagFor(options.dataGridRow);
@@ -35,26 +35,21 @@ export function dataGridTemplate<T extends FASTDataGrid>(
     options: DataGridOptions
 ): ElementViewTemplate<T> {
     const rowTag = tagFor(options.dataGridRow);
-    const baseListTag = tagFor(options.baseList);
     return html<T>`
         <template
             role="grid"
             tabindex="0"
             :rowElementTag="${() => rowTag}"
             :defaultRowItemTemplate="${rowItemTemplate(options)}"
+            :items="${x => x.rowsData}"
+            recycle="false"
+            :itemTemplate="${x => x.rowItemTemplate}"
+            ${children({
+                property: "rowElements",
+                filter: elements("[role=row]"),
+            })}
         >
-            <${baseListTag}
-                :items="${x => x.rowsData}"
-                recycle="false"
-                list-item-load-mode="immediate"
-                :itemTemplate = "${x => x.rowItemTemplate}"
-                ${children({
-                    property: "rowElements",
-                    filter: elements("[role=row]"),
-                })}
-            >
-                <slot></slot>
-            </${baseListTag}>
+            <slot></slot>
         </template>
     `;
 }

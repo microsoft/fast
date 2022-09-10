@@ -1041,6 +1041,8 @@ export class FASTDataGrid extends FASTElement {
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
     headerCellItemTemplate?: ViewTemplate;
+    // (undocumented)
+    listElement: FASTBaseList;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;

@@ -240,6 +240,7 @@ export const myDataGrid = DataGrid.compose({
 | `focusRowIndex`          | public  | `number`                     | `0`     | The index of the row that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified row.       |                |
 | `focusColumnIndex`       | public  | `number`                     | `0`     | The index of the column that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified column. |                |
 | `rowElementTag`          | public  | `string`                     |         | Set by the component templates.                                                                                                                                                                                                                         |                |
+| `listElement`            | public  | `FASTBaseList`               |         |                                                                                                                                                                                                                                                         |                |
 
 #### Methods
 

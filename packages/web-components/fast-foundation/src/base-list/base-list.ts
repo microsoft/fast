@@ -1,19 +1,12 @@
 import {
     attr,
     bind,
-    DOM,
     FASTElement,
-    nullableNumberConverter,
-    Observable,
     observable,
     RepeatBehavior,
     RepeatDirective,
-    Splice,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
-import { IdleCallbackQueue } from "../utilities/idle-callback-queue.js";
-import type { ListIdleLoadMode, ListItemLoadMode } from "./base-list.options.js";
 
 /**
  *  The BaseList class
@@ -30,25 +23,6 @@ export class FASTBaseList extends FASTElement {
      */
     @attr({ attribute: "recycle", mode: "boolean" })
     public recycle: boolean = false;
-
-    /**
-     * Controls the idle load queue behavior.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: idle-load-mode
-     */
-    @attr({ attribute: "idle-load-mode" })
-    public idleLoadMode: ListIdleLoadMode = "auto";
-    private idleLoadModeChanged(): void {
-        if (this.$fastController.isConnected) {
-            if (this.idleLoadMode === "suspended") {
-                this.idleCallbackQueue.suspend();
-            } else {
-                this.idleCallbackQueue.resume();
-            }
-        }
-    }
 
     /**
      *  The array of items to be displayed.
@@ -75,52 +49,12 @@ export class FASTBaseList extends FASTElement {
     public listItemContentsTemplate: ViewTemplate;
 
     /**
-     * Determines when child virtual list items load content,
-     * or more specifically when the item's "loadContent" observable prop
-     * becomes 'true'.
-     *
-     * "immediate": When the component connects.
-     * "manual": When set manually by some external code (ie. 'myListItem.laodContent = true')
-     * "idle": Items are loaded based on available idle cycles.
-     *
-     *
-     * @public
-     */
-    @attr({ attribute: "list-item-load-mode" })
-    public listItemLoadMode: ListItemLoadMode;
-
-    /**
-     * Defines the idle callback timeout value.
-     * Defaults to 1000
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: idle-callback-timeout
-     */
-    @attr({ attribute: "idle-callback-timeout", converter: nullableNumberConverter })
-    public idleCallbackTimeout: number = 1000;
-    private idleCallbackTimeoutChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.idleCallbackQueue.idleCallbackTimeout = this.idleCallbackTimeout;
-        }
-    }
-
-    /**
      * The default ViewTemplate used to render items
      *
      * @internal
      */
     @observable
     public defaultItemTemplate: ViewTemplate;
-
-    /**
-     * the idle callback queue for this list instance.
-     * List items can use this instance to coordinate idle loading.
-     *
-     * @internal
-     */
-    @observable
-    public idleCallbackQueue: IdleCallbackQueue = new IdleCallbackQueue();
 
     // reference to the repeat behavior used to render items
     private itemsRepeatBehavior: RepeatBehavior | null = null;
@@ -133,11 +67,6 @@ export class FASTBaseList extends FASTElement {
      */
     connectedCallback() {
         super.connectedCallback();
-
-        this.idleCallbackQueue.idleCallbackTimeout = this.idleCallbackTimeout;
-        if (this.idleLoadMode === "suspended") {
-            this.idleCallbackQueue.suspend();
-        }
 
         if (this.itemsPlaceholder === undefined) {
             this.itemsPlaceholder = document.createComment("");
