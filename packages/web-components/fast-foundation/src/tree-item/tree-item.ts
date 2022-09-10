@@ -134,14 +134,6 @@ export class FASTTreeItem extends FASTElement {
     public nested: boolean;
 
     /**
-     *
-     *
-     * @internal
-     */
-    @observable
-    public renderCollapsedChildren: boolean;
-
-    /**
      * Places document focus on a tree item
      *
      * @public

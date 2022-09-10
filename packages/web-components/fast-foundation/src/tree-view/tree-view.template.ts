@@ -5,8 +5,8 @@ import type { FASTTreeView } from "./tree-view.js";
  * The template for the {@link @microsoft/fast-foundation#FASTTreeView} component.
  * @public
  */
-export function treeViewTemplate(): ElementViewTemplate<FASTTreeView> {
-    return html<FASTTreeView>`
+export function treeViewTemplate<T extends FASTTreeView>(): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="tree"
             ${ref("treeView")}

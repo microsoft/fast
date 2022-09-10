@@ -1,43 +1,34 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTProgress } from "../progress.js";
 
-type ProgressStoryArgs = Args & FASTProgress;
-type ProgressStoryMeta = Meta<ProgressStoryArgs>;
-
-const componentTemplate = html<ProgressStoryArgs>`
+const storyTemplate = html<StoryArgs<FASTProgress>>`
     <fast-progress
         ?paused="${x => x.paused}"
         max="${x => x.max}"
         min="${x => x.min}"
         value="${x => x.value}"
-    ></fast-progress>
+    >
+        ${x => x.storyContent}
+    </fast-progress>
 `;
 
 export default {
     title: "Progress",
     args: {
-        min: 0,
-        max: 100,
+        paused: false,
+        indeterminate: false,
         value: 75,
     },
     argTypes: {
-        paused: { control: { type: "boolean" } },
+        indeterminate: { control: "boolean" },
+        min: { control: "number" },
+        max: { control: "number" },
+        paused: { control: "boolean" },
+        storyContent: { table: { disable: true } },
+        value: { control: "number", if: { arg: "indeterminate", truthy: false } },
     },
-} as ProgressStoryMeta;
+} as Meta<FASTProgress>;
 
-export const Progress = (args: ProgressStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    componentTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-
-export const ProgressIndeterminate = Progress.bind({});
-ProgressIndeterminate.args = {
-    value: null,
-};
-
-export const ProgressPaused = Progress.bind({});
-ProgressPaused.args = {
-    paused: true,
-};
+export const Progress: Story<FASTProgress> = renderComponent(storyTemplate).bind({});

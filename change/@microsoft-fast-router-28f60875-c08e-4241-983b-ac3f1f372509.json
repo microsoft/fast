@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: update router to use the new behavior API",
+  "packageName": "@microsoft/fast-router",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

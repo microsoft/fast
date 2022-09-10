@@ -1,38 +1,39 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import { uniqueId } from "@microsoft/fast-web-utilities";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTAnchoredRegion } from "../anchored-region.js";
+import {
+    AutoUpdateMode,
+    AxisPositioningMode,
+    AxisScalingMode,
+    HorizontalPosition,
+    VerticalPosition,
+} from "../anchored-region.options.js";
 
-type AnchoredRegionArgs = Args & FASTAnchoredRegion;
-type AnchoredRegionMeta = Meta<AnchoredRegionArgs>;
-
-const storyTemplate = html<AnchoredRegionArgs>`
-    <div style="height: 300%; width: 300%;">
-        <fast-button
-            id="anchor"
-            class="anchor"
-            style="
-                    transform: translate(400px, 400px);"
-        >
-            Anchor
-        </fast-button>
+const storyTemplate = html<StoryArgs<FASTAnchoredRegion>>`
+    <div style="min-height: 100px">
+        <fast-button class="anchor">Anchor</fast-button>
         <fast-anchored-region
             class="region"
-            id="region"
-            anchor="anchor"
-            fixed-placement="${x => x.fixedPlacement}"
-            vertical-positioning-mode="${x => x.verticalPositioningMode}"
-            vertical-default-position="${x => x.verticalDefaultPosition}"
-            vertical-inset="${x => x.verticalInset}"
-            vertical-scaling="${x => x.verticalScaling}"
-            vertical-viewport-lock="${x => x.verticalViewportLock}"
-            horizontal-positioning-mode="${x => x.horizontalPositioningMode}"
-            horizontal-default-position="${x => x.horizontalDefaultPosition}"
-            horizontal-scaling="${x => x.horizontalScaling}"
-            horizontal-inset="${x => x.horizontalInset}"
-            horizontal-viewport-lock="${x => x.horizontalViewportLock}"
+            ?horizontal-inset="${x => x.horizontalInset}"
+            ?horizontal-viewport-lock="${x => x.horizontalViewportLock}"
+            ?vertical-inset="${x => x.verticalInset}"
+            ?vertical-viewport-lock="${x => x.verticalViewportLock}"
+            anchor="${x => x.anchor}"
             auto-update-mode="${x => x.autoUpdateMode}"
+            fixed-placement="${x => x.fixedPlacement}"
+            horizontal-default-position="${x => x.horizontalDefaultPosition}"
+            horizontal-positioning-mode="${x => x.horizontalPositioningMode}"
+            horizontal-scaling="${x => x.horizontalScaling}"
+            horizontal-threshold="${x => x.horizontalThreshold}"
+            vertical-default-position="${x => x.verticalDefaultPosition}"
+            vertical-positioning-mode="${x => x.verticalPositioningMode}"
+            vertical-scaling="${x => x.verticalScaling}"
+            vertical-threshold="${x => x.verticalThreshold}"
+            viewport="${x => x.viewport}"
         >
-            ${x => x?.content}
+            ${x => x.storyContent}
         </fast-anchored-region>
     </div>
 `;
@@ -40,56 +41,83 @@ const storyTemplate = html<AnchoredRegionArgs>`
 export default {
     title: "Anchored Region",
     args: {
-        autoUpdateMode: "auto",
-        verticalPositioningMode: "locktodefault",
-        horizontalPositioningMode: "locktodefault",
-        verticalDefaultPosition: "top",
-        horizontalDefaultPosition: "left",
-        content: html`
-            <div style="background: white; padding: 20px">
-                anchored-region
+        storyContent: html`
+            <div id="content" style="background: var(--neutral-fill-rest); padding: 10px">
+                anchored region
             </div>
         `,
+        fixedPlacement: false,
+        horizontalInset: false,
+        horizontalViewportLock: false,
+        verticalInset: false,
+        verticalViewportLock: false,
     },
     argTypes: {
-        fixedPlacement: { control: { type: "boolean" } },
-        verticalPositioningMode: {
-            options: ["uncontrolled", "locktodefault", "dynamic"],
-            control: { type: "select" },
+        anchor: { control: "text" },
+        anchorId: { table: { disable: true } },
+        autoUpdateMode: {
+            control: "select",
+            options: Object.values(AutoUpdateMode),
         },
-        verticalDefaultPosition: {
-            options: ["top", "bottom", "center", "unset"],
-            control: { type: "select" },
-        },
-        verticalInset: { control: { type: "boolean" } },
-        verticalScaling: {
-            options: ["anchor", "fill", "content"],
-            control: { type: "select" },
-        },
-        verticalViewportLock: { control: { type: "boolean" } },
-        horizontalPositioningMode: {
-            options: ["uncontrolled", "locktodefault", "dynamic"],
-            control: { type: "select" },
-        },
+        fixedPlacement: { control: "boolean" },
         horizontalDefaultPosition: {
-            options: ["start", "end", "left", "right", "center", "unset"],
-            control: { type: "select" },
+            control: "select",
+            options: Object.values(HorizontalPosition),
+        },
+        horizontalInset: { control: "boolean" },
+        horizontalPositioningMode: {
+            control: "select",
+            options: Object.values(AxisPositioningMode),
         },
         horizontalScaling: {
-            options: ["anchor", "fill", "content"],
-            control: { type: "select" },
+            control: "select",
+            options: Object.values(AxisScalingMode),
         },
-        horizontalInset: { control: { type: "boolean" } },
-        horizontalViewportLock: { control: { type: "boolean" } },
-        autoUpdateMode: {
-            options: ["anchor", "auto"],
-            control: { type: "select" },
+        horizontalThreshold: { control: "number" },
+        horizontalViewportLock: { control: "boolean" },
+        storyContent: { table: { disable: true } },
+        verticalDefaultPosition: {
+            control: "select",
+            options: Object.values(VerticalPosition),
         },
+        verticalInset: { control: "boolean" },
+        verticalPositioningMode: {
+            control: "select",
+            options: Object.values(AxisPositioningMode),
+        },
+        verticalScaling: {
+            control: "select",
+            options: Object.values(AxisScalingMode),
+        },
+        verticalThreshold: { control: "number" },
+        verticalViewportLock: { control: "boolean" },
+        viewport: { control: "text" },
     },
-} as AnchoredRegionMeta;
+    decorators: [
+        (Story, { args }) => {
+            // IDs are generated to ensure that they're unique for the docs page
+            const renderedStory = Story() as DocumentFragment;
+            const anchor = renderedStory.querySelector(".anchor") as HTMLElement;
+            const region = renderedStory.querySelector(".region") as HTMLElement;
 
-export const AnchoredRegion = (args: AnchoredRegionArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+            const anchorId = args.anchorId ?? uniqueId("anchor");
+
+            anchor.id = anchorId;
+            region.id = uniqueId("region");
+            region.setAttribute("anchor", anchorId);
+            return renderedStory;
+        },
+    ],
+} as Meta<FASTAnchoredRegion>;
+
+export const AnchoredRegion: Story<FASTAnchoredRegion> = renderComponent(
+    storyTemplate
+).bind({});
+
+export const LockToDefault: Story<FASTAnchoredRegion> = AnchoredRegion.bind({});
+LockToDefault.args = {
+    horizontalDefaultPosition: HorizontalPosition.right,
+    horizontalPositioningMode: AxisPositioningMode.locktodefault,
+    verticalDefaultPosition: VerticalPosition.bottom,
+    verticalPositioningMode: AxisPositioningMode.locktodefault,
 };

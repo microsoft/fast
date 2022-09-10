@@ -9,13 +9,12 @@ import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
  *
  * @public
  */
-export function menuItemTemplate(
+export function menuItemTemplate<T extends FASTMenuItem>(
     options: MenuItemOptions
-): ElementViewTemplate<FASTMenuItem> {
+): ElementViewTemplate<T> {
     const anchoredRegionTag = tagFor(options.anchoredRegion);
-    return html<FASTMenuItem>`
+    return html<T>`
     <template
-        role="${x => x.role}"
         aria-haspopup="${x => (x.hasSubmenu ? "menu" : void 0)}"
         aria-checked="${x => (x.role !== MenuItemRole.menuitem ? x.checked : void 0)}"
         aria-disabled="${x => x.disabled}"
@@ -33,7 +32,7 @@ export function menuItemTemplate(
                     <div part="input-container" class="input-container">
                         <span part="checkbox" class="checkbox">
                             <slot name="checkbox-indicator">
-                                ${options.checkboxIndicator || ""}
+                                ${options.checkboxIndicator ?? ""}
                             </slot>
                         </span>
                     </div>
@@ -45,7 +44,7 @@ export function menuItemTemplate(
                     <div part="input-container" class="input-container">
                         <span part="radio" class="radio">
                             <slot name="radio-indicator">
-                                ${options.radioIndicator || ""}
+                                ${options.radioIndicator ?? ""}
                             </slot>
                         </span>
                     </div>
@@ -59,14 +58,14 @@ export function menuItemTemplate(
         ${endSlotTemplate(options)}
         ${when(
             x => x.hasSubmenu,
-            html<FASTMenuItem>`
+            html<T>`
                 <div
                     part="expand-collapse-glyph-container"
                     class="expand-collapse-glyph-container"
                 >
                     <span part="expand-collapse" class="expand-collapse">
                         <slot name="expand-collapse-indicator">
-                            ${options.expandCollapseGlyph || ""}
+                            ${options.expandCollapseGlyph ?? ""}
                         </slot>
                     </span>
                 </div>
@@ -74,7 +73,7 @@ export function menuItemTemplate(
         )}
         ${when(
             x => x.expanded,
-            html<FASTMenuItem>`
+            html<T>`
                 <${anchoredRegionTag}
                     :anchorElement="${x => x}"
                     vertical-positioning-mode="dynamic"

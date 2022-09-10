@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 01 Sep 2022 21:53:34 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.6",
+      "version": "2.0.0-beta.6",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "da9ebbe1b7471cd4e6f7b74f2f9bf02fcc54da4f",
+            "comment": "feat: add new state, ownedState, and computedState APIs"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 18 Aug 2022 20:46:10 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.5",
       "version": "2.0.0-beta.5",

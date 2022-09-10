@@ -1,6 +1,6 @@
 import {
     Constructable,
-    Controller,
+    ElementController,
     ElementStyles,
     FASTElement,
     observable,
@@ -13,7 +13,7 @@ import {
  * @public
  */
 export interface PropertyTarget {
-    setProperty(name: string, value: string | null): void;
+    setProperty(name: string, value: string): void;
     removeProperty(name: string): void;
 }
 
@@ -125,7 +125,7 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
         });
     }
 
-    handleChange(source: Controller, key: "isConnected") {
+    handleChange(source: ElementController, key: "isConnected") {
         // HTMLStyleElement.sheet is null if the element isn't connected to the DOM,
         // so this method reacts to changes in DOM connection for the element hosting
         // the HTMLStyleElement.

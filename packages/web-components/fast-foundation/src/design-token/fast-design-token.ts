@@ -1,8 +1,9 @@
 import {
-    Behavior,
-    CSSDirective,
     cssDirective,
+    CSSDirective,
     FASTElement,
+    HostBehavior,
+    HostController,
     Observable,
     Subscriber,
     SubscriberSet,
@@ -138,13 +139,13 @@ export class DesignToken<T> {
     }
 
     /**
-     * Registers and element or document as a DesignToken root.
+     * Registers a target for emitting default style values.
      * {@link CSSDesignToken | CSSDesignTokens} with default values assigned via
      * {@link DesignToken.withDefault} will emit CSS custom properties to all
-     * registered roots.
-     * @param target - The root to register
+     * registered targets.
+     * @param target - The target to register, defaults to the document
      */
-    public static registerRoot(
+    public static registerDefaultStyleTarget(
         target: FASTElement | Document | PropertyTarget = document
     ) {
         if (target instanceof FASTElement || target instanceof Document) {
@@ -155,10 +156,10 @@ export class DesignToken<T> {
     }
 
     /**
-     * Unregister an element or document as a DesignToken root.
-     * @param target - The root to deregister
+     * Unregister a target for default style emission.
+     * @param target - The root to deregister, defaults to the document
      */
-    public static unregisterRoot(
+    public static unregisterDefaultStyleTarget(
         target: FASTElement | Document | PropertyTarget = document
     ) {
         if (target instanceof FASTElement || target instanceof Document) {
@@ -305,7 +306,7 @@ export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
     }
 }
 
-export interface DesignTokenResolutionStrategy {
+export interface DesignTokenResolutionStrategy extends HostBehavior<FASTElement> {
     /**
      * Determines if a 'child' element is contained by a 'parent'.
      * @param child - The child element
@@ -318,16 +319,6 @@ export interface DesignTokenResolutionStrategy {
      * @param element - The element to find the parent of
      */
     parent(element: FASTElement): FASTElement | null;
-
-    /**
-     * Binds the strategy to the element
-     */
-    bind(element: FASTElement): void;
-
-    /**
-     * Un-binds the strategy to the element
-     */
-    unbind(element: FASTElement): void;
 }
 
 const defaultDesignTokenResolutionStrategy: DesignTokenResolutionStrategy = {
@@ -345,11 +336,9 @@ const defaultDesignTokenResolutionStrategy: DesignTokenResolutionStrategy = {
 
         return null;
     },
-    bind() {},
-    unbind() {},
 };
 
-class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
+class FASTDesignTokenNode extends DesignTokenNode implements HostBehavior {
     private static _strategy: DesignTokenResolutionStrategy;
     private static get strategy() {
         if (this._strategy === undefined) {
@@ -362,8 +351,8 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
     public static rootStyleSheetTarget = new RootStyleSheetTarget();
     private static cache = new WeakMap<FASTElement, FASTDesignTokenNode>();
 
-    public bind(target: FASTElement) {
-        let parent = FASTDesignTokenNode.findParent(target);
+    public connectedCallback(controller: HostController) {
+        let parent = FASTDesignTokenNode.findParent(controller.source);
 
         if (parent === null) {
             parent = FASTDesignTokenNode.defaultNode;
@@ -374,7 +363,7 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
             for (const child of parent.children) {
                 if (
                     child instanceof FASTDesignTokenNode &&
-                    FASTDesignTokenNode.strategy.contains(target, child.target)
+                    FASTDesignTokenNode.strategy.contains(controller.source, child.target)
                 ) {
                     reparent.push(child);
                 }
@@ -388,7 +377,7 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
         }
     }
 
-    public unbind(): void {
+    public disconnectedCallback(controller: HostController): void {
         FASTDesignTokenNode.cache.delete(this.target);
         this.dispose();
     }
@@ -402,7 +391,8 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
 
         found = new FASTDesignTokenNode(target);
         FASTDesignTokenNode.cache.set(target, found);
-        target.$fastController.addBehaviors([FASTDesignTokenNode.strategy, found]);
+        target.$fastController.addBehavior(FASTDesignTokenNode.strategy);
+        target.$fastController.addBehavior(found);
 
         return found;
     }
@@ -428,5 +418,27 @@ class FASTDesignTokenNode extends DesignTokenNode implements Behavior {
 
     constructor(public readonly target: FASTElement) {
         super();
+        // By default, nodes are not attached to the defaultNode for performance
+        // reasons. However, that behavior can throw if retrieval for a node
+        // happens before the bind() method is called. To guard against that,
+        //  lazily attach to the defaultNode when get/set/delete methods are called.
+        this.setTokenValue = this.lazyAttachToDefault(super.setTokenValue);
+        this.getTokenValue = this.lazyAttachToDefault(super.getTokenValue);
+        this.deleteTokenValue = this.lazyAttachToDefault(super.deleteTokenValue);
+    }
+
+    /**
+     * Creates a function from a function that lazily attaches the node to the default node.
+     */
+    private lazyAttachToDefault<T extends (...args: any) => any>(fn: T): T {
+        const cb = ((...args: Parameters<T>): ReturnType<T> => {
+            if (this.parent === null) {
+                FASTDesignTokenNode.defaultNode.appendChild(this);
+            }
+
+            return fn.apply(this, args);
+        }) as T;
+
+        return cb;
     }
 }

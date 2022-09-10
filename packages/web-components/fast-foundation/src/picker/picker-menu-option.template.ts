@@ -5,8 +5,10 @@ import type { FASTPickerMenuOption } from "./picker-menu-option.js";
  *
  * @public
  */
-export function pickerMenuOptionTemplate(): ElementViewTemplate<FASTPickerMenuOption> {
-    return html<FASTPickerMenuOption>`
+export function pickerMenuOptionTemplate<
+    T extends FASTPickerMenuOption
+>(): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="listitem"
             tabindex="-1"

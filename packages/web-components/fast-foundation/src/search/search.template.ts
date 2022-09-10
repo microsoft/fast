@@ -7,10 +7,10 @@ import type { FASTSearch, SearchOptions } from "./search.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTSearch:class)} component.
  * @public
  */
-export function searchTemplate(
+export function searchTemplate<T extends FASTSearch>(
     options: SearchOptions = {}
-): ElementViewTemplate<FASTSearch> {
-    return html<FASTSearch>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             class="
             ${x => (x.readOnly ? "readonly" : "")}

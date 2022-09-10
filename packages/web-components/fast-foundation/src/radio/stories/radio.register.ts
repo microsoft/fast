@@ -19,7 +19,6 @@ const styles = css`
             the radio is clicked. Maybe there is a better solution here? */
         outline: none;
         position: relative;
-        transition: all 0.2s ease-in-out;
         user-select: none;
     }
 
