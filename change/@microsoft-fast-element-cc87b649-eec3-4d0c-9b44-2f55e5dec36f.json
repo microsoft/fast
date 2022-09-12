@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "make insertBefore noop",
+  "packageName": "@microsoft/fast-element",
+  "email": "wendywendy@microsoft.com",
+  "dependentChangeType": "patch"
+}

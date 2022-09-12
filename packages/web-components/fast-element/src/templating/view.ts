@@ -139,8 +139,10 @@ export class HTMLView implements ElementView, SyntheticView {
         if (this.fragment.hasChildNodes()) {
             node.parentNode!.insertBefore(this.fragment, node);
         } else {
-            const parentNode = node.parentNode!;
             const end = this.lastChild!;
+            if (node.previousSibling === end) return;
+
+            const parentNode = node.parentNode!;
             let current = this.firstChild!;
             let next;
 
