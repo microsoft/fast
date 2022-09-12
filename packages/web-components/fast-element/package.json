@@ -70,6 +70,10 @@
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
     },
+    "./pending-task": {
+      "types": "./dist/dts/pending-task.d.ts",
+      "default": "./dist/esm/pending-task.js"
+    },
     "./package.json": "./package.json"
   },
   "unpkg": "dist/fast-element.min.js",

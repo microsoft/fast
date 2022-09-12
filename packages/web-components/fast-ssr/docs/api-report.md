@@ -10,15 +10,36 @@ import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { DOMContainer } from '@microsoft/fast-element/di';
 import { ExecutionContext } from '@microsoft/fast-element';
-import { FASTElement } from '@microsoft/fast-element';
 import { ViewBehaviorFactory } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
-// @beta
-export type ComponentDOMEmissionMode = "shadow";
+// @beta (undocumented)
+export interface AsyncElementRenderer extends Omit<ElementRenderer, "renderShadow" | "renderAttributes"> {
+    // (undocumented)
+    renderAttributes(): IterableIterator<string | Promise<string>>;
+    // (undocumented)
+    renderShadow(renderInfo: RenderInfo): IterableIterator<string | Promise<string>>;
+}
 
 // @beta (undocumented)
-export type ConstructableElementRenderer = (new (tagName: string, renderInfo: RenderInfo) => ElementRenderer) & typeof ElementRenderer;
+export interface AsyncTemplateRenderer {
+    // (undocumented)
+    createRenderInfo(): RenderInfo;
+    // (undocumented)
+    render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string | Promise<string>>;
+    // (undocumented)
+    withDefaultElementRenderers(...renderers: ConstructableElementRenderer<AsyncElementRenderer>[]): void;
+}
+
+// @beta (undocumented)
+export interface ConstructableElementRenderer<T extends ElementRenderer | AsyncElementRenderer = ElementRenderer> {
+    // (undocumented)
+    new (tagName: string, renderInfo: RenderInfo): T;
+    // Warning: (ae-forgotten-export) The symbol "AttributesMap" needs to be exported by the entry point exports.d.ts
+    //
+    // (undocumented)
+    matchesClass(ctor: typeof HTMLElement, tagName: string, attributes: AttributesMap): boolean;
+}
 
 // @beta
 export const DeclarativeShadowDOMPolyfill: Readonly<{
@@ -27,46 +48,39 @@ export const DeclarativeShadowDOMPolyfill: Readonly<{
 }>;
 
 // @beta (undocumented)
-export abstract class ElementRenderer {
-    constructor(tagName: string, renderInfo: RenderInfo);
+export interface ElementRenderer {
     // (undocumented)
-    abstract attributeChangedCallback(name: string, prev: string | null, next: string | null): void;
+    attributeChangedCallback(name: string, prev: string | null, next: string | null): void;
     // (undocumented)
-    abstract connectedCallback(): void;
+    connectedCallback(): void;
     // (undocumented)
     dispatchEvent(event: Event): boolean;
     // (undocumented)
-    abstract readonly element?: HTMLElement;
-    // (undocumented)
-    elementChanged(): void;
-    // Warning: (ae-forgotten-export) The symbol "AttributesMap" needs to be exported by the entry point exports.d.ts
-    static matchesClass(ctor: typeof HTMLElement, tagName: string, attributes: AttributesMap): boolean;
     renderAttributes(): IterableIterator<string>;
     // (undocumented)
-    abstract renderShadow(renderInfo: RenderInfo): IterableIterator<string>;
-    setAttribute(name: string, value: string): void;
-    setProperty(name: string, value: unknown): void;
-    // (undocumented)
-    readonly tagName: string;
-}
-
-// @beta
-export abstract class FASTElementRenderer extends ElementRenderer {
-    constructor(tagName: string, renderInfo: RenderInfo);
-    attributeChangedCallback(name: string, old: string | null, value: string | null): void;
-    connectedCallback(): void;
-    readonly element: FASTElement;
-    static matchesClass(ctor: typeof HTMLElement): boolean;
-    renderLight(renderInfo: RenderInfo): IterableIterator<string>;
     renderShadow(renderInfo: RenderInfo): IterableIterator<string>;
-    protected abstract styleRenderer: StyleRenderer;
-    protected abstract templateRenderer: TemplateRenderer;
+    // (undocumented)
+    setAttribute(name: string, value: string): void;
+    // (undocumented)
+    setProperty(name: string, value: unknown): void;
 }
 
-// @beta
+// @beta (undocumented)
 function fastSSR(): {
     templateRenderer: TemplateRenderer;
     ElementRenderer: ConstructableElementRenderer;
+};
+
+// @beta (undocumented)
+function fastSSR(config: SSRConfiguration & Record<"renderMode", "sync">): {
+    templateRenderer: TemplateRenderer;
+    ElementRenderer: ConstructableElementRenderer;
+};
+
+// @beta (undocumented)
+function fastSSR(config: SSRConfiguration & Record<"renderMode", "async">): {
+    templateRenderer: AsyncTemplateRenderer;
+    ElementRenderer: ConstructableElementRenderer<AsyncElementRenderer>;
 };
 export default fastSSR;
 
@@ -101,6 +115,12 @@ export const RequestStorageManager: Readonly<{
 }>;
 
 // @beta
+export interface SSRConfiguration {
+    // (undocumented)
+    renderMode: "sync" | "async";
+}
+
+// @beta
 export type StorageOptions = {
     createWindow?: () => {
         [key: string]: unknown;
@@ -113,24 +133,21 @@ export interface StyleRenderer {
     render(styles: ComposableStyles): string;
 }
 
-// @beta
-export class TemplateRenderer {
-    readonly componentDOMEmissionMode: ComponentDOMEmissionMode;
-    createRenderInfo(renderers?: ConstructableElementRenderer[]): RenderInfo;
+// @beta (undocumented)
+export interface TemplateRenderer {
+    // (undocumented)
+    createRenderInfo(): RenderInfo;
+    // (undocumented)
     render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
-    // Warning: (ae-forgotten-export) The symbol "Op" needs to be exported by the entry point exports.d.ts
-    //
-    // @internal
-    renderOpCodes(codes: Op[], renderInfo: RenderInfo, source: unknown, context: ExecutionContext): IterableIterator<string>;
+    // (undocumented)
     withDefaultElementRenderers(...renderers: ConstructableElementRenderer[]): void;
-    // @internal
-    withViewBehaviorFactoryRenderers(...renderers: ViewBehaviorFactoryRenderer<any>[]): void;
 }
 
 // @beta
 export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
     matcher: Constructable<T>;
-    render(behavior: T, renderInfo: RenderInfo, source: any, renderer: TemplateRenderer, context: ExecutionContext): IterableIterator<string>;
+    // Warning: (ae-forgotten-export) The symbol "DefaultTemplateRenderer" needs to be exported by the entry point exports.d.ts
+    render(behavior: T, renderInfo: RenderInfo, source: any, renderer: DefaultTemplateRenderer, context: ExecutionContext): IterableIterator<string>;
 }
 
 // Warnings were encountered during analysis:
