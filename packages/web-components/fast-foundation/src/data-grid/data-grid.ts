@@ -1,10 +1,4 @@
-import {
-    attr,
-    FASTElement,
-    observable,
-    Updates,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, observable, Updates, ViewTemplate } from "@microsoft/fast-element";
 import {
     eventFocus,
     eventFocusOut,
@@ -16,7 +10,7 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
-import { FASTBaseList } from "../index.js";
+import { FASTDataList } from "../index.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options.js";
@@ -98,7 +92,7 @@ export interface ColumnDefinition {
  * @slot - The default slot for custom row elements
  * @public
  */
-export class FASTDataGrid extends FASTBaseList {
+export class FASTDataGrid extends FASTDataList {
     /**
      *  generates a basic column definition by examining sample row data
      */
@@ -332,11 +326,11 @@ export class FASTDataGrid extends FASTBaseList {
      * @internal
      */
     public connectedCallback(): void {
-        super.connectedCallback();
-
         if (this.rowItemTemplate === undefined) {
             this.rowItemTemplate = this.defaultRowItemTemplate;
         }
+
+        super.connectedCallback();
 
         this.toggleGeneratedHeader();
 

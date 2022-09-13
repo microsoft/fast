@@ -1,4 +1,4 @@
-import { html, when } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import type { Args, Meta } from "@storybook/html";
 import type { FASTVirtualList as FoundationVirtualList } from "../virtual-list.js";
 
@@ -30,33 +30,14 @@ const listItemContentsTemplate = html`
         >
             ${x => x.itemData.title}
         </div>
-        ${when(
-            x => x.loadContent,
-            html`
-                <div
-                    style="
+        <div
+            style="
                         height: 160px;
                         width:160px;
                         margin:10px 20px 10px 20px;
                         background-image: url('${x => x.itemData.url}');
                 "
-                ></div>
-            `
-        )}
-        ${when(
-            x => !x.loadContent,
-            html`
-                <div
-                    style="
-                    background: white;
-                    opacity: 0.2;
-                    height: 160px;
-                    width:160px;
-                    margin:10px 20px 10px 20px;
-            "
-                ></div>
-            `
-        )}
+        ></div>
     </fast-card>
 `;
 
@@ -72,9 +53,6 @@ const storyTemplate = html<VirtualListStoryArgs>`
         auto-update-mode="${x => x.autoUpdateMode}"
         recycle="${x => x.recycle}"
         auto-resize-items="${x => x.autoResizeItems}"
-        idle-load-mode="${x => x.idleLoadMode}"
-        idle-callback-timeout="${x => x.idleCallbackTimeout}"
-        list-item-load-mode="${x => x.listItemLoadMode}"
         :listItemContentsTemplate="${listItemContentsTemplate}"
     ></fast-virtual-list>
 `;
@@ -107,17 +85,6 @@ export default {
         },
         recycle: { control: { type: "boolean" } },
         autoResizeItems: { control: { type: "boolean" } },
-        idleLoadMode: {
-            options: ["auto", "enabled", "suspended"],
-            control: { type: "select" },
-        },
-        idleCallbackTimeout: {
-            control: { type: "text" },
-        },
-        listItemLoadMode: {
-            options: ["manual", "immediate", "idle"],
-            control: { type: "select" },
-        },
     },
 } as VirtualListStoryMeta;
 

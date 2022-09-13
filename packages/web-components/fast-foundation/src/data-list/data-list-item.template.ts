@@ -1,12 +1,12 @@
 import { ElementViewTemplate, html } from "@microsoft/fast-element";
-import type { FASTBaseListItem } from "./base-list-item.js";
+import type { FASTDataListItem } from "./data-list-item.js";
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#BaseListItem} component.
  * @public
  */
-export function baseListItemTemplate(): ElementViewTemplate<FASTBaseListItem> {
-    return html<FASTBaseListItem>`
+export function dataListItemTemplate(): ElementViewTemplate<FASTDataListItem> {
+    return html<FASTDataListItem>`
         <template>
             <slot></slot>
         </template>

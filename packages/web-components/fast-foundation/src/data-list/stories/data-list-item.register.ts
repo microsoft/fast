@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
-import { FASTBaseListItem } from "../base-list-item.js";
-import { baseListItemTemplate } from "../base-list-item.template.js";
+import { FASTDataListItem } from "../data-list-item.js";
+import { dataListItemTemplate } from "../data-list-item.template.js";
 
 const styles = css`
     :host {
@@ -13,8 +13,8 @@ const styles = css`
     }
 `;
 
-FASTBaseListItem.define({
-    name: "fast-base-list-item",
-    template: baseListItemTemplate(),
+FASTDataListItem.define({
+    name: "fast-data-list-item",
+    template: dataListItemTemplate(),
     styles,
 });

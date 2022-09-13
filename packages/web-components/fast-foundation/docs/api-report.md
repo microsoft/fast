@@ -16,7 +16,6 @@ import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
-import { Splice } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
@@ -156,17 +155,6 @@ export type AxisScalingMode = typeof AxisScalingMode[keyof typeof AxisScalingMod
 
 // @public
 export function badgeTemplate<T extends FASTBadge>(): ElementViewTemplate<T>;
-
-// @public
-export function baseListItemTemplate(): ElementViewTemplate<FASTBaseListItem>;
-
-// @public
-export type BaseListOptions = {
-    baseListItem: TemplateElementDependency;
-};
-
-// @public
-export function baseListTemplate(options: BaseListOptions): ElementViewTemplate<FASTBaseList>;
 
 // @public
 export type BreadcrumbItemOptions = StartEndOptions & {
@@ -350,7 +338,6 @@ export type DataGridCellTypes = typeof DataGridCellTypes[keyof typeof DataGridCe
 // @public
 export type DataGridOptions = {
     dataGridRow: TemplateElementDependency;
-    baseList: TemplateElementDependency;
 };
 
 // @public
@@ -368,6 +355,37 @@ export type DataGridRowTypes = typeof DataGridRowTypes[keyof typeof DataGridRowT
 
 // @public
 export function dataGridTemplate<T extends FASTDataGrid>(options: DataGridOptions): ElementViewTemplate<T>;
+
+// @public (undocumented)
+export interface DataList extends FASTElement {
+    // (undocumented)
+    items: object[];
+    // (undocumented)
+    itemTemplate: ViewTemplate;
+    // (undocumented)
+    listItemContentsTemplate: ViewTemplate;
+    // (undocumented)
+    recycle: boolean;
+}
+
+// @public (undocumented)
+export interface DataListController {
+    // (undocumented)
+    connect(parent: DataList): void;
+    // (undocumented)
+    disconnect(): void;
+}
+
+// @public
+export function dataListItemTemplate(): ElementViewTemplate<FASTDataListItem>;
+
+// @public
+export type DataListOptions = {
+    defaultListItem: TemplateElementDependency;
+};
+
+// @public
+export function dataListTemplate<T extends FASTDataList>(options: DataListOptions): ElementViewTemplate<T>;
 
 // @public
 export class DateFormatter {
@@ -409,6 +427,14 @@ export const DayFormat: {
 
 // @public
 export type DayFormat = typeof DayFormat[keyof typeof DayFormat];
+
+// @public (undocumented)
+export class DefaultListController implements DataListController {
+    // (undocumented)
+    connect(parent: DataList): void;
+    // (undocumented)
+    disconnect(): void;
+}
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAButton" because one of its declarations is marked as @internal
@@ -770,47 +796,6 @@ export class FASTBadge extends FASTElement {
 }
 
 // @public
-export class FASTBaseList extends FASTElement {
-    // @internal (undocumented)
-    connectedCallback(): void;
-    // @internal
-    defaultItemTemplate: ViewTemplate;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
-    // Warning: (ae-forgotten-export) The symbol "IdleCallbackQueue" needs to be exported by the entry point index.d.ts
-    //
-    // @internal
-    idleCallbackQueue: IdleCallbackQueue;
-    idleCallbackTimeout: number;
-    idleLoadMode: ListIdleLoadMode;
-    items: object[];
-    itemTemplate: ViewTemplate;
-    listItemContentsTemplate: ViewTemplate;
-    listItemLoadMode: ListItemLoadMode;
-    recycle: boolean;
-}
-
-// @public
-export class FASTBaseListItem extends FASTElement {
-    // @internal (undocumented)
-    connectedCallback(): void;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
-    // @internal
-    idleCallbackQueue: IdleCallbackQueue;
-    // @internal
-    itemData: object;
-    // @internal
-    itemIndex: number;
-    // @internal
-    listItemContentsTemplate: ViewTemplate;
-    // @internal
-    loadContent: boolean;
-    // @internal
-    loadMode: ListItemLoadMode;
-}
-
-// @public
 export class FASTBaseProgress extends FASTElement {
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1013,7 +998,7 @@ export interface FASTCombobox extends StartEnd, DelegatesARIACombobox {
 }
 
 // @public
-export class FASTDataGrid extends FASTElement {
+export class FASTDataGrid extends FASTDataList {
     constructor();
     cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
@@ -1041,8 +1026,6 @@ export class FASTDataGrid extends FASTElement {
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
     headerCellItemTemplate?: ViewTemplate;
-    // (undocumented)
-    listElement: FASTBaseList;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
@@ -1114,6 +1097,37 @@ export class FASTDataGridRow extends FASTElement {
     rowType: DataGridRowTypes;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
+}
+
+// @public
+export class FASTDataList extends FASTElement implements DataList {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    defaultItemTemplate: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    items: object[];
+    itemTemplate: ViewTemplate;
+    // @internal
+    listController: DataListController;
+    listItemContentsTemplate: ViewTemplate;
+    orientation: Orientation;
+    recycle: boolean;
+}
+
+// @public
+export class FASTDataListItem extends FASTElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    itemData: object;
+    // @internal
+    itemIndex: number;
+    // @internal
+    listItemContentsTemplate: ViewTemplate;
 }
 
 // @public
@@ -2224,81 +2238,21 @@ export class FASTTreeView extends FASTElement {
 }
 
 // @public
-export class FASTVirtualList extends FASTElement {
-    autoResizeItems: boolean;
-    autoUpdateMode: VirtualListAutoUpdateMode;
-    // @internal (undocumented)
-    connectedCallback(): void;
-    // @internal
-    containerElement: HTMLDivElement;
-    // @internal
-    defaultHorizontalItemTemplate: ViewTemplate;
-    // @internal
-    defaultVerticalItemTemplate: ViewTemplate;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
-    // @internal
-    endSpacerSize: number;
-    // @internal
-    firstRenderedIndex: number;
-    getItemSizeMap: (itemIndex: number) => SizeMap | null;
-    // @internal
-    handleChange(source: any, splices: Splice[]): void;
-    // @internal (undocumented)
-    handleListItemConnected(e: Event): void;
-    // @internal (undocumented)
-    handleListItemDisconnected(e: Event): void;
-    // @internal
-    idleCallbackQueue: IdleCallbackQueue;
-    idleCallbackTimeout: number;
-    idleLoadMode: VirtualListIdleLoadMode;
-    items: object[];
-    itemSize: number;
-    itemTemplate: ViewTemplate;
-    // @internal
-    lastRenderedIndex: number;
-    listItemContentsTemplate: ViewTemplate;
-    listItemLoadMode: VirtualListItemLoadMode;
-    orientation: Orientation;
-    recycle: boolean;
-    protected requestPositionUpdates(): void;
-    protected reset(): void;
-    sizemap: SizeMap[];
-    // @internal
-    startSpacerSize: number;
-    // @internal
-    totalListSize: number;
-    update(): void;
-    viewport: string;
-    viewportBuffer: number;
-    viewportElement: HTMLElement;
-    virtualizationEnabled: boolean;
-    // @internal
-    visibleItemMap: SizeMap[];
-    // @internal
-    visibleItems: any[];
+export class FASTVirtualList extends FASTDataList {
+    // Warning: (ae-forgotten-export) The symbol "VirtualListController" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    listController: VirtualListController;
 }
 
 // @public
-export class FASTVirtualListItem extends FASTElement {
+export class FASTVirtualListItem extends FASTDataListItem {
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // @internal
-    idleCallbackQueue: IdleCallbackQueue;
-    // @internal
-    itemData: object;
-    // @internal
-    itemIndex: number;
-    // @internal
     itemSizeMap: SizeMap;
-    // @internal
-    listItemContentsTemplate: ViewTemplate;
-    // @internal
-    loadContent: boolean;
-    // @internal
-    loadMode: VirtualListItemLoadMode;
     // @internal
     sizeMap: SizeMap[];
 }
@@ -2485,12 +2439,6 @@ export function listboxOptionTemplate<T extends FASTListboxOption>(options?: Lis
 
 // @public
 export function listboxTemplate<T extends FASTListboxElement>(): ElementViewTemplate<T>;
-
-// @public
-export type ListIdleLoadMode = "auto" | "enabled" | "suspended";
-
-// @public
-export type ListItemLoadMode = "immediate" | "manual" | "idle";
 
 // @public
 export abstract class MatchMediaBehavior implements Behavior {
@@ -2933,17 +2881,11 @@ export type VerticalPosition = typeof VerticalPosition[keyof typeof VerticalPosi
 export type VirtualListAutoUpdateMode = "manual" | "viewport" | "auto" | "self";
 
 // @public
-export type VirtualListIdleLoadMode = "auto" | "enabled" | "suspended";
-
-// @public
-export type VirtualListItemLoadMode = "immediate" | "manual" | "idle";
-
-// @public
 export function virtualListItemTemplate(): ElementViewTemplate<FASTVirtualListItem>;
 
 // @public
 export type VirtualListOptions = {
-    virtualListItem: TemplateElementDependency;
+    defaultListItem: TemplateElementDependency;
 };
 
 // @public
@@ -2979,13 +2921,12 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/base-list/base-list.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "baseListItem" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/calendar/calendar.d.ts:49:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/calendar/calendar.d.ts:50:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/data-grid/data-grid.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "baseList" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/data-list/data-list.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "defaultListItem" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/menu-item/menu-item.d.ts:20:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
@@ -2994,7 +2935,7 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/picker/picker.template.d.ts:13:5 - (ae-incompatible-release-tags) The symbol "pickerListItem" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:14:5 - (ae-incompatible-release-tags) The symbol "progressRing" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/tooltip/tooltip.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/virtual-list/virtual-list.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "virtualListItem" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/virtual-list/virtual-list.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "defaultListItem" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 
 // (No @packageDocumentation comment for this package)
 

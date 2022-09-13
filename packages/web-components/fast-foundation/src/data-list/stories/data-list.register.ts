@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
-import { FASTDataList } from "../../index.js";
-import { virtualListTemplate } from "../virtual-list.template.js";
+import { FASTDataList } from "../data-list.js";
+import { dataListTemplate } from "../data-list.template.js";
 
 const styles = css`
     :host {
@@ -14,9 +14,9 @@ const styles = css`
 `;
 
 FASTDataList.define({
-    name: "fast-virtual-list",
+    name: "fast-data-list",
     styles,
-    template: virtualListTemplate({
-        defaultListItem: "fast-virtual-list-item",
+    template: dataListTemplate({
+        defaultListItem: "fast-data-list-item",
     }),
 });

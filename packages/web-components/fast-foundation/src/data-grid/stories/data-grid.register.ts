@@ -11,7 +11,6 @@ const styles = css`
 FASTDataGrid.define({
     name: "fast-data-grid",
     template: dataGridTemplate({
-        baseList: "fast-base-list",
         dataGridRow: "fast-data-grid-row",
     }),
     styles,

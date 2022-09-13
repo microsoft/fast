@@ -1,23 +1,23 @@
-import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
+import { ElementViewTemplate, html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
-import type { FASTBaseList } from "./base-list.js";
+import type { FASTDataList } from "./data-list.js";
 
 /**
- * Options for base list templates.
+ * Options for data list templates.
  * @public
  */
-export type BaseListOptions = {
-    baseListItem: TemplateElementDependency;
+export type DataListOptions = {
+    defaultListItem: TemplateElementDependency;
 };
 
 /**
  * Creates a default item template.  This is the template that defines what list items are created by the
  * list's repeat directive.
  */
-function defaultItemTemplate(options: BaseListOptions): ViewTemplate<any, FASTBaseList> {
-    const listItemTag = tagFor(options.baseListItem);
-    return html<any, FASTBaseList>`
+function defaultItemTemplate(options: DataListOptions): ViewTemplate<any, FASTDataList> {
+    const listItemTag = tagFor(options.defaultListItem);
+    return html<any, FASTDataList>`
     <${listItemTag}
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index}"
@@ -27,11 +27,11 @@ function defaultItemTemplate(options: BaseListOptions): ViewTemplate<any, FASTBa
 }
 
 /**
- * Generates a template for the {@link @microsoft/fast-foundation#BaseList} component.
+ * Generates a template for the {@link @microsoft/fast-foundation#DataList} component.
  * @public
  */
-export function baseListTemplate<T extends FASTBaseList>(
-    options: BaseListOptions
+export function dataListTemplate<T extends FASTDataList>(
+    options: DataListOptions
 ): ElementViewTemplate<T> {
     return html<T>`
         <template :defaultItemTemplate="${defaultItemTemplate(options)}">

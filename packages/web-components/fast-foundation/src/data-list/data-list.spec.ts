@@ -1,22 +1,22 @@
 import { expect } from "chai";
 import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
-import { FASTBaseList, baseListTemplate } from "./index.js";
-import { FASTBaseListItem, baseListItemTemplate } from "./index.js";
+import { FASTDataList, dataListTemplate } from "./index.js";
+import { FASTDataListItem, dataListItemTemplate } from "../index.js";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { DOM, html } from "@microsoft/fast-element";
 
 
 const baseListItemName = uniqueElementName();
-FASTBaseListItem.define({
+FASTDataListItem.define({
     name: baseListItemName,
-    template: baseListItemTemplate()
+    template: dataListItemTemplate()
 });
 
 const baseListName = uniqueElementName();
-FASTBaseList.define({
+FASTDataList.define({
     name: baseListName,
-    template: baseListTemplate({
-        baseListItem: baseListItemName
+    template: dataListTemplate({
+        defaultListItem: baseListItemName
     })
 });
 
@@ -42,14 +42,14 @@ function newDataSet(rowCount: number): object[] {
 }
 
 async function setup() {
-    const { document, element, connect, disconnect } = await fixture<FASTBaseList>(baseListName);
+    const { document, element, connect, disconnect } = await fixture<FASTDataList>(baseListName);
 
     element.itemTemplate = itemTemplate;
 
     return { element, connect, disconnect };
 }
 
-describe("BaseList", () => {
+describe("DataList", () => {
     it("should have a default 'itemTemplate'", async () => {
         const { element, connect, disconnect } = await setup();
 

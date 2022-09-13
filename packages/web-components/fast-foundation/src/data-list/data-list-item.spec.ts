@@ -1,13 +1,13 @@
 import { expect } from "chai";
 import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
-import { FASTBaseListItem, baseListItemTemplate } from "./index.js";
+import { FASTDataListItem, dataListItemTemplate } from "./index.js";
 import { DOM,html } from "@microsoft/fast-element";
 import { IdleCallbackQueue } from "../utilities/idle-callback-queue.js";
 
 const baseListItemName = uniqueElementName();
-FASTBaseListItem.define({
+FASTDataListItem.define({
     name: baseListItemName,
-    template: baseListItemTemplate()
+    template: dataListItemTemplate()
 });
 
 const listItemTemplate = html`
@@ -17,13 +17,8 @@ const listItemTemplate = html`
     </template>
 `;
 
-interface customContext {
-    titleString: string,
-}
-
-
 async function setup() {
-    const { document, element, connect, disconnect} = await fixture<FASTBaseListItem>(baseListItemName);
+    const { document, element, connect, disconnect} = await fixture<FASTDataListItem>(baseListItemName);
 
     element.listItemContentsTemplate = listItemTemplate,
     element.itemIndex = 1;

@@ -4,7 +4,7 @@ export * from "./anchor/index.js";
 export * from "./anchored-region/index.js";
 export * from "./avatar/index.js";
 export * from "./badge/index.js";
-export * from "./base-list/index.js";
+export * from "./data-list/index.js";
 export * from "./breadcrumb-item/index.js";
 export * from "./breadcrumb/index.js";
 export * from "./button/index.js";
