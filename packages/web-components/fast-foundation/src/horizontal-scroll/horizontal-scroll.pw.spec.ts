@@ -66,9 +66,12 @@ test.describe("HorizontalScroll", () => {
 
         test("should not scroll past the last in view element", async () => {
             await element.evaluate((node: FASTHorizontalScroll) => {
-                const scrollView = (node.shadowRoot as ShadowRoot).querySelector(
-                    ".scroll-view"
-                ) as HTMLElement;
+                const scrollView = node.shadowRoot?.querySelector(".scroll-view");
+
+                if (!scrollView) {
+                    test.fail();
+                    return;
+                }
 
                 while (
                     scrollView.scrollLeft + scrollView.clientWidth <
@@ -130,9 +133,7 @@ test.describe("HorizontalScroll", () => {
         const scrollNext = element.locator(".scroll-next");
 
         await element.evaluate((node: FASTHorizontalScroll) => {
-            node.querySelectorAll("fast-card:nth-child(n + 5)").forEach(card =>
-                card.remove()
-            );
+            node.querySelectorAll("div:nth-child(n + 4)").forEach(card => card.remove());
         });
 
         await expect(scrollNext).toBeHidden();
@@ -156,7 +157,7 @@ test.describe("HorizontalScroll", () => {
 
             await nextFlipper.click();
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 375);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 384);
 
             await previousFlipper.click();
 
@@ -166,11 +167,10 @@ test.describe("HorizontalScroll", () => {
 
             await nextFlipper.click();
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 250);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 256);
         });
 
         test("should scroll to previous when only 2 items wide", async ({ page }) => {
-            test.slow();
             await page.setViewportSize({ width: 250, height: 250 });
 
             await page.goto(
@@ -185,7 +185,7 @@ test.describe("HorizontalScroll", () => {
                 node.scrollToNext();
             });
 
-            await expect(await scrollView.evaluate(node => node.scrollLeft)).toBe(125);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 128);
 
             await element.evaluate((node: FASTHorizontalScroll) => {
                 node.scrollToPrevious();
