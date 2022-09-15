@@ -34,7 +34,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "clean:dist": "node ../../../build/clean.js dist",
+    "clean:dist": "rimraf dist storybook-static",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
     "build:rollup": "rollup -c",
@@ -65,7 +65,7 @@
     "@custom-elements-manifest/to-markdown": "^0.1.0",
     "@microsoft/api-extractor": "7.24.2",
     "@microsoft/tsdoc-config": "^0.13.4",
-    "@playwright/test": "^1.25.1",
+    "@playwright/test": "^1.25.2",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@storybook/addon-docs": "6.5.10",
     "@storybook/addon-essentials": "6.5.10",
