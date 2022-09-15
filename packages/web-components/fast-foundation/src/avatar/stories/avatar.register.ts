@@ -11,36 +11,28 @@ const styles = css`
         height: var(--avatar-size, var(--avatar-size-default));
         max-width: var(--avatar-size, var(--avatar-size-default));
         position: relative;
+        text-decoration: none;
+        border-radius: 100%;
+        background-color: var(--accent-fill-rest);
+        color: var(--foreground-on-accent-rest);
+        outline: solid 2px green;
+        outline-offset: 2px;
     }
 
     :host([hidden]) {
         display: none;
     }
 
-    .backplate {
-        text-decoration: none;
-        position: relative;
-        border-radius: 100%;
-        min-width: 100%;
-        overflow: hidden;
-        background-color: var(--accent-fill-rest);
-        color: var(--foreground-on-accent-rest);
-    }
-
-    .media,
-    .content {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-    }
-
     ::slotted(img) {
         display: block;
         max-width: 100%;
         position: absolute;
+        border-radius: 100%;
     }
 
     .content {
+        position: absolute;
+        inset: 0;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -52,6 +44,8 @@ const styles = css`
     ::slotted(fast-badge) {
         display: block;
         position: absolute;
+        bottom: -2px;
+        right: -2px;
     }
 `;
 
