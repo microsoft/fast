@@ -8,7 +8,7 @@ import type { CaptureType } from '@microsoft/fast-element';
 import { composedContains } from '@microsoft/fast-element/utilities';
 import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
-import { CSSDirective } from '@microsoft/fast-element';
+import type { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -1993,7 +1993,7 @@ export interface FASTTextArea extends DelegatesARIATextbox {
 export class FASTTextField extends FormAssociatedTextField {
     autofocus: boolean;
     // (undocumented)
-    protected autofocusChanged(): void;
+    protected autofocusChanged(prev: boolean | undefined, next: boolean): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
@@ -2006,29 +2006,29 @@ export class FASTTextField extends FormAssociatedTextField {
     handleTextInput(): void;
     list: string;
     // (undocumented)
-    protected listChanged(): void;
-    maxlength: number;
+    protected listChanged(prev: string | undefined, next: string): void;
+    maxlength: number | null;
     // (undocumented)
-    protected maxlengthChanged(): void;
-    minlength: number;
+    protected maxlengthChanged(prev: number | null | undefined, next: number | null): void;
+    minlength: number | null;
     // (undocumented)
-    protected minlengthChanged(): void;
+    protected minlengthChanged(prev: number | null | undefined, next: number | null): void;
     pattern: string;
     // (undocumented)
-    protected patternChanged(): void;
+    protected patternChanged(prev: string | undefined, next: string): void;
     placeholder: string;
     // (undocumented)
-    protected placeholderChanged(): void;
+    protected placeholderChanged(prev: string | undefined, next: string): void;
     readOnly: boolean;
     // (undocumented)
-    protected readOnlyChanged(): void;
+    protected readOnlyChanged(prev: boolean | undefined, next: boolean): void;
     select(): void;
-    size: number;
+    size: number | null;
     // (undocumented)
-    protected sizeChanged(): void;
+    protected sizeChanged(prev: number | null | undefined, next: number | null): void;
     spellcheck: boolean;
     // (undocumented)
-    protected spellcheckChanged(): void;
+    protected spellcheckChanged(prev: boolean | undefined, next: boolean): void;
     type: TextFieldType;
     validate(): void;
 }
