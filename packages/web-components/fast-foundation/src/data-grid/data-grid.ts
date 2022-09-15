@@ -1,8 +1,4 @@
-import type {
-    RepeatBehavior,
-    SyntheticViewTemplate,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import type { SyntheticViewTemplate, ViewTemplate } from "@microsoft/fast-element";
 import {
     attr,
     bind,

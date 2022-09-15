@@ -1,27 +1,24 @@
+import type { CSSDirective, HostController, Subscriber } from "@microsoft/fast-element";
 import {
     cssDirective,
-    CSSDirective,
     FASTElement,
     HostBehavior,
-    HostController,
     Observable,
-    Subscriber,
     SubscriberSet,
 } from "@microsoft/fast-element";
 import { composedContains, composedParent } from "@microsoft/fast-element/utilities";
+import type {
+    DerivedDesignTokenValue,
+    DesignTokenChangeRecord as CoreDesignTokenChangeRecord,
+    DesignTokenResolver,
+    DesignTokenValue,
+} from "./core/design-token-node.js";
+import { DesignTokenMutationType, DesignTokenNode } from "./core/design-token-node.js";
 import {
     PropertyTarget,
     PropertyTargetManager,
     RootStyleSheetTarget,
 } from "./custom-property-manager.js";
-import {
-    DesignTokenChangeRecord as CoreDesignTokenChangeRecord,
-    DerivedDesignTokenValue,
-    DesignTokenMutationType,
-    DesignTokenNode,
-    DesignTokenResolver,
-    DesignTokenValue,
-} from "./core/design-token-node.js";
 
 /**
  * @public

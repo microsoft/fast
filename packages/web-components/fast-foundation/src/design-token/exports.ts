@@ -1,17 +1,16 @@
-export {
-    DesignToken,
-    CSSDesignToken,
-    DesignTokenConfiguration,
+export type {
+    DerivedDesignTokenValue,
+    DesignTokenMutationType,
+    DesignTokenResolver,
+    StaticDesignTokenValue,
+} from "./core/exports.js";
+export type { PropertyTarget } from "./custom-property-manager.js";
+export { DesignTokenStyleTarget } from "./design-token-style-target.js";
+export { DesignTokenEventResolutionStrategy } from "./event-strategy.js";
+export { CSSDesignToken, DesignToken } from "./fast-design-token.js";
+export type {
     CSSDesignTokenConfiguration,
     DesignTokenChangeRecord,
+    DesignTokenConfiguration,
     DesignTokenSubscriber,
 } from "./fast-design-token.js";
-export { DesignTokenEventResolutionStrategy } from "./event-strategy.js";
-export { PropertyTarget } from "./custom-property-manager.js";
-export { DesignTokenStyleTarget } from "./design-token-style-target.js";
-export type {
-    StaticDesignTokenValue,
-    DerivedDesignTokenValue,
-    DesignTokenResolver,
-    DesignTokenMutationType,
-} from "./core/exports.js";
