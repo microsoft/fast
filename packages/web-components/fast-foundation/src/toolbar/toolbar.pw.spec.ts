@@ -1,50 +1,68 @@
 import { Orientation } from "@microsoft/fast-web-utilities";
+import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 
 test.describe("Toolbar", () => {
-    test("should have a role of `toolbar`", async ({ page }) => {
+    let page: Page;
+    let element: Locator;
+
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
+
+        element = page.locator("fast-toolbar");
+
         await page.goto(fixtureURL("toolbar--toolbar"));
+    });
 
-        const element = page.locator("fast-toolbar");
-
+    test("should have a role of `toolbar`", async () => {
         await expect(element).toHaveAttribute("role", "toolbar");
     });
 
-    test("should have a default orientation of `horizontal`", async ({ page }) => {
-        await page.goto(fixtureURL("toolbar--toolbar"));
-
-        const element = page.locator("fast-toolbar");
-
+    test("should have a default orientation of `horizontal`", async () => {
         await expect(element).toHaveAttribute("orientation", Orientation.horizontal);
     });
 
-    test("should move focus to its first focusable element when it receives focus", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("toolbar--toolbar-button-focus-test"));
+    test("should move focus to its first focusable element when it receives focus", async () => {
+        await page.setContent(/* html */ `
+            <fast-toolbar>
+                <button>Button 1</button>
+                <button>Button 2</button>
+                <button>Button 3</button>
+                <button>Button 4</button>
+                <button>Button 5</button>
+                <button slot="start">Start Slot Button</button>
+                <button slot="end">End Slot Button</button>
+            </fast-toolbar>
+        `);
 
         const element = page.locator("fast-toolbar");
 
         const buttons = element.locator("button");
 
-        const startSlotButton = buttons.filter({ hasText: "Start Slot Button" });
+        const firstButton = buttons.filter({ hasText: "Start Slot Button" });
 
-        await page.keyboard.press("Tab");
+        await element.focus();
 
-        await expect(startSlotButton).toBeFocused();
+        await expect(firstButton).toBeFocused();
     });
 
-    test("should move focus to next element when keyboard incrementer is pressed", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("toolbar--toolbar-button-focus-test"));
-
-        const element = page.locator("fast-toolbar");
+    test("should move focus to next element when keyboard incrementer is pressed", async () => {
+        await page.setContent(/* html */ `
+            <fast-toolbar>
+                <button slot="start">Start Slot Button</button>
+                <button>Button 1</button>
+                <button>Button 2</button>
+                <button>Button 3</button>
+                <button>Button 4</button>
+                <button>Button 5</button>
+                <button slot="end">End Slot Button</button>
+            </fast-toolbar>
+        `);
 
         const buttons = element.locator("button");
 
-        await page.keyboard.press("Tab");
+        await element.focus();
 
         await expect(buttons.filter({ hasText: "Start Slot Button" })).toBeFocused();
 
@@ -73,12 +91,18 @@ test.describe("Toolbar", () => {
         await expect(buttons.filter({ hasText: "End Slot Button" })).toBeFocused();
     });
 
-    test("should skip disabled elements when keyboard incrementer is pressed", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("toolbar--toolbar-button-focus-test"));
-
-        const element = page.locator("fast-toolbar");
+    test("should skip disabled elements when keyboard incrementer is pressed", async () => {
+        await page.setContent(/* html */ `
+            <fast-toolbar>
+                <button slot="start">Start Slot Button</button>
+                <button>Button 1</button>
+                <button>Button 2</button>
+                <button>Button 3</button>
+                <button>Button 4</button>
+                <button>Button 5</button>
+                <button slot="end">End Slot Button</button>
+            </fast-toolbar>
+        `);
 
         const buttons = element.locator("button:not([slot])");
 
@@ -94,7 +118,7 @@ test.describe("Toolbar", () => {
 
         await buttons.nth(4).evaluate(node => node.setAttribute("disabled", ""));
 
-        await page.keyboard.press("Tab");
+        await element.focus();
 
         await expect(startSlotButton).toBeFocused();
 
@@ -111,12 +135,18 @@ test.describe("Toolbar", () => {
         await expect(endSlotButton).toBeFocused();
     });
 
-    test("should skip hidden elements when keyboard incrementer is pressed", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("toolbar--toolbar-button-focus-test"));
-
-        const element = page.locator("fast-toolbar");
+    test("should skip hidden elements when keyboard incrementer is pressed", async () => {
+        await page.setContent(/* html */ `
+            <fast-toolbar>
+                <button slot="start">Start Slot Button</button>
+                <button>Button 1</button>
+                <button>Button 2</button>
+                <button>Button 3</button>
+                <button>Button 4</button>
+                <button>Button 5</button>
+                <button slot="end">End Slot Button</button>
+            </fast-toolbar>
+        `);
 
         const buttons = element.locator("button:not([slot])");
 
@@ -132,7 +162,7 @@ test.describe("Toolbar", () => {
 
         await buttons.nth(4).evaluate(node => node.setAttribute("hidden", ""));
 
-        await page.keyboard.press("Tab");
+        await element.focus();
 
         await expect(startSlotButton).toBeFocused();
 
@@ -149,21 +179,12 @@ test.describe("Toolbar", () => {
         await expect(endSlotButton).toBeFocused();
     });
 
-    test("should move focus to next element when keyboard incrementer is pressed and start slot content is added after connect", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("debug--blank"));
-
-        const element = page.locator("fast-toolbar");
+    test("should move focus to next element when keyboard incrementer is pressed and start slot content is added after connect", async () => {
+        await page.setContent(/* html */ `<fast-toolbar></fast-toolbar>`);
 
         const button1 = element.locator("button", { hasText: "Button 1" });
 
         const button2 = element.locator("button", { hasText: "Button 2" });
-
-        await page.evaluate(() => {
-            const toolbar = document.createElement("fast-toolbar");
-            document.getElementById("root")?.append(toolbar);
-        });
 
         await element.evaluate(node => {
             const button = document.createElement("button");
@@ -179,7 +200,7 @@ test.describe("Toolbar", () => {
             node.append(button);
         });
 
-        await page.keyboard.press("Tab");
+        await element.focus();
 
         await expect(button1).toBeFocused();
 
@@ -188,23 +209,14 @@ test.describe("Toolbar", () => {
         await expect(button2).toBeFocused();
     });
 
-    test("should move focus to next element when keyboard incrementer is pressed and end slot content is added after connect", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("debug--blank"));
-
-        const element = page.locator("fast-toolbar");
+    test("should move focus to next element when keyboard incrementer is pressed and end slot content is added after connect", async () => {
+        await page.setContent(/* html */ `<fast-toolbar></fast-toolbar>`);
 
         const endSlotButton = element.locator("button", {
             hasText: "End Slot Button",
         });
 
         const button1 = element.locator("button", { hasText: "Button 1" });
-
-        await page.evaluate(() => {
-            const toolbar = document.createElement("fast-toolbar");
-            document.getElementById("root")?.append(toolbar);
-        });
 
         await element.evaluate(node => {
             const button = document.createElement("button");
@@ -219,7 +231,7 @@ test.describe("Toolbar", () => {
             node.append(endSlotButton);
         });
 
-        await page.keyboard.press("Tab");
+        await element.focus();
 
         await expect(button1).toBeFocused();
 
@@ -228,12 +240,18 @@ test.describe("Toolbar", () => {
         await expect(endSlotButton).toBeFocused();
     });
 
-    test("should maintain correct activeIndex when the set of focusable children changes", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("toolbar--toolbar-button-focus-test"));
-
-        const element = page.locator("fast-toolbar");
+    test("should maintain correct activeIndex when the set of focusable children changes", async () => {
+        await page.setContent(/* html */ `
+            <fast-toolbar>
+                <button slot="start">Start Slot Button</button>
+                <button>Button 1</button>
+                <button>Button 2</button>
+                <button>Button 3</button>
+                <button>Button 4</button>
+                <button>Button 5</button>
+                <button slot="end">End Slot Button</button>
+            </fast-toolbar>
+        `);
 
         const button1 = element.locator("button", { hasText: "Button 1" });
 
@@ -243,7 +261,7 @@ test.describe("Toolbar", () => {
             hasText: "Start Slot Button",
         });
 
-        await page.keyboard.press("Tab");
+        await element.focus();
 
         await expect(startSlotButton).toBeFocused();
 
@@ -264,12 +282,18 @@ test.describe("Toolbar", () => {
         await expect(element).toHaveJSProperty("activeIndex", 1);
     });
 
-    test("should reset activeIndex to 0 when the focused item is no longer focusable", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("toolbar--toolbar-button-focus-test"));
-
-        const element = page.locator("fast-toolbar");
+    test("should reset activeIndex to 0 when the focused item is no longer focusable", async () => {
+        await page.setContent(/* html */ `
+            <fast-toolbar>
+                <button slot="start">Start Slot Button</button>
+                <button>Button 1</button>
+                <button>Button 2</button>
+                <button>Button 3</button>
+                <button>Button 4</button>
+                <button>Button 5</button>
+                <button slot="end">End Slot Button</button>
+            </fast-toolbar>
+        `);
 
         const button1 = element.locator("button", { hasText: "Button 1" });
 
@@ -277,7 +301,7 @@ test.describe("Toolbar", () => {
             hasText: "Start Slot Button",
         });
 
-        await page.keyboard.press("Tab");
+        await element.focus();
 
         await expect(startSlotButton).toBeFocused();
 
@@ -293,10 +317,7 @@ test.describe("Toolbar", () => {
             node.disabled = true;
         });
 
-        // Firefox does not remove focus from the element when it is disabled.
-        await page.click("body", { position: { x: 0, y: 0 } });
-
-        await page.keyboard.press("Tab");
+        await element.focus();
 
         await expect(startSlotButton).toBeFocused();
 
