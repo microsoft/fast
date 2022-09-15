@@ -51,7 +51,9 @@ test.describe("Menu", () => {
             </fast-menu>
         `);
 
-        await expect(menuItems.first()).toHaveClass(/indent-0/);
+        const firstMenuItem = menuItems.first();
+
+        await expect(firstMenuItem).toHaveClass(/indent-0/);
     });
 
     test("should NOT set any `tabindex` on non-menu-item elements", async () => {
@@ -161,6 +163,7 @@ test.describe("Menu", () => {
     });
 
     test("should set class on menu items to 0 columns when non fast-menu-item is present", async () => {
+        test.slow();
         await page.setContent(/* html */ `
             <fast-menu>
                 <fast-menu-item>Menu item</fast-menu-item>

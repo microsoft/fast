@@ -207,11 +207,11 @@ export class FASTMenu extends FASTElement {
         const role = el.getAttribute("role");
         const startSlot = el.querySelector("[slot=start]");
 
-        if (role !== MenuItemRole.menuitem) {
-            return startSlot === null ? 1 : 2;
-        } else {
-            return startSlot === null ? 0 : 1;
+        if (role && role !== MenuItemRole.menuitem) {
+            return !startSlot ? 1 : 2;
         }
+
+        return !startSlot ? 0 : 1;
     }
 
     private setItems(): void {
