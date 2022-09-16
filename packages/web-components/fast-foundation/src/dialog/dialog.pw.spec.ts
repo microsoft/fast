@@ -26,7 +26,7 @@ test.describe("Dialog", () => {
     });
 
     test("should include a role of `dialog` on the control", async () => {
-        await expect(control).toHaveClass("control");
+        await expect(control).toHaveClass(/control/);
     });
 
     test('should set the `tabindex` attribute on the control to "-1" by default', async () => {

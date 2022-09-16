@@ -46,13 +46,13 @@ test.describe("ListboxOption", () => {
             <fast-option disabled></fast-option>
         `);
 
-        await expect(element).toHaveClass("disabled");
+        await expect(element).toHaveClass(/disabled/);
 
         await element.evaluate((node: FASTListboxOption) => {
             node.disabled = false;
         });
 
-        await expect(element).not.toHaveClass("disabled");
+        await expect(element).not.toHaveClass(/disabled/);
     });
 
     test("should set the `aria-selected` attribute when selected", async () => {
@@ -74,13 +74,13 @@ test.describe("ListboxOption", () => {
             <fast-option selected></fast-option>
         `);
 
-        await expect(element).toHaveClass("selected");
+        await expect(element).toHaveClass(/selected/);
 
         await element.evaluate((node: FASTListboxOption) => {
             node.selected = false;
         });
 
-        await expect(element).not.toHaveClass("selected");
+        await expect(element).not.toHaveClass(/selected/);
     });
 
     test("should set the `aria-checked` attribute when checked", async () => {
@@ -108,19 +108,19 @@ test.describe("ListboxOption", () => {
             <fast-option></fast-option>
         `);
 
-        await expect(element).not.toHaveClass("checked");
+        await expect(element).not.toHaveClass(/checked/);
 
         await element.evaluate((node: FASTListboxOption) => {
             node.checked = true;
         });
 
-        await expect(element).toHaveClass("checked");
+        await expect(element).toHaveClass(/checked/);
 
         await element.evaluate((node: FASTListboxOption) => {
             node.checked = false;
         });
 
-        await expect(element).not.toHaveClass("checked");
+        await expect(element).not.toHaveClass(/checked/);
     });
 
     test("should have an empty string `value` when the `value` attribute exists and is empty", async () => {
