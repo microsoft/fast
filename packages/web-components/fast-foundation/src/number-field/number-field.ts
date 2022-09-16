@@ -5,7 +5,7 @@ import {
     SyntheticViewTemplate,
     Updates,
 } from "@microsoft/fast-element";
-import { keyArrowDown, keyArrowUp, limit } from "@microsoft/fast-web-utilities";
+import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { DelegatesARIATextbox } from "../text-field/text-field.js";
@@ -141,11 +141,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public maxChanged(previous: number, next: number): void {
-        const max = Math.max(next, this.min ?? next);
-        if (this.max !== max) {
-            this.max = max;
-            return;
-        }
+        this.max = Math.max(next, this.min ?? next);
         const min = Math.min(this.min, this.max);
         if (this.min !== undefined && this.min !== min) {
             this.min = min;
@@ -228,7 +224,6 @@ export class FASTNumberField extends FormAssociatedNumberField {
 
         if (this.$fastController.isConnected && this.control?.value !== value) {
             this.control.value = this.value;
-            ``;
         }
 
         super.valueChanged(previous, this.value);
@@ -253,21 +248,15 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     private getValidValue(value: string): string {
-        const numberValue = parseFloat(parseFloat(value).toPrecision(12));
-
-        if (isNaN(numberValue)) {
-            return "";
+        let validValue: number | string = parseFloat(parseFloat(value).toPrecision(12));
+        if (isNaN(validValue)) {
+            validValue = "";
+        } else {
+            validValue = Math.min(validValue, this.max ?? validValue);
+            validValue = Math.max(validValue, this.min ?? validValue).toString();
         }
 
-        if (this.min !== undefined && numberValue < this.min) {
-            return this.min.toString();
-        }
-
-        if (this.max !== undefined && numberValue > this.max) {
-            return this.max.toString();
-        }
-
-        return numberValue.toString();
+        return validValue;
     }
 
     /**
