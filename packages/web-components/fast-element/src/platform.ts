@@ -100,3 +100,31 @@ export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRe
         },
     });
 }
+
+/**
+ * Creates a function capable of locating metadata associated with a type.
+ * @returns A metadata locator function.
+ * @internal
+ */
+export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[] {
+    const metadataLookup = new WeakMap<any, TMetadata[]>();
+
+    return function(target: {}): TMetadata[] {
+        let metadata = metadataLookup.get(target);
+
+        if (metadata === void 0) {
+            let currentTarget = Reflect.getPrototypeOf(target);
+
+            while (metadata === void 0 && currentTarget !== null) {
+                metadata = metadataLookup.get(currentTarget);
+                currentTarget = Reflect.getPrototypeOf(currentTarget);
+            }
+
+            metadata = metadata === void 0 ? [] : metadata.slice(0);
+
+            metadataLookup.set(target, metadata);
+        }
+
+        return metadata;
+    }
+}
