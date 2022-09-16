@@ -26,7 +26,7 @@ export interface NodeBehaviorOptions<T = any> {
  *
  * @public
  */
-export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
+export type ElementsFilter = (value: Node, index?: number, array?: Node[]) => boolean;
 
 const selectElements = (value: Node): boolean => value.nodeType === 1;
 
