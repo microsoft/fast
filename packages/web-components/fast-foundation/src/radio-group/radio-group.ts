@@ -114,9 +114,6 @@ export class FASTRadioGroup extends FASTElement {
     public orientation: Orientation = Orientation.horizontal;
 
     @observable
-    positioningRegion: HTMLDivElement;
-
-    @observable
     public childItems: HTMLElement[];
 
     /**

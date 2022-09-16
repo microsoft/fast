@@ -25,7 +25,6 @@ export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTempl
             <div
                 class="positioning-region ${x => x.orientation}"
                 part="positioning-region"
-                ${ref("positioningRegion")}
             >
                 <slot
                     ${slotted({

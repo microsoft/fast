@@ -65,15 +65,14 @@ export const myRadioGroup = RadioGroup.compose({
 
 #### Fields
 
-| Name                | Privacy | Type             | Default | Description                                                                                                                                                                                      | Inherited From |
-| ------------------- | ------- | ---------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
-| `readOnly`          | public  | `boolean`        |         | When true, the child radios will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                |
-| `disabled`          | public  | `boolean`        |         | Disables the radio group and child radios.                                                                                                                                                       |                |
-| `name`              | public  | `string`         |         | The name of the radio group. Setting this value will set the name value for all child radio elements.                                                                                            |                |
-| `value`             | public  | `string`         |         | The value of the checked radio                                                                                                                                                                   |                |
-| `orientation`       | public  | `Orientation`    |         | The orientation of the group                                                                                                                                                                     |                |
-| `positioningRegion` |         | `HTMLDivElement` |         |                                                                                                                                                                                                  |                |
-| `childItems`        | public  | `HTMLElement[]`  |         |                                                                                                                                                                                                  |                |
+| Name          | Privacy | Type            | Default | Description                                                                                                                                                                                      | Inherited From |
+| ------------- | ------- | --------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
+| `readOnly`    | public  | `boolean`       |         | When true, the child radios will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                |
+| `disabled`    | public  | `boolean`       |         | Disables the radio group and child radios.                                                                                                                                                       |                |
+| `name`        | public  | `string`        |         | The name of the radio group. Setting this value will set the name value for all child radio elements.                                                                                            |                |
+| `value`       | public  | `string`        |         | The value of the checked radio                                                                                                                                                                   |                |
+| `orientation` | public  | `Orientation`   |         | The orientation of the group                                                                                                                                                                     |                |
+| `childItems`  | public  | `HTMLElement[]` |         |                                                                                                                                                                                                  |                |
 
 #### Methods
 
