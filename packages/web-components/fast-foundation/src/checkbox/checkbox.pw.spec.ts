@@ -54,13 +54,9 @@ test.describe("Checkbox", () => {
             <fast-checkbox checked></fast-checkbox>
         `);
 
-        await element.evaluate((node: FASTCheckbox) => {
-            node.checked = true;
-        });
-
         await expect(element).toHaveAttribute("aria-checked", "true");
 
-        await expect(element).toHaveClass("checked");
+        await expect(element).toHaveClass(/checked/);
 
         await element.evaluate((node: FASTCheckbox) => {
             node.checked = false;
@@ -68,7 +64,7 @@ test.describe("Checkbox", () => {
 
         await expect(element).toHaveAttribute("aria-checked", "false");
 
-        await expect(element).not.toHaveClass("checked");
+        await expect(element).not.toHaveClass(/checked/);
     });
 
     test("should NOT set a default `aria-required` value when `required` is not defined", async () => {
