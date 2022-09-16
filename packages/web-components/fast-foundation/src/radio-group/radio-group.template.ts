@@ -1,10 +1,4 @@
-import {
-    elements,
-    ElementViewTemplate,
-    html,
-    ref,
-    slotted,
-} from "@microsoft/fast-element";
+import { elements, ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
 import type { FASTRadioGroup } from "./radio-group.js";
 
 /**
