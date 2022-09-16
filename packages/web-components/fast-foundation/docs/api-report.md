@@ -20,6 +20,7 @@ import { HostController } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { RepeatBehavior } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
+import { ViewBehaviorOrchestrator } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
@@ -306,6 +307,9 @@ export { composedParent }
 
 // @beta
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
+
+// @beta
+export type ConstructableVirtualizing = Constructable<HTMLElement & FASTElement>;
 
 // @public (undocumented)
 export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
@@ -978,6 +982,8 @@ export interface FASTCombobox extends StartEnd, DelegatesARIACombobox {
 // @public
 export class FASTDataGrid extends FASTElement {
     constructor();
+    // (undocumented)
+    protected behaviorOrchestrator: ViewBehaviorOrchestrator | null;
     cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // (undocumented)
@@ -1024,8 +1030,6 @@ export class FASTDataGrid extends FASTElement {
     protected rowsDataChanged(): void;
     // (undocumented)
     protected rowsPlaceholder: Node | null;
-    // (undocumented)
-    protected rowsRepeatBehavior: RepeatBehavior | null;
     // (undocumented)
     protected updateRowIndexes(): void;
 }
@@ -2425,6 +2429,9 @@ export function isListboxOption(el: Element): el is FASTListboxOption;
 
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
+
+// @public
+export type ItemLoadMode = "idle" | "immediate";
 
 // @public
 export const lightModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;

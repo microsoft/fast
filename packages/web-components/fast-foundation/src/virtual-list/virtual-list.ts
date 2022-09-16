@@ -1,9 +1,11 @@
 import {
     attr,
+    bind,
     FASTElement,
     observable,
     RepeatBehavior,
     RepeatDirective,
+    ViewBehaviorOrchestrator,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
@@ -91,6 +93,8 @@ export class FASTVirtualList extends VirtualList {
     // the placeholder element used by the repeat behavior
     protected itemsPlaceholder: Node;
 
+    private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
+
     /**
      * @internal
      */
@@ -120,27 +124,28 @@ export class FASTVirtualList extends VirtualList {
             return;
         }
 
-        if (this.itemsRepeatBehavior) {
-            this.clearRepeatBehavior();
+        // if (this.itemsRepeatBehavior) {
+        //     this.clearRepeatBehavior();
+        // }
+
+        if (this.behaviorOrchestrator === null) {
+            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
+            this.$fastController.addBehavior(this.behaviorOrchestrator);
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective<FASTVirtualList>(
+                    bind(x => x.renderItems, false),
+                    bind(x => x.itemTemplate, false),
+                    { positioning: true }
+                ),
+                this.appendChild((this.itemsPlaceholder = document.createComment("")))
+            );
         }
-
-        const itemsRepeatDirective = new RepeatDirective(
-            x => x.renderItems,
-            x => x.itemTemplate,
-            { positioning: true, recycle: this.recycle }
-        );
-        this.itemsRepeatBehavior = itemsRepeatDirective.createBehavior({
-            [itemsRepeatDirective.nodeId]: this.itemsPlaceholder,
-        });
-
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
     }
 
     protected clearRepeatBehavior(): void {
-        if (!this.itemsRepeatBehavior) {
-            return;
-        }
-        this.itemsRepeatBehavior.unbind();
+        // if (!this.itemsRepeatBehavior) {
+        //     return;
+        // }
+        // this.itemsRepeatBehavior.unbind();
     }
 }

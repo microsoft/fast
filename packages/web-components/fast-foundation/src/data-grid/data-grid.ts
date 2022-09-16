@@ -307,8 +307,8 @@ export class FASTDataGrid extends FASTElement {
     @observable
     public rowElements: HTMLElement[];
 
-    private rowsPlaceholder: Node | null = null;
-    private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
+    protected rowsPlaceholder: Node | null = null;
+    protected behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
 
     private generatedHeader: FASTDataGridRow | null = null;
 
@@ -338,19 +338,6 @@ export class FASTDataGrid extends FASTElement {
 
         this.initializeRepeatBehavior();
 
-        if (this.behaviorOrchestrator === null) {
-            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
-            this.$fastController.addBehavior(this.behaviorOrchestrator);
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<FASTDataGrid>(
-                    bind(x => x.rowsData, false),
-                    bind(x => x.rowItemTemplate, false),
-                    { positioning: true }
-                ),
-                this.appendChild((this.rowsPlaceholder = document.createComment("")))
-            );
-        }
-
         this.toggleGeneratedHeader();
         this.addEventListener("row-focused", this.handleRowFocus);
         this.addEventListener(eventFocus, this.handleFocus);
@@ -372,19 +359,18 @@ export class FASTDataGrid extends FASTElement {
      * @internal
      */
     protected initializeRepeatBehavior(): void {
-        this.rowsPlaceholder = document.createComment("");
-        this.appendChild(this.rowsPlaceholder);
-        const rowsRepeatDirective = new RepeatDirective(
-            x => x.rowsData,
-            x => x.rowItemTemplate,
-            { positioning: true }
-        );
-        this.rowsRepeatBehavior = rowsRepeatDirective.createBehavior({
-            [rowsRepeatDirective.nodeId]: this.rowsPlaceholder,
-        });
-
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
+        if (this.behaviorOrchestrator === null) {
+            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
+            this.$fastController.addBehavior(this.behaviorOrchestrator);
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective<FASTDataGrid>(
+                    bind(x => x.rowsData, false),
+                    bind(x => x.rowItemTemplate, false),
+                    { positioning: true }
+                ),
+                this.appendChild((this.rowsPlaceholder = document.createComment("")))
+            );
+        }
     }
 
     /**

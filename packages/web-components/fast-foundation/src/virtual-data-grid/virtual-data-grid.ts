@@ -1,11 +1,13 @@
 import {
     attr,
+    bind,
     FASTElement,
     nullableNumberConverter,
     observable,
     RepeatBehavior,
     RepeatDirective,
     Updates,
+    ViewBehaviorOrchestrator,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { FASTDataGrid, FASTDataGridRow } from "../data-grid/index.js";
@@ -52,19 +54,31 @@ export class FASTVirtualDataGrid extends VirtualDataGrid {
      * @internal
      */
     protected initializeRepeatBehavior(): void {
-        this.rowsPlaceholder = document.createComment("");
-        this.appendChild(this.rowsPlaceholder);
-        const rowsRepeatDirective = new RepeatDirective(
-            x => x.renderItems,
-            x => x.rowItemTemplate,
-            { positioning: true }
-        );
-        this.rowsRepeatBehavior = rowsRepeatDirective.createBehavior({
-            [rowsRepeatDirective.nodeId]: this.rowsPlaceholder,
-        });
+        if (this.behaviorOrchestrator === null) {
+            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
+            this.$fastController.addBehavior(this.behaviorOrchestrator);
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective<FASTVirtualDataGrid>(
+                    bind(x => x.renderItems, false),
+                    bind(x => x.rowItemTemplate, false),
+                    { positioning: true }
+                ),
+                this.appendChild((this.rowsPlaceholder = document.createComment("")))
+            );
+        }
+        // this.rowsPlaceholder = document.createComment("");
+        // this.appendChild(this.rowsPlaceholder);
+        // const rowsRepeatDirective = new RepeatDirective(
+        //     x => x.renderItems,
+        //     x => x.rowItemTemplate,
+        //     { positioning: true }
+        // );
+        // this.rowsRepeatBehavior = rowsRepeatDirective.createBehavior({
+        //     [rowsRepeatDirective.nodeId]: this.rowsPlaceholder,
+        // });
 
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
+        // /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+        // this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
     }
 
     protected updateRowIndexes(): void {
