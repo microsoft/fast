@@ -59,7 +59,7 @@ export const AttributeConfiguration = Object.freeze({
     /**
      * Locates all attribute configurations associated with a type.
      */
-    locate: createMetadataLocator<AttributeConfiguration>()
+    locate: createMetadataLocator<AttributeConfiguration>(),
 });
 
 /**
@@ -335,9 +335,7 @@ export function attr(
             config.property = $prop;
         }
 
-        AttributeConfiguration
-            .locate($target.constructor)
-            .push(config);
+        AttributeConfiguration.locate($target.constructor).push(config);
     }
 
     if (arguments.length > 1) {

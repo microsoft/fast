@@ -109,7 +109,7 @@ export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRe
 export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[] {
     const metadataLookup = new WeakMap<any, TMetadata[]>();
 
-    return function(target: {}): TMetadata[] {
+    return function (target: {}): TMetadata[] {
         let metadata = metadataLookup.get(target);
 
         if (metadata === void 0) {
@@ -126,5 +126,5 @@ export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[] 
         }
 
         return metadata;
-    }
+    };
 }
