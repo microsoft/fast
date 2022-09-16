@@ -58,7 +58,12 @@ export class FASTTreeItem extends FASTElement {
     public expanded: boolean = false;
     protected expandedChanged(prev: boolean | undefined, next: boolean): void {
         if (this.$fastController.isConnected) {
-            this.ariaExpanded = next && this.childItems.length ? "true" : "false";
+            this.ariaExpanded = this.childItems?.length
+                ? next
+                    ? "true"
+                    : "false"
+                : null;
+
             this.$emit("expanded-change", this);
         }
     }

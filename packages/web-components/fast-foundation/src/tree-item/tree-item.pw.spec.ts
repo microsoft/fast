@@ -39,6 +39,12 @@ test.describe("TreeItem", () => {
         });
 
         await expect(element.first()).toHaveAttribute("aria-expanded", "true");
+
+        await element.first().evaluate<void, FASTTreeItem>(node => {
+            node.expanded = false;
+        });
+
+        await expect(element.first()).toHaveAttribute("aria-expanded", "false");
     });
 
     test("should NOT set the `aria-expanded` attribute when the tree item has no children", async () => {
@@ -53,6 +59,12 @@ test.describe("TreeItem", () => {
         await page.setContent(/* html */ `
             <fast-tree-item expanded></fast-tree-item>
         `);
+
+        await expect(element).not.hasAttribute("aria-expanded");
+
+        await element.evaluate<void, FASTTreeItem>(node => {
+            node.expanded = true;
+        });
 
         await expect(element).not.hasAttribute("aria-expanded");
     });
