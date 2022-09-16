@@ -11,7 +11,11 @@ export function textFieldTemplate<T extends FASTTextField>(
     options: TextFieldOptions = {}
 ): ElementViewTemplate<T> {
     return html<T>`
-        <template class="${x => (x.readOnly ? "readonly" : "")}">
+        <template
+            class="
+            ${x => (x.readOnly ? "readonly" : "")}
+        "
+        >
             <label
                 part="label"
                 for="control"
