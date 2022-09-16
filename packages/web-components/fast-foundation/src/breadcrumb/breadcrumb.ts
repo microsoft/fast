@@ -1,8 +1,5 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
-import {
-    FASTBreadcrumbItem,
-    isBreadcrumbItem,
-} from "../breadcrumb-item/breadcrumb-item.js";
+import { FASTBreadcrumbItem } from "../breadcrumb-item/breadcrumb-item.js";
 
 /**
  * A Breadcrumb Custom HTML Element.
@@ -17,37 +14,27 @@ export class FASTBreadcrumb extends FASTElement {
      */
     @observable
     public slottedBreadcrumbItems: HTMLElement[];
-    protected slottedBreadcrumbItemsChanged(
-        prev: Element[] | undefined,
-        next: Element[] | undefined
-    ) {
-        next = Array.from(this.children).filter(
-            FASTBreadcrumb.slottedBreadcrumbItemFilter
-        );
+    protected slottedBreadcrumbItemsChanged() {
+        if (this.$fastController.isConnected) {
+            if (
+                this.slottedBreadcrumbItems === undefined ||
+                this.slottedBreadcrumbItems.length === 0
+            ) {
+                return;
+            }
 
-        if (!next?.length) {
-            return;
+            const lastNode: HTMLElement = this.slottedBreadcrumbItems[
+                this.slottedBreadcrumbItems.length - 1
+            ];
+
+            this.slottedBreadcrumbItems.forEach((item: HTMLElement) => {
+                const itemIsLastNode: boolean = item === lastNode;
+
+                this.setItemSeparator(item, itemIsLastNode);
+                this.setAriaCurrent(item, itemIsLastNode);
+            });
         }
-
-        const lastNode = next[next.length - 1];
-
-        next.forEach((item: HTMLElement) => {
-            const itemIsLastNode = item === lastNode;
-
-            this.setItemSeparator(item, itemIsLastNode);
-            this.setAriaCurrent(item, itemIsLastNode);
-        });
     }
-
-    /**
-     * A filter to determine if an element is a breadcrumb item.
-     *
-     * @param n - the node to test
-     * @returns true if the node is a breadcrumb item, false otherwise
-     * @public
-     */
-    public static slottedBreadcrumbItemFilter = (n: HTMLElement) =>
-        isBreadcrumbItem(n) && !n.hidden;
 
     private setItemSeparator(item: HTMLElement, isLastNode: boolean): void {
         if (item instanceof FASTBreadcrumbItem) {

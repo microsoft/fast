@@ -1,5 +1,4 @@
 import { observable, SyntheticViewTemplate } from "@microsoft/fast-element";
-import { isHTMLElement } from "@microsoft/fast-web-utilities";
 import { DelegatesARIALink, FASTAnchor } from "../anchor/anchor.js";
 import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
@@ -17,16 +16,6 @@ import { applyMixins } from "../utilities/apply-mixins.js";
 export type BreadcrumbItemOptions = StartEndOptions & {
     separator?: string | SyntheticViewTemplate;
 };
-
-/**
- * Determines if the element is a {@link (FASTBreadcrumbItem:class)}.
- *
- * @param element - the element to test.
- * @public
- */
-export function isBreadcrumbItem(element: Element): element is FASTBreadcrumbItem {
-    return isHTMLElement(element) && element instanceof FASTBreadcrumbItem;
-}
 
 /**
  * A Breadcrumb Item Custom HTML Element.
