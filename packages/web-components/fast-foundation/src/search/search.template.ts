@@ -16,9 +16,9 @@ export function searchTemplate<T extends FASTSearch>(
                 part="label"
                 for="control"
                 class="${x =>
-                    ["label", !x.defaultSlottedNodes?.length && "label__hidden"]
-                        .filter(Boolean)
-                        .join(" ")}"
+                    x.defaultSlottedNodes && x.defaultSlottedNodes.length
+                        ? "label"
+                        : "label label__hidden"}"
             >
                 <slot
                     ${slotted({
