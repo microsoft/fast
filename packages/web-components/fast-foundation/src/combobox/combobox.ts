@@ -97,7 +97,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
         this.setDefaultSelectedOption();
 
         if (!this.firstSelectedOption) {
-            this.resetValue();
+            this.value = this.initialValue ?? "";
             return;
         }
 
@@ -572,7 +572,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
     public setDefaultSelectedOption(): void {
         if (this.$fastController.isConnected && this.options) {
             const selectedIndex = this.options.findIndex(
-                el => el.hasAttribute("selected") || el.selected
+                el => el.getAttribute("selected") !== null || el.selected
             );
 
             this.selectedIndex = selectedIndex;
@@ -677,15 +677,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
         if (shouldEmit) {
             this.$emit("change");
         }
-    }
-
-    /**
-     * Resets the value to the initial value.
-     *
-     * @internal
-     */
-    private resetValue() {
-        this.value = this.initialValue ?? "";
     }
 
     /**
