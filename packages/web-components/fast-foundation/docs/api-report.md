@@ -792,11 +792,10 @@ export class FASTBaseProgress extends FASTElement {
 
 // @public
 export class FASTBreadcrumb extends FASTElement {
-    static slottedBreadcrumbItemFilter: (n: HTMLElement) => boolean;
     // @internal (undocumented)
     slottedBreadcrumbItems: HTMLElement[];
     // (undocumented)
-    protected slottedBreadcrumbItemsChanged(prev: Element[] | undefined, next: Element[] | undefined): void;
+    protected slottedBreadcrumbItemsChanged(): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1649,7 +1648,7 @@ export class FASTRadioGroup extends FASTElement {
     name: string;
     // (undocumented)
     protected nameChanged(): void;
-    orientation: Orientation;
+    orientation: Orientation | "horizontal" | "vertical";
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;
@@ -1991,7 +1990,7 @@ export interface FASTTextArea extends DelegatesARIATextbox {
 export class FASTTextField extends FormAssociatedTextField {
     autofocus: boolean;
     // (undocumented)
-    protected autofocusChanged(prev: boolean | undefined, next: boolean): void;
+    protected autofocusChanged(): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
@@ -2004,29 +2003,29 @@ export class FASTTextField extends FormAssociatedTextField {
     handleTextInput(): void;
     list: string;
     // (undocumented)
-    protected listChanged(prev: string | undefined, next: string): void;
-    maxlength: number | null;
+    protected listChanged(): void;
+    maxlength: number;
     // (undocumented)
-    protected maxlengthChanged(prev: number | null | undefined, next: number | null): void;
-    minlength: number | null;
+    protected maxlengthChanged(): void;
+    minlength: number;
     // (undocumented)
-    protected minlengthChanged(prev: number | null | undefined, next: number | null): void;
+    protected minlengthChanged(): void;
     pattern: string;
     // (undocumented)
-    protected patternChanged(prev: string | undefined, next: string): void;
+    protected patternChanged(): void;
     placeholder: string;
     // (undocumented)
-    protected placeholderChanged(prev: string | undefined, next: string): void;
+    protected placeholderChanged(): void;
     readOnly: boolean;
     // (undocumented)
-    protected readOnlyChanged(prev: boolean | undefined, next: boolean): void;
+    protected readOnlyChanged(): void;
     select(): void;
-    size: number | null;
+    size: number;
     // (undocumented)
-    protected sizeChanged(prev: number | null | undefined, next: number | null): void;
+    protected sizeChanged(): void;
     spellcheck: boolean;
     // (undocumented)
-    protected spellcheckChanged(prev: boolean | undefined, next: boolean): void;
+    protected spellcheckChanged(): void;
     type: TextFieldType;
     validate(): void;
 }
@@ -2129,6 +2128,8 @@ export class FASTTooltip extends FASTElement {
 //
 // @public
 export class FASTTreeItem extends FASTElement {
+    // @internal
+    childItemLength(): number;
     // @internal (undocumented)
     childItems: HTMLElement[];
     disabled: boolean;
@@ -2145,14 +2146,14 @@ export class FASTTreeItem extends FASTElement {
     // @internal
     handleBlur: (e: FocusEvent) => void;
     // @internal
-    handleExpandCollapseButtonClick: (e: MouseEvent) => boolean | void;
+    handleExpandCollapseButtonClick: (e: MouseEvent) => void;
     // @internal
     handleFocus: (e: FocusEvent) => void;
     readonly isNestedItem: () => boolean;
     // @internal
     items: HTMLElement[];
     // (undocumented)
-    protected itemsChanged(prev: HTMLElement[] | undefined, next: HTMLElement[]): void;
+    protected itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void;
     // @internal
     nested: boolean;
     selected: boolean;
@@ -2355,13 +2356,10 @@ export type HorizontalScrollView = typeof HorizontalScrollView[keyof typeof Hori
 export function interactiveCalendarGridTemplate<T extends FASTCalendar>(options: CalendarOptions, todayString: string): ViewTemplate<T>;
 
 // @public
-export function isBreadcrumbItem(element: Element): element is FASTBreadcrumbItem;
-
-// @public
 export function isListboxOption(el: Element): el is FASTListboxOption;
 
 // @public
-export function isTreeItemElement(el: Element): el is FASTTreeItem;
+export function isTreeItemElement(el: Element): el is HTMLElement;
 
 // @public
 export const lightModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;

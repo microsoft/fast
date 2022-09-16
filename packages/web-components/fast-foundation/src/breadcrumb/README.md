@@ -108,17 +108,11 @@ This component is built with the expectation that focus is delegated to the anch
 | ------------- | ------ | ----------------------- |
 | `FASTElement` |        | @microsoft/fast-element |
 
-#### Static Fields
-
-| Name                          | Privacy | Type | Default | Description                                               | Inherited From |
-| ----------------------------- | ------- | ---- | ------- | --------------------------------------------------------- | -------------- |
-| `slottedBreadcrumbItemFilter` | public  |      |         | A filter to determine if an element is a breadcrumb item. |                |
-
 #### Methods
 
-| Name                            | Privacy   | Description | Parameters                                                   | Return | Inherited From |
-| ------------------------------- | --------- | ----------- | ------------------------------------------------------------ | ------ | -------------- |
-| `slottedBreadcrumbItemsChanged` | protected |             | `prev: Element[] or undefined, next: Element[] or undefined` |        |                |
+| Name                            | Privacy   | Description | Parameters | Return | Inherited From |
+| ------------------------------- | --------- | ----------- | ---------- | ------ | -------------- |
+| `slottedBreadcrumbItemsChanged` | protected |             |            |        |                |
 
 #### CSS Parts
 
@@ -170,14 +164,6 @@ This component is built with the expectation that focus is delegated to the anch
 | `rel`            | rel            | FASTAnchor     |
 | `target`         | target         | FASTAnchor     |
 | `type`           | type           | FASTAnchor     |
-
-<hr/>
-
-### Functions
-
-| Name               | Description                                                | Parameters         | Return                          |
-| ------------------ | ---------------------------------------------------------- | ------------------ | ------------------------------- |
-| `isBreadcrumbItem` | Determines if the element is a (FASTBreadcrumbItem:class). | `element: Element` | `element is FASTBreadcrumbItem` |
 
 <hr/>
 

@@ -57,12 +57,12 @@ export class FASTTreeItem extends TreeItem {}
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters                                              | Return | Inherited From |
-| ----------------- | --------- | ----------- | ------------------------------------------------------- | ------ | -------------- |
-| `expandedChanged` | protected |             | `prev: boolean or undefined, next: boolean`             | `void` |                |
-| `selectedChanged` | protected |             | `prev: boolean or undefined, next: boolean`             | `void` |                |
-| `disabledChanged` | protected |             | `prev: boolean or undefined, next: boolean`             | `void` |                |
-| `itemsChanged`    | protected |             | `prev: HTMLElement[] or undefined, next: HTMLElement[]` | `void` |                |
+| Name              | Privacy   | Description | Parameters                                   | Return | Inherited From |
+| ----------------- | --------- | ----------- | -------------------------------------------- | ------ | -------------- |
+| `expandedChanged` | protected |             | `prev: boolean or undefined, next: boolean`  | `void` |                |
+| `selectedChanged` | protected |             | `prev: boolean or undefined, next: boolean`  | `void` |                |
+| `disabledChanged` | protected |             | `prev: boolean or undefined, next: boolean`  | `void` |                |
+| `itemsChanged`    | protected |             | `oldValue: unknown, newValue: HTMLElement[]` | `void` |                |
 
 #### Events
 
@@ -114,9 +114,9 @@ export class FASTTreeItem extends TreeItem {}
 
 ### Functions
 
-| Name                | Description                      | Parameters    | Return               |
-| ------------------- | -------------------------------- | ------------- | -------------------- |
-| `isTreeItemElement` | check if the item is a tree item | `el: Element` | `el is FASTTreeItem` |
+| Name                | Description                      | Parameters    | Return              |
+| ------------------- | -------------------------------- | ------------- | ------------------- |
+| `isTreeItemElement` | check if the item is a tree item | `el: Element` | `el is HTMLElement` |
 
 <hr/>
 
