@@ -1,5 +1,4 @@
 import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
-import { whitespaceFilter } from "../utilities/whitespace-filter.js";
 import type { FASTSwitch, SwitchOptions } from "./switch.js";
 
 /**
@@ -27,12 +26,7 @@ export function switchTemplate<T extends FASTSwitch>(
                         ? "label"
                         : "label label__hidden"}"
             >
-                <slot
-                    ${slotted({
-                        property: "defaultSlottedNodes",
-                        filter: whitespaceFilter,
-                    })}
-                ></slot>
+                <slot ${slotted("defaultSlottedNodes")}></slot>
             </label>
             <div part="switch" class="switch">
                 <slot name="switch">${options.switch ?? ""}</slot>
