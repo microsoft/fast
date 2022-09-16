@@ -244,6 +244,8 @@ test.describe("TreeItem", () => {
 
             await expandCollapseButton.click();
 
+            await page.evaluate(() => new Promise(requestAnimationFrame));
+
             await expect(element.first()).toHaveBooleanAttribute("expanded");
 
             await expect(element.first()).toHaveAttribute("aria-expanded", "true");
