@@ -322,8 +322,10 @@ export class FASTCombobox extends FormAssociatedCombobox {
      * @internal
      */
     public disabledChanged(prev: boolean, next: boolean): void {
-        super.disabledChanged?.(prev, next);
-        this.ariaDisabled = next ? "true" : "false";
+        if (super.disabledChanged) {
+            super.disabledChanged(prev, next);
+        }
+        this.ariaDisabled = this.disabled ? "true" : "false";
     }
 
     /**
