@@ -8,8 +8,8 @@ import {
 } from "@microsoft/fast-element";
 import { composedContains, composedParent } from "@microsoft/fast-element/utilities";
 import type {
-    DerivedDesignTokenValue,
     DesignTokenChangeRecord as CoreDesignTokenChangeRecord,
+    DerivedDesignTokenValue,
     DesignTokenResolver,
     DesignTokenValue,
 } from "./core/design-token-node.js";

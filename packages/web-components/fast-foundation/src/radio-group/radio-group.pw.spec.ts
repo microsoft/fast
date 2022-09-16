@@ -1,6 +1,6 @@
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import type { FASTRadio } from "../radio/index.js";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTRadioGroup } from "./index.js";

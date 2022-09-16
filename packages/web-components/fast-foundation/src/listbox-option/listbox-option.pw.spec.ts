@@ -1,71 +1,132 @@
 import { expect, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTListboxOption } from "./listbox-option.js";
 
 test.describe("ListboxOption", () => {
-    test("should have a role of `option`", async ({ page }) => {
-        await page.goto(fixtureURL("listbox-option--listbox-option"));
+    let page: Page;
+    let element: Locator;
 
-        const element = page.locator("fast-option");
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
+
+        element = page.locator("fast-option");
+
+        await page.goto(fixtureURL("listbox-option--listbox-option"));
+    });
+
+    test.afterAll(async () => {
+        await page.close();
+    });
+
+    test("should have a role of `option`", async () => {
+        await page.setContent(/* html */ `
+            <fast-option></fast-option>
+        `);
 
         await expect(element).toHaveAttribute("role", "option");
     });
 
-    test("should set matching ARIA attributes", async ({ page }) => {
-        await page.goto(fixtureURL("listbox-option--listbox-option"));
-
-        const element = page.locator("fast-option");
-
-        // Disabled
-        await expect(element).not.hasAttribute("aria-disabled");
-
-        await element.evaluate((node: FASTListboxOption) => (node.disabled = true));
+    test("should set the `aria-disabled` attribute when disabled", async () => {
+        await page.setContent(/* html */ `
+            <fast-option disabled></fast-option>
+        `);
 
         await expect(element).toHaveAttribute("aria-disabled", "true");
 
-        await element.evaluate((node: FASTListboxOption) => (node.disabled = false));
+        await element.evaluate(node => {
+            node.toggleAttribute("disabled");
+        });
 
         await expect(element).toHaveAttribute("aria-disabled", "false");
+    });
 
-        await page.reload();
+    test('should add the "disabled" class when disabled', async () => {
+        await page.setContent(/* html */ `
+            <fast-option disabled></fast-option>
+        `);
 
-        // Selected
-        await expect(element).toHaveAttribute("aria-selected", "false");
+        await expect(element).toHaveClass("disabled");
 
-        await element.evaluate((node: FASTListboxOption) => (node.selected = true));
+        await element.evaluate((node: FASTListboxOption) => {
+            node.disabled = false;
+        });
+
+        await expect(element).not.toHaveClass("disabled");
+    });
+
+    test("should set the `aria-selected` attribute when selected", async () => {
+        await page.setContent(/* html */ `
+            <fast-option selected></fast-option>
+        `);
 
         await expect(element).toHaveAttribute("aria-selected", "true");
 
-        await expect(element).toHaveClass(/selected/);
-
-        await element.evaluate((node: FASTListboxOption) => (node.selected = false));
+        await element.evaluate((node: FASTListboxOption) => {
+            node.selected = false;
+        });
 
         await expect(element).toHaveAttribute("aria-selected", "false");
+    });
 
-        // Checked
+    test('should add the "selected" class when selected', async () => {
+        await page.setContent(/* html */ `
+            <fast-option selected></fast-option>
+        `);
+
+        await expect(element).toHaveClass("selected");
+
+        await element.evaluate((node: FASTListboxOption) => {
+            node.selected = false;
+        });
+
+        await expect(element).not.toHaveClass("selected");
+    });
+
+    test("should set the `aria-checked` attribute when checked", async () => {
+        await page.setContent(/* html */ `
+            <fast-option></fast-option>
+        `);
+
         await expect(element).not.hasAttribute("aria-checked");
 
-        await element.evaluate((node: FASTListboxOption) => (node.checked = true));
+        await element.evaluate((node: FASTListboxOption) => {
+            node.checked = true;
+        });
 
         await expect(element).toHaveAttribute("aria-checked", "true");
 
-        await expect(element).toHaveClass(/checked/);
-
-        await element.evaluate((node: FASTListboxOption) => (node.checked = false));
+        await element.evaluate((node: FASTListboxOption) => {
+            node.checked = false;
+        });
 
         await expect(element).toHaveAttribute("aria-checked", "false");
     });
 
-    test("should have an empty string `value` when the `value` attribute exists and is empty", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("listbox-option--listbox-option"));
+    test('should add the "checked" class when checked', async () => {
+        await page.setContent(/* html */ `
+            <fast-option></fast-option>
+        `);
 
-        const element = page.locator("fast-option");
+        await expect(element).not.toHaveClass("checked");
 
-        await element.evaluate(node => {
-            node.setAttribute("value", "");
+        await element.evaluate((node: FASTListboxOption) => {
+            node.checked = true;
         });
+
+        await expect(element).toHaveClass("checked");
+
+        await element.evaluate((node: FASTListboxOption) => {
+            node.checked = false;
+        });
+
+        await expect(element).not.toHaveClass("checked");
+    });
+
+    test("should have an empty string `value` when the `value` attribute exists and is empty", async () => {
+        await page.setContent(/* html */ `
+            <fast-option value=""></fast-option>
+        `);
 
         await element.evaluate((node: FASTListboxOption) => {
             node.innerText = "hello";
@@ -76,47 +137,41 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveAttribute("value", "");
     });
 
-    test("should return the text content when the `value` attribute does not exist", async ({
-        page,
-    }) => {
-        await page.goto(
-            fixtureURL("listbox-option--listbox-option", { value: "!undefined" })
-        );
+    test("should return the text content when the `value` attribute does not exist", async () => {
+        await page.setContent(/* html */ `
+            <fast-option>hello</fast-option>
+        `);
 
-        const element = page.locator("fast-option");
+        await expect(element).toHaveText("hello");
 
-        await expect(element).toHaveText("Listbox option");
-
-        await expect(element).toHaveJSProperty("value", "Listbox option");
+        await expect(element).toHaveJSProperty("value", "hello");
     });
 
-    test("should return the trimmed text content with the `text` property", async ({
-        page,
-    }) => {
-        await page.goto(
-            fixtureURL("listbox-option--listbox-option", { value: "!undefined" })
-        );
-
-        const element = page.locator("fast-option");
-
-        await element.evaluate(node => {
-            node.textContent = `
+    test("should return the trimmed text content with the `text` property", async () => {
+        await page.setContent(/* html */ `
+            <fast-option>
                 hello
                 world
-            `;
-        });
+            </fast-option>
+        `);
+
+        await expect(element).toHaveJSProperty(
+            "textContent",
+            `
+                hello
+                world
+            `
+        );
 
         await expect(element).toHaveText("hello world");
     });
 
-    test("should always return the `value` as a string", async ({ page }) => {
-        await page.goto(fixtureURL("listbox-option--listbox-option"));
+    test("should always return the `value` as a string", async () => {
+        await page.setContent(/* html */ `
+            <fast-option value="1"></fast-option>
+        `);
 
-        const element = page.locator("fast-option");
-
-        await element.evaluate((node: FASTListboxOption) => (node.value = 12345 as any));
-
-        await expect(element).toHaveJSProperty("value", "12345");
+        await expect(element).toHaveJSProperty("value", "1");
 
         expect(
             await element.evaluate((node: FASTListboxOption) => typeof node.value)

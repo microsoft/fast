@@ -4,34 +4,34 @@ import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTHorizontalScroll } from "./horizontal-scroll.js";
 
 test.describe("HorizontalScroll", () => {
+    let cards: Locator;
+    let element: Locator;
+    let page: Page;
+    let scrollNext: Locator;
+    let scrollPrevious: Locator;
+    let scrollView: Locator;
+
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
+
+        element = page.locator("fast-horizontal-scroll");
+        scrollNext = element.locator(".scroll-next");
+        scrollPrevious = element.locator(".scroll-prev");
+        scrollView = element.locator(".scroll-view");
+        cards = element.locator("fast-card");
+
+        await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
+
+        await element.evaluate((node: FASTHorizontalScroll) => {
+            node.speed = 0;
+        });
+    });
+
+    test.afterAll(async () => {
+        await page.close();
+    });
+
     test.describe("Flippers", () => {
-        let cards: Locator;
-        let element: Locator;
-        let page: Page;
-        let scrollNext: Locator;
-        let scrollPrevious: Locator;
-        let scrollView: Locator;
-
-        test.beforeAll(async ({ browser }) => {
-            page = await browser.newPage();
-
-            element = page.locator("fast-horizontal-scroll");
-            scrollNext = element.locator(".scroll-next");
-            scrollPrevious = element.locator(".scroll-prev");
-            scrollView = element.locator(".scroll-view");
-            cards = element.locator("fast-card");
-
-            await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
-
-            await element.evaluate((node: FASTHorizontalScroll) => {
-                node.speed = 0;
-            });
-        });
-
-        test.afterAll(async () => {
-            await page.close();
-        });
-
         test.beforeEach(async () => {
             await element.evaluate((node: FASTHorizontalScroll) => {
                 node.scrollToPosition(0);
@@ -123,24 +123,22 @@ test.describe("HorizontalScroll", () => {
         });
     });
 
-    test("should hide the next flipper if content is less than horizontal-scroll width", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
+    test("should hide the next flipper if content is less than horizontal-scroll width", async () => {
+        await page.setContent(/* html */ `
+            <fast-horizontal-scroll style="width: 1000px;">
+                <fast-card style="width: 100px;"></fast-card>
+            </fast-horizontal-scroll>
+        `);
 
         const element = page.locator("fast-horizontal-scroll");
 
         const scrollNext = element.locator(".scroll-next");
 
-        await element.evaluate((node: FASTHorizontalScroll) => {
-            node.querySelectorAll("div:nth-child(n + 4)").forEach(card => card.remove());
-        });
-
         await expect(scrollNext).toBeHidden();
     });
 
     test.describe("Scrolling", () => {
-        test("should change scroll stop on resize", async ({ page }) => {
+        test("should change scroll stop on resize", async () => {
             await page.goto(
                 fixtureURL("horizontal-scroll--horizontal-scroll", { speed: 0 })
             );
@@ -157,7 +155,7 @@ test.describe("HorizontalScroll", () => {
 
             await nextFlipper.click();
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 384);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 375);
 
             await previousFlipper.click();
 
@@ -167,7 +165,7 @@ test.describe("HorizontalScroll", () => {
 
             await nextFlipper.click();
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 256);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 250);
         });
 
         test("should scroll to previous when only 2 items wide", async ({ page }) => {
@@ -185,7 +183,7 @@ test.describe("HorizontalScroll", () => {
                 node.scrollToNext();
             });
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 128);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 125);
 
             await element.evaluate((node: FASTHorizontalScroll) => {
                 node.scrollToPrevious();

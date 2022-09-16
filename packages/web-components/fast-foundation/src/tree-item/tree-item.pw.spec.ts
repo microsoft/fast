@@ -230,6 +230,7 @@ test.describe("TreeItem", () => {
         });
 
         test("should toggle the expanded state when `expand-collapse-button` is clicked", async () => {
+            test.slow();
             await page.setContent(/* html */ `
                 <fast-tree-item>
                     <fast-tree-item>tree item</fast-tree-item>

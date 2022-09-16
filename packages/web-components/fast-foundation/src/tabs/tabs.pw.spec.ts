@@ -346,13 +346,11 @@ test.describe("Tabs", () => {
     });
 
     test("should not allow selecting a tab that has been disabled after it has been connected", async () => {
-        test.slow();
-
         await page.setContent(/* html */ `
             <fast-tabs>
-                <fast-tab>Tab one</fast-tab>
-                <fast-tab>Tab two</fast-tab>
-                <fast-tab>Tab three</fast-tab>
+                <fast-tab id="tab-1">Tab one</fast-tab>
+                <fast-tab id="tab-2">Tab two</fast-tab>
+                <fast-tab id="tab-3">Tab three</fast-tab>
                 <fast-tab-panel>Tab panel one</fast-tab-panel>
                 <fast-tab-panel>Tab panel two</fast-tab-panel>
                 <fast-tab-panel>Tab panel three</fast-tab-panel>

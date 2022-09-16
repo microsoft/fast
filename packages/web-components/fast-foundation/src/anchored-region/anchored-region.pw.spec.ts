@@ -1,14 +1,28 @@
+import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTAnchoredRegion } from "./anchored-region.js";
 
 test.describe("Anchored Region", () => {
-    test("should set positioning modes to 'uncontrolled' by default", async ({
-        page,
-    }) => {
-        await page.goto(fixtureURL("anchored-region--anchored-region"));
+    let page: Page;
+    let element: Locator;
 
-        const element = page.locator("fast-anchored-region");
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
+
+        element = page.locator("fast-anchored-region");
+
+        await page.goto(fixtureURL("anchored-region--anchored-region"));
+    });
+
+    test.afterAll(async () => {
+        await page.close();
+    });
+
+    test("should set positioning modes to 'uncontrolled' by default", async () => {
+        await page.setContent(/* html */ `
+            <fast-anchored-region></fast-anchored-region>
+        `);
 
         await expect(element).toHaveJSProperty("verticalPositioningMode", "uncontrolled");
 
@@ -18,12 +32,13 @@ test.describe("Anchored Region", () => {
         );
     });
 
-    test("should assign anchor and viewport elements by id", async ({ page }) => {
+    test("should assign anchor and viewport elements by id", async () => {
         const anchorId = "anchor";
 
-        await page.goto(fixtureURL("anchored-region--anchored-region", { anchorId }));
-
-        const element = page.locator("fast-anchored-region");
+        await page.setContent(/* html */ `
+            <div id="${anchorId}"></div>
+            <fast-anchored-region anchor="${anchorId}" viewport="${anchorId}"></fast-anchored-region>
+        `);
 
         await expect(element).toHaveAttribute("anchor", anchorId);
 
@@ -36,10 +51,12 @@ test.describe("Anchored Region", () => {
         expect(anchorElementId).toBe(anchorId);
     });
 
-    test("should be sized to match content by default", async ({ page }) => {
-        await page.goto(fixtureURL("anchored-region--anchored-region"));
-
-        const element = page.locator("fast-anchored-region");
+    test("should be sized to match content by default", async () => {
+        await page.setContent(/* html */ `
+            <fast-anchored-region>
+                <div id="content" style="width: 100px; height: 100px;"></div>
+            </fast-anchored-region>
+        `);
 
         const elementClientHeight = await element.evaluate(node => node.clientHeight);
 

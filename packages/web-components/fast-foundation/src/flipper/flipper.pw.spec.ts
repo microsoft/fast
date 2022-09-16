@@ -2,7 +2,6 @@ import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTFlipper } from "./flipper.js";
-import { FlipperDirection } from "./flipper.options.js";
 
 test.describe("Flipper", () => {
     let page: Page;
@@ -21,27 +20,41 @@ test.describe("Flipper", () => {
     });
 
     test("should include a role of button", async () => {
+        await page.setContent(/* html */ `
+            <fast-flipper></fast-flipper>
+        `);
+
         await expect(element).toHaveAttribute("role", "button");
     });
 
     test('should set `aria-hidden` to "true" by default', async () => {
+        await page.setContent(/* html */ `
+            <fast-flipper></fast-flipper>
+        `);
+
         await expect(element).toHaveAttribute("aria-hidden", "true");
     });
 
     test("should set the `hiddenFromAT` property to true by default", async () => {
+        await page.setContent(/* html */ `
+            <fast-flipper></fast-flipper>
+        `);
+
         await expect(element).toHaveJSProperty("hiddenFromAT", true);
     });
 
     test('should set the `direction` property to "next" by default', async () => {
+        await page.setContent(/* html */ `
+            <fast-flipper></fast-flipper>
+        `);
+
         await expect(element.locator("span")).toHaveClass("next");
     });
 
     test("should toggle the `aria-disabled` attribute based on the value of the `disabled` property", async () => {
-        await expect(element).not.hasAttribute("aria-disabled");
-
-        await element.evaluate((node: FASTFlipper) => {
-            node.disabled = true;
-        });
+        await page.setContent(/* html */ `
+            <fast-flipper disabled></fast-flipper>
+        `);
 
         await expect(element).toHaveAttribute("aria-disabled", "true");
 
@@ -54,6 +67,10 @@ test.describe("Flipper", () => {
     });
 
     test('should set the `tabindex` attribute to "-1" when `hiddenFromAT` is true', async () => {
+        await page.setContent(/* html */ `
+            <fast-flipper></fast-flipper>
+        `);
+
         await expect(element).toHaveAttribute("tabindex", "-1");
 
         await element.evaluate((node: FASTFlipper) => {
@@ -71,11 +88,9 @@ test.describe("Flipper", () => {
     });
 
     test("should set a `tabindex` of 0 when `aria-hidden` is false", async () => {
-        await expect(element).toHaveAttribute("tabindex", "-1");
-
-        await element.evaluate(node => {
-            node.setAttribute("aria-hidden", "false");
-        });
+        await page.setContent(/* html */ `
+            <fast-flipper aria-hidden="false"></fast-flipper>
+        `);
 
         await expect(element).toHaveAttribute("tabindex", "0");
 
@@ -87,9 +102,9 @@ test.describe("Flipper", () => {
     });
 
     test('should render a span with a class of "next" when the `direction` attribute is "next"', async () => {
-        await element.evaluate((node: FASTFlipper, FlipperDirection) => {
-            node.direction = FlipperDirection.next;
-        }, FlipperDirection);
+        await page.setContent(/* html */ `
+            <fast-flipper direction="next"></fast-flipper>
+        `);
 
         const spans = element.locator("span");
 
@@ -99,9 +114,9 @@ test.describe("Flipper", () => {
     });
 
     test('should render a span with a class of "previous" when the `direction` attribute is "previous"', async () => {
-        await element.evaluate((node: FASTFlipper, FlipperDirection) => {
-            node.direction = FlipperDirection.previous;
-        }, FlipperDirection);
+        await page.setContent(/* html */ `
+            <fast-flipper direction="previous"></fast-flipper>
+        `);
 
         const spans = element.locator("span");
 

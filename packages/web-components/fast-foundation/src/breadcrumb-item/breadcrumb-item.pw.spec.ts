@@ -5,106 +5,115 @@ import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTBreadcrumbItem } from "./breadcrumb-item.js";
 
 test.describe("Breadcrumb item", () => {
-    test.describe("States, Attributes, and Properties", () => {
-        let page: Page;
-        let element: Locator;
+    let page: Page;
+    let element: Locator;
+    let control: Locator;
 
-        test.beforeAll(async ({ browser }) => {
-            page = await browser.newPage();
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
 
-            element = page.locator("fast-breadcrumb-item");
+        element = page.locator("fast-breadcrumb-item");
 
-            await page.goto(fixtureURL("breadcrumb-item--breadcrumb-item"));
-        });
+        control = element.locator(".control");
 
-        test.afterAll(async () => {
-            await page.close();
-        });
+        await page.goto(fixtureURL("breadcrumb-item--breadcrumb-item"));
+    });
 
-        test("should include a `role` of `listitem`", async () => {
-            await expect(element.locator("> div")).toHaveAttribute("role", "listitem");
-        });
+    test.afterAll(async () => {
+        await page.close();
+    });
 
-        test("should render an internal anchor when the `href` attribute is not provided", async () => {
-            const anchor = element.locator("a");
+    test("should include a `role` of `listitem`", async () => {
+        await page.setContent(/* html */ `
+            <fast-breadcrumb-item></fast-breadcrumb-item>
+        `);
 
-            await expect(element).not.hasAttribute("href");
+        await expect(element.locator("> div")).toHaveAttribute("role", "listitem");
+    });
 
-            await expect(element).toHaveJSProperty("href", undefined);
+    test("should render an internal anchor when the `href` attribute is not provided", async () => {
+        await page.setContent(/* html */ `
+            <fast-breadcrumb-item></fast-breadcrumb-item>
+        `);
 
-            await expect(anchor).toHaveCount(1);
+        const anchor = element.locator("a");
 
-            await expect(element.locator("a")).toHaveCount(1);
-        });
+        await expect(element).not.hasAttribute("href");
 
-        test("should render an internal anchor when the `href` attribute is provided", async () => {
-            await element.evaluate(node => {
-                node.setAttribute("href", "https://fast.design");
-            });
+        await expect(element).toHaveJSProperty("href", undefined);
 
-            const anchor = element.locator("a");
+        await expect(anchor).toHaveCount(1);
 
-            await expect(anchor).toHaveCount(1);
+        await expect(element.locator("a")).toHaveCount(1);
+    });
 
-            await expect(anchor).toHaveAttribute("href", "https://fast.design");
+    test("should render an internal anchor when the `href` attribute is provided", async () => {
+        await page.setContent(/* html */ `
+            <fast-breadcrumb-item href="https://fast.design"></fast-breadcrumb-item>
+        `);
 
-            await element.evaluate(node => {
-                node.removeAttribute("href");
-            });
-        });
+        const anchor = element.locator("a");
 
-        test("should add an element with a class of `separator` when the `separator` property is true", async () => {
-            await element.evaluate<void, FASTBreadcrumbItem>(node => {
-                node.separator = true;
-            });
+        await expect(anchor).toHaveCount(1);
 
-            await expect(element.locator(".separator")).toHaveCount(1);
-        });
+        await expect(anchor).toHaveAttribute("href", "https://fast.design");
 
-        test.describe("should set the attribute on the internal control", () => {
-            const attributes = {
-                download: "foo",
-                hreflang: "en-GB",
-                ping: "foo",
-                referrerpolicy: "no-referrer",
-                rel: "external",
-                target: "_blank",
-                type: "foo",
-                ariaAtomic: "true",
-                ariaBusy: "false",
-                ariaControls: "testId",
-                ariaCurrent: "page",
-                ariaDescribedby: "testId",
-                ariaDetails: "testId",
-                ariaDisabled: "true",
-                ariaErrormessage: "test",
-                ariaExpanded: "true",
-                ariaFlowto: "testId",
-                ariaHaspopup: "true",
-                ariaHidden: "true",
-                ariaInvalid: "spelling",
-                ariaKeyshortcuts: "F4",
-                ariaLabel: "foo",
-                ariaLabelledby: "testId",
-                ariaLive: "polite",
-                ariaOwns: "testId",
-                ariaRelevant: "removals",
-                ariaRoledescription: "slide",
-            };
-
-            test.beforeAll(async () => {
-                await page.goto(
-                    fixtureURL("breadcrumb-item--breadcrumb-item-with-href", attributes)
-                );
-            });
-
-            for (const [attribute, value] of Object.entries(attributes)) {
-                const attrToken = spinalCase(attribute);
-
-                test(`should set the \`${attrToken}\` attribute to \`${value}\``, async () => {
-                    await expect(element).toHaveAttribute(attrToken, `${value}`);
-                });
-            }
+        await element.evaluate(node => {
+            node.removeAttribute("href");
         });
     });
+
+    test("should add an element with a class of `separator` when the `separator` property is true", async () => {
+        await page.setContent(/* html */ `
+            <fast-breadcrumb-item></fast-breadcrumb-item>
+        `);
+
+        await element.evaluate<void, FASTBreadcrumbItem>(node => {
+            node.separator = true;
+        });
+
+        await expect(element.locator(".separator")).toHaveCount(1);
+    });
+
+    const attributes = {
+        download: "foo",
+        hreflang: "en-GB",
+        ping: "foo",
+        referrerpolicy: "no-referrer",
+        rel: "external",
+        target: "_blank",
+        type: "foo",
+        ariaAtomic: "true",
+        ariaBusy: "false",
+        ariaControls: "testId",
+        ariaCurrent: "page",
+        ariaDescribedby: "testId",
+        ariaDetails: "testId",
+        ariaDisabled: "true",
+        ariaErrormessage: "test",
+        ariaExpanded: "true",
+        ariaFlowto: "testId",
+        ariaHaspopup: "true",
+        ariaHidden: "true",
+        ariaInvalid: "spelling",
+        ariaKeyshortcuts: "F4",
+        ariaLabel: "foo",
+        ariaLabelledby: "testId",
+        ariaLive: "polite",
+        ariaOwns: "testId",
+        ariaRelevant: "removals",
+        ariaRoledescription: "slide",
+    };
+
+    for (const [attribute, value] of Object.entries(attributes)) {
+        const attrToken = spinalCase(attribute);
+
+        test(`should set the \`${attrToken}\` attribute to \`${value}\` on the internal anchor`, async () => {
+            await page.setContent(`
+                <fast-breadcrumb-item ${attrToken}="${value}" href="#"></fast-breadcrumb-item>
+            `);
+
+            await expect(control).toHaveAttribute(attrToken, `${value}`);
+        });
+    }
 });
