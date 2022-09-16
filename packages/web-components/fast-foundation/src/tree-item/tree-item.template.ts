@@ -1,8 +1,7 @@
-import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { elements, ElementViewTemplate } from "@microsoft/fast-element";
 import { children, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { FASTTreeItem, TreeItemOptions } from "./tree-item.js";
-import { isTreeItemElement } from "./tree-item.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(FASTTreeItem:class)} component.
@@ -18,10 +17,10 @@ export function treeItemTemplate<T extends FASTTreeItem>(
             tabindex="-1"
             class="${x =>
                 [
-                    x.disabled && "disabled",
                     x.expanded && "expanded",
-                    x.nested && "nested",
                     x.selected && "selected",
+                    x.nested && "nested",
+                    x.disabled && "disabled",
                 ]
                     .filter(Boolean)
                     .join(" ")}"
@@ -32,13 +31,13 @@ export function treeItemTemplate<T extends FASTTreeItem>(
             @focusout="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
             ${children({
                 property: "childItems",
-                filter: isTreeItemElement,
+                filter: elements(),
             })}
         >
             <div class="positioning-region" part="positioning-region">
                 <div class="content-region" part="content-region">
                     ${when(
-                        x => x.childItems.length,
+                        x => x.childItems && x.childItemLength(),
                         html<T>`
                             <div
                                 aria-hidden="true"
@@ -62,7 +61,7 @@ export function treeItemTemplate<T extends FASTTreeItem>(
                 </div>
             </div>
             ${when(
-                x => x.childItems.length && x.expanded,
+                x => x.childItems && x.childItemLength() && x.expanded,
                 html<T>`
                     <div role="group" class="items" part="items">
                         <slot name="item" ${slotted("items")}></slot>

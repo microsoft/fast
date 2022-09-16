@@ -15,7 +15,7 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * @remarks
  * determines if element is an HTMLElement and if it has the role treeitem
  */
-export function isTreeItemElement(el: Element): el is FASTTreeItem {
+export function isTreeItemElement(el: Element): el is HTMLElement {
     return (
         isHTMLElement(el) &&
         (el.getAttribute("role") === "treeitem" || el.tagName.includes("TREE-ITEM"))
@@ -127,9 +127,9 @@ export class FASTTreeItem extends FASTElement {
      */
     @observable
     public items: HTMLElement[];
-    protected itemsChanged(prev: HTMLElement[] | undefined, next: HTMLElement[]): void {
+    protected itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
-            next.forEach(node => {
+            this.items.forEach((node: HTMLElement) => {
                 if (isTreeItemElement(node)) {
                     // TODO: maybe not require it to be a TreeItem?
                     (node as FASTTreeItem).nested = true;
@@ -171,7 +171,7 @@ export class FASTTreeItem extends FASTElement {
      *
      * @internal
      */
-    public handleExpandCollapseButtonClick = (e: MouseEvent): boolean | void => {
+    public handleExpandCollapseButtonClick = (e: MouseEvent): void => {
         if (!this.disabled && !e.defaultPrevented) {
             this.expanded = !this.expanded;
         }
@@ -194,6 +194,20 @@ export class FASTTreeItem extends FASTElement {
     public handleBlur = (e: FocusEvent): void => {
         this.setAttribute("tabindex", "-1");
     };
+
+    /**
+     * Gets number of children
+     *
+     * @internal
+     */
+    public childItemLength(): number {
+        const treeChildren: HTMLElement[] = this.childItems.filter(
+            (item: HTMLElement) => {
+                return isTreeItemElement(item);
+            }
+        );
+        return treeChildren ? treeChildren.length : 0;
+    }
 }
 
 /**
