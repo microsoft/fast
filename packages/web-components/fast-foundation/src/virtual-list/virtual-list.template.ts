@@ -16,11 +16,11 @@ export type VirtualListOptions = {
  * Creates a default vertical item template.  This is the template that defines what list items are created by the
  * list's repeat directive.  Authors can improve performance by tailoring templates to their specific scenario.
  */
-function defaultVerticalItemTemplate(
+function defaultVerticalItemTemplate<T extends FASTVirtualList>(
     options: VirtualListOptions
-): ViewTemplate<any, FASTVirtualList> {
+): ViewTemplate<any, T> {
     const listItemTag = tagFor(options.virtualListItem);
-    return html<any, FASTVirtualList>`
+    return html<any, T>`
     <${listItemTag}
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
@@ -41,11 +41,11 @@ function defaultVerticalItemTemplate(
  * Creates a default horizontal item template.  This is the template that defines what list items are created by the
  * list's repeat directive.  Authors can improve performance by tailoring templates to their specific scenario.
  */
-function defaultHorizontalItemTemplate(
+function defaultHorizontalItemTemplate<T extends FASTVirtualList>(
     options: VirtualListOptions
-): ViewTemplate<any, FASTVirtualList> {
+): ViewTemplate<any, T> {
     const listItemTag = tagFor(options.virtualListItem);
-    return html<any, FASTVirtualList>`
+    return html<any, T>`
     <${listItemTag}
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
@@ -66,10 +66,10 @@ function defaultHorizontalItemTemplate(
  * Generates a template for the {@link @microsoft/fast-foundation#VirtualList} component.
  * @public
  */
-export function virtualListTemplate(
+export function virtualListTemplate<T extends FASTVirtualList>(
     options: VirtualListOptions
-): ElementViewTemplate<FASTVirtualList> {
-    return html<FASTVirtualList>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             :defaultVerticalItemTemplate="${defaultVerticalItemTemplate(options)}"
             :defaultHorizontalItemTemplate="${defaultHorizontalItemTemplate(options)}"

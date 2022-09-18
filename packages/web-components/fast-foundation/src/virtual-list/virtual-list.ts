@@ -7,9 +7,9 @@ import {
     nullableNumberConverter,
     Observable,
     observable,
-    RepeatBehavior,
     RepeatDirective,
     Splice,
+    ViewBehaviorOrchestrator,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
@@ -322,7 +322,7 @@ export class FASTVirtualList extends FASTElement {
      * @internal
      */
     @observable
-    public visibleItems: any[] = [];
+    public visibleItems: object[] = [];
 
     /**
      * The positions of the currently rendered items in the list
@@ -409,7 +409,7 @@ export class FASTVirtualList extends FASTElement {
     private containerRect: DOMRect | undefined;
 
     // reference to the repeat behavior used to render items
-    private itemsRepeatBehavior: RepeatBehavior | null = null;
+    private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
 
     // the placeholder element used by the repeat behavior
     private itemsPlaceholder: Node;
@@ -448,11 +448,6 @@ export class FASTVirtualList extends FASTElement {
 
         this.viewportElement = this.viewportElement ?? this.getViewport();
         this.resetAutoUpdateMode("manual", this.autoUpdateMode);
-
-        if (this.itemsPlaceholder === undefined) {
-            this.itemsPlaceholder = document.createComment("");
-            this.appendChild(this.itemsPlaceholder);
-        }
 
         if (!this.itemTemplate) {
             this.itemTemplate =
@@ -698,9 +693,9 @@ export class FASTVirtualList extends FASTElement {
     private doReset(): void {
         this.pendingReset = false;
         this.cancelPendingPositionUpdates();
-        if (this.autoResizeItems) {
-            this.sizemap = this.generateSizeMap();
-        }
+        // if (this.autoResizeItems) {
+        this.sizemap = this.generateSizeMap();
+        // }
         this.observeItems();
         this.observeSizeMap();
         this.updateDimensions();
@@ -710,21 +705,18 @@ export class FASTVirtualList extends FASTElement {
      * initialize repeat behavior for visible items
      */
     private initializeRepeatBehavior(): void {
-        if (this.itemsRepeatBehavior !== null) {
-            return;
+        if (this.behaviorOrchestrator === null) {
+            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
+            this.$fastController.addBehavior(this.behaviorOrchestrator);
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective<FASTVirtualList>(
+                    bind(x => x.visibleItems, false),
+                    bind(x => x.itemTemplate, false),
+                    { positioning: true, recycle: this.recycle }
+                ),
+                this.appendChild((this.itemsPlaceholder = document.createComment("")))
+            );
         }
-
-        const itemsRepeatDirective = new RepeatDirective<FASTVirtualList>(
-            bind(x => x.visibleItems, false),
-            bind(x => x.itemTemplate, false),
-            { positioning: true, recycle: this.recycle }
-        );
-        this.itemsRepeatBehavior = itemsRepeatDirective.createBehavior({
-            [itemsRepeatDirective.nodeId]: this.itemsPlaceholder,
-        });
-
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
     }
 
     /**
@@ -1078,7 +1070,9 @@ export class FASTVirtualList extends FASTElement {
         );
 
         this.updateVisibleItemSizes(newFirstRenderedIndex, newLastRenderedIndex);
-        this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
+
+        // this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
+        this.visibleItems = newVisibleItems;
     }
 
     /**
