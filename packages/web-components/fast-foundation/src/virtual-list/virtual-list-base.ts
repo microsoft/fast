@@ -28,7 +28,7 @@ import type {
  *
  * @beta
  */
-export interface Virtualizing {
+export interface VirtualListBase {
     virtualizationDisabled: boolean;
     viewport: string;
     itemSize: number;
@@ -57,14 +57,14 @@ export interface Virtualizing {
  *
  * @beta
  */
-export type ConstructableVirtualizing = Constructable<HTMLElement & FASTElement>;
+export type ConstructableVirtualListBase = Constructable<HTMLElement & FASTElement>;
 
 /**
  * Base function for providing Custom Element Virtualization
  *
  * @beta
  */
-export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): T {
+export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T): T {
     const C = class extends BaseCtor {
         /**
          * Item size to use if one is not specified
@@ -559,7 +559,8 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
                     lastRenderedIndex + 1
                 );
 
-                this.renderItems.splice(0, this.renderItems.length, ...newVisibleItems);
+                // this.renderItems.splice(0, this.renderItems.length, ...newVisibleItems);
+                this.renderItems = newVisibleItems;
 
                 this.updateDimensions();
                 this.requestPositionUpdates();
@@ -897,7 +898,8 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
             }
 
             if (this.virtualizationDisabled) {
-                this.renderItems.splice(0, this.renderItems.length, ...this.sourceItems);
+                //this.renderItems.splice(0, this.renderItems.length, ...this.sourceItems);
+                this.renderItems = this.sourceItems;
                 this.updateVisibleItemSizes(0, this.renderItems.length - 1);
                 return;
             }
@@ -993,7 +995,8 @@ export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): 
             );
 
             this.updateVisibleItemSizes(newFirstRenderedIndex, newLastRenderedIndex);
-            this.renderItems.splice(0, this.renderItems.length, ...newVisibleItems);
+            // this.renderItems.splice(0, this.renderItems.length, ...newVisibleItems);
+            this.renderItems = newVisibleItems;
         }
 
         /**

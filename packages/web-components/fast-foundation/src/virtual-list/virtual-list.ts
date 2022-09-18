@@ -9,10 +9,10 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { Virtualizing } from "./virtualizing.js";
+import { Virtualizing, VirtualListBase } from "./virtual-list-base.js";
 
 class _VirtualList extends FASTElement {}
-interface _VirtualList extends Virtualizing {}
+interface _VirtualList extends VirtualListBase {}
 
 /**
  * A virtualizing base class for the {@link @microsoft/fast-foundation#(FASTVirtualList:class)} component.
