@@ -19,8 +19,8 @@ import {
     StartEndOptions,
     TemplateElementDependency,
 } from "../patterns/index.js";
-import { getDirection } from "../utilities/direction.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
+import { getDirection } from "../utilities/direction.js";
 import { MenuItemRole, roleForMenuItem } from "./menu-item.options.js";
 
 export { MenuItemRole, roleForMenuItem };
@@ -129,6 +129,16 @@ export class FASTMenuItem extends FASTElement {
             this.$emit("change");
         }
     }
+
+    /**
+     * The hidden attribute.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: hidden
+     */
+    @attr({ mode: "boolean" })
+    public hidden: boolean;
 
     /**
      * reference to the anchored region

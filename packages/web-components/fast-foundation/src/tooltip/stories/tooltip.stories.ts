@@ -6,7 +6,7 @@ import { FASTTooltip, TooltipPosition } from "../tooltip.js";
 
 const storyTemplate = html<StoryArgs<FASTTooltip>>`
     <fast-tooltip
-        ?visible="${x => x.visible}"
+        :visible="${x => x.visible}"
         delay="${x => x.delay}"
         position="${x => x.position}"
         auto-update-mode="${x => x.autoUpdateMode}"

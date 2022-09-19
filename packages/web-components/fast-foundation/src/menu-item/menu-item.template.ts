@@ -24,7 +24,8 @@ export function menuItemTemplate<T extends FASTMenuItem>(
         @mouseover="${(x, c) => x.handleMouseOver(c.event as MouseEvent)}"
         @mouseout="${(x, c) => x.handleMouseOut(c.event as MouseEvent)}"
         class="${x => (x.disabled ? "disabled" : "")} ${x =>
-        x.expanded ? "expanded" : ""} ${x => `indent-${x.startColumnCount}`}"
+        x.expanded ? "expanded" : ""} ${x =>
+        typeof x.startColumnCount === "number" ? `indent-${x.startColumnCount}` : ""}"
     >
             ${when(
                 x => x.role === MenuItemRole.menuitemcheckbox,
