@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: update foundation to use the new behavior API",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

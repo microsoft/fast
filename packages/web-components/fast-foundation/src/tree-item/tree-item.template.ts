@@ -1,16 +1,16 @@
-import type { ElementViewTemplate } from "@microsoft/fast-element";
-import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
+import { elements, ElementViewTemplate } from "@microsoft/fast-element";
+import { children, html, ref, slotted, when } from "@microsoft/fast-element";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { FASTTreeItem, TreeItemOptions } from "./tree-item.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(FASTTreeItem:class)} component.
  * @public
  */
-export function treeItemTemplate(
+export function treeItemTemplate<T extends FASTTreeItem>(
     options: TreeItemOptions = {}
-): ElementViewTemplate<FASTTreeItem> {
-    return html<FASTTreeItem>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="treeitem"
             slot="${x => (x.isNestedItem() ? "item" : void 0)}"
@@ -24,10 +24,9 @@ export function treeItemTemplate(
                 ]
                     .filter(Boolean)
                     .join(" ")}"
-            aria-expanded="${x =>
-                x.childItems && x.childItemLength() > 0 ? x.expanded : void 0}"
-            aria-selected="${x => x.selected}"
-            aria-disabled="${x => x.disabled}"
+            aria-expanded="${x => x.ariaExpanded}"
+            aria-selected="${x => x.ariaSelected}"
+            aria-disabled="${x => x.ariaDisabled}"
             @focusin="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
             @focusout="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
             ${children({
@@ -39,7 +38,7 @@ export function treeItemTemplate(
                 <div class="content-region" part="content-region">
                     ${when(
                         x => x.childItems && x.childItemLength(),
-                        html<FASTTreeItem>`
+                        html<T>`
                             <div
                                 aria-hidden="true"
                                 class="expand-collapse-button"
@@ -51,7 +50,7 @@ export function treeItemTemplate(
                                 ${ref("expandCollapseButton")}
                             >
                                 <slot name="expand-collapse-glyph">
-                                    ${options.expandCollapseGlyph || ""}
+                                    ${options.expandCollapseGlyph ?? ""}
                                 </slot>
                             </div>
                         `
@@ -62,11 +61,8 @@ export function treeItemTemplate(
                 </div>
             </div>
             ${when(
-                x =>
-                    x.childItems &&
-                    x.childItemLength() &&
-                    (x.expanded || x.renderCollapsedChildren),
-                html<FASTTreeItem>`
+                x => x.childItems && x.childItemLength() && x.expanded,
+                html<T>`
                     <div role="group" class="items" part="items">
                         <slot name="item" ${slotted("items")}></slot>
                     </div>

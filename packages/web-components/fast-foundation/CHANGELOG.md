@@ -1,8 +1,79 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
+This log was last generated on Thu, 01 Sep 2022 21:53:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.9
+
+Thu, 01 Sep 2022 21:53:34 GMT
+
+### Changes
+
+- remove boolean logical operator use for setting default slotted content in favor of nullish coalescing operator (chhol@microsoft.com)
+- update templates to ensure component classes can be extended (chhol@microsoft.com)
+- remove when directive from flipper (chhol@microsoft.com)
+- call change when search component clear button is clicked (jes@microsoft.com)
+- Lazily attach FASTDesignTokenNode to the default node to prevent errors" (nicholasrice@users.noreply.github.com)
+- fix: update foundation to use new import paths (roeisenb@microsoft.com)
+- remove references to renderCollapsedNodes and renderCollapsedChildren from tree view and tree item (chhol@microsoft.com)
+- ensure switch cannot be invoked via keyboard when in readonly mode (chhol@microsoft.com)
+- Adds DesignTokenStyleTarget to support DesignToken style collection for SSR (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.6
+
+## 3.0.0-alpha.8
+
+Fri, 26 Aug 2022 18:06:43 GMT
+
+### Changes
+
+- normalize storybook stories (863023+radium-v@users.noreply.github.com)
+- fix(tabs): home and end navigation (mathieulavoie94@gmail.com)
+- Fix constraint validation in focus-delegated components (nicholasrice@users.noreply.github.com)
+
+## 3.0.0-alpha.7
+
+Thu, 18 Aug 2022 20:46:10 GMT
+
+### Changes
+
+- change select() method to public on number field, text field, and text area (7282195+m-akinc@users.noreply.github.com)
+- add subpath export for package.json to packages (32497422+KingOfTac@users.noreply.github.com)
+- anchored-region checks local shadow dom (stephcomeau@msn.com)
+- use nullableNumberConverter for tooltip delay attribute (chhol@microsoft.com)
+- adding event-based resolution strategy export (nicholasrice@users.noreply.github.com)
+- refactor to allow arbitrary PropertyTarget types for DesignToken roots (nicholasrice@users.noreply.github.com)
+- hidden horizontal-scroll fix (robarb@microsoft.com)
+- Refactor DesignToken to provide a resolve function to derived token values, implements WebComponent implementation on top of isomorphic DesignToken infrastructure (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.5
+
+## 3.0.0-alpha.6
+
+Wed, 27 Jul 2022 17:36:33 GMT
+
+### Changes
+
+- Using getBoundingClientRect for horizontal-scroll (robarb@microsoft.com)
+- Removed the `fill`, `color`, and `shape` attributes and styling from Avatar (47367562+bheston@users.noreply.github.com)
+
+## 3.0.0-alpha.5
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- add export for custom elements manifest (32497422+KingOfTac@users.noreply.github.com)
+- add start and end slots to tab (chhol@microsoft.com)
+- feat: update foundation to new binding APIs (roeisenb@microsoft.com)
+- feat: move testing and dependency injection to fast-element (roeisenb@microsoft.com)
+- feat: remove design system, foundation element & related infrastructure (roeisenb@microsoft.com)
+- update breadcrumb item to always use an anchor and ensure aria-current is applied correctly in breadcrumb (chhol@microsoft.com)
+- add activeid to accordion change event (chhol@microsoft.com)
+- Removed the `fill` and `color` attributes and styling from Badge (47367562+bheston@users.noreply.github.com)
+- feat: enable fallback container creation for dependency injection location APIs (roeisenb@microsoft.com)
+- accordion verifies change events (stephcomeau@msn.com)
+- add storybook to fast-foundation (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.4
 
 ## 3.0.0-alpha.4
 

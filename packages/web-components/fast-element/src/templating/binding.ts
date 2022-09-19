@@ -1,8 +1,10 @@
-import { Message } from "../interfaces.js";
+import type { Subscriber } from "../index.js";
+import { isFunction, Message } from "../interfaces.js";
 import {
-    Binding,
-    BindingObserver,
     ExecutionContext,
+    Expression,
+    ExpressionController,
+    ExpressionObserver,
     Observable,
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
@@ -11,17 +13,17 @@ import {
     AddViewBehaviorFactory,
     Aspect,
     Aspected,
+    Binding,
     HTMLDirective,
     ViewBehavior,
     ViewBehaviorFactory,
-    ViewBehaviorTargets,
+    ViewController,
 } from "./html-directive.js";
-import { Markup } from "./markup.js";
-import type { CaptureType } from "./template.js";
+import { Markup, nextId } from "./markup.js";
 
 declare class TrustedHTML {}
 const createInnerHTMLBinding = globalThis.TrustedHTML
-    ? (binding: Binding) => (s, c) => {
+    ? (binding: Expression) => (s, c) => {
           const value = binding(s, c);
 
           if (value instanceof TrustedHTML) {
@@ -30,197 +32,54 @@ const createInnerHTMLBinding = globalThis.TrustedHTML
 
           throw FAST.error(Message.bindingInnerHTMLRequiresTrustedTypes);
       }
-    : (binding: Binding) => binding;
+    : (binding: Expression) => binding;
 
-/**
- * Describes how aspects of an HTML element will be affected by bindings.
- * @public
- */
-export type BindingMode = Record<
-    Aspect,
-    (directive: HTMLBindingDirective) => Pick<ViewBehaviorFactory, "createBehavior">
->;
-
-/**
- * Describes how aspects of an HTML element will be affected by bindings.
- * @public
- */
-export const BindingMode = Object.freeze({
-    /**
-     * Creates a binding mode based on the supplied behavior types.
-     * @param UpdateType - The base behavior type used to update aspects.
-     * @param EventType - The base behavior type used to respond to events.
-     * @returns A new binding mode.
-     */
-    define(
-        UpdateType: typeof UpdateBinding,
-        EventType: typeof EventBinding = EventBinding
-    ): BindingMode {
-        return Object.freeze({
-            [1]: d => new UpdateType(d, DOM.setAttribute),
-            [2]: d => new UpdateType(d, DOM.setBooleanAttribute),
-            [3]: d => new UpdateType(d, (t, a, v) => (t[a] = v)),
-            [4]: d => new (createContentBinding(UpdateType))(d, updateContentTarget),
-            [5]: d => new UpdateType(d, updateTokenListTarget),
-            [6]: d => new EventType(d),
-        });
-    },
-});
-
-/**
- * Describes the configuration for a binding expression.
- * @public
- */
-export interface BindingConfig<T = any> {
-    /**
-     * The binding mode to configure the binding with.
-     */
-    mode: BindingMode;
-
-    /**
-     * Options to be supplied to the binding behaviors.
-     */
-    options: T;
-}
-
-/**
- * Creates a new binding configuration based on the supplied options.
- * @public
- */
-export type BindingConfigResolver<T> = (options: T) => BindingConfig<T>;
-
-/**
- * Describes the configuration for a binding expression.
- * @public
- */
-export const BindingConfig = Object.freeze({
-    /**
-     * Creates a binding configuration based on the provided mode and options.
-     * @param mode - The mode to use for the configuration.
-     * @param defaultOptions - The default options to use for the configuration.
-     * @returns A new binding configuration.
-     */
-    define<T>(
-        mode: BindingMode,
-        defaultOptions: T
-    ): BindingConfig<T> & BindingConfigResolver<T> {
-        const config: BindingConfig<T> & BindingConfigResolver<T> = (
-            options: T
-        ): BindingConfig<T> => {
-            return {
-                mode: config.mode,
-                options: Object.assign({}, defaultOptions, options),
-            };
-        };
-
-        config.options = defaultOptions;
-        config.mode = mode;
-
-        return config;
-    },
-});
-
-/**
- * The "this" context for an update target function.
- * @public
- */
-export interface UpdateTargetThis {
-    /**
-     * The directive configuration for the update.
-     */
-    directive: HTMLBindingDirective;
-}
-
-/**
- * A target update function.
- * @param this - The "this" context for the update.
- * @param target - The node that is targeted by the update.
- * @param aspect - The aspect of the node that is being targeted.
- * @param value - The value to assign to the aspect.
- * @param source - The source object that the value was derived from.
- * @param context - The execution context that the binding is being run under.
- * @public
- */
-export type UpdateTarget = (
-    this: UpdateTargetThis,
-    target: Node,
-    aspect: string,
-    value: any,
-    source: any,
-    context: ExecutionContext
-) => void;
-
-/**
- * A base binding behavior for DOM updates.
- * @public
- */
-export class UpdateBinding implements ViewBehavior {
-    /**
-     * Creates an instance of UpdateBinding.
-     * @param directive - The directive that has the configuration for this behavior.
-     * @param updateTarget - The function used to update the target with the latest value.
-     */
-    constructor(
-        public readonly directive: HTMLBindingDirective,
-        protected updateTarget: UpdateTarget
-    ) {}
-
-    /**
-     * Bind this behavior to the source.
-     * @param source - The source to bind to.
-     * @param context - The execution context that the binding is operating within.
-     * @param targets - The targets that behaviors in a view can attach to.
-     */
-    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {}
-
-    /**
-     * Unbinds this behavior from the source.
-     * @param source - The source to unbind from.
-     * @param context - The execution context that the binding is operating within.
-     * @param targets - The targets that behaviors in a view can attach to.
-     */
-    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {}
-
-    /**
-     * Creates a behavior.
-     * @param targets - The targets available for behaviors to be attached to.
-     */
-    createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
-        return this;
+class OnChangeBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
+    TSource,
+    TReturn,
+    TParent
+> {
+    createObserver(
+        _: HTMLBindingDirective,
+        subscriber: Subscriber
+    ): ExpressionObserver<TSource, TReturn, TParent> {
+        return Observable.binding(this.evaluate, subscriber, this.isVolatile);
     }
 }
 
-function createContentBinding(Type: typeof UpdateBinding): typeof UpdateBinding {
-    return class extends Type {
-        unbind(
-            source: any,
-            context: ExecutionContext,
-            targets: ViewBehaviorTargets
-        ): void {
-            super.unbind(source, context, targets);
+class OneTimeBinding<TSource = any, TReturn = any, TParent = any>
+    extends Binding<TSource, TReturn, TParent>
+    implements ExpressionObserver<TSource, TReturn, TParent> {
+    createObserver(): ExpressionObserver<TSource, TReturn, TParent> {
+        return this;
+    }
 
-            const target = targets[this.directive.nodeId] as ContentTarget;
-            const view = target.$fastView as ComposableView;
-
-            if (view !== void 0 && view.isComposed) {
-                view.unbind();
-                view.needsBindOnly = true;
-            }
-        }
-    };
+    bind(controller: ExpressionController): TReturn {
+        return this.evaluate(controller.source, controller.context);
+    }
 }
+
+type UpdateTarget = (
+    this: HTMLBindingDirective,
+    target: Node,
+    aspect: string,
+    value: any,
+    controller: ViewController
+) => void;
 
 /**
  * A simple View that can be interpolated into HTML content.
  * @public
  */
 export interface ContentView {
+    readonly context: ExecutionContext;
+
     /**
      * Binds a view's behaviors to its binding source.
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the view within.
      */
-    bind(source: any, context: ExecutionContext): void;
+    bind(source: any): void;
 
     /**
      * Unbinds a view's behaviors from its binding source and context.
@@ -261,12 +120,11 @@ type ContentTarget = Node & {
     $fastTemplate?: ContentTemplate;
 };
 
-function updateContentTarget(
+function updateContent(
     target: ContentTarget,
     aspect: string,
     value: any,
-    source: any,
-    context: ExecutionContext
+    controller: ViewController
 ): void {
     // If there's no actual value, then this equates to the
     // empty string for the purposes of content bindings.
@@ -302,13 +160,13 @@ function updateContentTarget(
         // and that there's actually no need to compose it.
         if (!view.isComposed) {
             view.isComposed = true;
-            view.bind(source, context!);
+            view.bind(controller.source);
             view.insertBefore(target);
             target.$fastView = view;
             target.$fastTemplate = value;
         } else if (view.needsBindOnly) {
             view.needsBindOnly = false;
-            view.bind(source, context!);
+            view.bind(controller.source);
         }
     } else {
         const view = target.$fastView;
@@ -335,14 +193,13 @@ interface TokenListState {
     c: number;
 }
 
-function updateTokenListTarget(
-    this: UpdateTargetThis,
+function updateTokenList(
+    this: HTMLBindingDirective,
     target: Element,
     aspect: string,
     value: any
 ): void {
-    const directive = this.directive;
-    const lookup = `${directive.id}-t`;
+    const lookup = `${this.id}-t`;
     const state: TokenListState =
         target[lookup] ?? (target[lookup] = { c: 0, v: Object.create(null) });
     const versions = state.v;
@@ -382,224 +239,22 @@ function updateTokenListTarget(
     }
 }
 
-/**
- * A binding behavior for one-time bindings.
- * @public
- */
-export class OneTimeBinding extends UpdateBinding {
-    /**
-     * Bind this behavior to the source.
-     * @param source - The source to bind to.
-     * @param context - The execution context that the binding is operating within.
-     * @param targets - The targets that behaviors in a view can attach to.
-     */
-    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const directive = this.directive;
-        this.updateTarget(
-            targets[directive.nodeId],
-            directive.targetAspect,
-            directive.binding(source, context),
-            source,
-            context
-        );
-    }
-}
-
-/**
- * A binding behavior for bindings that change.
- * @public
- */
-export class ChangeBinding extends UpdateBinding {
-    private isBindingVolatile: boolean;
-    private observerProperty: string;
-
-    /**
-     * Creates an instance of ChangeBinding.
-     * @param directive - The directive that has the configuration for this behavior.
-     * @param updateTarget - The function used to update the target with the latest value.
-     */
-    constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget) {
-        super(directive, updateTarget);
-        this.isBindingVolatile = Observable.isVolatileBinding(directive.binding);
-        this.observerProperty = `${directive.id}-o`;
-    }
-
-    /**
-     * Returns the binding observer used to update the node.
-     * @param target - The target node.
-     * @returns A BindingObserver.
-     */
-    protected getObserver(target: Node): BindingObserver {
-        return (
-            target[this.observerProperty] ??
-            (target[this.observerProperty] = Observable.binding(
-                this.directive.binding,
-                this,
-                this.isBindingVolatile
-            ))
-        );
-    }
-
-    /**
-     * Bind this behavior to the source.
-     * @param source - The source to bind to.
-     * @param context - The execution context that the binding is operating within.
-     * @param targets - The targets that behaviors in a view can attach to.
-     */
-    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const directive = this.directive;
-        const target = targets[directive.nodeId];
-        const observer = this.getObserver(target);
-
-        (observer as any).target = target;
-        (observer as any).source = source;
-        (observer as any).context = context;
-
-        this.updateTarget(
-            target,
-            directive.targetAspect,
-            observer.observe(source, context),
-            source,
-            context
-        );
-    }
-
-    /**
-     * Unbinds this behavior from the source.
-     * @param source - The source to unbind from.
-     * @param context - The execution context that the binding is operating within.
-     * @param targets - The targets that behaviors in a view can attach to.
-     */
-    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.directive.nodeId];
-        const observer = this.getObserver(target);
-        observer.dispose();
-        (observer as any).target = null;
-        (observer as any).source = null;
-        (observer as any).context = null;
-    }
-
-    /** @internal */
-    public handleChange(binding: Binding, observer: BindingObserver): void {
-        const target = (observer as any).target;
-        const source = (observer as any).source;
-        const context = (observer as any).context;
-        this.updateTarget(
-            target,
-            this.directive.targetAspect,
-            observer.observe(source, context!),
-            source,
-            context
-        );
-    }
-}
-
-/**
- * A binding behavior for handling events.
- * @public
- */
-export class EventBinding {
-    private contextProperty: string;
-    private sourceProperty: string;
-
-    /**
-     * Creates an instance of EventBinding.
-     * @param directive - The directive that has the configuration for this behavior.
-     */
-    constructor(public readonly directive: HTMLBindingDirective) {
-        this.sourceProperty = `${directive.id}-s`;
-        this.contextProperty = `${directive.id}-c`;
-    }
-
-    /**
-     * Bind this behavior to the source.
-     * @param source - The source to bind to.
-     * @param context - The execution context that the binding is operating within.
-     * @param targets - The targets that behaviors in a view can attach to.
-     */
-    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const directive = this.directive;
-        const target = targets[directive.nodeId];
-        target[this.sourceProperty] = source;
-        target[this.contextProperty] = context;
-        target.addEventListener(directive.targetAspect, this, directive.options);
-    }
-
-    /**
-     * Unbinds this behavior from the source.
-     * @param source - The source to unbind from.
-     * @param context - The execution context that the binding is operating within.
-     * @param targets - The targets that behaviors in a view can attach to.
-     */
-    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const directive = this.directive;
-        const target = targets[directive.nodeId];
-        target[this.sourceProperty] = target[this.contextProperty] = null;
-        target.removeEventListener(directive.targetAspect, this, directive.options);
-    }
-
-    /**
-     * Creates a behavior.
-     * @param targets - The targets available for behaviors to be attached to.
-     */
-    createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
-        return this;
-    }
-
-    /**
-     * @internal
-     */
-    handleEvent(event: Event): void {
-        const target = event.currentTarget!;
-
-        ExecutionContext.setEvent(event);
-        const result = this.directive.binding(
-            target[this.sourceProperty],
-            target[this.contextProperty]
-        );
-        ExecutionContext.setEvent(null);
-
-        if (result !== true) {
-            event.preventDefault();
-        }
-    }
-}
-
-/**
- * The default binding options.
- * @public
- */
-export type DefaultBindingOptions = AddEventListenerOptions;
-
-/**
- * The default onChange binding configuration.
- * @public
- */
-export const onChange = BindingConfig.define(
-    BindingMode.define(ChangeBinding),
-    {} as DefaultBindingOptions
-);
-
-/**
- * The default onTime binding configuration.
- * @public
- */
-export const oneTime = BindingConfig.define(BindingMode.define(OneTimeBinding), {
-    once: true,
-} as DefaultBindingOptions);
+const setProperty = (t, a, v) => (t[a] = v);
+const eventTarget = () => void 0;
 
 /**
  * A directive that applies bindings.
  * @public
  */
 export class HTMLBindingDirective
-    implements HTMLDirective, ViewBehaviorFactory, Aspected {
-    private factory: Pick<ViewBehaviorFactory, "createBehavior"> | null = null;
+    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected {
+    private data: string;
+    private updateTarget: UpdateTarget | null = null;
 
     /**
      * The unique id of the factory.
      */
-    id: string;
+    id: string = nextId();
 
     /**
      * The structural id of the DOM node to which the created behavior will apply.
@@ -623,11 +278,11 @@ export class HTMLBindingDirective
 
     /**
      * Creates an instance of HTMLBindingDirective.
-     * @param binding - The binding to apply.
-     * @param mode - The binding mode to use when applying the binding.
-     * @param options - The options to configure the binding with.
+     * @param dataBinding - The binding configuration to apply.
      */
-    constructor(public binding: Binding, public mode: BindingMode, public options: any) {}
+    constructor(public dataBinding: Binding) {
+        this.data = `${this.id}-d`;
+    }
 
     /**
      * Creates HTML to be used within a template.
@@ -639,37 +294,176 @@ export class HTMLBindingDirective
 
     /**
      * Creates a behavior.
-     * @param targets - The targets available for behaviors to be attached to.
      */
-    createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
-        if (this.factory == null) {
+    createBehavior(): ViewBehavior {
+        if (this.updateTarget === null) {
             if (this.targetAspect === "innerHTML") {
-                this.binding = createInnerHTMLBinding(this.binding);
+                this.dataBinding.evaluate = createInnerHTMLBinding(
+                    this.dataBinding.evaluate
+                );
             }
 
-            this.factory = this.mode[this.aspectType](this);
+            switch (this.aspectType) {
+                case 1:
+                    this.updateTarget = DOM.setAttribute;
+                    break;
+                case 2:
+                    this.updateTarget = DOM.setBooleanAttribute;
+                    break;
+                case 3:
+                    this.updateTarget = setProperty;
+                    break;
+                case 4:
+                    this.bind = this.bindContent;
+                    this.updateTarget = updateContent;
+                    break;
+                case 5:
+                    this.updateTarget = updateTokenList;
+                    break;
+                case 6:
+                    this.bind = this.bindEvent;
+                    this.updateTarget = eventTarget;
+                    break;
+                default:
+                    throw FAST.error(Message.unsupportedBindingBehavior);
+            }
         }
 
-        return this.factory.createBehavior(targets);
+        return this;
+    }
+
+    /** @internal */
+    bindDefault(controller: ViewController): void {
+        const target = controller.targets[this.nodeId];
+        const observer =
+            target[this.data] ??
+            (target[this.data] = this.dataBinding.createObserver(this, this));
+
+        (observer as any).target = target;
+        (observer as any).controller = controller;
+
+        this.updateTarget!(
+            target,
+            this.targetAspect,
+            observer.bind(controller),
+            controller
+        );
+
+        if (this.updateTarget === updateContent) {
+            controller.onUnbind(this);
+        }
+    }
+
+    /** @internal */
+    bind = this.bindDefault;
+
+    /** @internal */
+    bindContent(controller: ViewController): void {
+        this.bindDefault(controller);
+        controller.onUnbind(this);
+    }
+
+    /** @internal */
+    bindEvent(controller: ViewController) {
+        const target = controller.targets[this.nodeId];
+        target[this.data] = controller;
+        target.addEventListener(this.targetAspect, this, this.dataBinding.options);
+    }
+
+    /** @internal */
+    unbind(controller: ViewController): void {
+        const target = controller.targets[this.nodeId] as ContentTarget;
+        const view = target.$fastView as ComposableView;
+
+        if (view !== void 0 && view.isComposed) {
+            view.unbind();
+            view.needsBindOnly = true;
+        }
+    }
+
+    /** @internal */
+    handleEvent(event: Event): void {
+        const target = event.currentTarget!;
+
+        ExecutionContext.setEvent(event);
+
+        const controller = target[this.data] as ViewController;
+        const result = this.dataBinding.evaluate(controller.source, controller.context);
+
+        ExecutionContext.setEvent(null);
+
+        if (result !== true) {
+            event.preventDefault();
+        }
+    }
+
+    /** @internal */
+    handleChange(binding: Expression, observer: ExpressionObserver): void {
+        const target = (observer as any).target;
+        const controller = (observer as any).controller;
+        this.updateTarget!(
+            target,
+            this.targetAspect,
+            observer.bind(controller),
+            controller
+        );
     }
 }
 
 HTMLDirective.define(HTMLBindingDirective, { aspected: true });
 
 /**
- * Creates a binding directive with the specified configuration.
- * @param binding - The binding expression.
- * @param config - The binding configuration.
- * @returns A binding directive.
+ * Creates an standard binding.
+ * @param binding - The binding to refresh when changed.
+ * @param isVolatile - Indicates whether the binding is volatile or not.
+ * @returns A binding configuration.
  * @public
  */
 export function bind<T = any>(
-    binding: Binding<T>,
-    config: BindingConfig | DefaultBindingOptions = onChange
-): CaptureType<T> {
-    if (!("mode" in config)) {
-        config = onChange(config);
-    }
+    binding: Expression<T>,
+    isVolatile = Observable.isVolatileBinding(binding)
+): Binding<T> {
+    return new OnChangeBinding(binding, isVolatile);
+}
 
-    return new HTMLBindingDirective(binding, config.mode, config.options);
+/**
+ * Creates a one time binding
+ * @param binding - The binding to refresh when signaled.
+ * @returns A binding configuration.
+ * @public
+ */
+export function oneTime<T = any>(binding: Expression<T>): Binding<T> {
+    return new OneTimeBinding(binding);
+}
+
+/**
+ * Creates an event listener binding.
+ * @param binding - The binding to invoke when the event is raised.
+ * @param options - Event listener options.
+ * @returns A binding configuration.
+ * @public
+ */
+export function listener<T = any>(
+    binding: Expression<T>,
+    options?: AddEventListenerOptions
+): Binding<T> {
+    const config = new OnChangeBinding(binding, false);
+    config.options = options;
+    return config;
+}
+
+/**
+ * Normalizes the input value into a binding.
+ * @param value - The value to create the default binding for.
+ * @returns A binding configuration for the provided value.
+ * @public
+ */
+export function normalizeBinding<TSource = any, TReturn = any, TParent = any>(
+    value: Expression<TSource, TReturn, TParent> | Binding<TSource, TReturn, TParent> | {}
+): Binding<TSource, TReturn, TParent> {
+    return isFunction(value)
+        ? bind(value)
+        : value instanceof Binding
+        ? value
+        : oneTime(() => value);
 }

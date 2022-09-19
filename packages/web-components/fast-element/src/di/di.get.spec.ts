@@ -562,3 +562,134 @@ describe("DI.get", function () {
         });
     });
 });
+
+describe("DI.getAsync", () => {
+    it("calls the registration locator for unknown keys", async () => {
+        const key = "key";
+        const instance = {};
+
+        const asyncRegistrationLocator = async key => {
+            return Registration.instance(key, instance);
+        };
+
+        const container = DI.createContainer({
+            asyncRegistrationLocator
+        });
+
+        const found = await container.getAsync(key);
+        expect(found).equals(instance);
+
+        const foundAgain = container.get(key);
+        expect(foundAgain).equals(instance);
+    });
+
+    it("calls the registration locator for unknown dependencies", async () => {
+        const key1 = "key";
+        const instance1 = {};
+
+        const key2 = "key2";
+        const instance2 = {};
+
+        const key3 = "key3";
+        const instance3 = {};
+
+        const asyncRegistrationLocator = async key => {
+            switch(key) {
+                case key1:
+                    return Registration.instance(key1, instance1);
+                case key2:
+                    return Registration.instance(key2, instance2);
+                case key3:
+                    return Registration.instance(key3, instance3);
+            }
+
+            throw new Error();
+        };
+
+        const container = DI.createContainer({
+            asyncRegistrationLocator
+        });
+
+        class Test {
+            constructor(
+                @inject(key1) public one,
+                @inject(key2) public two,
+                @inject(key3) public three
+            ){}
+        }
+
+        container.register(
+            Registration.singleton(Test, Test)
+        );
+
+        const found = await container.getAsync(Test);
+        expect(found.one).equals(instance1);
+        expect(found.two).equals(instance2);
+        expect(found.three).equals(instance3);
+
+        const foundAgain = container.get(Test);
+        expect(foundAgain).equals(found);
+    });
+
+    it("calls the registration locator for a hierarchy of unknowns", async () => {
+        const key1 = "key";
+        const instance1 = {};
+
+        const key2 = "key2";
+        const instance2 = {};
+
+        const key3 = "key3";
+        const instance3 = {};
+
+        class Test {
+            constructor(
+                @inject(key1) public one,
+                @inject(key2) public two,
+                @inject(key3) public three
+            ){}
+        }
+
+        class Test2 {
+            constructor(
+                @inject(Test) public test: Test
+            ) {}
+        }
+
+        const asyncRegistrationLocator = async key => {
+            switch(key) {
+                case key1:
+                    return Registration.instance(key1, instance1);
+                case key2:
+                    return Registration.instance(key2, instance2);
+                case key3:
+                    return Registration.instance(key3, instance3);
+                case Test:
+                    return Registration.singleton(key, Test);
+                case Test2:
+                    return Registration.transient(key, Test2);
+            }
+
+            throw new Error();
+        };
+
+        const container = DI.createContainer({
+            asyncRegistrationLocator
+        });
+
+        const found = await container.getAsync(Test2);
+        expect(found.test.one).equals(instance1);
+        expect(found.test.two).equals(instance2);
+        expect(found.test.three).equals(instance3);
+
+        const foundTest = container.get(Test);
+        expect(foundTest).equals(found.test);
+
+        const foundTransient = container.get(Test2);
+        expect(foundTransient).not.equals(found);
+        expect(foundTransient).instanceOf(Test2);
+        expect(foundTransient.test.one).equals(instance1);
+        expect(foundTransient.test.two).equals(instance2);
+        expect(foundTransient.test.three).equals(instance3);
+        expect(foundTransient.test).equals(foundTest);
+    });
+});

@@ -1,13 +1,13 @@
 import type { Constructable } from "../interfaces.js";
-import type { Behavior } from "../observation/behavior.js";
 import { createTypeRegistry } from "../platform.js";
+import type { HostBehavior } from "./host.js";
 import type { ComposableStyles } from "./element-styles.js";
 
 /**
  * Used to add behaviors when constructing styles.
  * @public
  */
-export type AddBehavior = (behavior: Behavior<HTMLElement>) => void;
+export type AddBehavior = (behavior: HostBehavior<HTMLElement>) => void;
 
 /**
  * Directive for use in {@link css}.

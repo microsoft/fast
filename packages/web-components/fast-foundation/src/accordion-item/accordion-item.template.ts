@@ -6,10 +6,10 @@ import type { AccordionItemOptions, FASTAccordionItem } from "./accordion-item.j
  * The template for the {@link @microsoft/fast-foundation#(FASTAccordionItem:class)} component.
  * @public
  */
-export function accordionItemTemplate(
+export function accordionItemTemplate<T extends FASTAccordionItem>(
     options: AccordionItemOptions = {}
-): ElementViewTemplate<FASTAccordionItem> {
-    return html<FASTAccordionItem>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template class="${x => (x.expanded ? "expanded" : "")}">
             <div
                 class="heading"
@@ -34,10 +34,10 @@ export function accordionItemTemplate(
                 ${endSlotTemplate(options)}
                 <span class="icon" part="icon" aria-hidden="true">
                     <slot name="expanded-icon">
-                        ${options.expandedIcon || ""}
+                        ${options.expandedIcon ?? ""}
                     </slot>
                     <slot name="collapsed-icon">
-                        ${options.collapsedIcon || ""}
+                        ${options.collapsedIcon ?? ""}
                     </slot>
                 <span>
             </div>

@@ -317,7 +317,6 @@ describe("DI.createContext() -> container.get()", function () {
             expect(container.get).to.have.been.nth(4).called.with(IInstance);
         });
 
-        // TODO: make test work
         it(`ContextDecorator alias to callback registration is invoked each time`, function () {
             interface IAlias {}
             const IAlias = DI.createContext<IAlias>("IAlias", x =>

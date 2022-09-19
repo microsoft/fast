@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-element",
   "description": "A library for constructing Web Components",
-  "version": "2.0.0-beta.3",
+  "version": "2.0.0-beta.6",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -34,10 +34,6 @@
       "types": "./dist/dts/debug.d.ts",
       "default": "./dist/esm/debug.js"
     },
-    "./observation/splice-strategies": {
-      "types": "./dist/dts/observation/splice-strategies.d.ts",
-      "default": "./dist/esm/observation/splice-strategies.js"
-    },
     "./binding/two-way": {
       "types": "./dist/dts/templating/binding-two-way.d.ts",
       "default": "./dist/esm/templating/binding-two-way.js"
@@ -54,9 +50,9 @@
       "types": "./dist/dts/utilities.d.ts",
       "default": "./dist/esm/utilities.js"
     },
-    "./hooks": {
-      "types": "./dist/dts/hooks.d.ts",
-      "default": "./dist/esm/hooks.js"
+    "./state": {
+      "types": "./dist/dts/state/exports.d.ts",
+      "default": "./dist/esm/state/exports.js"
     },
     "./context": {
       "types": "./dist/dts/context.d.ts",
@@ -73,7 +69,12 @@
     "./di": {
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
-    }
+    },
+    "./pending-task": {
+      "types": "./dist/dts/pending-task.d.ts",
+      "default": "./dist/esm/pending-task.js"
+    },
+    "./package.json": "./package.json"
   },
   "unpkg": "dist/fast-element.min.js",
   "sideEffects": [

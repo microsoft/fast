@@ -1,11 +1,12 @@
 import { isFunction, isString } from "../interfaces.js";
-import { Binding, ExecutionContext } from "../observation/observable.js";
+import type { Expression } from "../observation/observable.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
 import {
     AddViewBehaviorFactory,
     Aspect,
     Aspected,
+    Binding,
     HTMLDirective,
     HTMLDirectiveDefinition,
     ViewBehaviorFactory,
@@ -116,11 +117,10 @@ export class ViewTemplate<TSource = any, TParent = any>
     public render(
         source: TSource,
         host: Node,
-        hostBindingTarget?: Element,
-        context?: ExecutionContext
+        hostBindingTarget?: Element
     ): HTMLView<TSource, TParent> {
-        const view = this.create(hostBindingTarget ?? (host as any));
-        view.bind(source, context ?? ExecutionContext.default);
+        const view = this.create(hostBindingTarget);
+        view.bind(source);
         view.appendTo(host);
         return view;
     }
@@ -144,6 +144,7 @@ export interface CaptureType<TSource> {}
  * @public
  */
 export type TemplateValue<TSource, TParent = any> =
+    | Expression<TSource, any, TParent>
     | Binding<TSource, any, TParent>
     | HTMLDirective
     | CaptureType<TSource>;
@@ -191,25 +192,28 @@ export function html<TSource = any, TParent = any>(
 
         if (isFunction(currentValue)) {
             html += createAspectedHTML(
-                bind(currentValue) as HTMLBindingDirective,
+                new HTMLBindingDirective(bind(currentValue)),
                 currentString,
                 add
             );
         } else if (isString(currentValue)) {
             const match = lastAttributeNameRegex.exec(currentString);
             if (match !== null) {
-                const directive = bind(
-                    () => currentValue,
-                    oneTime
-                ) as HTMLBindingDirective;
+                const directive = new HTMLBindingDirective(oneTime(() => currentValue));
                 Aspect.assign(directive, match[2]);
                 html += directive.createHTML(add);
             } else {
                 html += currentValue;
             }
+        } else if (currentValue instanceof Binding) {
+            html += createAspectedHTML(
+                new HTMLBindingDirective(currentValue),
+                currentString,
+                add
+            );
         } else if ((definition = HTMLDirective.getForInstance(currentValue)) === void 0) {
             html += createAspectedHTML(
-                bind(() => currentValue, oneTime) as HTMLBindingDirective,
+                new HTMLBindingDirective(oneTime(() => currentValue)),
                 currentString,
                 add
             );

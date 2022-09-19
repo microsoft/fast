@@ -13,22 +13,22 @@ import type {
  * @returns - A calendar title template
  * @public
  */
-export function calendarTitleTemplate(): ViewTemplate<FASTCalendar> {
+export function calendarTitleTemplate<T extends FASTCalendar>(): ViewTemplate<T> {
     return html`
         <div
             class="title"
             part="title"
-            aria-label="${(x: FASTCalendar) =>
+            aria-label="${(x: T) =>
                 x.dateFormatter.getDate(`${x.month}-2-${x.year}`, {
                     month: "long",
                     year: "numeric",
                 })}"
         >
             <span part="month">
-                ${(x: FASTCalendar) => x.dateFormatter.getMonth(x.month)}
+                ${(x: T) => x.dateFormatter.getMonth(x.month)}
             </span>
             <span part="year">
-                ${(x: FASTCalendar) => x.dateFormatter.getYear(x.year)}
+                ${(x: T) => x.dateFormatter.getYear(x.year)}
             </span>
         </div>
     `;
@@ -130,14 +130,14 @@ export function calendarRowTemplate(
  *
  * @internal
  */
-export function interactiveCalendarGridTemplate(
+export function interactiveCalendarGridTemplate<T extends FASTCalendar>(
     options: CalendarOptions,
     todayString: string
-): ViewTemplate<FASTCalendar> {
+): ViewTemplate<T> {
     const gridTag: string = tagFor(options.dataGrid);
     const rowTag: string = tagFor(options.dataGridRow);
 
-    return html<FASTCalendar>`
+    return html<T>`
     <${gridTag} class="days interact" part="days" generate-header="none">
         <${rowTag}
             class="week-days"
@@ -162,11 +162,11 @@ export function interactiveCalendarGridTemplate(
  *
  * @internal
  */
-export function noninteractiveCalendarTemplate(
+export function noninteractiveCalendarTemplate<T extends FASTCalendar>(
     options: CalendarOptions,
     todayString: string
-): ViewTemplate<FASTCalendar> {
-    return html<FASTCalendar>`
+): ViewTemplate<T> {
+    return html<T>`
         <div class="days" part="days">
             <div class="week-days" part="week-days">
                 ${repeat(
@@ -178,7 +178,7 @@ export function noninteractiveCalendarTemplate(
                     `
                 )}
             </div>
-            ${repeat<FASTCalendar>(
+            ${repeat<T>(
                 x => x.getDays(),
                 html<CalendarDateInfo[]>`
                     <div class="week">
@@ -233,14 +233,14 @@ export function noninteractiveCalendarTemplate(
  * @returns - a template for a calendar month
  * @public
  */
-export function calendarTemplate(
+export function calendarTemplate<T extends FASTCalendar>(
     options: CalendarOptions
-): ElementViewTemplate<FASTCalendar> {
+): ElementViewTemplate<T> {
     const today: Date = new Date();
     const todayString: string = `${
         today.getMonth() + 1
     }-${today.getDate()}-${today.getFullYear()}`;
-    return html<FASTCalendar>`
+    return html<T>`
         <template>
             ${startSlotTemplate(options)} ${options.title ?? ""}
             <slot></slot>

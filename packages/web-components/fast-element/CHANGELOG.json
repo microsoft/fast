@@ -2,6 +2,153 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 01 Sep 2022 21:53:34 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.6",
+      "version": "2.0.0-beta.6",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "da9ebbe1b7471cd4e6f7b74f2f9bf02fcc54da4f",
+            "comment": "feat: add new state, ownedState, and computedState APIs"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 18 Aug 2022 20:46:10 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.5",
+      "version": "2.0.0-beta.5",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "218cfc014f5c76464493725f83bd883e8b07defa",
+            "comment": "Fix ExpressionObserer bug where watcher was not reset if the binding threw"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "fdd4514664691021a5673934c95acf31a8e73416",
+            "comment": "make insertbefore noop in view"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "eb8d5a59f645b85567adadac41a3bfa66001f941",
+            "comment": "make sure default options for recycle gets set in different scenarios"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "ac3954c97acd3bd549a27829593855c431a24027",
+            "comment": "refactor: remove dependency of DI on FASTElement"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "29308db7920baaaac5b31b206d551669e165bc06",
+            "comment": "add subpath export for package.json to packages"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "775d51602cba544347ec1e57fdb4fea248d1b1b5",
+            "comment": "change default array strategy to merge strategy, update repeat directive"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "aeac1198f427c33f789a2d869f58549ea5bfea57",
+            "comment": "assert FASTElement's type so that instanceof behavior is consistent with other class implementations"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 18 Jul 2022 21:10:01 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.4",
+      "version": "2.0.0-beta.4",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "f9fb9c88902bd81233fb927a7357d4bca7634f29",
+            "comment": "feat: extract all error messages from context and DI"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "27dc848327b25328e428f67505684d2171b58711",
+            "comment": "feat: introduce new binding API"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "7f4d6b5587f6eff52e5b7f414e27543bb4d7772d",
+            "comment": "Enabled DOM Container fallback functions when a container cannot be located."
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "0f57d55822bbf97ab69f90efc0a0d100b27e10eb",
+            "comment": "feat: add render directive, renderWith decorator, and RenderInstruction"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "94e6b0a0e7e1fd1167bd6453c3f7b27efdc91804",
+            "comment": "only store removed views if it can't be reused right away"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "11d5b4075118456b2e7c2a4f32a415eeea94ed7f",
+            "comment": "fix: enable createElementTemplate to have undefined attributes"
+          },
+          {
+            "author": "prudepixie@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "31296ea2be3981d25f5feb773b2895dbedfaf2c2",
+            "comment": "use index to track reusable views"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "4567188a47598b3d2589b05f039bea695f2b8875",
+            "comment": "feat: enable render, repeat, and when template helpers to handle static data in addition to the already supported dynamic bindings"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "f164aa75e62ed71c9386902051c021f1fdfba364",
+            "comment": "fix: FASTElementDefinition#isDefined should be true only after define"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "aacfde6d1f52a20af5511c5e792f730bd091d452",
+            "comment": "feat: move testing and dependency injection to fast-element"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "04c51a17dde6d03dc2e2a4de3666cbbec950d900",
+            "comment": "fix: warn when host bindings are accidentally applied on non CE views"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "b32eb1004960da95b74dba7f111ee859b6655896",
+            "comment": "feat: perf and safety improvements to fast element definition"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 22 Jun 2022 20:17:50 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.3",
       "version": "2.0.0-beta.3",

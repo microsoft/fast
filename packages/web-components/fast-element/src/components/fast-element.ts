@@ -1,5 +1,5 @@
 import { Constructable, isFunction } from "../interfaces.js";
-import { Controller } from "./controller.js";
+import { ElementController } from "./element-controller.js";
 import {
     FASTElementDefinition,
     PartialFASTElementDefinition,
@@ -14,7 +14,7 @@ export interface FASTElement extends HTMLElement {
      * The underlying controller that handles the lifecycle and rendering of
      * this FASTElement.
      */
-    readonly $fastController: Controller;
+    readonly $fastController: ElementController;
 
     /**
      * Emits a custom HTML event.
@@ -67,12 +67,12 @@ function createFASTElement<T extends typeof HTMLElement>(
     BaseType: T
 ): { new (): InstanceType<T> & FASTElement } {
     return class extends (BaseType as any) {
-        public readonly $fastController!: Controller;
+        public readonly $fastController!: ElementController;
 
         public constructor() {
             /* eslint-disable-next-line */
             super();
-            Controller.forCustomElement(this as any);
+            ElementController.forCustomElement(this as any);
         }
 
         public $emit(
@@ -84,11 +84,11 @@ function createFASTElement<T extends typeof HTMLElement>(
         }
 
         public connectedCallback(): void {
-            this.$fastController.onConnectedCallback();
+            this.$fastController.connect();
         }
 
         public disconnectedCallback(): void {
-            this.$fastController.onDisconnectedCallback();
+            this.$fastController.disconnect();
         }
 
         public attributeChangedCallback(
@@ -139,21 +139,27 @@ function define<TType extends Constructable<HTMLElement> = Constructable<HTMLEle
     return FASTElementDefinition.compose(this, type).define().type;
 }
 
+function from<TBase extends typeof HTMLElement>(BaseType: TBase) {
+    return createFASTElement(BaseType);
+}
+
 /**
  * A minimal base class for FASTElements that also provides
  * static helpers for working with FASTElements.
  * @public
  */
-export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
+export const FASTElement: {
+    new (): FASTElement;
+    define: typeof define;
+    compose: typeof compose;
+    from: typeof from;
+} = Object.assign(createFASTElement(HTMLElement), {
     /**
      * Creates a new FASTElement base class inherited from the
      * provided base type.
      * @param BaseType - The base element type to inherit from.
      */
-    from<TBase extends typeof HTMLElement>(BaseType: TBase) {
-        return createFASTElement(BaseType);
-    },
-
+    from,
     /**
      * Defines a platform custom element based on the provided type and definition.
      * @param type - The custom element type to define.

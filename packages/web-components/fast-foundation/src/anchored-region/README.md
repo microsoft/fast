@@ -75,6 +75,21 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 
 
+### Variables
+
+| Name                          | Description                                                                                                                                                                                                                                                                                                                                                          | Type                                                                                                |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `AxisPositioningMode`         | Values to define the base behavior of an anchored region on a particular axis                                                                                                                                                                                                                                                                                        | `{ uncontrolled: "uncontrolled", locktodefault: "locktodefault", dynamic: "dynamic", }`             |
+| `AxisScalingMode`             | Values to define the scaling behavior of an anchored region on a particular axis                                                                                                                                                                                                                                                                                     | `{ anchor: "anchor", content: "content", fill: "fill", }`                                           |
+| `HorizontalPosition`          | Values for the horizontal positioning options for an anchored region                                                                                                                                                                                                                                                                                                 | `{ start: "start", end: "end", left: "left", right: "right", center: "center", unset: "unset", }`   |
+| `VerticalPosition`            | Values for the vertical positioning options for an anchored region                                                                                                                                                                                                                                                                                                   | `{ top: "top", bottom: "bottom", center: "center", unset: "unset", }`                               |
+| `AutoUpdateMode`              | Defines if the component updates its position automatically. Calling update() always provokes an update. anchor - the component only updates its position when the anchor resizes (default) auto - the component updates its position when: - update() is called - the anchor resizes - the window resizes - the viewport resizes - any scroll event in the document | `{ anchor: "anchor", auto: "auto", }`                                                               |
+| `AnchoredRegionPositionLabel` | Values to describe the possible positions of the region relative to its anchor. Depending on the axis start = left/top, end = right/bottom                                                                                                                                                                                                                           | `{ start: "start", insetStart: "insetStart", insetEnd: "insetEnd", end: "end", center: "center", }` |
+
+<hr/>
+
+
+
 ### class: `FASTAnchoredRegion`
 
 #### Superclass
@@ -165,14 +180,6 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | Name | Description                      |
 | ---- | -------------------------------- |
 |      | The default slot for the content |
-
-<hr/>
-
-### Variables
-
-| Name             | Description                                                                                                                                                                                                                                                                                                                                                          | Type                                  |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| `AutoUpdateMode` | Defines if the component updates its position automatically. Calling update() always provokes an update. anchor - the component only updates its position when the anchor resizes (default) auto - the component updates its position when: - update() is called - the anchor resizes - the window resizes - the viewport resizes - any scroll event in the document | `{ anchor: "anchor", auto: "auto", }` |
 
 <hr/>
 

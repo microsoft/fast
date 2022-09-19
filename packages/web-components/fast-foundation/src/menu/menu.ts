@@ -1,4 +1,4 @@
-import { FASTElement, observable, Updates } from "@microsoft/fast-element";
+import { FASTElement, Observable, observable, Updates } from "@microsoft/fast-element";
 import {
     isHTMLElement,
     keyArrowDown,
@@ -6,12 +6,7 @@ import {
     keyEnd,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import {
-    FASTMenuItem,
-    MenuItemColumnCount,
-    MenuItemRole,
-    roleForMenuItem,
-} from "../menu-item/index.js";
+import { FASTMenuItem, MenuItemColumnCount, MenuItemRole } from "../menu-item/index.js";
 
 /**
  * A Menu Custom HTML Element.
@@ -26,7 +21,7 @@ export class FASTMenu extends FASTElement {
      * @internal
      */
     @observable
-    public items: HTMLSlotElement;
+    public items: HTMLElement[];
     protected itemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
         // only update children after the component is connected and
         // the setItems has run on connectedCallback
@@ -46,7 +41,7 @@ export class FASTMenu extends FASTElement {
      */
     private focusIndex: number = -1;
 
-    private static focusableElementRoles: { [key: string]: string } = roleForMenuItem;
+    private static focusableElementRoles = MenuItemRole;
 
     /**
      * @internal
@@ -200,19 +195,38 @@ export class FASTMenu extends FASTElement {
         }
     };
 
-    private removeItemListeners = (): void => {
-        if (this.menuItems !== undefined) {
-            this.menuItems.forEach((item: HTMLElement) => {
-                item.removeEventListener("expanded-change", this.handleExpandedChanged);
-                item.removeEventListener("focus", this.handleItemFocus);
-            });
+    private removeItemListeners(items: Element[] = this.items): void {
+        items.forEach(item => {
+            item.removeEventListener("focus", this.handleItemFocus);
+            item.removeEventListener("expanded-changed", this.handleExpandedChanged);
+            Observable.getNotifier(item).unsubscribe(this, "hidden");
+        });
+    }
+
+    private static elementIndent(el: HTMLElement): MenuItemColumnCount {
+        const role = el.getAttribute("role");
+        const startSlot = el.querySelector("[slot=start]");
+
+        if (role && role !== MenuItemRole.menuitem) {
+            return !startSlot ? 1 : 2;
         }
-    };
 
-    private setItems = (): void => {
-        const newItems: Element[] = this.domChildren();
+        return !startSlot ? 0 : 1;
+    }
 
-        this.removeItemListeners();
+    private setItems(): void {
+        const children = Array.from(this.children);
+
+        this.removeItemListeners(children);
+
+        children.forEach((child: Element) =>
+            Observable.getNotifier(child).subscribe(this, "hidden")
+        );
+
+        const newItems: Element[] = children.filter(
+            child => !child.hasAttribute("hidden")
+        );
+
         this.menuItems = newItems;
 
         const menuItems = this.menuItems.filter(this.isMenuItemElement);
@@ -222,25 +236,10 @@ export class FASTMenu extends FASTElement {
             this.focusIndex = 0;
         }
 
-        function elementIndent(el: HTMLElement): MenuItemColumnCount {
-            const role = el.getAttribute("role");
-            const startSlot = el.querySelector("[slot=start]");
-
-            if (role !== MenuItemRole.menuitem && startSlot === null) {
-                return 1;
-            } else if (role === MenuItemRole.menuitem && startSlot !== null) {
-                return 1;
-            } else if (role !== MenuItemRole.menuitem && startSlot !== null) {
-                return 2;
-            } else {
-                return 0;
-            }
-        }
-
         const indent: MenuItemColumnCount = menuItems.reduce((accum, current) => {
-            const elementValue = elementIndent(current);
+            const elementValue = FASTMenu.elementIndent(current);
 
-            return accum > elementValue ? accum : elementValue;
+            return Math.max(accum, elementValue as number) as MenuItemColumnCount;
         }, 0);
 
         menuItems.forEach((item: HTMLElement, index: number) => {
@@ -252,7 +251,13 @@ export class FASTMenu extends FASTElement {
                 item.startColumnCount = indent;
             }
         });
-    };
+    }
+
+    public handleChange(source: any, propertyName: string) {
+        if (propertyName === "hidden") {
+            this.setItems();
+        }
+    }
 
     /**
      * handle change from child element
@@ -297,21 +302,13 @@ export class FASTMenu extends FASTElement {
     };
 
     /**
-     * get an array of valid DOM children
-     */
-    private domChildren(): Element[] {
-        return Array.from(this.children).filter(child => !child.hasAttribute("hidden"));
-    }
-
-    /**
      * check if the item is a menu item
      */
     private isMenuItemElement = (el: Element): el is HTMLElement => {
         return (
-            isHTMLElement(el) &&
-            FASTMenu.focusableElementRoles.hasOwnProperty(
-                el.getAttribute("role") as string
-            )
+            el instanceof FASTMenuItem ||
+            (isHTMLElement(el) &&
+                (el.getAttribute("role") as string) in FASTMenu.focusableElementRoles)
         );
     };
 

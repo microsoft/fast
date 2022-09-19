@@ -95,7 +95,18 @@ export class FASTCombobox extends FormAssociatedCombobox {
     public formResetCallback(): void {
         super.formResetCallback();
         this.setDefaultSelectedOption();
+
+        if (!this.firstSelectedOption) {
+            this.value = this.initialValue ?? "";
+            return;
+        }
+
         this.updateValue();
+    }
+
+    /** {@inheritDoc (FormAssociated:interface).validate} */
+    public validate(): void {
+        super.validate(this.control);
     }
 
     private get isAutocompleteInline(): boolean {
@@ -569,6 +580,8 @@ export class FASTCombobox extends FormAssociatedCombobox {
             this.selectedIndex = selectedIndex;
             if (!this.dirtyValue && this.firstSelectedOption) {
                 this.value = this.firstSelectedOption.text;
+            } else {
+                this.value = "";
             }
             this.setSelectedOptions();
         }

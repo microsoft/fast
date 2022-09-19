@@ -1,56 +1,25 @@
 import { css, html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTAvatar } from "../avatar.js";
 
-type AvatarStoryArgs = Args & FASTAvatar;
-type AvatarStoryMeta = Meta<AvatarStoryArgs>;
-
-const storyTemplate = html<AvatarStoryArgs>`
-    <fast-avatar
-        alt="${x => x.alt}"
-        link="#"
-        shape="circle"
-        fill="accent-primary"
-        color="bar"
-    >
-        ${x => x.content}
+const storyTemplate = html<StoryArgs<FASTAvatar>>`
+    <fast-avatar link="${x => x.link}">
+        ${x => x.storyContent}
     </fast-avatar>
 `;
 
 export default {
     title: "Avatar",
-    args: {
-        content: html`
-            <img class="image" slot="media" src="https://via.placeholder.com/32x32" />
-        `,
-        alt: "Annie's profile image",
-        link: "#",
-        shape: "circle",
-        fill: "accent-primary",
-        color: "bar",
-    },
     argTypes: {
-        shape: {
-            options: ["circle", "square"],
-            control: {
-                type: "select",
-            },
-        },
+        link: { control: "text" },
+        storyContent: { table: { disable: true } },
     },
     decorators: [
         Story => {
             const renderedStory = Story() as FASTAvatar;
 
-            const storyStyles = css`
-                :host {
-                    --avatar-fill-accent-primary: #cf4073;
-                    --avatar-fill-accent-secondary: #0078d4;
-                    --avatar-color-foo: hsl(0, 0%, 100%);
-                    --avatar-color-bar: gray;
-                    --avatar-text-ratio: 3;
-                    --badge-fill-primary: var(--accent-fill-rest);
-                }
-
+            renderedStory.$fastController.addStyles(css`
                 ::slotted(fast-badge) {
                     bottom: 0;
                     right: 0;
@@ -64,29 +33,26 @@ export default {
                 ::slotted(.container) {
                     padding: 1em;
                 }
-            `;
-
-            renderedStory.$fastController.addStyles(storyStyles);
+            `);
 
             return renderedStory;
         },
     ],
-} as AvatarStoryMeta;
+} as Meta<FASTAvatar>;
 
-export const Avatar = (args: AvatarStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+export const Avatar: Story<FASTAvatar> = renderComponent(storyTemplate).bind({});
+Avatar.args = {
+    storyContent: html`
+        <img
+            class="image"
+            slot="media"
+            src="https://via.placeholder.com/32x32"
+            alt="Annie's profile image"
+        />
+    `,
 };
 
-export const CircleWithTextContent: AvatarStoryMeta = Avatar.bind({});
-CircleWithTextContent.args = {
-    alt: "Carlos's profile image",
-    content: html`
-        CR
-    `,
-    link: "#",
-    shape: "circle",
-    fill: "accent-primary",
-    color: "foo",
+export const AvatarCircleWithTextContent: Story<FASTAvatar> = Avatar.bind({});
+AvatarCircleWithTextContent.args = {
+    storyContent: "CR",
 };

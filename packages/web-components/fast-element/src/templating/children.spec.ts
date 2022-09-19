@@ -1,8 +1,10 @@
 import { expect } from "chai";
 import { children, ChildrenDirective } from "./children.js";
-import { ExecutionContext, observable } from "../observation/observable.js";
+import { observable } from "../observation/observable.js";
 import { elements } from "./node-observation.js";
 import { Updates } from "../observation/update-queue.js";
+import type { ViewBehaviorTargets, ViewController } from "./html-directive.js";
+import { Fake } from "../testing/fakes.js";
 
 describe("The children", () => {
     context("template function", () => {
@@ -14,11 +16,8 @@ describe("The children", () => {
 
     context("directive", () => {
         it("creates a behavior by returning itself", () => {
-            const targetId = 'r';
             const directive = children("test") as ChildrenDirective;
-            const target = document.createElement("div");
-            const targets = { [targetId]: target };
-            const behavior = directive.createBehavior(targets);
+            const behavior = directive.createBehavior();
             expect(behavior).to.equal(behavior);
         });
     });
@@ -49,6 +48,18 @@ describe("The children", () => {
             return { host, children, targets, nodeId };
         }
 
+        function createController(source: any, targets: ViewBehaviorTargets): ViewController {
+            return {
+                source,
+                targets,
+                context: Fake.executionContext(),
+                isBound: false,
+                onUnbind() {
+
+                }
+            };
+        }
+
         it("gathers child nodes", () => {
             const { host, children, targets, nodeId } = createDOM();
             const behavior = new ChildrenDirective({
@@ -56,8 +67,9 @@ describe("The children", () => {
             });
             behavior.nodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children);
         });
@@ -70,8 +82,9 @@ describe("The children", () => {
             });
             behavior.nodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children.filter(elements("foo-bar")));
         });
@@ -83,8 +96,9 @@ describe("The children", () => {
             });
             behavior.nodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children);
 
@@ -103,8 +117,9 @@ describe("The children", () => {
             });
             behavior.nodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children);
 
@@ -136,8 +151,9 @@ describe("The children", () => {
             behavior.nodeId = nodeId;
 
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(subtreeChildren);
 
@@ -163,12 +179,13 @@ describe("The children", () => {
             });
             behavior.nodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children);
 
-            behavior.unbind(model, ExecutionContext.default, targets);
+            behavior.unbind(controller);
 
             expect(model.nodes).members([]);
 
