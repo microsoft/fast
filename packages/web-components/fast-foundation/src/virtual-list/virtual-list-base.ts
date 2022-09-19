@@ -16,12 +16,9 @@ import type {
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
 } from "../utilities/resize-observer.js";
+import type { ItemLoadMode } from "../data-list/index.js";
 import type { FASTVirtualListItem } from "./virtual-list-item.js";
-import type {
-    ItemLoadMode,
-    SizeMap,
-    VirtualListAutoUpdateMode,
-} from "./virtual-list.options.js";
+import type { SizeMap, VirtualListAutoUpdateMode } from "./virtual-list.options.js";
 
 /**
  * Base class for providing Custom Element Virtualizing.

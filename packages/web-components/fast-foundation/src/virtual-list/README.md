@@ -33,6 +33,16 @@ export class FASTVirtualList extends VirtualList{}
 
 
 
+### Functions
+
+| Name           | Description                                               | Parameters    | Return |
+| -------------- | --------------------------------------------------------- | ------------- | ------ |
+| `Virtualizing` | Base function for providing Custom Element Virtualization | `BaseCtor: T` | `T`    |
+
+<hr/>
+
+
+
 ### class: `FASTVirtualListItem`
 
 #### Superclass
@@ -61,9 +71,9 @@ export class FASTVirtualList extends VirtualList{}
 
 #### Mixins
 
-| Name           | Module                            | Package |
-| -------------- | --------------------------------- | ------- |
-| `Virtualizing` | /src/virtual-list/virtualizing.js |         |
+| Name           | Module                                 | Package |
+| -------------- | -------------------------------------- | ------- |
+| `Virtualizing` | /src/virtual-list/virtual-list-base.js |         |
 
 <hr/>
 
@@ -99,16 +109,6 @@ export class FASTVirtualList extends VirtualList{}
 | Name      | Field   | Inherited From |
 | --------- | ------- | -------------- |
 | `recycle` | recycle |                |
-
-<hr/>
-
-
-
-### Functions
-
-| Name           | Description                                               | Parameters    | Return |
-| -------------- | --------------------------------------------------------- | ------------- | ------ |
-| `Virtualizing` | Base function for providing Custom Element Virtualization | `BaseCtor: T` | `T`    |
 
 <hr/>
 

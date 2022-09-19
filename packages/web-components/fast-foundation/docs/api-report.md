@@ -19,6 +19,7 @@ import { HostBehavior } from '@microsoft/fast-element';
 import { HostController } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { RepeatBehavior } from '@microsoft/fast-element';
+import { RepeatOptions } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewBehaviorOrchestrator } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
@@ -309,7 +310,7 @@ export { composedParent }
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
 // @beta
-export type ConstructableVirtualizing = Constructable<HTMLElement & FASTElement>;
+export type ConstructableVirtualListBase = Constructable<HTMLElement & FASTElement>;
 
 // @public (undocumented)
 export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
@@ -362,6 +363,17 @@ export type DataGridRowTypes = typeof DataGridRowTypes[keyof typeof DataGridRowT
 
 // @public
 export function dataGridTemplate<T extends FASTDataGrid>(options: DataGridOptions): ElementViewTemplate<T>;
+
+// @public
+export function dataListItemTemplate(): ElementViewTemplate<FASTDataListItem>;
+
+// @public
+export type DataListOptions = {
+    dataListItem: TemplateElementDependency;
+};
+
+// @public
+export function dataListTemplate(options: DataListOptions): ElementViewTemplate<FASTDataList>;
 
 // @public
 export class DateFormatter {
@@ -1093,6 +1105,58 @@ export class FASTDataGridRow extends FASTElement {
     rowType: DataGridRowTypes;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
+}
+
+// @public
+export class FASTDataList extends FASTElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    protected createPlaceholderElement(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    protected getRepeatOptions(): RepeatOptions;
+    protected initializeRepeatBehavior(): void;
+    itemContentsTemplate: ViewTemplate;
+    // (undocumented)
+    protected itemContentsTemplateChanged(): void;
+    // (undocumented)
+    protected itemsPlaceholder: Node;
+    itemTemplate: ViewTemplate;
+    orientation: Orientation;
+    // (undocumented)
+    protected orientationChanged(): void;
+    positioning: boolean;
+    recycle: boolean;
+    // @internal
+    renderItems: object[];
+    // (undocumented)
+    protected renderItemsChanged(): void;
+    sourceItems: object[];
+    // (undocumented)
+    protected sourceItemsChanged(): void;
+}
+
+// @public
+export class FASTDataListItem extends FASTElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    handleIdleCallback: () => void;
+    // @internal
+    idleLoad: boolean;
+    // @internal
+    itemContentsTemplate: ViewTemplate;
+    // @internal
+    itemData: object;
+    // @internal
+    itemIndex: number;
+    // @internal
+    listItemContentsTemplate: ViewTemplate;
+    // @internal
+    loadContent: boolean;
 }
 
 // @public
@@ -2883,10 +2947,19 @@ export const VerticalPosition: {
 export type VerticalPosition = typeof VerticalPosition[keyof typeof VerticalPosition];
 
 // @beta
-export function Virtualizing<T extends ConstructableVirtualizing>(BaseCtor: T): T;
+export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T): T;
+
+// Warning: (ae-forgotten-export) The symbol "VirtualList_base" needs to be exported by the entry point index.d.ts
+//
+// @beta
+export class VirtualList extends VirtualList_base {
+}
+
+// @public
+export type VirtualListAutoUpdateMode = "manual" | "viewport" | "auto" | "self";
 
 // @beta
-export interface Virtualizing {
+export interface VirtualListBase {
     // (undocumented)
     autoResizeItems: boolean;
     // (undocumented)
@@ -2928,15 +3001,6 @@ export interface Virtualizing {
     // (undocumented)
     virtualizationDisabled: boolean;
 }
-
-// Warning: (ae-forgotten-export) The symbol "VirtualList_base" needs to be exported by the entry point index.d.ts
-//
-// @beta
-export class VirtualList extends VirtualList_base {
-}
-
-// @public
-export type VirtualListAutoUpdateMode = "manual" | "viewport" | "auto" | "self";
 
 // @public
 export function virtualListItemTemplate(): ElementViewTemplate<FASTVirtualListItem>;
@@ -2984,6 +3048,7 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/data-list/data-list.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataListItem" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/menu-item/menu-item.d.ts:20:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

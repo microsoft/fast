@@ -12,6 +12,7 @@ export * from "./card/index.js";
 export * from "./checkbox/index.js";
 export * from "./combobox/index.js";
 export * from "./data-grid/index.js";
+export * from "./data-list/index.js";
 export * from "./design-token/exports.js";
 export * from "./dialog/index.js";
 export { reflectAttributes } from "./directives/reflect-attributes.js";

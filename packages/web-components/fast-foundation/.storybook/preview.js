@@ -28,8 +28,6 @@ import "../src/data-grid/stories/data-grid-cell.register.js";
 import "../src/data-grid/stories/data-grid-row.register.js";
 import "../src/data-grid/stories/data-grid.register.js";
 
-import "../src/virtual-data-grid/stories/virtual-data-grid.register.js";
-
 import "../src/calendar/stories/calendar.register.js";
 
 import "../src/slider-label/stories/slider-label.register.js";
@@ -60,6 +58,9 @@ import "../src/menu/stories/menu.register.js";
 
 import "../src/tree-item/stories/tree-item.register.js";
 import "../src/tree-view/stories/tree-view.register.js";
+
+import "../src/data-list/stories/data-list-item.register";
+import "../src/data-list/stories/data-list.register";
 
 import "../src/virtual-list/stories/virtual-list-item.register";
 import "../src/virtual-list/stories/virtual-list.register";
