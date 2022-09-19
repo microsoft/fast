@@ -2,11 +2,11 @@ import {
     attr,
     Constructable,
     DOM,
-    FASTElement,
     Notifier,
     nullableNumberConverter,
     Observable,
     observable,
+    RepeatOptions,
     Splice,
 } from "@microsoft/fast-element";
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
@@ -16,7 +16,7 @@ import type {
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
 } from "../utilities/resize-observer.js";
-import type { ItemLoadMode } from "../data-list/index.js";
+import type { FASTDataList, ItemLoadMode } from "../data-list/index.js";
 import type { FASTVirtualListItem } from "./virtual-list-item.js";
 import type { SizeMap, VirtualListAutoUpdateMode } from "./virtual-list.options.js";
 
@@ -54,7 +54,7 @@ export interface VirtualListBase {
  *
  * @beta
  */
-export type ConstructableVirtualListBase = Constructable<HTMLElement & FASTElement>;
+export type ConstructableVirtualListBase = Constructable<HTMLElement & FASTDataList>;
 
 /**
  * Base function for providing Custom Element Virtualization
@@ -136,21 +136,6 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
         }
 
         /**
-         * Whether the list is oriented vertically or horizontally.
-         * Default is vertical.
-         *
-         * @public
-         * @remarks
-         * HTML Attribute: orientation
-         */
-        public orientation: Orientation = Orientation.vertical;
-        private orientationChanged(): void {
-            if (this.$fastController.isConnected) {
-                this.updateDimensions();
-            }
-        }
-
-        /**
          * Auto update mode defines what prompts the component to check the dimensions of elements
          * in the DOM and reset the visible items accordingly.  Calling update() always provokes an update.
          *
@@ -167,6 +152,8 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
                 this.resetAutoUpdateMode(prevMode, newMode);
             }
         }
+
+        public displayItems: object[] | null = [];
 
         /**
          * The sizemap for the items
@@ -233,20 +220,6 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
             }
         }
 
-        /**
-         * the idle callback queue for this list instance.
-         * List items can use this instance to coordinate idle loading.
-         *
-         * @internal
-         */
-        public renderItems: object[] = [];
-
-        /**
-         *  The array of items to be rendered.
-         *
-         * @public
-         */
-        protected sourceItems: object[];
         protected sourceItemsChanged(): void {
             if (this.$fastController.isConnected) {
                 this.reset();
@@ -364,7 +337,6 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
          */
         connectedCallback() {
             super.connectedCallback();
-
             this.viewportElement = this.viewportElement ?? this.getViewport();
             this.resetAutoUpdateMode("manual", this.autoUpdateMode);
             this.initializeResizeDetector();
@@ -389,7 +361,6 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
             this.cancelPendingPositionUpdates();
             this.unobserveItems();
             this.unobserveSizeMap();
-            this.renderItems.splice(0, this.renderItems.length);
             this.renderedItemMap = [];
 
             this.disconnectResizeDetector();
@@ -403,6 +374,13 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
             if (this.currentCallbackElement) {
                 this.currentCallbackElement;
             }
+        }
+
+        protected getRepeatOptions(): RepeatOptions {
+            //positioning is always true for virtual lists
+            const options = super.getRepeatOptions();
+            options.positioning = true;
+            return options;
         }
 
         /**
@@ -557,7 +535,7 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
                 );
 
                 // this.renderItems.splice(0, this.renderItems.length, ...newVisibleItems);
-                this.renderItems = newVisibleItems;
+                this.displayItems = newVisibleItems;
 
                 this.updateDimensions();
                 this.requestPositionUpdates();
@@ -896,8 +874,8 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
 
             if (this.virtualizationDisabled) {
                 //this.renderItems.splice(0, this.renderItems.length, ...this.sourceItems);
-                this.renderItems = this.sourceItems;
-                this.updateVisibleItemSizes(0, this.renderItems.length - 1);
+                this.displayItems = this.sourceItems;
+                this.updateVisibleItemSizes(0, this.displayItems.length - 1);
                 return;
             }
 
@@ -993,7 +971,7 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
 
             this.updateVisibleItemSizes(newFirstRenderedIndex, newLastRenderedIndex);
             // this.renderItems.splice(0, this.renderItems.length, ...newVisibleItems);
-            this.renderItems = newVisibleItems;
+            this.displayItems = newVisibleItems;
         }
 
         /**
