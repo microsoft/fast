@@ -152,6 +152,7 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `itemsChanged`         | protected |                                     | `oldValue: HTMLElement[], newValue: HTMLElement[]` | `void` |                |
 | `focus`                | public    | Focuses the first item in the menu. |                                                    | `void` |                |
 | `collapseExpandedItem` | public    | Collapses any expanded menu items.  |                                                    | `void` |                |
+| `handleChange`         | public    |                                     | `source: any, propertyName: string`                |        |                |
 
 #### Slots
 
@@ -189,6 +190,7 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `expanded` | public  | `boolean`      |         | The expanded state of the element. |                |
 | `role`     | public  | `MenuItemRole` |         | The role of the element.           |                |
 | `checked`  | public  | `boolean`      |         | The checked value of the element.  |                |
+| `hidden`   | public  | `boolean`      |         | The hidden attribute.              |                |
 
 #### Methods
 
@@ -212,6 +214,7 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 |        | expanded |                |
 | `role` | role     |                |
 |        | checked  |                |
+|        | hidden   |                |
 
 #### CSS Parts
 

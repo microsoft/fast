@@ -95,6 +95,12 @@ export class FASTCombobox extends FormAssociatedCombobox {
     public formResetCallback(): void {
         super.formResetCallback();
         this.setDefaultSelectedOption();
+
+        if (!this.firstSelectedOption) {
+            this.value = this.initialValue ?? "";
+            return;
+        }
+
         this.updateValue();
     }
 
@@ -574,6 +580,8 @@ export class FASTCombobox extends FormAssociatedCombobox {
             this.selectedIndex = selectedIndex;
             if (!this.dirtyValue && this.firstSelectedOption) {
                 this.value = this.firstSelectedOption.text;
+            } else {
+                this.value = "";
             }
             this.setSelectedOptions();
         }

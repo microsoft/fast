@@ -30,7 +30,7 @@
                 "no-restricted-imports": [
                     "error",
                     {
-                        "patterns": ["**/stories/**"]
+                        "patterns": ["**/stories/**", "**/*.pw.spec.ts"]
                     }
                 ]
             }

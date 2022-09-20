@@ -1,12 +1,9 @@
-import {
+import type {
     Constructable,
     ElementController,
-    ElementStyles,
     FASTElement,
-    observable,
-    Observable,
-    Updates,
 } from "@microsoft/fast-element";
+import { ElementStyles, observable, Observable, Updates } from "@microsoft/fast-element";
 
 /**
  * A target that can have key/value pairs set and removed.

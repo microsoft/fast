@@ -281,7 +281,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
 export const elements: (selector?: string) => ElementsFilter;
 
 // @public
-export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
+export type ElementsFilter = (value: Node, index?: number, array?: Node[]) => boolean;
 
 // @public
 export class ElementStyles {
