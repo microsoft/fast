@@ -1,3 +1,4 @@
+import type { SyntheticViewTemplate, ViewTemplate } from "@microsoft/fast-element";
 import {
     attr,
     bind,
@@ -6,7 +7,6 @@ import {
     RepeatDirective,
     Updates,
     ViewBehaviorOrchestrator,
-    ViewTemplate,
 } from "@microsoft/fast-element";
 import {
     eventFocus,
@@ -52,7 +52,7 @@ export interface ColumnDefinition {
     /**
      *  Header cell template
      */
-    headerCellTemplate?: ViewTemplate;
+    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
 
     /**
      * Whether the header cell has an internal focus queue
@@ -71,7 +71,7 @@ export interface ColumnDefinition {
     /**
      * cell template
      */
-    cellTemplate?: ViewTemplate;
+    cellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
 
     /**
      * Whether the cell has an internal focus queue
