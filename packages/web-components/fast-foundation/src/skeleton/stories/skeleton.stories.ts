@@ -1,4 +1,4 @@
-import { css, html, repeat } from "@microsoft/fast-element";
+import { css, html, repeat, Updates } from "@microsoft/fast-element";
 import type { FASTCard } from "../../card/card.js";
 import { storyTemplate as cardStoryTemplate } from "../../card/stories/card.stories.js";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
@@ -35,12 +35,16 @@ export const Skeleton: Story<FASTSkeleton> = renderComponent(storyTemplate).bind
 Skeleton.decorators = [
     Story => {
         const renderedStory = Story() as FASTSkeleton;
-        renderedStory.$fastController.addStyles(css`
-            :host(fast-skeleton) {
-                height: 100px;
-                width: 100px;
-            }
-        `);
+
+        Updates.enqueue(() => {
+            renderedStory.$fastController.addStyles(css`
+                :host(fast-skeleton) {
+                    height: 100px;
+                    width: 100px;
+                }
+            `);
+        });
+
         return renderedStory;
     },
 ];
@@ -66,30 +70,32 @@ SkeletonCardExample.decorators = [
     Story => {
         const renderedStory = Story() as FASTCard;
 
-        renderedStory.$fastController.addStyles(css`
-            :host(fast-card) {
-                height: auto;
-                padding: 1rem;
-                width: 300px;
-            }
+        Updates.enqueue(() => {
+            renderedStory.$fastController.addStyles(css`
+                :host(fast-card) {
+                    height: auto;
+                    padding: 1rem;
+                    width: 300px;
+                }
 
-            ::slotted(fast-skeleton[shape="circle"]) {
-                height: 50px;
-                width: 50px;
-            }
+                ::slotted(fast-skeleton[shape="circle"]) {
+                    height: 50px;
+                    width: 50px;
+                }
 
-            ::slotted(fast-skeleton[shape="rect"]:not(:first-of-type)) {
-                border-radius: 4px;
-                height: 10px;
-                margin: 10px 0;
-            }
+                ::slotted(fast-skeleton[shape="rect"]:not(:first-of-type)) {
+                    border-radius: 4px;
+                    height: 10px;
+                    margin: 10px 0;
+                }
 
-            ::slotted(fast-skeleton[shape="rect"]:last-of-type) {
-                height: 30px;
-                margin: 20px 0 0;
-                width: 75px;
-            }
-        `);
+                ::slotted(fast-skeleton[shape="rect"]:last-of-type) {
+                    height: 30px;
+                    margin: 20px 0 0;
+                    width: 75px;
+                }
+            `);
+        });
 
         return renderedStory;
     },
