@@ -61,10 +61,11 @@ SkeletonCardExample.args = {
         { shape: SkeletonShape.rect, shimmer: true },
     ],
 };
-SkeletonCardExample.parameters = { controls: { disable: true } };
+SkeletonCardExample.parameters = { controls: { include: [] } };
 SkeletonCardExample.decorators = [
     Story => {
         const renderedStory = Story() as FASTCard;
+
         renderedStory.$fastController.addStyles(css`
             :host(fast-card) {
                 height: auto;
