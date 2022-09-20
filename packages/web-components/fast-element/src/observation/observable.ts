@@ -1,5 +1,5 @@
 import { DOM } from "../dom.js";
-import { FAST, KernelServiceId } from "../platform.js";
+import { createMetadataLocator, FAST, KernelServiceId } from "../platform.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
 import type { Notifier, Subscriber } from "./notifier.js";
 
@@ -91,7 +91,6 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
 export const Observable = FAST.getById(KernelServiceId.observable, () => {
     const volatileRegex = /(:|&&|\|\||if)/;
     const notifierLookup = new WeakMap<any, Notifier>();
-    const accessorLookup = new WeakMap<any, Accessor[]>();
     const queueUpdate = DOM.queueUpdate;
     let watcher: BindingObserverImplementation | undefined = void 0;
     let createArrayObserver = (array: any[]): Notifier => {
@@ -112,28 +111,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         return found;
     }
 
-    function getAccessors(target: {}): Accessor[] {
-        let accessors = accessorLookup.get(target);
-
-        if (accessors === void 0) {
-            let currentTarget = Reflect.getPrototypeOf(target);
-
-            while (accessors === void 0 && currentTarget !== null) {
-                accessors = accessorLookup.get(currentTarget);
-                currentTarget = Reflect.getPrototypeOf(currentTarget);
-            }
-
-            if (accessors === void 0) {
-                accessors = [];
-            } else {
-                accessors = accessors.slice(0);
-            }
-
-            accessorLookup.set(target, accessors);
-        }
-
-        return accessors;
-    }
+    const getAccessors = createMetadataLocator<Accessor>();
 
     class DefaultObservableAccessor implements Accessor {
         private field: string;

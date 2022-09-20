@@ -39,6 +39,11 @@ export type AttributeConfiguration = {
 };
 
 // @public
+export const AttributeConfiguration: Readonly<{
+    locate: (target: {}) => AttributeConfiguration[];
+}>;
+
+// @public
 export class AttributeDefinition implements Accessor {
     constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter);
     readonly attribute: string;
@@ -183,6 +188,11 @@ export class Controller extends PropertyChangeNotifier {
     set template(value: ElementViewTemplate | null);
     readonly view: ElementView | null;
 }
+
+// Warning: (ae-internal-missing-underscore) The name "createMetadataLocator" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[];
 
 // @public
 export function css(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): ElementStyles;
