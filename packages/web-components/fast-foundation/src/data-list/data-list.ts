@@ -2,7 +2,6 @@ import {
     attr,
     bind,
     FASTElement,
-    html,
     observable,
     RepeatDirective,
     RepeatOptions,

@@ -1,13 +1,3 @@
-import {
-    attr,
-    bind,
-    FASTElement,
-    observable,
-    RepeatBehavior,
-    RepeatDirective,
-    ViewBehaviorOrchestrator,
-    ViewTemplate,
-} from "@microsoft/fast-element";
 import { FASTDataList } from "../index.js";
 import { Virtualizing, VirtualListBase } from "./virtual-list-base.js";
 

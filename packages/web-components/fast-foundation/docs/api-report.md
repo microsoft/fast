@@ -18,10 +18,8 @@ import { FASTElementDefinition } from '@microsoft/fast-element';
 import { HostBehavior } from '@microsoft/fast-element';
 import { HostController } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
-import { RepeatBehavior } from '@microsoft/fast-element';
 import { RepeatOptions } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
-import { ViewBehaviorOrchestrator } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
@@ -310,7 +308,7 @@ export { composedParent }
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
 // @beta
-export type ConstructableVirtualListBase = Constructable<HTMLElement & FASTElement>;
+export type ConstructableVirtualListBase = Constructable<HTMLElement & FASTDataList>;
 
 // @public (undocumented)
 export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
@@ -992,12 +990,10 @@ export interface FASTCombobox extends StartEnd, DelegatesARIACombobox {
 }
 
 // @public
-export class FASTDataGrid extends FASTElement {
+export class FASTDataGrid extends FASTDataList {
     constructor();
-    // (undocumented)
-    protected behaviorOrchestrator: ViewBehaviorOrchestrator | null;
     cellItemTemplate?: ViewTemplate;
-    columnDefinitions: ColumnDefinition[] | null;
+    columnDefinitions: ColumnDefinition[];
     // (undocumented)
     protected columnDefinitionsChanged(): void;
     // (undocumented)
@@ -1025,9 +1021,7 @@ export class FASTDataGrid extends FASTElement {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
-    headerCellItemTemplate?: ViewTemplate;
-    // @internal (undocumented)
-    protected initializeRepeatBehavior(): void;
+    headerCellItemTemplate: ViewTemplate;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
@@ -1036,12 +1030,11 @@ export class FASTDataGrid extends FASTElement {
     rowElementTag: string;
     // (undocumented)
     protected rowindexUpdateQueued: boolean;
-    rowItemTemplate: ViewTemplate;
     rowsData: object[];
     // (undocumented)
     protected rowsDataChanged(): void;
     // (undocumented)
-    protected rowsPlaceholder: Node | null;
+    protected sourceItemsChanged(): void;
     // (undocumented)
     protected updateRowIndexes(): void;
 }
@@ -1069,23 +1062,25 @@ export class FASTDataGridCell extends FASTElement {
 }
 
 // @public
-export class FASTDataGridRow extends FASTElement {
-    // @internal
-    activeCellItemTemplate?: ViewTemplate;
+export class FASTDataGridRow extends FASTDataList {
     // @internal
     cellElements: HTMLElement[];
-    cellItemTemplate?: ViewTemplate;
-    columnDefinitions: ColumnDefinition[] | null;
+    cellItemTemplate: ViewTemplate;
+    columnDefinitions: ColumnDefinition[];
+    // (undocumented)
+    columnDefintionsChanged(): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultCellItemTemplate?: ViewTemplate;
+    defaultCellItemTemplate: ViewTemplate;
     // @internal
-    defaultHeaderCellItemTemplate?: ViewTemplate;
+    defaultHeaderCellItemTemplate: ViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // @internal (undocumented)
     focusColumnIndex: number;
+    // (undocumented)
+    protected getRepeatOptions(): RepeatOptions;
     gridTemplateColumns: string;
     // (undocumented)
     protected gridTemplateColumnsChanged(): void;
@@ -1095,7 +1090,7 @@ export class FASTDataGridRow extends FASTElement {
     handleFocusout(e: FocusEvent): void;
     // (undocumented)
     handleKeydown(e: KeyboardEvent): void;
-    headerCellItemTemplate?: ViewTemplate;
+    headerCellItemTemplate: ViewTemplate;
     // @internal
     isActiveRow: boolean;
     rowData: object | null;
@@ -1105,6 +1100,10 @@ export class FASTDataGridRow extends FASTElement {
     rowType: DataGridRowTypes;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
+    // (undocumented)
+    protected sourceItemsChanged(): void;
+    // (undocumented)
+    protected updateItemTemplate(): void;
 }
 
 // @public
@@ -1113,8 +1112,15 @@ export class FASTDataList extends FASTElement {
     connectedCallback(): void;
     // (undocumented)
     protected createPlaceholderElement(): void;
+    // @internal
+    defaultHorizontalItemTemplate: ViewTemplate;
+    // @internal
+    defaultVerticalItemTemplate: ViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
+    displayItems: object[] | null;
+    // (undocumented)
+    protected displayItemsChanged(): void;
     // (undocumented)
     protected getRepeatOptions(): RepeatOptions;
     protected initializeRepeatBehavior(): void;
@@ -1129,13 +1135,10 @@ export class FASTDataList extends FASTElement {
     protected orientationChanged(): void;
     positioning: boolean;
     recycle: boolean;
-    // @internal
-    renderItems: object[];
-    // (undocumented)
-    protected renderItemsChanged(): void;
     sourceItems: object[];
     // (undocumented)
     protected sourceItemsChanged(): void;
+    protected updateItemTemplate(): void;
 }
 
 // @public
@@ -2277,25 +2280,8 @@ export class FASTTreeView extends FASTElement {
 //
 // @public
 export class FASTVirtualList extends VirtualList {
-    // (undocumented)
-    protected clearRepeatBehavior(): void;
     // @internal (undocumented)
     connectedCallback(): void;
-    // @internal
-    defaultHorizontalItemTemplate: ViewTemplate;
-    // @internal
-    defaultVerticalItemTemplate: ViewTemplate;
-    protected initializeRepeatBehavior(): void;
-    itemContentsTemplate: ViewTemplate;
-    // (undocumented)
-    protected itemContentsTemplateChanged(): void;
-    items: object[];
-    // (undocumented)
-    protected itemsPlaceholder: Node;
-    // (undocumented)
-    protected itemsRepeatBehavior: RepeatBehavior | null;
-    itemTemplate: ViewTemplate;
-    recycle: boolean;
 }
 
 // @public
