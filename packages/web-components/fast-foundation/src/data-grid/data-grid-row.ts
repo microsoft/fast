@@ -4,6 +4,7 @@ import {
     FASTElement,
     observable,
     RepeatDirective,
+    RepeatOptions,
     ViewBehaviorOrchestrator,
     ViewTemplate,
 } from "@microsoft/fast-element";
@@ -14,7 +15,9 @@ import {
     keyArrowRight,
     keyEnd,
     keyHome,
+    Orientation,
 } from "@microsoft/fast-web-utilities";
+import { FASTDataList } from "../index.js";
 import type { ColumnDefinition } from "./data-grid.js";
 import { DataGridRowTypes } from "./data-grid.options.js";
 
@@ -25,7 +28,10 @@ import { DataGridRowTypes } from "./data-grid.options.js";
  * @slot - The default slot for custom cell elements
  * @public
  */
-export class FASTDataGridRow extends FASTElement {
+export class FASTDataGridRow extends FASTDataList {
+    // data grid rows have horizontal orientation
+    public orientation: Orientation = Orientation.horizontal;
+
     /**
      * String that gets applied to the the css gridTemplateColumns attribute for the row
      *
@@ -76,7 +82,10 @@ export class FASTDataGridRow extends FASTElement {
      * @public
      */
     @observable
-    public columnDefinitions: ColumnDefinition[] | null = null;
+    public columnDefinitions: ColumnDefinition[];
+    private columnDefinitionsChanged(): void {
+        this.sourceItems = this.columnDefinitions;
+    }
 
     /**
      * The template used to render cells in generated rows.
@@ -149,8 +158,6 @@ export class FASTDataGridRow extends FASTElement {
     @observable
     public cellElements: HTMLElement[];
 
-    private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
-
     /**
      * @internal
      */
@@ -168,23 +175,6 @@ export class FASTDataGridRow extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-
-        // note that row elements can be reused with a different data object
-        // as the parent grid's repeat behavior reacts to changes in the data set.
-        if (this.behaviorOrchestrator === null) {
-            this.updateItemTemplate();
-
-            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
-            this.$fastController.addBehavior(this.behaviorOrchestrator);
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<FASTDataGridRow>(
-                    bind(x => x.columnDefinitions, false),
-                    bind(x => x.activeCellItemTemplate, false),
-                    { positioning: true }
-                ),
-                this.appendChild(document.createComment(""))
-            );
-        }
 
         this.addEventListener("cell-focused", this.handleCellFocus);
         this.addEventListener(eventFocusOut, this.handleFocusout);
@@ -266,7 +256,7 @@ export class FASTDataGridRow extends FASTElement {
         }
     }
 
-    private updateItemTemplate(): void {
+    protected updateItemTemplate(): void {
         this.activeCellItemTemplate =
             this.rowType === DataGridRowTypes.default &&
             this.cellItemTemplate !== undefined
@@ -277,6 +267,18 @@ export class FASTDataGridRow extends FASTElement {
                 : this.headerCellItemTemplate !== undefined
                 ? this.headerCellItemTemplate
                 : this.defaultHeaderCellItemTemplate;
+
+        if (this.activeCellItemTemplate) {
+            this.itemTemplate = this.activeCellItemTemplate;
+        }
+    }
+
+    protected getRepeatOptions(): RepeatOptions {
+        // positioning is always true for data grid rows
+        return {
+            positioning: true,
+            recycle: this.recycle,
+        };
     }
 
     private updateRowStyle = (): void => {

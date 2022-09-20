@@ -11,7 +11,6 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
-import { FASTDataList } from "../index.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options.js";
@@ -93,7 +92,7 @@ export interface ColumnDefinition {
  * @slot - The default slot for custom row elements
  * @public
  */
-export class FASTDataGrid extends FASTDataList {
+export class FASTDataGrid extends FASTElement {
     /**
      *  generates a basic column definition by examining sample row data
      */
@@ -185,11 +184,7 @@ export class FASTDataGrid extends FASTDataList {
     @observable
     public rowsData: object[] = [];
     protected rowsDataChanged(): void {
-        this.sourceItems = this.rowsData;
-    }
-
-    protected sourceItemsChanged(): void {
-        if (this.columnDefinitions === null && this.rowsData.length > 0) {
+        if (!this.columnDefinitions && this.rowsData.length > 0) {
             this.columnDefinitions = FASTDataGrid.generateColumns(this.rowsData[0]);
         }
         if (this.$fastController.isConnected) {
@@ -219,6 +214,14 @@ export class FASTDataGrid extends FASTDataList {
     }
 
     /**
+     * The template to use for the programmatic generation of rows
+     *
+     * @public
+     */
+    @observable
+    public rowItemTemplate: ViewTemplate;
+
+    /**
      * The template used to render cells in generated rows.
      *
      * @public
@@ -232,7 +235,7 @@ export class FASTDataGrid extends FASTDataList {
      * @public
      */
     @observable
-    public headerCellItemTemplate: ViewTemplate;
+    public headerCellItemTemplate?: ViewTemplate;
     private headerCellItemTemplateChanged(): void {
         if (this.$fastController.isConnected) {
             if (this.generatedHeader !== null) {
@@ -296,6 +299,9 @@ export class FASTDataGrid extends FASTDataList {
     @observable
     public rowElements: HTMLElement[];
 
+    protected rowsPlaceholder: Node | null = null;
+    protected behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
+
     private generatedHeader: FASTDataGridRow | null = null;
 
     private isUpdatingFocus: boolean = false;
@@ -316,11 +322,13 @@ export class FASTDataGrid extends FASTDataList {
      * @internal
      */
     public connectedCallback(): void {
-        if (this.itemTemplate === undefined) {
-            this.itemTemplate = this.defaultRowItemTemplate;
+        super.connectedCallback();
+
+        if (this.rowItemTemplate === undefined) {
+            this.rowItemTemplate = this.defaultRowItemTemplate;
         }
 
-        super.connectedCallback();
+        this.initializeRepeatBehavior();
 
         this.toggleGeneratedHeader();
         this.addEventListener("row-focused", this.handleRowFocus);
@@ -342,6 +350,24 @@ export class FASTDataGrid extends FASTDataList {
     /**
      * @internal
      */
+    protected initializeRepeatBehavior(): void {
+        if (this.behaviorOrchestrator === null) {
+            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
+            this.$fastController.addBehavior(this.behaviorOrchestrator);
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective<FASTDataGrid>(
+                    bind(x => x.rowsData, false),
+                    bind(x => x.rowItemTemplate, false),
+                    { positioning: true }
+                ),
+                this.appendChild((this.rowsPlaceholder = document.createComment("")))
+            );
+        }
+    }
+
+    /**
+     * @internal
+     */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
 
@@ -352,6 +378,8 @@ export class FASTDataGrid extends FASTDataList {
 
         // disconnect observer
         this.observer.disconnect();
+
+        this.rowsPlaceholder = null;
         this.generatedHeader = null;
     }
 
@@ -482,7 +510,7 @@ export class FASTDataGrid extends FASTDataList {
                 break;
 
             case keyEnd:
-                if (e.ctrlKey && this.columnDefinitions !== null) {
+                if (e.ctrlKey) {
                     e.preventDefault();
                     // focus last cell of last row
                     this.focusOnCell(
@@ -571,10 +599,10 @@ export class FASTDataGrid extends FASTDataList {
                 this.generateHeader === GenerateHeaderOptions.sticky
                     ? DataGridRowTypes.stickyHeader
                     : DataGridRowTypes.header;
-            if (this.firstChild !== null || this.itemsPlaceholder !== null) {
+            if (this.firstChild !== null || this.rowsPlaceholder !== null) {
                 this.insertBefore(
                     generatedHeaderElement,
-                    this.firstChild !== null ? this.firstChild : this.itemsPlaceholder
+                    this.firstChild !== null ? this.firstChild : this.rowsPlaceholder
                 );
             }
             return;

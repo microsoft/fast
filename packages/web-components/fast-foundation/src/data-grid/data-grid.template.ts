@@ -39,7 +39,7 @@ export function dataGridTemplate<T extends FASTDataGrid>(
             role="grid"
             tabindex="0"
             :rowElementTag="${() => rowTag}"
-            :defaultVerticalItemTemplate="${rowItemTemplate(options)}"
+            :defaultRowItemTemplate="${rowItemTemplate(options)}"
             ${children({
                 property: "rowElements",
                 filter: elements("[role=row]"),

@@ -20,6 +20,7 @@ import { HostController } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { RepeatOptions } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
+import { ViewBehaviorOrchestrator } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
@@ -990,8 +991,10 @@ export interface FASTCombobox extends StartEnd, DelegatesARIACombobox {
 }
 
 // @public
-export class FASTDataGrid extends FASTDataList {
+export class FASTDataGrid extends FASTElement {
     constructor();
+    // (undocumented)
+    protected behaviorOrchestrator: ViewBehaviorOrchestrator | null;
     cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[];
     // (undocumented)
@@ -1021,7 +1024,9 @@ export class FASTDataGrid extends FASTDataList {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
-    headerCellItemTemplate: ViewTemplate;
+    headerCellItemTemplate?: ViewTemplate;
+    // @internal (undocumented)
+    protected initializeRepeatBehavior(): void;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
@@ -1030,11 +1035,12 @@ export class FASTDataGrid extends FASTDataList {
     rowElementTag: string;
     // (undocumented)
     protected rowindexUpdateQueued: boolean;
+    rowItemTemplate: ViewTemplate;
     rowsData: object[];
     // (undocumented)
     protected rowsDataChanged(): void;
     // (undocumented)
-    protected sourceItemsChanged(): void;
+    protected rowsPlaceholder: Node | null;
     // (undocumented)
     protected updateRowIndexes(): void;
 }
@@ -1064,17 +1070,17 @@ export class FASTDataGridCell extends FASTElement {
 // @public
 export class FASTDataGridRow extends FASTDataList {
     // @internal
+    activeCellItemTemplate?: ViewTemplate;
+    // @internal
     cellElements: HTMLElement[];
-    cellItemTemplate: ViewTemplate;
+    cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[];
-    // (undocumented)
-    columnDefintionsChanged(): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultCellItemTemplate: ViewTemplate;
+    defaultCellItemTemplate?: ViewTemplate;
     // @internal
-    defaultHeaderCellItemTemplate: ViewTemplate;
+    defaultHeaderCellItemTemplate?: ViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // @internal (undocumented)
@@ -1090,9 +1096,11 @@ export class FASTDataGridRow extends FASTDataList {
     handleFocusout(e: FocusEvent): void;
     // (undocumented)
     handleKeydown(e: KeyboardEvent): void;
-    headerCellItemTemplate: ViewTemplate;
+    headerCellItemTemplate?: ViewTemplate;
     // @internal
     isActiveRow: boolean;
+    // (undocumented)
+    orientation: Orientation;
     rowData: object | null;
     // (undocumented)
     protected rowDataChanged(): void;
@@ -1100,8 +1108,6 @@ export class FASTDataGridRow extends FASTDataList {
     rowType: DataGridRowTypes;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
-    // (undocumented)
-    protected sourceItemsChanged(): void;
     // (undocumented)
     protected updateItemTemplate(): void;
 }

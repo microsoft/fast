@@ -56,7 +56,9 @@ export class FASTDataList extends FASTElement {
      */
     @observable
     public sourceItems: object[];
-    protected sourceItemsChanged(): void {}
+    protected sourceItemsChanged(): void {
+        this.displayItems = this.sourceItems;
+    }
 
     /**
      * The default ViewTemplate used to render items vertically.
