@@ -1,6 +1,7 @@
 import { Accessor, Observable } from "../observation/observable.js";
 import { DOM } from "../dom.js";
 import type { Notifier } from "../observation/notifier.js";
+import { createMetadataLocator } from "../platform.js";
 
 /**
  * Represents objects that can convert values to and from
@@ -44,6 +45,17 @@ export type AttributeConfiguration = {
     mode?: AttributeMode;
     converter?: ValueConverter;
 };
+
+/**
+ * Metadata used to configure a custom attribute's behavior.
+ * @public
+ */
+ export const AttributeConfiguration = Object.freeze({
+    /**
+     * Locates all attribute configurations associated with a type.
+     */
+    locate: createMetadataLocator<AttributeConfiguration>(),
+});
 
 /**
  * Metadata used to configure a custom attribute's behavior through a decorator.
@@ -259,7 +271,7 @@ export class AttributeDefinition implements Accessor {
     ): ReadonlyArray<AttributeDefinition> {
         const attributes: AttributeDefinition[] = [];
 
-        attributeLists.push((Owner as any).attributes);
+        attributeLists.push(AttributeConfiguration.locate(Owner));
 
         for (let i = 0, ii = attributeLists.length; i < ii; ++i) {
             const list = attributeLists[i];
@@ -323,11 +335,7 @@ export function attr(
             config.property = $prop;
         }
 
-        const attributes: AttributeConfiguration[] =
-            ($target.constructor as any).attributes ||
-            (($target.constructor as any).attributes = []);
-
-        attributes.push(config);
+        AttributeConfiguration.locate($target.constructor).push(config);
     }
 
     if (arguments.length > 1) {

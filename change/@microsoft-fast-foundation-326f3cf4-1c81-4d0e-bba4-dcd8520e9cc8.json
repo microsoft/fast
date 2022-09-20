@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "fix(fast-foundation): update mixin helper to use new attribute api",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
