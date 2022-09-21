@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: prepare fast-element for scoped element registries",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
