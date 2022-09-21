@@ -104,6 +104,10 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | --------------------------- | ------- | ------------------------------------------ | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
 | `anchor`                    | public  | `string`                                   | `""`             | The HTML ID of the anchor element this region is positioned relative to                                                                                                                                                                 |                |
 | `viewport`                  | public  | `string`                                   | `""`             | The HTML ID of the viewport element this region is positioned relative to                                                                                                                                                               |                |
+| `mouseTracking`             | public  | `boolean`                                  | `false`          | When true current point anchor is updated with mouse moves                                                                                                                                                                              |                |
+| `usePointAnchor`            | public  | `boolean`                                  | `false`          | When true the point anchor coordinate is used as anchor                                                                                                                                                                                 |                |
+| `pointAnchorX`              | public  | `number`                                   | `0`              | Initial X coordinate when using point anchor                                                                                                                                                                                            |                |
+| `pointAnchorY`              | public  | `number`                                   | `0`              | Initial y coordinate when using point anchor                                                                                                                                                                                            |                |
 | `horizontalPositioningMode` | public  | `AxisPositioningMode`                      | `"uncontrolled"` | Sets what logic the component uses to determine horizontal placement. 'locktodefault' forces the default position 'dynamic' decides placement based on available space 'uncontrolled' does not control placement on the horizontal axis |                |
 | `horizontalDefaultPosition` | public  | `HorizontalPosition`                       | `"unset"`        | The default horizontal position of the region relative to the anchor element                                                                                                                                                            |                |
 | `horizontalViewportLock`    | public  | `boolean`                                  | `false`          | Whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis                                                                                                                                        |                |
@@ -130,6 +134,10 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | ---------------------------------- | --------- | ----------- | --------------------------------------------------- | ------ | -------------- |
 | `anchorChanged`                    | protected |             |                                                     | `void` |                |
 | `viewportChanged`                  | protected |             |                                                     | `void` |                |
+| `mouseTrackingChanged`             | protected |             |                                                     | `void` |                |
+| `usePointAnchorChanged`            | protected |             |                                                     | `void` |                |
+| `pointAnchorXChanged`              | protected |             |                                                     | `void` |                |
+| `pointAnchorYChanged`              | protected |             |                                                     | `void` |                |
 | `horizontalPositioningModeChanged` | protected |             |                                                     | `void` |                |
 | `horizontalDefaultPositionChanged` | protected |             |                                                     | `void` |                |
 | `horizontalViewportLockChanged`    | protected |             |                                                     | `void` |                |
@@ -160,6 +168,10 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | ----------------------------- | ------------------------- | -------------- |
 | `anchor`                      | anchor                    |                |
 | `viewport`                    | viewport                  |                |
+| `mouse-tracking`              | mouseTracking             |                |
+| `use-point-anchor`            | usePointAnchor            |                |
+| `point-anchor-x`              | pointAnchorX              |                |
+| `point-anchor-y`              | pointAnchorY              |                |
 | `horizontal-positioning-mode` | horizontalPositioningMode |                |
 | `horizontal-default-position` | horizontalDefaultPosition |                |
 | `horizontal-viewport-lock`    | horizontalViewportLock    |                |

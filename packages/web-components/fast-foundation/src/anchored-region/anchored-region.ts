@@ -1,5 +1,10 @@
 import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
-import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
+import {
+    Direction,
+    eventMouseMove,
+    eventResize,
+    eventScroll,
+} from "@microsoft/fast-web-utilities";
 import { getDirection } from "../utilities/direction.js";
 import { IntersectionService } from "../utilities/intersection-service.js";
 import type {
@@ -54,6 +59,63 @@ export class FASTAnchoredRegion extends FASTElement {
         if (this.initialLayoutComplete) {
             this.viewportElement = this.getViewport();
         }
+    }
+
+    /**
+     * When true current point anchor is updated with mouse moves
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: mouse-tracking
+     */
+    @attr({ attribute: "mouse-tracking", mode: "boolean" })
+    public mouseTracking: boolean = false;
+    protected mouseTrackingChanged(): void {
+        if (this.mouseTracking) {
+            window.addEventListener(eventMouseMove, this.handleMouseMove);
+        } else {
+            window.removeEventListener(eventMouseMove, this.handleMouseMove);
+        }
+        this.updateForAttributeChange();
+    }
+
+    /**
+     * When true the point anchor coordinate is used as anchor
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: use-point-anchor
+     */
+    @attr({ attribute: "use-point-anchor", mode: "boolean" })
+    public usePointAnchor: boolean = false;
+    protected usePointAnchorChanged(): void {
+        this.updateForAttributeChange();
+    }
+
+    /**
+     * Initial X coordinate when using point anchor
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: point-anchor-x
+     */
+    @attr({ attribute: "point-anchor-x" })
+    public pointAnchorX: number = 0;
+    protected pointAnchorXChanged(): void {
+        this.updateForAttributeChange();
+    }
+
+    /**
+     * Initial y coordinate when using point anchor
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: point-anchor-y
+     */
+    @attr({ attribute: "point-anchor-y" })
+    public pointAnchorY: number = 0;
+    protected pointAnchorYChanged(): void {
+        this.updateForAttributeChange();
     }
 
     /**
@@ -317,9 +379,10 @@ export class FASTAnchoredRegion extends FASTElement {
 
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
-    private viewportRect: ClientRect | DOMRect | undefined;
-    private anchorRect: ClientRect | DOMRect | undefined;
-    private regionRect: ClientRect | DOMRect | undefined;
+    private viewportRect: DOMRect | undefined;
+    private anchorRect: DOMRect | undefined;
+    private regionRect: DOMRect | undefined;
+    private pointAnchorRect: DOMRect = new DOMRect();
 
     /**
      * base offsets between the positioner's base position and the anchor's
@@ -347,6 +410,7 @@ export class FASTAnchoredRegion extends FASTElement {
      */
     connectedCallback() {
         super.connectedCallback();
+        this.pointAnchorRect = new DOMRect(this.pointAnchorX, this.pointAnchorY, 1, 1);
         if (this.autoUpdateMode === "auto") {
             this.startAutoUpdateEventListeners();
         }
@@ -469,13 +533,13 @@ export class FASTAnchoredRegion extends FASTElement {
     private startObservers = (): void => {
         this.stopObservers();
 
-        if (this.anchorElement === null) {
+        if (this.anchorElement === null && !this.usePointAnchor) {
             return;
         }
 
         this.requestPositionUpdates();
 
-        if (this.resizeDetector !== null) {
+        if (this.resizeDetector !== null && this.anchorElement !== null) {
             this.resizeDetector.observe(this.anchorElement);
             this.resizeDetector.observe(this);
         }
@@ -485,17 +549,22 @@ export class FASTAnchoredRegion extends FASTElement {
      * get position updates
      */
     private requestPositionUpdates = (): void => {
-        if (this.anchorElement === null || this.pendingPositioningUpdate) {
+        if (
+            (this.anchorElement === null && !this.usePointAnchor) ||
+            this.pendingPositioningUpdate
+        ) {
             return;
         }
         FASTAnchoredRegion.intersectionService.requestPosition(
             this,
             this.handleIntersection
         );
-        FASTAnchoredRegion.intersectionService.requestPosition(
-            this.anchorElement,
-            this.handleIntersection
-        );
+        if (this.anchorElement !== null) {
+            FASTAnchoredRegion.intersectionService.requestPosition(
+                this.anchorElement,
+                this.handleIntersection
+            );
+        }
         if (this.viewportElement !== null) {
             FASTAnchoredRegion.intersectionService.requestPosition(
                 this.viewportElement,
@@ -554,6 +623,9 @@ export class FASTAnchoredRegion extends FASTElement {
      *  Gets the anchor element by id
      */
     private getAnchor = (): HTMLElement | null => {
+        if (this.usePointAnchor) {
+            return null;
+        }
         const rootNode = this.getRootNode();
 
         if (rootNode instanceof ShadowRoot) {
@@ -589,9 +661,17 @@ export class FASTAnchoredRegion extends FASTElement {
         const regionEntry: IntersectionObserverEntry | undefined = entries.find(
             x => x.target === this
         );
-        const anchorEntry: IntersectionObserverEntry | undefined = entries.find(
-            x => x.target === this.anchorElement
-        );
+        let anchorEntry: IntersectionObserverEntry | undefined = undefined;
+        if (!this.usePointAnchor) {
+            anchorEntry = entries.find(x => x.target === this.anchorElement);
+        } else {
+            this.pointAnchorRect = new DOMRect(
+                this.pointAnchorX,
+                this.pointAnchorY,
+                0,
+                0
+            );
+        }
         const viewportEntry: IntersectionObserverEntry | undefined = entries.find(
             x => x.target === this.viewportElement
         );
@@ -599,9 +679,16 @@ export class FASTAnchoredRegion extends FASTElement {
         if (
             regionEntry === undefined ||
             viewportEntry === undefined ||
-            anchorEntry === undefined
+            (anchorEntry === undefined && !this.usePointAnchor)
         ) {
             return false;
+        }
+
+        let anchorRect: DOMRect = new DOMRect();
+        if (!this.usePointAnchor && anchorEntry !== undefined) {
+            anchorRect = anchorEntry.boundingClientRect;
+        } else {
+            anchorRect = this.pointAnchorRect;
         }
 
         // don't update the dom unless there is a significant difference in rect positions
@@ -611,12 +698,12 @@ export class FASTAnchoredRegion extends FASTElement {
             this.regionRect === undefined ||
             this.anchorRect === undefined ||
             this.viewportRect === undefined ||
-            this.isRectDifferent(this.anchorRect, anchorEntry.boundingClientRect) ||
+            this.isRectDifferent(this.anchorRect, anchorRect) ||
             this.isRectDifferent(this.viewportRect, viewportEntry.boundingClientRect) ||
             this.isRectDifferent(this.regionRect, regionEntry.boundingClientRect)
         ) {
             this.regionRect = regionEntry.boundingClientRect;
-            this.anchorRect = anchorEntry.boundingClientRect;
+            this.anchorRect = anchorRect;
             if (this.viewportElement === document.documentElement) {
                 this.viewportRect = new DOMRectReadOnly(
                     viewportEntry.boundingClientRect.x +
@@ -1212,6 +1299,9 @@ export class FASTAnchoredRegion extends FASTElement {
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.observe(this.viewportElement);
         }
+        if (this.mouseTracking) {
+            window.addEventListener(eventMouseMove, this.handleMouseMove);
+        }
     };
 
     /**
@@ -1223,5 +1313,16 @@ export class FASTAnchoredRegion extends FASTElement {
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.unobserve(this.viewportElement);
         }
+        if (this.mouseTracking) {
+            window.removeEventListener(eventMouseMove, this.handleMouseMove);
+        }
+    };
+
+    /**
+     * handles mouse move events when in mouse tracking mode
+     */
+    private handleMouseMove = (e: MouseEvent): void => {
+        this.pointAnchorRect = new DOMRect(e.pageX, e.pageY, 0, 0);
+        this.update();
     };
 }
