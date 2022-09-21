@@ -6,12 +6,15 @@ import type { FASTMenu } from "./menu.js";
 test.describe("Menu", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
     let menuItems: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-menu");
+
+        root = page.locator("#root");
 
         menuItems = element.locator("fast-menu-item");
 
@@ -23,33 +26,39 @@ test.describe("Menu", () => {
     });
 
     test("should have a role of `menu`", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item>Menu item</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                </fast-menu>
+            `;
+        });
 
         await expect(element).toHaveAttribute("role", "menu");
     });
 
     test("should set `tabindex` of the first focusable menu item to 0", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item>Menu item</fast-menu-item>
-                <fast-menu-item>Menu item</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                </fast-menu>
+            `;
+        });
 
         await expect(menuItems.first()).toHaveAttribute("tabindex", "0");
     });
 
     test("should set class on menu items to 0 columns", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item>Menu item</fast-menu-item>
-                <fast-menu-item>Menu item</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                </fast-menu>
+            `;
+        });
 
         const firstMenuItem = menuItems.first();
 
@@ -57,12 +66,14 @@ test.describe("Menu", () => {
     });
 
     test("should NOT set any `tabindex` on non-menu-item elements", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item>Menu item</fast-menu-item>
-                <div>Not a menu item</div>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                    <div>Not a menu item</div>
+                </fast-menu>
+            `;
+        });
 
         const divider = element.locator("div");
 
@@ -70,18 +81,20 @@ test.describe("Menu", () => {
     });
 
     test("should focus on first menu item when focus is called", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item>Menu item</fast-menu-item>
-                <fast-menu-item>Menu item</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                </fast-menu>
+            `;
+        });
 
         await element.waitFor({ state: "attached" });
 
         await expect(menuItems.first()).toHaveAttribute("tabindex", "0");
 
-        await page.evaluate(() => {
+        await root.evaluate(node => {
             document.querySelector<FASTMenu>("fast-menu")?.focus();
         });
 
@@ -93,11 +106,13 @@ test.describe("Menu", () => {
     });
 
     test("should not throw when focus is called with no items", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu></fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu></fast-menu>
+            `;
+        });
 
-        await page.evaluate(() => {
+        await root.evaluate(node => {
             document.querySelector<FASTMenu>("fast-menu")?.focus();
         });
 
@@ -105,26 +120,28 @@ test.describe("Menu", () => {
     });
 
     test("should not throw when focus is called before initialization is complete", async () => {
-        await page.setContent("");
+        await root.evaluate(node => {
+            node.innerHTML = "";
 
-        await page.evaluate(() => {
             const menu = document.createElement("fast-menu");
 
             menu.focus();
 
-            document.body.append(menu);
+            node.append(menu);
         });
 
         expect(await page.evaluate(() => document.activeElement?.id)).toBe("");
     });
 
     test("should focus disabled items", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item disabled>Menu item</fast-menu-item>
-                <fast-menu-item>Menu item</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item disabled>Menu item</fast-menu-item>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                </fast-menu>
+            `;
+        });
 
         const firstMenuItem = menuItems.first();
 
@@ -139,11 +156,16 @@ test.describe("Menu", () => {
 
     ["menuitem", "menuitemcheckbox", "menuitemradio"].forEach(role => {
         test(`should accept elements as focusable child with "${role}" role`, async () => {
-            await page.setContent(/* html */ `
-                <fast-menu>
-                    <div role="${role}">Menu item</div>
-                </fast-menu>
-            `);
+            await root.evaluate(
+                (node, { role }) => {
+                    node.innerHTML = /* html */ `
+                    <fast-menu>
+                        <div role="${role}">Menu item</div>
+                    </fast-menu>
+                `;
+                },
+                { role }
+            );
 
             await expect(
                 page.locator(`fast-menu [role="${role}"]`).first()
@@ -152,65 +174,75 @@ test.describe("Menu", () => {
     });
 
     test("should NOT set `indent` class on non-menu items", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item>Menu item</fast-menu-item>
-                <div>Not a menu item</div>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                    <div>Not a menu item</div>
+                </fast-menu>
+            `;
+        });
 
         await expect(element.locator("div")).not.toHaveClass(/indent/);
     });
 
     test("should set class on menu items to 0 columns when non fast-menu-item is present", async () => {
         test.slow();
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item>Menu item</fast-menu-item>
-                <div>Not a menu item</div>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                    <div>Not a menu item</div>
+                </fast-menu>
+            `;
+        });
 
         await expect(menuItems.first()).toHaveClass(/indent-0/);
     });
 
     test("should set class on menu items to 1 column", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item>Menu item</fast-menu-item>
-                <fast-menu-item>Menu item</fast-menu-item>
-                <fast-menu-item role="menuitemradio">Menu item</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                    <fast-menu-item role="menuitemradio">Menu item</fast-menu-item>
+                </fast-menu>
+            `;
+        });
 
         await expect(menuItems.first()).toHaveClass(/indent-1/);
     });
 
     test("should set class on menu items to 2 columns", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item role="menuitemradio">
-                    <div slot="start">Start</div>
-                    Menu item
-                </fast-menu-item>
-                <fast-menu-item>Menu item</fast-menu-item>
-                <fast-menu-item>Menu item</fast-menu-item>
-                <fast-menu-item>Menu item</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item role="menuitemradio">
+                        <div slot="start">Start</div>
+                        Menu item
+                    </fast-menu-item>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                </fast-menu>
+            `;
+        });
 
         await expect(menuItems.nth(0)).toHaveClass(/indent-2/);
     });
 
     test("should not navigate to hidden items when changed after connection", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item>Menu item 1</fast-menu-item>
-                <fast-menu-item>Menu item 2</fast-menu-item>
-                <fast-menu-item>Menu item 3</fast-menu-item>
-                <fast-menu-item>Menu item 4</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item>Menu item 1</fast-menu-item>
+                    <fast-menu-item>Menu item 2</fast-menu-item>
+                    <fast-menu-item>Menu item 3</fast-menu-item>
+                    <fast-menu-item>Menu item 4</fast-menu-item>
+                </fast-menu>
+            `;
+        });
 
         await expect.soft(menuItems).toHaveCount(4);
 
@@ -258,14 +290,16 @@ test.describe("Menu", () => {
     });
 
     test("should treat all checkbox menu items as individually selectable items", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item role="menuitemcheckbox">Menu item 1</fast-menu-item>
-                <fast-menu-item role="menuitemcheckbox">Menu item 2</fast-menu-item>
-                <fast-menu-item role="menuitemcheckbox">Menu item 3</fast-menu-item>
-                <fast-menu-item role="menuitemcheckbox">Menu item 4</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item role="menuitemcheckbox">Menu item 1</fast-menu-item>
+                    <fast-menu-item role="menuitemcheckbox">Menu item 2</fast-menu-item>
+                    <fast-menu-item role="menuitemcheckbox">Menu item 3</fast-menu-item>
+                    <fast-menu-item role="menuitemcheckbox">Menu item 4</fast-menu-item>
+                </fast-menu>
+            `;
+        });
 
         const menuItemsCount = await menuItems.count();
 
@@ -285,13 +319,15 @@ test.describe("Menu", () => {
     });
 
     test(`should treat all radio menu items as a radiogroup and limit selection to one item within the group`, async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item role="menuitemradio">Menu item 1</fast-menu-item>
-                <fast-menu-item role="menuitemradio">Menu item 2</fast-menu-item>
-                <fast-menu-item role="menuitemradio">Menu item 3</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item role="menuitemradio">Menu item 1</fast-menu-item>
+                    <fast-menu-item role="menuitemradio">Menu item 2</fast-menu-item>
+                    <fast-menu-item role="menuitemradio">Menu item 3</fast-menu-item>
+                </fast-menu>
+            `;
+        });
 
         await menuItems.first().click();
 
@@ -319,15 +355,17 @@ test.describe("Menu", () => {
     });
 
     test('should use elements with `[role="separator"]` to divide radio menu items into different radio groups', async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item role="menuitemradio">Menu item 1</fast-menu-item>
-                <fast-menu-item role="menuitemradio">Menu item 2</fast-menu-item>
-                <fast-divider role="separator"></fast-divider>
-                <fast-menu-item role="menuitemradio">Menu item 3</fast-menu-item>
-                <fast-menu-item role="menuitemradio">Menu item 4</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item role="menuitemradio">Menu item 1</fast-menu-item>
+                    <fast-menu-item role="menuitemradio">Menu item 2</fast-menu-item>
+                    <fast-divider role="separator"></fast-divider>
+                    <fast-menu-item role="menuitemradio">Menu item 3</fast-menu-item>
+                    <fast-menu-item role="menuitemradio">Menu item 4</fast-menu-item>
+                </fast-menu>
+            `;
+        });
 
         await menuItems.nth(0).click();
 
@@ -359,14 +397,16 @@ test.describe("Menu", () => {
     });
 
     test("should navigate the menu on arrow up/down keys", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item>Menu item 1</fast-menu-item>
-                <fast-menu-item>Menu item 2</fast-menu-item>
-                <fast-menu-item>Menu item 3</fast-menu-item>
-                <fast-menu-item>Menu item 4</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item>Menu item 1</fast-menu-item>
+                    <fast-menu-item>Menu item 2</fast-menu-item>
+                    <fast-menu-item>Menu item 3</fast-menu-item>
+                    <fast-menu-item>Menu item 4</fast-menu-item>
+                </fast-menu>
+            `;
+        });
 
         await element.waitFor({ state: "attached" });
 
@@ -392,17 +432,17 @@ test.describe("Menu", () => {
     });
 
     test("should not navigate to hidden items when set before connection", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu>
-                <fast-menu-item>Menu item 1</fast-menu-item>
-                <fast-menu-item hidden="hidden">Menu item 2</fast-menu-item>
-                <fast-menu-item>Menu item 3</fast-menu-item>
-                <fast-menu-item>Menu item 4</fast-menu-item>
-            </fast-menu>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item>Menu item 1</fast-menu-item>
+                    <fast-menu-item hidden="hidden">Menu item 2</fast-menu-item>
+                    <fast-menu-item>Menu item 3</fast-menu-item>
+                    <fast-menu-item>Menu item 4</fast-menu-item>
+                </fast-menu>
+            `;
 
-        // reset the focus to the window to help with flakiness
-        await page.evaluate(() => {
+            // reset the focus to the window to help with flakiness
             window.focus();
         });
 

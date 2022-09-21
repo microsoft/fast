@@ -6,11 +6,14 @@ import type { FASTProgress } from "./progress.js";
 test.describe("Progress ring", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-progress");
+
+        root = page.locator("#root");
 
         await page.goto(fixtureURL("progress--progress"));
     });
@@ -24,41 +27,51 @@ test.describe("Progress ring", () => {
     });
 
     test("should set the `aria-valuenow` attribute with the `value` property when provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-progress value="50"></fast-progress>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-progress value="50"></fast-progress>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-valuenow", "50");
     });
 
     test("should set the `aria-valuemin` attribute with the `min` property when provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-progress min="50"></fast-progress>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-progress min="50"></fast-progress>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-valuemin", "50");
     });
 
     test("should set the `aria-valuemax` attribute with the `max` property when provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-progress max="50"></fast-progress>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-progress max="50"></fast-progress>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-valuemax", "50");
     });
 
     test("should add a `paused` class when `paused` is true", async () => {
-        await page.setContent(/* html */ `
-            <fast-progress paused></fast-progress>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-progress paused></fast-progress>
+            `;
+        });
 
         await expect(element).toHaveClass(/paused/);
     });
 
     test("should render an element with a `determinate` slot when a value is provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-progress value="50"></fast-progress>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-progress value="50"></fast-progress>
+            `;
+        });
 
         const progress = element.locator(".progress");
 
@@ -66,9 +79,11 @@ test.describe("Progress ring", () => {
     });
 
     test("should render an element with an `indeterminate` slot when no value is provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-progress></fast-progress>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-progress></fast-progress>
+            `;
+        });
 
         const progress = element.locator(".progress");
 
@@ -76,17 +91,21 @@ test.describe("Progress ring", () => {
     });
 
     test("should return the `percentComplete` property as a value between 0 and 100 when `min` and `max` are unset", async () => {
-        await page.setContent(/* html */ `
-            <fast-progress value="50"></fast-progress>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-progress value="50"></fast-progress>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("percentComplete", 50);
     });
 
     test("should set the `percentComplete` property to match the current `value` in the range of `min` and `max`", async () => {
-        await page.setContent(/* html */ `
-            <fast-progress value="0"></fast-progress>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-progress value="0"></fast-progress>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("percentComplete", 0);
 

@@ -6,6 +6,7 @@ import type { FASTAccordionItem } from "./accordion-item.js";
 test.describe("Accordion item", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
     let heading: Locator;
     let button: Locator;
 
@@ -13,6 +14,8 @@ test.describe("Accordion item", () => {
         page = await browser.newPage();
 
         element = page.locator("fast-accordion-item");
+
+        root = page.locator("#root");
 
         heading = page.locator(`[role="heading"]`);
 
@@ -26,12 +29,14 @@ test.describe("Accordion item", () => {
     });
 
     test("should set a default heading level of 2 when `headinglevel` is not provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-accordion-item>
-                <span slot="heading">Heading 1</span>
-                <div>Content 1</div>
-            </fast-accordion-item>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion-item>
+                    <span slot="heading">Heading 1</span>
+                    <div>Content 1</div>
+                </fast-accordion-item>
+            `;
+        });
 
         await expect(element).not.hasAttribute("headinglevel");
 
@@ -39,12 +44,14 @@ test.describe("Accordion item", () => {
     });
 
     test("should set the `aria-level` attribute on the internal heading element equal to the heading level", async () => {
-        await page.setContent(/* html */ `
-            <fast-accordion-item>
-                <span slot="heading">Heading 1</span>
-                <div>Content 1</div>
-            </fast-accordion-item>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion-item>
+                    <span slot="heading">Heading 1</span>
+                    <div>Content 1</div>
+                </fast-accordion-item>
+            `;
+        });
 
         await element.evaluate<void, FASTAccordionItem>(node => {
             node.headinglevel = 3;
@@ -54,25 +61,31 @@ test.describe("Accordion item", () => {
     });
 
     test("should NOT have a class of `expanded` when the `expanded` property is false", async () => {
-        await page.setContent(/* html */ `
-            <fast-accordion-item></fast-accordion-item>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion-item></fast-accordion-item>
+            `;
+        });
 
         await expect(element).not.toHaveClass(/expanded/);
     });
 
     test("should have a class of `expanded` when the `expanded` property is true", async () => {
-        await page.setContent(/* html */ `
-            <fast-accordion-item expanded></fast-accordion-item>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion-item expanded></fast-accordion-item>
+            `;
+        });
 
         await expect(element).toHaveClass(/expanded/);
     });
 
     test("should set `aria-expanded` property on the internal control equal to the `expanded` property", async () => {
-        await page.setContent(/* html */ `
-            <fast-accordion-item expanded></fast-accordion-item>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion-item expanded></fast-accordion-item>
+            `;
+        });
 
         await expect(button).toHaveAttribute("aria-expanded", "true");
 
@@ -84,9 +97,11 @@ test.describe("Accordion item", () => {
     });
 
     test("should set internal properties to match the id when provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-accordion-item id="foo"></fast-accordion-item>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion-item id="foo"></fast-accordion-item>
+            `;
+        });
 
         await expect(element.locator(`[role="region"]`)).toHaveAttribute(
             "aria-labelledby",

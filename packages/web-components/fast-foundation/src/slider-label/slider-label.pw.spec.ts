@@ -8,13 +8,16 @@ import type { FASTSliderLabel } from "./slider-label.js";
 test.describe("Slider label", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
-        await page.goto(fixtureURL("slider-label--slider-label"));
-
         element = page.locator("fast-slider-label");
+
+        root = page.locator("#root");
+
+        await page.goto(fixtureURL("slider-label--slider-label"));
     });
 
     test.afterAll(async () => {
@@ -22,33 +25,44 @@ test.describe("Slider label", () => {
     });
 
     test("should NOT set the `aria-disabled` attribute when `disabled` is not defined", async () => {
-        await page.setContent(/* html */ `
-            <fast-slider-label></fast-slider-label>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-slider-label></fast-slider-label>
+            `;
+        });
 
         await expect(element).not.hasAttribute("aria-disabled");
     });
 
     test('should add an element with a class of "mark" by default', async () => {
-        await page.setContent(/* html */ `
-            <fast-slider-label></fast-slider-label>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-slider-label></fast-slider-label>
+            `;
+        });
 
         await expect(element.locator(".mark")).toHaveCount(1);
     });
 
     test("should NOT add an element with a class of `mark` when the `hideMark` property is true", async () => {
-        await page.setContent(/* html */ `
-            <fast-slider-label hide-mark></fast-slider-label>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-slider-label hide-mark></fast-slider-label>
+            `;
+        });
 
         await expect(element.locator(".mark")).toHaveCount(0);
     });
 
     test("should add a class equal to the `sliderOrientation` property", async () => {
-        await page.setContent(/* html */ `
-            <fast-slider-label slider-orientation="${Orientation.horizontal}"></fast-slider-label>
-        `);
+        await root.evaluate(
+            (node, { Orientation }) => {
+                node.innerHTML = /* html */ `
+                    <fast-slider-label slider-orientation="${Orientation.horizontal}"></fast-slider-label>
+                `;
+            },
+            { Orientation }
+        );
 
         await expect(element).toHaveClass(/horizontal/);
 
@@ -63,9 +77,11 @@ test.describe("Slider label", () => {
     });
 
     test("should set the `aria-disabled` attribute when the `disabled` property is true", async () => {
-        await page.setContent(/* html */ `
-            <fast-slider-label disabled></fast-slider-label>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-slider-label disabled></fast-slider-label>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-disabled", "true");
 

@@ -6,11 +6,14 @@ import { fixtureURL } from "../__test__/helpers.js";
 test.describe("Toolbar", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-toolbar");
+
+        root = page.locator("#root");
 
         await page.goto(fixtureURL("toolbar--toolbar"));
     });
@@ -24,17 +27,19 @@ test.describe("Toolbar", () => {
     });
 
     test("should move focus to its first focusable element when it receives focus", async () => {
-        await page.setContent(/* html */ `
-            <fast-toolbar>
-                <button>Button 1</button>
-                <button>Button 2</button>
-                <button>Button 3</button>
-                <button>Button 4</button>
-                <button>Button 5</button>
-                <button slot="start">Start Slot Button</button>
-                <button slot="end">End Slot Button</button>
-            </fast-toolbar>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-toolbar>
+                    <button>Button 1</button>
+                    <button>Button 2</button>
+                    <button>Button 3</button>
+                    <button>Button 4</button>
+                    <button>Button 5</button>
+                    <button slot="start">Start Slot Button</button>
+                    <button slot="end">End Slot Button</button>
+                </fast-toolbar>
+            `;
+        });
 
         const element = page.locator("fast-toolbar");
 
@@ -48,17 +53,19 @@ test.describe("Toolbar", () => {
     });
 
     test("should move focus to next element when keyboard incrementer is pressed", async () => {
-        await page.setContent(/* html */ `
-            <fast-toolbar>
-                <button slot="start">Start Slot Button</button>
-                <button>Button 1</button>
-                <button>Button 2</button>
-                <button>Button 3</button>
-                <button>Button 4</button>
-                <button>Button 5</button>
-                <button slot="end">End Slot Button</button>
-            </fast-toolbar>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-toolbar>
+                    <button slot="start">Start Slot Button</button>
+                    <button>Button 1</button>
+                    <button>Button 2</button>
+                    <button>Button 3</button>
+                    <button>Button 4</button>
+                    <button>Button 5</button>
+                    <button slot="end">End Slot Button</button>
+                </fast-toolbar>
+            `;
+        });
 
         const buttons = element.locator("button");
 
@@ -92,17 +99,19 @@ test.describe("Toolbar", () => {
     });
 
     test("should skip disabled elements when keyboard incrementer is pressed", async () => {
-        await page.setContent(/* html */ `
-            <fast-toolbar>
-                <button slot="start">Start Slot Button</button>
-                <button>Button 1</button>
-                <button>Button 2</button>
-                <button>Button 3</button>
-                <button>Button 4</button>
-                <button>Button 5</button>
-                <button slot="end">End Slot Button</button>
-            </fast-toolbar>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-toolbar>
+                    <button slot="start">Start Slot Button</button>
+                    <button>Button 1</button>
+                    <button>Button 2</button>
+                    <button>Button 3</button>
+                    <button>Button 4</button>
+                    <button>Button 5</button>
+                    <button slot="end">End Slot Button</button>
+                </fast-toolbar>
+            `;
+        });
 
         const buttons = element.locator("button:not([slot])");
 
@@ -136,17 +145,19 @@ test.describe("Toolbar", () => {
     });
 
     test("should skip hidden elements when keyboard incrementer is pressed", async () => {
-        await page.setContent(/* html */ `
-            <fast-toolbar>
-                <button slot="start">Start Slot Button</button>
-                <button>Button 1</button>
-                <button>Button 2</button>
-                <button>Button 3</button>
-                <button>Button 4</button>
-                <button>Button 5</button>
-                <button slot="end">End Slot Button</button>
-            </fast-toolbar>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-toolbar>
+                    <button slot="start">Start Slot Button</button>
+                    <button>Button 1</button>
+                    <button>Button 2</button>
+                    <button>Button 3</button>
+                    <button>Button 4</button>
+                    <button>Button 5</button>
+                    <button slot="end">End Slot Button</button>
+                </fast-toolbar>
+            `;
+        });
 
         const buttons = element.locator("button:not([slot])");
 
@@ -180,7 +191,9 @@ test.describe("Toolbar", () => {
     });
 
     test("should move focus to next element when keyboard incrementer is pressed and start slot content is added after connect", async () => {
-        await page.setContent(/* html */ `<fast-toolbar></fast-toolbar>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `<fast-toolbar></fast-toolbar>`;
+        });
 
         const button1 = element.locator("button", { hasText: "Button 1" });
 
@@ -210,7 +223,11 @@ test.describe("Toolbar", () => {
     });
 
     test("should move focus to next element when keyboard incrementer is pressed and end slot content is added after connect", async () => {
-        await page.setContent(/* html */ `<fast-toolbar></fast-toolbar>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-toolbar></fast-toolbar>
+            `;
+        });
 
         const endSlotButton = element.locator("button", {
             hasText: "End Slot Button",
@@ -241,17 +258,19 @@ test.describe("Toolbar", () => {
     });
 
     test("should maintain correct activeIndex when the set of focusable children changes", async () => {
-        await page.setContent(/* html */ `
-            <fast-toolbar>
-                <button slot="start">Start Slot Button</button>
-                <button>Button 1</button>
-                <button>Button 2</button>
-                <button>Button 3</button>
-                <button>Button 4</button>
-                <button>Button 5</button>
-                <button slot="end">End Slot Button</button>
-            </fast-toolbar>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-toolbar>
+                    <button slot="start">Start Slot Button</button>
+                    <button>Button 1</button>
+                    <button>Button 2</button>
+                    <button>Button 3</button>
+                    <button>Button 4</button>
+                    <button>Button 5</button>
+                    <button slot="end">End Slot Button</button>
+                </fast-toolbar>
+            `;
+        });
 
         const button1 = element.locator("button", { hasText: "Button 1" });
 
@@ -283,17 +302,19 @@ test.describe("Toolbar", () => {
     });
 
     test("should reset activeIndex to 0 when the focused item is no longer focusable", async () => {
-        await page.setContent(/* html */ `
-            <fast-toolbar>
-                <button slot="start">Start Slot Button</button>
-                <button>Button 1</button>
-                <button>Button 2</button>
-                <button>Button 3</button>
-                <button>Button 4</button>
-                <button>Button 5</button>
-                <button slot="end">End Slot Button</button>
-            </fast-toolbar>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-toolbar>
+                    <button slot="start">Start Slot Button</button>
+                    <button>Button 1</button>
+                    <button>Button 2</button>
+                    <button>Button 3</button>
+                    <button>Button 4</button>
+                    <button>Button 5</button>
+                    <button slot="end">End Slot Button</button>
+                </fast-toolbar>
+            `;
+        });
 
         const button1 = element.locator("button", { hasText: "Button 1" });
 

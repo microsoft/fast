@@ -8,12 +8,15 @@ import type { FASTRadioGroup } from "./index.js";
 test.describe("Radio Group", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
     let radios: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-radio-group");
+
+        root = page.locator("#root");
 
         radios = element.locator("fast-radio");
 
@@ -25,17 +28,21 @@ test.describe("Radio Group", () => {
     });
 
     test("should have a role of `radiogroup`", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group></fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group></fast-radio-group>
+            `;
+        });
 
         await expect(element).toHaveAttribute("role", "radiogroup");
     });
 
     test("should set a matching class on the `positioning-region` when an orientation is provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group></fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group></fast-radio-group>
+            `;
+        });
 
         const positioningRegion = element.locator(".positioning-region");
 
@@ -56,17 +63,21 @@ test.describe("Radio Group", () => {
     });
 
     test("should set the `aria-disabled` attribute when disabled", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group disabled></fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group disabled></fast-radio-group>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-disabled", "true");
     });
 
     test("should set the `aria-disabled` attribute equal to the `disabled` property", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group></fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group></fast-radio-group>
+            `;
+        });
 
         await expect(element).not.hasAttribute("aria-disabled");
 
@@ -84,17 +95,21 @@ test.describe("Radio Group", () => {
     });
 
     test("should set the `aria-readonly` attribute when the `readonly` attribute is present", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group readonly></fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group readonly></fast-radio-group>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-readonly", "true");
     });
 
     test("should set the `aria-readonly` attribute equal to the `readonly` property", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group></fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group></fast-radio-group>
+            `;
+        });
 
         await expect(element).not.hasAttribute("aria-readonly");
 
@@ -112,21 +127,25 @@ test.describe("Radio Group", () => {
     });
 
     test("should NOT set a default `aria-disabled` value when `disabled` is not defined", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group></fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group></fast-radio-group>
+            `;
+        });
 
         await expect(element).not.hasAttribute("aria-disabled");
     });
 
     test("should set all child radio elements to disabled when the `disabled` attribute is present", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group disabled>
-                <fast-radio></fast-radio>
-                <fast-radio></fast-radio>
-                <fast-radio></fast-radio>
-            </fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group disabled>
+                    <fast-radio></fast-radio>
+                    <fast-radio></fast-radio>
+                    <fast-radio></fast-radio>
+                </fast-radio-group>
+            `;
+        });
 
         await expect(element).toHaveBooleanAttribute("disabled");
 
@@ -144,13 +163,15 @@ test.describe("Radio Group", () => {
     });
 
     test("should set all child radio elements to readonly when the `readonly` property is true", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group readonly>
-                <fast-radio></fast-radio>
-                <fast-radio></fast-radio>
-                <fast-radio></fast-radio>
-            </fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group readonly>
+                    <fast-radio></fast-radio>
+                    <fast-radio></fast-radio>
+                    <fast-radio></fast-radio>
+                </fast-radio-group>
+            `;
+        });
 
         await expect(element).toHaveBooleanAttribute("readonly");
 
@@ -168,25 +189,29 @@ test.describe("Radio Group", () => {
     });
 
     test("should set tabindex of 0 to a child radio with a matching `value`", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group value="foo">
-                <fast-radio value="foo"></fast-radio>
-                <fast-radio value="bar"></fast-radio>
-                <fast-radio value="baz"></fast-radio>
-            </fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group value="foo">
+                    <fast-radio value="foo"></fast-radio>
+                    <fast-radio value="bar"></fast-radio>
+                    <fast-radio value="baz"></fast-radio>
+                </fast-radio-group>
+            `;
+        });
 
         await expect(radios.nth(0)).toHaveAttribute("tabindex", "0");
     });
 
     test("should NOT set `tabindex` of 0 to a child radio if its value does not match the radiogroup `value`", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group value="foo">
-                <fast-radio value="bar"></fast-radio>
-                <fast-radio value="baz"></fast-radio>
-                <fast-radio value="qux"></fast-radio>
-            </fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group value="foo">
+                    <fast-radio value="bar"></fast-radio>
+                    <fast-radio value="baz"></fast-radio>
+                    <fast-radio value="qux"></fast-radio>
+                </fast-radio-group>
+            `;
+        });
 
         expect(
             await radios.evaluateAll(radios =>
@@ -196,13 +221,15 @@ test.describe("Radio Group", () => {
     });
 
     test("should set a child radio with a matching `value` to `checked`", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group value="bar">
-                <fast-radio value="foo"></fast-radio>
-                <fast-radio value="bar"></fast-radio>
-                <fast-radio value="baz"></fast-radio>
-            </fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group value="bar">
+                    <fast-radio value="foo"></fast-radio>
+                    <fast-radio value="bar"></fast-radio>
+                    <fast-radio value="baz"></fast-radio>
+                </fast-radio-group>
+            `;
+        });
 
         await expect(radios.nth(0)).not.toBeChecked();
 
@@ -212,13 +239,15 @@ test.describe("Radio Group", () => {
     });
 
     test("should set a child radio with a matching `value` to `checked` when value changes", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group value="foo">
-                <fast-radio value="foo"></fast-radio>
-                <fast-radio value="bar"></fast-radio>
-                <fast-radio value="baz"></fast-radio>
-            </fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group value="foo">
+                    <fast-radio value="foo"></fast-radio>
+                    <fast-radio value="bar"></fast-radio>
+                    <fast-radio value="baz"></fast-radio>
+                </fast-radio-group>
+            `;
+        });
 
         await element.evaluate((node: FASTRadioGroup) => {
             node.value = "bar";
@@ -232,13 +261,15 @@ test.describe("Radio Group", () => {
     });
 
     test("should mark only the last radio defaulted to checked as checked", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group>
-                <fast-radio value="foo" checked></fast-radio>
-                <fast-radio value="bar" checked></fast-radio>
-                <fast-radio value="baz" checked></fast-radio>
-            </fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group>
+                    <fast-radio value="foo" checked></fast-radio>
+                    <fast-radio value="bar" checked></fast-radio>
+                    <fast-radio value="baz" checked></fast-radio>
+                </fast-radio-group>
+            `;
+        });
 
         expect(
             await radios.evaluateAll<number, FASTRadio>(
@@ -254,13 +285,15 @@ test.describe("Radio Group", () => {
     });
 
     test("should mark radio matching value on radio-group over any checked attributes", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio-group value="foo">
-                <fast-radio value="foo"></fast-radio>
-                <fast-radio value="bar" checked></fast-radio>
-                <fast-radio value="baz"></fast-radio>
-            </fast-radio-group>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group value="foo">
+                    <fast-radio value="foo"></fast-radio>
+                    <fast-radio value="bar" checked></fast-radio>
+                    <fast-radio value="baz"></fast-radio>
+                </fast-radio-group>
+            `;
+        });
 
         expect(
             await radios.evaluateAll<number, FASTRadio>(
@@ -282,15 +315,17 @@ test.describe("Radio Group", () => {
     });
 
     test("should allow resetting of elements by the parent form", async () => {
-        await page.setContent(/* html */ `
-            <form>
-                <fast-radio-group>
-                    <fast-radio value="foo"></fast-radio>
-                    <fast-radio value="bar" checked></fast-radio>
-                    <fast-radio value="baz"></fast-radio>
-                </fast-radio-group>
-            </form>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <form>
+                    <fast-radio-group>
+                        <fast-radio value="foo"></fast-radio>
+                        <fast-radio value="bar" checked></fast-radio>
+                        <fast-radio value="baz"></fast-radio>
+                    </fast-radio-group>
+                </form>
+            `;
+        });
 
         const form = page.locator("form");
 

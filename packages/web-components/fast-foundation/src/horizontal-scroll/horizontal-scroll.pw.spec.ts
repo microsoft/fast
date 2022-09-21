@@ -4,9 +4,11 @@ import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTHorizontalScroll } from "./horizontal-scroll.js";
 
 test.describe("HorizontalScroll", () => {
-    let cards: Locator;
-    let element: Locator;
     let page: Page;
+    let element: Locator;
+    let root: Locator;
+
+    let cards: Locator;
     let scrollNext: Locator;
     let scrollPrevious: Locator;
     let scrollView: Locator;
@@ -15,10 +17,16 @@ test.describe("HorizontalScroll", () => {
         page = await browser.newPage();
 
         element = page.locator("fast-horizontal-scroll");
-        scrollNext = element.locator(".scroll-next");
-        scrollPrevious = element.locator(".scroll-prev");
-        scrollView = element.locator(".scroll-view");
+
+        root = page.locator("#root");
+
         cards = element.locator("fast-card");
+
+        scrollNext = element.locator(".scroll-next");
+
+        scrollPrevious = element.locator(".scroll-prev");
+
+        scrollView = element.locator(".scroll-view");
 
         await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
 
@@ -124,11 +132,13 @@ test.describe("HorizontalScroll", () => {
     });
 
     test("should hide the next flipper if content is less than horizontal-scroll width", async () => {
-        await page.setContent(/* html */ `
-            <fast-horizontal-scroll style="width: 1000px;">
-                <fast-card style="width: 100px;"></fast-card>
-            </fast-horizontal-scroll>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-horizontal-scroll style="width: 1000px;">
+                    <fast-card style="width: 100px;"></fast-card>
+                </fast-horizontal-scroll>
+            `;
+        });
 
         const element = page.locator("fast-horizontal-scroll");
 
@@ -203,7 +213,7 @@ test.describe("HorizontalScroll", () => {
 
             const scrollView = element.locator(".scroll-view");
 
-            const cards = element.locator("fast-card");
+            cards = element.locator("fast-card");
 
             const lastCard = cards.last();
 
