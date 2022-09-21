@@ -1,4 +1,4 @@
-import { css, html, repeat } from "@microsoft/fast-element";
+import { css, html, repeat, Updates } from "@microsoft/fast-element";
 import { storyTemplate as cardStoryTemplate } from "../../card/stories/card.stories.js";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
@@ -44,18 +44,20 @@ export default {
         Story => {
             const renderedStory = Story() as FASTHorizontalScroll;
 
-            renderedStory.$fastController.addStyles(css`
-                ::slotted(fast-card) {
-                    color: var(--neutral-foreground-rest);
-                    height: 200px;
-                    width: 120px;
-                }
+            Updates.enqueue(() => {
+                renderedStory.$fastController.addStyles(css`
+                    ::slotted(fast-card) {
+                        color: var(--neutral-foreground-rest);
+                        height: 200px;
+                        width: 120px;
+                    }
 
-                :host {
-                    max-width: 620px;
-                    margin: 20px;
-                }
-            `);
+                    :host {
+                        max-width: 620px;
+                        margin: 20px;
+                    }
+                `);
+            });
 
             return renderedStory;
         },
