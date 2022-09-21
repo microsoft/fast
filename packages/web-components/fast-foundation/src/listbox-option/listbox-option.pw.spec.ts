@@ -48,22 +48,6 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });
 
-    test('should add the "disabled" class when disabled', async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-option disabled></fast-option>
-            `;
-        });
-
-        await expect(element).toHaveClass(/disabled/);
-
-        await element.evaluate((node: FASTListboxOption) => {
-            node.disabled = false;
-        });
-
-        await expect(element).not.toHaveClass(/disabled/);
-    });
-
     test("should set the `aria-selected` attribute when selected", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `

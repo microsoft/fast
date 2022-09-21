@@ -1,4 +1,3 @@
-import { Orientation } from "@microsoft/fast-web-utilities";
 import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 import type { FASTRadio } from "../radio/index.js";
