@@ -463,6 +463,28 @@ describe("The repeat", () => {
                 await Updates.next();
                 expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1newitem2${createOutput(vm.items.slice(mid +2).length , void 0, void 0, void 0, mid +2 ) }`);
             });
+            it(`updates rendered HTML when all items are spliced to replace entire array with an array of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate,
+                    { positioning: true}
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior();
+                const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
+
+                behavior.bind(controller);
+
+                vm.items.splice(0, vm.items.length, ...vm.items);
+                await Updates.next();
+                expect(toHTML(parent)).to.equal(createOutput(size));
+
+                vm.items.splice(0, vm.items.length, ...vm.items);
+                await Updates.next();
+                expect(toHTML(parent)).to.equal(createOutput(size));
+            });
         });
 
         oneThroughTen.forEach(size => {
