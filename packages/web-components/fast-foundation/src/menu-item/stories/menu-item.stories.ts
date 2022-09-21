@@ -1,4 +1,4 @@
-import { css, html, repeat } from "@microsoft/fast-element";
+import { css, html, repeat, Updates } from "@microsoft/fast-element";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTMenuItem } from "../menu-item.js";
@@ -126,17 +126,21 @@ MenuItemExpanded.args = {
 MenuItemExpanded.decorators = [
     Story => {
         const renderedStory = Story() as FASTMenuItem;
-        // Disable cursor interaction to prevent the state from changing
-        renderedStory.$fastController.addStyles(css`
-            :host {
-                width: 50%;
-                pointer-events: none;
-            }
 
-            ::slotted(div) {
-                padding: 10px;
-            }
-        `);
+        Updates.enqueue(() => {
+            // Disable cursor interaction to prevent the state from changing
+            renderedStory.$fastController.addStyles(css`
+                :host {
+                    width: 50%;
+                    pointer-events: none;
+                }
+
+                ::slotted(div) {
+                    padding: 10px;
+                }
+            `);
+        });
+
         return renderedStory;
     },
 ];
