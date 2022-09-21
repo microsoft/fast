@@ -7,11 +7,14 @@ import { DateFormatter } from "./date-formatter.js";
 test.describe("Calendar", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-calendar");
+
+        root = page.locator("#root");
 
         await page.goto(fixtureURL("calendar--calendar"));
     });
@@ -205,9 +208,11 @@ test.describe("Calendar", () => {
 
     test.describe("Defaults", () => {
         test("should default to the current month and year", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar></fast-calendar>
+                `;
+            });
 
             const today = new Date();
 
@@ -216,9 +221,11 @@ test.describe("Calendar", () => {
         });
 
         test("should return 5 weeks of days for August 2021", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="8" year="2021"></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="8" year="2021"></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) => {
@@ -234,9 +241,11 @@ test.describe("Calendar", () => {
         });
 
         test("should return 6 weeks of days for August 2021 when min-weeks is set to 6", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="8" year="2021" min-weeks="6"></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="8" year="2021" min-weeks="6"></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) => {
@@ -252,9 +261,11 @@ test.describe("Calendar", () => {
         });
 
         test("should highlight the current date", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar></fast-calendar>
+                `;
+            });
 
             const today = element.locator(`[part="today"]`);
 
@@ -266,9 +277,11 @@ test.describe("Calendar", () => {
 
     test.describe("Month info", () => {
         test("should display 31 days for the month of January in the year 2022", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="1" year="2022" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="1" year="2022" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) => node.getMonthInfo().length)
@@ -280,9 +293,11 @@ test.describe("Calendar", () => {
         });
 
         test("should display 28 days for the month of February in the year 2022", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="2" year="2022" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="2" year="2022" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) => node.getMonthInfo().length)
@@ -294,9 +309,11 @@ test.describe("Calendar", () => {
         });
 
         test("should display 29 days for the month of February in the year 2020", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="2" year="2020" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="2" year="2020" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) => node.getMonthInfo().length)
@@ -308,9 +325,11 @@ test.describe("Calendar", () => {
         });
 
         test("should start on Friday for January 2021", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="1" year="2021" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="1" year="2021" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) => node.getMonthInfo().start)
@@ -322,9 +341,11 @@ test.describe("Calendar", () => {
         });
 
         test("should start on Monday for February 2021", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="2" year="2021" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="2" year="2021" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) => node.getMonthInfo().start)
@@ -338,9 +359,11 @@ test.describe("Calendar", () => {
 
     test.describe("Labels", async () => {
         test("should return January for month 1", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="1" year="2021" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="1" year="2021" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>
@@ -350,9 +373,11 @@ test.describe("Calendar", () => {
         });
 
         test("should return Jan for month 1 and short format", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="1" year="2021" month-format="short" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="1" year="2021" month-format="short" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>
@@ -362,9 +387,11 @@ test.describe("Calendar", () => {
         });
 
         test("should return Mon for Monday by default", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="1" year="2021" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="1" year="2021" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>
@@ -374,9 +401,11 @@ test.describe("Calendar", () => {
         });
 
         test("should return Monday weekday for long format", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="1" year="2021" weekday-format="long" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="1" year="2021" weekday-format="long" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>
@@ -386,9 +415,11 @@ test.describe("Calendar", () => {
         });
 
         test("should return M for Monday for narrow format", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="1" year="2021" weekday-format="narrow" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="1" year="2021" weekday-format="narrow" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>
@@ -400,9 +431,11 @@ test.describe("Calendar", () => {
 
     test.describe("Localization", async () => {
         test(`should be "mai" for the month May in French`, async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="5" year="2021" locale="fr" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="5" year="2021" locale="fr" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>
@@ -412,9 +445,11 @@ test.describe("Calendar", () => {
         });
 
         test("should have French weekday labels for the fr-FR market", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="1" year="2021" locale="fr-FR" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="1" year="2021" locale="fr-FR" readonly></fast-calendar>
+                `;
+            });
 
             const frenchWeekdays = [
                 "dim.",
@@ -432,9 +467,11 @@ test.describe("Calendar", () => {
         });
 
         test('should set the formatted `year` property to "1942" when the `year` attribute is "2021" for the Hindu calendar', async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="6" year="2021" locale="hi-IN-u-ca-indian"></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="6" year="2021" locale="hi-IN-u-ca-indian"></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>
@@ -444,9 +481,11 @@ test.describe("Calendar", () => {
         });
 
         test('should set the formatted `year` property to "2564" when the `year` attribute is "2021" for the Buddhist calendar', async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="6" year="2021" locale="th-TH-u-ca-buddhist"></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="6" year="2021" locale="th-TH-u-ca-buddhist"></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>
@@ -456,9 +495,11 @@ test.describe("Calendar", () => {
         });
 
         test("should not be RTL for languages that are not Arabic or Hebrew", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="1" year="2021" locale="fr-FR" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="1" year="2021" locale="fr-FR" readonly></fast-calendar>
+                `;
+            });
 
             await expect(element).not.toHaveAttribute("dir", "rtl");
 
@@ -475,9 +516,11 @@ test.describe("Calendar", () => {
 
         /* FIXME this test is an incorrect assertion */
         test.skip("Should be RTL for Arabic language", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="8" year="2021" locale="ar-XE-u-ca-islamic-nu-arab" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="8" year="2021" locale="ar-XE-u-ca-islamic-nu-arab" readonly></fast-calendar>
+                `;
+            });
 
             const date = element.locator(".date");
 
@@ -491,9 +534,11 @@ test.describe("Calendar", () => {
 
     test.describe("Day states", async () => {
         test("should not show date as disabled by default", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="5" year="2021" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="5" year="2021" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>
@@ -515,9 +560,11 @@ test.describe("Calendar", () => {
         });
 
         test("should show date as disabled when added to disabled-dates attribute", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="5" year="2021" disabled-dates="5-6-2021,5-7-2021,5-8-2021" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="5" year="2021" disabled-dates="5-6-2021,5-7-2021,5-8-2021" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>
@@ -542,9 +589,11 @@ test.describe("Calendar", () => {
         });
 
         test("should not show date as selected by default", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="5" year="2021" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="5" year="2021" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>
@@ -567,9 +616,11 @@ test.describe("Calendar", () => {
         });
 
         test("should show date as selected when added to selected-dates attribute", async () => {
-            await page.setContent(/* html */ `
-                <fast-calendar month="5" year="2021" selected-dates="5-6-2021,5-7-2021,5-8-2021" readonly></fast-calendar>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-calendar month="5" year="2021" selected-dates="5-6-2021,5-7-2021,5-8-2021" readonly></fast-calendar>
+                `;
+            });
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>

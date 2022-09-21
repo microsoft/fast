@@ -8,13 +8,16 @@ import { DataGridRowTypes } from "./data-grid.options.js";
 test.describe("Data grid", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-data-grid");
 
-        await page.goto(fixtureURL("data-grid-data-grid--data-grid"));
+        root = page.locator("#root");
+
+        await page.goto(fixtureURL("data-grid--data-grid"));
     });
 
     test.afterAll(async () => {
@@ -22,38 +25,46 @@ test.describe("Data grid", () => {
     });
 
     test("should set role to 'grid'", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid></fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid></fast-data-grid>
+            `;
+        });
 
         await expect(element).toHaveAttribute("role", "grid");
     });
 
     test("should have a tabIndex of 0 by default", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid></fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid></fast-data-grid>
+            `;
+        });
 
         await expect(element).toHaveAttribute("tabindex", "0");
     });
 
     test("should have a tabIndex of -1 when no-tabbing is true", async () => {
-        await page.setContent(/* html */ `
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
             <fast-data-grid no-tabbing></fast-data-grid>
-        `);
+        `;
+        });
 
         await expect(element).toHaveAttribute("tabindex", "-1");
     });
 
     test("should have a tabIndex of -1 when a cell is focused", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid>
-                <fast-data-grid-row>
-                    <fast-data-grid-cell>Cell 1</fast-data-grid-cell>
-                    <fast-data-grid-cell>Cell 2</fast-data-grid-cell>
-                </fast-data-grid-row>
-            </fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid>
+                    <fast-data-grid-row>
+                        <fast-data-grid-cell>Cell 1</fast-data-grid-cell>
+                        <fast-data-grid-cell>Cell 2</fast-data-grid-cell>
+                    </fast-data-grid-row>
+                </fast-data-grid>
+            `;
+        });
 
         await element.locator("fast-data-grid-cell").first().focus();
 
@@ -61,9 +72,11 @@ test.describe("Data grid", () => {
     });
 
     test("should generate a basic grid with a row header based on rowsData only", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid></fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid></fast-data-grid>
+            `;
+        });
 
         element.evaluate((node: FASTDataGrid) => {
             node.rowsData = [
@@ -114,9 +127,11 @@ test.describe("Data grid", () => {
     });
 
     test("should not generate a header when `generateHeader` is `none`", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid generate-header="none"></fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="none"></fast-data-grid>
+            `;
+        });
 
         element.evaluate((node: FASTDataGrid) => {
             node.rowsData = [
@@ -155,12 +170,14 @@ test.describe("Data grid", () => {
     });
 
     test("should not generate a header when rowsData is empty", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid></fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = "";
 
-        element.evaluate((node: FASTDataGrid) => {
-            node.rowsData = [];
+            const dataGrid = document.createElement("fast-data-grid") as FASTDataGrid;
+
+            dataGrid.rowsData = [];
+
+            node.append(dataGrid);
         });
 
         const rows = element.locator("fast-data-grid-row");
@@ -169,9 +186,11 @@ test.describe("Data grid", () => {
     });
 
     test("should generate a sticky header when generateHeader is set to 'sticky'", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid generate-header="sticky"></fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="sticky"></fast-data-grid>
+            `;
+        });
 
         element.evaluate((node: FASTDataGrid) => {
             node.rowsData = [
@@ -222,9 +241,11 @@ test.describe("Data grid", () => {
     });
 
     test("should set the row index attribute of child rows'", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid generate-header="sticky"></fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="sticky"></fast-data-grid>
+            `;
+        });
 
         element.evaluate((node: FASTDataGrid) => {
             node.rowsData = [
@@ -246,9 +267,11 @@ test.describe("Data grid", () => {
     });
 
     test("should move focus with up/down arrow key strokes", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid generate-header="none"></fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="none"></fast-data-grid>
+            `;
+        });
 
         element.evaluate((node: FASTDataGrid) => {
             node.rowsData = [
@@ -292,9 +315,11 @@ test.describe("Data grid", () => {
     });
 
     test("should move focus to first/last cells with ctrl + home/end key strokes", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid generate-header="none"></fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="none"></fast-data-grid>
+            `;
+        });
 
         element.evaluate((node: FASTDataGrid) => {
             node.rowsData = [
@@ -324,9 +349,11 @@ test.describe("Data grid", () => {
     });
 
     test("should move focus by setting the `focusRowIndex` property", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid generate-header="none"></fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="none"></fast-data-grid>
+            `;
+        });
 
         element.evaluate((node: FASTDataGrid) => {
             node.rowsData = [
@@ -364,9 +391,11 @@ test.describe("Data grid", () => {
     });
 
     test("should move focus by setting `focusColumnIndex`", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid generate-header="none"></fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="none"></fast-data-grid>
+            `;
+        });
 
         element.evaluate((node: FASTDataGrid) => {
             node.rowsData = [
@@ -404,15 +433,17 @@ test.describe("Data grid", () => {
     });
 
     test("should auto generate grid-columns from a manual row", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid generate-header="none">
-                <fast-data-grid-row>
-                    <fast-data-grid-cell>1</fast-data-grid-cell>
-                    <fast-data-grid-cell>2</fast-data-grid-cell>
-                    <fast-data-grid-cell>3</fast-data-grid-cell>
-                </fast-data-grid-row>
-            </fast-data-grid>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="none">
+                    <fast-data-grid-row>
+                        <fast-data-grid-cell>1</fast-data-grid-cell>
+                        <fast-data-grid-cell>2</fast-data-grid-cell>
+                        <fast-data-grid-cell>3</fast-data-grid-cell>
+                    </fast-data-grid-row>
+                </fast-data-grid>
+            `;
+        });
 
         const lastRow = element.locator("fast-data-grid-row");
 

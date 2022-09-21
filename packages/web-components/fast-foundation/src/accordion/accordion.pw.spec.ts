@@ -6,11 +6,14 @@ import { AccordionExpandMode } from "./accordion.options.js";
 test.describe("Accordion", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-accordion");
+
+        root = page.locator("#root");
 
         await page.goto(fixtureURL("accordion--accordion"));
     });
@@ -20,52 +23,58 @@ test.describe("Accordion", () => {
     });
 
     test("should set an expand mode of `multi` when passed to the `expand-mode` attribute", async () => {
-        await page.setContent(/* html */ `
-            <fast-accordion expand-mode="multi">
-                <fast-accordion-item>
-                    <span slot="heading">Heading 1</span>
-                    <div>Content 1</div>
-                </fast-accordion-item>
-                <fast-accordion-item>
-                    <span slot="heading">Heading 2</span>
-                    <div>Content 2</div>
-                </fast-accordion-item>
-            </fast-accordion>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion expand-mode="multi">
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 1</span>
+                        <div>Content 1</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 2</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                </fast-accordion>
+            `;
+        });
 
         await expect(element).toHaveAttribute("expand-mode", AccordionExpandMode.multi);
     });
 
     test("should set an expand mode of `single` when passed to the `expand-mode` attribute", async () => {
-        await page.setContent(/* html */ `
-            <fast-accordion expand-mode="single">
-                <fast-accordion-item>
-                    <span slot="heading">Heading 1</span>
-                    <div>Content 1</div>
-                </fast-accordion-item>
-                <fast-accordion-item>
-                    <span slot="heading">Heading 2</span>
-                    <div>Content 2</div>
-                </fast-accordion-item>
-            </fast-accordion>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion expand-mode="single">
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 1</span>
+                        <div>Content 1</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 2</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                </fast-accordion>
+            `;
+        });
 
         await expect(element).toHaveAttribute("expand-mode", AccordionExpandMode.single);
     });
 
     test("should set a default expand mode of `multi` when `expand-mode` attribute is not passed", async () => {
-        await page.setContent(/* html */ `
-            <fast-accordion>
-                <fast-accordion-item>
-                    <span slot="heading">Heading 1</span>
-                    <div>Content 1</div>
-                </fast-accordion-item>
-                <fast-accordion-item>
-                    <span slot="heading">Heading 2</span>
-                    <div>Content 2</div>
-                </fast-accordion-item>
-            </fast-accordion>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion>
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 1</span>
+                        <div>Content 1</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 2</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                </fast-accordion>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("expandmode", AccordionExpandMode.multi);
 
@@ -73,18 +82,20 @@ test.describe("Accordion", () => {
     });
 
     test("should expand/collapse items when clicked in multi mode", async () => {
-        await page.setContent(/* html */ `
-            <fast-accordion expand-mode="multi">
-                <fast-accordion-item>
-                    <span slot="heading">Heading 1</span>
-                    <div>Content 1</div>
-                </fast-accordion-item>
-                <fast-accordion-item>
-                    <span slot="heading">Heading 2</span>
-                    <div>Content 2</div>
-                </fast-accordion-item>
-            </fast-accordion>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion expand-mode="multi">
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 1</span>
+                        <div>Content 1</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 2</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                </fast-accordion>
+            `;
+        });
 
         const items = element.locator("fast-accordion-item");
 
@@ -98,18 +109,20 @@ test.describe("Accordion", () => {
     });
 
     test("should only have one expanded item in single mode", async () => {
-        await page.setContent(/* html */ `
-            <fast-accordion expand-mode="single">
-                <fast-accordion-item>
-                    <span slot="heading">Heading 1</span>
-                    <div>Content 1</div>
-                </fast-accordion-item>
-                <fast-accordion-item>
-                    <span slot="heading">Heading 2</span>
-                    <div>Content 2</div>
-                </fast-accordion-item>
-            </fast-accordion>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion expand-mode="single">
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 1</span>
+                        <div>Content 1</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 2</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                </fast-accordion>
+            `;
+        });
 
         const items = element.locator("fast-accordion-item");
 
@@ -127,7 +140,7 @@ test.describe("Accordion", () => {
 
         await secondItemButton.click();
 
-        await secondItemButton.evaluate((node: HTMLElement) => {
+        await secondItemButton.evaluate(node => {
             node.dispatchEvent(new MouseEvent("click", { bubbles: true }));
             return new Promise(requestAnimationFrame);
         });
@@ -138,18 +151,20 @@ test.describe("Accordion", () => {
     });
 
     test("should ignore `change` events from components other than accordion items", async () => {
-        await page.setContent(/* html */ `
-            <fast-accordion expand-mode="single">
-                <fast-accordion-item>
-                    <div slot="heading">Accordion Item 1 Heading</div>
-                    Accordion Item 1 Content
-                </fast-accordion-item>
-                <fast-accordion-item>
-                    <div slot="heading">Accordion Item 2 Heading</div>
-                    <fast-checkbox>A checkbox as content</fast-checkbox>
-                </fast-accordion-item>
-            </fast-accordion>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion expand-mode="single">
+                    <fast-accordion-item>
+                        <div slot="heading">Accordion Item 1 Heading</div>
+                        Accordion Item 1 Content
+                    </fast-accordion-item>
+                    <fast-accordion-item>
+                        <div slot="heading">Accordion Item 2 Heading</div>
+                        <fast-checkbox>A checkbox as content</fast-checkbox>
+                    </fast-accordion-item>
+                </fast-accordion>
+            `;
+        });
 
         const item = element.locator("fast-accordion-item").nth(1);
 

@@ -7,12 +7,15 @@ import type { FASTTextArea } from "./text-area.js";
 test.describe("TextArea", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
     let control: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-text-area");
+
+        root = page.locator("#root");
 
         control = element.locator(".control");
 
@@ -34,7 +37,11 @@ test.describe("TextArea", () => {
 
         for (const attribute of Object.keys(attributes)) {
             test(attribute, async () => {
-                await page.setContent(`<fast-text-area ${attribute}></fast-text-area>`);
+                await root.evaluate((node, attribute: string) => {
+                    node.innerHTML = /* html */ `
+                        <fast-text-area ${attribute}></fast-text-area>
+                    `;
+                }, attribute);
 
                 await expect(control).toHaveBooleanAttribute(attribute);
             });
@@ -75,8 +82,13 @@ test.describe("TextArea", () => {
             const attributeSpinalCase = spinalCase(attribute);
 
             test(attribute, async () => {
-                await page.setContent(
-                    `<fast-text-area ${attributeSpinalCase}="${value}"></fast-text-area>`
+                await root.evaluate(
+                    (node, { attributeSpinalCase, value }) => {
+                        node.innerHTML = /* html */ `
+                            <fast-text-area ${attributeSpinalCase}="${value}"></fast-text-area>
+                        `;
+                    },
+                    { attributeSpinalCase, value }
                 );
 
                 await expect(control).toHaveAttribute(attributeSpinalCase, `${value}`);
@@ -85,41 +97,43 @@ test.describe("TextArea", () => {
     });
 
     test("should initialize to the initial value if no value property is set", async () => {
-        await page.setContent(`<fast-text-area></fast-text-area>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-text-area></fast-text-area>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "");
     });
 
     test("should initialize to the provided value attribute if set pre-connection", async () => {
-        await page.setContent(`<fast-text-area value="foo"></fast-text-area>`);
-
-        // await page.evaluate(() => {
-        //     const node = document.createElement("fast-text-area");
-
-        //     node.setAttribute("value", "foo");
-
-        //     document.getElementById("root")?.append(node);
-        // });
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-text-area value="foo"></fast-text-area>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
     test("should initialize to the provided value property if set pre-connection", async () => {
-        await page.setContent(``);
+        await root.evaluate(node => {
+            node.innerHTML = "";
 
-        await page.evaluate(() => {
-            const node = document.createElement("fast-text-area") as FASTTextArea;
-
-            node.value = "foo";
-
-            document.body.append(node);
+            const textArea = document.createElement("fast-text-area") as FASTTextArea;
+            textArea.value = "foo";
+            node.append(textArea);
         });
 
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
     test("should initialize to the provided value attribute if set post-connection", async () => {
-        await page.setContent(`<fast-text-area></fast-text-area>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-text-area></fast-text-area>
+            `;
+        });
 
         await element.evaluate((node: FASTTextArea) => {
             node.setAttribute("value", "foo");
@@ -129,7 +143,11 @@ test.describe("TextArea", () => {
     });
 
     test("should fire a `change` event when the internal control emits a `change` event", async () => {
-        await page.setContent(`<fast-text-area></fast-text-area>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-text-area></fast-text-area>
+            `;
+        });
 
         const [wasChanged] = await Promise.all([
             element.evaluate(
@@ -152,11 +170,13 @@ test.describe("TextArea", () => {
 
     test.describe("when the owning form's reset() method is invoked", () => {
         test("should reset the `value` property to an empty string when no `value` attribute is set", async () => {
-            await page.setContent(`
-                <form>
-                    <fast-text-area></fast-text-area>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-text-area></fast-text-area>
+                    </form>
+                `;
+            });
 
             const form = page.locator("form");
 
@@ -178,11 +198,13 @@ test.describe("TextArea", () => {
         });
 
         test("should reset the `value` property to match the `value` attribute", async () => {
-            await page.setContent(`
-                <form>
-                    <fast-text-area value="foo"></fast-text-area>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-text-area value="foo"></fast-text-area>
+                    </form>
+                `;
+            });
 
             const form = page.locator("form");
 
@@ -204,11 +226,13 @@ test.describe("TextArea", () => {
         });
 
         test("should put the control into a clean state, where `value` attribute modifications change the `value` property prior to user or programmatic interaction", async () => {
-            await page.setContent(`
-                <form>
-                    <fast-text-area></fast-text-area>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-text-area></fast-text-area>
+                    </form>
+                `;
+            });
 
             const form = page.locator("form");
 
