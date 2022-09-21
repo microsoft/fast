@@ -200,7 +200,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
             let addIndex = splice.index;
             const end = addIndex + splice.addedCount;
             const removedViews = views.splice(splice.index, removed.length);
-            availableViews = leftoverViews.length + removedViews.length;
+            const totalAvailableViews = (availableViews =
+                leftoverViews.length + removedViews.length);
 
             for (; addIndex < end; ++addIndex) {
                 const neighbor = views[addIndex];
@@ -208,7 +209,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
                 let view;
 
                 if (recycle && availableViews > 0) {
-                    if (removeIndex <= availableViews && removedViews.length > 0) {
+                    if (removeIndex <= totalAvailableViews && removedViews.length > 0) {
                         view = removedViews[removeIndex];
                         removeIndex++;
                     } else {
