@@ -7,6 +7,7 @@ export const storyTemplate = html<StoryArgs<FASTListboxOption>>`
     <fast-option
         ?disabled="${x => x.disabled}"
         ?selected="${x => x.selected}"
+        id="${x => x.id}"
         value="${x => x.value}"
     >
         ${x => x.storyContent}
@@ -24,7 +25,6 @@ export default {
     },
     argTypes: {
         disabled: { control: "boolean" },
-        items: { table: { disable: true } },
         selected: { control: "boolean" },
         value: { control: "text" },
         ariaChecked: { control: "text" },

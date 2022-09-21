@@ -215,13 +215,14 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public valueChanged(previous: string, next: string): void {
-        this.value = this.getValidValue(next);
+        const value = this.getValidValue(next);
 
-        if (next !== this.value) {
+        if (next !== value) {
+            this.value = value;
             return;
         }
 
-        if (this.control && !this.isUserInput) {
+        if (this.$fastController.isConnected && this.control?.value !== value) {
             this.control.value = this.value;
         }
 

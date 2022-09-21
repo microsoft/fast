@@ -117,6 +117,45 @@ const result = templateRenderer.render(html`
 
 > Unsupported directives are no-ops. To understand more about why, see the [Design Philosophy.](#design-philosophy)
 
+#### Rendering Asynchronous Components
+Sometimes it is necessary for a component to do asynchronous work prior to rending it's template, and `@microsoft/fast-ssr` can be configured to support async work by supplying the `renderMode: "async"` configuration to the SSR factory:
+
+```ts
+import fastSSR from "@microsoft/fast-ssr";
+
+const { templateRenderer } = fastSSR({
+    renderMode: "async"
+});
+```
+
+Communication that an element requires asynchronous rendering is facilitated by the [PendingTask](https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/pending-task.md) community protocol. The component should emit a `PendingTaskEvent` during it's `connectedCallback()`. Doing so instructs the `TemplateRenderer` to resolve all pending tasks before continuing rendering:
+```ts
+import { PendingTaskEvent } from "@microsoft/fast-element/pending-task";
+// ... 
+class AsyncElement extends FASTElement {
+    async doWork() {
+        // ...
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+
+        this.dispatchEvent(new PendingTaskEvent(this.doWork()));
+    }
+}
+```
+
+When yielding the results of an async renderer, ensure that any `Promise` encountered is awaited:
+
+```ts
+
+for await (const part of templateRenderer.render(someAsyncTemplate)) {
+    res.write(part);
+}
+```
+
+> It's important to note that to accurately render asynchronous components, template rendering must be effectively paused until async work is complete. This is inherently inefficient because that work gets initiated iteratively, during template rendering. If possible, it is best to architect your components and application in such a way that async work happens prior to template rendering, where initiation of async work can be better coordinated.
+
 ### Configuring the RenderInfo Object
 `TemplateRenderer.render()` must be invoked with a `RenderInfo` object. Its purpose is to provide different element renderers to the process, as well as metadata about the rendering process. It can be used to render custom elements from different templating libraries in the same process. By default, `TemplateRenderer.render()` will create a `RenderInfo` object for you, but you can also easily construct your own using `TemplateRenderer.createRenderInfo()`: 
 

@@ -1,3 +1,5 @@
+import { useArgs } from "@storybook/client-api";
+
 import "@microsoft/fast-element/polyfills";
 import "../src/anchor/stories/anchor.register.js";
 import "../src/anchored-region/stories/anchored-region.register.js";
@@ -56,3 +58,10 @@ import "../src/menu/stories/menu.register.js";
 
 import "../src/tree-item/stories/tree-item.register.js";
 import "../src/tree-view/stories/tree-view.register.js";
+
+export const decorators = [
+    (Story, context) => {
+        const [_, updateArgs] = useArgs();
+        return Story({ ...context, updateArgs });
+    },
+];

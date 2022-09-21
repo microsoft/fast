@@ -1,10 +1,9 @@
-export { DesignToken } from "./design-token.js";
-export {
-    DesignTokenNode,
-    DesignTokenResolver,
+export { DesignTokenMutationType, DesignTokenNode } from "./design-token-node.js";
+export type {
     DerivedDesignTokenValue,
-    StaticDesignTokenValue,
-    DesignTokenValue,
-    DesignTokenMutationType,
     DesignTokenChangeRecord,
+    DesignTokenResolver,
+    DesignTokenValue,
+    StaticDesignTokenValue,
 } from "./design-token-node.js";
+export { DesignToken } from "./design-token.js";

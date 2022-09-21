@@ -1,9 +1,12 @@
 import { Aspect, DOM, ExecutionContext, FASTElement } from "@microsoft/fast-element";
+import { PendingTaskEvent } from "@microsoft/fast-element/pending-task";
+import { escapeHtml } from "../escape-html.js";
 import { RenderInfo } from "../render-info.js";
 import { StyleRenderer } from "../styles/style-renderer.js";
-import { TemplateRenderer } from "../template-renderer/template-renderer.js";
+import { DefaultTemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
-import { ElementRenderer } from "./element-renderer.js";
+import { DefaultElementRenderer } from "./element-renderer.js";
+import { AsyncElementRenderer, ElementRenderer } from "./interfaces.js";
 import { FASTSSRStyleStrategy } from "./style-strategy.js";
 
 /**
@@ -12,7 +15,7 @@ import { FASTSSRStyleStrategy } from "./style-strategy.js";
  *
  * @beta
  */
-export abstract class FASTElementRenderer extends ElementRenderer {
+abstract class FASTElementRenderer extends DefaultElementRenderer {
     /**
      * The element instance represented by the {@link FASTElementRenderer}.
      */
@@ -21,7 +24,7 @@ export abstract class FASTElementRenderer extends ElementRenderer {
     /**
      * The template renderer to use when rendering a component template
      */
-    protected abstract templateRenderer: TemplateRenderer;
+    protected abstract templateRenderer: DefaultTemplateRenderer;
 
     /**
      * Responsible for rendering stylesheets
@@ -106,37 +109,104 @@ export abstract class FASTElementRenderer extends ElementRenderer {
             );
         }
     }
+}
 
-    /**
-     * Renders the component internals to light DOM instead of shadow DOM.
-     * @param renderInfo - information about the current rendering context.
-     */
-    public *renderLight(renderInfo: RenderInfo): IterableIterator<string> {
-        // TODO - this will yield out the element's template using the template renderer, skipping any shadow-DOM specific emission.
-        yield "";
+export abstract class SyncFASTElementRenderer extends FASTElementRenderer
+    implements ElementRenderer {
+    renderAttributes = renderAttributesSync;
+    renderShadow = renderShadow;
+}
+export abstract class AsyncFASTElementRenderer extends FASTElementRenderer
+    implements AsyncElementRenderer {
+    constructor(tagName: string, renderInfo: RenderInfo) {
+        super(tagName, renderInfo);
+
+        this.element.addEventListener(PendingTaskEvent.type, this.pendingTaskHandler);
     }
+    public *renderAttributes(
+        this: AsyncFASTElementRenderer
+    ): IterableIterator<string | Promise<string>> {
+        if (this.element !== undefined) {
+            if (this.awaiting.size) {
+                yield this.pauseRendering().then(() => "");
+            }
+            const { attributes } = this.element;
 
-    /**
-     * Render the component internals to shadow DOM.
-     * @param renderInfo - information about the current rendering context.
-     */
-    public *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
-        const view = this.element.$fastController.view;
-        const styles = FASTSSRStyleStrategy.getStylesFor(this.element);
+            for (
+                let i = 0, name, value;
+                i < attributes.length && ({ name, value } = attributes[i]);
+                i++
+            ) {
+                if (value === "" || value === undefined || value === null) {
+                    yield ` ${name}`;
+                } else {
+                    yield ` ${name}="${escapeHtml(value)}"`;
+                }
+            }
+        }
+    }
+    renderShadow = renderShadow as (
+        renderInfo: RenderInfo
+    ) => IterableIterator<string | Promise<string>>;
 
-        if (styles) {
-            for (const style of styles) {
-                yield this.styleRenderer.render(style);
+    private async pauseRendering() {
+        for (const awaiting of this.awaiting) {
+            try {
+                await awaiting;
+            } catch (e) {
+                // Await will throw if the Promise is rejected. In that case,
+                // SSR should just continue rendering
             }
         }
 
-        if (view !== null) {
-            yield* this.templateRenderer.renderOpCodes(
-                ((view as unknown) as SSRView).codes,
-                renderInfo,
-                this.element,
-                ExecutionContext.default
-            );
+        this.awaiting.clear();
+    }
+
+    private awaiting: Set<Promise<void>> = new Set();
+
+    private pendingTaskHandler = (e: Event) => {
+        if (PendingTaskEvent.isPendingTask(e)) {
+            this.awaiting.add(e.complete);
         }
+    };
+}
+
+function* renderAttributesSync(this: FASTElementRenderer): IterableIterator<string> {
+    if (this.element !== undefined) {
+        const { attributes } = this.element;
+        for (
+            let i = 0, name, value;
+            i < attributes.length && ({ name, value } = attributes[i]);
+            i++
+        ) {
+            if (value === "" || value === undefined || value === null) {
+                yield ` ${name}`;
+            } else {
+                yield ` ${name}="${escapeHtml(value)}"`;
+            }
+        }
+    }
+}
+
+function* renderShadow(
+    this: FASTElementRenderer,
+    renderInfo: RenderInfo
+): IterableIterator<string> {
+    const view = this.element.$fastController.view;
+    const styles = FASTSSRStyleStrategy.getStylesFor(this.element);
+
+    if (styles) {
+        for (const style of styles) {
+            yield this.styleRenderer.render(style);
+        }
+    }
+
+    if (view !== null) {
+        yield* this.templateRenderer.renderOpCodes(
+            ((view as unknown) as SSRView).codes,
+            renderInfo,
+            this.element,
+            ExecutionContext.default
+        );
     }
 }

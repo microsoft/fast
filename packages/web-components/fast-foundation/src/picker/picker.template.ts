@@ -47,13 +47,15 @@ export type PickerOptions = {
  * The template for the List Picker component.
  * @public
  */
-export function pickerTemplate(options: PickerOptions): ElementViewTemplate<FASTPicker> {
+export function pickerTemplate<T extends FASTPicker>(
+    options: PickerOptions
+): ElementViewTemplate<T> {
     const anchoredRegionTag: string = tagFor(options.anchoredRegion);
     const pickerMenuTag: string = tagFor(options.pickerMenu);
     const pickerListTag: string = tagFor(options.pickerList);
     const progressRingTag: string = tagFor(options.progressRing);
 
-    return html<FASTPicker>`
+    return html<T>`
         <template
             :selectedListTag="${() => pickerListTag}"
             :menuTag="${() => pickerMenuTag}"
@@ -69,7 +71,7 @@ export function pickerTemplate(options: PickerOptions): ElementViewTemplate<FAST
 
             ${when(
                 x => x.flyoutOpen,
-                html<FASTPicker>`
+                html<T>`
                 <${anchoredRegionTag}
                     class="region"
                     part="region"
@@ -94,13 +96,13 @@ export function pickerTemplate(options: PickerOptions): ElementViewTemplate<FAST
                 >
                     ${when(
                         x => !x.showNoOptions && !x.showLoading,
-                        html<FASTPicker>`
+                        html<T>`
                             <slot name="menu-region"></slot>
                         `
                     )}
                     ${when(
                         x => x.showNoOptions && !x.showLoading,
-                        html<FASTPicker>`
+                        html<T>`
                             <div class="no-options-display" part="no-options-display">
                                 <slot name="no-options-region">
                                     ${x => x.noSuggestionsText}
@@ -110,7 +112,7 @@ export function pickerTemplate(options: PickerOptions): ElementViewTemplate<FAST
                     )}
                     ${when(
                         x => x.showLoading,
-                        html<FASTPicker>`
+                        html<T>`
                             <div class="loading-display" part="loading-display">
                                 <slot name="loading-region">
                                     <${progressRingTag}

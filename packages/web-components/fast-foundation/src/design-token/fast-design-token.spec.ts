@@ -1,4 +1,4 @@
-import { Behavior, css, customElement, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
+import { css, customElement, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
 import { uniqueElementName } from "@microsoft/fast-element/testing";

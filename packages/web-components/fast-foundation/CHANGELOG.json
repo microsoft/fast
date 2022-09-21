@@ -2,6 +2,83 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 01 Sep 2022 21:53:34 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.9",
+      "version": "3.0.0-alpha.9",
+      "comments": {
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "4109784a8717d0e55544c5b6637ad1336fea63c8",
+            "comment": "remove alt and src from avatar spec as they do not exist as attributes"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "1d0341d86c9537628d7f345ff644a4a7ad6a8b3c",
+            "comment": "remove boolean logical operator use for setting default slotted content in favor of nullish coalescing operator"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "3b9ce1bbe8ca4a800d37f57a328e02f89491b80f",
+            "comment": "update templates to ensure component classes can be extended"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "da67749bf6b068ad8d143b5c7b3885b868d919a3",
+            "comment": "remove when directive from flipper"
+          },
+          {
+            "author": "jes@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "6b0f08574475d8b28cc2df67bf72b9041c2ad285",
+            "comment": "call change when search component clear button is clicked"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "ad8cef8b3f71fdffd50ddd9659b79a17ccca00b2",
+            "comment": "Lazily attach FASTDesignTokenNode to the default node to prevent errors\""
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "da9ebbe1b7471cd4e6f7b74f2f9bf02fcc54da4f",
+            "comment": "fix: update foundation to use new import paths"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e0d263dd185a5f98a4634d4370f1b908507385c3",
+            "comment": "remove references to renderCollapsedNodes and renderCollapsedChildren from tree view and tree item"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "b3363d93a630c95dc052ac0d5d5fd98d45061b7a",
+            "comment": "ensure switch cannot be invoked via keyboard when in readonly mode"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e369dcd43050738ee30df7a7eef5fc497114106a",
+            "comment": "Adds DesignTokenStyleTarget to support DesignToken style collection for SSR"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.6",
+            "commit": "6b0f08574475d8b28cc2df67bf72b9041c2ad285"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 Aug 2022 18:06:43 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.8",
       "version": "3.0.0-alpha.8",

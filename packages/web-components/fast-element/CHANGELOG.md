@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Thu, 18 Aug 2022 20:46:10 GMT and should not be manually modified.
+This log was last generated on Thu, 01 Sep 2022 21:53:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.6
+
+Thu, 01 Sep 2022 21:53:34 GMT
+
+### Changes
+
+- feat: add new state, ownedState, and computedState APIs (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.5
 
