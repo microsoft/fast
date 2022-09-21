@@ -23,7 +23,7 @@ export interface ShadowRootOptions extends ShadowRootInit {
      * from within this shadow root.
      * @beta
      */
-    registry?: CustomElementRegistry
+    registry?: CustomElementRegistry;
 }
 
 /**
