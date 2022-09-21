@@ -13,7 +13,7 @@ import {
 
 const storyTemplate = html<StoryArgs<FASTAnchoredRegion>>`
     <div style="min-height: 100px">
-        <fast-button class="anchor">Anchor</fast-button>
+        <fast-button class="anchor" style="margin: 250px;">Anchor</fast-button>
         <fast-anchored-region
             class="region"
             ?use-point-anchor="${x => x.usePointAnchor}"
@@ -55,6 +55,7 @@ export default {
                 </div>
             </div>
         `,
+        autoUpdateMode: "auto",
         fixedPlacement: false,
         horizontalInset: false,
         horizontalViewportLock: false,
@@ -138,10 +139,16 @@ LockToDefault.args = {
 };
 
 export const PointAnchor: Story<FASTAnchoredRegion> = AnchoredRegion.bind({});
-LockToDefault.args = {
+PointAnchor.args = {
     usePointAnchor: true,
     pointAnchorX: 200,
     pointAnchorY: 200,
-    horizontalDefaultPosition: HorizontalPosition.right,
-    verticalDefaultPosition: VerticalPosition.bottom,
+};
+
+export const MouseTracking: Story<FASTAnchoredRegion> = AnchoredRegion.bind({});
+MouseTracking.args = {
+    usePointAnchor: true,
+    pointAnchorX: 200,
+    pointAnchorY: 200,
+    mouseTracking: true,
 };
