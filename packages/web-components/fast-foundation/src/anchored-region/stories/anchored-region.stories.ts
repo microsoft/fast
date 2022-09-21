@@ -16,6 +16,10 @@ const storyTemplate = html<StoryArgs<FASTAnchoredRegion>>`
         <fast-button class="anchor">Anchor</fast-button>
         <fast-anchored-region
             class="region"
+            ?use-point-anchor="${x => x.usePointAnchor}"
+            ?mouse-tracking="${x => x.mouseTracking}"
+            point-anchor-x="${x => x.pointAnchorX}"
+            point-anchor-y="${x => x.pointAnchorY}"
             ?horizontal-inset="${x => x.horizontalInset}"
             ?horizontal-viewport-lock="${x => x.horizontalViewportLock}"
             ?vertical-inset="${x => x.verticalInset}"
@@ -59,6 +63,10 @@ export default {
             control: "select",
             options: Object.values(AutoUpdateMode),
         },
+        usePointAnchor: { control: "boolean" },
+        pointAnchorX: { control: "number" },
+        pointAnchorY: { control: "number" },
+        mouseTracking: { control: "boolean" },
         fixedPlacement: { control: "boolean" },
         horizontalDefaultPosition: {
             control: "select",
@@ -120,4 +128,13 @@ LockToDefault.args = {
     horizontalPositioningMode: AxisPositioningMode.locktodefault,
     verticalDefaultPosition: VerticalPosition.bottom,
     verticalPositioningMode: AxisPositioningMode.locktodefault,
+};
+
+export const PointAnchor: Story<FASTAnchoredRegion> = AnchoredRegion.bind({});
+LockToDefault.args = {
+    usePointAnchor: true,
+    pointAnchorX: 200,
+    pointAnchorY: 200,
+    horizontalDefaultPosition: HorizontalPosition.right,
+    verticalDefaultPosition: VerticalPosition.bottom,
 };

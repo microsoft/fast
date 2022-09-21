@@ -735,7 +735,19 @@ export class FASTAnchoredRegion extends FASTElement {
     protected horizontalViewportLockChanged(): void;
     // @internal
     initialLayoutComplete: boolean;
+    mouseTracking: boolean;
+    // (undocumented)
+    protected mouseTrackingChanged(): void;
+    pointAnchorX: number;
+    // (undocumented)
+    protected pointAnchorXChanged(): void;
+    pointAnchorY: number;
+    // (undocumented)
+    protected pointAnchorYChanged(): void;
     update: () => void;
+    usePointAnchor: boolean;
+    // (undocumented)
+    protected usePointAnchorChanged(): void;
     verticalDefaultPosition: VerticalPosition;
     // (undocumented)
     protected verticalDefaultPositionChanged(): void;
