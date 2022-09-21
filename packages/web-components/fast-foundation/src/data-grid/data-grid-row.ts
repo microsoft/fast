@@ -1,13 +1,4 @@
-import {
-    attr,
-    bind,
-    FASTElement,
-    observable,
-    RepeatDirective,
-    RepeatOptions,
-    ViewBehaviorOrchestrator,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, observable, RepeatOptions, ViewTemplate } from "@microsoft/fast-element";
 import {
     eventFocusOut,
     eventKeyDown,
@@ -17,7 +8,7 @@ import {
     keyHome,
     Orientation,
 } from "@microsoft/fast-web-utilities";
-import { FASTDataList } from "../index.js";
+import { FASTDataList } from "../data-list/index.js";
 import type { ColumnDefinition } from "./data-grid.js";
 import { DataGridRowTypes } from "./data-grid.options.js";
 

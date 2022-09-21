@@ -11,6 +11,7 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
+import { FASTDataList } from "../data-list/index.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options.js";
@@ -92,7 +93,7 @@ export interface ColumnDefinition {
  * @slot - The default slot for custom row elements
  * @public
  */
-export class FASTDataGrid extends FASTElement {
+export class FASTDataGrid extends FASTDataList {
     /**
      *  generates a basic column definition by examining sample row data
      */
@@ -183,7 +184,12 @@ export class FASTDataGrid extends FASTElement {
      */
     @observable
     public rowsData: object[] = [];
+
     protected rowsDataChanged(): void {
+        this.sourceItems = this.rowsData;
+    }
+
+    protected sourceItemsChanged(): void {
         if (!this.columnDefinitions && this.rowsData.length > 0) {
             this.columnDefinitions = FASTDataGrid.generateColumns(this.rowsData[0]);
         }
@@ -220,9 +226,12 @@ export class FASTDataGrid extends FASTElement {
      */
     @observable
     public rowItemTemplate: ViewTemplate;
+    protected rowItemTemplateChanged(): void {
+        this.itemTemplate = this.rowItemTemplate;
+    }
 
     /**
-     * The template used to render cells in generated rows.
+     * The template used to render cells in generated cells.
      *
      * @public
      */
@@ -299,9 +308,6 @@ export class FASTDataGrid extends FASTElement {
     @observable
     public rowElements: HTMLElement[];
 
-    protected rowsPlaceholder: Node | null = null;
-    protected behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
-
     private generatedHeader: FASTDataGridRow | null = null;
 
     private isUpdatingFocus: boolean = false;
@@ -322,11 +328,10 @@ export class FASTDataGrid extends FASTElement {
      * @internal
      */
     public connectedCallback(): void {
-        super.connectedCallback();
-
         if (this.rowItemTemplate === undefined) {
             this.rowItemTemplate = this.defaultRowItemTemplate;
         }
+        super.connectedCallback();
 
         this.initializeRepeatBehavior();
 
@@ -350,24 +355,6 @@ export class FASTDataGrid extends FASTElement {
     /**
      * @internal
      */
-    protected initializeRepeatBehavior(): void {
-        if (this.behaviorOrchestrator === null) {
-            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
-            this.$fastController.addBehavior(this.behaviorOrchestrator);
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<FASTDataGrid>(
-                    bind(x => x.rowsData, false),
-                    bind(x => x.rowItemTemplate, false),
-                    { positioning: true }
-                ),
-                this.appendChild((this.rowsPlaceholder = document.createComment("")))
-            );
-        }
-    }
-
-    /**
-     * @internal
-     */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
 
@@ -378,8 +365,6 @@ export class FASTDataGrid extends FASTElement {
 
         // disconnect observer
         this.observer.disconnect();
-
-        this.rowsPlaceholder = null;
         this.generatedHeader = null;
     }
 
@@ -671,5 +656,9 @@ export class FASTDataGrid extends FASTElement {
 
         this.rowindexUpdateQueued = false;
         this.columnDefinitionsStale = false;
+    }
+
+    protected updateItemTemplate(): void {
+        this.itemTemplate = this.rowItemTemplate;
     }
 }
