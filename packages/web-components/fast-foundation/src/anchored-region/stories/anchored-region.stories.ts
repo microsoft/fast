@@ -46,8 +46,13 @@ export default {
     title: "Anchored Region",
     args: {
         storyContent: html`
-            <div id="content" style="background: var(--neutral-fill-rest); padding: 10px">
-                anchored region
+            <div
+                id="content"
+                style="background:rgba(0, 255, 0, 0.2); height:100%; width:100%;"
+            >
+                <div style="background: var(--neutral-fill-rest); padding: 10px">
+                    anchored region
+                </div>
             </div>
         `,
         fixedPlacement: false,
@@ -55,6 +60,8 @@ export default {
         horizontalViewportLock: false,
         verticalInset: false,
         verticalViewportLock: false,
+        horizontalPositioningMode: "dynamic",
+        verticalPositioningMode: "dynamic",
     },
     argTypes: {
         anchor: { control: "text" },

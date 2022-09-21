@@ -1322,7 +1322,8 @@ export class FASTAnchoredRegion extends FASTElement {
      * handles mouse move events when in mouse tracking mode
      */
     private handleMouseMove = (e: MouseEvent): void => {
-        this.pointAnchorRect = new DOMRect(e.pageX, e.pageY, 0, 0);
+        this.pointAnchorX = e.pageX;
+        this.pointAnchorY = e.pageY;
         this.update();
     };
 }
