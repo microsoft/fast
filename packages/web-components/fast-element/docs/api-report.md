@@ -394,13 +394,14 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly attributes: ReadonlyArray<AttributeDefinition>;
     static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType>;
     define(registry?: CustomElementRegistry): this;
-    readonly elementOptions?: ElementDefinitionOptions;
+    readonly elementOptions: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
-    readonly shadowOptions?: ShadowRootInit;
+    readonly registry: CustomElementRegistry;
+    readonly shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
     readonly template?: ElementViewTemplate;
     readonly type: TType;
@@ -624,7 +625,8 @@ export interface PartialFASTElementDefinition {
     readonly attributes?: (AttributeConfiguration | string)[];
     readonly elementOptions?: ElementDefinitionOptions;
     readonly name: string;
-    readonly shadowOptions?: Partial<ShadowRootInit> | null;
+    readonly registry?: CustomElementRegistry;
+    readonly shadowOptions?: Partial<ShadowRootOptions> | null;
     readonly styles?: ComposableStyles | ComposableStyles[];
     readonly template?: ElementViewTemplate;
 }
@@ -681,6 +683,12 @@ export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehavi
 export interface RepeatOptions {
     positioning?: boolean;
     recycle?: boolean;
+}
+
+// @public
+export interface ShadowRootOptions extends ShadowRootInit {
+    // @beta
+    registry?: CustomElementRegistry;
 }
 
 // @public
