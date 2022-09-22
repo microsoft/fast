@@ -150,9 +150,9 @@ export const myDataGrid = DataGrid.compose({
 
 #### Superclass
 
-| Name           | Module        | Package |
-| -------------- | ------------- | ------- |
-| `FASTDataList` | /src/index.js |         |
+| Name           | Module                  | Package |
+| -------------- | ----------------------- | ------- |
+| `FASTDataList` | /src/data-list/index.js |         |
 
 #### Fields
 
@@ -235,9 +235,9 @@ export const myDataGrid = DataGrid.compose({
 
 #### Superclass
 
-| Name          | Module | Package                 |
-| ------------- | ------ | ----------------------- |
-| `FASTElement` |        | @microsoft/fast-element |
+| Name           | Module                  | Package |
+| -------------- | ----------------------- | ------- |
+| `FASTDataList` | /src/data-list/index.js |         |
 
 #### Static Fields
 
@@ -247,34 +247,49 @@ export const myDataGrid = DataGrid.compose({
 
 #### Fields
 
-| Name                     | Privacy   | Type                               | Default | Description                                                                                                                                                                                                                                             | Inherited From |
-| ------------------------ | --------- | ---------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `noTabbing`              | public    | `boolean`                          | `false` | When true the component will not add itself to the tab queue. Default is false.                                                                                                                                                                         |                |
-| `generateHeader`         | public    | `GenerateHeaderOptions`            |         | Whether the grid should automatically generate a header row and its type                                                                                                                                                                                |                |
-| `gridTemplateColumns`    | public    | `string`                           |         | String that gets applied to the the css gridTemplateColumns attribute of child rows                                                                                                                                                                     |                |
-| `rowsData`               | public    | `object[]`                         | `[]`    | The data being displayed in the grid                                                                                                                                                                                                                    |                |
-| `columnDefinitions`      | public    | `ColumnDefinition[]`               |         | The column definitions of the grid                                                                                                                                                                                                                      |                |
-| `rowItemTemplate`        | public    | `ViewTemplate`                     |         | The template to use for the programmatic generation of rows                                                                                                                                                                                             |                |
-| `cellItemTemplate`       | public    | `ViewTemplate or undefined`        |         | The template used to render cells in generated rows.                                                                                                                                                                                                    |                |
-| `headerCellItemTemplate` | public    | `ViewTemplate or undefined`        |         | The template used to render header cells in generated rows.                                                                                                                                                                                             |                |
-| `focusRowIndex`          | public    | `number`                           | `0`     | The index of the row that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified row.       |                |
-| `focusColumnIndex`       | public    | `number`                           | `0`     | The index of the column that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified column. |                |
-| `rowElementTag`          | public    | `string`                           |         | Set by the component templates.                                                                                                                                                                                                                         |                |
-| `rowsPlaceholder`        | protected | `Node or null`                     | `null`  |                                                                                                                                                                                                                                                         |                |
-| `behaviorOrchestrator`   | protected | `ViewBehaviorOrchestrator or null` | `null`  |                                                                                                                                                                                                                                                         |                |
-| `rowindexUpdateQueued`   | protected | `boolean`                          | `false` |                                                                                                                                                                                                                                                         |                |
-| `columnDefinitionsStale` | protected | `boolean`                          | `true`  |                                                                                                                                                                                                                                                         |                |
+| Name                     | Privacy   | Type                        | Default | Description                                                                                                                                                                                                                                             | Inherited From |
+| ------------------------ | --------- | --------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `noTabbing`              | public    | `boolean`                   | `false` | When true the component will not add itself to the tab queue. Default is false.                                                                                                                                                                         |                |
+| `generateHeader`         | public    | `GenerateHeaderOptions`     |         | Whether the grid should automatically generate a header row and its type                                                                                                                                                                                |                |
+| `gridTemplateColumns`    | public    | `string`                    |         | String that gets applied to the the css gridTemplateColumns attribute of child rows                                                                                                                                                                     |                |
+| `rowsData`               | public    | `object[]`                  | `[]`    | The data being displayed in the grid                                                                                                                                                                                                                    |                |
+| `columnDefinitions`      | public    | `ColumnDefinition[]`        |         | The column definitions of the grid                                                                                                                                                                                                                      |                |
+| `rowItemTemplate`        | public    | `ViewTemplate`              |         | The template to use for the programmatic generation of rows                                                                                                                                                                                             |                |
+| `cellItemTemplate`       | public    | `ViewTemplate or undefined` |         | The template used to render cells in generated cells.                                                                                                                                                                                                   |                |
+| `headerCellItemTemplate` | public    | `ViewTemplate or undefined` |         | The template used to render header cells in generated rows.                                                                                                                                                                                             |                |
+| `focusRowIndex`          | public    | `number`                    | `0`     | The index of the row that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified row.       |                |
+| `focusColumnIndex`       | public    | `number`                    | `0`     | The index of the column that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified column. |                |
+| `rowElementTag`          | public    | `string`                    |         | Set by the component templates.                                                                                                                                                                                                                         |                |
+| `rowindexUpdateQueued`   | protected | `boolean`                   | `false` |                                                                                                                                                                                                                                                         |                |
+| `columnDefinitionsStale` | protected | `boolean`                   | `true`  |                                                                                                                                                                                                                                                         |                |
+| `recycle`                | public    | `boolean`                   | `false` | Whether or not to recycle the html container used to display items. May help performance but containers may retain artifacts from previous use that developers will need to clear.                                                                      | FASTDataList   |
+| `positioning`            | public    | `boolean`                   | `false` | Whether or not positioning (ie. indexing) is available for the items generated by the repeat directive                                                                                                                                                  | FASTDataList   |
+| `orientation`            | public    | `Orientation`               |         | Whether the list is oriented vertically or horizontally. Default is vertical.                                                                                                                                                                           | FASTDataList   |
+| `sourceItems`            | public    | `object[]`                  |         | The source data array.                                                                                                                                                                                                                                  | FASTDataList   |
+| `itemTemplate`           | public    | `ViewTemplate`              |         | The ViewTemplate used in the items repeat loop                                                                                                                                                                                                          | FASTDataList   |
+| `itemContentsTemplate`   | public    | `ViewTemplate`              |         | The ViewTemplate used to render list item contents                                                                                                                                                                                                      | FASTDataList   |
+| `displayItems`           | public    | `object[] or null`          | `null`  | The items currently displayed                                                                                                                                                                                                                           | FASTDataList   |
+| `itemsPlaceholder`       | protected | `Node`                      |         |                                                                                                                                                                                                                                                         | FASTDataList   |
 
 #### Methods
 
-| Name                         | Privacy   | Description | Parameters | Return   | Inherited From |
-| ---------------------------- | --------- | ----------- | ---------- | -------- | -------------- |
-| `noTabbingChanged`           | protected |             |            | `void`   |                |
-| `gridTemplateColumnsChanged` | protected |             |            | `void`   |                |
-| `rowsDataChanged`            | protected |             |            | `void`   |                |
-| `columnDefinitionsChanged`   | protected |             |            | `void`   |                |
-| `getGridTemplateColumns`     | protected |             |            | `string` |                |
-| `updateRowIndexes`           | protected |             |            | `void`   |                |
+| Name                          | Privacy   | Description                                                                                                                                         | Parameters | Return          | Inherited From |
+| ----------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | --------------- | -------------- |
+| `noTabbingChanged`            | protected |                                                                                                                                                     |            | `void`          |                |
+| `gridTemplateColumnsChanged`  | protected |                                                                                                                                                     |            | `void`          |                |
+| `rowsDataChanged`             | protected |                                                                                                                                                     |            | `void`          |                |
+| `sourceItemsChanged`          | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
+| `columnDefinitionsChanged`    | protected |                                                                                                                                                     |            | `void`          |                |
+| `rowItemTemplateChanged`      | protected |                                                                                                                                                     |            | `void`          |                |
+| `getGridTemplateColumns`      | protected |                                                                                                                                                     |            | `string`        |                |
+| `updateRowIndexes`            | protected |                                                                                                                                                     |            | `void`          |                |
+| `updateItemTemplate`          | protected | applies the correct item template. Once an author overrides the item template with a custom one the author must manage template changes themselves. |            | `void`          | FASTDataList   |
+| `orientationChanged`          | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
+| `itemContentsTemplateChanged` | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
+| `displayItemsChanged`         | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
+| `createPlaceholderElement`    | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
+| `getRepeatOptions`            | protected |                                                                                                                                                     |            | `RepeatOptions` | FASTDataList   |
+| `initializeRepeatBehavior`    | protected | initialize repeat behavior                                                                                                                          |            | `void`          | FASTDataList   |
 
 #### Attributes
 
@@ -283,6 +298,8 @@ export const myDataGrid = DataGrid.compose({
 | `no-tabbing`            | noTabbing           |                |
 | `generate-header`       | generateHeader      |                |
 | `grid-template-columns` | gridTemplateColumns |                |
+| `recycle`               | recycle             | FASTDataList   |
+| `positioning`           | positioning         | FASTDataList   |
 
 #### Slots
 

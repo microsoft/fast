@@ -20,7 +20,6 @@ import { HostController } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { RepeatOptions } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
-import { ViewBehaviorOrchestrator } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
@@ -991,10 +990,8 @@ export interface FASTCombobox extends StartEnd, DelegatesARIACombobox {
 }
 
 // @public
-export class FASTDataGrid extends FASTElement {
+export class FASTDataGrid extends FASTDataList {
     constructor();
-    // (undocumented)
-    protected behaviorOrchestrator: ViewBehaviorOrchestrator | null;
     cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[];
     // (undocumented)
@@ -1025,8 +1022,6 @@ export class FASTDataGrid extends FASTElement {
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
     headerCellItemTemplate?: ViewTemplate;
-    // @internal (undocumented)
-    protected initializeRepeatBehavior(): void;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
@@ -1036,11 +1031,15 @@ export class FASTDataGrid extends FASTElement {
     // (undocumented)
     protected rowindexUpdateQueued: boolean;
     rowItemTemplate: ViewTemplate;
+    // (undocumented)
+    protected rowItemTemplateChanged(): void;
     rowsData: object[];
     // (undocumented)
     protected rowsDataChanged(): void;
     // (undocumented)
-    protected rowsPlaceholder: Node | null;
+    protected sourceItemsChanged(): void;
+    // (undocumented)
+    protected updateItemTemplate(): void;
     // (undocumented)
     protected updateRowIndexes(): void;
 }

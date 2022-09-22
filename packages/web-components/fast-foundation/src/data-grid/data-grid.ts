@@ -328,14 +328,12 @@ export class FASTDataGrid extends FASTDataList {
      * @internal
      */
     public connectedCallback(): void {
+        super.connectedCallback();
+
         if (this.rowItemTemplate === undefined) {
             this.rowItemTemplate = this.defaultRowItemTemplate;
         }
-        super.connectedCallback();
 
-        this.initializeRepeatBehavior();
-
-        this.toggleGeneratedHeader();
         this.addEventListener("row-focused", this.handleRowFocus);
         this.addEventListener(eventFocus, this.handleFocus);
         this.addEventListener(eventKeyDown, this.handleKeydown);
@@ -348,8 +346,6 @@ export class FASTDataGrid extends FASTDataList {
         if (this.noTabbing) {
             this.setAttribute("tabindex", "-1");
         }
-
-        Updates.enqueue(this.queueRowIndexUpdate);
     }
 
     /**
@@ -584,10 +580,10 @@ export class FASTDataGrid extends FASTDataList {
                 this.generateHeader === GenerateHeaderOptions.sticky
                     ? DataGridRowTypes.stickyHeader
                     : DataGridRowTypes.header;
-            if (this.firstChild !== null || this.rowsPlaceholder !== null) {
+            if (this.firstChild !== null || this.itemsPlaceholder !== null) {
                 this.insertBefore(
                     generatedHeaderElement,
-                    this.firstChild !== null ? this.firstChild : this.rowsPlaceholder
+                    this.firstChild !== null ? this.firstChild : this.itemsPlaceholder
                 );
             }
             return;
@@ -621,6 +617,15 @@ export class FASTDataGrid extends FASTDataList {
             Updates.enqueue(() => this.updateRowIndexes());
         }
     };
+
+    /**
+     * initialize repeat behavior
+     */
+    protected initializeRepeatBehavior(): void {
+        super.initializeRepeatBehavior();
+        this.toggleGeneratedHeader();
+        this.queueRowIndexUpdate();
+    }
 
     protected getGridTemplateColumns(): string {
         let newGridTemplateColumns = this.gridTemplateColumns;

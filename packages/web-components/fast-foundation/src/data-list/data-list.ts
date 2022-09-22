@@ -5,6 +5,7 @@ import {
     observable,
     RepeatDirective,
     RepeatOptions,
+    Updates,
     ViewBehaviorOrchestrator,
     ViewTemplate,
 } from "@microsoft/fast-element";
@@ -44,7 +45,7 @@ export class FASTDataList extends FASTElement {
      */
     public orientation: Orientation = Orientation.vertical;
     protected orientationChanged(): void {
-        if (this.$fastController.isConnected) {
+        if (this.$fastController.isConnected && this.behaviorOrchestrator) {
             this.updateItemTemplate();
         }
     }
@@ -88,11 +89,7 @@ export class FASTDataList extends FASTElement {
      * @public
      */
     public itemContentsTemplate: ViewTemplate;
-    protected itemContentsTemplateChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.initializeRepeatBehavior();
-        }
-    }
+    protected itemContentsTemplateChanged(): void {}
 
     /**
      * The items currently displayed
@@ -113,7 +110,9 @@ export class FASTDataList extends FASTElement {
      */
     connectedCallback() {
         super.connectedCallback();
-        this.initializeRepeatBehavior();
+        Updates.enqueue(() => {
+            this.initializeRepeatBehavior();
+        });
     }
 
     /**
