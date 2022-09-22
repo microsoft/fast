@@ -427,6 +427,8 @@ test.describe("Tabs", () => {
 
         await secondTab.evaluate((node: FASTTab) => {
             node.disabled = true;
+
+            return new Promise(requestAnimationFrame);
         });
 
         await secondTab.click({ force: true });

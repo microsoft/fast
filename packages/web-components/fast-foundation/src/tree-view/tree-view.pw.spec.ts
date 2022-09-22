@@ -171,7 +171,7 @@ test.describe("TreeView", () => {
 
         await expandCollapseButton.click();
 
-        await expect(firstTreeItem).toHaveBooleanAttribute("expanded");
+        await expect(firstTreeItem).toHaveJSProperty("expanded", true);
 
         await expect(firstTreeItem).toHaveAttribute("aria-expanded", "true");
 

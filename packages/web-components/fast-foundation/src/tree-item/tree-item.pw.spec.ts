@@ -206,6 +206,8 @@ test.describe("TreeItem", () => {
                     <fast-tree-item>tree item</fast-tree-item>
                 </fast-tree-item>
             `;
+
+            return new Promise(requestAnimationFrame);
         });
 
         await expect(element.first().locator(".items")).toHaveAttribute("role", "group");
@@ -259,6 +261,8 @@ test.describe("TreeItem", () => {
                 node.innerHTML = /* html */ `
                     <fast-tree-item>tree item</fast-tree-item>
                 `;
+
+                return new Promise(requestAnimationFrame);
             });
 
             const [wasChanged] = await Promise.all([
@@ -269,8 +273,9 @@ test.describe("TreeItem", () => {
                         });
                     });
                 }),
-                element.evaluate<void, FASTTreeItem>(node => {
+                element.evaluate((node: FASTTreeItem) => {
                     node.selected = true;
+                    return new Promise(requestAnimationFrame);
                 }),
             ]);
 

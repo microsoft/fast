@@ -231,9 +231,7 @@ test.describe("Search", () => {
                         node.addEventListener("change", () => resolve(true));
                     })
             ),
-            control.evaluate(node => {
-                node.dispatchEvent(new KeyboardEvent("change"));
-            }),
+            element.type("foo").then(() => control.press("Enter")),
         ]);
 
         expect(wasChanged).toBeTruthy();
