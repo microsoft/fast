@@ -7,11 +7,14 @@ import { DataGridCellTypes } from "./data-grid.options.js";
 test.describe("Data grid cell", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-data-grid-cell");
+
+        root = page.locator("#root");
 
         await page.goto(fixtureURL("data-grid-data-grid-cell--data-grid-cell"));
     });
@@ -21,57 +24,71 @@ test.describe("Data grid cell", () => {
     });
 
     test('should set the `role` attribute to "gridcell" by default', async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell></fast-data-grid-cell>
+            `;
+        });
 
         await expect(element).toHaveAttribute("role", "gridcell");
     });
 
     test("should have a tabIndex of -1 by default", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell></fast-data-grid-cell>
+            `;
+        });
 
         await expect(element).toHaveAttribute("tabindex", "-1");
     });
 
     test('should set the `role` attribute to "columnheader" when the `cell-type` attribute is "columnheader"', async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell cell-type="columnheader"></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell cell-type="columnheader"></fast-data-grid-cell>
+            `;
+        });
 
         await expect(element).toHaveAttribute("role", "columnheader");
     });
 
     test('should add the "column-header" class when the `cell-type` attribute is "columnheader"', async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell cell-type="columnheader"></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell cell-type="columnheader"></fast-data-grid-cell>
+            `;
+        });
 
         await expect(element).toHaveClass(/column-header/);
     });
 
     test('should set the `role` attribute to "rowheader" when the `cell-type` attribute is "rowheader"', async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell cell-type="rowheader"></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell cell-type="rowheader"></fast-data-grid-cell>
+            `;
+        });
 
         await expect(element).toHaveAttribute("role", "rowheader");
     });
 
     test('should add the "row-header" class when the `cell-type` attribute is "rowheader"', async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell cell-type="rowheader"></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell cell-type="rowheader"></fast-data-grid-cell>
+            `;
+        });
 
         await expect(element).toHaveClass(/row-header/);
     });
 
     test("should set the `grid-column` CSS property to match the `grid-column` attribute", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell grid-column="2"></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell grid-column="2"></fast-data-grid-cell>
+            `;
+        });
 
         await expect(element).toHaveCSS("grid-column-start", "2");
 
@@ -79,9 +96,11 @@ test.describe("Data grid cell", () => {
     });
 
     test("should not render data if no columndefinition provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell></fast-data-grid-cell>
+            `;
+        });
 
         await element.evaluate((el: FASTDataGridCell) => {
             el.rowData = {
@@ -96,9 +115,11 @@ test.describe("Data grid cell", () => {
     });
 
     test("should render data when a column definition is provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell></fast-data-grid-cell>
+            `;
+        });
 
         await element.evaluate((el: FASTDataGridCell) => {
             el.columnDefinition = { columnDataKey: "item1" };
@@ -114,9 +135,11 @@ test.describe("Data grid cell", () => {
     });
 
     test("should render a custom cell template when provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell></fast-data-grid-cell>
+            `;
+        });
 
         await element.evaluate((node: FASTDataGridCell) => {
             node.columnDefinition = {
@@ -129,9 +152,11 @@ test.describe("Data grid cell", () => {
     });
 
     test("should render a custom header cell template if provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell cell-type="columnheader"></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell cell-type="columnheader"></fast-data-grid-cell>
+            `;
+        });
 
         await element.evaluate((node: FASTDataGridCell) => {
             node.columnDefinition = {
@@ -144,9 +169,11 @@ test.describe("Data grid cell", () => {
     });
 
     test(`should fire a "cell-focused" event when focused`, async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell></fast-data-grid-cell>
+            `;
+        });
 
         const wasInvoked = await Promise.all([
             element.evaluate(node => node.addEventListener("cell-focused", () => true)),
@@ -161,9 +188,11 @@ test.describe("Data grid cell", () => {
     });
 
     test("should focus on custom cell template when a focus target callback is provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell></fast-data-grid-cell>
+            `;
+        });
 
         await element.evaluate((node: FASTDataGridCell) => {
             node.columnDefinition = {
@@ -182,9 +211,11 @@ test.describe("Data grid cell", () => {
     });
 
     test("should focus on custom header cell template when a focus target callback is provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-cell cell-type="columnheader"></fast-data-grid-cell>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-cell cell-type="columnheader"></fast-data-grid-cell>
+            `;
+        });
 
         await element.evaluate((node: FASTDataGridCell, DataGridCellTypes) => {
             node.cellType = DataGridCellTypes.columnHeader;

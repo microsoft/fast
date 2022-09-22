@@ -6,12 +6,15 @@ import type { FASTTooltip } from "./tooltip.js";
 test.describe("Tooltip", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
     let anchoredRegion: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-tooltip");
+
+        root = page.locator("#root");
 
         anchoredRegion = element.locator("fast-anchored-region");
 
@@ -145,10 +148,11 @@ test.describe("Tooltip", () => {
     test("should change anchor element when the `anchor` attribute changes", async () => {
         await page.goto(fixtureURL("tooltip--tooltip"));
 
-        await page.evaluate(() => {
+        await root.evaluate(node => {
             const newAnchor = document.createElement("div");
             newAnchor.id = "new-anchor";
-            document.getElementById("root")?.append(newAnchor);
+
+            node.append(newAnchor);
         });
 
         expect(

@@ -22,7 +22,9 @@ test.describe("Utilities", () => {
         });
 
         test('should return "ltr" for an element with no `dir` attribute', async () => {
-            await page.setContent(`<div></div>`);
+            await page.setContent(/* html */ `
+                <div></div>
+            `);
 
             const element = page.locator("div");
 
@@ -32,7 +34,9 @@ test.describe("Utilities", () => {
         });
 
         test('should return "ltr" for an element with `dir` attribute of "ltr"', async () => {
-            await page.setContent(`<div dir="ltr"></div>`);
+            await page.setContent(/* html */ `
+                <div dir="ltr"></div>
+            `);
 
             const element = page.locator("div");
 
@@ -42,7 +46,9 @@ test.describe("Utilities", () => {
         });
 
         test('should return "rtl" for an element with a `dir` attribute of "rtl"', async () => {
-            await page.setContent(`<div dir="rtl"></div>`);
+            await page.setContent(/* html */ `
+                <div dir="rtl"></div>
+            `);
 
             const element = page.locator("div");
 
@@ -52,7 +58,9 @@ test.describe("Utilities", () => {
         });
 
         test('should return "ltr" for an element with a `dir` property of "ltr"', async () => {
-            await page.setContent(`<div></div>`);
+            await page.setContent(/* html */ `
+                <div></div>
+            `);
 
             const element = page.locator("div");
 
@@ -66,7 +74,9 @@ test.describe("Utilities", () => {
         });
 
         test('should return "rtl" for an element with a `dir` property of "rtl"', async () => {
-            await page.setContent(`<div></div>`);
+            await page.setContent(/* html */ `
+                <div></div>
+            `);
 
             const element = page.locator("div");
 
@@ -88,9 +98,11 @@ test.describe("Utilities", () => {
         });
 
         test("should return true when given an element node", async () => {
-            await page.setContent(`<span>
+            await page.setContent(/* html */ `
+                <span>
                     span
-                </span>`);
+                </span>
+            `);
 
             const element = page.locator("span");
 
@@ -98,9 +110,11 @@ test.describe("Utilities", () => {
         });
 
         test("should return true when given a text node", async () => {
-            await page.setContent(`<span>
+            await page.setContent(/* html */ `
+                <span>
                     text
-                </span>`);
+                </span>
+            `);
 
             const element = page.locator("span");
 
@@ -110,7 +124,9 @@ test.describe("Utilities", () => {
         });
 
         test("should return false when given a text node which only contains spaces", async () => {
-            await page.setContent(`<span>          </span>`);
+            await page.setContent(/* html */ `
+                <span>          </span>
+            `);
 
             const element = page.locator("span");
 

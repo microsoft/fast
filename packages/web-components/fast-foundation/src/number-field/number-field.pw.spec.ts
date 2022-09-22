@@ -7,12 +7,15 @@ import type { FASTNumberField } from "./number-field.js";
 test.describe("NumberField", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
     let control: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-number-field");
+
+        root = page.locator("#root");
 
         control = element.locator(".control");
 
@@ -24,29 +27,49 @@ test.describe("NumberField", () => {
     });
 
     test("should initialize to the provided value attribute if set pre-connection", async () => {
-        await page.setContent(`<fast-number-field value="10"></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field value="10"></fast-number-field>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "10");
     });
 
     test("should set the `autofocus` attribute on the internal control", async () => {
-        await page.setContent(`<fast-number-field autofocus></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field autofocus></fast-number-field>
+            `;
+        });
 
         await expect(control).toHaveBooleanAttribute("autofocus");
     });
 
     test("should set the `disabled` attribute on the internal control", async () => {
-        await page.setContent(`<fast-number-field disabled></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field disabled></fast-number-field>
+            `;
+        });
         await expect(control).toHaveBooleanAttribute("disabled");
     });
 
     test("should set the `readonly` attribute on the internal control", async () => {
-        await page.setContent(`<fast-number-field readonly></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field readonly></fast-number-field>
+            `;
+        });
         await expect(control).toHaveBooleanAttribute("readonly");
     });
 
     test("should set the `required` attribute on the internal control", async () => {
-        await page.setContent(`<fast-number-field required></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field required></fast-number-field>
+            `;
+        });
         await expect(control).toHaveBooleanAttribute("required");
     });
 
@@ -81,8 +104,13 @@ test.describe("NumberField", () => {
         const attrToken = spinalCase(attribute);
 
         test(`should set the \`${attrToken}\` attribute to "${value}" on the internal control`, async () => {
-            await page.setContent(
-                `<fast-number-field ${attrToken}="${value}"></fast-number-field>`
+            await root.evaluate(
+                (node, { attrToken, value }) => {
+                    node.innerHTML = /* html */ `
+                        <fast-number-field ${attrToken}="${value}"></fast-number-field>
+                    `;
+                },
+                { attrToken, value }
             );
 
             await expect(control).toHaveAttribute(attrToken, `${value}`);
@@ -90,7 +118,11 @@ test.describe("NumberField", () => {
     }
 
     test("should set `value` property equal to the `max` property when value is greater than max", async () => {
-        await page.setContent(`<fast-number-field max="10"></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field max="10"></fast-number-field>
+            `;
+        });
 
         await control.fill("11");
 
@@ -98,7 +130,11 @@ test.describe("NumberField", () => {
     });
 
     test("should set `value` property equal to the `max` property when max is less than the value", async () => {
-        await page.setContent(`<fast-number-field value="20"></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field value="20"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.max = 10;
@@ -109,7 +145,11 @@ test.describe("NumberField", () => {
     });
 
     test("should set the `value` property equal to the `min` property when value is less than min", async () => {
-        await page.setContent(`<fast-number-field min="10"></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field min="10"></fast-number-field>
+            `;
+        });
 
         await control.fill("9");
 
@@ -119,7 +159,11 @@ test.describe("NumberField", () => {
     });
 
     test("should update the `value` property when the `min` property is greater than the `value`", async () => {
-        await page.setContent(`<fast-number-field value="10"></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field value="10"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.min = 20;
@@ -131,7 +175,11 @@ test.describe("NumberField", () => {
     });
 
     test("should set the `max` property equal to the `min` property when min is greater than max", async () => {
-        await page.setContent(`<fast-number-field min="10" max="5"></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field min="10" max="5"></fast-number-field>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("max", 10);
 
@@ -139,7 +187,11 @@ test.describe("NumberField", () => {
     });
 
     test("should initialize to the provided `value` attribute if set post-connection", async () => {
-        await page.setContent(`<fast-number-field></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.value = "10";
@@ -149,7 +201,11 @@ test.describe("NumberField", () => {
     });
 
     test('should fire a "change" event when the internal control emits a "change" event', async () => {
-        await page.setContent(`<fast-number-field></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field></fast-number-field>
+            `;
+        });
 
         const [wasChanged] = await Promise.all([
             element.evaluate(
@@ -169,7 +225,11 @@ test.describe("NumberField", () => {
     });
 
     test('should fire an "input" event when incrementing or decrementing', async () => {
-        await page.setContent(`<fast-number-field></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field></fast-number-field>
+            `;
+        });
 
         const [wasIncreased] = await Promise.all([
             element.evaluate(
@@ -201,7 +261,11 @@ test.describe("NumberField", () => {
     });
 
     test("should allow positive float numbers", async () => {
-        await page.setContent(`<fast-number-field></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field></fast-number-field>
+            `;
+        });
 
         await control.fill("1.1");
 
@@ -211,7 +275,11 @@ test.describe("NumberField", () => {
     });
 
     test("should allow negative float numbers", async () => {
-        await page.setContent(`<fast-number-field></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field></fast-number-field>
+            `;
+        });
 
         await control.fill("-1.1");
 
@@ -221,7 +289,11 @@ test.describe("NumberField", () => {
     });
 
     test("should allow positive integer numbers", async () => {
-        await page.setContent(`<fast-number-field></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field></fast-number-field>
+            `;
+        });
 
         await control.fill("1");
 
@@ -231,7 +303,11 @@ test.describe("NumberField", () => {
     });
 
     test("should allow negative integer numbers", async () => {
-        await page.setContent(`<fast-number-field></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field></fast-number-field>
+            `;
+        });
 
         await control.fill("-1");
 
@@ -243,7 +319,11 @@ test.describe("NumberField", () => {
     // TODO: This test doesn't account for the `e` character.
     // See https://github.com/microsoft/fast/issues/6251
     test("should disallow non-numeric characters", async () => {
-        await page.setContent(`<fast-number-field></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field></fast-number-field>
+            `;
+        });
 
         await control.fill("a");
 
@@ -253,13 +333,21 @@ test.describe("NumberField", () => {
     });
 
     test('should set the `step` property to "1" by default', async () => {
-        await page.setContent(`<fast-number-field></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field></fast-number-field>
+            `;
+        });
 
         await expect(control).toHaveAttribute("step", "1");
     });
 
     test("should update the `step` attribute on the internal control when the `step` property is changed", async () => {
-        await page.setContent(`<fast-number-field></fast-number-field>`);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.step = 2;
@@ -269,9 +357,11 @@ test.describe("NumberField", () => {
     });
 
     test("should increment the `value` property by the step amount when the `stepUp()` method is invoked", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field step="2" value="5"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field step="2" value="5"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.stepUp();
@@ -283,9 +373,11 @@ test.describe("NumberField", () => {
     });
 
     test("should decrement the `value` property by the step amount when the `stepDown()` method is invoked", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field step="2" value="5"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field step="2" value="5"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.stepDown();
@@ -297,9 +389,11 @@ test.describe("NumberField", () => {
     });
 
     test("should offset an undefined `value` from zero when stepped down", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field step="2"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field step="2"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.stepDown();
@@ -311,9 +405,11 @@ test.describe("NumberField", () => {
     });
 
     test("should offset an undefined `value` from zero when stepped up", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field step="2"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field step="2"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.stepUp();
@@ -325,9 +421,11 @@ test.describe("NumberField", () => {
     });
 
     test("should offset the `value` from zero after stepping down when `min` is a negative value", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field min="-10"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field min="-10"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.stepDown();
@@ -339,9 +437,11 @@ test.describe("NumberField", () => {
     });
 
     test("should offset the `value` from zero after stepping up when `min` is a negative value", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field min="-10"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field min="-10"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.stepUp();
@@ -353,9 +453,11 @@ test.describe("NumberField", () => {
     });
 
     test("should set `value` to match `min` after stepping down when `min` is greater than 0", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field min="10"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field min="10"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.stepDown();
@@ -367,9 +469,11 @@ test.describe("NumberField", () => {
     });
 
     test("should set `value` to match `min` after stepping up when `min` is greater than 0", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field min="10"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field min="10"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.stepUp();
@@ -381,9 +485,11 @@ test.describe("NumberField", () => {
     });
 
     test("should set the `value` to match `max` after stepping down when `value` is undefined and `min` and `max` are less than zero", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field min="-10" max="-5"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field min="-10" max="-5"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.stepDown();
@@ -395,9 +501,11 @@ test.describe("NumberField", () => {
     });
 
     test("should set the `value` to match `max` after stepping up when `value` is undefined and `min` and `max` are less than zero", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field min="-10" max="-5"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field min="-10" max="-5"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.stepUp();
@@ -409,9 +517,11 @@ test.describe("NumberField", () => {
     });
 
     test("should update the proxy value when stepping down", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field step="2" value="5"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field step="2" value="5"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.stepDown();
@@ -427,9 +537,11 @@ test.describe("NumberField", () => {
     });
 
     test("should update the proxy value when stepping up", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field step="2" value="5"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field step="2" value="5"></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.stepUp();
@@ -448,9 +560,14 @@ test.describe("NumberField", () => {
         const step = 0.1;
         const value = 0.2;
 
-        await page.setContent(/* html */ `
-            <fast-number-field step="${step}" value="${value}"></fast-number-field>
-        `);
+        await root.evaluate(
+            (node, { step, value }) => {
+                node.innerHTML = /* html */ `
+                    <fast-number-field step="${step}" value="${value}"></fast-number-field>
+                `;
+            },
+            { step, value }
+        );
 
         for (let i = 1; i < 10; i++) {
             await element.evaluate((node: FASTNumberField) => {
@@ -464,9 +581,11 @@ test.describe("NumberField", () => {
     });
 
     test("should not render step controls when `hide-step` attribute is present", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field hide-step></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field hide-step></fast-number-field>
+            `;
+        });
 
         const controls = element.locator(".controls");
 
@@ -474,9 +593,11 @@ test.describe("NumberField", () => {
     });
 
     test("should not render step controls when `readonly` attribute is present", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field readonly></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field readonly></fast-number-field>
+            `;
+        });
 
         const controls = element.locator(".controls");
 
@@ -484,9 +605,11 @@ test.describe("NumberField", () => {
     });
 
     test("should allow setting `valueAsNumber` property with a number", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field></fast-number-field>
+            `;
+        });
 
         await element.evaluate((node: FASTNumberField) => {
             node.valueAsNumber = 18;
@@ -496,9 +619,11 @@ test.describe("NumberField", () => {
     });
 
     test("should allow reading the `valueAsNumber` property as number", async () => {
-        await page.setContent(/* html */ `
-            <fast-number-field value="18"></fast-number-field>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field value="18"></fast-number-field>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("valueAsNumber", 18);
     });
@@ -507,11 +632,13 @@ test.describe("NumberField", () => {
         test('should reset its `value` property to "" if no `value` attribute is set', async () => {
             const form = page.locator("form");
 
-            await page.setContent(/* html */ `
-                <form>
-                    <fast-number-field></fast-number-field>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-number-field></fast-number-field>
+                    </form>
+                `;
+            });
 
             await element.evaluate((node: FASTNumberField) => {
                 node.value = "10";
@@ -527,11 +654,13 @@ test.describe("NumberField", () => {
         test("should reset the `value` property to match the `value` attribute", async () => {
             const form = page.locator("form");
 
-            await page.setContent(/* html */ `
-                <form>
-                    <fast-number-field value="10"></fast-number-field>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-number-field value="10"></fast-number-field>
+                    </form>
+                `;
+            });
 
             await expect(element).toHaveJSProperty("value", "10");
 
@@ -549,11 +678,13 @@ test.describe("NumberField", () => {
         test("should put the control into a clean state, where `value` attribute modifications change the `value` property prior to user or programmatic interaction", async () => {
             const form = page.locator("form");
 
-            await page.setContent(/* html */ `
-                <form>
-                    <fast-number-field value="10"></fast-number-field>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-number-field value="10"></fast-number-field>
+                    </form>
+                `;
+            });
 
             await expect(element).toHaveJSProperty("value", "10");
 

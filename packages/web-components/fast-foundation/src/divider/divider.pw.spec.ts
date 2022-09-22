@@ -8,11 +8,14 @@ import type { FASTDivider } from "./index.js";
 test.describe("Divider", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-divider");
+
+        root = page.locator("#root");
 
         await page.goto(fixtureURL("divider--divider"));
     });
@@ -22,17 +25,21 @@ test.describe("Divider", () => {
     });
 
     test('should set a default `role` attribute of "separator"', async () => {
-        await page.setContent(/* html */ `
-            <fast-divider></fast-divider>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-divider></fast-divider>
+            `;
+        });
 
         await expect(element).toHaveAttribute("role", DividerRole.separator);
     });
 
     test("should set the `role` attribute equal to the role provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-divider role="presentation"></fast-divider>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-divider role="presentation"></fast-divider>
+            `;
+        });
 
         await expect(element).toHaveAttribute("role", "presentation");
 
@@ -44,9 +51,11 @@ test.describe("Divider", () => {
     });
 
     test("should set the `aria-orientation` attribute equal to the `orientation` value", async () => {
-        await page.setContent(/* html */ `
-            <fast-divider orientation="vertical"></fast-divider>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-divider orientation="vertical"></fast-divider>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-orientation", Orientation.vertical);
 
