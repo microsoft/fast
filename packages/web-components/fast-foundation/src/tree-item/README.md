@@ -59,8 +59,9 @@ export class FASTTreeItem extends TreeItem {}
 
 | Name              | Privacy   | Description | Parameters                                   | Return | Inherited From |
 | ----------------- | --------- | ----------- | -------------------------------------------- | ------ | -------------- |
-| `expandedChanged` | protected |             |                                              | `void` |                |
-| `selectedChanged` | protected |             |                                              | `void` |                |
+| `expandedChanged` | protected |             | `prev: boolean or undefined, next: boolean`  | `void` |                |
+| `selectedChanged` | protected |             | `prev: boolean or undefined, next: boolean`  | `void` |                |
+| `disabledChanged` | protected |             | `prev: boolean or undefined, next: boolean`  | `void` |                |
 | `itemsChanged`    | protected |             | `oldValue: unknown, newValue: HTMLElement[]` | `void` |                |
 
 #### Events
@@ -96,6 +97,18 @@ export class FASTTreeItem extends TreeItem {}
 |                          | The default slot for tree item text content                                 |
 | `item`                   | The slot for tree items (fast tree items manage this assignment themselves) |
 | `expand-collapse-button` | The expand/collapse button                                                  |
+
+<hr/>
+
+### class: `DelegatesARIATreeItem`
+
+#### Fields
+
+| Name           | Privacy | Type                                  | Default | Description                                                             | Inherited From |
+| -------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------- | -------------- |
+| `ariaDisabled` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#treeitem for more information |                |
+| `ariaExpanded` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#treeitem for more information |                |
+| `ariaSelected` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#treeitem for more information |                |
 
 <hr/>
 

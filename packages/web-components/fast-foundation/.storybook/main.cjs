@@ -10,9 +10,19 @@ module.exports = {
     },
     core: {
         disableTelemetry: true,
-        builder: "webpack5",
+        builder: {
+            name: "webpack5",
+            options: {
+                lazyCompilation: true,
+                fsCache: true,
+            },
+        },
     },
     webpackFinal: async config => {
+        config.performance = {
+            ...(config.performance ?? {}),
+            hints: false,
+        };
         config.module.rules = [
             {
                 test: /\.ts$/,
@@ -23,10 +33,18 @@ module.exports = {
                     transpileOnly: true,
                 },
             },
+            {
+                test: /\.m?js$/,
+                enforce: "pre",
+                loader: require.resolve("source-map-loader"),
+                resolve: {
+                    fullySpecified: false,
+                },
+            },
         ];
 
         config.resolve.plugins = [
-            ...(config.resolve.plugins || []),
+            ...(config.resolve.plugins ?? []),
             new ResolveTypescriptPlugin({
                 includeNodeModules: true,
             }),

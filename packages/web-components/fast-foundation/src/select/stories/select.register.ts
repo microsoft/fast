@@ -194,7 +194,7 @@ export class Select extends FASTSelect {
     }
 
     protected maxHeightChanged(prev: number | undefined, next: number): void {
-        if (this.isConnected) {
+        if (this.$fastController.isConnected) {
             if (this.collapsible) {
                 this.updateComputedStylesheet();
             }

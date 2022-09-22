@@ -57,7 +57,7 @@ export function dataGridRowTemplate<T extends FASTDataGridRow>(
     return html<T>`
         <template
             role="row"
-            :classList="${x => (x.rowType !== "default" ? x.rowType : "")}"
+            class="${x => (x.rowType !== "default" ? x.rowType : "")}"
             :defaultCellItemTemplate="${cellItemTemplate(options)}"
             :defaultHeaderCellItemTemplate="${headerCellItemTemplate(options)}"
             ${children({

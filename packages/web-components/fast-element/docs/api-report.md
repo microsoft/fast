@@ -82,6 +82,11 @@ export type AttributeConfiguration = {
 };
 
 // @public
+export const AttributeConfiguration: Readonly<{
+    locate: (target: {}) => AttributeConfiguration[];
+}>;
+
+// @public
 export class AttributeDefinition implements Accessor {
     constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter);
     readonly attribute: string;
@@ -188,6 +193,11 @@ export interface ContentView {
     unbind(): void;
 }
 
+// Warning: (ae-internal-missing-underscore) The name "createMetadataLocator" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[];
+
 // Warning: (ae-internal-missing-underscore) The name "createTypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -271,7 +281,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
 export const elements: (selector?: string) => ElementsFilter;
 
 // @public
-export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
+export type ElementsFilter = (value: Node, index?: number, array?: Node[]) => boolean;
 
 // @public
 export class ElementStyles {

@@ -1,6 +1,6 @@
-import type { ElementViewTemplate } from "@microsoft/fast-element";
-import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
+import { elements, ElementViewTemplate } from "@microsoft/fast-element";
+import { children, html, ref, slotted, when } from "@microsoft/fast-element";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { FASTTreeItem, TreeItemOptions } from "./tree-item.js";
 
 /**
@@ -24,10 +24,9 @@ export function treeItemTemplate<T extends FASTTreeItem>(
                 ]
                     .filter(Boolean)
                     .join(" ")}"
-            aria-expanded="${x =>
-                x.childItems && x.childItemLength() > 0 ? x.expanded : void 0}"
-            aria-selected="${x => x.selected}"
-            aria-disabled="${x => x.disabled}"
+            aria-expanded="${x => x.ariaExpanded}"
+            aria-selected="${x => x.ariaSelected}"
+            aria-disabled="${x => x.ariaDisabled}"
             @focusin="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
             @focusout="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
             ${children({
