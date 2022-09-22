@@ -65,6 +65,8 @@ import "../src/tree-view/stories/tree-view.register.js";
 import "../src/virtual-list/stories/virtual-list-item.register";
 import "../src/virtual-list/stories/virtual-list.register";
 
+import "../src/virtual-data-grid/stories/virtual-data-grid.register";
+
 export const decorators = [
     (Story, context) => {
         const [_, updateArgs] = useArgs();

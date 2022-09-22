@@ -1022,6 +1022,7 @@ export class FASTDataGrid extends FASTDataList {
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
     headerCellItemTemplate?: ViewTemplate;
+    protected initializeRepeatBehavior(): void;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
@@ -2281,6 +2282,14 @@ export class FASTTreeView extends FASTElement {
     treeView: HTMLElement;
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "FASTVirtualDataGrid" is marked as @public, but its signature references "VirtualDataGrid" which is marked as @beta
+//
+// @public
+export class FASTVirtualDataGrid extends VirtualDataGrid {
+    // @internal (undocumented)
+    connectedCallback(): void;
+}
+
 // Warning: (ae-incompatible-release-tags) The symbol "FASTVirtualList" is marked as @public, but its signature references "VirtualList" which is marked as @beta
 //
 // @public
@@ -2937,6 +2946,20 @@ export const VerticalPosition: {
 // @public
 export type VerticalPosition = typeof VerticalPosition[keyof typeof VerticalPosition];
 
+// Warning: (ae-forgotten-export) The symbol "VirtualDataGrid_base" needs to be exported by the entry point index.d.ts
+//
+// @beta
+export class VirtualDataGrid extends VirtualDataGrid_base {
+}
+
+// @public
+export type VirtualDataGridOptions = {
+    dataGridRow: TemplateElementDependency;
+};
+
+// @public
+export function virtualDataGridTemplate<T extends FASTVirtualDataGrid>(options: VirtualDataGridOptions): ElementViewTemplate<T>;
+
 // @beta
 export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T): T;
 
@@ -3048,6 +3071,7 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/picker/picker.template.d.ts:13:5 - (ae-incompatible-release-tags) The symbol "pickerListItem" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:14:5 - (ae-incompatible-release-tags) The symbol "progressRing" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/tooltip/tooltip.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/virtual-data-grid/virtual-data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/virtual-list/virtual-list.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "virtualListItem" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 
 // (No @packageDocumentation comment for this package)

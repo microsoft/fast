@@ -529,6 +529,10 @@ export class FASTDataGrid extends FASTDataList {
 
         const focusTarget: HTMLElement = cells[focusColumnIndex] as HTMLElement;
 
+        if (!focusTarget) {
+            return;
+        }
+
         if (
             scrollIntoView &&
             this.scrollHeight !== this.clientHeight &&

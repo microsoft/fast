@@ -281,6 +281,7 @@ export const myDataGrid = DataGrid.compose({
 | `sourceItemsChanged`          | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
 | `columnDefinitionsChanged`    | protected |                                                                                                                                                     |            | `void`          |                |
 | `rowItemTemplateChanged`      | protected |                                                                                                                                                     |            | `void`          |                |
+| `initializeRepeatBehavior`    | protected | initialize repeat behavior                                                                                                                          |            | `void`          | FASTDataList   |
 | `getGridTemplateColumns`      | protected |                                                                                                                                                     |            | `string`        |                |
 | `updateRowIndexes`            | protected |                                                                                                                                                     |            | `void`          |                |
 | `updateItemTemplate`          | protected | applies the correct item template. Once an author overrides the item template with a custom one the author must manage template changes themselves. |            | `void`          | FASTDataList   |
@@ -289,7 +290,6 @@ export const myDataGrid = DataGrid.compose({
 | `displayItemsChanged`         | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
 | `createPlaceholderElement`    | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
 | `getRepeatOptions`            | protected |                                                                                                                                                     |            | `RepeatOptions` | FASTDataList   |
-| `initializeRepeatBehavior`    | protected | initialize repeat behavior                                                                                                                          |            | `void`          | FASTDataList   |
 
 #### Attributes
 
