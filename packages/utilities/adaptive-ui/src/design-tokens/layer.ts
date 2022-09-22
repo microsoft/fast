@@ -1,4 +1,5 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
+import { Palette } from "../color/palette.js";
 import { InteractiveColorRecipe, InteractiveSwatchSet } from "../color/recipe.js";
 import { deltaSwatch, deltaSwatchSet } from "../color/recipes/index.js";
 import { Swatch } from "../color/swatch.js";
@@ -8,274 +9,283 @@ import { create, createNonCss } from "./create.js";
 import { neutralPalette } from "./palette.js";
 
 /**
- * A recipe that evaluates to a fixed layer treatment.
+ * A recipe that evaluates to a "Fixed" layer treatment.
  *
  * @public
  */
 export interface LayerRecipe {
     /**
-     * Evaluate a fixed layer treatment.
+     * Evaluate a "Fixed" layer treatment.
      *
-     * {@link neutralFillLayerFixedRecipe}
+     * {@link layerFillFixedRecipe}
      *
-     * @param element - The element for which to evaluate the recipe
-     * @param index - The index of the layer, `0` for 'base', plus or minus relative to 'base'
+     * @param resolve - The resolver to evaluate the recipe
+     * @param index - The index of the layer, `0` for "Base", plus or minus relative to "Base"
      */
     evaluate(resolve: DesignTokenResolver, index: number): Swatch;
 }
 
 /**
- * Baseline values for light and dark mode for {@link neutralFillLayerBaseLuminance}.
+ * Baseline values for light and dark mode for {@link layerFillBaseLuminance}.
+ *
+ * @remarks
+ * These values represent reasonable starting points for light and dark modes, but custom values can be used instead.
  *
  * @public
  */
-export const StandardLuminance = Object.freeze({
-    LightMode: 1,
-    DarkMode: 0.23,
+export const LayerFillLuminance = Object.freeze({
+    LightMode: 0.95,
+    DarkMode: 0.13,
 } as const);
 
 /**
- * Types of baseline values for light and dark mode for {@link neutralFillLayerBaseLuminance}.
- *
- * @public
- */
-export type StandardLuminance = typeof StandardLuminance[keyof typeof StandardLuminance];
-
-/**
- * The luminance value for the 'base' layer, {@link neutralFillLayerBase}
+ * The {@link Palette} to use for Layer recipes.
  *
  * @remarks
- * 0...1, 0 = black, 1 = white
+ * By default this maps to the {@link neutralPalette}.
+ * Use a custom palette like `layerPalette.withDefault(PaletteRGB.from("#[HEX_COLOR]"))`.
  *
  * @public
  */
-export const neutralFillLayerBaseLuminance = createNonCss<number>(
-    "neutral-fill-layer-base-luminance"
-).withDefault(StandardLuminance.LightMode);
+export const layerPalette = createNonCss<Palette>("layer-palette").withDefault(
+    neutralPalette
+);
 
 /**
- * The offset between layer {@link Swatch}es on the {@link Palette}
+ * The ideal luminance value for the "Base" layer, {@link layerFillFixedBase}.
  *
  * @remarks
- * Should be a positive value so 'minus' recipes are darker and 'plus' recipes are lighter
+ * 0...1, 0 = black, 1 = white.
  *
  * @public
  */
-export const neutralFillLayerRestDelta = createNonCss<number>(
-    "neutral-fill-layer-rest-delta"
-).withDefault(3);
+export const layerFillBaseLuminance = createNonCss<number>(
+    "layer-fill-base-luminance"
+).withDefault(LayerFillLuminance.LightMode);
 
 /**
- * The offset from layer rest to hover
+ * The offset between "Fixed" layers, or from the container for "Interactive" rest state.
+ *
+ * @remarks
+ * Should be a positive value so "Minus" recipes are darker and "Plus" recipes are lighter.
  *
  * @public
  */
-export const neutralFillLayerHoverDelta = createNonCss<number>(
-    "neutral-fill-layer-hover-delta"
+export const layerFillDelta = createNonCss<number>("layer-fill-delta").withDefault(3);
+
+/**
+ * The offset from layer rest to hover.
+ *
+ * @public
+ */
+export const layerFillHoverDelta = createNonCss<number>(
+    "layer-fill-hover-delta"
 ).withDefault(-1);
 
 /**
- * The offset from layer rest to active
+ * The offset from layer rest to active.
  *
  * @public
  */
-export const neutralFillLayerActiveDelta = createNonCss<number>(
-    "neutral-fill-layer-active-delta"
+export const layerFillActiveDelta = createNonCss<number>(
+    "layer-fill-active-delta"
 ).withDefault(1);
 
 /**
- * The offset from layer rest to focus
+ * The offset from layer rest to focus.
  *
  * @public
  */
-export const neutralFillLayerFocusDelta = createNonCss<number>(
-    "neutral-fill-layer-focus-delta"
+export const layerFillFocusDelta = createNonCss<number>(
+    "layer-fill-focus-delta"
 ).withDefault(0);
 
 /**
- * The 'fixed' layers represent background fills commonly used to define app structure
+ * The "Fixed" layers represent background fills commonly used to define app structure.
  *
  * @remarks
- * Generally the primary section is {@link neutralFillLayerBase} and underlying sections like navigation
- * or header are logically *beneath* using {@link neutralFillLayerMinus1}, etc. Layers above the 'base' like
- * flyouts or dialogs should use {@link neutralFillLayerPlus1}, etc.
+ * Generally the primary section is {@link layerFillFixedBase} and underlying sections like navigation
+ * or header are logically *beneath* using {@link layerFillFixedMinus1}, etc. Layers above the "Base" like
+ * flyouts or dialogs should use {@link layerFillFixedPlus1}, etc.
  *
  * @public
  */
-export const neutralFillLayerFixedRecipe = createNonCss<LayerRecipe>(
-    "neutral-fill-layer-fixed-recipe"
+export const layerFillFixedRecipe = createNonCss<LayerRecipe>(
+    "layer-fill-fixed-recipe"
 ).withDefault({
     evaluate: (resolve: DesignTokenResolver, index: number): Swatch =>
         deltaSwatch(
-            resolve(neutralPalette),
-            luminanceSwatch(resolve(neutralFillLayerBaseLuminance)),
-            resolve(neutralFillLayerRestDelta) * index
+            resolve(layerPalette),
+            luminanceSwatch(resolve(layerFillBaseLuminance)),
+            resolve(layerFillDelta) * index
         ),
 });
 
 /**
- * Design token for the fill of the 'base' layer
+ * Design token for the fill of the "Base" layer.
  *
  * @public
  */
-export const neutralFillLayerFixedBase = create<Swatch>(
-    "neutral-fill-layer-fixed-base"
+export const layerFillFixedBase = create<Swatch>(
+    "layer-fill-fixed-base"
 ).withDefault((resolve: DesignTokenResolver) =>
-    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 0)
+    resolve(layerFillFixedRecipe).evaluate(resolve, 0)
 );
 
 /**
- * Design token for the fill of the layer 1 level beneath 'base'
+ * Design token for the fill of the layer 1 level beneath "Base".
  *
  * @public
  */
-export const neutralFillLayerFixedMinus1 = create<Swatch>(
-    "neutral-fill-layer-fixed-minus-1"
+export const layerFillFixedMinus1 = create<Swatch>(
+    "layer-fill-fixed-minus-1"
 ).withDefault((resolve: DesignTokenResolver) =>
-    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, -1)
+    resolve(layerFillFixedRecipe).evaluate(resolve, -1)
 );
 
 /**
- * Design token for the fill of the layer 2 levels beneath 'base'
+ * Design token for the fill of the layer 2 levels beneath "Base".
  *
  * @public
  */
-export const neutralFillLayerFixedMinus2 = create<Swatch>(
-    "neutral-fill-layer-fixed-minus-2"
+export const layerFillFixedMinus2 = create<Swatch>(
+    "layer-fill-fixed-minus-2"
 ).withDefault((resolve: DesignTokenResolver) =>
-    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, -2)
+    resolve(layerFillFixedRecipe).evaluate(resolve, -2)
 );
 
 /**
- * Design token for the fill of the layer 3 levels beneath 'base'
+ * Design token for the fill of the layer 3 levels beneath "Base".
  *
  * @public
  */
-export const neutralFillLayerFixedMinus3 = create<Swatch>(
-    "neutral-fill-layer-fixed-minus-3"
+export const layerFillFixedMinus3 = create<Swatch>(
+    "layer-fill-fixed-minus-3"
 ).withDefault((resolve: DesignTokenResolver) =>
-    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, -3)
+    resolve(layerFillFixedRecipe).evaluate(resolve, -3)
 );
 
 /**
- * Design token for the fill of the layer 4 levels beneath 'base'
+ * Design token for the fill of the layer 4 levels beneath "Base".
  *
  * @public
  */
-export const neutralFillLayerFixedMinus4 = create<Swatch>(
-    "neutral-fill-layer-fixed-minus-4"
+export const layerFillFixedMinus4 = create<Swatch>(
+    "layer-fill-fixed-minus-4"
 ).withDefault((resolve: DesignTokenResolver) =>
-    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, -4)
+    resolve(layerFillFixedRecipe).evaluate(resolve, -4)
 );
 
 /**
- * Design token for the fill of the layer 1 level above 'base'
+ * Design token for the fill of the layer 1 level above "Base".
  *
  * @public
  */
-export const neutralFillLayerFixedPlus1 = create<Swatch>(
-    "neutral-fill-layer-fixed-plus-1"
+export const layerFillFixedPlus1 = create<Swatch>(
+    "layer-fill-fixed-plus-1"
 ).withDefault((resolve: DesignTokenResolver) =>
-    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 1)
+    resolve(layerFillFixedRecipe).evaluate(resolve, 1)
 );
 
 /**
- * Design token for the fill of the layer 2 levels above 'base'
+ * Design token for the fill of the layer 2 levels above "Base".
  *
  * @public
  */
-export const neutralFillLayerFixedPlus2 = create<Swatch>(
-    "neutral-fill-layer-fixed-plus-2"
+export const layerFillFixedPlus2 = create<Swatch>(
+    "layer-fill-fixed-plus-2"
 ).withDefault((resolve: DesignTokenResolver) =>
-    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 2)
+    resolve(layerFillFixedRecipe).evaluate(resolve, 2)
 );
 
 /**
- * Design token for the fill of the layer 3 levels above 'base'
+ * Design token for the fill of the layer 3 levels above "Base".
  *
  * @public
  */
-export const neutralFillLayerFixedPlus3 = create<Swatch>(
-    "neutral-fill-layer-fixed-plus-3"
+export const layerFillFixedPlus3 = create<Swatch>(
+    "layer-fill-fixed-plus-3"
 ).withDefault((resolve: DesignTokenResolver) =>
-    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 3)
+    resolve(layerFillFixedRecipe).evaluate(resolve, 3)
 );
 
 /**
- * Design token for the fill of the layer 4 levels above 'base'
+ * Design token for the fill of the layer 4 levels above "Base".
  *
  * @public
  */
-export const neutralFillLayerFixedPlus4 = create<Swatch>(
-    "neutral-fill-layer-fixed-plus-4"
+export const layerFillFixedPlus4 = create<Swatch>(
+    "layer-fill-fixed-plus-4"
 ).withDefault((resolve: DesignTokenResolver) =>
-    resolve(neutralFillLayerFixedRecipe).evaluate(resolve, 4)
+    resolve(layerFillFixedRecipe).evaluate(resolve, 4)
 );
 
 /**
- * The recipe for a layer relative to its context (not 'fixed')
+ * The recipe for a layer relative to its context (as opposed to base luminance).
  *
  * @remarks
  * Useful for a `Card` or other container that's interactive.
  *
  * @public
  */
-export const neutralFillLayerInteractiveRecipe = createNonCss<InteractiveColorRecipe>(
-    "neutral-fill-layer-interactive-recipe"
+export const layerFillInteractiveRecipe = createNonCss<InteractiveColorRecipe>(
+    "layer-fill-interactive-recipe"
 ).withDefault({
     evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         deltaSwatchSet(
-            resolve(neutralPalette),
+            resolve(layerPalette),
             reference || resolve(fillColor),
-            resolve(neutralFillLayerRestDelta),
-            resolve(neutralFillLayerHoverDelta),
-            resolve(neutralFillLayerActiveDelta),
-            resolve(neutralFillLayerFocusDelta)
+            resolve(layerFillDelta),
+            resolve(layerFillHoverDelta),
+            resolve(layerFillActiveDelta),
+            resolve(layerFillFocusDelta)
         ),
 });
 
 /**
- * Design token for the fill of an interactive layer at rest
+ * Design token for the fill of an interactive layer at rest.
  *
  * @public
  */
-export const neutralFillLayerRest = create<Swatch>("neutral-fill-layer-rest").withDefault(
+export const layerFillInteractiveRest = create<Swatch>(
+    "layer-fill-interactive-rest"
+).withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillLayerInteractiveRecipe).evaluate(resolve).rest
+        resolve(layerFillInteractiveRecipe).evaluate(resolve).rest
 );
 
 /**
- * Design token for the fill of an interactive layer while hovered
+ * Design token for the fill of an interactive layer while hovered.
  *
  * @public
  */
-export const neutralFillLayerHover = create<Swatch>(
-    "neutral-fill-layer-hover"
+export const layerFillInteractiveHover = create<Swatch>(
+    "layer-fill-interactive-hover"
 ).withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillLayerInteractiveRecipe).evaluate(resolve).hover
+        resolve(layerFillInteractiveRecipe).evaluate(resolve).hover
 );
 
 /**
- * Design token for the fill of an interactive layer while pressed
+ * Design token for the fill of an interactive layer while pressed.
  *
  * @public
  */
-export const neutralFillLayerActive = create<Swatch>(
-    "neutral-fill-layer-active"
+export const layerFillInteractiveActive = create<Swatch>(
+    "layer-fill-interactive-active"
 ).withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillLayerInteractiveRecipe).evaluate(resolve).active
+        resolve(layerFillInteractiveRecipe).evaluate(resolve).active
 );
 
 /**
- * Design token for the fill of an interactive layer while focused
+ * Design token for the fill of an interactive layer while focused.
  *
  * @public
  */
-export const neutralFillLayerFocus = create<Swatch>(
-    "neutral-fill-layer-focus"
+export const layerFillInteractiveFocus = create<Swatch>(
+    "layer-fill-interactive-focus"
 ).withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillLayerInteractiveRecipe).evaluate(resolve).focus
+        resolve(layerFillInteractiveRecipe).evaluate(resolve).focus
 );
