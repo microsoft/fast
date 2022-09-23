@@ -2557,7 +2557,7 @@ export type RadioOptions = {
 export function radioTemplate<T extends FASTRadio>(options?: RadioOptions): ElementViewTemplate<T>;
 
 // @beta
-export function reflectAttributes<T = any>(...attributes: string[]): CaptureType<T>;
+export function reflectAttributes<TSource = any, TParent = any>(...attributes: string[]): CaptureType<TSource, TParent>;
 
 // Warning: (ae-internal-missing-underscore) The name "roleForMenuItem" should be prefixed with an underscore because the declaration is marked as @internal
 //
