@@ -18,7 +18,6 @@ import {
 import type { CaptureType, SyntheticViewTemplate, ViewTemplate } from "./template.js";
 import { HTMLView, SyntheticView } from "./view.js";
 import { normalizeBinding } from "./binding.js";
-// import { when } from "./when.js";
 
 /**
  * Options for configuring repeat behavior.
