@@ -24,6 +24,12 @@ function rowItemTemplate<T extends FASTVirtualDataGrid>(
     return html<any, T>`
     <${rowTag}
         slot="generated-items"
+        style="
+            position: absolute;
+            height: ${(x, c) => c.parent.itemSize}px;
+            transform: ${(x, c) =>
+                `translateY(${c.parent.renderedItemMap[c.index]?.start}px)`};
+        "
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
@@ -56,13 +62,10 @@ export function virtualDataGridTemplate<T extends FASTVirtualDataGrid>(
             <div
                 class="container"
                 part="container"
-                style="
-                    width: "100%";
-                    height: ${x => `${x.totalListSize}px`};
-                "
+                style="width: 100%; height: ${x => `${x.totalListSize}px`};"
                 ${ref("containerElement")}
             >
-                <slot name="generated-items></slot>
+                <slot name="generated-items"></slot>
             </div>
         </template>
     `;

@@ -4,6 +4,21 @@ import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTVirtualDataGrid } from "../virtual-data-grid.js";
 import { GenerateHeaderOptions } from "../../data-grid/index.js";
 
+// create a sample data set
+function newDataSet(rowCount: number, prefix: number): object[] {
+    const newData: object[] = [];
+    for (let i = 1; i <= rowCount; i++) {
+        newData.push({
+            item1: `value 1-${i}`,
+            item2: `value 2-${i}`,
+            item3: `value 3-${i}`,
+            item4: `value 4-${i}`,
+            item5: `value 5-${i}`,
+        });
+    }
+    return newData;
+}
+
 const storyTemplate = html<StoryArgs<FASTVirtualDataGrid>>`
     <fast-virtual-data-grid
         :rowsData="${x => x.rowsData}"
@@ -27,46 +42,10 @@ const storyTemplate = html<StoryArgs<FASTVirtualDataGrid>>`
 export default {
     title: "Virtual Data Grid",
     args: {
-        itemSize: 100,
-        itemLoadMode: "idle",
+        itemSize: 30,
         noTabbing: false,
-        rowsData: [
-            {
-                item1: `value 1-1`,
-                item2: `value 2-1`,
-                item3: `value 3-1`,
-                item4: `value 4-1`,
-                item5: `value 5-1`,
-            },
-            {
-                item1: `value 1-2`,
-                item2: `value 2-2`,
-                item3: `value 3-2`,
-                item4: `value 4-2`,
-                item5: `value 5-2`,
-            },
-            {
-                item1: `value 1-3`,
-                item2: `value 2-3`,
-                item3: `value 3-3`,
-                item4: `value 4-3`,
-                item5: `value 5-3`,
-            },
-            {
-                item1: `value 1-4`,
-                item2: `value 2-4`,
-                item3: `value 3-4`,
-                item4: `value 4-4`,
-                item5: `value 5-4`,
-            },
-            {
-                item1: `value 1-5`,
-                item2: `value 2-5`,
-                item3: `value 3-5`,
-                item4: `value 4-5`,
-                item5: `value 5-5`,
-            },
-        ],
+        rowsData: newDataSet(500, 1),
+        gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
     },
     argTypes: {
         generateHeader: {

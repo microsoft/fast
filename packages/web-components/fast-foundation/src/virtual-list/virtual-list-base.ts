@@ -221,6 +221,7 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
         }
 
         protected sourceItemsChanged(): void {
+            super.sourceItemsChanged();
             if (this.$fastController.isConnected) {
                 this.reset();
             }

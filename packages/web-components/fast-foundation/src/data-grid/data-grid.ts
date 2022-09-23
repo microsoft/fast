@@ -628,7 +628,7 @@ export class FASTDataGrid extends FASTDataList {
     protected initializeRepeatBehavior(): void {
         super.initializeRepeatBehavior();
         this.toggleGeneratedHeader();
-        this.queueRowIndexUpdate();
+        this.updateRowIndexes();
     }
 
     protected getGridTemplateColumns(): string {
