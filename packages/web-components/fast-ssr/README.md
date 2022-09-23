@@ -34,6 +34,18 @@ import "@microsoft/fast-ssr/install-dom-shim";
 
 Alternatively, a full DOM implementation such as [`jsdom`](https://github.com/jsdom/jsdom) or [`happy-dom`](https://github.com/capricorn86/happy-dom) can be used.
 
+#### Augmenting the DOM Shim
+To augment the properties installed by the DOM shim, import the Window factory and installer directly, and provide an object to `createWindow()` with the properties that should be added or overwritten.
+
+```ts
+import {
+  createWindow,
+  installWindowOnGlobal,
+} from '@microsoft/fast-ssr/dom-shim';
+
+installWindowOnGlobal(createWindow({ isSSR: true }));
+```
+
 ### Construct the Renderer
 Import the renderer factory and construct a `TemplateRenderer`.
 ```js
