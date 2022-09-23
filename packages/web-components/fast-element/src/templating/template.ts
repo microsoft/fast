@@ -137,7 +137,7 @@ const lastAttributeNameRegex =
  * @public
  */
 /* eslint-disable-next-line */
-export interface CaptureType<TSource> {}
+export interface CaptureType<TSource, TParent> {}
 
 /**
  * Represents the types of values that can be interpolated into a template.
@@ -147,7 +147,7 @@ export type TemplateValue<TSource, TParent = any> =
     | Expression<TSource, any, TParent>
     | Binding<TSource, any, TParent>
     | HTMLDirective
-    | CaptureType<TSource>;
+    | CaptureType<TSource, TParent>;
 
 function createAspectedHTML(
     value: HTMLDirective & Aspected,
