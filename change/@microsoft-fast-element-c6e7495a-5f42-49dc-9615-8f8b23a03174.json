@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: improve parent typing and fix repeat context type bug",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

@@ -133,6 +133,8 @@ HTMLDirective.define(ReflectAttributesDirective);
  * `
  * ```
  */
-export function reflectAttributes<T = any>(...attributes: string[]): CaptureType<T> {
+export function reflectAttributes<TSource = any, TParent = any>(
+    ...attributes: string[]
+): CaptureType<TSource, TParent> {
     return new ReflectAttributesDirective(attributes);
 }

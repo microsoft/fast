@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: update foundation to new capture type",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

@@ -1,10 +1,5 @@
 import type { Notifier, Subscriber } from "../observation/notifier.js";
-import {
-    ExecutionContext,
-    Expression,
-    ExpressionObserver,
-    Observable,
-} from "../observation/observable.js";
+import { Expression, ExpressionObserver, Observable } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
 import { ArrayObserver, Splice } from "../observation/arrays.js";
 import { Markup, nextId } from "./markup.js";
@@ -349,18 +344,19 @@ HTMLDirective.define(RepeatDirective);
  */
 export function repeat<
     TSource = any,
-    TArray extends ReadonlyArray<any> = ReadonlyArray<any>
+    TArray extends ReadonlyArray<any> = ReadonlyArray<any>,
+    TParent = any
 >(
     items:
-        | Expression<TSource, TArray, ExecutionContext<TSource>>
-        | Binding<TSource, TArray>
+        | Expression<TSource, TArray, TParent>
+        | Binding<TSource, TArray, TParent>
         | ReadonlyArray<any>,
     template:
-        | Expression<TSource, ViewTemplate>
-        | Binding<TSource, ViewTemplate>
-        | ViewTemplate,
+        | Expression<TSource, ViewTemplate<any, TSource>>
+        | Binding<TSource, ViewTemplate<any, TSource>>
+        | ViewTemplate<any, TSource>,
     options: RepeatOptions = defaultRepeatOptions
-): CaptureType<TSource> {
+): CaptureType<TSource, TParent> {
     const dataBinding = normalizeBinding(items);
     const templateBinding = normalizeBinding(template);
     return new RepeatDirective(dataBinding, templateBinding, {
