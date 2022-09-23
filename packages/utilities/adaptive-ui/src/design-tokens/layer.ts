@@ -33,7 +33,7 @@ export interface LayerRecipe {
  *
  * @public
  */
-export const LayerFillLuminance = Object.freeze({
+export const LayerBaseLuminance = Object.freeze({
     LightMode: 0.95,
     DarkMode: 0.13,
 } as const);
@@ -61,7 +61,7 @@ export const layerPalette = createNonCss<Palette>("layer-palette").withDefault(
  */
 export const layerFillBaseLuminance = createNonCss<number>(
     "layer-fill-base-luminance"
-).withDefault(LayerFillLuminance.LightMode);
+).withDefault(LayerBaseLuminance.LightMode);
 
 /**
  * The offset between "Fixed" layers, or from the container for "Interactive" rest state.
@@ -71,34 +71,34 @@ export const layerFillBaseLuminance = createNonCss<number>(
  *
  * @public
  */
-export const layerFillDelta = createNonCss<number>("layer-fill-delta").withDefault(3);
+export const layerFillDelta = createNonCss<number>("layer-fill-delta").withDefault(-3);
 
 /**
- * The offset from layer rest to hover.
+ * The offset from the container for hover state.
  *
  * @public
  */
 export const layerFillHoverDelta = createNonCss<number>(
     "layer-fill-hover-delta"
-).withDefault(-1);
+).withDefault(-4);
 
 /**
- * The offset from layer rest to active.
+ * The offset from the container for active state.
  *
  * @public
  */
 export const layerFillActiveDelta = createNonCss<number>(
     "layer-fill-active-delta"
-).withDefault(1);
+).withDefault(-2);
 
 /**
- * The offset from layer rest to focus.
+ * The offset from the container for focus state.
  *
  * @public
  */
 export const layerFillFocusDelta = createNonCss<number>(
     "layer-fill-focus-delta"
-).withDefault(0);
+).withDefault(-3);
 
 /**
  * The "Fixed" layers represent background fills commonly used to define app structure.
