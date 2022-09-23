@@ -7,7 +7,7 @@ import fastSSR, {
     RequestStorageManager,
 } from "@microsoft/fast-ssr";
 import express from "express";
-import { DefaultTodoList, app as todoApp, TodoList } from "fast-todo-app";
+import { DefaultTodoList, app as todoApp, todoForm, TodoList } from "fast-todo-app";
 import {
     DesignToken,
     DesignTokenEventResolutionStrategy,
@@ -18,7 +18,10 @@ const app = express();
 const port = 8080;
 const { templateRenderer } = fastSSR();
 
+// Define all custom elements
+todoForm.define();
 todoApp.define();
+
 DesignToken.withStrategy(DesignTokenEventResolutionStrategy);
 
 app.use(RequestStorageManager.middleware());

@@ -2,21 +2,24 @@ import { html, repeat } from "@microsoft/fast-element";
 import { twoWay } from "@microsoft/fast-element/binding/two-way";
 import type { TodoApp } from "./todo-app.js";
 import type { Todo } from "./todo-list.js";
-import { definition } from "./todo-form.js";
+import { todoForm } from "./todo-form.js";
 
-function delayRenderTodoForm() {
-    window.setTimeout(() => {
-        definition.define();
-    }, 3200);
-    return html`
-        <todo-form></todo-form>
-    `;
+// Simulate async bundle loading & element definition.
+function delayRenderTodoForm(timeout = 4000) {
+    return () => {
+        setTimeout(() => {
+            todoForm.define();
+        }, timeout);
+        return html`
+            <todo-form></todo-form>
+        `;
+    };
 }
 
 export const template = html<TodoApp>`
     <h1>FAST Todos</h1>
 
-    ${delayRenderTodoForm}
+    ${delayRenderTodoForm()}
 
     <section>
         <label for="filter">Filter:</label>

@@ -13,7 +13,7 @@ export class TodoForm extends FASTElement {
     }
 }
 
-export const definition = TodoForm.compose({
+export const todoForm = TodoForm.compose({
     name: "todo-form",
     template,
     styles,
