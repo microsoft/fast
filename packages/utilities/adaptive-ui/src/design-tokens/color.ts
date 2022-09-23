@@ -26,12 +26,12 @@ import { accentPalette, neutralPalette } from "./palette.js";
  */
 export const ContrastTarget = Object.freeze({
     /**
-     * Minimum contrast for normal (<= 14pt) text (AA rating).
+     * Minimum contrast for normal (&lt;= 14pt) text (AA rating).
      */
     NormalText: 4.5,
 
     /**
-     * Minimum contrast for large (> 14pt) text (AA rating).
+     * Minimum contrast for large (&gt; 14pt) text (AA rating).
      */
     LargeText: 3,
 } as const);
@@ -419,7 +419,7 @@ export const neutralFillInputHoverDelta = createNonCss<number>(
 /** @public */
 export const neutralFillInputActiveDelta = createNonCss<number>(
     "neutral-fill-input-active-delta"
-).withDefault(0);
+).withDefault(-2);
 
 /** @public */
 export const neutralFillInputFocusDelta = createNonCss<number>(

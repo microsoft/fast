@@ -257,8 +257,82 @@ export function interactiveSwatchSetAsOverlay(set: InteractiveSwatchSet, referen
 // @public
 export function isDark(color: RelativeLuminance): boolean;
 
+// @public
+export const LayerBaseLuminance: Readonly<{
+    readonly LightMode: 0.95;
+    readonly DarkMode: 0.13;
+}>;
+
 // @public (undocumented)
 export const layerCornerRadius: CSSDesignToken<number>;
+
+// @public
+export const layerFillActiveDelta: DesignToken<number>;
+
+// @public
+export const layerFillBaseLuminance: DesignToken<number>;
+
+// @public
+export const layerFillDelta: DesignToken<number>;
+
+// @public
+export const layerFillFixedBase: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedMinus1: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedMinus2: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedMinus3: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedMinus4: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedPlus1: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedPlus2: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedPlus3: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedPlus4: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedRecipe: DesignToken<LayerRecipe>;
+
+// @public
+export const layerFillFocusDelta: DesignToken<number>;
+
+// @public
+export const layerFillHoverDelta: DesignToken<number>;
+
+// @public
+export const layerFillInteractiveActive: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillInteractiveFocus: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillInteractiveHover: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillInteractiveRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public
+export const layerFillInteractiveRest: CSSDesignToken<Swatch>;
+
+// @public
+export const layerPalette: DesignToken<Palette<Swatch>>;
+
+// @public
+export interface LayerRecipe {
+    evaluate(resolve: DesignTokenResolver, index: number): Swatch;
+}
 
 // @public
 export function luminanceSwatch(luminance: number): Swatch;
@@ -566,7 +640,7 @@ export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof Pa
 
 // @public
 export class PaletteRGB extends BasePalette<SwatchRGB> {
-    static from(source: SwatchRGB, options?: Partial<PaletteRGBOptions>): PaletteRGB;
+    static from(source: SwatchRGB | string, options?: Partial<PaletteRGBOptions>): PaletteRGB;
 }
 
 // @public

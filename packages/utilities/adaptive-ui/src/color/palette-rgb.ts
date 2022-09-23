@@ -5,6 +5,7 @@ import {
     hslToRGB,
     interpolateRGB,
     labToRGB,
+    parseColorHexRGB,
     rgbToHSL,
     rgbToLAB,
     roundToPrecisionSmall,
@@ -293,15 +294,22 @@ export class PaletteRGB extends BasePalette<SwatchRGB> {
      * @param options - Options to specify details of palette generation
      * @returns The PaletteRGB with Swatches based on `source`
      */
-    static from(source: SwatchRGB, options?: Partial<PaletteRGBOptions>): PaletteRGB {
+    static from(
+        source: SwatchRGB | string,
+        options?: Partial<PaletteRGBOptions>
+    ): PaletteRGB {
+        const swatch =
+            source instanceof SwatchRGB
+                ? source
+                : SwatchRGB.from(parseColorHexRGB(source)!);
         const opts =
             options === void 0 || null
                 ? defaultPaletteRGBOptions
                 : { ...defaultPaletteRGBOptions, ...options };
 
         return new PaletteRGB(
-            source,
-            Object.freeze(PaletteRGB.createColorPaletteByContrast(source, opts))
+            swatch,
+            Object.freeze(PaletteRGB.createColorPaletteByContrast(swatch, opts))
         );
     }
 }

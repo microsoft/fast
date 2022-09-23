@@ -1,7 +1,7 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
 
 /**
- * A recipe that evaluates to an elevation treatment, commonly, but not limited to, a box .
+ * A recipe that evaluates to an elevation treatment, commonly, but not limited to, a box shadow.
  *
  * @public
  */

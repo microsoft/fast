@@ -1,7 +1,7 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "persist totalAvailableViews to compare against removeIndex",
   "packageName": "@microsoft/fast-element",
   "email": "wendywendy@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
