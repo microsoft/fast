@@ -1,8 +1,23 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Thu, 01 Sep 2022 21:53:34 GMT and should not be manually modified.
+This log was last generated on Fri, 23 Sep 2022 22:53:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.7
+
+Fri, 23 Sep 2022 22:53:27 GMT
+
+### Changes
+
+- feat: improve parent typing and fix repeat context type bug (roeisenb@microsoft.com)
+- feat: prepare fast-element for scoped element registries (roeisenb@microsoft.com)
+- persist totalAvailableViews to compare against removeIndex (wendywendy@microsoft.com)
+- make ElementsFilter type arguments optional (863023+radium-v@users.noreply.github.com)
+- fix(fast-element): attributes properly located in inheritance hierarchy (roeisenb@microsoft.com)
+- Adds PendingTask community protocol (nicholasrice@users.noreply.github.com)
+- feat: new behavior and context API design (roeisenb@microsoft.com)
+- feat: implement getAsync code path for dependency injection (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.6
 

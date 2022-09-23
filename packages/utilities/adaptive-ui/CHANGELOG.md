@@ -1,8 +1,18 @@
 # Change Log - @microsoft/adaptive-ui
 
-This log was last generated on Thu, 01 Sep 2022 21:53:34 GMT and should not be manually modified.
+This log was last generated on Fri, 23 Sep 2022 22:53:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.10
+
+Fri, 23 Sep 2022 22:53:27 GMT
+
+### Changes
+
+- Add layer recipes and design tokens (47367562+bheston@users.noreply.github.com)
+- Initial support for opacity in neutral recipes (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.10
 
 ## 1.0.0-alpha.9
 

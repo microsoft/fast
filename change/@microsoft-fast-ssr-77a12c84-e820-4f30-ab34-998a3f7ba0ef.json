@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "updates README.md with docs for dom-shim augmentation.",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
