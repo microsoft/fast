@@ -3,11 +3,6 @@ import { styles } from "./todo-form.styles.js";
 import { template } from "./todo-form.template.js";
 import { TodoList } from "./todo-list.js";
 
-@customElement({
-    name: "todo-form",
-    template,
-    styles,
-})
 export class TodoForm extends FASTElement {
     @observable public description: string = "";
     @TodoList todos!: TodoList;
@@ -17,3 +12,9 @@ export class TodoForm extends FASTElement {
         this.description = "";
     }
 }
+
+export const definition = TodoForm.compose({
+    name: "todo-form",
+    template,
+    styles,
+});
