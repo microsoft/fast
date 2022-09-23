@@ -104,9 +104,9 @@ HTMLDirective.define(ChildrenDirective);
  * @param propertyOrOptions - The options used to configure child node observation.
  * @public
  */
-export function children<TSource = any, TParent = any>(
-    propertyOrOptions: (keyof TSource & string) | ChildrenDirectiveOptions<keyof TSource & string>
-): CaptureType<TSource, TParent> {
+export function children<T = any>(
+    propertyOrOptions: (keyof T & string) | ChildrenDirectiveOptions<keyof T & string>
+): CaptureType<T> {
     if (isString(propertyOrOptions)) {
         propertyOrOptions = {
             property: propertyOrOptions,

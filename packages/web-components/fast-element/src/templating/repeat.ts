@@ -1,5 +1,6 @@
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
+    ExecutionContext,
     Expression,
     ExpressionObserver,
     Observable,
@@ -18,7 +19,6 @@ import {
 import type { CaptureType, SyntheticViewTemplate, ViewTemplate } from "./template.js";
 import { HTMLView, SyntheticView } from "./view.js";
 import { normalizeBinding } from "./binding.js";
-// import { when } from "./when.js";
 
 /**
  * Options for configuring repeat behavior.
@@ -349,19 +349,18 @@ HTMLDirective.define(RepeatDirective);
  */
 export function repeat<
     TSource = any,
-    TArray extends ReadonlyArray<any> = ReadonlyArray<any>,
-    TParent = any
+    TArray extends ReadonlyArray<any> = ReadonlyArray<any>
 >(
     items:
-        | Expression<TSource, TArray, TParent>
-        | Binding<TSource, TArray, TParent>
+        | Expression<TSource, TArray, ExecutionContext<TSource>>
+        | Binding<TSource, TArray>
         | ReadonlyArray<any>,
     template:
-        | Expression<TSource, ViewTemplate<any, TSource>>
-        | Binding<TSource, ViewTemplate<any, TSource>>
-        | ViewTemplate<any, TSource>,
+        | Expression<TSource, ViewTemplate>
+        | Binding<TSource, ViewTemplate>
+        | ViewTemplate,
     options: RepeatOptions = defaultRepeatOptions
-): CaptureType<TSource, TParent> {
+): CaptureType<TSource> {
     const dataBinding = normalizeBinding(items);
     const templateBinding = normalizeBinding(template);
     return new RepeatDirective(dataBinding, templateBinding, {
@@ -369,47 +368,3 @@ export function repeat<
         ...options,
     }) as any;
 }
-
-// class Child {
-//     age: number;
-// }
-
-// class Parent {
-//     name: string;
-//     children: Child[];
-// }
-
-// const template = html<Child, Parent>`
-//   ${(x, c) => {
-//     const { parent } = c;
-//     // Note that parent is of type Parent
-//   }}
-
-//   ${repeat((x, c) => {
-//     const { parent } = c;
-//     // Note that parent is of type ExecutionContext<Child>
-//     return parent.children;
-//   }, html<Child>`
-//     ${x => x.age}
-
-//     ${when((x, c) => {
-//         const { parent } = c;
-//         // Note parent is of type any
-//         return true;
-//     }, html`${(x, c) => {
-//         x.age;
-//         const p = c.parent;
-//         }}
-//     `)}
-//   `)}
-
-//   ${when((x, c) => {
-//     const { parent } = c;
-//     // Note parent is of type any
-//     return true;
-//   }, html`${(x, c) => {
-//     x.age;
-//     const p = c.parent;
-//     }}
-//   `)}
-// `;

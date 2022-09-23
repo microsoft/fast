@@ -9,12 +9,12 @@ import type { CaptureType, SyntheticViewTemplate } from "./template.js";
  * the template to render when the condition is true.
  * @public
  */
-export function when<TSource = any, TReturn = any, TParent = any>(
-    condition: Expression<TSource, TReturn, TParent> | boolean,
+export function when<TSource = any, TReturn = any>(
+    condition: Expression<TSource, TReturn> | boolean,
     templateOrTemplateBinding:
-        | SyntheticViewTemplate<TSource, TParent>
-        | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>
-): CaptureType<TSource, TParent> {
+        | SyntheticViewTemplate
+        | Expression<TSource, SyntheticViewTemplate>
+): CaptureType<TSource> {
     const dataBinding = isFunction(condition) ? condition : () => condition;
 
     const templateBinding = isFunction(templateOrTemplateBinding)

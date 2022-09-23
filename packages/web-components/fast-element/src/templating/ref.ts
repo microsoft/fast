@@ -26,5 +26,5 @@ HTMLDirective.define(RefDirective);
  * @param propertyName - The name of the property to assign the reference to.
  * @public
  */
-export const ref = <TSource = any, TParent = any>(propertyName: keyof TSource & string): CaptureType<TSource, TParent> =>
+export const ref = <T = any>(propertyName: keyof T & string): CaptureType<T> =>
     new RefDirective(propertyName);
