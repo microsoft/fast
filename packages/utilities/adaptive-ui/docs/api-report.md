@@ -257,6 +257,12 @@ export function interactiveSwatchSetAsOverlay(set: InteractiveSwatchSet, referen
 // @public
 export function isDark(color: RelativeLuminance): boolean;
 
+// @public
+export const LayerBaseLuminance: Readonly<{
+    readonly LightMode: 0.95;
+    readonly DarkMode: 0.13;
+}>;
+
 // @public (undocumented)
 export const layerCornerRadius: CSSDesignToken<number>;
 
@@ -319,12 +325,6 @@ export const layerFillInteractiveRecipe: DesignToken<InteractiveColorRecipe>;
 
 // @public
 export const layerFillInteractiveRest: CSSDesignToken<Swatch>;
-
-// @public
-export const LayerFillLuminance: Readonly<{
-    readonly LightMode: 0.95;
-    readonly DarkMode: 0.13;
-}>;
 
 // @public
 export const layerPalette: DesignToken<Palette<Swatch>>;
