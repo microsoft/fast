@@ -16,11 +16,4 @@ export class VirtualDataGrid extends Virtualizing(_VirtualDataGrid) {}
  *
  * @public
  */
-export class FASTVirtualDataGrid extends VirtualDataGrid {
-    /**
-     * @internal
-     */
-    connectedCallback() {
-        super.connectedCallback();
-    }
-}
+export class FASTVirtualDataGrid extends VirtualDataGrid {}

@@ -1,7 +1,7 @@
 import { FASTElement, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
 
 /**
- *  The VirtualListItem class.  Note that all props are set at runtime by the parent list.
+ *  The DataListItem class.  Note that all props are set at runtime by the parent list.
  *
  * @public
  */

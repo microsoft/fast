@@ -58,7 +58,9 @@ export class FASTDataList extends FASTElement {
     @observable
     public sourceItems: object[];
     protected sourceItemsChanged(): void {
-        this.displayItems = this.sourceItems;
+        if (!this.displayItems) {
+            this.displayItems = this.sourceItems;
+        }
     }
 
     /**
