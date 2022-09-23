@@ -105,7 +105,9 @@ HTMLDirective.define(ChildrenDirective);
  * @public
  */
 export function children<TSource = any, TParent = any>(
-    propertyOrOptions: (keyof TSource & string) | ChildrenDirectiveOptions<keyof TSource & string>
+    propertyOrOptions:
+        | (keyof TSource & string)
+        | ChildrenDirectiveOptions<keyof TSource & string>
 ): CaptureType<TSource, TParent> {
     if (isString(propertyOrOptions)) {
         propertyOrOptions = {

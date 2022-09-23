@@ -58,7 +58,9 @@ HTMLDirective.define(SlottedDirective);
  * @public
  */
 export function slotted<TSource = any, TParent = any>(
-    propertyOrOptions: (keyof TSource & string) | SlottedDirectiveOptions<keyof TSource & string>
+    propertyOrOptions:
+        | (keyof TSource & string)
+        | SlottedDirectiveOptions<keyof TSource & string>
 ): CaptureType<TSource, TParent> {
     if (isString(propertyOrOptions)) {
         propertyOrOptions = { property: propertyOrOptions };
