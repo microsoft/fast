@@ -576,14 +576,14 @@ export class NodeTemplate implements ContentTemplate, ContentView {
  * RenderInstruction to determine the view.
  * @public
  */
-export function render<TSource = any, TItem = any>(
+export function render<TSource = any, TItem = any, TParent = any>(
     value?: Expression<TSource, TItem> | Binding<TSource, TItem> | {},
     template?:
         | ContentTemplate
         | string
-        | Expression<TSource, ContentTemplate | string | Node>
-        | Binding<TSource, ContentTemplate | string | Node>
-): CaptureType<TSource> {
+        | Expression<TSource, ContentTemplate | string | Node, TParent>
+        | Binding<TSource, ContentTemplate | string | Node, TParent>
+): CaptureType<TSource, TParent> {
     let dataBinding: Binding<TSource>;
 
     if (value === void 0) {
