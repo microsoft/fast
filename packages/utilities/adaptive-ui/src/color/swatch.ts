@@ -66,7 +66,7 @@ export class SwatchRGB implements Swatch {
      * @param green - Green channel expressed as a number between 0 and 1
      * @param blue - Blue channel expressed as a number between 0 and 1
      * @param alpha - Alpha channel expressed as a number between 0 and 1, default 1
-     * @param intendedColor - If `alpha` < 1 this tracks the intended opaque color value for dependent calculations
+     * @param intendedColor - If `alpha` &lt; 1 this tracks the intended opaque color value for dependent calculations
      */
     constructor(
         red: number,
