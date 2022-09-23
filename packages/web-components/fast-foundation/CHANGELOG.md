@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 01 Sep 2022 21:53:34 GMT and should not be manually modified.
+This log was last generated on Fri, 23 Sep 2022 22:53:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.10
+
+Fri, 23 Sep 2022 22:53:27 GMT
+
+### Changes
+
+- feat: update foundation to new capture type (roeisenb@microsoft.com)
+- Convert karma and mocha tests to playwright (863023+radium-v@users.noreply.github.com)
+- fix(fast-foundation): update mixin helper to use new attribute api (roeisenb@microsoft.com)
+- fix: update foundation to use the new behavior API (roeisenb@microsoft.com)
+- removed redundant role setting in fast foundation menu-item template (yinon@hotmail.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.7
 
 ## 3.0.0-alpha.9
 

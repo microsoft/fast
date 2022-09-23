@@ -2,6 +2,63 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 23 Sep 2022 22:53:27 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.7",
+      "version": "2.0.0-beta.7",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "1646b26450a08a77c8bd6302560fe12cc6989ae1",
+            "comment": "feat: improve parent typing and fix repeat context type bug"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "0d786392a38e1d83e56fb1e2112a3e571d193c11",
+            "comment": "feat: prepare fast-element for scoped element registries"
+          },
+          {
+            "author": "wendywendy@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "a42ff75a9130a5ce13006c272c2e2bbbaffdbb41",
+            "comment": "persist totalAvailableViews to compare against removeIndex"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "ec2b158dcf39c8b4152b22c3b65963046b473e17",
+            "comment": "make ElementsFilter type arguments optional"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "1039218eafa9a8dbea9da94e1c7803de48d1484c",
+            "comment": "fix(fast-element): attributes properly located in inheritance hierarchy"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "c1909e9899d517f9483b24043d49a8b193af3c26",
+            "comment": "Adds PendingTask community protocol"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "2edd63a8abe24c68cfc7c76d773c912c6f2d6543",
+            "comment": "feat: new behavior and context API design"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "eb62934b258334c7f92ab3a1112ea62b3901cdac",
+            "comment": "feat: implement getAsync code path for dependency injection"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 01 Sep 2022 21:53:34 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.6",
       "version": "2.0.0-beta.6",

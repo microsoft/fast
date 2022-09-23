@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix(fast-element): attributes properly located in inheritance hierarchy",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

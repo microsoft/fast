@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: implement getAsync code path for dependency injection",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Fri, 23 Sep 2022 22:53:27 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.8",
+      "version": "1.0.0-alpha.8",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.7",
+            "commit": "1646b26450a08a77c8bd6302560fe12cc6989ae1"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 01 Sep 2022 21:53:34 GMT",
       "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.7",
       "version": "1.0.0-alpha.7",

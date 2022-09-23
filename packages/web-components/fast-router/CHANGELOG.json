@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Fri, 23 Sep 2022 22:53:27 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.7",
+      "version": "1.0.0-alpha.7",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-router",
+            "commit": "2edd63a8abe24c68cfc7c76d773c912c6f2d6543",
+            "comment": "fix: update router to use the new behavior API"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.7",
+            "commit": "1646b26450a08a77c8bd6302560fe12cc6989ae1"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 01 Sep 2022 21:53:34 GMT",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.6",
       "version": "1.0.0-alpha.6",

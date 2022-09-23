@@ -2,6 +2,65 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 23 Sep 2022 22:53:27 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.10",
+      "version": "3.0.0-alpha.10",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "1646b26450a08a77c8bd6302560fe12cc6989ae1",
+            "comment": "feat: update foundation to new capture type"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "ec2b158dcf39c8b4152b22c3b65963046b473e17",
+            "comment": "Convert karma and mocha tests to playwright"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "1039218eafa9a8dbea9da94e1c7803de48d1484c",
+            "comment": "fix(fast-foundation): update mixin helper to use new attribute api"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2edd63a8abe24c68cfc7c76d773c912c6f2d6543",
+            "comment": "fix: update foundation to use the new behavior API"
+          },
+          {
+            "author": "yinon@hotmail.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "cc49283b26b17f53edd5d4f8834207666315c910",
+            "comment": "removed redundant role setting in fast foundation menu-item template"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.7",
+            "commit": "1646b26450a08a77c8bd6302560fe12cc6989ae1"
+          }
+        ],
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "1884339a92b43c66fe8df992aa7c23d1feab4b41",
+            "comment": "fix test fixture rendering"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "12d3e6cedcbdc4729af33d1b52c874d222569279",
+            "comment": "fix storybook story bugs"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 01 Sep 2022 21:53:34 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.9",
       "version": "3.0.0-alpha.9",

@@ -2,6 +2,33 @@
   "name": "@microsoft/adaptive-ui",
   "entries": [
     {
+      "date": "Fri, 23 Sep 2022 22:53:27 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.10",
+      "version": "1.0.0-alpha.10",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "e4df319f20f647ac5437e684d3be460e98308f5b",
+            "comment": "Add layer recipes and design tokens"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "ebf424d4aee7575a4e8c20e76e92fcbe7e0af8d7",
+            "comment": "Initial support for opacity in neutral recipes"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.10",
+            "commit": "1646b26450a08a77c8bd6302560fe12cc6989ae1"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 01 Sep 2022 21:53:34 GMT",
       "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.9",
       "version": "1.0.0-alpha.9",

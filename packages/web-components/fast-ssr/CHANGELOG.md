@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Thu, 01 Sep 2022 21:53:34 GMT and should not be manually modified.
+This log was last generated on Fri, 23 Sep 2022 22:53:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.10
+
+Fri, 23 Sep 2022 22:53:27 GMT
+
+### Changes
+
+- update playwright (863023+radium-v@users.noreply.github.com)
+- Refactor core components to support Promise return types (nicholasrice@users.noreply.github.com)
+- Adds support for async component rendering through the PendingTask protocol (nicholasrice@users.noreply.github.com)
+- fix: updae SSR to use the new behavior API (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.7
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.10
 
 ## 1.0.0-beta.9
 
