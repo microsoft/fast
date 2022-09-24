@@ -20,6 +20,7 @@ import { HostController } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { RepeatOptions } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
+import { ViewBehaviorOrchestrator } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
@@ -1114,6 +1115,8 @@ export class FASTDataGridRow extends FASTDataList {
 
 // @public
 export class FASTDataList extends FASTElement {
+    // (undocumented)
+    protected behaviorOrchestrator: ViewBehaviorOrchestrator | null;
     // @internal (undocumented)
     connectedCallback(): void;
     // (undocumented)
@@ -1124,9 +1127,6 @@ export class FASTDataList extends FASTElement {
     defaultVerticalItemTemplate: ViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
-    displayItems: object[] | null;
-    // (undocumented)
-    protected displayItemsChanged(): void;
     // (undocumented)
     protected getRepeatOptions(): RepeatOptions;
     protected initializeRepeatBehavior(): void;
@@ -2286,8 +2286,6 @@ export class FASTTreeView extends FASTElement {
 //
 // @public
 export class FASTVirtualDataGrid extends VirtualDataGrid {
-    // @internal (undocumented)
-    connectedCallback(): void;
 }
 
 // Warning: (ae-incompatible-release-tags) The symbol "FASTVirtualList" is marked as @public, but its signature references "VirtualList" which is marked as @beta
@@ -2981,6 +2979,8 @@ export interface VirtualListBase {
     // (undocumented)
     containerElement: HTMLElement;
     // (undocumented)
+    displayItems: object[];
+    // (undocumented)
     endSpacerSize: number;
     // (undocumented)
     firstRenderedIndex: number;
@@ -2993,15 +2993,9 @@ export interface VirtualListBase {
     // (undocumented)
     lastRenderedIndex: number;
     // (undocumented)
-    orientation: Orientation;
-    // (undocumented)
     renderedItemMap: SizeMap[];
     // (undocumented)
-    renderItems: object[];
-    // (undocumented)
     sizemap: SizeMap[];
-    // (undocumented)
-    sourceItems: object[];
     // (undocumented)
     startSpacerSize: number;
     // (undocumented)

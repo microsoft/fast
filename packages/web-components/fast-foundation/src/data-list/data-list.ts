@@ -56,12 +56,8 @@ export class FASTDataList extends FASTElement {
      * @public
      */
     @observable
-    public sourceItems: object[];
-    protected sourceItemsChanged(): void {
-        if (!this.displayItems) {
-            this.displayItems = this.sourceItems;
-        }
-    }
+    public sourceItems: object[] = [];
+    protected sourceItemsChanged(): void {}
 
     /**
      * The default ViewTemplate used to render items vertically.
@@ -93,19 +89,10 @@ export class FASTDataList extends FASTElement {
     public itemContentsTemplate: ViewTemplate;
     protected itemContentsTemplateChanged(): void {}
 
-    /**
-     * The items currently displayed
-     *
-     * @public
-     */
-    @observable
-    public displayItems: object[] | null = null;
-    protected displayItemsChanged(): void {}
-
     // the placeholder element used by the repeat behavior
     protected itemsPlaceholder: Node;
 
-    private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
+    protected behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
 
     /**
      * @internal
@@ -159,9 +146,6 @@ export class FASTDataList extends FASTElement {
      * initialize repeat behavior
      */
     protected initializeRepeatBehavior(): void {
-        if (!this.displayItems) {
-            this.displayItems = this.sourceItems;
-        }
         if (this.behaviorOrchestrator === null) {
             if (!this.itemTemplate) {
                 this.updateItemTemplate();
@@ -171,7 +155,7 @@ export class FASTDataList extends FASTElement {
             this.$fastController.addBehavior(this.behaviorOrchestrator);
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<FASTDataList>(
-                    bind(x => x.displayItems, false),
+                    bind(x => x.sourceItems, false),
                     bind(x => x.itemTemplate, false),
                     this.getRepeatOptions()
                 ),

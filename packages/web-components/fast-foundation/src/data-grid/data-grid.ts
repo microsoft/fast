@@ -190,7 +190,7 @@ export class FASTDataGrid extends FASTDataList {
     }
 
     protected sourceItemsChanged(): void {
-        if (!this.columnDefinitions && this.rowsData.length > 0) {
+        if (!this.columnDefinitions && this.rowsData && this.rowsData.length > 0) {
             this.columnDefinitions = FASTDataGrid.generateColumns(this.rowsData[0]);
         }
         if (this.$fastController.isConnected) {

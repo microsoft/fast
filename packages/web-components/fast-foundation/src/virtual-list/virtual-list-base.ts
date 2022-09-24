@@ -1,13 +1,16 @@
 import {
     attr,
+    bind,
     Constructable,
     DOM,
     Notifier,
     nullableNumberConverter,
     Observable,
     observable,
+    RepeatDirective,
     RepeatOptions,
     Splice,
+    ViewBehaviorOrchestrator,
 } from "@microsoft/fast-element";
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
 import { IntersectionService } from "../utilities/intersection-service.js";
@@ -29,7 +32,6 @@ export interface VirtualListBase {
     viewport: string;
     itemSize: number;
     viewportBuffer: number;
-    orientation: Orientation;
     autoUpdateMode: VirtualListAutoUpdateMode;
     sizemap: SizeMap[];
     autoResizeItems: boolean;
@@ -41,8 +43,7 @@ export interface VirtualListBase {
     firstRenderedIndex: number;
     lastRenderedIndex: number;
     containerElement: HTMLElement;
-    renderItems: object[];
-    sourceItems: object[];
+    displayItems: object[];
     itemLoadMode: ItemLoadMode;
 
     getItemSizeMap(itemIndex: number): SizeMap | null;
@@ -113,6 +114,14 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
         }
 
         /**
+         * The items currently displayed
+         *
+         * @public
+         */
+        public displayItems: object[] = [];
+        protected displayItemsChanged(): void {}
+
+        /**
          * The size in pixels of each item along the virtualization axis.
          * When auto-resizing this is the amount of space reserved for elements until
          * they actually render and report size.  The default value is 50.
@@ -158,11 +167,6 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
         ): void {
             if (this.$fastController.isConnected) {
                 this.resetAutoUpdateMode(prevMode, newMode);
-            }
-        }
-
-        protected displayItemsChanged(): void {
-            if (this.$fastController.isConnected) {
             }
         }
 
@@ -341,7 +345,7 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
             this.cancelPendingPositionUpdates();
             this.unobserveItems();
             this.unobserveSizeMap();
-            this.renderedItemMap = [];
+            this.renderedItemMap.splice(0, this.renderedItemMap.length);
 
             this.disconnectResizeDetector();
 
@@ -354,6 +358,28 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
             // if (this.currentCallbackElement) {
             //     this.currentCallbackElement = undefined;
             // }
+        }
+
+        /**
+         * initialize repeat behavior
+         */
+        protected initializeRepeatBehavior(): void {
+            if (this.behaviorOrchestrator === null) {
+                if (!this.itemTemplate) {
+                    this.updateItemTemplate();
+                }
+                this.createPlaceholderElement();
+                this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
+                this.$fastController.addBehavior(this.behaviorOrchestrator);
+                this.behaviorOrchestrator.addBehaviorFactory(
+                    new RepeatDirective<typeof this>(
+                        bind(x => x.displayItems, false),
+                        bind(x => x.itemTemplate, false),
+                        this.getRepeatOptions()
+                    ),
+                    this.itemsPlaceholder
+                );
+            }
         }
 
         protected getRepeatOptions(): RepeatOptions {
@@ -514,8 +540,7 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
                     lastRenderedIndex + 1
                 );
 
-                // this.renderItems.splice(0, this.renderItems.length, ...newVisibleItems);
-                this.displayItems = newVisibleItems;
+                this.displayItems.splice(0, this.displayItems.length, ...newVisibleItems);
 
                 this.updateDimensions();
                 this.requestPositionUpdates();
@@ -853,8 +878,11 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
             }
 
             if (this.virtualizationDisabled) {
-                //this.renderItems.splice(0, this.renderItems.length, ...this.sourceItems);
-                this.displayItems = this.sourceItems;
+                this.displayItems.splice(
+                    0,
+                    this.displayItems.length,
+                    ...this.sourceItems
+                );
                 this.updateVisibleItemSizes(0, this.displayItems.length - 1);
                 return;
             }
@@ -950,7 +978,7 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
             );
 
             this.updateVisibleItemSizes(newFirstRenderedIndex, newLastRenderedIndex);
-            // this.renderItems.splice(0, this.renderItems.length, ...newVisibleItems);
+            // this.displayItems.splice(0, this.displayItems.length, ...newVisibleItems);
             this.displayItems = newVisibleItems;
         }
 
@@ -995,7 +1023,11 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
                 }
             }
 
-            this.renderedItemMap = newVisibleItemSizes;
+            this.renderedItemMap.splice(
+                0,
+                this.renderedItemMap.length,
+                ...newVisibleItemSizes
+            );
 
             this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
         }
@@ -1079,6 +1111,7 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
 
     observable(C.prototype, "isBusy");
     observable(C.prototype, "sizemap");
+    observable(C.prototype, "displayItems");
     observable(C.prototype, "viewportElement");
     observable(C.prototype, "renderedItemMap");
     observable(C.prototype, "totalListSize");
