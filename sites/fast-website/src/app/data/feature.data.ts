@@ -28,7 +28,7 @@ export const featureCardData: FeatureCardData[] = [
         links: [
             {
                 anchorText: "Learn more",
-                url: "/docs/community/contributor-guide",
+                url: "/docs/design-systems/overview",
             },
         ],
     },
