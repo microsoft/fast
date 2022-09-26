@@ -73,8 +73,9 @@ test.describe("Flipper", () => {
 
         await element.evaluate((node: FASTFlipper) => {
             node.disabled = false;
-            return new Promise(requestAnimationFrame);
         });
+
+        await (await element.elementHandle())?.waitForElementState("stable");
 
         await expect(element).not.hasAttribute("aria-disabled");
     });
@@ -90,8 +91,9 @@ test.describe("Flipper", () => {
 
         await element.evaluate((node: FASTFlipper) => {
             node.hiddenFromAT = false;
-            return new Promise(requestAnimationFrame);
         });
+
+        await (await element.elementHandle())?.waitForElementState("stable");
 
         await expect(element).toHaveAttribute("tabindex", "0");
 

@@ -257,15 +257,15 @@ test.describe("Search", () => {
 
             await expect(element).toHaveJSProperty("value", "test value");
 
-            expect(await element.getAttribute("value")).toBeNull();
+            await expect(element).not.hasAttribute("value");
 
             await form.evaluate<void, HTMLFormElement>(node => {
                 node.reset();
             });
 
-            await expect(element).toHaveJSProperty("value", "");
+            await expect(element).not.hasAttribute("value");
 
-            expect(await element.getAttribute("value")).toBeNull();
+            await expect(element).toHaveJSProperty("value", "");
         });
 
         test("should reset its `value` property to the value of the value attribute if it is set", async () => {

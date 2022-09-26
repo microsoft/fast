@@ -234,21 +234,23 @@ test.describe("TreeItem", () => {
             `;
             });
 
-            const expandCollapseButton = element
-                .first()
-                .locator(".expand-collapse-button");
+            const firstElement = element.first();
+
+            const expandCollapseButton = firstElement.locator(".expand-collapse-button");
 
             const [wasClicked] = await Promise.all([
-                element.first().evaluate(node => {
+                firstElement.evaluate(node => {
                     return new Promise(resolve => {
                         node.addEventListener("expanded-change", () => {
                             resolve(true);
                         });
                     });
                 }),
-                expandCollapseButton.evaluate((node: HTMLElement) => {
-                    return new Promise(requestAnimationFrame).then(() => node.click());
-                }),
+                firstElement.elementHandle().then(handle =>
+                    handle?.waitForElementState("stable").then(() => {
+                        expandCollapseButton.first().click();
+                    })
+                ),
             ]);
 
             expect(wasClicked).toBe(true);
@@ -288,7 +290,7 @@ test.describe("TreeItem", () => {
 
             await expect(element).not.toHaveBooleanAttribute("selected");
 
-            expect(await element.getAttribute("aria-selected")).toBeNull();
+            await expect(element).not.hasAttribute("aria-selected");
         });
 
         test("should fire an event when expanded state changes via the `expanded` attribute", async () => {

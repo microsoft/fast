@@ -250,7 +250,6 @@ test.describe("Tabs", () => {
 
             await element.evaluate((node: FASTTabs, secondTabId) => {
                 node.activeid = secondTabId;
-                return new Promise(requestAnimationFrame);
             }, secondTabId);
 
             await expect(secondTab).toHaveAttribute("aria-selected", "true");
@@ -333,12 +332,11 @@ test.describe("Tabs", () => {
 
             const secondTabId = (await secondTab.getAttribute("id")) ?? "";
 
+            const tabPanels = element.locator("fast-tab-panel");
+
             await element.evaluate((node: FASTTabs, secondTabId) => {
                 node.activeid = secondTabId;
-                return new Promise(requestAnimationFrame);
             }, secondTabId);
-
-            const tabPanels = element.locator("fast-tab-panel");
 
             await expect(tabPanels.nth(1)).toHaveAttribute(
                 "aria-labelledby",
@@ -409,17 +407,21 @@ test.describe("Tabs", () => {
                     <fast-tab-panel>Tab panel three</fast-tab-panel>
                 </fast-tabs>
             `;
-
-            return new Promise(requestAnimationFrame);
         });
+
+        await (await element.elementHandle())?.waitForElementState("stable");
 
         const firstTab = tabs.nth(0);
 
-        const firstTabId = (await firstTab.getAttribute("id")) ?? "";
+        const firstTabId = await firstTab.getAttribute("id");
+
+        expect(firstTabId).toBe("tab-1");
 
         await element.evaluate((node: FASTTabs, firstTabId) => {
-            node.activeid = firstTabId;
+            node.activeid = `${firstTabId}`;
         }, firstTabId);
+
+        await (await element.elementHandle())?.waitForElementState("stable");
 
         await expect(element).toHaveJSProperty("activeid", firstTabId);
 
@@ -428,6 +430,8 @@ test.describe("Tabs", () => {
         await secondTab.evaluate((node: FASTTab) => {
             node.disabled = true;
         });
+
+        await (await element.elementHandle())?.waitForElementState("stable");
 
         await secondTab.click({ force: true });
 
@@ -439,15 +443,15 @@ test.describe("Tabs", () => {
 
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
-            <fast-tabs>
-                <fast-tab>Tab one</fast-tab>
-                <fast-tab disabled>Tab two</fast-tab>
-                <fast-tab>Tab three</fast-tab>
-                <fast-tab-panel>Tab panel one</fast-tab-panel>
-                <fast-tab-panel>Tab panel two</fast-tab-panel>
-                <fast-tab-panel>Tab panel three</fast-tab-panel>
-            </fast-tabs>
-        `;
+                <fast-tabs>
+                    <fast-tab>Tab one</fast-tab>
+                    <fast-tab disabled>Tab two</fast-tab>
+                    <fast-tab>Tab three</fast-tab>
+                    <fast-tab-panel>Tab panel one</fast-tab-panel>
+                    <fast-tab-panel>Tab panel two</fast-tab-panel>
+                    <fast-tab-panel>Tab panel three</fast-tab-panel>
+                </fast-tabs>
+            `;
         });
 
         const firstTab = tabs.nth(0);
@@ -470,8 +474,9 @@ test.describe("Tabs", () => {
 
         await secondTab.evaluate((node: FASTTab) => {
             node.disabled = false;
-            return new Promise(requestAnimationFrame);
         });
+
+        await (await element.elementHandle())?.waitForElementState("stable");
 
         await secondTab.click({ force: true });
 
