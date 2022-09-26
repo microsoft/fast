@@ -96,7 +96,7 @@ export class FASTCalendar extends FASTElement {
      * Weekday that the calendar should start on, defaults to Sunday
      * @public
      */
-    @attr({ attribute: "first-day" })
+    @attr({ attribute: "first-day", converter: nullableNumberConverter })
     public firstDay: number = 0;
 
     /**
