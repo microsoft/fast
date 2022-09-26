@@ -1,56 +1,71 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
-import type { FASTDataGrid } from "../data-grid.js";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
+import { FASTDataGrid, GenerateHeaderOptions } from "../data-grid.js";
 
-type DataGridArgs = Args & FASTDataGrid;
-type DataGridMeta = Meta<DataGridArgs>;
-
-function newDataRow(id: string): object {
-    return {
-        rowId: `rowid-${id}`,
-        item1: `value 1-${id}`,
-        item2: `value 2-${id}`,
-        item3: `value 3-${id}`,
-        item4: `value 4-${id}`,
-        item5: `value 5-${id}`,
-        item6: `value 6-${id}`,
-    };
-}
-
-function newDataSet(rowCount: number): any[] {
-    return Array.from({ length: rowCount }, (v, i) => newDataRow(`${i + 1}`));
-}
-
-const storyTemplate = html<DataGridArgs>`
+const storyTemplate = html<StoryArgs<FASTDataGrid>>`
     <fast-data-grid
         :rowsData="${x => x.rowsData}"
-        no-tabbing="${x => x.noTabbing}"
+        ?no-tabbing="${x => x.noTabbing}"
         generate-header="${x => x.generateHeader}"
         grid-template-columns="${x => x.gridTemplateColumns}"
-    ></fast-data-grid>
+    >
+        ${x => x.storyContent}
+    </fast-data-grid>
 `;
 
 export default {
     title: "Data Grid",
     args: {
-        rowsData: newDataSet(20),
+        noTabbing: false,
+        rowsData: [
+            {
+                item1: `value 1-1`,
+                item2: `value 2-1`,
+                item3: `value 3-1`,
+                item4: `value 4-1`,
+                item5: `value 5-1`,
+            },
+            {
+                item1: `value 1-2`,
+                item2: `value 2-2`,
+                item3: `value 3-2`,
+                item4: `value 4-2`,
+                item5: `value 5-2`,
+            },
+            {
+                item1: `value 1-3`,
+                item2: `value 2-3`,
+                item3: `value 3-3`,
+                item4: `value 4-3`,
+                item5: `value 5-3`,
+            },
+            {
+                item1: `value 1-4`,
+                item2: `value 2-4`,
+                item3: `value 3-4`,
+                item4: `value 4-4`,
+                item5: `value 5-4`,
+            },
+            {
+                item1: `value 1-5`,
+                item2: `value 2-5`,
+                item3: `value 3-5`,
+                item4: `value 4-5`,
+                item5: `value 5-5`,
+            },
+        ],
     },
     argTypes: {
-        noTabbing: {
-            control: { type: "boolean" },
-        },
         generateHeader: {
-            options: ["none", "default", "sticky"],
-            control: { type: "select" },
+            control: "select",
+            options: Object.values(GenerateHeaderOptions),
         },
-        gridTemplateColumns: {
-            control: { type: "text" },
-        },
+        gridTemplateColumns: { control: "text" },
+        noTabbing: { control: "boolean" },
+        rowsData: { control: "object" },
+        storyContent: { table: { disable: true } },
     },
-} as DataGridMeta;
+} as Meta<FASTDataGrid>;
 
-export const DataGrid = (args: DataGridArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
+export const DataGrid: Story<FASTDataGrid> = renderComponent(storyTemplate).bind({});

@@ -2,6 +2,78 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Fri, 23 Sep 2022 22:53:27 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.8",
+      "version": "1.0.0-alpha.8",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.7",
+            "commit": "1646b26450a08a77c8bd6302560fe12cc6989ae1"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 01 Sep 2022 21:53:34 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.7",
+      "version": "1.0.0-alpha.7",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.6",
+            "commit": "6b0f08574475d8b28cc2df67bf72b9041c2ad285"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 18 Aug 2022 20:46:10 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.6",
+      "version": "1.0.0-alpha.6",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.5",
+            "commit": "0b57f1bc812e8e6371b7d27bb625f99a25bfaa66"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 18 Jul 2022 21:10:01 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.5",
+      "version": "1.0.0-alpha.5",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-react-wrapper",
+            "commit": "b32eb1004960da95b74dba7f111ee859b6655896",
+            "comment": "fix: update react wrapper to remove foundation dependency"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-react-wrapper",
+            "commit": "aacfde6d1f52a20af5511c5e792f730bd091d452",
+            "comment": "chore: update tests to use testing helpers from fast-element"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.4",
+            "commit": "2ff46a32cdd9af12b236d0e2f3436a4de782e8ee"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 22 Jun 2022 20:17:50 GMT",
       "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.4",
       "version": "1.0.0-alpha.4",

@@ -5,8 +5,8 @@ import type { FASTMenu } from "./menu.js";
  * The template for the {@link @microsoft/fast-foundation#FASTMenu} component.
  * @public
  */
-export function menuTemplate(): ElementViewTemplate<FASTMenu> {
-    return html<FASTMenu>`
+export function menuTemplate<T extends FASTMenu>(): ElementViewTemplate<T> {
+    return html<T>`
         <template
             slot="${x => (x.slot ? x.slot : x.isNestedMenu() ? "submenu" : void 0)}"
             role="menu"

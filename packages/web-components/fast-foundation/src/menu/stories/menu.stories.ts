@@ -1,109 +1,169 @@
-import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import { html, repeat } from "@microsoft/fast-element";
+import { storyTemplate as dividerStoryTemplate } from "../../divider/stories/divider.stories.js";
+import type { FASTMenuItem } from "../../menu-item/menu-item.js";
+import { storyTemplate as menuItemStoryTemplate } from "../../menu-item/stories/menu-item.stories.js";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTMenu } from "../menu.js";
 
-type MenuStoryArgs = Args & FASTMenu;
-type MenuStoryMeta = Meta<MenuStoryArgs>;
+const storyTemplate = html<StoryArgs<FASTMenu>>`
+    <fast-menu slot="${x => x.slot}">${x => x.storyContent}</fast-menu>
+`;
 
-const storyTemplate = html<MenuStoryArgs>`
-    <fast-menu>${x => x.content}</fast-menu>
+const storyContentTemplate = html`
+    ${repeat(
+        x => x.storyItems,
+        html<StoryArgs<FASTMenuItem>>`
+            ${x => x.template ?? menuItemStoryTemplate}
+        `
+    )}
 `;
 
 export default {
     title: "Menu",
     args: {
-        content: html`
-            <fast-menu-item>Menu item 1</fast-menu-item>
-            <fast-menu-item>Menu item 2</fast-menu-item>
-            <fast-menu-item>Menu item 3</fast-menu-item>
-        `,
+        storyContent: storyContentTemplate,
+        storyItems: [
+            { storyContent: "Menu Item 1" },
+            { storyContent: "Menu Item 2" },
+            { storyContent: "Menu Item 3" },
+        ],
     },
     argTypes: {
-        content: { table: { disable: true } },
+        storyContent: { table: { disable: true } },
     },
-} as MenuStoryMeta;
+} as Meta<FASTMenu>;
 
-export const Menu = (args: MenuStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+export const Menu: Story<FASTMenu> = renderComponent(storyTemplate).bind({});
+Menu.args = {
+    storyContent: html`
+        ${repeat(
+            x => x.storyItems,
+            html<StoryArgs<FASTMenuItem>>`
+                ${x => x.template ?? menuItemStoryTemplate}
+            `
+        )}
+    `,
 };
 
-export const MenuWithDivider = Menu.bind({});
+export const MenuWithDivider: Story<FASTMenu> = Menu.bind({});
 MenuWithDivider.args = {
-    content: html`
-        <fast-menu-item>Menu item 1</fast-menu-item>
-        <fast-menu-item>Menu item 2</fast-menu-item>
-        <fast-divider></fast-divider>
-        <fast-menu-item>Menu item 3</fast-menu-item>
-        <fast-menu-item>Menu item 4</fast-menu-item>
-    `,
+    storyItems: [
+        { storyContent: "Menu Item 1" },
+        { storyContent: "Menu Item 2" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Menu Item 3" },
+        { storyContent: "Menu Item 4" },
+    ],
 };
 
-export const MenuWithFormControls = Menu.bind({});
+export const MenuWithFormControls: Story<FASTMenu> = Menu.bind({});
 MenuWithFormControls.args = {
-    content: html`
-        <fast-menu-item>Menu item 1</fast-menu-item>
-        <fast-menu-item>Menu item 2</fast-menu-item>
-        <fast-divider></fast-divider>
-        <fast-menu-item role="menuitemcheckbox">Checkbox 1</fast-menu-item>
-        <fast-menu-item role="menuitemcheckbox">Checkbox 2</fast-menu-item>
-        <fast-divider></fast-divider>
-        <fast-menu-item role="menuitemradio">Radio 1.1</fast-menu-item>
-        <fast-menu-item role="menuitemradio">Radio 1.2</fast-menu-item>
-        <fast-divider></fast-divider>
-        <fast-menu-item role="menuitemradio">Radio 2.1</fast-menu-item>
-        <fast-menu-item role="menuitemradio">Radio 2.2</fast-menu-item>
-    `,
+    storyItems: [
+        { storyContent: "Menu Item 1" },
+        { storyContent: "Menu Item 2" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Checkbox 1", role: "menuitemcheckbox" },
+        { storyContent: "Checkbox 2", role: "menuitemcheckbox" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Radio 1.1", role: "menuitemradio" },
+        { storyContent: "Radio 1.2", role: "menuitemradio" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Radio 2.1", role: "menuitemradio" },
+        { storyContent: "Radio 2.2", role: "menuitemradio" },
+    ],
 };
 
-export const MenuWithNestedItems = Menu.bind({});
+export const MenuWithNestedItems: Story<FASTMenu> = Menu.bind({});
 MenuWithNestedItems.args = {
-    content: html`
-        <fast-menu-item>
-            Menu item 1
-            <fast-menu slot="submenu">
-                <fast-menu-item>Menu item 1.1</fast-menu-item>
-                <fast-menu-item>Menu item 1.2</fast-menu-item>
-                <fast-menu-item>Menu item 1.3</fast-menu-item>
-            </fast-menu>
-        </fast-menu-item>
-        <fast-menu-item>
-            Menu item 2
-            <fast-menu slot="submenu">
-                <fast-menu-item>Menu item 2.1</fast-menu-item>
-                <fast-menu-item>Menu item 2.2</fast-menu-item>
-                <fast-menu-item>Menu item 2.3</fast-menu-item>
-            </fast-menu>
-        </fast-menu-item>
-        <fast-menu-item>
-            Menu item 3
-            <fast-menu slot="submenu">
-                <fast-menu-item>Menu item 3.1</fast-menu-item>
-                <fast-menu-item>Menu item 3.2</fast-menu-item>
-                <fast-menu-item>Menu item 3.3</fast-menu-item>
-            </fast-menu>
-        </fast-menu-item>
-    `,
+    storyItems: [
+        {
+            storyContent: html`
+                Menu Item 1 ${repeat(x => x.storyItems, storyTemplate)}
+            `,
+            storyItems: [
+                {
+                    slot: "submenu",
+                    storyContent: storyContentTemplate,
+                    storyItems: [
+                        { storyContent: "Menu Item 1.1" },
+                        { storyContent: "Menu Item 1.2" },
+                        { storyContent: "Menu Item 1.3" },
+                    ],
+                },
+            ],
+        },
+        {
+            storyContent: html`
+                Menu Item 2 ${repeat(x => x.storyItems, storyTemplate)}
+            `,
+            storyItems: [
+                {
+                    slot: "submenu",
+                    storyContent: storyContentTemplate,
+                    storyItems: [
+                        {
+                            storyContent: html`
+                                Menu Item 2.1 ${repeat(x => x.storyItems, storyTemplate)}
+                            `,
+                            storyItems: [
+                                {
+                                    slot: "submenu",
+                                    storyContent: storyContentTemplate,
+                                    storyItems: [
+                                        { storyContent: "Menu Item 2.1.1" },
+                                        { storyContent: "Menu Item 2.1.2" },
+                                        { storyContent: "Menu Item 2.1.3" },
+                                    ],
+                                },
+                            ],
+                        },
+                        { storyContent: "Menu Item 2.2" },
+                        { storyContent: "Menu Item 2.3" },
+                    ],
+                },
+            ],
+        },
+        {
+            storyContent: html`
+                Menu Item 3 ${repeat(x => x.storyItems, storyTemplate)}
+            `,
+            storyItems: [
+                {
+                    slot: "submenu",
+                    storyContent: storyContentTemplate,
+                    storyItems: [
+                        { storyContent: "Menu Item 3.1" },
+                        { storyContent: "Menu Item 3.2" },
+                        { storyContent: "Menu Item 3.3" },
+                    ],
+                },
+            ],
+        },
+    ],
 };
 
-export const WithIcons = Menu.bind({});
-WithIcons.args = {
-    content: html`
-        <fast-menu-item>
-            <svg slot="start"><use href="#test-icon"></svg>
-            <svg slot="end"><use href="#test-icon"></svg>
-            Menu item 1
-        </fast-menu-item>
-        <fast-menu-item>
-            <svg slot="start"><use href="#test-icon"></svg>
-            <svg slot="end"><use href="#test-icon"></svg>
-            Menu item 2
-        </fast-menu-item>
-        <fast-menu-item>
-            <svg slot="start"><use href="#test-icon"></svg>
-            <svg slot="end"><use href="#test-icon"></svg>
-            Menu item 3
-        </fast-menu-item>
-    `,
+export const MenuWithItemsWithIcons: Story<FASTMenu> = Menu.bind({});
+MenuWithItemsWithIcons.args = {
+    storyItems: [
+        {
+            storyContent: html`
+                <svg slot="start"><use href="#test-icon" /></svg>
+                Slotted start icon
+            `,
+        },
+        {
+            storyContent: html`
+                <svg slot="end"><use href="#test-icon" /></svg>
+                Slotted end icon
+            `,
+        },
+        {
+            storyContent: html`
+                <svg slot="start"><use href="#test-icon" /></svg>
+                <svg slot="end"><use href="#test-icon" /></svg>
+                Slotted start and end icons
+            `,
+        },
+    ],
 };

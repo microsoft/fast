@@ -69,6 +69,10 @@ export class FASTSwitch extends FormAssociatedSwitch {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent) => {
+        if (this.readOnly) {
+            return;
+        }
+
         switch (e.key) {
             case keyEnter:
             case keySpace:

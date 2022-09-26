@@ -1,8 +1,42 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
+This log was last generated on Fri, 23 Sep 2022 22:53:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.7
+
+Fri, 23 Sep 2022 22:53:27 GMT
+
+### Changes
+
+- fix: update router to use the new behavior API (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.7
+
+## 1.0.0-alpha.6
+
+Thu, 01 Sep 2022 21:53:34 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.6
+
+## 1.0.0-alpha.5
+
+Thu, 18 Aug 2022 20:46:10 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.5
+
+## 1.0.0-alpha.4
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- refactor: reduce duplication in style normalization code scenarios (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.4
 
 ## 1.0.0-alpha.3
 

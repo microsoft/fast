@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: enable the render directive to work in SSR",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

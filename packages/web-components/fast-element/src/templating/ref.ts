@@ -1,8 +1,7 @@
-import type { ExecutionContext } from "../observation/observable.js";
 import {
     HTMLDirective,
     StatelessAttachedAttributeDirective,
-    ViewBehaviorTargets,
+    ViewController,
 } from "./html-directive.js";
 import type { CaptureType } from "./template.js";
 
@@ -12,25 +11,12 @@ import type { CaptureType } from "./template.js";
  */
 export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     /**
-     * Bind this behavior to the source.
-     * @param source - The source to bind to.
-     * @param context - The execution context that the binding is operating within.
-     * @param targets - The targets that behaviors in a view can attach to.
+     * Bind this behavior.
+     * @param controller - The view controller that manages the lifecycle of this behavior.
      */
-    public bind(
-        source: any,
-        context: ExecutionContext,
-        targets: ViewBehaviorTargets
-    ): void {
-        source[this.options] = targets[this.nodeId];
+    public bind(controller: ViewController): void {
+        controller.source[this.options] = controller.targets[this.nodeId];
     }
-
-    /**
-     * Unbinds this behavior from the source.
-     * @param source - The source to unbind from.
-     */
-    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-    public unbind(): void {}
 }
 
 HTMLDirective.define(RefDirective);
@@ -40,5 +26,6 @@ HTMLDirective.define(RefDirective);
  * @param propertyName - The name of the property to assign the reference to.
  * @public
  */
-export const ref = <T = any>(propertyName: keyof T & string): CaptureType<T> =>
-    new RefDirective(propertyName);
+export const ref = <TSource = any, TParent = any>(
+    propertyName: keyof TSource & string
+): CaptureType<TSource, TParent> => new RefDirective(propertyName);

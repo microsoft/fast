@@ -2,6 +2,78 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Fri, 23 Sep 2022 22:53:27 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.7",
+      "version": "1.0.0-alpha.7",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-router",
+            "commit": "2edd63a8abe24c68cfc7c76d773c912c6f2d6543",
+            "comment": "fix: update router to use the new behavior API"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.7",
+            "commit": "1646b26450a08a77c8bd6302560fe12cc6989ae1"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 01 Sep 2022 21:53:34 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.6",
+      "version": "1.0.0-alpha.6",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.6",
+            "commit": "6b0f08574475d8b28cc2df67bf72b9041c2ad285"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 18 Aug 2022 20:46:10 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.5",
+      "version": "1.0.0-alpha.5",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.5",
+            "commit": "0b57f1bc812e8e6371b7d27bb625f99a25bfaa66"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 18 Jul 2022 21:10:01 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.4",
+      "version": "1.0.0-alpha.4",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-router",
+            "commit": "f164aa75e62ed71c9386902051c021f1fdfba364",
+            "comment": "refactor: reduce duplication in style normalization code scenarios"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.4",
+            "commit": "2ff46a32cdd9af12b236d0e2f3436a4de782e8ee"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 22 Jun 2022 20:17:50 GMT",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.3",
       "version": "1.0.0-alpha.3",

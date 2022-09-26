@@ -5,5 +5,5 @@ export const { create } = DesignToken;
 
 /** @internal */
 export function createNonCss<T>(name: string): DesignToken<T> {
-    return DesignToken.create<T>({ name, cssCustomPropertyName: null });
+    return DesignToken.create<T>({ name });
 }

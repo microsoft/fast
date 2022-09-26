@@ -91,7 +91,7 @@ const styles = css`
         box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 1px) var(--focus-stroke-outer);
     }
     :host(:not([multiple]):not([size]):focus-visible)
-        ::slotted(fast-option}[aria-selected="true"]:not([disabled])) {
+        ::slotted(fast-option[aria-selected="true"]:not([disabled])) {
         box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 1px) inset
             var(--focus-stroke-inner);
         border-color: var(--focus-stroke-outer);
@@ -194,7 +194,7 @@ export class Select extends FASTSelect {
     }
 
     protected maxHeightChanged(prev: number | undefined, next: number): void {
-        if (this.isConnected) {
+        if (this.$fastController.isConnected) {
             if (this.collapsible) {
                 this.updateComputedStylesheet();
             }
@@ -250,8 +250,6 @@ export class Select extends FASTSelect {
                 --size: ${this.selectSize};
             }
         `;
-
-        console.log(this.selectSize);
 
         this.$fastController.addStyles(this.computedStylesheet);
     }

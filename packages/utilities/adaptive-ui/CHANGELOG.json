@@ -2,6 +2,132 @@
   "name": "@microsoft/adaptive-ui",
   "entries": [
     {
+      "date": "Fri, 23 Sep 2022 22:53:27 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.10",
+      "version": "1.0.0-alpha.10",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "e4df319f20f647ac5437e684d3be460e98308f5b",
+            "comment": "Add layer recipes and design tokens"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "ebf424d4aee7575a4e8c20e76e92fcbe7e0af8d7",
+            "comment": "Initial support for opacity in neutral recipes"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.10",
+            "commit": "1646b26450a08a77c8bd6302560fe12cc6989ae1"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 01 Sep 2022 21:53:34 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.9",
+      "version": "1.0.0-alpha.9",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.9",
+            "commit": "6b0f08574475d8b28cc2df67bf72b9041c2ad285"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 26 Aug 2022 18:06:44 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.8",
+      "version": "1.0.0-alpha.8",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.8",
+            "commit": "4fe1bc5f1be71e2e0ea3bb46871c597fc993dc5f"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 18 Aug 2022 20:46:10 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.7",
+      "version": "1.0.0-alpha.7",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "218cfc014f5c76464493725f83bd883e8b07defa",
+            "comment": "Update design tokens to use new resolve function"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.7",
+            "commit": "0b57f1bc812e8e6371b7d27bb625f99a25bfaa66"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 27 Jul 2022 17:36:33 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.6",
+      "version": "1.0.0-alpha.6",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "349a30c989da19b377e627fdb6e64974345a4b1b",
+            "comment": "Fixed missing export and incorrect min-contrast token values"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "0bc551cbe2db1a31adc31b3f69db08184da77dfa",
+            "comment": "Fix a bug in Swatch where blue and green values were being flipped"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.6",
+            "commit": "7df4548954621d6247ab7fe3fae1a1ba0d33294b"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 18 Jul 2022 21:10:01 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.5",
+      "version": "1.0.0-alpha.5",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "b7caa90b2d77f5e5d56ef5303ff7647a12e17802",
+            "comment": "Added elevation design tokens"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.5",
+            "commit": "2ff46a32cdd9af12b236d0e2f3436a4de782e8ee"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 22 Jun 2022 20:17:50 GMT",
       "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.4",
       "version": "1.0.0-alpha.4",

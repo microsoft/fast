@@ -69,7 +69,7 @@ export type ViewBehaviorFactoryOp = {
  */
 export type AttributeBindingOp = {
     type: OpType.attributeBinding;
-    binding: Binding;
+    dataBinding: Binding;
     target: string;
     aspect: number;
     useCustomElementInstance: boolean;

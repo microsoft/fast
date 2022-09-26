@@ -4,9 +4,11 @@
 
 ```ts
 
+import { ColorRGBA64 } from '@microsoft/fast-colors';
 import { CSSDesignToken } from '@microsoft/fast-foundation';
 import { CSSDirective } from '@microsoft/fast-element';
 import { DesignToken } from '@microsoft/fast-foundation';
+import { DesignTokenResolver } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
 
 // @public (undocumented)
@@ -98,12 +100,20 @@ export const _black: SwatchRGB;
 // @public
 export function blackOrWhiteByContrast(reference: Swatch, minContrast: number, defaultBlack: boolean): Swatch;
 
+// @public
+export function blackOrWhiteByContrastSet(restReference: Swatch, hoverReference: Swatch, activeReference: Swatch, focusReference: Swatch, minContrast: number, defaultBlack: boolean): {
+    rest: Swatch;
+    hover: Swatch;
+    active: Swatch;
+    focus: Swatch;
+};
+
 // @public (undocumented)
 export const bodyFont: CSSDesignToken<string>;
 
 // @public
 export interface ColorRecipe {
-    evaluate(element: HTMLElement, reference?: Swatch): Swatch;
+    evaluate(resolver: DesignTokenResolver, reference?: Swatch): Swatch;
 }
 
 // @public
@@ -114,6 +124,12 @@ export function contrastAndDeltaSwatchSet(palette: Palette, reference: Swatch, m
 
 // @public
 export function contrastSwatch(palette: Palette, reference: Swatch, minContrast: number, direction?: PaletteDirection): Swatch;
+
+// @public
+export const ContrastTarget: Readonly<{
+    readonly NormalText: 4.5;
+    readonly LargeText: 3;
+}>;
 
 // @public (undocumented)
 export const controlCornerRadius: CSSDesignToken<number>;
@@ -171,7 +187,7 @@ export const elevationFlyoutSize: DesignToken<number>;
 
 // @public
 export interface ElevationRecipe {
-    evaluate(element: HTMLElement, size: number): string;
+    evaluate(resolver: DesignTokenResolver, size: number): string;
 }
 
 // @public (undocumented)
@@ -224,7 +240,7 @@ export function idealColorDeltaSwatchSet(palette: Palette, reference: Swatch, mi
 
 // @public
 export interface InteractiveColorRecipe {
-    evaluate(element: HTMLElement, reference?: Swatch): InteractiveSwatchSet;
+    evaluate(resolver: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet;
 }
 
 // @public
@@ -236,13 +252,93 @@ export interface InteractiveSwatchSet {
 }
 
 // @public
+export function interactiveSwatchSetAsOverlay(set: InteractiveSwatchSet, reference: Swatch, asOverlay: boolean): InteractiveSwatchSet;
+
+// @public
 export function isDark(color: RelativeLuminance): boolean;
+
+// @public
+export const LayerBaseLuminance: Readonly<{
+    readonly LightMode: 0.95;
+    readonly DarkMode: 0.13;
+}>;
 
 // @public (undocumented)
 export const layerCornerRadius: CSSDesignToken<number>;
 
 // @public
+export const layerFillActiveDelta: DesignToken<number>;
+
+// @public
+export const layerFillBaseLuminance: DesignToken<number>;
+
+// @public
+export const layerFillDelta: DesignToken<number>;
+
+// @public
+export const layerFillFixedBase: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedMinus1: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedMinus2: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedMinus3: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedMinus4: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedPlus1: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedPlus2: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedPlus3: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedPlus4: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillFixedRecipe: DesignToken<LayerRecipe>;
+
+// @public
+export const layerFillFocusDelta: DesignToken<number>;
+
+// @public
+export const layerFillHoverDelta: DesignToken<number>;
+
+// @public
+export const layerFillInteractiveActive: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillInteractiveFocus: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillInteractiveHover: CSSDesignToken<Swatch>;
+
+// @public
+export const layerFillInteractiveRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public
+export const layerFillInteractiveRest: CSSDesignToken<Swatch>;
+
+// @public
+export const layerPalette: DesignToken<Palette<Swatch>>;
+
+// @public
+export interface LayerRecipe {
+    evaluate(resolve: DesignTokenResolver, index: number): Swatch;
+}
+
+// @public
 export function luminanceSwatch(luminance: number): Swatch;
+
+// @public (undocumented)
+export const neutralAsOverlay: DesignToken<boolean>;
 
 // @public (undocumented)
 export const neutralBaseColor: CSSDesignToken<string>;
@@ -544,7 +640,7 @@ export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof Pa
 
 // @public
 export class PaletteRGB extends BasePalette<SwatchRGB> {
-    static from(source: SwatchRGB, options?: Partial<PaletteRGBOptions>): PaletteRGB;
+    static from(source: SwatchRGB | string, options?: Partial<PaletteRGBOptions>): PaletteRGB;
 }
 
 // @public
@@ -585,9 +681,14 @@ export interface Swatch extends RelativeLuminance {
 }
 
 // @public
+export function swatchAsOverlay(swatch: Swatch, reference: Swatch, asOverlay: boolean): Swatch;
+
+// @public
 export class SwatchRGB implements Swatch {
-    constructor(red: number, green: number, blue: number);
+    constructor(red: number, green: number, blue: number, alpha?: number, intendedColor?: SwatchRGB);
+    static asOverlay(intendedColor: SwatchRGB, reference: SwatchRGB): SwatchRGB;
     readonly b: number;
+    readonly color: ColorRGBA64;
     contrast: any;
     createCSS: () => string;
     static from(obj: {
@@ -596,6 +697,7 @@ export class SwatchRGB implements Swatch {
         b: number;
     }): SwatchRGB;
     readonly g: number;
+    readonly intendedColor?: SwatchRGB;
     readonly r: number;
     readonly relativeLuminance: number;
     toColorString(): string;

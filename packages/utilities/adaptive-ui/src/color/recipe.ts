@@ -1,3 +1,4 @@
+import { DesignTokenResolver } from "@microsoft/fast-foundation";
 import { Swatch } from "./swatch.js";
 
 /**
@@ -9,10 +10,10 @@ export interface ColorRecipe {
     /**
      * Evaluate a single color value.
      *
-     * @param element - The element for which to evaluate the color recipe
+     * @param resolver - A function that resolves design tokens
      * @param reference - The reference color, implementation defaults to `fillColor`, but sometimes overridden for nested color recipes
      */
-    evaluate(element: HTMLElement, reference?: Swatch): Swatch;
+    evaluate(resolver: DesignTokenResolver, reference?: Swatch): Swatch;
 }
 
 /**
@@ -24,10 +25,10 @@ export interface InteractiveColorRecipe {
     /**
      * Evaluate an interactive color set.
      *
-     * @param element - The element for which to evaluate the color recipe
+     * @param resolver - A function that resolves design tokens
      * @param reference - The reference color, implementation defaults to `fillColor`, but sometimes overridden for nested color recipes
      */
-    evaluate(element: HTMLElement, reference?: Swatch): InteractiveSwatchSet;
+    evaluate(resolver: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet;
 }
 
 /**

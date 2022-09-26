@@ -6,10 +6,10 @@ import type { FASTListboxOption, ListboxOptionOptions } from "./listbox-option.j
  * The template for the {@link @microsoft/fast-foundation#(FASTListboxOption:class)} component.
  * @public
  */
-export function listboxOptionTemplate(
+export function listboxOptionTemplate<T extends FASTListboxOption>(
     options: ListboxOptionOptions = {}
-): ElementViewTemplate<FASTListboxOption> {
-    return html<FASTListboxOption>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             aria-checked="${x => x.ariaChecked}"
             aria-disabled="${x => x.ariaDisabled}"
