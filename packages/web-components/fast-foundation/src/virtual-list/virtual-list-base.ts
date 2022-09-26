@@ -380,6 +380,8 @@ export function Virtualizing<T extends ConstructableVirtualListBase>(BaseCtor: T
                     this.itemsPlaceholder
                 );
             }
+
+            super.initializeRepeatBehavior();
         }
 
         protected getRepeatOptions(): RepeatOptions {
