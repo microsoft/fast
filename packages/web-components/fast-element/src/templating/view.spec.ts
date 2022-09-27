@@ -2,6 +2,8 @@ import { expect } from "chai";
 import { Message } from "../interfaces.js";
 import { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
+import { AddViewBehaviorFactory, HTMLDirective, ViewBehavior, ViewBehaviorFactory, ViewController } from "./html-directive.js";
+import { Markup } from "./markup.js";
 import { html } from "./template.js";
 import { HTMLView } from "./view.js";
 
@@ -111,6 +113,51 @@ describe(`The HTMLView`, () => {
             expect(warnings.list.length).equal(1);
             expect(warnings.list[0].code).equal(Message.hostBindingWithoutHost);
             expect(warnings.list[0].values!.name).equal("addEventListener");
+        });
+    });
+
+    context("when rebinding", () => {
+        it("properly unbinds the old source before binding the new source", () => {
+            const sources: any[] = [];
+            const boundStates: boolean[] = [];
+
+            class SourceCaptureDirective
+                implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
+                id: string;
+                nodeId: string;
+
+                createHTML(add: AddViewBehaviorFactory): string {
+                    return Markup.attribute(add(this));
+                }
+
+                createBehavior(): ViewBehavior<any, any> {
+                    return this;
+                }
+
+                bind(controller: ViewController<any, any>): void {
+                    sources.push(controller.source);
+                    boundStates.push(controller.isBound);
+                }
+            }
+
+            HTMLDirective.define(SourceCaptureDirective);
+
+            const template = html`
+                <div ${new SourceCaptureDirective()}></div>
+            `;
+
+            const view = template.create();
+            const firstSource = {};
+            view.bind(firstSource);
+
+            const secondSource = {};
+            view.bind(secondSource);
+
+            expect(sources[0]).to.equal(firstSource);
+            expect(boundStates[0]).to.be.false;
+
+            expect(sources[1]).to.equal(secondSource);
+            expect(boundStates[1]).to.be.false;
         });
     });
 
