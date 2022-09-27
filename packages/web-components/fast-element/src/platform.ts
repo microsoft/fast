@@ -96,6 +96,10 @@ export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRe
             return typeToDefinition.get(key);
         },
         getForInstance(object: any): TDefinition | undefined {
+            if (object === null || object === void 0) {
+                return void 0;
+            }
+
             return typeToDefinition.get(object.constructor);
         },
     });
