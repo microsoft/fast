@@ -3,5 +3,5 @@
   "comment": "fix: correct view state when processing unbindables during rebind",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
