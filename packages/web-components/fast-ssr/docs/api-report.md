@@ -63,6 +63,8 @@ export interface ElementRenderer {
     setAttribute(name: string, value: string): void;
     // (undocumented)
     setProperty(name: string, value: unknown): void;
+    // (undocumented)
+    readonly tagName: string;
 }
 
 // @beta (undocumented)
