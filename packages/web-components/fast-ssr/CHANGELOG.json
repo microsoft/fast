@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Tue, 27 Sep 2022 22:31:52 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.11",
+      "version": "1.0.0-beta.11",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.8",
+            "commit": "8834c6732c727d39f92f72b197388453a9c17f9b"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.11",
+            "commit": "8834c6732c727d39f92f72b197388453a9c17f9b"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 23 Sep 2022 22:53:27 GMT",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.10",
       "version": "1.0.0-beta.10",

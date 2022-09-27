@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 27 Sep 2022 22:31:52 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.11",
+      "version": "3.0.0-alpha.11",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.8",
+            "commit": "8834c6732c727d39f92f72b197388453a9c17f9b"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 23 Sep 2022 22:53:27 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.10",
       "version": "3.0.0-alpha.10",
