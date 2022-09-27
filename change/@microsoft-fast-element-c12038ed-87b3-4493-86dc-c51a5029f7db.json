@@ -3,5 +3,5 @@
   "comment": "fix: do not crash when null/undefined is provided literally in templates",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
