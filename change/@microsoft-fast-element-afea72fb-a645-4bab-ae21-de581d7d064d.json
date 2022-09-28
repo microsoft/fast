@@ -3,5 +3,5 @@
   "comment": "fix: ensure composed templates receive the existing execution context",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
