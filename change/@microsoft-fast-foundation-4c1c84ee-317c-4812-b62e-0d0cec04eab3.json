@@ -3,5 +3,5 @@
   "comment": "fix: remove class from hs template root",
   "packageName": "@microsoft/fast-foundation",
   "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
