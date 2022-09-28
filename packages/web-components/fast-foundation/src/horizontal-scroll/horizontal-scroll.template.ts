@@ -11,9 +11,7 @@ export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
     options: HorizontalScrollOptions = {}
 ): ElementViewTemplate<T> {
     return html`
-        <template
-            @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
-        >
+        <template @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}">
             ${startSlotTemplate(options)}
             <div class="scroll-area" part="scroll-area">
                 <div
