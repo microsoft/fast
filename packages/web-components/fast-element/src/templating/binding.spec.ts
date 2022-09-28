@@ -271,6 +271,19 @@ describe("The HTML binding directive", () => {
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
         });
 
+        it("pipes the existing execution context through to the new view", () => {
+            const { behavior, parentNode, targets } = contentBinding("computedValue");
+            const template = html`This is a template. ${(x, c) => c.parent.testProp}`;
+            const model = new Model(template);
+            const controller = createController(model, targets);
+            const parent = { testProp: "testing..." };
+
+            controller.context.parent = parent;
+            behavior.bind(controller);
+
+            expect(toHTML(parentNode)).to.equal(`This is a template. testing...`);
+        });
+
         it("allows interpolated HTML tags in templates", async () => {
             const { behavior, parentNode, targets } = contentBinding();
             const template = html`${x => html`<${x.knownValue}>Hi there!</${x.knownValue}>`}`;
@@ -287,7 +300,7 @@ describe("The HTML binding directive", () => {
             await Updates.next()
 
             expect(toHTML(parentNode)).to.equal(`<a>Hi there!</a>`);
-        })
+        });
     })
 
     context("when unbinding template content", () => {
