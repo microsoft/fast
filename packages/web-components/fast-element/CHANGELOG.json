@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 28 Sep 2022 20:45:51 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.9",
+      "version": "2.0.0-beta.9",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "08fab33015853b7f820fdfdac2aecddfeb31843f",
+            "comment": "fix: ensure composed templates receive the existing execution context"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 27 Sep 2022 22:31:52 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.8",
       "version": "2.0.0-beta.8",
