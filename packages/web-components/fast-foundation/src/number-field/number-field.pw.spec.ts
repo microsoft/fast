@@ -138,8 +138,9 @@ test.describe("NumberField", () => {
 
         await element.evaluate((node: FASTNumberField) => {
             node.max = 10;
-            return new Promise(requestAnimationFrame);
         });
+
+        await (await element.elementHandle())?.waitForElementState("stable");
 
         await expect(element).toHaveJSProperty("value", "10");
     });

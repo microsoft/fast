@@ -71,7 +71,7 @@ test.describe("Slider", () => {
             `;
         });
 
-        expect(await element.getAttribute("aria-disabled")).toBe(null);
+        await expect(element).not.hasAttribute("aria-disabled");
     });
 
     test("should set a default `aria-orientation` value when `orientation` is not defined", async () => {
@@ -94,7 +94,7 @@ test.describe("Slider", () => {
             `;
         });
 
-        expect(await element.getAttribute("aria-readonly")).toBe(null);
+        await expect(element).not.hasAttribute("aria-readonly");
     });
 
     test("should initialize to the initial value if no value property is set", async () => {
