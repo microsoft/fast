@@ -296,16 +296,14 @@ export class HTMLView<TSource = any, TParent = any>
      * @param context - The execution context to run the behaviors within.
      */
     public bind(source: TSource): void {
-        const oldSource = this.source;
-
-        if (oldSource === source) {
+        if (this.source === source) {
             return;
         }
 
         let behaviors = this.behaviors;
-        this.source = source;
 
         if (behaviors === null) {
+            this.source = source;
             this.behaviors = behaviors = new Array<ViewBehavior>(this.factories.length);
             const factories = this.factories;
 
@@ -315,9 +313,12 @@ export class HTMLView<TSource = any, TParent = any>
                 behaviors[i] = behavior;
             }
         } else {
-            if (oldSource !== null) {
+            if (this.source !== null) {
                 this.evaluateUnbindables();
             }
+
+            this.isBound = false;
+            this.source = source;
 
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
                 behaviors[i].bind(this);
@@ -331,13 +332,7 @@ export class HTMLView<TSource = any, TParent = any>
      * Unbinds a view's behaviors from its binding source.
      */
     public unbind(): void {
-        if (!this.isBound) {
-            return;
-        }
-
-        const oldSource = this.source;
-
-        if (oldSource === null) {
+        if (!this.isBound || this.source === null) {
             return;
         }
 

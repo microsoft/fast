@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Fri, 23 Sep 2022 22:53:27 GMT and should not be manually modified.
+This log was last generated on Tue, 27 Sep 2022 22:31:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.8
+
+Tue, 27 Sep 2022 22:31:52 GMT
+
+### Changes
+
+- fix: correct view state when processing unbindables during rebind (roeisenb@microsoft.com)
+- fix: do not crash when null/undefined is provided literally in templates (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.7
 

@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 27 Sep 2022 22:31:52 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.8",
+      "version": "2.0.0-beta.8",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "8834c6732c727d39f92f72b197388453a9c17f9b",
+            "comment": "fix: correct view state when processing unbindables during rebind"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "d949a8873621f409f9d9f3453cdb40b593d14b67",
+            "comment": "fix: do not crash when null/undefined is provided literally in templates"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 23 Sep 2022 22:53:27 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.7",
       "version": "2.0.0-beta.7",
