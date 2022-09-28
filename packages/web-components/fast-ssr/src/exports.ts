@@ -1,17 +1,13 @@
 import {
-    Compiler,
-    ElementController,
-    ElementStyles,
-    StyleTarget,
-    Updates,
-    ViewBehaviorFactory,
-} from "@microsoft/fast-element";
-import { RenderInfo } from "./render-info.js";
-import {
     AsyncFASTElementRenderer,
     SyncFASTElementRenderer,
 } from "./element-renderer/fast-element-renderer.js";
-import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
+import {
+    AsyncElementRenderer,
+    ConstructableElementRenderer,
+    ElementRenderer,
+} from "./element-renderer/interfaces.js";
+import { RenderInfo } from "./render-info.js";
 import { StyleElementStyleRenderer, StyleRenderer } from "./styles/style-renderer.js";
 import {
     defaultViewBehaviorFactoryRenderers,
@@ -22,32 +18,11 @@ import {
     DefaultTemplateRenderer,
     TemplateRenderer,
 } from "./template-renderer/template-renderer.js";
-import { SSRView } from "./view.js";
-import {
-    AsyncElementRenderer,
-    ConstructableElementRenderer,
-    ElementRenderer,
-} from "./element-renderer/interfaces.js";
 
-Compiler.setDefaultStrategy(
-    (
-        html: string | HTMLTemplateElement,
-        factories: Record<string, ViewBehaviorFactory>
-    ) => {
-        if (typeof html !== "string") {
-            throw new Error(
-                "SSR compiler does not support HTMLTemplateElement templates"
-            );
-        }
+// Perform necessary configuration of FAST-Element library
+// for rendering in NodeJS
+import "./configure-fast-element.js";
 
-        return new SSRView(html, factories) as any;
-    }
-);
-
-ElementStyles.setDefaultStrategy(FASTSSRStyleStrategy);
-Updates.setMode(false);
-
-import "./patch-fast-element.js";
 /**
  * Configuration for SSR factory.
  * @beta
@@ -116,8 +91,8 @@ function fastSSR(config?: SSRConfiguration): any {
 }
 
 export default fastSSR;
-export * from "./request-storage.js";
 export * from "./declarative-shadow-dom-polyfill.js";
+export * from "./request-storage.js";
 export type {
     ElementRenderer,
     AsyncElementRenderer,
