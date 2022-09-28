@@ -1,6 +1,8 @@
 import {
     Compiler,
+    ElementController,
     ElementStyles,
+    StyleTarget,
     Updates,
     ViewBehaviorFactory,
 } from "@microsoft/fast-element";
@@ -45,6 +47,7 @@ Compiler.setDefaultStrategy(
 ElementStyles.setDefaultStrategy(FASTSSRStyleStrategy);
 Updates.setMode(false);
 
+import "./patch-fast-element.js";
 /**
  * Configuration for SSR factory.
  * @beta
