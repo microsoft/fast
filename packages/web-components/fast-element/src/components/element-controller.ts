@@ -1,11 +1,17 @@
-import { Message, Mutable, StyleStrategy, StyleTarget } from "../interfaces.js";
+import {
+    KernelServiceId,
+    Message,
+    Mutable,
+    StyleStrategy,
+    StyleTarget,
+} from "../interfaces.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { Observable, SourceLifetime } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
-import type { ElementStyles } from "../styles/element-styles.js";
+import { ElementStyles } from "../styles/element-styles.js";
 import type { ViewController } from "../templating/html-directive.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
 
@@ -480,13 +486,14 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
  * @param target
  * @returns
  */
-function normalizeStyleTarget(
-    target: StyleTarget
-): StyleTarget & { adoptedStyleSheets: CSSStyleSheet[] } {
-    if (target.nodeType === Node.DOCUMENT_NODE) {
-        return target as any;
+function normalizeStyleTarget(target: StyleTarget): StyleTarget {
+    if ("adoptedStyleSheets" in target) {
+        return target;
     } else {
-        return getShadowRoot(target as Element) ?? (target.getRootNode() as any);
+        return (
+            (getShadowRoot(target as any) as null | StyleTarget) ??
+            (target.getRootNode() as any)
+        );
     }
 }
 
@@ -529,7 +536,6 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
     }
 
     public removeStylesFrom(target: StyleTarget): void {
-        // target = getShadowRoot(target as any) as unknown as StyleTarget ?? target.getRootNode();
         const t = normalizeStyleTarget(target);
         const sheets = this.sheets;
         t.adoptedStyleSheets = t.adoptedStyleSheets!.filter(
@@ -540,6 +546,9 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
 
 let id = 0;
 const nextStyleId = (): string => `fast-${++id}`;
+function usableStyleTarget(target: StyleTarget): StyleTarget {
+    return target === document ? document.body : target;
+}
 export class StyleElementStrategy implements StyleStrategy {
     private readonly styleClass: string;
 
@@ -548,7 +557,7 @@ export class StyleElementStrategy implements StyleStrategy {
     }
 
     public addStylesTo(target: StyleTarget): void {
-        target = normalizeStyleTarget(target);
+        target = usableStyleTarget(normalizeStyleTarget(target));
 
         const styles = this.styles;
         const styleClass = this.styleClass;
@@ -566,10 +575,14 @@ export class StyleElementStrategy implements StyleStrategy {
             `.${this.styleClass}`
         );
 
-        target = normalizeStyleTarget(target);
+        target = usableStyleTarget(normalizeStyleTarget(target));
 
         for (let i = 0, ii = styles.length; i < ii; ++i) {
             target.removeChild(styles[i]);
         }
     }
 }
+
+ElementStyles.setDefaultStrategy(
+    FAST.getById(KernelServiceId.styleSheetStrategy, () => AdoptedStyleSheetsStrategy)
+);

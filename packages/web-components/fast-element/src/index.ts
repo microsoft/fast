@@ -43,4 +43,4 @@ export * from "./templating/node-observation.js";
 export * from "./components/fast-element.js";
 export * from "./components/fast-definitions.js";
 export * from "./components/attributes.js";
-export * from "./components/element-controller.js";
+export { ElementController } from "./components/element-controller.js";

@@ -17,19 +17,6 @@ export type AddBehavior = (behavior: HostBehavior<HTMLElement>) => void;
 // @public
 export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
 
-// Warning: (ae-internal-missing-underscore) The name "AdoptedStyleSheetsStrategy" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export class AdoptedStyleSheetsStrategy implements StyleStrategy {
-    constructor(styles: (string | CSSStyleSheet)[]);
-    // (undocumented)
-    addStylesTo(target: StyleTarget): void;
-    // (undocumented)
-    removeStylesFrom(target: StyleTarget): void;
-    // (undocumented)
-    readonly sheets: CSSStyleSheet[];
-}
-
 // @public
 export interface ArrayObserver extends SubscriberSet {
     addSplice(splice: Splice): void;
@@ -777,7 +764,7 @@ export interface StyleStrategy {
 }
 
 // @public
-export interface StyleTarget {
+export interface StyleTarget extends Pick<Node, "getRootNode"> {
     adoptedStyleSheets?: CSSStyleSheet[];
     append(styles: HTMLStyleElement): void;
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;

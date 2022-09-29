@@ -1,14 +1,15 @@
 import { expect } from "chai";
 import {
-    AdoptedStyleSheetsStrategy,
-    ComposableStyles,
-    ElementStyles,
-} from "./element-styles.js";
+    AdoptedStyleSheetsStrategy, StyleElementStrategy
+} from "../components/element-controller.js";
+import type { StyleTarget } from "../interfaces.js";
 import { AddBehavior, cssDirective, CSSDirective } from "./css-directive.js";
 import { css } from "./css.js";
+import {
+    ComposableStyles,
+    ElementStyles
+} from "./element-styles.js";
 import type { HostBehavior } from "./host.js";
-import { StyleElementStrategy } from "../polyfills.js";
-import type { StyleTarget } from "../interfaces.js";
 
 if (ElementStyles.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStrategy", () => {

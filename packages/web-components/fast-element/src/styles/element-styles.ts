@@ -1,6 +1,4 @@
-import { FAST } from "../platform.js";
-import { KernelServiceId, StyleStrategy, StyleTarget } from "../interfaces.js";
-import { AdoptedStyleSheetsStrategy } from "../components/element-controller.js";
+import type { StyleStrategy, StyleTarget } from "../interfaces.js";
 import type { HostBehavior } from "./host.js";
 
 /**
@@ -144,7 +142,3 @@ export class ElementStyles {
         Array.isArray((document as any).adoptedStyleSheets) &&
         "replace" in CSSStyleSheet.prototype;
 }
-
-ElementStyles.setDefaultStrategy(
-    FAST.getById(KernelServiceId.styleSheetStrategy, () => AdoptedStyleSheetsStrategy)
-);

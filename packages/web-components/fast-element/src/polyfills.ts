@@ -1,10 +1,5 @@
 import { StyleElementStrategy } from "./components/element-controller.js";
-import type {
-    FASTGlobal,
-    StyleStrategy,
-    StyleTarget,
-    TrustedTypesPolicy,
-} from "./interfaces.js";
+import type { FASTGlobal, TrustedTypesPolicy } from "./interfaces.js";
 
 declare const global: any;
 
