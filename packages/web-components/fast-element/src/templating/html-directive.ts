@@ -342,17 +342,10 @@ export const Aspect = Object.freeze({
         switch (value[0]) {
             case ":":
                 directive.targetAspect = value.substring(1);
-                switch (directive.targetAspect) {
-                    case "innerHTML":
-                        directive.aspectType = Aspect.property;
-                        break;
-                    case "classList":
-                        directive.aspectType = Aspect.tokenList;
-                        break;
-                    default:
-                        directive.aspectType = Aspect.property;
-                        break;
-                }
+                directive.aspectType =
+                    directive.targetAspect === "classList"
+                        ? (directive.aspectType = Aspect.tokenList)
+                        : (directive.aspectType = Aspect.property);
                 break;
             case "?":
                 directive.targetAspect = value.substring(1);
@@ -363,13 +356,8 @@ export const Aspect = Object.freeze({
                 directive.aspectType = Aspect.event;
                 break;
             default:
-                if (value === "class") {
-                    directive.targetAspect = "className";
-                    directive.aspectType = Aspect.property;
-                } else {
-                    directive.targetAspect = value;
-                    directive.aspectType = Aspect.attribute;
-                }
+                directive.targetAspect = value;
+                directive.aspectType = Aspect.attribute;
                 break;
         }
     },
