@@ -1,5 +1,6 @@
 import { FAST } from "../platform.js";
 import { KernelServiceId, StyleStrategy, StyleTarget } from "../interfaces.js";
+import { AdoptedStyleSheetsStrategy } from "../components/element-controller.js";
 import type { HostBehavior } from "./host.js";
 
 /**
@@ -20,7 +21,6 @@ export type ConstructibleStyleStrategy = {
     new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
 };
 
-const styleSheetCache = new Map<string, CSSStyleSheet>();
 let DefaultStyleStrategy: ConstructibleStyleStrategy;
 
 function reduceStyles(
@@ -143,46 +143,6 @@ export class ElementStyles {
     public static readonly supportsAdoptedStyleSheets =
         Array.isArray((document as any).adoptedStyleSheets) &&
         "replace" in CSSStyleSheet.prototype;
-}
-
-/**
- * https://wicg.github.io/construct-stylesheets/
- * https://developers.google.com/web/updates/2019/02/constructable-stylesheets
- *
- * @internal
- */
-export class AdoptedStyleSheetsStrategy implements StyleStrategy {
-    /** @internal */
-    public readonly sheets: CSSStyleSheet[];
-
-    public constructor(styles: (string | CSSStyleSheet)[]) {
-        this.sheets = styles.map((x: string | CSSStyleSheet) => {
-            if (x instanceof CSSStyleSheet) {
-                return x;
-            }
-
-            let sheet = styleSheetCache.get(x);
-
-            if (sheet === void 0) {
-                sheet = new CSSStyleSheet();
-                (sheet as any).replaceSync(x);
-                styleSheetCache.set(x, sheet);
-            }
-
-            return sheet;
-        });
-    }
-
-    public addStylesTo(target: StyleTarget): void {
-        target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...this.sheets];
-    }
-
-    public removeStylesFrom(target: StyleTarget): void {
-        const sheets = this.sheets;
-        target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-            (x: CSSStyleSheet) => sheets.indexOf(x) === -1
-        );
-    }
 }
 
 ElementStyles.setDefaultStrategy(

@@ -141,30 +141,7 @@ export const enum KernelServiceId {
  * A node that can be targeted by styles.
  * @public
  */
-export interface StyleTarget {
-    /**
-     * Stylesheets to be adopted by the node.
-     */
-    adoptedStyleSheets?: CSSStyleSheet[];
-
-    /**
-     * Adds styles to the target by appending the styles.
-     * @param styles - The styles element to add.
-     */
-    append(styles: HTMLStyleElement): void;
-
-    /**
-     * Removes styles from the target.
-     * @param styles - The styles element to remove.
-     */
-    removeChild(styles: HTMLStyleElement): void;
-
-    /**
-     * Returns all element descendants of node that match selectors.
-     * @param selectors - The CSS selector to use for the query.
-     */
-    querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
-}
+export type StyleTarget = Document | Element;
 
 /**
  * Implemented to provide specific behavior when adding/removing styles

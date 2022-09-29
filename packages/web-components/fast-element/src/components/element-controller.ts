@@ -1,4 +1,4 @@
-import { Message, Mutable, StyleTarget } from "../interfaces.js";
+import { Message, Mutable, StyleStrategy, StyleTarget } from "../interfaces.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { Observable, SourceLifetime } from "../observation/observable.js";
@@ -17,9 +17,9 @@ const defaultEventOptions: CustomEventInit = {
 
 const isConnectedPropertyName = "isConnected";
 
-const shadowRoots = new WeakMap<HTMLElement, ShadowRoot>();
+const shadowRoots = new WeakMap<Element, ShadowRoot>();
 
-function getShadowRoot(element: HTMLElement): ShadowRoot | null {
+function getShadowRoot(element: Element): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
 }
 
@@ -470,5 +470,106 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             element,
             definition
         ));
+    }
+}
+
+/**
+ * Converts a styleTarget into the operative target. When the provided target is an Element
+ * that is a FASTElement, the function will return the ShadowRoot for that element. Otherwise,
+ * it will return the root node for the element.
+ * @param target
+ * @returns
+ */
+function normalizeStyleTarget(
+    target: StyleTarget
+): StyleTarget & { adoptedStyleSheets: CSSStyleSheet[] } {
+    if (target.nodeType === Node.DOCUMENT_NODE) {
+        return target as any;
+    } else {
+        return getShadowRoot(target as Element) ?? (target.getRootNode() as any);
+    }
+}
+
+// Default StyleStrategy implementations are defined in this module because they
+// require access to element shadowRoots, and we don't want to leak shadowRoot
+// objects out of this module.
+/**
+ * https://wicg.github.io/construct-stylesheets/
+ * https://developers.google.com/web/updates/2019/02/constructable-stylesheets
+ *
+ * @internal
+ */
+export class AdoptedStyleSheetsStrategy implements StyleStrategy {
+    private static styleSheetCache = new Map<string, CSSStyleSheet>();
+    /** @internal */
+    public readonly sheets: CSSStyleSheet[];
+
+    public constructor(styles: (string | CSSStyleSheet)[]) {
+        const styleSheetCache = AdoptedStyleSheetsStrategy.styleSheetCache;
+        this.sheets = styles.map((x: string | CSSStyleSheet) => {
+            if (x instanceof CSSStyleSheet) {
+                return x;
+            }
+
+            let sheet = styleSheetCache.get(x);
+
+            if (sheet === void 0) {
+                sheet = new CSSStyleSheet();
+                (sheet as any).replaceSync(x);
+                styleSheetCache.set(x, sheet);
+            }
+
+            return sheet;
+        });
+    }
+
+    public addStylesTo(target: StyleTarget): void {
+        const t = normalizeStyleTarget(target);
+        t.adoptedStyleSheets = [...t.adoptedStyleSheets!, ...this.sheets];
+    }
+
+    public removeStylesFrom(target: StyleTarget): void {
+        // target = getShadowRoot(target as any) as unknown as StyleTarget ?? target.getRootNode();
+        const t = normalizeStyleTarget(target);
+        const sheets = this.sheets;
+        t.adoptedStyleSheets = t.adoptedStyleSheets!.filter(
+            (x: CSSStyleSheet) => sheets.indexOf(x) === -1
+        );
+    }
+}
+
+let id = 0;
+const nextStyleId = (): string => `fast-${++id}`;
+export class StyleElementStrategy implements StyleStrategy {
+    private readonly styleClass: string;
+
+    public constructor(private readonly styles: string[]) {
+        this.styleClass = nextStyleId();
+    }
+
+    public addStylesTo(target: StyleTarget): void {
+        target = normalizeStyleTarget(target);
+
+        const styles = this.styles;
+        const styleClass = this.styleClass;
+
+        for (let i = 0; i < styles.length; i++) {
+            const element = document.createElement("style");
+            element.innerHTML = styles[i];
+            element.className = styleClass;
+            target.append(element);
+        }
+    }
+
+    public removeStylesFrom(target: StyleTarget): void {
+        const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
+            `.${this.styleClass}`
+        );
+
+        target = normalizeStyleTarget(target);
+
+        for (let i = 0, ii = styles.length; i < ii; ++i) {
+            target.removeChild(styles[i]);
+        }
     }
 }
