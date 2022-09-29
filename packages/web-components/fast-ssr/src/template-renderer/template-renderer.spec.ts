@@ -140,12 +140,27 @@ test.describe("TemplateRenderer", () => {
 
             expect(consolidate(result)).toBe(`<${name}></${name}>`);
         });
+        test("should render it's template to the light DOM", () => {
+            const name = uniqueElementName();
+            @customElement({
+                name,
+                shadowOptions: null,
+                template: html`<p>Hello world</p>`
+            })
+            class MyElement extends FASTElement {}
+
+            const { templateRenderer } = fastSSR();
+            const result = templateRenderer.render(html`<${name}></${name}>`);
+
+            expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
+        });
 
         test("should render styles as the first child elements in the element's light DOM", () => {
             const name = uniqueElementName();
             @customElement({
                 name,
                 shadowOptions: null,
+                template: html`<p>With styles</p>`,
                 styles: css`:host {color: red;}`
             })
             class MyElement extends FASTElement {}
@@ -153,21 +168,20 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<${name}></${name}>`);
 
-            expect(consolidate(result)).toBe(`<${name}><style>:host {color: red;}</style></${name}>`);
+            expect(consolidate(result)).toBe(`<${name}><style>:host {color: red;}</style><p>With styles</p></${name}>`);
         });
         test("should render child elements into the element's light DOM", () => {
             const name = uniqueElementName();
             @customElement({
                 name,
-                shadowOptions: null,
-                styles: css`:host {color: red;}`
+                shadowOptions: null
             })
             class MyElement extends FASTElement {}
 
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<${name}><p>Hello world</p></${name}>`);
 
-            expect(consolidate(result)).toBe(`<${name}><style>:host {color: red;}</style><p>Hello world</p></${name}>`);
+            expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
         });
     });
 

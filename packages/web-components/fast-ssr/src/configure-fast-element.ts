@@ -5,7 +5,7 @@ import {
     Updates,
     ViewBehaviorFactory,
 } from "@microsoft/fast-element";
-import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
+import { FASTSSRStyleStrategy } from "./styles/style-strategy.js";
 import { SSRView } from "./view.js";
 
 Compiler.setDefaultStrategy(
