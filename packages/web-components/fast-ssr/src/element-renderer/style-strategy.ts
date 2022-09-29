@@ -14,23 +14,15 @@ function getOrCreateFor(target: StyleTarget): Set<string | CSSStyleSheet> {
     return set;
 }
 
-function isShadowRoot(target: any): target is ShadowRoot {
-    return !!target.host;
-}
-
 export class FASTSSRStyleStrategy implements StyleStrategy {
-    private normalizeTarget(target: StyleTarget) {
-        return isShadowRoot(target) ? target.host : target;
-    }
-
     addStylesTo(target: StyleTarget) {
-        const cache = getOrCreateFor(this.normalizeTarget(target));
+        const cache = getOrCreateFor(target);
 
         this.styles.forEach(style => cache?.add(style));
     }
 
     removeStylesFrom(target: StyleTarget) {
-        const cache = getOrCreateFor(this.normalizeTarget(target));
+        const cache = getOrCreateFor(target);
 
         this.styles.forEach(style => cache?.delete(style));
     }
