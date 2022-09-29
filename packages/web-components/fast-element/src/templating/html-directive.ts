@@ -344,8 +344,8 @@ export const Aspect = Object.freeze({
                 directive.targetAspect = value.substring(1);
                 directive.aspectType =
                     directive.targetAspect === "classList"
-                        ? (directive.aspectType = Aspect.tokenList)
-                        : (directive.aspectType = Aspect.property);
+                        ? Aspect.tokenList
+                        : Aspect.property;
                 break;
             case "?":
                 directive.targetAspect = value.substring(1);
