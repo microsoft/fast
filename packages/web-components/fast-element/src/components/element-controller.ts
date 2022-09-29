@@ -260,14 +260,17 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         const source = this.source;
-        const target: StyleTarget =
-            getShadowRoot(source) ?? ((source.getRootNode() as any) as StyleTarget);
 
         if (styles instanceof HTMLElement) {
+            // This won't be supported in SSR anyway, so we can just handle client-side
+            // Get shadowRoot
+            // if shadowRoot append the element to the shadowRoot
+            // If no shadowRoot, append the element to source
+            const target = getShadowRoot(source) ?? this.source;
             target.append(styles);
-        } else if (!styles.isAttachedTo(target)) {
+        } else if (!styles.isAttachedTo(source)) {
             const sourceBehaviors = styles.behaviors;
-            styles.addStylesTo(target);
+            styles.addStylesTo(source);
 
             if (sourceBehaviors !== null) {
                 for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
@@ -289,15 +292,14 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         const source = this.source;
-        const target: StyleTarget =
-            getShadowRoot(source) ?? ((source.getRootNode() as any) as StyleTarget);
 
         if (styles instanceof HTMLElement) {
+            const target = getShadowRoot(source) ?? source;
             target.removeChild(styles);
-        } else if (styles.isAttachedTo(target)) {
+        } else if (styles.isAttachedTo(source)) {
             const sourceBehaviors = styles.behaviors;
 
-            styles.removeStylesFrom(target);
+            styles.removeStylesFrom(source);
 
             if (sourceBehaviors !== null) {
                 for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
