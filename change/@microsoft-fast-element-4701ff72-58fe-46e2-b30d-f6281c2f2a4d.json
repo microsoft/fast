@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: less surprising class bindings w/ more flexibility for developers",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
