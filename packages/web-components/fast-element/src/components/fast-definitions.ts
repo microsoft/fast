@@ -7,6 +7,7 @@ import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
+const fastElementBaseTypes = new Set<Function>();
 
 const fastElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.getById(
     KernelServiceId.elementRegistry,
@@ -220,13 +221,19 @@ export class FASTElementDefinition<
         type: TType,
         nameOrDef?: string | PartialFASTElementDefinition
     ): FASTElementDefinition<TType> {
-        const found = fastElementRegistry.getByType(type);
-
-        if (found) {
+        if (fastElementBaseTypes.has(type) || fastElementRegistry.getByType(type)) {
             return new FASTElementDefinition<TType>(class extends type {}, nameOrDef);
         }
 
         return new FASTElementDefinition<TType>(type, nameOrDef);
+    }
+
+    /**
+     * Registers a FASTElement base type.
+     * @param type - The type to register as a base type.
+     */
+    public static registerBaseType(type: Function) {
+        fastElementBaseTypes.add(type);
     }
 
     /**
