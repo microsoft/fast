@@ -268,10 +268,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         const source = this.source;
 
         if (styles instanceof HTMLElement) {
-            // This won't be supported in SSR anyway, so we can just handle client-side
-            // Get shadowRoot
-            // if shadowRoot append the element to the shadowRoot
-            // If no shadowRoot, append the element to source
             const target = getShadowRoot(source) ?? this.source;
             target.append(styles);
         } else if (!styles.isAttachedTo(source)) {
