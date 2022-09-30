@@ -43,7 +43,7 @@ export const fillColor = create<Swatch>("fill-color").withDefault(
 
 /** @public */
 export const neutralAsOverlay = createNonCss<boolean>("neutral-as-overlay").withDefault(
-    true
+    false
 );
 
 // Accent Fill
