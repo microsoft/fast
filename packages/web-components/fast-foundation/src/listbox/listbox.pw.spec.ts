@@ -46,7 +46,7 @@ test.describe("Listbox", () => {
             `;
         });
 
-        expect(await element.getAttribute("tabindex")).toBeNull();
+        await expect(element).not.hasAttribute("tabindex");
     });
 
     test("should select nothing when no options have the `selected` attribute", async () => {
@@ -258,9 +258,8 @@ test.describe("Listbox", () => {
 
         await element.evaluate((node: FASTListboxElement) => {
             node.multiple = false;
-            return new Promise(requestAnimationFrame);
         });
 
-        expect(await element.getAttribute("aria-multiselectable")).toBeNull();
+        await expect(element).not.hasAttribute("aria-multiselectable");
     });
 });

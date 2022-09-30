@@ -113,14 +113,14 @@ test.describe("Menu item", () => {
         await expect(element).toHaveAttribute("aria-checked", "false");
     });
 
-    test("should aria-checked attribute of radio item to true when clicked", async () => {
+    test("should set the `aria-checked` attribute of radio item to true when clicked", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-menu-item role="menuitemradio">Menu item</fast-menu-item>
             `;
         });
 
-        expect(await element.getAttribute("aria-checked")).toBe(null);
+        await expect(element).not.hasAttribute("aria-checked");
 
         await element.click();
 

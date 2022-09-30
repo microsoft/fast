@@ -37,7 +37,6 @@ test.describe("Button", () => {
 
         await element.evaluate(node => {
             node.toggleAttribute("disabled");
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(control).not.toHaveBooleanAttribute("disabled");
@@ -54,7 +53,6 @@ test.describe("Button", () => {
 
         await element.evaluate(node => {
             node.toggleAttribute("formnovalidate");
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(control).not.toHaveBooleanAttribute("formnovalidate");
@@ -136,7 +134,6 @@ test.describe("Button", () => {
 
         await element.evaluate(node => {
             node.toggleAttribute("autofocus");
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(control).not.toHaveBooleanAttribute("autofocus");
@@ -206,13 +203,15 @@ test.describe("Button", () => {
 
         const content = element.locator(".content");
 
-        const [wasClicked] = await Promise.all([
+        const [wasNotClicked] = await Promise.all([
             element.evaluate(node =>
                 Promise.race([
                     new Promise(resolve => {
                         node.addEventListener("click", () => resolve(false));
                     }),
-                    new Promise(requestAnimationFrame).then(() => Promise.resolve(true)),
+                    new Promise(resolve =>
+                        requestAnimationFrame(() => setTimeout(() => resolve(true)))
+                    ),
                 ])
             ),
 
@@ -221,13 +220,15 @@ test.describe("Button", () => {
                     new Promise(resolve => {
                         node.addEventListener("click", () => resolve(false));
                     }),
-                    new Promise(requestAnimationFrame).then(() => Promise.resolve(true)),
+                    new Promise(resolve =>
+                        requestAnimationFrame(() => setTimeout(() => resolve(true)))
+                    ),
                 ])
             ),
 
             element.click(),
         ]);
 
-        expect(wasClicked).not.toBeFalsy();
+        expect(wasNotClicked).toBeTruthy();
     });
 });

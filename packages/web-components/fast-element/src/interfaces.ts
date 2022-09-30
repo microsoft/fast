@@ -49,16 +49,6 @@ export type Mutable<T> = {
 };
 
 /**
- * Extracts the item type from an array.
- * @public
- */
-export type ArrayItem<T> = T extends ReadonlyArray<infer TItem>
-    ? TItem
-    : T extends Array<infer TItem>
-    ? TItem
-    : any;
-
-/**
  * A policy for use with the standard trustedTypes platform API.
  * @public
  */

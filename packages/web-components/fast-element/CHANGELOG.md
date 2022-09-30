@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Tue, 27 Sep 2022 22:31:52 GMT and should not be manually modified.
+This log was last generated on Wed, 28 Sep 2022 20:45:51 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.9
+
+Wed, 28 Sep 2022 20:45:51 GMT
+
+### Changes
+
+- fix: ensure composed templates receive the existing execution context (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.8
 

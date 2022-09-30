@@ -172,7 +172,7 @@ export interface ContentTemplate {
 
 // @public
 export interface ContentView {
-    bind(source: any): void;
+    bind(source: any, context?: ExecutionContext): void;
     // (undocumented)
     readonly context: ExecutionContext;
     insertBefore(node: Node): void;
@@ -387,6 +387,8 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     get isDefined(): boolean;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
+    // @internal
+    static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
     readonly shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
@@ -486,8 +488,8 @@ export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
 export class HTMLView<TSource = any, TParent = any> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> {
     constructor(fragment: DocumentFragment, factories: ReadonlyArray<ViewBehaviorFactory>, targets: ViewBehaviorTargets);
     appendTo(node: Node): void;
-    bind(source: TSource): void;
-    get context(): ExecutionContext<TParent>;
+    bind(source: TSource, context?: ExecutionContext<TParent>): void;
+    context: ExecutionContext<TParent>;
     dispose(): void;
     static disposeContiguousBatch(views: SyntheticView[]): void;
     get event(): Event;
@@ -496,7 +498,6 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     firstChild: Node;
     index: number;
     insertBefore(node: Node): void;
-    // (undocumented)
     isBound: boolean;
     get isEven(): boolean;
     get isFirst(): boolean;
@@ -512,9 +513,8 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     readonly parent: TParent;
     readonly parentContext: ExecutionContext<TParent>;
     remove(): void;
-    // (undocumented)
-    selfContained: boolean;
     source: TSource | null;
+    readonly sourceLifetime: SourceLifetime;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
     unbind(): void;
@@ -586,8 +586,8 @@ export const Observable: Readonly<{
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors: (target: {}) => Accessor[];
-    binding<TSource = any, TReturn = any>(binding: Expression<TSource, TReturn, any>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): ExpressionNotifier<TSource, TReturn, any>;
-    isVolatileBinding<TSource_1 = any, TReturn_1 = any>(binding: Expression<TSource_1, TReturn_1, any>): boolean;
+    binding<TSource = any, TReturn = any>(expression: Expression<TSource, TReturn, any>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): ExpressionNotifier<TSource, TReturn, any>;
+    isVolatileBinding<TSource_1 = any, TReturn_1 = any>(expression: Expression<TSource_1, TReturn_1, any>): boolean;
 }>;
 
 // @public
@@ -857,7 +857,7 @@ export interface ValueConverter {
 
 // @public
 export interface View<TSource = any, TParent = any> extends Disposable {
-    bind(source: TSource): void;
+    bind(source: TSource, context?: ExecutionContext<TParent>): void;
     readonly context: ExecutionContext<TParent>;
     readonly source: TSource | null;
     unbind(): void;

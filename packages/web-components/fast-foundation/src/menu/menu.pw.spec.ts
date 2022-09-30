@@ -250,8 +250,9 @@ test.describe("Menu", () => {
 
         await element.evaluate(node => {
             node.focus();
-            return new Promise(requestAnimationFrame);
         });
+
+        await (await element.elementHandle())?.waitForElementState("stable");
 
         await expect(menuItems.nth(0)).toBeFocused();
 
@@ -277,8 +278,9 @@ test.describe("Menu", () => {
 
         await menuItems.nth(2).evaluate(node => {
             node.removeAttribute("hidden");
-            return new Promise(requestAnimationFrame);
         });
+
+        await (await element.elementHandle())?.waitForElementState("stable");
 
         await element.press("ArrowDown");
 
@@ -446,9 +448,10 @@ test.describe("Menu", () => {
             window.focus();
         });
 
+        await (await element.elementHandle())?.waitForElementState("stable");
+
         await element.evaluate(node => {
             node.focus();
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(menuItems.nth(0)).toBeFocused({ timeout: 500 });

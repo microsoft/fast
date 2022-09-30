@@ -32,14 +32,12 @@ test.describe("Disclosure", () => {
 
             await element.evaluate((node: FASTDisclosure) => {
                 node.expanded = true;
-                return new Promise(requestAnimationFrame);
             });
 
             await expect(element).toHaveBooleanAttribute("expanded");
 
             await element.evaluate((node: FASTDisclosure) => {
                 node.expanded = false;
-                return new Promise(requestAnimationFrame);
             });
 
             await expect(element).not.toHaveBooleanAttribute("expanded");

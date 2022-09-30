@@ -39,14 +39,12 @@ test.describe("Dialog", () => {
     test("should set the `hidden` attribute to equal the value of the `hidden` property", async () => {
         await element.evaluate((node: FASTDialog) => {
             node.hidden = true;
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(element).toHaveBooleanAttribute("hidden");
 
         await element.evaluate((node: FASTDialog) => {
             node.hidden = false;
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(element).not.toHaveBooleanAttribute("hidden");
@@ -97,7 +95,6 @@ test.describe("Dialog", () => {
 
         await element.evaluate((node: FASTDialog) => {
             node.modal = false;
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(control).not.hasAttribute("aria-modal");
@@ -128,14 +125,12 @@ test.describe("Dialog", () => {
 
         await element.evaluate((node: FASTDialog) => {
             node.noFocusTrap = true;
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(element).toHaveBooleanAttribute("no-focus-trap");
 
         await element.evaluate((node: FASTDialog) => {
             node.noFocusTrap = false;
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(element).not.toHaveBooleanAttribute("no-focus-trap");
@@ -182,7 +177,7 @@ test.describe("Dialog", () => {
             `;
         });
 
-        await overlay.waitFor({ state: "visible" });
+        await (await overlay.elementHandle())?.waitForElementState("stable");
 
         const [wasDismissed] = await Promise.all([
             element.evaluate(
@@ -205,7 +200,7 @@ test.describe("Dialog", () => {
             `;
         });
 
-        await overlay.waitFor({ state: "visible" });
+        await (await overlay.elementHandle())?.waitForElementState("stable");
 
         const [wasDismissed] = await Promise.all([
             element.evaluate(
@@ -228,7 +223,7 @@ test.describe("Dialog", () => {
             `;
         });
 
-        await overlay.waitFor({ state: "visible" });
+        await (await overlay.elementHandle())?.waitForElementState("stable");
 
         const [wasDismissed] = await Promise.all([
             element.evaluate(
@@ -238,7 +233,8 @@ test.describe("Dialog", () => {
                     })
             ),
             element
-                .evaluate(() => new Promise(requestAnimationFrame))
+                .elementHandle()
+                .then(handle => handle?.waitForElementState("stable"))
                 .then(() => page.keyboard.press("Escape")),
         ]);
 

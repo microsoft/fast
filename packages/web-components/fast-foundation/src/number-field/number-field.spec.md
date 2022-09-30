@@ -22,7 +22,7 @@ Extends FAST Element
 *Component Name*
 - `fast-number-field`
 
-*Attrs* - Adapted from [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text)
+*Attrs* - Adapted from [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number)
 - `autofocus` - automatically focuses the control
 - `readonly` - the text field should be submitted with the form but should not be editable.
 - `placeholder` - an exemplar value to display in the input field whenever it is empty

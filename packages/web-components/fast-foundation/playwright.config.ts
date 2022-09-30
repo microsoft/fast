@@ -35,19 +35,15 @@ expect.extend({
 
         name = name.trim();
 
-        const hasAttribute = await recieved.evaluate(
-            (node, name) => node.hasAttribute(name),
-            name
-        );
+        await (await recieved.elementHandle())?.waitForElementState("stable");
 
-        const attributeValue = await recieved.evaluate(
-            (node, name) => node.getAttribute(name),
-            name
-        );
+        const [hasAttribute, attributeValue] = await recieved.evaluate((node, name) => {
+            return [node.hasAttribute(name), node.getAttribute(name)];
+        }, name);
 
         if (this.isNot) {
             return {
-                pass: !!hasAttribute,
+                pass: hasAttribute,
                 message: () => `expected ${name} to not be present`,
             };
         }
@@ -61,12 +57,15 @@ expect.extend({
                 options
             )}
 
-Expected: not ${this.utils.printExpected(name)}
-Received: ${this.utils.printReceived(attributeValue)}`,
+expected ${recieved} to have boolean attribute \`${name}\``,
         };
     },
 
     async hasAttribute(recieved: Locator, attribute: string) {
+        if (await recieved.isVisible()) {
+            await (await recieved.elementHandle())?.waitForElementState("stable");
+        }
+
         const pass = await recieved.evaluate(
             (node, attribute) => node.hasAttribute(attribute),
             attribute
