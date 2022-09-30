@@ -2,7 +2,9 @@ import { expect } from "chai";
 import {
     AdoptedStyleSheetsStrategy, StyleElementStrategy
 } from "../components/element-controller.js";
+import { customElement } from "../index.js";
 import type { StyleTarget } from "../interfaces.js";
+import { uniqueElementName } from "../testing/fixture.js";
 import { AddBehavior, cssDirective, CSSDirective } from "./css-directive.js";
 import { css } from "./css.js";
 import {
@@ -10,10 +12,11 @@ import {
     ElementStyles
 } from "./element-styles.js";
 import type { HostBehavior } from "./host.js";
+import { html, ref, FASTElement}  from "@microsoft/fast-element";
 
 if (ElementStyles.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStrategy", () => {
-        context("when removing styles", () => {
+        context("when adding and removing styles", () => {
             it("should remove an associated stylesheet", () => {
                 const strategy = new AdoptedStyleSheetsStrategy([``]);
                 const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
@@ -83,6 +86,72 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
 
                 expect((target.adoptedStyleSheets![0])).to.equal(red.sheets[0]);
                 expect((target.adoptedStyleSheets![1])).to.equal(red.sheets[1]);
+            });
+            it("should apply stylesheets to the shadowRoot of a provided element when the shadowRoot is publicly accessible", () => {
+                const strategy = new AdoptedStyleSheetsStrategy([``]);
+                const target = {
+                    shadowRoot: {
+                        adoptedStyleSheets: [],
+                    }
+                };
+
+                strategy.addStylesTo(target as unknown as StyleTarget);
+                expect(target.shadowRoot.adoptedStyleSheets!.length).to.equal(1);
+
+                strategy.removeStylesFrom(target as unknown as StyleTarget);
+                expect(target.shadowRoot.adoptedStyleSheets!.length).to.equal(0);
+            });
+            it("should apply stylesheets to the shadowRoot of a provided FASTElement when defined with a closed shadowRoot", () => {
+                const name = uniqueElementName();
+                @customElement({
+                    name,
+                    template: html<MyElement>`<p ${ref("pChild")}></p>`,
+                    shadowOptions: {
+                        mode: "closed"
+                    }
+                })
+                class MyElement extends FASTElement {
+                    public pChild: HTMLParagraphElement;
+
+                    public get styleTarget(): StyleTarget {
+                        return this.pChild.getRootNode() as ShadowRoot;
+                    }
+                }
+
+                const strategy = new AdoptedStyleSheetsStrategy([``]);
+                const target = document.createElement(name) as MyElement;
+                document.body.appendChild(target);
+
+                strategy.addStylesTo(target);
+                expect(target.styleTarget.adoptedStyleSheets!.length).to.equal(1);
+
+                strategy.removeStylesFrom(target);
+                expect(target.styleTarget.adoptedStyleSheets!.length).to.equal(0);
+                document.body.removeChild(target);
+            });
+            it("should apply stylesheets to the root node of the provided element when the shadowRoot of the element is inaccessible or doesn't exist", () => {
+                const name = uniqueElementName();
+
+                class MyElement extends HTMLElement {
+                    #shadow: ShadowRoot;
+                    constructor() {
+                        super();
+                        this.#shadow = this.attachShadow({ mode: "closed"})
+                    }
+                }
+
+                customElements.define(name, MyElement);
+
+                const strategy = new AdoptedStyleSheetsStrategy([``]);
+                const target = document.createElement(name) as MyElement;
+                document.body.appendChild(target);
+
+                strategy.addStylesTo(target);
+                expect(( document as StyleTarget ).adoptedStyleSheets!.length).to.equal(1);
+
+                strategy.removeStylesFrom(target);
+                expect(( document as StyleTarget ).adoptedStyleSheets!.length).to.equal(0);
+                document.body.removeChild(target);
             });
         });
     });
