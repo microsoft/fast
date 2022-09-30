@@ -400,6 +400,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     get isDefined(): boolean;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
+    // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
     readonly shadowOptions?: ShadowRootOptions;

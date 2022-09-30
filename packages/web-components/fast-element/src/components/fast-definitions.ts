@@ -231,6 +231,7 @@ export class FASTElementDefinition<
     /**
      * Registers a FASTElement base type.
      * @param type - The type to register as a base type.
+     * @internal
      */
     public static registerBaseType(type: Function) {
         fastElementBaseTypes.add(type);
