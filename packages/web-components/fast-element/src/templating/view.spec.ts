@@ -37,7 +37,7 @@ describe(`The HTMLView`, () => {
 
             expect(warnings.list.length).equal(1);
             expect(warnings.list[0].code).equal(Message.hostBindingWithoutHost);
-            expect(warnings.list[0].values!.name).equal("className");
+            expect(warnings.list[0].values!.name).equal("setAttribute");
         });
 
         it("warns on style bindings when host not present", () => {
