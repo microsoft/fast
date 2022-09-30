@@ -2,7 +2,6 @@ import { expect } from "chai";
 import {
     AdoptedStyleSheetsStrategy, StyleElementStrategy
 } from "../components/element-controller.js";
-import { customElement } from "../index.js";
 import type { StyleTarget } from "../interfaces.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { AddBehavior, cssDirective, CSSDirective } from "./css-directive.js";
@@ -12,7 +11,9 @@ import {
     ElementStyles
 } from "./element-styles.js";
 import type { HostBehavior } from "./host.js";
-import { html, ref, FASTElement}  from "@microsoft/fast-element";
+import { html} from "../templating/template.js"
+import { ref} from "../templating/ref.js"
+import { FASTElement, customElement } from "../components/fast-element.js";
 
 if (ElementStyles.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStrategy", () => {
@@ -129,22 +130,12 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
                 expect(target.styleTarget.adoptedStyleSheets!.length).to.equal(0);
                 document.body.removeChild(target);
             });
-            it("should apply stylesheets to the root node of the provided element when the shadowRoot of the element is inaccessible or doesn't exist", () => {
-                const name = uniqueElementName();
-
-                class MyElement extends HTMLElement {
-                    #shadow: ShadowRoot;
-                    constructor() {
-                        super();
-                        this.#shadow = this.attachShadow({ mode: "closed"})
-                    }
-                }
-
-                customElements.define(name, MyElement);
+            it("should apply stylesheets to the parent document of the provided element when the shadowRoot of the element is inaccessible or doesn't exist and the element is in light DOM", () => {
+                const target = document.createElement("div");
+                target.attachShadow({mode: "closed"})
+                document.body.appendChild(target);
 
                 const strategy = new AdoptedStyleSheetsStrategy([``]);
-                const target = document.createElement(name) as MyElement;
-                document.body.appendChild(target);
 
                 strategy.addStylesTo(target);
                 expect(( document as StyleTarget ).adoptedStyleSheets!.length).to.equal(1);
@@ -152,6 +143,23 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
                 strategy.removeStylesFrom(target);
                 expect(( document as StyleTarget ).adoptedStyleSheets!.length).to.equal(0);
                 document.body.removeChild(target);
+            });
+            it("should apply stylesheets to the host's shadowRoot when the shadowRoot of the element is inaccessible or doesn't exist and the element is in a shadowRoot", () => {
+                const strategy = new AdoptedStyleSheetsStrategy([``]);
+                const host = document.createElement('div');
+                const target = document.createElement('div');
+                const hostShadow = host.attachShadow({mode: "closed"})
+                target.attachShadow({mode: "closed"})
+                hostShadow.appendChild(target);
+                document.body.appendChild(host);
+
+
+                strategy.addStylesTo(target);
+                expect(( hostShadow as StyleTarget ).adoptedStyleSheets!.length).to.equal(1);
+
+                strategy.removeStylesFrom(target);
+                expect(( hostShadow as StyleTarget ).adoptedStyleSheets!.length).to.equal(0);
+                document.body.removeChild(host);
             });
         });
     });
@@ -228,6 +236,81 @@ describe("StyleElementStrategy", () => {
 
         expect((shadowRoot.childNodes[0] as HTMLStyleElement).innerHTML).to.equal("body:{color:red;}");
         expect((shadowRoot.childNodes[1] as HTMLStyleElement).innerHTML).to.equal("body:{color:green;}");
+    });
+    it("should apply stylesheets to the shadowRoot of a provided element when the shadowRoot is publicly accessible", () => {
+        const css = ":host{color:red}"
+        const strategy = new StyleElementStrategy([css]);
+        const element = document.createElement("div");
+        const shadowRoot = element.attachShadow({mode: "open"});
+
+        strategy.addStylesTo(shadowRoot);
+        expect((shadowRoot.childNodes[0] as HTMLStyleElement).innerHTML).to.equal(css);
+
+        strategy.removeStylesFrom(shadowRoot);
+        expect(shadowRoot.childNodes[0]).to.equal(undefined);
+    });
+    it("should apply stylesheets to the shadowRoot of a provided FASTElement when defined with a closed shadowRoot", () => {
+        const css = ":host{color:red}";
+        const name = uniqueElementName();
+        @customElement({
+            name,
+            template: html<MyElement>`<p ${ref("pChild")}></p>`,
+            shadowOptions: {
+                mode: "closed"
+            }
+        })
+        class MyElement extends FASTElement {
+            public pChild: HTMLParagraphElement;
+
+            public get styleTarget(): ShadowRoot {
+                return this.pChild.getRootNode() as ShadowRoot;
+            }
+        }
+
+        const strategy = new StyleElementStrategy([css]);
+        const target = document.createElement(name) as MyElement;
+        document.body.appendChild(target);
+
+        strategy.addStylesTo(target);
+        expect((target.styleTarget.childNodes[2] as HTMLStyleElement).innerHTML).to.equal(css);
+
+        strategy.removeStylesFrom(target);
+        expect(target.styleTarget.childNodes[2]).to.equal(undefined);
+        document.body.removeChild(target);
+    });
+    it("should apply stylesheets to the parent document of the provided element when the shadowRoot of the element is inaccessible or doesn't exist and the element is in light DOM", () => {
+        const target = document.createElement("div");
+        const css = ":host{color:red}";
+        target.attachShadow({mode: "closed"})
+        document.body.appendChild(target);
+
+        const strategy = new StyleElementStrategy([css]);
+
+        strategy.addStylesTo(target);
+        expect(( document.body.childNodes[1] as HTMLStyleElement).innerHTML).to.equal(css);
+
+        strategy.removeStylesFrom(target);
+        expect(( document.body.childNodes[1] as HTMLStyleElement)).to.equal(undefined);
+        document.body.removeChild(target);
+    });
+    it("should apply stylesheets to the host's shadowRoot when the shadowRoot of the element is inaccessible or doesn't exist and the element is in a shadowRoot", () => {
+        const css = ":host{color:red}";
+        const strategy = new StyleElementStrategy([css]);
+        const host = document.createElement('div');
+        const target = document.createElement('div');
+        const hostShadow = host.attachShadow({mode: "closed"})
+        target.attachShadow({mode: "closed"})
+        hostShadow.appendChild(target);
+        document.body.appendChild(host);
+
+
+        strategy.addStylesTo(target);
+        expect((hostShadow.childNodes[1] as HTMLStyleElement).innerHTML).to.equal(css);
+
+        strategy.removeStylesFrom(target);
+        expect(( hostShadow as StyleTarget ).adoptedStyleSheets!.length).to.equal(0);
+        expect((hostShadow.childNodes[1] as HTMLStyleElement)).to.equal(undefined);
+        document.body.removeChild(host);
     });
 });
 

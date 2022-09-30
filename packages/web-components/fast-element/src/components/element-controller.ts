@@ -571,11 +571,12 @@ export class StyleElementStrategy implements StyleStrategy {
     }
 
     public removeStylesFrom(target: StyleTarget): void {
+        target = usableStyleTarget(normalizeStyleTarget(target));
         const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
             `.${this.styleClass}`
         );
 
-        target = usableStyleTarget(normalizeStyleTarget(target));
+        styles[0].parentNode;
 
         for (let i = 0, ii = styles.length; i < ii; ++i) {
             target.removeChild(styles[i]);
