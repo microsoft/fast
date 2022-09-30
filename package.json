@@ -10,6 +10,7 @@
   "private": true,
   "workspaces": {
     "packages": [
+      "packages/tooling/adaptive-ui-explorer",
       "packages/utilities/*",
       "packages/web-components/*",
       "sites/fast-color-explorer",
