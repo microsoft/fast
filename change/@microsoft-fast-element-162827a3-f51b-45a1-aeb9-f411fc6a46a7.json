@@ -3,5 +3,5 @@
   "comment": "fix: observation kernel missing binding observer disconnect method",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
