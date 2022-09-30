@@ -56,7 +56,7 @@ export class FASTCheckbox extends FormAssociatedCheckbox {
     /**
      * The indeterminate state of the control
      */
-    @observable
+    @attr({ attribute: "data-indeterminate", mode: "boolean" })
     public indeterminate: boolean = false;
 
     constructor() {

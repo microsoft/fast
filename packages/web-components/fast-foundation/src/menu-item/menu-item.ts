@@ -28,6 +28,7 @@ export { MenuItemRole, roleForMenuItem };
 /**
  * Types of menu item column count.
  * @public
+ * @deprecated - will be removed in a coming ALPHA version
  */
 export type MenuItemColumnCount = 0 | 1 | 2;
 
@@ -100,9 +101,10 @@ export class FASTMenuItem extends FASTElement {
     }
 
     /**
-     * @internal
+     * @public
+     * @deprecated - will be removed in a coming ALPHA version
      */
-    @observable
+    @attr({ attribute: "start-column-count" })
     public startColumnCount: MenuItemColumnCount;
 
     /**

@@ -16,14 +16,6 @@ export function listboxOptionTemplate<T extends FASTListboxOption>(
             aria-posinset="${x => x.ariaPosInSet}"
             aria-selected="${x => x.ariaSelected}"
             aria-setsize="${x => x.ariaSetSize}"
-            class="${x =>
-                [
-                    x.checked && "checked",
-                    x.selected && "selected",
-                    x.disabled && "disabled",
-                ]
-                    .filter(Boolean)
-                    .join(" ")}"
             role="option"
         >
             ${startSlotTemplate(options)}

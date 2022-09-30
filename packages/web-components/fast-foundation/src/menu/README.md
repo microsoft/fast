@@ -184,13 +184,14 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 #### Fields
 
-| Name       | Privacy | Type           | Default | Description                        | Inherited From |
-| ---------- | ------- | -------------- | ------- | ---------------------------------- | -------------- |
-| `disabled` | public  | `boolean`      |         | The disabled state of the element. |                |
-| `expanded` | public  | `boolean`      |         | The expanded state of the element. |                |
-| `role`     | public  | `MenuItemRole` |         | The role of the element.           |                |
-| `checked`  | public  | `boolean`      |         | The checked value of the element.  |                |
-| `hidden`   | public  | `boolean`      |         | The hidden attribute.              |                |
+| Name               | Privacy | Type                  | Default | Description                        | Inherited From |
+| ------------------ | ------- | --------------------- | ------- | ---------------------------------- | -------------- |
+| `disabled`         | public  | `boolean`             |         | The disabled state of the element. |                |
+| `expanded`         | public  | `boolean`             |         | The expanded state of the element. |                |
+| `startColumnCount` | public  | `MenuItemColumnCount` |         |                                    |                |
+| `role`             | public  | `MenuItemRole`        |         | The role of the element.           |                |
+| `checked`          | public  | `boolean`             |         | The checked value of the element.  |                |
+| `hidden`           | public  | `boolean`             |         | The hidden attribute.              |                |
 
 #### Methods
 
@@ -208,13 +209,14 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 #### Attributes
 
-| Name   | Field    | Inherited From |
-| ------ | -------- | -------------- |
-|        | disabled |                |
-|        | expanded |                |
-| `role` | role     |                |
-|        | checked  |                |
-|        | hidden   |                |
+| Name                 | Field            | Inherited From |
+| -------------------- | ---------------- | -------------- |
+|                      | disabled         |                |
+|                      | expanded         |                |
+| `start-column-count` | startColumnCount |                |
+| `role`               | role             |                |
+|                      | checked          |                |
+|                      | hidden           |                |
 
 #### CSS Parts
 

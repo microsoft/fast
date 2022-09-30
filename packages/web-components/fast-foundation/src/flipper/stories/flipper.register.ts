@@ -31,8 +31,8 @@ const styles = css`
         top: 0;
         transition: all 0.1s ease-in-out;
     }
-    .next,
-    .previous {
+    [direction="next"],
+    [direction="previous"] {
         display: grid;
         height: 16px;
         position: relative;
