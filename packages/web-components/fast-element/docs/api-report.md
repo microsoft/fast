@@ -400,6 +400,8 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     get isDefined(): boolean;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
+    // @internal
+    static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
     readonly shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
@@ -597,8 +599,8 @@ export const Observable: Readonly<{
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors: (target: {}) => Accessor[];
-    binding<TSource = any, TReturn = any>(binding: Expression<TSource, TReturn, any>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): ExpressionNotifier<TSource, TReturn, any>;
-    isVolatileBinding<TSource_1 = any, TReturn_1 = any>(binding: Expression<TSource_1, TReturn_1, any>): boolean;
+    binding<TSource = any, TReturn = any>(expression: Expression<TSource, TReturn, any>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): ExpressionNotifier<TSource, TReturn, any>;
+    isVolatileBinding<TSource_1 = any, TReturn_1 = any>(expression: Expression<TSource_1, TReturn_1, any>): boolean;
 }>;
 
 // @public
