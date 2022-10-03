@@ -22,7 +22,7 @@
     "help": "node ./scripts/index.js --help"
   },
   "dependencies": {
-    "@microsoft/fast-element": "2.0.0-beta.9",
+    "@microsoft/fast-element": "2.0.0-beta.10",
     "tachometer": "^0.7.0"
   },
   "devDependencies": {

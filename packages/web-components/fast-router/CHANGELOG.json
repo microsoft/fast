@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Mon, 03 Oct 2022 23:44:38 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.10",
+      "version": "1.0.0-alpha.10",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.10",
+            "commit": "e23f4375f183f0672f9aeafd0e58411adb66ae90"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 28 Sep 2022 20:45:51 GMT",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.9",
       "version": "1.0.0-alpha.9",

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: don't allow registering FASTElement itself as a web component",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}
