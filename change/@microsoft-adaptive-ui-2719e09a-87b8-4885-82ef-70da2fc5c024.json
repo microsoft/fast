@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Fix neutral color overlay mode default value",
+  "packageName": "@microsoft/adaptive-ui",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}
