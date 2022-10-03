@@ -2,7 +2,6 @@ import "./install-dom-shim.js";
 import { expect, test } from "@playwright/test";
 import { createWindow } from "./dom-shim.js";
 import { RequestStorage, RequestStorageManager } from "./request-storage.js";
-import exp from "constants";
 
 const noStorageError = "Storage must be accessed from within a request.";
 
