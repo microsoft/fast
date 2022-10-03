@@ -123,6 +123,34 @@ const perRequestGlobals = [
     "document",
 ];
 
+const perRequestGetters = perRequestGlobals.reduce((accum, key) => {
+    accum[key] = function get() {
+        // Return original global variable if currently not in the storage scope
+        const store = asyncLocalStorage.getStore() as Map<string, any>;
+        return store ? store.get("window")[key] : preShimGlobals.get(key);
+    };
+    return accum;
+}, {} as Record<string, () => unknown>);
+
+/**
+ * Tests whether the {@link RequestStorageManager} has an installed
+ * DOM shim for a provided key. Determination is performed by checking
+ * the getter instance of the globalThis's property descriptor against the preRequestDescriptors
+ * of the same key.
+ * @param key - The key of the global check for installation
+ */
+function shimIsInstalledFor(key: string): boolean {
+    return (
+        Object.getOwnPropertyDescriptor(globalThis, key)?.get === perRequestGetters[key]
+    );
+}
+
+/**
+ * Store the global objects being shimmed so that they be accessed as backup values
+ * and restored during uninstall.
+ */
+const preShimGlobals = new Map<string, any>();
+
 /**
  * APIs used in configuring and managing RequestStorage.
  * @beta
@@ -156,18 +184,30 @@ export const RequestStorageManager = Object.freeze({
 
     /**
      * Installs a DOM shim that ensures that window, document,
-     * and other globals are scoped per-request.
+     * and other globals are scoped per-request. Calling this function
+     * will have no effect if the shim has already been installed.
      */
     installDOMShim(): void {
         for (const key of perRequestGlobals) {
-            const original = (globalThis as any)[key];
-            Reflect.defineProperty(globalThis, key, {
-                get() {
-                    // Return original global variable if currently not in the storage scope
-                    const store = asyncLocalStorage.getStore() as Map<string, any>;
-                    return store ? store.get("window")[key] : original;
-                },
-            });
+            if (!shimIsInstalledFor(key)) {
+                preShimGlobals.set(key, (globalThis as any)[key]);
+                Object.defineProperty(globalThis, key, { get: perRequestGetters[key] });
+            }
+        }
+    },
+
+    /**
+     * Uninstalls the DOM shim installed by {@link RequestStorageManager.installDOMShim}.
+     * Calling this function will have no effect if there is no shim installed.
+     */
+    uninstallDOMShim(): void {
+        for (const key of perRequestGlobals) {
+            if (shimIsInstalledFor(key)) {
+                Object.defineProperty(globalThis, key, {
+                    value: preShimGlobals.get(key),
+                });
+                preShimGlobals.delete(key);
+            }
         }
     },
 
