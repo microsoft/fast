@@ -1,6 +1,6 @@
 import { ElementViewTemplate, html } from "@microsoft/fast-element";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
-import { DataGridCellRole, DataGridCellTypeClass } from "./data-grid.options.js";
+import { DataGridCellRole } from "./data-grid.options.js";
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#FASTDataGridCell} component using

@@ -61,7 +61,7 @@ test.describe("TreeView", () => {
 
         expect(
             await treeItems.evaluateAll(items =>
-                items.every(item => item.classList.contains("nested"))
+                items.every(item => item.hasAttribute("nested"))
             )
         ).toBe(true);
     });

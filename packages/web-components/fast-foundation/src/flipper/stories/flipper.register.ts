@@ -31,13 +31,15 @@ const styles = css`
         top: 0;
         transition: all 0.1s ease-in-out;
     }
-    [direction="next"],
-    [direction="previous"] {
+
+    .next,
+    .previous {
         display: grid;
         height: 16px;
         position: relative;
         width: 16px;
     }
+
     :host([disabled]) {
         opacity: var(--disabled-opacity);
         cursor: var(--disabled-cursor);

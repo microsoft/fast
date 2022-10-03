@@ -1,5 +1,4 @@
 import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
-import { TextAreaResize } from "./text-area.js";
 import type { FASTTextArea } from "./text-area.js";
 
 /**

@@ -143,10 +143,10 @@ const styles = css`
         fill: var(--neutral-foreground-rest);
     }
 
-    :host([start-column-count="0"[aria-haspopup="menu"]),
-    :host([start-column-count="indent-1"][aria-haspopup="menu"]),
-    :host([start-column-count="indent-1"][role="menuitemcheckbox"]),
-    :host([start-column-count="indent-1"][role="menuitemradio"]) {
+    :host([start-column-count="0"][aria-haspopup="menu"]),
+    :host([start-column-count="1"][aria-haspopup="menu"]),
+    :host([start-column-count="1"][role="menuitemcheckbox"]),
+    :host([start-column-count="1"][role="menuitemradio"]) {
         align-items: center;
         display: grid;
         grid-template-columns: var(--icon-col) auto 1fr var(--icon-col) var(--icon-col);
@@ -175,7 +175,7 @@ const styles = css`
         grid-column-start: 3;
     }
 
-    :host([aria-haspopup="menu"][start-column-count="0") .content {
+    :host([aria-haspopup="menu"][start-column-count="0"]) .content {
         grid-column-start: 1;
     }
 

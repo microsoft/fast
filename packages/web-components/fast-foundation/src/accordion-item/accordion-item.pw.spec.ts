@@ -60,26 +60,6 @@ test.describe("Accordion item", () => {
         await expect(heading).toHaveAttribute("aria-level", "3");
     });
 
-    test("should NOT have a class of `expanded` when the `expanded` property is false", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-accordion-item></fast-accordion-item>
-            `;
-        });
-
-        await expect(element).not.toHaveClass(/expanded/);
-    });
-
-    test("should have a class of `expanded` when the `expanded` property is true", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-accordion-item expanded></fast-accordion-item>
-            `;
-        });
-
-        await expect(element).toHaveClass(/expanded/);
-    });
-
     test("should set `aria-expanded` property on the internal control equal to the `expanded` property", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
