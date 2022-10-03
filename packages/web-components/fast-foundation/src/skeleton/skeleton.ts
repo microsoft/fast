@@ -29,7 +29,8 @@ export class FASTSkeleton extends FASTElement {
      * @remarks
      * HTML Attribute: fill
      */
-    @attr public fill: string;
+    @attr
+    public fill: string;
 
     /**
      * Indicates what the shape of the Skeleton should be.
@@ -38,7 +39,8 @@ export class FASTSkeleton extends FASTElement {
      * @remarks
      * HTML Attribute: shape
      */
-    @attr public shape: SkeletonShape = SkeletonShape.rect;
+    @attr
+    public shape: SkeletonShape = SkeletonShape.rect;
 
     /**
      * Indicates that the component can accept a pattern URL.
@@ -47,7 +49,8 @@ export class FASTSkeleton extends FASTElement {
      * @remarks
      * HTML Attribute: pattern
      */
-    @attr public pattern: string;
+    @attr
+    public pattern: string;
 
     /**
      * Indicates that the component has an activated shimmer effect

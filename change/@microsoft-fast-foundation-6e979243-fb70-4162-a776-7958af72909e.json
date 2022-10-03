@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "remove classes from host elements, add attributes to migrate observables, use data-t where it makes sensse",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

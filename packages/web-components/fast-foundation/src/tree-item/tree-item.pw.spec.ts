@@ -147,20 +147,6 @@ test.describe("TreeItem", () => {
         );
     });
 
-    test('should add a class of "nested" when the `nested` property is true', async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-tree-item>tree item</fast-tree-item>
-            `;
-        });
-
-        await element.evaluate((node: FASTTreeItem) => {
-            node.nested = true;
-        });
-
-        await expect(element).toHaveClass(/nested/);
-    });
-
     test("should have a default `tabindex` attribute of -1", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
