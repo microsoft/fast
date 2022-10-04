@@ -359,6 +359,31 @@ test.describe("Menu", () => {
         await expect(menuItems.nth(3)).toBeFocused();
     });
 
+    test("should close the menu when pressing the escape key", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <fast-menu-item>Menu item 1
+                        <fast-menu slot="submenu">
+                            <fast-menu-item>Menu item 1.1</fast-menu-item>
+                            <fast-menu-item>Menu item 1.2</fast-menu-item>
+                            <fast-menu-item>Menu item 1.3</fast-menu-item>
+                        </fast-menu>
+                    </fast-menu-item>
+                </fast-menu>
+            `;
+        });
+
+        await element.first().evaluate(node => {
+            node.focus();
+        });
+
+        await element.first().press("ArrowRight");
+        await element.first().press("Escape");
+
+        await expect(menuItems.first()).toBeFocused();
+    });
+
     test("should not navigate to hidden items when set before connection", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
