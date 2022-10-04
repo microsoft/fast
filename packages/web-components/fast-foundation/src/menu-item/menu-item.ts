@@ -228,6 +228,7 @@ export class FASTMenuItem extends FASTElement {
                     this.closeSubMenu();
                     return false;
                 }
+                break;
 
             case keyArrowLeft:
                 //close submenu
@@ -238,15 +239,6 @@ export class FASTMenuItem extends FASTElement {
         }
 
         return true;
-    };
-
-    /**
-     * @internal
-     */
-    public closeSubMenu = (): void => {
-        // close submenu
-        this.expanded = false;
-        this.focus();
     };
 
     /**
@@ -299,6 +291,15 @@ export class FASTMenuItem extends FASTElement {
         this.expanded = false;
 
         return false;
+    };
+
+    /**
+     * @internal
+     */
+    private closeSubMenu = (): void => {
+        // close submenu
+        this.expanded = false;
+        this.focus();
     };
 
     /**
