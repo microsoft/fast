@@ -232,8 +232,7 @@ export class FASTMenuItem extends FASTElement {
             case keyArrowLeft:
                 //close submenu
                 if (this.expanded) {
-                    this.expanded = false;
-                    this.focus();
+                    this.closeSubMenu();
                     return false;
                 }
         }
