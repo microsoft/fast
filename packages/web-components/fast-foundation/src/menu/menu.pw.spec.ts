@@ -379,7 +379,13 @@ test.describe("Menu", () => {
         });
 
         await element.first().press("ArrowRight");
+
+        await (await element.first().elementHandle())?.waitForElementState("stable");
+
+        await expect(menuItems.nth(1)).toBeFocused();
+
         await element.first().press("Escape");
+
 
         await expect(menuItems.first()).toBeFocused();
     });
