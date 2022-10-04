@@ -187,6 +187,8 @@ export const RequestStorageManager = Object.freeze({
      * Installs a DOM shim that ensures that window, document,
      * and other globals are scoped per-request. Calling this function
      * will have no effect if the shim has already been installed.
+     *
+     * @throws TypeError when properties cannot be defined on the globalThis.
      */
     installDOMShim(): void {
         for (const key of perRequestGlobals) {
