@@ -3,5 +3,5 @@
   "comment": "Adds ability to close menu with Escape key",
   "packageName": "@microsoft/fast-foundation",
   "email": "ryan@ryanmerrill.net",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
