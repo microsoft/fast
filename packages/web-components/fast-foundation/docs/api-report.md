@@ -1365,6 +1365,8 @@ export class FASTMenuItem extends FASTElement {
     // (undocumented)
     protected checkedChanged(oldValue: boolean, newValue: boolean): void;
     // @internal (undocumented)
+    closeSubMenu: () => void;
+    // @internal (undocumented)
     connectedCallback(): void;
     // @internal
     currentDirection: Direction;

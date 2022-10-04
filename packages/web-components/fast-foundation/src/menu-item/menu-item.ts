@@ -10,6 +10,7 @@ import {
     keyArrowLeft,
     keyArrowRight,
     keyEnter,
+    keyEscape,
     keySpace,
 } from "@microsoft/fast-web-utilities";
 import type { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
@@ -221,6 +222,13 @@ export class FASTMenuItem extends FASTElement {
                 this.expandAndFocus();
                 return false;
 
+            case keyEscape:
+                // close submenu
+                if (this.expanded) {
+                    this.closeSubMenu();
+                    return false;
+                }
+
             case keyArrowLeft:
                 //close submenu
                 if (this.expanded) {
@@ -231,6 +239,15 @@ export class FASTMenuItem extends FASTElement {
         }
 
         return true;
+    };
+
+    /**
+     * @internal
+     */
+    public closeSubMenu = (): void => {
+        // close submenu
+        this.expanded = false;
+        this.focus();
     };
 
     /**
