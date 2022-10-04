@@ -50,21 +50,6 @@ test.describe("Menu", () => {
         await expect(menuItems.first()).toHaveAttribute("tabindex", "0");
     });
 
-    test("should set class on menu items to 0 columns", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-menu>
-                    <fast-menu-item>Menu item</fast-menu-item>
-                    <fast-menu-item>Menu item</fast-menu-item>
-                </fast-menu>
-            `;
-        });
-
-        const firstMenuItem = menuItems.first();
-
-        await expect(firstMenuItem).toHaveClass(/indent-0/);
-    });
-
     test("should NOT set any `tabindex` on non-menu-item elements", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -173,65 +158,6 @@ test.describe("Menu", () => {
         });
     });
 
-    test("should NOT set `indent` class on non-menu items", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-menu>
-                    <fast-menu-item>Menu item</fast-menu-item>
-                    <div>Not a menu item</div>
-                </fast-menu>
-            `;
-        });
-
-        await expect(element.locator("div")).not.toHaveClass(/indent/);
-    });
-
-    test("should set class on menu items to 0 columns when non fast-menu-item is present", async () => {
-        test.slow();
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-menu>
-                    <fast-menu-item>Menu item</fast-menu-item>
-                    <div>Not a menu item</div>
-                </fast-menu>
-            `;
-        });
-
-        await expect(menuItems.first()).toHaveClass(/indent-0/);
-    });
-
-    test("should set class on menu items to 1 column", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-menu>
-                    <fast-menu-item>Menu item</fast-menu-item>
-                    <fast-menu-item>Menu item</fast-menu-item>
-                    <fast-menu-item role="menuitemradio">Menu item</fast-menu-item>
-                </fast-menu>
-            `;
-        });
-
-        await expect(menuItems.first()).toHaveClass(/indent-1/);
-    });
-
-    test("should set class on menu items to 2 columns", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-menu>
-                    <fast-menu-item role="menuitemradio">
-                        <div slot="start">Start</div>
-                        Menu item
-                    </fast-menu-item>
-                    <fast-menu-item>Menu item</fast-menu-item>
-                    <fast-menu-item>Menu item</fast-menu-item>
-                    <fast-menu-item>Menu item</fast-menu-item>
-                </fast-menu>
-            `;
-        });
-
-        await expect(menuItems.nth(0)).toHaveClass(/indent-2/);
-    });
-
     test("should not navigate to hidden items when changed after connection", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -250,8 +176,9 @@ test.describe("Menu", () => {
 
         await element.evaluate(node => {
             node.focus();
-            return new Promise(requestAnimationFrame);
         });
+
+        await (await element.elementHandle())?.waitForElementState("stable");
 
         await expect(menuItems.nth(0)).toBeFocused();
 
@@ -277,8 +204,9 @@ test.describe("Menu", () => {
 
         await menuItems.nth(2).evaluate(node => {
             node.removeAttribute("hidden");
-            return new Promise(requestAnimationFrame);
         });
+
+        await (await element.elementHandle())?.waitForElementState("stable");
 
         await element.press("ArrowDown");
 
@@ -446,9 +374,10 @@ test.describe("Menu", () => {
             window.focus();
         });
 
+        await (await element.elementHandle())?.waitForElementState("stable");
+
         await element.evaluate(node => {
             node.focus();
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(menuItems.nth(0)).toBeFocused({ timeout: 500 });

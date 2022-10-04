@@ -79,7 +79,7 @@ export interface ContentView {
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the view within.
      */
-    bind(source: any): void;
+    bind(source: any, context?: ExecutionContext): void;
 
     /**
      * Unbinds a view's behaviors from its binding source and context.
@@ -160,13 +160,13 @@ function updateContent(
         // and that there's actually no need to compose it.
         if (!view.isComposed) {
             view.isComposed = true;
-            view.bind(controller.source);
+            view.bind(controller.source, controller.context);
             view.insertBefore(target);
             target.$fastView = view;
             target.$fastTemplate = value;
         } else if (view.needsBindOnly) {
             view.needsBindOnly = false;
-            view.bind(controller.source);
+            view.bind(controller.source, controller.context);
         }
     } else {
         const view = target.$fastView;

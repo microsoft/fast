@@ -98,7 +98,7 @@ test.describe("Select", () => {
             `;
         });
 
-        expect(await element.getAttribute("tabindex")).toBeNull();
+        await expect(element).not.hasAttribute("tabindex");
     });
 
     test("should set its value to the first enabled option when disabled", async () => {
@@ -310,7 +310,11 @@ test.describe("Select", () => {
                                         resolve(eventName)
                                     )
                                 ),
-                                new Promise(requestAnimationFrame),
+                                new Promise(resolve =>
+                                    requestAnimationFrame(() =>
+                                        setTimeout(() => resolve(false))
+                                    )
+                                ),
                             ]),
                         eventName
                     ),
@@ -369,7 +373,11 @@ test.describe("Select", () => {
                                         resolve(eventName)
                                     )
                                 ),
-                                new Promise(requestAnimationFrame),
+                                new Promise(resolve =>
+                                    requestAnimationFrame(() =>
+                                        setTimeout(() => resolve(false))
+                                    )
+                                ),
                             ]),
                         eventName
                     ),

@@ -1,8 +1,34 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 23 Sep 2022 22:53:27 GMT and should not be manually modified.
+This log was last generated on Mon, 03 Oct 2022 23:44:38 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.13
+
+Mon, 03 Oct 2022 23:44:38 GMT
+
+### Changes
+
+- remove classes from host elements, add attributes to migrate observables, use data-t where it makes sensse (chhol@microsoft.com)
+- fix: remove class from hs template root (jes@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.10
+
+## 3.0.0-alpha.12
+
+Wed, 28 Sep 2022 20:45:51 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.9
+
+## 3.0.0-alpha.11
+
+Tue, 27 Sep 2022 22:31:52 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.8
 
 ## 3.0.0-alpha.10
 

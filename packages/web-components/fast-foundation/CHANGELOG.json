@@ -2,6 +2,77 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Mon, 03 Oct 2022 23:44:38 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.13",
+      "version": "3.0.0-alpha.13",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e23f4375f183f0672f9aeafd0e58411adb66ae90",
+            "comment": "remove classes from host elements, add attributes to migrate observables, use data-t where it makes sensse"
+          },
+          {
+            "author": "jes@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "81020717b427f8a162db99590d8cf271da945182",
+            "comment": "fix: remove class from hs template root"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.10",
+            "commit": "e23f4375f183f0672f9aeafd0e58411adb66ae90"
+          }
+        ],
+        "none": [
+          {
+            "author": "yinon@hotmail.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "836f35843e8fe1a95c360c41329ae73297a5dbb9",
+            "comment": "number field documentation link to MDN spec corrected"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "b5b0aa90e37aa4141b49c29c9c6289570c5d6562",
+            "comment": "adjust tests to wait for stable state when needed"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 28 Sep 2022 20:45:51 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.12",
+      "version": "3.0.0-alpha.12",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.9",
+            "commit": "08fab33015853b7f820fdfdac2aecddfeb31843f"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 27 Sep 2022 22:31:52 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.11",
+      "version": "3.0.0-alpha.11",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.8",
+            "commit": "8834c6732c727d39f92f72b197388453a9c17f9b"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 23 Sep 2022 22:53:27 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.10",
       "version": "3.0.0-alpha.10",

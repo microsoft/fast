@@ -71,7 +71,7 @@ test.describe("Slider", () => {
             `;
         });
 
-        expect(await element.getAttribute("aria-disabled")).toBe(null);
+        await expect(element).not.hasAttribute("aria-disabled");
     });
 
     test("should set a default `aria-orientation` value when `orientation` is not defined", async () => {
@@ -94,7 +94,7 @@ test.describe("Slider", () => {
             `;
         });
 
-        expect(await element.getAttribute("aria-readonly")).toBe(null);
+        await expect(element).not.hasAttribute("aria-readonly");
     });
 
     test("should initialize to the initial value if no value property is set", async () => {
@@ -153,20 +153,6 @@ test.describe("Slider", () => {
         await expect(element).toHaveAttribute("aria-readonly", "true");
     });
 
-    test("should add a class of `readonly` when readonly is true", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-slider></fast-slider>
-            `;
-        });
-
-        await element.evaluate((node: FASTSlider) => {
-            node.readOnly = true;
-        });
-
-        await expect(element).toHaveClass(/readonly/);
-    });
-
     test("should set the `aria-orientation` attribute equal to the `orientation` value", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -185,26 +171,6 @@ test.describe("Slider", () => {
         }, Orientation);
 
         await expect(element).toHaveAttribute("aria-orientation", Orientation.vertical);
-    });
-
-    test("should add a class equal to the `orientation` value", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-slider></fast-slider>
-            `;
-        });
-
-        await element.evaluate((node: FASTSlider, Orientation) => {
-            node.orientation = Orientation.horizontal;
-        }, Orientation);
-
-        await expect(element).toHaveClass(new RegExp(Orientation.horizontal));
-
-        await element.evaluate((node: FASTSlider, Orientation) => {
-            node.orientation = Orientation.vertical;
-        }, Orientation);
-
-        await expect(element).toHaveClass(new RegExp(Orientation.vertical));
     });
 
     test("should set direction equal to the `direction` value", async () => {

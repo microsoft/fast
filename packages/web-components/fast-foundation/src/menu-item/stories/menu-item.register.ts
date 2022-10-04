@@ -56,43 +56,43 @@ const styles = css`
         text-overflow: ellipsis;
     }
 
-    :host(.indent-0) {
+    :host([start-column-count="0"]) {
         grid-template-columns: auto 1fr var(--icon-col);
     }
 
-    :host(.indent-0) .content {
+    :host([start-column-count="0"]) .content {
         grid-column: 1;
         grid-row: 1;
         margin-inline-start: 10px;
     }
 
-    :host(.indent-0) .expand-collapse-glyph-container {
+    :host([start-column-count="0"]) .expand-collapse-glyph-container {
         grid-column: 5;
         grid-row: 1;
     }
 
-    :host(.indent-2) {
+    :host([start-column-count="2"]) {
         grid-template-columns:
             var(--icon-col) var(--icon-col) 1fr var(--icon-col)
             var(--icon-col);
     }
 
-    :host(.indent-2) .content {
+    :host([start-column-count="2"]) .content {
         grid-column: 3;
         grid-row: 1;
         margin-inline-start: 10px;
     }
 
-    :host(.indent-2) .expand-collapse-glyph-container {
+    :host([start-column-count="2"]) .expand-collapse-glyph-container {
         grid-column: 5;
         grid-row: 1;
     }
 
-    :host(.indent-2) .start {
+    :host([start-column-count="2"]) .start {
         grid-column: 2;
     }
 
-    :host(.indent-2) .end {
+    :host([start-column-count="2"]) .end {
         grid-column: 4;
     }
 
@@ -143,17 +143,17 @@ const styles = css`
         fill: var(--neutral-foreground-rest);
     }
 
-    :host(.indent-0[aria-haspopup="menu"]),
-    :host(.indent-1[aria-haspopup="menu"]),
-    :host(.indent-1[role="menuitemcheckbox"]),
-    :host(.indent-1[role="menuitemradio"]) {
+    :host([start-column-count="0"][aria-haspopup="menu"]),
+    :host([start-column-count="1"][aria-haspopup="menu"]),
+    :host([start-column-count="1"][role="menuitemcheckbox"]),
+    :host([start-column-count="1"][role="menuitemradio"]) {
         align-items: center;
         display: grid;
         grid-template-columns: var(--icon-col) auto 1fr var(--icon-col) var(--icon-col);
         min-height: 32px;
     }
 
-    :host(.indent-2:not([aria-haspopup="menu"])) .end {
+    :host([start-column-count="2"]:not([aria-haspopup="menu"])) .end {
         grid-column: 5;
     }
 
@@ -175,7 +175,7 @@ const styles = css`
         grid-column-start: 3;
     }
 
-    :host([aria-haspopup="menu"].indent-0) .content {
+    :host([aria-haspopup="menu"][start-column-count="0"]) .content {
         grid-column-start: 1;
     }
 

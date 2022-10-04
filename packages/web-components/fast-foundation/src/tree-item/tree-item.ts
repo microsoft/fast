@@ -141,10 +141,12 @@ export class FASTTreeItem extends FASTElement {
     /**
      * Indicates if the tree item is nested
      *
-     * @internal
+     * @public
+     * @deprecated - will be removed in coming ALPHA version
+     * HTML Attribute: nested
      */
-    @observable
-    public nested: boolean;
+    @attr({ mode: "boolean" })
+    public nested: boolean = false;
 
     /**
      * Places document focus on a tree item

@@ -66,7 +66,7 @@ export interface FASTElement extends HTMLElement {
 function createFASTElement<T extends typeof HTMLElement>(
     BaseType: T
 ): { new (): InstanceType<T> & FASTElement } {
-    return class extends (BaseType as any) {
+    const type = class extends (BaseType as any) {
         public readonly $fastController!: ElementController;
 
         public constructor() {
@@ -98,7 +98,11 @@ function createFASTElement<T extends typeof HTMLElement>(
         ): void {
             this.$fastController.onAttributeChangedCallback(name, oldValue, newValue);
         }
-    } as any;
+    };
+
+    FASTElementDefinition.registerBaseType(type);
+
+    return type as any;
 }
 
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
@@ -160,6 +164,7 @@ export const FASTElement: {
      * @param BaseType - The base element type to inherit from.
      */
     from,
+
     /**
      * Defines a platform custom element based on the provided type and definition.
      * @param type - The custom element type to define.

@@ -56,16 +56,6 @@ test.describe("Progress ring", () => {
         await expect(element).toHaveAttribute("aria-valuemax", "50");
     });
 
-    test("should add a `paused` class when `paused` is true", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-progress paused></fast-progress>
-            `;
-        });
-
-        await expect(element).toHaveClass(/paused/);
-    });
-
     test("should render an element with a `determinate` slot when a value is provided", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `

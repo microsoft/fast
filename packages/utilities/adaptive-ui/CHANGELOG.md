@@ -1,8 +1,33 @@
 # Change Log - @microsoft/adaptive-ui
 
-This log was last generated on Fri, 23 Sep 2022 22:53:27 GMT and should not be manually modified.
+This log was last generated on Mon, 03 Oct 2022 23:44:38 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.13
+
+Mon, 03 Oct 2022 23:44:38 GMT
+
+### Changes
+
+- Fix neutral color overlay mode default value (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.13
+
+## 1.0.0-alpha.12
+
+Wed, 28 Sep 2022 20:45:51 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.12
+
+## 1.0.0-alpha.11
+
+Tue, 27 Sep 2022 22:31:52 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.11
 
 ## 1.0.0-alpha.10
 

@@ -1,5 +1,9 @@
 import type { Disposable } from "../interfaces.js";
-import { ExecutionContext, Observable } from "../observation/observable.js";
+import {
+    ExecutionContext,
+    Observable,
+    SourceLifetime,
+} from "../observation/observable.js";
 import type {
     ViewBehavior,
     ViewBehaviorFactory,
@@ -26,7 +30,7 @@ export interface View<TSource = any, TParent = any> extends Disposable {
      * Binds a view's behaviors to its binding source.
      * @param source - The binding source for the view's binding behaviors.
      */
-    bind(source: TSource): void;
+    bind(source: TSource, context?: ExecutionContext<TParent>): void;
 
     /**
      * Unbinds a view's behaviors from its binding source and context.
@@ -107,16 +111,20 @@ export class HTMLView<TSource = any, TParent = any>
      */
     public source: TSource | null = null;
 
+    /**
+     * Indicates whether the controller is bound.
+     */
     public isBound = false;
 
-    public selfContained = false;
+    /**
+     * Indicates how the source's lifetime relates to the controller's lifetime.
+     */
+    readonly sourceLifetime: SourceLifetime = SourceLifetime.unknown;
 
     /**
      * The execution context the view is running within.
      */
-    public get context(): ExecutionContext<TParent> {
-        return this;
-    }
+    public context: ExecutionContext<TParent> = this;
 
     /**
      * The index of the current item within a repeat context.
@@ -295,17 +303,16 @@ export class HTMLView<TSource = any, TParent = any>
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the behaviors within.
      */
-    public bind(source: TSource): void {
-        const oldSource = this.source;
-
-        if (oldSource === source) {
+    public bind(source: TSource, context: ExecutionContext<TParent> = this): void {
+        if (this.source === source) {
             return;
         }
 
         let behaviors = this.behaviors;
-        this.source = source;
 
         if (behaviors === null) {
+            this.source = source;
+            this.context = context;
             this.behaviors = behaviors = new Array<ViewBehavior>(this.factories.length);
             const factories = this.factories;
 
@@ -315,9 +322,13 @@ export class HTMLView<TSource = any, TParent = any>
                 behaviors[i] = behavior;
             }
         } else {
-            if (oldSource !== null) {
+            if (this.source !== null) {
                 this.evaluateUnbindables();
             }
+
+            this.isBound = false;
+            this.source = source;
+            this.context = context;
 
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
                 behaviors[i].bind(this);
@@ -331,18 +342,13 @@ export class HTMLView<TSource = any, TParent = any>
      * Unbinds a view's behaviors from its binding source.
      */
     public unbind(): void {
-        if (!this.isBound) {
-            return;
-        }
-
-        const oldSource = this.source;
-
-        if (oldSource === null) {
+        if (!this.isBound || this.source === null) {
             return;
         }
 
         this.evaluateUnbindables();
         this.source = null;
+        this.context = this;
         this.isBound = false;
     }
 

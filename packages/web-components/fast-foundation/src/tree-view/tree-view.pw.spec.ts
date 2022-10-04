@@ -53,15 +53,15 @@ test.describe("TreeView", () => {
                     </fast-tree-item>
                 </fast-tree-view>
             `;
-
-            return new Promise(requestAnimationFrame);
         });
+
+        await (await element.elementHandle())?.waitForElementState("stable");
 
         const treeItems = element.locator("> fast-tree-item");
 
         expect(
             await treeItems.evaluateAll(items =>
-                items.every(item => item.classList.contains("nested"))
+                items.every(item => item.hasAttribute("nested"))
             )
         ).toBe(true);
     });
@@ -119,8 +119,6 @@ test.describe("TreeView", () => {
                     </fast-tree-item>
                 </fast-tree-view>
             `;
-
-            return new Promise(requestAnimationFrame);
         });
 
         const treeItems = element.locator("> fast-tree-item");
@@ -161,8 +159,6 @@ test.describe("TreeView", () => {
                     </fast-tree-item>
                 </fast-tree-view>
             `;
-
-            return new Promise(requestAnimationFrame);
         });
 
         const firstTreeItem = element.locator("> fast-tree-item").first();
