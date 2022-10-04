@@ -150,6 +150,7 @@ function shimIsInstalledFor(key: string): boolean {
  * and restored during uninstall.
  */
 const preShimGlobals = new Map<string, any>();
+const preShimDescriptors = new Map<string, PropertyDescriptor>();
 
 /**
  * APIs used in configuring and managing RequestStorage.
@@ -190,8 +191,26 @@ export const RequestStorageManager = Object.freeze({
     installDOMShim(): void {
         for (const key of perRequestGlobals) {
             if (!shimIsInstalledFor(key)) {
+                const preShimValue = (globalThis as any)[key];
                 preShimGlobals.set(key, (globalThis as any)[key]);
-                Object.defineProperty(globalThis, key, { get: perRequestGetters[key] });
+                const preShimDescriptor = Object.getOwnPropertyDescriptor(
+                    globalThis,
+                    key
+                );
+
+                // This will throw if the globalThis already contains a value for the key that is not configurable. Do this work
+                // prior to caching value and descriptor so if it does throw, the caches aren't polluted
+                Object.defineProperty(globalThis, key, {
+                    get: perRequestGetters[key],
+                    enumerable: true,
+                    configurable: true,
+                });
+
+                if (preShimDescriptor) {
+                    preShimDescriptors.set(key, preShimDescriptor);
+                }
+
+                preShimGlobals.set(key, preShimValue);
             }
         }
     },
@@ -203,9 +222,13 @@ export const RequestStorageManager = Object.freeze({
     uninstallDOMShim(): void {
         for (const key of perRequestGlobals) {
             if (shimIsInstalledFor(key)) {
-                Object.defineProperty(globalThis, key, {
-                    value: preShimGlobals.get(key),
-                });
+                if (preShimDescriptors.has(key)) {
+                    Object.defineProperty(globalThis, key, preShimDescriptors.get(key)!);
+                    preShimDescriptors.delete(key);
+                } else {
+                    delete (globalThis as any)[key];
+                }
+
                 preShimGlobals.delete(key);
             }
         }
