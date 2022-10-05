@@ -1,10 +1,4 @@
-import {
-    KernelServiceId,
-    Message,
-    Mutable,
-    StyleStrategy,
-    StyleTarget,
-} from "../interfaces.js";
+import { Message, Mutable, StyleStrategy, StyleTarget } from "../interfaces.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { Observable, SourceLifetime } from "../observation/observable.js";
@@ -14,7 +8,6 @@ import type { ElementView } from "../templating/view.js";
 import { ElementStyles } from "../styles/element-styles.js";
 import type { ViewController } from "../templating/html-directive.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
-import { DOM } from "../index.js";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -501,8 +494,9 @@ function normalizeStyleTarget(target: StyleTarget): StyleTarget {
  * https://wicg.github.io/construct-stylesheets/
  * https://developers.google.com/web/updates/2019/02/constructable-stylesheets
  *
+ * @internal
  */
-class AdoptedStyleSheetsStrategy implements StyleStrategy {
+export class AdoptedStyleSheetsStrategy implements StyleStrategy {
     private static styleSheetCache = new Map<string, CSSStyleSheet>();
     /** @internal */
     public readonly sheets: CSSStyleSheet[];
@@ -545,7 +539,10 @@ const nextStyleId = (): string => `fast-${++id}`;
 function usableStyleTarget(target: StyleTarget): StyleTarget {
     return target === document ? document.body : target;
 }
-class StyleElementStrategy implements StyleStrategy {
+/**
+ * @internal
+ */
+export class StyleElementStrategy implements StyleStrategy {
     private readonly styleClass: string;
 
     public constructor(private readonly styles: string[]) {
