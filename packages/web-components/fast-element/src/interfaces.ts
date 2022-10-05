@@ -124,7 +124,6 @@ export const enum KernelServiceId {
     observable = 2,
     contextEvent = 3,
     elementRegistry = 4,
-    styleSheetStrategy = 5,
 }
 
 /**
