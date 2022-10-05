@@ -1299,9 +1299,6 @@ export class FASTAnchoredRegion extends FASTElement {
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.observe(this.viewportElement);
         }
-        if (this.mouseTracking) {
-            window.addEventListener(eventMouseMove, this.handleMouseMove);
-        }
     };
 
     /**
@@ -1312,9 +1309,6 @@ export class FASTAnchoredRegion extends FASTElement {
         window.removeEventListener(eventScroll, this.update);
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.unobserve(this.viewportElement);
-        }
-        if (this.mouseTracking) {
-            window.removeEventListener(eventMouseMove, this.handleMouseMove);
         }
     };
 
