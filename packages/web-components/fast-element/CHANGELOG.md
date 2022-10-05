@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Mon, 03 Oct 2022 23:44:38 GMT and should not be manually modified.
+This log was last generated on Wed, 05 Oct 2022 23:26:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.11
+
+Wed, 05 Oct 2022 23:26:01 GMT
+
+### Changes
+
+- fix: removed a shadowRoot leak from ElementController (nicholasrice@users.noreply.github.com)
 
 ## 2.0.0-beta.10
 

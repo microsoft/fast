@@ -1,8 +1,19 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Mon, 03 Oct 2022 23:44:38 GMT and should not be manually modified.
+This log was last generated on Wed, 05 Oct 2022 23:26:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.14
+
+Wed, 05 Oct 2022 23:26:01 GMT
+
+### Changes
+
+- Added RequestStorageManager.uninstallDOMShim() method to support uninstalling installed DOM shims (nicholasrice@users.noreply.github.com)
+- add {shadowOptions: null} support (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.11
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.14
 
 ## 1.0.0-beta.13
 

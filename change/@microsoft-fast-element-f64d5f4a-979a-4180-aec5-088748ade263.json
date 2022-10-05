@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: removed a shadowRoot leak from ElementController",
-  "packageName": "@microsoft/fast-element",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}
