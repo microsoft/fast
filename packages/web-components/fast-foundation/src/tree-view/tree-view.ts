@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
+import { FASTElement, observable, Updates } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
     isHTMLElement,

@@ -12,15 +12,6 @@ export function selectTemplate<T extends FASTSelect>(
 ): ElementViewTemplate<T> {
     return html<T>`
         <template
-            class="${x =>
-                [
-                    x.collapsible && "collapsible",
-                    x.collapsible && x.open && "open",
-                    x.disabled && "disabled",
-                    x.collapsible && x.position,
-                ]
-                    .filter(Boolean)
-                    .join(" ")}"
             aria-activedescendant="${x => x.ariaActiveDescendant}"
             aria-controls="${x => x.ariaControls}"
             aria-disabled="${x => x.ariaDisabled}"

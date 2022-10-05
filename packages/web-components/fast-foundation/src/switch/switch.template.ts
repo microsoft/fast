@@ -17,7 +17,6 @@ export function switchTemplate<T extends FASTSwitch>(
             tabindex="${x => (x.disabled ? null : 0)}"
             @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
-            class="${x => (x.checked ? "checked" : "")}"
         >
             <label
                 part="label"

@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Wed, 28 Sep 2022 20:45:51 GMT and should not be manually modified.
+This log was last generated on Mon, 03 Oct 2022 23:44:38 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.10
+
+Mon, 03 Oct 2022 23:44:38 GMT
+
+### Changes
+
+- fix: observation kernel missing binding observer disconnect method (roeisenb@microsoft.com)
+- feat: less surprising class bindings w/ more flexibility for developers (roeisenb@microsoft.com)
+- fix: don't allow registering FASTElement itself as a web component (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.9
 

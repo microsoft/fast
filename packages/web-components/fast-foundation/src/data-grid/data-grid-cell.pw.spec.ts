@@ -53,16 +53,6 @@ test.describe("Data grid cell", () => {
         await expect(element).toHaveAttribute("role", "columnheader");
     });
 
-    test('should add the "column-header" class when the `cell-type` attribute is "columnheader"', async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-data-grid-cell cell-type="columnheader"></fast-data-grid-cell>
-            `;
-        });
-
-        await expect(element).toHaveClass(/column-header/);
-    });
-
     test('should set the `role` attribute to "rowheader" when the `cell-type` attribute is "rowheader"', async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -71,16 +61,6 @@ test.describe("Data grid cell", () => {
         });
 
         await expect(element).toHaveAttribute("role", "rowheader");
-    });
-
-    test('should add the "row-header" class when the `cell-type` attribute is "rowheader"', async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-data-grid-cell cell-type="rowheader"></fast-data-grid-cell>
-            `;
-        });
-
-        await expect(element).toHaveClass(/row-header/);
     });
 
     test("should set the `grid-column` CSS property to match the `grid-column` attribute", async () => {

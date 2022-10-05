@@ -110,6 +110,7 @@ export const RequestStorage: Readonly<{
 export const RequestStorageManager: Readonly<{
     backend: AsyncLocalStorage<unknown>;
     installDOMShim(): void;
+    uninstallDOMShim(): void;
     installDIContextRequestStrategy(): void;
     createStorage(options?: StorageOptions): Map<any, any>;
     run<T = unknown>(storage: Map<any, any>, callback: () => T): T;

@@ -35,38 +35,6 @@ test.describe("DataGridRow", () => {
         await expect(element).toHaveAttribute("role", "row");
     });
 
-    test('should add the "header" class when the `row-type` attribute is "header"', async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-data-grid-row row-type="header"></fast-data-grid-row>
-            `;
-        });
-
-        await expect(element).toHaveClass(/header/);
-
-        await element.evaluate(node => {
-            node.removeAttribute("row-type");
-        });
-
-        await expect(element).not.toHaveClass(/header/);
-    });
-
-    test('should apply "sticky-header" class when the `row-type` attribute is "sticky-header"', async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-data-grid-row row-type="sticky-header"></fast-data-grid-row>
-            `;
-        });
-
-        await expect(element).toHaveClass(/sticky-header/);
-
-        await element.evaluate(node => {
-            node.removeAttribute("row-type");
-        });
-
-        await expect(element).not.toHaveClass(/sticky-header/);
-    });
-
     test("should set `grid-template-columns` style to match attribute", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `

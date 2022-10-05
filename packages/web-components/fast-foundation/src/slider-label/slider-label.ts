@@ -71,15 +71,20 @@ export class FASTSliderLabel extends FASTElement {
     public disabled: boolean; // Map to proxy element
 
     /**
-     * @internal
+     * The orientation state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#(FASTSlider:class)}.
+     *
+     * @public
+     * @deprecated - will be removed in coming ALPHA version
+     * @remarks
+     * HTML Attribute: orientation
      */
-    @observable
-    public sliderOrientation: Orientation;
+    @attr
+    public orientation: Orientation = "horizontal";
 
     /**
      * @internal
      */
-    protected sliderOrientationChanged(): void {
+    protected orientationChanged(): void {
         void 0;
     }
 
@@ -137,7 +142,7 @@ export class FASTSliderLabel extends FASTElement {
                 this.sliderDirection = source.direction;
                 break;
             case "orientation":
-                this.sliderOrientation = source.orientation;
+                this.orientation = source.orientation;
                 break;
             case "max":
                 this.sliderMaxPosition = source.max;
@@ -158,7 +163,7 @@ export class FASTSliderLabel extends FASTElement {
     private getSliderConfiguration = (): void => {
         if (!this.isSliderConfig(this.parentNode)) {
             this.sliderDirection = defaultConfig.direction || Direction.ltr;
-            this.sliderOrientation = defaultConfig.orientation || Orientation.horizontal;
+            this.orientation = defaultConfig.orientation || Orientation.horizontal;
             this.sliderMaxPosition = defaultConfig.max;
             this.sliderMinPosition = defaultConfig.min;
         } else {
@@ -169,7 +174,7 @@ export class FASTSliderLabel extends FASTElement {
                 this.disabled = disabled;
             }
             this.sliderDirection = direction || Direction.ltr;
-            this.sliderOrientation = orientation || Orientation.horizontal;
+            this.orientation = orientation || Orientation.horizontal;
             this.sliderMaxPosition = max;
             this.sliderMinPosition = min;
         }
@@ -192,7 +197,7 @@ export class FASTSliderLabel extends FASTElement {
             leftNum = 50;
         }
 
-        if (this.sliderOrientation === Orientation.horizontal) {
+        if (this.orientation === Orientation.horizontal) {
             return direction === Direction.rtl
                 ? `right: ${leftNum}%; left: ${rightNum}%;`
                 : `left: ${leftNum}%; right: ${rightNum}%;`;

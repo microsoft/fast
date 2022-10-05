@@ -1386,7 +1386,7 @@ export class FASTMenuItem extends FASTElement {
     hasSubmenu: boolean;
     hidden: boolean;
     role: MenuItemRole;
-    // @internal (undocumented)
+    // @deprecated (undocumented)
     startColumnCount: MenuItemColumnCount;
     // @internal (undocumented)
     submenu: Element | undefined;
@@ -1847,6 +1847,10 @@ export class FASTSliderLabel extends FASTElement {
     // @internal (undocumented)
     handleChange(source: any, propertyName: string): void;
     hideMark: boolean;
+    // @deprecated
+    orientation: Orientation;
+    // @internal (undocumented)
+    protected orientationChanged(): void;
     position: string;
     // (undocumented)
     protected positionChanged(): void;
@@ -1860,10 +1864,6 @@ export class FASTSliderLabel extends FASTElement {
     sliderMaxPosition: number;
     // @internal (undocumented)
     sliderMinPosition: number;
-    // @internal (undocumented)
-    sliderOrientation: Orientation;
-    // @internal (undocumented)
-    protected sliderOrientationChanged(): void;
 }
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSwitch" needs to be exported by the entry point index.d.ts
@@ -2154,7 +2154,7 @@ export class FASTTreeItem extends FASTElement {
     items: HTMLElement[];
     // (undocumented)
     protected itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void;
-    // @internal
+    // @deprecated
     nested: boolean;
     selected: boolean;
     // (undocumented)
@@ -2396,7 +2396,7 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
 // @public
 export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListEvent) => void;
 
-// @public
+// @public @deprecated
 export type MenuItemColumnCount = 0 | 1 | 2;
 
 // @public
@@ -2835,7 +2835,7 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/menu-item/menu-item.d.ts:20:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/menu-item/menu-item.d.ts:21:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:11:5 - (ae-incompatible-release-tags) The symbol "pickerMenuOption" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

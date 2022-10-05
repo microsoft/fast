@@ -53,6 +53,7 @@ export class FASTTreeItem extends TreeItem {}
 | `expanded`     | public  | `boolean` | `false` | When true, the control will be appear expanded by user interaction.                                                                                                                         |                |
 | `selected`     | public  | `boolean` |         | When true, the control will appear selected by user interaction.                                                                                                                            |                |
 | `disabled`     | public  | `boolean` |         | When true, the control will be immutable by user interaction. See [disabled HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) for more information. |                |
+| `nested`       | public  | `boolean` | `false` | Indicates if the tree item is nested                                                                                                                                                        |                |
 | `isNestedItem` | public  |           |         | Whether the tree is nested                                                                                                                                                                  |                |
 
 #### Methods
@@ -78,6 +79,7 @@ export class FASTTreeItem extends TreeItem {}
 |      | expanded |                |
 |      | selected |                |
 |      | disabled |                |
+|      | nested   |                |
 
 #### CSS Parts
 
