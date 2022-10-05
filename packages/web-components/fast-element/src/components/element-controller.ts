@@ -14,6 +14,7 @@ import type { ElementView } from "../templating/view.js";
 import { ElementStyles } from "../styles/element-styles.js";
 import type { ViewController } from "../templating/html-directive.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
+import { DOM } from "../index.js";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -500,9 +501,8 @@ function normalizeStyleTarget(target: StyleTarget): StyleTarget {
  * https://wicg.github.io/construct-stylesheets/
  * https://developers.google.com/web/updates/2019/02/constructable-stylesheets
  *
- * @internal
  */
-export class AdoptedStyleSheetsStrategy implements StyleStrategy {
+class AdoptedStyleSheetsStrategy implements StyleStrategy {
     private static styleSheetCache = new Map<string, CSSStyleSheet>();
     /** @internal */
     public readonly sheets: CSSStyleSheet[];
@@ -545,7 +545,7 @@ const nextStyleId = (): string => `fast-${++id}`;
 function usableStyleTarget(target: StyleTarget): StyleTarget {
     return target === document ? document.body : target;
 }
-export class StyleElementStrategy implements StyleStrategy {
+class StyleElementStrategy implements StyleStrategy {
     private readonly styleClass: string;
 
     public constructor(private readonly styles: string[]) {
@@ -581,5 +581,7 @@ export class StyleElementStrategy implements StyleStrategy {
 }
 
 ElementStyles.setDefaultStrategy(
-    FAST.getById(KernelServiceId.styleSheetStrategy, () => AdoptedStyleSheetsStrategy)
+    ElementStyles.supportsAdoptedStyleSheets
+        ? AdoptedStyleSheetsStrategy
+        : StyleElementStrategy
 );

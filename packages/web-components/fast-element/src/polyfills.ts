@@ -1,6 +1,6 @@
-import { StyleElementStrategy } from "./components/element-controller.js";
 import type { FASTGlobal, TrustedTypesPolicy } from "./interfaces.js";
 
+// GlobalThis goes to platform
 declare const global: any;
 
 (function ensureGlobalThis() {
@@ -64,13 +64,4 @@ if (FAST.getById === void 0) {
         },
         ...propConfig,
     });
-}
-
-// duplicated from DOM
-const supportsAdoptedStyleSheets =
-    Array.isArray((document as any).adoptedStyleSheets) &&
-    "replace" in CSSStyleSheet.prototype;
-
-if (!supportsAdoptedStyleSheets) {
-    FAST.getById(/* KernelServiceId.styleSheetStrategy */ 5, () => StyleElementStrategy);
 }
