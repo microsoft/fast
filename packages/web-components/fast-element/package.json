@@ -26,10 +26,6 @@
       "development": "./dist/esm/index.debug.js",
       "default": "./dist/esm/index.js"
     },
-    "./polyfills": {
-      "types": "./dist/dts/polyfills.d.ts",
-      "default": "./dist/esm/polyfills.js"
-    },
     "./debug": {
       "types": "./dist/dts/debug.d.ts",
       "default": "./dist/esm/debug.js"

@@ -1,4 +1,5 @@
 import type { FASTGlobal } from "./interfaces.js";
+import "./polyfills.js";
 
 // ensure FAST global - duplicated in polyfills.ts and debug.ts
 const propConfig = {
