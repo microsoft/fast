@@ -1,6 +1,5 @@
 import { useArgs } from "@storybook/client-api";
 
-import "@microsoft/fast-element/polyfills";
 import "../src/anchor/stories/anchor.register.js";
 import "../src/anchored-region/stories/anchored-region.register.js";
 import "../src/avatar/stories/avatar.register.js";
