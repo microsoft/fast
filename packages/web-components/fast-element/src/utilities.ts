@@ -48,3 +48,35 @@ export function composedContains(reference: HTMLElement, test: HTMLElement): boo
 
     return false;
 }
+
+export class UnobservableMutationObserver extends MutationObserver {
+    private observedNodes: Set<Node> = new Set();
+
+    /**
+     * An extension of MutationObserver that supports unobserving nodes.
+     * @param callback - The callback to invoke when observed nodes are changed.
+     */
+    constructor(private readonly callback: MutationCallback) {
+        function handler(mutations: MutationRecord[]) {
+            this.callback.call(
+                null,
+                mutations.filter(record => this.observedNodes.has(record.target))
+            );
+        }
+
+        super(handler);
+    }
+
+    public observe(target: Node, options?: MutationObserverInit | undefined): void {
+        this.observedNodes.add(target);
+        super.observe(target, options);
+    }
+
+    public unobserve(target: Node): void {
+        this.observedNodes.delete(target);
+
+        if (this.observedNodes.size < 1) {
+            this.disconnect();
+        }
+    }
+}

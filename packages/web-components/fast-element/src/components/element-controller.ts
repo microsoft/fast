@@ -313,6 +313,21 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
+        const boundObservables = this.boundObservables;
+
+        // If we have any observables that were bound, re-apply their values.
+        if (boundObservables !== null) {
+            const propertyNames = Object.keys(boundObservables);
+            const element = this.source;
+
+            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
+                const propertyName = propertyNames[i];
+                (element as any)[propertyName] = boundObservables[propertyName];
+            }
+
+            this.boundObservables = null;
+        }
+
         if (this.needsInitialization) {
             this.finishInitialization();
         } else if (this.view !== null) {
