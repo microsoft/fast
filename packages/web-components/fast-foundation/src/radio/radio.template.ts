@@ -13,10 +13,6 @@ export function radioTemplate<T extends FASTRadio>(
     return html<T>`
         <template
             role="radio"
-            class="${x =>
-                [x.checked && "checked", x.readOnly && "readonly"]
-                    .filter(Boolean)
-                    .join(" ")}"
             aria-checked="${x => x.checked}"
             aria-required="${x => x.required}"
             aria-disabled="${x => x.disabled}"

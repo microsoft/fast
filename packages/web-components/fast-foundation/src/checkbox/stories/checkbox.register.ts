@@ -119,8 +119,8 @@ const styles = css`
         cursor: var(--disabled-cursor);
     }
 
-    :host([aria-checked="true"]:not(.indeterminate)) .checked-indicator,
-    :host(.indeterminate) .indeterminate-indicator {
+    :host([aria-checked="true"]:not([data-indeterminate])) .checked-indicator,
+    :host([data-indeterminate]) .indeterminate-indicator {
         opacity: 1;
     }
 

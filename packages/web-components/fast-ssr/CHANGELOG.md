@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Wed, 28 Sep 2022 20:45:51 GMT and should not be manually modified.
+This log was last generated on Mon, 03 Oct 2022 23:44:38 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.13
+
+Mon, 03 Oct 2022 23:44:38 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.10
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.13
 
 ## 1.0.0-beta.12
 

@@ -146,17 +146,17 @@ const styles = css`
         cursor: not-allowed;
     }
 
-    :host(.nested) .content-region {
+    :host([nested]) .content-region {
         position: relative;
         margin-inline-start: var(--expand-collapse-button-size);
     }
 
-    :host(.nested) .expand-collapse-button {
+    :host([nested]) .expand-collapse-button {
         position: absolute;
         right: 100%;
     }
 
-    :host(.nested) .expand-collapse-button:hover {
+    :host([nested]) .expand-collapse-button:hover {
         background: var(--tree-item-expand-collapse-hover);
     }
 
@@ -189,7 +189,7 @@ const styles = css`
     .expand-collapse-glyph {
         transform: rotate(0deg);
     }
-    :host(.nested) .expand-collapse-button {
+    :host([nested]) .expand-collapse-button {
         right: 100%;
     }
     :host([selected])::after {

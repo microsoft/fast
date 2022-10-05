@@ -8,11 +8,7 @@ import type { FASTSliderLabel } from "./slider-label.js";
  */
 export function sliderLabelTemplate<T extends FASTSliderLabel>(): ElementViewTemplate<T> {
     return html<T>`
-        <template
-            aria-disabled="${x => x.disabled}"
-            class="${x => x.sliderOrientation || Orientation.horizontal}
-            ${x => (x.disabled ? "disabled" : "")}"
-        >
+        <template aria-disabled="${x => x.disabled}">
             <div ${ref("root")} part="root" class="root" style="${x => x.positionStyle}">
                 <div class="container">
                     ${when(
