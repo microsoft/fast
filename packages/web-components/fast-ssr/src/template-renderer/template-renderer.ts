@@ -2,6 +2,7 @@ import {
     Aspect,
     Aspected,
     ExecutionContext,
+    FASTElementDefinition,
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
@@ -166,10 +167,10 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
                 }
 
                 case OpType.customElementAttributes: {
-                    const currentRenderer =
-                        renderInfo.customElementInstanceStack[
-                            renderInfo.customElementInstanceStack.length - 1
-                        ];
+                    const currentRenderer = getLast(
+                        renderInfo.customElementInstanceStack
+                    );
+
                     if (currentRenderer) {
                         // simulate DOM connection
                         currentRenderer.connectedCallback();
@@ -182,21 +183,37 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
                 }
 
                 case OpType.customElementShadow: {
-                    yield '<template shadowroot="open">';
-
-                    const currentRenderer =
-                        renderInfo.customElementInstanceStack[
-                            renderInfo.customElementInstanceStack.length - 1
-                        ];
-                    if (currentRenderer) {
-                        const shadow = currentRenderer.renderShadow(renderInfo);
-
-                        if (shadow) {
-                            yield* shadow;
-                        }
+                    const currentRenderer = getLast(
+                        renderInfo.customElementInstanceStack
+                    );
+                    if (!currentRenderer) {
+                        break;
                     }
 
-                    yield "</template>";
+                    // FAST components with a shadowOptions assigned `undefined`
+                    // render to light DOM client-side. If SSR encounters this,
+                    // simply skip rendering declarative shadow DOM so the
+                    // element template renders into the current root.
+                    const ctor = customElements.get(currentRenderer.tagName);
+                    const skipDSD =
+                        ctor &&
+                        FASTElementDefinition.getByType(ctor)?.shadowOptions ===
+                            undefined;
+
+                    if (!skipDSD) {
+                        yield '<template shadowroot="open">';
+                    }
+
+                    const content = currentRenderer.renderShadow(renderInfo);
+
+                    if (content) {
+                        yield* content;
+                    }
+
+                    if (!skipDSD) {
+                        yield "</template>";
+                    }
+
                     break;
                 }
 
