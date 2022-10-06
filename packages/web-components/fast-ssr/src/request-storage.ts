@@ -298,14 +298,6 @@ export const RequestStorageManager = Object.freeze({
      * Disables access to globals for a single request.
      */
     disable() {
-        const store:
-            | Map<string, unknown>
-            | undefined = RequestStorageManager.backend.getStore() as
-            | Map<string, unknown>
-            | undefined;
-
-        if (store) {
-            store.set("window", {});
-        }
+        RequestStorage.set("window", {});
     },
 });
