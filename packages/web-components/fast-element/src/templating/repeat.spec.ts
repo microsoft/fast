@@ -19,6 +19,14 @@ describe("The repeat", () => {
         return { parent, targets, nodeId };
     }
 
+    function expectViewPositionToBeCorrect(behavior: RepeatBehavior<any>) {
+        for (let i = 0, ii = behavior.views.length; i < ii; ++i) {
+            const context = behavior.views[i].context;
+            expect(context.index).equal(i);
+            expect(context.length).equal(ii);
+        }
+    }
+
     context("template function", () => {
         class ViewModel {
             items = ["a", "b", "c"]
@@ -226,6 +234,7 @@ describe("The repeat", () => {
 
                 behavior.bind(controller);
 
+                expectViewPositionToBeCorrect(behavior);
                 expect(toHTML(parent)).to.equal(createOutput(size));
             });
         });
@@ -369,12 +378,14 @@ describe("The repeat", () => {
                 const controller = createController(vm, targets);
 
                 behavior.bind(controller);
+                expectViewPositionToBeCorrect(behavior);
 
                 const index = size - 1;
                 vm.items.splice(index, 1, { name: "newitem1" }, { name: "newitem2" });
 
                 await Updates.next();
 
+                expectViewPositionToBeCorrect(behavior);
                 expect(toHTML(parent)).to.equal(
                     `${createOutput(size, x => x !== index)}newitem1newitem2`
                 );
@@ -415,10 +426,13 @@ describe("The repeat", () => {
                 const controller = createController(vm, targets);
 
                 behavior.bind(controller);
+                expectViewPositionToBeCorrect(behavior);
 
                 const mid = Math.floor(vm.items.length/2)
                 vm.items.splice(mid, 1, { name: "newitem1" });
                 await Updates.next();
+
+                expectViewPositionToBeCorrect(behavior);
                 expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1${createOutput(vm.items.slice(mid +1).length , void 0, void 0, void 0, mid +1 ) }`);
             });
         });
@@ -477,12 +491,16 @@ describe("The repeat", () => {
 
                 behavior.bind(controller);
 
+                expectViewPositionToBeCorrect(behavior);
+
                 vm.items.splice(0, vm.items.length, ...vm.items);
                 await Updates.next();
+                expectViewPositionToBeCorrect(behavior);
                 expect(toHTML(parent)).to.equal(createOutput(size));
 
                 vm.items.splice(0, vm.items.length, ...vm.items);
                 await Updates.next();
+                expectViewPositionToBeCorrect(behavior);
                 expect(toHTML(parent)).to.equal(createOutput(size));
             });
         });
