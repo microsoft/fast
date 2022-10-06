@@ -221,9 +221,9 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         }
 
         if (this.directive.options.positioning) {
-            for (let i = 0, ii = views.length; i < ii; ++i) {
+            for (let i = 0, viewsLength = views.length; i < viewsLength; ++i) {
                 const context = views[i].context;
-                context.length = ii;
+                context.length = viewsLength;
                 context.index = i;
             }
         }
