@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-element",
   "description": "A library for constructing Web Components",
-  "version": "2.0.0-beta.10",
+  "version": "2.0.0-beta.11",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -25,10 +25,6 @@
       "production": "./dist/esm/index.js",
       "development": "./dist/esm/index.debug.js",
       "default": "./dist/esm/index.js"
-    },
-    "./polyfills": {
-      "types": "./dist/dts/polyfills.d.ts",
-      "default": "./dist/esm/polyfills.js"
     },
     "./debug": {
       "types": "./dist/dts/debug.d.ts",

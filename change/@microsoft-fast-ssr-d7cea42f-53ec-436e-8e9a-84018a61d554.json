@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Added RequestStorageManager.uninstallDOMShim() method to support uninstalling installed DOM shims",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

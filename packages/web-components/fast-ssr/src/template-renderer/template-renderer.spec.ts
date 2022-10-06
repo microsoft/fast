@@ -1,5 +1,5 @@
 import "../install-dom-shim.js";
-import { children, customElement, ExecutionContext, FASTElement, html, ref, repeat, slotted, when } from "@microsoft/fast-element";
+import { children, css, customElement, ExecutionContext, FASTElement, html, ref, repeat, slotted, when } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
@@ -7,6 +7,7 @@ import { DefaultTemplateRenderer } from "./template-renderer.js";
 import { render } from "@microsoft/fast-element/render";
 import { DefaultElementRenderer } from "../element-renderer/element-renderer.js";
 import { RenderInfo } from "../render-info.js";
+import { uniqueElementName } from "@microsoft/fast-element/testing";
 
 @customElement("hello-world")
 class HelloWorld extends FASTElement {}
@@ -124,7 +125,65 @@ test.describe("TemplateRenderer", () => {
 
             expect(consolidate(result)).toBe(`<with-host-attributes  id="foo" static="static" dynamic="dynamic" bool-true><template shadowroot=\"open\">value<slot></slot></template></with-host-attributes>`);
         });
-    })
+    });
+    test.describe("rendering a FAST element configured with a null shadowOptions config", () => {
+        test("should not render declarative shadow DOM", () => {
+            const name = uniqueElementName();
+            @customElement({
+                name,
+                shadowOptions: null
+            })
+            class MyElement extends FASTElement {}
+
+            const { templateRenderer } = fastSSR();
+            const result = templateRenderer.render(html`<${name}></${name}>`);
+
+            expect(consolidate(result)).toBe(`<${name}></${name}>`);
+        });
+        test("should render it's template to the light DOM", () => {
+            const name = uniqueElementName();
+            @customElement({
+                name,
+                shadowOptions: null,
+                template: html`<p>Hello world</p>`
+            })
+            class MyElement extends FASTElement {}
+
+            const { templateRenderer } = fastSSR();
+            const result = templateRenderer.render(html`<${name}></${name}>`);
+
+            expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
+        });
+
+        test("should render styles as the first child elements in the element's light DOM", () => {
+            const name = uniqueElementName();
+            @customElement({
+                name,
+                shadowOptions: null,
+                template: html`<p>With styles</p>`,
+                styles: css`:host {color: red;}`
+            })
+            class MyElement extends FASTElement {}
+
+            const { templateRenderer } = fastSSR();
+            const result = templateRenderer.render(html`<${name}></${name}>`);
+
+            expect(consolidate(result)).toBe(`<${name}><style>:host {color: red;}</style><p>With styles</p></${name}>`);
+        });
+        test("should render child elements into the element's light DOM", () => {
+            const name = uniqueElementName();
+            @customElement({
+                name,
+                shadowOptions: null
+            })
+            class MyElement extends FASTElement {}
+
+            const { templateRenderer } = fastSSR();
+            const result = templateRenderer.render(html`<${name}><p>Hello world</p></${name}>`);
+
+            expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
+        });
+    });
 
     test("should emit a single element template", () => {
         const { templateRenderer } = fastSSR();
