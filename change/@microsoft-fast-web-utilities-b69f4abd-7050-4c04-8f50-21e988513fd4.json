@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "upgrade karma to ^6.4.1",
-  "packageName": "@microsoft/fast-web-utilities",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Wed, 05 Oct 2022 23:26:01 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Oct 2022 23:21:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.12
+
+Thu, 06 Oct 2022 23:21:20 GMT
+
+### Changes
+
+- fix: repeat update view context positioning (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.11
 

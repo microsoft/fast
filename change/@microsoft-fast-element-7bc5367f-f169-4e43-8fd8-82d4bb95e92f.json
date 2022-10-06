@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: repeat update view context positioning",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}
