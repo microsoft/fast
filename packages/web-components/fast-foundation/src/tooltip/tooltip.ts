@@ -301,31 +301,43 @@ export class FASTTooltip extends FASTElement {
      * @internal
      */
     public handlePositionChange = (ev: Event): void => {
-        this.classList.toggle("top", this.region.verticalPosition === "start");
-        this.classList.toggle("bottom", this.region.verticalPosition === "end");
-        this.classList.toggle("inset-top", this.region.verticalPosition === "insetStart");
+        this.classList.toggle("top", this.region.positioner.verticalPosition === "start");
+        this.classList.toggle(
+            "bottom",
+            this.region.positioner.verticalPosition === "end"
+        );
+        this.classList.toggle(
+            "inset-top",
+            this.region.positioner.verticalPosition === "insetStart"
+        );
         this.classList.toggle(
             "inset-bottom",
-            this.region.verticalPosition === "insetEnd"
+            this.region.positioner.verticalPosition === "insetEnd"
         );
         this.classList.toggle(
             "center-vertical",
-            this.region.verticalPosition === "center"
+            this.region.positioner.verticalPosition === "center"
         );
 
-        this.classList.toggle("left", this.region.horizontalPosition === "start");
-        this.classList.toggle("right", this.region.horizontalPosition === "end");
+        this.classList.toggle(
+            "left",
+            this.region.positioner.horizontalPosition === "start"
+        );
+        this.classList.toggle(
+            "right",
+            this.region.positioner.horizontalPosition === "end"
+        );
         this.classList.toggle(
             "inset-left",
-            this.region.horizontalPosition === "insetStart"
+            this.region.positioner.horizontalPosition === "insetStart"
         );
         this.classList.toggle(
             "inset-right",
-            this.region.horizontalPosition === "insetEnd"
+            this.region.positioner.horizontalPosition === "insetEnd"
         );
         this.classList.toggle(
             "center-horizontal",
-            this.region.horizontalPosition === "center"
+            this.region.positioner.horizontalPosition === "center"
         );
     };
 

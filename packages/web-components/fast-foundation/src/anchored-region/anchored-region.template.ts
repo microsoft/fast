@@ -9,9 +9,9 @@ export function anchoredRegionTemplate<
     T extends FASTAnchoredRegion
 >(): ElementViewTemplate<T> {
     return html<T>`
-        <template data-loaded="${x => (x.initialLayoutComplete ? "loaded" : "")}">
+        <template class="${x => (x.positioner.initialLayoutComplete ? "loaded" : "")}">
             ${when(
-                x => x.initialLayoutComplete,
+                x => x.positioner.initialLayoutComplete,
                 html<T>`
                     <slot></slot>
                 `

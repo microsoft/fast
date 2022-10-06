@@ -43,6 +43,85 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(options?: Acc
 export function accordionTemplate<T extends FASTAccordion>(): ElementViewTemplate<T>;
 
 // @public
+export class AnchoredPositioner {
+    anchorElement: HTMLElement | null;
+    // (undocumented)
+    protected anchorElementChanged(): void;
+    autoUpdateMode: AutoUpdateMode;
+    // (undocumented)
+    protected autoUpdateModeChanged(prevMode: AutoUpdateMode, newMode: AutoUpdateMode): void;
+    // @internal (undocumented)
+    connect(): void;
+    // @internal (undocumented)
+    disconnect(): void;
+    fixedPlacement: boolean;
+    // (undocumented)
+    protected fixedPlacementChanged(): void;
+    horizontalDefaultPosition: HorizontalPosition;
+    // (undocumented)
+    protected horizontalDefaultPositionChanged(): void;
+    horizontalInset: boolean;
+    // (undocumented)
+    protected horizontalInsetChanged(): void;
+    horizontalPosition: AnchoredRegionPositionLabel | undefined;
+    horizontalPositioningMode: AxisPositioningMode;
+    // (undocumented)
+    protected horizontalPositioningModeChanged(): void;
+    horizontalScaling: AxisScalingMode;
+    // (undocumented)
+    protected horizontalScalingChanged(): void;
+    horizontalThreshold: number;
+    // (undocumented)
+    protected horizontalThresholdChanged(): void;
+    horizontalViewportLock: boolean;
+    // (undocumented)
+    protected horizontalViewportLockChanged(): void;
+    initialize(): void;
+    // @internal
+    initialLayoutComplete: boolean;
+    mouseTracking: boolean;
+    // (undocumented)
+    protected mouseTrackingChanged(): void;
+    pointAnchorX: number;
+    // (undocumented)
+    protected pointAnchorXChanged(): void;
+    pointAnchorY: number;
+    // (undocumented)
+    protected pointAnchorYChanged(): void;
+    regionElement: HTMLElement | null;
+    // (undocumented)
+    protected regionElementChanged(): void;
+    // @internal
+    regionVisible: boolean;
+    update: () => void;
+    usePointAnchor: boolean;
+    // (undocumented)
+    protected usePointAnchorChanged(): void;
+    verticalDefaultPosition: VerticalPosition;
+    // (undocumented)
+    protected verticalDefaultPositionChanged(): void;
+    verticalInset: boolean;
+    // (undocumented)
+    protected verticalInsetChanged(): void;
+    verticalPosition: AnchoredRegionPositionLabel | undefined;
+    verticalPositioningMode: AxisPositioningMode;
+    // (undocumented)
+    protected verticalPositioningModeChanged(): void;
+    verticalScaling: AxisScalingMode;
+    // (undocumented)
+    protected verticalScalingChanged(): void;
+    verticalThreshold: number;
+    // (undocumented)
+    protected verticalThresholdChanged(): void;
+    verticalViewportLock: boolean;
+    // (undocumented)
+    protected verticalViewportLockChanged(): void;
+    viewportElement: HTMLElement | null;
+    // (undocumented)
+    protected viewportElementChanged(): void;
+}
+
+// @public
 export interface AnchoredRegionConfig {
     readonly autoUpdateMode?: AutoUpdateMode;
     readonly fixedPlacement?: boolean;
@@ -720,7 +799,6 @@ export class FASTAnchoredRegion extends FASTElement {
     horizontalInset: boolean;
     // (undocumented)
     protected horizontalInsetChanged(): void;
-    horizontalPosition: AnchoredRegionPositionLabel | undefined;
     horizontalPositioningMode: AxisPositioningMode;
     // (undocumented)
     protected horizontalPositioningModeChanged(): void;
@@ -733,8 +811,6 @@ export class FASTAnchoredRegion extends FASTElement {
     horizontalViewportLock: boolean;
     // (undocumented)
     protected horizontalViewportLockChanged(): void;
-    // @internal
-    initialLayoutComplete: boolean;
     mouseTracking: boolean;
     // (undocumented)
     protected mouseTrackingChanged(): void;
@@ -744,7 +820,8 @@ export class FASTAnchoredRegion extends FASTElement {
     pointAnchorY: number;
     // (undocumented)
     protected pointAnchorYChanged(): void;
-    update: () => void;
+    // (undocumented)
+    positioner: AnchoredPositioner;
     usePointAnchor: boolean;
     // (undocumented)
     protected usePointAnchorChanged(): void;
@@ -754,7 +831,6 @@ export class FASTAnchoredRegion extends FASTElement {
     verticalInset: boolean;
     // (undocumented)
     protected verticalInsetChanged(): void;
-    verticalPosition: AnchoredRegionPositionLabel | undefined;
     verticalPositioningMode: AxisPositioningMode;
     // (undocumented)
     protected verticalPositioningModeChanged(): void;
