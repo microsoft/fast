@@ -127,7 +127,12 @@ const perRequestGetters = perRequestGlobals.reduce((accum, key) => {
     accum[key] = function get() {
         // Return original global variable if currently not in the storage scope
         const store = asyncLocalStorage.getStore() as Map<string, any>;
-        return store ? store.get("window")[key] : preShimGlobals.get(key);
+        if (store) {
+            const windowStorage = store.get("window");
+            return (windowStorage) ? windowStorage[key] : undefined;
+        } else {
+            return preShimGlobals.get(key);
+        }
     };
     return accum;
 }, {} as Record<string, () => unknown>);
@@ -151,6 +156,8 @@ function shimIsInstalledFor(key: string): boolean {
  */
 const preShimGlobals = new Map<string, any>();
 const preShimDescriptors = new Map<string, PropertyDescriptor>();
+
+const perRequestWindowStorageKey = "per-request-window";
 
 /**
  * APIs used in configuring and managing RequestStorage.
@@ -182,6 +189,14 @@ export const RequestStorageManager = Object.freeze({
     set backend(localStorage: AsyncLocalStorage<unknown>) {
         asyncLocalStorage = localStorage;
     },
+
+    activateDOMShim(): void {
+        const store = asyncLocalStorage.getStore() as Map<string, any>;
+        if (store) {
+            const perRequestWindowStorage = store.get(perRequestWindowStorageKey);
+            store.set("window", perRequestWindowStorage);
+        }
+    }
 
     /**
      * Installs a DOM shim that ensures that window, document,
@@ -254,7 +269,7 @@ export const RequestStorageManager = Object.freeze({
         const storage = new Map();
         const window = options.createWindow ? options.createWindow() : createWindow();
 
-        storage.set("window", window);
+        storage.set(perRequestWindowStorageKey, window);
 
         if (options.storage) {
             for (const [key, value] of options.storage) {
