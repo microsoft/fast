@@ -649,6 +649,8 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     bind(controller: ViewController): void;
     handleChange(source: any, args: Splice[] | ExpressionObserver): void;
     unbind(): void;
+    // @internal (undocumented)
+    views: SyntheticView[];
 }
 
 // @public
