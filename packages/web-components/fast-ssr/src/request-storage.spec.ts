@@ -2,6 +2,7 @@ import "./install-dom-shim.js";
 import { expect, test } from "@playwright/test";
 import { createWindow } from "./dom-shim.js";
 import { RequestStorage, RequestStorageManager } from "./request-storage.js";
+import { escapeRegExp } from "lodash-es";
 
 const noStorageError = "Storage must be accessed from within a request.";
 
@@ -122,6 +123,19 @@ test.describe("RequestStorageManager", () => {
 
         expect(captured).not.toBe("world");
     });
+    test("disable should prevent access to installed globals", () => {
+        RequestStorageManager.installDOMShim();
+
+        let capturedWindow;
+        const storage = RequestStorageManager.createStorage();
+
+        RequestStorageManager.run(storage, () => {
+            RequestStorageManager.disable();
+
+            capturedWindow = window;
+        })
+        expect(capturedWindow).toBeUndefined()
+    })
 });
 
 test.describe("RequestStorage", () => {

@@ -115,6 +115,7 @@ export const RequestStorageManager: Readonly<{
     createStorage(options?: StorageOptions): Map<any, any>;
     run<T = unknown>(storage: Map<any, any>, callback: () => T): T;
     middleware(options?: StorageOptions): Middleware;
+    disable(): void;
 }>;
 
 // @beta
