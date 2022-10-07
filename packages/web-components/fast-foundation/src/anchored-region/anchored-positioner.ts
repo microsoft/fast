@@ -1,4 +1,5 @@
 import { observable, Updates } from "@microsoft/fast-element";
+import { singleton } from "@microsoft/fast-element/di";
 import {
     Direction,
     eventMouseMove,
@@ -29,6 +30,7 @@ import type {
  *
  * @public
  */
+@singleton
 export class AnchoredPositioner {
     /**
      * When true current point anchor is updated with mouse moves
@@ -350,6 +352,16 @@ export class AnchoredPositioner {
      * indicates the current vertical position of the region
      */
     public horizontalPosition: AnchoredRegionPositionLabel | undefined;
+
+    /**
+     * invoked when position changes
+     */
+    public positionChangedCallback?: () => void;
+
+    /**
+     * invoked when position changes
+     */
+    public loadedCallback?: () => void;
 
     /**
      * values to be applied to the component's transform on render
@@ -945,8 +957,9 @@ export class AnchoredPositioner {
         this.updatePositionClasses();
 
         if (positionChanged) {
-            // emit change event
-            //this.$emit("positionchange", this, { bubbles: false });
+            if (this.positionChangedCallback) {
+                this.positionChangedCallback();
+            }
         }
     };
 

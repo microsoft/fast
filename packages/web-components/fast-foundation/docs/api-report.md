@@ -79,6 +79,7 @@ export class AnchoredPositioner {
     initialize(): void;
     // @internal
     initialLayoutComplete: boolean;
+    loadedCallback?: () => void;
     mouseTracking: boolean;
     // (undocumented)
     protected mouseTrackingChanged(): void;
@@ -88,6 +89,7 @@ export class AnchoredPositioner {
     pointAnchorY: number;
     // (undocumented)
     protected pointAnchorYChanged(): void;
+    positionChangedCallback?: () => void;
     regionElement: HTMLElement | null;
     // (undocumented)
     protected regionElementChanged(): void;

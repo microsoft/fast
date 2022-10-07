@@ -366,8 +366,12 @@ export class FASTAnchoredRegion extends FASTElement {
      */
     connectedCallback() {
         super.connectedCallback();
-        this.viewportElement = this.getViewport();
-        this.anchorElement = this.getAnchor();
+        if (!this.viewportElement) {
+            this.viewportElement = this.getViewport();
+        }
+        if (!this.anchorElement) {
+            this.anchorElement = this.getAnchor();
+        }
         this.positioner.mouseTracking = this.mouseTracking;
         this.positioner.usePointAnchor = this.usePointAnchor;
         this.positioner.pointAnchorX = this.pointAnchorX;
@@ -389,6 +393,8 @@ export class FASTAnchoredRegion extends FASTElement {
         this.positioner.anchorElement = this.anchorElement;
         this.positioner.viewportElement = this.viewportElement;
         this.positioner.regionElement = this;
+        this.positioner.loadedCallback = this.handleRegionLoaded;
+        this.positioner.positionChangedCallback = this.handlePositionChanged;
         this.positioner.initialize();
     }
 
@@ -439,4 +445,12 @@ export class FASTAnchoredRegion extends FASTElement {
 
         return document.getElementById(this.anchor);
     };
+
+    private handleRegionLoaded(): void {
+        this.$emit("loaded", this, { bubbles: false });
+    }
+
+    private handlePositionChanged(): void {
+        this.$emit("positionchange", this, { bubbles: false });
+    }
 }
