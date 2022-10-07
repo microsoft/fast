@@ -13,6 +13,7 @@ const storyTemplate = html<StoryArgs<FASTSelect>>`
         size="${x => x.size}"
         position="${x => x.position}"
         value="${x => x.value}"
+        style="margin-top:200px;"
     >
         ${x => x.storyContent}
     </fast-select>

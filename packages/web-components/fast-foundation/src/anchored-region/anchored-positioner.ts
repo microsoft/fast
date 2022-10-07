@@ -1,5 +1,5 @@
 import { observable, Updates } from "@microsoft/fast-element";
-import { singleton } from "@microsoft/fast-element/di";
+import { singleton, transient } from "@microsoft/fast-element/di";
 import {
     Direction,
     eventMouseMove,
@@ -30,7 +30,7 @@ import type {
  *
  * @public
  */
-@singleton
+@transient
 export class AnchoredPositioner {
     /**
      * When true current point anchor is updated with mouse moves

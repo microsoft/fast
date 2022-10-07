@@ -18,7 +18,7 @@ import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { AnchoredPositioner } from "../anchored-region/anchored-positioner.js";
 import { FormAssociatedSelect } from "./select.form-associated.js";
-import { SelectPosition } from "./select.options.js";
+import type { SelectPosition } from "./select.options.js";
 
 /**
  * Select configuration options
@@ -49,6 +49,7 @@ export type SelectOptions = StartEndOptions & {
  */
 export class FASTSelect extends FormAssociatedSelect {
     @inject(AnchoredPositioner) positioner!: AnchoredPositioner;
+
     /**
      * The open attribute.
      *
@@ -84,6 +85,8 @@ export class FASTSelect extends FormAssociatedSelect {
             Updates.enqueue(() => this.focus());
 
             return;
+        } else {
+            this.positioner.disconnect();
         }
 
         this.ariaControls = "";
@@ -240,31 +243,18 @@ export class FASTSelect extends FormAssociatedSelect {
      * @public
      */
     public setPositioning(): void {
-        const currentBox = this.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        const availableBottom = viewportHeight - currentBox.bottom;
-
-        this.position = this.forcedPosition
-            ? this.positionAttribute
-            : currentBox.top > availableBottom
-            ? SelectPosition.above
-            : SelectPosition.below;
-
-        this.positionAttribute = this.forcedPosition
-            ? this.positionAttribute
-            : this.position;
-
-        this.maxHeight =
-            this.position === SelectPosition.above ? ~~currentBox.top : ~~availableBottom;
+        this.positioner.horizontalScaling = "anchor";
+        this.positioner.verticalPositioningMode = "locktodefault";
+        this.positioner.verticalDefaultPosition =
+            this.positionAttribute === "above" ? "top" : "bottom";
+        this.positioner.verticalScaling = "content";
+        this.positioner.fixedPlacement = false;
+        this.positioner.autoUpdateMode = "auto";
+        this.positioner.anchorElement = this;
+        this.positioner.viewportElement = document.documentElement;
+        this.positioner.regionElement = this.listbox;
+        this.positioner.connect();
     }
-
-    /**
-     * The max height for the listbox when opened.
-     *
-     * @internal
-     */
-    @observable
-    public maxHeight: number = 0;
 
     /**
      * The value displayed on the button.

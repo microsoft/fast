@@ -1835,8 +1835,6 @@ export class FASTSelect extends FormAssociatedSelect {
     listbox: HTMLDivElement;
     // @internal
     listboxId: string;
-    // @internal
-    maxHeight: number;
     // @internal @override
     mousedownHandler(e: MouseEvent): boolean | void;
     multipleChanged(prev: boolean | undefined, next: boolean): void;
