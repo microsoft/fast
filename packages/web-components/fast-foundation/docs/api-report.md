@@ -1847,6 +1847,8 @@ export class FASTSelect extends FormAssociatedSelect {
     positionAttribute?: SelectPosition;
     // (undocumented)
     protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition | undefined): void;
+    // (undocumented)
+    positioner: AnchoredPositioner;
     // @internal
     selectedIndexChanged(prev: number | undefined, next: number): void;
     // @internal @override

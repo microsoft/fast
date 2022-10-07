@@ -1043,7 +1043,7 @@ export class AnchoredPositioner {
 
             case "content":
                 nextRegionWidth = this.regionRect.width;
-                this.regionWidth = "unset";
+                this.regionWidth = "auto";
                 break;
         }
 
@@ -1126,7 +1126,7 @@ export class AnchoredPositioner {
 
             case "content":
                 nextRegionHeight = this.regionRect.height;
-                this.regionHeight = "unset";
+                this.regionHeight = "auto";
                 break;
         }
 

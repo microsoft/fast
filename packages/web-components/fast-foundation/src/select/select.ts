@@ -1,4 +1,5 @@
 import { SyntheticViewTemplate, Updates } from "@microsoft/fast-element";
+import { inject } from "@microsoft/fast-element/di";
 import { attr, Observable, observable, volatile } from "@microsoft/fast-element";
 import {
     keyArrowDown,
@@ -15,6 +16,7 @@ import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox, FASTListbox } from "../listbox/listbox.js";
 import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
+import { AnchoredPositioner } from "../anchored-region/anchored-positioner.js";
 import { FormAssociatedSelect } from "./select.form-associated.js";
 import { SelectPosition } from "./select.options.js";
 
@@ -46,6 +48,7 @@ export type SelectOptions = StartEndOptions & {
  * @public
  */
 export class FASTSelect extends FormAssociatedSelect {
+    @inject(AnchoredPositioner) positioner!: AnchoredPositioner;
     /**
      * The open attribute.
      *

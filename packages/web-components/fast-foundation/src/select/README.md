@@ -157,6 +157,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 | Name                | Privacy   | Type                          | Default | Description                                                         | Inherited From       |
 | ------------------- | --------- | ----------------------------- | ------- | ------------------------------------------------------------------- | -------------------- |
+| `positioner`        |           | `AnchoredPositioner`          |         |                                                                     |                      |
 | `open`              | public    | `boolean`                     | `false` | The open attribute.                                                 |                      |
 | `value`             | public    |                               |         | The value property.                                                 |                      |
 | `positionAttribute` | public    | `SelectPosition or undefined` |         | Reflects the placement for the listbox when the select is open.     |                      |

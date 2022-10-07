@@ -395,7 +395,7 @@ export class FASTAnchoredRegion extends FASTElement {
         this.positioner.regionElement = this;
         this.positioner.loadedCallback = this.handleRegionLoaded;
         this.positioner.positionChangedCallback = this.handlePositionChanged;
-        this.positioner.initialize();
+        this.positioner.connect();
     }
 
     /**
