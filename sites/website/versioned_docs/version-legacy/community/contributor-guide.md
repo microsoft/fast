@@ -65,7 +65,7 @@ lerna run prepare
 If you're interested in contributing changes to the `fast-component` design system, start by navigating to the `fast-components` directory and starting the Storybook local server there.
 
 ```bash
-cd packages/web-components/fast-components
+cd packages/web-components/fast-foundation
 yarn start
 ```
 Storybook will automatically open in a browser window at `localhost:6006`.
