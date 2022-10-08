@@ -309,7 +309,12 @@ export class FASTTooltip extends FASTElement {
     /**
      * Indicates whether the anchor is currently being hovered or has focus
      */
-    private isAnchorHoveredFocused: boolean = false;
+    private isAnchorFocused: boolean = false;
+
+    /**
+     * Indicates whether the anchor is currently being hovered or has focus
+     */
+    private isAnchorHovered: boolean = false;
 
     /**
      * Indicates whether the region is currently being hovered
@@ -382,9 +387,9 @@ export class FASTTooltip extends FASTElement {
      * mouse enters anchor
      */
     private handleAnchorMouseOver = (ev: MouseEvent): void => {
+        this.isAnchorHovered = true;
         if (this.tooltipVisible) {
-            // tooltip is already visible, just set the anchor hover flag
-            this.isAnchorHoveredFocused = true;
+            // tooltip is already visible
             return;
         }
         this.initialPointerX = ev.pageX;
@@ -396,7 +401,7 @@ export class FASTTooltip extends FASTElement {
      * mouse leaves anchor
      */
     private handleAnchorMouseOut = (ev: MouseEvent): void => {
-        this.isAnchorHoveredFocused = false;
+        this.isAnchorHovered = false;
         this.clearShowDelayTimer();
         this.startHideDelayTimer();
     };
@@ -405,6 +410,7 @@ export class FASTTooltip extends FASTElement {
      * anchor gets focus
      */
     private handleAnchorFocusIn = (ev: Event): void => {
+        this.isAnchorFocused = true;
         this.startShowDelayTimer();
     };
 
@@ -412,7 +418,7 @@ export class FASTTooltip extends FASTElement {
      * anchor loses focus
      */
     private handleAnchorFocusOut = (ev: Event): void => {
-        this.isAnchorHoveredFocused = false;
+        this.isAnchorFocused = false;
         this.clearShowDelayTimer();
         this.startHideDelayTimer();
     };
@@ -448,7 +454,7 @@ export class FASTTooltip extends FASTElement {
      * starts the show timer if not currently running
      */
     private startShowDelayTimer = (): void => {
-        if (this.isAnchorHoveredFocused) {
+        if (this.showDelayTimer) {
             return;
         }
 
@@ -467,7 +473,6 @@ export class FASTTooltip extends FASTElement {
      * start hover
      */
     private startHover = (): void => {
-        this.isAnchorHoveredFocused = true;
         this.updateTooltipVisibility();
     };
 
@@ -587,7 +592,9 @@ export class FASTTooltip extends FASTElement {
         if (!e.defaultPrevented && this.tooltipVisible) {
             switch (e.key) {
                 case keyEscape:
-                    this.isAnchorHoveredFocused = false;
+                    this.isAnchorFocused = false;
+                    this.isAnchorHovered = false;
+                    this.isRegionHovered = false;
                     this.updateTooltipVisibility();
                     this.$emit("dismiss");
                     break;
@@ -605,7 +612,7 @@ export class FASTTooltip extends FASTElement {
             this.showTooltip();
             return;
         } else {
-            if (this.isAnchorHoveredFocused || this.isRegionHovered) {
+            if (this.isAnchorHovered || this.isAnchorFocused || this.isRegionHovered) {
                 this.showTooltip();
                 return;
             }
@@ -621,7 +628,7 @@ export class FASTTooltip extends FASTElement {
             return;
         }
         this.currentDirection = getDirection(this);
-        if (this.isAnchorHoveredFocused && this.trackPointer) {
+        if (this.isAnchorHovered && this.trackPointer) {
             this.isPointerTracking = true;
         }
         this.tooltipVisible = true;
