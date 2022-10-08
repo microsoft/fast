@@ -715,15 +715,15 @@ export class FASTAnchoredRegion extends FASTElement {
     protected horizontalViewportLockChanged(): void;
     // @internal
     initialLayoutComplete: boolean;
-    mouseTracking: boolean;
-    // (undocumented)
-    protected mouseTrackingChanged(): void;
     pointAnchorX: number;
     // (undocumented)
     protected pointAnchorXChanged(): void;
     pointAnchorY: number;
     // (undocumented)
     protected pointAnchorYChanged(): void;
+    pointerTracking: boolean;
+    // (undocumented)
+    protected pointerTrackingChanged(): void;
     update: () => void;
     usePointAnchor: boolean;
     // (undocumented)
@@ -2094,11 +2094,20 @@ export class FASTTooltip extends FASTElement {
     // @internal (undocumented)
     horizontalScaling: AxisScalingMode;
     horizontalViewportLock: boolean;
+    // @internal (undocumented)
+    initialPointerX: number;
+    // @internal (undocumented)
+    initialPointerY: number;
+    // @internal (undocumented)
+    isPointerTracking: boolean;
     position: TooltipPosition;
     // @internal
     region: FASTAnchoredRegion;
     // @internal (undocumented)
     tooltipVisible: boolean;
+    trackPointer: boolean | undefined;
+    // (undocumented)
+    protected trackPointerChanged(): void;
     // @internal (undocumented)
     verticalDefaultPosition: string | undefined;
     // @internal (undocumented)
@@ -2112,7 +2121,7 @@ export class FASTTooltip extends FASTElement {
     viewportElement: HTMLElement | null;
     // (undocumented)
     protected viewportElementChanged(): void;
-    visible: boolean;
+    visible: boolean | undefined;
     // (undocumented)
     protected visibleChanged(): void;
 }

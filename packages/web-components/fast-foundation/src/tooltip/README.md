@@ -68,22 +68,24 @@ export const myTooltip = Tooltip.compose({
 
 #### Fields
 
-| Name                     | Privacy | Type                  | Default    | Description                                                                                                                                                                                                      | Inherited From |
-| ------------------------ | ------- | --------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `visible`                | public  | `boolean`             |            | Whether the tooltip is visible or not. If undefined tooltip is shown when anchor element is hovered                                                                                                              |                |
-| `anchor`                 | public  | `string`              | `""`       | The id of the element the tooltip is anchored to                                                                                                                                                                 |                |
-| `delay`                  | public  | `number`              | `300`      | The delay in milliseconds before a tooltip is shown after a hover event                                                                                                                                          |                |
-| `position`               | public  | `TooltipPosition`     |            | Controls the placement of the tooltip relative to the anchor. When the position is undefined the tooltip is placed above or below the anchor based on available space.                                           |                |
-| `autoUpdateMode`         | public  | `AutoUpdateMode`      | `"anchor"` | Controls when the tooltip updates its position, default is 'anchor' which only updates when the anchor is resized.  'auto' will update on scroll/resize events. Corresponds to anchored-region auto-update-mode. |                |
-| `horizontalViewportLock` | public  | `boolean`             |            | Controls if the tooltip will always remain fully in the viewport on the horizontal axis                                                                                                                          |                |
-| `verticalViewportLock`   | public  | `boolean`             |            | Controls if the tooltip will always remain fully in the viewport on the vertical axis                                                                                                                            |                |
-| `anchorElement`          | public  | `HTMLElement or null` | `null`     | the html element currently being used as anchor. Setting this directly overrides the anchor attribute.                                                                                                           |                |
+| Name                     | Privacy | Type                   | Default    | Description                                                                                                                                                                                                      | Inherited From |
+| ------------------------ | ------- | ---------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `visible`                | public  | `boolean or undefined` |            | Whether the tooltip is visible or not. If undefined tooltip is shown when anchor element is hovered                                                                                                              |                |
+| `trackPointer`           | public  | `boolean or undefined` |            | When true the tooltip will anchor to the mouse pointer when focused via hover                                                                                                                                    |                |
+| `anchor`                 | public  | `string`               | `""`       | The id of the element the tooltip is anchored to                                                                                                                                                                 |                |
+| `delay`                  | public  | `number`               | `300`      | The delay in milliseconds before a tooltip is shown after a hover event                                                                                                                                          |                |
+| `position`               | public  | `TooltipPosition`      |            | Controls the placement of the tooltip relative to the anchor. When the position is undefined the tooltip is placed above or below the anchor based on available space.                                           |                |
+| `autoUpdateMode`         | public  | `AutoUpdateMode`       | `"anchor"` | Controls when the tooltip updates its position, default is 'anchor' which only updates when the anchor is resized.  'auto' will update on scroll/resize events. Corresponds to anchored-region auto-update-mode. |                |
+| `horizontalViewportLock` | public  | `boolean`              |            | Controls if the tooltip will always remain fully in the viewport on the horizontal axis                                                                                                                          |                |
+| `verticalViewportLock`   | public  | `boolean`              |            | Controls if the tooltip will always remain fully in the viewport on the vertical axis                                                                                                                            |                |
+| `anchorElement`          | public  | `HTMLElement or null`  | `null`     | the html element currently being used as anchor. Setting this directly overrides the anchor attribute.                                                                                                           |                |
 
 #### Methods
 
 | Name                     | Privacy   | Description | Parameters                      | Return | Inherited From |
 | ------------------------ | --------- | ----------- | ------------------------------- | ------ | -------------- |
 | `visibleChanged`         | protected |             |                                 | `void` |                |
+| `trackPointerChanged`    | protected |             |                                 | `void` |                |
 | `anchorChanged`          | protected |             |                                 | `void` |                |
 | `anchorElementChanged`   | protected |             | `oldValue: HTMLElement or null` | `void` |                |
 | `viewportElementChanged` | protected |             |                                 | `void` |                |
@@ -99,6 +101,7 @@ export const myTooltip = Tooltip.compose({
 | Name                       | Field                  | Inherited From |
 | -------------------------- | ---------------------- | -------------- |
 |                            | visible                |                |
+| `track-pointer`            | trackPointer           |                |
 | `anchor`                   | anchor                 |                |
 | `delay`                    | delay                  |                |
 | `position`                 | position               |                |
