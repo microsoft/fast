@@ -36,7 +36,7 @@ export class FASTTooltip extends FASTElement {
      * HTML Attribute: visible
      */
     @attr({ mode: "boolean" })
-    public visible: boolean;
+    public visible: boolean | undefined;
     protected visibleChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.updateTooltipVisibility();

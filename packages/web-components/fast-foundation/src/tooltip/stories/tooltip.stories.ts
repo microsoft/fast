@@ -6,7 +6,7 @@ import { FASTTooltip, TooltipPosition } from "../tooltip.js";
 
 const storyTemplate = html<StoryArgs<FASTTooltip>>`
     <fast-tooltip
-        :visible="${x => x.visible}"
+        visible="${x => (x.visible ? "true" : undefined)}"
         delay="${x => x.delay}"
         position="${x => x.position}"
         auto-update-mode="${x => x.autoUpdateMode}"
@@ -39,10 +39,10 @@ export default {
 export const Tooltip: Story = renderComponent(
     html<StoryArgs<FASTTooltip>>`
         <div>
-            ${storyTemplate}
             <fast-button id="anchor-default">
                 Hover or focus me
             </fast-button>
+            ${storyTemplate}
         </div>
     `
 ).bind({});
