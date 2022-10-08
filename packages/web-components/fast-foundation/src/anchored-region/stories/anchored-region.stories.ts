@@ -144,11 +144,3 @@ PointAnchor.args = {
     pointAnchorX: 200,
     pointAnchorY: 200,
 };
-
-export const PointerTracking: Story<FASTAnchoredRegion> = AnchoredRegion.bind({});
-PointerTracking.args = {
-    usePointAnchor: true,
-    pointAnchorX: 200,
-    pointAnchorY: 200,
-    pointerTracking: true,
-};

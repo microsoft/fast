@@ -38,7 +38,7 @@ export default {
     },
 } as Meta<FASTTooltip>;
 
-export const Tooltip: Story = renderComponent(
+export const Default: Story = renderComponent(
     html<StoryArgs<FASTTooltip>>`
         <div>
             <fast-button id="anchor-default" style="margin: 200px;">
@@ -48,3 +48,17 @@ export const Tooltip: Story = renderComponent(
         </div>
     `
 ).bind({});
+
+export const PointerTracking: Story = renderComponent(
+    html<StoryArgs<FASTTooltip>>`
+        <div>
+            <fast-button id="anchor-default" style="margin: 200px;">
+                Hover or focus me
+            </fast-button>
+            ${storyTemplate}
+        </div>
+    `
+).bind({});
+PointerTracking.args = {
+    trackPointer: true,
+};
