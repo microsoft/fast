@@ -1,10 +1,5 @@
 import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
-import {
-    Direction,
-    eventMouseMove,
-    eventResize,
-    eventScroll,
-} from "@microsoft/fast-web-utilities";
+import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
 import { getDirection } from "../utilities/direction.js";
 import { IntersectionService } from "../utilities/intersection-service.js";
 import type {
@@ -59,24 +54,6 @@ export class FASTAnchoredRegion extends FASTElement {
         if (this.initialLayoutComplete) {
             this.viewportElement = this.getViewport();
         }
-    }
-
-    /**
-     * When true current point anchor is updated with pointer moves
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: pointer-tracking
-     */
-    @attr({ attribute: "pointer-tracking", mode: "boolean" })
-    public pointerTracking: boolean = false;
-    protected pointerTrackingChanged(): void {
-        if (this.pointerTracking) {
-            window.addEventListener(eventMouseMove, this.handleMouseMove);
-        } else {
-            window.removeEventListener(eventMouseMove, this.handleMouseMove);
-        }
-        this.updateForAttributeChange();
     }
 
     /**
@@ -1310,14 +1287,5 @@ export class FASTAnchoredRegion extends FASTElement {
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.unobserve(this.viewportElement);
         }
-    };
-
-    /**
-     * handles mouse move events when in mouse tracking mode
-     */
-    private handleMouseMove = (e: MouseEvent): void => {
-        this.pointAnchorX = e.pageX;
-        this.pointAnchorY = e.pageY;
-        this.update();
     };
 }

@@ -22,9 +22,8 @@ export function tooltipTemplate<T extends FASTTooltip>(
             x => x.tooltipVisible,
             html<T>`
             <${tagFor(options.anchoredRegion)}
-                point-anchor-x = "${x => x.initialPointerX}"
-                point-anchor-Y = "${x => x.initialPointerY}"
-                pointer-tracking="${x => x.isPointerTracking}"
+                :pointAnchorX = "${x => x.pointAnchorX}"
+                :pointAnchorY = "${x => x.pointAnchorY}"
                 use-point-anchor="${x => x.isPointerTracking}"
                 fixed-placement="true"
                 auto-update-mode="${x => x.autoUpdateMode}"

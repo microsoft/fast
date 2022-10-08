@@ -5,7 +5,7 @@ import {
     observable,
     Updates,
 } from "@microsoft/fast-element";
-import { Direction, keyEscape } from "@microsoft/fast-web-utilities";
+import { Direction, eventMouseMove, keyEscape } from "@microsoft/fast-web-utilities";
 import type { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
 import type {
     AutoUpdateMode,
@@ -281,13 +281,13 @@ export class FASTTooltip extends FASTElement {
      * @internal
      */
     @observable
-    public initialPointerX: number = 0;
+    public pointAnchorX: number = 0;
 
     /**
      * @internal
      */
     @observable
-    public initialPointerY: number = 0;
+    public pointAnchorY: number = 0;
 
     /**
      * reference to the anchored region
@@ -392,9 +392,12 @@ export class FASTTooltip extends FASTElement {
             // tooltip is already visible
             return;
         }
-        this.initialPointerX = ev.pageX;
-        this.initialPointerY = ev.pageY;
+        this.pointAnchorX = ev.pageX;
+        this.pointAnchorY = ev.pageY;
         this.startShowDelayTimer();
+        if (this.trackPointer) {
+            window.addEventListener(eventMouseMove, this.handleMouseMove);
+        }
     };
 
     /**
@@ -402,6 +405,9 @@ export class FASTTooltip extends FASTElement {
      */
     private handleAnchorMouseOut = (ev: MouseEvent): void => {
         this.isAnchorHovered = false;
+        if (this.trackPointer) {
+            window.removeEventListener(eventMouseMove, this.handleMouseMove);
+        }
         this.clearShowDelayTimer();
         this.startHideDelayTimer();
     };
@@ -656,6 +662,9 @@ export class FASTTooltip extends FASTElement {
             this.region.removeEventListener("mouseout", this.handleRegionMouseOut);
         }
         document.removeEventListener("keydown", this.handleDocumentKeydown);
+        if (this.isPointerTracking) {
+            this.style.pointerEvents = "auto";
+        }
         this.tooltipVisible = false;
         this.isPointerTracking = false;
     };
@@ -681,5 +690,16 @@ export class FASTTooltip extends FASTElement {
         this.region.addEventListener("mouseout", this.handleRegionMouseOut, {
             passive: true,
         });
+        if (this.isPointerTracking) {
+            this.style.pointerEvents = "none";
+        }
+    };
+
+    /**
+     * handles mouse move events when in mouse tracking mode
+     */
+    private handleMouseMove = (e: MouseEvent): void => {
+        this.pointAnchorX = e.pageX - document.documentElement.scrollLeft;
+        this.pointAnchorY = e.pageY - document.documentElement.scrollTop;
     };
 }
