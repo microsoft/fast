@@ -62,16 +62,16 @@ export class FASTAnchoredRegion extends FASTElement {
     }
 
     /**
-     * When true current point anchor is updated with mouse moves
+     * When true current point anchor is updated with pointer moves
      *
      * @public
      * @remarks
-     * HTML Attribute: mouse-tracking
+     * HTML Attribute: pointer-tracking
      */
-    @attr({ attribute: "mouse-tracking", mode: "boolean" })
-    public mouseTracking: boolean = false;
-    protected mouseTrackingChanged(): void {
-        if (this.mouseTracking) {
+    @attr({ attribute: "pointer-tracking", mode: "boolean" })
+    public pointerTracking: boolean = false;
+    protected pointerTrackingChanged(): void {
+        if (this.pointerTracking) {
             window.addEventListener(eventMouseMove, this.handleMouseMove);
         } else {
             window.removeEventListener(eventMouseMove, this.handleMouseMove);

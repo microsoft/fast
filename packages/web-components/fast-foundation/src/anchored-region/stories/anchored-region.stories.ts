@@ -17,7 +17,7 @@ const storyTemplate = html<StoryArgs<FASTAnchoredRegion>>`
         <fast-anchored-region
             class="region"
             ?use-point-anchor="${x => x.usePointAnchor}"
-            ?mouse-tracking="${x => x.mouseTracking}"
+            ?pointer-tracking="${x => x.pointerTracking}"
             point-anchor-x="${x => x.pointAnchorX}"
             point-anchor-y="${x => x.pointAnchorY}"
             ?horizontal-inset="${x => x.horizontalInset}"
@@ -74,7 +74,7 @@ export default {
         usePointAnchor: { control: "boolean" },
         pointAnchorX: { control: "number" },
         pointAnchorY: { control: "number" },
-        mouseTracking: { control: "boolean" },
+        pointerTracking: { control: "boolean" },
         fixedPlacement: { control: "boolean" },
         horizontalDefaultPosition: {
             control: "select",
@@ -145,10 +145,10 @@ PointAnchor.args = {
     pointAnchorY: 200,
 };
 
-export const MouseTracking: Story<FASTAnchoredRegion> = AnchoredRegion.bind({});
-MouseTracking.args = {
+export const PointerTracking: Story<FASTAnchoredRegion> = AnchoredRegion.bind({});
+PointerTracking.args = {
     usePointAnchor: true,
     pointAnchorX: 200,
     pointAnchorY: 200,
-    mouseTracking: true,
+    pointerTracking: true,
 };
