@@ -45,6 +45,22 @@ export class FASTTooltip extends FASTElement {
     }
 
     /**
+     * When true the tooltip will anchor to the mouse pointer when focused via hover
+     *
+     * @defaultValue - undefined
+     * @public
+     * HTML Attribute: track-pointer
+     */
+    @attr({ attribute: "track-pointer", mode: "boolean" })
+    public trackPointer: boolean | undefined;
+    protected trackPointerChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+            this.updateTooltipVisibility();
+            this.updateLayout();
+        }
+    }
+
+    /**
      * The id of the element the tooltip is anchored to
      *
      * @defaultValue - undefined
@@ -256,6 +272,24 @@ export class FASTTooltip extends FASTElement {
     public currentDirection: Direction = Direction.ltr;
 
     /**
+     * @internal
+     */
+    @observable
+    public isPointerTracking: boolean = false;
+
+    /**
+     * @internal
+     */
+    @observable
+    public initialPointerX: number = 0;
+
+    /**
+     * @internal
+     */
+    @observable
+    public initialPointerY: number = 0;
+
+    /**
      * reference to the anchored region
      *
      * @internal
@@ -332,14 +366,14 @@ export class FASTTooltip extends FASTElement {
     /**
      * mouse enters region
      */
-    private handleRegionMouseOver = (ev: Event): void => {
+    private handleRegionMouseOver = (ev: MouseEvent): void => {
         this.isRegionHovered = true;
     };
 
     /**
      * mouse leaves region
      */
-    private handleRegionMouseOut = (ev: Event): void => {
+    private handleRegionMouseOut = (ev: MouseEvent): void => {
         this.isRegionHovered = false;
         this.startHideDelayTimer();
     };
@@ -347,19 +381,21 @@ export class FASTTooltip extends FASTElement {
     /**
      * mouse enters anchor
      */
-    private handleAnchorMouseOver = (ev: Event): void => {
+    private handleAnchorMouseOver = (ev: MouseEvent): void => {
         if (this.tooltipVisible) {
             // tooltip is already visible, just set the anchor hover flag
             this.isAnchorHoveredFocused = true;
             return;
         }
+        this.initialPointerX = ev.pageX;
+        this.initialPointerY = ev.pageY;
         this.startShowDelayTimer();
     };
 
     /**
      * mouse leaves anchor
      */
-    private handleAnchorMouseOut = (ev: Event): void => {
+    private handleAnchorMouseOut = (ev: MouseEvent): void => {
         this.isAnchorHoveredFocused = false;
         this.clearShowDelayTimer();
         this.startHideDelayTimer();
@@ -585,6 +621,9 @@ export class FASTTooltip extends FASTElement {
             return;
         }
         this.currentDirection = getDirection(this);
+        if (this.isAnchorHoveredFocused && this.trackPointer) {
+            this.isPointerTracking = true;
+        }
         this.tooltipVisible = true;
         document.addEventListener("keydown", this.handleDocumentKeydown);
         Updates.enqueue(this.setRegionProps);
@@ -611,6 +650,7 @@ export class FASTTooltip extends FASTElement {
         }
         document.removeEventListener("keydown", this.handleDocumentKeydown);
         this.tooltipVisible = false;
+        this.isPointerTracking = false;
     };
 
     /**

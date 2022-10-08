@@ -7,6 +7,7 @@ import { FASTTooltip, TooltipPosition } from "../tooltip.js";
 const storyTemplate = html<StoryArgs<FASTTooltip>>`
     <fast-tooltip
         visible="${x => (x.visible ? "true" : undefined)}"
+        track-pointer="${x => (x.trackPointer ? "true" : undefined)}"
         delay="${x => x.delay}"
         position="${x => x.position}"
         auto-update-mode="${x => x.autoUpdateMode}"
@@ -30,6 +31,7 @@ export default {
         position: { control: "select", options: Object.values(TooltipPosition) },
         verticalViewportLock: { control: "boolean" },
         visible: { control: "boolean" },
+        trackPointer: { control: "boolean" },
     },
     parameters: {
         docs: { inlineStories: false },
@@ -39,7 +41,7 @@ export default {
 export const Tooltip: Story = renderComponent(
     html<StoryArgs<FASTTooltip>>`
         <div>
-            <fast-button id="anchor-default">
+            <fast-button id="anchor-default" style="margin: 200px;">
                 Hover or focus me
             </fast-button>
             ${storyTemplate}
