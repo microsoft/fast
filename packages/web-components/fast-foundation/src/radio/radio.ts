@@ -8,7 +8,7 @@ import { FormAssociatedRadio } from "./radio.form-associated.js";
  */
 export type RadioControl = Pick<
     HTMLInputElement,
-    "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute"
+    "checked" | "disabled" | "focus" | "setAttribute" | "getAttribute"
 >;
 
 /**
