@@ -115,7 +115,6 @@ export const myRadio = Radio.compose<RadioOptions>({
 
 | Name       | Privacy | Type      | Default | Description                                                                                                                                                                                 | Inherited From      |
 | ---------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| `readOnly` | public  | `boolean` |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                     |
 | `name`     | public  | `string`  |         | The name of the radio. See [name attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname) for more info.                                              |                     |
 | `proxy`    |         |           |         |                                                                                                                                                                                             | FormAssociatedRadio |
 
@@ -123,7 +122,6 @@ export const myRadio = Radio.compose<RadioOptions>({
 
 | Name              | Privacy   | Description                       | Parameters         | Return            | Inherited From |
 | ----------------- | --------- | --------------------------------- | ------------------ | ----------------- | -------------- |
-| `readOnlyChanged` | protected |                                   |                    | `void`            |                |
 | `keypressHandler` | public    | Handles key presses on the radio. | `e: KeyboardEvent` | `boolean or void` |                |
 | `clickHandler`    | public    | Handles clicks on the radio.      | `e: MouseEvent`    | `boolean or void` |                |
 
@@ -132,12 +130,6 @@ export const myRadio = Radio.compose<RadioOptions>({
 | Name     | Type | Description                                                | Inherited From |
 | -------- | ---- | ---------------------------------------------------------- | -------------- |
 | `change` |      | Emits a custom change event when the checked state changes |                |
-
-#### Attributes
-
-| Name       | Field    | Inherited From |
-| ---------- | -------- | -------------- |
-| `readonly` | readOnly |                |
 
 #### CSS Parts
 

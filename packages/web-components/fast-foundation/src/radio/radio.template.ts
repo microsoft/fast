@@ -16,7 +16,6 @@ export function radioTemplate<T extends FASTRadio>(
             aria-checked="${x => x.checked}"
             aria-required="${x => x.required}"
             aria-disabled="${x => x.disabled}"
-            aria-readonly="${x => x.readOnly}"
             @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         >

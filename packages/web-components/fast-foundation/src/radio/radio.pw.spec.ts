@@ -71,17 +71,6 @@ test.describe("Radio", () => {
         await element.evaluate((node: FASTRadio) => (node.disabled = false));
 
         await expect(element).toHaveAttribute("aria-disabled", "false");
-
-        // Readonly
-        await expect(element).not.hasAttribute("aria-readonly");
-
-        await element.evaluate((node: FASTRadio) => (node.readOnly = true));
-
-        await expect(element).toHaveAttribute("aria-readonly", "true");
-
-        await element.evaluate((node: FASTRadio) => (node.readOnly = false));
-
-        await expect(element).toHaveAttribute("aria-readonly", "false");
     });
 
     test("should set a tabindex of 0 on the element", async () => {

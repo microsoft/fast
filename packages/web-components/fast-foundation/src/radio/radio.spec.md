@@ -35,8 +35,6 @@ Extends [form associated custom element](../form-associated/form-associated-cust
   - The current checked state of the radio
 
 *Content attributes*
-- `readonly`
-  - The radio should be submitted with the form but should not be editable.
 - `disabled`
   - The radio should be disabled from user interaction and will not be submitted with the form data.
 - `value` - Not visible to the user, it's used for form data and to distinguish between other radio buttons of the same name attribute value.
@@ -72,7 +70,6 @@ Extends [form associated custom element](../form-associated/form-associated-cust
 - checked
 - disabled
 - required
-- readonly
 
 *Slotted Content/Slotted Classes*
 *CSS Parts*
@@ -88,9 +85,6 @@ The checked state can be toggled by:
 
 **disabled**: `true` or `false`
 When disabled, the value will not be changeable through user interaction. It should also not expose it's value to a form submission.
-
-**readonly**: `true` or `false`
-When readonly, the value will not be changeable through user interaction. The value will still be exposed to forms on submission.
 
 ### Accessibility
 The root element inside the shadow-dom of the radio will be a focusable element with the following accessibility content attributes:
