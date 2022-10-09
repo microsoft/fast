@@ -4,7 +4,7 @@ import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTTreeView } from "../tree-view.js";
 
 const storyTemplate = html<StoryArgs<FASTTreeView>>`
-    <fast-tree-view render-collapsed-nodes="${x => x.renderCollapsedNodes}">
+    <fast-tree-view>
         ${x => x.storyContent}
     </fast-tree-view>
 `;
@@ -26,11 +26,11 @@ TreeView.args = {
         <fast-tree-item>
             Root item 1
             <fast-divider></fast-divider>
-            <fast-tree-item expanded>
+            <fast-tree-item>
                 Flowers
                 <fast-tree-item>Daisy</fast-tree-item>
                 <fast-tree-item disabled>Sunflower</fast-tree-item>
-                <fast-tree-item expanded>
+                <fast-tree-item>
                     Rose
                     <fast-divider role="presentation"></fast-divider>
                     <fast-tree-item>Pink</fast-tree-item>
@@ -41,7 +41,7 @@ TreeView.args = {
             <fast-tree-item>Nested item 2</fast-tree-item>
             <fast-tree-item>Nested item 3</fast-tree-item>
         </fast-tree-item>
-        <fast-tree-item>
+        <fast-tree-item expanded>
             Root item 2
             <fast-tree-item>
                 Flowers
