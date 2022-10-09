@@ -26,11 +26,11 @@ TreeView.args = {
         <fast-tree-item>
             Root item 1
             <fast-divider></fast-divider>
-            <fast-tree-item>
+            <fast-tree-item expanded>
                 Flowers
                 <fast-tree-item>Daisy</fast-tree-item>
                 <fast-tree-item disabled>Sunflower</fast-tree-item>
-                <fast-tree-item>
+                <fast-tree-item expanded>
                     Rose
                     <fast-divider role="presentation"></fast-divider>
                     <fast-tree-item>Pink</fast-tree-item>

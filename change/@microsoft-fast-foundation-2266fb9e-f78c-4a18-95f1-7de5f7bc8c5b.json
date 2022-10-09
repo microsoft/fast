@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "revert tree item changes from playwright migration",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}
