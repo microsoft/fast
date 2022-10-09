@@ -741,9 +741,6 @@ export class FASTAnchoredRegion extends FASTElement {
     pointAnchorY: number;
     // (undocumented)
     protected pointAnchorYChanged(): void;
-    pointerTracking: boolean;
-    // (undocumented)
-    protected pointerTrackingChanged(): void;
     update: () => void;
     usePointAnchor: boolean;
     // (undocumented)
@@ -2113,11 +2110,11 @@ export class FASTTooltip extends FASTElement {
     horizontalScaling: AxisScalingMode;
     horizontalViewportLock: boolean;
     // @internal (undocumented)
-    initialPointerX: number;
-    // @internal (undocumented)
-    initialPointerY: number;
-    // @internal (undocumented)
     isPointerTracking: boolean;
+    // @internal (undocumented)
+    pointAnchorX: number;
+    // @internal (undocumented)
+    pointAnchorY: number;
     position: TooltipPosition;
     // @internal
     region: FASTAnchoredRegion;
