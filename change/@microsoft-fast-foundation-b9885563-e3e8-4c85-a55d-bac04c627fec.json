@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "remove readonly support from fast radio",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "yinon@hotmail.com",
+  "dependentChangeType": "patch"
+}
