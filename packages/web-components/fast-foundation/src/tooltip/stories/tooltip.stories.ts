@@ -49,7 +49,7 @@ export const Default: Story = renderComponent(
     `
 ).bind({});
 
-export const PointerTracking: Story = renderComponent(
+export const PointerTracking: Story<FASTTooltip> = renderComponent(
     html<StoryArgs<FASTTooltip>>`
         <div>
             <fast-button id="anchor-default" style="margin: 200px;">
