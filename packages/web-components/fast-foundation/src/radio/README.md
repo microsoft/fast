@@ -113,17 +113,17 @@ export const myRadio = Radio.compose<RadioOptions>({
 
 #### Fields
 
-| Name       | Privacy | Type      | Default | Description                                                                                                                                                                                 | Inherited From      |
-| ---------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| `name`     | public  | `string`  |         | The name of the radio. See [name attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname) for more info.                                              |                     |
-| `proxy`    |         |           |         |                                                                                                                                                                                             | FormAssociatedRadio |
+| Name    | Privacy | Type     | Default | Description                                                                                                                                    | Inherited From      |
+| ------- | ------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `name`  | public  | `string` |         | The name of the radio. See [name attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname) for more info. |                     |
+| `proxy` |         |          |         |                                                                                                                                                | FormAssociatedRadio |
 
 #### Methods
 
-| Name              | Privacy   | Description                       | Parameters         | Return            | Inherited From |
-| ----------------- | --------- | --------------------------------- | ------------------ | ----------------- | -------------- |
-| `keypressHandler` | public    | Handles key presses on the radio. | `e: KeyboardEvent` | `boolean or void` |                |
-| `clickHandler`    | public    | Handles clicks on the radio.      | `e: MouseEvent`    | `boolean or void` |                |
+| Name              | Privacy | Description                       | Parameters         | Return            | Inherited From |
+| ----------------- | ------- | --------------------------------- | ------------------ | ----------------- | -------------- |
+| `keypressHandler` | public  | Handles key presses on the radio. | `e: KeyboardEvent` | `boolean or void` |                |
+| `clickHandler`    | public  | Handles clicks on the radio.      | `e: MouseEvent`    | `boolean or void` |                |
 
 #### Events
 
