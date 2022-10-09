@@ -28,11 +28,13 @@ export function tooltipTemplate<T extends FASTTooltip>(
                 fixed-placement="true"
                 auto-update-mode="${x => x.autoUpdateMode}"
                 vertical-positioning-mode="${x => x.verticalPositioningMode}"
-                vertical-default-position="${x => x.verticalDefaultPosition}"
+                vertical-default-position="${x =>
+                    x.isPointerTracking ? "top" : x.verticalDefaultPosition}"
                 vertical-inset="${x => x.verticalInset}"
                 vertical-scaling="${x => x.verticalScaling}"
                 horizontal-positioning-mode="${x => x.horizontalPositioningMode}"
-                horizontal-default-position="${x => x.horizontalDefaultPosition}"
+                horizontal-default-position="${x =>
+                    x.isPointerTracking ? "end" : x.horizontalDefaultPosition}"
                 horizontal-scaling="${x => x.horizontalScaling}"
                 horizontal-inset="${x => x.horizontalInset}"
                 vertical-viewport-lock="${x => x.horizontalViewportLock}"
