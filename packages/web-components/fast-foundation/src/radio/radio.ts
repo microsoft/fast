@@ -33,20 +33,6 @@ export type RadioOptions = {
  */
 export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
-     * @public
-     * @remarks
-     * HTML Attribute: readonly
-     */
-    @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean; // Map to proxy element
-    protected readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.readOnly = this.readOnly;
-        }
-    }
-
-    /**
      * The name of the radio. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname | name attribute} for more info.
      */
     @observable
@@ -129,7 +115,7 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     public keypressHandler(e: KeyboardEvent): boolean | void {
         switch (e.key) {
             case keySpace:
-                if (!this.checked && !this.readOnly) {
+                if (!this.checked) {
                     this.checked = true;
                 }
                 return;
@@ -143,7 +129,7 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
      * @beta
      */
     public clickHandler(e: MouseEvent): boolean | void {
-        if (!this.disabled && !this.readOnly && !this.checked) {
+        if (!this.disabled && !this.checked) {
             this.checked = true;
         }
     }
