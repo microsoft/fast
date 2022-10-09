@@ -162,32 +162,6 @@ test.describe("Radio Group", () => {
         ).toBeTruthy();
     });
 
-    test("should set all child radio elements to readonly when the `readonly` property is true", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-radio-group readonly>
-                    <fast-radio></fast-radio>
-                    <fast-radio></fast-radio>
-                    <fast-radio></fast-radio>
-                </fast-radio-group>
-            `;
-        });
-
-        await expect(element).toHaveBooleanAttribute("readonly");
-
-        expect(
-            await radios.evaluateAll(radios =>
-                radios.every(radio => radio.hasAttribute("readonly"))
-            )
-        ).toBeTruthy();
-
-        expect(
-            await radios.evaluateAll(radios =>
-                radios.every(radio => radio.getAttribute("aria-readonly") === "true")
-            )
-        ).toBeTruthy();
-    });
-
     test("should set tabindex of 0 to a child radio with a matching `value`", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `

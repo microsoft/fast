@@ -31,17 +31,6 @@ export class FASTRadioGroup extends FASTElement {
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
-    protected readOnlyChanged(): void {
-        if (this.slottedRadioButtons !== undefined) {
-            this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
-                if (this.readOnly) {
-                    radio.readOnly = true;
-                } else {
-                    radio.readOnly = false;
-                }
-            });
-        }
-    }
 
     /**
      * Disables the radio group and child radios.
@@ -250,16 +239,8 @@ export class FASTRadioGroup extends FASTElement {
         const radio: HTMLInputElement = group[index] as HTMLInputElement;
         if (!this.isInsideToolbar) {
             radio.setAttribute("tabindex", "0");
-            if (radio.readOnly) {
-                this.slottedRadioButtons.forEach((nextRadio: HTMLInputElement) => {
-                    if (nextRadio !== radio) {
-                        nextRadio.setAttribute("tabindex", "-1");
-                    }
-                });
-            } else {
-                radio.checked = true;
-                this.selectedRadio = radio;
-            }
+            radio.checked = true;
+            this.selectedRadio = radio;
         }
         this.focusedRadio = radio;
         radio.focus();
