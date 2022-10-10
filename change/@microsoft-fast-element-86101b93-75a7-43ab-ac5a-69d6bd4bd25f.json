@@ -3,5 +3,5 @@
   "comment": "fix: prevent event callbacks when controller is not bound",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
