@@ -71,7 +71,6 @@ export default {
         usePointAnchor: { control: "boolean" },
         pointAnchorX: { control: "number" },
         pointAnchorY: { control: "number" },
-        pointerTracking: { control: "boolean" },
         fixedPlacement: { control: "boolean" },
         horizontalDefaultPosition: {
             control: "select",
@@ -309,4 +308,7 @@ PositionsBase.args = {
     usePointAnchor: true,
     pointAnchorX: 200,
     pointAnchorY: 200,
+};
+PositionsBase.argTypes = {
+    verticalViewportLock: { control: "boolean" },
 };
