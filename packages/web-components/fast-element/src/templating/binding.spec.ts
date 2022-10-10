@@ -5,7 +5,7 @@ import { html, ViewTemplate } from "./template.js";
 import { toHTML } from "../__test__/helpers.js";
 import { SyntheticView, HTMLView } from "./view.js";
 import { Updates } from "../observation/update-queue.js";
-import { Aspect, ViewBehaviorTargets, ViewController } from "./html-directive.js";
+import { Aspect } from "./html-directive.js";
 import { DOM } from "./dom.js";
 import { Signal, signal } from "./binding-signal.js";
 import { twoWay, TwoWayBindingOptions } from "./binding-two-way.js";
@@ -94,30 +94,13 @@ describe("The HTML binding directive", () => {
         return configureDirective(directive, sourceAspect);
     }
 
-    function createController(source: any, targets: ViewBehaviorTargets) {
-        const unbindables = new Set<{ unbind(controller: ViewController) }>();
-
-        return {
-            isBound: false,
-            context: Fake.executionContext(),
-            onUnbind(object) {
-                unbindables.add(object);
-            },
-            source,
-            targets,
-            unbind() {
-                unbindables.forEach(x => x.unbind(this));
-            }
-        };
-    }
-
     context("when binding text content", () => {
         it("initially sets the text of a node", () => {
             const { behavior, node, targets } = contentBinding();
             const model = new Model("This is a test");
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
 
             expect(node.textContent).to.equal(model.value);
         });
@@ -125,9 +108,9 @@ describe("The HTML binding directive", () => {
         it("updates the text of a node when the expression changes", async () => {
             const { behavior, node, targets } = contentBinding();
             const model = new Model("This is a test");
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
 
             expect(node.textContent).to.equal(model.value);
 
@@ -144,9 +127,9 @@ describe("The HTML binding directive", () => {
             const { behavior, parentNode, targets } = contentBinding();
             const template = html<Model>`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
 
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
         });
@@ -155,9 +138,9 @@ describe("The HTML binding directive", () => {
             const { behavior, parentNode, targets } = contentBinding();
             const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
 
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
@@ -172,9 +155,9 @@ describe("The HTML binding directive", () => {
             const { behavior, parentNode, targets } = contentBinding();
             const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model)
 
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
@@ -189,9 +172,9 @@ describe("The HTML binding directive", () => {
             const { behavior, parentNode, targets } = contentBinding();
             const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
 
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
@@ -206,9 +189,9 @@ describe("The HTML binding directive", () => {
             const { behavior, parentNode, targets } = contentBinding();
             const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
 
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
@@ -224,9 +207,9 @@ describe("The HTML binding directive", () => {
             const { behavior, parentNode, node, targets } = contentBinding();
             const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
 
             const view = (node as any).$fastView as SyntheticView;
             const capturedTemplate = (node as any).$fastTemplate as ViewTemplate;
@@ -257,9 +240,9 @@ describe("The HTML binding directive", () => {
             const { behavior, parentNode, targets } = contentBinding("computedValue");
             const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
 
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
@@ -275,11 +258,11 @@ describe("The HTML binding directive", () => {
             const { behavior, parentNode, targets } = contentBinding("computedValue");
             const template = html`This is a template. ${(x, c) => c.parent.testProp}`;
             const model = new Model(template);
-            const controller = createController(model, targets);
-            const parent = { testProp: "testing..." };
+            const controller = Fake.viewController(targets, behavior);
+            const context = Fake.executionContext();
+            context.parent =  { testProp: "testing..." };
 
-            controller.context.parent = parent;
-            behavior.bind(controller);
+            controller.bind(model, context);
 
             expect(toHTML(parentNode)).to.equal(`This is a template. testing...`);
         });
@@ -289,9 +272,9 @@ describe("The HTML binding directive", () => {
             const template = html`${x => html`<${x.knownValue}>Hi there!</${x.knownValue}>`}`;
             const model = new Model(template);
             model.knownValue = "button"
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
 
             expect(toHTML(parentNode)).to.equal(`<button>Hi there!</button>`);
 
@@ -308,9 +291,9 @@ describe("The HTML binding directive", () => {
             const { behavior, node, parentNode, targets } = contentBinding();
             const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
 
             const newView = (node as any).$fastView as SyntheticView;
             expect(newView.source).to.equal(model);
@@ -325,9 +308,9 @@ describe("The HTML binding directive", () => {
             const { behavior, node, parentNode, targets } = contentBinding();
             const template = html`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
 
             const view = (node as any).$fastView as SyntheticView;
             expect(view.source).to.equal(model);
@@ -337,7 +320,7 @@ describe("The HTML binding directive", () => {
 
             expect(view.source).to.equal(null);
 
-            behavior.bind(controller);
+            controller.bind(model);
 
             const newView = (node as any).$fastView as SyntheticView;
             expect(newView.source).to.equal(model);
@@ -401,9 +384,9 @@ describe("The HTML binding directive", () => {
             it(`sets the initial value of a ${aspectScenario.name} binding`, () => {
                 const { behavior, node, targets } = defaultBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(model.value);
             });
@@ -411,9 +394,9 @@ describe("The HTML binding directive", () => {
             it(`updates the ${aspectScenario.name} when the model changes`, async () => {
                 const { behavior, node, targets } = defaultBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(model.value);
 
@@ -427,9 +410,9 @@ describe("The HTML binding directive", () => {
             it(`doesn't update the ${aspectScenario.name} after unbind`, async () => {
                 const { behavior, node, targets } = defaultBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(model.value);
 
@@ -448,9 +431,9 @@ describe("The HTML binding directive", () => {
             it(`sets the initial value of a ${aspectScenario.name} binding`, () => {
                 const { behavior, node, targets } = oneTimeBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(model.value);
             });
@@ -458,9 +441,9 @@ describe("The HTML binding directive", () => {
             it(`does not update the ${aspectScenario.name} after the initial set`, async () => {
                 const { behavior, node, targets } = oneTimeBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
 
@@ -474,9 +457,9 @@ describe("The HTML binding directive", () => {
             it(`doesn't update the ${aspectScenario.name} after unbind`, async () => {
                 const { behavior, node, targets } = oneTimeBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
 
@@ -494,9 +477,9 @@ describe("The HTML binding directive", () => {
             it(`sets the initial value of the ${aspectScenario.name} binding`, () => {
                 const { behavior, node, targets } = signalBinding("test-signal", aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(model.value);
             });
@@ -505,9 +488,9 @@ describe("The HTML binding directive", () => {
                 const signalName = "test-signal";
                 const { behavior, node, targets } = signalBinding(signalName, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
 
@@ -528,9 +511,9 @@ describe("The HTML binding directive", () => {
                 const signalName = "test-signal";
                 const { behavior, node, targets } = signalBinding(signalName, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(model.value);
 
@@ -550,9 +533,9 @@ describe("The HTML binding directive", () => {
             it(`sets the initial value of the ${aspectScenario.name} binding`, () => {
                 const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(model.value);
             });
@@ -560,9 +543,9 @@ describe("The HTML binding directive", () => {
             it(`updates the ${aspectScenario.name} when the model changes`, async () => {
                 const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
 
@@ -576,9 +559,9 @@ describe("The HTML binding directive", () => {
             it(`updates the model when a change event fires for the ${aspectScenario.name}`, async () => {
                 const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
 
@@ -594,9 +577,9 @@ describe("The HTML binding directive", () => {
                 const fromView = value => "fixed value";
                 const { behavior, node, targets } = twoWayBinding({ fromView }, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
 
@@ -612,9 +595,9 @@ describe("The HTML binding directive", () => {
                 const changeEvent = "foo";
                 const { behavior, node, targets } = twoWayBinding({changeEvent}, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
 
@@ -629,9 +612,9 @@ describe("The HTML binding directive", () => {
             it(`doesn't update the ${aspectScenario.name} after unbind`, async () => {
                 const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
-                const controller = createController(model, targets);
+                const controller = Fake.viewController(targets, behavior);
 
-                behavior.bind(controller);
+                controller.bind(model);
 
                 expect(aspectScenario.getValue(node)).to.equal(model.value);
 
@@ -648,18 +631,18 @@ describe("The HTML binding directive", () => {
         it("does not invoke the method on bind", () => {
             const { behavior, targets } = eventBinding({}, "@my-event");
             const model = new Model("Test value.");
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
             expect(model.actionInvokeCount).to.equal(0);
         });
 
         it("invokes the method each time the event is raised", () => {
             const { behavior, node, targets } = eventBinding({}, "@my-event");
             const model = new Model("Test value.");
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
             expect(model.actionInvokeCount).to.equal(0);
 
             node.dispatchEvent(new CustomEvent("my-event"));
@@ -675,13 +658,30 @@ describe("The HTML binding directive", () => {
         it("invokes the method one time for a one time event", () => {
             const { behavior, node, targets } = eventBinding({ once: true }, "@my-event");
             const model = new Model("Test value.");
-            const controller = createController(model, targets);
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(controller);
+            controller.bind(model);
             expect(model.actionInvokeCount).to.equal(0);
 
             node.dispatchEvent(new CustomEvent("my-event"));
             expect(model.actionInvokeCount).to.equal(1);
+
+            node.dispatchEvent(new CustomEvent("my-event"));
+            expect(model.actionInvokeCount).to.equal(1);
+        });
+
+        it("does not invoke the method when unbound", () => {
+            const { behavior, node, targets } = eventBinding({}, "@my-event");
+            const model = new Model("Test value.");
+            const controller = Fake.viewController(targets, behavior);
+
+            controller.bind(model);
+            expect(model.actionInvokeCount).to.equal(0);
+
+            node.dispatchEvent(new CustomEvent("my-event"));
+            expect(model.actionInvokeCount).to.equal(1);
+
+            controller.unbind();
 
             node.dispatchEvent(new CustomEvent("my-event"));
             expect(model.actionInvokeCount).to.equal(1);
