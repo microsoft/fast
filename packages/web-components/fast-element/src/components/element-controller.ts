@@ -205,7 +205,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Adds the behavior to the component.
      * @param behavior - The behavior to add.
      */
-    addBehavior(behavior: HostBehavior<TElement>) {
+    public addBehavior(behavior: HostBehavior<TElement>) {
         const targetBehaviors = this.behaviors ?? (this.behaviors = new Map());
         const count = targetBehaviors.get(behavior) ?? 0;
 
@@ -226,7 +226,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * @param behavior - The behavior to remove.
      * @param force - Forces removal even if this behavior was added more than once.
      */
-    removeBehavior(behavior: HostBehavior<TElement>, force: boolean = false) {
+    public removeBehavior(behavior: HostBehavior<TElement>, force: boolean = false) {
         const targetBehaviors = this.behaviors;
         if (targetBehaviors === null) {
             return;
@@ -313,20 +313,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
-        const boundObservables = this.boundObservables;
-
-        // If we have any observables that were bound, re-apply their values.
-        if (boundObservables !== null) {
-            const propertyNames = Object.keys(boundObservables);
-            const element = this.source;
-
-            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
-                const propertyName = propertyNames[i];
-                (element as any)[propertyName] = boundObservables[propertyName];
-            }
-
-            this.boundObservables = null;
-        }
+        this.bindObservables();
 
         if (this.needsInitialization) {
             this.finishInitialization();
@@ -406,13 +393,16 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         return false;
     }
 
-    private finishInitialization(): void {
-        const element = this.source;
+    /**
+     * bind any observable values that were set prior to element upgrade.
+     */
+    protected bindObservables() {
         const boundObservables = this.boundObservables;
 
         // If we have any observables that were bound, re-apply their values.
         if (boundObservables !== null) {
             const propertyNames = Object.keys(boundObservables);
+            const element = this.source;
 
             for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
                 const propertyName = propertyNames[i];
@@ -421,7 +411,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
             this.boundObservables = null;
         }
+    }
 
+    private finishInitialization(): void {
         this.renderTemplate(this.template);
         this.addStyles(this.mainStyles);
 
