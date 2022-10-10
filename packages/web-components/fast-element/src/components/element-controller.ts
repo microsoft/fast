@@ -30,7 +30,6 @@ function getShadowRoot(element: Element): ShadowRoot | null {
 export class ElementController<TElement extends HTMLElement = HTMLElement>
     extends PropertyChangeNotifier
     implements HostController<TElement> {
-    private boundObservables: Record<string, any> | null = null;
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
@@ -180,22 +179,19 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             }
         }
 
-        // Capture any observable values that were set by the binding engine before
-        // the browser upgraded the element. Then delete the property since it will
-        // shadow the getter/setter that is required to make the observable operate.
-        // Later, in the connect callback, we'll re-apply the values.
+        // Delete and re-assign any observable properties that were assigned
+        // before the element is upgraded. This needs to happen because otherwise
+        // the value will shadow the observable getter and setter
         const accessors = Observable.getAccessors(element);
 
         if (accessors.length > 0) {
-            const boundObservables = (this.boundObservables = Object.create(null));
-
             for (let i = 0, ii = accessors.length; i < ii; ++i) {
-                const propertyName = accessors[i].name;
+                const propertyName = accessors[i].name as keyof TElement;
                 const value = (element as any)[propertyName];
 
                 if (value !== void 0) {
-                    delete (element as any)[propertyName];
-                    boundObservables[propertyName] = value;
+                    delete element[propertyName];
+                    element[propertyName] = value;
                 }
             }
         }
@@ -313,8 +309,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
-        this.bindObservables();
-
         if (this.needsInitialization) {
             this.finishInitialization();
         } else if (this.view !== null) {
@@ -391,26 +385,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         return false;
-    }
-
-    /**
-     * bind any observable values that were set prior to element upgrade.
-     */
-    protected bindObservables() {
-        const boundObservables = this.boundObservables;
-
-        // If we have any observables that were bound, re-apply their values.
-        if (boundObservables !== null) {
-            const propertyNames = Object.keys(boundObservables);
-            const element = this.source;
-
-            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
-                const propertyName = propertyNames[i];
-                (element as any)[propertyName] = boundObservables[propertyName];
-            }
-
-            this.boundObservables = null;
-        }
     }
 
     private finishInitialization(): void {
