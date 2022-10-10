@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-web-utilities",
   "entries": [
     {
+      "date": "Thu, 06 Oct 2022 23:21:20 GMT",
+      "tag": "@microsoft/fast-web-utilities_v6.0.0",
+      "version": "6.0.0",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-web-utilities",
+            "commit": "c06e32d72d518bf5c3152efe4e666f233190b445",
+            "comment": "upgrade karma to ^6.4.1"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 18 Aug 2022 20:46:10 GMT",
       "tag": "@microsoft/fast-web-utilities_v6.0.0",
       "version": "6.0.0",

@@ -383,17 +383,19 @@ export class HTMLBindingDirective
 
     /** @internal */
     handleEvent(event: Event): void {
-        const target = event.currentTarget!;
+        const controller = event.currentTarget![this.data] as ViewController;
 
-        ExecutionContext.setEvent(event);
+        if (controller.isBound) {
+            ExecutionContext.setEvent(event);
+            const result = this.dataBinding.evaluate(
+                controller.source,
+                controller.context
+            );
+            ExecutionContext.setEvent(null);
 
-        const controller = target[this.data] as ViewController;
-        const result = this.dataBinding.evaluate(controller.source, controller.context);
-
-        ExecutionContext.setEvent(null);
-
-        if (result !== true) {
-            event.preventDefault();
+            if (result !== true) {
+                event.preventDefault();
+            }
         }
     }
 

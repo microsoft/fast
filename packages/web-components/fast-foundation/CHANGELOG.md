@@ -1,8 +1,34 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Mon, 03 Oct 2022 23:44:38 GMT and should not be manually modified.
+This log was last generated on Mon, 10 Oct 2022 20:28:02 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.16
+
+Mon, 10 Oct 2022 20:28:02 GMT
+
+### Changes
+
+- revert tree item changes from playwright migration (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.13
+
+## 3.0.0-alpha.15
+
+Thu, 06 Oct 2022 23:21:20 GMT
+
+### Changes
+
+- Adds ability to close menu with Escape key (ryan@ryanmerrill.net)
+- Bump @microsoft/fast-element to v2.0.0-beta.12
+
+## 3.0.0-alpha.14
+
+Wed, 05 Oct 2022 23:26:01 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.11
 
 ## 3.0.0-alpha.13
 

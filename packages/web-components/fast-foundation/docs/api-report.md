@@ -514,20 +514,6 @@ export class DelegatesARIAToolbar {
 export interface DelegatesARIAToolbar extends ARIAGlobalStatesAndProperties {
 }
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIATreeItem" because one of its declarations is marked as @internal
-//
-// @public
-export class DelegatesARIATreeItem {
-    ariaDisabled: "true" | "false" | string | null;
-    ariaExpanded: "true" | "false" | string | null;
-    ariaSelected: "true" | "false" | string | null;
-}
-
-// @internal
-export interface DelegatesARIATreeItem extends ARIAGlobalStatesAndProperties {
-}
-
 // @public
 export type DerivedDesignTokenValue<T> = (resolve: DesignTokenResolver) => T;
 
@@ -2134,8 +2120,6 @@ export class FASTTreeItem extends FASTElement {
     // @internal (undocumented)
     childItems: HTMLElement[];
     disabled: boolean;
-    // (undocumented)
-    protected disabledChanged(prev: boolean | undefined, next: boolean): void;
     // @internal
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
@@ -2163,7 +2147,7 @@ export class FASTTreeItem extends FASTElement {
 }
 
 // @internal
-export interface FASTTreeItem extends StartEnd, DelegatesARIATreeItem {
+export interface FASTTreeItem extends StartEnd {
 }
 
 // @public

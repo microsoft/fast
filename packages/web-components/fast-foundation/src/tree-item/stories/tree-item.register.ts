@@ -137,7 +137,7 @@ const styles = css`
         margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 
-    :host([expanded]) > .items {
+    :host([aria-expanded="true"]) > .items {
         display: block;
     }
 
@@ -195,7 +195,7 @@ const styles = css`
     :host([selected])::after {
         left: calc(var(--focus-stroke-width) * 1px);
     }
-    :host([expanded]) > .positioning-region .expand-collapse-glyph {
+    :host([aria-expanded="true"]) > .positioning-region .expand-collapse-glyph {
         transform: rotate(45deg);
     }
 `;

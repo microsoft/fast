@@ -15,9 +15,10 @@ export function treeItemTemplate<T extends FASTTreeItem>(
             role="treeitem"
             slot="${x => (x.isNestedItem() ? "item" : void 0)}"
             tabindex="-1"
-            aria-expanded="${x => x.ariaExpanded}"
-            aria-selected="${x => x.ariaSelected}"
-            aria-disabled="${x => x.ariaDisabled}"
+            aria-expanded="${x =>
+                x.childItems && x.childItemLength() > 0 ? x.expanded : void 0}"
+            aria-selected="${x => x.selected}"
+            aria-disabled="${x => x.disabled}"
             @focusin="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
             @focusout="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
             ${children({

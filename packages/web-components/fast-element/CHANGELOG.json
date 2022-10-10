@@ -2,6 +2,59 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Mon, 10 Oct 2022 20:28:02 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.13",
+      "version": "2.0.0-beta.13",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "fed5e806e44da9d10916d9d765fb7f35ed300a3f",
+            "comment": "fix: prevent event callbacks when controller is not bound"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 06 Oct 2022 23:21:20 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.12",
+      "version": "2.0.0-beta.12",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "c06e32d72d518bf5c3152efe4e666f233190b445",
+            "comment": "upgrade karma to ^6.4.1"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "a69c2e3c0700918fef5ba934909781cc8ab71384",
+            "comment": "fix: repeat update view context positioning"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 05 Oct 2022 23:26:01 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.11",
+      "version": "2.0.0-beta.11",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "21d1de94be2b9399ddc43a2b93c6483fa7304591",
+            "comment": "fix: removed a shadowRoot leak from ElementController"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 03 Oct 2022 23:44:38 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.10",
       "version": "2.0.0-beta.10",

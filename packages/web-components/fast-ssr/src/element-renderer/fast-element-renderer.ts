@@ -3,11 +3,11 @@ import { PendingTaskEvent } from "@microsoft/fast-element/pending-task";
 import { escapeHtml } from "../escape-html.js";
 import { RenderInfo } from "../render-info.js";
 import { StyleRenderer } from "../styles/style-renderer.js";
+import { FASTSSRStyleStrategy } from "../styles/style-strategy.js";
 import { DefaultTemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
 import { DefaultElementRenderer } from "./element-renderer.js";
 import { AsyncElementRenderer, ElementRenderer } from "./interfaces.js";
-import { FASTSSRStyleStrategy } from "./style-strategy.js";
 
 /**
  * An {@link ElementRenderer} implementation designed to render components

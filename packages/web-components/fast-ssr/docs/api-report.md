@@ -63,6 +63,8 @@ export interface ElementRenderer {
     setAttribute(name: string, value: string): void;
     // (undocumented)
     setProperty(name: string, value: unknown): void;
+    // (undocumented)
+    readonly tagName: string;
 }
 
 // @beta (undocumented)
@@ -108,6 +110,7 @@ export const RequestStorage: Readonly<{
 export const RequestStorageManager: Readonly<{
     backend: AsyncLocalStorage<unknown>;
     installDOMShim(): void;
+    uninstallDOMShim(): void;
     installDIContextRequestStrategy(): void;
     createStorage(options?: StorageOptions): Map<any, any>;
     run<T = unknown>(storage: Map<any, any>, callback: () => T): T;

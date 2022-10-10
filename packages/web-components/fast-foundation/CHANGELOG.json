@@ -2,6 +2,71 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Mon, 10 Oct 2022 20:28:02 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.16",
+      "version": "3.0.0-alpha.16",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "ed2977ef6556964e68ea3ab0e4951320a1527baf",
+            "comment": "revert tree item changes from playwright migration"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.13",
+            "commit": "ed2977ef6556964e68ea3ab0e4951320a1527baf"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 06 Oct 2022 23:21:20 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.15",
+      "version": "3.0.0-alpha.15",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "ryan@ryanmerrill.net",
+            "package": "@microsoft/fast-foundation",
+            "commit": "30a9e92c29e4613217bee0588f0c0935777032c8",
+            "comment": "Adds ability to close menu with Escape key"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.12",
+            "commit": "a69c2e3c0700918fef5ba934909781cc8ab71384"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 05 Oct 2022 23:26:01 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.14",
+      "version": "3.0.0-alpha.14",
+      "comments": {
+        "none": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "21d1de94be2b9399ddc43a2b93c6483fa7304591",
+            "comment": "remove polyfills from storybook"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.11",
+            "commit": "21d1de94be2b9399ddc43a2b93c6483fa7304591"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 03 Oct 2022 23:44:38 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.13",
       "version": "3.0.0-alpha.13",

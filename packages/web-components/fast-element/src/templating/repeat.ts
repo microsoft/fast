@@ -67,13 +67,16 @@ function bindWithPositioning(
 export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     private location: Node;
     private controller: ViewController;
-    private views: SyntheticView[] = [];
+
     private template: SyntheticViewTemplate;
     private templateBindingObserver: ExpressionObserver<TSource, SyntheticViewTemplate>;
     private items: readonly any[] | null = null;
     private itemsObserver: Notifier | null = null;
     private itemsBindingObserver: ExpressionObserver<TSource, any[]>;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
+
+    /** @internal */
+    public views: SyntheticView[] = [];
 
     /**
      * Creates an instance of RepeatBehavior.
@@ -218,10 +221,10 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         }
 
         if (this.directive.options.positioning) {
-            for (let i = 0, ii = views.length; i < ii; ++i) {
+            for (let i = 0, viewsLength = views.length; i < viewsLength; ++i) {
                 const context = views[i].context;
-                context.length = i;
-                context.index = ii;
+                context.length = viewsLength;
+                context.index = i;
             }
         }
     }

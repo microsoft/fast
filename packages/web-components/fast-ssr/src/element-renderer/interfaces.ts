@@ -4,6 +4,7 @@ import { RenderInfo } from "../render-info.js";
  * @beta
  */
 export interface ElementRenderer {
+    readonly tagName: string;
     connectedCallback(): void;
     attributeChangedCallback(
         name: string,
