@@ -178,5 +178,6 @@ export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
         <ar-position-demo></ar-position-demo>
     `
 ).bind({});
+PositionsBase.parameters = { controls: { include: [], hideNoControlsWarning: true } };
 PositionsBase.argTypes = {};
 PositionsBase.args = {};
