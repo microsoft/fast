@@ -115,27 +115,19 @@ export default {
             const region = (renderedStory.querySelector(
                 ".region"
             ) as any) as FASTAnchoredRegion;
-            const subRegions = renderedStory.querySelectorAll(".subregion");
 
             const anchorId = args.anchorId ?? uniqueId("anchor");
 
             if (anchor) {
                 anchor.id = anchorId;
-                anchor.addEventListener("anchor-moved", () => {
+                anchor.addEventListener("positionchange", () => {
                     region?.update();
-                    subRegions.forEach(element => {
-                        ((element as any) as FASTAnchoredRegion).update();
-                    });
                 });
 
                 if (region) {
                     region.id = uniqueId("region");
                     region?.setAttribute("anchor", anchorId);
                 }
-
-                subRegions.forEach(element => {
-                    element.setAttribute("anchor", anchorId);
-                });
             }
 
             return renderedStory;
@@ -183,155 +175,6 @@ PointAnchor.args = {
 
 export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
     html<StoryArgs<FASTAnchoredRegion>>`
-        <div style="min-height: 100px">
-            <fast-anchored-region
-                class="subregion"
-                fixed-placement="true"
-                auto-update-mode="auto"
-                horizontal-default-position="left"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-scaling="fill"
-                vertical-default-position="top"
-                vertical-positioning-mode="locktodefault"
-                vertical-scaling="fill"
-            >
-                <div
-                    style="background: green; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
-                >
-                    top-left
-                </div>
-            </fast-anchored-region>
-
-            <fast-anchored-region
-                class="subregion"
-                fixed-placement="true"
-                auto-update-mode="auto"
-                horizontal-default-position="right"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-scaling="fill"
-                vertical-default-position="top"
-                vertical-positioning-mode="locktodefault"
-                vertical-scaling="fill"
-            >
-                <div
-                    style="background: green; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
-                >
-                    top-right
-                </div>
-            </fast-anchored-region>
-
-            <fast-anchored-region
-                class="subregion"
-                fixed-placement="true"
-                auto-update-mode="auto"
-                horizontal-default-position="left"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-scaling="fill"
-                vertical-default-position="bottom"
-                vertical-positioning-mode="locktodefault"
-                vertical-scaling="fill"
-            >
-                <div
-                    style="background: green; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
-                >
-                    bottom-left
-                </div>
-            </fast-anchored-region>
-
-            <fast-anchored-region
-                class="subregion"
-                fixed-placement="true"
-                auto-update-mode="auto"
-                horizontal-default-position="right"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-scaling="fill"
-                vertical-default-position="bottom"
-                vertical-positioning-mode="locktodefault"
-                vertical-scaling="fill"
-            >
-                <div
-                    style="background: green; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
-                >
-                    bottom-right
-                </div>
-            </fast-anchored-region>
-            <fast-anchored-region
-                class="subregion"
-                fixed-placement="true"
-                auto-update-mode="auto"
-                horizontal-default-position="right"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-scaling="fill"
-                vertical-default-position="center"
-                vertical-positioning-mode="locktodefault"
-                vertical-scaling="anchor"
-            >
-                <div
-                    style="background: blue; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
-                >
-                    center-right
-                </div>
-            </fast-anchored-region>
-
-            <fast-anchored-region
-                class="subregion"
-                fixed-placement="true"
-                auto-update-mode="auto"
-                horizontal-default-position="left"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-scaling="fill"
-                vertical-default-position="center"
-                vertical-positioning-mode="locktodefault"
-                vertical-scaling="anchor"
-            >
-                <div
-                    style="background: blue; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
-                >
-                    center-left
-                </div>
-            </fast-anchored-region>
-
-            <fast-anchored-region
-                class="subregion"
-                fixed-placement="true"
-                auto-update-mode="auto"
-                horizontal-default-position="center"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-scaling="anchor"
-                vertical-default-position="top"
-                vertical-positioning-mode="locktodefault"
-                vertical-scaling="fill"
-            >
-                <div
-                    style="background: blue; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
-                >
-                    top-center
-                </div>
-            </fast-anchored-region>
-
-            <fast-anchored-region
-                class="subregion"
-                fixed-placement="true"
-                auto-update-mode="auto"
-                horizontal-default-position="center"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-scaling="anchor"
-                vertical-default-position="bottom"
-                vertical-positioning-mode="locktodefault"
-                vertical-scaling="fill"
-            >
-                <div
-                    style="background: blue; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
-                >
-                    bottom-center
-                </div>
-            </fast-anchored-region>
-
-            <draggable-anchor class="anchor" point-anchor-x="150" point-anchor-Y="150">
-                Anchor
-                <br />
-                Click to Drag
-            </draggable-anchor>
-        </div>
+        <ar-position-demo></ar-position-demo>
     `
 ).bind({});

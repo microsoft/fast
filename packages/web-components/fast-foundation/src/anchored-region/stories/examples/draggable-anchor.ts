@@ -37,6 +37,7 @@ export class DraggableAnchor extends FASTAnchoredRegion {
     private handleMouseDown = (e: MouseEvent): void => {
         this.isDragging = true;
         window.addEventListener(eventMouseMove, this.handleMouseMove);
+        this.updatePosition(e);
     };
 
     /**
@@ -58,12 +59,11 @@ export class DraggableAnchor extends FASTAnchoredRegion {
     private updatePosition(e: MouseEvent) {
         this.pointAnchorX = e.pageX - document.documentElement.scrollLeft;
         this.pointAnchorY = e.pageY - document.documentElement.scrollTop;
-        this.$emit("anchor-moved");
     }
 }
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(FASTAnchoredRegion:class)} component.
+ * The template
  * @public
  */
 export function draggableAnchorTemplate<T extends DraggableAnchor>(): ElementViewTemplate<
