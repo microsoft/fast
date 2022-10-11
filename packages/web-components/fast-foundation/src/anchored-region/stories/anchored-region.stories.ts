@@ -178,3 +178,5 @@ export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
         <ar-position-demo></ar-position-demo>
     `
 ).bind({});
+PositionsBase.argTypes = {};
+PositionsBase.args = {};

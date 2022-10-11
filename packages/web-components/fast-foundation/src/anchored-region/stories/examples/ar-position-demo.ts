@@ -43,7 +43,7 @@ export function arPositionDemoTemplate<T extends ARPositionDemo>(): ElementViewT
     T
 > {
     return html<T>`
-        <template style="min-height: 100px">
+        <template style="height:100%; width:100%;">
             <fast-anchored-region
                 anchor="anchor"
                 class="subregion"
