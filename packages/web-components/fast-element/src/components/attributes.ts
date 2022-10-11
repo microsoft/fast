@@ -1,11 +1,11 @@
 import { isString } from "../interfaces.js";
-import type { Behavior } from "../observation/behavior.js";
 import type { Notifier } from "../observation/notifier.js";
 import { Accessor, Observable } from "../observation/observable.js";
 import { Updates } from "../observation/update-queue.js";
-import { DOM } from "../templating/dom.js";
 import { createMetadataLocator } from "../platform.js";
-import { FASTElement } from "./fast-element.js";
+import type { HostBehavior, HostController } from "../styles/host.js";
+import { DOM } from "../templating/dom.js";
+import type { FASTElement } from "./fast-element.js";
 
 /**
  * Represents objects that can convert values to and from
@@ -122,7 +122,7 @@ export const nullableNumberConverter: ValueConverter = {
  * custom elements.
  * @public
  */
-export class AttributeDefinition implements Accessor, Behavior {
+export class AttributeDefinition implements Accessor, HostBehavior {
     private readonly fieldName: string;
     private readonly callbackName: string;
     private readonly hasCallback: boolean;
@@ -203,7 +203,7 @@ export class AttributeDefinition implements Accessor, Behavior {
             if (source.isConnected) {
                 this.tryReflectToAttribute(source);
             } else {
-                (source as FASTElement).$fastController.addBehaviors([this]);
+                (source as FASTElement).$fastController.addBehavior(this);
             }
 
             if (this.hasCallback) {
@@ -307,16 +307,12 @@ export class AttributeDefinition implements Accessor, Behavior {
         return attributes;
     }
 
-    public bind(source: HTMLElement) {
-        // if (source[this.fieldName] !== undefined) {
-        this.tryReflectToAttribute(source);
-        // }
+    connectedCallback(controller: HostController) {
+        this.tryReflectToAttribute(controller.source);
     }
 
-    public unbind(source): void {
-        if (source instanceof FASTElement) {
-            source.$fastController.removeBehaviors([this]);
-        }
+    disconnectedCallback(controller: HostController) {
+        controller.removeBehavior(this);
     }
 }
 

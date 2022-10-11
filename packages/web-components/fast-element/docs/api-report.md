@@ -74,12 +74,16 @@ export const AttributeConfiguration: Readonly<{
 }>;
 
 // @public
-export class AttributeDefinition implements Accessor {
+export class AttributeDefinition implements Accessor, HostBehavior {
     constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter);
     readonly attribute: string;
     // @internal
     static collect(Owner: Function, ...attributeLists: (ReadonlyArray<string | AttributeConfiguration> | undefined)[]): ReadonlyArray<AttributeDefinition>;
+    // (undocumented)
+    connectedCallback(controller: HostController): void;
     readonly converter?: ValueConverter;
+    // (undocumented)
+    disconnectedCallback(controller: HostController): void;
     getValue(source: HTMLElement): any;
     readonly mode: AttributeMode;
     readonly name: string;
