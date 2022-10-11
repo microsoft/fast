@@ -741,6 +741,9 @@ export class FASTAnchoredRegion extends FASTElement {
     pointAnchorY: number;
     // (undocumented)
     protected pointAnchorYChanged(): void;
+    protected translateX: number;
+    // (undocumented)
+    protected translateY: number;
     update: () => void;
     usePointAnchor: boolean;
     // (undocumented)
