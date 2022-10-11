@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, Updates } from "@microsoft/fast-element";
 import { uniqueId } from "@microsoft/fast-web-utilities";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
@@ -10,6 +10,7 @@ import {
     HorizontalPosition,
     VerticalPosition,
 } from "../anchored-region.options.js";
+import type { DraggableAnchor } from "./examples/draggable-anchor.js";
 
 const storyTemplate = html<StoryArgs<FASTAnchoredRegion>>`
         <fast-anchored-region
@@ -53,10 +54,8 @@ export default {
             </div>
         `,
         autoUpdateMode: "auto",
-        fixedPlacement: false,
-        horizontalInset: false,
+        fixedPlacement: true,
         horizontalViewportLock: false,
-        verticalInset: false,
         verticalViewportLock: false,
         horizontalPositioningMode: "dynamic",
         verticalPositioningMode: "dynamic",
@@ -71,6 +70,7 @@ export default {
         usePointAnchor: { control: "boolean" },
         pointAnchorX: { control: "number" },
         pointAnchorY: { control: "number" },
+        pointerTracking: { control: "boolean" },
         fixedPlacement: { control: "boolean" },
         horizontalDefaultPosition: {
             control: "select",
@@ -109,21 +109,34 @@ export default {
         (Story, { args }) => {
             // IDs are generated to ensure that they're unique for the docs page
             const renderedStory = Story() as DocumentFragment;
-            const anchor = renderedStory.querySelector(".anchor") as HTMLElement;
-            const region = renderedStory.querySelector(".region") as HTMLElement;
+            const anchor = (renderedStory.querySelector(
+                ".anchor"
+            ) as any) as DraggableAnchor;
+            const region = (renderedStory.querySelector(
+                ".region"
+            ) as any) as FASTAnchoredRegion;
+            const subRegions = renderedStory.querySelectorAll(".subregion");
+
+            const anchorId = args.anchorId ?? uniqueId("anchor");
 
             if (anchor) {
-                const anchorId = args.anchorId ?? uniqueId("anchor");
                 anchor.id = anchorId;
-                region.setAttribute("anchor", anchorId);
+                anchor.addEventListener("anchor-moved", () => {
+                    region?.update();
+                    subRegions.forEach(element => {
+                        ((element as any) as FASTAnchoredRegion).update();
+                    });
+                });
+
+                if (region) {
+                    region.id = uniqueId("region");
+                    region?.setAttribute("anchor", anchorId);
+                }
+
+                subRegions.forEach(element => {
+                    element.setAttribute("anchor", anchorId);
+                });
             }
-
-            region.id = uniqueId("region");
-
-            const subRegions = renderedStory.querySelectorAll(".subregion");
-            subRegions.forEach(element => {
-                element.setAttribute("anchor", region.id);
-            });
 
             return renderedStory;
         },
@@ -133,12 +146,15 @@ export default {
 export const AnchoredRegion: Story<FASTAnchoredRegion> = renderComponent(
     html<StoryArgs<FASTAnchoredRegion>>`
         <div style="min-height: 100px">
-            <fast-button class="anchor" style="margin: 250px;">Anchor</fast-button>
             ${storyTemplate}
+            <draggable-anchor class="anchor" point-anchor-x="150" point-anchor-Y="150">
+                Anchor
+                <br />
+                Click to Drag
+            </draggable-anchor>
         </div>
     `
 ).bind({});
-AnchoredRegion.args = {};
 
 export const PointAnchor: Story<FASTAnchoredRegion> = renderComponent(
     html<StoryArgs<FASTAnchoredRegion>>`
@@ -151,6 +167,18 @@ PointAnchor.args = {
     usePointAnchor: true,
     pointAnchorX: 200,
     pointAnchorY: 200,
+    storyContent: html`
+        <div
+            id="content"
+            style="background:rgba(0, 255, 0, 0.2); height:100%; width:100%;"
+        >
+            <div style="background: var(--neutral-fill-rest); padding: 10px">
+                Position controlled by
+                <br />
+                point-anchor-x and point-anchor-y
+            </div>
+        </div>
+    `,
 };
 
 export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
@@ -167,9 +195,11 @@ export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
                 vertical-positioning-mode="locktodefault"
                 vertical-scaling="fill"
             >
-                <fast-card style="background: green; opacity:0.5; padding: 10px;">
+                <div
+                    style="background: green; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
+                >
                     top-left
-                </fast-card>
+                </div>
             </fast-anchored-region>
 
             <fast-anchored-region
@@ -183,9 +213,11 @@ export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
                 vertical-positioning-mode="locktodefault"
                 vertical-scaling="fill"
             >
-                <fast-card style="background: green; opacity:0.5; padding: 10px;">
+                <div
+                    style="background: green; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
+                >
                     top-right
-                </fast-card>
+                </div>
             </fast-anchored-region>
 
             <fast-anchored-region
@@ -199,9 +231,11 @@ export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
                 vertical-positioning-mode="locktodefault"
                 vertical-scaling="fill"
             >
-                <fast-card style="background: green; opacity:0.5; padding: 10px;">
+                <div
+                    style="background: green; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
+                >
                     bottom-left
-                </fast-card>
+                </div>
             </fast-anchored-region>
 
             <fast-anchored-region
@@ -215,9 +249,11 @@ export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
                 vertical-positioning-mode="locktodefault"
                 vertical-scaling="fill"
             >
-                <fast-card style="background: green; opacity:0.5; padding: 10px;">
+                <div
+                    style="background: green; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
+                >
                     bottom-right
-                </fast-card>
+                </div>
             </fast-anchored-region>
             <fast-anchored-region
                 class="subregion"
@@ -230,9 +266,11 @@ export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
                 vertical-positioning-mode="locktodefault"
                 vertical-scaling="anchor"
             >
-                <fast-card style="background: blue; opacity:0.5; padding: 10px;">
+                <div
+                    style="background: blue; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
+                >
                     center-right
-                </fast-card>
+                </div>
             </fast-anchored-region>
 
             <fast-anchored-region
@@ -246,9 +284,11 @@ export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
                 vertical-positioning-mode="locktodefault"
                 vertical-scaling="anchor"
             >
-                <fast-card style="background: blue; opacity:0.5; padding: 10px;">
+                <div
+                    style="background: blue; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
+                >
                     center-left
-                </fast-card>
+                </div>
             </fast-anchored-region>
 
             <fast-anchored-region
@@ -262,9 +302,11 @@ export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
                 vertical-positioning-mode="locktodefault"
                 vertical-scaling="fill"
             >
-                <fast-card style="background: blue; opacity:0.5; padding: 10px;">
+                <div
+                    style="background: blue; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
+                >
                     top-center
-                </fast-card>
+                </div>
             </fast-anchored-region>
 
             <fast-anchored-region
@@ -278,37 +320,18 @@ export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
                 vertical-positioning-mode="locktodefault"
                 vertical-scaling="fill"
             >
-                <fast-card style="background: blue; opacity:0.5; padding: 10px;">
+                <div
+                    style="background: blue; opacity:0.5; padding: 10px; height: 100%; width: 100%; box-sizing: border-box;"
+                >
                     bottom-center
-                </fast-card>
+                </div>
             </fast-anchored-region>
 
-            ${storyTemplate}
+            <draggable-anchor class="anchor" point-anchor-x="150" point-anchor-Y="150">
+                Anchor
+                <br />
+                Click to Drag
+            </draggable-anchor>
         </div>
     `
 ).bind({});
-PositionsBase.args = {
-    storyContent: html`
-        <div
-            id="content"
-            style="background:rgba(0, 255, 0, 0.2); height:100%; width:100%;"
-        >
-            <div style="background: var(--neutral-fill-rest); padding: 10px">
-                anchored region
-            </div>
-            <fast-tooltip track-pointer="true" anchor="content">
-                The main anchored region
-                <br />
-                is also the anchor for
-                <br />
-                the colored sub-regions.
-            </fast-tooltip>
-        </div>
-    `,
-    usePointAnchor: true,
-    pointAnchorX: 200,
-    pointAnchorY: 200,
-};
-PositionsBase.argTypes = {
-    verticalViewportLock: { control: "boolean" },
-};
