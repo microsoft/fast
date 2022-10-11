@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: calendar attr to adjust weekday start",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

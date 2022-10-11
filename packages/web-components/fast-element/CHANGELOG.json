@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Mon, 10 Oct 2022 20:28:02 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.13",
+      "version": "2.0.0-beta.13",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "fed5e806e44da9d10916d9d765fb7f35ed300a3f",
+            "comment": "fix: prevent event callbacks when controller is not bound"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Oct 2022 23:21:20 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.12",
       "version": "2.0.0-beta.12",

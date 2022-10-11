@@ -22,6 +22,7 @@ const storyTemplate = html<StoryArgs<FASTCalendar>>`
         selected-dates="${x => x.selectedDates}"
         weekday-format="${x => x.weekdayFormat}"
         year-format="${x => x.yearFormat}"
+        first-day="${x => x.firstDay}"
     >
         ${x => x.storyContent}
     </fast-calendar>
@@ -35,6 +36,7 @@ export default {
     argTypes: {
         dayFormat: { control: "select", options: Object.values(DayFormat) },
         disabledDates: { control: "text" },
+        firstDay: { control: "number", min: 0, max: 6 },
         locale: { control: "text" },
         minWeeks: { control: "number", min: 0 },
         month: { control: "number", min: 1, max: 12 },

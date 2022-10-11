@@ -54,6 +54,18 @@ test.describe("TreeItem", () => {
         await expect(element.first()).toHaveAttribute("aria-expanded", "false");
     });
 
+    test("should set the `aria-expanded` attribute equal to TRUE when the `expanded` attribute is present", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-tree-item expanded>
+                    <fast-tree-item>tree item</fast-tree-item>
+                </fast-tree-item>
+            `;
+        });
+
+        await expect(element.first()).toHaveAttribute("aria-expanded", "true");
+    });
+
     test("should NOT set the `aria-expanded` attribute when the tree item has no children", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -110,6 +122,22 @@ test.describe("TreeItem", () => {
         await expect(element).toHaveAttribute("aria-selected", "false");
     });
 
+    test("should set the `aria-selected` attribute equal to TRUE when the selected attribute is present", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-tree-item selected>tree item</fast-tree-item>
+            `;
+        });
+
+        await expect(element).toHaveAttribute("aria-selected", "true");
+
+        await element.evaluate<void, FASTTreeItem>(node => {
+            node.disabled = false;
+        });
+
+        await expect(element).toHaveAttribute("aria-disabled", "false");
+    });
+
     test("should set the `aria-disabled` attribute equal to the `disabled` property", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -130,6 +158,16 @@ test.describe("TreeItem", () => {
         });
 
         await expect(element).toHaveAttribute("aria-disabled", "false");
+    });
+
+    test("should set the `aria-disabled` attribute equal to TRUE when the disabled attribute is present", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-tree-item disabled>tree item</fast-tree-item>
+            `;
+        });
+
+        await expect(element).toHaveAttribute("aria-disabled", "true");
     });
 
     test('should add a slot attribute of "item" to nested tree items', async () => {
