@@ -345,8 +345,8 @@ export class FASTAnchoredRegion extends FASTElement {
     /**
      * values to be applied to the component's transform on render
      */
-    private translateX: number;
-    private translateY: number;
+    protected translateX: number;
+    protected translateY: number;
 
     /**
      * the span to be applied to the region on each axis
