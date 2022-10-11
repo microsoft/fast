@@ -956,12 +956,17 @@ export class FASTAnchoredRegion extends FASTElement {
             desiredVerticalPosition
         );
 
-        const positionChanged: boolean =
-            this.horizontalPosition !== desiredHorizontalPosition ||
-            this.verticalPosition !== desiredVerticalPosition;
+        const previousTranslateX: number = this.translateX;
+        const previousTranslateY: number = this.translateY;
 
         this.setHorizontalPosition(desiredHorizontalPosition, nextPositionerDimension);
         this.setVerticalPosition(desiredVerticalPosition, nextPositionerDimension);
+
+        const positionChanged: boolean =
+            this.horizontalPosition !== desiredHorizontalPosition ||
+            this.verticalPosition !== desiredVerticalPosition ||
+            previousTranslateX !== this.translateX ||
+            previousTranslateY !== this.translateY;
 
         this.updateRegionStyle();
 
