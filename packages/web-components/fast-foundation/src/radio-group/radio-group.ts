@@ -239,7 +239,9 @@ export class FASTRadioGroup extends FASTElement {
         const radio: HTMLInputElement = group[index] as HTMLInputElement;
         if (!this.isInsideToolbar) {
             radio.setAttribute("tabindex", "0");
-            radio.checked = true;
+            if (!this.readOnly) {
+                radio.checked = true;
+            }
             this.selectedRadio = radio;
         }
         this.focusedRadio = radio;

@@ -1,5 +1,6 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
+import type { FASTRadioGroup } from "src/radio-group/radio-group.js";
 import { FormAssociatedRadio } from "./radio.form-associated.js";
 
 /**
@@ -52,6 +53,12 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     @observable
     public defaultSlottedNodes: Node[];
 
+    get radioGroup() {
+        return (this as HTMLElement).closest(
+            "[role=radiogroup]"
+        ) as FASTRadioGroup | null;
+    }
+
     /**
      * @internal
      */
@@ -102,10 +109,7 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     }
 
     private isInsideRadioGroup(): boolean {
-        const parent: HTMLElement | null = (this as HTMLElement).closest(
-            "[role=radiogroup]"
-        );
-        return parent !== null;
+        return this.radioGroup !== null;
     }
 
     /**
@@ -115,7 +119,7 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     public keypressHandler(e: KeyboardEvent): boolean | void {
         switch (e.key) {
             case keySpace:
-                if (!this.checked) {
+                if (!this.checked && !this.radioGroup?.readOnly) {
                     this.checked = true;
                 }
                 return;
@@ -129,7 +133,7 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
      * @beta
      */
     public clickHandler(e: MouseEvent): boolean | void {
-        if (!this.disabled && !this.checked) {
+        if (!this.disabled && !this.radioGroup?.readOnly && !this.checked) {
             this.checked = true;
         }
     }
