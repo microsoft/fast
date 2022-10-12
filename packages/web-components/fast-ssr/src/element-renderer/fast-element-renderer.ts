@@ -1,4 +1,10 @@
-import { Aspect, DOM, ExecutionContext, FASTElement } from "@microsoft/fast-element";
+import {
+    Aspect,
+    DOM,
+    ExecutionContext,
+    FASTElement,
+    FASTElementDefinition,
+} from "@microsoft/fast-element";
 import { PendingTaskEvent } from "@microsoft/fast-element/pending-task";
 import { escapeHtml } from "../escape-html.js";
 import { RenderInfo } from "../render-info.js";
@@ -7,15 +13,21 @@ import { FASTSSRStyleStrategy } from "../styles/style-strategy.js";
 import { DefaultTemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
 import { DefaultElementRenderer } from "./element-renderer.js";
-import { AsyncElementRenderer, ElementRenderer } from "./interfaces.js";
+import {
+    AsyncElementRenderer,
+    AttributesMap,
+    ConstructableFASTElementRenderer,
+    ElementRenderer,
+} from "./interfaces.js";
 
 /**
  * An {@link ElementRenderer} implementation designed to render components
  * built with FAST.
  *
- * @beta
  */
 abstract class FASTElementRenderer extends DefaultElementRenderer {
+    static #disabledConstructors = new Set<typeof HTMLElement | string>();
+
     /**
      * The element instance represented by the {@link FASTElementRenderer}.
      */
@@ -31,12 +43,30 @@ abstract class FASTElementRenderer extends DefaultElementRenderer {
      */
     protected abstract styleRenderer: StyleRenderer;
 
-    /**
-     * Tests a constructor to determine if it should be managed by a {@link FASTElementRenderer}.
-     * @param ctor - The constructor to test.
-     */
-    public static matchesClass(ctor: typeof HTMLElement): boolean {
-        return ctor.prototype instanceof FASTElement;
+    public static matchesClass(
+        ctor: typeof HTMLElement,
+        tagName: string,
+        attributes: AttributesMap
+    ): boolean {
+        const canRender = ctor.prototype instanceof FASTElement;
+
+        if (!canRender) {
+            return false;
+        }
+
+        const disabled = FASTElementRenderer.#disabledConstructors;
+
+        return !(disabled.has(tagName) || disabled.has(ctor));
+    }
+
+    public static disable(
+        ...elements: Array<string | typeof FASTElement | FASTElementDefinition>
+    ) {
+        for (const element of elements) {
+            FASTElementRenderer.#disabledConstructors.add(
+                element instanceof FASTElementDefinition ? element.type : element
+            );
+        }
     }
 
     /**
