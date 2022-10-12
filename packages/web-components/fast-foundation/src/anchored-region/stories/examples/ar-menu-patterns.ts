@@ -16,34 +16,68 @@ import type { FASTAnchoredRegion } from "../../anchored-region.js";
  */
 export class ARMenuPatterns extends FASTElement {
     @observable
-    basicDropdownOpen = false;
+    basicDropdownOpen: boolean = false;
 
     @observable
-    sideDropdownOpen = false;
+    sideDropdownOpen: boolean = false;
 
     @observable
-    basicDropdownDynamicOpen = false;
+    basicDropdownDynamicOpen: boolean = false;
 
     @observable
-    sideDropdownDynamicOpen = false;
+    sideDropdownDynamicOpen: boolean = false;
 
     @observable
-    basicDropdownFillOpen = false;
+    basicDropdownFillOpen: boolean = false;
 
     @observable
-    sideDropdownFillOpen = false;
+    sideDropdownFillOpen: boolean = false;
+
+    @observable
+    contextMenuOpen: boolean = false;
+
+    @observable
+    pointAnchorX: number = 0;
+
+    @observable
+    pointAnchorY: number = 0;
+
+    public contextElement: HTMLElement;
 
     public connectedCallback(): void {
         super.connectedCallback();
+        this.contextElement.addEventListener("contextmenu", this.handleContext);
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
+        this.contextElement.removeEventListener("contextmenu", this.handleContext);
     }
+
+    public handleContext = (e: MouseEvent): void => {
+        if (e.defaultPrevented) {
+            return;
+        }
+        e.preventDefault();
+        this.pointAnchorX = e.clientX;
+        this.pointAnchorY = e.clientY;
+        if (!this.contextMenuOpen) {
+            this.contextMenuOpen = true;
+            window.addEventListener("click", this.handleContextClose);
+        }
+    };
+
+    public handleContextClose = (e: MouseEvent): void => {
+        if (e.defaultPrevented) {
+            return;
+        }
+        window.removeEventListener("click", this.handleContextClose);
+        this.contextMenuOpen = false;
+    };
 }
 
 const listboxTemplate = html`
-    <fast-listbox style="width: 100%; height: 100%; overflow-y: auto;">
+    <fast-listbox style="width: 100%; overflow-y: auto;">
         <fast-option>"Option 1"</fast-option>
         <fast-option>"Option 2"</fast-option>
         <fast-option>"Option 3"</fast-option>
@@ -203,6 +237,7 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 x => x.basicDropdownFillOpen,
                 html<T>`
                     <fast-anchored-region
+                        style="display:flex; flex-direction: column;"
                         id="menu-basic-dropdown-fill"
                         anchor="anchor-basic-dropdown-fill"
                         fixed-placement="true"
@@ -229,6 +264,7 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 x => x.sideDropdownFillOpen,
                 html<T>`
                     <fast-anchored-region
+                        style="display:flex; flex-direction: column;"
                         id="menu-basic-dropdown-fill"
                         anchor="anchor-side-dropdown-fill"
                         fixed-placement="true"
@@ -240,6 +276,32 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                         vertical-inset="true"
                         vertical-positioning-mode="locktodefault"
                         vertical-scaling="fill"
+                    >
+                        ${listboxTemplate}
+                    </fast-anchored-region>
+                `
+            )}
+            ${sectionDividerTemplate} Context menus can be positioned using a point as an
+            anchor rather than an element. ${sectionDividerTemplate}
+            <div
+                style="background:green; height:400px; width:400px; padding: 20px;"
+                ${ref("contextElement")}
+            >
+                I have a context menu!
+            </div>
+            ${when(
+                x => x.contextMenuOpen,
+                html<T>`
+                    <fast-anchored-region
+                        fixed-placement="true"
+                        use-point-anchor="true"
+                        horizontal-default-position="right"
+                        horizontal-positioning-mode="dynamic"
+                        horizontal-scaling="content"
+                        vertical-default-position="bottom"
+                        vertical-positioning-mode="dynamic"
+                        :pointAnchorX="${x => x.pointAnchorX}"
+                        :pointAnchorY="${x => x.pointAnchorY}"
                     >
                         ${listboxTemplate}
                     </fast-anchored-region>
