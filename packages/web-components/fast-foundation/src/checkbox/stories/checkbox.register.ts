@@ -119,7 +119,7 @@ const styles = css`
         cursor: var(--disabled-cursor);
     }
 
-    :host([aria-checked="true"] .checked-indicator,
+    :host([aria-checked="true"]) .checked-indicator,
     :host([aria-checked="mixed"]) .indeterminate-indicator {
         opacity: 1;
     }
