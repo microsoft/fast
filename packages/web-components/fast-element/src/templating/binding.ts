@@ -314,14 +314,12 @@ export class HTMLBindingDirective
                     this.updateTarget = setProperty;
                     break;
                 case 4:
-                    this.bind = this.bindContent;
                     this.updateTarget = updateContent;
                     break;
                 case 5:
                     this.updateTarget = updateTokenList;
                     break;
                 case 6:
-                    this.bind = this.bindEvent;
                     this.updateTarget = eventTarget;
                     break;
                 default:
@@ -333,41 +331,37 @@ export class HTMLBindingDirective
     }
 
     /** @internal */
-    bindDefault(controller: ViewController): void {
+    bind(controller: ViewController): void {
         const target = controller.targets[this.nodeId];
-        const observer =
-            target[this.data] ??
-            (target[this.data] = this.dataBinding.createObserver(this, this));
 
-        (observer as any).target = target;
-        (observer as any).controller = controller;
+        switch (this.updateTarget) {
+            case eventTarget:
+                target[this.data] = controller;
+                target.addEventListener(
+                    this.targetAspect,
+                    this,
+                    this.dataBinding.options
+                );
+                break;
+            case updateContent:
+                controller.onUnbind(this);
+            // intentional fall through
+            default:
+                const observer =
+                    target[this.data] ??
+                    (target[this.data] = this.dataBinding.createObserver(this, this));
 
-        this.updateTarget!(
-            target,
-            this.targetAspect,
-            observer.bind(controller),
-            controller
-        );
+                (observer as any).target = target;
+                (observer as any).controller = controller;
 
-        if (this.updateTarget === updateContent) {
-            controller.onUnbind(this);
+                this.updateTarget!(
+                    target,
+                    this.targetAspect,
+                    observer.bind(controller),
+                    controller
+                );
+                break;
         }
-    }
-
-    /** @internal */
-    bind = this.bindDefault;
-
-    /** @internal */
-    bindContent(controller: ViewController): void {
-        this.bindDefault(controller);
-        controller.onUnbind(this);
-    }
-
-    /** @internal */
-    bindEvent(controller: ViewController) {
-        const target = controller.targets[this.nodeId];
-        target[this.data] = controller;
-        target.addEventListener(this.targetAspect, this, this.dataBinding.options);
     }
 
     /** @internal */
@@ -416,40 +410,40 @@ HTMLDirective.define(HTMLBindingDirective, { aspected: true });
 
 /**
  * Creates an standard binding.
- * @param binding - The binding to refresh when changed.
+ * @param expression - The binding to refresh when changed.
  * @param isVolatile - Indicates whether the binding is volatile or not.
  * @returns A binding configuration.
  * @public
  */
 export function bind<T = any>(
-    binding: Expression<T>,
-    isVolatile = Observable.isVolatileBinding(binding)
+    expression: Expression<T>,
+    isVolatile = Observable.isVolatileBinding(expression)
 ): Binding<T> {
-    return new OnChangeBinding(binding, isVolatile);
+    return new OnChangeBinding(expression, isVolatile);
 }
 
 /**
  * Creates a one time binding
- * @param binding - The binding to refresh when signaled.
+ * @param expression - The binding to refresh when signaled.
  * @returns A binding configuration.
  * @public
  */
-export function oneTime<T = any>(binding: Expression<T>): Binding<T> {
-    return new OneTimeBinding(binding);
+export function oneTime<T = any>(expression: Expression<T>): Binding<T> {
+    return new OneTimeBinding(expression);
 }
 
 /**
  * Creates an event listener binding.
- * @param binding - The binding to invoke when the event is raised.
+ * @param expression - The binding to invoke when the event is raised.
  * @param options - Event listener options.
  * @returns A binding configuration.
  * @public
  */
 export function listener<T = any>(
-    binding: Expression<T>,
+    expression: Expression<T>,
     options?: AddEventListenerOptions
 ): Binding<T> {
-    const config = new OnChangeBinding(binding, false);
+    const config = new OnChangeBinding(expression, false);
     config.options = options;
     return config;
 }

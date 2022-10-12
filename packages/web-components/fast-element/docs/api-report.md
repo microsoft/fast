@@ -96,7 +96,7 @@ export class AttributeDefinition implements Accessor {
 export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
 // @public
-export function bind<T = any>(binding: Expression<T>, isVolatile?: boolean): Binding<T>;
+export function bind<T = any>(expression: Expression<T>, isVolatile?: boolean): Binding<T>;
 
 // @public
 export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
@@ -436,13 +436,7 @@ export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory,
     constructor(dataBinding: Binding);
     aspectType: Aspect;
     // @internal (undocumented)
-    bind: (controller: ViewController) => void;
-    // @internal (undocumented)
-    bindContent(controller: ViewController): void;
-    // @internal (undocumented)
-    bindDefault(controller: ViewController): void;
-    // @internal (undocumented)
-    bindEvent(controller: ViewController): void;
+    bind(controller: ViewController): void;
     createBehavior(): ViewBehavior;
     createHTML(add: AddViewBehaviorFactory): string;
     // (undocumented)
@@ -529,7 +523,7 @@ export interface LengthObserver extends Subscriber {
 export function lengthOf<T>(array: readonly T[]): number;
 
 // @public
-export function listener<T = any>(binding: Expression<T>, options?: AddEventListenerOptions): Binding<T>;
+export function listener<T = any>(expression: Expression<T>, options?: AddEventListenerOptions): Binding<T>;
 
 // @public
 export const Markup: Readonly<{
@@ -600,7 +594,7 @@ export interface ObservationRecord {
 }
 
 // @public
-export function oneTime<T = any>(binding: Expression<T>): Binding<T>;
+export function oneTime<T = any>(expression: Expression<T>): Binding<T>;
 
 // @public
 export const Parser: Readonly<{
