@@ -206,26 +206,28 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 #### Fields
 
-| Name               | Privacy | Type              | Default | Description | Inherited From |
-| ------------------ | ------- | ----------------- | ------- | ----------- | -------------- |
-| `anchorElement`    | public  | `DraggableAnchor` |         |             |                |
-| `handleAnchorMove` | public  |                   |         |             |                |
+| Name               | Privacy | Type              | Default        | Description | Inherited From |
+| ------------------ | ------- | ----------------- | -------------- | ----------- | -------------- |
+| `anchorElement`    | public  | `DraggableAnchor` |                |             |                |
+| `positions`        | public  | `ArPositions`     | `"fillLocked"` |             |                |
+| `handleAnchorMove` | public  |                   |                |             |                |
 
 <hr/>
 
 ### Variables
 
-| Name                   | Description | Type |
-| ---------------------- | ----------- | ---- |
-| `arPositionDemoStyles` |             |      |
+| Name                   | Description | Type                                                |
+| ---------------------- | ----------- | --------------------------------------------------- |
+| `ArPositions`          |             | `{ dynamic: "dynamic", fillLocked: "fillLocked", }` |
+| `arPositionDemoStyles` |             |                                                     |
 
 <hr/>
 
 ### Functions
 
-| Name                     | Description  | Parameters | Return                         |
-| ------------------------ | ------------ | ---------- | ------------------------------ |
-| `arPositionDemoTemplate` | The template |            | `ElementViewTemplate<
+| Name                     | Description  | Parameters | Return                          |
+| ------------------------ | ------------ | ---------- | ------------------------------- |
+| `arPositionDemoTemplate` | The template |            | `ElementViewTemplate<
     T >` |
 
 <hr/>
@@ -335,9 +337,9 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 ### Functions
 
-| Name                      | Description  | Parameters | Return                         |
-| ------------------------- | ------------ | ---------- | ------------------------------ |
-| `draggableAnchorTemplate` | The template |            | `ElementViewTemplate<
+| Name                      | Description  | Parameters | Return                          |
+| ------------------------- | ------------ | ---------- | ------------------------------- |
+| `draggableAnchorTemplate` | The template |            | `ElementViewTemplate<
     T >` |
 
 <hr/>
