@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "refactor: remove duplication and re-organize binding behavior logic",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
