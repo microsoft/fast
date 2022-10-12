@@ -1,5 +1,12 @@
-import { SyntheticViewTemplate, Updates } from "@microsoft/fast-element";
-import { attr, Observable, observable, volatile } from "@microsoft/fast-element";
+import { autoUpdate, computePosition, flip, hide, size } from "@floating-ui/dom";
+import {
+    attr,
+    Observable,
+    observable,
+    SyntheticViewTemplate,
+    Updates,
+    volatile,
+} from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowUp,
@@ -72,7 +79,7 @@ export class FASTSelect extends FormAssociatedSelect {
             this.ariaControls = this.listboxId;
             this.ariaExpanded = "true";
 
-            this.setPositioning();
+            Updates.enqueue(() => this.setPositioning());
             this.focusAndScrollOptionIntoView();
             this.indexWhenOpened = this.selectedIndex;
 
@@ -81,6 +88,8 @@ export class FASTSelect extends FormAssociatedSelect {
 
             return;
         }
+
+        this.cleanup?.();
 
         this.ariaControls = "";
         this.ariaExpanded = "false";
@@ -201,36 +210,55 @@ export class FASTSelect extends FormAssociatedSelect {
     public listboxId: string = uniqueId("listbox-");
 
     /**
+     * Cleanup function for the listbox positioner.
+     *
+     * @public
+     */
+    public cleanup: () => void;
+
+    /**
      * Calculate and apply listbox positioning based on available viewport space.
      *
      * @public
      */
     public setPositioning(): void {
-        const currentBox = this.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        const availableBottom = viewportHeight - currentBox.bottom;
+        if (this.$fastController.isConnected) {
+            this.cleanup = autoUpdate(this, this.listbox, async () => {
+                const { middlewareData, x, y } = await computePosition(
+                    this.control,
+                    this.listbox,
+                    {
+                        placement: "bottom",
+                        strategy: "fixed",
+                        middleware: [
+                            flip(),
+                            size({
+                                apply: ({ availableHeight, rects }) => {
+                                    Object.assign(this.listbox.style, {
+                                        maxHeight: `${availableHeight}px`,
+                                        width: `${rects.reference.width}px`,
+                                    });
+                                },
+                            }),
+                            hide(),
+                        ],
+                    }
+                );
 
-        this.position = this.forcedPosition
-            ? this.positionAttribute
-            : currentBox.top > availableBottom
-            ? SelectPosition.above
-            : SelectPosition.below;
+                if (middlewareData.hide?.referenceHidden) {
+                    this.open = false;
+                    return;
+                }
 
-        this.positionAttribute = this.forcedPosition
-            ? this.positionAttribute
-            : this.position;
-
-        this.maxHeight =
-            this.position === SelectPosition.above ? ~~currentBox.top : ~~availableBottom;
+                Object.assign(this.listbox.style, {
+                    position: "fixed",
+                    top: "0",
+                    left: "0",
+                    transform: `translate(${x}px, ${y}px)`,
+                });
+            });
+        }
     }
-
-    /**
-     * The max height for the listbox when opened.
-     *
-     * @internal
-     */
-    @observable
-    public maxHeight: number = 0;
 
     /**
      * The value displayed on the button.
@@ -532,6 +560,7 @@ export class FASTSelect extends FormAssociatedSelect {
 
     public disconnectedCallback() {
         this.removeEventListener("contentchange", this.updateDisplayValue);
+        this.cleanup?.();
         super.disconnectedCallback();
     }
 
