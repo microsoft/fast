@@ -16,7 +16,6 @@ import { DelegatesARIAListbox, FASTListbox } from "../listbox/listbox.js";
 import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedSelect } from "./select.form-associated.js";
-import { SelectPosition } from "./select.options.js";
 
 /**
  * Select configuration options
@@ -185,36 +184,6 @@ export class FASTSelect extends FormAssociatedSelect {
     public selectedIndexChanged(prev: number | undefined, next: number): void {
         super.selectedIndexChanged(prev, next);
         this.updateValue();
-    }
-
-    /**
-     * Reflects the placement for the listbox when the select is open.
-     *
-     * @public
-     */
-    @attr({ attribute: "position" })
-    public positionAttribute?: SelectPosition;
-
-    /**
-     * Indicates the initial state of the position attribute.
-     *
-     * @internal
-     */
-    private forcedPosition: boolean = false;
-
-    /**
-     * Holds the current state for the calculated position of the listbox.
-     *
-     * @public
-     */
-    @observable
-    public position?: SelectPosition;
-    protected positionChanged(
-        prev: SelectPosition | undefined,
-        next: SelectPosition | undefined
-    ): void {
-        this.positionAttribute = next;
-        this.setPositioning();
     }
 
     /**
@@ -558,8 +527,6 @@ export class FASTSelect extends FormAssociatedSelect {
 
     public connectedCallback() {
         super.connectedCallback();
-        this.forcedPosition = !!this.positionAttribute;
-
         this.addEventListener("contentchange", this.updateDisplayValue);
     }
 

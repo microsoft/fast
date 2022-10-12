@@ -1726,18 +1726,12 @@ export class FASTSelect extends FormAssociatedSelect {
     listbox: HTMLDivElement;
     // @internal
     listboxId: string;
-    // @internal
-    maxHeight: number;
     // @internal @override
     mousedownHandler(e: MouseEvent): boolean | void;
     multipleChanged(prev: boolean | undefined, next: boolean): void;
     open: boolean;
     // @internal
     protected openChanged(prev: boolean | undefined, next: boolean): void;
-    position?: SelectPosition;
-    positionAttribute?: SelectPosition;
-    // (undocumented)
-    protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition | undefined): void;
     // @internal
     selectedIndexChanged(prev: number | undefined, next: number): void;
     // @internal @override
@@ -2564,15 +2558,6 @@ export function searchTemplate<T extends FASTSearch>(options?: SearchOptions): E
 export type SelectOptions = StartEndOptions & {
     indicator?: string | SyntheticViewTemplate;
 };
-
-// @public
-export const SelectPosition: {
-    readonly above: "above";
-    readonly below: "below";
-};
-
-// @public
-export type SelectPosition = typeof SelectPosition[keyof typeof SelectPosition];
 
 // @public
 export function selectTemplate<T extends FASTSelect>(options?: SelectOptions): ElementViewTemplate<T>;
