@@ -1,4 +1,4 @@
-import { html, Updates } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import { uniqueId } from "@microsoft/fast-web-utilities";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
@@ -11,6 +11,7 @@ import {
     VerticalPosition,
 } from "../anchored-region.options.js";
 import type { DraggableAnchor } from "./examples/draggable-anchor.js";
+import { ArPositions } from "./examples/ar-position-demo.js";
 
 const storyTemplate = html<StoryArgs<FASTAnchoredRegion>>`
         <fast-anchored-region
@@ -173,11 +174,18 @@ PointAnchor.args = {
     `,
 };
 
-export const PositionsBase: Story<FASTAnchoredRegion> = renderComponent(
+export const PositionsDemo: Story<FASTAnchoredRegion> = renderComponent(
     html<StoryArgs<FASTAnchoredRegion>>`
-        <ar-position-demo></ar-position-demo>
+        <ar-position-demo :positions="${x => x.Positions}"></ar-position-demo>
     `
 ).bind({});
-PositionsBase.parameters = { controls: { include: [], hideNoControlsWarning: true } };
-PositionsBase.argTypes = {};
-PositionsBase.args = {};
+PositionsDemo.parameters = { controls: { include: ["Positions"] } };
+PositionsDemo.argTypes = {
+    Positions: {
+        control: "select",
+        options: Object.values(ArPositions),
+    },
+};
+PositionsDemo.args = {
+    Positions: "fillLocked",
+};
