@@ -239,6 +239,43 @@ export function arPositionDemoTemplate<T extends ARPositionDemo>(): ElementViewT
                         auto-update-mode="auto"
                         horizontal-positioning-mode="dynamic"
                         horizontal-scaling="content"
+                        vertical-positioning-mode="dynamic"
+                        vertical-inset="true'
+                        vertical-scaling="content"
+                    >
+                    <div
+                        style="background: blue; opacity:0.5; padding: 10px; height: 200px; width: 100%; box-sizing: border-box; border: solid 4px; border-color: black;"
+                    >
+                        <br><br>
+                        right or left, inset vertically
+                    </div>
+                </fast-anchored-region>
+
+                <fast-anchored-region
+                    anchor="anchor"
+                    class="subregion"
+                    fixed-placement="true"
+                    auto-update-mode="auto"
+                    horizontal-inset="true"
+                    horizontal-positioning-mode="dynamic"
+                    horizontal-scaling="content"
+                    vertical-positioning-mode="dynamic"
+                    vertical-scaling="content"
+                >
+                    <div
+                        style="background: blue; opacity:0.5; padding: 10px; height: 200px; width: 100%; box-sizing: border-box; border: solid 4px; border-color: black;"
+                    >
+                        <br><br>
+                        top or bottom, inset horizontally
+                    </div>
+                </fast-anchored-region>
+                    <fast-anchored-region
+                        anchor="anchor"
+                        class="subregion"
+                        fixed-placement="true"
+                        auto-update-mode="auto"
+                        horizontal-positioning-mode="dynamic"
+                        horizontal-scaling="content"
                         vertical-default-position="center"
                         vertical-positioning-mode="locktodefault"
                         vertical-scaling="content"

@@ -7,6 +7,11 @@ import {
     arPositionDemoStyles,
     arPositionDemoTemplate,
 } from "./examples/ar-position-demo.js";
+import {
+    ARMenuPatterns,
+    arMenuPatternsStyles,
+    arMenuPatternsTemplate,
+} from "./examples/ar-menu-patterns.js";
 
 const styles = css`
     :host {
@@ -27,9 +32,14 @@ DraggableAnchor.define({
     styles,
 });
 
-//utility component for examples
 ARPositionDemo.define({
     name: "ar-position-demo",
     template: arPositionDemoTemplate(),
     styles: arPositionDemoStyles,
+});
+
+ARMenuPatterns.define({
+    name: "ar-menu-patterns",
+    template: arMenuPatternsTemplate(),
+    styles: arMenuPatternsStyles,
 });
