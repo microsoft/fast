@@ -893,6 +893,7 @@ export class FASTCheckbox extends FormAssociatedCheckbox {
 // @public
 export class FASTCombobox extends FormAssociatedCombobox {
     autocomplete: ComboboxAutocomplete | undefined;
+    cleanup: () => void;
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
@@ -901,6 +902,8 @@ export class FASTCombobox extends FormAssociatedCombobox {
     control: HTMLInputElement;
     // @internal
     disabledChanged(prev: boolean, next: boolean): void;
+    // (undocumented)
+    disconnectedCallback(): void;
     filteredOptions: FASTListboxOption[];
     filterOptions(): void;
     // @internal

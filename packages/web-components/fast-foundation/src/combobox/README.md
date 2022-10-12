@@ -163,22 +163,21 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Fields
 
-| Name                | Privacy   | Type                                | Default | Description                                                                              | Inherited From         |
-| ------------------- | --------- | ----------------------------------- | ------- | ---------------------------------------------------------------------------------------- | ---------------------- |
-| `autocomplete`      | public    | `ComboboxAutocomplete or undefined` |         | The autocomplete attribute.                                                              |                        |
-| `filteredOptions`   | public    | `FASTListboxOption[]`               | `[]`    | The collection of currently filtered options.                                            |                        |
-| `open`              | public    | `boolean`                           | `false` | The open attribute.                                                                      |                        |
-| `options`           | public    | `FASTListboxOption[]`               |         | The list of options.                                                                     | FASTListbox            |
-| `placeholder`       | public    | `string`                            |         | Sets the placeholder value of the element, generally used to provide a hint to the user. |                        |
-| `positionAttribute` | public    | `SelectPosition or undefined`       |         | The placement for the listbox when the combobox is open.                                 |                        |
-| `position`          | public    | `SelectPosition or undefined`       |         | The current state of the calculated position of the listbox.                             |                        |
-| `value`             | public    |                                     |         | The value property.                                                                      |                        |
-| `proxy`             |           |                                     |         |                                                                                          | FormAssociatedCombobox |
-| `length`            | public    | `number`                            |         | The number of options.                                                                   | FASTListbox            |
-| `typeAheadExpired`  | protected |                                     |         |                                                                                          | FASTListbox            |
-| `disabled`          | public    | `boolean`                           |         | The disabled state of the listbox.                                                       | FASTListbox            |
-| `selectedIndex`     | public    | `number`                            | `-1`    | The index of the selected option.                                                        | FASTListbox            |
-| `selectedOptions`   | public    | `FASTListboxOption[]`               | `[]`    | A collection of the selected options.                                                    | FASTListbox            |
+| Name               | Privacy   | Type                                | Default | Description                                                                              | Inherited From         |
+| ------------------ | --------- | ----------------------------------- | ------- | ---------------------------------------------------------------------------------------- | ---------------------- |
+| `autocomplete`     | public    | `ComboboxAutocomplete or undefined` |         | The autocomplete attribute.                                                              |                        |
+| `filteredOptions`  | public    | `FASTListboxOption[]`               | `[]`    | The collection of currently filtered options.                                            |                        |
+| `open`             | public    | `boolean`                           | `false` | The open attribute.                                                                      |                        |
+| `options`          | public    | `FASTListboxOption[]`               |         | The list of options.                                                                     | FASTListbox            |
+| `placeholder`      | public    | `string`                            |         | Sets the placeholder value of the element, generally used to provide a hint to the user. |                        |
+| `value`            | public    |                                     |         | The value property.                                                                      |                        |
+| `cleanup`          | public    | `() => void`                        |         | Cleanup function for the listbox positioner.                                             |                        |
+| `proxy`            |           |                                     |         |                                                                                          | FormAssociatedCombobox |
+| `length`           | public    | `number`                            |         | The number of options.                                                                   | FASTListbox            |
+| `typeAheadExpired` | protected |                                     |         |                                                                                          | FASTListbox            |
+| `disabled`         | public    | `boolean`                           |         | The disabled state of the listbox.                                                       | FASTListbox            |
+| `selectedIndex`    | public    | `number`                            | `-1`    | The index of the selected option.                                                        | FASTListbox            |
+| `selectedOptions`  | public    | `FASTListboxOption[]`               | `[]`    | A collection of the selected options.                                                    | FASTListbox            |
 
 #### Methods
 
