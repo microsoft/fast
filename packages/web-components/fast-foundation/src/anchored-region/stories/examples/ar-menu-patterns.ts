@@ -77,36 +77,58 @@ export class ARMenuPatterns extends FASTElement {
 }
 
 const contextMenuTemplate = html`
-    <fast-listbox style="width: 100%; overflow-y: auto; max-height:100vh;">
-        <fast-option>"Option 1"</fast-option>
-        <fast-option>"Option 2"</fast-option>
-        <fast-option>"Option 3"</fast-option>
-        <fast-option>"Option 4"</fast-option>
-        <fast-option>"Option 5"</fast-option>
-        <fast-option>"Option 6"</fast-option>
-        <fast-option>"Option 7"</fast-option>
-        <fast-option>"Option 8"</fast-option>
-        <fast-option>"Option 9"</fast-option>
-        <fast-option>"Option 10"</fast-option>
-        <fast-option>"Option 11"</fast-option>
-        <fast-option>"Option 12"</fast-option>
-    </fast-listbox>
+    <fast-menu style="width: 100%; overflow-y: auto; max-height:100vh;">
+        <fast-menu-item>Option 1</fast-menu-item>
+        <fast-menu-item>Option 2</fast-menu-item>
+        <fast-menu-item>Option 3</fast-menu-item>
+        <fast-menu-item>Option 4</fast-menu-item>
+        <fast-menu-item>Option 5</fast-menu-item>
+        <fast-menu-item>Option 6</fast-menu-item>
+        <fast-menu-item>Option 7</fast-menu-item>
+        <fast-menu-item>Option 8</fast-menu-item>
+        <fast-menu-item>Option 9</fast-menu-item>
+        <fast-menu-item>Option 10</fast-menu-item>
+        <fast-menu-item>Option 11</fast-menu-item>
+        <fast-menu-item>
+            Option 12
+            <fast-menu slot="submenu">
+                <fast-menu-item>Option 1</fast-menu-item>
+                <fast-menu-item>Option 2</fast-menu-item>
+                <fast-menu-item>Option 3</fast-menu-item>
+                <fast-menu-item>Option 4</fast-menu-item>
+                <fast-menu-item>Option 5</fast-menu-item>
+                <fast-menu-item>
+                Option 6
+                <fast-menu slot="submenu">
+                    <fast-menu-item>Option 1</fast-menu-item>
+                    <fast-menu-item>Option 2</fast-menu-item>
+                    <fast-menu-item>Option 3</fast-menu-item>
+                    <fast-menu-item>Option 4</fast-menu-item>
+                    <fast-menu-item>Option 5</fast-menu-item>
+                    <fast-menu-item>
+                        Option 6
+                    </fast-menu-item>
+                </fast-menu>
+                </fast-menu-item>
+            </fast-menu>
+        </fast-menu-item>
+    </fast-listmenu>
 `;
 
 const listboxTemplate = html`
     <fast-listbox style="width: 100%; overflow-y: auto;">
-        <fast-option>"Option 1"</fast-option>
-        <fast-option>"Option 2"</fast-option>
-        <fast-option>"Option 3"</fast-option>
-        <fast-option>"Option 4"</fast-option>
-        <fast-option>"Option 5"</fast-option>
-        <fast-option>"Option 6"</fast-option>
-        <fast-option>"Option 7"</fast-option>
-        <fast-option>"Option 8"</fast-option>
-        <fast-option>"Option 9"</fast-option>
-        <fast-option>"Option 10"</fast-option>
-        <fast-option>"Option 11"</fast-option>
-        <fast-option>"Option 12"</fast-option>
+        <fast-option>Option 1</fast-option>
+        <fast-option>Option 2</fast-option>
+        <fast-option>Option 3</fast-option>
+        <fast-option>Option 4</fast-option>
+        <fast-option>Option 5</fast-option>
+        <fast-option>Option 6</fast-option>
+        <fast-option>Option 7</fast-option>
+        <fast-option>Option 8</fast-option>
+        <fast-option>Option 9</fast-option>
+        <fast-option>Option 10</fast-option>
+        <fast-option>Option 11</fast-option>
+        <fast-option>Option 12</fast-option>
     </fast-listbox>
 `;
 const sectionDividerTemplate = html`
@@ -248,7 +270,7 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 id="anchor-basic-dropdown-fill"
                 @click="${x => (x.basicDropdownFillOpen = !x.basicDropdownFillOpen)}"
             >
-                Dynamic vertical menu
+                Scaling vertical menu
             </fast-button>
             ${when(
                 x => x.basicDropdownFillOpen,
@@ -275,7 +297,7 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 id="anchor-side-dropdown-fill"
                 @click="${x => (x.sideDropdownFillOpen = !x.sideDropdownFillOpen)}"
             >
-                Dynamic side menu
+                Scaling side menu
             </fast-button>
             ${when(
                 x => x.sideDropdownFillOpen,
