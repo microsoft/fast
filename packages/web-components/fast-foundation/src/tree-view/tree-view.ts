@@ -10,7 +10,7 @@ import {
     keyEnter,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import { FASTTreeItem, isTreeItemElement } from "../tree-item/tree-item.js";
+import { FASTTreeItem } from "../tree-item/tree-item.js";
 
 /**
  * A Tree view Custom HTML Element.
@@ -203,7 +203,10 @@ export class FASTTreeView extends FASTElement {
             return;
         }
 
-        if (!(e.target instanceof Element) || !isTreeItemElement(e.target as Element)) {
+        if (
+            !(e.target instanceof Element) ||
+            !this.isTreeItemElement(e.target as Element)
+        ) {
             // not a tree item, ignore
             return true;
         }
@@ -228,7 +231,10 @@ export class FASTTreeView extends FASTElement {
             return;
         }
 
-        if (!(e.target instanceof Element) || !isTreeItemElement(e.target as Element)) {
+        if (
+            !(e.target instanceof Element) ||
+            !this.isTreeItemElement(e.target as Element)
+        ) {
             return true;
         }
 
@@ -278,13 +284,13 @@ export class FASTTreeView extends FASTElement {
         if (this.currentFocused === null || !this.contains(this.currentFocused)) {
             this.currentFocused = this.getValidFocusableItem();
         }
-
+        console.log(this.currentFocused, "this current focused");
         // toggle properties on child elements
         this.nested = this.checkForNestedItems();
 
         const treeItems: HTMLElement[] | void = this.getVisibleNodes();
         treeItems.forEach(node => {
-            if (isTreeItemElement(node)) {
+            if (this.isTreeItemElement(node)) {
                 (node as FASTTreeItem).nested = this.nested;
             }
         });
@@ -313,7 +319,7 @@ export class FASTTreeView extends FASTElement {
      */
     private checkForNestedItems(): boolean {
         return this.slottedTreeItems.some((node: HTMLElement) => {
-            return isTreeItemElement(node) && node.querySelector("[role='treeitem']");
+            return node.nodeType === 1 && this.isTreeItemElement(node);
         });
     }
 
@@ -321,7 +327,7 @@ export class FASTTreeView extends FASTElement {
      * check if the item is focusable
      */
     private isFocusableElement = (el: Element): el is HTMLElement => {
-        return isTreeItemElement(el);
+        return this.isTreeItemElement(el);
     };
 
     private isSelectedElement = (el: FASTTreeItem): el is FASTTreeItem => {
@@ -330,5 +336,12 @@ export class FASTTreeView extends FASTElement {
 
     private getVisibleNodes(): HTMLElement[] {
         return getDisplayedNodes(this, "[role='treeitem']") || [];
+    }
+
+    private isTreeItemElement(el: Element): el is HTMLElement {
+        return (
+            FASTTreeItem.isFASTTreeItemElement(el) ??
+            el.getAttribute("role") === "treeitem"
+        );
     }
 }

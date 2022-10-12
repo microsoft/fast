@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "compare tree item using instance of to determine if an element is a tree item",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

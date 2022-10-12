@@ -9,19 +9,6 @@ import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
- * check if the item is a tree item
- * @public
- * @remarks
- * determines if element is an HTMLElement and if it has the role treeitem
- */
-export function isTreeItemElement(el: Element): el is HTMLElement {
-    return (
-        isHTMLElement(el) &&
-        (el.getAttribute("role") === "treeitem" || el.tagName.includes("TREE-ITEM"))
-    );
-}
-
-/**
  * Tree Item configuration options
  * @public
  */
@@ -117,7 +104,7 @@ export class FASTTreeItem extends FASTElement {
     protected itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this.items.forEach((node: HTMLElement) => {
-                if (isTreeItemElement(node)) {
+                if (FASTTreeItem.isFASTTreeItemElement(node)) {
                     // TODO: maybe not require it to be a TreeItem?
                     (node as FASTTreeItem).nested = true;
                 }
@@ -152,7 +139,7 @@ export class FASTTreeItem extends FASTElement {
      * @public
      */
     public readonly isNestedItem = (): boolean => {
-        return isTreeItemElement(this.parentElement as Element);
+        return FASTTreeItem.isFASTTreeItemElement(this.parentElement as Element);
     };
 
     /**
@@ -192,10 +179,14 @@ export class FASTTreeItem extends FASTElement {
     public childItemLength(): number {
         const treeChildren: HTMLElement[] = this.childItems.filter(
             (item: HTMLElement) => {
-                return isTreeItemElement(item);
+                return FASTTreeItem.isFASTTreeItemElement(item);
             }
         );
         return treeChildren ? treeChildren.length : 0;
+    }
+
+    public static isFASTTreeItemElement(el: Element): el is HTMLElement {
+        return isHTMLElement(el) && el instanceof FASTTreeItem;
     }
 }
 
