@@ -182,14 +182,13 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Methods
 
-| Name                 | Privacy   | Description                                                                | Parameters                                                             | Return | Inherited From |
-| -------------------- | --------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------ | -------------- |
-| `validate`           | public    | {@inheritDoc (FormAssociated:interface).validate}                          |                                                                        | `void` |                |
-| `positionChanged`    | protected |                                                                            | `prev: SelectPosition or undefined, next: SelectPosition or undefined` | `void` |                |
-| `filterOptions`      | public    | Filter available options by text value.                                    |                                                                        | `void` |                |
-| `setPositioning`     | public    | Calculate and apply listbox positioning based on available viewport space. | `force`                                                                | `void` |                |
-| `selectFirstOption`  | public    | Moves focus to the first selectable option.                                |                                                                        | `void` | FASTListbox    |
-| `setSelectedOptions` | public    | Sets an option as selected and gives it focus.                             |                                                                        |        | FASTListbox    |
+| Name                 | Privacy | Description                                                                | Parameters | Return | Inherited From |
+| -------------------- | ------- | -------------------------------------------------------------------------- | ---------- | ------ | -------------- |
+| `validate`           | public  | {@inheritDoc (FormAssociated:interface).validate}                          |            | `void` |                |
+| `filterOptions`      | public  | Filter available options by text value.                                    |            | `void` |                |
+| `setPositioning`     | public  | Calculate and apply listbox positioning based on available viewport space. |            | `void` |                |
+| `selectFirstOption`  | public  | Moves focus to the first selectable option.                                |            | `void` | FASTListbox    |
+| `setSelectedOptions` | public  | Sets an option as selected and gives it focus.                             |            |        | FASTListbox    |
 
 #### Events
 
@@ -199,13 +198,12 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Attributes
 
-| Name           | Field             | Inherited From |
-| -------------- | ----------------- | -------------- |
-| `autocomplete` | autocomplete      |                |
-| `open`         | open              |                |
-| `placeholder`  | placeholder       |                |
-| `position`     | positionAttribute |                |
-|                | disabled          | FASTListbox    |
+| Name           | Field        | Inherited From |
+| -------------- | ------------ | -------------- |
+| `autocomplete` | autocomplete |                |
+| `open`         | open         |                |
+| `placeholder`  | placeholder  |                |
+|                | disabled     | FASTListbox    |
 
 #### CSS Parts
 

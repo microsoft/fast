@@ -81,13 +81,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
     private filter: string = "";
 
     /**
-     * The initial state of the position attribute.
-     *
-     * @internal
-     */
-    private forcedPosition: boolean = false;
-
-    /**
      * Reset the element to its first selectable option when its parent form is reset.
      *
      * @internal
@@ -129,14 +122,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
      * @internal
      */
     public listboxId: string = uniqueId("listbox-");
-
-    /**
-     * The max height for the listbox when opened.
-     *
-     * @internal
-     */
-    @observable
-    public maxHeight: number = 0;
 
     /**
      * The open attribute.
@@ -212,29 +197,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
     }
 
     /**
-     * The placement for the listbox when the combobox is open.
-     *
-     * @public
-     */
-    @attr({ attribute: "position" })
-    public positionAttribute?: SelectPosition;
-
-    /**
-     * The current state of the calculated position of the listbox.
-     *
-     * @public
-     */
-    @observable
-    public position?: SelectPosition;
-    protected positionChanged(
-        prev: SelectPosition | undefined,
-        next: SelectPosition | undefined
-    ): void {
-        this.positionAttribute = next;
-        this.setPositioning();
-    }
-
-    /**
      * The value property.
      *
      * @public
@@ -307,7 +269,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
 
     public connectedCallback() {
         super.connectedCallback();
-        this.forcedPosition = !!this.positionAttribute;
         if (this.value) {
             this.initialValue = this.value;
         }

@@ -919,8 +919,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
     listbox: HTMLDivElement;
     // @internal
     listboxId: string;
-    // @internal
-    maxHeight: number;
     open: boolean;
     // @internal
     protected openChanged(): void;
@@ -929,10 +927,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
     placeholder: string;
     // @internal
     protected placeholderChanged(): void;
-    position?: SelectPosition;
-    positionAttribute?: SelectPosition;
-    // (undocumented)
-    protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition | undefined): void;
     // @internal
     selectedIndexChanged(prev: number | undefined, next: number): void;
     // @internal
