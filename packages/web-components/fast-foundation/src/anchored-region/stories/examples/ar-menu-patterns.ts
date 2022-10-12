@@ -76,6 +76,23 @@ export class ARMenuPatterns extends FASTElement {
     };
 }
 
+const contextMenuTemplate = html`
+    <fast-listbox style="width: 100%; overflow-y: auto; max-height:100vh;">
+        <fast-option>"Option 1"</fast-option>
+        <fast-option>"Option 2"</fast-option>
+        <fast-option>"Option 3"</fast-option>
+        <fast-option>"Option 4"</fast-option>
+        <fast-option>"Option 5"</fast-option>
+        <fast-option>"Option 6"</fast-option>
+        <fast-option>"Option 7"</fast-option>
+        <fast-option>"Option 8"</fast-option>
+        <fast-option>"Option 9"</fast-option>
+        <fast-option>"Option 10"</fast-option>
+        <fast-option>"Option 11"</fast-option>
+        <fast-option>"Option 12"</fast-option>
+    </fast-listbox>
+`;
+
 const listboxTemplate = html`
     <fast-listbox style="width: 100%; overflow-y: auto;">
         <fast-option>"Option 1"</fast-option>
@@ -282,7 +299,9 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 `
             )}
             ${sectionDividerTemplate} Context menus can be positioned using a point as an
-            anchor rather than an element. ${sectionDividerTemplate}
+            anchor rather than an element. The context menu below also uses viewport lock
+            and a css constraint on not exceeding the viewport height to remain is
+            view.${sectionDividerTemplate}
             <div
                 style="background:green; height:400px; width:400px; padding: 20px;"
                 ${ref("contextElement")}
@@ -298,12 +317,14 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                         horizontal-default-position="right"
                         horizontal-positioning-mode="dynamic"
                         horizontal-scaling="content"
+                        horizontal-viewport-lock="true"
                         vertical-default-position="bottom"
                         vertical-positioning-mode="dynamic"
+                        vertical-viewport-lock="true"
                         :pointAnchorX="${x => x.pointAnchorX}"
                         :pointAnchorY="${x => x.pointAnchorY}"
                     >
-                        ${listboxTemplate}
+                        ${contextMenuTemplate}
                     </fast-anchored-region>
                 `
             )}
