@@ -15,7 +15,7 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * determines if element is an HTMLElement and if it has the role treeitem
  */
 export function isTreeItemElement(el: Element): el is HTMLElement {
-    return isHTMLElement(el) && el.hasOwnProperty("isTreeItem");
+    return isHTMLElement(el) && (el as any).isTreeItem;
 }
 
 /**

@@ -2134,6 +2134,8 @@ export class FASTTreeItem extends FASTElement {
     handleFocus: (e: FocusEvent) => void;
     readonly isNestedItem: () => boolean;
     // @internal
+    readonly isTreeItem: boolean;
+    // @internal
     items: HTMLElement[];
     // (undocumented)
     protected itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void;

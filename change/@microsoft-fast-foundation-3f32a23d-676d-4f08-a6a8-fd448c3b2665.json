@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "add readonly property to identify tree items and udpate isTreeItemElement check",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}
