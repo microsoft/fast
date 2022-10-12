@@ -53,7 +53,7 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     @observable
     public defaultSlottedNodes: Node[];
 
-    get radioGroup() {
+    private get radioGroup() {
         return (this as HTMLElement).closest(
             "[role=radiogroup]"
         ) as FASTRadioGroup | null;
