@@ -15,10 +15,7 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * determines if element is an HTMLElement and if it has the role treeitem
  */
 export function isTreeItemElement(el: Element): el is HTMLElement {
-    return (
-        isHTMLElement(el) &&
-        (el.getAttribute("role") === "treeitem" || el.tagName.includes("TREE-ITEM"))
-    );
+    return isHTMLElement(el) && el.hasOwnProperty("isTreeItem");
 }
 
 /**
@@ -90,6 +87,13 @@ export class FASTTreeItem extends FASTElement {
      * @internal
      */
     public expandCollapseButton: HTMLDivElement;
+
+    /**
+     *  Readonly property identifying the element as a tree item
+     *
+     * @internal
+     */
+    public readonly isTreeItem: boolean = true;
 
     /**
      * Whether the item is focusable
