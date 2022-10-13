@@ -14,6 +14,9 @@ export interface Accessor {
 // @public
 export type AddBehavior = (behavior: HostBehavior<HTMLElement>) => void;
 
+// @beta
+export function addHydrationSupport(): void;
+
 // @public
 export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
 
@@ -258,10 +261,17 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     removeBehavior(behavior: HostBehavior<TElement>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+    static setStrategy(strategy: ElementControllerStrategy): void;
     readonly source: TElement;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
     readonly view: ElementView<TElement> | null;
+}
+
+// @public (undocumented)
+export interface ElementControllerStrategy {
+    // (undocumented)
+    create(element: HTMLElement, definition: FASTElementDefinition): ElementController;
 }
 
 // @public
