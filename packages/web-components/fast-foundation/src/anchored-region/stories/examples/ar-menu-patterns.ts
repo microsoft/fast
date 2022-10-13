@@ -7,7 +7,6 @@ import {
     ref,
     when,
 } from "@microsoft/fast-element";
-import type { FASTAnchoredRegion } from "../../anchored-region.js";
 
 /**
  *
@@ -32,6 +31,12 @@ export class ARMenuPatterns extends FASTElement {
 
     @observable
     sideDropdownFillOpen: boolean = false;
+
+    @observable
+    fixedDropDownOpen: boolean = false;
+
+    @observable
+    absoluteDropDownOpen: boolean = false;
 
     @observable
     contextMenuOpen: boolean = false;
@@ -143,13 +148,13 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
     T
 > {
     return html<T>`
-        <template style="height:100%; width:100%; overflow: auto;">
+        <template style="">
             <h1>
                 Menu patterns
             </h1>
-            The most basic flyouts always appear in the same relative position to their
-            anchor and ignore the viewport (ie. they don't care if they get clipped).
-            ${sectionDividerTemplate}
+            ${sectionDividerTemplate} The most basic flyouts always appear in the same
+            relative position to their anchor and ignore the viewport (ie. they don't care
+            if they get clipped). ${sectionDividerTemplate}
 
             <fast-button
                 id="anchor-basic-dropdown"
@@ -161,9 +166,7 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 x => x.basicDropdownOpen,
                 html<T>`
                     <fast-anchored-region
-                        id="menu-basic-dropdown"
                         anchor="anchor-basic-dropdown"
-                        fixed-placement="true"
                         auto-update-mode="auto"
                         horizontal-default-position="center"
                         horizontal-positioning-mode="locktodefault"
@@ -187,9 +190,7 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 x => x.sideDropdownOpen,
                 html<T>`
                     <fast-anchored-region
-                        id="menu-basic-dropdown"
                         anchor="anchor-side-dropdown"
-                        fixed-placement="true"
                         auto-update-mode="auto"
                         horizontal-default-position="right"
                         horizontal-positioning-mode="locktodefault"
@@ -218,9 +219,7 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 x => x.basicDropdownDynamicOpen,
                 html<T>`
                     <fast-anchored-region
-                        id="menu-basic-dropdown-dynamic"
                         anchor="anchor-basic-dropdown-dynamic"
-                        fixed-placement="true"
                         auto-update-mode="auto"
                         horizontal-default-position="center"
                         horizontal-positioning-mode="dynamic"
@@ -244,9 +243,7 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 x => x.sideDropdownDynamicOpen,
                 html<T>`
                     <fast-anchored-region
-                        id="menu-basic-dropdown-dynamic"
                         anchor="anchor-side-dropdown-dynamic"
-                        fixed-placement="true"
                         auto-update-mode="auto"
                         horizontal-default-position="right"
                         horizontal-positioning-mode="dynamic"
@@ -277,9 +274,7 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 html<T>`
                     <fast-anchored-region
                         style="display:flex; flex-direction: column;"
-                        id="menu-basic-dropdown-fill"
                         anchor="anchor-basic-dropdown-fill"
-                        fixed-placement="true"
                         auto-update-mode="auto"
                         horizontal-default-position="center"
                         horizontal-positioning-mode="dynamic"
@@ -304,9 +299,7 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 html<T>`
                     <fast-anchored-region
                         style="display:flex; flex-direction: column;"
-                        id="menu-basic-dropdown-fill"
                         anchor="anchor-side-dropdown-fill"
-                        fixed-placement="true"
                         auto-update-mode="auto"
                         horizontal-default-position="right"
                         horizontal-positioning-mode="dynamic"
@@ -315,6 +308,61 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                         vertical-inset="true"
                         vertical-positioning-mode="locktodefault"
                         vertical-scaling="fill"
+                    >
+                        ${listboxTemplate}
+                    </fast-anchored-region>
+                `
+            )}
+            ${sectionDividerTemplate} Popups have their css position attribute set to
+            either "fixed" or "absolute" based on the value of the component's
+            "fixed-placement" attribute. Authors may choose either but there are
+            tradeoffs. Elements that are "fixed" may be more effective at escaping
+            containers, but "absolute" positioned elements may track better during
+            scrolling (ie. no corrections are necessary if the element is actually
+            scrolling with the parent container). ${sectionDividerTemplate}
+            <fast-button
+                id="anchor-fixed-dropdown"
+                @click="${x => (x.fixedDropDownOpen = !x.fixedDropDownOpen)}"
+            >
+                Fixed position dropdown
+            </fast-button>
+            ${when(
+                x => x.fixedDropDownOpen,
+                html<T>`
+                    <fast-anchored-region
+                        anchor="anchor-fixed-dropdown"
+                        fixed-placement="true"
+                        auto-update-mode="auto"
+                        horizontal-default-position="center"
+                        horizontal-positioning-mode="locktodefault"
+                        horizontal-scaling="anchor"
+                        vertical-default-position="bottom"
+                        vertical-positioning-mode="locktodefault"
+                        vertical-scaling="content"
+                    >
+                        ${listboxTemplate}
+                    </fast-anchored-region>
+                `
+            )}
+
+            <fast-button
+                id="anchor-absolute-dropdown"
+                @click="${x => (x.absoluteDropDownOpen = !x.absoluteDropDownOpen)}"
+            >
+                Absolute positioned dropdown
+            </fast-button>
+            ${when(
+                x => x.absoluteDropDownOpen,
+                html<T>`
+                    <fast-anchored-region
+                        anchor="anchor-absolute-dropdown"
+                        auto-update-mode="auto"
+                        horizontal-default-position="center"
+                        horizontal-positioning-mode="locktodefault"
+                        horizontal-scaling="anchor"
+                        vertical-default-position="bottom"
+                        vertical-positioning-mode="locktodefault"
+                        vertical-scaling="content"
                     >
                         ${listboxTemplate}
                     </fast-anchored-region>
@@ -334,8 +382,8 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 x => x.contextMenuOpen,
                 html<T>`
                     <fast-anchored-region
-                        fixed-placement="true"
                         use-point-anchor="true"
+                        fixed-placement="true"
                         horizontal-default-position="right"
                         horizontal-positioning-mode="dynamic"
                         horizontal-scaling="content"

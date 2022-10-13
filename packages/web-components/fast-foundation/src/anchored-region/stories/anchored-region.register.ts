@@ -12,6 +12,11 @@ import {
     arMenuPatternsStyles,
     arMenuPatternsTemplate,
 } from "./examples/ar-menu-patterns.js";
+import {
+    ARLockIntoView,
+    arLockIntoViewStyles,
+    arLockIntoViewTemplate,
+} from "./examples/ar-lockintoview.js";
 
 const styles = css`
     :host {
@@ -42,4 +47,10 @@ ARMenuPatterns.define({
     name: "ar-menu-patterns",
     template: arMenuPatternsTemplate(),
     styles: arMenuPatternsStyles,
+});
+
+ARLockIntoView.define({
+    name: "ar-lock-into-view",
+    template: arLockIntoViewTemplate(),
+    styles: arLockIntoViewStyles,
 });

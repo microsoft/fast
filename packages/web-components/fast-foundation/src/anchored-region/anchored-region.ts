@@ -333,6 +333,30 @@ export class FASTAnchoredRegion extends FASTElement {
     public initialLayoutComplete: boolean = false;
 
     /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public viewportRect: DOMRect | undefined;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public anchorRect: DOMRect | undefined;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public regionRect: DOMRect | undefined;
+
+    /**
      * indicates the current horizontal position of the region
      */
     public verticalPosition: AnchoredRegionPositionLabel | undefined;
@@ -356,9 +380,6 @@ export class FASTAnchoredRegion extends FASTElement {
 
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
-    private viewportRect: DOMRect | undefined;
-    private anchorRect: DOMRect | undefined;
-    private regionRect: DOMRect | undefined;
     private pointAnchorRect: DOMRect = new DOMRect();
 
     /**
