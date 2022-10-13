@@ -47,7 +47,7 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
     T
 > {
     return html<T>`
-        <template style="height:100%; width:100%; overflow: auto;">
+        <template style="height:100%; width:100%;">
             <h1>
                 Lock into view
             </h1>
@@ -74,12 +74,112 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                 <div
                     style="grid-column: 1; grid-row: 1;"
                     class="grid-cell"
-                    id="grid-cell-1"
+                    id="grid-cell-1-1"
                 >
                     <fast-anchored-region
                         class="tracking-region"
                         anchor="anchor"
-                        viewport="grid-cell-1"
+                        viewport="grid-cell-1-1"
+                        auto-update-mode="auto"
+                        horizontal-viewport-lock="true"
+                        vertical-viewport-lock="true"
+                        horizontal-default-position="left"
+                        horizontal-positioning-mode="locktodefault"
+                        horizontal-scaling="content"
+                        vertical-default-position="top"
+                        vertical-positioning-mode="locktodefault"
+                        vertical-scaling="content"
+                    >
+                        <div
+                            class="tracker1"
+                        >
+                        </div>
+                    </fast-anchored-region>
+                </div>
+                <div
+                    style="grid-column: 2; grid-row: 1;"
+                    class="grid-cell"
+                    id="grid-cell-1-2"
+                >
+                    <fast-anchored-region
+                        class="tracking-region"
+                        anchor="anchor"
+                        viewport="grid-cell-1-2"
+                        auto-update-mode="auto"
+                        horizontal-viewport-lock="true"
+                        vertical-viewport-lock="true"
+                        horizontal-default-position="center"
+                        horizontal-positioning-mode="locktodefault"
+                        horizontal-scaling="content"
+                        vertical-default-position="top"
+                        vertical-positioning-mode="locktodefault"
+                        vertical-scaling="content"
+                    >
+                        <div
+                            class="tracker1"
+                        >
+                        </div>
+                    </fast-anchored-region>
+                </div>
+                <div
+                    style="grid-column: 3; grid-row: 1;"
+                    class="grid-cell"
+                    id="grid-cell-1-3"
+                >
+                    <fast-anchored-region
+                        class="tracking-region"
+                        anchor="anchor"
+                        viewport="grid-cell-1-3"
+                        auto-update-mode="auto"
+                        horizontal-viewport-lock="true"
+                        vertical-viewport-lock="true"
+                        horizontal-default-position="right"
+                        horizontal-positioning-mode="locktodefault"
+                        horizontal-scaling="content"
+                        vertical-default-position="top"
+                        vertical-positioning-mode="locktodefault"
+                        vertical-scaling="content"
+                    >
+                        <div
+                            class="tracker1"
+                        >
+                        </div>
+                    </fast-anchored-region>
+                </div>
+                <div
+                    style="grid-column: 1; grid-row: 2;"
+                    class="grid-cell"
+                    id="grid-cell-2-1"
+                >
+                    <fast-anchored-region
+                        class="tracking-region"
+                        anchor="anchor"
+                        viewport="grid-cell-2-1"
+                        auto-update-mode="auto"
+                        horizontal-viewport-lock="true"
+                        vertical-viewport-lock="true"
+                        horizontal-default-position="left"
+                        horizontal-positioning-mode="locktodefault"
+                        horizontal-scaling="content"
+                        vertical-default-position="center"
+                        vertical-positioning-mode="locktodefault"
+                        vertical-scaling="content"
+                    >
+                        <div
+                            class="tracker1"
+                        >
+                        </div>
+                    </fast-anchored-region>
+                </div>
+                <div
+                    style="grid-column: 2; grid-row: 2;"
+                    class="grid-cell"
+                    id="grid-cell-2-2"
+                >
+                    <fast-anchored-region
+                        class="tracking-region"
+                        anchor="anchor"
+                        viewport="grid-cell-2-2"
                         auto-update-mode="auto"
                         horizontal-viewport-lock="true"
                         vertical-viewport-lock="true"
@@ -97,46 +197,104 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                     </fast-anchored-region>
                 </div>
                 <div
-                    style="grid-column: 2; grid-row: 1;"
-                    class="grid-cell"
-                    id="grid-cell-1"
-                >
-                </div>
-                <div
-                    style="grid-column: 3; grid-row: 1;"
-                    class="grid-cell"
-                    id="grid-cell-1"
-                >
-                </div>
-                <div
-                    style="grid-column: 1; grid-row: 2;"
-                    class="grid-cell"
-                    id="grid-cell-1"
-                >
-                </div>
-                <div
                     style="grid-column: 3; grid-row: 2;"
                     class="grid-cell"
-                    id="grid-cell-1"
+                    id="grid-cell-2-3"
                 >
+                    <fast-anchored-region
+                        class="tracking-region"
+                        anchor="anchor"
+                        viewport="grid-cell-2-3"
+                        auto-update-mode="auto"
+                        horizontal-viewport-lock="true"
+                        vertical-viewport-lock="true"
+                        horizontal-default-position="right"
+                        horizontal-positioning-mode="locktodefault"
+                        horizontal-scaling="content"
+                        vertical-default-position="center"
+                        vertical-positioning-mode="locktodefault"
+                        vertical-scaling="content"
+                    >
+                        <div
+                            class="tracker1"
+                        >
+                        </div>
+                    </fast-anchored-region>
                 </div>
                 <div
                     style="grid-column: 1; grid-row: 3;"
                     class="grid-cell"
-                    id="grid-cell-1"
+                    id="grid-cell-3-1"
                 >
+                    <fast-anchored-region
+                        class="tracking-region"
+                        anchor="anchor"
+                        viewport="grid-cell-3-1"
+                        auto-update-mode="auto"
+                        horizontal-viewport-lock="true"
+                        vertical-viewport-lock="true"
+                        horizontal-default-position="left"
+                        horizontal-positioning-mode="locktodefault"
+                        horizontal-scaling="content"
+                        vertical-default-position="bottom"
+                        vertical-positioning-mode="locktodefault"
+                        vertical-scaling="content"
+                    >
+                        <div
+                            class="tracker1"
+                        >
+                        </div>
+                    </fast-anchored-region>
                 </div>
                 <div
                     style="grid-column: 2; grid-row: 3;"
                     class="grid-cell"
-                    id="grid-cell-1"
+                    id="grid-cell-3-2"
                 >
+                    <fast-anchored-region
+                        class="tracking-region"
+                        anchor="anchor"
+                        viewport="grid-cell-3-2"
+                        auto-update-mode="auto"
+                        horizontal-viewport-lock="true"
+                        vertical-viewport-lock="true"
+                        horizontal-default-position="center"
+                        horizontal-positioning-mode="locktodefault"
+                        horizontal-scaling="content"
+                        vertical-default-position="bottom"
+                        vertical-positioning-mode="locktodefault"
+                        vertical-scaling="content"
+                    >
+                        <div
+                            class="tracker1"
+                        >
+                        </div>
+                    </fast-anchored-region>
                 </div>
                 <div
                     style="grid-column: 3; grid-row: 3;"
                     class="grid-cell"
-                    id="grid-cell-1"
+                    id="grid-cell-3-3"
                 >
+                    <fast-anchored-region
+                        class="tracking-region"
+                        anchor="anchor"
+                        viewport="grid-cell-3-3"
+                        auto-update-mode="auto"
+                        horizontal-viewport-lock="true"
+                        vertical-viewport-lock="true"
+                        horizontal-default-position="right"
+                        horizontal-positioning-mode="locktodefault"
+                        horizontal-scaling="content"
+                        vertical-default-position="bottom"
+                        vertical-positioning-mode="locktodefault"
+                        vertical-scaling="content"
+                    >
+                        <div
+                            class="tracker1"
+                        >
+                        </div>
+                    </fast-anchored-region>
                 </div>
             <div>
         </template>
@@ -165,9 +323,9 @@ export const arLockIntoViewStyles = css`
         pointer-events: none;
     }
     .tracker1 {
-        background: grey;
+        background: blue;
         opacity: 0.5;
-        border: solid green 2px;
+        border: solid green 4px;
         height: 100px;
         width: 100px;
     }
