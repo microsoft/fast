@@ -238,3 +238,12 @@ export const MenuPatterns: Story<FASTAnchoredRegion> = renderComponent(
 MenuPatterns.parameters = { controls: { include: [], hideNoControlsWarning: true } };
 MenuPatterns.argTypes = {};
 MenuPatterns.args = {};
+
+export const LockIntoView: Story<FASTAnchoredRegion> = renderComponent(
+    html<StoryArgs<FASTAnchoredRegion>>`
+        <ar-lock-into-view></ar-lock-into-view>
+    `
+).bind({});
+LockIntoView.parameters = { controls: { include: [], hideNoControlsWarning: true } };
+LockIntoView.argTypes = {};
+LockIntoView.args = {};
