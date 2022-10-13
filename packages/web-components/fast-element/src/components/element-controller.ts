@@ -7,7 +7,6 @@ import type { HostBehavior, HostController } from "../styles/host.js";
 import type { ViewController } from "../templating/html-directive.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
-import { UnobservableMutationObserver } from "../utilities.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
 
 const defaultEventOptions: CustomEventInit = {
@@ -33,6 +32,7 @@ let elementControllerStrategy: ElementControllerStrategy = {
         return new ElementController(element, definition);
     },
 };
+
 /**
  * Controls the lifecycle and rendering of a `FASTElement`.
  * @public
@@ -458,43 +458,15 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             definition
         ));
     }
-}
 
-export class HydratableElementController<
-    TElement extends HTMLElement = HTMLElement
-> extends ElementController<TElement> {
-    private static hydrationObserver = new UnobservableMutationObserver(
-        HydratableElementController.hydrationObserverHandler
-    );
-    private static hydrationObserverHandler(events: MutationRecord[]) {
-        for (const event of events) {
-            this.hydrationObserver.unobserve(event.target);
-            (event.target as any).$fastController.connect();
-        }
+    /**
+     * Sets the strategy that ElementController.forCustomElement uses to construct
+     * ElementController instances for an element.
+     * @param strategy - The strategy to use.
+     */
+    public static setStrategy(strategy: ElementControllerStrategy) {
+        elementControllerStrategy = strategy;
     }
-
-    public connect() {
-        if (this.source.hasAttribute("defer-hydration")) {
-            HydratableElementController.hydrationObserver.observe(this.source, {
-                attributeFilter: ["defer-hydration"],
-            });
-        } else {
-            super.connect();
-        }
-    }
-
-    public disconnect() {
-        super.disconnect();
-        HydratableElementController.hydrationObserver.unobserve(this.source);
-    }
-}
-
-export function addHydrationSupport() {
-    elementControllerStrategy = {
-        create(element, definition) {
-            return new HydratableElementController(element, definition);
-        },
-    };
 }
 
 /**
