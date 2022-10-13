@@ -296,6 +296,8 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                 </div>
             </div>
 
+            ${sectionDividerTemplate} Many, to test perf.${sectionDividerTemplate}
+
             <div class="many-trackers">
                 ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
                 ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}

@@ -1069,7 +1069,7 @@ export class FASTAnchoredRegion extends FASTElement {
 
             case "content":
                 nextRegionWidth = this.regionRect.width;
-                this.regionWidth = "unset";
+                this.regionWidth = "auto";
                 break;
         }
 
@@ -1152,7 +1152,7 @@ export class FASTAnchoredRegion extends FASTElement {
 
             case "content":
                 nextRegionHeight = this.regionRect.height;
-                this.regionHeight = "unset";
+                this.regionHeight = "auto";
                 break;
         }
 
