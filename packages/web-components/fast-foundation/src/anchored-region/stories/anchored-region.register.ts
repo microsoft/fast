@@ -1,7 +1,11 @@
 import { css } from "@microsoft/fast-element";
 import { FASTAnchoredRegion } from "../anchored-region.js";
 import { anchoredRegionTemplate } from "../anchored-region.template.js";
-import { DraggableAnchor, draggableAnchorTemplate } from "./examples/draggable-anchor.js";
+import {
+    DraggableAnchor,
+    draggableAnchorStyles,
+    draggableAnchorTemplate,
+} from "./examples/draggable-anchor.js";
 import {
     AnchoredRegionPointer,
     anchoredRegionPointerStyles,
@@ -26,6 +30,7 @@ import {
 const styles = css`
     :host {
         display: block;
+        will-change: transform;
     }
 `;
 
@@ -39,7 +44,7 @@ FASTAnchoredRegion.define({
 DraggableAnchor.define({
     name: "draggable-anchor",
     template: draggableAnchorTemplate(),
-    styles,
+    styles: draggableAnchorStyles,
 });
 
 AnchoredRegionPointer.define({

@@ -76,24 +76,16 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
             ${sectionDividerTemplate} The "lock into view" attributes keep the region in
             the viewport on the specified axis. There is significant flexibility as to
             what other element is the viewport.
-            <p>
-                Anchored regions can be styled based on their placement by using the css
-                classes put on the element based on position (ie. top/bottom/left/right).
-                This is how the borders on the blue squares below are thicker on the
-                anchored sides. ${sectionDividerTemplate}
-                <draggable-anchor
-                    fixed-placement="true"
-                    class="anchor"
-                    id="anchor"
-                    point-anchor-x="300"
-                    point-anchor-Y="300"
-                    ${ref("anchorElement")}
-                >
-                    Anchor
-                    <br />
-                    Click to Drag
-                </draggable-anchor>
-            </p>
+            <br />
+            Anchored regions can be styled based on their placement by using the css
+            classes put on the element based on position (ie. top/bottom/left/right). This
+            is how the borders on the blue squares below are thicker on the anchored
+            sides. ${sectionDividerTemplate}
+            <draggable-anchor class="anchor" id="anchor" ${ref("anchorElement")}>
+                Anchor
+                <br />
+                Click to Drag
+            </draggable-anchor>
 
             <div class="grid">
                 <div

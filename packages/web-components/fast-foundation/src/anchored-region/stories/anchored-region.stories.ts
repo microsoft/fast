@@ -174,46 +174,6 @@ PointAnchor.args = {
     `,
 };
 
-export const InACard: Story<FASTAnchoredRegion> = renderComponent(
-    html<StoryArgs<FASTAnchoredRegion>>`
-        <div style="min-height: 100px">
-            <fast-card
-                style="height: 200px; background: green; contain: none; padding: 10px; overflow: hidden;"
-            >
-                In order for an anchored region to break out of a card parent the card's
-                css "contain" setting may have to be changed. In this case the green area
-                is the parent card. ${storyTemplate}
-                <draggable-anchor
-                    class="anchor"
-                    point-anchor-x="150"
-                    point-anchor-Y="150"
-                >
-                    Anchor
-                    <br />
-                    Click to Drag
-                </draggable-anchor>
-            </fast-card>
-        </div>
-    `
-).bind({});
-PointAnchor.args = {
-    usePointAnchor: true,
-    pointAnchorX: 200,
-    pointAnchorY: 200,
-    storyContent: html`
-        <div
-            id="content"
-            style="background:rgba(0, 255, 0, 0.2); height:100%; width:100%;"
-        >
-            <div style="background: var(--neutral-fill-rest); padding: 10px">
-                Position controlled by
-                <br />
-                point-anchor-x and point-anchor-y
-            </div>
-        </div>
-    `,
-};
-
 export const PositionsDemo: Story<FASTAnchoredRegion> = renderComponent(
     html<StoryArgs<FASTAnchoredRegion>>`
         <ar-position-demo :positions="${x => x.Positions}"></ar-position-demo>
