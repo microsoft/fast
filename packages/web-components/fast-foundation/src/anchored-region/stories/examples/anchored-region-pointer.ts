@@ -68,9 +68,11 @@ export function anchoredRegionPointerTemplate<
 export const anchoredRegionPointerStyles = css`
     :host {
         display: block;
+        will-change: transform;
         box-sizing: border-box;
     }
     .pointer {
+        will-change: transform;
         position: absolute;
         transform-origin: 50% 50%;
         height: 100%;
