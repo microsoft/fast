@@ -39,6 +39,13 @@ const sectionDividerTemplate = html`
     <fast-divider style="margin:20px;"></fast-divider>
 `;
 
+const pointerElementTemplate = html`
+    <div class="tracker"></div>
+    <div class="pointer" slot="pointer">
+        ↑
+    </div>
+`;
+
 /**
  * The template
  * @public
@@ -54,14 +61,17 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
             ${sectionDividerTemplate}
                 The "lock into view" attributes keep the region in the viewport on the
                 specified axis.  There is significant flexibility as to what other element
-                is the viewport.
+                is the viewport.<p>
+                Anchored regions can be styled based on their placement by using the
+                css classes put on the element based on position (ie. top/bottom/left/right).
+                This is how the borders on the blue squares below are thicker on the anchored sides.
             ${sectionDividerTemplate}
             <draggable-anchor
                 fixed-placement="true"
                 class="anchor"
                 id="anchor"
-                point-anchor-x="150"
-                point-anchor-Y="150"
+                point-anchor-x="300"
+                point-anchor-Y="300"
                 ${ref("anchorElement")}
             >
                 Anchor
@@ -76,7 +86,7 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                     class="grid-cell"
                     id="grid-cell-1-1"
                 >
-                    <fast-anchored-region
+                    <anchored-region-pointer
                         class="tracking-region"
                         anchor="anchor"
                         viewport="grid-cell-1-1"
@@ -90,18 +100,15 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                         vertical-positioning-mode="locktodefault"
                         vertical-scaling="content"
                     >
-                        <div
-                            class="tracker1"
-                        >
-                        </div>
-                    </fast-anchored-region>
+                        ${pointerElementTemplate}
+                    </anchored-region-pointer>
                 </div>
                 <div
                     style="grid-column: 2; grid-row: 1;"
                     class="grid-cell"
                     id="grid-cell-1-2"
                 >
-                    <fast-anchored-region
+                    <anchored-region-pointer
                         class="tracking-region"
                         anchor="anchor"
                         viewport="grid-cell-1-2"
@@ -115,18 +122,15 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                         vertical-positioning-mode="locktodefault"
                         vertical-scaling="content"
                     >
-                        <div
-                            class="tracker1"
-                        >
-                        </div>
-                    </fast-anchored-region>
+                        ${pointerElementTemplate}
+                    </anchored-region-pointer>
                 </div>
                 <div
                     style="grid-column: 3; grid-row: 1;"
                     class="grid-cell"
                     id="grid-cell-1-3"
                 >
-                    <fast-anchored-region
+                    <anchored-region-pointer
                         class="tracking-region"
                         anchor="anchor"
                         viewport="grid-cell-1-3"
@@ -140,18 +144,15 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                         vertical-positioning-mode="locktodefault"
                         vertical-scaling="content"
                     >
-                        <div
-                            class="tracker1"
-                        >
-                        </div>
-                    </fast-anchored-region>
+                        ${pointerElementTemplate}
+                    </anchored-region-pointer>
                 </div>
                 <div
                     style="grid-column: 1; grid-row: 2;"
                     class="grid-cell"
                     id="grid-cell-2-1"
                 >
-                    <fast-anchored-region
+                    <anchored-region-pointer
                         class="tracking-region"
                         anchor="anchor"
                         viewport="grid-cell-2-1"
@@ -165,18 +166,15 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                         vertical-positioning-mode="locktodefault"
                         vertical-scaling="content"
                     >
-                        <div
-                            class="tracker1"
-                        >
-                        </div>
-                    </fast-anchored-region>
+                        ${pointerElementTemplate}
+                    </anchored-region-pointer>
                 </div>
                 <div
                     style="grid-column: 2; grid-row: 2;"
                     class="grid-cell"
                     id="grid-cell-2-2"
                 >
-                    <fast-anchored-region
+                    <anchored-region-pointer
                         class="tracking-region"
                         anchor="anchor"
                         viewport="grid-cell-2-2"
@@ -190,18 +188,15 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                         vertical-positioning-mode="locktodefault"
                         vertical-scaling="content"
                     >
-                        <div
-                            class="tracker1"
-                        >
-                        </div>
-                    </fast-anchored-region>
+                        ${pointerElementTemplate}
+                    </anchored-region-pointer>
                 </div>
                 <div
                     style="grid-column: 3; grid-row: 2;"
                     class="grid-cell"
                     id="grid-cell-2-3"
                 >
-                    <fast-anchored-region
+                    <anchored-region-pointer
                         class="tracking-region"
                         anchor="anchor"
                         viewport="grid-cell-2-3"
@@ -215,18 +210,15 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                         vertical-positioning-mode="locktodefault"
                         vertical-scaling="content"
                     >
-                        <div
-                            class="tracker1"
-                        >
-                        </div>
-                    </fast-anchored-region>
+                        ${pointerElementTemplate}
+                    </anchored-region-pointer>
                 </div>
                 <div
                     style="grid-column: 1; grid-row: 3;"
                     class="grid-cell"
                     id="grid-cell-3-1"
                 >
-                    <fast-anchored-region
+                    <anchored-region-pointer
                         class="tracking-region"
                         anchor="anchor"
                         viewport="grid-cell-3-1"
@@ -240,18 +232,15 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                         vertical-positioning-mode="locktodefault"
                         vertical-scaling="content"
                     >
-                        <div
-                            class="tracker1"
-                        >
-                        </div>
-                    </fast-anchored-region>
+                        ${pointerElementTemplate}
+                    </anchored-region-pointer>
                 </div>
                 <div
                     style="grid-column: 2; grid-row: 3;"
                     class="grid-cell"
                     id="grid-cell-3-2"
                 >
-                    <fast-anchored-region
+                    <anchored-region-pointer
                         class="tracking-region"
                         anchor="anchor"
                         viewport="grid-cell-3-2"
@@ -265,18 +254,15 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                         vertical-positioning-mode="locktodefault"
                         vertical-scaling="content"
                     >
-                        <div
-                            class="tracker1"
-                        >
-                        </div>
-                    </fast-anchored-region>
+                        ${pointerElementTemplate}
+                    </anchored-region-pointer>
                 </div>
                 <div
                     style="grid-column: 3; grid-row: 3;"
                     class="grid-cell"
                     id="grid-cell-3-3"
                 >
-                    <fast-anchored-region
+                    <anchored-region-pointer
                         class="tracking-region"
                         anchor="anchor"
                         viewport="grid-cell-3-3"
@@ -290,11 +276,8 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                         vertical-positioning-mode="locktodefault"
                         vertical-scaling="content"
                     >
-                        <div
-                            class="tracker1"
-                        >
-                        </div>
-                    </fast-anchored-region>
+                        ${pointerElementTemplate}
+                    </anchored-region-pointer>
                 </div>
             <div>
         </template>
@@ -321,12 +304,29 @@ export const arLockIntoViewStyles = css`
     }
     .tracking-region {
         pointer-events: none;
-    }
-    .tracker1 {
         background: blue;
         opacity: 0.5;
-        border: solid green 4px;
+        border: solid green 2px;
+    }
+    .tracking-region.top {
+        border-bottom-width: 8px;
+    }
+    .tracking-region.bottom {
+        border-top-width: 8px;
+    }
+    .tracking-region.left {
+        border-right-width: 8px;
+    }
+    .tracking-region.right {
+        border-left-width: 8px;
+    }
+    .tracker {
         height: 100px;
         width: 100px;
+    }
+    .pointer {
+        font-size: 42px;
+        grid-column: 2;
+        grid-row: 2;
     }
 `;

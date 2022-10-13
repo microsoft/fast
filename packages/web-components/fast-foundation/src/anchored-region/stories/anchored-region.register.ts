@@ -3,6 +3,11 @@ import { FASTAnchoredRegion } from "../anchored-region.js";
 import { anchoredRegionTemplate } from "../anchored-region.template.js";
 import { DraggableAnchor, draggableAnchorTemplate } from "./examples/draggable-anchor.js";
 import {
+    AnchoredRegionPointer,
+    anchoredRegionPointerStyles,
+    anchoredRegionPointerTemplate,
+} from "./examples/anchored-region-pointer.js";
+import {
     ARPositionDemo,
     arPositionDemoStyles,
     arPositionDemoTemplate,
@@ -35,6 +40,12 @@ DraggableAnchor.define({
     name: "draggable-anchor",
     template: draggableAnchorTemplate(),
     styles,
+});
+
+AnchoredRegionPointer.define({
+    name: "anchored-region-pointer",
+    template: anchoredRegionPointerTemplate(),
+    styles: anchoredRegionPointerStyles,
 });
 
 ARPositionDemo.define({
