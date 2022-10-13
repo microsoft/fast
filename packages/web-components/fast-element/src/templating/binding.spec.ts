@@ -5,11 +5,12 @@ import { html, ViewTemplate } from "./template.js";
 import { toHTML } from "../__test__/helpers.js";
 import { SyntheticView, HTMLView } from "./view.js";
 import { Updates } from "../observation/update-queue.js";
-import { Aspect } from "./html-directive.js";
 import { DOM } from "./dom.js";
 import { Signal, signal } from "./binding-signal.js";
 import { twoWay, TwoWayBindingOptions } from "./binding-two-way.js";
 import { Fake } from "../testing/fakes.js";
+import { HTMLDirective } from "./html-directive.js";
+import { dangerousHTML } from "./dangerous-html.js";
 
 describe("The HTML binding directive", () => {
     class Model {
@@ -55,7 +56,7 @@ describe("The HTML binding directive", () => {
         directive.nodeId = 'r';
 
         if (sourceAspect) {
-            Aspect.assign(directive, sourceAspect);
+            HTMLDirective.assignAspect(directive, sourceAspect);
         }
 
         const node = document.createElement("div");
@@ -267,9 +268,9 @@ describe("The HTML binding directive", () => {
             expect(toHTML(parentNode)).to.equal(`This is a template. testing...`);
         });
 
-        it("allows interpolated HTML tags in templates", async () => {
+        it("allows interpolated HTML tags in templates using dangerousHTML", async () => {
             const { behavior, parentNode, targets } = contentBinding();
-            const template = html`${x => html`<${x.knownValue}>Hi there!</${x.knownValue}>`}`;
+            const template = html`${x => html`<${dangerousHTML(x.knownValue)}>Hi there!</${dangerousHTML(x.knownValue)}>`}`;
             const model = new Model(template);
             model.knownValue = "button"
             const controller = Fake.viewController(targets, behavior);

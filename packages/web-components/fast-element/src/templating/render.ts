@@ -350,7 +350,7 @@ function createElementTemplate<TSource = any, TParent = any>(
         markup[lastIndex] = `${markup[lastIndex]}${content ?? ""}</${tagName}>`;
     }
 
-    return html((markup as any) as TemplateStringsArray, ...values);
+    return ViewTemplate.create(markup, values);
 }
 
 function create(options: TagNameRenderOptions): RenderInstruction;
@@ -607,19 +607,23 @@ export function render<TSource = any, TItem = any, TParent = any>(
             return instructionToTemplate(getForInstance(data));
         });
     } else if (isFunction(template)) {
-        templateBinding = bind((s: any, c: ExecutionContext) => {
-            let result = template(s, c);
+        templateBinding = bind(
+            (s: any, c: ExecutionContext) => {
+                let result = template(s, c);
 
-            if (isString(result)) {
-                result = instructionToTemplate(
-                    getForInstance(dataBinding.evaluate(s, c), result)
-                );
-            } else if (result instanceof Node) {
-                result = (result as any).$fastTemplate ?? new NodeTemplate(result);
-            }
+                if (isString(result)) {
+                    result = instructionToTemplate(
+                        getForInstance(dataBinding.evaluate(s, c), result)
+                    );
+                } else if (result instanceof Node) {
+                    result = (result as any).$fastTemplate ?? new NodeTemplate(result);
+                }
 
-            return result;
-        }, true);
+                return result;
+            },
+            void 0,
+            true
+        );
     } else if (isString(template)) {
         templateBindingDependsOnData = true;
         templateBinding = oneTime((s: any, c: ExecutionContext) => {

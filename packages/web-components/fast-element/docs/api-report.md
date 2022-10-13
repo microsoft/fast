@@ -32,22 +32,8 @@ export const ArrayObserver: Readonly<{
 }>;
 
 // @public
-export const Aspect: Readonly<{
-    readonly none: 0;
-    readonly attribute: 1;
-    readonly booleanAttribute: 2;
-    readonly property: 3;
-    readonly content: 4;
-    readonly tokenList: 5;
-    readonly event: 6;
-    readonly assign: (directive: Aspected, value?: string) => void;
-}>;
-
-// @public
-export type Aspect = typeof Aspect[Exclude<keyof typeof Aspect, "assign" | "none">];
-
-// @public
 export interface Aspected {
+    // Warning: (ae-forgotten-export) The symbol "Aspect" needs to be exported by the entry point index.d.ts
     aspectType: Aspect;
     dataBinding?: Binding;
     sourceAspect: string;
@@ -95,18 +81,22 @@ export class AttributeDefinition implements Accessor {
 // @public
 export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
+// Warning: (ae-forgotten-export) The symbol "SecurityPolicy" needs to be exported by the entry point index.d.ts
+//
 // @public
-export function bind<T = any>(expression: Expression<T>, isVolatile?: boolean): Binding<T>;
+export function bind<T = any>(expression: Expression<T>, policy?: SecurityPolicy, isVolatile?: boolean): Binding<T>;
 
 // @public
 export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
-    constructor(evaluate: Expression<TSource, TReturn, TParent>, isVolatile?: boolean);
+    constructor(evaluate: Expression<TSource, TReturn, TParent>, policy?: SecurityPolicy | undefined, isVolatile?: boolean);
     abstract createObserver(directive: HTMLDirective, subscriber: Subscriber): ExpressionObserver<TSource, TReturn, TParent>;
     // (undocumented)
     evaluate: Expression<TSource, TReturn, TParent>;
     // (undocumented)
     isVolatile: boolean;
     options?: any;
+    // (undocumented)
+    policy?: SecurityPolicy | undefined;
 }
 
 // @public
@@ -146,10 +136,9 @@ factories: Record<string, ViewBehaviorFactory>) => HTMLTemplateCompilationResult
 
 // @public
 export const Compiler: {
-    setHTMLPolicy(policy: TrustedTypesPolicy): void;
-    compile<TSource = any, TParent = any>(html: string | HTMLTemplateElement, directives: Record<string, ViewBehaviorFactory>): HTMLTemplateCompilationResult<TSource, TParent>;
+    compile<TSource = any, TParent = any>(html: string | HTMLTemplateElement, directives: Record<string, ViewBehaviorFactory>, policy?: SecurityPolicy): HTMLTemplateCompilationResult<TSource, TParent>;
     setDefaultStrategy(strategy: CompilationStrategy): void;
-    aggregate(parts: (string | ViewBehaviorFactory)[]): ViewBehaviorFactory;
+    aggregate(parts: (string | ViewBehaviorFactory)[], policy?: SecurityPolicy): ViewBehaviorFactory;
 };
 
 // @public
@@ -223,6 +212,16 @@ export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (Compos
 
 // @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
+
+// @public (undocumented)
+export function dangerousHTML<TSource = any, TParent = any>(html: string): CaptureType<TSource, TParent>;
+
+// @public (undocumented)
+export class DangerousHTMLDirective implements HTMLDirective {
+    constructor(html: string);
+    // (undocumented)
+    createHTML(): string;
+}
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
@@ -448,6 +447,7 @@ export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory,
     id: string;
     nodeId: string;
     sourceAspect: string;
+    tagName: string | null;
     targetAspect: string;
     // @internal (undocumented)
     unbind(controller: ViewController): void;
@@ -463,6 +463,7 @@ export const HTMLDirective: Readonly<{
     getForInstance: (object: any) => HTMLDirectiveDefinition<Constructable<HTMLDirective>> | undefined;
     getByType: (key: Function) => HTMLDirectiveDefinition<Constructable<HTMLDirective>> | undefined;
     define<TType extends Constructable<HTMLDirective>>(type: TType, options?: PartialHTMLDirectiveDefinition): TType;
+    assignAspect(directive: Aspected, value?: string): void;
 }>;
 
 // @public
@@ -594,7 +595,7 @@ export interface ObservationRecord {
 }
 
 // @public
-export function oneTime<T = any>(expression: Expression<T>): Binding<T>;
+export function oneTime<T = any>(expression: Expression<T>, policy?: SecurityPolicy): Binding<T>;
 
 // @public
 export const Parser: Readonly<{
@@ -804,16 +805,6 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 // @public
 export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource, TParent>;
 
-// @public
-export type TrustedTypes = {
-    createPolicy(name: string, rules: TrustedTypesPolicy): TrustedTypesPolicy;
-};
-
-// @public
-export type TrustedTypesPolicy = {
-    createHTML(html: string): string;
-};
-
 // Warning: (ae-internal-missing-underscore) The name "TypeDefinition" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -896,8 +887,10 @@ export interface ViewController<TSource = any, TParent = any> extends Expression
 
 // @public
 export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent> {
-    constructor(html: string | HTMLTemplateElement, factories: Record<string, ViewBehaviorFactory>);
+    constructor(html: string | HTMLTemplateElement, factories?: Record<string, ViewBehaviorFactory>, policy?: SecurityPolicy | undefined);
     create(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
+    // (undocumented)
+    static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: SecurityPolicy): ViewTemplate<TSource, TParent>;
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;

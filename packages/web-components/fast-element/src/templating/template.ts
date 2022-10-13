@@ -1,10 +1,9 @@
-import { isFunction, isString } from "../interfaces.js";
+import { isFunction, isString, SecurityPolicy } from "../interfaces.js";
 import type { Expression } from "../observation/observable.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
 import {
     AddViewBehaviorFactory,
-    Aspect,
     Aspected,
     Binding,
     HTMLDirective,
@@ -62,6 +61,45 @@ export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
     createView(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
 }
 
+// Much thanks to LitHTML for working this out!
+const lastAttributeNameRegex =
+    /* eslint-disable-next-line no-control-regex */
+    /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F "'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;
+
+/**
+ * A marker interface used to capture types when interpolating Directive helpers
+ * into templates.
+ * @public
+ */
+/* eslint-disable-next-line */
+export interface CaptureType<TSource, TParent> {}
+
+/**
+ * Represents the types of values that can be interpolated into a template.
+ * @public
+ */
+export type TemplateValue<TSource, TParent = any> =
+    | Expression<TSource, any, TParent>
+    | Binding<TSource, any, TParent>
+    | HTMLDirective
+    | CaptureType<TSource, TParent>;
+
+function createHTML(
+    value: HTMLDirective,
+    prevString: string,
+    add: AddViewBehaviorFactory,
+    definition: HTMLDirectiveDefinition = HTMLDirective.getForInstance(value)!
+): string {
+    if (definition.aspected) {
+        const match = lastAttributeNameRegex.exec(prevString);
+        if (match !== null) {
+            HTMLDirective.assignAspect((value as any) as Aspected, match[2]);
+        }
+    }
+
+    return value.createHTML(add);
+}
+
 /**
  * A template capable of creating HTMLView instances or rendering directly to DOM.
  * @public
@@ -86,10 +124,12 @@ export class ViewTemplate<TSource = any, TParent = any>
      * Creates an instance of ViewTemplate.
      * @param html - The html representing what this template will instantiate, including placeholders for directives.
      * @param factories - The directives that will be connected to placeholders in the html.
+     * @param policy - The security policy to use when compiling this template.
      */
     public constructor(
         html: string | HTMLTemplateElement,
-        factories: Record<string, ViewBehaviorFactory>
+        factories: Record<string, ViewBehaviorFactory> = {},
+        private policy?: SecurityPolicy
     ) {
         this.html = html;
         this.factories = factories;
@@ -101,7 +141,11 @@ export class ViewTemplate<TSource = any, TParent = any>
      */
     public create(hostBindingTarget?: Element): HTMLView<TSource, TParent> {
         if (this.result === null) {
-            this.result = Compiler.compile<TSource, TParent>(this.html, this.factories);
+            this.result = Compiler.compile<TSource, TParent>(
+                this.html,
+                this.factories,
+                this.policy
+            );
         }
 
         return this.result!.createView(hostBindingTarget);
@@ -124,42 +168,50 @@ export class ViewTemplate<TSource = any, TParent = any>
         view.appendTo(host);
         return view;
     }
-}
 
-// Much thanks to LitHTML for working this out!
-const lastAttributeNameRegex =
-    /* eslint-disable-next-line no-control-regex */
-    /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F "'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;
+    public static create<TSource = any, TParent = any>(
+        strings: string[],
+        values: TemplateValue<TSource, TParent>[],
+        policy?: SecurityPolicy
+    ) {
+        let html = "";
+        const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
+        const add = (factory: ViewBehaviorFactory): string => {
+            const id = factory.id ?? (factory.id = nextId());
+            factories[id] = factory;
+            return id;
+        };
 
-/**
- * A marker interface used to capture types when interpolating Directive helpers
- * into templates.
- * @public
- */
-/* eslint-disable-next-line */
-export interface CaptureType<TSource, TParent> {}
+        for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
+            const currentString = strings[i];
+            let currentValue = values[i];
+            let definition: HTMLDirectiveDefinition | undefined;
 
-/**
- * Represents the types of values that can be interpolated into a template.
- * @public
- */
-export type TemplateValue<TSource, TParent = any> =
-    | Expression<TSource, any, TParent>
-    | Binding<TSource, any, TParent>
-    | HTMLDirective
-    | CaptureType<TSource, TParent>;
+            html += currentString;
 
-function createAspectedHTML(
-    value: HTMLDirective & Aspected,
-    prevString: string,
-    add: AddViewBehaviorFactory
-): string {
-    const match = lastAttributeNameRegex.exec(prevString);
-    if (match !== null) {
-        Aspect.assign(value as Aspected, match[2]);
+            if (isFunction(currentValue)) {
+                currentValue = new HTMLBindingDirective(bind(currentValue));
+            } else if (currentValue instanceof Binding) {
+                currentValue = new HTMLBindingDirective(currentValue);
+            } else if (!(definition = HTMLDirective.getForInstance(currentValue))) {
+                const staticValue = currentValue;
+                currentValue = new HTMLBindingDirective(oneTime(() => staticValue));
+            }
+
+            html += createHTML(
+                currentValue as HTMLDirective,
+                currentString,
+                add,
+                definition
+            );
+        }
+
+        return new ViewTemplate<TSource, TParent>(
+            html + strings[strings.length - 1],
+            factories,
+            policy
+        );
     }
-
-    return value.createHTML(add);
 }
 
 /**
@@ -175,63 +227,12 @@ export function html<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
     ...values: TemplateValue<TSource, TParent>[]
 ): ViewTemplate<TSource, TParent> {
-    let html = "";
-    const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
-    const add = (factory: ViewBehaviorFactory): string => {
-        const id = factory.id ?? (factory.id = nextId());
-        factories[id] = factory;
-        return id;
-    };
-
-    for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
-        const currentString = strings[i];
-        const currentValue = values[i];
-        let definition: HTMLDirectiveDefinition | undefined;
-
-        html += currentString;
-
-        if (isFunction(currentValue)) {
-            html += createAspectedHTML(
-                new HTMLBindingDirective(bind(currentValue)),
-                currentString,
-                add
-            );
-        } else if (isString(currentValue)) {
-            const match = lastAttributeNameRegex.exec(currentString);
-            if (match !== null) {
-                const directive = new HTMLBindingDirective(oneTime(() => currentValue));
-                Aspect.assign(directive, match[2]);
-                html += directive.createHTML(add);
-            } else {
-                html += currentValue;
-            }
-        } else if (currentValue instanceof Binding) {
-            html += createAspectedHTML(
-                new HTMLBindingDirective(currentValue),
-                currentString,
-                add
-            );
-        } else if ((definition = HTMLDirective.getForInstance(currentValue)) === void 0) {
-            html += createAspectedHTML(
-                new HTMLBindingDirective(oneTime(() => currentValue)),
-                currentString,
-                add
-            );
-        } else {
-            if (definition.aspected) {
-                html += createAspectedHTML(
-                    currentValue as HTMLDirective & Aspected,
-                    currentString,
-                    add
-                );
-            } else {
-                html += (currentValue as HTMLDirective).createHTML(add);
-            }
-        }
+    if (!Array.isArray(strings) || !Array.isArray(strings.raw)) {
+        // TODO
+        throw new Error(
+            "Calling html`` as a normal function invalidates the security guarantees provided by FAST."
+        );
     }
 
-    return new ViewTemplate<TSource, TParent>(
-        html + strings[strings.length - 1],
-        factories
-    );
+    return ViewTemplate.create((strings as any) as string[], values);
 }

@@ -1,5 +1,5 @@
 import type { HostBehavior } from "../index.js";
-import type { Constructable, Mutable } from "../interfaces.js";
+import { Aspect, Constructable, Mutable, SecurityPolicy } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -181,6 +181,32 @@ export interface HTMLDirective {
 }
 
 /**
+ * Represents something that applies to a specific aspect of the DOM.
+ * @public
+ */
+export interface Aspected {
+    /**
+     * The original source aspect exactly as represented in markup.
+     */
+    sourceAspect: string;
+
+    /**
+     * The evaluated target aspect, determined after processing the source.
+     */
+    targetAspect: string;
+
+    /**
+     * The type of aspect to target.
+     */
+    aspectType: Aspect;
+
+    /**
+     * A binding if one is associated with the aspect.
+     */
+    dataBinding?: Binding;
+}
+
+/**
  * Represents metadata configuration for an HTMLDirective.
  * @public
  */
@@ -238,91 +264,6 @@ export const HTMLDirective = Object.freeze({
         registry.register(options as HTMLDirectiveDefinition);
         return type;
     },
-});
-
-/**
- * Decorator: Defines an HTMLDirective.
- * @param options - Provides options that specify the directive's application.
- * @public
- */
-export function htmlDirective(options?: PartialHTMLDirectiveDefinition) {
-    /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
-    return function (type: Constructable<HTMLDirective>) {
-        HTMLDirective.define(type, options);
-    };
-}
-
-/**
- * Captures a binding expression along with related information and capabilities.
- *
- * @public
- */
-export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
-    /**
-     * Options associated with the binding.
-     */
-    options?: any;
-
-    /**
-     * Creates a binding.
-     * @param evaluate - Evaluates the binding.
-     * @param isVolatile - Indicates whether the binding is volatile.
-     */
-    public constructor(
-        public evaluate: Expression<TSource, TReturn, TParent>,
-        public isVolatile: boolean = false
-    ) {}
-
-    /**
-     * Creates an observer capable of notifying a subscriber when the output of a binding changes.
-     * @param directive - The HTML Directive to create the observer for.
-     * @param subscriber - The subscriber to changes in the binding.
-     */
-    abstract createObserver(
-        directive: HTMLDirective,
-        subscriber: Subscriber
-    ): ExpressionObserver<TSource, TReturn, TParent>;
-}
-
-/**
- * The type of HTML aspect to target.
- * @public
- */
-export const Aspect = Object.freeze({
-    /**
-     * Not aspected.
-     */
-    none: 0 as const,
-
-    /**
-     * An attribute.
-     */
-    attribute: 1 as const,
-
-    /**
-     * A boolean attribute.
-     */
-    booleanAttribute: 2 as const,
-
-    /**
-     * A property.
-     */
-    property: 3 as const,
-
-    /**
-     * Content
-     */
-    content: 4 as const,
-
-    /**
-     * A token list.
-     */
-    tokenList: 5 as const,
-
-    /**
-     * An event.
-     */
-    event: 6 as const,
 
     /**
      *
@@ -331,7 +272,7 @@ export const Aspect = Object.freeze({
      * @remarks
      * If a falsy value is provided, then the content aspect will be assigned.
      */
-    assign(directive: Aspected, value?: string): void {
+    assignAspect(directive: Aspected, value?: string): void {
         if (!value) {
             directive.aspectType = Aspect.content;
             return;
@@ -361,38 +302,52 @@ export const Aspect = Object.freeze({
                 break;
         }
     },
-} as const);
+});
 
 /**
- * The type of HTML aspect to target.
+ * Decorator: Defines an HTMLDirective.
+ * @param options - Provides options that specify the directive's application.
  * @public
  */
-export type Aspect = typeof Aspect[Exclude<keyof typeof Aspect, "assign" | "none">];
+export function htmlDirective(options?: PartialHTMLDirectiveDefinition) {
+    /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
+    return function (type: Constructable<HTMLDirective>) {
+        HTMLDirective.define(type, options);
+    };
+}
 
 /**
- * Represents something that applies to a specific aspect of the DOM.
+ * Captures a binding expression along with related information and capabilities.
+ *
  * @public
  */
-export interface Aspected {
+export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     /**
-     * The original source aspect exactly as represented in markup.
+     * Options associated with the binding.
      */
-    sourceAspect: string;
+    options?: any;
 
     /**
-     * The evaluated target aspect, determined after processing the source.
+     * Creates a binding.
+     * @param evaluate - Evaluates the binding.
+     * @param policy - The security policy to associate with this binding.
+     * @param isVolatile - Indicates whether the binding is volatile.
      */
-    targetAspect: string;
+    public constructor(
+        public evaluate: Expression<TSource, TReturn, TParent>,
+        public policy?: SecurityPolicy,
+        public isVolatile: boolean = false
+    ) {}
 
     /**
-     * The type of aspect to target.
+     * Creates an observer capable of notifying a subscriber when the output of a binding changes.
+     * @param directive - The HTML Directive to create the observer for.
+     * @param subscriber - The subscriber to changes in the binding.
      */
-    aspectType: Aspect;
-
-    /**
-     * A binding if one is associated with the aspect.
-     */
-    dataBinding?: Binding;
+    abstract createObserver(
+        directive: HTMLDirective,
+        subscriber: Subscriber
+    ): ExpressionObserver<TSource, TReturn, TParent>;
 }
 
 /**

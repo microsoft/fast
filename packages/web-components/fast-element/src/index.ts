@@ -7,8 +7,6 @@ export type {
     Mutable,
     StyleStrategy,
     StyleTarget,
-    TrustedTypes,
-    TrustedTypesPolicy,
 } from "./interfaces.js";
 export * from "./platform.js";
 
@@ -38,6 +36,7 @@ export * from "./templating/slotted.js";
 export * from "./templating/children.js";
 export * from "./templating/view.js";
 export * from "./templating/node-observation.js";
+export * from "./templating/dangerous-html.js";
 
 // Components
 export * from "./components/fast-element.js";

@@ -1,5 +1,5 @@
 import type { Subscriber } from "../index.js";
-import { isFunction, Message } from "../interfaces.js";
+import { Aspect, isFunction, Message, SecurityPolicy } from "../interfaces.js";
 import {
     ExecutionContext,
     Expression,
@@ -11,7 +11,6 @@ import { FAST } from "../platform.js";
 import { DOM } from "./dom.js";
 import {
     AddViewBehaviorFactory,
-    Aspect,
     Aspected,
     Binding,
     HTMLDirective,
@@ -20,19 +19,6 @@ import {
     ViewController,
 } from "./html-directive.js";
 import { Markup, nextId } from "./markup.js";
-
-declare class TrustedHTML {}
-const createInnerHTMLBinding = globalThis.TrustedHTML
-    ? (binding: Expression) => (s, c) => {
-          const value = binding(s, c);
-
-          if (value instanceof TrustedHTML) {
-              return value;
-          }
-
-          throw FAST.error(Message.bindingInnerHTMLRequiresTrustedTypes);
-      }
-    : (binding: Expression) => binding;
 
 class OnChangeBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
     TSource,
@@ -242,6 +228,15 @@ function updateTokenList(
 const setProperty = (t, a, v) => (t[a] = v);
 const eventTarget = () => void 0;
 
+const sinkLookup: Record<Aspect, UpdateTarget> = {
+    1: DOM.setAttribute,
+    2: DOM.setBooleanAttribute,
+    3: setProperty,
+    4: updateContent,
+    5: updateTokenList,
+    6: eventTarget,
+};
+
 /**
  * A directive that applies bindings.
  * @public
@@ -277,6 +272,11 @@ export class HTMLBindingDirective
     aspectType: Aspect = Aspect.content;
 
     /**
+     * The tagname associated with the target node.
+     */
+    tagName: string | null = null;
+
+    /**
      * Creates an instance of HTMLBindingDirective.
      * @param dataBinding - The binding configuration to apply.
      */
@@ -297,34 +297,19 @@ export class HTMLBindingDirective
      */
     createBehavior(): ViewBehavior {
         if (this.updateTarget === null) {
-            if (this.targetAspect === "innerHTML") {
-                this.dataBinding.evaluate = createInnerHTMLBinding(
-                    this.dataBinding.evaluate
-                );
+            const sink = sinkLookup[this.aspectType];
+            const policy = this.dataBinding.policy ?? SecurityPolicy.default;
+
+            if (!sink) {
+                throw FAST.error(Message.unsupportedBindingBehavior);
             }
 
-            switch (this.aspectType) {
-                case 1:
-                    this.updateTarget = DOM.setAttribute;
-                    break;
-                case 2:
-                    this.updateTarget = DOM.setBooleanAttribute;
-                    break;
-                case 3:
-                    this.updateTarget = setProperty;
-                    break;
-                case 4:
-                    this.updateTarget = updateContent;
-                    break;
-                case 5:
-                    this.updateTarget = updateTokenList;
-                    break;
-                case 6:
-                    this.updateTarget = eventTarget;
-                    break;
-                default:
-                    throw FAST.error(Message.unsupportedBindingBehavior);
-            }
+            this.updateTarget = policy.protect(
+                this.tagName,
+                this.aspectType,
+                this.targetAspect,
+                sink
+            );
         }
 
         return this;
@@ -334,8 +319,8 @@ export class HTMLBindingDirective
     bind(controller: ViewController): void {
         const target = controller.targets[this.nodeId];
 
-        switch (this.updateTarget) {
-            case eventTarget:
+        switch (this.aspectType) {
+            case 6:
                 target[this.data] = controller;
                 target.addEventListener(
                     this.targetAspect,
@@ -343,7 +328,7 @@ export class HTMLBindingDirective
                     this.dataBinding.options
                 );
                 break;
-            case updateContent:
+            case 4:
                 controller.onUnbind(this);
             // intentional fall through
             default:
@@ -411,25 +396,31 @@ HTMLDirective.define(HTMLBindingDirective, { aspected: true });
 /**
  * Creates an standard binding.
  * @param expression - The binding to refresh when changed.
+ * @param policy - The security policy to associate with th binding.
  * @param isVolatile - Indicates whether the binding is volatile or not.
  * @returns A binding configuration.
  * @public
  */
 export function bind<T = any>(
     expression: Expression<T>,
+    policy?: SecurityPolicy,
     isVolatile = Observable.isVolatileBinding(expression)
 ): Binding<T> {
-    return new OnChangeBinding(expression, isVolatile);
+    return new OnChangeBinding(expression, policy, isVolatile);
 }
 
 /**
  * Creates a one time binding
  * @param expression - The binding to refresh when signaled.
+ * @param policy - The security policy to associate with th binding.
  * @returns A binding configuration.
  * @public
  */
-export function oneTime<T = any>(expression: Expression<T>): Binding<T> {
-    return new OneTimeBinding(expression);
+export function oneTime<T = any>(
+    expression: Expression<T>,
+    policy?: SecurityPolicy
+): Binding<T> {
+    return new OneTimeBinding(expression, policy);
 }
 
 /**
@@ -443,7 +434,7 @@ export function listener<T = any>(
     expression: Expression<T>,
     options?: AddEventListenerOptions
 ): Binding<T> {
-    const config = new OnChangeBinding(expression, false);
+    const config = new OnChangeBinding(expression);
     config.options = options;
     return config;
 }

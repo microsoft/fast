@@ -3,7 +3,7 @@ import type {
     ExpressionController,
     ExpressionObserver,
 } from "../observation/observable.js";
-import { isString } from "../interfaces.js";
+import { isString, SecurityPolicy } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type { HTMLBindingDirective } from "./binding.js";
 import { Binding } from "./html-directive.js";
@@ -103,14 +103,16 @@ class SignalBinding<TSource = any, TReturn = any, TParent = any> extends Binding
  * Creates a signal binding configuration with the supplied options.
  * @param expression - The binding to refresh when signaled.
  * @param options - The signal name or a binding to use to retrieve the signal name.
+ * @param policy - The security policy to associate with th binding.
  * @returns A binding configuration.
  * @public
  */
 export function signal<T = any>(
     expression: Expression<T>,
-    options: string | Expression<T>
+    options: string | Expression<T>,
+    policy?: SecurityPolicy
 ): Binding<T> {
-    const binding = new SignalBinding(expression);
+    const binding = new SignalBinding(expression, policy);
     binding.options = options;
     return binding;
 }

@@ -1,5 +1,3 @@
-import type { TrustedTypesPolicy } from "./interfaces.js";
-
 // GlobalThis goes to platform
 declare const global: any;
 
@@ -25,10 +23,3 @@ declare const global: any;
         result.globalThis = result;
     }
 })();
-
-// API-only Polyfill for trustedTypes
-if (!globalThis.trustedTypes) {
-    globalThis.trustedTypes = {
-        createPolicy: (n: string, r: TrustedTypesPolicy) => r,
-    };
-}

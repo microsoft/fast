@@ -1,17 +1,17 @@
 import { expect } from "chai";
 import { customElement, FASTElement } from "../components/fast-element.js";
 import { Markup } from './markup.js';
-import { ExecutionContext } from "../observation/observable.js";
 import { css } from "../styles/css.js";
 import { toHTML } from "../__test__/helpers.js";
 import { bind, HTMLBindingDirective } from "./binding.js";
 import { Compiler } from "./compiler.js";
-import { Aspect, HTMLDirective, ViewBehaviorFactory } from "./html-directive.js";
+import { HTMLDirective, ViewBehaviorFactory } from "./html-directive.js";
 import { html } from "./template.js";
-import type { StyleTarget } from "../interfaces.js";
+import { Aspect, StyleTarget } from "../interfaces.js";
 import { ElementStyles } from "../index.debug.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { Fake } from "../testing/fakes.js";
+import { dangerousHTML } from "./dangerous-html.js";
 
 /**
  * Used to satisfy TS by exposing some internal properties of the
@@ -212,7 +212,7 @@ describe("The template compiler", () => {
             };
 
             const binding = new HTMLBindingDirective(bind(x => x));
-            Aspect.assign(binding, "a"); // mimic the html function, which will think it's an attribute
+            HTMLDirective.assignAspect(binding, "a"); // mimic the html function, which will think it's an attribute
             const html = `a=${binding.createHTML(add)}`;
 
             const result = Compiler.compile(html, factories) as any as CompilationResultInternals;
@@ -554,6 +554,7 @@ describe("The template compiler", () => {
     if (ElementStyles.supportsAdoptedStyleSheets) {
         it("handles templates with adoptedStyleSheets", () => {
             const name = uniqueElementName();
+            const tag = dangerousHTML(name);
 
             @customElement({
                 name,
@@ -568,7 +569,7 @@ describe("The template compiler", () => {
             })
             class TestElement extends FASTElement {}
 
-            const viewTemplate = html`<${name}></${name}>`;
+            const viewTemplate = html`<${tag}></${tag}>`;
 
             const host = document.createElement("div");
             document.body.appendChild(host);

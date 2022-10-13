@@ -1,9 +1,14 @@
-import { isFunction, isString, Message, TrustedTypesPolicy } from "../interfaces.js";
+import { isFunction, isString, Message, SecurityPolicy } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { Parser } from "./markup.js";
 import { HTMLBindingDirective, oneTime } from "./binding.js";
-import { Aspect, Aspected, Binding, ViewBehaviorFactory } from "./html-directive.js";
+import {
+    Aspected,
+    Binding,
+    HTMLDirective,
+    ViewBehaviorFactory,
+} from "./html-directive.js";
 import type { HTMLTemplateCompilationResult as TemplateCompilationResult } from "./template.js";
 import { HTMLView } from "./view.js";
 
@@ -50,7 +55,8 @@ class CompilationContext<TSource = any, TParent = any>
 
     constructor(
         public readonly fragment: DocumentFragment,
-        public readonly directives: Record<string, ViewBehaviorFactory>
+        public readonly directives: Record<string, ViewBehaviorFactory>,
+        public readonly policy: SecurityPolicy
     ) {}
 
     public addFactory(
@@ -147,12 +153,14 @@ function compileAttributes(
 
         if (parseResult === null) {
             if (includeBasicValues) {
-                result = new HTMLBindingDirective(oneTime(() => attrValue));
-                Aspect.assign((result as any) as Aspected, attr.name);
+                result = new HTMLBindingDirective(
+                    oneTime(() => attrValue, context.policy)
+                );
+                HTMLDirective.assignAspect((result as any) as Aspected, attr.name);
             }
         } else {
             /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-            result = Compiler.aggregate(parseResult);
+            result = Compiler.aggregate(parseResult, context.policy);
         }
 
         if (result !== null) {
@@ -197,7 +205,7 @@ function compileContent(
             currentNode.textContent = currentPart;
         } else {
             currentNode.textContent = " ";
-            Aspect.assign((currentPart as any) as Aspected);
+            HTMLDirective.assignAspect((currentPart as any) as Aspected);
             context.addFactory(currentPart, parentId, nodeId, nodeIndex);
         }
 
@@ -284,11 +292,6 @@ export type CompilationStrategy = (
 ) => TemplateCompilationResult;
 
 const templateTag = "TEMPLATE";
-const policyOptions: TrustedTypesPolicy = { createHTML: html => html };
-let htmlPolicy: TrustedTypesPolicy = globalThis.trustedTypes
-    ? globalThis.trustedTypes.createPolicy("fast-html", policyOptions)
-    : policyOptions;
-const fastHTMLPolicy = htmlPolicy;
 
 /**
  * Common APIs related to compilation.
@@ -296,24 +299,11 @@ const fastHTMLPolicy = htmlPolicy;
  */
 export const Compiler = {
     /**
-     * Sets the HTML trusted types policy used by the compiler.
-     * @param policy - The policy to set for HTML.
-     * @remarks
-     * This API can only be called once, for security reasons. It should be
-     * called by the application developer at the start of their program.
-     */
-    setHTMLPolicy(policy: TrustedTypesPolicy) {
-        if (htmlPolicy !== fastHTMLPolicy) {
-            throw FAST.error(Message.onlySetHTMLPolicyOnce);
-        }
-
-        htmlPolicy = policy;
-    },
-    /**
      * Compiles a template and associated directives into a compilation
      * result which can be used to create views.
      * @param html - The html string or template element to compile.
      * @param directives - The directives referenced by the template.
+     * @param policy - The security policy to compile the html with.
      * @remarks
      * The template that is provided for compilation is altered in-place
      * and cannot be compiled again. If the original template must be preserved,
@@ -322,13 +312,14 @@ export const Compiler = {
      */
     compile<TSource = any, TParent = any>(
         html: string | HTMLTemplateElement,
-        directives: Record<string, ViewBehaviorFactory>
+        directives: Record<string, ViewBehaviorFactory>,
+        policy: SecurityPolicy = SecurityPolicy.default
     ): TemplateCompilationResult<TSource, TParent> {
         let template: HTMLTemplateElement;
 
         if (isString(html)) {
             template = document.createElement(templateTag) as HTMLTemplateElement;
-            template.innerHTML = htmlPolicy.createHTML(html);
+            template.innerHTML = policy.createHTML(html);
 
             const fec = template.content.firstElementChild;
 
@@ -341,7 +332,11 @@ export const Compiler = {
 
         // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
         const fragment = document.adoptNode(template.content);
-        const context = new CompilationContext<TSource, TParent>(fragment, directives);
+        const context = new CompilationContext<TSource, TParent>(
+            fragment,
+            directives,
+            policy
+        );
         compileAttributes(context, "", template, /* host */ "h", 0, true);
 
         if (
@@ -376,9 +371,13 @@ export const Compiler = {
      * Aggregates an array of strings and directives into a single directive.
      * @param parts - A heterogeneous array of static strings interspersed with
      * directives.
+     * @param policy - The security policy to use with the aggregated bindings.
      * @returns A single inline directive that aggregates the behavior of all the parts.
      */
-    aggregate(parts: (string | ViewBehaviorFactory)[]): ViewBehaviorFactory {
+    aggregate(
+        parts: (string | ViewBehaviorFactory)[],
+        policy: SecurityPolicy = SecurityPolicy.default
+    ): ViewBehaviorFactory {
         if (parts.length === 1) {
             return parts[0] as ViewBehaviorFactory;
         }
@@ -386,6 +385,7 @@ export const Compiler = {
         let sourceAspect!: string;
         let binding!: Binding;
         let isVolatile: boolean | undefined = false;
+        let bindingPolicy: SecurityPolicy | undefined = void 0;
         const partCount = parts.length;
 
         const finalParts = parts.map((x: string | ViewBehaviorFactory) => {
@@ -396,6 +396,7 @@ export const Compiler = {
             sourceAspect = ((x as any) as Aspected).sourceAspect || sourceAspect;
             binding = ((x as any) as Aspected).dataBinding || binding;
             isVolatile = isVolatile || ((x as any) as Aspected).dataBinding!.isVolatile;
+            bindingPolicy = bindingPolicy || ((x as any) as Aspected).dataBinding!.policy;
             return ((x as any) as Aspected).dataBinding!.evaluate;
         });
 
@@ -411,8 +412,9 @@ export const Compiler = {
 
         binding.evaluate = expression;
         binding.isVolatile = isVolatile;
+        binding.policy = bindingPolicy ?? policy;
         const directive = new HTMLBindingDirective(binding);
-        Aspect.assign(directive, sourceAspect!);
+        HTMLDirective.assignAspect(directive, sourceAspect!);
         return directive;
     },
 };

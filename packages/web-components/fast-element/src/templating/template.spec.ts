@@ -2,9 +2,10 @@ import { expect } from "chai";
 import { html, ViewTemplate } from "./template.js";
 import { Markup, Parser } from "./markup.js";
 import { bind, HTMLBindingDirective } from "./binding.js";
-import { Aspect, HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory } from "./html-directive.js";
-import { Constructable, isString } from "../interfaces.js";
+import { HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory } from "./html-directive.js";
+import { Aspect, Constructable, isString } from "../interfaces.js";
 import { Fake } from "../testing/fakes.js";
+import { dangerousHTML } from "./dangerous-html.js";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {
@@ -61,19 +62,19 @@ describe(`The html tag template helper`, () => {
             type: "string",
             location: "at the beginning",
             template: html`${stringValue} end`,
-            result: `${stringValue} end`,
+            result: `${FAKE.interpolation} end`,
         },
         {
             type: "string",
             location: "in the middle",
             template: html`beginning ${stringValue} end`,
-            result: `beginning ${stringValue} end`,
+            result: `beginning ${FAKE.interpolation} end`,
         },
         {
             type: "string",
             location: "at the end",
             template: html`beginning ${stringValue}`,
-            result: `beginning ${stringValue}`,
+            result: `beginning ${FAKE.interpolation}`,
         },
         // number interpolation
         {
@@ -165,21 +166,21 @@ describe(`The html tag template helper`, () => {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "at the beginning",
             template: html<Model>`${stringValue}${numberValue}${x => x.value}${new TestDirective()} end`,
-            result: `${stringValue}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
+            result: `${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "in the middle",
             template: html<Model>`beginning ${stringValue}${numberValue}${x => x.value}${new TestDirective()} end`,
-            result: `beginning ${stringValue}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
+            result: `beginning ${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "at the end",
             template: html<Model>`beginning ${stringValue}${numberValue}${x => x.value}${new TestDirective()}`,
-            result: `beginning ${stringValue}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment}`,
+            result: `beginning ${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment}`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
@@ -187,7 +188,7 @@ describe(`The html tag template helper`, () => {
             location: "at the beginning",
             template: html<Model>`${stringValue}separator${numberValue}separator${x =>
                     x.value}separator${new TestDirective()} end`,
-            result: `${stringValue}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
+            result: `${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
@@ -195,7 +196,7 @@ describe(`The html tag template helper`, () => {
             location: "in the middle",
             template: html<Model>`beginning ${stringValue}separator${numberValue}separator${x =>
                     x.value}separator${new TestDirective()} end`,
-            result: `beginning ${stringValue}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
+            result: `beginning ${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
@@ -203,7 +204,7 @@ describe(`The html tag template helper`, () => {
             location: "at the end",
             template: html<Model>`beginning ${stringValue}separator${numberValue}separator${x =>
                     x.value}separator${new TestDirective()}`,
-            result: `beginning ${stringValue}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment}`,
+            result: `beginning ${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment}`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
     ];
@@ -531,8 +532,8 @@ describe(`The html tag template helper`, () => {
         expect(target.querySelector('#embedded')).to.be.equal(null)
     });
 
-    it("Should properly interpolate HTML tags with opening / closing tags", () => {
-      const element = "button"
+    it("Should properly interpolate HTML tags with opening / closing tags using dangerousHTML", () => {
+      const element = dangerousHTML("button");
       const template = html`<${element}></${element}>`
       expect(template.html).to.equal('<button></button>')
     })

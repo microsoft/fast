@@ -1,3 +1,5 @@
+import { FAST } from "./platform.js";
+
 /**
  * Represents a callable type such as a function or an object with a "call" method.
  * @public
@@ -46,31 +48,6 @@ export interface Disposable {
  */
 export type Mutable<T> = {
     -readonly [P in keyof T]: T[P];
-};
-
-/**
- * A policy for use with the standard trustedTypes platform API.
- * @public
- */
-export type TrustedTypesPolicy = {
-    /**
-     * Creates trusted HTML.
-     * @param html - The HTML to clear as trustworthy.
-     */
-    createHTML(html: string): string;
-};
-
-/**
- * Enables working with trusted types.
- * @public
- */
-export type TrustedTypes = {
-    /**
-     * Creates a trusted types policy.
-     * @param name - The policy name.
-     * @param rules - The policy rules implementation.
-     */
-    createPolicy(name: string, rules: TrustedTypesPolicy): TrustedTypesPolicy;
 };
 
 /**
@@ -222,3 +199,106 @@ export const isString = (object: any): object is string => typeof object === "st
  * @internal
  */
 export const noop = () => void 0;
+
+/**
+ * The type of HTML aspect to target.
+ * @public
+ */
+export const Aspect = Object.freeze({
+    /**
+     * Not aspected.
+     */
+    none: 0 as const,
+
+    /**
+     * An attribute.
+     */
+    attribute: 1 as const,
+
+    /**
+     * A boolean attribute.
+     */
+    booleanAttribute: 2 as const,
+
+    /**
+     * A property.
+     */
+    property: 3 as const,
+
+    /**
+     * Content
+     */
+    content: 4 as const,
+
+    /**
+     * A token list.
+     */
+    tokenList: 5 as const,
+
+    /**
+     * An event.
+     */
+    event: 6 as const,
+} as const);
+
+/**
+ * The type of HTML aspect to target.
+ * @public
+ */
+export type Aspect = typeof Aspect[Exclude<keyof typeof Aspect, "none">];
+
+export type DOMSink = (
+    target: Node,
+    aspectName: string,
+    value: any,
+    ...args: any[]
+) => void;
+
+export interface SecurityPolicy {
+    createHTML(value: string): string;
+    protect<T extends DOMSink = DOMSink>(
+        tagName: string | null,
+        aspect: Aspect,
+        aspectName: string,
+        sink: T
+    ): T;
+}
+
+let defaultPolicy: SecurityPolicy = {
+    createHTML(value: string): string {
+        return value;
+    },
+
+    protect<T extends DOMSink = DOMSink>(
+        tagName: string | null,
+        aspect: Aspect,
+        aspectName: string,
+        sink: T
+    ): T {
+        return sink;
+    },
+};
+
+const fastPolicy = defaultPolicy;
+
+export const SecurityPolicy = {
+    get default() {
+        return defaultPolicy;
+    },
+
+    /**
+     * Sets the security policy used by the templating system.
+     * @param policy - The policy to set.
+     * @remarks
+     * This API can only be called once, for security reasons. It should be
+     * called by the application developer at the start of their program.
+     */
+    set default(value: SecurityPolicy) {
+        if (defaultPolicy !== fastPolicy) {
+            // TODO: fix error message
+            throw FAST.error(Message.onlySetHTMLPolicyOnce);
+        }
+
+        defaultPolicy = value;
+    },
+};
