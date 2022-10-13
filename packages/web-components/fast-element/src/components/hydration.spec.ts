@@ -16,9 +16,7 @@ describe("The HydratableElementController", () => {
         addHydrationSupport();
     })
     afterEach(() => {
-        ElementController.setStrategy({create(element, definition) {
-            return new ElementController(element, definition);
-        }});
+        ElementController.setStrategy(ElementController);
     })
     function createController(
         config: Omit<PartialFASTElementDefinition, "name"> = {},

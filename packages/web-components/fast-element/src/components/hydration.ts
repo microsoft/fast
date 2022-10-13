@@ -36,12 +36,6 @@ export class HydratableElementController<
     }
 }
 
-const hydratableElementControllerStrategy: ElementControllerStrategy = {
-    create(element, definition) {
-        return new HydratableElementController(element, definition);
-    },
-};
-
 /**
  * Configures FAST to support component hydration deferal.
  *
@@ -51,5 +45,5 @@ const hydratableElementControllerStrategy: ElementControllerStrategy = {
  * currently in beta. This feature is subject to change.
  */
 export function addHydrationSupport() {
-    ElementController.setStrategy(hydratableElementControllerStrategy);
+    ElementController.setStrategy(HydratableElementController);
 }

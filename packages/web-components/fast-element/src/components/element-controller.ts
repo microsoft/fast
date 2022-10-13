@@ -23,15 +23,15 @@ function getShadowRoot(element: Element): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
 }
 
-export interface ElementControllerStrategy {
-    create(element: HTMLElement, definition: FASTElementDefinition): ElementController;
-}
+let elementControllerStrategy: ElementControllerStrategy;
 
-let elementControllerStrategy: ElementControllerStrategy = {
-    create(element, definition) {
-        return new ElementController(element, definition);
-    },
-};
+/**
+ * A type that instantiates an ElementController
+ * @public
+ */
+export interface ElementControllerStrategy {
+    new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
+}
 
 /**
  * Controls the lifecycle and rendering of a `FASTElement`.
@@ -452,8 +452,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (definition === void 0) {
             throw FAST.error(Message.missingElementDefinition);
         }
+        if (elementControllerStrategy === undefined) {
+            elementControllerStrategy = ElementController;
+        }
 
-        return ((element as any).$fastController = elementControllerStrategy.create(
+        return ((element as any).$fastController = new elementControllerStrategy(
             element,
             definition
         ));
