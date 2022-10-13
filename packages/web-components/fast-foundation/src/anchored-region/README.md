@@ -196,6 +196,90 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 
 
+### class: `ARLockIntoView`
+
+#### Superclass
+
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
+
+#### Fields
+
+| Name               | Privacy | Type              | Default | Description | Inherited From |
+| ------------------ | ------- | ----------------- | ------- | ----------- | -------------- |
+| `anchorElement`    | public  | `DraggableAnchor` |         |             |                |
+| `handleAnchorMove` | public  |                   |         |             |                |
+
+<hr/>
+
+### Variables
+
+| Name                   | Description | Type |
+| ---------------------- | ----------- | ---- |
+| `arLockIntoViewStyles` |             |      |
+
+<hr/>
+
+### Functions
+
+| Name                     | Description  | Parameters | Return                          |
+| ------------------------ | ------------ | ---------- | ------------------------------- |
+| `arLockIntoViewTemplate` | The template |            | `ElementViewTemplate<
+    T >` |
+
+<hr/>
+
+
+
+### class: `ARMenuPatterns`
+
+#### Superclass
+
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
+
+#### Fields
+
+| Name                       | Privacy | Type          | Default | Description | Inherited From |
+| -------------------------- | ------- | ------------- | ------- | ----------- | -------------- |
+| `basicDropdownOpen`        |         | `boolean`     | `false` |             |                |
+| `sideDropdownOpen`         |         | `boolean`     | `false` |             |                |
+| `basicDropdownDynamicOpen` |         | `boolean`     | `false` |             |                |
+| `sideDropdownDynamicOpen`  |         | `boolean`     | `false` |             |                |
+| `basicDropdownFillOpen`    |         | `boolean`     | `false` |             |                |
+| `sideDropdownFillOpen`     |         | `boolean`     | `false` |             |                |
+| `fixedDropDownOpen`        |         | `boolean`     | `false` |             |                |
+| `absoluteDropDownOpen`     |         | `boolean`     | `false` |             |                |
+| `contextMenuOpen`          |         | `boolean`     | `false` |             |                |
+| `pointAnchorX`             |         | `number`      | `0`     |             |                |
+| `pointAnchorY`             |         | `number`      | `0`     |             |                |
+| `contextElement`           | public  | `HTMLElement` |         |             |                |
+| `handleContext`            | public  |               |         |             |                |
+| `handleContextClose`       | public  |               |         |             |                |
+
+<hr/>
+
+### Variables
+
+| Name                   | Description | Type |
+| ---------------------- | ----------- | ---- |
+| `arMenuPatternsStyles` |             |      |
+
+<hr/>
+
+### Functions
+
+| Name                     | Description  | Parameters | Return                          |
+| ------------------------ | ------------ | ---------- | ------------------------------- |
+| `arMenuPatternsTemplate` | The template |            | `ElementViewTemplate<
+    T >` |
+
+<hr/>
+
+
+
 ### class: `ARPositionDemo`
 
 #### Superclass

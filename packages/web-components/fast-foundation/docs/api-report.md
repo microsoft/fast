@@ -704,6 +704,8 @@ export class FASTAnchoredRegion extends FASTElement {
     anchorElement: HTMLElement | null;
     // (undocumented)
     protected anchorElementChanged(): void;
+    // @internal (undocumented)
+    anchorRect: DOMRect | undefined;
     autoUpdateMode: AutoUpdateMode;
     // (undocumented)
     protected autoUpdateModeChanged(prevMode: AutoUpdateMode, newMode: AutoUpdateMode): void;
@@ -741,6 +743,8 @@ export class FASTAnchoredRegion extends FASTElement {
     pointAnchorY: number;
     // (undocumented)
     protected pointAnchorYChanged(): void;
+    // @internal (undocumented)
+    regionRect: DOMRect | undefined;
     protected translateX: number;
     // (undocumented)
     protected translateY: number;
@@ -773,6 +777,8 @@ export class FASTAnchoredRegion extends FASTElement {
     viewportElement: HTMLElement | null;
     // (undocumented)
     protected viewportElementChanged(): void;
+    // @internal (undocumented)
+    viewportRect: DOMRect | undefined;
 }
 
 // @public

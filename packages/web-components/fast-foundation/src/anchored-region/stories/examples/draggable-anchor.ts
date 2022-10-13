@@ -1,11 +1,5 @@
-import {
-    ElementViewTemplate,
-    html,
-    observable,
-    Updates,
-    when,
-} from "@microsoft/fast-element";
-import { eventMouseMove } from "@microsoft/fast-web-utilities";
+import { ElementViewTemplate, html, observable, when } from "@microsoft/fast-element";
+import { eventMouseMove, eventMouseUp } from "@microsoft/fast-web-utilities";
 import { FASTAnchoredRegion } from "../../anchored-region.js";
 
 /**
@@ -37,6 +31,7 @@ export class DraggableAnchor extends FASTAnchoredRegion {
     private handleMouseDown = (e: MouseEvent): void => {
         this.isDragging = true;
         window.addEventListener(eventMouseMove, this.handleMouseMove);
+        document.addEventListener(eventMouseUp, this.handleMouseUp);
         this.updatePosition(e);
     };
 
@@ -46,6 +41,7 @@ export class DraggableAnchor extends FASTAnchoredRegion {
     public handleMouseUp = (e: MouseEvent): void => {
         this.isDragging = false;
         window.removeEventListener(eventMouseMove, this.handleMouseMove);
+        document.removeEventListener(eventMouseUp, this.handleMouseUp);
         this.updatePosition(e);
     };
 
@@ -74,12 +70,12 @@ export function draggableAnchorTemplate<T extends DraggableAnchor>(): ElementVie
             ${when(
                 x => x.initialLayoutComplete,
                 html<T>`
-                    <button
+                    <fast-button
                         @mousedown="${(x, c) => x.handleMouseDown(c.event as MouseEvent)}"
                         @mouseup="${(x, c) => x.handleMouseUp(c.event as MouseEvent)}"
                     >
                         <slot></slot>
-                    </button>
+                    </fast-button>
                 `
             )}
         </template>
