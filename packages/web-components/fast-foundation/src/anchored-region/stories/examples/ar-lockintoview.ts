@@ -46,6 +46,21 @@ const pointerElementTemplate = html`
     </div>
 `;
 
+const trackerRegionTemplate = html`
+    <div class="tracker-region-container">
+        <anchored-region-pointer
+            class="tracking-region many"
+            anchor="anchor"
+            auto-update-mode="auto"
+            horizontal-positioning-mode="uncontrolled"
+            horizontal-scaling="content"
+            vertical-positioning-mode="uncontrolled"
+            vertical-scaling="content"
+        >
+            ${pointerElementTemplate}
+        </anchored-region-pointer>
+    </div>
+`;
 /**
  * The template
  * @public
@@ -54,33 +69,33 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
     T
 > {
     return html<T>`
-        <template style="height:100%; width:100%;">
+        <template>
             <h1>
                 Lock into view
             </h1>
-            ${sectionDividerTemplate}
-                The "lock into view" attributes keep the region in the viewport on the
-                specified axis.  There is significant flexibility as to what other element
-                is the viewport.<p>
-                Anchored regions can be styled based on their placement by using the
-                css classes put on the element based on position (ie. top/bottom/left/right).
-                This is how the borders on the blue squares below are thicker on the anchored sides.
-            ${sectionDividerTemplate}
-            <draggable-anchor
-                fixed-placement="true"
-                class="anchor"
-                id="anchor"
-                point-anchor-x="300"
-                point-anchor-Y="300"
-                ${ref("anchorElement")}
-            >
-                Anchor
-                <br />
-                Click to Drag
-            </draggable-anchor>
-            <div
-                class="grid"
-            >
+            ${sectionDividerTemplate} The "lock into view" attributes keep the region in
+            the viewport on the specified axis. There is significant flexibility as to
+            what other element is the viewport.
+            <p>
+                Anchored regions can be styled based on their placement by using the css
+                classes put on the element based on position (ie. top/bottom/left/right).
+                This is how the borders on the blue squares below are thicker on the
+                anchored sides. ${sectionDividerTemplate}
+                <draggable-anchor
+                    fixed-placement="true"
+                    class="anchor"
+                    id="anchor"
+                    point-anchor-x="300"
+                    point-anchor-Y="300"
+                    ${ref("anchorElement")}
+                >
+                    Anchor
+                    <br />
+                    Click to Drag
+                </draggable-anchor>
+            </p>
+
+            <div class="grid">
                 <div
                     style="grid-column: 1; grid-row: 1;"
                     class="grid-cell"
@@ -279,7 +294,61 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                         ${pointerElementTemplate}
                     </anchored-region-pointer>
                 </div>
-            <div>
+            </div>
+
+            <div class="many-trackers">
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate}
+            </div>
         </template>
     `;
 }
@@ -292,8 +361,9 @@ export const arLockIntoViewStyles = css`
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
-        width: 100%;
+        width: 600px;
         height: 600px;
+        gap: 10px;
     }
     .grid-cell {
         background: grey;
@@ -328,5 +398,13 @@ export const arLockIntoViewStyles = css`
         font-size: 42px;
         grid-column: 2;
         grid-row: 2;
+    }
+    .many-trackers {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .tracker-region-container {
+        height: 100px;
+        width: 100px;
     }
 `;
