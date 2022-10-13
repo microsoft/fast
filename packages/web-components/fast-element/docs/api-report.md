@@ -268,10 +268,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     readonly view: ElementView<TElement> | null;
 }
 
-// @public (undocumented)
+// @public
 export interface ElementControllerStrategy {
     // (undocumented)
-    create(element: HTMLElement, definition: FASTElementDefinition): ElementController;
+    new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
 }
 
 // @public
