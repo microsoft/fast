@@ -1,12 +1,13 @@
 import { Message, Mutable, StyleStrategy, StyleTarget } from "../interfaces.js";
-import type { HostBehavior, HostController } from "../styles/host.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { Observable, SourceLifetime } from "../observation/observable.js";
 import { FAST } from "../platform.js";
+import { ElementStyles } from "../styles/element-styles.js";
+import type { HostBehavior, HostController } from "../styles/host.js";
+import type { ViewController } from "../templating/html-directive.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
-import { ElementStyles } from "../styles/element-styles.js";
-import type { ViewController } from "../templating/html-directive.js";
+import { UnobservableMutationObserver } from "../utilities.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
 
 const defaultEventOptions: CustomEventInit = {
@@ -23,6 +24,15 @@ function getShadowRoot(element: Element): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
 }
 
+export interface ElementControllerStrategy {
+    create(element: HTMLElement, definition: FASTElementDefinition): ElementController;
+}
+
+let elementControllerStrategy: ElementControllerStrategy = {
+    create(element, definition) {
+        return new ElementController(element, definition);
+    },
+};
 /**
  * Controls the lifecycle and rendering of a `FASTElement`.
  * @public
@@ -443,11 +453,48 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             throw FAST.error(Message.missingElementDefinition);
         }
 
-        return ((element as any).$fastController = new ElementController(
+        return ((element as any).$fastController = elementControllerStrategy.create(
             element,
             definition
         ));
     }
+}
+
+export class HydratableElementController<
+    TElement extends HTMLElement = HTMLElement
+> extends ElementController<TElement> {
+    private static hydrationObserver = new UnobservableMutationObserver(
+        HydratableElementController.hydrationObserverHandler
+    );
+    private static hydrationObserverHandler(events: MutationRecord[]) {
+        for (const event of events) {
+            this.hydrationObserver.unobserve(event.target);
+            (event.target as any).$fastController.connect();
+        }
+    }
+
+    public connect() {
+        if (this.source.hasAttribute("defer-hydration")) {
+            HydratableElementController.hydrationObserver.observe(this.source, {
+                attributeFilter: ["defer-hydration"],
+            });
+        } else {
+            super.connect();
+        }
+    }
+
+    public disconnect() {
+        super.disconnect();
+        HydratableElementController.hydrationObserver.unobserve(this.source);
+    }
+}
+
+export function addHydrationSupport() {
+    elementControllerStrategy = {
+        create(element, definition) {
+            return new HydratableElementController(element, definition);
+        },
+    };
 }
 
 /**
