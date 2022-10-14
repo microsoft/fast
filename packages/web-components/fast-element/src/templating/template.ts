@@ -1,4 +1,5 @@
-import { isFunction, isString, SecurityPolicy } from "../interfaces.js";
+import type { DOMPolicy } from "../dom.js";
+import { isFunction } from "../interfaces.js";
 import type { Expression } from "../observation/observable.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
@@ -129,7 +130,7 @@ export class ViewTemplate<TSource = any, TParent = any>
     public constructor(
         html: string | HTMLTemplateElement,
         factories: Record<string, ViewBehaviorFactory> = {},
-        private policy?: SecurityPolicy
+        private policy?: DOMPolicy
     ) {
         this.html = html;
         this.factories = factories;
@@ -172,7 +173,7 @@ export class ViewTemplate<TSource = any, TParent = any>
     public static create<TSource = any, TParent = any>(
         strings: string[],
         values: TemplateValue<TSource, TParent>[],
-        policy?: SecurityPolicy
+        policy?: DOMPolicy
     ) {
         let html = "";
         const factories: Record<string, ViewBehaviorFactory> = Object.create(null);

@@ -5,7 +5,7 @@ import { html, ViewTemplate } from "./template.js";
 import { toHTML } from "../__test__/helpers.js";
 import { SyntheticView, HTMLView } from "./view.js";
 import { Updates } from "../observation/update-queue.js";
-import { DOM } from "./dom.js";
+import { DOM } from "../dom.js";
 import { Signal, signal } from "./binding-signal.js";
 import { twoWay, TwoWayBindingOptions } from "./binding-two-way.js";
 import { Fake } from "../testing/fakes.js";

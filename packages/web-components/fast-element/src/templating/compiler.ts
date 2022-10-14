@@ -1,6 +1,7 @@
-import { isFunction, isString, Message, SecurityPolicy } from "../interfaces.js";
+import { isFunction, isString, Message } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
+import { DOM, DOMPolicy } from "../dom.js";
 import { Parser } from "./markup.js";
 import { HTMLBindingDirective, oneTime } from "./binding.js";
 import {
@@ -56,7 +57,7 @@ class CompilationContext<TSource = any, TParent = any>
     constructor(
         public readonly fragment: DocumentFragment,
         public readonly directives: Record<string, ViewBehaviorFactory>,
-        public readonly policy: SecurityPolicy
+        public readonly policy: DOMPolicy
     ) {}
 
     public addFactory(
@@ -313,7 +314,7 @@ export const Compiler = {
     compile<TSource = any, TParent = any>(
         html: string | HTMLTemplateElement,
         directives: Record<string, ViewBehaviorFactory>,
-        policy: SecurityPolicy = SecurityPolicy.default
+        policy: DOMPolicy = DOM.policy
     ): TemplateCompilationResult<TSource, TParent> {
         let template: HTMLTemplateElement;
 
@@ -376,7 +377,7 @@ export const Compiler = {
      */
     aggregate(
         parts: (string | ViewBehaviorFactory)[],
-        policy: SecurityPolicy = SecurityPolicy.default
+        policy: DOMPolicy = DOM.policy
     ): ViewBehaviorFactory {
         if (parts.length === 1) {
             return parts[0] as ViewBehaviorFactory;
@@ -385,7 +386,7 @@ export const Compiler = {
         let sourceAspect!: string;
         let binding!: Binding;
         let isVolatile: boolean | undefined = false;
-        let bindingPolicy: SecurityPolicy | undefined = void 0;
+        let bindingPolicy: DOMPolicy | undefined = void 0;
         const partCount = parts.length;
 
         const finalParts = parts.map((x: string | ViewBehaviorFactory) => {

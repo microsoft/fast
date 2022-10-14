@@ -3,8 +3,9 @@ import type {
     ExpressionController,
     ExpressionObserver,
 } from "../observation/observable.js";
-import { isString, SecurityPolicy } from "../interfaces.js";
+import { isString } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
+import type { DOMPolicy } from "../dom.js";
 import type { HTMLBindingDirective } from "./binding.js";
 import { Binding } from "./html-directive.js";
 
@@ -110,7 +111,7 @@ class SignalBinding<TSource = any, TReturn = any, TParent = any> extends Binding
 export function signal<T = any>(
     expression: Expression<T>,
     options: string | Expression<T>,
-    policy?: SecurityPolicy
+    policy?: DOMPolicy
 ): Binding<T> {
     const binding = new SignalBinding(expression, policy);
     binding.options = options;

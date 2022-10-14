@@ -9,6 +9,7 @@ export type {
     StyleTarget,
 } from "./interfaces.js";
 export * from "./platform.js";
+export * from "./dom.js";
 
 // Observation
 export * from "./observation/observable.js";
@@ -23,7 +24,6 @@ export * from "./styles/css-directive.js";
 export * from "./styles/host.js";
 
 // Templating
-export * from "./templating/dom.js";
 export * from "./templating/template.js";
 export * from "./templating/compiler.js";
 export { Markup, Parser } from "./templating/markup.js";

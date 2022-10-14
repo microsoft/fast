@@ -3,9 +3,10 @@ import { html, ViewTemplate } from "./template.js";
 import { Markup, Parser } from "./markup.js";
 import { bind, HTMLBindingDirective } from "./binding.js";
 import { HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory } from "./html-directive.js";
-import { Aspect, Constructable, isString } from "../interfaces.js";
+import { Constructable, isString } from "../interfaces.js";
 import { Fake } from "../testing/fakes.js";
 import { dangerousHTML } from "./dangerous-html.js";
+import { DOMAspect } from "../dom.js";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {
@@ -224,7 +225,7 @@ describe(`The html tag template helper`, () => {
                             found = true;
 
                             if (behaviorFactory instanceof HTMLBindingDirective) {
-                                expect(behaviorFactory.aspectType).to.equal(Aspect.content);
+                                expect(behaviorFactory.aspectType).to.equal(DOMAspect.content);
                             }
                         }
 
@@ -279,7 +280,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "some-attribute",
             "some-attribute",
-            Aspect.attribute
+            DOMAspect.attribute
         );
     });
 
@@ -296,7 +297,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "some-attribute",
             "some-attribute",
-            Aspect.attribute
+            DOMAspect.attribute
         );
     });
 
@@ -313,7 +314,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "some-attribute",
             "some-attribute",
-            Aspect.attribute
+            DOMAspect.attribute
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
@@ -333,7 +334,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "some-attribute",
             "some-attribute",
-            Aspect.attribute
+            DOMAspect.attribute
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
@@ -353,7 +354,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "?some-attribute",
             "some-attribute",
-            Aspect.booleanAttribute
+            DOMAspect.booleanAttribute
         );
     });
 
@@ -370,7 +371,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "?some-attribute",
             "some-attribute",
-            Aspect.booleanAttribute
+            DOMAspect.booleanAttribute
         );
     });
 
@@ -387,7 +388,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "?some-attribute",
             "some-attribute",
-            Aspect.booleanAttribute
+            DOMAspect.booleanAttribute
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
@@ -407,7 +408,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             ":someAttribute",
             "someAttribute",
-            Aspect.property
+            DOMAspect.property
         );
     });
 
@@ -424,7 +425,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             ":someAttribute",
             "someAttribute",
-            Aspect.property
+            DOMAspect.property
         );
     });
 
@@ -441,7 +442,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             ":someAttribute",
             "someAttribute",
-            Aspect.property
+            DOMAspect.property
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
@@ -461,7 +462,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             ":someAttribute",
             "someAttribute",
-            Aspect.property
+            DOMAspect.property
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
@@ -473,7 +474,7 @@ describe(`The html tag template helper`, () => {
         class TestDirective implements HTMLDirective, Aspected {
             sourceAspect: string;
             targetAspect: string;
-            aspectType = Aspect.property;
+            aspectType = DOMAspect.property;
             id: string;
             nodeId: string;
 
@@ -498,7 +499,7 @@ describe(`The html tag template helper`, () => {
             TestDirective,
             ":someAttribute",
             "someAttribute",
-            Aspect.property
+            DOMAspect.property
         );
     });
 
@@ -515,7 +516,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "@someEvent",
             "someEvent",
-            Aspect.event
+            DOMAspect.event
         );
     });
 

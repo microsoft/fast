@@ -1,7 +1,7 @@
 import type { FASTGlobal } from "./interfaces.js";
 import "./polyfills.js";
 
-// ensure FAST global - duplicated in polyfills.ts and debug.ts
+// ensure FAST global - duplicated debug.ts
 const propConfig = {
     configurable: false,
     enumerable: false,

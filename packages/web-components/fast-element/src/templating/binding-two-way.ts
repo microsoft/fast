@@ -1,4 +1,5 @@
-import { isString, Message, SecurityPolicy } from "../interfaces.js";
+import type { DOMPolicy } from "../dom.js";
+import { isString, Message } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -160,7 +161,7 @@ class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding
 export function twoWay<T = any>(
     expression: Expression<T>,
     optionsOrChangeEvent?: TwoWayBindingOptions | string,
-    policy?: SecurityPolicy,
+    policy?: DOMPolicy,
     isBindingVolatile = Observable.isVolatileBinding(expression)
 ): Binding<T> {
     if (isString(optionsOrChangeEvent)) {

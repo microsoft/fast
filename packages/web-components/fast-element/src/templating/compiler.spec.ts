@@ -7,11 +7,12 @@ import { bind, HTMLBindingDirective } from "./binding.js";
 import { Compiler } from "./compiler.js";
 import { HTMLDirective, ViewBehaviorFactory } from "./html-directive.js";
 import { html } from "./template.js";
-import { Aspect, StyleTarget } from "../interfaces.js";
+import type { StyleTarget } from "../interfaces.js";
 import { ElementStyles } from "../index.debug.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { Fake } from "../testing/fakes.js";
 import { dangerousHTML } from "./dangerous-html.js";
+import { DOMAspect } from "../dom.js";
 
 /**
  * Used to satisfy TS by exposing some internal properties of the
@@ -218,7 +219,7 @@ describe("The template compiler", () => {
             const result = Compiler.compile(html, factories) as any as CompilationResultInternals;
             const bindingFactory = result.factories[0] as HTMLBindingDirective;
 
-            expect(bindingFactory.aspectType).equal(Aspect.content);
+            expect(bindingFactory.aspectType).equal(DOMAspect.content);
         });
     });
 

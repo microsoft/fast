@@ -1,5 +1,5 @@
 import type { Subscriber } from "../index.js";
-import { Aspect, isFunction, Message, SecurityPolicy } from "../interfaces.js";
+import { isFunction, Message } from "../interfaces.js";
 import {
     ExecutionContext,
     Expression,
@@ -8,7 +8,7 @@ import {
     Observable,
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
-import { DOM } from "./dom.js";
+import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
 import {
     AddViewBehaviorFactory,
     Aspected,
@@ -228,7 +228,7 @@ function updateTokenList(
 const setProperty = (t, a, v) => (t[a] = v);
 const eventTarget = () => void 0;
 
-const sinkLookup: Record<Aspect, UpdateTarget> = {
+const sinkLookup: Record<DOMAspect, UpdateTarget> = {
     1: DOM.setAttribute,
     2: DOM.setBooleanAttribute,
     3: setProperty,
@@ -269,7 +269,7 @@ export class HTMLBindingDirective
     /**
      * The type of aspect to target.
      */
-    aspectType: Aspect = Aspect.content;
+    aspectType: DOMAspect = DOMAspect.content;
 
     /**
      * The tagname associated with the target node.
@@ -298,7 +298,7 @@ export class HTMLBindingDirective
     createBehavior(): ViewBehavior {
         if (this.updateTarget === null) {
             const sink = sinkLookup[this.aspectType];
-            const policy = this.dataBinding.policy ?? SecurityPolicy.default;
+            const policy = this.dataBinding.policy ?? DOM.policy;
 
             if (!sink) {
                 throw FAST.error(Message.unsupportedBindingBehavior);
@@ -403,7 +403,7 @@ HTMLDirective.define(HTMLBindingDirective, { aspected: true });
  */
 export function bind<T = any>(
     expression: Expression<T>,
-    policy?: SecurityPolicy,
+    policy?: DOMPolicy,
     isVolatile = Observable.isVolatileBinding(expression)
 ): Binding<T> {
     return new OnChangeBinding(expression, policy, isVolatile);
@@ -418,7 +418,7 @@ export function bind<T = any>(
  */
 export function oneTime<T = any>(
     expression: Expression<T>,
-    policy?: SecurityPolicy
+    policy?: DOMPolicy
 ): Binding<T> {
     return new OneTimeBinding(expression, policy);
 }

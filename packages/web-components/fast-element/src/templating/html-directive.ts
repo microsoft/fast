@@ -1,5 +1,5 @@
-import type { HostBehavior } from "../index.js";
-import { Aspect, Constructable, Mutable, SecurityPolicy } from "../interfaces.js";
+import { DOMAspect, DOMPolicy } from "../dom.js";
+import type { Constructable, Mutable } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -8,7 +8,7 @@ import {
     ExpressionObserver,
 } from "../observation/observable.js";
 import { createTypeRegistry } from "../platform.js";
-import type { HostController } from "../styles/host.js";
+import type { HostBehavior, HostController } from "../styles/host.js";
 import { Markup, nextId } from "./markup.js";
 
 /**
@@ -198,7 +198,7 @@ export interface Aspected {
     /**
      * The type of aspect to target.
      */
-    aspectType: Aspect;
+    aspectType: DOMAspect;
 
     /**
      * A binding if one is associated with the aspect.
@@ -274,7 +274,7 @@ export const HTMLDirective = Object.freeze({
      */
     assignAspect(directive: Aspected, value?: string): void {
         if (!value) {
-            directive.aspectType = Aspect.content;
+            directive.aspectType = DOMAspect.content;
             return;
         }
 
@@ -285,20 +285,20 @@ export const HTMLDirective = Object.freeze({
                 directive.targetAspect = value.substring(1);
                 directive.aspectType =
                     directive.targetAspect === "classList"
-                        ? Aspect.tokenList
-                        : Aspect.property;
+                        ? DOMAspect.tokenList
+                        : DOMAspect.property;
                 break;
             case "?":
                 directive.targetAspect = value.substring(1);
-                directive.aspectType = Aspect.booleanAttribute;
+                directive.aspectType = DOMAspect.booleanAttribute;
                 break;
             case "@":
                 directive.targetAspect = value.substring(1);
-                directive.aspectType = Aspect.event;
+                directive.aspectType = DOMAspect.event;
                 break;
             default:
                 directive.targetAspect = value;
-                directive.aspectType = Aspect.attribute;
+                directive.aspectType = DOMAspect.attribute;
                 break;
         }
     },
@@ -335,7 +335,7 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
      */
     public constructor(
         public evaluate: Expression<TSource, TReturn, TParent>,
-        public policy?: SecurityPolicy,
+        public policy?: DOMPolicy,
         public isVolatile: boolean = false
     ) {}
 

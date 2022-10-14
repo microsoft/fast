@@ -33,8 +33,7 @@ export const ArrayObserver: Readonly<{
 
 // @public
 export interface Aspected {
-    // Warning: (ae-forgotten-export) The symbol "Aspect" needs to be exported by the entry point index.d.ts
-    aspectType: Aspect;
+    aspectType: DOMAspect;
     dataBinding?: Binding;
     sourceAspect: string;
     targetAspect: string;
@@ -81,14 +80,12 @@ export class AttributeDefinition implements Accessor {
 // @public
 export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
-// Warning: (ae-forgotten-export) The symbol "SecurityPolicy" needs to be exported by the entry point index.d.ts
-//
 // @public
-export function bind<T = any>(expression: Expression<T>, policy?: SecurityPolicy, isVolatile?: boolean): Binding<T>;
+export function bind<T = any>(expression: Expression<T>, policy?: DOMPolicy, isVolatile?: boolean): Binding<T>;
 
 // @public
 export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
-    constructor(evaluate: Expression<TSource, TReturn, TParent>, policy?: SecurityPolicy | undefined, isVolatile?: boolean);
+    constructor(evaluate: Expression<TSource, TReturn, TParent>, policy?: DOMPolicy | undefined, isVolatile?: boolean);
     abstract createObserver(directive: HTMLDirective, subscriber: Subscriber): ExpressionObserver<TSource, TReturn, TParent>;
     // (undocumented)
     evaluate: Expression<TSource, TReturn, TParent>;
@@ -96,7 +93,7 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     isVolatile: boolean;
     options?: any;
     // (undocumented)
-    policy?: SecurityPolicy | undefined;
+    policy?: DOMPolicy | undefined;
 }
 
 // @public
@@ -136,9 +133,9 @@ factories: Record<string, ViewBehaviorFactory>) => HTMLTemplateCompilationResult
 
 // @public
 export const Compiler: {
-    compile<TSource = any, TParent = any>(html: string | HTMLTemplateElement, directives: Record<string, ViewBehaviorFactory>, policy?: SecurityPolicy): HTMLTemplateCompilationResult<TSource, TParent>;
+    compile<TSource = any, TParent = any>(html: string | HTMLTemplateElement, directives: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy): HTMLTemplateCompilationResult<TSource, TParent>;
     setDefaultStrategy(strategy: CompilationStrategy): void;
-    aggregate(parts: (string | ViewBehaviorFactory)[], policy?: SecurityPolicy): ViewBehaviorFactory;
+    aggregate(parts: (string | ViewBehaviorFactory)[], policy?: DOMPolicy): ViewBehaviorFactory;
 };
 
 // @public
@@ -236,9 +233,35 @@ export const DOM: Readonly<{
     queueUpdate: (callable: Callable) => void;
     nextUpdate: () => Promise<void>;
     processUpdates: () => void;
+    policy: DOMPolicy;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>;
+
+// @public
+export const DOMAspect: Readonly<{
+    readonly none: 0;
+    readonly attribute: 1;
+    readonly booleanAttribute: 2;
+    readonly property: 3;
+    readonly content: 4;
+    readonly tokenList: 5;
+    readonly event: 6;
+}>;
+
+// @public
+export type DOMAspect = typeof DOMAspect[Exclude<keyof typeof DOMAspect, "none">];
+
+// @public (undocumented)
+export interface DOMPolicy {
+    // (undocumented)
+    createHTML(value: string): string;
+    // (undocumented)
+    protect<T extends DOMSink = DOMSink>(tagName: string | null, aspect: DOMAspect, aspectName: string, sink: T): T;
+}
+
+// @public (undocumented)
+export type DOMSink = (target: Node, aspectName: string, value: any, ...args: any[]) => void;
 
 // @public
 export class ElementController<TElement extends HTMLElement = HTMLElement> extends PropertyChangeNotifier implements HostController<TElement> {
@@ -433,7 +456,7 @@ export function html<TSource = any, TParent = any>(strings: TemplateStringsArray
 // @public
 export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected {
     constructor(dataBinding: Binding);
-    aspectType: Aspect;
+    aspectType: DOMAspect;
     // @internal (undocumented)
     bind(controller: ViewController): void;
     createBehavior(): ViewBehavior;
@@ -595,7 +618,7 @@ export interface ObservationRecord {
 }
 
 // @public
-export function oneTime<T = any>(expression: Expression<T>, policy?: SecurityPolicy): Binding<T>;
+export function oneTime<T = any>(expression: Expression<T>, policy?: DOMPolicy): Binding<T>;
 
 // @public
 export const Parser: Readonly<{
@@ -887,10 +910,10 @@ export interface ViewController<TSource = any, TParent = any> extends Expression
 
 // @public
 export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent> {
-    constructor(html: string | HTMLTemplateElement, factories?: Record<string, ViewBehaviorFactory>, policy?: SecurityPolicy | undefined);
+    constructor(html: string | HTMLTemplateElement, factories?: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy | undefined);
     create(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
     // (undocumented)
-    static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: SecurityPolicy): ViewTemplate<TSource, TParent>;
+    static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy): ViewTemplate<TSource, TParent>;
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
