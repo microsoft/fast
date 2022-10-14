@@ -1,14 +1,14 @@
-// GlobalThis goes to platform
-declare const global: any;
-
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 (function ensureGlobalThis() {
     if (typeof globalThis !== "undefined") {
         // We're running in a modern environment.
         return;
     }
 
+    // @ts-ignore
     if (typeof global !== "undefined") {
         // We're running in NodeJS
+        // @ts-ignore
         global.globalThis = global;
     } else if (typeof self !== "undefined") {
         (self as any).globalThis = self;

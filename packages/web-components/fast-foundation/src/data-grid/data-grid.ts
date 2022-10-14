@@ -341,8 +341,8 @@ export class FASTDataGrid extends FASTElement {
             this.$fastController.addBehavior(this.behaviorOrchestrator);
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<FASTDataGrid>(
-                    bind(x => x.rowsData, false),
-                    bind(x => x.rowItemTemplate, false),
+                    bind(x => x.rowsData),
+                    bind(x => x.rowItemTemplate),
                     { positioning: true }
                 ),
                 this.appendChild((this.rowsPlaceholder = document.createComment("")))
