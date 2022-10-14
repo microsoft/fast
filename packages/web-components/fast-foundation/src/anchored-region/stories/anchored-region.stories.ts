@@ -16,9 +16,9 @@ import { ArPositions } from "./examples/ar-position-demo.js";
 const storyTemplate = html<StoryArgs<FASTAnchoredRegion>>`
         <fast-anchored-region
             class="region"
-            ?use-point-anchor="${x => x.usePointAnchor}"
-            :pointAnchorX="${x => x.pointAnchorX}"
-            :pointAnchorY="${x => x.pointAnchorY}"
+            ?use-virtual-anchor="${x => x.useVirtualAnchor}"
+            :virtualAnchorX="${x => x.virtualAnchorX}"
+            :virtualAnchorY="${x => x.virtualAnchorY}"
             ?horizontal-inset="${x => x.horizontalInset}"
             ?horizontal-viewport-lock="${x => x.horizontalViewportLock}"
             ?vertical-inset="${x => x.verticalInset}"
@@ -68,9 +68,9 @@ export default {
             control: "select",
             options: Object.values(AutoUpdateMode),
         },
-        usePointAnchor: { control: "boolean" },
-        pointAnchorX: { control: "number" },
-        pointAnchorY: { control: "number" },
+        useVirtualAnchor: { control: "boolean" },
+        virtualAnchorX: { control: "number" },
+        virtualAnchorY: { control: "number" },
         pointerTracking: { control: "boolean" },
         fixedPlacement: { control: "boolean" },
         horizontalDefaultPosition: {
@@ -140,7 +140,11 @@ export const AnchoredRegion: Story<FASTAnchoredRegion> = renderComponent(
     html<StoryArgs<FASTAnchoredRegion>>`
         <div style="min-height: 100px">
             ${storyTemplate}
-            <draggable-anchor class="anchor" point-anchor-x="150" point-anchor-Y="150">
+            <draggable-anchor
+                class="anchor"
+                virtual-anchor-x="150"
+                virtual-anchor-Y="150"
+            >
                 Anchor
                 <br />
                 Click to Drag
@@ -157,9 +161,9 @@ export const PointAnchor: Story<FASTAnchoredRegion> = renderComponent(
     `
 ).bind({});
 PointAnchor.args = {
-    usePointAnchor: true,
-    pointAnchorX: 200,
-    pointAnchorY: 200,
+    useVirtualAnchor: true,
+    virtualAnchorX: 200,
+    virtualAnchorY: 200,
     storyContent: html`
         <div
             id="content"
@@ -168,7 +172,7 @@ PointAnchor.args = {
             <div style="background: var(--neutral-fill-rest); padding: 10px">
                 Position controlled by
                 <br />
-                point-anchor-x and point-anchor-y
+                virtual-anchor-x and virtual-anchor-y
             </div>
         </div>
     `,

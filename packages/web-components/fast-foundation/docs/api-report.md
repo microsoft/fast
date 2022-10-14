@@ -717,21 +717,15 @@ export class FASTAnchoredRegion extends FASTElement {
     protected horizontalViewportLockChanged(): void;
     // @internal
     initialLayoutComplete: boolean;
-    pointAnchorX: number;
-    // (undocumented)
-    protected pointAnchorXChanged(): void;
-    pointAnchorY: number;
-    // (undocumented)
-    protected pointAnchorYChanged(): void;
     // @internal (undocumented)
     regionRect: DOMRect | undefined;
     protected translateX: number;
     // (undocumented)
     protected translateY: number;
     update: () => void;
-    usePointAnchor: boolean;
+    useVirtualAnchor: boolean;
     // (undocumented)
-    protected usePointAnchorChanged(): void;
+    protected useVirtualAnchorChanged(): void;
     verticalDefaultPosition: VerticalPosition;
     // (undocumented)
     protected verticalDefaultPositionChanged(): void;
@@ -759,6 +753,13 @@ export class FASTAnchoredRegion extends FASTElement {
     protected viewportElementChanged(): void;
     // @internal (undocumented)
     viewportRect: DOMRect | undefined;
+    virtualAnchorRect: DOMRect;
+    virtualAnchorX: number;
+    // (undocumented)
+    protected virtualAnchorXChanged(): void;
+    virtualAnchorY: number;
+    // (undocumented)
+    protected virtualAnchorYChanged(): void;
 }
 
 // @public
@@ -2102,10 +2103,6 @@ export class FASTTooltip extends FASTElement {
     horizontalViewportLock: boolean;
     // @internal (undocumented)
     isPointerTracking: boolean;
-    // @internal (undocumented)
-    pointAnchorX: number;
-    // @internal (undocumented)
-    pointAnchorY: number;
     position: TooltipPosition;
     // @internal
     region: FASTAnchoredRegion;
@@ -2127,6 +2124,10 @@ export class FASTTooltip extends FASTElement {
     viewportElement: HTMLElement | null;
     // (undocumented)
     protected viewportElementChanged(): void;
+    // @internal (undocumented)
+    virtualAnchorX: number;
+    // @internal (undocumented)
+    virtualAnchorY: number;
     visible: boolean | undefined;
     // (undocumented)
     protected visibleChanged(): void;

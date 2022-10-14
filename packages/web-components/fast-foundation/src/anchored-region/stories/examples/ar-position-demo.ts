@@ -317,8 +317,8 @@ export function arPositionDemoTemplate<T extends ARPositionDemo>(): ElementViewT
             <draggable-anchor
                 class="anchor"
                 id="anchor"
-                point-anchor-x="150"
-                point-anchor-Y="150"
+                virtual-anchor-x="150"
+                virtual-anchor-Y="150"
                 ${ref("anchorElement")}
             >
                 Anchor

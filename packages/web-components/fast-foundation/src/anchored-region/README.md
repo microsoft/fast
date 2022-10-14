@@ -104,9 +104,9 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | --------------------------- | --------- | ------------------------------------------ | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
 | `anchor`                    | public    | `string`                                   | `""`             | The HTML ID of the anchor element this region is positioned relative to                                                                                                                                                                 |                |
 | `viewport`                  | public    | `string`                                   | `""`             | The HTML ID of the viewport element this region is positioned relative to                                                                                                                                                               |                |
-| `usePointAnchor`            | public    | `boolean`                                  | `false`          | When true the point anchor coordinate is used as anchor                                                                                                                                                                                 |                |
-| `pointAnchorX`              | public    | `number`                                   | `0`              | Initial X coordinate when using point anchor                                                                                                                                                                                            |                |
-| `pointAnchorY`              | public    | `number`                                   | `0`              | Initial y coordinate when using point anchor                                                                                                                                                                                            |                |
+| `useVirtualAnchor`          | public    | `boolean`                                  | `false`          | When true the virtual anchor is used                                                                                                                                                                                                    |                |
+| `virtualAnchorX`            | public    | `number`                                   | `0`              | Initial X coordinate when using virtual anchor                                                                                                                                                                                          |                |
+| `virtualAnchorY`            | public    | `number`                                   | `0`              | Initial y coordinate when using virtual anchor                                                                                                                                                                                          |                |
 | `horizontalPositioningMode` | public    | `AxisPositioningMode`                      | `"uncontrolled"` | Sets what logic the component uses to determine horizontal placement. 'locktodefault' forces the default position 'dynamic' decides placement based on available space 'uncontrolled' does not control placement on the horizontal axis |                |
 | `horizontalDefaultPosition` | public    | `HorizontalPosition`                       | `"unset"`        | The default horizontal position of the region relative to the anchor element                                                                                                                                                            |                |
 | `horizontalViewportLock`    | public    | `boolean`                                  | `false`          | Whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis                                                                                                                                        |                |
@@ -123,6 +123,7 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | `autoUpdateMode`            | public    | `AutoUpdateMode`                           | `"anchor"`       | Defines what triggers the anchored region to revaluate positioning                                                                                                                                                                      |                |
 | `anchorElement`             | public    | `HTMLElement or null`                      | `null`           | The HTML element being used as the anchor                                                                                                                                                                                               |                |
 | `viewportElement`           | public    | `HTMLElement or null`                      | `null`           | The HTML element being used as the viewport                                                                                                                                                                                             |                |
+| `virtualAnchorRect`         | public    | `DOMRect`                                  | `new DOMRect()`  | The HTML element being used as the viewport                                                                                                                                                                                             |                |
 | `verticalPosition`          | public    | `AnchoredRegionPositionLabel or undefined` |                  | indicates the current horizontal position of the region                                                                                                                                                                                 |                |
 | `horizontalPosition`        | public    | `AnchoredRegionPositionLabel or undefined` |                  | indicates the current vertical position of the region                                                                                                                                                                                   |                |
 | `translateX`                | protected | `number`                                   |                  | values to be applied to the component's transform on render                                                                                                                                                                             |                |
@@ -135,9 +136,9 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | ---------------------------------- | --------- | ----------- | --------------------------------------------------- | ------ | -------------- |
 | `anchorChanged`                    | protected |             |                                                     | `void` |                |
 | `viewportChanged`                  | protected |             |                                                     | `void` |                |
-| `usePointAnchorChanged`            | protected |             |                                                     | `void` |                |
-| `pointAnchorXChanged`              | protected |             |                                                     | `void` |                |
-| `pointAnchorYChanged`              | protected |             |                                                     | `void` |                |
+| `useVirtualAnchorChanged`          | protected |             |                                                     | `void` |                |
+| `virtualAnchorXChanged`            | protected |             |                                                     | `void` |                |
+| `virtualAnchorYChanged`            | protected |             |                                                     | `void` |                |
 | `horizontalPositioningModeChanged` | protected |             |                                                     | `void` |                |
 | `horizontalDefaultPositionChanged` | protected |             |                                                     | `void` |                |
 | `horizontalViewportLockChanged`    | protected |             |                                                     | `void` |                |
@@ -168,9 +169,9 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | ----------------------------- | ------------------------- | -------------- |
 | `anchor`                      | anchor                    |                |
 | `viewport`                    | viewport                  |                |
-| `use-point-anchor`            | usePointAnchor            |                |
-| `point-anchor-x`              | pointAnchorX              |                |
-| `point-anchor-y`              | pointAnchorY              |                |
+| `use-virtual-anchor`          | useVirtualAnchor          |                |
+| `virtual-anchor-x`            | virtualAnchorX            |                |
+| `virtual-anchor-y`            | virtualAnchorY            |                |
 | `horizontal-positioning-mode` | horizontalPositioningMode |                |
 | `horizontal-default-position` | horizontalDefaultPosition |                |
 | `horizontal-viewport-lock`    | horizontalViewportLock    |                |
@@ -191,6 +192,126 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | Name | Description                      |
 | ---- | -------------------------------- |
 |      | The default slot for the content |
+
+<hr/>
+
+
+
+### class: `AnchoredRegionPointer`
+
+#### Superclass
+
+| Name                 | Module                                  | Package |
+| -------------------- | --------------------------------------- | ------- |
+| `FASTAnchoredRegion` | /src/anchored-region/anchored-region.js |         |
+
+#### Fields
+
+| Name                        | Privacy   | Type                                       | Default          | Description                                                                                                                                                                                                                             | Inherited From     |
+| --------------------------- | --------- | ------------------------------------------ | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `anchor`                    | public    | `string`                                   | `""`             | The HTML ID of the anchor element this region is positioned relative to                                                                                                                                                                 | FASTAnchoredRegion |
+| `viewport`                  | public    | `string`                                   | `""`             | The HTML ID of the viewport element this region is positioned relative to                                                                                                                                                               | FASTAnchoredRegion |
+| `useVirtualAnchor`          | public    | `boolean`                                  | `false`          | When true the virtual anchor is used                                                                                                                                                                                                    | FASTAnchoredRegion |
+| `virtualAnchorX`            | public    | `number`                                   | `0`              | Initial X coordinate when using virtual anchor                                                                                                                                                                                          | FASTAnchoredRegion |
+| `virtualAnchorY`            | public    | `number`                                   | `0`              | Initial y coordinate when using virtual anchor                                                                                                                                                                                          | FASTAnchoredRegion |
+| `horizontalPositioningMode` | public    | `AxisPositioningMode`                      | `"uncontrolled"` | Sets what logic the component uses to determine horizontal placement. 'locktodefault' forces the default position 'dynamic' decides placement based on available space 'uncontrolled' does not control placement on the horizontal axis | FASTAnchoredRegion |
+| `horizontalDefaultPosition` | public    | `HorizontalPosition`                       | `"unset"`        | The default horizontal position of the region relative to the anchor element                                                                                                                                                            | FASTAnchoredRegion |
+| `horizontalViewportLock`    | public    | `boolean`                                  | `false`          | Whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis                                                                                                                                        | FASTAnchoredRegion |
+| `horizontalInset`           | public    | `boolean`                                  | `false`          | Whether the region overlaps the anchor on the horizontal axis                                                                                                                                                                           | FASTAnchoredRegion |
+| `horizontalThreshold`       | public    | `number`                                   |                  | How narrow the space allocated to the default position has to be before the widest area is selected for layout                                                                                                                          | FASTAnchoredRegion |
+| `horizontalScaling`         | public    | `AxisScalingMode`                          | `"content"`      | Defines how the width of the region is calculated                                                                                                                                                                                       | FASTAnchoredRegion |
+| `verticalPositioningMode`   | public    | `AxisPositioningMode`                      | `"uncontrolled"` | Sets what logic the component uses to determine vertical placement. 'locktodefault' forces the default position 'dynamic' decides placement based on available space 'uncontrolled' does not control placement on the vertical axis     | FASTAnchoredRegion |
+| `verticalDefaultPosition`   | public    | `VerticalPosition`                         | `"unset"`        | The default vertical position of the region relative to the anchor element                                                                                                                                                              | FASTAnchoredRegion |
+| `verticalViewportLock`      | public    | `boolean`                                  | `false`          | Whether the region remains in the viewport (ie. detaches from the anchor) on the vertical axis                                                                                                                                          | FASTAnchoredRegion |
+| `verticalInset`             | public    | `boolean`                                  | `false`          | Whether the region overlaps the anchor on the vertical axis                                                                                                                                                                             | FASTAnchoredRegion |
+| `verticalThreshold`         | public    | `number`                                   |                  | How short the space allocated to the default position has to be before the tallest area is selected for layout                                                                                                                          | FASTAnchoredRegion |
+| `verticalScaling`           | public    | `AxisScalingMode`                          | `"content"`      | Defines how the height of the region is calculated                                                                                                                                                                                      | FASTAnchoredRegion |
+| `fixedPlacement`            | public    | `boolean`                                  | `false`          | Whether the region is positioned using css "position: fixed". Otherwise the region uses "position: absolute". Fixed placement allows the region to break out of parent containers,                                                      | FASTAnchoredRegion |
+| `autoUpdateMode`            | public    | `AutoUpdateMode`                           | `"anchor"`       | Defines what triggers the anchored region to revaluate positioning                                                                                                                                                                      | FASTAnchoredRegion |
+| `anchorElement`             | public    | `HTMLElement or null`                      | `null`           | The HTML element being used as the anchor                                                                                                                                                                                               | FASTAnchoredRegion |
+| `viewportElement`           | public    | `HTMLElement or null`                      | `null`           | The HTML element being used as the viewport                                                                                                                                                                                             | FASTAnchoredRegion |
+| `virtualAnchorRect`         | public    | `DOMRect`                                  | `new DOMRect()`  | The HTML element being used as the viewport                                                                                                                                                                                             | FASTAnchoredRegion |
+| `verticalPosition`          | public    | `AnchoredRegionPositionLabel or undefined` |                  | indicates the current horizontal position of the region                                                                                                                                                                                 | FASTAnchoredRegion |
+| `horizontalPosition`        | public    | `AnchoredRegionPositionLabel or undefined` |                  | indicates the current vertical position of the region                                                                                                                                                                                   | FASTAnchoredRegion |
+| `translateX`                | protected | `number`                                   |                  | values to be applied to the component's transform on render                                                                                                                                                                             | FASTAnchoredRegion |
+| `translateY`                | protected | `number`                                   |                  |                                                                                                                                                                                                                                         | FASTAnchoredRegion |
+| `update`                    | public    |                                            |                  | update position                                                                                                                                                                                                                         | FASTAnchoredRegion |
+
+#### Methods
+
+| Name                               | Privacy   | Description | Parameters                                                           | Return   | Inherited From     |
+| ---------------------------------- | --------- | ----------- | -------------------------------------------------------------------- | -------- | ------------------ |
+| `getRotation`                      | public    |             | `anchorRect: DOMRect or undefined, regionRect: DOMRect or undefined` | `number` |                    |
+| `getDistance`                      | public    |             | `anchorRect: DOMRect or undefined, regionRect: DOMRect or undefined` | `number` |                    |
+| `anchorChanged`                    | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `viewportChanged`                  | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `useVirtualAnchorChanged`          | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `virtualAnchorXChanged`            | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `virtualAnchorYChanged`            | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `horizontalPositioningModeChanged` | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `horizontalDefaultPositionChanged` | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `horizontalViewportLockChanged`    | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `horizontalInsetChanged`           | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `horizontalThresholdChanged`       | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `horizontalScalingChanged`         | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `verticalPositioningModeChanged`   | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `verticalDefaultPositionChanged`   | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `verticalViewportLockChanged`      | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `verticalInsetChanged`             | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `verticalThresholdChanged`         | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `verticalScalingChanged`           | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `fixedPlacementChanged`            | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `autoUpdateModeChanged`            | protected |             | `prevMode: AutoUpdateMode, newMode: AutoUpdateMode`                  | `void`   | FASTAnchoredRegion |
+| `anchorElementChanged`             | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+| `viewportElementChanged`           | protected |             |                                                                      | `void`   | FASTAnchoredRegion |
+
+#### Events
+
+| Name             | Type | Description                                                         | Inherited From     |
+| ---------------- | ---- | ------------------------------------------------------------------- | ------------------ |
+| `loaded`         |      | Fires a custom 'loaded' event when the region is loaded and visible | FASTAnchoredRegion |
+| `positionchange` |      | Fires a custom 'positionchange' event when the position has changed | FASTAnchoredRegion |
+
+#### Attributes
+
+| Name                          | Field                     | Inherited From     |
+| ----------------------------- | ------------------------- | ------------------ |
+| `anchor`                      | anchor                    | FASTAnchoredRegion |
+| `viewport`                    | viewport                  | FASTAnchoredRegion |
+| `use-virtual-anchor`          | useVirtualAnchor          | FASTAnchoredRegion |
+| `virtual-anchor-x`            | virtualAnchorX            | FASTAnchoredRegion |
+| `virtual-anchor-y`            | virtualAnchorY            | FASTAnchoredRegion |
+| `horizontal-positioning-mode` | horizontalPositioningMode | FASTAnchoredRegion |
+| `horizontal-default-position` | horizontalDefaultPosition | FASTAnchoredRegion |
+| `horizontal-viewport-lock`    | horizontalViewportLock    | FASTAnchoredRegion |
+| `horizontal-inset`            | horizontalInset           | FASTAnchoredRegion |
+| `horizontal-threshold`        | horizontalThreshold       | FASTAnchoredRegion |
+| `horizontal-scaling`          | horizontalScaling         | FASTAnchoredRegion |
+| `vertical-positioning-mode`   | verticalPositioningMode   | FASTAnchoredRegion |
+| `vertical-default-position`   | verticalDefaultPosition   | FASTAnchoredRegion |
+| `vertical-viewport-lock`      | verticalViewportLock      | FASTAnchoredRegion |
+| `vertical-inset`              | verticalInset             | FASTAnchoredRegion |
+| `vertical-threshold`          | verticalThreshold         | FASTAnchoredRegion |
+| `vertical-scaling`            | verticalScaling           | FASTAnchoredRegion |
+| `fixed-placement`             | fixedPlacement            | FASTAnchoredRegion |
+| `auto-update-mode`            | autoUpdateMode            | FASTAnchoredRegion |
+
+<hr/>
+
+### Variables
+
+| Name                          | Description | Type |
+| ----------------------------- | ----------- | ---- |
+| `anchoredRegionPointerStyles` |             |      |
+
+<hr/>
+
+### Functions
+
+| Name                            | Description  | Parameters | Return                   |
+| ------------------------------- | ------------ | ---------- | ------------------------ |
+| `registerAnchoredRegionPointer` |              |            |                          |
+| `anchoredRegionPointerTemplate` | The template |            | `ElementViewTemplate<T>` |
 
 <hr/>
 
@@ -225,6 +346,7 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 | Name                     | Description  | Parameters | Return                          |
 | ------------------------ | ------------ | ---------- | ------------------------------- |
+| `registerARLockIntoView` |              |            |                                 |
 | `arLockIntoViewTemplate` | The template |            | `ElementViewTemplate<
     T >` |
 
@@ -253,8 +375,8 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | `fixedDropDownOpen`        |         | `boolean`     | `false` |             |                |
 | `absoluteDropDownOpen`     |         | `boolean`     | `false` |             |                |
 | `contextMenuOpen`          |         | `boolean`     | `false` |             |                |
-| `pointAnchorX`             |         | `number`      | `0`     |             |                |
-| `pointAnchorY`             |         | `number`      | `0`     |             |                |
+| `virtualAnchorX`           |         | `number`      | `0`     |             |                |
+| `virtualAnchorY`           |         | `number`      | `0`     |             |                |
 | `contextElement`           | public  | `HTMLElement` |         |             |                |
 | `handleContext`            | public  |               |         |             |                |
 | `handleContextClose`       | public  |               |         |             |                |
@@ -273,6 +395,7 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 | Name                     | Description  | Parameters | Return                          |
 | ------------------------ | ------------ | ---------- | ------------------------------- |
+| `registerARMenuPatterns` |              |            |                                 |
 | `arMenuPatternsTemplate` | The template |            | `ElementViewTemplate<
     T >` |
 
@@ -311,8 +434,79 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 | Name                     | Description  | Parameters | Return                          |
 | ------------------------ | ------------ | ---------- | ------------------------------- |
+| `registerARPositionDemo` |              |            |                                 |
 | `arPositionDemoTemplate` | The template |            | `ElementViewTemplate<
     T >` |
+
+<hr/>
+
+
+
+### class: `ARTile`
+
+#### Superclass
+
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
+
+#### Fields
+
+| Name    | Privacy | Type       | Default | Description | Inherited From |
+| ------- | ------- | ---------- | ------- | ----------- | -------------- |
+| `items` | public  | `object[]` |         |             |                |
+
+<hr/>
+
+### Variables
+
+| Name           | Description | Type |
+| -------------- | ----------- | ---- |
+| `arTileStyles` |             |      |
+
+<hr/>
+
+### Functions
+
+| Name             | Description  | Parameters | Return                   |
+| ---------------- | ------------ | ---------- | ------------------------ |
+| `registerARTile` |              |            |                          |
+| `arTileTemplate` | The template |            | `ElementViewTemplate<T>` |
+
+<hr/>
+
+
+
+### class: `ARTiles`
+
+#### Superclass
+
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
+
+#### Fields
+
+| Name    | Privacy | Type       | Default | Description | Inherited From |
+| ------- | ------- | ---------- | ------- | ----------- | -------------- |
+| `items` | public  | `object[]` |         |             |                |
+
+<hr/>
+
+### Variables
+
+| Name            | Description | Type |
+| --------------- | ----------- | ---- |
+| `arTilesStyles` |             |      |
+
+<hr/>
+
+### Functions
+
+| Name              | Description  | Parameters | Return                   |
+| ----------------- | ------------ | ---------- | ------------------------ |
+| `registerARTiles` |              |            |                          |
+| `arTilesTemplate` | The template |            | `ElementViewTemplate<T>` |
 
 <hr/>
 
@@ -322,100 +516,25 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 #### Superclass
 
-| Name                 | Module                                  | Package |
-| -------------------- | --------------------------------------- | ------- |
-| `FASTAnchoredRegion` | /src/anchored-region/anchored-region.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
 
 #### Fields
 
-| Name                        | Privacy   | Type                                       | Default          | Description                                                                                                                                                                                                                             | Inherited From     |
-| --------------------------- | --------- | ------------------------------------------ | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| `isDragging`                | public    | `boolean`                                  | `false`          |                                                                                                                                                                                                                                         |                    |
-| `handleMouseUp`             | public    |                                            |                  |                                                                                                                                                                                                                                         |                    |
-| `handleMouseMove`           | public    |                                            |                  | handles mouse move events when in mouse tracking mode                                                                                                                                                                                   |                    |
-| `anchor`                    | public    | `string`                                   | `""`             | The HTML ID of the anchor element this region is positioned relative to                                                                                                                                                                 | FASTAnchoredRegion |
-| `viewport`                  | public    | `string`                                   | `""`             | The HTML ID of the viewport element this region is positioned relative to                                                                                                                                                               | FASTAnchoredRegion |
-| `usePointAnchor`            | public    | `boolean`                                  | `false`          | When true the point anchor coordinate is used as anchor                                                                                                                                                                                 | FASTAnchoredRegion |
-| `pointAnchorX`              | public    | `number`                                   | `0`              | Initial X coordinate when using point anchor                                                                                                                                                                                            | FASTAnchoredRegion |
-| `pointAnchorY`              | public    | `number`                                   | `0`              | Initial y coordinate when using point anchor                                                                                                                                                                                            | FASTAnchoredRegion |
-| `horizontalPositioningMode` | public    | `AxisPositioningMode`                      | `"uncontrolled"` | Sets what logic the component uses to determine horizontal placement. 'locktodefault' forces the default position 'dynamic' decides placement based on available space 'uncontrolled' does not control placement on the horizontal axis | FASTAnchoredRegion |
-| `horizontalDefaultPosition` | public    | `HorizontalPosition`                       | `"unset"`        | The default horizontal position of the region relative to the anchor element                                                                                                                                                            | FASTAnchoredRegion |
-| `horizontalViewportLock`    | public    | `boolean`                                  | `false`          | Whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis                                                                                                                                        | FASTAnchoredRegion |
-| `horizontalInset`           | public    | `boolean`                                  | `false`          | Whether the region overlaps the anchor on the horizontal axis                                                                                                                                                                           | FASTAnchoredRegion |
-| `horizontalThreshold`       | public    | `number`                                   |                  | How narrow the space allocated to the default position has to be before the widest area is selected for layout                                                                                                                          | FASTAnchoredRegion |
-| `horizontalScaling`         | public    | `AxisScalingMode`                          | `"content"`      | Defines how the width of the region is calculated                                                                                                                                                                                       | FASTAnchoredRegion |
-| `verticalPositioningMode`   | public    | `AxisPositioningMode`                      | `"uncontrolled"` | Sets what logic the component uses to determine vertical placement. 'locktodefault' forces the default position 'dynamic' decides placement based on available space 'uncontrolled' does not control placement on the vertical axis     | FASTAnchoredRegion |
-| `verticalDefaultPosition`   | public    | `VerticalPosition`                         | `"unset"`        | The default vertical position of the region relative to the anchor element                                                                                                                                                              | FASTAnchoredRegion |
-| `verticalViewportLock`      | public    | `boolean`                                  | `false`          | Whether the region remains in the viewport (ie. detaches from the anchor) on the vertical axis                                                                                                                                          | FASTAnchoredRegion |
-| `verticalInset`             | public    | `boolean`                                  | `false`          | Whether the region overlaps the anchor on the vertical axis                                                                                                                                                                             | FASTAnchoredRegion |
-| `verticalThreshold`         | public    | `number`                                   |                  | How short the space allocated to the default position has to be before the tallest area is selected for layout                                                                                                                          | FASTAnchoredRegion |
-| `verticalScaling`           | public    | `AxisScalingMode`                          | `"content"`      | Defines how the height of the region is calculated                                                                                                                                                                                      | FASTAnchoredRegion |
-| `fixedPlacement`            | public    | `boolean`                                  | `false`          | Whether the region is positioned using css "position: fixed". Otherwise the region uses "position: absolute". Fixed placement allows the region to break out of parent containers,                                                      | FASTAnchoredRegion |
-| `autoUpdateMode`            | public    | `AutoUpdateMode`                           | `"anchor"`       | Defines what triggers the anchored region to revaluate positioning                                                                                                                                                                      | FASTAnchoredRegion |
-| `anchorElement`             | public    | `HTMLElement or null`                      | `null`           | The HTML element being used as the anchor                                                                                                                                                                                               | FASTAnchoredRegion |
-| `viewportElement`           | public    | `HTMLElement or null`                      | `null`           | The HTML element being used as the viewport                                                                                                                                                                                             | FASTAnchoredRegion |
-| `verticalPosition`          | public    | `AnchoredRegionPositionLabel or undefined` |                  | indicates the current horizontal position of the region                                                                                                                                                                                 | FASTAnchoredRegion |
-| `horizontalPosition`        | public    | `AnchoredRegionPositionLabel or undefined` |                  | indicates the current vertical position of the region                                                                                                                                                                                   | FASTAnchoredRegion |
-| `translateX`                | protected | `number`                                   |                  | values to be applied to the component's transform on render                                                                                                                                                                             | FASTAnchoredRegion |
-| `translateY`                | protected | `number`                                   |                  |                                                                                                                                                                                                                                         | FASTAnchoredRegion |
-| `update`                    | public    |                                            |                  | update position                                                                                                                                                                                                                         | FASTAnchoredRegion |
+| Name              | Privacy | Type      | Default | Description                                           | Inherited From |
+| ----------------- | ------- | --------- | ------- | ----------------------------------------------------- | -------------- |
+| `isDragging`      | public  | `boolean` | `false` |                                                       |                |
+| `handleMouseUp`   | public  |           |         |                                                       |                |
+| `handleMouseMove` | public  |           |         | handles mouse move events when in mouse tracking mode |                |
 
-#### Methods
+<hr/>
 
-| Name                               | Privacy   | Description | Parameters                                          | Return | Inherited From     |
-| ---------------------------------- | --------- | ----------- | --------------------------------------------------- | ------ | ------------------ |
-| `anchorChanged`                    | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `viewportChanged`                  | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `usePointAnchorChanged`            | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `pointAnchorXChanged`              | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `pointAnchorYChanged`              | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `horizontalPositioningModeChanged` | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `horizontalDefaultPositionChanged` | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `horizontalViewportLockChanged`    | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `horizontalInsetChanged`           | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `horizontalThresholdChanged`       | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `horizontalScalingChanged`         | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `verticalPositioningModeChanged`   | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `verticalDefaultPositionChanged`   | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `verticalViewportLockChanged`      | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `verticalInsetChanged`             | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `verticalThresholdChanged`         | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `verticalScalingChanged`           | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `fixedPlacementChanged`            | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `autoUpdateModeChanged`            | protected |             | `prevMode: AutoUpdateMode, newMode: AutoUpdateMode` | `void` | FASTAnchoredRegion |
-| `anchorElementChanged`             | protected |             |                                                     | `void` | FASTAnchoredRegion |
-| `viewportElementChanged`           | protected |             |                                                     | `void` | FASTAnchoredRegion |
+### Variables
 
-#### Events
-
-| Name             | Type | Description                                                         | Inherited From     |
-| ---------------- | ---- | ------------------------------------------------------------------- | ------------------ |
-| `loaded`         |      | Fires a custom 'loaded' event when the region is loaded and visible | FASTAnchoredRegion |
-| `positionchange` |      | Fires a custom 'positionchange' event when the position has changed | FASTAnchoredRegion |
-
-#### Attributes
-
-| Name                          | Field                     | Inherited From     |
-| ----------------------------- | ------------------------- | ------------------ |
-| `anchor`                      | anchor                    | FASTAnchoredRegion |
-| `viewport`                    | viewport                  | FASTAnchoredRegion |
-| `use-point-anchor`            | usePointAnchor            | FASTAnchoredRegion |
-| `point-anchor-x`              | pointAnchorX              | FASTAnchoredRegion |
-| `point-anchor-y`              | pointAnchorY              | FASTAnchoredRegion |
-| `horizontal-positioning-mode` | horizontalPositioningMode | FASTAnchoredRegion |
-| `horizontal-default-position` | horizontalDefaultPosition | FASTAnchoredRegion |
-| `horizontal-viewport-lock`    | horizontalViewportLock    | FASTAnchoredRegion |
-| `horizontal-inset`            | horizontalInset           | FASTAnchoredRegion |
-| `horizontal-threshold`        | horizontalThreshold       | FASTAnchoredRegion |
-| `horizontal-scaling`          | horizontalScaling         | FASTAnchoredRegion |
-| `vertical-positioning-mode`   | verticalPositioningMode   | FASTAnchoredRegion |
-| `vertical-default-position`   | verticalDefaultPosition   | FASTAnchoredRegion |
-| `vertical-viewport-lock`      | verticalViewportLock      | FASTAnchoredRegion |
-| `vertical-inset`              | verticalInset             | FASTAnchoredRegion |
-| `vertical-threshold`          | verticalThreshold         | FASTAnchoredRegion |
-| `vertical-scaling`            | verticalScaling           | FASTAnchoredRegion |
-| `fixed-placement`             | fixedPlacement            | FASTAnchoredRegion |
-| `auto-update-mode`            | autoUpdateMode            | FASTAnchoredRegion |
+| Name                    | Description | Type |
+| ----------------------- | ----------- | ---- |
+| `draggableAnchorStyles` |             |      |
 
 <hr/>
 
@@ -423,6 +542,7 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 | Name                      | Description  | Parameters | Return                          |
 | ------------------------- | ------------ | ---------- | ------------------------------- |
+| `registerDraggableAnchor` |              |            |                                 |
 | `draggableAnchorTemplate` | The template |            | `ElementViewTemplate<
     T >` |
 
