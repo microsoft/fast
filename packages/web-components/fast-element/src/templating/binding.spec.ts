@@ -695,4 +695,67 @@ describe("The HTML binding directive", () => {
             expect(model.actionInvokeCount).to.equal(1);
         });
     });
+
+    context('when binding classList', () => {
+        function updateTarget(target: Node, directive: HTMLBindingDirective, value: any) {
+            (directive as any).updateTarget(
+                target,
+                directive.targetAspect,
+                value,
+                Fake.viewController()
+            );
+        }
+
+        function createClassBinding() {
+            const directive = new HTMLBindingDirective(bind(() => ""));
+            Aspect.assign(directive, ":classList");
+            return directive.createBehavior() as HTMLBindingDirective;
+        }
+
+        it('adds and removes own classes', () => {
+            const element = document.createElement("div");
+            element.classList.add("foo");
+            element.classList.add("bar");
+
+            const observerA = createClassBinding();
+            const observerB = createClassBinding();
+            const contains = element.classList.contains.bind(element.classList);
+
+            expect(contains('foo') && contains('bar')).true;
+
+            updateTarget(element, observerA, ' xxx \t\r\n\v\f yyy  ');
+            expect(contains('foo') && contains('bar')).true;
+            expect(contains('xxx') && contains('yyy')).true;
+
+            updateTarget(element, observerA, '');
+            expect(contains('foo') && contains('bar')).true;
+            expect(contains('xxx') || contains('yyy')).false;
+
+            updateTarget(element, observerB, 'bbb');
+            expect(contains('foo') && contains('bar')).true;
+            expect(contains('bbb')).true;
+
+            updateTarget(element, observerB, 'aaa');
+            expect(contains('foo') && contains('bar')).true;
+            expect(contains('aaa') && !contains('bbb')).true;
+
+            updateTarget(element, observerA, 'foo bar');
+            expect(contains('foo') && contains('bar')).true;
+
+            updateTarget(element, observerA, '');
+            expect(contains('foo') || contains('bar')).false;
+
+            updateTarget(element, observerA, 'foo');
+            expect(contains('foo')).true;
+
+            updateTarget(element, observerA, null);
+            expect(contains('foo')).false;
+
+            updateTarget(element, observerA, 'foo');
+            expect(contains('foo')).true;
+
+            updateTarget(element, observerA, undefined);
+            expect(contains('foo')).false;
+        });
+    });
 });
