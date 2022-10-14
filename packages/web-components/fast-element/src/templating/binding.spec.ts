@@ -11,6 +11,7 @@ import { twoWay, TwoWayBindingOptions } from "./binding-two-way.js";
 import { Fake } from "../testing/fakes.js";
 import { HTMLDirective } from "./html-directive.js";
 import { dangerousHTML } from "./dangerous-html.js";
+import { nextId } from "./markup.js";
 
 describe("The HTML binding directive", () => {
     class Model {
@@ -39,7 +40,10 @@ describe("The HTML binding directive", () => {
 
     function contentBinding(propertyName: keyof Model = "value") {
         const directive = new HTMLBindingDirective(bind(x => x[propertyName]));
+        directive.id = nextId();
         directive.targetNodeId = 'r';
+        directive.targetTagName = null;
+        directive.policy = DOM.policy;
 
         const node = document.createTextNode(" ");
         const targets = { r: node };
@@ -52,8 +56,11 @@ describe("The HTML binding directive", () => {
         return { directive, behavior, node, parentNode, targets };
     }
 
-    function configureDirective(directive: HTMLBindingDirective, sourceAspect?: string) {
+    function compileDirective(directive: HTMLBindingDirective, sourceAspect?: string) {
+        directive.id = nextId();
         directive.targetNodeId = 'r';
+        directive.targetTagName = "div";
+        directive.policy = DOM.policy;
 
         if (sourceAspect) {
             HTMLDirective.assignAspect(directive, sourceAspect);
@@ -72,27 +79,27 @@ describe("The HTML binding directive", () => {
 
     function defaultBinding(sourceAspect?: string) {
         const directive = new HTMLBindingDirective(bind<Model>(x => x.value));
-        return configureDirective(directive, sourceAspect);
+        return compileDirective(directive, sourceAspect);
     }
 
     function oneTimeBinding(sourceAspect?: string) {
         const directive = new HTMLBindingDirective(oneTime<Model>(x => x.value));
-        return configureDirective(directive, sourceAspect);
+        return compileDirective(directive, sourceAspect);
     }
 
     function signalBinding(signalName: string, sourceAspect?: string) {
         const directive = new HTMLBindingDirective(signal<Model>(x => x.value, signalName));
-        return configureDirective(directive, sourceAspect);
+        return compileDirective(directive, sourceAspect);
     }
 
     function twoWayBinding(options: TwoWayBindingOptions, sourceAspect?: string) {
         const directive = new HTMLBindingDirective(twoWay<Model>(x => x.value, options));
-        return configureDirective(directive, sourceAspect);
+        return compileDirective(directive, sourceAspect);
     }
 
     function eventBinding(options: AddEventListenerOptions, sourceAspect: string) {
         const directive = new HTMLBindingDirective(listener<Model>(x => x.invokeAction(), options));
-        return configureDirective(directive, sourceAspect);
+        return compileDirective(directive, sourceAspect);
     }
 
     context("when binding text content", () => {

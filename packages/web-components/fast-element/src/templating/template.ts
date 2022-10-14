@@ -151,7 +151,7 @@ export class ViewTemplate<TSource = any, TParent = any>
             );
         }
 
-        return this.result!.createView(hostBindingTarget);
+        return this.result.createView(hostBindingTarget);
     }
 
     /**

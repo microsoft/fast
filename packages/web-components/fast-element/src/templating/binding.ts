@@ -298,7 +298,7 @@ export class HTMLBindingDirective
     createBehavior(): ViewBehavior {
         if (this.updateTarget === null) {
             const sink = sinkLookup[this.aspectType];
-            const policy = this.dataBinding.policy ?? this.policy ?? DOM.policy;
+            const policy = this.dataBinding.policy ?? this.policy;
 
             if (!sink) {
                 throw FAST.error(Message.unsupportedBindingBehavior);
