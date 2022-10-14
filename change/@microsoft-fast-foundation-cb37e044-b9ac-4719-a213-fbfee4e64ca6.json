@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "indeterminate checkboxes should set an aria-checked state of mixed",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}
