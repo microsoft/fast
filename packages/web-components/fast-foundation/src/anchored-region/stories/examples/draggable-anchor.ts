@@ -9,6 +9,14 @@ import {
 } from "@microsoft/fast-element";
 import { eventMouseMove, eventMouseUp } from "@microsoft/fast-web-utilities";
 
+export function registerDraggableAnchor() {
+    DraggableAnchor.define({
+        name: "draggable-anchor",
+        template: draggableAnchorTemplate(),
+        styles: draggableAnchorStyles,
+    });
+}
+
 /**
  *
  *
