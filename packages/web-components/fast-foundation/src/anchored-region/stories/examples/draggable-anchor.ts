@@ -35,7 +35,7 @@ export class DraggableAnchor extends FASTElement {
      */
     private handleMouseDown = (e: MouseEvent): void => {
         this.isDragging = true;
-        window.addEventListener(eventMouseMove, this.handleMouseMove);
+        window.addEventListener(eventMouseMove, this.handleMouseMove, { passive: true });
         document.addEventListener(eventMouseUp, this.handleMouseUp);
         this.lastMouseEvent = e;
         this.updatePosition();
@@ -80,8 +80,6 @@ export class DraggableAnchor extends FASTElement {
         }px)`;
         this.lastMouseEvent = null;
         this.$emit("positionchange", this, { bubbles: false });
-        // this.pointAnchorX = e.pageX - document.documentElement.scrollLeft;
-        // this.pointAnchorY = e.pageY - document.documentElement.scrollTop;
     }
 }
 
