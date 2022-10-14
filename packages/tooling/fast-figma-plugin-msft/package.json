@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-figma-plugin-msft",
   "version": "0.8.16",
   "description": "A Figma plugin for designing MSFT experiences",
-  "sideEffects": false,
+  "type": "module",
   "private": true,
   "scripts": {
     "build": "webpack --progress --mode=production",
@@ -38,6 +38,7 @@
     "eslint-config-prettier": "^6.10.1",
     "html-webpack-inline-source-plugin": "^1.0.0-beta.2",
     "prettier": "2.0.2",
+    "resolve-typescript-plugin": "^1.2.0",
     "raw-loader": "^4.0.2",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.3.0",

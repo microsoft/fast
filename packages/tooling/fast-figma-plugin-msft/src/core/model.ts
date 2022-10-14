@@ -1,4 +1,4 @@
-import { DesignTokenType } from "./ui/design-token-registry";
+import { DesignTokenType } from "./ui/design-token-registry.js";
 
 /**
  * A key for passing the fill color from the tool to the plugin. Keeping it out of main design tokens to avoid a lo more special handling.
