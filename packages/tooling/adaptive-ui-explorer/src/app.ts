@@ -28,17 +28,11 @@ import {
     SwatchRGB,
 } from "@microsoft/adaptive-ui";
 import { ComponentType } from "./component-type.js";
-import { ColorBlock } from "./components/color-block.js";
-import { ControlPane } from "./components/control-pane/index.js";
-import { LayerBackground } from "./components/layer-background/index.js";
-import { PaletteGradient } from "./components/palette-gradient/palette-gradient.js";
-import { SampleApp } from "./components/sample-app/sample-app.js";
-
-ColorBlock;
-ControlPane;
-PaletteGradient;
-LayerBackground;
-SampleApp;
+import "./components/color-block.js";
+import "./components/control-pane/index.js";
+import "./components/layer-background/index.js";
+import "./components/palette-gradient/palette-gradient.js";
+import "./components/sample-app/sample-app.js";
 
 const sampleTemplate = html<App>`
     <app-design-system-provider
@@ -84,6 +78,9 @@ const template = html<App>`
     <div class="container fill">
         <div class="row fill">
             <app-design-system-provider class="canvas" ${ref("canvas")}>
+                <app-design-system-provider
+                    ${ref("designSystemElement")}
+                ></app-design-system-provider>
                 <div class="container fill">
                     <div class="row gradient">
                         <app-palette-gradient
@@ -258,7 +255,7 @@ export class App extends FASTElement implements AppAttributes {
         this.accentColor = "#0078d4";
     }
 
-    private designSystemElement: FASTElement;
+    designSystemElement: FASTElement;
 
     componentTypeTemplate(): ViewTemplate<App, any> {
         // if (this.componentType === ComponentType.sample) {
@@ -301,12 +298,6 @@ export class App extends FASTElement implements AppAttributes {
     ];
 
     private resolveLayerRecipes = (luminance: number): SwatchInfo[] => {
-        if (!this.designSystemElement) {
-            this.designSystemElement = document.createElement(
-                "app-design-system-provider"
-            ) as FASTElement;
-            this.canvas.appendChild(this.designSystemElement);
-        }
         layerFillBaseLuminance.setValueFor(this.designSystemElement, luminance);
 
         return this.layerTokens

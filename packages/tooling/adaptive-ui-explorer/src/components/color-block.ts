@@ -58,24 +58,21 @@ import {
     SwatchRGB,
 } from "@microsoft/adaptive-ui";
 import { ComponentType } from "../component-type.js";
-import { AppSwatch } from "./swatch.js";
-import { AdaptiveComponent } from "./adaptive-component.js";
-
-AdaptiveComponent;
-AppSwatch;
+import "./adaptive-component.js";
+import "./swatch.js";
 
 const backplateComponents = html<ColorBlock>`
     <template>
         <div class="example">
             <app-adaptive-component
-                :fillRestToken="${x => accentFillRest}"
-                :fillHoverToken="${x => accentFillHover}"
-                :fillActiveToken="${x => accentFillActive}"
-                :fillFocusToken="${x => accentFillFocus}"
-                :foregroundRestToken="${x => foregroundOnAccentRest}"
-                :foregroundHoverToken="${x => foregroundOnAccentHover}"
-                :foregroundActiveToken="${x => foregroundOnAccentActive}"
-                :foregroundFocusToken="${x => foregroundOnAccentFocus}"
+                :fillRest="${x => accentFillRest}"
+                :fillHover="${x => accentFillHover}"
+                :fillActive="${x => accentFillActive}"
+                :fillFocus="${x => accentFillFocus}"
+                :foregroundRest="${x => foregroundOnAccentRest}"
+                :foregroundHover="${x => foregroundOnAccentHover}"
+                :foregroundActive="${x => foregroundOnAccentActive}"
+                :foregroundFocus="${x => foregroundOnAccentFocus}"
             >
                 Accent button
             </app-adaptive-component>
@@ -121,11 +118,11 @@ const backplateComponents = html<ColorBlock>`
 
         <div class="example">
             <app-adaptive-component
-                :fillRestToken="${x => neutralFillRest}"
-                :fillHoverToken="${x => neutralFillHover}"
-                :fillActiveToken="${x => neutralFillActive}"
-                :fillFocusToken="${x => neutralFillFocus}"
-                :foregroundRestToken="${x => neutralForegroundRest}"
+                :fillRest="${x => neutralFillRest}"
+                :fillHover="${x => neutralFillHover}"
+                :fillActive="${x => neutralFillActive}"
+                :fillFocus="${x => neutralFillFocus}"
+                :foregroundRest="${x => neutralForegroundRest}"
             >
                 Neutral button
             </app-adaptive-component>
@@ -164,12 +161,12 @@ const backplateComponents = html<ColorBlock>`
 
         <div class="example">
             <app-adaptive-component
-                :fillRestToken="${x => fillColor}"
-                :strokeRestToken="${x => neutralStrokeRest}"
-                :strokeHoverToken="${x => neutralStrokeHover}"
-                :strokeActiveToken="${x => neutralStrokeActive}"
-                :strokeFocusToken="${x => neutralStrokeFocus}"
-                :foregroundRestToken="${x => neutralForegroundRest}"
+                :fillRest="${x => fillColor}"
+                :strokeRest="${x => neutralStrokeRest}"
+                :strokeHover="${x => neutralStrokeHover}"
+                :strokeActive="${x => neutralStrokeActive}"
+                :strokeFocus="${x => neutralStrokeFocus}"
+                :foregroundRest="${x => neutralForegroundRest}"
             >
                 Outline button
             </app-adaptive-component>
@@ -211,11 +208,11 @@ const backplateComponents = html<ColorBlock>`
 
         <div class="example">
             <app-adaptive-component
-                :fillRestToken="${x => neutralFillStealthRest}"
-                :fillHoverToken="${x => neutralFillStealthHover}"
-                :fillActiveToken="${x => neutralFillStealthActive}"
-                :fillFocusToken="${x => neutralFillStealthFocus}"
-                :foregroundRestToken="${x => neutralForegroundRest}"
+                :fillRest="${x => neutralFillStealthRest}"
+                :fillHover="${x => neutralFillStealthHover}"
+                :fillActive="${x => neutralFillStealthActive}"
+                :fillFocus="${x => neutralFillStealthFocus}"
+                :foregroundRest="${x => neutralForegroundRest}"
             >
                 Stealth button
             </app-adaptive-component>
@@ -258,10 +255,10 @@ const textComponents = html<ColorBlock>`
     <template>
         <div class="example">
             <app-adaptive-component
-                :foregroundRestToken="${x => neutralForegroundRest}"
-                :foregroundHoverToken="${x => neutralForegroundHover}"
-                :foregroundActiveToken="${x => neutralForegroundActive}"
-                :foregroundFocusToken="${x => neutralForegroundFocus}"
+                :foregroundRest="${x => neutralForegroundRest}"
+                :foregroundHover="${x => neutralForegroundHover}"
+                :foregroundActive="${x => neutralForegroundActive}"
+                :foregroundFocus="${x => neutralForegroundFocus}"
             >
                 Neutral
             </app-adaptive-component>
@@ -286,7 +283,7 @@ const textComponents = html<ColorBlock>`
         ></app-swatch>
 
         <div class="example">
-            <app-adaptive-component :foregroundRestToken="${x => neutralForegroundHint}">
+            <app-adaptive-component :foregroundRest="${x => neutralForegroundHint}">
                 Hint
             </app-adaptive-component>
         </div>
@@ -299,10 +296,10 @@ const textComponents = html<ColorBlock>`
 
         <div class="example">
             <app-adaptive-component
-                :foregroundRestToken="${x => accentForegroundRest}"
-                :foregroundHoverToken="${x => accentForegroundHover}"
-                :foregroundActiveToken="${x => accentForegroundActive}"
-                :foregroundFocusToken="${x => accentForegroundFocus}"
+                :foregroundRest="${x => accentForegroundRest}"
+                :foregroundHover="${x => accentForegroundHover}"
+                :foregroundActive="${x => accentForegroundActive}"
+                :foregroundFocus="${x => accentForegroundFocus}"
             >
                 Accent
             </app-adaptive-component>
@@ -339,15 +336,15 @@ const formComponents = html<ColorBlock>`
     <template>
         <div class="example">
             <app-adaptive-component
-                :fillRestToken="${x => neutralFillInputRest}"
-                :fillHoverToken="${x => neutralFillInputHover}"
-                :fillActiveToken="${x => neutralFillInputActive}"
-                :fillFocusToken="${x => neutralFillInputFocus}"
-                :foregroundRestToken="${x => neutralForegroundRest}"
-                :strokeRestToken="${x => neutralStrokeRest}"
-                :strokeHoverToken="${x => neutralStrokeHover}"
-                :strokeActiveToken="${x => neutralStrokeActive}"
-                :strokeFocusToken="${x => neutralStrokeFocus}"
+                :fillRest="${x => neutralFillInputRest}"
+                :fillHover="${x => neutralFillInputHover}"
+                :fillActive="${x => neutralFillInputActive}"
+                :fillFocus="${x => neutralFillInputFocus}"
+                :foregroundRest="${x => neutralForegroundRest}"
+                :strokeRest="${x => neutralStrokeRest}"
+                :strokeHover="${x => neutralStrokeHover}"
+                :strokeActive="${x => neutralStrokeActive}"
+                :strokeFocus="${x => neutralStrokeFocus}"
             >
                 Text field
             </app-adaptive-component>
@@ -394,15 +391,15 @@ const formComponents = html<ColorBlock>`
 
         <div class="example">
             <app-adaptive-component
-                :fillRestToken="${x => neutralFillInputRest}"
-                :fillHoverToken="${x => neutralFillInputHover}"
-                :fillActiveToken="${x => neutralFillInputActive}"
-                :fillFocusToken="${x => neutralFillInputFocus}"
-                :foregroundRestToken="${x => neutralForegroundRest}"
-                :strokeRestToken="${x => neutralStrokeStrongRest}"
-                :strokeHoverToken="${x => neutralStrokeStrongHover}"
-                :strokeActiveToken="${x => neutralStrokeStrongActive}"
-                :strokeFocusToken="${x => neutralStrokeStrongFocus}"
+                :fillRest="${x => neutralFillInputRest}"
+                :fillHover="${x => neutralFillInputHover}"
+                :fillActive="${x => neutralFillInputActive}"
+                :fillFocus="${x => neutralFillInputFocus}"
+                :foregroundRest="${x => neutralForegroundRest}"
+                :strokeRest="${x => neutralStrokeStrongRest}"
+                :strokeHover="${x => neutralStrokeStrongHover}"
+                :strokeActive="${x => neutralStrokeStrongActive}"
+                :strokeFocus="${x => neutralStrokeStrongFocus}"
             >
                 Checkbox
             </app-adaptive-component>
@@ -446,7 +443,7 @@ const formComponents = html<ColorBlock>`
         ></app-swatch>
 
         <div class="example">
-            <app-adaptive-component :strokeRestToken="${x => neutralStrokeDividerRest}">
+            <app-adaptive-component :strokeRest="${x => neutralStrokeDividerRest}">
                 Divider
             </app-adaptive-component>
         </div>

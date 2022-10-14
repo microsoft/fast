@@ -9,34 +9,27 @@ import {
 import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { Swatch } from "@microsoft/adaptive-ui";
 
+// why this component is different
+
 function template<T extends AdaptiveComponent>(): ElementViewTemplate<T> {
     return html<T>`
-        <template tabindex="0">
-            <style>
-                :host {
-                    background: ${x => x.fillRestToken?.createCSS()};
-                    border-color: ${x => x.strokeRestToken?.createCSS()} !important;
-                    color: ${x => x.foregroundRestToken?.createCSS()};
-                }
-
-                :host(:hover) {
-                    background: ${x => x.fillHoverToken?.createCSS()};
-                    border-color: ${x => x.strokeHoverToken?.createCSS()} !important;
-                    color: ${x => x.foregroundHoverToken?.createCSS()};
-                }
-
-                :host(:active) {
-                    background: ${x => x.fillActiveToken?.createCSS()};
-                    border-color: ${x => x.strokeActiveToken?.createCSS()} !important;
-                    color: ${x => x.foregroundActiveToken?.createCSS()};
-                }
-
-                :host(:focus) {
-                    background: ${x => x.fillFocusToken?.createCSS()};
-                    border-color: ${x => x.strokeFocusToken?.createCSS()} !important;
-                    color: ${x => x.foregroundFocusToken?.createCSS()};
-                }
-            </style>
+        <template
+            tabindex="0"
+            style="
+                --ac-fill-rest: ${x => x.fillRest?.createCSS()};
+                --ac-fill-hover: ${x => x.fillHover?.createCSS()};
+                --ac-fill-active: ${x => x.fillActive?.createCSS()};
+                --ac-fill-focus: ${x => x.fillFocus?.createCSS()};
+                --ac-stroke-rest: ${x => x.strokeRest?.createCSS()};
+                --ac-stroke-hover: ${x => x.strokeHover?.createCSS()};
+                --ac-stroke-active: ${x => x.strokeActive?.createCSS()};
+                --ac-stroke-focus: ${x => x.strokeFocus?.createCSS()};
+                --ac-foreground-rest: ${x => x.foregroundRest?.createCSS()};
+                --ac-foreground-hover: ${x => x.foregroundHover?.createCSS()};
+                --ac-foreground-active: ${x => x.foregroundActive?.createCSS()};
+                --ac-foreground-focus: ${x => x.foregroundFocus?.createCSS()};
+            "
+        >
             <slot></slot>
         </template>
     `;
@@ -54,6 +47,30 @@ const styles = css`
         border-radius: 4px;
         cursor: pointer;
     }
+
+    :host {
+        background: var(--ac-fill-rest);
+        border-color: var(--ac-stroke-rest) !important;
+        color: var(--ac-foreground-rest);
+    }
+
+    :host(:hover) {
+        background: var(--ac-fill-hover);
+        border-color: var(--ac-stroke-hover) !important;
+        color: var(--ac-foreground-hover);
+    }
+
+    :host(:active) {
+        background: var(--ac-fill-active);
+        border-color: var(--ac-stroke-active) !important;
+        color: var(--ac-foreground-active);
+    }
+
+    :host(:focus) {
+        background: var(--ac-fill-focus);
+        border-color: var(--ac-stroke-focus) !important;
+        color: var(--ac-foreground-focus);
+    }
 `;
 
 @customElement({
@@ -63,38 +80,38 @@ const styles = css`
 })
 export class AdaptiveComponent extends FASTElement {
     @observable
-    public fillRestToken?: CSSDesignToken<Swatch>;
+    public fillRest?: CSSDesignToken<Swatch>;
 
     @observable
-    public fillHoverToken?: CSSDesignToken<Swatch>;
+    public fillHover?: CSSDesignToken<Swatch>;
 
     @observable
-    public fillActiveToken?: CSSDesignToken<Swatch>;
+    public fillActive?: CSSDesignToken<Swatch>;
 
     @observable
-    public fillFocusToken?: CSSDesignToken<Swatch>;
+    public fillFocus?: CSSDesignToken<Swatch>;
 
     @observable
-    public strokeRestToken?: CSSDesignToken<Swatch>;
+    public strokeRest?: CSSDesignToken<Swatch>;
 
     @observable
-    public strokeHoverToken?: CSSDesignToken<Swatch>;
+    public strokeHover?: CSSDesignToken<Swatch>;
 
     @observable
-    public strokeActiveToken?: CSSDesignToken<Swatch>;
+    public strokeActive?: CSSDesignToken<Swatch>;
 
     @observable
-    public strokeFocusToken?: CSSDesignToken<Swatch>;
+    public strokeFocus?: CSSDesignToken<Swatch>;
 
     @observable
-    public foregroundRestToken?: CSSDesignToken<Swatch>;
+    public foregroundRest?: CSSDesignToken<Swatch>;
 
     @observable
-    public foregroundHoverToken?: CSSDesignToken<Swatch>;
+    public foregroundHover?: CSSDesignToken<Swatch>;
 
     @observable
-    public foregroundActiveToken?: CSSDesignToken<Swatch>;
+    public foregroundActive?: CSSDesignToken<Swatch>;
 
     @observable
-    public foregroundFocusToken?: CSSDesignToken<Swatch>;
+    public foregroundFocus?: CSSDesignToken<Swatch>;
 }

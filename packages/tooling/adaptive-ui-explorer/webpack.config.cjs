@@ -1,4 +1,5 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const InjectBodyPlugin = require("inject-body-webpack-plugin").default;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ResolveTypeScriptPlugin = require("resolve-typescript-plugin");
 const path = require('path');
@@ -9,7 +10,7 @@ module.exports = function(env, { mode }) {
         mode: production ? 'production' : 'development',
         devtool: production ? 'source-map' : 'inline-source-map',
         entry: {
-            app: ['./src/webapp.ts']
+            app: ['./src/app.ts']
         },
         output: {
             filename: 'bundle.js',
@@ -18,6 +19,9 @@ module.exports = function(env, { mode }) {
         },
         plugins: [
             new CleanWebpackPlugin(),
+            new InjectBodyPlugin({
+                content: "<style>html { height: 100%; font-family: sans-serif; } body { margin: 0; height: 100%; display: flex; }</style> <app-main></app-main>",
+            }),
             new HtmlWebpackPlugin({
                 title: "Adaptive UI Explorer",
             }),
@@ -32,15 +36,15 @@ module.exports = function(env, { mode }) {
         },
         module: {
             rules: [
-              {
-                  test: /\.ts$/i,
-                  use: [
-                      {
-                          loader: 'ts-loader'
-                      }
-                  ],
-                  exclude: /node_modules/
-              }
+                {
+                    test: /\.ts$/i,
+                    use: [
+                        {
+                            loader: 'ts-loader'
+                        }
+                    ],
+                    exclude: /node_modules/
+                }
             ]
         },
         resolve: {
