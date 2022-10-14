@@ -3,5 +3,5 @@
   "comment": "fix: tokenList bindings track adds and removes from multiple sources",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
