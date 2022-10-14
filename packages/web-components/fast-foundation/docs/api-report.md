@@ -270,12 +270,12 @@ export function checkboxTemplate<T extends FASTCheckbox>(options?: CheckboxOptio
 export interface ColumnDefinition {
     cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
     cellInternalFocusQueue?: boolean;
-    cellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
+    cellTemplate?: ViewTemplate | SyntheticViewTemplate;
     columnDataKey: string;
     gridColumn?: string;
     headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
     headerCellInternalFocusQueue?: boolean;
-    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
+    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate;
     isRowHeader?: boolean;
     title?: string;
 }

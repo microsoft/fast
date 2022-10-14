@@ -1,4 +1,10 @@
-import { ElementViewTemplate, html, repeat, when } from "@microsoft/fast-element";
+import {
+    dangerousHTML,
+    ElementViewTemplate,
+    html,
+    repeat,
+    when,
+} from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate, tagFor } from "../patterns/index.js";
 import type {
@@ -42,7 +48,7 @@ export function calendarTitleTemplate<T extends FASTCalendar>(): ViewTemplate<T>
 export function calendarWeekdayTemplate(
     options: CalendarOptions
 ): ViewTemplate<WeekdayText> {
-    const cellTag = tagFor(options.dataGridCell);
+    const cellTag = dangerousHTML(tagFor(options.dataGridCell));
     return html<WeekdayText>`
         <${cellTag}
             class="week-day"
@@ -67,7 +73,7 @@ export function calendarCellTemplate(
     options: CalendarOptions,
     todayString: string
 ): ViewTemplate<CalendarDateInfo> {
-    const cellTag: string = tagFor(options.dataGridCell);
+    const cellTag = dangerousHTML(tagFor(options.dataGridCell));
     return html<CalendarDateInfo>`
         <${cellTag}
             class="${(x, c) => c.parentContext.parent.getDayClassNames(x, todayString)}"
@@ -134,8 +140,8 @@ export function interactiveCalendarGridTemplate<T extends FASTCalendar>(
     options: CalendarOptions,
     todayString: string
 ): ViewTemplate<T> {
-    const gridTag: string = tagFor(options.dataGrid);
-    const rowTag: string = tagFor(options.dataGridRow);
+    const gridTag = dangerousHTML(tagFor(options.dataGrid));
+    const rowTag = dangerousHTML(tagFor(options.dataGridRow));
 
     return html<T>`
     <${gridTag} class="days interact" part="days" generate-header="none">

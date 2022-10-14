@@ -1,4 +1,10 @@
-import { ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
+import {
+    dangerousHTML,
+    ElementViewTemplate,
+    html,
+    ref,
+    when,
+} from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate, tagFor } from "../patterns/index.js";
 import { MenuItemRole } from "./menu-item.js";
 import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
@@ -12,7 +18,7 @@ import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
 export function menuItemTemplate<T extends FASTMenuItem>(
     options: MenuItemOptions
 ): ElementViewTemplate<T> {
-    const anchoredRegionTag = tagFor(options.anchoredRegion);
+    const anchoredRegionTag = dangerousHTML(tagFor(options.anchoredRegion));
     return html<T>`
     <template
         aria-haspopup="${x => (x.hasSubmenu ? "menu" : void 0)}"

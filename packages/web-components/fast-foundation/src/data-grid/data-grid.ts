@@ -52,7 +52,7 @@ export interface ColumnDefinition {
     /**
      *  Header cell template
      */
-    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
+    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate;
 
     /**
      * Whether the header cell has an internal focus queue
@@ -71,7 +71,7 @@ export interface ColumnDefinition {
     /**
      * cell template
      */
-    cellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
+    cellTemplate?: ViewTemplate | SyntheticViewTemplate;
 
     /**
      * Whether the cell has an internal focus queue
