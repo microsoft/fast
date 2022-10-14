@@ -157,11 +157,12 @@ export const enum Message {
     // 1101 - 1200 Observation
     needsArrayObservation = 1101,
     // 1201 - 1300 Templating
-    onlySetHTMLPolicyOnce = 1201,
+    onlySetDOMPolicyOnce = 1201,
     bindingInnerHTMLRequiresTrustedTypes = 1202,
     twoWayBindingRequiresObservables = 1203,
     hostBindingWithoutHost = 1204,
     unsupportedBindingBehavior = 1205,
+    directCallToHTMLTagNotAllowed = 1206,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,

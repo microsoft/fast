@@ -119,8 +119,7 @@ export const DOM = Object.freeze({
      */
     set policy(value: DOMPolicy) {
         if (defaultPolicy !== fastPolicy) {
-            // TODO: fix error message
-            throw FAST.error(Message.onlySetHTMLPolicyOnce);
+            throw FAST.error(Message.onlySetDOMPolicyOnce);
         }
 
         defaultPolicy = value;

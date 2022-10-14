@@ -1,6 +1,7 @@
 import type { DOMPolicy } from "../dom.js";
-import { isFunction } from "../interfaces.js";
+import { isFunction, Message } from "../interfaces.js";
 import type { Expression } from "../observation/observable.js";
+import { FAST } from "../platform.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
 import {
@@ -230,10 +231,7 @@ export function html<TSource = any, TParent = any>(
     ...values: TemplateValue<TSource, TParent>[]
 ): ViewTemplate<TSource, TParent> {
     if (!Array.isArray(strings) || !Array.isArray(strings.raw)) {
-        // TODO
-        throw new Error(
-            "Calling html`` as a normal function invalidates the security guarantees provided by FAST."
-        );
+        throw FAST.error(Message.directCallToHTMLTagNotAllowed);
     }
 
     return ViewTemplate.create((strings as any) as string[], values);
