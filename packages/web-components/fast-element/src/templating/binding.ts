@@ -225,16 +225,13 @@ function updateTokenList(
     }
 }
 
-const setProperty = (t, a, v) => (t[a] = v);
-const eventTarget = () => void 0;
-
 const sinkLookup: Record<DOMAspect, UpdateTarget> = {
-    1: DOM.setAttribute,
-    2: DOM.setBooleanAttribute,
-    3: setProperty,
-    4: updateContent,
-    5: updateTokenList,
-    6: eventTarget,
+    [DOMAspect.attribute]: DOM.setAttribute,
+    [DOMAspect.booleanAttribute]: DOM.setBooleanAttribute,
+    [DOMAspect.property]: (t, a, v) => (t[a] = v),
+    [DOMAspect.content]: updateContent,
+    [DOMAspect.tokenList]: updateTokenList,
+    [DOMAspect.event]: () => void 0,
 };
 
 /**
@@ -320,7 +317,7 @@ export class HTMLBindingDirective
         const target = controller.targets[this.nodeId];
 
         switch (this.aspectType) {
-            case 6:
+            case DOMAspect.event:
                 target[this.data] = controller;
                 target.addEventListener(
                     this.targetAspect,
@@ -328,7 +325,7 @@ export class HTMLBindingDirective
                     this.dataBinding.options
                 );
                 break;
-            case 4:
+            case DOMAspect.content:
                 controller.onUnbind(this);
             // intentional fall through
             default:
