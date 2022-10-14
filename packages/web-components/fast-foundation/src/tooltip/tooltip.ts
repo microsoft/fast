@@ -281,13 +281,13 @@ export class FASTTooltip extends FASTElement {
      * @internal
      */
     @observable
-    public pointAnchorX: number = 0;
+    public virtualAnchorX: number = 0;
 
     /**
      * @internal
      */
     @observable
-    public pointAnchorY: number = 0;
+    public virtualAnchorY: number = 0;
 
     /**
      * reference to the anchored region
@@ -392,8 +392,8 @@ export class FASTTooltip extends FASTElement {
             // tooltip is already visible
             return;
         }
-        this.pointAnchorX = ev.pageX;
-        this.pointAnchorY = ev.pageY;
+        this.virtualAnchorX = ev.pageX;
+        this.virtualAnchorY = ev.pageY;
         this.startShowDelayTimer();
         if (this.trackPointer) {
             window.addEventListener(eventMouseMove, this.handleMouseMove);
@@ -699,7 +699,7 @@ export class FASTTooltip extends FASTElement {
      * handles mouse move events when in mouse tracking mode
      */
     private handleMouseMove = (e: MouseEvent): void => {
-        this.pointAnchorX = e.pageX - document.documentElement.scrollLeft;
-        this.pointAnchorY = e.pageY - document.documentElement.scrollTop;
+        this.virtualAnchorX = e.pageX - document.documentElement.scrollLeft;
+        this.virtualAnchorY = e.pageY - document.documentElement.scrollTop;
     };
 }

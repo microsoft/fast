@@ -50,10 +50,10 @@ export class ARMenuPatterns extends FASTElement {
     contextMenuOpen: boolean = false;
 
     @observable
-    pointAnchorX: number = 0;
+    virtualAnchorX: number = 0;
 
     @observable
-    pointAnchorY: number = 0;
+    virtualAnchorY: number = 0;
 
     public contextElement: HTMLElement;
 
@@ -72,8 +72,8 @@ export class ARMenuPatterns extends FASTElement {
             return;
         }
         e.preventDefault();
-        this.pointAnchorX = e.clientX;
-        this.pointAnchorY = e.clientY;
+        this.virtualAnchorX = e.clientX;
+        this.virtualAnchorY = e.clientY;
         if (!this.contextMenuOpen) {
             this.contextMenuOpen = true;
             window.addEventListener("click", this.handleContextClose);
@@ -390,7 +390,7 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                 x => x.contextMenuOpen,
                 html<T>`
                     <fast-anchored-region
-                        use-point-anchor="true"
+                        use-virtual-anchor="true"
                         fixed-placement="true"
                         horizontal-default-position="right"
                         horizontal-positioning-mode="dynamic"
@@ -399,8 +399,8 @@ export function arMenuPatternsTemplate<T extends ARMenuPatterns>(): ElementViewT
                         vertical-default-position="bottom"
                         vertical-positioning-mode="dynamic"
                         vertical-viewport-lock="true"
-                        :pointAnchorX="${x => x.pointAnchorX}"
-                        :pointAnchorY="${x => x.pointAnchorY}"
+                        :virtualAnchorX="${x => x.virtualAnchorX}"
+                        :virtualAnchorY="${x => x.virtualAnchorY}"
                     >
                         ${contextMenuTemplate}
                     </fast-anchored-region>

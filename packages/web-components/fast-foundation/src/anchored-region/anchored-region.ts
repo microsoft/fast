@@ -57,41 +57,41 @@ export class FASTAnchoredRegion extends FASTElement {
     }
 
     /**
-     * When true the point anchor coordinate is used as anchor
+     * When true the virtual anchor is used
      *
      * @public
      * @remarks
-     * HTML Attribute: use-point-anchor
+     * HTML Attribute: use-virtual-anchor
      */
-    @attr({ attribute: "use-point-anchor", mode: "boolean" })
-    public usePointAnchor: boolean = false;
-    protected usePointAnchorChanged(): void {
+    @attr({ attribute: "use-virtual-anchor", mode: "boolean" })
+    public useVirtualAnchor: boolean = false;
+    protected useVirtualAnchorChanged(): void {
         this.updateForAttributeChange();
     }
 
     /**
-     * Initial X coordinate when using point anchor
+     * Initial X coordinate when using virtual anchor
      *
      * @public
      * @remarks
-     * HTML Attribute: point-anchor-x
+     * HTML Attribute: virtual-anchor-x
      */
-    @attr({ attribute: "point-anchor-x" })
-    public pointAnchorX: number = 0;
-    protected pointAnchorXChanged(): void {
+    @attr({ attribute: "virtual-anchor-x" })
+    public virtualAnchorX: number = 0;
+    protected virtualAnchorXChanged(): void {
         this.updateForAttributeChange();
     }
 
     /**
-     * Initial y coordinate when using point anchor
+     * Initial y coordinate when using virtual anchor
      *
      * @public
      * @remarks
-     * HTML Attribute: point-anchor-y
+     * HTML Attribute: virtual-anchor-y
      */
-    @attr({ attribute: "point-anchor-y" })
-    public pointAnchorY: number = 0;
-    protected pointAnchorYChanged(): void {
+    @attr({ attribute: "virtual-anchor-y" })
+    public virtualAnchorY: number = 0;
+    protected virtualAnchorYChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -325,6 +325,14 @@ export class FASTAnchoredRegion extends FASTElement {
     }
 
     /**
+     * The HTML element being used as the viewport
+     *
+     * @public
+     */
+    @observable
+    public virtualAnchorRect: DOMRect = new DOMRect();
+
+    /**
      * indicates that an initial positioning pass on layout has completed
      *
      * @internal
@@ -380,8 +388,6 @@ export class FASTAnchoredRegion extends FASTElement {
 
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
-    private pointAnchorRect: DOMRect = new DOMRect();
-
     /**
      * base offsets between the positioner's base position and the anchor's
      */
@@ -408,7 +414,12 @@ export class FASTAnchoredRegion extends FASTElement {
      */
     connectedCallback() {
         super.connectedCallback();
-        this.pointAnchorRect = new DOMRect(this.pointAnchorX, this.pointAnchorY, 1, 1);
+        this.virtualAnchorRect = new DOMRect(
+            this.virtualAnchorX,
+            this.virtualAnchorY,
+            1,
+            1
+        );
         if (this.autoUpdateMode === "auto") {
             this.startAutoUpdateEventListeners();
         }
@@ -531,7 +542,7 @@ export class FASTAnchoredRegion extends FASTElement {
     private startObservers = (): void => {
         this.stopObservers();
 
-        if (this.anchorElement === null && !this.usePointAnchor) {
+        if (this.anchorElement === null && !this.useVirtualAnchor) {
             return;
         }
 
@@ -548,7 +559,7 @@ export class FASTAnchoredRegion extends FASTElement {
      */
     private requestPositionUpdates = (): void => {
         if (
-            (this.anchorElement === null && !this.usePointAnchor) ||
+            (this.anchorElement === null && !this.useVirtualAnchor) ||
             this.pendingPositioningUpdate
         ) {
             return;
@@ -621,7 +632,7 @@ export class FASTAnchoredRegion extends FASTElement {
      *  Gets the anchor element by id
      */
     private getAnchor = (): HTMLElement | null => {
-        if (this.usePointAnchor) {
+        if (this.useVirtualAnchor) {
             return null;
         }
         const rootNode = this.getRootNode();
@@ -660,12 +671,12 @@ export class FASTAnchoredRegion extends FASTElement {
             x => x.target === this
         );
         let anchorEntry: IntersectionObserverEntry | undefined = undefined;
-        if (!this.usePointAnchor) {
+        if (!this.useVirtualAnchor) {
             anchorEntry = entries.find(x => x.target === this.anchorElement);
         } else {
-            this.pointAnchorRect = new DOMRect(
-                this.pointAnchorX,
-                this.pointAnchorY,
+            this.virtualAnchorRect = new DOMRect(
+                this.virtualAnchorX,
+                this.virtualAnchorY,
                 0,
                 0
             );
@@ -677,16 +688,16 @@ export class FASTAnchoredRegion extends FASTElement {
         if (
             regionEntry === undefined ||
             viewportEntry === undefined ||
-            (anchorEntry === undefined && !this.usePointAnchor)
+            (anchorEntry === undefined && !this.useVirtualAnchor)
         ) {
             return false;
         }
 
         let anchorRect: DOMRect = new DOMRect();
-        if (!this.usePointAnchor && anchorEntry !== undefined) {
+        if (!this.useVirtualAnchor && anchorEntry !== undefined) {
             anchorRect = anchorEntry.boundingClientRect;
         } else {
-            anchorRect = this.pointAnchorRect;
+            anchorRect = this.virtualAnchorRect;
         }
 
         // don't update the dom unless there is a significant difference in rect positions
