@@ -152,6 +152,26 @@ export interface ViewBehavior<TSource = any, TParent = any> {
  */
 export interface ViewBehaviorFactory {
     /**
+     * The unique id of the factory.
+     */
+    id?: string;
+
+    /**
+     * The structural id of the DOM node to which the created behavior will apply.
+     */
+    targetNodeId?: string;
+
+    /**
+     * The tag name of the DOM node to which the created behavior will apply.
+     */
+    targetTagName?: string | null;
+
+    /**
+     * The policy that the created behavior must run under.
+     */
+    policy?: DOMPolicy;
+
+    /**
      * Creates a behavior.
      */
     createBehavior(): ViewBehavior;
@@ -160,27 +180,7 @@ export interface ViewBehaviorFactory {
 /**
  * Represents a ViewBehaviorFactory after the compilation process has completed.
  */
-export interface CompiledViewBehaviorFactory extends ViewBehaviorFactory {
-    /**
-     * The unique id of the factory.
-     */
-    id: string;
-
-    /**
-     * The structural id of the DOM node to which the created behavior will apply.
-     */
-    targetNodeId: string;
-
-    /**
-     * The tag name of the DOM node to which the created behavior will apply.
-     */
-    targetTagName: string | null;
-
-    /**
-     * The policy that the created behavior must run under.
-     */
-    policy: DOMPolicy;
-}
+export type CompiledViewBehaviorFactory = Required<ViewBehaviorFactory>;
 
 /**
  * Used to add behavior factories when constructing templates.

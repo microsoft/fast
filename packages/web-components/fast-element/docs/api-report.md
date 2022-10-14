@@ -132,12 +132,7 @@ html: string | HTMLTemplateElement,
 factories: Record<string, ViewBehaviorFactory>) => HTMLTemplateCompilationResult;
 
 // @public
-export interface CompiledViewBehaviorFactory extends ViewBehaviorFactory {
-    id: string;
-    policy: DOMPolicy;
-    targetNodeId: string;
-    targetTagName: string | null;
-}
+export type CompiledViewBehaviorFactory = Required<ViewBehaviorFactory>;
 
 // @public
 export const Compiler: {
@@ -891,6 +886,10 @@ export interface ViewBehavior<TSource = any, TParent = any> {
 // @public
 export interface ViewBehaviorFactory {
     createBehavior(): ViewBehavior;
+    id?: string;
+    policy?: DOMPolicy;
+    targetNodeId?: string;
+    targetTagName?: string | null;
 }
 
 // @public
