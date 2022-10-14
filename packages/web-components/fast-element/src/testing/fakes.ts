@@ -95,7 +95,7 @@ export const Fake = Object.freeze({
     },
 
     viewController<TSource = any, TParent = any>(
-        targets: ViewBehaviorTargets = {},
+        targets: ViewBehaviorTargets,
         ...behaviors: ViewBehavior<TSource, TParent>[]
     ) {
         const unbindables = new Set<{ unbind(controller: ViewController) }>();

@@ -189,8 +189,8 @@ function updateContent(
 }
 
 interface TokenListState {
-    cv: {};
-    v: number;
+    v: {};
+    c: number;
 }
 
 function updateTokenList(
@@ -201,9 +201,9 @@ function updateTokenList(
 ): void {
     const lookup = `${this.id}-t`;
     const state: TokenListState =
-        target[lookup] ?? (target[lookup] = { v: 0, cv: Object.create(null) });
-    const classVersions = state.cv;
-    let version = state.v;
+        target[lookup] ?? (target[lookup] = { c: 0, v: Object.create(null) });
+    const versions = state.v;
+    let currentVersion = state.c;
     const tokenList = target[aspect] as DOMTokenList;
 
     // Add the classes, tracking the version at which they were added.
@@ -217,23 +217,23 @@ function updateTokenList(
                 continue;
             }
 
-            classVersions[currentName] = version;
+            versions[currentName] = currentVersion;
             tokenList.add(currentName);
         }
     }
 
-    state.v = version + 1;
+    state.v = currentVersion + 1;
 
     // If this is the first call to add classes, there's no need to remove old ones.
-    if (version === 0) {
+    if (currentVersion === 0) {
         return;
     }
 
     // Remove classes from the previous version.
-    version -= 1;
+    currentVersion -= 1;
 
-    for (const name in classVersions) {
-        if (classVersions[name] === version) {
+    for (const name in versions) {
+        if (versions[name] === currentVersion) {
             tokenList.remove(name);
         }
     }
