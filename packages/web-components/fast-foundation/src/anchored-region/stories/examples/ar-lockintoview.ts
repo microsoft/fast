@@ -9,6 +9,14 @@ import {
 import type { FASTAnchoredRegion } from "../../anchored-region.js";
 import type { DraggableAnchor } from "./draggable-anchor.js";
 
+export function registerARLockIntoView() {
+    ARLockIntoView.define({
+        name: "ar-lock-into-view",
+        template: arLockIntoViewTemplate(),
+        styles: arLockIntoViewStyles,
+    });
+}
+
 /**
  *
  *

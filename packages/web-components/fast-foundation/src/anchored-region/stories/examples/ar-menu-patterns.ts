@@ -8,6 +8,14 @@ import {
     when,
 } from "@microsoft/fast-element";
 
+export function registerARMenuPatterns() {
+    ARMenuPatterns.define({
+        name: "ar-menu-patterns",
+        template: arMenuPatternsTemplate(),
+        styles: arMenuPatternsStyles,
+    });
+}
+
 /**
  *
  *

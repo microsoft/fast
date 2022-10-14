@@ -207,3 +207,12 @@ export const LockIntoView: Story<FASTAnchoredRegion> = renderComponent(
 LockIntoView.parameters = { controls: { include: [], hideNoControlsWarning: true } };
 LockIntoView.argTypes = {};
 LockIntoView.args = {};
+
+export const Ranking: Story<FASTAnchoredRegion> = renderComponent(
+    html<StoryArgs<FASTAnchoredRegion>>`
+        <ar-ranking></ar-ranking>
+    `
+).bind({});
+Ranking.parameters = { controls: { include: [], hideNoControlsWarning: true } };
+Ranking.argTypes = {};
+Ranking.args = {};

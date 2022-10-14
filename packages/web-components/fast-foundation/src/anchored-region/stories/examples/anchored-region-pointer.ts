@@ -1,6 +1,14 @@
 import { css, ElementViewTemplate, html, when } from "@microsoft/fast-element";
 import { FASTAnchoredRegion } from "../../anchored-region.js";
 
+export function registerAnchoredRegionPointer() {
+    AnchoredRegionPointer.define({
+        name: "anchored-region-pointer",
+        template: anchoredRegionPointerTemplate(),
+        styles: anchoredRegionPointerStyles,
+    });
+}
+
 /**
  *
  *
