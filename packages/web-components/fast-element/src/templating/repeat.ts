@@ -104,7 +104,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
      * @param controller - The view controller that manages the lifecycle of this behavior.
      */
     public bind(controller: ViewController): void {
-        this.location = controller.targets[this.directive.nodeId];
+        this.location = controller.targets[this.directive.targetNodeId];
         this.controller = controller;
         this.items = this.itemsBindingObserver.bind(controller);
         this.template = this.templateBindingObserver.bind(controller);
@@ -295,14 +295,9 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 export class RepeatDirective<TSource = any>
     implements HTMLDirective, ViewBehaviorFactory {
     /**
-     * The unique id of the factory.
-     */
-    id: string = nextId();
-
-    /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    nodeId: string;
+    targetNodeId: string;
 
     /**
      * Creates a placeholder string based on the directive's index within the template.

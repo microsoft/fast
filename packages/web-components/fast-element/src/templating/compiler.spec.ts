@@ -5,7 +5,7 @@ import { css } from "../styles/css.js";
 import { toHTML } from "../__test__/helpers.js";
 import { bind, HTMLBindingDirective } from "./binding.js";
 import { Compiler } from "./compiler.js";
-import { HTMLDirective, ViewBehaviorFactory } from "./html-directive.js";
+import { CompiledViewBehaviorFactory, HTMLDirective, ViewBehaviorFactory } from "./html-directive.js";
 import { html } from "./template.js";
 import type { StyleTarget } from "../interfaces.js";
 import { ElementStyles } from "../index.debug.js";
@@ -20,15 +20,15 @@ import { DOMAspect } from "../dom.js";
  */
 interface CompilationResultInternals {
     readonly fragment: DocumentFragment;
-    readonly factories: ViewBehaviorFactory[];
+    readonly factories: CompiledViewBehaviorFactory[];
 }
 
 describe("The template compiler", () => {
     function compile(html: string, directives: HTMLDirective[]) {
-        const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
+        const factories: Record<string, CompiledViewBehaviorFactory> = Object.create(null);
         const ids: string[] = [];
         let nextId = -1;
-        const add = (factory: ViewBehaviorFactory): string => {
+        const add = (factory: CompiledViewBehaviorFactory): string => {
             const id = `${++nextId}`;
             ids.push(id);
             factory.id = id;
@@ -192,7 +192,7 @@ describe("The template compiler", () => {
                     expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(factories[i].nodeId).to.equal(
+                        expect(factories[i].targetNodeId).to.equal(
                             x.targetIds[i]
                         );
                     }
@@ -204,7 +204,7 @@ describe("The template compiler", () => {
             const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
             const ids: string[] = [];
             let nextId = -1;
-            const add = (factory: ViewBehaviorFactory): string => {
+            const add = (factory: CompiledViewBehaviorFactory): string => {
                 const id = `${++nextId}`;
                 ids.push(id);
                 factory.id = id;
@@ -382,7 +382,7 @@ describe("The template compiler", () => {
                     expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(factories[i].nodeId).to.equal(
+                        expect(factories[i].targetNodeId).to.equal(
                             x.targetIds[i]
                         );
                     }
@@ -543,7 +543,7 @@ describe("The template compiler", () => {
                     expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(factories[i].nodeId).to.equal(
+                        expect(factories[i].targetNodeId).to.equal(
                             x.targetIds[i]
                         );
                     }

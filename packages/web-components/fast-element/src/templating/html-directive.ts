@@ -1,4 +1,4 @@
-import { DOMAspect, DOMPolicy } from "../dom.js";
+import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
 import type { Constructable, Mutable } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
@@ -87,10 +87,15 @@ export const ViewBehaviorOrchestrator = Object.freeze({
                 return isConnected;
             },
             addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void {
-                const nodeId = factory.nodeId || (factory.nodeId = nextId());
-                factory.id || (factory.id = nextId());
-                this.addTarget(nodeId, target);
-                this.addBehavior(factory.createBehavior());
+                const compiled = factory as CompiledViewBehaviorFactory;
+
+                compiled.id = compiled.id ?? nextId();
+                compiled.targetNodeId = compiled.targetNodeId ?? nextId();
+                compiled.targetTagName = (target as HTMLElement).tagName ?? null;
+                compiled.policy = compiled.policy ?? DOM.policy;
+
+                this.addTarget(compiled.targetNodeId, target);
+                this.addBehavior(compiled.createBehavior());
             },
             addTarget(nodeId: string, target: Node) {
                 targets[nodeId] = target;
@@ -147,6 +152,16 @@ export interface ViewBehavior<TSource = any, TParent = any> {
  */
 export interface ViewBehaviorFactory {
     /**
+     * Creates a behavior.
+     */
+    createBehavior(): ViewBehavior;
+}
+
+/**
+ * Represents a ViewBehaviorFactory after the compilation process has completed.
+ */
+export interface CompiledViewBehaviorFactory extends ViewBehaviorFactory {
+    /**
      * The unique id of the factory.
      */
     id: string;
@@ -154,12 +169,17 @@ export interface ViewBehaviorFactory {
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    nodeId: string;
+    targetNodeId: string;
 
     /**
-     * Creates a behavior.
+     * The tag name of the DOM node to which the created behavior will apply.
      */
-    createBehavior(): ViewBehavior;
+    targetTagName: string | null;
+
+    /**
+     * The policy that the created behavior must run under.
+     */
+    policy: DOMPolicy;
 }
 
 /**
@@ -356,16 +376,6 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
  */
 export abstract class StatelessAttachedAttributeDirective<TOptions>
     implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
-    /**
-     * The unique id of the factory.
-     */
-    public id: string = nextId();
-
-    /**
-     * The structural id of the DOM node to which the created behavior will apply.
-     */
-    public nodeId: string;
-
     /**
      * Creates an instance of RefDirective.
      * @param options - The options to use in configuring the directive.

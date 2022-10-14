@@ -7,6 +7,7 @@ import {
     AddViewBehaviorFactory,
     Aspected,
     Binding,
+    CompiledViewBehaviorFactory,
     HTMLDirective,
     HTMLDirectiveDefinition,
     ViewBehaviorFactory,
@@ -177,7 +178,7 @@ export class ViewTemplate<TSource = any, TParent = any>
     ) {
         let html = "";
         const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
-        const add = (factory: ViewBehaviorFactory): string => {
+        const add = (factory: CompiledViewBehaviorFactory): string => {
             const id = factory.id ?? (factory.id = nextId());
             factories[id] = factory;
             return id;

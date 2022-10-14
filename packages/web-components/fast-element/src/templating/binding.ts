@@ -18,7 +18,7 @@ import {
     ViewBehaviorFactory,
     ViewController,
 } from "./html-directive.js";
-import { Markup, nextId } from "./markup.js";
+import { Markup } from "./markup.js";
 
 class OnChangeBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
     TSource,
@@ -246,12 +246,22 @@ export class HTMLBindingDirective
     /**
      * The unique id of the factory.
      */
-    id: string = nextId();
+    id: string;
 
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    nodeId: string;
+    targetNodeId: string;
+
+    /**
+     * The tagname associated with the target node.
+     */
+    targetTagName: string | null;
+
+    /**
+     * The policy that the created behavior must run under.
+     */
+    policy: DOMPolicy;
 
     /**
      * The original source aspect exactly as represented in markup.
@@ -269,17 +279,10 @@ export class HTMLBindingDirective
     aspectType: DOMAspect = DOMAspect.content;
 
     /**
-     * The tagname associated with the target node.
-     */
-    tagName: string | null = null;
-
-    /**
      * Creates an instance of HTMLBindingDirective.
      * @param dataBinding - The binding configuration to apply.
      */
-    constructor(public dataBinding: Binding) {
-        this.data = `${this.id}-d`;
-    }
+    constructor(public dataBinding: Binding) {}
 
     /**
      * Creates HTML to be used within a template.
@@ -295,14 +298,15 @@ export class HTMLBindingDirective
     createBehavior(): ViewBehavior {
         if (this.updateTarget === null) {
             const sink = sinkLookup[this.aspectType];
-            const policy = this.dataBinding.policy ?? DOM.policy;
+            const policy = this.dataBinding.policy ?? this.policy ?? DOM.policy;
 
             if (!sink) {
                 throw FAST.error(Message.unsupportedBindingBehavior);
             }
 
+            this.data = `${this.id}-d`;
             this.updateTarget = policy.protect(
-                this.tagName,
+                this.targetTagName,
                 this.aspectType,
                 this.targetAspect,
                 sink
@@ -314,7 +318,7 @@ export class HTMLBindingDirective
 
     /** @internal */
     bind(controller: ViewController): void {
-        const target = controller.targets[this.nodeId];
+        const target = controller.targets[this.targetNodeId];
 
         switch (this.aspectType) {
             case DOMAspect.event:
@@ -348,7 +352,7 @@ export class HTMLBindingDirective
 
     /** @internal */
     unbind(controller: ViewController): void {
-        const target = controller.targets[this.nodeId] as ContentTarget;
+        const target = controller.targets[this.targetNodeId] as ContentTarget;
         const view = target.$fastView as ComposableView;
 
         if (view !== void 0 && view.isComposed) {

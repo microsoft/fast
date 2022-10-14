@@ -67,7 +67,7 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
      * @param controller - The view controller that manages the lifecycle of this behavior.
      */
     public bind(controller: ViewController): void {
-        this.location = controller.targets[this.directive.nodeId];
+        this.location = controller.targets[this.directive.targetNodeId];
         this.controller = controller;
         this.data = this.dataBindingObserver.bind(controller);
         this.template = this.templateBindingObserver.bind(controller);
@@ -150,14 +150,9 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
 export class RenderDirective<TSource = any>
     implements HTMLDirective, ViewBehaviorFactory {
     /**
-     * The unique id of the factory.
-     */
-    public id: string;
-
-    /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    public nodeId: string;
+    public targetNodeId: string;
 
     /**
      * Creates an instance of RenderDirective.

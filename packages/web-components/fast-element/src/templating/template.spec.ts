@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { html, ViewTemplate } from "./template.js";
 import { Markup, Parser } from "./markup.js";
 import { bind, HTMLBindingDirective } from "./binding.js";
-import { HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory } from "./html-directive.js";
+import { HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory, CompiledViewBehaviorFactory } from "./html-directive.js";
 import { Constructable, isString } from "../interfaces.js";
 import { Fake } from "../testing/fakes.js";
 import { dangerousHTML } from "./dangerous-html.js";
@@ -219,7 +219,7 @@ describe(`The html tag template helper`, () => {
                     let found = false;
 
                     for (const id in x.template.factories) {
-                        const behaviorFactory = x.template.factories[id];
+                        const behaviorFactory = x.template.factories[id] as CompiledViewBehaviorFactory;
 
                         if (behaviorFactory instanceof type) {
                             found = true;

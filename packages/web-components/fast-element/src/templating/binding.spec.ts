@@ -39,7 +39,7 @@ describe("The HTML binding directive", () => {
 
     function contentBinding(propertyName: keyof Model = "value") {
         const directive = new HTMLBindingDirective(bind(x => x[propertyName]));
-        directive.nodeId = 'r';
+        directive.targetNodeId = 'r';
 
         const node = document.createTextNode(" ");
         const targets = { r: node };
@@ -53,7 +53,7 @@ describe("The HTML binding directive", () => {
     }
 
     function configureDirective(directive: HTMLBindingDirective, sourceAspect?: string) {
-        directive.nodeId = 'r';
+        directive.targetNodeId = 'r';
 
         if (sourceAspect) {
             HTMLDirective.assignAspect(directive, sourceAspect);

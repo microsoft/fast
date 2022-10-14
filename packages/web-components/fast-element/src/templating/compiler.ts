@@ -2,11 +2,12 @@ import { isFunction, isString, Message } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { DOM, DOMPolicy } from "../dom.js";
-import { Parser } from "./markup.js";
+import { nextId, Parser } from "./markup.js";
 import { HTMLBindingDirective, oneTime } from "./binding.js";
 import {
     Aspected,
     Binding,
+    CompiledViewBehaviorFactory,
     HTMLDirective,
     ViewBehaviorFactory,
 } from "./html-directive.js";
@@ -52,7 +53,7 @@ class CompilationContext<TSource = any, TParent = any>
     private proto: any = null;
     private nodeIds = new Set<string>();
     private descriptors: PropertyDescriptorMap = {};
-    public readonly factories: ViewBehaviorFactory[] = [];
+    public readonly factories: CompiledViewBehaviorFactory[] = [];
 
     constructor(
         public readonly fragment: DocumentFragment,
@@ -61,17 +62,22 @@ class CompilationContext<TSource = any, TParent = any>
     ) {}
 
     public addFactory(
-        factory: ViewBehaviorFactory,
+        factory: CompiledViewBehaviorFactory,
         parentId: string,
         nodeId: string,
-        targetIndex: number
+        targetIndex: number,
+        tagName: string | null
     ): void {
         if (!this.nodeIds.has(nodeId)) {
             this.nodeIds.add(nodeId);
             this.addTargetDescriptor(parentId, nodeId, targetIndex);
         }
 
-        factory.nodeId = nodeId;
+        factory.id = factory.id ?? nextId();
+        factory.targetNodeId = nodeId;
+        factory.targetTagName = tagName;
+        factory.policy = factory.policy ?? this.policy;
+
         this.factories.push(factory);
     }
 
@@ -168,7 +174,13 @@ function compileAttributes(
             node.removeAttributeNode(attr);
             i--;
             ii--;
-            context.addFactory(result, parentId, nodeId, nodeIndex);
+            context.addFactory(
+                result as CompiledViewBehaviorFactory,
+                parentId,
+                nodeId,
+                nodeIndex,
+                node.tagName
+            );
         }
     }
 }
@@ -207,7 +219,13 @@ function compileContent(
         } else {
             currentNode.textContent = " ";
             HTMLDirective.assignAspect((currentPart as any) as Aspected);
-            context.addFactory(currentPart, parentId, nodeId, nodeIndex);
+            context.addFactory(
+                currentPart as CompiledViewBehaviorFactory,
+                parentId,
+                nodeId,
+                nodeIndex,
+                null
+            );
         }
 
         lastNode = currentNode;
@@ -254,10 +272,11 @@ function compileNode(
             if (parts !== null) {
                 context.addFactory(
                     /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-                    Compiler.aggregate(parts),
+                    Compiler.aggregate(parts) as CompiledViewBehaviorFactory,
                     parentId,
                     nodeId,
-                    nodeIndex
+                    nodeIndex,
+                    null
                 );
             }
             break;

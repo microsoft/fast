@@ -65,7 +65,7 @@ describe("The children", () => {
             const behavior = new ChildrenDirective({
                 property: "nodes",
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = createController(model, targets);
 
@@ -80,7 +80,7 @@ describe("The children", () => {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = createController(model, targets);
 
@@ -94,7 +94,7 @@ describe("The children", () => {
             const behavior = new ChildrenDirective({
                 property: "nodes",
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = createController(model, targets);
 
@@ -115,7 +115,7 @@ describe("The children", () => {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = createController(model, targets);
 
@@ -148,7 +148,7 @@ describe("The children", () => {
                 subtree: true,
                 selector: subtreeElement,
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
 
             const model = new Model();
             const controller = createController(model, targets);
@@ -177,7 +177,7 @@ describe("The children", () => {
             const behavior = new ChildrenDirective({
                 property: "nodes",
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = createController(model, targets);
 

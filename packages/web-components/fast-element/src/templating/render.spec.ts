@@ -596,7 +596,7 @@ describe("The render", () => {
 
         function renderBehavior() {
             const directive = render<Parent>(x => x.child, x => x.template) as RenderDirective;
-            directive.nodeId = 'r';
+            directive.targetNodeId = 'r';
 
             const node = document.createComment("");
             const targets = { r: node };

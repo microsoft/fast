@@ -132,6 +132,14 @@ html: string | HTMLTemplateElement,
 factories: Record<string, ViewBehaviorFactory>) => HTMLTemplateCompilationResult;
 
 // @public
+export interface CompiledViewBehaviorFactory extends ViewBehaviorFactory {
+    id: string;
+    policy: DOMPolicy;
+    targetNodeId: string;
+    targetTagName: string | null;
+}
+
+// @public
 export const Compiler: {
     compile<TSource = any, TParent = any>(html: string | HTMLTemplateElement, directives: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy): HTMLTemplateCompilationResult<TSource, TParent>;
     setDefaultStrategy(strategy: CompilationStrategy): void;
@@ -468,10 +476,11 @@ export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory,
     // @internal (undocumented)
     handleEvent(event: Event): void;
     id: string;
-    nodeId: string;
+    policy: DOMPolicy;
     sourceAspect: string;
-    tagName: string | null;
     targetAspect: string;
+    targetNodeId: string;
+    targetTagName: string | null;
     // @internal (undocumented)
     unbind(controller: ViewController): void;
 }
@@ -504,7 +513,7 @@ export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
 
 // @public
 export class HTMLView<TSource = any, TParent = any> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> {
-    constructor(fragment: DocumentFragment, factories: ReadonlyArray<ViewBehaviorFactory>, targets: ViewBehaviorTargets);
+    constructor(fragment: DocumentFragment, factories: ReadonlyArray<CompiledViewBehaviorFactory>, targets: ViewBehaviorTargets);
     appendTo(node: Node): void;
     bind(source: TSource, context?: ExecutionContext<TParent>): void;
     context: ExecutionContext<TParent>;
@@ -576,7 +585,10 @@ export abstract class NodeObservationDirective<T extends NodeBehaviorOptions> ex
     protected abstract disconnect(target: any): void;
     protected abstract getNodes(target: any): Node[];
     protected getSource(target: Node): any;
+    get id(): string;
+    set id(value: string);
     protected abstract observe(target: any): void;
+    targetNodeId: string;
     unbind(controller: ViewController): void;
     protected updateTarget(source: any, value: ReadonlyArray<any>): void;
 }
@@ -656,6 +668,7 @@ export const ref: <TSource = any, TParent = any>(propertyName: keyof TSource & s
 // @public
 export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     bind(controller: ViewController): void;
+    targetNodeId: string;
 }
 
 // @public
@@ -678,10 +691,9 @@ export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehavi
     createHTML(add: AddViewBehaviorFactory): string;
     // (undocumented)
     readonly dataBinding: Binding<TSource>;
-    id: string;
-    nodeId: string;
     // (undocumented)
     readonly options: RepeatOptions;
+    targetNodeId: string;
     // (undocumented)
     readonly templateBinding: Binding<TSource, SyntheticViewTemplate>;
 }
@@ -771,8 +783,6 @@ export abstract class StatelessAttachedAttributeDirective<TOptions> implements H
     abstract bind(controller: ViewController): void;
     createBehavior(): ViewBehavior;
     createHTML(add: AddViewBehaviorFactory): string;
-    id: string;
-    nodeId: string;
     // (undocumented)
     protected options: TOptions;
 }
@@ -881,8 +891,6 @@ export interface ViewBehavior<TSource = any, TParent = any> {
 // @public
 export interface ViewBehaviorFactory {
     createBehavior(): ViewBehavior;
-    id: string;
-    nodeId: string;
 }
 
 // @public
