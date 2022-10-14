@@ -2,7 +2,7 @@ import type { Notifier, Subscriber } from "../observation/notifier.js";
 import { Expression, ExpressionObserver, Observable } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
 import { ArrayObserver, Splice } from "../observation/arrays.js";
-import { Markup, nextId } from "./markup.js";
+import { Markup } from "./markup.js";
 import {
     AddViewBehaviorFactory,
     Binding,

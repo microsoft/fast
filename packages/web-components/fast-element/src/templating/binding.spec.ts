@@ -56,17 +56,20 @@ describe("The HTML binding directive", () => {
         return { directive, behavior, node, parentNode, targets };
     }
 
-    function compileDirective(directive: HTMLBindingDirective, sourceAspect?: string) {
-        directive.id = nextId();
-        directive.targetNodeId = 'r';
-        directive.targetTagName = "div";
-        directive.policy = DOM.policy;
-
+    function compileDirective(directive: HTMLBindingDirective, sourceAspect?: string, node?: HTMLElement) {
         if (sourceAspect) {
             HTMLDirective.assignAspect(directive, sourceAspect);
         }
 
-        const node = document.createElement("div");
+        if (!node) {
+            node = document.createElement("div");
+        }
+
+        directive.id = nextId();
+        directive.targetNodeId = 'r';
+        directive.targetTagName = node.tagName ?? null;
+        directive.policy = DOM.policy;
+
         const targets = { r: node };
 
         const behavior = directive.createBehavior();
@@ -706,10 +709,9 @@ describe("The HTML binding directive", () => {
             );
         }
 
-        function createClassBinding() {
+        function createClassBinding(element: HTMLElement) {
             const directive = new HTMLBindingDirective(bind(() => ""));
-            Aspect.assign(directive, ":classList");
-            return directive.createBehavior() as HTMLBindingDirective;
+            return compileDirective(directive, ":classList", element);
         }
 
         it('adds and removes own classes', () => {
@@ -717,8 +719,8 @@ describe("The HTML binding directive", () => {
             element.classList.add("foo");
             element.classList.add("bar");
 
-            const observerA = createClassBinding();
-            const observerB = createClassBinding();
+            const { directive: observerA } = createClassBinding(element);
+            const { directive: observerB } = createClassBinding(element);
             const contains = element.classList.contains.bind(element.classList);
 
             expect(contains('foo') && contains('bar')).true;
