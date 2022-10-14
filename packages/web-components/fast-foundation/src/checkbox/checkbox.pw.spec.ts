@@ -182,7 +182,7 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveAttribute("aria-readonly", "false");
     });
 
-    test("should add a data attribute of `indeterminate` when indeterminate is true", async () => {
+    test("should set the aria-checked value to 'mixed' when indeterminate property is true", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
@@ -193,13 +193,13 @@ test.describe("Checkbox", () => {
             node.indeterminate = true;
         });
 
-        await expect(element).toHaveBooleanAttribute("data-indeterminate");
+        await expect(element).toHaveAttribute("aria-checked", "mixed");
 
         await element.evaluate((node: FASTCheckbox) => {
             node.indeterminate = false;
         });
 
-        await expect(element).not.toHaveBooleanAttribute("data-indeterminate");
+        await expect(element).toHaveAttribute("aria-checked", "false");
     });
 
     test("should set off `indeterminate` on `checked` change by user click", async () => {
