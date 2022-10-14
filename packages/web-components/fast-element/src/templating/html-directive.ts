@@ -179,6 +179,7 @@ export interface ViewBehaviorFactory {
 
 /**
  * Represents a ViewBehaviorFactory after the compilation process has completed.
+ * @public
  */
 export type CompiledViewBehaviorFactory = Required<ViewBehaviorFactory>;
 

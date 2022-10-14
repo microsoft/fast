@@ -59,9 +59,6 @@ export abstract class NodeObservationDirective<
         return this._id;
     }
 
-    /**
-     * The unique id of the factory.
-     */
     public set id(value: string) {
         this._id = value;
         this._sourceProperty = `${value}-s`;

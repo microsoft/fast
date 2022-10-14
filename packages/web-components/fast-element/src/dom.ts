@@ -49,6 +49,10 @@ export const DOMAspect = Object.freeze({
  */
 export type DOMAspect = typeof DOMAspect[Exclude<keyof typeof DOMAspect, "none">];
 
+/**
+ * A function used to send values to a DOM sink.
+ * @public
+ */
 export type DOMSink = (
     target: Node,
     aspectName: string,
@@ -56,8 +60,24 @@ export type DOMSink = (
     ...args: any[]
 ) => void;
 
+/**
+ * A security policy that FAST can use to interact with the DOM.
+ * @public
+ */
 export interface DOMPolicy {
+    /**
+     * Creates safe HTML from the provided value.
+     * @param value - The source to convert to safe HTML.
+     */
     createHTML(value: string): string;
+
+    /**
+     * Protects a DOM sink that intends to write to the DOM.
+     * @param tagName - The tag name for the element to write to.
+     * @param aspect - The aspect of the DOM to write to.
+     * @param aspectName - The name of the aspect to write to.
+     * @param sink - The sink that is used to write to the DOM.
+     */
     protect<T extends DOMSink = DOMSink>(
         tagName: string | null,
         aspect: DOMAspect,
@@ -106,12 +126,15 @@ export const DOM = Object.freeze({
      */
     processUpdates: Updates.process,
 
+    /**
+     * Gets the dom policy used by the templating system.
+     */
     get policy() {
         return defaultPolicy;
     },
 
     /**
-     * Sets the security policy used by the templating system.
+     * Sets the dom policy used by the templating system.
      * @param policy - The policy to set.
      * @remarks
      * This API can only be called once, for security reasons. It should be

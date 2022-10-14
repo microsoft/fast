@@ -213,10 +213,10 @@ export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (Compos
 // @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
 
-// @public (undocumented)
+// @public
 export function dangerousHTML<TSource = any, TParent = any>(html: string): CaptureType<TSource, TParent>;
 
-// @public (undocumented)
+// @public
 export class DangerousHTMLDirective implements HTMLDirective {
     constructor(html: string);
     // (undocumented)
@@ -255,15 +255,13 @@ export const DOMAspect: Readonly<{
 // @public
 export type DOMAspect = typeof DOMAspect[Exclude<keyof typeof DOMAspect, "none">];
 
-// @public (undocumented)
+// @public
 export interface DOMPolicy {
-    // (undocumented)
     createHTML(value: string): string;
-    // (undocumented)
     protect<T extends DOMSink = DOMSink>(tagName: string | null, aspect: DOMAspect, aspectName: string, sink: T): T;
 }
 
-// @public (undocumented)
+// @public
 export type DOMSink = (target: Node, aspectName: string, value: any, ...args: any[]) => void;
 
 // @public
