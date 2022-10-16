@@ -96,6 +96,32 @@ export class FASTAnchoredRegion extends FASTElement {
     }
 
     /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: virtual-anchor-width
+     */
+    @attr({ attribute: "virtual-anchor-width" })
+    public virtualAnchorWidth: number = 0;
+    protected virtualAnchorWidthChanged(): void {
+        this.updateForAttributeChange();
+    }
+
+    /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: virtual-anchor-height
+     */
+    @attr({ attribute: "virtual-anchor-height" })
+    public virtualAnchorHeight: number = 0;
+    protected virtualAnchorHeightChanged(): void {
+        this.updateForAttributeChange();
+    }
+
+    /**
      * Sets what logic the component uses to determine horizontal placement.
      * 'locktodefault' forces the default position
      * 'dynamic' decides placement based on available space
@@ -325,12 +351,15 @@ export class FASTAnchoredRegion extends FASTElement {
     }
 
     /**
-     * The HTML element being used as the viewport
+     * The virtual rect being used as anchor
      *
-     * @public
+     * @internal
      */
     @observable
     public virtualAnchorRect: DOMRect = new DOMRect();
+    protected virtualAnchorRectChanged(): void {
+        this.updateForAttributeChange();
+    }
 
     /**
      * indicates that an initial positioning pass on layout has completed
@@ -414,12 +443,14 @@ export class FASTAnchoredRegion extends FASTElement {
      */
     connectedCallback() {
         super.connectedCallback();
-        this.virtualAnchorRect = new DOMRect(
-            this.virtualAnchorX,
-            this.virtualAnchorY,
-            1,
-            1
-        );
+        if (!this.virtualAnchorRect) {
+            this.virtualAnchorRect = new DOMRect(
+                this.virtualAnchorX,
+                this.virtualAnchorY,
+                this.virtualAnchorHeight,
+                this.virtualAnchorWidth
+            );
+        }
         if (this.autoUpdateMode === "auto") {
             this.startAutoUpdateEventListeners();
         }
@@ -529,8 +560,13 @@ export class FASTAnchoredRegion extends FASTElement {
         this.style.pointerEvents = "none";
 
         this.forceUpdate = false;
-
-        this.style.position = this.fixedPlacement ? "fixed" : "absolute";
+        // don't set position if we're not doing active positioning on either axis
+        if (
+            this.horizontalPositioningMode !== "uncontrolled" &&
+            this.verticalPositioningMode !== "uncontrolled"
+        ) {
+            this.style.position = this.fixedPlacement ? "fixed" : "absolute";
+        }
         this.updatePositionClasses();
 
         this.updateRegionStyle();

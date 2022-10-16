@@ -212,11 +212,11 @@ LockIntoView.parameters = { controls: { include: [], hideNoControlsWarning: true
 LockIntoView.argTypes = {};
 LockIntoView.args = {};
 
-export const Ranking: Story<FASTAnchoredRegion> = renderComponent(
+export const Tiles: Story<FASTAnchoredRegion> = renderComponent(
     html<StoryArgs<FASTAnchoredRegion>>`
-        <ar-ranking></ar-ranking>
+        <ar-tiles></ar-tiles>
     `
 ).bind({});
-Ranking.parameters = { controls: { include: [], hideNoControlsWarning: true } };
-Ranking.argTypes = {};
-Ranking.args = {};
+Tiles.parameters = { controls: { include: [], hideNoControlsWarning: true } };
+Tiles.argTypes = {};
+Tiles.args = {};
