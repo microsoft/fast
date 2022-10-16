@@ -6,7 +6,7 @@ import { registerAnchoredRegionPointer } from "./examples/anchored-region-pointe
 import { registerARPositionDemo } from "./examples/ar-position-demo.js";
 import { registerARMenuPatterns } from "./examples/ar-menu-patterns.js";
 import { registerARLockIntoView } from "./examples/ar-lockintoview.js";
-import { registerARTiles } from "./examples/ar-tiles.js";
+import { registerARTiles } from "./examples/tiles/ar-tiles.js";
 
 const styles = css`
     :host {

@@ -41,7 +41,7 @@ export class DraggableAnchor extends FASTElement {
     /**
      *
      */
-    private handleMouseDown = (e: MouseEvent): void => {
+    public handleMouseDown = (e: MouseEvent): void => {
         this.isDragging = true;
         window.addEventListener(eventMouseMove, this.handleMouseMove, { passive: true });
         document.addEventListener(eventMouseUp, this.handleMouseUp);
