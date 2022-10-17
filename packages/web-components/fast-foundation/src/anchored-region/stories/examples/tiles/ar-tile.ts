@@ -185,6 +185,7 @@ export const arTileStyles = css`
 
     :host(.dragging) {
         z-index:100;
+        pointer-events: none;
     }
 
     .socket-top .socket-right .socket-bottom .socket-left {
@@ -208,9 +209,10 @@ export const arTileStyles = css`
         grid-column: 1;
     }
     .content {
-        grid-row: 1 / 4;
-        grid-column: 1 / 4;
-        height: 56px;
-        width: 56px;
+        font-size: 32px;
+        height: 36px;
+        width: 36px;
+        grid-row: 2;
+        grid-column: 2;
     }
 `;
