@@ -1,5 +1,6 @@
 import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
+import type { DOMPolicy } from "../dom.js";
 import { Constructable, isFunction, isString } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
@@ -243,12 +244,30 @@ export type BaseElementRenderOptions<
 > = CommonRenderOptions & {
     /**
      * Attributes to use when creating the element template.
+     * @remarks
+     * This API should be used with caution. When providing attributes, if not done properly,
+     * you can open up the application to XSS attacks. When using this API, provide a strong
+     * DOMPolicy that can properly sanitize and also be sure to manually sanitize attribute
+     * values particularly if they can come from user input.
      */
     attributes?: Record<string, string | TemplateValue<TSource, TParent>>;
+
     /**
      * Content to use when creating the element template.
+     * @remarks
+     * This API should be used with caution. When providing content, if not done properly,
+     * you can open up the application to XSS attacks. When using this API, provide a strong
+     * DOMPolicy that can properly sanitize and also be sure to manually sanitize content
+     * particularly if it can come from user input. Prefer passing a template
+     * created by the the html tag helper rather than passing a raw string, as that will
+     * enable the JS runtime to help secure the static strings.
      */
     content?: string | SyntheticViewTemplate;
+
+    /**
+     * The DOMPolicy to create the render instruction with.
+     */
+    policy?: DOMPolicy;
 };
 
 /**
@@ -311,7 +330,8 @@ function instructionToTemplate(def: RenderInstruction | undefined) {
 function createElementTemplate<TSource = any, TParent = any>(
     tagName: string,
     attributes?: Record<string, string | TemplateValue<TSource, TParent>>,
-    content?: string | ContentTemplate
+    content?: string | ContentTemplate,
+    policy?: DOMPolicy
 ): ViewTemplate<TSource, TParent> {
     const markup: Array<string> = [];
     const values: Array<TemplateValue<TSource, TParent>> = [];
@@ -345,7 +365,7 @@ function createElementTemplate<TSource = any, TParent = any>(
         markup[lastIndex] = `${markup[lastIndex]}${content ?? ""}</${tagName}>`;
     }
 
-    return ViewTemplate.create(markup, values);
+    return ViewTemplate.create(markup, values, policy);
 }
 
 function create(options: TagNameRenderOptions): RenderInstruction;
@@ -373,7 +393,8 @@ function create(options: any): RenderInstruction {
         template = createElementTemplate(
             tagName,
             options.attributes ?? defaultAttributes,
-            options.content
+            options.content,
+            options.policy
         );
     } else {
         template = options.template;
@@ -440,19 +461,33 @@ export const RenderInstruction = Object.freeze({
      * @returns true if the object is a RenderInstruction; false otherwise
      */
     instanceOf,
+
     /**
      * Creates a RenderInstruction for a set of options.
      * @param options - The options to use when creating the RenderInstruction.
+     * @remarks
+     * This API should be used with caution. When providing attributes or content,
+     * if not done properly, you can open up the application to XSS attacks. When using this API,
+     * provide a strong DOMPolicy that can properly sanitize and also be sure to manually sanitize
+     * content and attribute values particularly if they can come from user input.
      */
     create,
+
     /**
      * Creates a template based on a tag name.
      * @param tagName - The tag name to use when creating the template.
      * @param attributes - The attributes to apply to the element.
      * @param content - The content to insert into the element.
+     * @param policy - The DOMPolicy to create the template with.
      * @returns A template based on the provided specifications.
+     * @remarks
+     * This API should be used with caution. When providing attributes or content,
+     * if not done properly, you can open up the application to XSS attacks. When using this API,
+     * provide a strong DOMPolicy that can properly sanitize and also be sure to manually sanitize
+     * content and attribute values particularly if they can come from user input.
      */
     createElementTemplate,
+
     /**
      * Creates and registers an instruction.
      * @param options The options to use when creating the RenderInstruction.
@@ -460,6 +495,7 @@ export const RenderInstruction = Object.freeze({
      * A previously created RenderInstruction can also be registered.
      */
     register,
+
     /**
      * Finds a previously registered RenderInstruction by type and optionally by name.
      * @param type - The type to retrieve the RenderInstruction for.
@@ -467,6 +503,7 @@ export const RenderInstruction = Object.freeze({
      * @returns The located RenderInstruction that matches the criteria or undefined if none is found.
      */
     getByType,
+
     /**
      * Finds a previously registered RenderInstruction for the instance's type and optionally by name.
      * @param object - The instance to retrieve the RenderInstruction for.

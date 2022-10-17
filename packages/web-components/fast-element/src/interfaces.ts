@@ -163,6 +163,8 @@ export const enum Message {
     hostBindingWithoutHost = 1204,
     unsupportedBindingBehavior = 1205,
     directCallToHTMLTagNotAllowed = 1206,
+    onlySetTemplatePolicyOnce = 1207,
+    cannotSetTemplatePolicyAfterCompilation = 1208,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,

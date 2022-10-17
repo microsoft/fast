@@ -155,6 +155,27 @@ export class ViewTemplate<TSource = any, TParent = any>
     }
 
     /**
+     * Sets the DOMPolicy for this template.
+     * @param policy - The policy to associated with this template.
+     * @returns The modified template instance.
+     * @remarks
+     * The DOMPolicy can only be set once for a template and cannot be
+     * set after the template is compiled.
+     */
+    public withPolicy(policy: DOMPolicy): this {
+        if (this.result) {
+            throw FAST.error(Message.cannotSetTemplatePolicyAfterCompilation);
+        }
+
+        if (this.policy) {
+            throw FAST.error(Message.onlySetTemplatePolicyOnce);
+        }
+
+        this.policy = policy;
+        return this;
+    }
+
+    /**
      * Creates an HTMLView from this template, binds it to the source, and then appends it to the host.
      * @param source - The data source to bind the template to.
      * @param host - The Element where the template will be rendered.
@@ -172,11 +193,24 @@ export class ViewTemplate<TSource = any, TParent = any>
         return view;
     }
 
+    /**
+     * Creates a template based on a set of static strings and dynamic values.
+     * @param strings - The static strings to create the template with.
+     * @param values - The dynamic values to create the template with.
+     * @param policy - The DOMPolicy to associated with the template.
+     * @returns A ViewTemplate.
+     * @remarks
+     * This API should not be used directly under normal circumstances because constructing
+     * a template in this way, if not done properly, can open up the application to XSS
+     * attacks. When using this API, provide a strong DOMPolicy that can properly sanitize
+     * and also be sure to manually sanitize all static strings particularly if they can
+     * come from user input.
+     */
     public static create<TSource = any, TParent = any>(
         strings: string[],
         values: TemplateValue<TSource, TParent>[],
         policy?: DOMPolicy
-    ) {
+    ): ViewTemplate<TSource, TParent> {
         let html = "";
         const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
         const add = (factory: CompiledViewBehaviorFactory): string => {

@@ -13,12 +13,14 @@ const FAST: FASTGlobal = globalThis.FAST;
 
 const debugMessages = {
     [1101 /* needsArrayObservation */]: "Must call enableArrayObservation before observing arrays.",
-    [1201 /* onlySetDOMPolicyOnce */]: "The DOM policy can only be set once.",
+    [1201 /* onlySetDOMPolicyOnce */]: "The DOM Policy can only be set once.",
     [1202 /* bindingInnerHTMLRequiresTrustedTypes */]: "To bind innerHTML, you must use a TrustedTypesPolicy.",
     [1203 /* twoWayBindingRequiresObservables */]: "View=>Model update skipped. To use twoWay binding, the target property must be observable.",
     [1204 /* hostBindingWithoutHost */]: "No host element is present. Cannot bind host with ${name}.",
     [1205 /* unsupportedBindingBehavior */]: "The requested binding behavior is not supported by the binding engine.",
     [1206 /* directCallToHTMLTagNotAllowed */]: "Calling html`` as a normal function invalidates the security guarantees provided by FAST.",
+    [1207 /* onlySetTemplatePolicyOnce */]: "The DOM Policy for an HTML template can only be set once.",
+    [1208 /* cannotSetTemplatePolicyAfterCompilation */]: "The DOM Policy cannot be set after a template is compiled.",
     [1401 /* missingElementDefinition */]: "Missing FASTElement definition.",
     [1501 /* noRegistrationForContext */]: "No registration for Context/Interface '${name}'.",
     [1502 /* noFactoryForResolver */]: "Dependency injection resolver for '${key}' returned a null factory.",
