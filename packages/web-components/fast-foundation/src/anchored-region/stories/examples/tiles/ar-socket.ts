@@ -27,6 +27,7 @@ export const SocketFacing = {
     bottom: "bottom",
     left: "left",
     right: "right",
+    center: "center",
 } as const;
 
 /**
@@ -57,6 +58,7 @@ export class ARSocket extends FASTAnchoredRegion {
         } else {
             this.removeEventListener("mouseenter", this.handleMouseEnter);
             this.removeEventListener("mouseleave", this.handleMouseLeave);
+            this.socketHovered = false;
         }
     }
 
@@ -142,11 +144,9 @@ export function arSocketTemplate<T extends ARSocket>(): ElementViewTemplate<T> {
                     transform:rotate(${x =>
                             x.getRotation(x.anchorRect, x.regionRect)}deg);
                     opacity:${x =>
-                            (600 - x.getDistance(x.anchorRect, x.regionRect)) / 600};
+                            (100 - x.getDistance(x.anchorRect, x.regionRect)) / 100};
                 "
-                    >
-                        ↑
-                    </div>
+                    ></div>
                 `
             )}
         </template>
@@ -156,9 +156,8 @@ export function arSocketTemplate<T extends ARSocket>(): ElementViewTemplate<T> {
 export const arSocketStyles = css`
     :host {
         display: grid;
-        box-sizing: border-box;
-        grid-template-columns: 1fr 20px 1fr;
-        grid-template-rows: 1fr 20px 1fr;
+        grid-template-columns: 1fr 10px 1fr;
+        grid-template-rows: 1fr 10px 1fr;
     }
     :host(.preview) {
         background: green;
@@ -171,7 +170,7 @@ export const arSocketStyles = css`
         will-change: transform, opacity;
         position: absolute;
         transform-origin: 50% 50%;
-        height: 20px;
-        width: 20px;
+        height: 10px;
+        width: 10px;
     }
 `;
