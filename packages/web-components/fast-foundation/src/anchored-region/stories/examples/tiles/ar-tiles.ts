@@ -75,13 +75,6 @@ export class ARTiles extends FASTElement {
         this.updateActiveSockets(detail);
     };
 
-    private updateActiveSockets(detail: tileDragEventArgs): void {
-        this.activeSockets.forEach(socket => {
-            socket.virtualAnchorX = detail.event.pageX;
-            socket.virtualAnchorY = detail.event.pageY;
-        });
-    }
-
     public handleDragTileEnd = (e: CustomEvent): void => {
         if (e.defaultPrevented || !this.currentDragTile) {
             return;
@@ -106,6 +99,12 @@ export class ARTiles extends FASTElement {
         e.preventDefault();
         this.updateActiveSockets(e.detail as tileDragEventArgs);
     };
+    private updateActiveSockets(detail: tileDragEventArgs): void {
+        this.activeSockets.forEach(socket => {
+            socket.virtualAnchorX = detail.event.pageX;
+            socket.virtualAnchorY = detail.event.pageY;
+        });
+    }
 
     public handleSocketConnected = (e: CustomEvent): void => {
         if (e.defaultPrevented) {
@@ -154,6 +153,10 @@ export class ARTiles extends FASTElement {
                 this.currentDragTile.horizontalDefaultPosition = "center";
                 this.currentDragTile.verticalDefaultPosition = "bottom";
                 break;
+            case "center":
+                this.currentDragTile.horizontalDefaultPosition = "center";
+                this.currentDragTile.verticalDefaultPosition = "center";
+                break;
         }
     };
 
@@ -164,7 +167,7 @@ export class ARTiles extends FASTElement {
         e.preventDefault();
         this.hoverSocket = undefined;
         this.currentDragTile.useVirtualAnchor = true;
-        this.currentDragTile.anchorElement = undefined;
+        this.currentDragTile.anchorElement = null;
         this.currentDragTile.horizontalDefaultPosition = "right";
         this.currentDragTile.verticalDefaultPosition = "bottom";
     };
@@ -185,16 +188,32 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                 Tiles
             </h1>
             ${sectionDividerTemplate} Blah ${sectionDividerTemplate}
-            <div id="canvas" class="canvas">
+            <div id="board" class="board">
+                <div id="canvas" class="canvas">
+                    <ar-socket socket-facing="center" class="start">
+                        Start
+                    </ar-socket>
+                </div>
+                <div id="hand" class="hand">
+                    <ar-socket id="dispenser-1" socket-facing="center" class="dispenser">
+                        A
+                    </ar-socket>
+                    <ar-socket id="dispenser-2" socket-facing="center" class="dispenser">
+                        B
+                    </ar-socket>
+                </div>
+
                 <ar-tile
-                    viewport="canvas"
+                    anchor="dispenser-1"
+                    viewport="board"
                     vertical-viewport-lock="true"
                     horizontal-viewport-lock="true"
                 >
                     A
                 </ar-tile>
                 <ar-tile
-                    viewport="canvas"
+                    anchor="dispenser-2"
+                    viewport="board"
                     vertical-viewport-lock="true"
                     horizontal-viewport-lock="true"
                 >
@@ -209,10 +228,45 @@ export const arTilesStyles = css`
     :host {
     }
 
-    .canvas {
-        width: 100%;
+    .start {
+        position: absolute;
+        left: 350px;
+        top: 180px;
+        background: green;
+        height: 60px;
+        width: 60px;
+    }
+
+    .dispenser {
+        margin: 5px;
+        background: brown;
+        height: 60px;
+        width: 60px;
+    }
+
+    .board {
         height: 600px;
         position: relative;
+        display: grid;
+        grid-template-columns: 10px 1fr 10px;
+        grid-template-rows: 10px 1fr 10px 150px 10px;
+    }
+
+    .canvas {
+        grid-row: 2;
+        grid-column: 2;
+        width: 100%;
+        height: 100%;
         background: lightgray;
+    }
+
+    .hand {
+        position: relative;
+        grid-row: 4;
+        grid-column: 2;
+        background: lightgray;
+        display: flex;
+        gap; 10px;
+        flex-wrap: wrap;
     }
 `;

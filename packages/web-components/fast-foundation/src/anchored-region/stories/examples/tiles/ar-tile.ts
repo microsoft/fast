@@ -31,11 +31,10 @@ export class ARTile extends FASTAnchoredRegion {
     @observable
     public items: object[];
 
-    public useVirtualAnchor: boolean = true;
     public horizontalPositioningMode: AxisPositioningMode = "locktodefault";
     public verticalPositioningMode: AxisPositioningMode = "locktodefault";
-    public verticalDefaultPosition: VerticalPosition = "bottom";
-    public horizontalDefaultPosition: HorizontalPosition = "right";
+    public verticalDefaultPosition: VerticalPosition = "center";
+    public horizontalDefaultPosition: HorizontalPosition = "center";
 
     @observable
     public isDragging: boolean = false;
@@ -127,13 +126,9 @@ export class ARTile extends FASTAnchoredRegion {
         }
 
         this.virtualAnchorX =
-            this.lastMouseEvent.pageX -
-            document.documentElement.scrollLeft -
-            this.offsetLeft;
+            this.lastMouseEvent.pageX - document.documentElement.scrollLeft;
         this.virtualAnchorY =
-            this.lastMouseEvent.pageY -
-            document.documentElement.scrollTop -
-            this.offsetTop;
+            this.lastMouseEvent.pageY - document.documentElement.scrollTop;
 
         this.$emit(
             "dragtile",
@@ -182,11 +177,10 @@ export function arTileTemplate<T extends ARTile>(): ElementViewTemplate<T> {
 export const arTileStyles = css`
     :host {
         display: grid;
-        grid-template-columns: 20px 1fr 20px;
-        grid-template-rows: 20px 1fr 20px;
+        grid-template-columns: 10px 1fr 10px;
+        grid-template-rows: 10px 1fr 10px;
         background: gray;
         border: solid 2px black;
-        box-sizing: border-box;
     }
 
     :host(.dragging) {
@@ -199,24 +193,24 @@ export const arTileStyles = css`
 
     .socket-top {
         grid-row: 1;
-        grid-column: 1 / 4;
+        grid-column: 2;
     }
     .socket-right {
-        grid-row: 1 / 4;
+        grid-row: 2;
         grid-column: 3;
     }
     .socket-bottom {
         grid-row: 3;
-        grid-column: 1 / 4;
+        grid-column: 2;
     }
     .socket-left {
-        grid-row: 1 / 4;
+        grid-row: 2;
         grid-column: 1;
     }
     .content {
         grid-row: 1 / 4;
         grid-column: 1 / 4;
-        height: 100px;
-        width: 100px;
+        height: 56px;
+        width: 56px;
     }
 `;

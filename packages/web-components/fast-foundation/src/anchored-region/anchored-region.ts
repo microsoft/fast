@@ -357,9 +357,6 @@ export class FASTAnchoredRegion extends FASTElement {
      */
     @observable
     public virtualAnchorRect: DOMRect = new DOMRect();
-    protected virtualAnchorRectChanged(): void {
-        this.updateForAttributeChange();
-    }
 
     /**
      * indicates that an initial positioning pass on layout has completed
