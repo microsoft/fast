@@ -1,4 +1,5 @@
 import {
+    attr,
     css,
     ElementViewTemplate,
     html,
@@ -7,6 +8,7 @@ import {
     when,
 } from "@microsoft/fast-element";
 import { FASTAnchoredRegion } from "../../../anchored-region.js";
+import type { ARTile } from "./ar-tile.js";
 
 export function registerARSocket() {
     ARSocket.define({
@@ -18,10 +20,31 @@ export function registerARSocket() {
 
 /**
  *
+ * @public
+ */
+export const SocketFacing = {
+    top: "top",
+    bottom: "bottom",
+    left: "left",
+    right: "right",
+} as const;
+
+/**
+ *
+ *
+ * @public
+ */
+export type SocketFacing = typeof SocketFacing[keyof typeof SocketFacing];
+
+/**
+ *
  *
  * @public
  */
 export class ARSocket extends FASTAnchoredRegion {
+    @attr({ attribute: "socket-facing" })
+    public socketFacing: SocketFacing = "right";
+
     @observable
     public socketActive: boolean = false;
     public socketActiveChanged(): void {
@@ -43,27 +66,29 @@ export class ARSocket extends FASTAnchoredRegion {
         this.classList.toggle("preview", this.socketHovered);
     }
 
+    public parentTile: ARTile | undefined;
+
     public connectedCallback(): void {
         super.connectedCallback();
         this.useVirtualAnchor = true;
         Updates.enqueue(() => {
-            this.$emit("socketconnected", this, { composed: true });
+            this.$emit("socketconnected", this);
         });
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-        this.$emit("socketdisconnected", this, { composed: true });
+        this.$emit("socketdisconnected", this);
     }
 
     public handleMouseEnter = (e: MouseEvent): void => {
         this.socketHovered = true;
-        this.$emit("sockethovered", this, { composed: true });
+        this.$emit("sockethovered", this);
     };
 
     public handleMouseLeave = (e: MouseEvent): void => {
         this.socketHovered = false;
-        this.$emit("socketunhovered", this, { composed: true });
+        this.$emit("socketunhovered", this);
     };
 
     public getRotation(

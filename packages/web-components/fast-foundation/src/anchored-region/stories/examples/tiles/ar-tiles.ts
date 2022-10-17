@@ -32,6 +32,8 @@ export class ARTiles extends FASTElement {
 
     private currentDragTile: ARTile | undefined;
 
+    private hoverSocket: ARSocket | undefined;
+
     public connectedCallback(): void {
         super.connectedCallback();
         this.addEventListener("socketconnected", this.handleSocketConnected);
@@ -47,6 +49,8 @@ export class ARTiles extends FASTElement {
         this.removeEventListener("dragtilestart", this.handleDragTileStart);
         this.removeEventListener("dragtileend", this.handleDragTileEnd);
         this.allSockets.splice(0, this.allSockets.length);
+        this.currentDragTile = undefined;
+        this.hoverSocket = undefined;
     }
 
     public handleDragTileStart = (e: CustomEvent): void => {
@@ -59,7 +63,9 @@ export class ARTiles extends FASTElement {
         if (this.currentDragTile === undefined) {
             return;
         }
-        this.currentDragTile.addEventListener("positionchange", this.handleTileDrag);
+        this.addEventListener("sockethovered", this.handleSocketHovered);
+        this.addEventListener("socketunhovered", this.handleSocketUnhovered);
+        this.currentDragTile.addEventListener("dragtile", this.handleTileDrag);
         this.allSockets.forEach(socket => {
             if (!this.currentDragTile.sockets.includes(socket)) {
                 socket.socketActive = true;
@@ -77,18 +83,19 @@ export class ARTiles extends FASTElement {
     }
 
     public handleDragTileEnd = (e: CustomEvent): void => {
-        if (e.defaultPrevented) {
+        if (e.defaultPrevented || !this.currentDragTile) {
             return;
         }
         e.preventDefault();
-        const detail = e.detail as tileDragEventArgs;
-        this.updateActiveSockets(detail);
+        this.removeEventListener("sockethovered", this.handleSocketHovered);
+        this.removeEventListener("socketunhovered", this.handleSocketUnhovered);
+        this.updateActiveSockets(e.detail as tileDragEventArgs);
         this.activeSockets.forEach(socket => {
             socket.anchorElement = null;
             socket.socketActive = false;
         });
         this.activeSockets.splice(0, this.activeSockets.length);
-        this.currentDragTile.removeEventListener("positionchange", this.handleTileDrag);
+        this.currentDragTile.removeEventListener("dragtile", this.handleTileDrag);
         this.currentDragTile = undefined;
     };
 
@@ -121,6 +128,46 @@ export class ARTiles extends FASTElement {
             this.activeSockets.splice(this.activeSockets.indexOf(socket as ARSocket), 1);
         }
     };
+
+    public handleSocketHovered = (e: CustomEvent): void => {
+        if (e.defaultPrevented || !e.target || !this.currentDragTile) {
+            return;
+        }
+        e.preventDefault();
+        this.hoverSocket = e.detail as ARSocket;
+        this.currentDragTile.useVirtualAnchor = false;
+        this.currentDragTile.anchorElement = this.hoverSocket;
+        switch (this.hoverSocket.socketFacing) {
+            case "left":
+                this.currentDragTile.horizontalDefaultPosition = "left";
+                this.currentDragTile.verticalDefaultPosition = "center";
+                break;
+            case "right":
+                this.currentDragTile.horizontalDefaultPosition = "right";
+                this.currentDragTile.verticalDefaultPosition = "center";
+                break;
+            case "top":
+                this.currentDragTile.horizontalDefaultPosition = "center";
+                this.currentDragTile.verticalDefaultPosition = "top";
+                break;
+            case "bottom":
+                this.currentDragTile.horizontalDefaultPosition = "center";
+                this.currentDragTile.verticalDefaultPosition = "bottom";
+                break;
+        }
+    };
+
+    public handleSocketUnhovered = (e: CustomEvent): void => {
+        if (e.defaultPrevented || !e.target) {
+            return;
+        }
+        e.preventDefault();
+        this.hoverSocket = undefined;
+        this.currentDragTile.useVirtualAnchor = true;
+        this.currentDragTile.anchorElement = undefined;
+        this.currentDragTile.horizontalDefaultPosition = "right";
+        this.currentDragTile.verticalDefaultPosition = "bottom";
+    };
 }
 
 const sectionDividerTemplate = html`
@@ -138,9 +185,21 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                 Tiles
             </h1>
             ${sectionDividerTemplate} Blah ${sectionDividerTemplate}
-            <div class="layout">
-                <ar-tile></ar-tile>
-                <ar-tile></ar-tile>
+            <div id="canvas" class="canvas">
+                <ar-tile
+                    viewport="canvas"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    A
+                </ar-tile>
+                <ar-tile
+                    viewport="canvas"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    B
+                </ar-tile>
             </div>
         </template>
     `;
@@ -150,9 +209,10 @@ export const arTilesStyles = css`
     :host {
     }
 
-    .layout {
+    .canvas {
         width: 100%;
         height: 600px;
+        position: relative;
         background: lightgray;
     }
 `;

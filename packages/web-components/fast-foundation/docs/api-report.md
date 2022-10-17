@@ -773,7 +773,18 @@ export class FASTAnchoredRegion extends FASTElement {
     protected viewportElementChanged(): void;
     // @internal (undocumented)
     viewportRect: DOMRect | undefined;
+    // (undocumented)
+    virtualAnchorHeight: number;
+    // (undocumented)
+    protected virtualAnchorHeightChanged(): void;
+    // @internal
     virtualAnchorRect: DOMRect;
+    // (undocumented)
+    protected virtualAnchorRectChanged(): void;
+    // (undocumented)
+    virtualAnchorWidth: number;
+    // (undocumented)
+    protected virtualAnchorWidthChanged(): void;
     virtualAnchorX: number;
     // (undocumented)
     protected virtualAnchorXChanged(): void;
