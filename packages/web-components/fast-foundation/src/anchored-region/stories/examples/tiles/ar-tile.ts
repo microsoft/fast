@@ -1,14 +1,12 @@
 import { Updates } from "@microsoft/fast-element";
-import {
-    css,
-    ElementViewTemplate,
-    FASTElement,
-    html,
-    observable,
-    ref,
-    when,
-} from "@microsoft/fast-element";
+import { css, ElementViewTemplate, html, observable, ref } from "@microsoft/fast-element";
 import { eventMouseMove, eventMouseUp } from "@microsoft/fast-web-utilities";
+import type {
+    HorizontalPosition,
+    VerticalPosition,
+} from "src/anchored-region/anchored-region.options.js";
+import type { AxisPositioningMode } from "src/index.js";
+import { FASTAnchoredRegion } from "../../../anchored-region.js";
 import type { ARSocket } from "./ar-socket.js";
 
 export function registerARTile() {
@@ -29,12 +27,21 @@ export interface tileDragEventArgs {
  *
  * @public
  */
-export class ARTile extends FASTElement {
+export class ARTile extends FASTAnchoredRegion {
     @observable
     public items: object[];
 
+    public useVirtualAnchor: boolean = true;
+    public horizontalPositioningMode: AxisPositioningMode = "locktodefault";
+    public verticalPositioningMode: AxisPositioningMode = "locktodefault";
+    public verticalDefaultPosition: VerticalPosition = "bottom";
+    public horizontalDefaultPosition: HorizontalPosition = "right";
+
     @observable
     public isDragging: boolean = false;
+    public isDraggingChanged(): void {
+        this.classList.toggle("dragging", this.isDragging);
+    }
 
     public socketTop: ARSocket;
     public socketRight: ARSocket;
@@ -53,22 +60,32 @@ export class ARTile extends FASTElement {
             this.socketTop,
             this.socketRight
         );
+        this.sockets.forEach(socket => {
+            socket.parentTile = this;
+        });
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.lastMouseEvent = null;
         this.sockets.splice(0, this.sockets.length);
+        this.sockets.forEach(socket => {
+            socket.parentTile = undefined;
+        });
     }
 
     /**
      *
      */
     public handleMouseDown = (e: MouseEvent): void => {
+        if (e.defaultPrevented) {
+            return;
+        }
+        e.preventDefault();
         this.isDragging = true;
         this.style.pointerEvents = "none";
-        window.addEventListener(eventMouseMove, this.handleMouseMove, { passive: true });
-        document.addEventListener(eventMouseUp, this.handleMouseUp);
+        window.addEventListener(eventMouseMove, this.handleMouseMove);
+        window.addEventListener(eventMouseUp, this.handleMouseUp);
         this.lastMouseEvent = e;
         this.updatePosition();
         this.$emit("dragtilestart", { tile: this, event: e }, { composed: true });
@@ -78,10 +95,14 @@ export class ARTile extends FASTElement {
      *
      */
     public handleMouseUp = (e: MouseEvent): void => {
+        if (e.defaultPrevented) {
+            return;
+        }
+        e.preventDefault();
         this.isDragging = false;
         this.style.pointerEvents = "auto";
         window.removeEventListener(eventMouseMove, this.handleMouseMove);
-        document.removeEventListener(eventMouseUp, this.handleMouseUp);
+        window.removeEventListener(eventMouseUp, this.handleMouseUp);
         this.lastMouseEvent = e;
         this.updatePosition();
         this.$emit("dragtileend", { tile: this, event: e }, { composed: true });
@@ -104,20 +125,22 @@ export class ARTile extends FASTElement {
         if (!this.lastMouseEvent) {
             return;
         }
-        this.style.transform = `translate(${
+
+        this.virtualAnchorX =
             this.lastMouseEvent.pageX -
             document.documentElement.scrollLeft -
-            this.offsetLeft
-        }px, ${
+            this.offsetLeft;
+        this.virtualAnchorY =
             this.lastMouseEvent.pageY -
             document.documentElement.scrollTop -
-            this.offsetTop
-        }px)`;
+            this.offsetTop;
+
         this.$emit(
-            "positionchange",
+            "dragtile",
             { tile: this, event: this.lastMouseEvent },
             { bubbles: false }
         );
+
         this.lastMouseEvent = null;
     }
 }
@@ -128,26 +151,46 @@ export class ARTile extends FASTElement {
  */
 export function arTileTemplate<T extends ARTile>(): ElementViewTemplate<T> {
     return html<T>`
-        <template
-            @mousedown="${(x, c) => x.handleMouseDown(c.event as MouseEvent)}"
-            @mouseup="${(x, c) => x.handleMouseUp(c.event as MouseEvent)}"
-        >
-            <ar-socket class="socket-top" ${ref("socketTop")}></ar-socket>
-            <ar-socket class="socket-right" ${ref("socketRight")}></ar-socket>
-            <ar-socket class="socket-bottom" ${ref("socketBottom")}></ar-socket>
-            <ar-socket class="socket-left" ${ref("socketLeft")}></ar-socket>
+        <template @mousedown="${(x, c) => x.handleMouseDown(c.event as MouseEvent)}">
+            <ar-socket
+                socket-facing="top"
+                class="socket-top"
+                ${ref("socketTop")}
+            ></ar-socket>
+            <ar-socket
+                socket-facing="right"
+                class="socket-right"
+                ${ref("socketRight")}
+            ></ar-socket>
+            <ar-socket
+                socket-facing="bottom"
+                class="socket-bottom"
+                ${ref("socketBottom")}
+            ></ar-socket>
+            <ar-socket
+                socket-facing="left"
+                class="socket-left"
+                ${ref("socketLeft")}
+            ></ar-socket>
+            <div class="content">
+                <slot></slot>
+            </div>
         </template>
     `;
 }
 
 export const arTileStyles = css`
     :host {
-        height: 100px;
-        width: 100px;
         display: grid;
         grid-template-columns: 20px 1fr 20px;
         grid-template-rows: 20px 1fr 20px;
         background: gray;
+        border: solid 2px black;
+        box-sizing: border-box;
+    }
+
+    :host(.dragging) {
+        z-index:100;
     }
 
     .socket-top .socket-right .socket-bottom .socket-left {
@@ -169,5 +212,11 @@ export const arTileStyles = css`
     .socket-left {
         grid-row: 1 / 4;
         grid-column: 1;
+    }
+    .content {
+        grid-row: 1 / 4;
+        grid-column: 1 / 4;
+        height: 100px;
+        width: 100px;
     }
 `;
