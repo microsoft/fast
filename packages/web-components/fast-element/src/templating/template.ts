@@ -264,9 +264,9 @@ export function html<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
     ...values: TemplateValue<TSource, TParent>[]
 ): ViewTemplate<TSource, TParent> {
-    if (!Array.isArray(strings) || !Array.isArray(strings.raw)) {
-        throw FAST.error(Message.directCallToHTMLTagNotAllowed);
+    if (Array.isArray(strings) && Array.isArray(strings.raw)) {
+        return ViewTemplate.create((strings as any) as string[], values);
     }
 
-    return ViewTemplate.create((strings as any) as string[], values);
+    throw FAST.error(Message.directCallToHTMLTagNotAllowed);
 }
