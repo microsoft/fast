@@ -79,7 +79,9 @@ export class FASTAnchoredRegion extends FASTElement {
     @attr({ attribute: "virtual-anchor-x" })
     public virtualAnchorX: number = 0;
     protected virtualAnchorXChanged(): void {
-        this.updateForAttributeChange();
+        if (this.useVirtualAnchor) {
+            this.updateForAttributeChange();
+        }
     }
 
     /**
@@ -92,7 +94,9 @@ export class FASTAnchoredRegion extends FASTElement {
     @attr({ attribute: "virtual-anchor-y" })
     public virtualAnchorY: number = 0;
     protected virtualAnchorYChanged(): void {
-        this.updateForAttributeChange();
+        if (this.useVirtualAnchor) {
+            this.updateForAttributeChange();
+        }
     }
 
     /**
@@ -105,7 +109,9 @@ export class FASTAnchoredRegion extends FASTElement {
     @attr({ attribute: "virtual-anchor-width" })
     public virtualAnchorWidth: number = 0;
     protected virtualAnchorWidthChanged(): void {
-        this.updateForAttributeChange();
+        if (this.useVirtualAnchor) {
+            this.updateForAttributeChange();
+        }
     }
 
     /**
@@ -118,7 +124,9 @@ export class FASTAnchoredRegion extends FASTElement {
     @attr({ attribute: "virtual-anchor-height" })
     public virtualAnchorHeight: number = 0;
     protected virtualAnchorHeightChanged(): void {
-        this.updateForAttributeChange();
+        if (this.useVirtualAnchor) {
+            this.updateForAttributeChange();
+        }
     }
 
     /**

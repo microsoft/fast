@@ -31,6 +31,7 @@ export class ARTiles extends FASTElement {
     private activeSockets: ARSocket[] = [];
 
     private currentDragTile: ARTile | undefined;
+    private dragTileOriginalSocket: ARSocket | undefined;
 
     private hoverSocket: ARSocket | undefined;
 
@@ -60,12 +61,16 @@ export class ARTiles extends FASTElement {
         e.preventDefault();
         const detail = e.detail as tileDragEventArgs;
         this.currentDragTile = detail.tile;
+        if (detail.tile.anchorElement) {
+            this.dragTileOriginalSocket = detail.tile.anchorElement as ARSocket;
+        }
         if (this.currentDragTile === undefined) {
             return;
         }
         this.addEventListener("sockethovered", this.handleSocketHovered);
         this.addEventListener("socketunhovered", this.handleSocketUnhovered);
         this.currentDragTile.addEventListener("dragtile", this.handleTileDrag);
+        this.currentDragTile.useVirtualAnchor = true;
         this.allSockets.forEach(socket => {
             if (!this.currentDragTile.sockets.includes(socket)) {
                 socket.socketActive = true;
@@ -80,6 +85,12 @@ export class ARTiles extends FASTElement {
             return;
         }
         e.preventDefault();
+        if (this.hoverSocket) {
+            this.setTileInSocket(this.hoverSocket);
+        } else if (this.dragTileOriginalSocket) {
+            this.setTileInSocket(this.dragTileOriginalSocket);
+        }
+
         this.removeEventListener("sockethovered", this.handleSocketHovered);
         this.removeEventListener("socketunhovered", this.handleSocketUnhovered);
         this.updateActiveSockets(e.detail as tileDragEventArgs);
@@ -90,6 +101,7 @@ export class ARTiles extends FASTElement {
         this.activeSockets.splice(0, this.activeSockets.length);
         this.currentDragTile.removeEventListener("dragtile", this.handleTileDrag);
         this.currentDragTile = undefined;
+        this.dragTileOriginalSocket = undefined;
     };
 
     public handleTileDrag = (e: CustomEvent): void => {
@@ -99,6 +111,7 @@ export class ARTiles extends FASTElement {
         e.preventDefault();
         this.updateActiveSockets(e.detail as tileDragEventArgs);
     };
+
     private updateActiveSockets(detail: tileDragEventArgs): void {
         this.activeSockets.forEach(socket => {
             socket.virtualAnchorX = detail.event.pageX;
@@ -134,9 +147,17 @@ export class ARTiles extends FASTElement {
         }
         e.preventDefault();
         this.hoverSocket = e.detail as ARSocket;
+
+        this.setTileInSocket(this.hoverSocket);
+    };
+
+    private setTileInSocket(socket: ARSocket): void {
+        if (!this.currentDragTile) {
+            return;
+        }
         this.currentDragTile.useVirtualAnchor = false;
-        this.currentDragTile.anchorElement = this.hoverSocket;
-        switch (this.hoverSocket.socketFacing) {
+        this.currentDragTile.anchorElement = socket;
+        switch (socket.socketFacing) {
             case "left":
                 this.currentDragTile.horizontalDefaultPosition = "left";
                 this.currentDragTile.verticalDefaultPosition = "center";
@@ -158,7 +179,7 @@ export class ARTiles extends FASTElement {
                 this.currentDragTile.verticalDefaultPosition = "center";
                 break;
         }
-    };
+    }
 
     public handleSocketUnhovered = (e: CustomEvent): void => {
         if (e.defaultPrevented || !e.target) {
@@ -167,7 +188,6 @@ export class ARTiles extends FASTElement {
         e.preventDefault();
         this.hoverSocket = undefined;
         this.currentDragTile.useVirtualAnchor = true;
-        this.currentDragTile.anchorElement = null;
         this.currentDragTile.horizontalDefaultPosition = "right";
         this.currentDragTile.verticalDefaultPosition = "bottom";
     };
@@ -195,21 +215,114 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                     </ar-socket>
                 </div>
                 <div id="hand" class="hand">
-                    <ar-socket id="dispenser-1" socket-facing="center" class="dispenser">
-                        A
-                    </ar-socket>
-                    <ar-socket id="dispenser-2" socket-facing="center" class="dispenser">
-                        B
-                    </ar-socket>
+                    <ar-socket
+                        id="dispenser-1"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-2"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-3"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-4"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-5"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-6"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-7"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-8"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-9"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-10"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-11"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-12"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-13"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-14"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-15"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-16"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-17"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-18"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-19"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
+                    <ar-socket
+                        id="dispenser-20"
+                        socket-facing="center"
+                        class="dispenser"
+                    ></ar-socket>
                 </div>
-
                 <ar-tile
                     anchor="dispenser-1"
                     viewport="board"
                     vertical-viewport-lock="true"
                     horizontal-viewport-lock="true"
                 >
-                    A
+                    D
                 </ar-tile>
                 <ar-tile
                     anchor="dispenser-2"
@@ -217,7 +330,151 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                     vertical-viewport-lock="true"
                     horizontal-viewport-lock="true"
                 >
-                    B
+                    R
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-3"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    A
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-4"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    G
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-5"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    T
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-6"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    O
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-7"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    M
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-8"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    A
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-9"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    K
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-10"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    E
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-11"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    W
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-12"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    O
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-13"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    R
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-14"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    D
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-15"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    S
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-16"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    C
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-17"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    O
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-18"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    O
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-19"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    L
+                </ar-tile>
+                <ar-tile
+                    anchor="dispenser-20"
+                    viewport="board"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    X
                 </ar-tile>
             </div>
         </template>
