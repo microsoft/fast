@@ -1,5 +1,5 @@
 import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
-import { StealthButton } from "../stealth-button";
+import { StealthButton } from "../stealth-button/index.js";
 
 StealthButton;
 

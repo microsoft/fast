@@ -10,8 +10,8 @@ import {
     when,
 } from "@microsoft/fast-element";
 import CheckmarkIcon from "../../assets/checkmark.svg";
-import { DesignTokenDefinition } from "../../design-token-registry";
-import { DesignTokenField } from "../design-token-field";
+import { DesignTokenDefinition } from "../../design-token-registry.js";
+import { DesignTokenField } from "../design-token-field/index.js";
 
 DesignTokenField;
 
