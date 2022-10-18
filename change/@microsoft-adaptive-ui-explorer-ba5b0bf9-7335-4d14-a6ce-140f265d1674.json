@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Initial port of Color Explorer into the new Adaptive UI Explorer component",
+  "packageName": "@microsoft/adaptive-ui-explorer",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}
