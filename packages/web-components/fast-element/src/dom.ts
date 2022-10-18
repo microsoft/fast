@@ -78,12 +78,12 @@ export interface DOMPolicy {
      * @param aspectName - The name of the aspect to write to.
      * @param sink - The sink that is used to write to the DOM.
      */
-    protect<T extends DOMSink = DOMSink>(
+    protect(
         tagName: string | null,
         aspect: DOMAspect,
         aspectName: string,
-        sink: T
-    ): T;
+        sink: DOMSink
+    ): DOMSink;
 }
 
 const createHTML = html => html;
@@ -96,12 +96,12 @@ let defaultPolicy: DOMPolicy = {
         return fastTrustedType.createHTML(value);
     },
 
-    protect<T extends DOMSink = DOMSink>(
+    protect(
         tagName: string | null,
         aspect: DOMAspect,
         aspectName: string,
-        sink: T
-    ): T {
+        sink: DOMSink
+    ): DOMSink {
         return sink;
     },
 };

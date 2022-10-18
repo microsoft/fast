@@ -259,7 +259,7 @@ export type DOMAspect = typeof DOMAspect[Exclude<keyof typeof DOMAspect, "none">
 // @public
 export interface DOMPolicy {
     createHTML(value: string): string;
-    protect<T extends DOMSink = DOMSink>(tagName: string | null, aspect: DOMAspect, aspectName: string, sink: T): T;
+    protect(tagName: string | null, aspect: DOMAspect, aspectName: string, sink: DOMSink): DOMSink;
 }
 
 // @public
