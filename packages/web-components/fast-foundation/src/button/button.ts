@@ -171,16 +171,6 @@ export class FASTButton extends FormAssociatedButton {
     }
 
     /**
-     * Prevent events to propagate if disabled and has no slotted content wrapped in HTML elements
-     * @internal
-     */
-    public handleClick = (e: Event) => {
-        if (this.disabled && this.defaultSlottedContent?.length <= 1) {
-            e.stopPropagation();
-        }
-    };
-
-    /**
      * Submits the parent form
      */
     private handleSubmission = () => {
