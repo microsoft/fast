@@ -5,10 +5,10 @@ import {
     AppliedRecipes,
     PluginNodeData,
     RecipeEvaluation,
-} from "../core/model";
-import { PluginNode } from "../core/node";
-import { DesignTokenType } from "../core/ui/design-token-registry";
-import { variantBooleanHelper } from "./utility";
+} from "../core/model.js";
+import { PluginNode } from "../core/node.js";
+import { DesignTokenType } from "../core/ui/design-token-registry.js";
+import { variantBooleanHelper } from "./utility.js";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;

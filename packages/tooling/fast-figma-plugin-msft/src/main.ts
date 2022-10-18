@@ -2,7 +2,7 @@ import {
     deserializeUINodes,
     FigmaController,
     PluginUISerializableNodeData,
-} from "./figma/controller";
+} from "./figma/controller.js";
 
 const controller = new FigmaController();
 
