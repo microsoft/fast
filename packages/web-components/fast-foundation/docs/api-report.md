@@ -809,8 +809,6 @@ export class FASTButton extends FormAssociatedButton {
     // (undocumented)
     control: HTMLButtonElement;
     defaultSlottedContent: HTMLElement[];
-    // @internal (undocumented)
-    disconnectedCallback(): void;
     formaction: string;
     // (undocumented)
     protected formactionChanged(): void;
@@ -827,6 +825,8 @@ export class FASTButton extends FormAssociatedButton {
     formtarget: "_self" | "_blank" | "_parent" | "_top";
     // (undocumented)
     protected formtargetChanged(): void;
+    // @internal
+    handleClick: (e: Event) => void;
     type: ButtonType;
     // (undocumented)
     protected typeChanged(previous: ButtonType | undefined, next: ButtonType): void;

@@ -45,6 +45,7 @@ export function buttonTemplate<T extends FASTButton>(
             aria-pressed="${x => x.ariaPressed}"
             aria-relevant="${x => x.ariaRelevant}"
             aria-roledescription="${x => x.ariaRoledescription}"
+            @click="${(x, c) => x.handleClick(c.event)}"
             ${ref("control")}
         >
             ${startSlotTemplate(options)}

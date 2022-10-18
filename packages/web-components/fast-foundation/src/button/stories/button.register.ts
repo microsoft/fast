@@ -33,7 +33,7 @@ const styles = css`
         box-sizing: border-box;
         display: inline-flex;
         justify-content: center;
-        align-items: baseline;
+        align-items: center;
         padding: 0 calc((10 + (var(--design-unit) * 2 * var(--density))) * 1px);
         white-space: nowrap;
         outline: none;
