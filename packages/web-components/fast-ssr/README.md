@@ -172,7 +172,7 @@ for await (const part of templateRenderer.render(someAsyncTemplate)) {
 In cases where an author doesn't want a FAST component to render in SSR environments, but it is impractical to prevent *defining* that element in the custom element registry, the `ElementRenderer` exposes a mechanism to prevent matching elements it would otherwise match. Components can be disabled by tag-name (`"element-name"`), class constructor (`class MyElement extends FASTElement {}`), or `FASTElementDefinition` (`MyElement.compose({/* config */})`)
 
 ```ts
-// The element get's defined somewhere in application
+// The element gets defined somewhere in an application
 const name = "my-element";
 class MyElement extends FASTElement {}
 const definition = MyElement.compose({name, template: html`<p>Hello world</p>`});
