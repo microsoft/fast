@@ -200,3 +200,15 @@ export const isString = (object: any): object is string => typeof object === "st
  * @internal
  */
 export const noop = () => void 0;
+
+/**
+ * A policy for use with the standard trustedTypes platform API.
+ * @public
+ */
+export type TrustedTypesPolicy = {
+    /**
+     * Creates trusted HTML.
+     * @param html - The HTML to clear as trustworthy.
+     */
+    createHTML(html: string): string;
+};

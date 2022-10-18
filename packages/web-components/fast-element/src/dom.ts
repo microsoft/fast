@@ -1,5 +1,5 @@
 import { Updates } from "./observation/update-queue.js";
-import { Callable, Message } from "./interfaces.js";
+import { Callable, Message, TrustedTypesPolicy } from "./interfaces.js";
 import { FAST } from "./platform.js";
 
 /**
@@ -86,10 +86,6 @@ export interface DOMPolicy {
     ): T;
 }
 
-type TrustedTypesPolicy = {
-    createHTML(html: string): string;
-};
-
 const createHTML = html => html;
 const fastTrustedType: TrustedTypesPolicy = globalThis.trustedTypes
     ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
@@ -149,7 +145,7 @@ export const DOM = Object.freeze({
      * This API can only be called once, for security reasons. It should be
      * called by the application developer at the start of their program.
      */
-    set policy(value: DOMPolicy) {
+    setPolicy(value: DOMPolicy) {
         if (defaultPolicy !== fastPolicy) {
             throw FAST.error(Message.onlySetDOMPolicyOnce);
         }
