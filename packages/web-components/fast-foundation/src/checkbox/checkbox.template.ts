@@ -11,7 +11,7 @@ export function checkboxTemplate<T extends FASTCheckbox>(
     return html<T>`
         <template
             role="checkbox"
-            aria-checked="${x => x.checked}"
+            aria-checked="${x => (x.indeterminate ? "mixed" : x.checked)}"
             aria-required="${x => x.required}"
             aria-disabled="${x => x.disabled}"
             aria-readonly="${x => x.readOnly}"

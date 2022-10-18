@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Mon, 10 Oct 2022 20:28:02 GMT and should not be manually modified.
+This log was last generated on Fri, 14 Oct 2022 18:26:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.14
+
+Fri, 14 Oct 2022 18:26:11 GMT
+
+### Changes
+
+- fix: tokenList bindings track adds and removes from multiple sources (roeisenb@microsoft.com)
+- refactor: remove duplication and re-organize binding behavior logic (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.13
 

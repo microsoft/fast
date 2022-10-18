@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 14 Oct 2022 18:26:11 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.17",
+      "version": "3.0.0-alpha.17",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "bcfbcb5be4433fb1fb0fab1697f13d345980db87",
+            "comment": "indeterminate checkboxes should set an aria-checked state of mixed"
+          },
+          {
+            "author": "robarb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "dbe2989d20201028d3e4b25ae37172bbfcc7439d",
+            "comment": "feat: calendar attr to adjust weekday start"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.14",
+            "commit": "bcfbcb5be4433fb1fb0fab1697f13d345980db87"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 10 Oct 2022 20:28:02 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.16",
       "version": "3.0.0-alpha.16",
