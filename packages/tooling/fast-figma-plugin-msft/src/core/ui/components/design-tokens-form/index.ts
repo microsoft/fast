@@ -8,8 +8,8 @@ import {
     when,
 } from "@microsoft/fast-element";
 import SubtractIcon from "../../assets/subtract.svg";
-import { UIDesignTokenValue } from "../../ui-controller";
-import { DesignTokenField } from "../design-token-field";
+import { UIDesignTokenValue } from "../../ui-controller.js";
+import { DesignTokenField } from "../design-token-field/index.js";
 
 DesignTokenField;
 

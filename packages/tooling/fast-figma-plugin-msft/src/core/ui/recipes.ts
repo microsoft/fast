@@ -62,10 +62,12 @@ import {
     DesignTokenRegistry,
     DesignTokenType,
     FormControlId,
-} from "./design-token-registry";
-import { docBaseColor, docFillRest, docForeground } from "./custom-recipes";
+} from "./design-token-registry.js";
+import { docBaseColor, docFillRest, docForeground } from "./custom-recipes.js";
 
-interface DesignTokenStore<T> {
+interface DesignTokenStore<
+    T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
+> {
     [key: string]: {
         name: string;
         token: DesignToken<T>;
@@ -259,7 +261,9 @@ const textRecipes: DesignTokenStore<any> = {
     },
 };
 
-function registerStore<T>(
+function registerStore<
+    T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
+>(
     type: DesignTokenType | null,
     store: DesignTokenStore<T>,
     title: string,
