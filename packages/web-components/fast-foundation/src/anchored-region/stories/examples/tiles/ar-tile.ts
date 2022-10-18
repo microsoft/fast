@@ -1,5 +1,12 @@
 import { Updates } from "@microsoft/fast-element";
-import { css, ElementViewTemplate, html, observable, ref } from "@microsoft/fast-element";
+import {
+    attr,
+    css,
+    ElementViewTemplate,
+    html,
+    observable,
+    ref,
+} from "@microsoft/fast-element";
 import { eventMouseMove, eventMouseUp } from "@microsoft/fast-web-utilities";
 import type {
     HorizontalPosition,
@@ -37,10 +44,14 @@ export class ARTile extends FASTAnchoredRegion {
     public horizontalDefaultPosition: HorizontalPosition = "center";
 
     @observable
-    public isDragging: boolean = false;
-    public isDraggingChanged(): void {
-        this.classList.toggle("dragging", this.isDragging);
+    public dragging: boolean = false;
+    public draggingChanged(): void {
+        this.classList.toggle("dragging", this.dragging);
     }
+
+    @attr
+    public fixed: boolean = false;
+    public fixedChanged(): void {}
 
     public socketTop: ARSocket;
     public socketRight: ARSocket;
@@ -77,11 +88,11 @@ export class ARTile extends FASTAnchoredRegion {
      *
      */
     public handleMouseDown = (e: MouseEvent): void => {
-        if (e.defaultPrevented) {
+        if (e.defaultPrevented || this.fixed) {
             return;
         }
         e.preventDefault();
-        this.isDragging = true;
+        this.dragging = true;
         this.style.pointerEvents = "none";
         window.addEventListener(eventMouseMove, this.handleMouseMove);
         window.addEventListener(eventMouseUp, this.handleMouseUp);
@@ -98,7 +109,7 @@ export class ARTile extends FASTAnchoredRegion {
             return;
         }
         e.preventDefault();
-        this.isDragging = false;
+        this.dragging = false;
         this.style.pointerEvents = "auto";
         window.removeEventListener(eventMouseMove, this.handleMouseMove);
         window.removeEventListener(eventMouseUp, this.handleMouseUp);
@@ -181,6 +192,7 @@ export const arTileStyles = css`
         grid-template-rows: 10px 1fr 10px;
         background: gray;
         border: solid 2px black;
+        user-select: none;
     }
 
     :host(.dragging) {
