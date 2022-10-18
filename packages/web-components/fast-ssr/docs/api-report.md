@@ -10,6 +10,8 @@ import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { DOMContainer } from '@microsoft/fast-element/di';
 import { ExecutionContext } from '@microsoft/fast-element';
+import { FASTElement } from '@microsoft/fast-element';
+import { FASTElementDefinition } from '@microsoft/fast-element';
 import { ViewBehaviorFactory } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
@@ -36,9 +38,12 @@ export interface ConstructableElementRenderer<T extends ElementRenderer | AsyncE
     // (undocumented)
     new (tagName: string, renderInfo: RenderInfo): T;
     // Warning: (ae-forgotten-export) The symbol "AttributesMap" needs to be exported by the entry point exports.d.ts
-    //
-    // (undocumented)
     matchesClass(ctor: typeof HTMLElement, tagName: string, attributes: AttributesMap): boolean;
+}
+
+// @beta (undocumented)
+export interface ConstructableFASTElementRenderer<T extends ElementRenderer | AsyncElementRenderer = ElementRenderer> extends ConstructableElementRenderer<T> {
+    disable(...args: Array<string | typeof FASTElement | FASTElementDefinition>): void;
 }
 
 // @beta
@@ -70,19 +75,19 @@ export interface ElementRenderer {
 // @beta (undocumented)
 function fastSSR(): {
     templateRenderer: TemplateRenderer;
-    ElementRenderer: ConstructableElementRenderer;
+    ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
 };
 
 // @beta (undocumented)
 function fastSSR(config: SSRConfiguration & Record<"renderMode", "sync">): {
     templateRenderer: TemplateRenderer;
-    ElementRenderer: ConstructableElementRenderer;
+    ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
 };
 
 // @beta (undocumented)
 function fastSSR(config: SSRConfiguration & Record<"renderMode", "async">): {
     templateRenderer: AsyncTemplateRenderer;
-    ElementRenderer: ConstructableElementRenderer<AsyncElementRenderer>;
+    ElementRenderer: ConstructableFASTElementRenderer<AsyncFASTElementRenderer>;
 };
 export default fastSSR;
 
@@ -155,6 +160,8 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
 
 // Warnings were encountered during analysis:
 //
+// dist/dts/exports.d.ts:18:5 - (ae-forgotten-export) The symbol "SyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
+// dist/dts/exports.d.ts:28:5 - (ae-forgotten-export) The symbol "AsyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
 // dist/dts/request-storage.d.ts:32:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
 
 // (No @packageDocumentation comment for this package)
