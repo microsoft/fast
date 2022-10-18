@@ -69,6 +69,7 @@ export class ARSocket extends FASTAnchoredRegion {
     }
 
     public parentTile: ARTile | undefined;
+    public childTile: ARTile | undefined;
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -81,6 +82,8 @@ export class ARSocket extends FASTAnchoredRegion {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.$emit("socketdisconnected", this);
+        this.parentTile = undefined;
+        this.childTile = undefined;
     }
 
     public handleMouseEnter = (e: MouseEvent): void => {
@@ -144,7 +147,7 @@ export function arSocketTemplate<T extends ARSocket>(): ElementViewTemplate<T> {
                     transform:rotate(${x =>
                             x.getRotation(x.anchorRect, x.regionRect)}deg);
                     opacity:${x =>
-                            (100 - x.getDistance(x.anchorRect, x.regionRect)) / 100};
+                            (200 - x.getDistance(x.anchorRect, x.regionRect)) / 200};
                 "
                     ></div>
                 `

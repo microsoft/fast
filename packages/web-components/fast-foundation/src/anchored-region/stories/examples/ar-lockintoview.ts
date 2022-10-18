@@ -65,7 +65,10 @@ const trackerRegionTemplate = html`
             vertical-positioning-mode="uncontrolled"
             vertical-scaling="content"
         >
-            ${pointerElementTemplate}
+            <div class="manytracker"></div>
+            <div class="manypointer" slot="pointer">
+                ↑
+            </div>
         </anchored-region-pointer>
     </div>
 `;
@@ -349,7 +352,56 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
                 ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
                 ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
                 ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
+                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
             </div>
         </template>
     `;
@@ -380,6 +432,12 @@ export const arLockIntoViewStyles = css`
         opacity: 0.5;
         border: solid green 2px;
     }
+    .tracking-region.many {
+        pointer-events: none;
+        background: blue;
+        opacity: 0.5;
+        border: none;
+    }
     .tracking-region.top {
         border-bottom-width: 8px;
     }
@@ -406,7 +464,16 @@ export const arLockIntoViewStyles = css`
         flex-wrap: wrap;
     }
     .tracker-region-container {
-        height: 100px;
-        width: 100px;
+        height: 50px;
+        width: 50px;
+    }
+    .manypointer {
+        font-size: 20px;
+        grid-column: 2;
+        grid-row: 2;
+    }
+    .manytracker {
+        height: 50px;
+        width: 50px;
     }
 `;

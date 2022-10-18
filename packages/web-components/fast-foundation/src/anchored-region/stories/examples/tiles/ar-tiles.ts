@@ -1,13 +1,16 @@
 import {
+    bind,
     css,
     ElementViewTemplate,
     FASTElement,
     html,
     observable,
     ref,
+    RepeatDirective,
+    ViewBehaviorOrchestrator,
+    ViewTemplate,
 } from "@microsoft/fast-element";
 import { ARTile, registerARTile, tileDragEventArgs } from "./ar-tile.js";
-import { registerARConnector } from "./ar-connector.js";
 import { ARSocket, registerARSocket } from "./ar-socket.js";
 
 export function registerARTiles() {
@@ -17,7 +20,6 @@ export function registerARTiles() {
         styles: arTilesStyles,
     });
     registerARTile();
-    registerARConnector();
     registerARSocket();
 }
 
@@ -27,6 +29,39 @@ export function registerARTiles() {
  * @public
  */
 export class ARTiles extends FASTElement {
+    @observable
+    public letters: string[] = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+    ];
+
+    public board: HTMLDivElement;
+    public canvas: HTMLDivElement;
+    public hand: HTMLDivElement;
     private allSockets: ARSocket[] = [];
     private activeSockets: ARSocket[] = [];
 
@@ -34,6 +69,9 @@ export class ARTiles extends FASTElement {
     private dragTileOriginalSocket: ARSocket | undefined;
 
     private hoverSocket: ARSocket | undefined;
+    private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
+    private dispenserPlaceholder: Node | null = null;
+    private tilePlaceholder: Node | null = null;
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -41,6 +79,29 @@ export class ARTiles extends FASTElement {
         this.addEventListener("socketdisconnected", this.handleSocketDisconnected);
         this.addEventListener("dragtilestart", this.handleDragTileStart);
         this.addEventListener("dragtileend", this.handleDragTileEnd);
+        this.dispenserPlaceholder = document.createComment("");
+        this.tilePlaceholder = document.createComment("");
+        if (this.behaviorOrchestrator === null) {
+            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
+            this.$fastController.addBehavior(this.behaviorOrchestrator);
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective<ARTiles>(
+                    bind(x => x.letters, false),
+                    bind(x => dispensorTemplate, false),
+                    { positioning: true }
+                ),
+                this.hand.appendChild(this.dispenserPlaceholder)
+            );
+
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective<ARTiles>(
+                    bind(x => x.letters, false),
+                    bind(x => letterTileTemplate, false),
+                    { positioning: true }
+                ),
+                this.board.appendChild(this.tilePlaceholder)
+            );
+        }
     }
 
     public disconnectedCallback(): void {
@@ -63,6 +124,7 @@ export class ARTiles extends FASTElement {
         this.currentDragTile = detail.tile;
         if (detail.tile.anchorElement) {
             this.dragTileOriginalSocket = detail.tile.anchorElement as ARSocket;
+            this.dragTileOriginalSocket.childTile = undefined;
         }
         if (this.currentDragTile === undefined) {
             return;
@@ -71,14 +133,36 @@ export class ARTiles extends FASTElement {
         this.addEventListener("socketunhovered", this.handleSocketUnhovered);
         this.currentDragTile.addEventListener("dragtile", this.handleTileDrag);
         this.currentDragTile.useVirtualAnchor = true;
+        this.currentDragTile.horizontalDefaultPosition = "right";
+        this.currentDragTile.verticalDefaultPosition = "bottom";
         this.allSockets.forEach(socket => {
-            if (!this.currentDragTile.sockets.includes(socket)) {
+            if (this.isValidSocket(socket)) {
                 socket.socketActive = true;
                 this.activeSockets.push(socket);
             }
         });
         this.updateActiveSockets(detail);
     };
+
+    private isValidSocket(socket: ARSocket): boolean {
+        if (
+            !this.currentDragTile ||
+            this.currentDragTile.sockets.includes(socket) ||
+            socket.childTile !== undefined
+        ) {
+            return false;
+        }
+
+        if (socket.parentTile === undefined) {
+            return true;
+        }
+
+        if (socket.parentTile && socket.parentTile.fixed) {
+            return true;
+        }
+
+        return false;
+    }
 
     public handleDragTileEnd = (e: CustomEvent): void => {
         if (e.defaultPrevented || !this.currentDragTile) {
@@ -87,6 +171,9 @@ export class ARTiles extends FASTElement {
         e.preventDefault();
         if (this.hoverSocket) {
             this.setTileInSocket(this.hoverSocket);
+            if (!this.hand.contains(this.hoverSocket)) {
+                this.currentDragTile.fixed = true;
+            }
         } else if (this.dragTileOriginalSocket) {
             this.setTileInSocket(this.dragTileOriginalSocket);
         }
@@ -102,6 +189,7 @@ export class ARTiles extends FASTElement {
         this.currentDragTile.removeEventListener("dragtile", this.handleTileDrag);
         this.currentDragTile = undefined;
         this.dragTileOriginalSocket = undefined;
+        this.hoverSocket = undefined;
     };
 
     public handleTileDrag = (e: CustomEvent): void => {
@@ -157,6 +245,7 @@ export class ARTiles extends FASTElement {
         }
         this.currentDragTile.useVirtualAnchor = false;
         this.currentDragTile.anchorElement = socket;
+        socket.childTile = this.currentDragTile;
         switch (socket.socketFacing) {
             case "left":
                 this.currentDragTile.horizontalDefaultPosition = "left";
@@ -186,6 +275,7 @@ export class ARTiles extends FASTElement {
             return;
         }
         e.preventDefault();
+        this.hoverSocket?.childTile = undefined;
         this.hoverSocket = undefined;
         this.currentDragTile.useVirtualAnchor = true;
         this.currentDragTile.horizontalDefaultPosition = "right";
@@ -195,6 +285,25 @@ export class ARTiles extends FASTElement {
 
 const sectionDividerTemplate = html`
     <fast-divider style="margin:20px;"></fast-divider>
+`;
+
+const letterTileTemplate: ViewTemplate<ARTiles> = html`
+    <ar-tile
+        anchor="dispenser-${(x, c) => c.index}"
+        viewport="board"
+        vertical-viewport-lock="true"
+        horizontal-viewport-lock="true"
+    >
+        ${x => x}
+    </ar-tile>
+`;
+
+const dispensorTemplate: ViewTemplate<ARTile> = html`
+    <ar-socket
+        id="dispenser-${(x, c) => c.index}"
+        socket-facing="center"
+        class="dispenser"
+    ></ar-socket>
 `;
 
 /**
@@ -208,274 +317,13 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                 Tiles
             </h1>
             ${sectionDividerTemplate} Blah ${sectionDividerTemplate}
-            <div id="board" class="board">
-                <div id="canvas" class="canvas">
+            <div id="board" class="board" ${ref("board")}>
+                <div id="canvas" class="canvas" ${ref("canvas")}>
                     <ar-socket socket-facing="center" class="start">
                         Start
                     </ar-socket>
                 </div>
-                <div id="hand" class="hand">
-                    <ar-socket
-                        id="dispenser-1"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-2"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-3"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-4"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-5"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-6"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-7"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-8"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-9"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-10"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-11"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-12"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-13"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-14"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-15"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-16"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-17"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-18"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-19"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                    <ar-socket
-                        id="dispenser-20"
-                        socket-facing="center"
-                        class="dispenser"
-                    ></ar-socket>
-                </div>
-                <ar-tile
-                    anchor="dispenser-1"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    D
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-2"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    R
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-3"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    A
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-4"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    G
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-5"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    T
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-6"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    O
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-7"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    M
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-8"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    A
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-9"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    K
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-10"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    E
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-11"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    W
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-12"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    O
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-13"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    R
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-14"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    D
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-15"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    S
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-16"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    C
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-17"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    O
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-18"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    O
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-19"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    L
-                </ar-tile>
-                <ar-tile
-                    anchor="dispenser-20"
-                    viewport="board"
-                    vertical-viewport-lock="true"
-                    horizontal-viewport-lock="true"
-                >
-                    X
-                </ar-tile>
+                <div id="hand" class="hand" ${ref("hand")}></div>
             </div>
         </template>
     `;
@@ -489,7 +337,7 @@ export const arTilesStyles = css`
         position: absolute;
         left: 350px;
         top: 180px;
-        background: green;
+        background: yellow;
         height: 60px;
         width: 60px;
     }
@@ -502,18 +350,19 @@ export const arTilesStyles = css`
     }
 
     .board {
-        height: 600px;
+        height: auto;
+        width: 800px;
         position: relative;
         display: grid;
         grid-template-columns: 10px 1fr 10px;
-        grid-template-rows: 10px 1fr 10px 150px 10px;
+        grid-template-rows: 10px auto 10px auto 10px;
     }
 
     .canvas {
         grid-row: 2;
         grid-column: 2;
         width: 100%;
-        height: 100%;
+        height: 400px;
         background: lightgray;
     }
 
