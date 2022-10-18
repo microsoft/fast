@@ -130,10 +130,9 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
 
 #### Attributes
 
-| Name                 | Field         | Inherited From |
-| -------------------- | ------------- | -------------- |
-| `readonly`           | readOnly      |                |
-| `data-indeterminate` | indeterminate |                |
+| Name       | Field    | Inherited From |
+| ---------- | -------- | -------------- |
+| `readonly` | readOnly |                |
 
 #### CSS Parts
 

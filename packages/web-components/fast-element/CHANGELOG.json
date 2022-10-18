@@ -2,6 +2,42 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 14 Oct 2022 18:26:11 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.14",
+      "version": "2.0.0-beta.14",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "19f1ae727e2ff6e629d2b134fc045a81d83caaed",
+            "comment": "fix: tokenList bindings track adds and removes from multiple sources"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "0248fa906f986d6b0cbdeb26cf388742e871449e",
+            "comment": "refactor: remove duplication and re-organize binding behavior logic"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 10 Oct 2022 20:28:02 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.13",
+      "version": "2.0.0-beta.13",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "fed5e806e44da9d10916d9d765fb7f35ed300a3f",
+            "comment": "fix: prevent event callbacks when controller is not bound"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Oct 2022 23:21:20 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.12",
       "version": "2.0.0-beta.12",

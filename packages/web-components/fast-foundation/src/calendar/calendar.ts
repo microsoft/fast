@@ -93,6 +93,13 @@ export class FASTCalendar extends FASTElement {
     }
 
     /**
+     * Weekday that the calendar should start on, defaults to Sunday
+     * @public
+     */
+    @attr({ attribute: "first-day", converter: nullableNumberConverter })
+    public firstDay: number = 0;
+
+    /**
      * Month to display
      * @public
      */
@@ -228,7 +235,9 @@ export class FASTCalendar extends FASTElement {
         minWeeks: number = this.minWeeks
     ): CalendarDateInfo[][] {
         minWeeks = minWeeks > 10 ? 10 : minWeeks;
-        const { start, length, previous, next } = info;
+        const { length, previous, next } = info;
+        let start = info.start - Math.min(Math.max(0, this.firstDay), 6);
+        start = start < 0 ? 7 + start : start;
         const days: CalendarDateInfo[][] = [];
         let dayCount = 1 - start;
 
@@ -323,8 +332,9 @@ export class FASTCalendar extends FASTElement {
                 weekday.abbr = longText[index];
             });
         }
+        const firstDay = Math.min(Math.max(0, this.firstDay), 6);
 
-        return weekdayText;
+        return [...weekdayText.slice(firstDay), ...weekdayText.slice(0, firstDay)];
     }
 
     /**

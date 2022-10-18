@@ -845,6 +845,7 @@ export class FASTCalendar extends FASTElement {
     // (undocumented)
     protected dayFormatChanged(): void;
     disabledDates: string;
+    firstDay: number;
     getDayClassNames(date: CalendarDateInfo, todayString?: string): string;
     getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[][];
     getMonthInfo(month?: number, year?: number): CalendarInfo;
