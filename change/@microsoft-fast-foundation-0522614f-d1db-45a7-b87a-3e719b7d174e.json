@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "remove click handler on slots",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "32497422+KingOfTac@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
