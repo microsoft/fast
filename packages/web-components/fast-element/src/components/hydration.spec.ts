@@ -11,8 +11,8 @@ import spies from "chai-spies";
 chai.use(spies)
 
 describe("The HydratableElementController", () => {
-    beforeEach(async () => {
-        ElementController.setStrategy(HydratableElementController);
+    beforeEach(() => {
+        HydratableElementController.install();
     })
     afterEach(() => {
         ElementController.setStrategy(ElementController);
