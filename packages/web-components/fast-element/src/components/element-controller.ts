@@ -470,9 +470,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (definition === void 0) {
             throw FAST.error(Message.missingElementDefinition);
         }
-        if (elementControllerStrategy === undefined) {
-            ElementController.setStrategy(ElementController);
-        }
 
         return ((element as any).$fastController = new elementControllerStrategy(
             element,
@@ -489,6 +486,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         elementControllerStrategy = strategy;
     }
 }
+
+// Set default strategy for ElementController
+ElementController.setStrategy(ElementController);
 
 /**
  * Converts a styleTarget into the operative target. When the provided target is an Element
