@@ -1,10 +1,13 @@
 import { UnobservableMutationObserver } from "../utilities.js";
-import { ElementController, ElementControllerStrategy } from "./element-controller.js";
+import { ElementController } from "./element-controller.js";
 
 const deferHydrationAttribute = "defer-hydration";
 
 /**
- * @internal
+ * An ElementController capable of hydrating FAST elements from
+ * Declarative Shadow DOM.
+ *
+ * @beta
  */
 export class HydratableElementController<
     TElement extends HTMLElement = HTMLElement
@@ -34,16 +37,8 @@ export class HydratableElementController<
         super.disconnect();
         HydratableElementController.hydrationObserver.unobserve(this.source);
     }
-}
 
-/**
- * Configures FAST to support component hydration deferal.
- *
- * @beta
- * @remarks
- * This feature is designed to support SSR rendering, which is
- * currently in beta. This feature is subject to change.
- */
-export function addHydrationSupport() {
-    ElementController.setStrategy(HydratableElementController);
+    public static install() {
+        ElementController.setStrategy(HydratableElementController);
+    }
 }

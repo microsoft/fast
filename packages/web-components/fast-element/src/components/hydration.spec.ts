@@ -5,15 +5,14 @@ import { uniqueElementName } from "../testing/exports.js";
 import { ElementController } from "./element-controller.js";
 import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions.js";
 import { FASTElement } from "./fast-element.js";
-import { HydratableElementController, addHydrationSupport } from "./hydration.js";
+import { HydratableElementController } from "./hydration.js";
 import spies from "chai-spies";
 
 chai.use(spies)
 
-
 describe("The HydratableElementController", () => {
-    beforeEach(() => {
-        addHydrationSupport();
+    beforeEach(async () => {
+        ElementController.setStrategy(HydratableElementController);
     })
     afterEach(() => {
         ElementController.setStrategy(ElementController);

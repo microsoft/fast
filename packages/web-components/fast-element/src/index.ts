@@ -47,4 +47,3 @@ export {
     ElementController,
     ElementControllerStrategy,
 } from "./components/element-controller.js";
-export { addHydrationSupport } from "./components/hydration.js";

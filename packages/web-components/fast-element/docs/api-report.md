@@ -14,9 +14,6 @@ export interface Accessor {
 // @public
 export type AddBehavior = (behavior: HostBehavior<HTMLElement>) => void;
 
-// @beta
-export function addHydrationSupport(): void;
-
 // @public
 export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
 
