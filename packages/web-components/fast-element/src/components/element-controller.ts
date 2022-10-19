@@ -471,7 +471,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             throw FAST.error(Message.missingElementDefinition);
         }
         if (elementControllerStrategy === undefined) {
-            elementControllerStrategy = ElementController;
+            ElementController.setStrategy(ElementController);
         }
 
         return ((element as any).$fastController = new elementControllerStrategy(
