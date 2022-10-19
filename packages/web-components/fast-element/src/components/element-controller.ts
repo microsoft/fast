@@ -40,6 +40,7 @@ export interface ElementControllerStrategy {
 export class ElementController<TElement extends HTMLElement = HTMLElement>
     extends PropertyChangeNotifier
     implements HostController<TElement> {
+    private boundObservables: Record<string, any> | null = null;
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
@@ -189,19 +190,21 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             }
         }
 
-        // Delete and re-assign any observable properties that were assigned
-        // before the element is upgraded. This needs to happen because otherwise
-        // the value will shadow the observable getter and setter
+        // Capture any observable values that were set by the binding engine before
+        // the browser upgraded the element. Then delete the property since it will
+        // shadow the getter/setter that is required to make the observable operate.
+        // Later, in the connect callback, we'll re-apply the values.
         const accessors = Observable.getAccessors(element);
 
         if (accessors.length > 0) {
+            const boundObservables = (this.boundObservables = Object.create(null));
             for (let i = 0, ii = accessors.length; i < ii; ++i) {
                 const propertyName = accessors[i].name as keyof TElement;
                 const value = (element as any)[propertyName];
 
                 if (value !== void 0) {
                     delete element[propertyName];
-                    element[propertyName] = value;
+                    boundObservables[propertyName] = value;
                 }
             }
         }
@@ -398,6 +401,21 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     }
 
     private finishInitialization(): void {
+        const element = this.source;
+        const boundObservables = this.boundObservables;
+
+        // If we have any observables that were bound, re-apply their values.
+        if (boundObservables !== null) {
+            const propertyNames = Object.keys(boundObservables);
+
+            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
+                const propertyName = propertyNames[i];
+                (element as any)[propertyName] = boundObservables[propertyName];
+            }
+
+            this.boundObservables = null;
+        }
+
         this.renderTemplate(this.template);
         this.addStyles(this.mainStyles);
 
