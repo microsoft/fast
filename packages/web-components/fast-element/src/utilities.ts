@@ -49,6 +49,9 @@ export function composedContains(reference: HTMLElement, test: HTMLElement): boo
     return false;
 }
 
+/**
+ * @internal
+ */
 export class UnobservableMutationObserver extends MutationObserver {
     private observedNodes: Set<Node> = new Set();
 
@@ -56,7 +59,7 @@ export class UnobservableMutationObserver extends MutationObserver {
      * An extension of MutationObserver that supports unobserving nodes.
      * @param callback - The callback to invoke when observed nodes are changed.
      */
-    constructor(private readonly callback: MutationCallback) {
+    constructor(callback: MutationCallback) {
         function handler(mutations: MutationRecord[]) {
             this.callback.call(
                 null,
