@@ -4,6 +4,9 @@
         "baseUrl": ".",
         "outDir": "./dist",
         "declaration": false,
+        "target": "ES2015",
+        "module": "ES2015",
+        "moduleResolution": "Node16",
         "allowSyntheticDefaultImports": true,
         "strictPropertyInitialization": false,
         "typeRoots": [

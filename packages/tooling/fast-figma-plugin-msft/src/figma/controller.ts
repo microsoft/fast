@@ -1,13 +1,13 @@
-import { Controller, PluginUIState } from "../core/controller";
+import { Controller, PluginUIState } from "../core/controller.js";
 import {
     AdditionalData,
     AppliedDesignTokens,
     AppliedRecipes,
     RecipeEvaluations,
-} from "../core/model";
-import { DesignTokenType } from "../core/ui/design-token-registry";
-import { PluginUINodeData } from "../core/ui/ui-controller";
-import { FigmaPluginNode } from "./node";
+} from "../core/model.js";
+import { DesignTokenType } from "../core/ui/design-token-registry.js";
+import { PluginUINodeData } from "../core/ui/ui-controller.js";
+import { FigmaPluginNode } from "./node.js";
 
 /**
  * Serializable version of PluginUINodeData that works across Figma's iframe sandbox setup.

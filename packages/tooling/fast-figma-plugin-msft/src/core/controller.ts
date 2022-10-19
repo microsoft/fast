@@ -1,6 +1,6 @@
-import { AppliedDesignTokens, AppliedRecipes, RecipeEvaluations } from "./model";
-import { PluginNode } from "./node";
-import { PluginUINodeData } from "./ui/ui-controller";
+import { AppliedDesignTokens, AppliedRecipes, RecipeEvaluations } from "./model.js";
+import { PluginNode } from "./node.js";
+import { PluginUINodeData } from "./ui/ui-controller.js";
 
 export interface PluginUIState {
     selectedNodes: PluginUINodeData[];

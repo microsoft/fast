@@ -9,13 +9,13 @@ import {
     ReadonlyAppliedDesignTokens,
     ReadonlyAppliedRecipes,
     RecipeEvaluation,
-} from "../model";
+} from "../model.js";
 import {
     DesignTokenDefinition,
     DesignTokenRegistry,
     DesignTokenType,
-} from "./design-token-registry";
-import { registerRecipes, registerTokens } from "./recipes";
+} from "./design-token-registry.js";
+import { registerRecipes, registerTokens } from "./recipes.js";
 
 /**
  * Represents a Node on the UI side.
@@ -285,10 +285,9 @@ export class UIController {
         });
     }
 
-    private evaluateRecipe<T>(
-        recipe: DesignTokenDefinition<T>,
-        node: PluginUINodeData
-    ): T {
+    private evaluateRecipe<
+        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
+    >(recipe: DesignTokenDefinition<T>, node: PluginUINodeData): T {
         // console.log("    evaluateRecipe", recipe);
         let value: T = this.getDesignTokenValue<T>(node, recipe.token);
         if (typeof (value as any).toColorString === "function") {
@@ -358,11 +357,9 @@ export class UIController {
         this.dispatchState("assignRecipe");
     }
 
-    private setDesignTokenForElement<T>(
-        nodeElement: HTMLElement,
-        token: DesignToken<T>,
-        value: T | null
-    ) {
+    private setDesignTokenForElement<
+        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
+    >(nodeElement: HTMLElement, token: DesignToken<T>, value: T | null) {
         try {
             if (value) {
                 // TODO figure out a better way to handle storage data types
@@ -409,7 +406,11 @@ export class UIController {
         return (value: AppliedDesignToken, key: string): void => {
             const def = this._designTokenRegistry.get(key);
             if (def) {
-                this.setDesignTokenForElement(nodeElement, def.token, value.value);
+                this.setDesignTokenForElement(
+                    nodeElement,
+                    def.token,
+                    value.value as string
+                );
             }
         };
     }
@@ -465,17 +466,23 @@ export class UIController {
         return this._designTokenRegistry.find(DesignTokenType.designToken);
     }
 
-    public getDesignTokenDefinition<T>(id: string): DesignTokenDefinition<T> | null {
+    public getDesignTokenDefinition<
+        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
+    >(id: string): DesignTokenDefinition<T> | null {
         return this._designTokenRegistry.get(id);
     }
 
-    public getDefaultDesignTokenValue<T>(token: DesignToken<T>): string {
+    public getDefaultDesignTokenValue<
+        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
+    >(token: DesignToken<T>): string {
         const val = this.valueToString(token.getValueFor(this._rootElement));
         // console.log("getDefaultDesignTokenValue", "token", token, "value", val);
         return val;
     }
 
-    public getDesignTokenValue<T>(node: PluginUINodeData, token: DesignToken<T>): T {
+    public getDesignTokenValue<
+        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
+    >(node: PluginUINodeData, token: DesignToken<T>): T {
         // Evaluate the token based on the tokens provided to the element.
         const element = this.getElementForNode(node);
         const val = token.getValueFor(element);
@@ -483,7 +490,9 @@ export class UIController {
         return val;
     }
 
-    private setDesignTokenForNode<T>(
+    private setDesignTokenForNode<
+        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
+    >(
         node: PluginUINodeData,
         definition: DesignTokenDefinition<T>,
         value: T | null
@@ -501,7 +510,9 @@ export class UIController {
         this.setDesignTokenForElement(element, definition.token, value);
     }
 
-    public assignDesignToken<T>(definition: DesignTokenDefinition<T>, value: T): void {
+    public assignDesignToken<
+        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
+    >(definition: DesignTokenDefinition<T>, value: T): void {
         const nodes = this._selectedNodes.filter(node =>
             node.supports.includes(DesignTokenType.designToken)
         );

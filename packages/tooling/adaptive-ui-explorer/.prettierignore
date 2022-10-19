@@ -1,0 +1,3 @@
+dist/*
+test/*
+src/__test__/*
