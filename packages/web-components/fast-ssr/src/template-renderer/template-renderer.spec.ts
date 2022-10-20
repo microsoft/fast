@@ -207,9 +207,9 @@ test.describe("TemplateRenderer", () => {
 
         for (const key of [name, definition, MyElement]) {
             const  { ElementRenderer, templateRenderer } = fastSSR();
-            expect(consolidate(templateRenderer.render(html`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"><p>Hello world</p></template></${name}>`);
+            expect(consolidate(templateRenderer.render(html`<${dangerousHTML(name)}></${dangerousHTML(name)}>`))).toBe(`<${name}><template shadowroot="open"><p>Hello world</p></template></${name}>`);
             ElementRenderer.disable(key);
-            expect(consolidate(templateRenderer.render(html`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`);
+            expect(consolidate(templateRenderer.render(html`<${dangerousHTML(name)}></${dangerousHTML(name)}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`);
         }
     });
 
