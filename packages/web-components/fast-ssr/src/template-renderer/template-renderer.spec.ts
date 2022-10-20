@@ -199,6 +199,20 @@ test.describe("TemplateRenderer", () => {
         expect(consolidate(result)).toBe("<unregistered-element>Hello world</unregistered-element>");
     });
 
+    test("should not render the template for elements that have been disabled via the ElementRenderer", () => {
+        const name = uniqueElementName();
+        class MyElement extends FASTElement {}
+        const definition = MyElement.compose({name, template: html`<p>Hello world</p>`})
+        definition.define()
+
+        for (const key of [name, definition, MyElement]) {
+            const  { ElementRenderer, templateRenderer } = fastSSR();
+            expect(consolidate(templateRenderer.render(html`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"><p>Hello world</p></template></${name}>`);
+            ElementRenderer.disable(key);
+            expect(consolidate(templateRenderer.render(html`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`);
+        }
+    });
+
     /**
      * Bindings
      */

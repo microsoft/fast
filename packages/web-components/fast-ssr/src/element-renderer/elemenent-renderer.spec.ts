@@ -30,11 +30,39 @@ test.describe("FASTElementRenderer", () => {
     test.describe("should have a 'matchesClass' method", () => {
         test("that returns true when invoked with a class that extends FASTElement ",  () => {
             class MyElement extends FASTElement {}
-            expect(SyncFASTElementRenderer.matchesClass(MyElement)).toBe(true);
+            expect(SyncFASTElementRenderer.matchesClass(MyElement, "", new Map())).toBe(true);
         });
         test("that returns false when invoked with a class that does not extend FASTElement ", () => {
             class MyElement extends HTMLElement {}
-            expect(SyncFASTElementRenderer.matchesClass(MyElement)).toBe(false);
+            expect(SyncFASTElementRenderer.matchesClass(MyElement, "", new Map())).toBe(false);
+        });
+
+        test("should return false when the provided class has been disabled", () => {
+            class MyElement extends FASTElement {}
+            const { ElementRenderer } = fastSSR();
+
+            ElementRenderer.disable(MyElement);
+
+            expect(ElementRenderer.matchesClass(MyElement, "", new Map())).toBe(false)
+        });
+        test("should return false when the provided tag-name has been disabled", () => {
+            const name = uniqueElementName();
+            class MyElement extends FASTElement {}
+            const { ElementRenderer } = fastSSR();
+
+            ElementRenderer.disable(name);
+
+            expect(ElementRenderer.matchesClass(MyElement, name, new Map())).toBe(false)
+        });
+        test("should return false when the provided element definition has been disabled", () => {
+            const name = uniqueElementName();
+            class MyElement extends FASTElement {}
+            const definition = MyElement.compose(name);
+            const { ElementRenderer } = fastSSR();
+
+            ElementRenderer.disable(definition);
+
+            expect(ElementRenderer.matchesClass(MyElement, name, new Map())).toBe(false)
         });
     });
 

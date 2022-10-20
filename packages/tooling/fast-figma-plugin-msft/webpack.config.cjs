@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const ResolveTypeScriptPlugin = require("resolve-typescript-plugin");
+
 
 const appDir = path.resolve(__dirname, "./src");
 const outDir = path.resolve(__dirname, "./dist");
@@ -60,7 +62,8 @@ module.exports = (env, args) => {
             }),
         ],
         resolve: {
-            extensions: [".js", ".svg", ".ts"],
+            extensions: [".js", ".svg"],
+            plugins: [new ResolveTypeScriptPlugin()],
         },
     };
 };
