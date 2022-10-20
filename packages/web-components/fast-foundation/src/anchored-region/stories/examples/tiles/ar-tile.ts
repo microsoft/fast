@@ -193,31 +193,33 @@ export const arTileStyles = css`
         background: gray;
         border: solid 2px black;
         user-select: none;
+        box-sizing: border-box;
     }
 
     :host(.dragging) {
-        z-index:100;
+        z-index: 100;
         pointer-events: none;
     }
 
     .socket-top .socket-right .socket-bottom .socket-left {
-        background: white;s
+        background: white;
+        box-sizing: border-box;
     }
 
     .socket-top {
         grid-row: 1;
-        grid-column: 2;
+        grid-column: 1 / 4;
     }
     .socket-right {
-        grid-row: 2;
+        grid-row: 1 / 4;
         grid-column: 3;
     }
     .socket-bottom {
         grid-row: 3;
-        grid-column: 2;
+        grid-column: 1 / 4;
     }
     .socket-left {
-        grid-row: 2;
+        grid-row: 1 / 4;
         grid-column: 1;
     }
     .content {
