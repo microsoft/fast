@@ -1,19 +1,23 @@
 import { DOMAspect, DOMPolicy, DOMSink } from "./dom.js";
 import type { TrustedTypesPolicy } from "./interfaces.js";
 
-export type DOMAspectGuards = Record<string, (DOMSink) => DOMSink>;
+export type DOMSinkGuards = Record<string, (DOMSink) => DOMSink>;
 
-export type DOMElementGuards = Record<
-    string,
-    {
-        [DOMAspect.attribute]?: DOMAspectGuards;
-        [DOMAspect.booleanAttribute]?: DOMAspectGuards;
-        [DOMAspect.property]?: DOMAspectGuards;
-        [DOMAspect.content]?: DOMAspectGuards;
-        [DOMAspect.tokenList]?: DOMAspectGuards;
-        [DOMAspect.event]?: DOMAspectGuards;
-    }
->;
+export type DOMAspectGuards = {
+    [DOMAspect.attribute]?: DOMSinkGuards;
+    [DOMAspect.booleanAttribute]?: DOMSinkGuards;
+    [DOMAspect.property]?: DOMSinkGuards;
+    [DOMAspect.content]?: DOMSinkGuards;
+    [DOMAspect.tokenList]?: DOMSinkGuards;
+    [DOMAspect.event]?: DOMSinkGuards;
+};
+
+export type DOMElementGuards = Record<string, DOMAspectGuards>;
+
+export type DOMGuards = {
+    elements: DOMElementGuards;
+    aspects: DOMAspectGuards;
+};
 
 function safeURL(sink: DOMSink): DOMSink {
     return (target: Node, name: string, value: string, ...rest: any[]) => {
@@ -32,7 +36,7 @@ function block(sink: DOMSink): DOMSink {
     };
 }
 
-const defaultDOMGuards: DOMElementGuards = {
+const defaultDOMElementGuards: DOMElementGuards = Object.freeze({
     A: {
         [DOMAspect.attribute]: {
             href: safeURL,
@@ -87,6 +91,7 @@ const defaultDOMGuards: DOMElementGuards = {
         },
         [DOMAspect.property]: {
             src: safeURL,
+            srcdoc: block,
         },
     },
     INPUT: {
@@ -119,19 +124,43 @@ const defaultDOMGuards: DOMElementGuards = {
             textContent: block,
         },
     },
-};
+});
+
+export const defaultDOMGuards = Object.freeze({
+    elements: defaultDOMElementGuards,
+    aspects: {
+        [DOMAspect.property]: {
+            innerHTML: block,
+        },
+    },
+});
+
+function tryGuard(
+    aspectGuards: DOMAspectGuards,
+    aspect: DOMAspect,
+    aspectName: string,
+    sink: DOMSink
+) {
+    const sinkGuards = aspectGuards[aspect];
+
+    if (sinkGuards) {
+        const guard = sinkGuards[aspectName];
+        if (guard) {
+            return guard(sink);
+        }
+    }
+}
 
 const DOMPolicy = Object.freeze({
-    create(fastTrustedType?: TrustedTypesPolicy, guards?: DOMElementGuards): DOMPolicy {
+    create(
+        fastTrustedType?: TrustedTypesPolicy,
+        guards: DOMGuards = defaultDOMGuards
+    ): DOMPolicy {
         if (!fastTrustedType) {
             const createHTML = html => html;
             fastTrustedType = globalThis.trustedTypes
                 ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
                 : { createHTML };
-        }
-
-        if (!guards) {
-            guards = defaultDOMGuards;
         }
 
         return Object.freeze({
@@ -145,17 +174,22 @@ const DOMPolicy = Object.freeze({
                 aspectName: string,
                 sink: DOMSink
             ): DOMSink {
-                const elementLookup = guards![tagName ?? ""];
-                if (elementLookup) {
-                    const aspectLookup = elementLookup[aspect];
-                    if (aspectLookup) {
-                        const guard = aspectLookup[aspectName];
-                        if (guard) {
-                            return guard(sink);
-                        }
+                // Check for element-specific guards.
+                const elementGuards = guards.elements[tagName ?? ""];
+                if (elementGuards) {
+                    const guard = tryGuard(elementGuards, aspect, aspectName, sink);
+                    if (guard) {
+                        return guard;
                     }
                 }
 
+                // Check for guards applicable to all nodes.
+                const guard = tryGuard(guards.aspects, aspect, aspectName, sink);
+                if (guard) {
+                    return guard;
+                }
+
+                // No additional protection needed.
                 return sink;
             },
         });
