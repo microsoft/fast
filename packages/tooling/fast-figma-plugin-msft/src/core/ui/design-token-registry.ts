@@ -27,7 +27,17 @@ export type MappedDesignTokenTypes<T> = { [K in keyof typeof DesignTokenType]: T
  * Defines a generic design token
  */
 /* eslint-disable-next-line @typescript-eslint/ban-types */
-export interface DesignTokenDefinition<T extends {} = any> {
+export interface DesignTokenDefinition<
+    T extends
+        | string
+        | number
+        | boolean
+        | BigInteger
+        | null
+        | Array<any>
+        | symbol
+        | {} = any
+> {
     /**
      * A title for organizing recipe sets
      */
@@ -92,7 +102,9 @@ export class DesignTokenRegistry {
      * Get a design token definition by ID
      * @param id the id of the design token
      */
-    public get<T>(id: string): DesignTokenDefinition<T> | null {
+    public get<
+        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
+    >(id: string): DesignTokenDefinition<T> | null {
         if (this.isRegistered(id)) {
             return this.entries[id];
         }
