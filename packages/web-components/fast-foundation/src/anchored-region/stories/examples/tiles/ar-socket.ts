@@ -158,6 +158,7 @@ export function arSocketTemplate<T extends ARSocket>(): ElementViewTemplate<T> {
 
 export const arSocketStyles = css`
     :host {
+        box-sizing: border-box;
         display: grid;
         grid-template-columns: 1fr 10px 1fr;
         grid-template-rows: 1fr 10px 1fr;

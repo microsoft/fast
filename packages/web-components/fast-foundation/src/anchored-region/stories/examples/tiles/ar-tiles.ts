@@ -59,11 +59,17 @@ export class ARTiles extends FASTElement {
         "Z",
     ];
 
+    // public letters: string[] = [
+    //     "A",
+    //     "B",
+    // ];
+
     public board: HTMLDivElement;
     public canvas: HTMLDivElement;
     public hand: HTMLDivElement;
     private allSockets: ARSocket[] = [];
     private activeSockets: ARSocket[] = [];
+    private placedTiles: ARTile[] = [];
 
     private currentDragTile: ARTile | undefined;
     private dragTileOriginalSocket: ARSocket | undefined;
@@ -111,6 +117,8 @@ export class ARTiles extends FASTElement {
         this.removeEventListener("dragtilestart", this.handleDragTileStart);
         this.removeEventListener("dragtileend", this.handleDragTileEnd);
         this.allSockets.splice(0, this.allSockets.length);
+        this.activeSockets.splice(0, this.activeSockets.length);
+        this.placedTiles.splice(0, this.placedTiles.length);
         this.currentDragTile = undefined;
         this.hoverSocket = undefined;
     }
@@ -144,26 +152,6 @@ export class ARTiles extends FASTElement {
         this.updateActiveSockets(detail);
     };
 
-    private isValidSocket(socket: ARSocket): boolean {
-        if (
-            !this.currentDragTile ||
-            this.currentDragTile.sockets.includes(socket) ||
-            socket.childTile !== undefined
-        ) {
-            return false;
-        }
-
-        if (socket.parentTile === undefined) {
-            return true;
-        }
-
-        if (socket.parentTile && socket.parentTile.fixed) {
-            return true;
-        }
-
-        return false;
-    }
-
     public handleDragTileEnd = (e: CustomEvent): void => {
         if (e.defaultPrevented || !this.currentDragTile) {
             return;
@@ -173,6 +161,7 @@ export class ARTiles extends FASTElement {
             this.setTileInSocket(this.hoverSocket);
             if (!this.hand.contains(this.hoverSocket)) {
                 this.currentDragTile.fixed = true;
+                this.placedTiles.push(this.currentDragTile);
             }
         } else if (this.dragTileOriginalSocket) {
             this.setTileInSocket(this.dragTileOriginalSocket);
@@ -191,6 +180,94 @@ export class ARTiles extends FASTElement {
         this.dragTileOriginalSocket = undefined;
         this.hoverSocket = undefined;
     };
+
+    private isValidSocket(socket: ARSocket): boolean {
+        if (
+            !this.currentDragTile ||
+            this.currentDragTile.sockets.includes(socket) ||
+            socket.childTile !== undefined
+        ) {
+            return false;
+        }
+
+        if (socket.parentTile === undefined) {
+            return true;
+        }
+
+        const dropRect: DOMRect | undefined = this.getDropRect(
+            socket,
+            this.currentDragTile
+        );
+        if (!dropRect) {
+            return false;
+        }
+
+        let intersecting: boolean = false;
+        this.placedTiles.forEach(tile => {
+            // console.debug(`regionrect: ${tile.regionRect?.top},  ${tile.regionRect?.right}, ${tile.regionRect?.bottom}, ${tile.regionRect?.left}`);
+            //console.debug(`droprect: ${dropRect?.top},  ${dropRect?.right}, ${dropRect?.bottom}, ${dropRect?.left}`);
+            if (tile.regionRect && this.isIntersecting(tile.regionRect, dropRect)) {
+                intersecting = true;
+                //todo: break early
+            }
+            console.debug(`intersecting: ${intersecting}`);
+        });
+
+        if (socket.parentTile && socket.parentTile.fixed && !intersecting) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private isIntersecting(rectA: DOMRect, rectB: DOMRect): boolean {
+        console.debug(
+            `rectA: ${rectA.top},  ${rectA.right}, ${rectA.bottom}, ${rectA.left}`
+        );
+        console.debug(
+            `rectB: ${rectB.top},  ${rectB.right}, ${rectB.bottom}, ${rectB.left}`
+        );
+        if (
+            rectA.left >= rectB.right ||
+            rectA.top >= rectB.bottom ||
+            rectA.right <= rectB.left ||
+            rectA.bottom <= rectB.top
+        ) {
+            return false;
+        }
+        return true;
+    }
+
+    private getDropRect(socket: ARSocket, tile: ARTile): DOMRect | undefined {
+        if (!socket.regionRect || !tile.regionRect) {
+            return undefined;
+        }
+
+        let tileTop: number = 0;
+        let tileLeft: number = 0;
+        // console.debug(`socket.regionRect: ${socket.regionRect?.top}, ${socket.regionRect?.right}, ${socket.regionRect?.bottom}, ${socket.regionRect?.left}`);
+
+        switch (socket.socketFacing) {
+            case "left":
+                tileTop = socket.regionRect.top + tile.regionRect.height / 2;
+                tileLeft = socket.regionRect.left - tile.regionRect.width / 2;
+                break;
+            case "right":
+                tileTop = socket.regionRect.top + tile.regionRect.height / 2;
+                tileLeft = socket.regionRect.right + tile.regionRect.width / 2;
+                break;
+            case "top":
+                tileTop = socket.regionRect.top - tile.regionRect.height / 2;
+                tileLeft = socket.regionRect.left + tile.regionRect.width / 2;
+                break;
+            case "bottom":
+                tileTop = socket.regionRect.bottom + tile.regionRect.height / 2;
+                tileLeft = socket.regionRect.left + tile.regionRect.width / 2;
+                break;
+        }
+
+        return new DOMRect(tileLeft, tileTop, 1, 1);
+    }
 
     public handleTileDrag = (e: CustomEvent): void => {
         if (e.defaultPrevented) {

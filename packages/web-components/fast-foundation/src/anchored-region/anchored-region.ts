@@ -753,6 +753,7 @@ export class FASTAnchoredRegion extends FASTElement {
             this.isRectDifferent(this.regionRect, regionEntry.boundingClientRect)
         ) {
             this.regionRect = regionEntry.boundingClientRect;
+            // console.debug(`regionRect: ${this.regionRect?.top},  ${this.regionRect?.right}, ${this.regionRect?.bottom}, ${this.regionRect?.left}`);
             this.anchorRect = anchorRect;
             if (this.viewportElement === document.documentElement) {
                 this.viewportRect = new DOMRectReadOnly(
