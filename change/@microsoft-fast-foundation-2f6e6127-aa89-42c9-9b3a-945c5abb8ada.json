@@ -3,5 +3,5 @@
   "comment": "feat: add new DOM Policy protection throughout",
   "packageName": "@microsoft/fast-foundation",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }

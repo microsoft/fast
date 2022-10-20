@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "feat: add new DOM policy protection throughout",
+  "comment": "feat: add new DOM Policy protection throughout",
   "packageName": "@microsoft/fast-router",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
