@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "remove click handler on slots",
+  "comment": "remove unnecessary click handler from legacy button span implementation",
   "packageName": "@microsoft/fast-foundation",
   "email": "32497422+KingOfTac@users.noreply.github.com",
   "dependentChangeType": "prerelease"
