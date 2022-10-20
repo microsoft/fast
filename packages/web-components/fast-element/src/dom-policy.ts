@@ -1,7 +1,15 @@
 import { DOMAspect, DOMPolicy, DOMSink } from "./dom.js";
-import type { TrustedTypesPolicy } from "./interfaces.js";
+import { isString, TrustedTypesPolicy } from "./interfaces.js";
 
-export type DOMSinkGuards = Record<string, (DOMSink) => DOMSink>;
+export type DOMSinkGuards = Record<
+    string,
+    (
+        tagName: string | null,
+        aspect: DOMAspect,
+        aspectName: string,
+        sink: DOMSink
+    ) => DOMSink
+>;
 
 export type DOMAspectGuards = {
     [DOMAspect.attribute]?: DOMSinkGuards;
@@ -19,24 +27,33 @@ export type DOMGuards = {
     aspects: DOMAspectGuards;
 };
 
-function safeURL(sink: DOMSink): DOMSink {
+function safeURL(
+    tagName: string | null,
+    aspect: DOMAspect,
+    aspectName: string,
+    sink: DOMSink
+): DOMSink {
     return (target: Node, name: string, value: string, ...rest: any[]) => {
-        if (value !== null && value !== void 0) {
-            // TODO
-            return value;
+        if (isString(value)) {
+            return value.replace("javascript:", "");
         }
 
         sink(target, name, value, ...rest);
     };
 }
 
-function block(sink: DOMSink): DOMSink {
-    return (target: Node, name: string, value: string, ...rest: any[]) => {
-        // TODO
-    };
+function block(
+    tagName: string | null,
+    aspect: DOMAspect,
+    aspectName: string,
+    sink: DOMSink
+): DOMSink {
+    throw new Error(
+        `${aspectName} on ${tagName ?? "text"} is blocked by the current DOMPolicy.`
+    );
 }
 
-const defaultDOMElementGuards: DOMElementGuards = Object.freeze({
+const defaultDOMElementGuards: DOMElementGuards = {
     A: {
         [DOMAspect.attribute]: {
             href: safeURL,
@@ -71,10 +88,10 @@ const defaultDOMElementGuards: DOMElementGuards = Object.freeze({
     },
     FORM: {
         [DOMAspect.attribute]: {
-            formaction: safeURL,
+            action: safeURL,
         },
         [DOMAspect.property]: {
-            formAction: safeURL,
+            action: safeURL,
         },
     },
     FRAME: {
@@ -102,6 +119,14 @@ const defaultDOMElementGuards: DOMElementGuards = Object.freeze({
             formAction: safeURL,
         },
     },
+    LINK: {
+        [DOMAspect.attribute]: {
+            href: block,
+        },
+        [DOMAspect.property]: {
+            href: block,
+        },
+    },
     OBJECT: {
         [DOMAspect.attribute]: {
             codebase: block,
@@ -124,19 +149,100 @@ const defaultDOMElementGuards: DOMElementGuards = Object.freeze({
             textContent: block,
         },
     },
-});
-
-export const defaultDOMGuards = Object.freeze({
-    elements: defaultDOMElementGuards,
-    aspects: {
+    STYLE: {
         [DOMAspect.property]: {
-            innerHTML: block,
+            innerText: block,
+            textContent: block,
         },
     },
-});
+};
+
+const blockedEvents = {
+    onabort: block,
+    onauxclick: block,
+    onbeforeinput: block,
+    onbeforematch: block,
+    oncancel: block,
+    oncanplay: block,
+    oncanplaythrough: block,
+    onchange: block,
+    onclick: block,
+    onclose: block,
+    oncontextlost: block,
+    oncontextmenu: block,
+    oncontextrestored: block,
+    oncuechange: block,
+    ondblclick: block,
+    ondrag: block,
+    ondragend: block,
+    ondragenter: block,
+    ondragleave: block,
+    ondragover: block,
+    ondragstart: block,
+    ondrop: block,
+    ondurationchange: block,
+    onemptied: block,
+    onended: block,
+    onformdata: block,
+    oninput: block,
+    oninvalid: block,
+    onkeydown: block,
+    onkeypress: block,
+    onkeyup: block,
+    onloadeddata: block,
+    onloadedmetadata: block,
+    onloadstart: block,
+    onmousedown: block,
+    onmouseenter: block,
+    onmouseleave: block,
+    onmousemove: block,
+    onmouseout: block,
+    onmouseover: block,
+    onmouseup: block,
+    onpause: block,
+    onplay: block,
+    onplaying: block,
+    onprogress: block,
+    onratechange: block,
+    onreset: block,
+    onsecuritypolicyviolation: block,
+    onseeked: block,
+    onseeking: block,
+    onselect: block,
+    onslotchange: block,
+    onstalled: block,
+    onsubmit: block,
+    onsuspend: block,
+    ontimeupdate: block,
+    ontoggle: block,
+    onvolumechange: block,
+    onwaiting: block,
+    onwebkitanimationend: block,
+    onwebkitanimationiteration: block,
+    onwebkitanimationstart: block,
+    onwebkittransitionend: block,
+    onwheel: block,
+};
+
+const defaultDOMGuards = {
+    elements: defaultDOMElementGuards,
+    aspects: {
+        [DOMAspect.attribute]: {
+            ...blockedEvents,
+        },
+        [DOMAspect.property]: {
+            innerHTML: block,
+            ...blockedEvents,
+        },
+        [DOMAspect.event]: {
+            ...blockedEvents,
+        },
+    },
+};
 
 function tryGuard(
     aspectGuards: DOMAspectGuards,
+    tagName: string | null,
     aspect: DOMAspect,
     aspectName: string,
     sink: DOMSink
@@ -146,7 +252,7 @@ function tryGuard(
     if (sinkGuards) {
         const guard = sinkGuards[aspectName];
         if (guard) {
-            return guard(sink);
+            return guard(tagName, aspect, aspectName, sink);
         }
     }
 }
@@ -177,14 +283,22 @@ const DOMPolicy = Object.freeze({
                 // Check for element-specific guards.
                 const elementGuards = guards.elements[tagName ?? ""];
                 if (elementGuards) {
-                    const guard = tryGuard(elementGuards, aspect, aspectName, sink);
+                    const guard = tryGuard(
+                        elementGuards,
+                        tagName,
+                        aspect,
+                        aspectName,
+                        sink
+                    );
+
                     if (guard) {
                         return guard;
                     }
                 }
 
                 // Check for guards applicable to all nodes.
-                const guard = tryGuard(guards.aspects, aspect, aspectName, sink);
+                const guard = tryGuard(guards.aspects, tagName, aspect, aspectName, sink);
+
                 if (guard) {
                     return guard;
                 }
