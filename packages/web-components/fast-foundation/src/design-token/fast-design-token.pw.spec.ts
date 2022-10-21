@@ -58,7 +58,7 @@ function uniqueTokenName(): string {
 
 // Test utilities
 
-test.describe.only("A DesignToken", () => {
+test.describe("A DesignToken", () => {
     let page: Page;
     let root: Locator;
 
