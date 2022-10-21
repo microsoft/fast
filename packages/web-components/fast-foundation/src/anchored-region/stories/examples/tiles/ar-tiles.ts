@@ -7,6 +7,7 @@ import {
     observable,
     ref,
     RepeatDirective,
+    Updates,
     ViewBehaviorOrchestrator,
     ViewTemplate,
 } from "@microsoft/fast-element";
@@ -23,6 +24,11 @@ export function registerARTiles() {
     registerARSocket();
 }
 
+export interface TileData {
+    title: string;
+    value: number;
+}
+
 /**
  *
  *
@@ -30,39 +36,11 @@ export function registerARTiles() {
  */
 export class ARTiles extends FASTElement {
     @observable
-    public letters: string[] = [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z",
+    public tiles: TileData[] = [
+        { title: "A", value: 1 },
+        { title: "B", value: 1 },
+        { title: "C", value: 1 },
     ];
-
-    // public letters: string[] = [
-    //     "A",
-    //     "B",
-    // ];
 
     public board: HTMLDivElement;
     public canvas: HTMLDivElement;
@@ -92,8 +70,8 @@ export class ARTiles extends FASTElement {
             this.$fastController.addBehavior(this.behaviorOrchestrator);
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<ARTiles>(
-                    bind(x => x.letters, false),
-                    bind(x => dispensorTemplate, false),
+                    bind(x => x.tiles, false),
+                    bind(x => dispenserTemplate, false),
                     { positioning: true }
                 ),
                 this.hand.appendChild(this.dispenserPlaceholder)
@@ -101,7 +79,7 @@ export class ARTiles extends FASTElement {
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<ARTiles>(
-                    bind(x => x.letters, false),
+                    bind(x => x.tiles, false),
                     bind(x => letterTileTemplate, false),
                     { positioning: true }
                 ),
@@ -143,13 +121,31 @@ export class ARTiles extends FASTElement {
         this.currentDragTile.useVirtualAnchor = true;
         this.currentDragTile.horizontalDefaultPosition = "right";
         this.currentDragTile.verticalDefaultPosition = "bottom";
-        this.allSockets.forEach(socket => {
-            if (this.isValidSocket(socket)) {
-                socket.socketActive = true;
-                this.activeSockets.push(socket);
-            }
+        this.placedTiles.forEach(tile => {
+            tile.update();
+            tile.sockets.forEach(socket => {
+                socket.update();
+            });
         });
-        this.updateActiveSockets(detail);
+        this.currentDragTile.addEventListener(
+            "positionchange",
+            this.handleDragTilePositionChange
+        );
+    };
+
+    public handleDragTilePositionChange = (): void => {
+        this.currentDragTile?.removeEventListener(
+            "positionchange",
+            this.handleDragTilePositionChange
+        );
+        Updates.enqueue(() => {
+            this.allSockets.forEach(socket => {
+                if (this.isValidSocket(socket)) {
+                    socket.socketActive = true;
+                    this.activeSockets.push(socket);
+                }
+            });
+        });
     };
 
     public handleDragTileEnd = (e: CustomEvent): void => {
@@ -160,8 +156,7 @@ export class ARTiles extends FASTElement {
         if (this.hoverSocket) {
             this.setTileInSocket(this.hoverSocket);
             if (!this.hand.contains(this.hoverSocket)) {
-                this.currentDragTile.fixed = true;
-                this.placedTiles.push(this.currentDragTile);
+                this.connectDroppedTile(this.currentDragTile);
             }
         } else if (this.dragTileOriginalSocket) {
             this.setTileInSocket(this.dragTileOriginalSocket);
@@ -181,10 +176,16 @@ export class ARTiles extends FASTElement {
         this.hoverSocket = undefined;
     };
 
+    private connectDroppedTile(tile: ARTile): void {
+        tile.fixed = true;
+        this.placedTiles.push(tile);
+    }
+
     private isValidSocket(socket: ARSocket): boolean {
         if (
             !this.currentDragTile ||
             this.currentDragTile.sockets.includes(socket) ||
+            this.hand.contains(socket) ||
             socket.childTile !== undefined
         ) {
             return false;
@@ -204,13 +205,10 @@ export class ARTiles extends FASTElement {
 
         let intersecting: boolean = false;
         this.placedTiles.forEach(tile => {
-            // console.debug(`regionrect: ${tile.regionRect?.top},  ${tile.regionRect?.right}, ${tile.regionRect?.bottom}, ${tile.regionRect?.left}`);
-            //console.debug(`droprect: ${dropRect?.top},  ${dropRect?.right}, ${dropRect?.bottom}, ${dropRect?.left}`);
             if (tile.regionRect && this.isIntersecting(tile.regionRect, dropRect)) {
                 intersecting = true;
                 //todo: break early
             }
-            console.debug(`intersecting: ${intersecting}`);
         });
 
         if (socket.parentTile && socket.parentTile.fixed && !intersecting) {
@@ -221,12 +219,12 @@ export class ARTiles extends FASTElement {
     }
 
     private isIntersecting(rectA: DOMRect, rectB: DOMRect): boolean {
-        console.debug(
-            `rectA: ${rectA.top},  ${rectA.right}, ${rectA.bottom}, ${rectA.left}`
-        );
-        console.debug(
-            `rectB: ${rectB.top},  ${rectB.right}, ${rectB.bottom}, ${rectB.left}`
-        );
+        // console.debug(
+        //     `rectA: ${rectA.top},  ${rectA.right}, ${rectA.bottom}, ${rectA.left}`
+        // );
+        // console.debug(
+        //     `rectB: ${rectB.top},  ${rectB.right}, ${rectB.bottom}, ${rectB.left}`
+        // );
         if (
             rectA.left >= rectB.right ||
             rectA.top >= rectB.bottom ||
@@ -245,7 +243,6 @@ export class ARTiles extends FASTElement {
 
         let tileTop: number = 0;
         let tileLeft: number = 0;
-        // console.debug(`socket.regionRect: ${socket.regionRect?.top}, ${socket.regionRect?.right}, ${socket.regionRect?.bottom}, ${socket.regionRect?.left}`);
 
         switch (socket.socketFacing) {
             case "left":
@@ -371,11 +368,11 @@ const letterTileTemplate: ViewTemplate<ARTiles> = html`
         vertical-viewport-lock="true"
         horizontal-viewport-lock="true"
     >
-        ${x => x}
+        ${x => x.title}
     </ar-tile>
 `;
 
-const dispensorTemplate: ViewTemplate<ARTile> = html`
+const dispenserTemplate: ViewTemplate<ARTile> = html`
     <ar-socket
         id="dispenser-${(x, c) => c.index}"
         socket-facing="center"

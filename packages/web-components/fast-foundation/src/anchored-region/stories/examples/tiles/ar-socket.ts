@@ -104,8 +104,8 @@ export class ARSocket extends FASTAnchoredRegion {
             return 0;
         }
 
-        const anchorX: number = anchorRect.top + anchorRect.height / 2;
-        const anchorY: number = anchorRect.left + anchorRect.width / 2;
+        const anchorX: number = anchorRect.top;
+        const anchorY: number = anchorRect.left;
         const regionX: number = regionRect.top + regionRect.height / 2;
         const regionY: number = regionRect.left + regionRect.width / 2;
 
@@ -122,8 +122,8 @@ export class ARSocket extends FASTAnchoredRegion {
             return 0;
         }
 
-        const anchorX: number = anchorRect.top + anchorRect.height / 2;
-        const anchorY: number = anchorRect.left + anchorRect.width / 2;
+        const anchorX: number = anchorRect.top;
+        const anchorY: number = anchorRect.left;
         const regionX: number = regionRect.top + regionRect.height / 2;
         const regionY: number = regionRect.left + regionRect.width / 2;
 
