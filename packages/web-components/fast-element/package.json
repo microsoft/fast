@@ -66,6 +66,14 @@
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
     },
+    "./element-hydration": {
+      "types": "./dist/dts/components/hydration.d.ts",
+      "default": "./dist/esm/components/hydration.js"
+    },
+    "./install-element-hydration": {
+      "types": "./dist/dts/components/install-hydration.d.ts",
+      "default": "./dist/esm/components/install-hydration.js"
+    },
     "./pending-task": {
       "types": "./dist/dts/pending-task.d.ts",
       "default": "./dist/esm/pending-task.js"
@@ -75,7 +83,8 @@
   "unpkg": "dist/fast-element.min.js",
   "sideEffects": [
     "./dist/esm/debug.js",
-    "./dist/esm/polyfills.js"
+    "./dist/esm/polyfills.js",
+    "./dist/esm/components/install-hydration.js"
   ],
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
