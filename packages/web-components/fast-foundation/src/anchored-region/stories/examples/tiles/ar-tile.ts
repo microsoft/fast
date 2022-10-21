@@ -97,8 +97,8 @@ export class ARTile extends FASTAnchoredRegion {
         window.addEventListener(eventMouseMove, this.handleMouseMove);
         window.addEventListener(eventMouseUp, this.handleMouseUp);
         this.lastMouseEvent = e;
-        this.updatePosition();
         this.$emit("dragtilestart", { tile: this, event: e }, { composed: true });
+        this.updatePosition();
     };
 
     /**
