@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "remove unnecessary composedParent & composedContains exports from Foundation",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "tebin.raouf@thomsonreuters.com",
+  "dependentChangeType": "patch"
+}
