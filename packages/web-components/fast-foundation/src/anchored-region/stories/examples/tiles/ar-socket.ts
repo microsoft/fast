@@ -69,7 +69,7 @@ export class ARSocket extends FASTAnchoredRegion {
     }
 
     public parentTile: ARTile | undefined;
-    public childTile: ARTile | undefined;
+    public connectedTile: ARTile | undefined;
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -83,7 +83,7 @@ export class ARSocket extends FASTAnchoredRegion {
         super.disconnectedCallback();
         this.$emit("socketdisconnected", this);
         this.parentTile = undefined;
-        this.childTile = undefined;
+        this.connectedTile = undefined;
     }
 
     public handleMouseEnter = (e: MouseEvent): void => {

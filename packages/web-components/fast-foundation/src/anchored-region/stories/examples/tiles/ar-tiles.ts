@@ -133,7 +133,7 @@ export class ARTiles extends FASTElement {
         this.currentDragTile = detail.tile;
         if (detail.tile.anchorElement) {
             this.dragTileOriginalSocket = detail.tile.anchorElement as ARSocket;
-            this.dragTileOriginalSocket.childTile = undefined;
+            this.dragTileOriginalSocket.connectedTile = undefined;
         }
         if (this.currentDragTile === undefined) {
             return;
@@ -177,12 +177,12 @@ export class ARTiles extends FASTElement {
         }
         e.preventDefault();
         if (this.hoverSocket) {
-            this.setTileInSocket(this.hoverSocket);
+            this.setTileInSocket(this.hoverSocket, this.currentDragTile);
             if (!this.hand.contains(this.hoverSocket)) {
-                this.connectDroppedTile(this.currentDragTile);
+                this.placeTile(this.currentDragTile);
             }
         } else if (this.dragTileOriginalSocket) {
-            this.setTileInSocket(this.dragTileOriginalSocket);
+            this.setTileInSocket(this.dragTileOriginalSocket, this.currentDragTile);
         }
 
         this.removeEventListener("sockethovered", this.handleSocketHovered);
@@ -199,7 +199,7 @@ export class ARTiles extends FASTElement {
         this.hoverSocket = undefined;
     };
 
-    private connectDroppedTile(tile: ARTile): void {
+    private placeTile(tile: ARTile): void {
         tile.fixed = true;
         this.placedTiles.push(tile);
     }
@@ -209,7 +209,7 @@ export class ARTiles extends FASTElement {
             !this.currentDragTile ||
             this.currentDragTile.sockets.includes(socket) ||
             this.hand.contains(socket) ||
-            socket.childTile !== undefined
+            socket.connectedTile !== undefined
         ) {
             return false;
         }
@@ -227,12 +227,14 @@ export class ARTiles extends FASTElement {
         }
 
         let intersecting: boolean = false;
-        this.placedTiles.forEach(tile => {
+
+        for (let i = 0; i < this.placedTiles.length; i++) {
+            const tile: ARTile = this.placedTiles[i];
             if (tile.regionRect && this.isIntersecting(tile.regionRect, dropRect)) {
                 intersecting = true;
-                //todo: break early
+                break;
             }
-        });
+        }
 
         if (socket.parentTile && socket.parentTile.fixed && !intersecting) {
             return true;
@@ -242,12 +244,6 @@ export class ARTiles extends FASTElement {
     }
 
     private isIntersecting(rectA: DOMRect, rectB: DOMRect): boolean {
-        // console.debug(
-        //     `rectA: ${rectA.top},  ${rectA.right}, ${rectA.bottom}, ${rectA.left}`
-        // );
-        // console.debug(
-        //     `rectB: ${rectB.top},  ${rectB.right}, ${rectB.bottom}, ${rectB.left}`
-        // );
         if (
             rectA.left >= rectB.right ||
             rectA.top >= rectB.bottom ||
@@ -264,29 +260,30 @@ export class ARTiles extends FASTElement {
             return undefined;
         }
 
-        let tileTop: number = 0;
-        let tileLeft: number = 0;
+        const socketRect = socket.regionRect;
+        const tileRect = tile.regionRect;
+        let tileTop = 0;
+        let tileLeft = 0;
 
         switch (socket.socketFacing) {
             case "left":
-                tileTop = socket.regionRect.top + tile.regionRect.height / 2;
-                tileLeft = socket.regionRect.left - tile.regionRect.width / 2;
+                tileTop = socketRect.top + 5;
+                tileLeft = socketRect.left - tileRect.width + 5;
                 break;
             case "right":
-                tileTop = socket.regionRect.top + tile.regionRect.height / 2;
-                tileLeft = socket.regionRect.right + tile.regionRect.width / 2;
+                tileTop = socketRect.top + 5;
+                tileLeft = socketRect.right + 5;
                 break;
             case "top":
-                tileTop = socket.regionRect.top - tile.regionRect.height / 2;
-                tileLeft = socket.regionRect.left + tile.regionRect.width / 2;
+                tileTop = socketRect.top - tileRect.height + 5;
+                tileLeft = socketRect.left + 5;
                 break;
             case "bottom":
-                tileTop = socket.regionRect.bottom + tile.regionRect.height / 2;
-                tileLeft = socket.regionRect.left + tile.regionRect.width / 2;
+                tileTop = socketRect.bottom + 5;
+                tileLeft = socketRect.left + 5;
                 break;
         }
-
-        return new DOMRect(tileLeft, tileTop, 1, 1);
+        return new DOMRect(tileLeft, tileTop, tileRect.width - 10, tileRect.height - 10);
     }
 
     public handleTileDrag = (e: CustomEvent): void => {
@@ -333,46 +330,89 @@ export class ARTiles extends FASTElement {
         e.preventDefault();
         this.hoverSocket = e.detail as ARSocket;
 
-        this.setTileInSocket(this.hoverSocket);
+        this.setTileInSocket(this.hoverSocket, this.currentDragTile);
     };
 
-    private setTileInSocket(socket: ARSocket): void {
-        if (!this.currentDragTile) {
-            return;
-        }
-        this.currentDragTile.useVirtualAnchor = false;
-        this.currentDragTile.anchorElement = socket;
-        socket.childTile = this.currentDragTile;
+    private setTileInSocket(socket: ARSocket, tile: ARTile): void {
         switch (socket.socketFacing) {
             case "left":
-                this.currentDragTile.horizontalDefaultPosition = "left";
-                this.currentDragTile.verticalDefaultPosition = "center";
+                tile.horizontalDefaultPosition = "left";
+                tile.verticalDefaultPosition = "center";
                 break;
             case "right":
-                this.currentDragTile.horizontalDefaultPosition = "right";
-                this.currentDragTile.verticalDefaultPosition = "center";
+                tile.horizontalDefaultPosition = "right";
+                tile.verticalDefaultPosition = "center";
                 break;
             case "top":
-                this.currentDragTile.horizontalDefaultPosition = "center";
-                this.currentDragTile.verticalDefaultPosition = "top";
+                tile.horizontalDefaultPosition = "center";
+                tile.verticalDefaultPosition = "top";
                 break;
             case "bottom":
-                this.currentDragTile.horizontalDefaultPosition = "center";
-                this.currentDragTile.verticalDefaultPosition = "bottom";
+                tile.horizontalDefaultPosition = "center";
+                tile.verticalDefaultPosition = "bottom";
                 break;
             case "center":
-                this.currentDragTile.horizontalDefaultPosition = "center";
-                this.currentDragTile.verticalDefaultPosition = "center";
+                tile.horizontalDefaultPosition = "center";
+                tile.verticalDefaultPosition = "center";
                 break;
         }
+
+        const dropRect: DOMRect | undefined = this.getDropRect(socket, tile);
+        //console.debug(dropRect?.left, dropRect?.right);
+        if (socket.parentTile && dropRect) {
+            this.activeSockets.forEach(activeSocket => {
+                const activeDropRect = this.getDropRect(activeSocket, tile);
+                if (activeDropRect && this.isIntersecting(dropRect, activeDropRect)) {
+                    activeSocket.connectedTile = tile;
+                    switch (activeSocket.socketFacing) {
+                        case "left":
+                            tile.socketRight.connectedTile = activeSocket.parentTile;
+                            console.debug("connect left");
+                            break;
+                        case "right":
+                            tile.socketLeft.connectedTile = activeSocket.parentTile;
+                            console.debug("connect right");
+                            break;
+                        case "top":
+                            tile.socketBottom.connectedTile = activeSocket.parentTile;
+                            console.debug("connect top");
+                            break;
+                        case "bottom":
+                            tile.socketTop.connectedTile = activeSocket.parentTile;
+                            console.debug("connect bottom");
+                            break;
+                    }
+                }
+            });
+        }
+        tile.useVirtualAnchor = false;
+        tile.anchorElement = socket;
+    }
+
+    private removeTileFromSocket(socket: ARSocket, tile: ARTile): void {
+        tile.sockets.forEach(dragTileSocket => {
+            if (dragTileSocket.connectedTile) {
+                dragTileSocket.connectedTile.sockets.forEach(childTileSocket => {
+                    if (childTileSocket.connectedTile === tile) {
+                        childTileSocket.connectedTile = undefined;
+                    }
+                });
+                dragTileSocket.connectedTile = undefined;
+            }
+        });
     }
 
     public handleSocketUnhovered = (e: CustomEvent): void => {
-        if (e.defaultPrevented || !e.target) {
+        if (
+            e.defaultPrevented ||
+            !e.target ||
+            !this.hoverSocket ||
+            !this.currentDragTile
+        ) {
             return;
         }
         e.preventDefault();
-        this.hoverSocket?.childTile = undefined;
+        this.removeTileFromSocket(this.hoverSocket, this.currentDragTile);
         this.hoverSocket = undefined;
         this.currentDragTile.useVirtualAnchor = true;
         this.currentDragTile.horizontalDefaultPosition = "right";
