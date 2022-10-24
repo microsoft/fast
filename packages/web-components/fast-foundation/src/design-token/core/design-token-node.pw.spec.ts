@@ -1,20 +1,20 @@
-/* eslint-disable */
-import "./test-dom-shim.js";
-import { Observable } from "@microsoft/fast-element";
+import "./test/fast-element-dom-shim.js";
 import type { Subscriber } from "@microsoft/fast-element";
+import { Observable } from "@microsoft/fast-element";
 import { reactive } from "@microsoft/fast-element/state";
+import { test } from "@playwright/test";
+import { expect } from "expect";
+import jest from "jest-mock";
+import type { DesignTokenResolver } from "./design-token-node.js";
 import {
     DesignTokenChangeRecordImpl as DesignTokenChangeRecord,
     DesignTokenMutationType,
     DesignTokenNode,
 } from "./design-token-node.js";
-import type { DesignTokenResolver } from "./design-token-node.js";
 import type { DesignToken as IDesignToken } from "./design-token.js";
-import { test } from "@playwright/test";
-import jest from "jest-mock";
-import { expect } from "expect";
 
 function createChangeHandler() {
+    /* eslint-disable-next-line */
     const handleChange = jest.fn(() => {});
     const subscriber: Subscriber = { handleChange };
     return { handleChange, subscriber };
@@ -1071,8 +1071,7 @@ test.describe("DesignTokenNode", () => {
         test("the token when the static value assigned to a node is the same value as was previously assigned", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
-            const handleChange = jest.fn(() => {});
-            const subscriber: Subscriber = { handleChange };
+            const { handleChange, subscriber } = createChangeHandler();
             node.setTokenValue(token, 12);
             Observable.getNotifier(token).subscribe(subscriber);
 
@@ -1083,8 +1082,7 @@ test.describe("DesignTokenNode", () => {
         test("the token when the derived value assigned to a node results in the same value as the previously assigned static value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
-            const handleChange = jest.fn(() => {});
-            const subscriber: Subscriber = { handleChange };
+            const { handleChange, subscriber } = createChangeHandler();
             node.setTokenValue(token, 12);
             Observable.getNotifier(token).subscribe(subscriber);
 
@@ -1095,8 +1093,7 @@ test.describe("DesignTokenNode", () => {
         test("the token when the derived value assigned to a node results in the same value as the previously assigned derived value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
-            const handleChange = jest.fn(() => {});
-            const subscriber: Subscriber = { handleChange };
+            const { handleChange, subscriber } = createChangeHandler();
             function a() {
                 return 12;
             }
@@ -1151,8 +1148,7 @@ test.describe("DesignTokenNode", () => {
         test("the token when a derived value using an observable value is deleted and then the observable value is changed", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
-            const handleChange = jest.fn(() => {});
-            const subscriber: Subscriber = { handleChange };
+            const { subscriber, handleChange } = createChangeHandler();
             node.setTokenValue(token, 12);
             const dependencies = reactive({ value: 6 });
 
@@ -1167,8 +1163,7 @@ test.describe("DesignTokenNode", () => {
         test("the token when a derived value using an observable value is re-assigned and then the observable value is changed", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
-            const handleChange = jest.fn(() => {});
-            const subscriber: Subscriber = { handleChange };
+            const { subscriber, handleChange } = createChangeHandler();
             node.setTokenValue(token, 12);
             const dependencies = reactive({ value: 6 });
 
