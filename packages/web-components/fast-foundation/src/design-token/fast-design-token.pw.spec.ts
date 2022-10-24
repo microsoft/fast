@@ -5,7 +5,6 @@ import type {
     Observable as FASTObservable,
     Updates as FASTUpdates,
 } from "@microsoft/fast-element";
-import { keyPageDown } from "@microsoft/fast-web-utilities";
 import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
@@ -25,20 +24,10 @@ declare const DesignToken: typeof DesignTokenImpl;
 declare const CSSDesignToken: typeof CSSDesignTokenImpl;
 declare const createElement: () => FASTElement;
 declare const addElement: (parent?: Element) => FASTElement;
-declare const getID: (target: FASTElement) => string;
-declare const removeElement: (...els: HTMLElement[]) => void;
 declare const Updates: typeof FASTUpdates;
 declare const css: typeof FASTcss;
 declare const threw: (fn: () => void) => boolean;
-declare const getElement: (id: string) => FASTElement;
-declare const TokenRegistry: {
-    add<T>(token: DesignTokenImpl<T>): void;
-    get<T>(name: string): DesignTokenImpl<T>;
-};
 declare const cleanup: () => void;
-declare const IDs: <T extends Record<string, HTMLElement>>(
-    elements: T
-) => Record<keyof T, string>;
 declare const Observable: typeof FASTObservable;
 declare const spy: <T extends (...args: any[]) => any>(fn: T) => Spy & T;
 

@@ -19,19 +19,6 @@ export const DesignToken: Story = () => {
         `,
     }));
 
-    class TokenRegistry {
-        private static registry = new Map<string, FASTDesignToken<any>>();
-        add<T>(value: FASTDesignToken<T>) {
-            TokenRegistry.registry.set(value.name, value);
-        }
-
-        get<T>(name: string): FASTDesignToken<T> {
-            if (!TokenRegistry.registry.has(name)) {
-                throw new ReferenceError(`No DesignToken with name '${name}' was found.`);
-            }
-            return TokenRegistry.registry.get(name)!;
-        }
-    }
     const elementCache = new Set<HTMLElement>();
     // The objects required for unit-testing
     // DesignToken. These get installed on the
@@ -53,28 +40,6 @@ export const DesignToken: Story = () => {
             el.setAttribute("id", "id" + uniqueElementName());
             parent.appendChild(el);
             return el;
-        },
-        removeElement(...els: HTMLElement[]) {
-            els.forEach(el => el.parentElement?.removeChild(el));
-        },
-        getElement(id: string): HTMLElement {
-            const element = document.getElementById(id);
-            if (!element) {
-                throw new ReferenceError(`Element with id '${id}' not found.`);
-            }
-
-            return element;
-        },
-        getID(target: HTMLElement): string {
-            const id = target.getAttribute("id");
-
-            if (id == null) {
-                throw new TypeError(
-                    `Unable to read the 'id' attribute of the provided element`
-                );
-            }
-
-            return id;
         },
         css,
         threw(fn: () => void): boolean {
@@ -107,17 +72,8 @@ export const DesignToken: Story = () => {
 
             return f;
         },
-        IDs<T extends Record<string, HTMLElement>>(elements: T): Record<keyof T, string> {
-            const r: any = {};
-            for (const entry in elements) {
-                r[entry] = requiredTestObject.getID(elements[entry]);
-            }
-
-            return r;
-        },
         Updates,
         Observable,
-        TokenRegistry: new TokenRegistry(),
         cleanup() {
             elementCache.forEach(value => {
                 value.parentElement?.removeChild(value);
