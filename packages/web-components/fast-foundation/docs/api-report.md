@@ -2114,7 +2114,7 @@ export class FASTTooltip extends FASTElement {
 // @public
 export class FASTTreeItem extends FASTElement {
     // @internal
-    get childItemLength(): number | void;
+    get childItemLength(): number;
     // @internal (undocumented)
     childItems: HTMLElement[];
     disabled: boolean;

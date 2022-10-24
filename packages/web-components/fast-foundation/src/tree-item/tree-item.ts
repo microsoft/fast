@@ -193,10 +193,12 @@ export class FASTTreeItem extends FASTElement {
      *
      * @internal
      */
-    public get childItemLength(): number | void {
+    public get childItemLength(): number {
         if (this.$fastController.isConnected) {
             return this.childItems?.filter(item => isTreeItemElement(item)).length;
         }
+
+        return 0;
     }
 }
 
