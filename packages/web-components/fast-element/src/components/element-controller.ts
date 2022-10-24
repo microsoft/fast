@@ -1,12 +1,12 @@
 import { Message, Mutable, StyleStrategy, StyleTarget } from "../interfaces.js";
-import type { HostBehavior, HostController } from "../styles/host.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { Observable, SourceLifetime } from "../observation/observable.js";
 import { FAST } from "../platform.js";
+import { ElementStyles } from "../styles/element-styles.js";
+import type { HostBehavior, HostController } from "../styles/host.js";
+import type { ViewController } from "../templating/html-directive.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
-import { ElementStyles } from "../styles/element-styles.js";
-import type { ViewController } from "../templating/html-directive.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
 
 const defaultEventOptions: CustomEventInit = {
@@ -21,6 +21,16 @@ const shadowRoots = new WeakMap<Element, ShadowRoot>();
 
 function getShadowRoot(element: Element): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
+}
+
+let elementControllerStrategy: ElementControllerStrategy;
+
+/**
+ * A type that instantiates an ElementController
+ * @public
+ */
+export interface ElementControllerStrategy {
+    new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
 }
 
 /**
@@ -188,13 +198,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         if (accessors.length > 0) {
             const boundObservables = (this.boundObservables = Object.create(null));
-
             for (let i = 0, ii = accessors.length; i < ii; ++i) {
-                const propertyName = accessors[i].name;
+                const propertyName = accessors[i].name as keyof TElement;
                 const value = (element as any)[propertyName];
 
                 if (value !== void 0) {
-                    delete (element as any)[propertyName];
+                    delete element[propertyName];
                     boundObservables[propertyName] = value;
                 }
             }
@@ -205,7 +214,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Adds the behavior to the component.
      * @param behavior - The behavior to add.
      */
-    addBehavior(behavior: HostBehavior<TElement>) {
+    public addBehavior(behavior: HostBehavior<TElement>) {
         const targetBehaviors = this.behaviors ?? (this.behaviors = new Map());
         const count = targetBehaviors.get(behavior) ?? 0;
 
@@ -226,7 +235,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * @param behavior - The behavior to remove.
      * @param force - Forces removal even if this behavior was added more than once.
      */
-    removeBehavior(behavior: HostBehavior<TElement>, force: boolean = false) {
+    public removeBehavior(behavior: HostBehavior<TElement>, force: boolean = false) {
         const targetBehaviors = this.behaviors;
         if (targetBehaviors === null) {
             return;
@@ -462,12 +471,24 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             throw FAST.error(Message.missingElementDefinition);
         }
 
-        return ((element as any).$fastController = new ElementController(
+        return ((element as any).$fastController = new elementControllerStrategy(
             element,
             definition
         ));
     }
+
+    /**
+     * Sets the strategy that ElementController.forCustomElement uses to construct
+     * ElementController instances for an element.
+     * @param strategy - The strategy to use.
+     */
+    public static setStrategy(strategy: ElementControllerStrategy) {
+        elementControllerStrategy = strategy;
+    }
 }
+
+// Set default strategy for ElementController
+ElementController.setStrategy(ElementController);
 
 /**
  * Converts a styleTarget into the operative target. When the provided target is an Element
