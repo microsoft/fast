@@ -29,6 +29,11 @@ export interface tileDragEventArgs {
     event: MouseEvent;
 }
 
+export interface TileData {
+    title: string;
+    value: number;
+}
+
 /**
  *
  *
@@ -36,7 +41,7 @@ export interface tileDragEventArgs {
  */
 export class ARTile extends FASTAnchoredRegion {
     @observable
-    public items: object[];
+    public tileData: TileData;
 
     public horizontalPositioningMode: AxisPositioningMode = "locktodefault";
     public verticalPositioningMode: AxisPositioningMode = "locktodefault";
