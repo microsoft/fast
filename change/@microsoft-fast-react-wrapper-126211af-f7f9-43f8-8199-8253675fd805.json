@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "fix prettier errors",
+  "packageName": "@microsoft/fast-react-wrapper",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}
