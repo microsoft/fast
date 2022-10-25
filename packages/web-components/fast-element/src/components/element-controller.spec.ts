@@ -548,20 +548,32 @@ describe("The ElementController", () => {
             }
         }, "isConnected")
         controller.addBehavior({
-            connectedCallback() { order.push("behaviors connected") },
-            disconnectedCallback() { order.push("behaviors disconnected")}
+            connectedCallback() {
+                order.push("parent behavior connected");
+                controller.addBehavior({
+                    connectedCallback() {
+                        order.push("child behavior connected")
+                    },
+                    disconnectedCallback() {
+                        order.push('child behavior disconnected')
+                    }
+                })
+            },
+            disconnectedCallback() { order.push("parent behavior disconnected")}
         });
 
         controller.connect();
 
         expect(order[0]).to.equal("observables bound");
-        expect(order[1]).to.equal("isConnected set true");
-        expect(order[2]).to.equal("behaviors connected");
+        expect(order[1]).to.equal("parent behavior connected");
+        expect(order[2]).to.equal("child behavior connected");
         expect(order[3]).to.equal("template rendered");
+        expect(order[4]).to.equal("isConnected set true");
 
         controller.disconnect();
 
-        expect(order[4]).to.equal('isConnected set false');
-        expect(order[5]).to.equal('behaviors disconnected');
+        expect(order[5]).to.equal('isConnected set false');
+        expect(order[6]).to.equal('parent behavior disconnected');
+        expect(order[7]).to.equal('child behavior disconnected');
     });
 });

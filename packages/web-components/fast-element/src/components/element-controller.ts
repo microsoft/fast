@@ -336,8 +336,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             this.boundObservables = null;
         }
 
-        this.setIsConnected(true);
-
         const behaviors = this.behaviors;
         if (behaviors !== null) {
             for (const key of behaviors.keys()) {
@@ -353,6 +351,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         } else if (this.view !== null) {
             this.view.bind(this.source);
         }
+
+        this.setIsConnected(true);
     }
 
     /**
