@@ -50,7 +50,7 @@ export type AttributeConfiguration = {
  * Metadata used to configure a custom attribute's behavior.
  * @public
  */
- export const AttributeConfiguration = Object.freeze({
+export const AttributeConfiguration = Object.freeze({
     /**
      * Locates all attribute configurations associated with a type.
      */

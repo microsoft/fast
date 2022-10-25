@@ -165,7 +165,7 @@ export const emptyArray = Object.freeze([]);
  * @returns A metadata locator function.
  * @internal
  */
- export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[] {
+export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[] {
     const metadataLookup = new WeakMap<any, TMetadata[]>();
 
     return function (target: {}): TMetadata[] {
