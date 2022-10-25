@@ -27,13 +27,6 @@ import { MenuItemRole, roleForMenuItem } from "./menu-item.options.js";
 export { MenuItemRole, roleForMenuItem };
 
 /**
- * Types of menu item column count.
- * @public
- * @deprecated - will be removed in a coming ALPHA version
- */
-export type MenuItemColumnCount = 0 | 1 | 2;
-
-/**
  * Menu Item configuration options
  * @public
  */
@@ -100,13 +93,6 @@ export class FASTMenuItem extends FASTElement {
             this.$emit("expanded-change", this, { bubbles: false });
         }
     }
-
-    /**
-     * @public
-     * @deprecated - will be removed in a coming ALPHA version
-     */
-    @attr({ attribute: "start-column-count" })
-    public startColumnCount: MenuItemColumnCount;
 
     /**
      * The role of the element.
@@ -183,10 +169,6 @@ export class FASTMenuItem extends FASTElement {
         Updates.enqueue(() => {
             this.updateSubmenu();
         });
-
-        if (!this.startColumnCount) {
-            this.startColumnCount = 1;
-        }
 
         this.observer = new MutationObserver(this.updateSubmenu);
     }

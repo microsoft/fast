@@ -1327,12 +1327,17 @@ export class FASTMenu extends FASTElement {
     handleFocusOut: (e: FocusEvent) => void;
     // @internal (undocumented)
     handleMenuKeyDown(e: KeyboardEvent): void | boolean;
+    protected isMenuItemElement: (el: Element) => el is HTMLElement;
     // @internal (undocumented)
     readonly isNestedMenu: () => boolean;
     // @internal (undocumented)
     items: HTMLElement[];
     // (undocumented)
     protected itemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
+    // (undocumented)
+    protected menuItems: Element[] | undefined;
+    // (undocumented)
+    protected setItems(): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1365,8 +1370,6 @@ export class FASTMenuItem extends FASTElement {
     hasSubmenu: boolean;
     hidden: boolean;
     role: MenuItemRole;
-    // @deprecated (undocumented)
-    startColumnCount: MenuItemColumnCount;
     // @internal (undocumented)
     submenu: Element | undefined;
     // @internal (undocumented)
@@ -2375,9 +2378,6 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
 // @public
 export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListEvent) => void;
 
-// @public @deprecated
-export type MenuItemColumnCount = 0 | 1 | 2;
-
 // @public
 export type MenuItemOptions = StartEndOptions & {
     checkboxIndicator?: string | SyntheticViewTemplate;
@@ -2814,7 +2814,7 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/menu-item/menu-item.d.ts:21:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/menu-item/menu-item.d.ts:15:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:11:5 - (ae-incompatible-release-tags) The symbol "pickerMenuOption" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

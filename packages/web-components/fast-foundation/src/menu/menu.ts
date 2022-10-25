@@ -6,7 +6,7 @@ import {
     keyEnd,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import { FASTMenuItem, MenuItemColumnCount, MenuItemRole } from "../menu-item/index.js";
+import { FASTMenuItem, MenuItemRole } from "../menu-item/index.js";
 
 /**
  * A Menu Custom HTML Element.
@@ -31,7 +31,7 @@ export class FASTMenu extends FASTElement {
         }
     }
 
-    private menuItems: Element[] | undefined;
+    protected menuItems: Element[] | undefined;
 
     private expandedItem: FASTMenuItem | null = null;
 
@@ -203,18 +203,7 @@ export class FASTMenu extends FASTElement {
         });
     }
 
-    private static elementIndent(el: HTMLElement): MenuItemColumnCount {
-        const role = el.getAttribute("role");
-        const startSlot = el.querySelector("[slot=start]");
-
-        if (role && role !== MenuItemRole.menuitem) {
-            return !startSlot ? 1 : 2;
-        }
-
-        return !startSlot ? 0 : 1;
-    }
-
-    private setItems(): void {
+    protected setItems(): void {
         const children = Array.from(this.children);
 
         this.removeItemListeners(children);
@@ -236,20 +225,10 @@ export class FASTMenu extends FASTElement {
             this.focusIndex = 0;
         }
 
-        const indent: MenuItemColumnCount = menuItems.reduce((accum, current) => {
-            const elementValue = FASTMenu.elementIndent(current);
-
-            return Math.max(accum, elementValue as number) as MenuItemColumnCount;
-        }, 0);
-
         menuItems.forEach((item: HTMLElement, index: number) => {
             item.setAttribute("tabindex", index === 0 ? "0" : "-1");
             item.addEventListener("expanded-change", this.handleExpandedChanged);
             item.addEventListener("focus", this.handleItemFocus);
-
-            if (item instanceof FASTMenuItem) {
-                item.startColumnCount = indent;
-            }
         });
     }
 
@@ -304,7 +283,7 @@ export class FASTMenu extends FASTElement {
     /**
      * check if the item is a menu item
      */
-    private isMenuItemElement = (el: Element): el is HTMLElement => {
+    protected isMenuItemElement = (el: Element): el is HTMLElement => {
         return (
             el instanceof FASTMenuItem ||
             (isHTMLElement(el) &&
