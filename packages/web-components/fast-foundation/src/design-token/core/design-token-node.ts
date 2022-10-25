@@ -1,9 +1,5 @@
-import {
-    Disposable,
-    ExpressionNotifier,
-    Observable,
-    Subscriber,
-} from "@microsoft/fast-element";
+import { Observable } from "@microsoft/fast-element";
+import type { Disposable, ExpressionNotifier, Subscriber } from "@microsoft/fast-element";
 import type { DesignToken } from "./design-token.js";
 
 /**
