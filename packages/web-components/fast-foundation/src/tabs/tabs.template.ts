@@ -14,17 +14,6 @@ export function tabsTemplate<T extends FASTTabs>(
         ${startSlotTemplate(options)}
         <div class="tablist" part="tablist" role="tablist">
             <slot name="tab" ${slotted("tabs")}></slot>
-
-            ${when(
-                x => x.showActiveIndicator,
-                html<T>`
-                    <div
-                        ${ref("activeIndicatorRef")}
-                        class="active-indicator"
-                        part="active-indicator"
-                    ></div>
-                `
-            )}
         </div>
         ${endSlotTemplate(options)}
         <div class="tabpanel" part="tabpanel">

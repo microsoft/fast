@@ -8,11 +8,7 @@ import { TabsOrientation } from "../tabs.options.js";
 import type { FASTTabs } from "../tabs.js";
 
 const storyTemplate = html<StoryArgs<FASTTabs>>`
-    <fast-tabs
-        ?hide-active-indicator="${x => x.hideActiveIndicator}"
-        activeid="${x => x.activeid}"
-        orientation="${x => x.orientation}"
-    >
+    <fast-tabs activeid="${x => x.activeid}" orientation="${x => x.orientation}">
         ${x => x.storyContent}
     </fast-tabs>
 `;
@@ -28,7 +24,6 @@ const tabWithIconsStoryTemplate = html<StoryArgs<FASTTab>>`
 export default {
     title: "Tabs",
     args: {
-        hideActiveIndicator: false,
         orientation: TabsOrientation.horizontal,
         storyContent: html<StoryArgs<FASTTabs>>`
             ${repeat(x => x.storyItems.tabs, tabStoryTemplate)}
@@ -37,7 +32,6 @@ export default {
     },
     argTypes: {
         activeid: { control: "text" },
-        hideActiveIndicator: { control: "boolean" },
         orientation: { control: "radio", options: Object.values(TabsOrientation) },
         storyContent: { table: { disable: true } },
         storyItems: { table: { disable: true } },

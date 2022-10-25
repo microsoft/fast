@@ -1915,18 +1915,15 @@ export class FASTTabs extends FASTElement {
     activeid: string;
     // @internal (undocumented)
     activeidChanged(oldValue: string, newValue: string): void;
-    // @internal (undocumented)
-    activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
     adjust(adjustment: number): void;
     // @internal (undocumented)
     connectedCallback(): void;
-    hideActiveIndicator: boolean;
     orientation: TabsOrientation;
     // @internal (undocumented)
     orientationChanged(): void;
-    // @internal (undocumented)
-    showActiveIndicator: boolean;
+    // (undocumented)
+    protected setTabs: () => void;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
     // @internal (undocumented)

@@ -61,40 +61,6 @@ test.describe("Tabs", () => {
         await expect(element).toHaveJSProperty("orientation", "horizontal");
     });
 
-    test("should set the `hideActiveIndicator` property to false by default", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-tabs></fast-tabs>
-            `;
-        });
-
-        await expect(element).not.toHaveBooleanAttribute("hide-active-indicator");
-
-        await expect(element).toHaveJSProperty("hideActiveIndicator", false);
-    });
-
-    test("should set the `hideActiveIndicator` property when the `hide-active-indicator` attribute is present", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-tabs hide-active-indicator></fast-tabs>
-            `;
-        });
-
-        await expect(element).toHaveBooleanAttribute("hide-active-indicator");
-
-        await expect(element).toHaveJSProperty("hideActiveIndicator", true);
-    });
-
-    test('should render an internal element with a class of "active-indicator" when `hide-active-indicator` is false', async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-tabs></fast-tabs>
-            `;
-        });
-
-        await expect(element.locator(".active-indicator")).toHaveCount(1);
-    });
-
     test("should set an `id` attribute on the active tab when an `id` is provided", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -288,35 +254,6 @@ test.describe("Tabs", () => {
 
             await expect(secondTab).toHaveAttribute("aria-selected", "true");
         });
-
-        test("should skip updating the active indicator if the same tab is clicked twice", async () => {
-            await root.evaluate(
-                (node, { template }) => {
-                    node.innerHTML = template;
-                },
-                { template }
-            );
-
-            const activeIndicator = element.locator(".active-indicator");
-
-            await activeIndicator.evaluate(node => {
-                node.style.transitionDuration = "0s";
-            });
-
-            const x = (await activeIndicator.boundingBox())!.x;
-
-            await tabs.nth(1).click();
-
-            const newX = (await activeIndicator.boundingBox())!.x;
-
-            expect(newX).toBeGreaterThan(x);
-
-            await tabs.nth(1).click();
-
-            const newX2 = (await activeIndicator.boundingBox())!.x;
-
-            expect(newX2).toBe(newX);
-        });
     });
 
     test.describe("active tabpanel", () => {
@@ -360,39 +297,6 @@ test.describe("Tabs", () => {
 
             await expect(tabPanels.nth(2)).toHaveBooleanAttribute("hidden");
         });
-    });
-
-    test("should not display an active indicator if all tabs are disabled", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-            <fast-tabs>
-                <fast-tab disabled>Tab one</fast-tab>
-                <fast-tab disabled>Tab two</fast-tab>
-                <fast-tab disabled>Tab three</fast-tab>
-                <fast-tab-panel>Tab panel one</fast-tab-panel>
-                <fast-tab-panel>Tab panel two</fast-tab-panel>
-                <fast-tab-panel>Tab panel three</fast-tab-panel>
-            </fast-tabs>
-        `;
-        });
-
-        const activeIndicator = element.locator(".active-indicator");
-
-        await expect(activeIndicator).not.toBeVisible();
-    });
-
-    test("should display an active indicator if the last tab is disabled", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-            <fast-tabs>
-                <fast-tab>Tab one</fast-tab>
-                <fast-tab>Tab two</fast-tab>
-                <fast-tab disabled>Tab three</fast-tab>
-            </fast-tabs>
-        `;
-        });
-
-        await expect(element).toHaveJSProperty("showActiveIndicator", true);
     });
 
     test("should not allow selecting a tab that has been disabled after it has been connected", async () => {

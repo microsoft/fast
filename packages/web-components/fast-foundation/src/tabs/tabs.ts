@@ -22,7 +22,6 @@ import { TabsOrientation } from "./tabs.options.js";
  * @slot tab - The slot for tabs
  * @slot tabpanel - The slot for tabpanels
  * @csspart tablist - The element wrapping for the tabs
- * @csspart activeIndicator - The visual indicator
  * @fires change - Fires a custom 'change' event when a tab is clicked or during keyboard navigation
  *
  * @public
@@ -43,7 +42,6 @@ export class FASTTabs extends FASTElement {
         if (this.$fastController.isConnected) {
             this.setTabs();
             this.setTabPanels();
-            this.handleActiveIndicatorPosition();
         }
     }
     /**
@@ -68,7 +66,6 @@ export class FASTTabs extends FASTElement {
             );
             this.setTabs();
             this.setTabPanels();
-            this.handleActiveIndicatorPosition();
         }
     }
 
@@ -90,7 +87,6 @@ export class FASTTabs extends FASTElement {
 
             this.setTabs();
             this.setTabPanels();
-            this.handleActiveIndicatorPosition();
         }
     }
 
@@ -112,30 +108,8 @@ export class FASTTabs extends FASTElement {
 
             this.setTabs();
             this.setTabPanels();
-            this.handleActiveIndicatorPosition();
         }
     }
-
-    /**
-     * Whether or not to show the active indicator
-     * @public
-     * @remarks
-     * HTML Attribute: activeindicator
-     */
-    @attr({ attribute: "hide-active-indicator", mode: "boolean" })
-    public hideActiveIndicator = false;
-
-    /**
-     * @internal
-     */
-    @observable
-    public activeIndicatorRef: HTMLElement;
-
-    /**
-     * @internal
-     */
-    @observable
-    public showActiveIndicator: boolean = true;
 
     /**
      * A reference to the active tab
@@ -145,7 +119,6 @@ export class FASTTabs extends FASTElement {
 
     private prevActiveTabIndex: number = 0;
     private activeTabIndex: number = 0;
-    private ticking: boolean = false;
     private tabIds: Array<string>;
     private tabpanelIds: Array<string>;
 
@@ -172,7 +145,7 @@ export class FASTTabs extends FASTElement {
         }
     }
 
-    private setTabs = (): void => {
+    protected setTabs = (): void => {
         const gridHorizontalProperty: string = "gridColumn";
         const gridVerticalProperty: string = "gridRow";
         const gridProperty: string = this.isHorizontal()
@@ -180,14 +153,12 @@ export class FASTTabs extends FASTElement {
             : gridVerticalProperty;
 
         this.activeTabIndex = this.getActiveIndex();
-        this.showActiveIndicator = false;
+
         this.tabs.forEach((tab: HTMLElement, index: number) => {
             if (tab.slot === "tab") {
                 const isActiveTab =
                     this.activeTabIndex === index && this.isFocusableElement(tab);
-                if (!this.hideActiveIndicator && this.isFocusableElement(tab)) {
-                    this.showActiveIndicator = true;
-                }
+
                 const tabId: string = this.tabIds[index];
                 const tabpanelId: string = this.tabpanelIds[index];
                 tab.setAttribute("id", tabId);
@@ -292,44 +263,6 @@ export class FASTTabs extends FASTElement {
                 break;
         }
     };
-
-    private handleActiveIndicatorPosition() {
-        // Ignore if we click twice on the same tab
-        if (
-            this.showActiveIndicator &&
-            !this.hideActiveIndicator &&
-            this.activeTabIndex !== this.prevActiveTabIndex
-        ) {
-            if (this.ticking) {
-                this.ticking = false;
-            } else {
-                this.ticking = true;
-                this.animateActiveIndicator();
-            }
-        }
-    }
-
-    private animateActiveIndicator(): void {
-        this.ticking = true;
-        const gridProperty: string = this.isHorizontal() ? "gridColumn" : "gridRow";
-        const translateProperty: string = this.isHorizontal()
-            ? "translateX"
-            : "translateY";
-        const offsetProperty: string = this.isHorizontal() ? "offsetLeft" : "offsetTop";
-        const prev: number = this.activeIndicatorRef[offsetProperty];
-        this.activeIndicatorRef.style[gridProperty] = `${this.activeTabIndex + 1}`;
-        const next: number = this.activeIndicatorRef[offsetProperty];
-        this.activeIndicatorRef.style[gridProperty] = `${this.prevActiveTabIndex + 1}`;
-        const dif: number = next - prev;
-        this.activeIndicatorRef.style.transform = `${translateProperty}(${dif}px)`;
-        this.activeIndicatorRef.classList.add("activeIndicatorTransition");
-        this.activeIndicatorRef.addEventListener("transitionend", () => {
-            this.ticking = false;
-            this.activeIndicatorRef.style[gridProperty] = `${this.activeTabIndex + 1}`;
-            this.activeIndicatorRef.style.transform = `${translateProperty}(0px)`;
-            this.activeIndicatorRef.classList.remove("activeIndicatorTransition");
-        });
-    }
 
     /**
      * The adjust method for FASTTabs
