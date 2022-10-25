@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Fri, 14 Oct 2022 18:26:11 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Oct 2022 20:24:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.18
+
+Tue, 25 Oct 2022 20:24:32 GMT
+
+### Changes
+
+- add feature to disable rendering of a component by the element renderer (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.15
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.18
 
 ## 1.0.0-beta.17
 

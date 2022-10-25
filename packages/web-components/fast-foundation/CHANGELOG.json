@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 25 Oct 2022 20:24:32 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.18",
+      "version": "3.0.0-alpha.18",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2455b606ad905219af52f15e35a74e20921e2eb4",
+            "comment": "add readonly property to identify tree items and udpate isTreeItemElement check"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e2604dd734275f78cfb577527c48b9c014f0929e",
+            "comment": "remove unnecessary click handler from legacy button span implementation"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.15",
+            "commit": "220cc7e0e0de490e51cc8b6f42ff46b03228beaa"
+          }
+        ],
+        "none": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "016cbf86b111923d2424f9d44e707efb80750cde",
+            "comment": "Migrate DesignToken tests to Playwright"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 14 Oct 2022 18:26:11 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.17",
       "version": "3.0.0-alpha.17",

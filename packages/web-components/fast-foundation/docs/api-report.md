@@ -2108,7 +2108,7 @@ export class FASTTooltip extends FASTElement {
 // @public
 export class FASTTreeItem extends FASTElement {
     // @internal
-    childItemLength(): number;
+    get childItemLength(): number;
     // @internal (undocumented)
     childItems: HTMLElement[];
     disabled: boolean;
@@ -2127,6 +2127,8 @@ export class FASTTreeItem extends FASTElement {
     // @internal
     handleFocus: (e: FocusEvent) => void;
     readonly isNestedItem: () => boolean;
+    // @internal
+    readonly isTreeItem: boolean;
     // @internal
     items: HTMLElement[];
     // (undocumented)
