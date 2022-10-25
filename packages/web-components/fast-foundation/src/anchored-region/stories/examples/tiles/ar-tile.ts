@@ -32,6 +32,9 @@ export interface tileDragEventArgs {
 export interface TileData {
     title: string;
     value: number;
+    fixed?: boolean;
+    gridX?: number;
+    gridY?: number;
 }
 
 /**
@@ -192,22 +195,24 @@ export function arTileTemplate<T extends ARTile>(): ElementViewTemplate<T> {
 
 export const arTileStyles = css`
     :host {
+        display: block;
         display: grid;
-        grid-template-columns: 10px 1fr 10px;
-        grid-template-rows: 10px 1fr 10px;
-        background: gray;
-        border: solid 2px black;
         user-select: none;
-        box-sizing: border-box;
+        grid-template-columns: 10px 20px 10px;
+        grid-template-rows: 10px 20px 10px;
+    }
+
+    :host(.loaded) {
+        transition: transform 0.2s ease-out;
     }
 
     :host(.dragging) {
+        transition: unset;
         z-index: 100;
         pointer-events: none;
     }
 
     .socket-top .socket-right .socket-bottom .socket-left {
-        background: white;
         box-sizing: border-box;
     }
 
@@ -228,10 +233,16 @@ export const arTileStyles = css`
         grid-column: 1;
     }
     .content {
-        font-size: 32px;
-        height: 36px;
-        width: 36px;
-        grid-row: 2;
-        grid-column: 2;
+        height: 40px;
+        width: 40px;
+        background: gray;
+        border: solid 1px black;
+        box-sizing: border-box;
+        padding: 4px;
+        display: flex;
+        justify-content: center;
+        font-size: 24px;
+        grid-row: 1 / 4;
+        grid-column: 1 / 4;
     }
 `;

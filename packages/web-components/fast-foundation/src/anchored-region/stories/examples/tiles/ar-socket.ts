@@ -142,13 +142,9 @@ export function arSocketTemplate<T extends ARSocket>(): ElementViewTemplate<T> {
                 x => x.initialLayoutComplete && x.socketActive,
                 html<T>`
                     <div
-                        class="pointer"
-                        style="
-                    transform:rotate(${x =>
-                            x.getRotation(x.anchorRect, x.regionRect)}deg);
-                    opacity:${x =>
-                            (200 - x.getDistance(x.anchorRect, x.regionRect)) / 200};
-                "
+                        class="background ${x => x.socketFacing}"
+                        style="opacity:${x =>
+                            (100 - x.getDistance(x.anchorRect, x.regionRect)) / 200};"
                     ></div>
                 `
             )}
@@ -166,15 +162,22 @@ export const arSocketStyles = css`
     :host(.preview) {
         background: green;
     }
-    .pointer {
-        border-radius: 50%;
-        background: blue;
+    .background {
+        background: green;
         grid-row: 2;
         grid-column: 2;
         will-change: transform, opacity;
-        position: absolute;
         transform-origin: 50% 50%;
-        height: 10px;
-        width: 10px;
+    }
+
+    .top {
+    }
+    .bottom {
+    }
+    .left {
+    }
+    .right {
+    }
+    .center {
     }
 `;
