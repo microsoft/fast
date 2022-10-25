@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "persist totaAvailableViews to compare removeIndex against",
-  "packageName": "@microsoft/fast-element",
-  "email": "wendywendy@microsoft.com",
-  "dependentChangeType": "patch"
-}

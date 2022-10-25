@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Tue, 25 Oct 2022 03:07:31 GMT",
+      "tag": "@microsoft/fast-router_v0.4.6",
+      "version": "0.4.6",
+      "comments": {
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-router",
+            "commit": "3fdcb06dceadb8a28d9d4d2a217116ece04e89f4",
+            "comment": "fix prettier errors"
+          }
+        ],
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v1.11.0",
+            "commit": "3fdcb06dceadb8a28d9d4d2a217116ece04e89f4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 17 Aug 2022 16:41:39 GMT",
       "tag": "@microsoft/fast-router_v0.4.5",
       "version": "0.4.5",

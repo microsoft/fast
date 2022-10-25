@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 25 Oct 2022 03:07:31 GMT",
+      "tag": "@microsoft/fast-foundation_v2.47.0",
+      "version": "2.47.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "f1f45777e52bd5752ea4f512121f40e5ff79e9a7",
+            "comment": "add activeid to accordion change event"
+          }
+        ],
+        "minor": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "a8021a341f066d481ba0c6514c3caaa7e746be83",
+            "comment": "fix(fast-foundation): update mixin helper to use new attribute api"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v1.11.0",
+            "commit": "3fdcb06dceadb8a28d9d4d2a217116ece04e89f4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 02 Sep 2022 17:18:31 GMT",
       "tag": "@microsoft/fast-foundation_v2.46.14",
       "version": "2.46.14",
