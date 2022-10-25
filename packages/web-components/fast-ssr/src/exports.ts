@@ -1,3 +1,4 @@
+import { FASTElement, FASTElementDefinition } from "@microsoft/fast-element";
 import {
     AsyncFASTElementRenderer,
     SyncFASTElementRenderer,
@@ -24,18 +25,39 @@ import {
 // Perform necessary configuration of FAST-Element library
 // for rendering in NodeJS
 import "./configure-fast-element.js";
-import { FASTElement, FASTElementDefinition } from "@microsoft/fast-element";
 
 /**
  * Configuration for SSR factory.
  * @beta
  */
 export interface SSRConfiguration {
-    renderMode: "sync" | "async";
+    /**
+     * When 'async', configures the renderer to support async rendering. Defaults to 'sync'.
+     * 'async' rendering will yield 'string | Promise<string>'
+     */
+    renderMode?: "sync" | "async";
+
+    /**
+     * Configures the renderer to yield the `defer-hydration` attribute during element rendering.
+     * The `defer-hydration` attribute can be used to prevent immediate hydration of the element
+     * by fast-element by importing hydration support in the client bundle.
+     * @example
+     *
+     * ```ts
+     * import "@microsoft/fast-element/install-element-hydration";
+     * ```
+     */
+    deferHydration?: boolean;
 }
 
 /** @beta */
 function fastSSR(): {
+    templateRenderer: TemplateRenderer;
+    ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
+};
+function fastSSR(
+    config: Omit<SSRConfiguration, "renderMode">
+): {
     templateRenderer: TemplateRenderer;
     ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
 };
@@ -69,6 +91,7 @@ function fastSSR(
  */
 function fastSSR(config?: SSRConfiguration): any {
     const async = config && config.renderMode === "async";
+    const deferHydration = config?.deferHydration || false;
     const templateRenderer = new DefaultTemplateRenderer();
 
     const elementRenderer = class extends (!async
@@ -103,6 +126,7 @@ function fastSSR(config?: SSRConfiguration): any {
         }
         protected templateRenderer: DefaultTemplateRenderer = templateRenderer;
         protected styleRenderer = new StyleElementStyleRenderer();
+        protected deferHydration = deferHydration;
     };
 
     templateRenderer.withDefaultElementRenderers(

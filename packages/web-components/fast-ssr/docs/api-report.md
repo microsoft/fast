@@ -78,6 +78,14 @@ function fastSSR(): {
     ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
 };
 
+// Warning: (ae-incompatible-release-tags) The symbol "fastSSR" is marked as @public, but its signature references "SSRConfiguration" which is marked as @beta
+//
+// @public (undocumented)
+function fastSSR(config: Omit<SSRConfiguration, "renderMode">): {
+    templateRenderer: TemplateRenderer;
+    ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
+};
+
 // @beta (undocumented)
 function fastSSR(config: SSRConfiguration & Record<"renderMode", "sync">): {
     templateRenderer: TemplateRenderer;
@@ -124,8 +132,8 @@ export const RequestStorageManager: Readonly<{
 
 // @beta
 export interface SSRConfiguration {
-    // (undocumented)
-    renderMode: "sync" | "async";
+    deferHydration?: boolean;
+    renderMode?: "sync" | "async";
 }
 
 // @beta
@@ -160,8 +168,10 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/exports.d.ts:18:5 - (ae-forgotten-export) The symbol "SyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
-// dist/dts/exports.d.ts:28:5 - (ae-forgotten-export) The symbol "AsyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
+// dist/dts/exports.d.ts:33:5 - (ae-forgotten-export) The symbol "SyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
+// dist/dts/exports.d.ts:36:5 - (ae-incompatible-release-tags) The symbol "templateRenderer" is marked as @public, but its signature references "TemplateRenderer" which is marked as @beta
+// dist/dts/exports.d.ts:37:5 - (ae-incompatible-release-tags) The symbol "ElementRenderer" is marked as @public, but its signature references "ConstructableFASTElementRenderer" which is marked as @beta
+// dist/dts/exports.d.ts:47:5 - (ae-forgotten-export) The symbol "AsyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
 // dist/dts/request-storage.d.ts:32:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
 
 // (No @packageDocumentation comment for this package)
