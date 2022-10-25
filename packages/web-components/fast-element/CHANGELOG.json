@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 25 Oct 2022 02:36:11 GMT",
+      "tag": "@microsoft/fast-element_v1.11.0",
+      "version": "1.11.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "wendywendy@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "085bd287b815dcb43b7697d5e42cf8f29f3105cc",
+            "comment": "persist totaAvailableViews to compare removeIndex against"
+          },
+          {
+            "author": "wendywendy@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "b0d0a0ccd68e932101dd4c35f89625684b485148",
+            "comment": "make insertBefore noop"
+          }
+        ],
+        "minor": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "a8021a341f066d481ba0c6514c3caaa7e746be83",
+            "comment": "fix(fast-element): attributes properly located in inheritance hierarchy"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 17 Aug 2022 16:41:39 GMT",
       "tag": "@microsoft/fast-element_v1.10.5",
       "version": "1.10.5",

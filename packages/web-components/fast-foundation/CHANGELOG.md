@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 02 Sep 2022 17:18:31 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Oct 2022 02:36:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.47.0
+
+Tue, 25 Oct 2022 02:36:11 GMT
+
+### Minor changes
+
+- fix(fast-foundation): update mixin helper to use new attribute api (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v1.11.0
+
+### Patches
+
+- add activeid to accordion change event (chhol@microsoft.com)
 
 ## 2.46.14
 

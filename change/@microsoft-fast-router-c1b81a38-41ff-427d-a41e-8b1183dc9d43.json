@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "fix prettier errors",
-  "packageName": "@microsoft/fast-router",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "none"
-}

@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Tue, 25 Oct 2022 02:36:11 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.3.15",
+      "version": "0.3.15",
+      "comments": {
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-react-wrapper",
+            "commit": "3fdcb06dceadb8a28d9d4d2a217116ece04e89f4",
+            "comment": "fix prettier errors"
+          }
+        ],
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-element to v1.11.0",
+            "commit": "3fdcb06dceadb8a28d9d4d2a217116ece04e89f4"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-foundation to v2.47.0",
+            "commit": "3fdcb06dceadb8a28d9d4d2a217116ece04e89f4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 02 Sep 2022 17:18:31 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.3.14",
       "version": "0.3.14",
