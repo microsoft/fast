@@ -322,11 +322,21 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
-        if (this.needsInitialization) {
-            this.finishInitialization();
-        } else if (this.view !== null) {
-            this.view.bind(this.source);
+        // If we have any observables that were bound, re-apply their values.
+        if (this.boundObservables !== null) {
+            const element = this.source;
+            const boundObservables = this.boundObservables;
+            const propertyNames = Object.keys(boundObservables);
+
+            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
+                const propertyName = propertyNames[i];
+                (element as any)[propertyName] = boundObservables[propertyName];
+            }
+
+            this.boundObservables = null;
         }
+
+        this.setIsConnected(true);
 
         const behaviors = this.behaviors;
         if (behaviors !== null) {
@@ -335,7 +345,14 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             }
         }
 
-        this.setIsConnected(true);
+        if (this.needsInitialization) {
+            this.renderTemplate(this.template);
+            this.addStyles(this.mainStyles);
+
+            this.needsInitialization = false;
+        } else if (this.view !== null) {
+            this.view.bind(this.source);
+        }
     }
 
     /**
@@ -398,28 +415,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         return false;
-    }
-
-    private finishInitialization(): void {
-        const element = this.source;
-        const boundObservables = this.boundObservables;
-
-        // If we have any observables that were bound, re-apply their values.
-        if (boundObservables !== null) {
-            const propertyNames = Object.keys(boundObservables);
-
-            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
-                const propertyName = propertyNames[i];
-                (element as any)[propertyName] = boundObservables[propertyName];
-            }
-
-            this.boundObservables = null;
-        }
-
-        this.renderTemplate(this.template);
-        this.addStyles(this.mainStyles);
-
-        this.needsInitialization = false;
     }
 
     private renderTemplate(template: ElementViewTemplate | null | undefined): void {

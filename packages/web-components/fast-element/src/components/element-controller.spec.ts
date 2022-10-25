@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { ElementStyles } from "../index.debug.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
-import { Observable } from "../observation/observable.js";
+import { observable, Observable } from "../observation/observable.js";
 import { css } from "../styles/css.js";
-import { html } from "../templating/template.js";
+import { html, ViewTemplate } from "../templating/template.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { toHTML } from "../__test__/helpers.js";
 import { ElementController } from "./element-controller.js";
@@ -514,5 +514,54 @@ describe("The ElementController", () => {
 
             document.body.removeChild(element);
         });
+    });
+
+    it("should ensure proper invocation order of state, rendering, and behaviors during connection and disconnection", () => {
+        const order: string[] = [];
+        const name = uniqueElementName();
+        const template = new Proxy(html``, { get(target, p, receiver) {
+            if (p === "render") { order.push("template rendered") }
+
+            return Reflect.get(target, p, receiver);
+        }});
+
+        class Test extends FASTElement {
+            @observable
+            observed = true;
+            observedChanged() {
+                if (this.observed) {
+                    order.push("observables bound")
+                }
+            }
+        }
+
+        Test.compose({
+            name,
+            template
+        }).define();
+
+        const element = document.createElement(name);
+        const controller = ElementController.forCustomElement(element);
+        Observable.getNotifier(controller).subscribe({
+            handleChange() {
+                order.push(`isConnected set ${controller.isConnected}`);
+            }
+        }, "isConnected")
+        controller.addBehavior({
+            connectedCallback() { order.push("behaviors connected") },
+            disconnectedCallback() { order.push("behaviors disconnected")}
+        });
+
+        controller.connect();
+
+        expect(order[0]).to.equal("observables bound");
+        expect(order[1]).to.equal("isConnected set true");
+        expect(order[2]).to.equal("behaviors connected");
+        expect(order[3]).to.equal("template rendered");
+
+        controller.disconnect();
+
+        expect(order[4]).to.equal('isConnected set false');
+        expect(order[5]).to.equal('behaviors disconnected');
     });
 });
