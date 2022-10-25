@@ -5,8 +5,6 @@
 ```ts
 
 import type { CaptureType } from '@microsoft/fast-element';
-import { composedContains } from '@microsoft/fast-element/utilities';
-import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
 import type { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
@@ -298,10 +296,6 @@ export type ComboboxOptions = StartEndOptions & {
 
 // @public
 export function comboboxTemplate<T extends FASTCombobox>(options?: ComboboxOptions): ElementViewTemplate<T>;
-
-export { composedContains }
-
-export { composedParent }
 
 // @beta
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
