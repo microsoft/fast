@@ -3,5 +3,5 @@
   "comment": "Adds shim for MediaQueryList.addEventListener and updates matchMedia to always use the window's MediaQueryList",
   "packageName": "@microsoft/fast-ssr",
   "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
