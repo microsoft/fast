@@ -19,6 +19,6 @@ export function createTrackableDOMPolicy() {
                 this.used = true;
                 sink(node, aspectName, value, ...args);
             };
-        }
+        },
     };
 }
