@@ -53,7 +53,33 @@ function block(
     );
 }
 
-const defaultDOMElementGuards: DOMElementGuards = {
+type DeepReadonly<T> = T extends (infer R)[]
+    ? DeepReadonlyArray<R>
+    : T extends Function
+    ? T
+    : T extends object
+    ? DeepReadonlyObject<T>
+    : T;
+
+interface DeepReadonlyArray<T> extends ReadonlyArray<DeepReadonly<T>> {}
+
+type DeepReadonlyObject<T> = {
+    readonly [P in keyof T]: DeepReadonly<T[P]>;
+};
+
+function deepFreeze<T>(obj: T): DeepReadonly<T> {
+    for (const key of Object.keys(obj)) {
+        const value = obj[key];
+
+        if (typeof value === "object" && !Object.isFrozen(value)) {
+            deepFreeze(value);
+        }
+    }
+
+    return Object.freeze(obj) as DeepReadonly<T>;
+}
+
+const defaultDOMElementGuards = {
     A: {
         [DOMAspect.attribute]: {
             href: safeURL,
@@ -233,7 +259,7 @@ const blockedEvents = {
     onwheel: block,
 };
 
-const defaultDOMGuards = {
+export const defaultDOMGuards = deepFreeze({
     elements: defaultDOMElementGuards,
     aspects: {
         [DOMAspect.attribute]: {
@@ -247,7 +273,7 @@ const defaultDOMGuards = {
             ...blockedEvents,
         },
     },
-};
+});
 
 function tryGuard(
     aspectGuards: DOMAspectGuards,
