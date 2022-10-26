@@ -46,6 +46,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private _template: ElementViewTemplate<TElement> | null = null;
     private _isConnected: boolean = false;
     private connecting = false;
+    private guardBehaviorConnection = false;
     private behaviors: Map<HostBehavior<TElement>, number> | null = null;
     private _mainStyles: ElementStyles | null = null;
 
@@ -223,7 +224,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             targetBehaviors.set(behavior, 1);
             behavior.addedCallback && behavior.addedCallback(this);
 
-            if (behavior.connectedCallback && (this.isConnected || this.connecting)) {
+            if (
+                behavior.connectedCallback &&
+                !this.guardBehaviorConnection &&
+                (this.isConnected || this.connecting)
+            ) {
                 behavior.connectedCallback(this);
             }
         } else {
@@ -341,20 +346,16 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         const behaviors = this.behaviors;
         if (behaviors !== null) {
+            this.guardBehaviorConnection = true;
             // Iterate over the current attached behaviors only. Any behaviors
             // added during this loop will be attached and connected in
             // ElementController.addBehavior, so we need to guard against
             // connecting them here.
-            const size = behaviors.size;
-            let current = 0;
             for (const key of behaviors.keys()) {
-                current++;
                 key.connectedCallback && key.connectedCallback(this);
-
-                if (current === size) {
-                    break;
-                }
             }
+
+            this.guardBehaviorConnection = false;
         }
 
         if (this.needsInitialization) {
