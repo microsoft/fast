@@ -5,6 +5,10 @@ import { storyTemplate as menuItemStoryTemplate } from "../../menu-item/stories/
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTMenu } from "../menu.js";
+import type {
+    FancyMenu as MyFancyMenu,
+    FancyMenuItem as MyFancyMenuItem,
+} from "./menu.register.js";
 
 const storyTemplate = html<StoryArgs<FASTMenu>>`
     <fast-menu slot="${x => x.slot}">${x => x.storyContent}</fast-menu>
@@ -15,6 +19,31 @@ const storyContentTemplate = html`
         x => x.storyItems,
         html<StoryArgs<FASTMenuItem>>`
             ${x => x.template ?? menuItemStoryTemplate}
+        `
+    )}
+`;
+
+const fancyStoryTemplate = html<StoryArgs<FASTMenu>>`
+    <fancy-menu slot="${x => x.slot}">${x => x.storyContent}</fancy-menu>
+`;
+
+const fancyMenuItemStoryTemplate = html<StoryArgs<FASTMenuItem>>`
+    <fancy-menu-item
+        ?expanded="${x => x.expanded}"
+        ?checked="${x => x.checked}"
+        ?disabled="${x => x.disabled}"
+        id="${x => x.id}"
+        role="${x => x.role}"
+    >
+        ${x => x.storyContent}
+    </fancy-menu-item>
+`;
+
+const fancyStoryContentTemplate = html`
+    ${repeat(
+        x => x.storyItems,
+        html<StoryArgs<MyFancyMenuItem>>`
+            ${x => x.template ?? fancyMenuItemStoryTemplate}
         `
     )}
 `;
@@ -57,20 +86,21 @@ MenuWithDivider.args = {
     ],
 };
 
-export const MenuWithFormControls: Story<FASTMenu> = Menu.bind({});
-MenuWithFormControls.args = {
+export const MenuWithCheckboxItems: Story<FASTMenu> = Menu.bind({});
+MenuWithCheckboxItems.args = {
     storyItems: [
-        { storyContent: "Menu Item 1" },
-        { storyContent: "Menu Item 2" },
-        { template: dividerStoryTemplate },
-        { storyContent: "Checkbox 1", role: "menuitemcheckbox" },
-        { storyContent: "Checkbox 2", role: "menuitemcheckbox" },
-        { template: dividerStoryTemplate },
-        { storyContent: "Radio 1.1", role: "menuitemradio" },
-        { storyContent: "Radio 1.2", role: "menuitemradio" },
-        { template: dividerStoryTemplate },
-        { storyContent: "Radio 2.1", role: "menuitemradio" },
-        { storyContent: "Radio 2.2", role: "menuitemradio" },
+        { storyContent: "Menu Item 1", role: "menuitemcheckbox" },
+        { storyContent: "Menu Item 2", role: "menuitemcheckbox" },
+        { storyContent: "Menu Item 3", role: "menuitemcheckbox" },
+    ],
+};
+
+export const MenuWithRadioItems: Story<FASTMenu> = Menu.bind({});
+MenuWithRadioItems.args = {
+    storyItems: [
+        { storyContent: "Menu Item 1", role: "menuitemradio" },
+        { storyContent: "Menu Item 2", role: "menuitemradio" },
+        { storyContent: "Menu Item 3", role: "menuitemradio" },
     ],
 };
 
@@ -143,8 +173,33 @@ MenuWithNestedItems.args = {
     ],
 };
 
-export const MenuWithItemsWithIcons: Story<FASTMenu> = Menu.bind({});
-MenuWithItemsWithIcons.args = {
+export const FancyMenu: Story<MyFancyMenu> = renderComponent(fancyStoryTemplate).bind({});
+FancyMenu.args = {
+    storyContent: html`
+        ${repeat(
+            x => x.storyItems,
+            html<StoryArgs<FASTMenuItem>>`
+                ${x => x.template ?? fancyMenuItemStoryTemplate}
+            `
+        )}
+    `,
+    storyItems: [
+        { storyContent: "Fancy Menu Item 1" },
+        { storyContent: "Fancy Menu Item 2" },
+        { storyContent: "Fancy Menu Item 3" },
+    ],
+};
+
+export const FancyMenuWithItemsWithIcons: Story<MyFancyMenu> = FancyMenu.bind({});
+FancyMenuWithItemsWithIcons.args = {
+    storyContent: html`
+        ${repeat(
+            x => x.storyItems,
+            html<StoryArgs<FASTMenuItem>>`
+                ${x => x.template ?? fancyMenuItemStoryTemplate}
+            `
+        )}
+    `,
     storyItems: [
         {
             storyContent: html`
@@ -165,5 +220,30 @@ MenuWithItemsWithIcons.args = {
                 Slotted start and end icons
             `,
         },
+    ],
+};
+
+export const FancyMenuWithFormControls: Story<MyFancyMenu> = FancyMenu.bind({});
+FancyMenuWithFormControls.args = {
+    storyContent: html`
+        ${repeat(
+            x => x.storyItems,
+            html<StoryArgs<FASTMenuItem>>`
+                ${x => x.template ?? fancyMenuItemStoryTemplate}
+            `
+        )}
+    `,
+    storyItems: [
+        { storyContent: "Fancy Menu Item 1" },
+        { storyContent: "Fancy Menu Item 2" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Fancy Checkbox 1", role: "menuitemcheckbox" },
+        { storyContent: "Fancy Checkbox 2", role: "menuitemcheckbox" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Fancy Radio 1.1", role: "menuitemradio" },
+        { storyContent: "Fancy Radio 1.2", role: "menuitemradio" },
+        { template: dividerStoryTemplate },
+        { storyContent: "Fancy Radio 2.1", role: "menuitemradio" },
+        { storyContent: "Fancy Radio 2.2", role: "menuitemradio" },
     ],
 };
