@@ -1,14 +1,17 @@
-import { expect } from "chai";
+import chai, { expect } from "chai";
 import { ElementStyles } from "../index.debug.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import { observable, Observable } from "../observation/observable.js";
 import { css } from "../styles/css.js";
-import { html, ViewTemplate } from "../templating/template.js";
+import { html } from "../templating/template.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { toHTML } from "../__test__/helpers.js";
 import { ElementController } from "./element-controller.js";
 import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions.js";
 import { FASTElement } from "./fast-element.js";
+import spies from "chai-spies";
+
+chai.use(spies);
 
 describe("The ElementController", () => {
     const templateA = html`a`;
@@ -489,6 +492,35 @@ describe("The ElementController", () => {
             expect(behavior.bound).to.equal(true);
             controller.removeBehavior(behavior, true);
             expect(behavior.bound).to.equal(false);
+        });
+
+        it("should connect behaviors added by stylesheets by .addStyles() during connection and disconnect them during disconnection", () => {
+            const { controller } = createController();
+            const behavior: HostBehavior = {
+                connectedCallback: chai.spy() ,
+                disconnectedCallback: chai.spy()
+            };
+            controller.addStyles(css``.withBehaviors(behavior));
+
+            controller.connect();
+            expect(behavior.connectedCallback).to.have.been.called;
+
+            controller.disconnect();
+            expect(behavior.disconnectedCallback).to.have.been.called;
+        });
+
+        it("should connect behaviors added by the component's main stylesheet during connection and disconnect them during disconnection", () => {
+            const behavior: HostBehavior = {
+                connectedCallback: chai.spy() ,
+                disconnectedCallback: chai.spy()
+            };
+            const { controller } = createController({styles: css``.withBehaviors(behavior)});
+            controller.connect();
+
+            expect(behavior.connectedCallback).to.have.been.called();
+
+            controller.disconnect();
+            expect(behavior.disconnectedCallback).to.have.been.called();
         });
     });
 
