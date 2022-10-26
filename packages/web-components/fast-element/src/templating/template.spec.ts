@@ -6,7 +6,9 @@ import { HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBeh
 import { Constructable, isString } from "../interfaces.js";
 import { Fake } from "../testing/fakes.js";
 import { dangerousHTML } from "./dangerous-html.js";
-import { DOMAspect } from "../dom.js";
+import { DOMAspect, DOMPolicy } from "../dom.js";
+import { createTrackableDOMPolicy } from "../__test__/helpers.js";
+import { Compiler } from "./compiler.js";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {
@@ -538,4 +540,51 @@ describe(`The html tag template helper`, () => {
       const template = html`<${element}></${element}>`
       expect(template.html).to.equal('<button></button>')
     })
+});
+
+describe("The ViewTemplate", () => {
+    it("lazily compiles", () => {
+        let hasCompiled = false;
+        const compile = Compiler.compile;
+        Compiler.setDefaultStrategy((html, directives, policy) => {
+            hasCompiled = true;
+            return compile(html, directives, policy);
+        });
+
+        const template = html`This is a test.`;
+
+        expect(hasCompiled).to.be.false;
+
+        template.create();
+        Compiler.setDefaultStrategy(compile);
+
+        expect(hasCompiled).to.be.true;
+    });
+
+    it("passes its dom policy along to the compiler", () => {
+        const trackedPolicy = createTrackableDOMPolicy();
+        const template = html`This is a test.`.withPolicy(trackedPolicy);
+        let capturedPolicy: DOMPolicy;
+
+        const compile = Compiler.compile;
+        Compiler.setDefaultStrategy((html, directives, policy) => {
+            capturedPolicy = policy;
+            return compile(html, directives, policy);
+        });
+
+        template.create();
+        Compiler.setDefaultStrategy(compile);
+
+        expect(capturedPolicy!).to.equal(trackedPolicy);
+    });
+
+    it("prevents assigning a policy more than once", () => {
+        const trackedPolicy = createTrackableDOMPolicy();
+        const template = html`This is a test.`.withPolicy(trackedPolicy);
+
+        expect(() => {
+            const differentPolicy = createTrackableDOMPolicy();
+            template.withPolicy(differentPolicy);
+        }).to.throw();
+    });
 });

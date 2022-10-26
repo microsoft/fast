@@ -305,10 +305,16 @@ export type CompilationStrategy = (
      * The preprocessed HTML string or template to compile.
      */
     html: string | HTMLTemplateElement,
+
     /**
      * The behavior factories used within the html that is being compiled.
      */
-    factories: Record<string, ViewBehaviorFactory>
+    factories: Record<string, ViewBehaviorFactory>,
+
+    /**
+     * The security policy to compile the html with.
+     */
+    policy: DOMPolicy
 ) => TemplateCompilationResult;
 
 const templateTag = "TEMPLATE";
@@ -322,7 +328,7 @@ export const Compiler = {
      * Compiles a template and associated directives into a compilation
      * result which can be used to create views.
      * @param html - The html string or template element to compile.
-     * @param directives - The directives referenced by the template.
+     * @param factories - The behavior factories referenced by the template.
      * @param policy - The security policy to compile the html with.
      * @remarks
      * The template that is provided for compilation is altered in-place
@@ -332,7 +338,7 @@ export const Compiler = {
      */
     compile<TSource = any, TParent = any>(
         html: string | HTMLTemplateElement,
-        directives: Record<string, ViewBehaviorFactory>,
+        factories: Record<string, ViewBehaviorFactory>,
         policy: DOMPolicy = DOM.policy
     ): TemplateCompilationResult<TSource, TParent> {
         let template: HTMLTemplateElement;
@@ -354,7 +360,7 @@ export const Compiler = {
         const fragment = document.adoptNode(template.content);
         const context = new CompilationContext<TSource, TParent>(
             fragment,
-            directives,
+            factories,
             policy
         );
         compileAttributes(context, "", template, /* host */ "h", 0, true);
@@ -364,11 +370,11 @@ export const Compiler = {
             // because something like a when, repeat, etc. could add nodes before the marker.
             // To mitigate this, we insert a stable first node. However, if we insert a node,
             // that will alter the result of the TreeWalker. So, we also need to offset the target index.
-            isMarker(fragment.firstChild!, directives) ||
+            isMarker(fragment.firstChild!, factories) ||
             // Or if there is only one node and a directive, it means the template's content
             // is *only* the directive. In that case, HTMLView.dispose() misses any nodes inserted by
             // the directive. Inserting a new node ensures proper disposal of nodes added by the directive.
-            (fragment.childNodes.length === 1 && Object.keys(directives).length > 0)
+            (fragment.childNodes.length === 1 && Object.keys(factories).length > 0)
         ) {
             fragment.insertBefore(document.createComment(""), fragment.firstChild);
         }

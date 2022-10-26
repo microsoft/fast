@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { bind, HTMLBindingDirective, oneTime, listener } from "./binding.js";
 import { observable } from "../observation/observable.js";
 import { html, ViewTemplate } from "./template.js";
-import { toHTML } from "../__test__/helpers.js";
+import { createTrackableDOMPolicy, toHTML } from "../__test__/helpers.js";
 import { SyntheticView, HTMLView } from "./view.js";
 import { Updates } from "../observation/update-queue.js";
 import { DOM, DOMPolicy } from "../dom.js";
@@ -103,19 +103,6 @@ describe("The HTML binding directive", () => {
     function eventBinding(options: AddEventListenerOptions, sourceAspect: string) {
         const directive = new HTMLBindingDirective(listener<Model>(x => x.invokeAction(), options));
         return compileDirective(directive, sourceAspect);
-    }
-
-    function createTrackableDOMPolicy() {
-        return {
-            used: false,
-            createHTML: (html: string) => html,
-            protect(tagName, aspect, aspectName, sink) {
-                return (node, aspectName, value, ...args) => {
-                    this.used = true;
-                    sink(node, aspectName, value, ...args);
-                };
-            }
-        };
     }
 
     context("when binding text content", () => {

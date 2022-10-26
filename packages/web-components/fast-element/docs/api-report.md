@@ -129,14 +129,15 @@ export type ChildrenDirectiveOptions<T = any> = ChildListDirectiveOptions<T> | S
 // @public
 export type CompilationStrategy = (
 html: string | HTMLTemplateElement,
-factories: Record<string, ViewBehaviorFactory>) => HTMLTemplateCompilationResult;
+factories: Record<string, ViewBehaviorFactory>,
+policy: DOMPolicy) => HTMLTemplateCompilationResult;
 
 // @public
 export type CompiledViewBehaviorFactory = Required<ViewBehaviorFactory>;
 
 // @public
 export const Compiler: {
-    compile<TSource = any, TParent = any>(html: string | HTMLTemplateElement, directives: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy): HTMLTemplateCompilationResult<TSource, TParent>;
+    compile<TSource = any, TParent = any>(html: string | HTMLTemplateElement, factories: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy): HTMLTemplateCompilationResult<TSource, TParent>;
     setDefaultStrategy(strategy: CompilationStrategy): void;
     aggregate(parts: (string | ViewBehaviorFactory)[], policy?: DOMPolicy): ViewBehaviorFactory;
 };
