@@ -91,7 +91,7 @@ const fastTrustedType: TrustedTypesPolicy = globalThis.trustedTypes
     ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
     : { createHTML };
 
-let defaultPolicy: DOMPolicy = {
+let defaultPolicy: DOMPolicy = Object.freeze({
     createHTML(value: string): string {
         return fastTrustedType.createHTML(value);
     },
@@ -104,7 +104,7 @@ let defaultPolicy: DOMPolicy = {
     ): DOMSink {
         return sink;
     },
-};
+});
 
 const fastPolicy = defaultPolicy;
 
