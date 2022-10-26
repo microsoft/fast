@@ -5,7 +5,7 @@ import { html, ViewTemplate } from "./template.js";
 import { toHTML } from "../__test__/helpers.js";
 import { SyntheticView, HTMLView } from "./view.js";
 import { Updates } from "../observation/update-queue.js";
-import { DOM } from "../dom.js";
+import { DOM, DOMPolicy } from "../dom.js";
 import { Signal, signal } from "./binding-signal.js";
 import { twoWay, TwoWayBindingOptions } from "./binding-two-way.js";
 import { Fake } from "../testing/fakes.js";
@@ -80,29 +80,42 @@ describe("The HTML binding directive", () => {
         return { directive, behavior, node, parentNode, targets };
     }
 
-    function defaultBinding(sourceAspect?: string) {
-        const directive = new HTMLBindingDirective(bind<Model>(x => x.value));
+    function defaultBinding(sourceAspect?: string, policy?: DOMPolicy) {
+        const directive = new HTMLBindingDirective(bind<Model>(x => x.value, policy));
         return compileDirective(directive, sourceAspect);
     }
 
-    function oneTimeBinding(sourceAspect?: string) {
-        const directive = new HTMLBindingDirective(oneTime<Model>(x => x.value));
+    function oneTimeBinding(sourceAspect?: string, policy?: DOMPolicy) {
+        const directive = new HTMLBindingDirective(oneTime<Model>(x => x.value, policy));
         return compileDirective(directive, sourceAspect);
     }
 
-    function signalBinding(signalName: string, sourceAspect?: string) {
-        const directive = new HTMLBindingDirective(signal<Model>(x => x.value, signalName));
+    function signalBinding(signalName: string, sourceAspect?: string, policy?: DOMPolicy) {
+        const directive = new HTMLBindingDirective(signal<Model>(x => x.value, signalName, policy));
         return compileDirective(directive, sourceAspect);
     }
 
-    function twoWayBinding(options: TwoWayBindingOptions, sourceAspect?: string) {
-        const directive = new HTMLBindingDirective(twoWay<Model>(x => x.value, options));
+    function twoWayBinding(options: TwoWayBindingOptions, sourceAspect?: string, policy?: DOMPolicy) {
+        const directive = new HTMLBindingDirective(twoWay<Model>(x => x.value, options, policy));
         return compileDirective(directive, sourceAspect);
     }
 
     function eventBinding(options: AddEventListenerOptions, sourceAspect: string) {
         const directive = new HTMLBindingDirective(listener<Model>(x => x.invokeAction(), options));
         return compileDirective(directive, sourceAspect);
+    }
+
+    function createTrackableDOMPolicy() {
+        return {
+            used: false,
+            createHTML: (html: string) => html,
+            protect(tagName, aspect, aspectName, sink) {
+                return (node, aspectName, value, ...args) => {
+                    this.used = true;
+                    sink(node, aspectName, value, ...args);
+                };
+            }
+        };
     }
 
     context("when binding text content", () => {
@@ -434,6 +447,18 @@ describe("The HTML binding directive", () => {
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
             });
+
+            it(`uses the dom policy when setting a ${aspectScenario.name} binding`, () => {
+                const policy = createTrackableDOMPolicy();
+                const { behavior, node, targets } = defaultBinding(aspectScenario.sourceAspect, policy);
+                const model = new Model(aspectScenario.originalValue);
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+                expect(policy.used).to.be.true;
+            });
         }
     });
 
@@ -479,6 +504,18 @@ describe("The HTML binding directive", () => {
                 await Updates.next();
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+            });
+
+            it(`uses the dom policy when setting a ${aspectScenario.name} binding`, () => {
+                const policy = createTrackableDOMPolicy();
+                const { behavior, node, targets } = oneTimeBinding(aspectScenario.sourceAspect, policy);
+                const model = new Model(aspectScenario.originalValue);
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+                expect(policy.used).to.be.true;
             });
         }
     });
@@ -535,6 +572,18 @@ describe("The HTML binding directive", () => {
                 await Updates.next();
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+            });
+
+            it(`uses the dom policy when setting a ${aspectScenario.name} binding`, () => {
+                const policy = createTrackableDOMPolicy();
+                const { behavior, node, targets } = signalBinding("test-signal", aspectScenario.sourceAspect, policy);
+                const model = new Model(aspectScenario.originalValue);
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+                expect(policy.used).to.be.true;
             });
         }
     });
@@ -634,6 +683,18 @@ describe("The HTML binding directive", () => {
                 await Updates.next();
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+            });
+
+            it(`uses the dom policy when setting a ${aspectScenario.name} binding`, () => {
+                const policy = createTrackableDOMPolicy();
+                const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect, policy);
+                const model = new Model(aspectScenario.originalValue);
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+                expect(policy.used).to.be.true;
             });
         }
     });
