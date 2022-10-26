@@ -206,6 +206,7 @@ export class MutationObserver {
 export class MediaQueryList {
     /** No-op */
     addListener() {}
+    addEventListener() {}
 
     /** Always false */
     matches = false;
@@ -231,7 +232,7 @@ export function createWindow(
         public CustomElementRegistry = CustomElementRegistry;
         public MutationObserver = MutationObserver;
         public MediaQueryList = MediaQueryList;
-        public matchMedia = () => new MediaQueryList();
+        public matchMedia = () => new this.MediaQueryList();
 
         // Defined in constructor
         public window: unknown;
