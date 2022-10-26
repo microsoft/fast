@@ -3,5 +3,5 @@
   "comment": "Fixed bug preventing main component stylesheet behaviors from being connected during connectedCallback",
   "packageName": "@microsoft/fast-element",
   "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
