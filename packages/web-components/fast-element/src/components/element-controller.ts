@@ -45,6 +45,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
     private _isConnected: boolean = false;
+    private connecting = false;
     private behaviors: Map<HostBehavior<TElement>, number> | null = null;
     private _mainStyles: ElementStyles | null = null;
 
@@ -222,7 +223,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             targetBehaviors.set(behavior, 1);
             behavior.addedCallback && behavior.addedCallback(this);
 
-            if (behavior.connectedCallback && this.isConnected) {
+            if (behavior.connectedCallback && (this.isConnected || this.connecting)) {
                 behavior.connectedCallback(this);
             }
         } else {
@@ -322,6 +323,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
+        this.connecting = true;
+
         // If we have any observables that were bound, re-apply their values.
         if (this.boundObservables !== null) {
             const element = this.source;
@@ -338,7 +341,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         const behaviors = this.behaviors;
         if (behaviors !== null) {
-            for (const key of behaviors.keys()) {
+            // Iterate over the current attached behaviors only. Any behaviors
+            // added during this loop will be attached and connected in
+            // ElementController.addBehavior
+            for (const key of Array.from(behaviors.keys())) {
                 key.connectedCallback && key.connectedCallback(this);
             }
         }
@@ -353,6 +359,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         this.setIsConnected(true);
+        this.connecting = false;
     }
 
     /**

@@ -497,7 +497,7 @@ describe("The ElementController", () => {
         it("should connect behaviors added by stylesheets by .addStyles() during connection and disconnect them during disconnection", () => {
             const { controller } = createController();
             const behavior: HostBehavior = {
-                connectedCallback: chai.spy() ,
+                connectedCallback: chai.spy(),
                 disconnectedCallback: chai.spy()
             };
             controller.addStyles(css``.withBehaviors(behavior));
@@ -511,7 +511,7 @@ describe("The ElementController", () => {
 
         it("should connect behaviors added by the component's main stylesheet during connection and disconnect them during disconnection", () => {
             const behavior: HostBehavior = {
-                connectedCallback: chai.spy() ,
+                connectedCallback: chai.spy(),
                 disconnectedCallback: chai.spy()
             };
             const { controller } = createController({styles: css``.withBehaviors(behavior)});
