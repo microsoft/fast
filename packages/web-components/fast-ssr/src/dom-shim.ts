@@ -205,7 +205,6 @@ export class MutationObserver {
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList} */
 export class MediaQueryList {
     /** No-op */
-    addListener() {}
     addEventListener() {}
 
     /** Always false */
