@@ -343,9 +343,17 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (behaviors !== null) {
             // Iterate over the current attached behaviors only. Any behaviors
             // added during this loop will be attached and connected in
-            // ElementController.addBehavior
-            for (const key of Array.from(behaviors.keys())) {
+            // ElementController.addBehavior, so we need to guard against
+            // connecting them here.
+            const size = behaviors.size;
+            let current = 0;
+            for (const key of behaviors.keys()) {
+                current++;
                 key.connectedCallback && key.connectedCallback(this);
+
+                if (current === size) {
+                    break;
+                }
             }
         }
 
