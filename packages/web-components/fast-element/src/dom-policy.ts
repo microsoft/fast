@@ -80,7 +80,7 @@ function deepFreeze<T>(obj: T): DeepReadonly<T> {
 }
 
 const defaultDOMElementGuards = {
-    A: {
+    a: {
         [DOMAspect.attribute]: {
             href: safeURL,
         },
@@ -88,7 +88,7 @@ const defaultDOMElementGuards = {
             href: safeURL,
         },
     },
-    AREA: {
+    area: {
         [DOMAspect.attribute]: {
             href: safeURL,
         },
@@ -96,7 +96,7 @@ const defaultDOMElementGuards = {
             href: safeURL,
         },
     },
-    BUTTON: {
+    button: {
         [DOMAspect.attribute]: {
             formaction: safeURL,
         },
@@ -104,7 +104,7 @@ const defaultDOMElementGuards = {
             formAction: safeURL,
         },
     },
-    EMBED: {
+    embed: {
         [DOMAspect.attribute]: {
             src: block,
         },
@@ -112,7 +112,7 @@ const defaultDOMElementGuards = {
             src: block,
         },
     },
-    FORM: {
+    form: {
         [DOMAspect.attribute]: {
             action: safeURL,
         },
@@ -120,7 +120,7 @@ const defaultDOMElementGuards = {
             action: safeURL,
         },
     },
-    FRAME: {
+    frame: {
         [DOMAspect.attribute]: {
             src: safeURL,
         },
@@ -128,7 +128,7 @@ const defaultDOMElementGuards = {
             src: safeURL,
         },
     },
-    IFRAME: {
+    iframe: {
         [DOMAspect.attribute]: {
             src: safeURL,
         },
@@ -137,7 +137,7 @@ const defaultDOMElementGuards = {
             srcdoc: block,
         },
     },
-    INPUT: {
+    input: {
         [DOMAspect.attribute]: {
             formaction: safeURL,
         },
@@ -145,7 +145,7 @@ const defaultDOMElementGuards = {
             formAction: safeURL,
         },
     },
-    LINK: {
+    link: {
         [DOMAspect.attribute]: {
             href: block,
         },
@@ -153,7 +153,7 @@ const defaultDOMElementGuards = {
             href: block,
         },
     },
-    OBJECT: {
+    object: {
         [DOMAspect.attribute]: {
             codebase: block,
             data: block,
@@ -163,7 +163,7 @@ const defaultDOMElementGuards = {
             data: block,
         },
     },
-    SCRIPT: {
+    script: {
         [DOMAspect.attribute]: {
             src: block,
             text: block,
@@ -175,7 +175,7 @@ const defaultDOMElementGuards = {
             textContent: block,
         },
     },
-    STYLE: {
+    style: {
         [DOMAspect.property]: {
             innerText: block,
             textContent: block,
@@ -316,7 +316,8 @@ const DOMPolicy = Object.freeze({
                 sink: DOMSink
             ): DOMSink {
                 // Check for element-specific guards.
-                const elementGuards = guards.elements[tagName ?? ""];
+                const key = (tagName ?? "").toLowerCase();
+                const elementGuards = guards.elements[key];
                 if (elementGuards) {
                     const guard = tryGuard(
                         elementGuards,
