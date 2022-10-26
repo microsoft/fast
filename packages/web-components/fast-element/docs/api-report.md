@@ -282,10 +282,17 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     removeBehavior(behavior: HostBehavior<TElement>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+    static setStrategy(strategy: ElementControllerStrategy): void;
     readonly source: TElement;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
     readonly view: ElementView<TElement> | null;
+}
+
+// @public
+export interface ElementControllerStrategy {
+    // (undocumented)
+    new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
 }
 
 // @public
