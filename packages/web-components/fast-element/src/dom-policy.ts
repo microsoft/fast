@@ -332,14 +332,9 @@ const DOMPolicy = Object.freeze({
                 }
 
                 // Check for guards applicable to all nodes.
-                const guard = tryGuard(guards.aspects, tagName, aspect, aspectName, sink);
-
-                if (guard) {
-                    return guard;
-                }
-
-                // No additional protection needed.
-                return sink;
+                return (
+                    tryGuard(guards.aspects, tagName, aspect, aspectName, sink) ?? sink
+                );
             },
         });
     },
