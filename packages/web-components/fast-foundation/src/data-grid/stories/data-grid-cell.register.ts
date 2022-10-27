@@ -15,7 +15,7 @@ const styles = css`
         border-radius: calc(var(--control-corner-radius) * 1px);
     }
 
-    :host(.column-header) {
+    :host([cell-type="column-header"]) {
         font-weight: 600;
     }
 

@@ -7,13 +7,18 @@ import type { FASTSelect } from "./select.js";
 test.describe("Select", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-select");
 
-        await page.goto(fixtureURL("select--select"));
+        root = page.locator("#root");
+
+        await page.goto(fixtureURL("select--select"), {
+            waitUntil: "load",
+        });
     });
 
     test.afterAll(async () => {
@@ -21,28 +26,35 @@ test.describe("Select", () => {
     });
 
     test("should have a role of `combobox`", async () => {
-        await page.setContent(/* html */ `
-            <fast-select></fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select></fast-select>
+            `;
+        });
+
         await expect(element).toHaveAttribute("role", "combobox");
     });
 
     test("should have a tabindex of 0 when `disabled` is not defined", async () => {
-        await page.setContent(/* html */ `
-            <fast-select>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         await expect(element).toHaveAttribute("tabindex", "0");
     });
 
     test("should set the `aria-disabled` attribute equal to the `disabled` value", async () => {
-        await page.setContent(/* html */ `
-            <fast-select disabled></fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select disabled></fast-select>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-disabled", "true");
 
@@ -54,21 +66,25 @@ test.describe("Select", () => {
     });
 
     test("should have the attribute aria-expanded set to false", async () => {
-        await page.setContent(/* html */ `
-            <fast-select></fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select></fast-select>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-expanded", "false");
     });
 
     test("should set its value to the first enabled option", async () => {
-        await page.setContent(/* html */ `
-            <fast-select>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "Option 1");
 
@@ -76,21 +92,25 @@ test.describe("Select", () => {
     });
 
     test("should NOT have a tabindex when `disabled` is true", async () => {
-        await page.setContent(/* html */ `
-            <fast-select disabled></fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select disabled></fast-select>
+            `;
+        });
 
-        expect(await element.getAttribute("tabindex")).toBeNull();
+        await expect(element).not.hasAttribute("tabindex");
     });
 
     test("should set its value to the first enabled option when disabled", async () => {
-        await page.setContent(/* html */ `
-            <fast-select disabled>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select disabled>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "Option 1");
 
@@ -98,13 +118,15 @@ test.describe("Select", () => {
     });
 
     test("should select the first option with a `selected` attribute", async () => {
-        await page.setContent(/* html */ `
-            <fast-select>
-                <fast-option>Option 1</fast-option>
-                <fast-option selected>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option selected>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "Option 2");
 
@@ -112,13 +134,15 @@ test.describe("Select", () => {
     });
 
     test("should select the first option with a `selected` attribute when disabled", async () => {
-        await page.setContent(/* html */ `
-            <fast-select disabled>
-                <fast-option>Option 1</fast-option>
-                <fast-option selected>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select disabled>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option selected>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "Option 2");
 
@@ -126,25 +150,29 @@ test.describe("Select", () => {
     });
 
     test("should return the same value when the `value` property is set before connect", async () => {
-        await page.setContent(/* html */ `
-            <fast-select value="Option 2">
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select value="Option 2">
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "Option 2");
     });
 
     test("should return the same value when the value property is set after connect", async () => {
-        await page.setContent(/* html */ `
-            <fast-select>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         await element.evaluate<void, FASTSelect>(node => {
             node.value = "Option 3";
@@ -154,13 +182,15 @@ test.describe("Select", () => {
     });
 
     test("should select the next selectable option when the value is set to match a disabled option", async () => {
-        await page.setContent(/* html */ `
-            <fast-select>
-                <fast-option>Option 1</fast-option>
-                <fast-option disabled>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option disabled>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "Option 1");
 
@@ -176,13 +206,15 @@ test.describe("Select", () => {
     });
 
     test("should update the `value` property when the selected option's `value` property changes", async () => {
-        await page.setContent(/* html */ `
-            <fast-select>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         const options = element.locator("fast-option");
 
@@ -196,13 +228,15 @@ test.describe("Select", () => {
     });
 
     test("should return the `value` property as a string", async () => {
-        await page.setContent(/* html */ `
-            <fast-select>
-                <fast-option value="1">Option 1</fast-option>
-                <fast-option value="2">Option 2</fast-option>
-                <fast-option value="3">Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select>
+                    <fast-option value="1">Option 1</fast-option>
+                    <fast-option value="2">Option 2</fast-option>
+                    <fast-option value="3">Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "1");
 
@@ -212,13 +246,19 @@ test.describe("Select", () => {
     });
 
     test("should update the aria-expanded attribute when opened", async () => {
-        await page.setContent(/* html */ `
-            <fast-select>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
+
+        await element.evaluate(node =>
+            Promise.all(node.getAnimations({ subtree: true }).map(a => a.finished))
+        );
 
         element.click();
 
@@ -226,13 +266,15 @@ test.describe("Select", () => {
     });
 
     test("should display the listbox when the `open` property is true before connecting", async () => {
-        await page.setContent(/* html */ `
-            <fast-select open>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select open>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         const listbox = element.locator(".listbox");
 
@@ -249,13 +291,15 @@ test.describe("Select", () => {
             { expectedValue: "Option 1", key: "Home" },
         ].forEach(({ expectedValue, key }) => {
             test(`should NOT emit \`${eventName}\` event while open when the value changes by user input via ${key} key`, async () => {
-                await page.setContent(/* html */ `
-                    <fast-select open>
-                        <fast-option>Option 1</fast-option>
-                        <fast-option>Option 2</fast-option>
-                        <fast-option>Option 3</fast-option>
-                    </fast-select>
-                `);
+                await root.evaluate(node => {
+                    node.innerHTML = /* html */ `
+                        <fast-select open>
+                            <fast-option>Option 1</fast-option>
+                            <fast-option>Option 2</fast-option>
+                            <fast-option>Option 3</fast-option>
+                        </fast-select>
+                    `;
+                });
 
                 const [wasChanged] = await Promise.all([
                     element.evaluate(
@@ -266,7 +310,11 @@ test.describe("Select", () => {
                                         resolve(eventName)
                                     )
                                 ),
-                                new Promise(requestAnimationFrame),
+                                new Promise(resolve =>
+                                    requestAnimationFrame(() =>
+                                        setTimeout(() => resolve(false))
+                                    )
+                                ),
                             ]),
                         eventName
                     ),
@@ -282,13 +330,15 @@ test.describe("Select", () => {
             });
 
             test(`should emit \`${eventName}\` event while closed when the value changes by user input via ${key} key`, async () => {
-                await page.setContent(/* html */ `
-                    <fast-select>
-                        <fast-option>Option 1</fast-option>
-                        <fast-option>Option 2</fast-option>
-                        <fast-option>Option 3</fast-option>
-                    </fast-select>
-                `);
+                await root.evaluate(node => {
+                    node.innerHTML = /* html */ `
+                        <fast-select>
+                            <fast-option>Option 1</fast-option>
+                            <fast-option>Option 2</fast-option>
+                            <fast-option>Option 3</fast-option>
+                        </fast-select>
+                    `;
+                });
 
                 const [wasChanged] = await Promise.all([
                     element.evaluate((node, eventName) => {
@@ -323,7 +373,11 @@ test.describe("Select", () => {
                                         resolve(eventName)
                                     )
                                 ),
-                                new Promise(requestAnimationFrame),
+                                new Promise(resolve =>
+                                    requestAnimationFrame(() =>
+                                        setTimeout(() => resolve(false))
+                                    )
+                                ),
                             ]),
                         eventName
                     ),
@@ -340,15 +394,17 @@ test.describe("Select", () => {
 
     test.describe("when the owning form's reset() function is invoked", () => {
         test("should reset the value property to the first available option", async () => {
-            await page.setContent(/* html */ `
-                <form>
-                    <fast-select>
-                        <fast-option>Option 1</fast-option>
-                        <fast-option>Option 2</fast-option>
-                        <fast-option>Option 3</fast-option>
-                    </fast-select>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-select>
+                            <fast-option>Option 1</fast-option>
+                            <fast-option>Option 2</fast-option>
+                            <fast-option>Option 3</fast-option>
+                        </fast-select>
+                    </form>
+                `;
+            });
 
             const form = page.locator("form");
 
@@ -369,13 +425,15 @@ test.describe("Select", () => {
     });
 
     test("should set the `aria-activedescendant` attribute to the ID of the currently selected option", async () => {
-        await page.setContent(/* html */ `
-            <fast-select>
-                <fast-option id="option-1">Option 1</fast-option>
-                <fast-option id="option-2">Option 2</fast-option>
-                <fast-option id="option-3">Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select>
+                    <fast-option id="option-1">Option 1</fast-option>
+                    <fast-option id="option-2">Option 2</fast-option>
+                    <fast-option id="option-3">Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-activedescendant", "option-1");
 
@@ -393,13 +451,15 @@ test.describe("Select", () => {
     });
 
     test("should set the `aria-controls` attribute to the ID of the internal listbox element while open", async () => {
-        await page.setContent(/* html */ `
-            <fast-select>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         const listbox = element.locator(".listbox");
 
@@ -421,13 +481,15 @@ test.describe("Select", () => {
     });
 
     test("should update the `displayValue` when the selected option's content changes", async () => {
-        await page.setContent(/* html */ `
-            <fast-select>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-select>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
 
         const options = element.locator("fast-option");
 

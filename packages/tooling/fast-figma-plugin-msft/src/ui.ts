@@ -7,12 +7,12 @@ import {
     fluentTabPanel,
     fluentTabs,
 } from "@fluentui/web-components";
-import { App } from "./core/ui";
+import { App } from "./core/ui/index.js";
 import {
     deserializeUINodes,
     PluginUISerializableNodeData,
     serializeUINodes,
-} from "./figma/controller";
+} from "./figma/controller.js";
 
 DesignSystem.getOrCreate()
     .withPrefix("plugin")

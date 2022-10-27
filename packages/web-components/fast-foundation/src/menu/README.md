@@ -145,6 +145,13 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | ------------- | ------ | ----------------------- |
 | `FASTElement` |        | @microsoft/fast-element |
 
+#### Fields
+
+| Name                | Privacy   | Type                     | Default | Description                      | Inherited From |
+| ------------------- | --------- | ------------------------ | ------- | -------------------------------- | -------------- |
+| `menuItems`         | protected | `Element[] or undefined` |         |                                  |                |
+| `isMenuItemElement` | protected |                          |         | check if the item is a menu item |                |
+
 #### Methods
 
 | Name                   | Privacy   | Description                         | Parameters                                         | Return | Inherited From |
@@ -152,6 +159,7 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `itemsChanged`         | protected |                                     | `oldValue: HTMLElement[], newValue: HTMLElement[]` | `void` |                |
 | `focus`                | public    | Focuses the first item in the menu. |                                                    | `void` |                |
 | `collapseExpandedItem` | public    | Collapses any expanded menu items.  |                                                    | `void` |                |
+| `setItems`             | protected |                                     |                                                    | `void` |                |
 | `handleChange`         | public    |                                     | `source: any, propertyName: string`                |        |                |
 
 #### Slots

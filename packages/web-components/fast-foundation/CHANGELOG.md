@@ -1,8 +1,93 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 01 Sep 2022 21:53:34 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Oct 2022 20:24:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.18
+
+Tue, 25 Oct 2022 20:24:32 GMT
+
+### Changes
+
+- add readonly property to identify tree items and udpate isTreeItemElement check (chhol@microsoft.com)
+- remove unnecessary click handler from legacy button span implementation (32497422+KingOfTac@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.15
+
+## 3.0.0-alpha.17
+
+Fri, 14 Oct 2022 18:26:11 GMT
+
+### Changes
+
+- indeterminate checkboxes should set an aria-checked state of mixed (chhol@microsoft.com)
+- feat: calendar attr to adjust weekday start (robarb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.14
+
+## 3.0.0-alpha.16
+
+Mon, 10 Oct 2022 20:28:02 GMT
+
+### Changes
+
+- revert tree item changes from playwright migration (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.13
+
+## 3.0.0-alpha.15
+
+Thu, 06 Oct 2022 23:21:20 GMT
+
+### Changes
+
+- Adds ability to close menu with Escape key (ryan@ryanmerrill.net)
+- Bump @microsoft/fast-element to v2.0.0-beta.12
+
+## 3.0.0-alpha.14
+
+Wed, 05 Oct 2022 23:26:01 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.11
+
+## 3.0.0-alpha.13
+
+Mon, 03 Oct 2022 23:44:38 GMT
+
+### Changes
+
+- remove classes from host elements, add attributes to migrate observables, use data-t where it makes sensse (chhol@microsoft.com)
+- fix: remove class from hs template root (jes@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.10
+
+## 3.0.0-alpha.12
+
+Wed, 28 Sep 2022 20:45:51 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.9
+
+## 3.0.0-alpha.11
+
+Tue, 27 Sep 2022 22:31:52 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.8
+
+## 3.0.0-alpha.10
+
+Fri, 23 Sep 2022 22:53:27 GMT
+
+### Changes
+
+- feat: update foundation to new capture type (roeisenb@microsoft.com)
+- Convert karma and mocha tests to playwright (863023+radium-v@users.noreply.github.com)
+- fix(fast-foundation): update mixin helper to use new attribute api (roeisenb@microsoft.com)
+- fix: update foundation to use the new behavior API (roeisenb@microsoft.com)
+- removed redundant role setting in fast foundation menu-item template (yinon@hotmail.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.7
 
 ## 3.0.0-alpha.9
 

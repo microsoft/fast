@@ -10,8 +10,8 @@ import {
     RecipeEvaluation,
     RecipeEvaluations,
     TOOL_FILL_COLOR_TOKEN,
-} from "./model";
-import { DesignTokenType } from "./ui/design-token-registry";
+} from "./model.js";
+import { DesignTokenType } from "./ui/design-token-registry.js";
 
 const DesignTokenCache: Map<string, ReadonlyAppliedDesignTokens> = new Map();
 

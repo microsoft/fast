@@ -34,6 +34,18 @@ import "@microsoft/fast-ssr/install-dom-shim";
 
 Alternatively, a full DOM implementation such as [`jsdom`](https://github.com/jsdom/jsdom) or [`happy-dom`](https://github.com/capricorn86/happy-dom) can be used.
 
+#### Augmenting the DOM Shim
+To augment the properties installed by the DOM shim, import the Window factory and installer directly, and provide an object to `createWindow()` with the properties that should be added or overwritten.
+
+```ts
+import {
+  createWindow,
+  installWindowOnGlobal,
+} from '@microsoft/fast-ssr/dom-shim';
+
+installWindowOnGlobal(createWindow({ isSSR: true }));
+```
+
 ### Construct the Renderer
 Import the renderer factory and construct a `TemplateRenderer`.
 ```js
@@ -155,6 +167,28 @@ for await (const part of templateRenderer.render(someAsyncTemplate)) {
 ```
 
 > It's important to note that to accurately render asynchronous components, template rendering must be effectively paused until async work is complete. This is inherently inefficient because that work gets initiated iteratively, during template rendering. If possible, it is best to architect your components and application in such a way that async work happens prior to template rendering, where initiation of async work can be better coordinated.
+
+#### Disabling Rendering for Specific Components
+In cases where an author doesn't want a FAST component to render in SSR environments, but it is impractical to prevent *defining* that element in the custom element registry, the `ElementRenderer` exposes a mechanism to prevent matching elements it would otherwise match. Components can be disabled by tag-name (`"element-name"`), class constructor (`class MyElement extends FASTElement {}`), or `FASTElementDefinition` (`MyElement.compose({/* config */})`)
+
+```ts
+// The element gets defined somewhere in an application
+const name = "my-element";
+class MyElement extends FASTElement {}
+const definition = MyElement.compose({name, template: html`<p>Hello world</p>`});
+definition.define();
+
+
+const { templateRenderer, ElementRenderer } = fastSSR();
+ElementRenderer.disable("my-element");
+// or 
+// ElementRenderer.disable(MyElement);
+// or
+// ElementRenderer.disable(definition);
+
+// Does not render template contents of the custom element
+templateRenderer.render(html`<my-element></my-element>`);
+```
 
 ### Configuring the RenderInfo Object
 `TemplateRenderer.render()` must be invoked with a `RenderInfo` object. Its purpose is to provide different element renderers to the process, as well as metadata about the rendering process. It can be used to render custom elements from different templating libraries in the same process. By default, `TemplateRenderer.render()` will create a `RenderInfo` object for you, but you can also easily construct your own using `TemplateRenderer.createRenderInfo()`: 

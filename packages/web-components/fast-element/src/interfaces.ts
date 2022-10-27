@@ -49,16 +49,6 @@ export type Mutable<T> = {
 };
 
 /**
- * Extracts the item type from an array.
- * @public
- */
-export type ArrayItem<T> = T extends ReadonlyArray<infer TItem>
-    ? TItem
-    : T extends Array<infer TItem>
-    ? TItem
-    : any;
-
-/**
  * A policy for use with the standard trustedTypes platform API.
  * @public
  */
@@ -134,14 +124,13 @@ export const enum KernelServiceId {
     observable = 2,
     contextEvent = 3,
     elementRegistry = 4,
-    styleSheetStrategy = 5,
 }
 
 /**
  * A node that can be targeted by styles.
  * @public
  */
-export interface StyleTarget {
+export interface StyleTarget extends Pick<Node, "getRootNode"> {
     /**
      * Stylesheets to be adopted by the node.
      */
@@ -165,7 +154,6 @@ export interface StyleTarget {
      */
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
 }
-
 /**
  * Implemented to provide specific behavior when adding/removing styles
  * for elements.

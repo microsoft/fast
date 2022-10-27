@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-element",
   "description": "A library for constructing Web Components",
-  "version": "2.0.0-beta.6",
+  "version": "2.0.0-beta.15",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -25,10 +25,6 @@
       "production": "./dist/esm/index.js",
       "development": "./dist/esm/index.debug.js",
       "default": "./dist/esm/index.js"
-    },
-    "./polyfills": {
-      "types": "./dist/dts/polyfills.d.ts",
-      "default": "./dist/esm/polyfills.js"
     },
     "./debug": {
       "types": "./dist/dts/debug.d.ts",
@@ -70,6 +66,14 @@
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
     },
+    "./element-hydration": {
+      "types": "./dist/dts/components/hydration.d.ts",
+      "default": "./dist/esm/components/hydration.js"
+    },
+    "./install-element-hydration": {
+      "types": "./dist/dts/components/install-hydration.d.ts",
+      "default": "./dist/esm/components/install-hydration.js"
+    },
     "./pending-task": {
       "types": "./dist/dts/pending-task.d.ts",
       "default": "./dist/esm/pending-task.js"
@@ -79,7 +83,8 @@
   "unpkg": "dist/fast-element.min.js",
   "sideEffects": [
     "./dist/esm/debug.js",
-    "./dist/esm/polyfills.js"
+    "./dist/esm/polyfills.js",
+    "./dist/esm/components/install-hydration.js"
   ],
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
@@ -111,7 +116,7 @@
     "@microsoft/api-extractor": "7.24.2",
     "@types/chai": "^4.2.11",
     "@types/chai-spies": "^1.0.3",
-    "@types/karma": "^5.0.0",
+    "@types/karma": "^6.3.3",
     "@types/mocha": "^7.0.2",
     "@types/webpack-env": "^1.15.2",
     "chai": "^4.2.0",
@@ -122,7 +127,7 @@
     "istanbul-instrumenter-loader": "^3.0.1",
     "jsdom": "^16.2.2",
     "jsdom-global": "3.0.2",
-    "karma": "^5.0.4",
+    "karma": "^6.4.1",
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage": "^2.0.2",
     "karma-coverage-istanbul-reporter": "^3.0.0",

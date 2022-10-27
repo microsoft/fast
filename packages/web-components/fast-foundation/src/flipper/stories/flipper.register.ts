@@ -31,6 +31,7 @@ const styles = css`
         top: 0;
         transition: all 0.1s ease-in-out;
     }
+
     .next,
     .previous {
         display: grid;
@@ -38,6 +39,7 @@ const styles = css`
         position: relative;
         width: 16px;
     }
+
     :host([disabled]) {
         opacity: var(--disabled-opacity);
         cursor: var(--disabled-cursor);

@@ -7,12 +7,15 @@ import type { FASTButton } from "./button.js";
 test.describe("Button", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
     let control: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-button");
+
+        root = page.locator("#root");
 
         control = element.locator(".control");
 
@@ -24,30 +27,32 @@ test.describe("Button", () => {
     });
 
     test("should set the `disabled` attribute on the internal control", async () => {
-        await page.setContent(/* html */ `
-            <fast-button disabled></fast-button>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-button disabled></fast-button>
+            `;
+        });
 
         await expect(control).toHaveBooleanAttribute("disabled");
 
         await element.evaluate(node => {
             node.toggleAttribute("disabled");
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(control).not.toHaveBooleanAttribute("disabled");
     });
 
     test("should set the `formnovalidate` attribute on the internal control", async () => {
-        await page.setContent(/* html */ `
-            <fast-button formnovalidate></fast-button>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-button formnovalidate></fast-button>
+            `;
+        });
 
         await expect(control).toHaveBooleanAttribute("formnovalidate");
 
         await element.evaluate(node => {
             node.toggleAttribute("formnovalidate");
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(control).not.toHaveBooleanAttribute("formnovalidate");
@@ -90,8 +95,13 @@ test.describe("Button", () => {
             const attrToken = spinalCase(attribute);
 
             test(`should set the \`${attrToken}\` attribute to \`${value}\``, async () => {
-                await page.setContent(
-                    `<fast-button ${attrToken}="${value}"></fast-button>`
+                await root.evaluate(
+                    (node, { attrToken, value }) => {
+                        node.innerHTML = /* html */ `
+                            <fast-button ${attrToken}="${value}"></fast-button>
+                        `;
+                    },
+                    { attrToken, value }
                 );
 
                 await expect(control).toHaveAttribute(attrToken, `${value}`);
@@ -100,9 +110,11 @@ test.describe("Button", () => {
     });
 
     test("should set the `form` attribute on the internal button when `formId` is provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-button></fast-button>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-button></fast-button>
+            `;
+        });
 
         await element.evaluate((node: FASTButton) => {
             node.formId = "foo";
@@ -112,26 +124,29 @@ test.describe("Button", () => {
     });
 
     test("should set the `autofocus` attribute on the internal control", async () => {
-        await page.setContent(/* html */ `
-            <fast-button autofocus></fast-button>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-button autofocus></fast-button>
+            `;
+        });
 
         await expect(control).toHaveBooleanAttribute("autofocus");
 
         await element.evaluate(node => {
             node.toggleAttribute("autofocus");
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(control).not.toHaveBooleanAttribute("autofocus");
     });
 
     test("of type `submit` should submit the parent form when clicked", async () => {
-        await page.setContent(/* html */ `
-            <form>
-                <fast-button type="submit">Submit Button</fast-button>
-            </form>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <form>
+                    <fast-button type="submit">Submit Button</fast-button>
+                </form>
+            `;
+        });
 
         const form = page.locator("form");
 
@@ -153,12 +168,14 @@ test.describe("Button", () => {
     });
 
     test("of type `reset` should reset the parent form when clicked", async () => {
-        await page.setContent(/* html */ `
-            <form>
-                <input type="text" value="foo" />
-                <fast-button type="reset">Reset Button</fast-button>
-            </form>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <form>
+                    <input type="text" value="foo" />
+                    <fast-button type="reset">Reset Button</fast-button>
+                </form>
+            `;
+        });
 
         const form = page.locator("form");
 
@@ -178,19 +195,23 @@ test.describe("Button", () => {
     });
 
     test("should not propagate when clicked and `disabled` is true", async () => {
-        await page.setContent(/* html */ `
-            <fast-button disabled>Disabled Button</fast-button>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-button disabled>Disabled Button</fast-button>
+            `;
+        });
 
         const content = element.locator(".content");
 
-        const [wasClicked] = await Promise.all([
+        const [wasNotClicked] = await Promise.all([
             element.evaluate(node =>
                 Promise.race([
                     new Promise(resolve => {
                         node.addEventListener("click", () => resolve(false));
                     }),
-                    new Promise(requestAnimationFrame).then(() => Promise.resolve(true)),
+                    new Promise(resolve =>
+                        requestAnimationFrame(() => setTimeout(() => resolve(true)))
+                    ),
                 ])
             ),
 
@@ -199,13 +220,15 @@ test.describe("Button", () => {
                     new Promise(resolve => {
                         node.addEventListener("click", () => resolve(false));
                     }),
-                    new Promise(requestAnimationFrame).then(() => Promise.resolve(true)),
+                    new Promise(resolve =>
+                        requestAnimationFrame(() => setTimeout(() => resolve(true)))
+                    ),
                 ])
             ),
 
             element.click(),
         ]);
 
-        expect(wasClicked).not.toBeFalsy();
+        expect(wasNotClicked).toBeTruthy();
     });
 });

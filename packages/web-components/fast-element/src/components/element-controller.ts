@@ -1,12 +1,12 @@
-import { Message, Mutable, StyleTarget } from "../interfaces.js";
-import type { HostBehavior, HostController } from "../styles/host.js";
+import { Message, Mutable, StyleStrategy, StyleTarget } from "../interfaces.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { Observable, SourceLifetime } from "../observation/observable.js";
 import { FAST } from "../platform.js";
+import { ElementStyles } from "../styles/element-styles.js";
+import type { HostBehavior, HostController } from "../styles/host.js";
+import type { ViewController } from "../templating/html-directive.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
-import type { ElementStyles } from "../styles/element-styles.js";
-import type { ViewController } from "../templating/html-directive.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
 
 const defaultEventOptions: CustomEventInit = {
@@ -17,10 +17,20 @@ const defaultEventOptions: CustomEventInit = {
 
 const isConnectedPropertyName = "isConnected";
 
-const shadowRoots = new WeakMap<HTMLElement, ShadowRoot>();
+const shadowRoots = new WeakMap<Element, ShadowRoot>();
 
-function getShadowRoot(element: HTMLElement): ShadowRoot | null {
+function getShadowRoot(element: Element): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
+}
+
+let elementControllerStrategy: ElementControllerStrategy;
+
+/**
+ * A type that instantiates an ElementController
+ * @public
+ */
+export interface ElementControllerStrategy {
+    new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
 }
 
 /**
@@ -188,13 +198,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         if (accessors.length > 0) {
             const boundObservables = (this.boundObservables = Object.create(null));
-
             for (let i = 0, ii = accessors.length; i < ii; ++i) {
-                const propertyName = accessors[i].name;
+                const propertyName = accessors[i].name as keyof TElement;
                 const value = (element as any)[propertyName];
 
                 if (value !== void 0) {
-                    delete (element as any)[propertyName];
+                    delete element[propertyName];
                     boundObservables[propertyName] = value;
                 }
             }
@@ -205,7 +214,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Adds the behavior to the component.
      * @param behavior - The behavior to add.
      */
-    addBehavior(behavior: HostBehavior<TElement>) {
+    public addBehavior(behavior: HostBehavior<TElement>) {
         const targetBehaviors = this.behaviors ?? (this.behaviors = new Map());
         const count = targetBehaviors.get(behavior) ?? 0;
 
@@ -226,7 +235,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * @param behavior - The behavior to remove.
      * @param force - Forces removal even if this behavior was added more than once.
      */
-    removeBehavior(behavior: HostBehavior<TElement>, force: boolean = false) {
+    public removeBehavior(behavior: HostBehavior<TElement>, force: boolean = false) {
         const targetBehaviors = this.behaviors;
         if (targetBehaviors === null) {
             return;
@@ -260,14 +269,13 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         const source = this.source;
-        const target: StyleTarget =
-            getShadowRoot(source) ?? ((source.getRootNode() as any) as StyleTarget);
 
         if (styles instanceof HTMLElement) {
+            const target = getShadowRoot(source) ?? this.source;
             target.append(styles);
-        } else if (!styles.isAttachedTo(target)) {
+        } else if (!styles.isAttachedTo(source)) {
             const sourceBehaviors = styles.behaviors;
-            styles.addStylesTo(target);
+            styles.addStylesTo(source);
 
             if (sourceBehaviors !== null) {
                 for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
@@ -289,15 +297,14 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         const source = this.source;
-        const target: StyleTarget =
-            getShadowRoot(source) ?? ((source.getRootNode() as any) as StyleTarget);
 
         if (styles instanceof HTMLElement) {
+            const target = getShadowRoot(source) ?? source;
             target.removeChild(styles);
-        } else if (styles.isAttachedTo(target)) {
+        } else if (styles.isAttachedTo(source)) {
             const sourceBehaviors = styles.behaviors;
 
-            styles.removeStylesFrom(target);
+            styles.removeStylesFrom(source);
 
             if (sourceBehaviors !== null) {
                 for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
@@ -315,10 +322,18 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
-        if (this.needsInitialization) {
-            this.finishInitialization();
-        } else if (this.view !== null) {
-            this.view.bind(this.source);
+        // If we have any observables that were bound, re-apply their values.
+        if (this.boundObservables !== null) {
+            const element = this.source;
+            const boundObservables = this.boundObservables;
+            const propertyNames = Object.keys(boundObservables);
+
+            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
+                const propertyName = propertyNames[i];
+                (element as any)[propertyName] = boundObservables[propertyName];
+            }
+
+            this.boundObservables = null;
         }
 
         const behaviors = this.behaviors;
@@ -326,6 +341,15 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             for (const key of behaviors.keys()) {
                 key.connectedCallback && key.connectedCallback(this);
             }
+        }
+
+        if (this.needsInitialization) {
+            this.renderTemplate(this.template);
+            this.addStyles(this.mainStyles);
+
+            this.needsInitialization = false;
+        } else if (this.view !== null) {
+            this.view.bind(this.source);
         }
 
         this.setIsConnected(true);
@@ -393,28 +417,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         return false;
     }
 
-    private finishInitialization(): void {
-        const element = this.source;
-        const boundObservables = this.boundObservables;
-
-        // If we have any observables that were bound, re-apply their values.
-        if (boundObservables !== null) {
-            const propertyNames = Object.keys(boundObservables);
-
-            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
-                const propertyName = propertyNames[i];
-                (element as any)[propertyName] = boundObservables[propertyName];
-            }
-
-            this.boundObservables = null;
-        }
-
-        this.renderTemplate(this.template);
-        this.addStyles(this.mainStyles);
-
-        this.needsInitialization = false;
-    }
-
     private renderTemplate(template: ElementViewTemplate | null | undefined): void {
         // When getting the host to render to, we start by looking
         // up the shadow root. If there isn't one, then that means
@@ -464,9 +466,135 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             throw FAST.error(Message.missingElementDefinition);
         }
 
-        return ((element as any).$fastController = new ElementController(
+        return ((element as any).$fastController = new elementControllerStrategy(
             element,
             definition
         ));
     }
+
+    /**
+     * Sets the strategy that ElementController.forCustomElement uses to construct
+     * ElementController instances for an element.
+     * @param strategy - The strategy to use.
+     */
+    public static setStrategy(strategy: ElementControllerStrategy) {
+        elementControllerStrategy = strategy;
+    }
 }
+
+// Set default strategy for ElementController
+ElementController.setStrategy(ElementController);
+
+/**
+ * Converts a styleTarget into the operative target. When the provided target is an Element
+ * that is a FASTElement, the function will return the ShadowRoot for that element. Otherwise,
+ * it will return the root node for the element.
+ * @param target
+ * @returns
+ */
+function normalizeStyleTarget(target: StyleTarget): StyleTarget {
+    if ("adoptedStyleSheets" in target) {
+        return target;
+    } else {
+        return (
+            (getShadowRoot(target as any) as null | StyleTarget) ??
+            (target.getRootNode() as any)
+        );
+    }
+}
+
+// Default StyleStrategy implementations are defined in this module because they
+// require access to element shadowRoots, and we don't want to leak shadowRoot
+// objects out of this module.
+/**
+ * https://wicg.github.io/construct-stylesheets/
+ * https://developers.google.com/web/updates/2019/02/constructable-stylesheets
+ *
+ * @internal
+ */
+export class AdoptedStyleSheetsStrategy implements StyleStrategy {
+    private static styleSheetCache = new Map<string, CSSStyleSheet>();
+    /** @internal */
+    public readonly sheets: CSSStyleSheet[];
+
+    public constructor(styles: (string | CSSStyleSheet)[]) {
+        const styleSheetCache = AdoptedStyleSheetsStrategy.styleSheetCache;
+        this.sheets = styles.map((x: string | CSSStyleSheet) => {
+            if (x instanceof CSSStyleSheet) {
+                return x;
+            }
+
+            let sheet = styleSheetCache.get(x);
+
+            if (sheet === void 0) {
+                sheet = new CSSStyleSheet();
+                (sheet as any).replaceSync(x);
+                styleSheetCache.set(x, sheet);
+            }
+
+            return sheet;
+        });
+    }
+
+    public addStylesTo(target: StyleTarget): void {
+        const t = normalizeStyleTarget(target);
+        t.adoptedStyleSheets = [...t.adoptedStyleSheets!, ...this.sheets];
+    }
+
+    public removeStylesFrom(target: StyleTarget): void {
+        const t = normalizeStyleTarget(target);
+        const sheets = this.sheets;
+        t.adoptedStyleSheets = t.adoptedStyleSheets!.filter(
+            (x: CSSStyleSheet) => sheets.indexOf(x) === -1
+        );
+    }
+}
+
+let id = 0;
+const nextStyleId = (): string => `fast-${++id}`;
+function usableStyleTarget(target: StyleTarget): StyleTarget {
+    return target === document ? document.body : target;
+}
+/**
+ * @internal
+ */
+export class StyleElementStrategy implements StyleStrategy {
+    private readonly styleClass: string;
+
+    public constructor(private readonly styles: string[]) {
+        this.styleClass = nextStyleId();
+    }
+
+    public addStylesTo(target: StyleTarget): void {
+        target = usableStyleTarget(normalizeStyleTarget(target));
+
+        const styles = this.styles;
+        const styleClass = this.styleClass;
+
+        for (let i = 0; i < styles.length; i++) {
+            const element = document.createElement("style");
+            element.innerHTML = styles[i];
+            element.className = styleClass;
+            target.append(element);
+        }
+    }
+
+    public removeStylesFrom(target: StyleTarget): void {
+        target = usableStyleTarget(normalizeStyleTarget(target));
+        const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
+            `.${this.styleClass}`
+        );
+
+        styles[0].parentNode;
+
+        for (let i = 0, ii = styles.length; i < ii; ++i) {
+            target.removeChild(styles[i]);
+        }
+    }
+}
+
+ElementStyles.setDefaultStrategy(
+    ElementStyles.supportsAdoptedStyleSheets
+        ? AdoptedStyleSheetsStrategy
+        : StyleElementStrategy
+);

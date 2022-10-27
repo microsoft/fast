@@ -16,7 +16,6 @@ export function progressTemplate<T extends FASTProgress>(
             aria-valuenow="${x => x.value}"
             aria-valuemin="${x => x.min}"
             aria-valuemax="${x => x.max}"
-            class="${x => (x.paused ? "paused" : "")}"
         >
             ${when(
                 x => typeof x.value === "number",

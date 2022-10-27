@@ -1,4 +1,9 @@
-import { ExecutionContext } from "../index.js";
+import {
+    ExecutionContext,
+    ViewBehavior,
+    ViewBehaviorTargets,
+    ViewController,
+} from "../index.js";
 
 export const Fake = Object.freeze({
     executionContext<TParent = any>(
@@ -85,6 +90,44 @@ export const Fake = Object.freeze({
              */
             eventTarget<TTarget extends EventTarget>(): TTarget {
                 return this.event.target! as TTarget;
+            },
+        };
+    },
+
+    viewController<TSource = any, TParent = any>(
+        targets: ViewBehaviorTargets = {},
+        ...behaviors: ViewBehavior<TSource, TParent>[]
+    ) {
+        const unbindables = new Set<{ unbind(controller: ViewController) }>();
+
+        return {
+            isBound: false,
+            context: (null as any) as ExecutionContext<TParent>,
+            onUnbind(object) {
+                unbindables.add(object);
+            },
+            source: (null as any) as TSource,
+            targets,
+            bind(
+                source: TSource,
+                context: ExecutionContext<TParent> = Fake.executionContext()
+            ) {
+                if (this.isBound) {
+                    return;
+                }
+
+                this.source = source;
+                this.context = context;
+                behaviors.forEach(x => x.bind(this));
+                this.isBound = true;
+            },
+            unbind() {
+                if (this.isBound) {
+                    unbindables.forEach(x => x.unbind(this));
+                    this.source = null;
+                    this.context = null;
+                    this.isBound = false;
+                }
             },
         };
     },

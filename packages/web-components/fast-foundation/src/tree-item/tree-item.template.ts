@@ -15,18 +15,10 @@ export function treeItemTemplate<T extends FASTTreeItem>(
             role="treeitem"
             slot="${x => (x.isNestedItem() ? "item" : void 0)}"
             tabindex="-1"
-            class="${x =>
-                [
-                    x.expanded && "expanded",
-                    x.selected && "selected",
-                    x.nested && "nested",
-                    x.disabled && "disabled",
-                ]
-                    .filter(Boolean)
-                    .join(" ")}"
-            aria-expanded="${x => x.ariaExpanded}"
-            aria-selected="${x => x.ariaSelected}"
-            aria-disabled="${x => x.ariaDisabled}"
+            aria-expanded="${x =>
+                x.childItems && x.childItemLength > 0 ? x.expanded : void 0}"
+            aria-selected="${x => x.selected}"
+            aria-disabled="${x => x.disabled}"
             @focusin="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
             @focusout="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
             ${children({
@@ -37,7 +29,7 @@ export function treeItemTemplate<T extends FASTTreeItem>(
             <div class="positioning-region" part="positioning-region">
                 <div class="content-region" part="content-region">
                     ${when(
-                        x => x.childItems && x.childItemLength(),
+                        x => x.childItems && x.childItemLength > 0,
                         html<T>`
                             <div
                                 aria-hidden="true"
@@ -61,7 +53,7 @@ export function treeItemTemplate<T extends FASTTreeItem>(
                 </div>
             </div>
             ${when(
-                x => x.childItems && x.childItemLength() && x.expanded,
+                x => x.childItems && x.childItemLength > 0 && x.expanded,
                 html<T>`
                     <div role="group" class="items" part="items">
                         <slot name="item" ${slotted("items")}></slot>

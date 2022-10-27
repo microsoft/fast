@@ -1,8 +1,96 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Thu, 01 Sep 2022 21:53:34 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Oct 2022 20:24:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.18
+
+Tue, 25 Oct 2022 20:24:32 GMT
+
+### Changes
+
+- add feature to disable rendering of a component by the element renderer (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.15
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.18
+
+## 1.0.0-beta.17
+
+Fri, 14 Oct 2022 18:26:11 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.14
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.17
+
+## 1.0.0-beta.16
+
+Mon, 10 Oct 2022 20:28:02 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.13
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.16
+
+## 1.0.0-beta.15
+
+Thu, 06 Oct 2022 23:21:20 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.12
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.15
+
+## 1.0.0-beta.14
+
+Wed, 05 Oct 2022 23:26:01 GMT
+
+### Changes
+
+- Added RequestStorageManager.uninstallDOMShim() method to support uninstalling installed DOM shims (nicholasrice@users.noreply.github.com)
+- add {shadowOptions: null} support (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.11
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.14
+
+## 1.0.0-beta.13
+
+Mon, 03 Oct 2022 23:44:38 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.10
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.13
+
+## 1.0.0-beta.12
+
+Wed, 28 Sep 2022 20:45:51 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.9
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.12
+
+## 1.0.0-beta.11
+
+Tue, 27 Sep 2022 22:31:52 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.8
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.11
+
+## 1.0.0-beta.10
+
+Fri, 23 Sep 2022 22:53:27 GMT
+
+### Changes
+
+- update playwright (863023+radium-v@users.noreply.github.com)
+- Refactor core components to support Promise return types (nicholasrice@users.noreply.github.com)
+- Adds support for async component rendering through the PendingTask protocol (nicholasrice@users.noreply.github.com)
+- fix: updae SSR to use the new behavior API (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.7
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.10
 
 ## 1.0.0-beta.9
 

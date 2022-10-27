@@ -1,8 +1,81 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Thu, 01 Sep 2022 21:53:34 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Oct 2022 20:24:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.15
+
+Tue, 25 Oct 2022 20:24:32 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.15
+
+## 1.0.0-alpha.14
+
+Fri, 14 Oct 2022 18:26:11 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.14
+
+## 1.0.0-alpha.13
+
+Mon, 10 Oct 2022 20:28:02 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.13
+
+## 1.0.0-alpha.12
+
+Thu, 06 Oct 2022 23:21:20 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.12
+
+## 1.0.0-alpha.11
+
+Wed, 05 Oct 2022 23:26:01 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.11
+
+## 1.0.0-alpha.10
+
+Mon, 03 Oct 2022 23:44:38 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.10
+
+## 1.0.0-alpha.9
+
+Wed, 28 Sep 2022 20:45:51 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.9
+
+## 1.0.0-alpha.8
+
+Tue, 27 Sep 2022 22:31:52 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.8
+
+## 1.0.0-alpha.7
+
+Fri, 23 Sep 2022 22:53:27 GMT
+
+### Changes
+
+- fix: update router to use the new behavior API (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.7
 
 ## 1.0.0-alpha.6
 

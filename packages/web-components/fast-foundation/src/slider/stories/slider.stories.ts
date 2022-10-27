@@ -1,4 +1,4 @@
-import { css, html, repeat } from "@microsoft/fast-element";
+import { css, html, repeat, Updates } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { storyTemplate as sliderLabelStoryTemplate } from "../../slider-label/stories/slider-label.stories.js";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
@@ -61,11 +61,14 @@ SliderWithLabels.args = {
 SliderWithLabels.decorators = [
     Story => {
         const renderedStory = Story() as FASTSlider;
-        renderedStory.$fastController.addStyles(css`
-            :host([orientation="horizontal"]) {
-                padding: 0 1em;
-            }
-        `);
+
+        Updates.enqueue(() => {
+            renderedStory.$fastController.addStyles(css`
+                :host([orientation="horizontal"]) {
+                    padding: 0 1em;
+                }
+            `);
+        });
 
         return renderedStory;
     },

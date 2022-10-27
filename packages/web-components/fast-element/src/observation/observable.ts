@@ -5,7 +5,7 @@ import {
     KernelServiceId,
     Message,
 } from "../interfaces.js";
-import { FAST } from "../platform.js";
+import { createMetadataLocator, FAST } from "../platform.js";
 import { Updates } from "./update-queue.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
 import type { Notifier, Subscriber } from "./notifier.js";
@@ -174,7 +174,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
     const queueUpdate = Updates.enqueue;
     const volatileRegex = /(:|&&|\|\||if)/;
     const notifierLookup = new WeakMap<any, Notifier>();
-    const accessorLookup = new WeakMap<any, Accessor[]>();
     let watcher: ExpressionNotifierImplementation | undefined = void 0;
     let createArrayObserver = (array: any[]): Notifier => {
         throw FAST.error(Message.needsArrayObservation);
@@ -195,24 +194,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         return found;
     }
 
-    function getAccessors(target: {}): Accessor[] {
-        let accessors = accessorLookup.get(target);
-
-        if (accessors === void 0) {
-            let currentTarget = Reflect.getPrototypeOf(target);
-
-            while (accessors === void 0 && currentTarget !== null) {
-                accessors = accessorLookup.get(currentTarget);
-                currentTarget = Reflect.getPrototypeOf(currentTarget);
-            }
-
-            accessors = accessors === void 0 ? [] : accessors.slice(0);
-
-            accessorLookup.set(target, accessors);
-        }
-
-        return accessors;
-    }
+    const getAccessors = createMetadataLocator<Accessor>();
 
     class DefaultObservableAccessor implements Accessor {
         private field: string;
@@ -265,11 +247,11 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         private controller: ExpressionController;
 
         constructor(
-            private binding: Expression<TSource, TReturn>,
+            private expression: Expression<TSource, TReturn>,
             initialSubscriber?: Subscriber,
             private isVolatileBinding: boolean = false
         ) {
-            super(binding, initialSubscriber);
+            super(expression, initialSubscriber);
         }
 
         public setMode(isAsync: boolean): void {
@@ -310,12 +292,17 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             this.needsRefresh = this.isVolatileBinding;
             let result;
             try {
-                result = this.binding(source, context);
+                result = this.expression(source, context);
             } finally {
                 watcher = previousWatcher;
             }
 
             return result;
+        }
+
+        // backwards compat with v1 kernel
+        public disconnect() {
+            this.dispose();
         }
 
         public dispose(): void {
@@ -468,17 +455,17 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         /**
          * Creates a {@link ExpressionNotifier} that can watch the
          * provided {@link Expression} for changes.
-         * @param binding - The binding to observe.
+         * @param expression - The binding to observe.
          * @param initialSubscriber - An initial subscriber to changes in the binding value.
          * @param isVolatileBinding - Indicates whether the binding's dependency list must be re-evaluated on every value evaluation.
          */
         binding<TSource = any, TReturn = any>(
-            binding: Expression<TSource, TReturn>,
+            expression: Expression<TSource, TReturn>,
             initialSubscriber?: Subscriber,
-            isVolatileBinding: boolean = this.isVolatileBinding(binding)
+            isVolatileBinding: boolean = this.isVolatileBinding(expression)
         ): ExpressionNotifier<TSource, TReturn> {
             return new ExpressionNotifierImplementation(
-                binding,
+                expression,
                 initialSubscriber,
                 isVolatileBinding
             );
@@ -487,12 +474,12 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         /**
          * Determines whether a binding expression is volatile and needs to have its dependency list re-evaluated
          * on every evaluation of the value.
-         * @param binding - The binding to inspect.
+         * @param expression - The binding to inspect.
          */
         isVolatileBinding<TSource = any, TReturn = any>(
-            binding: Expression<TSource, TReturn>
+            expression: Expression<TSource, TReturn>
         ): boolean {
-            return volatileRegex.test(binding.toString());
+            return volatileRegex.test(expression.toString());
         },
     });
 });

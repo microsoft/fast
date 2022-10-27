@@ -7,11 +7,16 @@ import type { FASTSearch } from "./search.js";
 test.describe("Search", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
     let control: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
+
         element = page.locator("fast-search");
+
+        root = page.locator("#root");
+
         control = element.locator(".control");
 
         await page.goto(fixtureURL("search--search"));
@@ -32,9 +37,14 @@ test.describe("Search", () => {
 
         for (const attribute of Object.keys(attributes)) {
             test(`should set ${attribute}`, async () => {
-                await page.setContent(/* html */ `
-                    <fast-search ${attribute}>Search</fast-search>
-                `);
+                await root.evaluate(
+                    (node, { attribute }) => {
+                        node.innerHTML = /* html */ `
+                            <fast-search ${attribute}>Search</fast-search>
+                        `;
+                    },
+                    { attribute }
+                );
 
                 await expect(element).toHaveBooleanAttribute(attribute);
             });
@@ -72,9 +82,11 @@ test.describe("Search", () => {
         for (const [attribute, value] of Object.entries(attributes)) {
             const attrToken = spinalCase(attribute);
             test(`should set ${attrToken} to ${value}`, async () => {
-                await page.setContent(/* html */ `
-                    <fast-search>Search</fast-search>
-                `);
+                await root.evaluate(node => {
+                    node.innerHTML = /* html */ `
+                        <fast-search>Search</fast-search>
+                    `;
+                });
 
                 await element.evaluate(
                     (node: FASTSearch, { attrToken, value }) => {
@@ -89,25 +101,31 @@ test.describe("Search", () => {
     });
 
     test("should initialize to the initial value if no value property is set", async () => {
-        await page.setContent(/* html */ `
-            <fast-search>Search</fast-search>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-search>Search</fast-search>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "");
     });
 
     test("should initialize to the provided value attribute if set pre-connection", async () => {
-        await page.setContent(/* html */ `
-            <fast-search value="foo">Search</fast-search>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-search value="foo">Search</fast-search>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
     test("should initialize to the provided value attribute if set post-connection", async () => {
-        await page.setContent(/* html */ `
-            <fast-search>Search</fast-search>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-search>Search</fast-search>
+            `;
+        });
 
         await element.evaluate(node => {
             node.setAttribute("value", "foo");
@@ -117,23 +135,23 @@ test.describe("Search", () => {
     });
 
     test("should initialize to the provided value property if set pre-connection", async () => {
-        await page.setContent("");
+        await root.evaluate(node => {
+            node.innerHTML = "";
 
-        await page.evaluate(() => {
-            const node = document.createElement("fast-search") as FASTSearch;
-
-            node.value = "foo";
-
-            document.body.append(node);
+            const searchElement = document.createElement("fast-search") as FASTSearch;
+            searchElement.value = "foo";
+            node.append(searchElement);
         });
 
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
     test("should hide the label when no default slotted content is provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-search></fast-search>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-search></fast-search>
+            `;
+        });
 
         const label = element.locator(".label");
 
@@ -141,9 +159,11 @@ test.describe("Search", () => {
     });
 
     test("should hide the label when start content is provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-search><span slot="start">Start</span></fast-search>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-search><span slot="start">Start</span></fast-search>
+            `;
+        });
 
         const label = element.locator(".label");
 
@@ -151,9 +171,11 @@ test.describe("Search", () => {
     });
 
     test("should hide the label when end content is provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-search><span slot="end">End</span></fast-search>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-search><span slot="end">End</span></fast-search>
+            `;
+        });
 
         const label = element.locator(".label");
 
@@ -161,12 +183,14 @@ test.describe("Search", () => {
     });
 
     test("should hide the label when start and end content is provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-search>
-                <span slot="start">Start</span>
-                <span slot="end">End</span>
-            </fast-search>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-search>
+                    <span slot="start">Start</span>
+                    <span slot="end">End</span>
+                </fast-search>
+            `;
+        });
 
         const label = element.locator(".label");
 
@@ -174,9 +198,11 @@ test.describe("Search", () => {
     });
 
     test("should hide the label when space-only text nodes are slotted", async () => {
-        await page.setContent(/* html */ `
-            <fast-search>label</fast-search>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-search>label</fast-search>
+            `;
+        });
 
         const label = element.locator(".label");
 
@@ -190,9 +216,11 @@ test.describe("Search", () => {
     });
 
     test("should fire a change event when the internal control emits a change event", async () => {
-        await page.setContent(/* html */ `
-            <fast-search>Search</fast-search>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-search>Search</fast-search>
+            `;
+        });
 
         const control = element.locator(".control");
 
@@ -213,11 +241,13 @@ test.describe("Search", () => {
 
     test.describe("when the owning form's reset() method is invoked", () => {
         test("should reset its `value` property to an empty string when no value attribute is set", async () => {
-            await page.setContent(/* html */ `
-                <form>
-                    <fast-search>Search</fast-search>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-search>Search</fast-search>
+                    </form>
+                `;
+            });
 
             const form = page.locator("form");
 
@@ -227,23 +257,25 @@ test.describe("Search", () => {
 
             await expect(element).toHaveJSProperty("value", "test value");
 
-            expect(await element.getAttribute("value")).toBeNull();
+            await expect(element).not.hasAttribute("value");
 
             await form.evaluate<void, HTMLFormElement>(node => {
                 node.reset();
             });
 
-            await expect(element).toHaveJSProperty("value", "");
+            await expect(element).not.hasAttribute("value");
 
-            expect(await element.getAttribute("value")).toBeNull();
+            await expect(element).toHaveJSProperty("value", "");
         });
 
         test("should reset its `value` property to the value of the value attribute if it is set", async () => {
-            await page.setContent(/* html */ `
-                <form>
-                    <fast-search value="test value">Search</fast-search>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-search value="test value">Search</fast-search>
+                    </form>
+                `;
+            });
 
             const form = page.locator("form");
 
@@ -261,11 +293,13 @@ test.describe("Search", () => {
         });
 
         test("should put the control into a clean state, where `value` attribute modifications change the `value` property prior to user or programmatic interaction", async () => {
-            await page.setContent(/* html */ `
-                <form>
-                    <fast-search>Search</fast-search>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-search>Search</fast-search>
+                    </form>
+                `;
+            });
 
             const form = page.locator("form");
 

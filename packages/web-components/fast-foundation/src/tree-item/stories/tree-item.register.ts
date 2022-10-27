@@ -137,7 +137,7 @@ const styles = css`
         margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 
-    :host([expanded]) > .items {
+    :host([aria-expanded="true"]) > .items {
         display: block;
     }
 
@@ -146,17 +146,17 @@ const styles = css`
         cursor: not-allowed;
     }
 
-    :host(.nested) .content-region {
+    :host([nested]) .content-region {
         position: relative;
         margin-inline-start: var(--expand-collapse-button-size);
     }
 
-    :host(.nested) .expand-collapse-button {
+    :host([nested]) .expand-collapse-button {
         position: absolute;
         right: 100%;
     }
 
-    :host(.nested) .expand-collapse-button:hover {
+    :host([nested]) .expand-collapse-button:hover {
         background: var(--tree-item-expand-collapse-hover);
     }
 
@@ -189,13 +189,13 @@ const styles = css`
     .expand-collapse-glyph {
         transform: rotate(0deg);
     }
-    :host(.nested) .expand-collapse-button {
+    :host([nested]) .expand-collapse-button {
         right: 100%;
     }
     :host([selected])::after {
         left: calc(var(--focus-stroke-width) * 1px);
     }
-    :host([expanded]) > .positioning-region .expand-collapse-glyph {
+    :host([aria-expanded="true"]) > .positioning-region .expand-collapse-glyph {
         transform: rotate(45deg);
     }
 `;

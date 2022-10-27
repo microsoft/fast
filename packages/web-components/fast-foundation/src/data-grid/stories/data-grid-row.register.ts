@@ -11,7 +11,7 @@ const styles = css`
         border-bottom: calc(var(--stroke-width) * 1px) solid
             var(--neutral-stroke-divider-rest);
     }
-    :host(.sticky-header) {
+    :host([row-type="sticky-header"]) {
         background: var(--neutral-fill-rest);
         position: sticky;
         top: 0;

@@ -5,8 +5,6 @@
 ```ts
 
 import type { CaptureType } from '@microsoft/fast-element';
-import { composedContains } from '@microsoft/fast-element/utilities';
-import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
 import type { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
@@ -299,10 +297,6 @@ export type ComboboxOptions = StartEndOptions & {
 // @public
 export function comboboxTemplate<T extends FASTCombobox>(options?: ComboboxOptions): ElementViewTemplate<T>;
 
-export { composedContains }
-
-export { composedParent }
-
 // @beta
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
@@ -512,20 +506,6 @@ export class DelegatesARIAToolbar {
 
 // @internal
 export interface DelegatesARIAToolbar extends ARIAGlobalStatesAndProperties {
-}
-
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIATreeItem" because one of its declarations is marked as @internal
-//
-// @public
-export class DelegatesARIATreeItem {
-    ariaDisabled: "true" | "false" | string | null;
-    ariaExpanded: "true" | "false" | string | null;
-    ariaSelected: "true" | "false" | string | null;
-}
-
-// @internal
-export interface DelegatesARIATreeItem extends ARIAGlobalStatesAndProperties {
 }
 
 // @public
@@ -823,8 +803,6 @@ export class FASTButton extends FormAssociatedButton {
     // (undocumented)
     control: HTMLButtonElement;
     defaultSlottedContent: HTMLElement[];
-    // @internal (undocumented)
-    disconnectedCallback(): void;
     formaction: string;
     // (undocumented)
     protected formactionChanged(): void;
@@ -859,6 +837,7 @@ export class FASTCalendar extends FASTElement {
     // (undocumented)
     protected dayFormatChanged(): void;
     disabledDates: string;
+    firstDay: number;
     getDayClassNames(date: CalendarDateInfo, todayString?: string): string;
     getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[][];
     getMonthInfo(month?: number, year?: number): CalendarInfo;
@@ -1348,12 +1327,17 @@ export class FASTMenu extends FASTElement {
     handleFocusOut: (e: FocusEvent) => void;
     // @internal (undocumented)
     handleMenuKeyDown(e: KeyboardEvent): void | boolean;
+    protected isMenuItemElement: (el: Element) => el is HTMLElement;
     // @internal (undocumented)
     readonly isNestedMenu: () => boolean;
     // @internal (undocumented)
     items: HTMLElement[];
     // (undocumented)
     protected itemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
+    // (undocumented)
+    protected menuItems: Element[] | undefined;
+    // (undocumented)
+    protected setItems(): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1386,8 +1370,6 @@ export class FASTMenuItem extends FASTElement {
     hasSubmenu: boolean;
     hidden: boolean;
     role: MenuItemRole;
-    // @internal (undocumented)
-    startColumnCount: MenuItemColumnCount;
     // @internal (undocumented)
     submenu: Element | undefined;
     // @internal (undocumented)
@@ -1847,6 +1829,10 @@ export class FASTSliderLabel extends FASTElement {
     // @internal (undocumented)
     handleChange(source: any, propertyName: string): void;
     hideMark: boolean;
+    // @deprecated
+    orientation: Orientation;
+    // @internal (undocumented)
+    protected orientationChanged(): void;
     position: string;
     // (undocumented)
     protected positionChanged(): void;
@@ -1860,10 +1846,6 @@ export class FASTSliderLabel extends FASTElement {
     sliderMaxPosition: number;
     // @internal (undocumented)
     sliderMinPosition: number;
-    // @internal (undocumented)
-    sliderOrientation: Orientation;
-    // @internal (undocumented)
-    protected sliderOrientationChanged(): void;
 }
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSwitch" needs to be exported by the entry point index.d.ts
@@ -2129,12 +2111,10 @@ export class FASTTooltip extends FASTElement {
 // @public
 export class FASTTreeItem extends FASTElement {
     // @internal
-    childItemLength(): number;
+    get childItemLength(): number;
     // @internal (undocumented)
     childItems: HTMLElement[];
     disabled: boolean;
-    // (undocumented)
-    protected disabledChanged(prev: boolean | undefined, next: boolean): void;
     // @internal
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
@@ -2151,10 +2131,12 @@ export class FASTTreeItem extends FASTElement {
     handleFocus: (e: FocusEvent) => void;
     readonly isNestedItem: () => boolean;
     // @internal
+    readonly isTreeItem: boolean;
+    // @internal
     items: HTMLElement[];
     // (undocumented)
     protected itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void;
-    // @internal
+    // @deprecated
     nested: boolean;
     selected: boolean;
     // (undocumented)
@@ -2162,7 +2144,7 @@ export class FASTTreeItem extends FASTElement {
 }
 
 // @internal
-export interface FASTTreeItem extends StartEnd, DelegatesARIATreeItem {
+export interface FASTTreeItem extends StartEnd {
 }
 
 // @public
@@ -2397,9 +2379,6 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
 export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListEvent) => void;
 
 // @public
-export type MenuItemColumnCount = 0 | 1 | 2;
-
-// @public
 export type MenuItemOptions = StartEndOptions & {
     checkboxIndicator?: string | SyntheticViewTemplate;
     expandCollapseGlyph?: string | SyntheticViewTemplate;
@@ -2557,7 +2536,7 @@ export type RadioOptions = {
 export function radioTemplate<T extends FASTRadio>(options?: RadioOptions): ElementViewTemplate<T>;
 
 // @beta
-export function reflectAttributes<T = any>(...attributes: string[]): CaptureType<T>;
+export function reflectAttributes<TSource = any, TParent = any>(...attributes: string[]): CaptureType<TSource, TParent>;
 
 // Warning: (ae-internal-missing-underscore) The name "roleForMenuItem" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -2835,7 +2814,7 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/menu-item/menu-item.d.ts:20:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/menu-item/menu-item.d.ts:15:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:11:5 - (ae-incompatible-release-tags) The symbol "pickerMenuOption" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

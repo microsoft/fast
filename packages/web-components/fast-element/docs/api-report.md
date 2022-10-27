@@ -17,19 +17,6 @@ export type AddBehavior = (behavior: HostBehavior<HTMLElement>) => void;
 // @public
 export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
 
-// Warning: (ae-internal-missing-underscore) The name "AdoptedStyleSheetsStrategy" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export class AdoptedStyleSheetsStrategy implements StyleStrategy {
-    constructor(styles: (string | CSSStyleSheet)[]);
-    // (undocumented)
-    addStylesTo(target: StyleTarget): void;
-    // (undocumented)
-    removeStylesFrom(target: StyleTarget): void;
-    // (undocumented)
-    readonly sheets: CSSStyleSheet[];
-}
-
 // @public
 export interface ArrayObserver extends SubscriberSet {
     addSplice(splice: Splice): void;
@@ -82,6 +69,11 @@ export type AttributeConfiguration = {
 };
 
 // @public
+export const AttributeConfiguration: Readonly<{
+    locate: (target: {}) => AttributeConfiguration[];
+}>;
+
+// @public
 export class AttributeDefinition implements Accessor {
     constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter);
     readonly attribute: string;
@@ -104,7 +96,7 @@ export class AttributeDefinition implements Accessor {
 export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
 // @public
-export function bind<T = any>(binding: Expression<T>, isVolatile?: boolean): Binding<T>;
+export function bind<T = any>(expression: Expression<T>, isVolatile?: boolean): Binding<T>;
 
 // @public
 export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
@@ -126,7 +118,7 @@ export type Callable = typeof Function.prototype.call | {
 };
 
 // @public
-export interface CaptureType<TSource> {
+export interface CaptureType<TSource, TParent> {
 }
 
 // @public
@@ -134,7 +126,7 @@ export interface ChildListDirectiveOptions<T = any> extends NodeBehaviorOptions<
 }
 
 // @public
-export function children<T = any>(propertyOrOptions: (keyof T & string) | ChildrenDirectiveOptions<keyof T & string>): CaptureType<T>;
+export function children<TSource = any, TParent = any>(propertyOrOptions: (keyof TSource & string) | ChildrenDirectiveOptions<keyof TSource & string>): CaptureType<TSource, TParent>;
 
 // @public
 export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> {
@@ -180,13 +172,18 @@ export interface ContentTemplate {
 
 // @public
 export interface ContentView {
-    bind(source: any): void;
+    bind(source: any, context?: ExecutionContext): void;
     // (undocumented)
     readonly context: ExecutionContext;
     insertBefore(node: Node): void;
     remove(): void;
     unbind(): void;
 }
+
+// Warning: (ae-internal-missing-underscore) The name "createMetadataLocator" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[];
 
 // Warning: (ae-internal-missing-underscore) The name "createTypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -261,10 +258,17 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     removeBehavior(behavior: HostBehavior<TElement>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+    static setStrategy(strategy: ElementControllerStrategy): void;
     readonly source: TElement;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
     readonly view: ElementView<TElement> | null;
+}
+
+// @public
+export interface ElementControllerStrategy {
+    // (undocumented)
+    new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
 }
 
 // @public
@@ -384,13 +388,16 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly attributes: ReadonlyArray<AttributeDefinition>;
     static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType>;
     define(registry?: CustomElementRegistry): this;
-    readonly elementOptions?: ElementDefinitionOptions;
+    readonly elementOptions: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
-    readonly shadowOptions?: ShadowRootInit;
+    // @internal
+    static registerBaseType(type: Function): void;
+    readonly registry: CustomElementRegistry;
+    readonly shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
     readonly template?: ElementViewTemplate;
     readonly type: TType;
@@ -436,13 +443,7 @@ export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory,
     constructor(dataBinding: Binding);
     aspectType: Aspect;
     // @internal (undocumented)
-    bind: (controller: ViewController) => void;
-    // @internal (undocumented)
-    bindContent(controller: ViewController): void;
-    // @internal (undocumented)
-    bindDefault(controller: ViewController): void;
-    // @internal (undocumented)
-    bindEvent(controller: ViewController): void;
+    bind(controller: ViewController): void;
     createBehavior(): ViewBehavior;
     createHTML(add: AddViewBehaviorFactory): string;
     // (undocumented)
@@ -488,8 +489,8 @@ export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
 export class HTMLView<TSource = any, TParent = any> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> {
     constructor(fragment: DocumentFragment, factories: ReadonlyArray<ViewBehaviorFactory>, targets: ViewBehaviorTargets);
     appendTo(node: Node): void;
-    bind(source: TSource): void;
-    get context(): ExecutionContext<TParent>;
+    bind(source: TSource, context?: ExecutionContext<TParent>): void;
+    context: ExecutionContext<TParent>;
     dispose(): void;
     static disposeContiguousBatch(views: SyntheticView[]): void;
     get event(): Event;
@@ -498,7 +499,6 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     firstChild: Node;
     index: number;
     insertBefore(node: Node): void;
-    // (undocumented)
     isBound: boolean;
     get isEven(): boolean;
     get isFirst(): boolean;
@@ -514,9 +514,8 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     readonly parent: TParent;
     readonly parentContext: ExecutionContext<TParent>;
     remove(): void;
-    // (undocumented)
-    selfContained: boolean;
     source: TSource | null;
+    readonly sourceLifetime: SourceLifetime;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
     unbind(): void;
@@ -531,7 +530,7 @@ export interface LengthObserver extends Subscriber {
 export function lengthOf<T>(array: readonly T[]): number;
 
 // @public
-export function listener<T = any>(binding: Expression<T>, options?: AddEventListenerOptions): Binding<T>;
+export function listener<T = any>(expression: Expression<T>, options?: AddEventListenerOptions): Binding<T>;
 
 // @public
 export const Markup: Readonly<{
@@ -588,8 +587,8 @@ export const Observable: Readonly<{
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors: (target: {}) => Accessor[];
-    binding<TSource = any, TReturn = any>(binding: Expression<TSource, TReturn, any>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): ExpressionNotifier<TSource, TReturn, any>;
-    isVolatileBinding<TSource_1 = any, TReturn_1 = any>(binding: Expression<TSource_1, TReturn_1, any>): boolean;
+    binding<TSource = any, TReturn = any>(expression: Expression<TSource, TReturn, any>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): ExpressionNotifier<TSource, TReturn, any>;
+    isVolatileBinding<TSource_1 = any, TReturn_1 = any>(expression: Expression<TSource_1, TReturn_1, any>): boolean;
 }>;
 
 // @public
@@ -602,7 +601,7 @@ export interface ObservationRecord {
 }
 
 // @public
-export function oneTime<T = any>(binding: Expression<T>): Binding<T>;
+export function oneTime<T = any>(expression: Expression<T>): Binding<T>;
 
 // @public
 export const Parser: Readonly<{
@@ -614,7 +613,8 @@ export interface PartialFASTElementDefinition {
     readonly attributes?: (AttributeConfiguration | string)[];
     readonly elementOptions?: ElementDefinitionOptions;
     readonly name: string;
-    readonly shadowOptions?: Partial<ShadowRootInit> | null;
+    readonly registry?: CustomElementRegistry;
+    readonly shadowOptions?: Partial<ShadowRootOptions> | null;
     readonly styles?: ComposableStyles | ComposableStyles[];
     readonly template?: ElementViewTemplate;
 }
@@ -634,7 +634,7 @@ export class PropertyChangeNotifier implements Notifier {
 }
 
 // @public
-export const ref: <T = any>(propertyName: keyof T & string) => CaptureType<T>;
+export const ref: <TSource = any, TParent = any>(propertyName: keyof TSource & string) => CaptureType<TSource, TParent>;
 
 // @public
 export class RefDirective extends StatelessAttachedAttributeDirective<string> {
@@ -642,7 +642,7 @@ export class RefDirective extends StatelessAttachedAttributeDirective<string> {
 }
 
 // @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>>(items: Expression<TSource, TArray, ExecutionContext<TSource>> | Binding<TSource, TArray> | ReadonlyArray<any>, template: Expression<TSource, ViewTemplate> | Binding<TSource, ViewTemplate> | ViewTemplate, options?: RepeatOptions): CaptureType<TSource>;
+export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>, TParent = any>(items: Expression<TSource, TArray, TParent> | Binding<TSource, TArray, TParent> | ReadonlyArray<any>, template: Expression<TSource, ViewTemplate<any, TSource>> | Binding<TSource, ViewTemplate<any, TSource>> | ViewTemplate<any, TSource>, options?: RepeatOptions): CaptureType<TSource, TParent>;
 
 // @public
 export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
@@ -650,6 +650,8 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     bind(controller: ViewController): void;
     handleChange(source: any, args: Splice[] | ExpressionObserver): void;
     unbind(): void;
+    // @internal (undocumented)
+    views: SyntheticView[];
 }
 
 // @public
@@ -674,7 +676,13 @@ export interface RepeatOptions {
 }
 
 // @public
-export function slotted<T = any>(propertyOrOptions: (keyof T & string) | SlottedDirectiveOptions<keyof T & string>): CaptureType<T>;
+export interface ShadowRootOptions extends ShadowRootInit {
+    // @beta
+    registry?: CustomElementRegistry;
+}
+
+// @public
+export function slotted<TSource = any, TParent = any>(propertyOrOptions: (keyof TSource & string) | SlottedDirectiveOptions<keyof TSource & string>): CaptureType<TSource, TParent>;
 
 // @public
 export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveOptions> {
@@ -759,7 +767,7 @@ export interface StyleStrategy {
 }
 
 // @public
-export interface StyleTarget {
+export interface StyleTarget extends Pick<Node, "getRootNode"> {
     adoptedStyleSheets?: CSSStyleSheet[];
     append(styles: HTMLStyleElement): void;
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
@@ -801,7 +809,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 }
 
 // @public
-export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource>;
+export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource, TParent>;
 
 // @public
 export type TrustedTypes = {
@@ -852,7 +860,7 @@ export interface ValueConverter {
 
 // @public
 export interface View<TSource = any, TParent = any> extends Disposable {
-    bind(source: TSource): void;
+    bind(source: TSource, context?: ExecutionContext<TParent>): void;
     readonly context: ExecutionContext<TParent>;
     readonly source: TSource | null;
     unbind(): void;
@@ -906,7 +914,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
 export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
 
 // @public
-export function when<TSource = any, TReturn = any>(condition: Expression<TSource, TReturn> | boolean, templateOrTemplateBinding: SyntheticViewTemplate | Expression<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
+export function when<TSource = any, TReturn = any, TParent = any>(condition: Expression<TSource, TReturn, TParent> | boolean, templateOrTemplateBinding: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>): CaptureType<TSource, TParent>;
 
 // Warnings were encountered during analysis:
 //

@@ -1,15 +1,15 @@
 import {
-    Compiler,
-    ElementStyles,
-    Updates,
-    ViewBehaviorFactory,
-} from "@microsoft/fast-element";
-import { RenderInfo } from "./render-info.js";
-import {
     AsyncFASTElementRenderer,
     SyncFASTElementRenderer,
 } from "./element-renderer/fast-element-renderer.js";
-import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
+import {
+    AsyncElementRenderer,
+    AttributesMap,
+    ConstructableElementRenderer,
+    ConstructableFASTElementRenderer,
+    ElementRenderer,
+} from "./element-renderer/interfaces.js";
+import { RenderInfo } from "./render-info.js";
 import { StyleElementStyleRenderer, StyleRenderer } from "./styles/style-renderer.js";
 import {
     defaultViewBehaviorFactoryRenderers,
@@ -20,30 +20,11 @@ import {
     DefaultTemplateRenderer,
     TemplateRenderer,
 } from "./template-renderer/template-renderer.js";
-import { SSRView } from "./view.js";
-import {
-    AsyncElementRenderer,
-    ConstructableElementRenderer,
-    ElementRenderer,
-} from "./element-renderer/interfaces.js";
 
-Compiler.setDefaultStrategy(
-    (
-        html: string | HTMLTemplateElement,
-        factories: Record<string, ViewBehaviorFactory>
-    ) => {
-        if (typeof html !== "string") {
-            throw new Error(
-                "SSR compiler does not support HTMLTemplateElement templates"
-            );
-        }
-
-        return new SSRView(html, factories) as any;
-    }
-);
-
-ElementStyles.setDefaultStrategy(FASTSSRStyleStrategy);
-Updates.setMode(false);
+// Perform necessary configuration of FAST-Element library
+// for rendering in NodeJS
+import "./configure-fast-element.js";
+import { FASTElement, FASTElementDefinition } from "@microsoft/fast-element";
 
 /**
  * Configuration for SSR factory.
@@ -56,21 +37,21 @@ export interface SSRConfiguration {
 /** @beta */
 function fastSSR(): {
     templateRenderer: TemplateRenderer;
-    ElementRenderer: ConstructableElementRenderer;
+    ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
 };
 /** @beta */
 function fastSSR(
     config: SSRConfiguration & Record<"renderMode", "sync">
 ): {
     templateRenderer: TemplateRenderer;
-    ElementRenderer: ConstructableElementRenderer;
+    ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
 };
 /** @beta */
 function fastSSR(
     config: SSRConfiguration & Record<"renderMode", "async">
 ): {
     templateRenderer: AsyncTemplateRenderer;
-    ElementRenderer: ConstructableElementRenderer<AsyncElementRenderer>;
+    ElementRenderer: ConstructableFASTElementRenderer<AsyncFASTElementRenderer>;
 };
 /**
  * Factory for creating SSR rendering assets.
@@ -79,9 +60,9 @@ function fastSSR(
  * import "@microsoft/install-dom-shim";
  * import fastSSR from "@microsoft/fast-ssr";
  * import { html } from "@microsoft/fast-element";
- * const { templateRenderer, defaultRenderInfo } = fastSSR();
+ * const { templateRenderer } = fastSSR();
  *
- * const streamableSSRResult = templateRenderer.render(html`...`, defaultRenderInfo);
+ * const streamableSSRResult = templateRenderer.render(html`...`);
  * ```
  *
  * @beta
@@ -89,18 +70,43 @@ function fastSSR(
 function fastSSR(config?: SSRConfiguration): any {
     const async = config && config.renderMode === "async";
     const templateRenderer = new DefaultTemplateRenderer();
-    const elementRenderer = !async
-        ? class extends SyncFASTElementRenderer {
-              protected templateRenderer: DefaultTemplateRenderer = templateRenderer;
-              protected styleRenderer = new StyleElementStyleRenderer();
-          }
-        : class extends AsyncFASTElementRenderer {
-              protected templateRenderer: DefaultTemplateRenderer = templateRenderer;
-              protected styleRenderer = new StyleElementStyleRenderer();
-          };
+
+    const elementRenderer = class extends (!async
+        ? SyncFASTElementRenderer
+        : AsyncFASTElementRenderer) {
+        static #disabledConstructors = new Set<typeof HTMLElement | string>();
+
+        public static matchesClass(
+            ctor: typeof HTMLElement,
+            tagName: string,
+            attributes: AttributesMap
+        ): boolean {
+            const canRender = ctor.prototype instanceof FASTElement;
+
+            if (!canRender) {
+                return false;
+            }
+
+            const disabled = elementRenderer.#disabledConstructors;
+
+            return !(disabled.has(tagName) || disabled.has(ctor));
+        }
+
+        public static disable(
+            ...elements: Array<string | typeof FASTElement | FASTElementDefinition>
+        ) {
+            for (const element of elements) {
+                elementRenderer.#disabledConstructors.add(
+                    element instanceof FASTElementDefinition ? element.type : element
+                );
+            }
+        }
+        protected templateRenderer: DefaultTemplateRenderer = templateRenderer;
+        protected styleRenderer = new StyleElementStyleRenderer();
+    };
 
     templateRenderer.withDefaultElementRenderers(
-        elementRenderer as ConstructableElementRenderer
+        (elementRenderer as unknown) as ConstructableElementRenderer
     );
     templateRenderer.withViewBehaviorFactoryRenderers(
         ...defaultViewBehaviorFactoryRenderers
@@ -113,8 +119,8 @@ function fastSSR(config?: SSRConfiguration): any {
 }
 
 export default fastSSR;
-export * from "./request-storage.js";
 export * from "./declarative-shadow-dom-polyfill.js";
+export * from "./request-storage.js";
 export type {
     ElementRenderer,
     AsyncElementRenderer,
@@ -124,4 +130,5 @@ export type {
     ViewBehaviorFactoryRenderer,
     RenderInfo,
     ConstructableElementRenderer,
+    ConstructableFASTElementRenderer,
 };

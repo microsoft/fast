@@ -1,10 +1,5 @@
 import type { Notifier, Subscriber } from "../observation/notifier.js";
-import {
-    ExecutionContext,
-    Expression,
-    ExpressionObserver,
-    Observable,
-} from "../observation/observable.js";
+import { Expression, ExpressionObserver, Observable } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
 import { ArrayObserver, Splice } from "../observation/arrays.js";
 import { Markup, nextId } from "./markup.js";
@@ -72,13 +67,16 @@ function bindWithPositioning(
 export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     private location: Node;
     private controller: ViewController;
-    private views: SyntheticView[] = [];
+
     private template: SyntheticViewTemplate;
     private templateBindingObserver: ExpressionObserver<TSource, SyntheticViewTemplate>;
     private items: readonly any[] | null = null;
     private itemsObserver: Notifier | null = null;
     private itemsBindingObserver: ExpressionObserver<TSource, any[]>;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
+
+    /** @internal */
+    public views: SyntheticView[] = [];
 
     /**
      * Creates an instance of RepeatBehavior.
@@ -187,7 +185,8 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             let addIndex = splice.index;
             const end = addIndex + splice.addedCount;
             const removedViews = views.splice(splice.index, removed.length);
-            availableViews = leftoverViews.length + removedViews.length;
+            const totalAvailableViews = (availableViews =
+                leftoverViews.length + removedViews.length);
 
             for (; addIndex < end; ++addIndex) {
                 const neighbor = views[addIndex];
@@ -195,7 +194,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                 let view;
 
                 if (recycle && availableViews > 0) {
-                    if (removeIndex <= availableViews && removedViews.length > 0) {
+                    if (removeIndex <= totalAvailableViews && removedViews.length > 0) {
                         view = removedViews[removeIndex];
                         removeIndex++;
                     } else {
@@ -222,10 +221,10 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         }
 
         if (this.directive.options.positioning) {
-            for (let i = 0, ii = views.length; i < ii; ++i) {
+            for (let i = 0, viewsLength = views.length; i < viewsLength; ++i) {
                 const context = views[i].context;
-                context.length = i;
-                context.index = ii;
+                context.length = viewsLength;
+                context.index = i;
             }
         }
     }
@@ -348,18 +347,19 @@ HTMLDirective.define(RepeatDirective);
  */
 export function repeat<
     TSource = any,
-    TArray extends ReadonlyArray<any> = ReadonlyArray<any>
+    TArray extends ReadonlyArray<any> = ReadonlyArray<any>,
+    TParent = any
 >(
     items:
-        | Expression<TSource, TArray, ExecutionContext<TSource>>
-        | Binding<TSource, TArray>
+        | Expression<TSource, TArray, TParent>
+        | Binding<TSource, TArray, TParent>
         | ReadonlyArray<any>,
     template:
-        | Expression<TSource, ViewTemplate>
-        | Binding<TSource, ViewTemplate>
-        | ViewTemplate,
+        | Expression<TSource, ViewTemplate<any, TSource>>
+        | Binding<TSource, ViewTemplate<any, TSource>>
+        | ViewTemplate<any, TSource>,
     options: RepeatOptions = defaultRepeatOptions
-): CaptureType<TSource> {
+): CaptureType<TSource, TParent> {
     const dataBinding = normalizeBinding(items);
     const templateBinding = normalizeBinding(template);
     return new RepeatDirective(dataBinding, templateBinding, {

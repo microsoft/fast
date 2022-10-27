@@ -79,7 +79,7 @@ export interface ContentView {
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the view within.
      */
-    bind(source: any): void;
+    bind(source: any, context?: ExecutionContext): void;
 
     /**
      * Unbinds a view's behaviors from its binding source and context.
@@ -160,13 +160,13 @@ function updateContent(
         // and that there's actually no need to compose it.
         if (!view.isComposed) {
             view.isComposed = true;
-            view.bind(controller.source);
+            view.bind(controller.source, controller.context);
             view.insertBefore(target);
             target.$fastView = view;
             target.$fastTemplate = value;
         } else if (view.needsBindOnly) {
             view.needsBindOnly = false;
-            view.bind(controller.source);
+            view.bind(controller.source, controller.context);
         }
     } else {
         const view = target.$fastView;
@@ -189,8 +189,8 @@ function updateContent(
 }
 
 interface TokenListState {
-    v: {};
-    c: number;
+    cv: {};
+    v: number;
 }
 
 function updateTokenList(
@@ -201,9 +201,9 @@ function updateTokenList(
 ): void {
     const lookup = `${this.id}-t`;
     const state: TokenListState =
-        target[lookup] ?? (target[lookup] = { c: 0, v: Object.create(null) });
-    const versions = state.v;
-    let currentVersion = state.c;
+        target[lookup] ?? (target[lookup] = { v: 0, cv: Object.create(null) });
+    const classVersions = state.cv;
+    let version = state.v;
     const tokenList = target[aspect] as DOMTokenList;
 
     // Add the classes, tracking the version at which they were added.
@@ -217,23 +217,23 @@ function updateTokenList(
                 continue;
             }
 
-            versions[currentName] = currentVersion;
+            classVersions[currentName] = version;
             tokenList.add(currentName);
         }
     }
 
-    state.v = currentVersion + 1;
+    state.v = version + 1;
 
     // If this is the first call to add classes, there's no need to remove old ones.
-    if (currentVersion === 0) {
+    if (version === 0) {
         return;
     }
 
     // Remove classes from the previous version.
-    currentVersion -= 1;
+    version -= 1;
 
-    for (const name in versions) {
-        if (versions[name] === currentVersion) {
+    for (const name in classVersions) {
+        if (classVersions[name] === version) {
             tokenList.remove(name);
         }
     }
@@ -314,14 +314,12 @@ export class HTMLBindingDirective
                     this.updateTarget = setProperty;
                     break;
                 case 4:
-                    this.bind = this.bindContent;
                     this.updateTarget = updateContent;
                     break;
                 case 5:
                     this.updateTarget = updateTokenList;
                     break;
                 case 6:
-                    this.bind = this.bindEvent;
                     this.updateTarget = eventTarget;
                     break;
                 default:
@@ -333,41 +331,37 @@ export class HTMLBindingDirective
     }
 
     /** @internal */
-    bindDefault(controller: ViewController): void {
+    bind(controller: ViewController): void {
         const target = controller.targets[this.nodeId];
-        const observer =
-            target[this.data] ??
-            (target[this.data] = this.dataBinding.createObserver(this, this));
 
-        (observer as any).target = target;
-        (observer as any).controller = controller;
+        switch (this.updateTarget) {
+            case eventTarget:
+                target[this.data] = controller;
+                target.addEventListener(
+                    this.targetAspect,
+                    this,
+                    this.dataBinding.options
+                );
+                break;
+            case updateContent:
+                controller.onUnbind(this);
+            // intentional fall through
+            default:
+                const observer =
+                    target[this.data] ??
+                    (target[this.data] = this.dataBinding.createObserver(this, this));
 
-        this.updateTarget!(
-            target,
-            this.targetAspect,
-            observer.bind(controller),
-            controller
-        );
+                (observer as any).target = target;
+                (observer as any).controller = controller;
 
-        if (this.updateTarget === updateContent) {
-            controller.onUnbind(this);
+                this.updateTarget!(
+                    target,
+                    this.targetAspect,
+                    observer.bind(controller),
+                    controller
+                );
+                break;
         }
-    }
-
-    /** @internal */
-    bind = this.bindDefault;
-
-    /** @internal */
-    bindContent(controller: ViewController): void {
-        this.bindDefault(controller);
-        controller.onUnbind(this);
-    }
-
-    /** @internal */
-    bindEvent(controller: ViewController) {
-        const target = controller.targets[this.nodeId];
-        target[this.data] = controller;
-        target.addEventListener(this.targetAspect, this, this.dataBinding.options);
     }
 
     /** @internal */
@@ -383,17 +377,19 @@ export class HTMLBindingDirective
 
     /** @internal */
     handleEvent(event: Event): void {
-        const target = event.currentTarget!;
+        const controller = event.currentTarget![this.data] as ViewController;
 
-        ExecutionContext.setEvent(event);
+        if (controller.isBound) {
+            ExecutionContext.setEvent(event);
+            const result = this.dataBinding.evaluate(
+                controller.source,
+                controller.context
+            );
+            ExecutionContext.setEvent(null);
 
-        const controller = target[this.data] as ViewController;
-        const result = this.dataBinding.evaluate(controller.source, controller.context);
-
-        ExecutionContext.setEvent(null);
-
-        if (result !== true) {
-            event.preventDefault();
+            if (result !== true) {
+                event.preventDefault();
+            }
         }
     }
 
@@ -414,40 +410,40 @@ HTMLDirective.define(HTMLBindingDirective, { aspected: true });
 
 /**
  * Creates an standard binding.
- * @param binding - The binding to refresh when changed.
+ * @param expression - The binding to refresh when changed.
  * @param isVolatile - Indicates whether the binding is volatile or not.
  * @returns A binding configuration.
  * @public
  */
 export function bind<T = any>(
-    binding: Expression<T>,
-    isVolatile = Observable.isVolatileBinding(binding)
+    expression: Expression<T>,
+    isVolatile = Observable.isVolatileBinding(expression)
 ): Binding<T> {
-    return new OnChangeBinding(binding, isVolatile);
+    return new OnChangeBinding(expression, isVolatile);
 }
 
 /**
  * Creates a one time binding
- * @param binding - The binding to refresh when signaled.
+ * @param expression - The binding to refresh when signaled.
  * @returns A binding configuration.
  * @public
  */
-export function oneTime<T = any>(binding: Expression<T>): Binding<T> {
-    return new OneTimeBinding(binding);
+export function oneTime<T = any>(expression: Expression<T>): Binding<T> {
+    return new OneTimeBinding(expression);
 }
 
 /**
  * Creates an event listener binding.
- * @param binding - The binding to invoke when the event is raised.
+ * @param expression - The binding to invoke when the event is raised.
  * @param options - Event listener options.
  * @returns A binding configuration.
  * @public
  */
 export function listener<T = any>(
-    binding: Expression<T>,
+    expression: Expression<T>,
     options?: AddEventListenerOptions
 ): Binding<T> {
-    const config = new OnChangeBinding(binding, false);
+    const config = new OnChangeBinding(expression, false);
     config.options = options;
     return config;
 }

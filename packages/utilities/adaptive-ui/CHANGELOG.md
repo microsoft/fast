@@ -1,8 +1,83 @@
 # Change Log - @microsoft/adaptive-ui
 
-This log was last generated on Thu, 01 Sep 2022 21:53:34 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Oct 2022 20:24:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.18
+
+Tue, 25 Oct 2022 20:24:32 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.18
+
+## 1.0.0-alpha.17
+
+Fri, 14 Oct 2022 18:26:11 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.17
+
+## 1.0.0-alpha.16
+
+Mon, 10 Oct 2022 20:28:02 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.16
+
+## 1.0.0-alpha.15
+
+Thu, 06 Oct 2022 23:21:20 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.15
+
+## 1.0.0-alpha.14
+
+Wed, 05 Oct 2022 23:26:01 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.14
+
+## 1.0.0-alpha.13
+
+Mon, 03 Oct 2022 23:44:38 GMT
+
+### Changes
+
+- Fix neutral color overlay mode default value (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.13
+
+## 1.0.0-alpha.12
+
+Wed, 28 Sep 2022 20:45:51 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.12
+
+## 1.0.0-alpha.11
+
+Tue, 27 Sep 2022 22:31:52 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.11
+
+## 1.0.0-alpha.10
+
+Fri, 23 Sep 2022 22:53:27 GMT
+
+### Changes
+
+- Add layer recipes and design tokens (47367562+bheston@users.noreply.github.com)
+- Initial support for opacity in neutral recipes (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.10
 
 ## 1.0.0-alpha.9
 

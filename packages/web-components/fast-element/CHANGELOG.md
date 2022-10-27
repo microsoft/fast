@@ -1,8 +1,92 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Thu, 01 Sep 2022 21:53:34 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Oct 2022 20:24:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.15
+
+Tue, 25 Oct 2022 20:24:32 GMT
+
+### Changes
+
+- Updated the ElementController to connect behaviors prior to rendering element templates (nicholasrice@users.noreply.github.com)
+- Added support to fast-element to support element hydration and the `defer-hydration` attribute (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.14
+
+Fri, 14 Oct 2022 18:26:11 GMT
+
+### Changes
+
+- fix: tokenList bindings track adds and removes from multiple sources (roeisenb@microsoft.com)
+- refactor: remove duplication and re-organize binding behavior logic (roeisenb@microsoft.com)
+
+## 2.0.0-beta.13
+
+Mon, 10 Oct 2022 20:28:02 GMT
+
+### Changes
+
+- fix: prevent event callbacks when controller is not bound (roeisenb@microsoft.com)
+
+## 2.0.0-beta.12
+
+Thu, 06 Oct 2022 23:21:20 GMT
+
+### Changes
+
+- fix: repeat update view context positioning (roeisenb@microsoft.com)
+
+## 2.0.0-beta.11
+
+Wed, 05 Oct 2022 23:26:01 GMT
+
+### Changes
+
+- fix: removed a shadowRoot leak from ElementController (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.10
+
+Mon, 03 Oct 2022 23:44:38 GMT
+
+### Changes
+
+- fix: observation kernel missing binding observer disconnect method (roeisenb@microsoft.com)
+- feat: less surprising class bindings w/ more flexibility for developers (roeisenb@microsoft.com)
+- fix: don't allow registering FASTElement itself as a web component (roeisenb@microsoft.com)
+
+## 2.0.0-beta.9
+
+Wed, 28 Sep 2022 20:45:51 GMT
+
+### Changes
+
+- fix: ensure composed templates receive the existing execution context (roeisenb@microsoft.com)
+
+## 2.0.0-beta.8
+
+Tue, 27 Sep 2022 22:31:52 GMT
+
+### Changes
+
+- fix: correct view state when processing unbindables during rebind (roeisenb@microsoft.com)
+- fix: do not crash when null/undefined is provided literally in templates (roeisenb@microsoft.com)
+
+## 2.0.0-beta.7
+
+Fri, 23 Sep 2022 22:53:27 GMT
+
+### Changes
+
+- feat: improve parent typing and fix repeat context type bug (roeisenb@microsoft.com)
+- feat: prepare fast-element for scoped element registries (roeisenb@microsoft.com)
+- persist totalAvailableViews to compare against removeIndex (wendywendy@microsoft.com)
+- make ElementsFilter type arguments optional (863023+radium-v@users.noreply.github.com)
+- fix(fast-element): attributes properly located in inheritance hierarchy (roeisenb@microsoft.com)
+- Adds PendingTask community protocol (nicholasrice@users.noreply.github.com)
+- feat: new behavior and context API design (roeisenb@microsoft.com)
+- feat: implement getAsync code path for dependency injection (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.6
 

@@ -10,6 +10,7 @@ import {
     keyArrowLeft,
     keyArrowRight,
     keyEnter,
+    keyEscape,
     keySpace,
 } from "@microsoft/fast-web-utilities";
 import type { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
@@ -24,12 +25,6 @@ import { getDirection } from "../utilities/direction.js";
 import { MenuItemRole, roleForMenuItem } from "./menu-item.options.js";
 
 export { MenuItemRole, roleForMenuItem };
-
-/**
- * Types of menu item column count.
- * @public
- */
-export type MenuItemColumnCount = 0 | 1 | 2;
 
 /**
  * Menu Item configuration options
@@ -98,12 +93,6 @@ export class FASTMenuItem extends FASTElement {
             this.$emit("expanded-change", this, { bubbles: false });
         }
     }
-
-    /**
-     * @internal
-     */
-    @observable
-    public startColumnCount: MenuItemColumnCount;
 
     /**
      * The role of the element.
@@ -181,10 +170,6 @@ export class FASTMenuItem extends FASTElement {
             this.updateSubmenu();
         });
 
-        if (!this.startColumnCount) {
-            this.startColumnCount = 1;
-        }
-
         this.observer = new MutationObserver(this.updateSubmenu);
     }
 
@@ -219,11 +204,18 @@ export class FASTMenuItem extends FASTElement {
                 this.expandAndFocus();
                 return false;
 
+            case keyEscape:
+                // close submenu
+                if (this.expanded) {
+                    this.closeSubMenu();
+                    return false;
+                }
+                break;
+
             case keyArrowLeft:
                 //close submenu
                 if (this.expanded) {
-                    this.expanded = false;
-                    this.focus();
+                    this.closeSubMenu();
                     return false;
                 }
         }
@@ -281,6 +273,15 @@ export class FASTMenuItem extends FASTElement {
         this.expanded = false;
 
         return false;
+    };
+
+    /**
+     * @internal
+     */
+    private closeSubMenu = (): void => {
+        // close submenu
+        this.expanded = false;
+        this.focus();
     };
 
     /**

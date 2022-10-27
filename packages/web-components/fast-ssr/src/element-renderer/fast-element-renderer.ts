@@ -3,17 +3,16 @@ import { PendingTaskEvent } from "@microsoft/fast-element/pending-task";
 import { escapeHtml } from "../escape-html.js";
 import { RenderInfo } from "../render-info.js";
 import { StyleRenderer } from "../styles/style-renderer.js";
+import { FASTSSRStyleStrategy } from "../styles/style-strategy.js";
 import { DefaultTemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
 import { DefaultElementRenderer } from "./element-renderer.js";
-import { AsyncElementRenderer, ElementRenderer } from "./interfaces.js";
-import { FASTSSRStyleStrategy } from "./style-strategy.js";
+import { AsyncElementRenderer, AttributesMap, ElementRenderer } from "./interfaces.js";
 
 /**
  * An {@link ElementRenderer} implementation designed to render components
  * built with FAST.
  *
- * @beta
  */
 abstract class FASTElementRenderer extends DefaultElementRenderer {
     /**
@@ -31,11 +30,11 @@ abstract class FASTElementRenderer extends DefaultElementRenderer {
      */
     protected abstract styleRenderer: StyleRenderer;
 
-    /**
-     * Tests a constructor to determine if it should be managed by a {@link FASTElementRenderer}.
-     * @param ctor - The constructor to test.
-     */
-    public static matchesClass(ctor: typeof HTMLElement): boolean {
+    public static matchesClass(
+        ctor: typeof HTMLElement,
+        tagName: string,
+        attributes: AttributesMap
+    ): boolean {
         return ctor.prototype instanceof FASTElement;
     }
 

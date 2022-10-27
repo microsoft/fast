@@ -6,10 +6,14 @@ import type { FASTRadio } from "./radio.js";
 test.describe("Radio", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
+
         element = page.locator("fast-radio");
+
+        root = page.locator("#root");
 
         await page.goto(fixtureURL("radio--radio"));
     });
@@ -19,17 +23,21 @@ test.describe("Radio", () => {
     });
 
     test("should have a role of `radio`", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio>Radio</fast-radio>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio>Radio</fast-radio>
+            `;
+        });
 
         await expect(element).toHaveAttribute("role", "radio");
     });
 
     test("should set ARIA attributes to match the state", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio>Radio</fast-radio>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio>Radio</fast-radio>
+            `;
+        });
 
         // Checked
         await expect(element).toHaveAttribute("aria-checked", "false");
@@ -37,8 +45,6 @@ test.describe("Radio", () => {
         await element.evaluate((node: FASTRadio) => (node.checked = true));
 
         await expect(element).toHaveAttribute("aria-checked", "true");
-
-        await expect(element).toHaveClass(/checked/);
 
         await element.evaluate((node: FASTRadio) => (node.checked = false));
 
@@ -73,35 +79,37 @@ test.describe("Radio", () => {
 
         await expect(element).toHaveAttribute("aria-readonly", "true");
 
-        await expect(element).toHaveClass(/readonly/);
-
         await element.evaluate((node: FASTRadio) => (node.readOnly = false));
 
         await expect(element).toHaveAttribute("aria-readonly", "false");
-
-        await expect(element).not.toHaveClass(/readonly/);
     });
 
     test("should set a tabindex of 0 on the element", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio>Radio</fast-radio>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio>Radio</fast-radio>
+            `;
+        });
 
         await expect(element).toHaveAttribute("tabindex", "0");
     });
 
     test("should NOT set a tabindex when disabled is `true`", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio disabled></fast-radio>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio disabled></fast-radio>
+            `;
+        });
 
         await expect(element).toHaveAttribute("tabindex", "");
     });
 
     test("should initialize to the initial value if no value property is set", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio>Radio</fast-radio>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio>Radio</fast-radio>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "on");
 
@@ -109,9 +117,11 @@ test.describe("Radio", () => {
     });
 
     test("should initialize to the provided value attribute if set pre-connection", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio>Radio</fast-radio>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio>Radio</fast-radio>
+            `;
+        });
 
         await element.evaluate((node: FASTRadio) => node.setAttribute("value", "foo"));
 
@@ -119,9 +129,11 @@ test.describe("Radio", () => {
     });
 
     test("should initialize to the provided value attribute if set post-connection", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio>Radio</fast-radio>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio>Radio</fast-radio>
+            `;
+        });
 
         await element.evaluate((node: FASTRadio) => node.setAttribute("value", "foo"));
 
@@ -129,17 +141,21 @@ test.describe("Radio", () => {
     });
 
     test("should initialize to the provided value property if set pre-connection", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio value="foo"></fast-radio>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio value="foo"></fast-radio>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
     test("should set the `label__hidden` class on the internal label when default slotted content does not exist", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio>label</fast-radio>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio>label</fast-radio>
+            `;
+        });
 
         const label = element.locator("label");
 
@@ -153,9 +169,11 @@ test.describe("Radio", () => {
     });
 
     test("should fire events when clicked and spacebar is pressed", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio>Radio</fast-radio>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio>Radio</fast-radio>
+            `;
+        });
 
         const [wasClicked] = await Promise.all([
             element.evaluate(
@@ -192,9 +210,11 @@ test.describe("Radio", () => {
     });
 
     test("should handle validity when the `required` attribute is present", async () => {
-        await page.setContent(/* html */ `
-            <fast-radio required name="name" value="test">Radio</fast-radio>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio required name="name" value="test">Radio</fast-radio>
+            `;
+        });
 
         expect(
             await element.evaluate((node: FASTRadio) => node.validity.valueMissing)
@@ -209,11 +229,13 @@ test.describe("Radio", () => {
 
     test.describe("whose parent form has its reset() method invoked", () => {
         test("should set its checked property to false if the checked attribute is unset", async () => {
-            await page.setContent(/* html */ `
-                <form>
-                    <fast-radio>Radio</fast-radio>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-radio>Radio</fast-radio>
+                    </form>
+                `;
+            });
 
             const form = page.locator("form");
 
@@ -229,11 +251,13 @@ test.describe("Radio", () => {
         });
 
         test("should set its checked property to true if the checked attribute is set", async () => {
-            await page.setContent(/* html */ `
-                <form>
-                    <fast-radio checked></fast-radio>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-radio checked></fast-radio>
+                    </form>
+                `;
+            });
 
             const form = page.locator("form");
 
@@ -255,11 +279,13 @@ test.describe("Radio", () => {
         });
 
         test("should put the control into a clean state, where `checked` attribute modifications modify the `checked` property prior to user or programmatic interaction", async () => {
-            await page.setContent(/* html */ `
-                <form>
-                    <fast-radio>Radio</fast-radio>
-                </form>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <form>
+                        <fast-radio>Radio</fast-radio>
+                    </form>
+                `;
+            });
 
             const form = page.locator("form");
 

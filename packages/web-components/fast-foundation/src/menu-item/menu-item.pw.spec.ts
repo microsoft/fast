@@ -7,10 +7,14 @@ import { MenuItemRole } from "./menu-item.options.js";
 test.describe("Menu item", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
+
         element = page.locator("fast-menu-item");
+
+        root = page.locator("#root");
 
         await page.goto(fixtureURL("menu-item--menu-item"));
     });
@@ -20,9 +24,11 @@ test.describe("Menu item", () => {
     });
 
     test("should include a role of `menuitem` by default when no role is provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu-item>Menu item</fast-menu-item>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu-item>Menu item</fast-menu-item>
+            `;
+        });
 
         await expect(element).toHaveAttribute("role", MenuItemRole.menuitem);
     });
@@ -33,9 +39,11 @@ test.describe("Menu item", () => {
             let role: MenuItemRole;
             for (role in MenuItemRole) {
                 test(role, async () => {
-                    await page.setContent(/* html */ `
-                <fast-menu-item>Menu item</fast-menu-item>
-            `);
+                    await root.evaluate(node => {
+                        node.innerHTML = /* html */ `
+                            <fast-menu-item>Menu item</fast-menu-item>
+                        `;
+                    });
 
                     await element.evaluate(
                         (node: FASTMenuItem, role) => (node.role = role),
@@ -48,41 +56,51 @@ test.describe("Menu item", () => {
     );
 
     test("should set the `aria-disabled` attribute with the `disabled` value when provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu-item disabled>Menu item</fast-menu-item>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu-item disabled>Menu item</fast-menu-item>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-disabled", "true");
     });
 
     test("should set an `aria-expanded` attribute with the `expanded` value when provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu-item expanded>Menu item</fast-menu-item>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu-item expanded>Menu item</fast-menu-item>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-expanded", "true");
     });
 
     test("should set an `aria-checked` attribute with the `checked` value when provided to a menuitemcheckbox", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu-item role="menuitemcheckbox" checked>Menu item</fast-menu-item>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu-item role="menuitemcheckbox" checked>Menu item</fast-menu-item>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-checked", "true");
     });
 
     test("should NOT set an `aria-checked` attribute when checked is provided to a menuitem", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu-item role="menuitem" checked>Menu item</fast-menu-item>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu-item role="menuitem" checked>Menu item</fast-menu-item>
+            `;
+        });
 
         await expect(element).not.toHaveAttribute("aria-checked", "true");
     });
 
     test("should toggle the `aria-checked` attribute of checkbox item when clicked", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu-item role="menuitemcheckbox">Menu item</fast-menu-item>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu-item role="menuitemcheckbox">Menu item</fast-menu-item>
+            `;
+        });
 
         await expect(element).not.hasAttribute("aria-checked");
 
@@ -95,12 +113,14 @@ test.describe("Menu item", () => {
         await expect(element).toHaveAttribute("aria-checked", "false");
     });
 
-    test("should aria-checked attribute of radio item to true when clicked", async () => {
-        await page.setContent(/* html */ `
-            <fast-menu-item role="menuitemradio">Menu item</fast-menu-item>
-        `);
+    test("should set the `aria-checked` attribute of radio item to true when clicked", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu-item role="menuitemradio">Menu item</fast-menu-item>
+            `;
+        });
 
-        expect(await element.getAttribute("aria-checked")).toBe(null);
+        await expect(element).not.hasAttribute("aria-checked");
 
         await element.click();
 
@@ -113,9 +133,11 @@ test.describe("Menu item", () => {
 
     test.describe("events", () => {
         test("should emit a `change` an event when clicked", async () => {
-            await page.setContent(/* html */ `
-                <fast-menu-item>Menu item</fast-menu-item>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-menu-item>Menu item</fast-menu-item>
+                `;
+            });
 
             const [wasClicked] = await Promise.all([
                 element.evaluate(
@@ -131,9 +153,11 @@ test.describe("Menu item", () => {
         });
 
         test("should emit a `keydown` event when space key is invoked", async () => {
-            await page.setContent(/* html */ `
-                <fast-menu-item>Menu item</fast-menu-item>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-menu-item>Menu item</fast-menu-item>
+                `;
+            });
 
             const [wasChanged] = await Promise.all([
                 element.evaluate(node =>
@@ -154,9 +178,11 @@ test.describe("Menu item", () => {
         });
 
         test("should emit a `keydown` event when `Enter` key is invoked", async () => {
-            await page.setContent(/* html */ `
-                <fast-menu-item>Menu item</fast-menu-item>
-            `);
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-menu-item>Menu item</fast-menu-item>
+                `;
+            });
 
             const [wasChanged] = await Promise.all([
                 element.evaluate(node =>

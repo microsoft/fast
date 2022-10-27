@@ -53,6 +53,7 @@ export class FASTTreeItem extends TreeItem {}
 | `expanded`     | public  | `boolean` | `false` | When true, the control will be appear expanded by user interaction.                                                                                                                         |                |
 | `selected`     | public  | `boolean` |         | When true, the control will appear selected by user interaction.                                                                                                                            |                |
 | `disabled`     | public  | `boolean` |         | When true, the control will be immutable by user interaction. See [disabled HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) for more information. |                |
+| `nested`       | public  | `boolean` | `false` | Indicates if the tree item is nested                                                                                                                                                        |                |
 | `isNestedItem` | public  |           |         | Whether the tree is nested                                                                                                                                                                  |                |
 
 #### Methods
@@ -61,7 +62,6 @@ export class FASTTreeItem extends TreeItem {}
 | ----------------- | --------- | ----------- | -------------------------------------------- | ------ | -------------- |
 | `expandedChanged` | protected |             | `prev: boolean or undefined, next: boolean`  | `void` |                |
 | `selectedChanged` | protected |             | `prev: boolean or undefined, next: boolean`  | `void` |                |
-| `disabledChanged` | protected |             | `prev: boolean or undefined, next: boolean`  | `void` |                |
 | `itemsChanged`    | protected |             | `oldValue: unknown, newValue: HTMLElement[]` | `void` |                |
 
 #### Events
@@ -78,6 +78,7 @@ export class FASTTreeItem extends TreeItem {}
 |      | expanded |                |
 |      | selected |                |
 |      | disabled |                |
+|      | nested   |                |
 
 #### CSS Parts
 
@@ -97,18 +98,6 @@ export class FASTTreeItem extends TreeItem {}
 |                          | The default slot for tree item text content                                 |
 | `item`                   | The slot for tree items (fast tree items manage this assignment themselves) |
 | `expand-collapse-button` | The expand/collapse button                                                  |
-
-<hr/>
-
-### class: `DelegatesARIATreeItem`
-
-#### Fields
-
-| Name           | Privacy | Type                                  | Default | Description                                                             | Inherited From |
-| -------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------- | -------------- |
-| `ariaDisabled` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#treeitem for more information |                |
-| `ariaExpanded` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#treeitem for more information |                |
-| `ariaSelected` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/TR/wai-aria-1.2/#treeitem for more information |                |
 
 <hr/>
 

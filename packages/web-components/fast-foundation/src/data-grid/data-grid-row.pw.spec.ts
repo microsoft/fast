@@ -9,11 +9,14 @@ test.describe("DataGridRow", () => {
 
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-data-grid-row");
+
+        root = page.locator("#root");
 
         await page.goto(fixtureURL("data-grid-data-grid-row--data-grid-row"));
     });
@@ -23,45 +26,21 @@ test.describe("DataGridRow", () => {
     });
 
     test('should set the `role` attribute to "row" by default', async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-row></fast-data-grid-row>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-row></fast-data-grid-row>
+            `;
+        });
 
         await expect(element).toHaveAttribute("role", "row");
     });
 
-    test('should add the "header" class when the `row-type` attribute is "header"', async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-row row-type="header"></fast-data-grid-row>
-        `);
-
-        await expect(element).toHaveClass(/header/);
-
-        await element.evaluate(node => {
-            node.removeAttribute("row-type");
-        });
-
-        await expect(element).not.toHaveClass(/header/);
-    });
-
-    test('should apply "sticky-header" class when the `row-type` attribute is "sticky-header"', async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-row row-type="sticky-header"></fast-data-grid-row>
-        `);
-
-        await expect(element).toHaveClass(/sticky-header/);
-
-        await element.evaluate(node => {
-            node.removeAttribute("row-type");
-        });
-
-        await expect(element).not.toHaveClass(/sticky-header/);
-    });
-
     test("should set `grid-template-columns` style to match attribute", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-row grid-template-columns="1fr 2fr 3fr"></fast-data-grid-row>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-row grid-template-columns="1fr 2fr 3fr"></fast-data-grid-row>
+            `;
+        });
 
         await expect(element).toHaveAttribute(
             "style",
@@ -70,11 +49,13 @@ test.describe("DataGridRow", () => {
     });
 
     test("should fire an event when a child cell is focused", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-row>
-                <fast-data-grid-cell></fast-data-grid-cell>
-            </fast-data-grid-row>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-row>
+                    <fast-data-grid-cell></fast-data-grid-cell>
+                </fast-data-grid-row>
+            `;
+        });
 
         const cell = page.locator(cellQueryString).first();
 
@@ -95,13 +76,15 @@ test.describe("DataGridRow", () => {
     });
 
     test("should move focus with left/right arrow key strokes", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-row>
-                <fast-data-grid-cell></fast-data-grid-cell>
-                <fast-data-grid-cell></fast-data-grid-cell>
-                <fast-data-grid-cell></fast-data-grid-cell>
-            </fast-data-grid-row>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-row>
+                    <fast-data-grid-cell></fast-data-grid-cell>
+                    <fast-data-grid-cell></fast-data-grid-cell>
+                    <fast-data-grid-cell></fast-data-grid-cell>
+                </fast-data-grid-row>
+            `;
+        });
 
         await element.locator(cellQueryString).first().focus();
 
@@ -117,13 +100,15 @@ test.describe("DataGridRow", () => {
     });
 
     test("should move focus to the start/end of the row with home/end keystrokes", async () => {
-        await page.setContent(/* html */ `
-            <fast-data-grid-row>
-                <fast-data-grid-cell></fast-data-grid-cell>
-                <fast-data-grid-cell></fast-data-grid-cell>
-                <fast-data-grid-cell></fast-data-grid-cell>
-            </fast-data-grid-row>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-row>
+                    <fast-data-grid-cell></fast-data-grid-cell>
+                    <fast-data-grid-cell></fast-data-grid-cell>
+                    <fast-data-grid-cell></fast-data-grid-cell>
+                </fast-data-grid-row>
+            `;
+        });
 
         await element.locator(cellQueryString).first().focus();
 
@@ -141,9 +126,11 @@ test.describe("DataGridRow", () => {
     test("should render no cells if provided no column definitions", async () => {
         const cells = element.locator("fast-data-grid-cell");
 
-        await page.setContent(/* html */ `
-            <fast-data-grid-row></fast-data-grid-row>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-row></fast-data-grid-row>
+            `;
+        });
 
         await element.evaluate((node: FASTDataGridRow) => {
             node.rowData = {
@@ -158,9 +145,11 @@ test.describe("DataGridRow", () => {
     test("should render as many column header cells as specified in column definitions", async () => {
         const cells = element.locator(cellQueryString);
 
-        await page.setContent(/* html */ `
-            <fast-data-grid-row></fast-data-grid-row>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-row></fast-data-grid-row>
+            `;
+        });
 
         await element.evaluate((node: FASTDataGridRow) => {
             node.columnDefinitions = [{ columnDataKey: "item1" }];

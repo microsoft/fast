@@ -6,6 +6,7 @@ import type { FASTDialog } from "./index.js";
 test.describe("Dialog", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
     let control: Locator;
     let overlay: Locator;
 
@@ -13,6 +14,8 @@ test.describe("Dialog", () => {
         page = await browser.newPage();
 
         element = page.locator("fast-dialog");
+
+        root = page.locator("#root");
 
         control = element.locator(`[role="dialog"]`);
 
@@ -36,66 +39,73 @@ test.describe("Dialog", () => {
     test("should set the `hidden` attribute to equal the value of the `hidden` property", async () => {
         await element.evaluate((node: FASTDialog) => {
             node.hidden = true;
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(element).toHaveBooleanAttribute("hidden");
 
         await element.evaluate((node: FASTDialog) => {
             node.hidden = false;
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(element).not.toHaveBooleanAttribute("hidden");
     });
 
     test("should set the `aria-describedby` attribute on the control when provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-dialog aria-describedby="description">
-                <div id="description">Description</div>
-            </fast-dialog>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-dialog aria-describedby="description">
+                    <div id="description">Description</div>
+                </fast-dialog>
+            `;
+        });
 
         await expect(control).toHaveAttribute("aria-describedby", "description");
     });
 
     test("should set the `aria-labelledby` attribute on the dialog control when provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-dialog aria-labelledby="label">
-                <div id="label">Label</div>
-            </fast-dialog>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-dialog aria-labelledby="label">
+                    <div id="label">Label</div>
+                </fast-dialog>
+            `;
+        });
 
         await expect(control).toHaveAttribute("aria-labelledby", "label");
     });
 
     test("should set the `aria-label` attribute on the dialog control when provided", async () => {
-        await page.setContent(/* html */ `
-            <fast-dialog aria-label="Label"></fast-dialog>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-dialog aria-label="Label"></fast-dialog>
+            `;
+        });
 
         await expect(control).toHaveAttribute("aria-label", "Label");
     });
 
     test("should add an attribute of `aria-modal` with a value equal to the `modal` attribute", async () => {
-        await page.setContent(/* html */ `
-            <fast-dialog modal></fast-dialog>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-dialog modal></fast-dialog>
+            `;
+        });
 
         await expect(control).toHaveAttribute("aria-modal", "true");
 
         await element.evaluate((node: FASTDialog) => {
             node.modal = false;
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(control).not.hasAttribute("aria-modal");
     });
 
     test('should add an overlay element with a `role` attribute of "presentation" when the `modal` property is true', async () => {
-        await page.setContent(/* html */ `
-            <fast-dialog modal></fast-dialog>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-dialog modal></fast-dialog>
+            `;
+        });
 
         await expect(overlay).toHaveAttribute("role", "presentation");
 
@@ -107,20 +117,20 @@ test.describe("Dialog", () => {
     });
 
     test("should add an attribute of `no-focus-trap` when `noFocusTrap` is true", async () => {
-        await page.setContent(/* html */ `
-            <fast-dialog no-focus-trap></fast-dialog>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-dialog no-focus-trap></fast-dialog>
+            `;
+        });
 
         await element.evaluate((node: FASTDialog) => {
             node.noFocusTrap = true;
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(element).toHaveBooleanAttribute("no-focus-trap");
 
         await element.evaluate((node: FASTDialog) => {
             node.noFocusTrap = false;
-            return new Promise(requestAnimationFrame);
         });
 
         await expect(element).not.toHaveBooleanAttribute("no-focus-trap");
@@ -161,11 +171,13 @@ test.describe("Dialog", () => {
     });
 
     test("should fire a 'dismiss' event when its overlay is clicked", async () => {
-        await page.setContent(/* html */ `
-            <fast-dialog modal></fast-dialog>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-dialog modal></fast-dialog>
+            `;
+        });
 
-        await overlay.waitFor({ state: "visible" });
+        await (await overlay.elementHandle())?.waitForElementState("stable");
 
         const [wasDismissed] = await Promise.all([
             element.evaluate(
@@ -182,11 +194,13 @@ test.describe("Dialog", () => {
     });
 
     test("should fire a `cancel` event when its overlay is clicked", async () => {
-        await page.setContent(/* html */ `
-            <fast-dialog modal></fast-dialog>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-dialog modal></fast-dialog>
+            `;
+        });
 
-        await overlay.waitFor({ state: "visible" });
+        await (await overlay.elementHandle())?.waitForElementState("stable");
 
         const [wasDismissed] = await Promise.all([
             element.evaluate(
@@ -203,11 +217,13 @@ test.describe("Dialog", () => {
     });
 
     test("should fire a 'dismiss' event when keydown is invoked on the document", async () => {
-        await page.setContent(/* html */ `
-            <fast-dialog modal></fast-dialog>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-dialog modal></fast-dialog>
+            `;
+        });
 
-        await overlay.waitFor({ state: "visible" });
+        await (await overlay.elementHandle())?.waitForElementState("stable");
 
         const [wasDismissed] = await Promise.all([
             element.evaluate(
@@ -217,7 +233,8 @@ test.describe("Dialog", () => {
                     })
             ),
             element
-                .evaluate(() => new Promise(requestAnimationFrame))
+                .elementHandle()
+                .then(handle => handle?.waitForElementState("stable"))
                 .then(() => page.keyboard.press("Escape")),
         ]);
 

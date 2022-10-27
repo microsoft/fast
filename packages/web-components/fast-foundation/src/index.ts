@@ -49,6 +49,3 @@ export * from "./tree-view/index.js";
 
 // export our utilities
 export * from "./utilities/index.js";
-
-// TODO: remove this before final release once site and CLI are ready
-export { composedParent, composedContains } from "@microsoft/fast-element/utilities";

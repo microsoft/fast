@@ -6,11 +6,14 @@ import type { FASTListboxOption } from "./listbox-option.js";
 test.describe("ListboxOption", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-option");
+
+        root = page.locator("#root");
 
         await page.goto(fixtureURL("listbox-option--listbox-option"));
     });
@@ -20,17 +23,21 @@ test.describe("ListboxOption", () => {
     });
 
     test("should have a role of `option`", async () => {
-        await page.setContent(/* html */ `
-            <fast-option></fast-option>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-option></fast-option>
+            `;
+        });
 
         await expect(element).toHaveAttribute("role", "option");
     });
 
     test("should set the `aria-disabled` attribute when disabled", async () => {
-        await page.setContent(/* html */ `
-            <fast-option disabled></fast-option>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-option disabled></fast-option>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-disabled", "true");
 
@@ -41,24 +48,12 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });
 
-    test('should add the "disabled" class when disabled', async () => {
-        await page.setContent(/* html */ `
-            <fast-option disabled></fast-option>
-        `);
-
-        await expect(element).toHaveClass(/disabled/);
-
-        await element.evaluate((node: FASTListboxOption) => {
-            node.disabled = false;
-        });
-
-        await expect(element).not.toHaveClass(/disabled/);
-    });
-
     test("should set the `aria-selected` attribute when selected", async () => {
-        await page.setContent(/* html */ `
-            <fast-option selected></fast-option>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-option selected></fast-option>
+            `;
+        });
 
         await expect(element).toHaveAttribute("aria-selected", "true");
 
@@ -69,24 +64,12 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveAttribute("aria-selected", "false");
     });
 
-    test('should add the "selected" class when selected', async () => {
-        await page.setContent(/* html */ `
-            <fast-option selected></fast-option>
-        `);
-
-        await expect(element).toHaveClass(/selected/);
-
-        await element.evaluate((node: FASTListboxOption) => {
-            node.selected = false;
-        });
-
-        await expect(element).not.toHaveClass(/selected/);
-    });
-
     test("should set the `aria-checked` attribute when checked", async () => {
-        await page.setContent(/* html */ `
-            <fast-option></fast-option>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-option></fast-option>
+            `;
+        });
 
         await expect(element).not.hasAttribute("aria-checked");
 
@@ -103,30 +86,12 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveAttribute("aria-checked", "false");
     });
 
-    test('should add the "checked" class when checked', async () => {
-        await page.setContent(/* html */ `
-            <fast-option></fast-option>
-        `);
-
-        await expect(element).not.toHaveClass(/checked/);
-
-        await element.evaluate((node: FASTListboxOption) => {
-            node.checked = true;
-        });
-
-        await expect(element).toHaveClass(/checked/);
-
-        await element.evaluate((node: FASTListboxOption) => {
-            node.checked = false;
-        });
-
-        await expect(element).not.toHaveClass(/checked/);
-    });
-
     test("should have an empty string `value` when the `value` attribute exists and is empty", async () => {
-        await page.setContent(/* html */ `
-            <fast-option value=""></fast-option>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-option value=""></fast-option>
+            `;
+        });
 
         await element.evaluate((node: FASTListboxOption) => {
             node.innerText = "hello";
@@ -138,9 +103,11 @@ test.describe("ListboxOption", () => {
     });
 
     test("should return the text content when the `value` attribute does not exist", async () => {
-        await page.setContent(/* html */ `
-            <fast-option>hello</fast-option>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-option>hello</fast-option>
+            `;
+        });
 
         await expect(element).toHaveText("hello");
 
@@ -148,28 +115,26 @@ test.describe("ListboxOption", () => {
     });
 
     test("should return the trimmed text content with the `text` property", async () => {
-        await page.setContent(/* html */ `
-            <fast-option>
-                hello
-                world
-            </fast-option>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-option>
+                    hello
+                    world
+                </fast-option>
+            `;
+        });
 
-        await expect(element).toHaveJSProperty(
-            "textContent",
-            `
-                hello
-                world
-            `
-        );
+        await expect(element).toHaveText(/\n\s{20}hello\n\s{20}world\n\s{16}/);
 
         await expect(element).toHaveText("hello world");
     });
 
     test("should always return the `value` as a string", async () => {
-        await page.setContent(/* html */ `
-            <fast-option value="1"></fast-option>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-option value="1"></fast-option>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("value", "1");
 

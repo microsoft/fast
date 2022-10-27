@@ -6,11 +6,16 @@ import type { FASTListboxElement } from "./listbox.element.js";
 test.describe("Listbox", () => {
     let page: Page;
     let element: Locator;
+    let root: Locator;
     let options: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
+
         element = page.locator("fast-listbox");
+
+        root = page.locator("#root");
+
         options = element.locator("fast-option");
 
         await page.goto(fixtureURL("listbox--listbox"));
@@ -21,33 +26,39 @@ test.describe("Listbox", () => {
     });
 
     test("should have a tabindex of 0 when `disabled` is not defined", async () => {
-        await page.setContent(/* html */ `
-            <fast-listbox>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-listbox>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-listbox>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-listbox>
+            `;
+        });
 
         await expect(element).toHaveAttribute("tabindex", "0");
     });
 
     test("should NOT have a tabindex when `disabled` is true", async () => {
-        await page.setContent(/* html */ `
-            <fast-listbox disabled></fast-listbox>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-listbox disabled></fast-listbox>
+            `;
+        });
 
-        expect(await element.getAttribute("tabindex")).toBeNull();
+        await expect(element).not.hasAttribute("tabindex");
     });
 
     test("should select nothing when no options have the `selected` attribute", async () => {
-        await page.setContent(/* html */ `
-            <fast-listbox>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-listbox>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-listbox>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-listbox>
+            `;
+        });
 
         expect(
             await options.evaluateAll(options =>
@@ -61,13 +72,15 @@ test.describe("Listbox", () => {
     });
 
     test("should select the option with a `selected` attribute", async () => {
-        await page.setContent(/* html */ `
-            <fast-listbox>
-                <fast-option>Option 1</fast-option>
-                <fast-option selected>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-listbox>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-listbox>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option selected>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-listbox>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("selectedIndex", 1);
 
@@ -77,21 +90,25 @@ test.describe("Listbox", () => {
     });
 
     test("should set the `size` property to match the `size` attribute", async () => {
-        await page.setContent(/* html */ `
-            <fast-listbox size="5"></fast-listbox>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-listbox size="5"></fast-listbox>
+            `;
+        });
 
         await expect(element).toHaveJSProperty("size", 5);
     });
 
     test("should set the `size` attribute to match the `size` property", async () => {
-        await page.setContent(/* html */ `
-            <fast-listbox>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-listbox>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-listbox>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-listbox>
+            `;
+        });
 
         await element.evaluate((node: FASTListboxElement) => {
             node.size = 5;
@@ -104,13 +121,15 @@ test.describe("Listbox", () => {
         "should set the `size` property to 0 when a negative value is set",
         () => {
             test("via the `size` property", async () => {
-                await page.setContent(/* html */ `
-                    <fast-listbox>
-                        <fast-option>Option 1</fast-option>
-                        <fast-option>Option 2</fast-option>
-                        <fast-option>Option 3</fast-option>
-                    </fast-listbox>
-                `);
+                await root.evaluate(node => {
+                    node.innerHTML = /* html */ `
+                        <fast-listbox>
+                            <fast-option>Option 1</fast-option>
+                            <fast-option>Option 2</fast-option>
+                            <fast-option>Option 3</fast-option>
+                        </fast-listbox>
+                    `;
+                });
 
                 await element.evaluate((node: FASTListboxElement) => {
                     node.size = 1;
@@ -128,13 +147,15 @@ test.describe("Listbox", () => {
             });
 
             test("via the `size` attribute", async () => {
-                await page.setContent(/* html */ `
-                    <fast-listbox>
-                        <fast-option>Option 1</fast-option>
-                        <fast-option>Option 2</fast-option>
-                        <fast-option>Option 3</fast-option>
-                    </fast-listbox>
-                `);
+                await root.evaluate(node => {
+                    node.innerHTML = /* html */ `
+                        <fast-listbox>
+                            <fast-option>Option 1</fast-option>
+                            <fast-option>Option 2</fast-option>
+                            <fast-option>Option 3</fast-option>
+                        </fast-listbox>
+                    `;
+                });
 
                 await element.evaluate((node: FASTListboxElement) =>
                     node.setAttribute("size", "1")
@@ -154,13 +175,15 @@ test.describe("Listbox", () => {
     );
 
     test("should set the `aria-setsize` and `aria-posinset` properties on slotted options", async () => {
-        await page.setContent(/* html */ `
-            <fast-listbox>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-listbox>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-listbox>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-listbox>
+            `;
+        });
 
         const optionsCount = await options.count();
 
@@ -175,13 +198,15 @@ test.describe("Listbox", () => {
     });
 
     test("should set a unique ID for each slotted option without an ID", async () => {
-        await page.setContent(/* html */ `
-            <fast-listbox>
-                <fast-option>Option 1</fast-option>
-                <fast-option id="second-option">Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-listbox>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-listbox>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option id="second-option">Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-listbox>
+            `;
+        });
 
         await expect(options.nth(0)).toHaveAttribute("id", /option-\d+/);
 
@@ -191,13 +216,15 @@ test.describe("Listbox", () => {
     });
 
     test("should set the `aria-activedescendant` property to the ID of the currently selected option", async () => {
-        await page.setContent(/* html */ `
-            <fast-listbox>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-listbox>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-listbox>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-listbox>
+            `;
+        });
 
         const optionsCount = await options.count();
 
@@ -213,13 +240,15 @@ test.describe("Listbox", () => {
     });
 
     test("should set the `aria-multiselectable` attribute to match the `multiple` attribute", async () => {
-        await page.setContent(/* html */ `
-            <fast-listbox>
-                <fast-option>Option 1</fast-option>
-                <fast-option>Option 2</fast-option>
-                <fast-option>Option 3</fast-option>
-            </fast-listbox>
-        `);
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-listbox>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-listbox>
+            `;
+        });
 
         await element.evaluate((node: FASTListboxElement) => {
             node.multiple = true;
@@ -231,8 +260,6 @@ test.describe("Listbox", () => {
             node.multiple = false;
         });
 
-        await page.evaluate(() => new Promise(requestAnimationFrame));
-
-        expect(await element.getAttribute("aria-multiselectable")).toBeNull();
+        await expect(element).not.hasAttribute("aria-multiselectable");
     });
 });
