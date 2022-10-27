@@ -156,4 +156,15 @@ test.describe("The DOM shim", () => {
             })
         })
     });
+
+    test.describe("has a matchMedia method", () => {
+        test("that can returns the MediaQueryList supplied to createWindow", () => {
+            class MyMediaQueryList {};
+
+            const win: any = createWindow({MediaQueryList: MyMediaQueryList});
+            const list = win.matchMedia();
+
+            expect(list).toBeInstanceOf(MyMediaQueryList);
+        })
+    });
 })
