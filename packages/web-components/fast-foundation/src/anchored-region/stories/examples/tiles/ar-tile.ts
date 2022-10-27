@@ -33,8 +33,10 @@ export interface TileData {
     title: string;
     value: number;
     fixed?: boolean;
-    gridX?: number;
-    gridY?: number;
+    column?: number;
+    row?: number;
+    tileId?: string;
+    anchorId?: string;
 }
 
 /**
@@ -56,10 +58,6 @@ export class ARTile extends FASTAnchoredRegion {
     public draggingChanged(): void {
         this.classList.toggle("dragging", this.dragging);
     }
-
-    @attr
-    public fixed: boolean = false;
-    public fixedChanged(): void {}
 
     public socketTop: ARSocket;
     public socketRight: ARSocket;
@@ -96,7 +94,7 @@ export class ARTile extends FASTAnchoredRegion {
      *
      */
     public handleMouseDown = (e: MouseEvent): void => {
-        if (e.defaultPrevented || this.fixed) {
+        if (e.defaultPrevented || this.tileData.fixed) {
             return;
         }
         e.preventDefault();
@@ -105,7 +103,7 @@ export class ARTile extends FASTAnchoredRegion {
         window.addEventListener(eventMouseMove, this.handleMouseMove);
         window.addEventListener(eventMouseUp, this.handleMouseUp);
         this.lastMouseEvent = e;
-        this.$emit("dragtilestart", { tile: this, event: e }, { composed: true });
+        this.$emit("dragtilestart", { tile: this, event: e });
         this.updatePosition();
     };
 

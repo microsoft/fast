@@ -7,6 +7,7 @@ import {
     Updates,
     when,
 } from "@microsoft/fast-element";
+import type { AutoUpdateMode } from "src/anchored-region/anchored-region.options.js";
 import { FASTAnchoredRegion } from "../../../anchored-region.js";
 import type { ARTile } from "./ar-tile.js";
 
@@ -144,7 +145,7 @@ export function arSocketTemplate<T extends ARSocket>(): ElementViewTemplate<T> {
                     <div
                         class="background ${x => x.socketFacing}"
                         style="opacity:${x =>
-                            (100 - x.getDistance(x.anchorRect, x.regionRect)) / 200};"
+                            (200 - x.getDistance(x.anchorRect, x.regionRect)) / 200};"
                     ></div>
                 `
             )}
