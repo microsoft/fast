@@ -33,6 +33,13 @@ export interface ElementControllerStrategy {
     new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
 }
 
+const enum ConnectionState {
+    connecting,
+    connected,
+    disconnecting,
+    disconnected,
+}
+
 /**
  * Controls the lifecycle and rendering of a `FASTElement`.
  * @public
@@ -45,7 +52,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
     private _isConnected: boolean = false;
-    private connecting = false;
+    private connectionState: ConnectionState = ConnectionState.disconnected;
     private guardBehaviorConnection = false;
     private behaviors: Map<HostBehavior<TElement>, number> | null = null;
     private _mainStyles: ElementStyles | null = null;
@@ -84,12 +91,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      */
     public get isConnected(): boolean {
         Observable.track(this, isConnectedPropertyName);
-        return this._isConnected;
-    }
-
-    private setIsConnected(value: boolean): void {
-        this._isConnected = value;
-        Observable.notify(this, isConnectedPropertyName);
+        return this.connectionState === ConnectionState.connected;
     }
 
     /**
@@ -227,7 +229,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             if (
                 behavior.connectedCallback &&
                 !this.guardBehaviorConnection &&
-                (this.isConnected || this.connecting)
+                (this.connectionState === ConnectionState.connected ||
+                    this.connectionState === ConnectionState.connecting)
             ) {
                 behavior.connectedCallback(this);
             }
@@ -324,11 +327,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Runs connected lifecycle behavior on the associated element.
      */
     public connect(): void {
-        if (this._isConnected) {
+        if (this.connectionState === ConnectionState.connected) {
             return;
         }
 
-        this.connecting = true;
+        this.connectionState = ConnectionState.connecting;
 
         // If we have any observables that were bound, re-apply their values.
         if (this.boundObservables !== null) {
@@ -367,8 +370,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             this.view.bind(this.source);
         }
 
-        this.setIsConnected(true);
-        this.connecting = false;
+        this.connectionState = ConnectionState.connected;
+        Observable.notify(this, "isConnected");
     }
 
     /**
@@ -379,7 +382,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
-        this.setIsConnected(false);
+        this.connectionState = ConnectionState.disconnecting;
+        Observable.notify(this, "isConnected");
 
         if (this.view !== null) {
             this.view.unbind();
@@ -391,6 +395,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 key.disconnectedCallback && key.disconnectedCallback(this);
             }
         }
+
+        this.connectionState = ConnectionState.disconnected;
     }
 
     /**

@@ -321,7 +321,7 @@ describe("The ElementController", () => {
     it("should have an observable isConnected property", () => {
         const { element, controller } = createController();
         let attached = controller.isConnected;
-        const handler = { handleChange: () => (attached = !attached) };
+        const handler = { handleChange: () => {attached = controller.isConnected} };
         Observable.getNotifier(controller).subscribe(handler, "isConnected");
 
         expect(attached).to.equal(false);
