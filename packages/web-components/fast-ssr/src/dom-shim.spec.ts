@@ -1,8 +1,8 @@
 import "./install-dom-shim.js";
 import { expect, test } from "@playwright/test";
-import  { createWindow } from "./dom-shim.js";
 import * as Foundation from "@microsoft/fast-foundation";
 import { ElementViewTemplate, FASTElement } from "@microsoft/fast-element";
+import  { createWindow } from "./dom-shim.js";
 import fastSSR from "./exports.js";
 
 test.describe("createWindow", () => {
@@ -74,9 +74,7 @@ const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTListbox as any as typeof FASTElement, Foundation.listboxTemplate()],
     [Foundation.FASTListboxOption, Foundation.listboxOptionTemplate()],
     [Foundation.FASTMenu, Foundation.menuTemplate()],
-    [Foundation.FASTMenuItem, Foundation.menuItemTemplate({
-        anchoredRegion
-    })],
+    [Foundation.FASTMenuItem, Foundation.menuItemTemplate()],
     [Foundation.FASTNumberField, Foundation.numberFieldTemplate()],
     [Foundation.FASTPicker, Foundation.pickerTemplate({
         anchoredRegion,

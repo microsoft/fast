@@ -1348,16 +1348,13 @@ export class FASTMenuItem extends FASTElement {
     checked: boolean;
     // (undocumented)
     protected checkedChanged(oldValue: boolean, newValue: boolean): void;
-    // @internal (undocumented)
-    connectedCallback(): void;
-    // @internal
-    currentDirection: Direction;
+    cleanup: () => void;
     disabled: boolean;
     // @internal (undocumented)
     disconnectedCallback(): void;
     expanded: boolean;
     // (undocumented)
-    protected expandedChanged(oldValue: boolean): void;
+    protected expandedChanged(prev: boolean | undefined, next: boolean): void;
     // @internal (undocumented)
     handleMenuItemClick: (e: MouseEvent) => boolean;
     // @internal (undocumented)
@@ -1367,15 +1364,20 @@ export class FASTMenuItem extends FASTElement {
     // @internal (undocumented)
     handleMouseOver: (e: MouseEvent) => boolean;
     // @internal (undocumented)
-    hasSubmenu: boolean;
+    get hasSubmenu(): boolean;
     hidden: boolean;
     role: MenuItemRole;
+    // @internal
+    slottedSubmenu: HTMLElement[];
+    // @internal
+    protected slottedSubmenuChanged(prev: HTMLElement[] | undefined, next: HTMLElement[]): void;
     // @internal (undocumented)
-    submenu: Element | undefined;
+    submenu: HTMLElement | undefined;
+    // @internal
+    submenuContainer: HTMLDivElement;
     // @internal (undocumented)
     submenuLoaded: () => void;
-    // @internal
-    submenuRegion: FASTAnchoredRegion;
+    updateSubmenu(): void;
 }
 
 // @internal
@@ -2383,7 +2385,6 @@ export type MenuItemOptions = StartEndOptions & {
     checkboxIndicator?: string | SyntheticViewTemplate;
     expandCollapseGlyph?: string | SyntheticViewTemplate;
     radioIndicator?: string | SyntheticViewTemplate;
-    anchoredRegion: TemplateElementDependency;
 };
 
 // @public
@@ -2397,7 +2398,7 @@ export const MenuItemRole: {
 export type MenuItemRole = typeof MenuItemRole[keyof typeof MenuItemRole];
 
 // @public
-export function menuItemTemplate<T extends FASTMenuItem>(options: MenuItemOptions): ElementViewTemplate<T>;
+export function menuItemTemplate<T extends FASTMenuItem>(options?: MenuItemOptions): ElementViewTemplate<T>;
 
 // @beta
 export const MenuPlacement: {
@@ -2814,7 +2815,6 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/menu-item/menu-item.d.ts:15:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:11:5 - (ae-incompatible-release-tags) The symbol "pickerMenuOption" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
