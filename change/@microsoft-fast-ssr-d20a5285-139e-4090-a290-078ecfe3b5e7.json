@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "use floating-ui for menu-item submenus",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

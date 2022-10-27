@@ -94,6 +94,7 @@
     "wait-on": "^6.0.1"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.0.3",
     "@microsoft/fast-element": "^2.0.0-beta.15",
     "@microsoft/fast-web-utilities": "^6.0.0",
     "tabbable": "^5.2.0",
