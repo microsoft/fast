@@ -4,6 +4,7 @@ import * as Foundation from "@microsoft/fast-foundation";
 import { ElementViewTemplate, FASTElement } from "@microsoft/fast-element";
 import  { createWindow } from "./dom-shim.js";
 import fastSSR from "./exports.js";
+import { consolidate } from "./test-utilities/consolidate.js";
 
 test.describe("createWindow", () => {
     test("should create a window with a document property that is an instance of the window's Document constructor", () => {
@@ -118,7 +119,7 @@ test.describe("The DOM shim", () => {
         test(`should support construction and connection of the ${ctor.name} component and template during SSR rendering`, () => {
             const { templateRenderer } = fastSSR();
             const templateString = `<${name}></${name}>`;
-            expect(() => templateRenderer.render(templateString)).not.toThrow();
+            expect(() => consolidate(templateRenderer.render(templateString))).not.toThrow();
         });
     });
 
