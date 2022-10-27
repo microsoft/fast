@@ -33,7 +33,7 @@ export interface ElementControllerStrategy {
     new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
 }
 
-const enum ConnectionState {
+const enum Stages {
     connecting,
     connected,
     disconnecting,
@@ -51,7 +51,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
-    private connectionState: ConnectionState = ConnectionState.disconnected;
+    private stage: Stages = Stages.disconnected;
     /**
      * A guard against connecting behaviors multiple times
      * during connect in scenarios where a behavior adds
@@ -95,7 +95,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      */
     public get isConnected(): boolean {
         Observable.track(this, isConnectedPropertyName);
-        return this.connectionState === ConnectionState.connected;
+        return this.stage === Stages.connected;
     }
 
     /**
@@ -233,8 +233,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             if (
                 behavior.connectedCallback &&
                 !this.guardBehaviorConnection &&
-                (this.connectionState === ConnectionState.connected ||
-                    this.connectionState === ConnectionState.connecting)
+                (this.stage === Stages.connected || this.stage === Stages.connecting)
             ) {
                 behavior.connectedCallback(this);
             }
@@ -331,14 +330,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Runs connected lifecycle behavior on the associated element.
      */
     public connect(): void {
-        if (
-            this.connectionState === ConnectionState.connected ||
-            this.connectionState === ConnectionState.connecting
-        ) {
+        if (this.stage === Stages.connected || this.stage === Stages.connecting) {
             return;
         }
 
-        this.connectionState = ConnectionState.connecting;
+        this.stage = Stages.connecting;
 
         // If we have any observables that were bound, re-apply their values.
         if (this.boundObservables !== null) {
@@ -373,7 +369,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             this.view.bind(this.source);
         }
 
-        this.connectionState = ConnectionState.connected;
+        this.stage = Stages.connected;
         Observable.notify(this, isConnectedPropertyName);
     }
 
@@ -385,7 +381,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
-        this.connectionState = ConnectionState.disconnecting;
+        this.stage = Stages.disconnecting;
         Observable.notify(this, isConnectedPropertyName);
 
         if (this.view !== null) {
@@ -399,7 +395,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             }
         }
 
-        this.connectionState = ConnectionState.disconnected;
+        this.stage = Stages.disconnected;
     }
 
     /**
@@ -433,7 +429,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         detail?: any,
         options?: Omit<CustomEventInit, "detail">
     ): void | boolean {
-        if (this.connectionState === ConnectionState.connected) {
+        if (this.stage === Stages.connected) {
             return this.source.dispatchEvent(
                 new CustomEvent(type, { detail, ...defaultEventOptions, ...options })
             );
