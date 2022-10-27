@@ -1,6 +1,8 @@
 import {
     bind,
+    children,
     css,
+    elements,
     ElementViewTemplate,
     FASTElement,
     html,
@@ -44,12 +46,12 @@ export interface BoardTile {
  */
 export class ARTiles extends FASTElement {
     @observable
-    public tiles: TileData[] = [
-        { title: "A", value: 1 },
-        { title: "B", value: 1 },
-        { title: "C", value: 1 },
-        { title: "D", value: 1 },
-        { title: "E", value: 1 },
+    public tileData: TileData[] = [
+        { title: "A", value: 1, column: 5, row: 5, fixed: true },
+        { title: "B", value: 1, column: 6, row: 5, fixed: true },
+        { title: "C", value: 1, column: 7, row: 5, fixed: true },
+        { title: "D", value: 1, column: 5, row: 4, fixed: true },
+        { title: "E", value: 1, column: 5, row: 6, fixed: true },
         { title: "F", value: 1 },
         { title: "G", value: 1 },
         { title: "H", value: 1 },
@@ -80,7 +82,7 @@ export class ARTiles extends FASTElement {
     }
 
     @observable
-    public boardTiles: BoardTile[] = [];
+    public boardSpaces: BoardTile[] = [];
 
     @observable
     public horizontalWords: ScoreWord[] = [];
@@ -97,10 +99,13 @@ export class ARTiles extends FASTElement {
     public verticalWordDisplay: HTMLDivElement;
     public horizontalWordDisplay: HTMLDivElement;
 
+    public allTiles: ARTile[] = [];
+
     private allSockets: ARSocket[] = [];
     private activeSockets: ARSocket[] = [];
     private placedTiles: ARTile[] = [];
-    private fixedTiles: ARTile[] = [];
+    private fixedTileData: TileData[] = [];
+    private handTileData: TileData[] = [];
 
     private currentDragTile: ARTile | undefined;
     private dragTileOriginalSocket: ARSocket | undefined;
@@ -130,22 +135,13 @@ export class ARTiles extends FASTElement {
         this.horizontalWordPlaceholder = document.createComment("");
         this.boardTilePlaceholder = document.createComment("");
 
-        for (let row = 1; row <= this.boardRows; row++) {
-            for (let column = 1; column <= this.boardColumns; column++) {
-                this.boardTiles.push({
-                    row,
-                    column,
-                });
-            }
-        }
-
         if (this.behaviorOrchestrator === null) {
             this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
 
             this.$fastController.addBehavior(this.behaviorOrchestrator);
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<ARTiles>(
-                    bind(x => x.tiles, false),
+                    bind(x => x.handTileData, false),
                     bind(x => dispenserTemplate, false),
                     { positioning: true }
                 ),
@@ -154,7 +150,16 @@ export class ARTiles extends FASTElement {
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<ARTiles>(
-                    bind(x => x.tiles, false),
+                    bind(x => x.handTileData, false),
+                    bind(x => letterTileTemplate, false),
+                    { positioning: true }
+                ),
+                this.layout.appendChild(this.tilePlaceholder)
+            );
+
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective<ARTiles>(
+                    bind(x => x.fixedTileData, false),
                     bind(x => letterTileTemplate, false),
                     { positioning: true }
                 ),
@@ -181,7 +186,7 @@ export class ARTiles extends FASTElement {
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<ARTiles>(
-                    bind(x => x.boardTiles, false),
+                    bind(x => x.boardSpaces, false),
                     bind(x => boardTileTemplate, false),
                     { positioning: true }
                 ),
@@ -281,7 +286,7 @@ export class ARTiles extends FASTElement {
     };
 
     private placeTile(tile: ARTile): void {
-        tile.fixed = true;
+        //tile.fixed = true;
     }
 
     private isValidSocket(socket: ARSocket): boolean {
@@ -463,7 +468,6 @@ export class ARTiles extends FASTElement {
         tile.anchorElement = socket;
         tile.useVirtualAnchor = false;
         if (!this.placedTiles.includes(tile) && !this.hand.contains(socket)) {
-            console.debug(`place tile: ${tile.tileData.title}`);
             this.placedTiles.push(tile);
         }
         this.updateScore();
@@ -481,7 +485,6 @@ export class ARTiles extends FASTElement {
             }
         });
         if (this.placedTiles.includes(tile)) {
-            console.debug(`remove tile: ${tile.tileData.title}`);
             this.placedTiles.splice(this.placedTiles.indexOf(tile), 1);
         }
 
@@ -566,7 +569,52 @@ export class ARTiles extends FASTElement {
         this.score = newScore;
     }
 
-    private reset(): void {}
+    private reset(): void {
+        this.score = 0;
+        this.allSockets.splice(0, this.allSockets.length);
+        this.activeSockets.splice(0, this.activeSockets.length);
+        this.placedTiles.splice(0, this.placedTiles.length);
+        this.fixedTileData.splice(0, this.fixedTileData.length);
+        this.boardSpaces.splice(0, this.boardSpaces.length);
+        this.currentDragTile = undefined;
+        this.dragTileOriginalSocket = undefined;
+        this.hoverSocket = undefined;
+
+        for (let row = 1; row <= this.boardRows; row++) {
+            for (let column = 1; column <= this.boardColumns; column++) {
+                this.boardSpaces.push({
+                    row,
+                    column,
+                });
+            }
+        }
+
+        this.tileData.forEach(thisTileData => {
+            thisTileData.tileId = `tile-${this.tileData.indexOf(thisTileData)}`;
+            if (thisTileData.fixed) {
+                this.fixedTileData.push(thisTileData);
+            } else {
+                this.handTileData.push(thisTileData);
+            }
+        });
+
+        Updates.enqueue(this.updateTiles);
+    }
+
+    private updateTiles = (): void => {
+        this.placedTiles.splice(0, this.placedTiles.length);
+        this.allTiles.forEach(tile => {
+            if (tile.tileData.row && tile.tileData.column) {
+                this.placedTiles.push(tile);
+            }
+        });
+        this.updateTileConnections();
+        this.updateScore();
+    };
+
+    private updateTileConnections(): void {
+        this.placedTiles.forEach(tile => {});
+    }
 }
 
 const sectionDividerTemplate = html`
@@ -587,10 +635,14 @@ const scoreWordTemplate: ViewTemplate<ScoreWord> = html`
     </div>
 `;
 
-const letterTileTemplate: ViewTemplate<ARTiles> = html`
+const letterTileTemplate: ViewTemplate<TileData> = html`
     <ar-tile
         :tileData="${x => x}"
-        anchor="dispenser-${(x, c) => c.index}"
+        id="${x => x.tileId}"
+        anchor="${x =>
+            x.row && x.column
+                ? `board-tile-${x.row}-${x.column}`
+                : `dispenser-${x.tileId}`}"
         viewport="layout"
         vertical-viewport-lock="true"
         horizontal-viewport-lock="true"
@@ -599,9 +651,9 @@ const letterTileTemplate: ViewTemplate<ARTiles> = html`
     </ar-tile>
 `;
 
-const dispenserTemplate: ViewTemplate<ARTile> = html`
+const dispenserTemplate: ViewTemplate<TileData> = html`
     <ar-socket
-        id="dispenser-${(x, c) => c.index}"
+        id="dispenser-${x => x.tileId}"
         socket-facing="center"
         class="dispenser"
     ></ar-socket>
@@ -618,12 +670,16 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                 Tiles
             </h1>
             ${sectionDividerTemplate} Blah ${sectionDividerTemplate}
-            <div id="layout" class="layout" ${ref("layout")}>
-                <div id="board" class="board" ${ref("board")}>
-                    <ar-socket socket-facing="center" class="start">
-                        Start
-                    </ar-socket>
-                </div>
+            <div
+                id="layout"
+                class="layout"
+                ${children({
+                    property: "allTiles",
+                    filter: elements("ar-tile"),
+                })}
+                ${ref("layout")}
+            >
+                <div id="board" class="board" ${ref("board")}></div>
                 <div id="hand" class="hand" ${ref("hand")}></div>
                 <div class="scoring">
                     Score: ${x => x.score}
