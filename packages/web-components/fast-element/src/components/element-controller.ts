@@ -51,7 +51,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
-    private _isConnected: boolean = false;
     private connectionState: ConnectionState = ConnectionState.disconnected;
     /**
      * A guard against connecting behaviors multiple times
@@ -332,7 +331,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Runs connected lifecycle behavior on the associated element.
      */
     public connect(): void {
-        if (this.connectionState === ConnectionState.connected) {
+        if (
+            this.connectionState === ConnectionState.connected ||
+            this.connectionState === ConnectionState.connecting
+        ) {
             return;
         }
 
@@ -372,19 +374,19 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         this.connectionState = ConnectionState.connected;
-        Observable.notify(this, "isConnected");
+        Observable.notify(this, isConnectedPropertyName);
     }
 
     /**
      * Runs disconnected lifecycle behavior on the associated element.
      */
     public disconnect(): void {
-        if (!this._isConnected) {
+        if (!this.isConnected) {
             return;
         }
 
         this.connectionState = ConnectionState.disconnecting;
-        Observable.notify(this, "isConnected");
+        Observable.notify(this, isConnectedPropertyName);
 
         if (this.view !== null) {
             this.view.unbind();
@@ -431,7 +433,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         detail?: any,
         options?: Omit<CustomEventInit, "detail">
     ): void | boolean {
-        if (this._isConnected) {
+        if (this.connectionState === ConnectionState.connected) {
             return this.source.dispatchEvent(
                 new CustomEvent(type, { detail, ...defaultEventOptions, ...options })
             );
