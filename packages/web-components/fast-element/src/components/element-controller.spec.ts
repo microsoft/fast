@@ -438,6 +438,32 @@ describe("The ElementController", () => {
             expect(childBehaviorBound).to.equal(true);
         });
 
+        it("should disconnect a behavior B that is added to the Controller by behavior A, where A removes B during disconnection", () => {
+            class ParentBehavior implements HostBehavior {
+                public child = new ChildBehavior();
+                connectedCallback(controller: HostController<any>): void {
+                    controller.addBehavior(this.child);
+                }
+
+                disconnectedCallback(controller) {
+                    controller.removeBehavior(this.child);
+                }
+            }
+
+            const disconnected = chai.spy();
+            class ChildBehavior implements HostBehavior {
+                disconnectedCallback = disconnected
+            }
+
+            const { controller } = createController();
+            const behavior = new ParentBehavior();
+            controller.addBehavior(behavior);
+            controller.connect();
+            controller.disconnect();
+
+            expect(behavior.child.disconnectedCallback).to.have.been.called();
+        });
+
         it("should unbind a behavior only when the behavior is removed the number of times it has been added", () => {
             class TestBehavior implements HostBehavior {
                 public bound = false;

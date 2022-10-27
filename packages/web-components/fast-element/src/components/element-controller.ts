@@ -261,7 +261,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (count === 1 || force) {
             targetBehaviors.delete(behavior);
 
-            if (behavior.disconnectedCallback && this.isConnected) {
+            if (behavior.disconnectedCallback && this.stage !== Stages.disconnected) {
                 behavior.disconnectedCallback(this);
             }
 
