@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
+import { attr, css, FASTElement, observable, Updates } from "@microsoft/fast-element";
 import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
 import { getDirection } from "../utilities/direction.js";
 import { IntersectionService } from "../utilities/intersection-service.js";
@@ -26,6 +26,23 @@ import type {
  * @public
  */
 export class FASTAnchoredRegion extends FASTElement {
+    private static hiddenStyles = css`
+        :host {
+            opacity: 0;
+            pointer-events: "none";
+        }
+    `;
+
+    private static fixedStyles = css`
+        :host {
+            position: fixed;
+        }
+    `;
+    private static absoluteStyles = css`
+        :host {
+            position: fixed;
+        }
+    `;
     /**
      * The HTML ID of the anchor element this region is positioned relative to
      *
@@ -235,6 +252,13 @@ export class FASTAnchoredRegion extends FASTElement {
         if (this.$fastController.isConnected && this.initialLayoutComplete) {
             this.initialize();
         }
+        if (this.fixedPlacement) {
+            FASTAnchoredRegion.absoluteStyles.removeStylesFrom(this);
+            FASTAnchoredRegion.fixedStyles.addStylesTo(this);
+        } else {
+            FASTAnchoredRegion.absoluteStyles.addStylesTo(this);
+            FASTAnchoredRegion.fixedStyles.removeStylesFrom(this);
+        }
     }
 
     /**
@@ -296,11 +320,13 @@ export class FASTAnchoredRegion extends FASTElement {
     /**
      * indicates the current horizontal position of the region
      */
+    @observable
     public verticalPosition: AnchoredRegionPositionLabel | undefined;
 
     /**
      * indicates the current vertical position of the region
      */
+    @observable
     public horizontalPosition: AnchoredRegionPositionLabel | undefined;
 
     /**
@@ -330,6 +356,12 @@ export class FASTAnchoredRegion extends FASTElement {
     private pendingPositioningUpdate: boolean = false;
     private pendingReset: boolean = false;
     private currentDirection: Direction = Direction.ltr;
+
+    /**
+     * @internal
+     */
+    @observable
+    public loaded: boolean = false;
     private regionVisible: boolean = false;
 
     // indicates that a layout update should occur even if geometry has not changed
@@ -451,16 +483,14 @@ export class FASTAnchoredRegion extends FASTElement {
 
         this.verticalPosition = undefined;
         this.horizontalPosition = undefined;
-
-        this.style.opacity = "0";
-        this.style.pointerEvents = "none";
+        FASTAnchoredRegion.hiddenStyles.addStylesTo(this);
 
         this.forceUpdate = false;
 
-        this.style.position = this.fixedPlacement ? "fixed" : "absolute";
-        this.updatePositionClasses();
-
-        this.updateRegionStyle();
+        (this.fixedPlacement
+            ? FASTAnchoredRegion.fixedStyles
+            : FASTAnchoredRegion.absoluteStyles
+        ).addStylesTo(this);
     }
 
     /**
@@ -909,13 +939,13 @@ export class FASTAnchoredRegion extends FASTElement {
 
         if (!this.regionVisible) {
             this.regionVisible = true;
-            this.style.removeProperty("pointer-events");
-            this.style.removeProperty("opacity");
-            this.classList.toggle("loaded", true);
+            if (FASTAnchoredRegion.hiddenStyles.isAttachedTo(this)) {
+                this.$fastController.removeStyles(FASTAnchoredRegion.hiddenStyles);
+            }
+
+            this.loaded = true;
             this.$emit("loaded", this, { bubbles: false });
         }
-
-        this.updatePositionClasses();
 
         if (positionChanged) {
             // emit change event
@@ -931,23 +961,6 @@ export class FASTAnchoredRegion extends FASTElement {
         this.style.width = this.regionWidth;
         this.style.height = this.regionHeight;
         this.style.transform = `translate(${this.translateX}px, ${this.translateY}px)`;
-    };
-
-    /**
-     *  Updates the css classes that reflect the current position of the element
-     */
-    private updatePositionClasses = (): void => {
-        this.classList.toggle("top", this.verticalPosition === "start");
-        this.classList.toggle("bottom", this.verticalPosition === "end");
-        this.classList.toggle("inset-top", this.verticalPosition === "insetStart");
-        this.classList.toggle("inset-bottom", this.verticalPosition === "insetEnd");
-        this.classList.toggle("vertical-center", this.verticalPosition === "center");
-
-        this.classList.toggle("left", this.horizontalPosition === "start");
-        this.classList.toggle("right", this.horizontalPosition === "end");
-        this.classList.toggle("inset-left", this.horizontalPosition === "insetStart");
-        this.classList.toggle("inset-right", this.horizontalPosition === "insetEnd");
-        this.classList.toggle("horizontal-center", this.horizontalPosition === "center");
     };
 
     /**

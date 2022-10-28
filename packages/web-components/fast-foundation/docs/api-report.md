@@ -715,6 +715,8 @@ export class FASTAnchoredRegion extends FASTElement {
     protected horizontalViewportLockChanged(): void;
     // @internal
     initialLayoutComplete: boolean;
+    // @internal (undocumented)
+    loaded: boolean;
     update: () => void;
     verticalDefaultPosition: VerticalPosition;
     // (undocumented)

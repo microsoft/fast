@@ -8,7 +8,11 @@ import { shouldBubble } from "./event-utilities.js";
 /**
  * @beta
  */
-export class Node extends EventTarget {}
+export class Node extends EventTarget {
+    getRootNode() {
+        return globalThis["document"];
+    }
+}
 
 /**
  * @beta
@@ -95,6 +99,10 @@ export class Document extends Node {
     }
     createElement() {
         return {};
+    }
+
+    getElementById() {
+        return null;
     }
 
     public dispatchEvent(event: Event): boolean {
@@ -200,6 +208,12 @@ export class MutationObserver {
     observe() {}
 }
 
+export class ResizeObserver {
+    observe() {}
+    disconnect() {}
+    unobserve() {}
+}
+
 /**
  * Shim of MediaQueryList.
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList} */
@@ -230,6 +244,7 @@ export function createWindow(
         public ShadowRoot = ShadowRoot;
         public CustomElementRegistry = CustomElementRegistry;
         public MutationObserver = MutationObserver;
+        public ResizeObserver = ResizeObserver;
         public MediaQueryList = MediaQueryList;
         public matchMedia = () => new this.MediaQueryList();
 
