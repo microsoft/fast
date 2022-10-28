@@ -4,6 +4,7 @@ import {
     ViewBehaviorTargets,
     ViewController,
 } from "../index.js";
+import { noop } from "../interfaces.js";
 
 export const Fake = Object.freeze({
     executionContext<TParent = any>(
@@ -108,6 +109,7 @@ export const Fake = Object.freeze({
             },
             source: (null as any) as TSource,
             targets,
+            toJSON: noop,
             bind(
                 source: TSource,
                 context: ExecutionContext<TParent> = Fake.executionContext()

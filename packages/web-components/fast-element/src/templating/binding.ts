@@ -1,5 +1,5 @@
 import type { Subscriber } from "../index.js";
-import { isFunction, Message } from "../interfaces.js";
+import { isFunction, Message, noop } from "../interfaces.js";
 import {
     ExecutionContext,
     Expression,
@@ -57,6 +57,11 @@ class OneTimeBinding<TSource = any, TReturn = any, TParent = any>
     bind(controller: ExpressionController): TReturn {
         return this.evaluate(controller.source, controller.context);
     }
+
+    /**
+     * Opts out of JSON stringification.
+     */
+    toJSON = noop;
 }
 
 type UpdateTarget = (

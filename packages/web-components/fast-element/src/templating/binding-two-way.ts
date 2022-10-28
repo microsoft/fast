@@ -1,4 +1,4 @@
-import { isString, Message } from "../interfaces.js";
+import { isString, Message, noop } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -133,6 +133,11 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
             value
         );
     }
+
+    /**
+     * Opts out of JSON stringification.
+     */
+    toJSON = noop;
 }
 
 class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
