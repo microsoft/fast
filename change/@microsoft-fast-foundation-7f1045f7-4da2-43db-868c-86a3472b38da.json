@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "use floating-ui for select and combobox",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}
