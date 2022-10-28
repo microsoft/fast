@@ -893,6 +893,7 @@ export class FASTCheckbox extends FormAssociatedCheckbox {
 // @public
 export class FASTCombobox extends FormAssociatedCombobox {
     autocomplete: ComboboxAutocomplete | undefined;
+    cleanup: () => void;
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
@@ -901,6 +902,8 @@ export class FASTCombobox extends FormAssociatedCombobox {
     control: HTMLInputElement;
     // @internal
     disabledChanged(prev: boolean, next: boolean): void;
+    // (undocumented)
+    disconnectedCallback(): void;
     filteredOptions: FASTListboxOption[];
     filterOptions(): void;
     // @internal
@@ -919,8 +922,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
     listbox: HTMLDivElement;
     // @internal
     listboxId: string;
-    // @internal
-    maxHeight: number;
     open: boolean;
     // @internal
     protected openChanged(): void;
@@ -929,10 +930,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
     placeholder: string;
     // @internal
     protected placeholderChanged(): void;
-    position?: SelectPosition;
-    positionAttribute?: SelectPosition;
-    // (undocumented)
-    protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition | undefined): void;
     // @internal
     selectedIndexChanged(prev: number | undefined, next: number): void;
     // @internal
@@ -1704,6 +1701,7 @@ export interface FASTSearch extends StartEnd, DelegatesARIASearch {
 //
 // @public
 export class FASTSelect extends FormAssociatedSelect {
+    cleanup: () => void;
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // @internal
@@ -1729,18 +1727,12 @@ export class FASTSelect extends FormAssociatedSelect {
     listbox: HTMLDivElement;
     // @internal
     listboxId: string;
-    // @internal
-    maxHeight: number;
     // @internal @override
     mousedownHandler(e: MouseEvent): boolean | void;
     multipleChanged(prev: boolean | undefined, next: boolean): void;
     open: boolean;
     // @internal
     protected openChanged(prev: boolean | undefined, next: boolean): void;
-    position?: SelectPosition;
-    positionAttribute?: SelectPosition;
-    // (undocumented)
-    protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition | undefined): void;
     // @internal
     selectedIndexChanged(prev: number | undefined, next: number): void;
     // @internal @override
@@ -2567,15 +2559,6 @@ export function searchTemplate<T extends FASTSearch>(options?: SearchOptions): E
 export type SelectOptions = StartEndOptions & {
     indicator?: string | SyntheticViewTemplate;
 };
-
-// @public
-export const SelectPosition: {
-    readonly above: "above";
-    readonly below: "below";
-};
-
-// @public
-export type SelectPosition = typeof SelectPosition[keyof typeof SelectPosition];
 
 // @public
 export function selectTemplate<T extends FASTSelect>(options?: SelectOptions): ElementViewTemplate<T>;
