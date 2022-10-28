@@ -1794,9 +1794,6 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     orientation: Orientation;
     // @internal (undocumented)
     position: string;
-    readOnly: boolean;
-    // (undocumented)
-    protected readOnlyChanged(): void;
     step: number;
     // @internal (undocumented)
     stepMultiplier: number;
