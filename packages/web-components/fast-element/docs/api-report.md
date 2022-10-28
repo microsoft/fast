@@ -518,6 +518,8 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     readonly sourceLifetime: SourceLifetime;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
+    // (undocumented)
+    toJSON: () => undefined;
     unbind(): void;
 }
 
@@ -758,6 +760,7 @@ export abstract class StatelessAttachedAttributeDirective<TOptions> implements H
     nodeId: string;
     // (undocumented)
     protected options: TOptions;
+    toJSON: () => undefined;
 }
 
 // @public
