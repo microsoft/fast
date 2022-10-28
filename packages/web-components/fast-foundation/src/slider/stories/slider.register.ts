@@ -123,12 +123,8 @@ const styles = css`
         bottom: 0;
     }
 
-    :host([disabled]),
-    :host([readonly]) {
-        cursor: var(--disabled-cursor);
-    }
-
     :host([disabled]) {
+        cursor: var(--disabled-cursor);
         opacity: var(--disabled-opacity);
     }
 `;

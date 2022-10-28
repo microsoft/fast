@@ -35,22 +35,6 @@ import { SliderMode } from "./slider.options.js";
  */
 export class FASTSlider extends FormAssociatedSlider implements SliderConfiguration {
     /**
-     * When true, the control will be immutable by user interaction.
-     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: readonly
-     */
-    @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean; // Map to proxy element
-    protected readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.readOnly = this.readOnly;
-        }
-    }
-
-    /**
      * @internal
      */
     public track: HTMLDivElement;
@@ -293,10 +277,6 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     }
 
     protected keypressHandler = (e: KeyboardEvent) => {
-        if (this.readOnly || this.disabled) {
-            return;
-        }
-
         if (e.key === keyHome) {
             e.preventDefault();
             this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
@@ -425,6 +405,12 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
      *  If the event handler is null it removes the events
      */
     private handleThumbMouseDown = (event: MouseEvent | null): void => {
+        if (event) {
+            if (this.disabled || event.defaultPrevented) {
+                return;
+            }
+            (event.target as HTMLElement).focus();
+        }
         const eventAction = `${event !== null ? "add" : "remove"}EventListener`;
         window[eventAction]("mouseup", this.handleWindowMouseUp);
         window[eventAction]("mousemove", this.handleMouseMove, { passive: true });
@@ -437,7 +423,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
      *  Handle mouse moves during a thumb drag operation
      */
     private handleMouseMove = (e: MouseEvent | TouchEvent): void => {
-        if (this.readOnly || this.disabled || e.defaultPrevented) {
+        if (this.disabled || e.defaultPrevented) {
             return;
         }
         // update the value based on current position
@@ -498,7 +484,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
      */
     private handleMouseDown = (e: MouseEvent | null) => {
         const eventAction = `${e !== null ? "add" : "remove"}EventListener`;
-        if (e === null || (!this.disabled && !this.readOnly)) {
+        if (e === null || !this.disabled) {
             window[eventAction]("mouseup", this.handleWindowMouseUp);
             window.document[eventAction]("mouseleave", this.handleWindowMouseUp);
             window[eventAction]("mousemove", this.handleMouseMove);
