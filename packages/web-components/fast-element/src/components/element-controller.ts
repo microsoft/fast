@@ -330,7 +330,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Runs connected lifecycle behavior on the associated element.
      */
     public connect(): void {
-        if (this.stage === Stages.connected || this.stage === Stages.connecting) {
+        if (this.stage !== Stages.disconnected) {
             return;
         }
 
@@ -377,7 +377,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Runs disconnected lifecycle behavior on the associated element.
      */
     public disconnect(): void {
-        if (!this.isConnected) {
+        if (this.stage !== Stages.connected) {
             return;
         }
 
