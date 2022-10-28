@@ -114,11 +114,8 @@ const styles = css`
         width: 100%;
         top: 0;
     }
-    :host([disabled]),
-    :host([readonly]) {
-        cursor: var(--disabled-cursor);
-    }
     :host([disabled]) {
+        cursor: var(--disabled-cursor);
         opacity: var(--disabled-opacity);
     }
 `;

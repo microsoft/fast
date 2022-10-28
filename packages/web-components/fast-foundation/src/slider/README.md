@@ -167,7 +167,6 @@ export const mySliderLabel = SliderLabel.compose({
 
 | Name                 | Privacy   | Type                                | Default | Description                                                                                                                                                                                 | Inherited From       |
 | -------------------- | --------- | ----------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `readOnly`           | public    | `boolean`                           |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                      |
 | `valueAsNumber`      | public    | `number`                            |         | The value property, typed as a number.                                                                                                                                                      |                      |
 | `valueTextFormatter` | public    | `(value: string) => string or null` |         | Custom function that generates a string for the component's "aria-valuetext" attribute based on the current value.                                                                          |                      |
 | `min`                | public    | `number`                            | `0`     | The minimum allowed value.                                                                                                                                                                  |                      |
@@ -182,7 +181,6 @@ export const mySliderLabel = SliderLabel.compose({
 
 | Name                             | Privacy   | Description                                 | Parameters             | Return | Inherited From |
 | -------------------------------- | --------- | ------------------------------------------- | ---------------------- | ------ | -------------- |
-| `readOnlyChanged`                | protected |                                             |                        | `void` |                |
 | `increment`                      | public    | Increment the value by the step             |                        | `void` |                |
 | `decrement`                      | public    | Decrement the value by the step             |                        | `void` |                |
 | `setThumbPositionForOrientation` | public    | Places the thumb based on the current value | `direction: Direction` | `void` |                |
@@ -197,7 +195,6 @@ export const mySliderLabel = SliderLabel.compose({
 
 | Name          | Field       | Inherited From |
 | ------------- | ----------- | -------------- |
-| `readonly`    | readOnly    |                |
 |               | min         |                |
 |               | max         |                |
 |               | step        |                |

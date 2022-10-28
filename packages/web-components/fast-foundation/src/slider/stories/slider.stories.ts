@@ -9,7 +9,6 @@ import { SliderMode } from "../slider.options.js";
 const storyTemplate = html<StoryArgs<FASTSlider>>`
     <fast-slider
         ?disabled="${x => x.disabled}"
-        ?readonly="${x => x.readOnly}"
         max="${x => x.max}"
         min="${x => x.min}"
         mode="${x => x.mode}"
@@ -25,7 +24,6 @@ export default {
     title: "Slider",
     args: {
         disabled: false,
-        readOnly: false,
     },
     argTypes: {
         disabled: { control: "boolean" },
@@ -33,7 +31,6 @@ export default {
         min: { control: "number" },
         mode: { control: "radio", options: Object.values(SliderMode) },
         orientation: { control: "radio", options: Object.values(Orientation) },
-        readOnly: { control: "boolean" },
         step: { control: "number" },
         storyContent: { table: { disable: true } },
         storyItems: { control: "object" },
