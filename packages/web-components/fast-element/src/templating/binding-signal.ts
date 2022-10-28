@@ -80,6 +80,7 @@ class SignalObserver<TSource = any, TReturn = any, TParent = any> implements Sub
 
     /**
      * Opts out of JSON stringification.
+     * @internal
      */
     toJSON = noop;
 

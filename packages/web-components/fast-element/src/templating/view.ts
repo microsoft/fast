@@ -354,6 +354,7 @@ export class HTMLView<TSource = any, TParent = any>
 
     /**
      * Opts out of JSON stringification.
+     * @internal
      */
     toJSON = noop;
 

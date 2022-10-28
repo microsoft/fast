@@ -413,6 +413,7 @@ export abstract class StatelessAttachedAttributeDirective<TOptions>
 
     /**
      * Opts out of JSON stringification.
+     * @internal
      */
     toJSON = noop;
 
