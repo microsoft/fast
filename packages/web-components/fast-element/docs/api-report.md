@@ -518,7 +518,6 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     readonly sourceLifetime: SourceLifetime;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
-    // (undocumented)
     toJSON: () => undefined;
     unbind(): void;
 }
