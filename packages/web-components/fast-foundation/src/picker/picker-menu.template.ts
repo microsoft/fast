@@ -5,8 +5,8 @@ import type { FASTPickerMenu } from "./picker-menu.js";
  * The template for the List Picker component.
  * @public
  */
-export function pickerMenuTemplate(): ElementViewTemplate<FASTPickerMenu> {
-    return html<FASTPickerMenu>`
+export function pickerMenuTemplate<T extends FASTPickerMenu>(): ElementViewTemplate<T> {
+    return html<T>`
         <template role="list" slot="menu-region">
             <div class="options-display" part="options-display">
                 <div class="header-region" part="header-region">

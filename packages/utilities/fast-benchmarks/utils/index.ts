@@ -3,8 +3,6 @@ export const _random = (max: number) => {
 };
 
 export const itemCount = 1000;
-let id = 0;
-let id2 = 0;
 
 export const adjectives = [
     "pretty",
@@ -88,6 +86,7 @@ export class NestedRandomData {
 }
 
 export function generateData(count: number) {
+    let id = 0;
     const data = [];
 
     for (let i = 0; i < count; i++) {
@@ -98,6 +97,9 @@ export function generateData(count: number) {
 }
 
 export function generateNestedData(count: number) {
+    let id = 0,
+        id2 = 0;
+
     const data = [];
     for (let i = 0; i < count; i++) {
         data.push(
@@ -107,7 +109,7 @@ export function generateNestedData(count: number) {
                 new RandomItem(++id),
                 new RandomItem(++id),
                 generateData(10),
-                generateData(itemCount / 2),
+                generateData(count / 2),
                 new NestedRandomData(
                     ++id2,
                     new RandomItem(++id),
@@ -145,7 +147,7 @@ declare global {
 
 export function measureMemory() {
     if (window && performance && performance.memory) {
-        // Report results in MBs\
+        // Report results in MBs
         window.usedJSHeapSize = performance.memory.usedJSHeapSize / 1e6;
     } else {
         window.usedJSHeapSize = 0;

@@ -10,7 +10,7 @@ import {
 } from "@microsoft/fast-element";
 import { RenderDirective } from "@microsoft/fast-element/render";
 import { RenderInfo } from "../render-info.js";
-import { TemplateRenderer } from "./template-renderer.js";
+import { DefaultTemplateRenderer } from "./template-renderer.js";
 
 /**
  * Describes an implementation that can render a directive.
@@ -30,7 +30,7 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
         behavior: T,
         renderInfo: RenderInfo,
         source: any,
-        renderer: TemplateRenderer,
+        renderer: DefaultTemplateRenderer,
         context: ExecutionContext
     ): IterableIterator<string>;
 
@@ -47,22 +47,27 @@ export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirectiv
             directive: RepeatDirective,
             renderInfo: RenderInfo,
             source: any,
-            renderer: TemplateRenderer,
+            renderer: DefaultTemplateRenderer,
             context: ExecutionContext
         ): IterableIterator<string> {
-            const items = directive.dataBinding(source, context);
-            const template = directive.templateBinding(source, context);
-            const childContext = context.createChildContext(source);
+            const items = directive.dataBinding.evaluate(source, context);
+            const template = directive.templateBinding.evaluate(source, context);
+            const childContext = Object.create(context, {
+                parent: { value: source },
+                parentContext: { value: context },
+            });
 
             if (template instanceof ViewTemplate) {
                 if (directive.options.positioning) {
                     for (let i = 0, length = items.length; i < length; i++) {
-                        // Match fast-element repeater item context code.
-                        const ctx: ExecutionContext = childContext.createItemContext(
-                            i,
-                            length
+                        childContext.index = i;
+                        childContext.length = length;
+                        yield* renderer.render(
+                            template,
+                            renderInfo,
+                            items[i],
+                            childContext
                         );
-                        yield* renderer.render(template, renderInfo, items[i], ctx);
                     }
                 } else {
                     for (let i = 0, length = items.length; i < length; i++) {
@@ -88,12 +93,15 @@ export const RenderDirectiveRenderer: ViewBehaviorFactoryRenderer<RenderDirectiv
             directive: RenderDirective,
             renderInfo: RenderInfo,
             source: any,
-            renderer: TemplateRenderer,
+            renderer: DefaultTemplateRenderer,
             context: ExecutionContext
         ): IterableIterator<string> {
-            const data = directive.dataBinding(source, context);
-            const template = directive.templateBinding(source, context);
-            const childContext = context.createChildContext(source);
+            const data = directive.dataBinding.evaluate(source, context);
+            const template = directive.templateBinding.evaluate(source, context);
+            const childContext = Object.create(context, {
+                parent: { value: source },
+                parentContext: { value: context },
+            });
 
             if (template instanceof ViewTemplate) {
                 yield* renderer.render(template, renderInfo, data, childContext);

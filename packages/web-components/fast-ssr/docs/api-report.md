@@ -4,63 +4,90 @@
 
 ```ts
 
+import { AsyncLocalStorage } from 'async_hooks';
 import { Binding } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { DOMContainer } from '@microsoft/fast-element/di';
 import { ExecutionContext } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
+import { FASTElementDefinition } from '@microsoft/fast-element';
 import { ViewBehaviorFactory } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
+// @beta (undocumented)
+export interface AsyncElementRenderer extends Omit<ElementRenderer, "renderShadow" | "renderAttributes"> {
+    // (undocumented)
+    renderAttributes(): IterableIterator<string | Promise<string>>;
+    // (undocumented)
+    renderShadow(renderInfo: RenderInfo): IterableIterator<string | Promise<string>>;
+}
+
+// @beta (undocumented)
+export interface AsyncTemplateRenderer {
+    // (undocumented)
+    createRenderInfo(): RenderInfo;
+    // (undocumented)
+    render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string | Promise<string>>;
+    // (undocumented)
+    withDefaultElementRenderers(...renderers: ConstructableElementRenderer<AsyncElementRenderer>[]): void;
+}
+
+// @beta (undocumented)
+export interface ConstructableElementRenderer<T extends ElementRenderer | AsyncElementRenderer = ElementRenderer> {
+    // (undocumented)
+    new (tagName: string, renderInfo: RenderInfo): T;
+    // Warning: (ae-forgotten-export) The symbol "AttributesMap" needs to be exported by the entry point exports.d.ts
+    matchesClass(ctor: typeof HTMLElement, tagName: string, attributes: AttributesMap): boolean;
+}
+
+// @beta (undocumented)
+export interface ConstructableFASTElementRenderer<T extends ElementRenderer | AsyncElementRenderer = ElementRenderer> extends ConstructableElementRenderer<T> {
+    disable(...args: Array<string | typeof FASTElement | FASTElementDefinition>): void;
+}
+
 // @beta
-export type ComponentDOMEmissionMode = "shadow";
+export const DeclarativeShadowDOMPolyfill: Readonly<{
+    undefinedElementStyles: string;
+    nonStreamingTemplateUpgrade: string;
+}>;
 
 // @beta (undocumented)
-export type ConstructableElementRenderer = (new (tagName: string, renderInfo: RenderInfo) => ElementRenderer) & typeof ElementRenderer;
-
-// @beta (undocumented)
-export abstract class ElementRenderer {
-    constructor(tagName: string, renderInfo: RenderInfo);
+export interface ElementRenderer {
     // (undocumented)
-    abstract attributeChangedCallback(name: string, prev: string | null, next: string | null): void;
+    attributeChangedCallback(name: string, prev: string | null, next: string | null): void;
     // (undocumented)
-    abstract connectedCallback(): void;
+    connectedCallback(): void;
     // (undocumented)
     dispatchEvent(event: Event): boolean;
     // (undocumented)
-    abstract readonly element?: HTMLElement;
-    // (undocumented)
-    elementChanged(): void;
-    // Warning: (ae-forgotten-export) The symbol "AttributesMap" needs to be exported by the entry point exports.d.ts
-    static matchesClass(ctor: typeof HTMLElement, tagName: string, attributes: AttributesMap): boolean;
     renderAttributes(): IterableIterator<string>;
     // (undocumented)
-    abstract renderShadow(renderInfo: RenderInfo): IterableIterator<string>;
+    renderShadow(renderInfo: RenderInfo): IterableIterator<string>;
+    // (undocumented)
     setAttribute(name: string, value: string): void;
+    // (undocumented)
     setProperty(name: string, value: unknown): void;
     // (undocumented)
     readonly tagName: string;
 }
 
-// @beta
-export abstract class FASTElementRenderer extends ElementRenderer {
-    constructor(tagName: string, renderInfo: RenderInfo);
-    attributeChangedCallback(name: string, old: string | null, value: string | null): void;
-    connectedCallback(): void;
-    readonly element: FASTElement;
-    static matchesClass(ctor: typeof HTMLElement): boolean;
-    renderLight(renderInfo: RenderInfo): IterableIterator<string>;
-    renderShadow(renderInfo: RenderInfo): IterableIterator<string>;
-    protected abstract styleRenderer: StyleRenderer;
-    protected abstract templateRenderer: TemplateRenderer;
-}
-
-// @beta
+// @beta (undocumented)
 function fastSSR(): {
     templateRenderer: TemplateRenderer;
-    elementRenderer: typeof FASTElementRenderer;
-    defaultRenderInfo: RenderInfo;
+    ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
+};
+
+// @beta (undocumented)
+function fastSSR(config: SSRConfiguration & Record<"renderMode", "sync">): {
+    templateRenderer: TemplateRenderer;
+    ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
+};
+
+// @beta (undocumented)
+function fastSSR(config: SSRConfiguration & Record<"renderMode", "async">): {
+    templateRenderer: AsyncTemplateRenderer;
+    ElementRenderer: ConstructableFASTElementRenderer<AsyncFASTElementRenderer>;
 };
 export default fastSSR;
 
@@ -86,12 +113,20 @@ export const RequestStorage: Readonly<{
 
 // @beta
 export const RequestStorageManager: Readonly<{
+    backend: AsyncLocalStorage<unknown>;
     installDOMShim(): void;
+    uninstallDOMShim(): void;
     installDIContextRequestStrategy(): void;
     createStorage(options?: StorageOptions): Map<any, any>;
     run<T = unknown>(storage: Map<any, any>, callback: () => T): T;
     middleware(options?: StorageOptions): Middleware;
 }>;
+
+// @beta
+export interface SSRConfiguration {
+    // (undocumented)
+    renderMode: "sync" | "async";
+}
 
 // @beta
 export type StorageOptions = {
@@ -106,27 +141,28 @@ export interface StyleRenderer {
     render(styles: ComposableStyles): string;
 }
 
-// @beta
-export class TemplateRenderer {
-    readonly componentDOMEmissionMode: ComponentDOMEmissionMode;
-    render(template: ViewTemplate | string, renderInfo: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
-    // Warning: (ae-forgotten-export) The symbol "Op" needs to be exported by the entry point exports.d.ts
-    //
-    // @internal
-    renderOpCodes(codes: Op[], renderInfo: RenderInfo, source: unknown, context: ExecutionContext): IterableIterator<string>;
-    // @internal
-    withViewBehaviorFactoryRenderers(...renderers: ViewBehaviorFactoryRenderer<any>[]): void;
+// @beta (undocumented)
+export interface TemplateRenderer {
+    // (undocumented)
+    createRenderInfo(): RenderInfo;
+    // (undocumented)
+    render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
+    // (undocumented)
+    withDefaultElementRenderers(...renderers: ConstructableElementRenderer[]): void;
 }
 
 // @beta
 export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
     matcher: Constructable<T>;
-    render(behavior: T, renderInfo: RenderInfo, source: any, renderer: TemplateRenderer, context: ExecutionContext): IterableIterator<string>;
+    // Warning: (ae-forgotten-export) The symbol "DefaultTemplateRenderer" needs to be exported by the entry point exports.d.ts
+    render(behavior: T, renderInfo: RenderInfo, source: any, renderer: DefaultTemplateRenderer, context: ExecutionContext): IterableIterator<string>;
 }
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/request-storage.d.ts:31:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
+// dist/dts/exports.d.ts:18:5 - (ae-forgotten-export) The symbol "SyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
+// dist/dts/exports.d.ts:28:5 - (ae-forgotten-export) The symbol "AsyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
+// dist/dts/request-storage.d.ts:32:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
 
 // (No @packageDocumentation comment for this package)
 

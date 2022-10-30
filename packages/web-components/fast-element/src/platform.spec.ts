@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import type { FASTGlobal } from "./interfaces.js";
+import { createTypeRegistry, TypeDefinition } from "./platform.js";
 
 declare const FAST: FASTGlobal;
 
@@ -30,5 +31,21 @@ describe("The FAST global", () => {
 
             expect(found).to.be.null;
         });
+    });
+});
+
+describe("TypeRegistry", () => {
+    it("returns undefined when getting the definition for null", () => {
+        const reg = createTypeRegistry<TypeDefinition>();
+        const value = reg.getForInstance(null);
+
+        expect(value).to.be.undefined;
+    });
+
+    it("returns undefined when getting the definition for undefined", () => {
+        const reg = createTypeRegistry<TypeDefinition>();
+        const value = reg.getForInstance(undefined);
+
+        expect(value).to.be.undefined;
     });
 });

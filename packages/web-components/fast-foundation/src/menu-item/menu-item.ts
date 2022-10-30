@@ -1,3 +1,5 @@
+import type { Placement } from "@floating-ui/dom";
+import { autoUpdate, computePosition, flip, shift, size } from "@floating-ui/dom";
 import {
     attr,
     FASTElement,
@@ -6,30 +8,18 @@ import {
     Updates,
 } from "@microsoft/fast-element";
 import {
-    Direction,
     keyArrowLeft,
     keyArrowRight,
     keyEnter,
+    keyEscape,
     keySpace,
 } from "@microsoft/fast-web-utilities";
-import type { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
-import type { FASTMenu } from "../menu/menu.js";
-import {
-    StartEnd,
-    StartEndOptions,
-    TemplateElementDependency,
-} from "../patterns/index.js";
-import { getDirection } from "../utilities/direction.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { MenuItemRole, roleForMenuItem } from "./menu-item.options.js";
 
 export { MenuItemRole, roleForMenuItem };
-
-/**
- * Types of menu item column count.
- * @public
- */
-export type MenuItemColumnCount = 0 | 1 | 2;
 
 /**
  * Menu Item configuration options
@@ -39,7 +29,6 @@ export type MenuItemOptions = StartEndOptions & {
     checkboxIndicator?: string | SyntheticViewTemplate;
     expandCollapseGlyph?: string | SyntheticViewTemplate;
     radioIndicator?: string | SyntheticViewTemplate;
-    anchoredRegion: TemplateElementDependency;
 };
 
 /**
@@ -85,25 +74,15 @@ export class FASTMenuItem extends FASTElement {
      */
     @attr({ mode: "boolean" })
     public expanded: boolean;
-    protected expandedChanged(oldValue: boolean): void {
+    protected expandedChanged(prev: boolean | undefined, next: boolean): void {
         if (this.$fastController.isConnected) {
-            if (this.submenu === undefined) {
-                return;
+            if (next && this.submenu) {
+                this.updateSubmenu();
             }
-            if (this.expanded === false) {
-                (this.submenu as FASTMenu).collapseExpandedItem();
-            } else {
-                this.currentDirection = getDirection(this);
-            }
+
             this.$emit("expanded-change", this, { bubbles: false });
         }
     }
-
-    /**
-     * @internal
-     */
-    @observable
-    public startColumnCount: MenuItemColumnCount;
 
     /**
      * The role of the element.
@@ -114,6 +93,13 @@ export class FASTMenuItem extends FASTElement {
      */
     @attr
     public role: MenuItemRole = MenuItemRole.menuitem;
+
+    /**
+     * Cleanup function for the submenu positioner.
+     *
+     * @public
+     */
+    public cleanup: () => void;
 
     /**
      * The checked value of the element.
@@ -131,63 +117,66 @@ export class FASTMenuItem extends FASTElement {
     }
 
     /**
-     * reference to the anchored region
+     * The hidden attribute.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: hidden
+     */
+    @attr({ mode: "boolean" })
+    public hidden: boolean;
+
+    /**
+     * The submenu slotted content.
      *
      * @internal
      */
     @observable
-    public submenuRegion: FASTAnchoredRegion;
+    public slottedSubmenu: HTMLElement[];
 
     /**
      * @internal
      */
-    @observable
-    public hasSubmenu: boolean = false;
+    public get hasSubmenu(): boolean {
+        return !!this.submenu;
+    }
 
     /**
-     * Track current direction to pass to the anchored region
+     * Sets the submenu and updates its position.
      *
      * @internal
      */
-    @observable
-    public currentDirection: Direction = Direction.ltr;
+    protected slottedSubmenuChanged(
+        prev: HTMLElement[] | undefined,
+        next: HTMLElement[]
+    ) {
+        if (next.length) {
+            this.submenu = next[0];
+            this.updateSubmenu();
+        }
+    }
+
+    /**
+     * The container for the submenu.
+     *
+     * @internal
+     */
+    public submenuContainer: HTMLDivElement;
 
     /**
      * @internal
      */
     @observable
-    public submenu: Element | undefined;
+    public submenu: HTMLElement | undefined;
 
     private focusSubmenuOnLoad: boolean = false;
-
-    private observer: MutationObserver | undefined;
-
-    /**
-     * @internal
-     */
-    public connectedCallback(): void {
-        super.connectedCallback();
-        Updates.enqueue(() => {
-            this.updateSubmenu();
-        });
-
-        if (!this.startColumnCount) {
-            this.startColumnCount = 1;
-        }
-
-        this.observer = new MutationObserver(this.updateSubmenu);
-    }
 
     /**
      * @internal
      */
     public disconnectedCallback(): void {
+        this.cleanup?.();
         super.disconnectedCallback();
-        this.submenu = undefined;
-        if (this.observer !== undefined) {
-            this.observer.disconnect();
-            this.observer = undefined;
-        }
     }
 
     /**
@@ -209,11 +198,18 @@ export class FASTMenuItem extends FASTElement {
                 this.expandAndFocus();
                 return false;
 
+            case keyEscape:
+                // close submenu
+                if (this.expanded) {
+                    this.closeSubMenu();
+                    return false;
+                }
+                break;
+
             case keyArrowLeft:
                 //close submenu
                 if (this.expanded) {
-                    this.expanded = false;
-                    this.focus();
+                    this.closeSubMenu();
                     return false;
                 }
         }
@@ -241,8 +237,8 @@ export class FASTMenuItem extends FASTElement {
             return;
         }
         this.focusSubmenuOnLoad = false;
-        if (this.hasSubmenu) {
-            (this.submenu as HTMLElement).focus();
+        if (this.submenu) {
+            this.submenu.focus();
             this.setAttribute("tabindex", "-1");
         }
     };
@@ -276,6 +272,15 @@ export class FASTMenuItem extends FASTElement {
     /**
      * @internal
      */
+    private closeSubMenu = (): void => {
+        // close submenu
+        this.expanded = false;
+        this.focus();
+    };
+
+    /**
+     * @internal
+     */
     private expandAndFocus = (): void => {
         if (!this.hasSubmenu) {
             return;
@@ -298,13 +303,12 @@ export class FASTMenuItem extends FASTElement {
                 break;
 
             case MenuItemRole.menuitem:
-                // update submenu
-                this.updateSubmenu();
                 if (this.hasSubmenu) {
                     this.expandAndFocus();
-                } else {
-                    this.$emit("change");
+                    break;
                 }
+
+                this.$emit("change");
                 break;
 
             case MenuItemRole.menuitemradio:
@@ -316,23 +320,45 @@ export class FASTMenuItem extends FASTElement {
     };
 
     /**
-     * Gets the submenu element if any
+     * Calculate and apply submenu positioning.
      *
-     * @internal
+     * @public
      */
-    private updateSubmenu = (): void => {
-        this.submenu = this.domChildren().find((element: Element) => {
-            return element.getAttribute("role") === "menu";
+    public updateSubmenu() {
+        this.cleanup?.();
+
+        if (!this.submenu || !this.expanded) {
+            return;
+        }
+
+        Updates.enqueue(() => {
+            this.cleanup = autoUpdate(this, this.submenuContainer, async () => {
+                const fallbackPlacements: Placement[] = ["left-start", "right-start"];
+                const { x, y } = await computePosition(this, this.submenuContainer, {
+                    middleware: [
+                        shift(),
+                        size({
+                            apply: ({ availableWidth, rects }) => {
+                                if (availableWidth < rects.floating.width) {
+                                    fallbackPlacements.push("bottom-end", "top-end");
+                                }
+                            },
+                        }),
+                        flip({ fallbackPlacements }),
+                    ],
+                    placement: "right-start",
+                    strategy: "fixed",
+                });
+
+                Object.assign(this.submenuContainer.style, {
+                    left: `${x}px`,
+                    position: "fixed",
+                    top: `${y}px`,
+                });
+
+                this.submenuLoaded();
+            });
         });
-
-        this.hasSubmenu = this.submenu === undefined ? false : true;
-    };
-
-    /**
-     * get an array of valid DOM children
-     */
-    private domChildren(): Element[] {
-        return Array.from(this.children).filter(child => !child.hasAttribute("hidden"));
     }
 }
 

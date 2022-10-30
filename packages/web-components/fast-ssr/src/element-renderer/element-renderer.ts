@@ -7,17 +7,7 @@ import { RenderInfo } from "../render-info.js";
 import { escapeHtml } from "../escape-html.js";
 import { HTMLElement as ShimHTMLElement } from "../dom-shim.js";
 import { shouldBubble } from "../event-utilities.js";
-
-type AttributesMap = Map<string, string>;
-
-/**
- * @beta
- */
-export type ConstructableElementRenderer = (new (
-    tagName: string,
-    renderInfo: RenderInfo
-) => ElementRenderer) &
-    typeof ElementRenderer;
+import { AttributesMap, ElementRenderer } from "./interfaces.js";
 
 export const getElementRenderer = (
     renderInfo: RenderInfo,
@@ -41,7 +31,8 @@ export const getElementRenderer = (
 /**
  * @beta
  */
-export abstract class ElementRenderer {
+export abstract class DefaultElementRenderer
+    implements Omit<ElementRenderer, "renderShadow" | "renderAttributes"> {
     private parent: ElementRenderer | null = null;
     @observable
     abstract readonly element?: HTMLElement;
@@ -86,9 +77,9 @@ export abstract class ElementRenderer {
 
     constructor(
         public readonly tagName: string,
-        private readonly renderInfo: RenderInfo
+        private readonly renderInfo?: RenderInfo
     ) {
-        this.parent = renderInfo.customElementInstanceStack.at(-1) || null;
+        this.parent = renderInfo?.customElementInstanceStack.at(-1) || null;
     }
 
     abstract connectedCallback(): void;
@@ -121,36 +112,13 @@ export abstract class ElementRenderer {
             this.attributeChangedCallback(name, prev, value);
         }
     }
-
-    public abstract renderShadow(renderInfo: RenderInfo): IterableIterator<string>;
-
-    /**
-     * Render an element's attributes.
-     *
-     * Default implementation serializes all attributes on the element instance.
-     */
-    public *renderAttributes(): IterableIterator<string> {
-        if (this.element !== undefined) {
-            const { attributes } = this.element;
-            for (
-                let i = 0, name, value;
-                i < attributes.length && ({ name, value } = attributes[i]);
-                i++
-            ) {
-                if (value === "" || value === undefined || value === null) {
-                    yield ` ${name}`;
-                } else {
-                    yield ` ${name}="${escapeHtml(value)}"`;
-                }
-            }
-        }
-    }
 }
+
 /**
  * An ElementRenderer used as a fallback in the case where a custom element is
  * either unregistered or has no other matching renderer.
  */
-class FallbackRenderer extends ElementRenderer {
+class FallbackRenderer extends DefaultElementRenderer implements ElementRenderer {
     public element?: HTMLElement | undefined;
     private readonly _attributes: { [name: string]: string } = {};
 

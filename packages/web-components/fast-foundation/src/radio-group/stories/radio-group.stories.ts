@@ -1,66 +1,67 @@
-import { html, repeat, when } from "@microsoft/fast-element";
+import { html, repeat } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type { Args, Meta } from "@storybook/html";
+import { storyTemplate as radioStoryTemplate } from "../../radio/stories/radio.stories.js";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTRadioGroup } from "../radio-group.js";
 
-type RadioGroupStoryArgs = Args & FASTRadioGroup;
-type RadioGroupStoryMeta = Meta<RadioGroupStoryArgs>;
-
-const storyTemplate = html<RadioGroupStoryArgs>`
-    <fast-radio-group name="${x => x.name}" orientation="${x => x.orientation}">
-        ${when(
-            x => x.label,
-            html`
-                <label slot="label">
-                    ${x => x.label}
-                </label>
-            `
-        )}
-        ${repeat(
-            x => x.items,
-            html`
-                <fast-radio value="${x => x.value}">
-                    ${x => x.label}
-                </fast-radio>
-            `
-        )}
+const storyTemplate = html<StoryArgs<FASTRadioGroup>>`
+    <fast-radio-group
+        ?disabled="${x => x.disabled}"
+        ?readonly="${x => x.readOnly}"
+        name="${x => x.name}"
+        orientation="${x => x.orientation}"
+        value="${x => x.value}"
+    >
+        ${x => x.storyContent}
     </fast-radio-group>
 `;
 
 export default {
-    title: "Radio/Radio Group",
+    title: "Radio Group",
     args: {
-        label: "Fruits",
+        disabled: false,
         name: "fruits",
-        items: [
-            { value: "apples", label: "Apples" },
-            { value: "bananas", label: "Bananas" },
-            { value: "blueberries", label: "Blueberries" },
-            { value: "grapefruit", label: "Grapefruit" },
-            { value: "kiwi", label: "Kiwi" },
-            { value: "mango", label: "Mango" },
-            { value: "oranges", label: "Oranges" },
-            { value: "pineapple", label: "Pineapple" },
-            { value: "strawberries", label: "Strawberries" },
+        readOnly: false,
+        storyContent: html<StoryArgs<FASTRadioGroup>>`
+            <label slot="label">Fruits</label>
+            ${repeat(x => x.storyItems, radioStoryTemplate)}
+        `,
+        storyItems: [
+            { storyContent: "Apples", value: "apples" },
+            { storyContent: "Bananas", value: "bananas" },
+            { storyContent: "Blueberries", value: "blueberries" },
+            { storyContent: "Grapefruit", value: "grapefruit" },
+            { storyContent: "Kiwi", value: "kiwi" },
+            { storyContent: "Mango", value: "mango" },
+            { storyContent: "Oranges", value: "oranges" },
+            { storyContent: "Pineapple", value: "pineapple" },
+            { storyContent: "Strawberries", value: "strawberries" },
         ],
     },
     argTypes: {
-        orientation: {
-            options: Object.values(Orientation),
-            control: {
-                type: "select",
-            },
-        },
+        disabled: { control: "boolean" },
+        name: { control: "text" },
+        orientation: { control: "radio", options: Object.values(Orientation) },
+        readOnly: { control: "boolean" },
+        storyContent: { table: { disable: true } },
+        storyItems: { control: "object" },
+        value: { control: "text" },
     },
-} as RadioGroupStoryMeta;
+} as Meta<FASTRadioGroup>;
 
-export const RadioGroup = (args: RadioGroupStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
+export const RadioGroup: Story<FASTRadioGroup> = renderComponent(storyTemplate).bind({});
 
-export const RadioGroupVertical = RadioGroup.bind({});
+export const RadioGroupVertical: Story<FASTRadioGroup> = RadioGroup.bind({});
 RadioGroupVertical.args = {
     orientation: Orientation.vertical,
 };
+
+export const RadioGroupInForm: Story<FASTRadioGroup> = renderComponent(
+    html<StoryArgs<FASTRadioGroup>>`
+        <form @submit="${() => false}">
+            ${storyTemplate}
+            <fast-button type="submit">Submit</fast-button>
+        </form>
+    `
+).bind({});

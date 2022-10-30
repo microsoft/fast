@@ -1,5 +1,6 @@
-import type { Constructable } from "./interfaces.js";
+import { Constructable, Message } from "./interfaces.js";
 import { Metadata } from "./metadata.js";
+import { FAST } from "./platform.js";
 
 /**
  * A Context object defines an optional initial value for a Context, as well as a name identifier for debugging purposes.
@@ -71,7 +72,9 @@ export const Context = Object.freeze({
             index: number
         ): void {
             if (target == null || new.target !== undefined) {
-                throw new Error(`No registration for context: '${Interface.name}'`);
+                throw FAST.error(Message.noRegistrationForContext, {
+                    name: Interface.name,
+                });
             }
 
             if (property) {

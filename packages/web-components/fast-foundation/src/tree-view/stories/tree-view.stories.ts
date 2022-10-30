@@ -1,12 +1,27 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTTreeView } from "../tree-view.js";
 
-type TreeViewStoryArgs = Args & FASTTreeView;
-type TreeViewStoryMeta = Meta<TreeViewStoryArgs>;
+const storyTemplate = html<StoryArgs<FASTTreeView>>`
+    <fast-tree-view>
+        ${x => x.storyContent}
+    </fast-tree-view>
+`;
 
-const storyTemplate = html<TreeViewStoryArgs>`
-    <fast-tree-view :renderCollapsedNodes="${x => x.renderCollapsedNodes}">
+export default {
+    title: "Tree view",
+    args: {
+        renderCollapsedNodes: true,
+    },
+    argTypes: {
+        storyContent: { table: { disable: true } },
+    },
+} as Meta<FASTTreeView>;
+
+export const TreeView: Story<FASTTreeView> = renderComponent(storyTemplate).bind({});
+TreeView.args = {
+    storyContent: html`
         <fast-divider></fast-divider>
         <fast-tree-item>
             Root item 1
@@ -26,7 +41,7 @@ const storyTemplate = html<TreeViewStoryArgs>`
             <fast-tree-item>Nested item 2</fast-tree-item>
             <fast-tree-item>Nested item 3</fast-tree-item>
         </fast-tree-item>
-        <fast-tree-item>
+        <fast-tree-item expanded>
             Root item 2
             <fast-tree-item>
                 Flowers
@@ -41,27 +56,5 @@ const storyTemplate = html<TreeViewStoryArgs>`
         <fast-tree-item>
             Root item 3
         </fast-tree-item>
-    </fast-tree-view>
-`;
-
-export default {
-    title: "Tree view",
-    argTypes: {
-        args: {
-            content: "You got a fast tree item",
-            expanded: false,
-            disabled: false,
-            selected: false,
-            renderCollapsedNodes: true,
-        },
-        renderCollapsedNodes: {
-            control: { type: "boolean" },
-        },
-    },
-} as TreeViewStoryMeta;
-
-export const TreeView = (args: TreeViewStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+    `,
 };

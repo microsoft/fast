@@ -1,5 +1,5 @@
 import { isFunction } from "../interfaces.js";
-import type { Binding, ExecutionContext } from "../observation/observable.js";
+import type { ExecutionContext, Expression } from "../observation/observable.js";
 import type { CaptureType, SyntheticViewTemplate } from "./template.js";
 
 /**
@@ -9,12 +9,12 @@ import type { CaptureType, SyntheticViewTemplate } from "./template.js";
  * the template to render when the condition is true.
  * @public
  */
-export function when<TSource = any, TReturn = any>(
-    condition: Binding<TSource, TReturn> | boolean,
+export function when<TSource = any, TReturn = any, TParent = any>(
+    condition: Expression<TSource, TReturn, TParent> | boolean,
     templateOrTemplateBinding:
-        | SyntheticViewTemplate
-        | Binding<TSource, SyntheticViewTemplate>
-): CaptureType<TSource> {
+        | SyntheticViewTemplate<TSource, TParent>
+        | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>
+): CaptureType<TSource, TParent> {
     const dataBinding = isFunction(condition) ? condition : () => condition;
 
     const templateBinding = isFunction(templateOrTemplateBinding)

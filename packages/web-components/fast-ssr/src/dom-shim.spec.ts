@@ -1,8 +1,8 @@
 import "./install-dom-shim.js";
 import { expect, test } from "@playwright/test";
-import  { createWindow } from "./dom-shim.js";
 import * as Foundation from "@microsoft/fast-foundation";
 import { ElementViewTemplate, FASTElement } from "@microsoft/fast-element";
+import  { createWindow } from "./dom-shim.js";
 import fastSSR from "./exports.js";
 
 test.describe("createWindow", () => {
@@ -74,9 +74,7 @@ const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTListbox as any as typeof FASTElement, Foundation.listboxTemplate()],
     [Foundation.FASTListboxOption, Foundation.listboxOptionTemplate()],
     [Foundation.FASTMenu, Foundation.menuTemplate()],
-    [Foundation.FASTMenuItem, Foundation.menuItemTemplate({
-        anchoredRegion
-    })],
+    [Foundation.FASTMenuItem, Foundation.menuItemTemplate()],
     [Foundation.FASTNumberField, Foundation.numberFieldTemplate()],
     [Foundation.FASTPicker, Foundation.pickerTemplate({
         anchoredRegion,
@@ -112,15 +110,59 @@ const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTTreeView, Foundation.treeViewTemplate()]
 ];
 
-test.describe("The foundation DOM shim", () => {
+test.describe("The DOM shim", () => {
     componentsAndTemplates.forEach(([ctor, template]) => {
         const name = deriveName(ctor);
         ctor.define({ name, template });
 
         test(`should support construction and connection of the ${ctor.name} component and template during SSR rendering`, () => {
-            const { templateRenderer, defaultRenderInfo } = fastSSR();
+            const { templateRenderer } = fastSSR();
             const templateString = `<${name}></${name}>`;
-            expect(() => templateRenderer.render(templateString, defaultRenderInfo)).not.toThrow();
+            expect(() => templateRenderer.render(templateString)).not.toThrow();
         });
+    });
+
+    test.describe("has a CSSStyleSheet implementation", () => {
+        test("that is constructable", () => {
+            expect(() => new CSSStyleSheet()).not.toThrow();
+        });
+        test("that supports adding :host{} and :root{} rules", () => {
+            const sheet = new CSSStyleSheet();
+            const hostIndex = sheet.insertRule(":host{}");
+            expect(sheet.cssRules[hostIndex].cssText).toBe(":host {  }");
+            const rootIndex = sheet.insertRule(":root{}");
+            expect(sheet.cssRules[rootIndex].cssText).toBe(":root {  }");
+        });
+
+        test.describe("with rule implementations", () => {
+            test("that support setting properties from the style declaration", () => {
+                const sheet = new CSSStyleSheet();
+                const index = sheet.insertRule(":host{}");
+                const rule = sheet.cssRules[index] as CSSStyleRule;
+                rule.style.setProperty("--test", "value");
+
+                expect(rule.cssText).toBe(":host { --test: value; }");
+            });
+            test("that support removing properties from the style declaration", () => {
+                const sheet = new CSSStyleSheet();
+                const index = sheet.insertRule(":host{}");
+                const rule = sheet.cssRules[index] as CSSStyleRule;
+                rule.style.setProperty("--test", "value");
+                rule.style.removeProperty("--test");
+
+                expect(rule.cssText).toBe(":host {  }");
+            })
+        })
+    });
+
+    test.describe("has a matchMedia method", () => {
+        test("that can returns the MediaQueryList supplied to createWindow", () => {
+            class MyMediaQueryList {};
+
+            const win: any = createWindow({MediaQueryList: MyMediaQueryList});
+            const list = win.matchMedia();
+
+            expect(list).toBeInstanceOf(MyMediaQueryList);
+        })
     });
 })

@@ -6,13 +6,20 @@ import { contrast } from "./utilities/relative-luminance.js";
 
 const { expect } = chai;
 
-const grey: SwatchRGB = SwatchRGB.from(parseColorHexRGB("#808080")!);
+const greyHex = "#808080";
+const greySwatch: SwatchRGB = SwatchRGB.from(parseColorHexRGB(greyHex)!);
 
 describe("PaletteRGB.from", () => {
     it("should create a palette from the provided swatch", () => {
-        const palette = PaletteRGB.from(grey);
+        const palette = PaletteRGB.from(greySwatch);
 
-        expect(palette.source === grey).to.be.true;
+        expect(palette.source).to.equal(greySwatch);
+    });
+
+    it("should create a palette from the provided hex color", () => {
+        const palette = PaletteRGB.from(greyHex);
+
+        expect(palette.source.toColorString()).to.equal(greyHex);
     });
 
     it("should create a palette with increased contrast", () => {
@@ -20,7 +27,7 @@ describe("PaletteRGB.from", () => {
             stepContrast: 1.07,
             stepContrastRamp: 0,
         };
-        const palette = PaletteRGB.from(grey, options);
+        const palette = PaletteRGB.from(greySwatch, options);
 
         expect(
             contrast(palette.swatches[0], palette.swatches[1]),
@@ -37,7 +44,7 @@ describe("PaletteRGB.from", () => {
     //     const options: Partial<PaletteRGBOptions> = {
     //             preserveSource: true,
     //     };
-    //     const palette = PaletteRGB.from(grey, options);
+    //     const palette = PaletteRGB.from(greySwatch, options);
 
     //     expect(contrast(palette.swatches[0], palette.swatches[1]), "at least 1.05:1 between 0 and 1").to.be.gte(1.05);
     //     expect(contrast(palette.swatches[20], palette.swatches[21]), "at least 1.05:1 between 0 and 1").to.be.gte(1.05);

@@ -200,6 +200,11 @@ export class FASTSearch extends FormAssociatedSearch {
         }
     }
 
+    /** {@inheritDoc (FormAssociated:interface).validate} */
+    public validate(): void {
+        super.validate(this.control);
+    }
+
     /**
      * Handles the internal control's `input` event
      * @internal
@@ -215,6 +220,7 @@ export class FASTSearch extends FormAssociatedSearch {
     public handleClearInput(): void {
         this.value = "";
         this.control.focus();
+        this.handleChange();
     }
 
     /**

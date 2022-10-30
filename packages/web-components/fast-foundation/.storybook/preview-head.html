@@ -98,15 +98,23 @@
         --type-ramp-plus-6-line-height: 72px;
     }
 
-    html {
+    html,
+    .docs-story {
         background-color: var(--fill-color);
+        color: var(--neutral-foreground-rest);
         min-height: 100%;
+    }
+
+    /* Disable zoom transform for Firefox, see https://github.com/storybookjs/storybook/issues/16774 */
+    .docs-story [class^="css-"] {
+        transform: none !important;
     }
 
     html,
     body,
     #root {
         width: 100%;
+        height: 100%;
     }
 
     @media (prefers-color-scheme: dark) {

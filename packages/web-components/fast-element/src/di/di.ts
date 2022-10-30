@@ -2,11 +2,10 @@
  * Big thanks to https://github.com/fkleuver and the https://github.com/aurelia/aurelia project
  * for the bulk of this code and many of the associated tests.
  */
-import { FASTElement } from "../components/fast-element.js";
 import { Context, ContextDecorator, ContextEvent, UnknownContext } from "../context.js";
-import type { Class, Constructable } from "../interfaces.js";
+import { Class, Constructable, Message } from "../interfaces.js";
 import { Metadata } from "../metadata.js";
-import { emptyArray } from "../platform.js";
+import { emptyArray, FAST } from "../platform.js";
 
 /**
  * Represents a custom callback for resolving a request from the container.
@@ -28,6 +27,7 @@ export type ResolveCallback<T = any> = (
 interface ResolverLike<C, K = any> {
     readonly $isResolver: true;
     resolve(handler: C, requestor: C): Resolved<K>;
+    resolveAsync(handler: C, requestor: C): Promise<Resolved<K>>;
     getFactory?(container: C): (K extends Constructable ? Factory<K> : never) | null;
 }
 
@@ -84,6 +84,17 @@ export interface Factory<T extends Constructable = any> {
      * @param dynamicDependencies - Dynamic dependencies supplied to the constructor.
      */
     construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
+
+    /**
+     * Constructs an instance of the factory's object, allowing for
+     * async resolution of dependencies.
+     * @param container - The container the object is being constructor for.
+     * @param dynamicDependencies - Dynamic dependencies supplied to the constructor.
+     */
+    constructAsync(
+        container: Container,
+        dynamicDependencies?: Key[]
+    ): Promise<Resolved<T>>;
 }
 
 /**
@@ -116,6 +127,27 @@ export interface ServiceLocator {
      * @param key - The key to lookup.
      */
     get<K extends Key>(key: K | Key): Resolved<K>;
+
+    /**
+     * Gets a dependency by key, allowing for asynchronously
+     * resolved dependencies.
+     * @param key - The key to lookup.
+     */
+    getAsync<K extends Key>(key: K): Promise<Resolved<K>>;
+
+    /**
+     * Gets a dependency by key, allowing for asynchronously
+     * resolved dependencies.
+     * @param key - The key to lookup.
+     */
+    getAsync<K extends Key>(key: Key): Promise<Resolved<K>>;
+
+    /**
+     * Gets a dependency by key, allowing for asynchronously
+     * resolved dependencies.
+     * @param key - The key to lookup.
+     */
+    getAsync<K extends Key>(key: K | Key): Promise<Resolved<K>>;
 
     /**
      * Gets an array of all dependencies by key.
@@ -382,6 +414,12 @@ function cloneArrayWithPossibleProps<T>(source: readonly T[]): T[] {
 export type ParentLocator = (owner: any) => Container | null;
 
 /**
+ * A function capable of asynchronously locating a resolver for a key.
+ * @public
+ */
+export type AsyncRegistrationLocator = (key: Key) => Promise<Registration | null>;
+
+/**
  * Configuration for a dependency injection container.
  * @public
  */
@@ -390,6 +428,13 @@ export interface ContainerConfiguration {
      * The locator function used to find the parent of the container.
      */
     parentLocator: ParentLocator;
+
+    /**
+     * When an asynchronous get request is made to the container, if no
+     * resolver is found for the key, this function is called to provide
+     * a registration.
+     */
+    asyncRegistrationLocator: AsyncRegistrationLocator;
 
     /**
      * Indicates whether this container should resolve dependencies that are directly made
@@ -415,9 +460,7 @@ export const DefaultResolver = Object.freeze({
      * @param key - The key to create the resolver for.
      */
     none(key: Key): Resolver {
-        throw Error(
-            `${key.toString()} not registered, did you forget to add @singleton()?`
-        );
+        throw FAST.error(Message.noDefaultResolver, { key });
     },
 
     /**
@@ -452,6 +495,7 @@ export const ContainerConfiguration = Object.freeze({
      */
     default: Object.freeze({
         parentLocator: () => null,
+        asyncRegistrationLocator: async () => null,
         responsibleForOwnerRequests: false,
         defaultResolver: DefaultResolver.singleton,
     } as ContainerConfiguration),
@@ -503,7 +547,7 @@ function createContext<K extends Key>(
         index: number
     ): void {
         if (target == null || new.target !== undefined) {
-            throw new Error(`No registration for interface: '${Interface.name}'`);
+            throw FAST.error(Message.noRegistrationForContext, { name: Interface.name });
         }
 
         if (property) {
@@ -779,8 +823,13 @@ export const DI = Object.freeze({
                     value = container.get(key);
                     this[diPropertyKey] = value;
 
-                    if (respectConnection && this instanceof FASTElement) {
-                        const notifier = (this as FASTElement).$fastController;
+                    if (respectConnection) {
+                        const notifier = (this as any).$fastController;
+
+                        if (!notifier) {
+                            throw FAST.error(Message.connectUpdateRequiresController);
+                        }
+
                         const handleChange = () => {
                             const newContainer = DI.findResponsibleContainer(this);
                             const newValue = newContainer.get(key) as any;
@@ -1304,13 +1353,46 @@ export class ResolverImpl implements Resolver, Registration {
         return container.registerResolver(this.key, this);
     }
 
+    public resolveAsync(handler: Container, requestor: Container) {
+        switch (this.strategy) {
+            case ResolverStrategy.singleton: {
+                if (this.resolving) {
+                    throw FAST.error(Message.cyclicDependency, { name: this.state.name });
+                }
+
+                this.resolving = true;
+
+                return handler
+                    .getFactory(this.state as Constructable)
+                    .constructAsync(requestor)
+                    .then(instance => {
+                        this.state = instance;
+                        this.strategy = ResolverStrategy.instance;
+                        this.resolving = false;
+                        return instance;
+                    });
+            }
+            case ResolverStrategy.transient: {
+                // Always create transients from the requesting container
+                const factory = handler.getFactory(this.state as Constructable);
+                if (factory === null) {
+                    throw FAST.error(Message.noFactoryForResolver, { key: this.key });
+                }
+
+                return factory.constructAsync(requestor);
+            }
+            default:
+                return Promise.resolve(this.resolve(handler, requestor));
+        }
+    }
+
     public resolve(handler: Container, requestor: Container): any {
         switch (this.strategy) {
             case ResolverStrategy.instance:
                 return this.state;
             case ResolverStrategy.singleton: {
                 if (this.resolving) {
-                    throw new Error(`Cyclic dependency found: ${this.state.name}`);
+                    throw FAST.error(Message.cyclicDependency, { name: this.state.name });
                 }
                 this.resolving = true;
                 this.state = handler
@@ -1324,9 +1406,7 @@ export class ResolverImpl implements Resolver, Registration {
                 // Always create transients from the requesting container
                 const factory = handler.getFactory(this.state as Constructable);
                 if (factory === null) {
-                    throw new Error(
-                        `Resolver for ${String(this.key)} returned a null factory`
-                    );
+                    throw FAST.error(Message.noFactoryForResolver, { key: this.key });
                 }
                 return factory.construct(requestor);
             }
@@ -1337,7 +1417,9 @@ export class ResolverImpl implements Resolver, Registration {
             case ResolverStrategy.alias:
                 return requestor.get(this.state);
             default:
-                throw new Error(`Invalid resolver strategy specified: ${this.strategy}.`);
+                throw FAST.error(Message.invalidResolverStrategy, {
+                    strategy: this.strategy,
+                });
         }
     }
 
@@ -1367,21 +1449,32 @@ export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
     private transformers: ((instance: any) => any)[] | null = null;
     public constructor(public Type: T, private readonly dependencies: Key[]) {}
 
+    public async constructAsync(
+        container: Container,
+        dynamicDependencies?: Key[]
+    ): Promise<Resolved<T>> {
+        const resolved = await Promise.all(
+            this.dependencies.map(x => container.getAsync(x))
+        );
+
+        return this.constructCore(resolved, dynamicDependencies);
+    }
+
     public construct(container: Container, dynamicDependencies?: Key[]): Resolved<T> {
+        const resolved = this.dependencies.map(containerGetKey, container);
+        return this.constructCore(resolved, dynamicDependencies);
+    }
+
+    private constructCore(resolved: any[], dynamicDependencies?: Key[]) {
         let instance: Resolved<T>;
 
         if (dynamicDependencies === void 0) {
-            instance = new this.Type(
-                ...this.dependencies.map(containerGetKey, container)
-            ) as Resolved<T>;
+            instance = new this.Type(...resolved) as Resolved<T>;
         } else {
-            instance = new this.Type(
-                ...this.dependencies.map(containerGetKey, container),
-                ...dynamicDependencies
-            ) as Resolved<T>;
+            instance = new this.Type(...resolved, ...dynamicDependencies) as Resolved<T>;
         }
 
-        if (this.transformers == null) {
+        if (this.transformers === null) {
             return instance;
         }
 
@@ -1397,6 +1490,9 @@ const containerResolver: Resolver = {
     $isResolver: true,
     resolve(handler: Container, requestor: Container): Container {
         return requestor;
+    },
+    resolveAsync: function (handler: Container, requestor: Container): Promise<any> {
+        return Promise.resolve(requestor);
     },
 };
 
@@ -1519,9 +1615,9 @@ export class ContainerImpl implements DOMContainer {
 
     public register(...params: any[]): Container {
         if (++this.registerDepth === 100) {
-            throw new Error("Unable to autoregister dependency");
             // Most likely cause is trying to register a plain object that does not have a
             // register method and is not a class constructor
+            throw FAST.error(Message.cannotAutoregisterDependency);
         }
 
         let current: Registry | Record<string, Registry>;
@@ -1666,6 +1762,47 @@ export class ContainerImpl implements DOMContainer {
             : false;
     }
 
+    public async getAsync<K extends Key>(key: K): Promise<Resolved<K>> {
+        validateKey(key);
+
+        if ((key as Resolver).$isResolver) {
+            return (key as Resolver).resolveAsync(this, this);
+        }
+
+        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
+        let current: ContainerImpl = this;
+        let resolver: Resolver | undefined | null;
+
+        while (current != null) {
+            resolver = current.resolvers.get(key);
+
+            if (resolver == null) {
+                if (current.parent == null) {
+                    const registration = await this.config.asyncRegistrationLocator(key);
+
+                    if (!registration) {
+                        throw FAST.error(Message.cannotResolveKey, { key });
+                    }
+
+                    const handler = isRegisterInRequester(
+                        (key as unknown) as RegisterSelf<Constructable>
+                    )
+                        ? this
+                        : current;
+
+                    resolver = registration.register(handler);
+                    return resolver.resolveAsync(current, this);
+                }
+
+                current = current.parent;
+            } else {
+                return resolver.resolveAsync(current, this);
+            }
+        }
+
+        throw FAST.error(Message.cannotResolveKey, { key });
+    }
+
     public get<K extends Key>(key: K): Resolved<K> {
         validateKey(key);
 
@@ -1697,7 +1834,7 @@ export class ContainerImpl implements DOMContainer {
             }
         }
 
-        throw new Error(`Unable to resolve key: ${String(key)}`);
+        throw FAST.error(Message.cannotResolveKey, { key });
     }
 
     public getAll<K extends Key>(
@@ -1752,9 +1889,9 @@ export class ContainerImpl implements DOMContainer {
 
         if (factory === void 0) {
             if (isNativeFunction(Type)) {
-                throw new Error(
-                    `${Type.name} is a native function and therefore cannot be safely constructed by DI. If this is intentional, please use a callback or cachedCallback resolver.`
-                );
+                throw FAST.error(Message.cannotConstructNativeFunction, {
+                    name: Type.name,
+                });
             }
 
             factories.set(
@@ -1781,15 +1918,15 @@ export class ContainerImpl implements DOMContainer {
 
     private jitRegister(keyAsValue: any, handler: ContainerImpl): Resolver {
         if (typeof keyAsValue !== "function") {
-            throw new Error(
-                `Attempted to jitRegister something that is not a constructor: '${keyAsValue}'. Did you forget to register this dependency?`
-            );
+            throw FAST.error(Message.cannotJITRegisterNonConstructor, {
+                value: keyAsValue,
+            });
         }
 
         if (InstrinsicTypeNames.has(keyAsValue.name)) {
-            throw new Error(
-                `Attempted to jitRegister an intrinsic type: ${keyAsValue.name}. Did you forget to add @inject(Key)`
-            );
+            throw FAST.error(Message.cannotJITRegisterIntrinsic, {
+                value: keyAsValue.name,
+            });
         }
 
         if (isRegistry(keyAsValue)) {
@@ -1804,14 +1941,14 @@ export class ContainerImpl implements DOMContainer {
                     return newResolver;
                 }
 
-                throw new Error(
-                    "A valid resolver was not returned from the static register method"
-                );
+                throw FAST.error(Message.invalidResolver);
             }
 
             return registrationResolver as Resolver;
         } else if (keyAsValue.$isInterface) {
-            throw new Error(`Attempted to jitRegister an interface: ${keyAsValue.name}`);
+            throw FAST.error(Message.cannotJITRegisterInterface, {
+                value: keyAsValue.name,
+            });
         } else {
             const resolver = this.config.defaultResolver(keyAsValue, handler);
             handler.resolvers.set(keyAsValue, resolver);
@@ -1966,9 +2103,7 @@ export const Registration = Object.freeze({
 /** @internal */
 export function validateKey(key: any): void {
     if (key === null || key === void 0) {
-        throw new Error(
-            "key/value cannot be null or undefined. Are you trying to inject/register something that doesn't exist with DI?"
-        );
+        throw FAST.error(Message.invalidKey);
     }
 }
 

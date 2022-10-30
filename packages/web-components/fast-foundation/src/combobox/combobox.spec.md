@@ -44,7 +44,6 @@ Extends [`listbox`](../listbox/listbox.spec.md) and [form associated custom elem
 - `autocomplete` - Handles autocomplete features for the control on pageload. Accepted values are `none`, `inline`, `list`, and `both`.
 - `disabled` - Disables the control.
 - `name` - Name of the control.
-- `position` - The placement for the listbox when the combobox is open. Values may be either `above` or `below`.
 - `required` - Boolean value that sets the field as required.
 - `value` - The initial value of the combobox.
 

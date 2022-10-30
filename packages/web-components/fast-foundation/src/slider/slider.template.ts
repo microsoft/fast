@@ -1,19 +1,17 @@
 import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
-import type { FASTSlider, SliderOptions } from "./slider.js";
+import type { FASTSlider } from "./slider.js";
+import type { SliderOptions } from "./slider.options.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(FASTSlider:class)} component.
  * @public
  */
-export function sliderTemplate(
+export function sliderTemplate<T extends FASTSlider>(
     options: SliderOptions = {}
-): ElementViewTemplate<FASTSlider> {
-    return html<FASTSlider>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="slider"
-            class="${x => (x.readOnly ? "readonly" : "")}
-        ${x => x.orientation || Orientation.horizontal}"
             tabindex="${x => (x.disabled ? null : 0)}"
             aria-valuetext="${x => x.valueTextFormatter(x.value)}"
             aria-valuenow="${x => x.value}"
@@ -42,7 +40,7 @@ export function sliderTemplate(
                     class="thumb-container"
                     style="${x => x.position}"
                 >
-                    <slot name="thumb">${options.thumb || ""}</slot>
+                    <slot name="thumb">${options.thumb ?? ""}</slot>
                 </div>
             </div>
         </template>

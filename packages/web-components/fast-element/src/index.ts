@@ -17,12 +17,12 @@ export * from "./observation/observable.js";
 export * from "./observation/notifier.js";
 export * from "./observation/arrays.js";
 export * from "./observation/update-queue.js";
-export type { Behavior } from "./observation/behavior.js";
 
 // Styles
 export * from "./styles/element-styles.js";
 export * from "./styles/css.js";
 export * from "./styles/css-directive.js";
+export * from "./styles/host.js";
 
 // Templating
 export * from "./templating/dom.js";
@@ -43,4 +43,7 @@ export * from "./templating/node-observation.js";
 export * from "./components/fast-element.js";
 export * from "./components/fast-definitions.js";
 export * from "./components/attributes.js";
-export * from "./components/controller.js";
+export {
+    ElementController,
+    ElementControllerStrategy,
+} from "./components/element-controller.js";

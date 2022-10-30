@@ -1,4 +1,4 @@
-import { css, ElementStyles, observable } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import { FASTSelect } from "../select.js";
 import { selectTemplate } from "../select.template.js";
 
@@ -19,6 +19,7 @@ const styles = css`
         outline: none;
         vertical-align: top;
     }
+
     :host(:not([aria-haspopup])) {
         --elevation: 0;
         border: 0;
@@ -42,9 +43,9 @@ const styles = css`
                 ) * 1px
         );
         overflow-y: auto;
+        position: fixed;
+        top: 0;
         left: 0;
-        position: absolute;
-        width: 100%;
         z-index: 1;
     }
 
@@ -91,7 +92,7 @@ const styles = css`
         box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 1px) var(--focus-stroke-outer);
     }
     :host(:not([multiple]):not([size]):focus-visible)
-        ::slotted(fast-option}[aria-selected="true"]:not([disabled])) {
+        ::slotted(fast-option[aria-selected="true"]:not([disabled])) {
         box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 1px) inset
             var(--focus-stroke-inner);
         border-color: var(--focus-stroke-outer);
@@ -173,64 +174,14 @@ const styles = css`
 export class Select extends FASTSelect {
     private computedStylesheet?: ElementStyles;
 
-    private get listboxMaxHeight(): string {
-        return Math.floor(this.maxHeight / 40).toString();
-    }
-
-    @observable
-    private listboxScrollWidth: string = "";
-
-    protected listboxScrollWidthChanged(): void {
-        this.updateComputedStylesheet();
-    }
-
-    private get selectSize(): string {
-        return `${this.size ?? (this.multiple ? 4 : 0)}`;
-    }
-
     public multipleChanged(prev: boolean | undefined, next: boolean): void {
         super.multipleChanged(prev, next);
-        this.updateComputedStylesheet();
-    }
-
-    protected maxHeightChanged(prev: number | undefined, next: number): void {
-        if (this.isConnected) {
-            if (this.collapsible) {
-                this.updateComputedStylesheet();
-            }
-        }
-    }
-
-    public setPositioning(): void {
-        super.setPositioning();
         this.updateComputedStylesheet();
     }
 
     protected sizeChanged(prev: number | undefined, next: number): void {
         super.sizeChanged(prev, next);
         this.updateComputedStylesheet();
-
-        if (this.collapsible) {
-            requestAnimationFrame(() => {
-                this.listbox.style.setProperty("display", "flex");
-                this.listbox.style.setProperty("overflow", "visible");
-                this.listbox.style.setProperty("visibility", "hidden");
-                this.listbox.style.setProperty("width", "auto");
-                this.listbox.hidden = false;
-
-                this.listboxScrollWidth = `${this.listbox.scrollWidth}`;
-
-                this.listbox.hidden = true;
-                this.listbox.style.removeProperty("display");
-                this.listbox.style.removeProperty("overflow");
-                this.listbox.style.removeProperty("visibility");
-                this.listbox.style.removeProperty("width");
-            });
-
-            return;
-        }
-
-        this.listboxScrollWidth = "";
     }
 
     /**
@@ -239,19 +190,17 @@ export class Select extends FASTSelect {
      * @internal
      */
     protected updateComputedStylesheet(): void {
-        if (this.computedStylesheet) {
-            this.$fastController.removeStyles(this.computedStylesheet);
+        this.$fastController.removeStyles(this.computedStylesheet);
+
+        if (this.collapsible) {
+            return;
         }
 
         this.computedStylesheet = css`
             :host {
-                --listbox-max-height: ${this.listboxMaxHeight};
-                --listbox-scroll-width: ${this.listboxScrollWidth};
-                --size: ${this.selectSize};
+                --size: ${`${this.size ?? (this.multiple ? 4 : 0)}`};
             }
         `;
-
-        console.log(this.selectSize);
 
         this.$fastController.addStyles(this.computedStylesheet);
     }

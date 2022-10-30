@@ -20,12 +20,20 @@
                 },
                 "extendDefaults": true
             }
-        ],
-        "no-restricted-imports": [
-            "error",
-            {
-                "patterns": ["**/stories/**"]
-            }
         ]
-    }
+    },
+    "overrides": [
+        {
+            "files": ["**/*.ts"],
+            "excludedFiles": ["**/*.stories.ts"],
+            "rules": {
+                "no-restricted-imports": [
+                    "error",
+                    {
+                        "patterns": ["**/stories/**", "**/*.pw.spec.ts"]
+                    }
+                ]
+            }
+        }
+    ]
 }

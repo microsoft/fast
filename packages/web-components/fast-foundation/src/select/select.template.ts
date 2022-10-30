@@ -7,20 +7,11 @@ import type { FASTSelect, SelectOptions } from "./select.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTSelect:class)} component.
  * @public
  */
-export function selectTemplate(
+export function selectTemplate<T extends FASTSelect>(
     options: SelectOptions = {}
-): ElementViewTemplate<FASTSelect> {
-    return html<FASTSelect>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
-            class="${x =>
-                [
-                    x.collapsible && "collapsible",
-                    x.collapsible && x.open && "open",
-                    x.disabled && "disabled",
-                    x.collapsible && x.position,
-                ]
-                    .filter(Boolean)
-                    .join(" ")}"
             aria-activedescendant="${x => x.ariaActiveDescendant}"
             aria-controls="${x => x.ariaControls}"
             aria-disabled="${x => x.ariaDisabled}"
@@ -38,7 +29,7 @@ export function selectTemplate(
         >
             ${when(
                 x => x.collapsible,
-                html<FASTSelect>`
+                html<T>`
                     <div
                         class="control"
                         part="control"
@@ -52,7 +43,7 @@ export function selectTemplate(
                             </div>
                             <div aria-hidden="true" class="indicator" part="indicator">
                                 <slot name="indicator">
-                                    ${options.indicator || ""}
+                                    ${options.indicator ?? ""}
                                 </slot>
                             </div>
                         </slot>

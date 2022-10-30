@@ -34,17 +34,10 @@ const styles = css`
         display: inline-flex;
         flex-direction: column;
         left: 0;
-        max-height: calc(
-            var(--max-height) -
-                (
-                    (var(--base-height-multiplier) + var(--density)) * var(--design-unit) *
-                        1px
-                )
-        );
         padding: calc(var(--design-unit) * 1px) 0;
         overflow-y: auto;
-        position: absolute;
-        width: 100%;
+        position: fixed;
+        top: 0;
         z-index: 1;
     }
 

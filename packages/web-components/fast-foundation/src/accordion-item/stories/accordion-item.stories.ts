@@ -1,30 +1,37 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTAccordionItem } from "../accordion-item.js";
 
-type AccordionItemArgs = Args & FASTAccordionItem;
-type AccordionItemMeta = Meta<AccordionItemArgs>;
-
-const storyTemplate = html<AccordionItemArgs>`
-    <fast-accordion-item ?expanded="${x => x?.expanded}">
-        ${x => x?.content}
+const storyTemplate = html<StoryArgs<FASTAccordionItem>>`
+    <fast-accordion-item
+        ?expanded="${x => x.expanded}"
+        heading-level="${x => x.headinglevel}"
+        id="${x => x.id}"
+    >
+        ${x => x.storyContent}
     </fast-accordion-item>
 `;
 
 export default {
-    title: "Accordion/Accordion Item",
-    includeStories: ["AccordionItem"],
+    title: "Accordion Item",
     args: {
-        content: html`
-            Accordion Item Content
-            <div slot="heading">Accordion Item Heading</div>
-        `,
-        expanded: true,
+        expanded: false,
     },
-} as AccordionItemMeta;
+    argTypes: {
+        expanded: { control: "boolean" },
+        headinglevel: { control: { type: "number", max: 6, min: 1 } },
+        id: { control: "text" },
+        storyContent: { table: { disable: true } },
+    },
+} as Meta<FASTAccordionItem>;
 
-export const AccordionItem = (args: AccordionItemArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+export const AccordionItem: Story<FASTAccordionItem> = renderComponent(
+    storyTemplate
+).bind({});
+AccordionItem.args = {
+    storyContent: html`
+        Accordion Item Content
+        <div slot="heading">Accordion Item Heading</div>
+    `,
 };

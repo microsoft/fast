@@ -8,7 +8,7 @@ import {
     html,
     observable,
 } from "@microsoft/fast-element";
-import { DesignTokenDefinition, FormControlId } from "../../design-token-registry";
+import { DesignTokenDefinition, FormControlId } from "../../design-token-registry.js";
 
 const defaultTokenTemplate = html<DesignTokenField>`
     <input

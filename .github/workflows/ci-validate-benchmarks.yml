@@ -91,6 +91,30 @@ jobs:
         with:
             name: results
             path: packages/utilities/fast-benchmarks/results/fast-element-render-createDelete5x.json
+            
+  observable_run1k:
+    name: Run observable benchmark with decorator 1k times
+    needs: [setup]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v1
+        with:
+            node-version: "16.x"
+
+      - name: Run tachometer and generate results file
+        run: |
+            cd packages/utilities/fast-benchmarks
+            yarn install
+            yarn run benchmark --library=fast-element --benchmark=observable --versions master ${GITHUB_HEAD_REF} --operations=runFile1k
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+            name: results
+            path: packages/utilities/fast-benchmarks/results/fast-element-observable-runFile1k.json
 
   repeat_reverse:
     name: Run repeat benchmark with nested template, reverse method
@@ -108,7 +132,7 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=reverse --operations=clickTrigger10x --queryParam loopCount=200 itemCount=200
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=reverse --operations=clickTrigger10x --queryParam itemCount=100
 
       - name: Upload results
         uses: actions/upload-artifact@v2
@@ -132,7 +156,7 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=push --operations=clickTrigger10x --queryParam loopCount=200 itemCount=200
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=push --operations=clickTrigger10x --queryParam itemCount=100 addCount=20
 
       - name: Upload results
         uses: actions/upload-artifact@v2
@@ -156,7 +180,7 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=unshift --operations=clickTrigger10x --queryParam loopCount=200 itemCount=200 addCount=1
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=unshift --operations=clickTrigger10x --queryParam itemCount=100 addCount=20
 
       - name: Upload results
         uses: actions/upload-artifact@v2
@@ -180,7 +204,7 @@ jobs:
         run: |
             cd packages/utilities/fast-benchmarks
             yarn install
-            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=shift --operations=clickTrigger10x --queryParam loopCount=200 itemCount=200
+            yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates nested --method=shift --operations=clickTrigger10x --queryParam itemCount=100
 
       - name: Upload results
         uses: actions/upload-artifact@v2
@@ -204,7 +228,7 @@ jobs:
           run: |
               cd packages/utilities/fast-benchmarks
               yarn install
-              yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates basic --method=splice --operations=clickTrigger10x --queryParam loopCount=1000 itemCount=1000 deleteCount=10 addCount=10
+              yarn run benchmark --library=fast-element --benchmark=repeat --versions master ${GITHUB_HEAD_REF} --templates basic --method=splice --operations=clickTrigger10x --queryParam itemCount=1000 deleteCount=20 addCount=20
 
         - name: Upload results
           uses: actions/upload-artifact@v2
@@ -214,7 +238,7 @@ jobs:
 
   report_results:
     name: Report Results
-    needs: [render_create10k, render_update10th, render_createDelete5x, repeat_reverse, repeat_push, repeat_unshift, repeat_shift, repeat_splice]
+    needs: [render_create10k, render_update10th, render_createDelete5x, observable_run1k, repeat_reverse, repeat_push, repeat_unshift, repeat_shift, repeat_splice]
     runs-on: ubuntu-latest
 
     steps:

@@ -1,18 +1,14 @@
 import type { ElementViewTemplate } from "@microsoft/fast-element";
 import { html, when } from "@microsoft/fast-element";
-import { FASTSkeleton, SkeletonShape } from "./skeleton.js";
+import type { FASTSkeleton } from "./skeleton.js";
 
 /**
  * The template for the fast-skeleton component
  * @public
  */
-export function skeletonTemplate(): ElementViewTemplate<FASTSkeleton> {
-    return html<FASTSkeleton>`
-        <template
-            class="${x => (x.shape in SkeletonShape ? x.shape : "rect")}"
-            pattern="${x => x.pattern}"
-            ?shimmer="${x => x.shimmer}"
-        >
+export function skeletonTemplate<T extends FASTSkeleton>(): ElementViewTemplate<T> {
+    return html<T>`
+        <template pattern="${x => x.pattern}" ?shimmer="${x => x.shimmer}">
             ${when(
                 x => x.shimmer === true,
                 html`

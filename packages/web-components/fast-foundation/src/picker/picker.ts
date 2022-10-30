@@ -1,12 +1,13 @@
 import {
     attr,
+    bind,
     html,
     HTMLView,
     observable,
     ref,
-    RepeatBehavior,
     RepeatDirective,
     Updates,
+    ViewBehaviorOrchestrator,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
@@ -30,11 +31,12 @@ import {
     FlyoutPosTop,
     FlyoutPosTopFill,
 } from "../anchored-region/index.js";
-import type { FASTPickerMenu } from "./picker-menu.js";
-import { FASTPickerMenuOption } from "./picker-menu-option.js";
 import { FASTPickerListItem } from "./picker-list-item.js";
-import { FormAssociatedPicker } from "./picker.form-associated.js";
 import type { FASTPickerList } from "./picker-list.js";
+import { FASTPickerMenuOption } from "./picker-menu-option.js";
+import type { FASTPickerMenu } from "./picker-menu.js";
+import { FormAssociatedPicker } from "./picker.form-associated.js";
+import { MenuPlacement } from "./picker.options.js";
 
 const pickerInputTemplate: ViewTemplate = html<FASTPicker>`
     <input
@@ -50,19 +52,6 @@ const pickerInputTemplate: ViewTemplate = html<FASTPicker>`
         ${ref("inputElement")}
     />
 `;
-
-/**
- * Defines the vertical positioning options for an anchored region
- *
- * @beta
- */
-export type menuConfigs =
-    | "bottom"
-    | "bottom-fill"
-    | "tallest"
-    | "tallest-fill"
-    | "top"
-    | "top-fill";
 
 /**
  * A Picker Custom HTML Element.  This is an early "alpha" version of the component.
@@ -192,7 +181,7 @@ export class FASTPicker extends FormAssociatedPicker {
      * HTML Attribute: menu-placement
      */
     @attr({ attribute: "menu-placement" })
-    public menuPlacement: menuConfigs = "bottom-fill";
+    public menuPlacement: MenuPlacement = MenuPlacement.bottomFill;
     protected menuPlacementChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateMenuConfig();
@@ -449,11 +438,10 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     @observable
     public selectedItems: string[] = [];
-    private itemsRepeatBehavior: RepeatBehavior | null;
 
-    private optionsRepeatBehavior: RepeatBehavior | null;
     private optionsPlaceholder: Node;
     private inputElementView: HTMLView | null = null;
+    private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
 
     /**
      * @internal
@@ -461,10 +449,14 @@ export class FASTPicker extends FormAssociatedPicker {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        this.listElement = document.createElement(this.selectedListTag) as FASTPickerList;
-        this.appendChild(this.listElement);
-        this.itemsPlaceholderElement = document.createComment("");
-        this.listElement.append(this.itemsPlaceholderElement);
+        if (!this.listElement) {
+            this.listElement = document.createElement(
+                this.selectedListTag
+            ) as FASTPickerList;
+            this.appendChild(this.listElement);
+            this.itemsPlaceholderElement = document.createComment("");
+            this.listElement.appendChild(this.itemsPlaceholderElement);
+        }
 
         this.inputElementView = pickerInputTemplate.render(this, this.listElement);
 
@@ -473,21 +465,23 @@ export class FASTPicker extends FormAssociatedPicker {
             return element.tagName === match;
         }) as FASTPickerMenu;
 
-        if (this.menuElement === undefined) {
+        if (!this.menuElement) {
             this.menuElement = document.createElement(this.menuTag) as FASTPickerMenu;
             this.appendChild(this.menuElement);
+
+            if (this.menuElement.id === "") {
+                this.menuElement.id = uniqueId("listbox-");
+            }
+
+            this.menuId = this.menuElement.id;
         }
 
-        if (this.menuElement.id === "") {
-            this.menuElement.id = uniqueId("listbox-");
+        if (!this.optionsPlaceholder) {
+            this.optionsPlaceholder = document.createComment("");
+            this.menuElement.appendChild(this.optionsPlaceholder);
         }
-
-        this.menuId = this.menuElement.id;
-        this.optionsPlaceholder = document.createComment("");
-        this.menuElement.append(this.optionsPlaceholder);
 
         this.updateMenuConfig();
-
         Updates.enqueue(() => this.initialize());
     }
 
@@ -496,6 +490,7 @@ export class FASTPicker extends FormAssociatedPicker {
         this.toggleFlyout(false);
         this.inputElement.removeEventListener("input", this.handleTextInput);
         this.inputElement.removeEventListener("click", this.handleInputClick);
+
         if (this.inputElementView !== null) {
             this.inputElementView.dispose();
             this.inputElementView = null;
@@ -517,37 +512,36 @@ export class FASTPicker extends FormAssociatedPicker {
         this.updateListItemTemplate();
         this.updateOptionTemplate();
 
-        const itemsRepeatDirective = new RepeatDirective(
-            x => x.selectedItems,
-            x => x.activeListItemTemplate,
-            { positioning: true }
-        );
-        this.itemsRepeatBehavior = itemsRepeatDirective.createBehavior({
-            [itemsRepeatDirective.nodeId]: this.itemsPlaceholderElement,
-        });
+        if (this.behaviorOrchestrator === null) {
+            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
+            this.$fastController.addBehavior(this.behaviorOrchestrator);
+
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective(
+                    bind(x => x.selectedItems, false),
+                    bind(x => x.activeListItemTemplate, false),
+                    { positioning: true }
+                ),
+                this.itemsPlaceholderElement
+            );
+
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective(
+                    bind(x => x.filteredOptionsList, false),
+                    bind(x => x.activeMenuOptionTemplate, false),
+                    { positioning: true }
+                ),
+                this.optionsPlaceholder
+            );
+        }
 
         this.inputElement.addEventListener("input", this.handleTextInput);
         this.inputElement.addEventListener("click", this.handleInputClick);
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
-
         this.menuElement.suggestionsAvailableText = this.suggestionsAvailableText;
         this.menuElement.addEventListener(
             "optionsupdated",
             this.handleMenuOptionsUpdated
         );
-
-        const optionsRepeatDirective = new RepeatDirective(
-            x => x.filteredOptionsList,
-            x => x.activeMenuOptionTemplate,
-            { positioning: true }
-        );
-        this.optionsRepeatBehavior = optionsRepeatDirective.createBehavior({
-            [optionsRepeatDirective.nodeId]: this.optionsPlaceholder,
-        });
-
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        this.$fastController.addBehaviors([this.optionsRepeatBehavior!]);
 
         this.handleSelectionChange();
     }
