@@ -1,7 +1,8 @@
 import {
-    Behavior,
     ElementStyles,
     FASTElement,
+    HostBehavior,
+    HostController,
     Observable,
 } from "@microsoft/fast-element";
 
@@ -12,7 +13,7 @@ import {
  *
  * @public
  */
-export class PropertyStyleSheetBehavior implements Behavior {
+export class PropertyStyleSheetBehavior implements HostBehavior {
     /**
      * Constructs a {@link PropertyStyleSheetBehavior} instance.
      * @param propertyName - The property name to operate from.
@@ -29,18 +30,18 @@ export class PropertyStyleSheetBehavior implements Behavior {
      * Binds the behavior to the element.
      * @param elementInstance - The element for which the property is applied.
      */
-    public bind(elementInstance: FASTElement) {
-        Observable.getNotifier(elementInstance).subscribe(this, this.propertyName);
-        this.handleChange(elementInstance, this.propertyName);
+    public addedCallback(controller: HostController) {
+        Observable.getNotifier(controller.source).subscribe(this, this.propertyName);
+        this.handleChange(controller.source, this.propertyName);
     }
 
     /**
      * Unbinds the behavior from the element.
      * @param source - The element for which the behavior is unbinding.
      */
-    public unbind(source: typeof FASTElement & HTMLElement) {
-        Observable.getNotifier(source).unsubscribe(this, this.propertyName);
-        (source as any).$fastController.removeStyles(this.styles);
+    public removedCallback(controller: HostController) {
+        Observable.getNotifier(controller.source).unsubscribe(this, this.propertyName);
+        controller.removeStyles(this.styles);
     }
 
     /**
@@ -50,10 +51,12 @@ export class PropertyStyleSheetBehavior implements Behavior {
      * @internal
      */
     public handleChange(source: FASTElement, key: string) {
+        const controller = source.$fastController;
+
         if (source[key] === this.value) {
-            source.$fastController.addStyles(this.styles);
+            controller.addStyles(this.styles);
         } else {
-            source.$fastController.removeStyles(this.styles);
+            controller.removeStyles(this.styles);
         }
     }
 }

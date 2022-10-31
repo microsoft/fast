@@ -25,6 +25,10 @@ module.exports = {
         colorMode: {
             defaultMode: "dark",
         },
+        prism: {
+            theme: require("prism-react-renderer/themes/github"),
+            darkTheme: require("prism-react-renderer/themes/palenight"),
+        },
         docs: {
             sidebar: {
                 hideable: true,

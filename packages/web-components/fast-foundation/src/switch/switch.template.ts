@@ -5,10 +5,10 @@ import type { FASTSwitch, SwitchOptions } from "./switch.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTSwitch:class)} component.
  * @public
  */
-export function switchTemplate(
+export function switchTemplate<T extends FASTSwitch>(
     options: SwitchOptions = {}
-): ElementViewTemplate<FASTSwitch> {
-    return html<FASTSwitch>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="switch"
             aria-checked="${x => x.checked}"
@@ -17,7 +17,6 @@ export function switchTemplate(
             tabindex="${x => (x.disabled ? null : 0)}"
             @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
-            class="${x => (x.checked ? "checked" : "")}"
         >
             <label
                 part="label"
@@ -29,7 +28,7 @@ export function switchTemplate(
                 <slot ${slotted("defaultSlottedNodes")}></slot>
             </label>
             <div part="switch" class="switch">
-                <slot name="switch">${options.switch || ""}</slot>
+                <slot name="switch">${options.switch ?? ""}</slot>
             </div>
             <span class="status-message" part="status-message">
                 <span class="checked-message" part="checked-message">

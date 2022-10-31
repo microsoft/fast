@@ -18,11 +18,11 @@ export type CellItemTemplateOptions = {
     dataGridCell: TemplateElementDependency;
 };
 
-function cellItemTemplate(
+function cellItemTemplate<T extends FASTDataGridRow>(
     options: CellItemTemplateOptions
-): ViewTemplate<ColumnDefinition, FASTDataGridRow> {
+): ViewTemplate<ColumnDefinition, T> {
     const cellTag = tagFor(options.dataGridCell);
-    return html<ColumnDefinition, FASTDataGridRow>`
+    return html<ColumnDefinition, T>`
     <${cellTag}
         cell-type="${x => (x.isRowHeader ? "rowheader" : undefined)}"
         grid-column="${(x, c) => c.index + 1}"
@@ -32,11 +32,11 @@ function cellItemTemplate(
 `;
 }
 
-function headerCellItemTemplate(
+function headerCellItemTemplate<T extends FASTDataGridRow>(
     options: CellItemTemplateOptions
-): ViewTemplate<ColumnDefinition, FASTDataGridRow> {
+): ViewTemplate<ColumnDefinition, T> {
     const cellTag = tagFor(options.dataGridCell);
-    return html<ColumnDefinition, FASTDataGridRow>`
+    return html<ColumnDefinition, T>`
     <${cellTag}
         cell-type="columnheader"
         grid-column="${(x, c) => c.index + 1}"
@@ -51,13 +51,12 @@ function headerCellItemTemplate(
  *
  * @public
  */
-export function dataGridRowTemplate(
+export function dataGridRowTemplate<T extends FASTDataGridRow>(
     options: CellItemTemplateOptions
-): ElementViewTemplate<FASTDataGridRow> {
-    return html<FASTDataGridRow>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="row"
-            :classList="${x => (x.rowType !== "default" ? x.rowType : "")}"
             :defaultCellItemTemplate="${cellItemTemplate(options)}"
             :defaultHeaderCellItemTemplate="${headerCellItemTemplate(options)}"
             ${children({

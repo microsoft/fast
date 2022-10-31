@@ -8,6 +8,7 @@ import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
  * @param palette - The Palette used to find the Swatch
  * @param reference - The reference color
  * @param minContrast - The desired minimum contrast
+ * @param direction - The direction the delta moves on the `palette`, defaults to {@link directionByIsDark} based on `reference`
  * @returns The Swatch
  *
  * @public

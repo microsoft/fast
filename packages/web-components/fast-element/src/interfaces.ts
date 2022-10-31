@@ -49,16 +49,6 @@ export type Mutable<T> = {
 };
 
 /**
- * Extracts the item type from an array.
- * @public
- */
-export type ArrayItem<T> = T extends ReadonlyArray<infer TItem>
-    ? TItem
-    : T extends Array<infer TItem>
-    ? TItem
-    : any;
-
-/**
  * A policy for use with the standard trustedTypes platform API.
  * @public
  */
@@ -134,14 +124,13 @@ export const enum KernelServiceId {
     observable = 2,
     contextEvent = 3,
     elementRegistry = 4,
-    styleSheetStrategy = 5,
 }
 
 /**
  * A node that can be targeted by styles.
  * @public
  */
-export interface StyleTarget {
+export interface StyleTarget extends Pick<Node, "getRootNode"> {
     /**
      * Stylesheets to be adopted by the node.
      */
@@ -165,7 +154,6 @@ export interface StyleTarget {
      */
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
 }
-
 /**
  * Implemented to provide specific behavior when adding/removing styles
  * for elements.
@@ -198,9 +186,25 @@ export const enum Message {
     bindingInnerHTMLRequiresTrustedTypes = 1202,
     twoWayBindingRequiresObservables = 1203,
     hostBindingWithoutHost = 1204,
+    unsupportedBindingBehavior = 1205,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,
+    // 1501 - 1600 Context and Dependency Injection
+    noRegistrationForContext = 1501,
+    noFactoryForResolver = 1502,
+    invalidResolverStrategy = 1503,
+    cannotAutoregisterDependency = 1504,
+    cannotResolveKey = 1505,
+    cannotConstructNativeFunction = 1506,
+    cannotJITRegisterNonConstructor = 1507,
+    cannotJITRegisterIntrinsic = 1508,
+    cannotJITRegisterInterface = 1509,
+    invalidResolver = 1510,
+    invalidKey = 1511,
+    noDefaultResolver = 1512,
+    cyclicDependency = 1513,
+    connectUpdateRequiresController = 1514,
 }
 
 /**
@@ -213,3 +217,8 @@ export const isFunction = (object: any): object is Function =>
  * @internal
  */
 export const isString = (object: any): object is string => typeof object === "string";
+
+/**
+ * @internal
+ */
+export const noop = () => void 0;

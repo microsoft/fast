@@ -7,16 +7,12 @@ import type { FASTRadio, RadioOptions } from "./radio.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTRadio:class)} component.
  * @public
  */
-export function radioTemplate(
+export function radioTemplate<T extends FASTRadio>(
     options: RadioOptions = {}
-): ElementViewTemplate<FASTRadio> {
-    return html`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="radio"
-            class="${x =>
-                [x.checked && "checked", x.readOnly && "readonly"]
-                    .filter(Boolean)
-                    .join(" ")}"
             aria-checked="${x => x.checked}"
             aria-required="${x => x.required}"
             aria-disabled="${x => x.disabled}"

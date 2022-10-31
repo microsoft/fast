@@ -5,12 +5,11 @@ import { FASTListboxElement } from "./listbox.element.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTListbox:class)} component.
  * @public
  */
-export function listboxTemplate(): ElementViewTemplate<FASTListboxElement> {
-    return html<FASTListboxElement>`
+export function listboxTemplate<T extends FASTListboxElement>(): ElementViewTemplate<T> {
+    return html<T>`
         <template
             aria-activedescendant="${x => x.ariaActiveDescendant}"
             aria-multiselectable="${x => x.ariaMultiSelectable}"
-            class="listbox"
             role="listbox"
             tabindex="${x => (!x.disabled ? "0" : null)}"
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"

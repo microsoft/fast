@@ -217,7 +217,7 @@ export class FASTTextField extends FormAssociatedTextField {
      *
      * @public
      */
-    protected select(): void {
+    public select(): void {
         this.control.select();
 
         /**
@@ -248,6 +248,11 @@ export class FASTTextField extends FormAssociatedTextField {
      */
     public handleChange(): void {
         this.$emit("change");
+    }
+
+    /** {@inheritDoc (FormAssociated:interface).validate} */
+    public validate(): void {
+        super.validate(this.control);
     }
 }
 

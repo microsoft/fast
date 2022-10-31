@@ -1,10 +1,14 @@
 import type { Disposable } from "../interfaces.js";
-import type { Behavior } from "../observation/behavior.js";
-import type { ExecutionContext } from "../observation/observable.js";
+import {
+    ExecutionContext,
+    Observable,
+    SourceLifetime,
+} from "../observation/observable.js";
 import type {
     ViewBehavior,
     ViewBehaviorFactory,
     ViewBehaviorTargets,
+    ViewController,
 } from "./html-directive.js";
 
 /**
@@ -15,7 +19,7 @@ export interface View<TSource = any, TParent = any> extends Disposable {
     /**
      * The execution context the view is running within.
      */
-    readonly context: ExecutionContext<TParent> | null;
+    readonly context: ExecutionContext<TParent>;
 
     /**
      * The data that the view is bound to.
@@ -25,9 +29,8 @@ export interface View<TSource = any, TParent = any> extends Disposable {
     /**
      * Binds a view's behaviors to its binding source.
      * @param source - The binding source for the view's binding behaviors.
-     * @param context - The execution context to run the view within.
      */
-    bind(source: TSource, context: ExecutionContext<TParent>): void;
+    bind(source: TSource, context?: ExecutionContext<TParent>): void;
 
     /**
      * Unbinds a view's behaviors from its binding source and context.
@@ -96,8 +99,12 @@ function removeNodeSequence(firstNode: Node, lastNode: Node): void {
  * @public
  */
 export class HTMLView<TSource = any, TParent = any>
-    implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent> {
+    implements
+        ElementView<TSource, TParent>,
+        SyntheticView<TSource, TParent>,
+        ExecutionContext<TParent> {
     private behaviors: ViewBehavior[] | null = null;
+    private unbindables: { unbind(controller: ViewController) }[] = [];
 
     /**
      * The data that the view is bound to.
@@ -105,9 +112,100 @@ export class HTMLView<TSource = any, TParent = any>
     public source: TSource | null = null;
 
     /**
+     * Indicates whether the controller is bound.
+     */
+    public isBound = false;
+
+    /**
+     * Indicates how the source's lifetime relates to the controller's lifetime.
+     */
+    readonly sourceLifetime: SourceLifetime = SourceLifetime.unknown;
+
+    /**
      * The execution context the view is running within.
      */
-    public context: ExecutionContext<TParent> | null = null;
+    public context: ExecutionContext<TParent> = this;
+
+    /**
+     * The index of the current item within a repeat context.
+     */
+    public index: number = 0;
+
+    /**
+     * The length of the current collection within a repeat context.
+     */
+    public length: number = 0;
+
+    /**
+     * The parent data source within a nested context.
+     */
+    public readonly parent: TParent;
+
+    /**
+     * The parent execution context when in nested context scenarios.
+     */
+    public readonly parentContext: ExecutionContext<TParent>;
+
+    /**
+     * The current event within an event handler.
+     */
+    public get event(): Event {
+        return ExecutionContext.getEvent()!;
+    }
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * has an even index.
+     */
+    public get isEven(): boolean {
+        return this.index % 2 === 0;
+    }
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * has an odd index.
+     */
+    public get isOdd(): boolean {
+        return this.index % 2 !== 0;
+    }
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * is the first item in the collection.
+     */
+    public get isFirst(): boolean {
+        return this.index === 0;
+    }
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * is somewhere in the middle of the collection.
+     */
+    public get isInMiddle(): boolean {
+        return !this.isFirst && !this.isLast;
+    }
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * is the last item in the collection.
+     */
+    public get isLast(): boolean {
+        return this.index === this.length - 1;
+    }
+
+    /**
+     * Returns the typed event detail of a custom event.
+     */
+    public eventDetail<TDetail>(): TDetail {
+        return (this.event as CustomEvent<TDetail>).detail;
+    }
+
+    /**
+     * Returns the typed event target of the event.
+     */
+    public eventTarget<TTarget extends EventTarget>(): TTarget {
+        return this.event.target! as TTarget;
+    }
 
     /**
      * The first DOM node in the range of nodes that make up the view.
@@ -127,7 +225,7 @@ export class HTMLView<TSource = any, TParent = any>
     public constructor(
         private fragment: DocumentFragment,
         private factories: ReadonlyArray<ViewBehaviorFactory>,
-        private targets: ViewBehaviorTargets
+        public readonly targets: ViewBehaviorTargets
     ) {
         this.firstChild = fragment.firstChild!;
         this.lastChild = fragment.lastChild!;
@@ -149,8 +247,10 @@ export class HTMLView<TSource = any, TParent = any>
         if (this.fragment.hasChildNodes()) {
             node.parentNode!.insertBefore(this.fragment, node);
         } else {
-            const parentNode = node.parentNode!;
             const end = this.lastChild!;
+            if (node.previousSibling === end) return;
+
+            const parentNode = node.parentNode!;
             let current = this.firstChild!;
             let next;
 
@@ -192,65 +292,74 @@ export class HTMLView<TSource = any, TParent = any>
         this.unbind();
     }
 
+    public onUnbind(behavior: {
+        unbind(controller: ViewController<TSource, TParent>);
+    }): void {
+        this.unbindables.push(behavior);
+    }
+
     /**
      * Binds a view's behaviors to its binding source.
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the behaviors within.
      */
-    public bind(source: TSource, context: ExecutionContext<TParent>): void {
-        let behaviors = this.behaviors;
-        const oldSource = this.source;
-
-        if (oldSource === source) {
+    public bind(source: TSource, context: ExecutionContext<TParent> = this): void {
+        if (this.source === source) {
             return;
         }
 
-        this.source = source;
-        this.context = context;
-        const targets = this.targets;
+        let behaviors = this.behaviors;
 
-        if (oldSource !== null) {
-            for (let i = 0, ii = behaviors!.length; i < ii; ++i) {
-                const current = behaviors![i];
-                current.unbind(oldSource, context, targets);
-                current.bind(source, context, targets);
-            }
-        } else if (behaviors === null) {
-            this.behaviors = behaviors = new Array<Behavior>(this.factories.length);
+        if (behaviors === null) {
+            this.source = source;
+            this.context = context;
+            this.behaviors = behaviors = new Array<ViewBehavior>(this.factories.length);
             const factories = this.factories;
 
             for (let i = 0, ii = factories.length; i < ii; ++i) {
-                const behavior = factories[i].createBehavior(targets);
-                behavior.bind(source, context, targets);
+                const behavior = factories[i].createBehavior();
+                behavior.bind(this);
                 behaviors[i] = behavior;
             }
         } else {
+            if (this.source !== null) {
+                this.evaluateUnbindables();
+            }
+
+            this.isBound = false;
+            this.source = source;
+            this.context = context;
+
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].bind(source, context, targets);
+                behaviors[i].bind(this);
             }
         }
+
+        this.isBound = true;
     }
 
     /**
      * Unbinds a view's behaviors from its binding source.
      */
     public unbind(): void {
-        const oldSource = this.source;
-
-        if (oldSource === null) {
+        if (!this.isBound || this.source === null) {
             return;
         }
 
-        const targets = this.targets;
-        const context = this.context;
-        const behaviors = this.behaviors!;
+        this.evaluateUnbindables();
+        this.source = null;
+        this.context = this;
+        this.isBound = false;
+    }
 
-        for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-            behaviors[i].unbind(oldSource, context!, targets);
+    private evaluateUnbindables() {
+        const unbindables = this.unbindables;
+
+        for (let i = 0, ii = unbindables.length; i < ii; ++i) {
+            unbindables[i].unbind(this);
         }
 
-        this.source = null;
-        this.context = null;
+        unbindables.length = 0;
     }
 
     /**
@@ -269,3 +378,6 @@ export class HTMLView<TSource = any, TParent = any>
         }
     }
 }
+
+Observable.defineProperty(HTMLView.prototype, "index");
+Observable.defineProperty(HTMLView.prototype, "length");

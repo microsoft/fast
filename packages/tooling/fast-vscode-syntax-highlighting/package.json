@@ -1,5 +1,6 @@
 {
   "name": "fast-tagged-templates",
+  "publisher": "ms-fast",
   "displayName": "FAST Tagged Template Literals",
   "description": "Syntax highlighting support for CSS and HTML tagged template literals",
   "author": {
@@ -7,7 +8,7 @@
     "url": "https://discord.gg/FcSNfg4"
   },
   "homepage": "https://www.fast.design/",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "engines": {
     "vscode": "^1.49.0"

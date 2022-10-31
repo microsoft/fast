@@ -5,9 +5,9 @@ import type { FASTPickerList } from "./picker-list.js";
  *
  * @public
  */
-export function pickerListTemplate(): ElementViewTemplate<FASTPickerList> {
-    return html<FASTPickerList>`
-        <template slot="list-region" role="list" class="picker-list">
+export function pickerListTemplate<T extends FASTPickerList>(): ElementViewTemplate<T> {
+    return html<T>`
+        <template slot="list-region" role="list">
             <slot></slot>
             <slot name="input-region"></slot>
         </template>

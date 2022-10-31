@@ -1,9 +1,11 @@
+import { observable } from "../observation/observable.js";
+import { RepeatBehavior, RepeatDirective, repeat } from "./repeat.js";
 import { expect } from "chai";
-import { repeat, RepeatDirective, RepeatBehavior, RepeatOptions } from "./repeat.js";
 import { html } from "./template.js";
-import { ExecutionContext, observable } from "../observation/observable.js";
 import { toHTML } from "../__test__/helpers.js";
 import { Updates } from "../observation/update-queue.js";
+import type { ViewBehaviorTargets, ViewController } from "./html-directive.js";
+import { Fake } from "../testing/fakes.js";
 
 describe("The repeat", () => {
     function createLocation() {
@@ -17,6 +19,14 @@ describe("The repeat", () => {
         return { parent, targets, nodeId };
     }
 
+    function expectViewPositionToBeCorrect(behavior: RepeatBehavior<any>) {
+        for (let i = 0, ii = behavior.views.length; i < ii; ++i) {
+            const context = behavior.views[i].context;
+            expect(context.index).equal(i);
+            expect(context.length).equal(ii);
+        }
+    }
+
     context("template function", () => {
         class ViewModel {
             items = ["a", "b", "c"]
@@ -28,6 +38,35 @@ describe("The repeat", () => {
                 html`test`
             );
             expect(directive).to.be.instanceOf(RepeatDirective);
+        });
+
+        it("returns a RepeatDirective with optional properties set to default values", () => {
+            const directive = repeat(
+                () => [],
+                html`test`
+            ) as RepeatDirective;
+            expect(directive).to.be.instanceOf(RepeatDirective);
+            expect(directive.options).to.deep.equal({positioning: false, recycle: true})
+        });
+
+        it("returns a RepeatDirective with recycle property set to default value when positioning is set to different value", () => {
+            const directive = repeat(
+                () => [],
+                html`test`,
+                {positioning: true}
+            ) as RepeatDirective;
+            expect(directive).to.be.instanceOf(RepeatDirective);
+            expect(directive.options).to.deep.equal({positioning: true, recycle: true})
+        });
+
+        it("returns a RepeatDirective with positioning property set to default value when recycle is set to different value", () => {
+            const directive = repeat(
+                () => [],
+                html`test`,
+                {recycle: false}
+            ) as RepeatDirective;
+            expect(directive).to.be.instanceOf(RepeatDirective);
+            expect(directive.options).to.deep.equal({positioning: false, recycle: false})
         });
 
         it("returns a RepeatDirective with optional properties set to different values", () => {
@@ -44,7 +83,7 @@ describe("The repeat", () => {
             const source = new ViewModel();
             const directive = repeat<ViewModel>(x => x.items, html`test`) as RepeatDirective;
 
-            const data = directive.dataBinding(source, ExecutionContext.default);
+            const data = directive.dataBinding.evaluate(source, Fake.executionContext());
 
             expect(data).to.equal(source.items);
         });
@@ -54,7 +93,7 @@ describe("The repeat", () => {
             const itemTemplate = html`test`;
             const directive = repeat(array, itemTemplate) as RepeatDirective;
 
-            const data = directive.dataBinding({}, ExecutionContext.default);
+            const data = directive.dataBinding.evaluate({}, Fake.executionContext());
 
             expect(data).to.equal(array);
         });
@@ -63,7 +102,7 @@ describe("The repeat", () => {
             const source = new ViewModel();
             const itemTemplate = html`test`;
             const directive = repeat<ViewModel>(x => x.items, itemTemplate) as RepeatDirective;
-            const template = directive.templateBinding(source, ExecutionContext.default);
+            const template = directive.templateBinding.evaluate(source, Fake.executionContext());
             expect(template).to.equal(itemTemplate);
         });
 
@@ -71,21 +110,21 @@ describe("The repeat", () => {
             const source = new ViewModel();
             const itemTemplate = html`test`;
             const directive = repeat<ViewModel>(x => x.items, () => itemTemplate) as RepeatDirective;
-            const template = directive.templateBinding(source, ExecutionContext.default);
+            const template = directive.templateBinding.evaluate(source, Fake.executionContext());
             expect(template).equal(itemTemplate);
         });
     });
 
     context("directive", () => {
         it("creates a RepeatBehavior", () => {
-            const { targets, nodeId } = createLocation();
+            const { nodeId } = createLocation();
             const directive = repeat(
                 () => [],
                 html`test`
             ) as RepeatDirective;
             directive.nodeId = nodeId;
 
-            const behavior = directive.createBehavior(targets);
+            const behavior = directive.createBehavior();
 
             expect(behavior).to.be.instanceOf(RepeatBehavior);
         });
@@ -145,6 +184,23 @@ describe("The repeat", () => {
             return output;
         }
 
+        function createController(source: any, targets: ViewBehaviorTargets) {
+            const unbindables: { unbind(controller: ViewController) }[] = [];
+
+            return {
+                isBound: false,
+                context: Fake.executionContext(),
+                onUnbind(object) {
+                    unbindables.push(object);
+                },
+                source,
+                targets,
+                unbind() {
+                    unbindables.forEach(x => x.unbind(this))
+                }
+            };
+        }
+
         zeroThroughTen.forEach(size => {
             it(`renders a template for each item in array of size ${size}`, () => {
                 const { parent, targets, nodeId } = createLocation();
@@ -154,10 +210,11 @@ describe("The repeat", () => {
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
 
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 expect(toHTML(parent)).to.equal(createOutput(size));
             });
@@ -171,11 +228,13 @@ describe("The repeat", () => {
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
 
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
+                expectViewPositionToBeCorrect(behavior);
                 expect(toHTML(parent)).to.equal(createOutput(size));
             });
         });
@@ -188,10 +247,11 @@ describe("The repeat", () => {
                     wrappedItemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const data = new ViewModel(size);
+                const controller = createController(data, targets);
 
-                behavior.bind(data, ExecutionContext.default);
+                behavior.bind(controller);
 
                 expect(toHTML(parent)).to.equal(
                     createOutput(size, void 0, void 0, input => `<div>${input}</div>`)
@@ -221,10 +281,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
                 vm.items.push({ name: "newitem" });
 
                 await Updates.next();
@@ -241,10 +302,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 const index = size - 1;
                 vm.items.splice(index, 1);
@@ -265,10 +327,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 vm.items.splice(0, 1);
 
@@ -286,10 +349,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 const index = size - 1;
                 vm.items.splice(index, 1, { name: "newitem1" }, { name: "newitem2" });
@@ -309,16 +373,19 @@ describe("The repeat", () => {
                     {positioning: true, recycle: false}
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
+                expectViewPositionToBeCorrect(behavior);
 
                 const index = size - 1;
                 vm.items.splice(index, 1, { name: "newitem1" }, { name: "newitem2" });
 
                 await Updates.next();
 
+                expectViewPositionToBeCorrect(behavior);
                 expect(toHTML(parent)).to.equal(
                     `${createOutput(size, x => x !== index)}newitem1newitem2`
                 );
@@ -333,10 +400,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 const mid = Math.floor(vm.items.length/2)
                 vm.items.splice(mid, 1, { name: "newitem1" });
@@ -353,14 +421,18 @@ describe("The repeat", () => {
                 ) as RepeatDirective;
 
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
+                expectViewPositionToBeCorrect(behavior);
 
                 const mid = Math.floor(vm.items.length/2)
                 vm.items.splice(mid, 1, { name: "newitem1" });
                 await Updates.next();
+
+                expectViewPositionToBeCorrect(behavior);
                 expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1${createOutput(vm.items.slice(mid +1).length , void 0, void 0, void 0, mid +1 ) }`);
             });
         });
@@ -373,10 +445,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 const mid = Math.floor(vm.items.length/2)
                 vm.items.splice(mid, 2, { name: "newitem1" }, { name: "newitem2" });
@@ -393,15 +466,42 @@ describe("The repeat", () => {
                 ) as RepeatDirective;
 
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 const mid = Math.floor(vm.items.length/2)
                 vm.items.splice(mid, 2, { name: "newitem1" }, { name: "newitem2" });
                 await Updates.next();
                 expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1newitem2${createOutput(vm.items.slice(mid +2).length , void 0, void 0, void 0, mid +2 ) }`);
+            });
+            it(`updates rendered HTML when all items are spliced to replace entire array with an array of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate,
+                    { positioning: true}
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior();
+                const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
+
+                behavior.bind(controller);
+
+                expectViewPositionToBeCorrect(behavior);
+
+                vm.items.splice(0, vm.items.length, ...vm.items);
+                await Updates.next();
+                expectViewPositionToBeCorrect(behavior);
+                expect(toHTML(parent)).to.equal(createOutput(size));
+
+                vm.items.splice(0, vm.items.length, ...vm.items);
+                await Updates.next();
+                expectViewPositionToBeCorrect(behavior);
+                expect(toHTML(parent)).to.equal(createOutput(size));
             });
         });
 
@@ -413,10 +513,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 vm.items.splice(0, 1, { name: "newitem1" }, { name: "newitem2" });
 
@@ -436,10 +537,11 @@ describe("The repeat", () => {
                     x => vm.template
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 expect(toHTML(parent)).to.equal(createOutput(size));
 
@@ -466,10 +568,11 @@ describe("The repeat", () => {
                     deepItemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size, true);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 const text = toHTML(parent);
 
@@ -488,10 +591,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 vm.items.shift();
                 vm.items.unshift({ name: "shift" });
@@ -512,10 +616,11 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
+                behavior.bind(controller);
 
                 vm.items.shift();
                 vm.items.unshift({ name: "shift" }, { name: "shift" });
@@ -528,6 +633,210 @@ describe("The repeat", () => {
             });
         });
 
+        oneThroughTen.forEach(size => {
+            it(`handles back to back shift and unshift operations with multiple unshift items for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior();
+                const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
+
+                behavior.bind(controller);
+
+                vm.items.shift();
+                vm.items.unshift({ name: "shift1" }, { name: "shift2" });
+                vm.items.shift();
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `shift2${createOutput(size, index => index !== 0)}`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back shift and push operations for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior();
+                const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
+
+                behavior.bind(controller);
+
+                vm.items.shift();
+                vm.items.push({ name: "shift3" });
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `${createOutput(size, index => index !== 0)}shift3`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back push and shift operations for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior();
+                const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
+
+                behavior.bind(controller);
+
+                vm.items.push({ name: "shift3" });
+                vm.items.shift();
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `${createOutput(size, index => index !== 0)}shift3`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back push and pop operations for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior();
+                const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
+
+                behavior.bind(controller);
+
+                vm.items.push({ name: "shift3" });
+                vm.items.pop();
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `${createOutput(size)}`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back pop and push operations for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior();
+                const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
+
+                behavior.bind(controller);
+
+                vm.items.pop();
+                vm.items.push({ name: "shift3" });
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `${createOutput(size-1)}shift3`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back array modification operations for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior();
+                const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
+
+                behavior.bind(controller);;
+
+                vm.items.pop();
+                vm.items.push({ name: "shift3" });
+                vm.items.unshift({ name: "shift1" }, { name: "shift2" });
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `shift1shift2${createOutput(size-1)}shift3`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back array modification 2 operations for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior();
+                const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
+
+                behavior.bind(controller);
+
+                vm.items.push({ name: "shift3" });
+                vm.items.pop();
+                vm.items.unshift({ name: "shift1" }, { name: "shift2" });
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `shift1shift2${createOutput(size)}`
+                );
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`handles back to back multiple shift operations with unshift with multiple items for arrays of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.nodeId = nodeId;
+                const behavior = directive.createBehavior();
+                const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
+
+                behavior.bind(controller);
+
+                vm.items.shift();
+                vm.items.shift();
+                vm.items.unshift({ name: "shift1" }, { name: "shift2" });
+
+                await Updates.next();
+
+                expect(toHTML(parent)).to.equal(
+                    `shift1shift2${createOutput(size -1, index => index !== 0, void 0, void 0, 1 ) }`
+                );
+            });
+        });
+
         zeroThroughTen.forEach(size => {
             it(`updates rendered HTML when a new item is pushed into an array of size ${size} after it has been unbound and rebound`, async () => {
                 const { parent, targets, nodeId } = createLocation();
@@ -536,18 +845,19 @@ describe("The repeat", () => {
                     itemTemplate
                 ) as RepeatDirective;
                 directive.nodeId = nodeId;
-                const behavior = directive.createBehavior(targets);
+                const behavior = directive.createBehavior();
                 const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
 
-                behavior.bind(vm, ExecutionContext.default);
-
-                await Updates.next();
-
-                behavior.unbind();
+                behavior.bind(controller);
 
                 await Updates.next();
 
-                behavior.bind(vm, ExecutionContext.default);
+                controller.unbind();
+
+                await Updates.next();
+
+                behavior.bind(controller);
 
                 await Updates.next();
 

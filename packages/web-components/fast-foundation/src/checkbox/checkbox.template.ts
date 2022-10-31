@@ -5,29 +5,26 @@ import type { CheckboxOptions, FASTCheckbox } from "./checkbox.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTCheckbox:class)} component.
  * @public
  */
-export function checkboxTemplate(
+export function checkboxTemplate<T extends FASTCheckbox>(
     options: CheckboxOptions = {}
-): ElementViewTemplate<FASTCheckbox> {
-    return html<FASTCheckbox>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="checkbox"
-            aria-checked="${x => x.checked}"
+            aria-checked="${x => (x.indeterminate ? "mixed" : x.checked)}"
             aria-required="${x => x.required}"
             aria-disabled="${x => x.disabled}"
             aria-readonly="${x => x.readOnly}"
             tabindex="${x => (x.disabled ? null : 0)}"
             @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
-            class="${x => (x.readOnly ? "readonly" : "")} ${x =>
-                x.checked ? "checked" : ""} ${x =>
-                x.indeterminate ? "indeterminate" : ""}"
         >
             <div part="control" class="control">
                 <slot name="checked-indicator">
-                    ${options.checkedIndicator || ""}
+                    ${options.checkedIndicator ?? ""}
                 </slot>
                 <slot name="indeterminate-indicator">
-                    ${options.indeterminateIndicator || ""}
+                    ${options.indeterminateIndicator ?? ""}
                 </slot>
             </div>
             <label

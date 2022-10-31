@@ -215,13 +215,14 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public valueChanged(previous: string, next: string): void {
-        this.value = this.getValidValue(next);
+        const value = this.getValidValue(next);
 
-        if (next !== this.value) {
+        if (next !== value) {
+            this.value = value;
             return;
         }
 
-        if (this.control && !this.isUserInput) {
+        if (this.$fastController.isConnected && this.control?.value !== value) {
             this.control.value = this.value;
         }
 
@@ -233,6 +234,11 @@ export class FASTNumberField extends FormAssociatedNumberField {
         }
 
         this.isUserInput = false;
+    }
+
+    /** {@inheritDoc (FormAssociated:interface).validate} */
+    public validate(): void {
+        super.validate(this.control);
     }
 
     /**
@@ -316,7 +322,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      *
      * @public
      */
-    protected select(): void {
+    public select(): void {
         this.control.select();
 
         /**

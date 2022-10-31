@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: enable createElementTemplate to have undefined attributes",
-  "packageName": "@microsoft/fast-element",
-  "email": "32497422+KingOfTac@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

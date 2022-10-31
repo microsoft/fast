@@ -9,20 +9,19 @@ const progressSegments: number = 44;
  * The template for the {@link @microsoft/fast-foundation#FASTProgressRing} component.
  * @public
  */
-export function progressRingTemplate(
+export function progressRingTemplate<T extends FASTProgressRing>(
     options: ProgressRingOptions = {}
-): ElementViewTemplate<FASTProgressRing> {
-    return html<FASTProgressRing>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="progressbar"
             aria-valuenow="${x => x.value}"
             aria-valuemin="${x => x.min}"
             aria-valuemax="${x => x.max}"
-            class="${x => (x.paused ? "paused" : "")}"
         >
             ${when(
                 x => typeof x.value === "number",
-                html<FASTProgressRing>`
+                html<T>`
                     <svg
                         class="progress"
                         part="progress"
@@ -51,9 +50,9 @@ export function progressRingTemplate(
             )}
             ${when(
                 x => typeof x.value !== "number",
-                html<FASTProgressRing>`
+                html<T>`
                     <slot name="indeterminate">
-                        ${options.indeterminateIndicator || ""}
+                        ${options.indeterminateIndicator ?? ""}
                     </slot>
                 `
             )}

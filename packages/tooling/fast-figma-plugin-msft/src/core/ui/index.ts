@@ -13,9 +13,9 @@ import {
     Drawer,
     TokenGlyph,
     TokenGlyphType,
-} from "./components";
-import { DesignTokenDefinition, DesignTokenType } from "./design-token-registry";
-import { PluginUINodeData, UIController, UIDesignTokenValue } from "./ui-controller";
+} from "./components/index.js";
+import { DesignTokenDefinition, DesignTokenType } from "./design-token-registry.js";
+import { PluginUINodeData, UIController, UIDesignTokenValue } from "./ui-controller.js";
 
 TokenGlyph;
 Drawer;

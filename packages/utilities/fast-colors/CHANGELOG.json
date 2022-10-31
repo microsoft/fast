@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-colors",
   "entries": [
     {
+      "date": "Thu, 18 Aug 2022 20:46:10 GMT",
+      "tag": "@microsoft/fast-colors_v5.3.1",
+      "version": "5.3.1",
+      "comments": {
+        "none": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-colors",
+            "commit": "52a57b88060b24d61f6161a667cec3360b3429c4",
+            "comment": "ensures dist files aren't used as ts source files"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Jun 2022 17:53:14 GMT",
       "tag": "@microsoft/fast-colors_v5.3.1",
       "version": "5.3.1",

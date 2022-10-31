@@ -176,7 +176,7 @@ export class FASTTextArea extends FormAssociatedTextArea {
      *
      * @public
      */
-    protected select(): void {
+    public select(): void {
         this.control.select();
 
         /**
@@ -206,6 +206,11 @@ export class FASTTextArea extends FormAssociatedTextArea {
      */
     public handleChange(): void {
         this.$emit("change");
+    }
+
+    /** {@inheritDoc (FormAssociated:interface).validate} */
+    public validate(): void {
+        super.validate(this.control);
     }
 }
 

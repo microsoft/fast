@@ -1,75 +1,79 @@
 import { html, repeat } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import { storyTemplate as ListboxOptionTemplate } from "../../listbox-option/stories/listbox-option.stories.js";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTSelect } from "../select.js";
-import { SelectPosition } from "../select.options.js";
 
-type SelectStoryArgs = Args & FASTSelect;
-type SelectStoryMeta = Meta<SelectStoryArgs>;
-
-const storyTemplate = html<SelectStoryArgs>`
+const storyTemplate = html<StoryArgs<FASTSelect>>`
     <fast-select
         ?open="${x => x.open}"
         ?disabled="${x => x.disabled}"
         ?multiple="${x => x.multiple}"
         size="${x => x.size}"
-        position="${x => x.position}"
+        value="${x => x.value}"
     >
-        ${repeat(
-            x => x.items,
-            html`
-                <fast-option>${x => x.text}</fast-option>
-            `
-        )}
+        ${x => x.storyContent}
     </fast-select>
 `;
 
 export default {
     title: "Select",
     args: {
-        items: [
-            { text: "William Hartnell" },
-            { text: "Patrick Troughton" },
-            { text: "Jon Pertwee" },
-            { text: "Tom Baker" },
-            { text: "Peter Davidson" },
-            { text: "Colin Baker" },
-            { text: "Sylvester McCoy" },
-            { text: "Paul McGann" },
-            { text: "Christopher Eccleston" },
-            { text: "David Tenant" },
-            { text: "Matt Smith" },
-            { text: "Peter Capaldi" },
-            { text: "Jodie Whittaker" },
+        disabled: false,
+        multiple: false,
+        open: false,
+        storyContent: html<StoryArgs<FASTSelect>>`
+            ${repeat(x => x.storyItems, ListboxOptionTemplate)}
+        `,
+        storyItems: [
+            { storyContent: "William Hartnell" },
+            { storyContent: "Patrick Troughton" },
+            { storyContent: "Jon Pertwee" },
+            { storyContent: "Tom Baker" },
+            { storyContent: "Peter Davidson" },
+            { storyContent: "Colin Baker" },
+            { storyContent: "Sylvester McCoy" },
+            { storyContent: "Paul McGann" },
+            { storyContent: "Christopher Eccleston" },
+            { storyContent: "David Tenant" },
+            { storyContent: "Matt Smith" },
+            { storyContent: "Peter Capaldi" },
+            { storyContent: "Jodie Whittaker" },
+            { storyContent: "Ncuti Gatwa" },
         ],
     },
     argTypes: {
-        disabled: { control: { type: "boolean" } },
-        items: { table: { disable: true } },
-        name: { control: { type: "text" } },
-        multiple: { control: { type: "boolean" } },
-        open: { control: { type: "boolean" } },
-        position: { options: Object.values(SelectPosition), control: { type: "select" } },
-        size: { control: { type: "number" } },
+        disabled: { control: "boolean" },
+        name: { control: "text" },
+        multiple: { control: "boolean" },
+        open: { control: "boolean" },
+        size: { control: "number" },
+        storyContent: { table: { disable: true } },
+        storyItems: { control: "object" },
+        value: { control: "text" },
     },
-} as SelectStoryMeta;
+} as Meta<FASTSelect>;
 
-export const Select = (args: SelectStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
+export const Select: Story<FASTSelect> = renderComponent(storyTemplate).bind({});
 
-export const SelectMultiple = Select.bind({});
+export const SelectMultiple: Story<FASTSelect> = Select.bind({});
 SelectMultiple.args = {
     multiple: true,
 };
 
-export const SelectWithSize = Select.bind({});
+export const SelectWithSize: Story<FASTSelect> = Select.bind({});
 SelectWithSize.args = {
     size: 5,
 };
 
-export const SelectDisabled = Select.bind({});
+export const SelectDisabled: Story<FASTSelect> = Select.bind({});
 SelectDisabled.args = {
     disabled: true,
 };
+
+export const SelectInForm: Story<FASTSelect> = renderComponent(html<Meta<FASTSelect>>`
+    <form @submit="${() => false}">
+        ${storyTemplate}
+        <fast-button type="submit">Submit</fast-button>
+    </form>
+`).bind({});

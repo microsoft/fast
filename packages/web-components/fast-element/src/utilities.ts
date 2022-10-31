@@ -1,136 +1,3 @@
-import { ArrayObserver } from "./index.debug.js";
-import { Disposable, isFunction } from "./interfaces.js";
-import type { Notifier, Subscriber } from "./observation/notifier.js";
-import { Observable } from "./observation/observable.js";
-
-interface ObjectVisitor<TVisitorData> {
-    visitObject(object: any, data: TVisitorData): void;
-    visitArray(array: any[], data: TVisitorData): void;
-    visitProperty(object: any, key: PropertyKey, value: any, data: TVisitorData): void;
-}
-
-function shouldTraverse(value: any, traversed: WeakSet<any> | Set<any>) {
-    return (
-        value !== null &&
-        value !== void 0 &&
-        typeof value === "object" &&
-        !traversed.has(value)
-    );
-}
-
-function traverseObject<TVisitorData>(
-    object: any,
-    deep: boolean,
-    visitor: ObjectVisitor<TVisitorData>,
-    data: TVisitorData,
-    traversed: WeakSet<any> | Set<any>
-): void {
-    if (!shouldTraverse(object, traversed)) {
-        return;
-    }
-
-    traversed.add(object);
-
-    if (Array.isArray(object)) {
-        visitor.visitArray(object, data);
-
-        for (const item of object) {
-            traverseObject(item, deep, visitor, data, traversed);
-        }
-    } else {
-        visitor.visitObject(object, data);
-
-        for (const key in object) {
-            const value = object[key];
-            visitor.visitProperty(object, key, value, data);
-
-            if (deep) {
-                traverseObject(value, deep, visitor, data, traversed);
-            }
-        }
-    }
-}
-
-const noop = () => void 0;
-const observed = new WeakSet<any>();
-
-const makeObserverVisitor: ObjectVisitor<undefined> = {
-    visitObject: noop,
-    visitArray: noop,
-    visitProperty(object: any, propertyName: string, value: any): void {
-        Reflect.defineProperty(object, propertyName, {
-            enumerable: true,
-            get() {
-                Observable.track(object, propertyName);
-                return value;
-            },
-            set(newValue: any) {
-                if (value !== newValue) {
-                    value = newValue;
-                    Observable.notify(object, propertyName);
-                }
-            },
-        });
-    },
-};
-
-interface WatchData {
-    notifiers: Notifier[];
-    subscriber: Subscriber;
-}
-
-function watchObject(object: any, data: WatchData) {
-    const notifier = Observable.getNotifier(object);
-    notifier.subscribe(data.subscriber);
-    data.notifiers.push(notifier);
-}
-
-const watchVisitor: ObjectVisitor<WatchData> = {
-    visitProperty: noop,
-    visitObject: watchObject,
-    visitArray: watchObject,
-};
-
-/**
- * Converts a plain object to an observable object.
- * @param object - The object to make observable.
- * @param deep - Indicates whether or not to deeply convert the oject.
- * @returns The converted object.
- * @beta
- */
-export function makeObservable<T>(object: T, deep = false): T {
-    traverseObject(object, deep, makeObserverVisitor, void 0, observed);
-    return object;
-}
-
-/**
- * Deeply subscribes to changes in existing observable objects.
- * @param object - The observable object to watch.
- * @param subscriber - The handler to call when changes are made to the object.
- * @returns A disposable that can be used to unsubscribe from change updates.
- * @beta
- */
-export function watch(
-    object: any,
-    subscriber: Subscriber | ((subject: any, args: any) => void)
-): Disposable {
-    const data: WatchData = {
-        notifiers: [],
-        subscriber: isFunction(subscriber) ? { handleChange: subscriber } : subscriber,
-    };
-
-    ArrayObserver.enable();
-    traverseObject(object, true, watchVisitor, data, new Set());
-
-    return {
-        dispose() {
-            for (const n of data.notifiers) {
-                n.unsubscribe(data.subscriber);
-            }
-        },
-    };
-}
-
 /**
  * Retrieves the "composed parent" element of a node, ignoring DOM tree boundaries.
  * When the parent of a node is a shadow-root, it will return the host
@@ -180,4 +47,39 @@ export function composedContains(reference: HTMLElement, test: HTMLElement): boo
     }
 
     return false;
+}
+
+/**
+ * @internal
+ */
+export class UnobservableMutationObserver extends MutationObserver {
+    private observedNodes: Set<Node> = new Set();
+
+    /**
+     * An extension of MutationObserver that supports unobserving nodes.
+     * @param callback - The callback to invoke when observed nodes are changed.
+     */
+    constructor(private readonly callback: MutationCallback) {
+        function handler(mutations: MutationRecord[]) {
+            this.callback.call(
+                null,
+                mutations.filter(record => this.observedNodes.has(record.target))
+            );
+        }
+
+        super(handler);
+    }
+
+    public observe(target: Node, options?: MutationObserverInit | undefined): void {
+        this.observedNodes.add(target);
+        super.observe(target, options);
+    }
+
+    public unobserve(target: Node): void {
+        this.observedNodes.delete(target);
+
+        if (this.observedNodes.size < 1) {
+            this.disconnect();
+        }
+    }
 }

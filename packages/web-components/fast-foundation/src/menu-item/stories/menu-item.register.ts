@@ -2,9 +2,9 @@ import { css } from "@microsoft/fast-element";
 import { FASTMenuItem } from "../menu-item.js";
 import { menuItemTemplate } from "../menu-item.template.js";
 
-const styles = css`
+export const styles = css`
     :host([hidden]) {
-        display: none;
+        display: none !important;
     }
 
     :host {
@@ -15,16 +15,13 @@ const styles = css`
         border: calc(var(--focus-stroke-width) * 1px) solid transparent;
         box-sizing: border-box;
         color: var(--neutral-foreground-rest);
-        contain: layout;
         cursor: pointer;
-        display: grid;
+        display: flex;
         fill: currentcolor;
         font: var(--type-ramp-base-font-size) / var(--type-ramp-base-line-height)
             var(--body-font);
-        grid-template-columns: var(--icon-col) 1fr var(--icon-col);
-        grid-template-rows: auto;
         height: calc(var(--height-number) * 1px);
-        justify-items: center;
+        justify-items: start;
         margin: 0 calc(var(--design-unit) * 1px);
         outline: none;
         overflow: visible;
@@ -35,8 +32,6 @@ const styles = css`
     :host(:hover) {
         background: var(--neutral-fill-stealth-hover);
         color: var(--neutral-foreground-rest);
-        position: relative;
-        z-index: 1;
     }
 
     :host(:active) {
@@ -49,51 +44,14 @@ const styles = css`
         color: var(--neutral-foreground-rest);
     }
 
+    :host([role="menuitem"]) .content {
+        padding: 0 10px;
+    }
+
     .content {
-        grid-column-start: 2;
         justify-self: start;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-
-    :host(.indent-0) {
-        grid-template-columns: auto 1fr var(--icon-col);
-    }
-
-    :host(.indent-0) .content {
-        grid-column: 1;
-        grid-row: 1;
-        margin-inline-start: 10px;
-    }
-
-    :host(.indent-0) .expand-collapse-glyph-container {
-        grid-column: 5;
-        grid-row: 1;
-    }
-
-    :host(.indent-2) {
-        grid-template-columns:
-            var(--icon-col) var(--icon-col) 1fr var(--icon-col)
-            var(--icon-col);
-    }
-
-    :host(.indent-2) .content {
-        grid-column: 3;
-        grid-row: 1;
-        margin-inline-start: 10px;
-    }
-
-    :host(.indent-2) .expand-collapse-glyph-container {
-        grid-column: 5;
-        grid-row: 1;
-    }
-
-    :host(.indent-2) .start {
-        grid-column: 2;
-    }
-
-    :host(.indent-2) .end {
-        grid-column: 4;
     }
 
     :host([aria-checked="true"]),
@@ -112,8 +70,8 @@ const styles = css`
         background: var(--neutral-fill-stealth-rest);
     }
 
-    :host([disabled]:hover) .start,
-    :host([disabled]:hover) .end,
+    :host([disabled]:hover) ::slotted([slot="start"]),
+    :host([disabled]:hover) ::slotted([slot="end"]),
     :host([disabled]:hover)::slotted(svg) {
         fill: var(--neutral-foreground-rest);
     }
@@ -128,33 +86,19 @@ const styles = css`
         fill: currentcolor;
     }
 
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
         display: flex;
         justify-content: center;
     }
 
-    :host(:hover) .start,
-    :host(:hover) .end,
+    :host(:hover) ::slotted([slot="start"]),
+    :host(:hover) ::slotted([slot="end"]),
     :host(:hover)::slotted(svg),
-    :host(:active) .start,
-    :host(:active) .end,
+    :host(:active) ::slotted([slot="start"]),
+    :host(:active) ::slotted([slot="end"]),
     :host(:active)::slotted(svg) {
         fill: var(--neutral-foreground-rest);
-    }
-
-    :host(.indent-0[aria-haspopup="menu"]),
-    :host(.indent-1[aria-haspopup="menu"]),
-    :host(.indent-1[role="menuitemcheckbox"]),
-    :host(.indent-1[role="menuitemradio"]) {
-        align-items: center;
-        display: grid;
-        grid-template-columns: var(--icon-col) auto 1fr var(--icon-col) var(--icon-col);
-        min-height: 32px;
-    }
-
-    :host(.indent-2:not([aria-haspopup="menu"])) .end {
-        grid-column: 5;
     }
 
     .input-container,
@@ -162,27 +106,15 @@ const styles = css`
         display: none;
     }
 
+    .expand-collapse-glyph-container {
+        margin-inline-start: auto;
+    }
+
     :host([aria-haspopup="menu"]) .expand-collapse-glyph-container,
     :host([role="menuitemcheckbox"]) .input-container,
     :host([role="menuitemradio"]) .input-container {
         display: grid;
         margin-inline-end: 10px;
-    }
-
-    :host([aria-haspopup="menu"]) .content,
-    :host([role="menuitemcheckbox"]) .content,
-    :host([role="menuitemradio"]) .content {
-        grid-column-start: 3;
-    }
-
-    :host([aria-haspopup="menu"].indent-0) .content {
-        grid-column-start: 1;
-    }
-
-    :host([aria-haspopup="menu"]) .end,
-    :host([role="menuitemcheckbox"]) .end,
-    :host([role="menuitemradio"]) .end {
-        grid-column-start: 4;
     }
 
     .expand-collapse,
@@ -257,12 +189,18 @@ const styles = css`
         display: block;
         pointer-events: none;
     }
+
+    .submenu-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
 `;
 
 FASTMenuItem.define({
     name: "fast-menu-item",
     template: menuItemTemplate({
-        anchoredRegion: "fast-anchored-region",
         checkboxIndicator: /* html */ `
             <svg
                 part="checkbox-indicator"

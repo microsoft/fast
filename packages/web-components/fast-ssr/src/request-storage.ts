@@ -2,7 +2,7 @@ import { AsyncLocalStorage } from "async_hooks";
 import { DI, DOMContainer } from "@microsoft/fast-element/di";
 import { createWindow } from "./dom-shim.js";
 
-const asyncLocalStorage = new AsyncLocalStorage();
+let asyncLocalStorage = new AsyncLocalStorage();
 const defaultOptions = {};
 
 function getStore() {
@@ -123,22 +123,116 @@ const perRequestGlobals = [
     "document",
 ];
 
+const perRequestGetters = perRequestGlobals.reduce((accum, key) => {
+    accum[key] = function get() {
+        // Return original global variable if currently not in the storage scope
+        const store = asyncLocalStorage.getStore() as Map<string, any>;
+        return store ? store.get("window")[key] : preShimGlobals.get(key);
+    };
+    return accum;
+}, {} as Record<string, () => unknown>);
+
+/**
+ * Tests whether the {@link RequestStorageManager} has an installed
+ * DOM shim for a provided key. Determination is performed by checking
+ * the getter instance of the globalThis's property descriptor against the preRequestDescriptors
+ * of the same key.
+ * @param key - The key of the global check for installation
+ */
+function shimIsInstalledFor(key: string): boolean {
+    return (
+        Object.getOwnPropertyDescriptor(globalThis, key)?.get === perRequestGetters[key]
+    );
+}
+
+/**
+ * Store the global objects being shimmed so that they be accessed as backup values
+ * and restored during uninstall.
+ */
+const preShimGlobals = new Map<string, any>();
+const preShimDescriptors = new Map<string, PropertyDescriptor>();
+
 /**
  * APIs used in configuring and managing RequestStorage.
  * @beta
  */
 export const RequestStorageManager = Object.freeze({
     /**
+     * Gets the current AsyncLocalStorage instance that provides
+     * the backend for the RequestStorageManager.
+     */
+    get backend(): AsyncLocalStorage<unknown> {
+        return asyncLocalStorage;
+    },
+
+    /**
+     * Sets an AsyncLocalStorage instance to provide
+     * a pre-existing backend for the RequestStorageManager.
+     * @remarks
+     * Replacing the default AsyncLocalStorage backend should not be
+     * done under normal circumstances. This capability is intended for
+     * advanced integration scenarios only.
+     *
+     * Avoid setting this property after middleware is installed or in the
+     * middle of a RequestStorageManager#run operation. In the event that
+     * this timing is necessary, then you must provide a window instance
+     * available through the "window" key of your storage, otherwise the
+     * necessary requirements for RequestStorage to function will not be met.
+     */
+    set backend(localStorage: AsyncLocalStorage<unknown>) {
+        asyncLocalStorage = localStorage;
+    },
+
+    /**
      * Installs a DOM shim that ensures that window, document,
-     * and other globals are scoped per-request.
+     * and other globals are scoped per-request. Calling this function
+     * will have no effect if the shim has already been installed.
+     *
+     * @throws TypeError when properties cannot be defined on the globalThis.
      */
     installDOMShim(): void {
         for (const key of perRequestGlobals) {
-            Reflect.defineProperty(globalThis, key, {
-                get() {
-                    return RequestStorage.get("window")[key];
-                },
-            });
+            if (!shimIsInstalledFor(key)) {
+                const preShimValue = (globalThis as any)[key];
+                preShimGlobals.set(key, (globalThis as any)[key]);
+                const preShimDescriptor = Object.getOwnPropertyDescriptor(
+                    globalThis,
+                    key
+                );
+
+                // This will throw if the globalThis already contains a value for the key that is not configurable. Do this work
+                // prior to caching value and descriptor so if it does throw, the caches aren't polluted
+                Object.defineProperty(globalThis, key, {
+                    get: perRequestGetters[key],
+                    enumerable: true,
+                    configurable: true,
+                });
+
+                if (preShimDescriptor) {
+                    preShimDescriptors.set(key, preShimDescriptor);
+                }
+
+                preShimGlobals.set(key, preShimValue);
+            }
+        }
+    },
+
+    /**
+     * Uninstalls the DOM shim installed by {@link RequestStorageManager.installDOMShim}.
+     * Calling this function will have no effect if there is no shim installed.
+     */
+    uninstallDOMShim(): void {
+        for (const key of perRequestGlobals) {
+            if (shimIsInstalledFor(key)) {
+                if (preShimDescriptors.has(key)) {
+                    Object.defineProperty(globalThis, key, preShimDescriptors.get(key)!);
+                    preShimDescriptors.delete(key);
+                } else {
+                    delete (globalThis as any)[key];
+                }
+
+                preShimGlobals.delete(key);
+            }
         }
     },
 

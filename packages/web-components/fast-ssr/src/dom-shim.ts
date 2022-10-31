@@ -119,14 +119,48 @@ class CustomEvent<T = any> extends Event {
     }
 }
 
+class CSSStyleRule {
+    public readonly style = new CSSStyleDeclaration();
+    constructor(public selectorText: string) {}
+
+    public get cssText(): string {
+        return `${this.selectorText} { ${this.style.cssText} }`;
+    }
+}
+
+class CSSStyleDeclaration {
+    private rules = new Map<string, string>();
+    public setProperty(name: string, value: string = "") {
+        this.rules.set(name, value);
+    }
+    public removeProperty(name: string) {
+        this.rules.delete(name);
+    }
+
+    public get cssText() {
+        let text = "";
+
+        for (const [key, value] of this.rules) {
+            text += `${key}: ${value};`;
+        }
+
+        return text;
+    }
+}
+
 /**
  * @beta
  */
 export class CSSStyleSheet {
     replace() {}
     public readonly cssRules: CSSRule[] = [];
-    insertRule(rule: CSSRule, index: number = 0) {
-        this.cssRules.splice(index, 0, rule);
+    insertRule(rule: string, index: number = 0) {
+        const selectorText = rule.split("{")[0];
+        this.cssRules.splice(
+            index,
+            0,
+            (new CSSStyleRule(selectorText) as unknown) as CSSRule
+        );
 
         return index;
     }
@@ -171,7 +205,7 @@ export class MutationObserver {
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList} */
 export class MediaQueryList {
     /** No-op */
-    addListener() {}
+    addEventListener() {}
 
     /** Always false */
     matches = false;
@@ -197,7 +231,7 @@ export function createWindow(
         public CustomElementRegistry = CustomElementRegistry;
         public MutationObserver = MutationObserver;
         public MediaQueryList = MediaQueryList;
-        public matchMedia = () => new MediaQueryList();
+        public matchMedia = () => new this.MediaQueryList();
 
         // Defined in constructor
         public window: unknown;

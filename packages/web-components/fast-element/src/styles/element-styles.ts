@@ -1,6 +1,5 @@
-import type { Behavior } from "../observation/behavior.js";
-import { FAST } from "../platform.js";
-import { KernelServiceId, StyleStrategy, StyleTarget } from "../interfaces.js";
+import type { StyleStrategy, StyleTarget } from "../interfaces.js";
+import type { HostBehavior } from "./host.js";
 
 /**
  * Represents styles that can be composed into the ShadowDOM of a custom element.
@@ -20,7 +19,6 @@ export type ConstructibleStyleStrategy = {
     new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
 };
 
-const styleSheetCache = new Map<string, CSSStyleSheet>();
 let DefaultStyleStrategy: ConstructibleStyleStrategy;
 
 function reduceStyles(
@@ -44,7 +42,7 @@ export class ElementStyles {
     /**
      * The behaviors associated with this set of styles.
      */
-    public readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
+    public readonly behaviors: ReadonlyArray<HostBehavior<HTMLElement>> | null;
 
     /**
      * Gets the StyleStrategy associated with these element styles.
@@ -68,10 +66,10 @@ export class ElementStyles {
             )
             .reduce(
                 (
-                    prev: Behavior<HTMLElement>[] | null,
-                    curr: Behavior<HTMLElement>[] | null
+                    prev: HostBehavior<HTMLElement>[] | null,
+                    curr: HostBehavior<HTMLElement>[] | null
                 ) => (curr === null ? prev : prev === null ? curr : prev.concat(curr)),
-                null as Behavior<HTMLElement>[] | null
+                null as HostBehavior<HTMLElement>[] | null
             );
     }
 
@@ -96,7 +94,7 @@ export class ElementStyles {
      * Associates behaviors with this set of styles.
      * @param behaviors - The behaviors to associate.
      */
-    public withBehaviors(...behaviors: Behavior<HTMLElement>[]): this {
+    public withBehaviors(...behaviors: HostBehavior<HTMLElement>[]): this {
         (this.behaviors as any) =
             this.behaviors === null ? behaviors : this.behaviors.concat(behaviors);
 
@@ -144,47 +142,3 @@ export class ElementStyles {
         Array.isArray((document as any).adoptedStyleSheets) &&
         "replace" in CSSStyleSheet.prototype;
 }
-
-/**
- * https://wicg.github.io/construct-stylesheets/
- * https://developers.google.com/web/updates/2019/02/constructable-stylesheets
- *
- * @internal
- */
-export class AdoptedStyleSheetsStrategy implements StyleStrategy {
-    /** @internal */
-    public readonly sheets: CSSStyleSheet[];
-
-    public constructor(styles: (string | CSSStyleSheet)[]) {
-        this.sheets = styles.map((x: string | CSSStyleSheet) => {
-            if (x instanceof CSSStyleSheet) {
-                return x;
-            }
-
-            let sheet = styleSheetCache.get(x);
-
-            if (sheet === void 0) {
-                sheet = new CSSStyleSheet();
-                (sheet as any).replaceSync(x);
-                styleSheetCache.set(x, sheet);
-            }
-
-            return sheet;
-        });
-    }
-
-    public addStylesTo(target: StyleTarget): void {
-        target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...this.sheets];
-    }
-
-    public removeStylesFrom(target: StyleTarget): void {
-        const sheets = this.sheets;
-        target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-            (x: CSSStyleSheet) => sheets.indexOf(x) === -1
-        );
-    }
-}
-
-ElementStyles.setDefaultStrategy(
-    FAST.getById(KernelServiceId.styleSheetStrategy, () => AdoptedStyleSheetsStrategy)
-);

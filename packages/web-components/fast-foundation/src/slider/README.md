@@ -145,6 +145,16 @@ export const mySliderLabel = SliderLabel.compose({
 
 
 
+### Variables
+
+| Name         | Description                                                             | Type                               |
+| ------------ | ----------------------------------------------------------------------- | ---------------------------------- |
+| `SliderMode` | The selection modes of a @microsoft/fast-foundation#(FASTSlider:class). | `{ singleValue: "single-value", }` |
+
+<hr/>
+
+
+
 ### class: `FASTSlider`
 
 #### Superclass
@@ -214,14 +224,6 @@ export const mySliderLabel = SliderLabel.compose({
 
 <hr/>
 
-### Variables
-
-| Name         | Description                                                             | Type                               |
-| ------------ | ----------------------------------------------------------------------- | ---------------------------------- |
-| `SliderMode` | The selection modes of a @microsoft/fast-foundation#(FASTSlider:class). | `{ singleValue: "single-value", }` |
-
-<hr/>
-
 
 
 ### class: `FASTSliderLabel`
@@ -234,11 +236,12 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### Fields
 
-| Name       | Privacy | Type      | Default | Description                                                                                                                | Inherited From |
-| ---------- | ------- | --------- | ------- | -------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `position` | public  | `string`  |         | The position of the label relative to the min and max value of the parent @microsoft/fast-foundation#(FASTSlider:class).   |                |
-| `hideMark` | public  | `boolean` | `false` | Hides the tick mark.                                                                                                       |                |
-| `disabled` | public  | `boolean` |         | The disabled state of the label. This is generally controlled by the parent @microsoft/fast-foundation#(FASTSlider:class). |                |
+| Name          | Privacy | Type          | Default        | Description                                                                                                                   | Inherited From |
+| ------------- | ------- | ------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `position`    | public  | `string`      |                | The position of the label relative to the min and max value of the parent @microsoft/fast-foundation#(FASTSlider:class).      |                |
+| `hideMark`    | public  | `boolean`     | `false`        | Hides the tick mark.                                                                                                          |                |
+| `disabled`    | public  | `boolean`     |                | The disabled state of the label. This is generally controlled by the parent @microsoft/fast-foundation#(FASTSlider:class).    |                |
+| `orientation` | public  | `Orientation` | `"horizontal"` | The orientation state of the label. This is generally controlled by the parent @microsoft/fast-foundation#(FASTSlider:class). |                |
 
 #### Methods
 
@@ -248,11 +251,12 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### Attributes
 
-| Name        | Field    | Inherited From |
-| ----------- | -------- | -------------- |
-| `position`  | position |                |
-| `hide-mark` | hideMark |                |
-| `disabled`  | disabled |                |
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `position`    | position    |                |
+| `hide-mark`   | hideMark    |                |
+| `disabled`    | disabled    |                |
+| `orientation` | orientation |                |
 
 #### CSS Parts
 

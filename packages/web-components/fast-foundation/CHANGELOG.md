@@ -1,8 +1,176 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
+This log was last generated on Fri, 28 Oct 2022 20:44:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.19
+
+Fri, 28 Oct 2022 20:44:44 GMT
+
+### Changes
+
+- use floating-ui for menu-item submenus (863023+radium-v@users.noreply.github.com)
+- use floating-ui for select and combobox (863023+radium-v@users.noreply.github.com)
+- remove indent logic from foundation menu and menu item, move to example (chhol@microsoft.com)
+- remove unnecessary composedParent & composedContains exports from Foundation (tebin.raouf@thomsonreuters.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.16
+
+## 3.0.0-alpha.18
+
+Tue, 25 Oct 2022 20:24:32 GMT
+
+### Changes
+
+- add readonly property to identify tree items and udpate isTreeItemElement check (chhol@microsoft.com)
+- remove unnecessary click handler from legacy button span implementation (32497422+KingOfTac@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.15
+
+## 3.0.0-alpha.17
+
+Fri, 14 Oct 2022 18:26:11 GMT
+
+### Changes
+
+- indeterminate checkboxes should set an aria-checked state of mixed (chhol@microsoft.com)
+- feat: calendar attr to adjust weekday start (robarb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.14
+
+## 3.0.0-alpha.16
+
+Mon, 10 Oct 2022 20:28:02 GMT
+
+### Changes
+
+- revert tree item changes from playwright migration (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.13
+
+## 3.0.0-alpha.15
+
+Thu, 06 Oct 2022 23:21:20 GMT
+
+### Changes
+
+- Adds ability to close menu with Escape key (ryan@ryanmerrill.net)
+- Bump @microsoft/fast-element to v2.0.0-beta.12
+
+## 3.0.0-alpha.14
+
+Wed, 05 Oct 2022 23:26:01 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.11
+
+## 3.0.0-alpha.13
+
+Mon, 03 Oct 2022 23:44:38 GMT
+
+### Changes
+
+- remove classes from host elements, add attributes to migrate observables, use data-t where it makes sensse (chhol@microsoft.com)
+- fix: remove class from hs template root (jes@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.10
+
+## 3.0.0-alpha.12
+
+Wed, 28 Sep 2022 20:45:51 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.9
+
+## 3.0.0-alpha.11
+
+Tue, 27 Sep 2022 22:31:52 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.8
+
+## 3.0.0-alpha.10
+
+Fri, 23 Sep 2022 22:53:27 GMT
+
+### Changes
+
+- feat: update foundation to new capture type (roeisenb@microsoft.com)
+- Convert karma and mocha tests to playwright (863023+radium-v@users.noreply.github.com)
+- fix(fast-foundation): update mixin helper to use new attribute api (roeisenb@microsoft.com)
+- fix: update foundation to use the new behavior API (roeisenb@microsoft.com)
+- removed redundant role setting in fast foundation menu-item template (yinon@hotmail.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.7
+
+## 3.0.0-alpha.9
+
+Thu, 01 Sep 2022 21:53:34 GMT
+
+### Changes
+
+- remove boolean logical operator use for setting default slotted content in favor of nullish coalescing operator (chhol@microsoft.com)
+- update templates to ensure component classes can be extended (chhol@microsoft.com)
+- remove when directive from flipper (chhol@microsoft.com)
+- call change when search component clear button is clicked (jes@microsoft.com)
+- Lazily attach FASTDesignTokenNode to the default node to prevent errors" (nicholasrice@users.noreply.github.com)
+- fix: update foundation to use new import paths (roeisenb@microsoft.com)
+- remove references to renderCollapsedNodes and renderCollapsedChildren from tree view and tree item (chhol@microsoft.com)
+- ensure switch cannot be invoked via keyboard when in readonly mode (chhol@microsoft.com)
+- Adds DesignTokenStyleTarget to support DesignToken style collection for SSR (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.6
+
+## 3.0.0-alpha.8
+
+Fri, 26 Aug 2022 18:06:43 GMT
+
+### Changes
+
+- normalize storybook stories (863023+radium-v@users.noreply.github.com)
+- fix(tabs): home and end navigation (mathieulavoie94@gmail.com)
+- Fix constraint validation in focus-delegated components (nicholasrice@users.noreply.github.com)
+
+## 3.0.0-alpha.7
+
+Thu, 18 Aug 2022 20:46:10 GMT
+
+### Changes
+
+- change select() method to public on number field, text field, and text area (7282195+m-akinc@users.noreply.github.com)
+- add subpath export for package.json to packages (32497422+KingOfTac@users.noreply.github.com)
+- anchored-region checks local shadow dom (stephcomeau@msn.com)
+- use nullableNumberConverter for tooltip delay attribute (chhol@microsoft.com)
+- adding event-based resolution strategy export (nicholasrice@users.noreply.github.com)
+- refactor to allow arbitrary PropertyTarget types for DesignToken roots (nicholasrice@users.noreply.github.com)
+- hidden horizontal-scroll fix (robarb@microsoft.com)
+- Refactor DesignToken to provide a resolve function to derived token values, implements WebComponent implementation on top of isomorphic DesignToken infrastructure (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.5
+
+## 3.0.0-alpha.6
+
+Wed, 27 Jul 2022 17:36:33 GMT
+
+### Changes
+
+- Using getBoundingClientRect for horizontal-scroll (robarb@microsoft.com)
+- Removed the `fill`, `color`, and `shape` attributes and styling from Avatar (47367562+bheston@users.noreply.github.com)
+
+## 3.0.0-alpha.5
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- add export for custom elements manifest (32497422+KingOfTac@users.noreply.github.com)
+- add start and end slots to tab (chhol@microsoft.com)
+- feat: update foundation to new binding APIs (roeisenb@microsoft.com)
+- feat: move testing and dependency injection to fast-element (roeisenb@microsoft.com)
+- feat: remove design system, foundation element & related infrastructure (roeisenb@microsoft.com)
+- update breadcrumb item to always use an anchor and ensure aria-current is applied correctly in breadcrumb (chhol@microsoft.com)
+- add activeid to accordion change event (chhol@microsoft.com)
+- Removed the `fill` and `color` attributes and styling from Badge (47367562+bheston@users.noreply.github.com)
+- feat: enable fallback container creation for dependency injection location APIs (roeisenb@microsoft.com)
+- accordion verifies change events (stephcomeau@msn.com)
+- add storybook to fast-foundation (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.4
 
 ## 3.0.0-alpha.4
 

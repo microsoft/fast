@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { FASTElementDefinition } from "./fast-definitions.js";
 import { ElementStyles } from "../styles/element-styles.js";
 import { uniqueElementName } from "../testing/fixture.js";
+import { FASTElement } from "./fast-element.js";
 
 describe("FASTElementDefinition", () => {
     class MyElement extends HTMLElement {}
@@ -123,6 +124,38 @@ describe("FASTElementDefinition", () => {
             def.define();
 
             expect(def.isDefined).to.be.true;
+        });
+    });
+
+    context("compose", () => {
+        it("prevents registering FASTElement", () => {
+            const def1 = FASTElementDefinition.compose(
+                FASTElement,
+                uniqueElementName()
+            );
+
+            const def2 = FASTElementDefinition.compose(
+                FASTElement,
+                uniqueElementName()
+            );
+
+            expect(def1.type).not.equal(FASTElement);
+            expect(def2.type).not.equal(FASTElement);
+        });
+
+        it("automatically inherits definitions made directly against FASTElement", () => {
+            const def1 = FASTElementDefinition.compose(
+                FASTElement,
+                uniqueElementName()
+            );
+
+            const def2 = FASTElementDefinition.compose(
+                FASTElement,
+                uniqueElementName()
+            );
+
+            expect(Reflect.getPrototypeOf(def1.type)).equals(FASTElement);
+            expect(Reflect.getPrototypeOf(def2.type)).equals(FASTElement);
         });
     });
 });

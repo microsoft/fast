@@ -1,9 +1,4 @@
-import {
-    attr,
-    nullableNumberConverter,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import {
     Direction,
     keyArrowDown,
@@ -12,45 +7,13 @@ import {
     keyArrowUp,
     keyEnd,
     keyHome,
+    limit,
     Orientation,
 } from "@microsoft/fast-web-utilities";
 import { getDirection } from "../utilities/direction.js";
 import { convertPixelToPercent } from "./slider-utilities.js";
 import { FormAssociatedSlider } from "./slider.form-associated.js";
-
-/**
- * The selection modes of a {@link @microsoft/fast-foundation#(FASTSlider:class)}.
- * @public
- */
-export const SliderMode = {
-    singleValue: "single-value",
-} as const;
-
-/**
- * The types for the selection mode of the slider
- * @public
- */
-export type SliderMode = typeof SliderMode[keyof typeof SliderMode];
-
-/**
- * The configuration structure of {@link @microsoft/fast-foundation#(FASTSlider:class)}.
- * @public
- */
-export interface SliderConfiguration {
-    max: number;
-    min: number;
-    orientation?: Orientation;
-    direction?: Direction;
-    disabled?: boolean;
-}
-
-/**
- * Slider configuration options
- * @public
- */
-export type SliderOptions = {
-    thumb?: string | SyntheticViewTemplate;
-};
+import { SliderConfiguration, SliderMode } from "./slider.options.js";
 
 /**
  * A Slider Custom HTML Element.
@@ -172,12 +135,25 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
      * @internal
      */
     public valueChanged(previous: string, next: string): void {
-        super.valueChanged(previous, next);
-
         if (this.$fastController.isConnected) {
+            const nextAsNumber = parseFloat(next);
+            const value = limit(
+                this.min,
+                this.max,
+                this.convertToConstrainedValue(nextAsNumber)
+            ).toString();
+
+            if (value !== next) {
+                this.value = value;
+                return;
+            }
+
+            super.valueChanged(previous, next);
+
             this.setThumbPositionForOrientation(this.direction);
+
+            this.$emit("change");
         }
-        this.$emit("change");
     }
 
     /**
@@ -469,7 +445,17 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         this.value = `${this.calculateNewValue(eventValue)}`;
     };
 
-    private calculateNewValue = (rawValue: number): number => {
+    /**
+     * Calculate the new value based on the given raw pixel value.
+     *
+     * @param rawValue - the value to be converted to a constrained value
+     * @returns the constrained value
+     *
+     * @internal
+     */
+    public calculateNewValue(rawValue: number): number {
+        this.setupTrackConstraints();
+
         // update the value based on current position
         const newPosition = convertPixelToPercent(
             rawValue,
@@ -483,7 +469,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         );
         const newValue: number = (this.max - this.min) * newPosition + this.min;
         return this.convertToConstrainedValue(newValue);
-    };
+    }
 
     /**
      * Handle a window mouse up during a drag operation
@@ -523,7 +509,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         }
     };
 
-    private convertToConstrainedValue = (value: number): number => {
+    private convertToConstrainedValue(value: number): number {
         if (isNaN(value)) {
             value = this.min;
         }
@@ -546,5 +532,5 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
                 ? constrainedValue - remainderValue + Number(this.step)
                 : constrainedValue - remainderValue;
         return constrainedValue + this.min;
-    };
+    }
 }

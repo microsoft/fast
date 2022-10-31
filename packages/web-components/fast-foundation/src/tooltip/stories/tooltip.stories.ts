@@ -1,56 +1,48 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
 import { AutoUpdateMode } from "../../index.js";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import { FASTTooltip, TooltipPosition } from "../tooltip.js";
 
-type TooltipStoryArgs = Args & FASTTooltip;
-type TooltipStoryMeta = Meta<TooltipStoryArgs>;
-
-const storyTemplate = html<TooltipStoryArgs>`
-    <div id="viewport" style="height: 100%; width: 100%;">
-        <fast-tooltip
-            visible="${x => x.visible}"
-            delay="${x => x.delay}"
-            position="${x => x.position}"
-            auto-update-mode="${x => x.autoUpdateMode}"
-            vertical-viewport-lock="${x => x.verticalViewportLock}"
-            horizontal-viewport-lock="${x => x.horizontalViewportLock}"
-            anchor="anchor-default"
-        >
-            ${x => x.content}
-        </fast-tooltip>
-        <fast-button
-            id="anchor-default"
-            style="margin: 200px; height: 150px; width: 150px;"
-        >
-            anchor
-        </fast-button>
-    </div>
+const storyTemplate = html<StoryArgs<FASTTooltip>>`
+    <fast-tooltip
+        :visible="${x => x.visible}"
+        delay="${x => x.delay}"
+        position="${x => x.position}"
+        auto-update-mode="${x => x.autoUpdateMode}"
+        vertical-viewport-lock="${x => x.verticalViewportLock}"
+        horizontal-viewport-lock="${x => x.horizontalViewportLock}"
+        anchor="anchor-default"
+    >
+        ${x => x.storyContent}
+    </fast-tooltip>
 `;
 
 export default {
     title: "Tooltip",
     args: {
-        content: "Here's a tooltip",
+        storyContent: "Tooltip",
     },
     argTypes: {
-        visible: { control: { type: "boolean" } },
-        delay: { control: { type: "number" } },
-        position: {
-            options: Object.values(TooltipPosition),
-            control: { type: "select" },
-        },
-        autoUpdateMode: {
-            options: Object.values(AutoUpdateMode),
-            control: { type: "select" },
-        },
-        verticalViewportLock: { control: { type: "boolean" } },
-        horizontalViewportLock: { control: { type: "boolean" } },
+        autoUpdateMode: { control: "select", options: Object.values(AutoUpdateMode) },
+        delay: { control: "number" },
+        horizontalViewportLock: { control: "boolean" },
+        position: { control: "select", options: Object.values(TooltipPosition) },
+        verticalViewportLock: { control: "boolean" },
+        visible: { control: "boolean" },
     },
-} as TooltipStoryMeta;
+    parameters: {
+        docs: { inlineStories: false },
+    },
+} as Meta<FASTTooltip>;
 
-export const Tooltip = (args: TooltipStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
+export const Tooltip: Story = renderComponent(
+    html<StoryArgs<FASTTooltip>>`
+        <div>
+            ${storyTemplate}
+            <fast-button id="anchor-default">
+                Hover or focus me
+            </fast-button>
+        </div>
+    `
+).bind({});

@@ -14,6 +14,10 @@ const styles = css`
         padding: calc(var(--design-unit) * 1px) 0;
     }
 
+    :host([hidden]) {
+        display: none !important;
+    }
+
     :host(:focus-within:not([disabled])) {
         border-color: var(--focus-stroke-outer);
         box-shadow: 0 0 0 calc((var(--focus-stroke-width) - var(--stroke-width)) * 1px)

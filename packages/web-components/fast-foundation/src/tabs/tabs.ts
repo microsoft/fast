@@ -6,8 +6,8 @@ import {
     keyArrowUp,
     keyEnd,
     keyHome,
+    limit,
     uniqueId,
-    wrapInBounds,
 } from "@microsoft/fast-web-utilities";
 import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
@@ -358,13 +358,21 @@ export class FASTTabs extends FASTElement {
      * This method allows the active index to be adjusted by numerical increments
      */
     public adjust(adjustment: number): void {
-        this.prevActiveTabIndex = this.activeTabIndex;
-        this.activeTabIndex = wrapInBounds(
+        const focusableTabs = this.tabs.filter(t => !this.isDisabledElement(t));
+        const currentActiveTabIndex = focusableTabs.indexOf(this.activetab);
+
+        const nextTabIndex = limit(
             0,
-            this.tabs.length - 1,
-            this.activeTabIndex + adjustment
+            focusableTabs.length - 1,
+            currentActiveTabIndex + adjustment
         );
-        this.setComponent();
+
+        // the index of the next focusable tab within the context of all available tabs
+        const nextIndex = this.tabs.indexOf(focusableTabs[nextTabIndex]);
+
+        if (nextIndex > -1) {
+            this.moveToTabByIndex(this.tabs, nextIndex);
+        }
     }
 
     private adjustForward = (e: KeyboardEvent): void => {
