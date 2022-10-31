@@ -91,7 +91,7 @@ function fastSSR(
  */
 function fastSSR(config?: SSRConfiguration): any {
     const async = config && config.renderMode === "async";
-    const deferHydration = config?.deferHydration || false;
+    const deferHydration = config?.deferHydration || true;
     const templateRenderer = new DefaultTemplateRenderer();
 
     const elementRenderer = class extends (!async
