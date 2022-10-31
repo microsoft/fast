@@ -2,6 +2,42 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 28 Oct 2022 20:44:44 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.16",
+      "version": "2.0.0-beta.16",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "5b745b1fb3bf249a7a2d172b7fb69cb08694aadd",
+            "comment": "Fixed bug preventing main component stylesheet behaviors from being connected during connectedCallback"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Oct 2022 20:24:32 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.15",
+      "version": "2.0.0-beta.15",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "220cc7e0e0de490e51cc8b6f42ff46b03228beaa",
+            "comment": "Updated the ElementController to connect behaviors prior to rendering element templates"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "32ca5de5feda4870ed36329f58ded4a0a0421f02",
+            "comment": "Added support to fast-element to support element hydration and the `defer-hydration` attribute"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 14 Oct 2022 18:26:11 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.14",
       "version": "2.0.0-beta.14",

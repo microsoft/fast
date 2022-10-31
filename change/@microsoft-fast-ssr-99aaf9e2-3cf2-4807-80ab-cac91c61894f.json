@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "add feature to disable rendering of a component by the element renderer",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

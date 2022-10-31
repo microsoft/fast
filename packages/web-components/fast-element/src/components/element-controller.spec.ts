@@ -1,7 +1,7 @@
-import { expect } from "chai";
+import chai, { expect } from "chai";
 import { ElementStyles } from "../index.debug.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
-import { Observable } from "../observation/observable.js";
+import { observable, Observable } from "../observation/observable.js";
 import { css } from "../styles/css.js";
 import { html } from "../templating/template.js";
 import { uniqueElementName } from "../testing/fixture.js";
@@ -9,6 +9,9 @@ import { toHTML } from "../__test__/helpers.js";
 import { ElementController } from "./element-controller.js";
 import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions.js";
 import { FASTElement } from "./fast-element.js";
+import spies from "chai-spies";
+
+chai.use(spies);
 
 describe("The ElementController", () => {
     const templateA = html`a`;
@@ -318,7 +321,7 @@ describe("The ElementController", () => {
     it("should have an observable isConnected property", () => {
         const { element, controller } = createController();
         let attached = controller.isConnected;
-        const handler = { handleChange: () => (attached = !attached) };
+        const handler = { handleChange: () => {attached = controller.isConnected} };
         Observable.getNotifier(controller).subscribe(handler, "isConnected");
 
         expect(attached).to.equal(false);
@@ -435,6 +438,32 @@ describe("The ElementController", () => {
             expect(childBehaviorBound).to.equal(true);
         });
 
+        it("should disconnect a behavior B that is added to the Controller by behavior A, where A removes B during disconnection", () => {
+            class ParentBehavior implements HostBehavior {
+                public child = new ChildBehavior();
+                connectedCallback(controller: HostController<any>): void {
+                    controller.addBehavior(this.child);
+                }
+
+                disconnectedCallback(controller) {
+                    controller.removeBehavior(this.child);
+                }
+            }
+
+            const disconnected = chai.spy();
+            class ChildBehavior implements HostBehavior {
+                disconnectedCallback = disconnected
+            }
+
+            const { controller } = createController();
+            const behavior = new ParentBehavior();
+            controller.addBehavior(behavior);
+            controller.connect();
+            controller.disconnect();
+
+            expect(behavior.child.disconnectedCallback).to.have.been.called();
+        });
+
         it("should unbind a behavior only when the behavior is removed the number of times it has been added", () => {
             class TestBehavior implements HostBehavior {
                 public bound = false;
@@ -490,6 +519,35 @@ describe("The ElementController", () => {
             controller.removeBehavior(behavior, true);
             expect(behavior.bound).to.equal(false);
         });
+
+        it("should connect behaviors added by stylesheets by .addStyles() during connection and disconnect them during disconnection", () => {
+            const { controller } = createController();
+            const behavior: HostBehavior = {
+                connectedCallback: chai.spy(),
+                disconnectedCallback: chai.spy()
+            };
+            controller.addStyles(css``.withBehaviors(behavior));
+
+            controller.connect();
+            expect(behavior.connectedCallback).to.have.been.called;
+
+            controller.disconnect();
+            expect(behavior.disconnectedCallback).to.have.been.called;
+        });
+
+        it("should connect behaviors added by the component's main stylesheet during connection and disconnect them during disconnection", () => {
+            const behavior: HostBehavior = {
+                connectedCallback: chai.spy(),
+                disconnectedCallback: chai.spy()
+            };
+            const { controller } = createController({styles: css``.withBehaviors(behavior)});
+            controller.connect();
+
+            expect(behavior.connectedCallback).to.have.been.called();
+
+            controller.disconnect();
+            expect(behavior.disconnectedCallback).to.have.been.called();
+        });
     });
 
     context("with pre-existing shadow dom on the host", () => {
@@ -514,5 +572,66 @@ describe("The ElementController", () => {
 
             document.body.removeChild(element);
         });
+    });
+
+    it("should ensure proper invocation order of state, rendering, and behaviors during connection and disconnection", () => {
+        const order: string[] = [];
+        const name = uniqueElementName();
+        const template = new Proxy(html``, { get(target, p, receiver) {
+            if (p === "render") { order.push("template rendered") }
+
+            return Reflect.get(target, p, receiver);
+        }});
+
+        class Test extends FASTElement {
+            @observable
+            observed = true;
+            observedChanged() {
+                if (this.observed) {
+                    order.push("observables bound")
+                }
+            }
+        }
+
+        Test.compose({
+            name,
+            template
+        }).define();
+
+        const element = document.createElement(name);
+        const controller = ElementController.forCustomElement(element);
+        Observable.getNotifier(controller).subscribe({
+            handleChange() {
+                order.push(`isConnected set ${controller.isConnected}`);
+            }
+        }, "isConnected")
+        controller.addBehavior({
+            connectedCallback() {
+                order.push("parent behavior connected");
+                controller.addBehavior({
+                    connectedCallback() {
+                        order.push("child behavior connected")
+                    },
+                    disconnectedCallback() {
+                        order.push('child behavior disconnected')
+                    }
+                })
+            },
+            disconnectedCallback() { order.push("parent behavior disconnected")}
+        });
+
+        controller.connect();
+
+        expect(order[0]).to.equal("observables bound");
+        expect(order[1]).to.equal("parent behavior connected");
+        expect(order[2]).to.equal("child behavior connected");
+        expect(order[3]).to.equal("template rendered");
+        expect(order[4]).to.equal("isConnected set true");
+
+        controller.disconnect();
+
+        expect(order[5]).to.equal('isConnected set false');
+        expect(order[6]).to.equal('parent behavior disconnected');
+        expect(order[7]).to.equal('child behavior disconnected');
     });
 });

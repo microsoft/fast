@@ -3,7 +3,6 @@ import { storyTemplate as ListboxOptionTemplate } from "../../listbox-option/sto
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTSelect } from "../select.js";
-import { SelectPosition } from "../select.options.js";
 
 const storyTemplate = html<StoryArgs<FASTSelect>>`
     <fast-select
@@ -11,7 +10,6 @@ const storyTemplate = html<StoryArgs<FASTSelect>>`
         ?disabled="${x => x.disabled}"
         ?multiple="${x => x.multiple}"
         size="${x => x.size}"
-        position="${x => x.position}"
         value="${x => x.value}"
     >
         ${x => x.storyContent}
@@ -49,10 +47,6 @@ export default {
         name: { control: "text" },
         multiple: { control: "boolean" },
         open: { control: "boolean" },
-        position: {
-            control: "select",
-            options: [undefined, ...Object.values(SelectPosition)],
-        },
         size: { control: "number" },
         storyContent: { table: { disable: true } },
         storyItems: { control: "object" },

@@ -105,6 +105,11 @@
         min-height: 100%;
     }
 
+    /* Disable zoom transform for Firefox, see https://github.com/storybookjs/storybook/issues/16774 */
+    .docs-story [class^="css-"] {
+        transform: none !important;
+    }
+
     html,
     body,
     #root {
