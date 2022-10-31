@@ -192,20 +192,22 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 #### Fields
 
-| Name       | Privacy | Type           | Default | Description                        | Inherited From |
-| ---------- | ------- | -------------- | ------- | ---------------------------------- | -------------- |
-| `disabled` | public  | `boolean`      |         | The disabled state of the element. |                |
-| `expanded` | public  | `boolean`      |         | The expanded state of the element. |                |
-| `role`     | public  | `MenuItemRole` |         | The role of the element.           |                |
-| `checked`  | public  | `boolean`      |         | The checked value of the element.  |                |
-| `hidden`   | public  | `boolean`      |         | The hidden attribute.              |                |
+| Name       | Privacy | Type           | Default | Description                                  | Inherited From |
+| ---------- | ------- | -------------- | ------- | -------------------------------------------- | -------------- |
+| `disabled` | public  | `boolean`      |         | The disabled state of the element.           |                |
+| `expanded` | public  | `boolean`      |         | The expanded state of the element.           |                |
+| `role`     | public  | `MenuItemRole` |         | The role of the element.                     |                |
+| `cleanup`  | public  | `() => void`   |         | Cleanup function for the submenu positioner. |                |
+| `checked`  | public  | `boolean`      |         | The checked value of the element.            |                |
+| `hidden`   | public  | `boolean`      |         | The hidden attribute.                        |                |
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters                             | Return | Inherited From |
-| ----------------- | --------- | ----------- | -------------------------------------- | ------ | -------------- |
-| `expandedChanged` | protected |             | `oldValue: boolean`                    | `void` |                |
-| `checkedChanged`  | protected |             | `oldValue: boolean, newValue: boolean` | `void` |                |
+| Name              | Privacy   | Description                              | Parameters                                  | Return | Inherited From |
+| ----------------- | --------- | ---------------------------------------- | ------------------------------------------- | ------ | -------------- |
+| `expandedChanged` | protected |                                          | `prev: boolean or undefined, next: boolean` | `void` |                |
+| `checkedChanged`  | protected |                                          | `oldValue: boolean, newValue: boolean`      | `void` |                |
+| `updateSubmenu`   | public    | Calculate and apply submenu positioning. |                                             |        |                |
 
 #### Events
 
