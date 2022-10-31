@@ -203,7 +203,7 @@ const { templateRenderer } = fastSSR({deferHydration: false});
 #### Configuring FAST-Element
 `@microsoft/fast-element` must be configured to respect the `defer-hydration` attribute. To do this, simply import the install code into the client-side application before defining the custom elements:
 ```ts
-import "@microsoft/fast-element-hydration";
+import "@microsoft/fast-element/install-element-hydration";
 
 // Define custom elements
 ```
