@@ -262,6 +262,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     readonly source: TElement;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
+    // @internal
+    toJSON: () => undefined;
     readonly view: ElementView<TElement> | null;
 }
 
