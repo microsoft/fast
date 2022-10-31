@@ -75,6 +75,7 @@ function fastSSR(
     templateRenderer: AsyncTemplateRenderer;
     ElementRenderer: ConstructableFASTElementRenderer<AsyncFASTElementRenderer>;
 };
+
 /**
  * Factory for creating SSR rendering assets.
  * @example
@@ -90,11 +91,12 @@ function fastSSR(
  * @beta
  */
 function fastSSR(config?: SSRConfiguration): any {
-    const async = config && config.renderMode === "async";
-    const deferHydration = config?.deferHydration || true;
+    config = { renderMode: "sync", deferHydration: true, ...config } as Required<
+        SSRConfiguration
+    >;
     const templateRenderer = new DefaultTemplateRenderer();
 
-    const elementRenderer = class extends (!async
+    const elementRenderer = class extends (config.renderMode !== "async"
         ? SyncFASTElementRenderer
         : AsyncFASTElementRenderer) {
         static #disabledConstructors = new Set<typeof HTMLElement | string>();
@@ -126,7 +128,7 @@ function fastSSR(config?: SSRConfiguration): any {
         }
         protected templateRenderer: DefaultTemplateRenderer = templateRenderer;
         protected styleRenderer = new StyleElementStyleRenderer();
-        protected deferHydration = deferHydration;
+        protected deferHydration = config?.deferHydration;
     };
 
     templateRenderer.withDefaultElementRenderers(

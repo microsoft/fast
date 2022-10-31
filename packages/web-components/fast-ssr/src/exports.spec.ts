@@ -12,11 +12,25 @@ test.describe("fastSSR default export", () => {
         expect(templateRenderer.createRenderInfo().elementRenderers.includes(ElementRenderer)).toBe(true)
     })
 
-    test("should render FAST elements with the `defer-hydration` attribute when configured", () => {
+    test("should render FAST elements with the `defer-hydration` attribute by default", () => {
+        const { templateRenderer } = fastSSR();
+        const name = uniqueElementName();
+        FASTElement.define(name);
+
+        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name} defer-hydration><template shadowroot="open"></template></${name}>`)
+    });
+    test("should render FAST elements with the `defer-hydration` attribute when deferHydration is configured to be true", () => {
         const { templateRenderer } = fastSSR({deferHydration: true});
         const name = uniqueElementName();
         FASTElement.define(name);
 
         expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name} defer-hydration><template shadowroot="open"></template></${name}>`)
+    });
+    test("should not render FAST elements with the `defer-hydration` attribute when deferHydration is configured to be false", () => {
+        const { templateRenderer } = fastSSR({deferHydration: false});
+        const name = uniqueElementName();
+        FASTElement.define(name);
+
+        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`)
     });
 });
