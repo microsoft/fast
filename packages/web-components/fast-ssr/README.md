@@ -190,6 +190,34 @@ ElementRenderer.disable("my-element");
 templateRenderer.render(html`<my-element></my-element>`);
 ```
 
+### Hydration
+#### `defer-hydration` Attribute
+The `defer-hydration` attribute is an attribute added to each custom-element rendered by the `ElementRenderer`. The presence of the attribute indicates to client-side code that the element should not hydrate it's view. When the attribute is removed, the element is free to hydrate itself.
+
+This attribute is added automatically during custom element rendering to all FAST custom elements. If your app does not require orchestrating element hydration, emission of this attribute can be prevented by configuring the renderer:
+```ts
+const { templateRenderer } = fastSSR({deferHydration: false});
+```
+
+> For more information on this community-protocol, see https://github.com/webcomponents-cg/community-protocols/pull/15
+#### Configuring FAST-Element
+`@microsoft/fast-element` must be configured to respect the `defer-hydration` attribute. To do this, simply import the install code into the client-side application before defining the custom elements:
+```ts
+import "@microsoft/fast-element-hydration";
+
+// Define custom elements
+```
+
+Alternatively, the `HydratableElementController` can be imported and installed manually:
+
+```ts
+import { HydratableElementController } from "@microsoft/fast-element/element-hydration";
+
+HydratableElementController.install();
+```
+
+After you do this, `@microsoft/fast-element` will wait until the `defer-hydration` attribute is removed (if present during connection) before doing connection work like rendering templates, applying stylesheets, and binding behaviors.
+
 ### Configuring the RenderInfo Object
 `TemplateRenderer.render()` must be invoked with a `RenderInfo` object. Its purpose is to provide different element renderers to the process, as well as metadata about the rendering process. It can be used to render custom elements from different templating libraries in the same process. By default, `TemplateRenderer.render()` will create a `RenderInfo` object for you, but you can also easily construct your own using `TemplateRenderer.createRenderInfo()`: 
 
