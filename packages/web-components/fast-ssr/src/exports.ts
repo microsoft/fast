@@ -32,8 +32,10 @@ import "./configure-fast-element.js";
  */
 export interface SSRConfiguration {
     /**
-     * When 'async', configures the renderer to support async rendering. Defaults to 'sync'.
+     * When 'async', configures the renderer to support async rendering.
      * 'async' rendering will yield 'string | Promise<string>'
+     *
+     * Defaults to 'sync'.
      */
     renderMode?: "sync" | "async";
 
@@ -41,6 +43,8 @@ export interface SSRConfiguration {
      * Configures the renderer to yield the `defer-hydration` attribute during element rendering.
      * The `defer-hydration` attribute can be used to prevent immediate hydration of the element
      * by fast-element by importing hydration support in the client bundle.
+     *
+     * Defaults to `true`
      * @example
      *
      * ```ts
