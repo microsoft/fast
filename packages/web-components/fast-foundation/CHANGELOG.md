@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 25 Oct 2022 20:24:32 GMT and should not be manually modified.
+This log was last generated on Fri, 28 Oct 2022 20:44:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.19
+
+Fri, 28 Oct 2022 20:44:44 GMT
+
+### Changes
+
+- use floating-ui for menu-item submenus (863023+radium-v@users.noreply.github.com)
+- use floating-ui for select and combobox (863023+radium-v@users.noreply.github.com)
+- remove indent logic from foundation menu and menu item, move to example (chhol@microsoft.com)
+- remove unnecessary composedParent & composedContains exports from Foundation (tebin.raouf@thomsonreuters.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.16
 
 ## 3.0.0-alpha.18
 
