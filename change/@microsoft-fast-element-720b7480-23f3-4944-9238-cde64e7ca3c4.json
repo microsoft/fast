@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Added support to fast-element to support element hydration and the `defer-hydration` attribute",
-  "packageName": "@microsoft/fast-element",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

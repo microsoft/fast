@@ -33,6 +33,13 @@ export interface ElementControllerStrategy {
     new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
 }
 
+const enum Stages {
+    connecting,
+    connected,
+    disconnecting,
+    disconnected,
+}
+
 /**
  * Controls the lifecycle and rendering of a `FASTElement`.
  * @public
@@ -44,7 +51,13 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
-    private _isConnected: boolean = false;
+    private stage: Stages = Stages.disconnected;
+    /**
+     * A guard against connecting behaviors multiple times
+     * during connect in scenarios where a behavior adds
+     * another behavior during it's connectedCallback
+     */
+    private guardBehaviorConnection = false;
     private behaviors: Map<HostBehavior<TElement>, number> | null = null;
     private _mainStyles: ElementStyles | null = null;
 
@@ -82,12 +95,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      */
     public get isConnected(): boolean {
         Observable.track(this, isConnectedPropertyName);
-        return this._isConnected;
-    }
-
-    private setIsConnected(value: boolean): void {
-        this._isConnected = value;
-        Observable.notify(this, isConnectedPropertyName);
+        return this.stage === Stages.connected;
     }
 
     /**
@@ -222,7 +230,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             targetBehaviors.set(behavior, 1);
             behavior.addedCallback && behavior.addedCallback(this);
 
-            if (behavior.connectedCallback && this.isConnected) {
+            if (
+                behavior.connectedCallback &&
+                !this.guardBehaviorConnection &&
+                (this.stage === Stages.connected || this.stage === Stages.connecting)
+            ) {
                 behavior.connectedCallback(this);
             }
         } else {
@@ -249,7 +261,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (count === 1 || force) {
             targetBehaviors.delete(behavior);
 
-            if (behavior.disconnectedCallback && this.isConnected) {
+            if (behavior.disconnectedCallback && this.stage !== Stages.disconnected) {
                 behavior.disconnectedCallback(this);
             }
 
@@ -318,35 +330,59 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Runs connected lifecycle behavior on the associated element.
      */
     public connect(): void {
-        if (this._isConnected) {
+        if (this.stage !== Stages.disconnected) {
             return;
         }
 
-        if (this.needsInitialization) {
-            this.finishInitialization();
-        } else if (this.view !== null) {
-            this.view.bind(this.source);
+        this.stage = Stages.connecting;
+
+        // If we have any observables that were bound, re-apply their values.
+        if (this.boundObservables !== null) {
+            const element = this.source;
+            const boundObservables = this.boundObservables;
+            const propertyNames = Object.keys(boundObservables);
+
+            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
+                const propertyName = propertyNames[i];
+                (element as any)[propertyName] = boundObservables[propertyName];
+            }
+
+            this.boundObservables = null;
         }
 
         const behaviors = this.behaviors;
         if (behaviors !== null) {
+            this.guardBehaviorConnection = true;
             for (const key of behaviors.keys()) {
                 key.connectedCallback && key.connectedCallback(this);
             }
+
+            this.guardBehaviorConnection = false;
         }
 
-        this.setIsConnected(true);
+        if (this.needsInitialization) {
+            this.renderTemplate(this.template);
+            this.addStyles(this.mainStyles);
+
+            this.needsInitialization = false;
+        } else if (this.view !== null) {
+            this.view.bind(this.source);
+        }
+
+        this.stage = Stages.connected;
+        Observable.notify(this, isConnectedPropertyName);
     }
 
     /**
      * Runs disconnected lifecycle behavior on the associated element.
      */
     public disconnect(): void {
-        if (!this._isConnected) {
+        if (this.stage !== Stages.connected) {
             return;
         }
 
-        this.setIsConnected(false);
+        this.stage = Stages.disconnecting;
+        Observable.notify(this, isConnectedPropertyName);
 
         if (this.view !== null) {
             this.view.unbind();
@@ -358,6 +394,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 key.disconnectedCallback && key.disconnectedCallback(this);
             }
         }
+
+        this.stage = Stages.disconnected;
     }
 
     /**
@@ -391,35 +429,13 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         detail?: any,
         options?: Omit<CustomEventInit, "detail">
     ): void | boolean {
-        if (this._isConnected) {
+        if (this.stage === Stages.connected) {
             return this.source.dispatchEvent(
                 new CustomEvent(type, { detail, ...defaultEventOptions, ...options })
             );
         }
 
         return false;
-    }
-
-    private finishInitialization(): void {
-        const element = this.source;
-        const boundObservables = this.boundObservables;
-
-        // If we have any observables that were bound, re-apply their values.
-        if (boundObservables !== null) {
-            const propertyNames = Object.keys(boundObservables);
-
-            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
-                const propertyName = propertyNames[i];
-                (element as any)[propertyName] = boundObservables[propertyName];
-            }
-
-            this.boundObservables = null;
-        }
-
-        this.renderTemplate(this.template);
-        this.addStyles(this.mainStyles);
-
-        this.needsInitialization = false;
     }
 
     private renderTemplate(template: ElementViewTemplate | null | undefined): void {
