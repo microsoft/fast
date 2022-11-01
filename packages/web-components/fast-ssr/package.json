@@ -34,8 +34,8 @@
     "install-playwright-browsers": "yarn playwright install"
   },
   "description": "A package for rendering FAST Web Components outside the browser.",
-  "main": "./dist/esm/exports.js",
-  "types": "./dist/dts/exports.d.ts",
+  "main": "dist/esm/exports.js",
+  "types": "dist/dts/exports.d.ts",
   "exports": {
     ".": {
       "types": "./dist/dts/exports.d.ts",
