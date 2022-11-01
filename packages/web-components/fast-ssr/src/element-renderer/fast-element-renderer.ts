@@ -21,6 +21,12 @@ abstract class FASTElementRenderer extends DefaultElementRenderer {
     public readonly element!: FASTElement;
 
     /**
+     * When true, instructs the ElementRenderer to yield the `defer-hydration` attribute for
+     * rendered elements.
+     */
+    protected abstract deferHydration: boolean;
+
+    /**
      * The template renderer to use when rendering a component template
      */
     protected abstract templateRenderer: DefaultTemplateRenderer;
@@ -129,19 +135,8 @@ export abstract class AsyncFASTElementRenderer extends FASTElementRenderer
             if (this.awaiting.size) {
                 yield this.pauseRendering().then(() => "");
             }
-            const { attributes } = this.element;
 
-            for (
-                let i = 0, name, value;
-                i < attributes.length && ({ name, value } = attributes[i]);
-                i++
-            ) {
-                if (value === "" || value === undefined || value === null) {
-                    yield ` ${name}`;
-                } else {
-                    yield ` ${name}="${escapeHtml(value)}"`;
-                }
-            }
+            yield* renderAttributesSync.call(this);
         }
     }
     renderShadow = renderShadow as (
@@ -183,6 +178,10 @@ function* renderAttributesSync(this: FASTElementRenderer): IterableIterator<stri
             } else {
                 yield ` ${name}="${escapeHtml(value)}"`;
             }
+        }
+
+        if (this.deferHydration) {
+            yield " defer-hydration";
         }
     }
 }
