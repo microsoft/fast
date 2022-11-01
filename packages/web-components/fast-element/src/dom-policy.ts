@@ -53,32 +53,6 @@ function block(
     );
 }
 
-type DeepReadonly<T> = T extends (infer R)[]
-    ? DeepReadonlyArray<R>
-    : T extends Function
-    ? T
-    : T extends object
-    ? DeepReadonlyObject<T>
-    : T;
-
-interface DeepReadonlyArray<T> extends ReadonlyArray<DeepReadonly<T>> {}
-
-type DeepReadonlyObject<T> = {
-    readonly [P in keyof T]: DeepReadonly<T[P]>;
-};
-
-function deepFreeze<T>(obj: T): DeepReadonly<T> {
-    for (const key of Object.keys(obj)) {
-        const value = obj[key];
-
-        if (typeof value === "object" && !Object.isFrozen(value)) {
-            deepFreeze(value);
-        }
-    }
-
-    return Object.freeze(obj) as DeepReadonly<T>;
-}
-
 const defaultDOMElementGuards = {
     a: {
         [DOMAspect.attribute]: {
@@ -259,7 +233,7 @@ const blockedEvents = {
     onwheel: block,
 };
 
-export const defaultDOMGuards = deepFreeze({
+const defaultDOMGuards = {
     elements: defaultDOMElementGuards,
     aspects: {
         [DOMAspect.attribute]: {
@@ -273,7 +247,130 @@ export const defaultDOMGuards = deepFreeze({
             ...blockedEvents,
         },
     },
-});
+};
+
+function createDomSinkGuards(
+    config: Partial<DOMSinkGuards>,
+    defaults: DOMSinkGuards
+): DOMSinkGuards {
+    const result = {};
+
+    for (const name in defaults) {
+        const overrideValue = config[name];
+        const defaultValue = defaults[name];
+
+        switch (overrideValue) {
+            case null:
+                // remove the default
+                break;
+            case undefined:
+                // keep the default
+                result[name] = defaultValue;
+                break;
+            default:
+                // override the default
+                result[name] = overrideValue;
+                break;
+        }
+    }
+
+    // add any new sinks that were not overrides
+    for (const name in config) {
+        if (!(name in result)) {
+            result[name] = config[name];
+        }
+    }
+
+    return Object.freeze(result);
+}
+
+function createDOMAspectGuards(
+    config: DOMAspectGuards,
+    defaults: DOMAspectGuards
+): DOMAspectGuards {
+    const result = {};
+
+    for (const aspect in defaults) {
+        const overrideValue = config[aspect];
+        const defaultValue = defaults[aspect];
+
+        switch (overrideValue) {
+            case null:
+                // remove the default
+                break;
+            case undefined:
+                // keep the default
+                result[aspect] = createDomSinkGuards(defaultValue, {});
+                break;
+            default:
+                // override the default
+                result[aspect] = createDomSinkGuards(overrideValue, defaultValue);
+                break;
+        }
+    }
+
+    // add any new aspect guards that were not overrides
+    for (const aspect in config) {
+        if (!(aspect in result)) {
+            result[aspect] = createDomSinkGuards(config[aspect], {});
+        }
+    }
+
+    return Object.freeze(result);
+}
+
+function createElementGuards(
+    config: DOMElementGuards,
+    defaults: DOMElementGuards
+): DOMElementGuards {
+    const result = {};
+
+    for (const tag in defaults) {
+        const overrideValue = config[tag];
+        const defaultValue = defaults[tag];
+
+        switch (overrideValue) {
+            case null:
+                // remove the default
+                break;
+            case undefined:
+                // keep the default
+                result[tag] = createDOMAspectGuards(overrideValue, {});
+                break;
+            default:
+                // override the default aspects
+                result[tag] = createDOMAspectGuards(overrideValue, defaultValue);
+                break;
+        }
+    }
+
+    // Add any new element guards that were not overrides
+    for (const tag in config) {
+        if (!(tag in result)) {
+            result[tag] = createDOMAspectGuards(config[tag], {});
+        }
+    }
+
+    return Object.freeze(result);
+}
+
+function createDOMGuards(config: Partial<DOMGuards>, defaults: DOMGuards): DOMGuards {
+    return Object.freeze({
+        elements: config.elements
+            ? createElementGuards(config.elements, defaults.elements)
+            : defaults.elements,
+        aspects: config.aspects
+            ? createDOMAspectGuards(config.aspects, defaults.aspects)
+            : defaults.aspects,
+    });
+}
+
+function createTrustedType() {
+    const createHTML = html => html;
+    return globalThis.trustedTypes
+        ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
+        : { createHTML };
+}
 
 function tryGuard(
     aspectGuards: DOMAspectGuards,
@@ -292,21 +389,29 @@ function tryGuard(
     }
 }
 
+/**
+ * Options for creating a DOM Policy.
+ */
+export type DOMPolicyOptions = {
+    /**
+     * The trusted type to use for HTML creation.
+     */
+    trustedType?: TrustedTypesPolicy;
+
+    /**
+     * The DOM guards used to override or extend the defaults.
+     */
+    guards?: Partial<DOMGuards>;
+};
+
 const DOMPolicy = Object.freeze({
-    create(
-        fastTrustedType?: TrustedTypesPolicy,
-        guards: DOMGuards = defaultDOMGuards
-    ): DOMPolicy {
-        if (!fastTrustedType) {
-            const createHTML = html => html;
-            fastTrustedType = globalThis.trustedTypes
-                ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
-                : { createHTML };
-        }
+    create(options: DOMPolicyOptions = {}): Readonly<DOMPolicy> {
+        const trustedType = options.trustedType ?? createTrustedType();
+        const guards = createDOMGuards(options.guards ?? {}, defaultDOMGuards);
 
         return Object.freeze({
             createHTML(value: string): string {
-                return fastTrustedType!.createHTML(value);
+                return trustedType.createHTML(value);
             },
 
             protect(
