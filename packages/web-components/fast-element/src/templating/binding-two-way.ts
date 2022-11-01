@@ -1,5 +1,5 @@
 import type { DOMPolicy } from "../dom.js";
-import { isString, Message } from "../interfaces.js";
+import { isString, Message, noop } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -134,6 +134,12 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
             value
         );
     }
+
+    /**
+     * Opts out of JSON stringification.
+     * @internal
+     */
+    toJSON = noop;
 }
 
 class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding<

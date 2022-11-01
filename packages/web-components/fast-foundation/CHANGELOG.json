@@ -2,6 +2,45 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 28 Oct 2022 20:44:44 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.19",
+      "version": "3.0.0-alpha.19",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7aaf156483ac6f5922a529b5b54e04e87445d882",
+            "comment": "use floating-ui for menu-item submenus"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "45b9c12961ea49694276b6a6d4d1f932ee9f83e8",
+            "comment": "use floating-ui for select and combobox"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "a614cb8270fe4b1d389cc3775c96913424dfc71b",
+            "comment": "remove indent logic from foundation menu and menu item, move to example"
+          },
+          {
+            "author": "tebin.raouf@thomsonreuters.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "f7186f122613e3cc66f9cf3700138c2b41175ed4",
+            "comment": "remove unnecessary composedParent & composedContains exports from Foundation"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.16",
+            "commit": "5b745b1fb3bf249a7a2d172b7fb69cb08694aadd"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Oct 2022 20:24:32 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.18",
       "version": "3.0.0-alpha.18",

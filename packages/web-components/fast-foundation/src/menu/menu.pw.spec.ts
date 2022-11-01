@@ -360,6 +360,7 @@ test.describe("Menu", () => {
     });
 
     test("should close the menu when pressing the escape key", async () => {
+        test.slow();
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-menu>
@@ -386,6 +387,7 @@ test.describe("Menu", () => {
 
         await element.first().press("Escape");
 
+        await (await element.first().elementHandle())?.waitForElementState("stable");
 
         await expect(menuItems.first()).toBeFocused();
     });

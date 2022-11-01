@@ -1,5 +1,5 @@
 import type { DOMPolicy } from "../dom.js";
-import { isFunction, Message } from "../interfaces.js";
+import { isFunction, isString, noop } from "../interfaces.js";
 import type { Expression } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
@@ -192,6 +192,12 @@ export class ViewTemplate<TSource = any, TParent = any>
         view.appendTo(host);
         return view;
     }
+
+    /**
+     * Opts out of JSON stringification.
+     * @internal
+     */
+    toJSON = noop;
 
     /**
      * Creates a template based on a set of static strings and dynamic values.

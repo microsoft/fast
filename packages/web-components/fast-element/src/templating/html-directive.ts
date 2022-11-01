@@ -1,5 +1,6 @@
 import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
-import type { Constructable, Mutable } from "../interfaces.js";
+import type { HostBehavior } from "../index.js";
+import { Constructable, Mutable, noop } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -377,6 +378,12 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
  */
 export abstract class StatelessAttachedAttributeDirective<TOptions>
     implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
+    /**
+     * Opts out of JSON stringification.
+     * @internal
+     */
+    toJSON = noop;
+
     /**
      * Creates an instance of RefDirective.
      * @param options - The options to use in configuring the directive.

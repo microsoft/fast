@@ -1,4 +1,4 @@
-import type { Disposable } from "../interfaces.js";
+import { Disposable, noop } from "../interfaces.js";
 import {
     ExecutionContext,
     Observable,
@@ -351,6 +351,12 @@ export class HTMLView<TSource = any, TParent = any>
         this.context = this;
         this.isBound = false;
     }
+
+    /**
+     * Opts out of JSON stringification.
+     * @internal
+     */
+    toJSON = noop;
 
     private evaluateUnbindables() {
         const unbindables = this.unbindables;

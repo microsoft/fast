@@ -1,10 +1,12 @@
 import { expect } from "chai";
 import { slotted, SlottedDirective } from "./slotted.js";
+import { ref } from "./ref.js";
 import { observable } from "../observation/observable.js";
 import { elements } from "./node-observation.js";
 import { Updates } from "../observation/update-queue.js";
 import type { ViewBehaviorTargets, ViewController } from "./html-directive.js";
 import { Fake } from "../testing/fakes.js";
+import { html } from "./template.js";
 
 describe("The slotted", () => {
     context("template function", () => {
@@ -28,6 +30,7 @@ describe("The slotted", () => {
     context("behavior", () => {
         class Model {
             @observable nodes;
+            reference: HTMLElement;
         }
 
         function createAndAppendChildren(host: HTMLElement, elementName = "div") {
@@ -153,6 +156,26 @@ describe("The slotted", () => {
             await Updates.next();
 
             expect(model.nodes).members([]);
+        });
+
+        it("should not throw if DOM stringified", () => {
+            const template = html<Model>`
+                <slot id="test"
+                     ${slotted("nodes")}
+                     ${ref("reference")}>
+                </div>
+            `;
+
+            const view = template.create();
+            const model = new Model();
+
+            view.bind(model);
+
+            expect(() => {
+                JSON.stringify(model.reference);
+            }).to.not.throw();
+
+            view.unbind();
         });
     });
 });

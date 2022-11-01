@@ -3,7 +3,7 @@ import type {
     ExpressionController,
     ExpressionObserver,
 } from "../observation/observable.js";
-import { isString } from "../interfaces.js";
+import { isString, noop } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type { DOMPolicy } from "../dom.js";
 import type { HTMLBindingDirective } from "./binding.js";
@@ -78,6 +78,12 @@ class SignalObserver<TSource = any, TReturn = any, TParent = any> implements Sub
     handleChange() {
         this.subscriber.handleChange(this.dataBinding.evaluate, this);
     }
+
+    /**
+     * Opts out of JSON stringification.
+     * @internal
+     */
+    toJSON = noop;
 
     private getSignal(controller: ExpressionController<TSource, TParent>): string {
         const options = this.dataBinding.options;
