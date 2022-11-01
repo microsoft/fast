@@ -79,6 +79,7 @@ export class ARTile extends FASTAnchoredRegion {
         this.sockets.forEach(socket => {
             socket.parentTile = this;
         });
+        this.addEventListener("transitionend", this.handleTransitionEnd);
     }
 
     public disconnectedCallback(): void {
@@ -88,6 +89,7 @@ export class ARTile extends FASTAnchoredRegion {
         this.sockets.forEach(socket => {
             socket.parentTile = undefined;
         });
+        this.removeEventListener("transitionend", this.handleTransitionEnd);
     }
 
     /**
@@ -134,6 +136,10 @@ export class ARTile extends FASTAnchoredRegion {
         }
         this.updateQueued = true;
         Updates.enqueue(() => this.updatePosition());
+    };
+
+    public handleTransitionEnd = (e: TransitionEvent): void => {
+        this.update();
     };
 
     private updatePosition() {

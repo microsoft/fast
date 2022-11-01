@@ -342,7 +342,13 @@ export class FASTAnchoredRegion extends FASTElement {
     @observable
     public anchorElement: HTMLElement | null = null;
     protected anchorElementChanged(): void {
-        this.requestReset();
+        if (this.initialLayoutComplete) {
+            this.stopObservers();
+            this.startObservers();
+            this.updateForAttributeChange();
+        } else {
+            this.requestReset();
+        }
     }
 
     /**
@@ -797,10 +803,7 @@ export class FASTAnchoredRegion extends FASTElement {
     /**
      *  compare rects to see if there is enough change to justify a DOM update
      */
-    private isRectDifferent = (
-        rectA: DOMRect | ClientRect,
-        rectB: DOMRect | ClientRect
-    ): boolean => {
+    private isRectDifferent = (rectA: DOMRect, rectB: DOMRect): boolean => {
         if (
             Math.abs(rectA.top - rectB.top) > this.updateThreshold ||
             Math.abs(rectA.right - rectB.right) > this.updateThreshold ||

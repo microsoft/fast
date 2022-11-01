@@ -760,8 +760,6 @@ export class FASTAnchoredRegion extends FASTElement {
     // @internal
     virtualAnchorRect: DOMRect;
     // (undocumented)
-    protected virtualAnchorRectChanged(): void;
-    // (undocumented)
     virtualAnchorWidth: number;
     // (undocumented)
     protected virtualAnchorWidthChanged(): void;
