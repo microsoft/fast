@@ -936,9 +936,9 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
-    withPolicy(policy: DOMPolicy): this;
     // @internal
     toJSON: () => undefined;
+    withPolicy(policy: DOMPolicy): this;
 }
 
 // @public

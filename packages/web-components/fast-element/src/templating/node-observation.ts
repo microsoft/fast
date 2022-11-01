@@ -50,7 +50,7 @@ export abstract class NodeObservationDirective<
     T extends NodeBehaviorOptions
 > extends StatelessAttachedAttributeDirective<T> {
     private _id: string;
-    private controllerProperty = `${this.id}-c`;
+    private _controllerProperty: string;
 
     /**
      * The unique id of the factory.
@@ -61,14 +61,13 @@ export abstract class NodeObservationDirective<
 
     public set id(value: string) {
         this._id = value;
-        this._sourceProperty = `${value}-s`;
+        this._controllerProperty = `${value}-c`;
     }
 
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
     public targetNodeId: string;
-
 
     /**
      * Bind this behavior to the source.
@@ -78,7 +77,7 @@ export abstract class NodeObservationDirective<
      */
     bind(controller: ViewController): void {
         const target = controller.targets[this.targetNodeId] as any;
-        target[this.controllerProperty] = controller;
+        target[this._controllerProperty] = controller;
         this.updateTarget(controller.source, this.computeNodes(target));
         this.observe(target);
         controller.onUnbind(this);
@@ -94,7 +93,7 @@ export abstract class NodeObservationDirective<
         const target = controller.targets[this.targetNodeId] as any;
         this.updateTarget(controller.source, emptyArray);
         this.disconnect(target);
-        target[this.controllerProperty] = null;
+        target[this._controllerProperty] = null;
     }
 
     /**
@@ -103,7 +102,7 @@ export abstract class NodeObservationDirective<
      * @returns The source.
      */
     protected getSource(target: Node) {
-        return target[this.controllerProperty].source;
+        return target[this._controllerProperty].source;
     }
 
     /**

@@ -1,5 +1,4 @@
 import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
-import type { HostBehavior } from "../index.js";
 import { Constructable, Mutable, noop } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {

@@ -1,5 +1,5 @@
 import type { DOMPolicy } from "../dom.js";
-import { isFunction, isString, noop } from "../interfaces.js";
+import { isFunction, Message, noop } from "../interfaces.js";
 import type { Expression } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
