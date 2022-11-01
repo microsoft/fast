@@ -634,4 +634,12 @@ describe("The ElementController", () => {
         expect(order[6]).to.equal('parent behavior disconnected');
         expect(order[7]).to.equal('child behavior disconnected');
     });
+
+    it("should not throw if DOM stringified", () => {
+        const controller = createController();
+
+        expect(() => {
+            JSON.stringify(controller.element);
+        }).to.not.throw();
+    });
 });

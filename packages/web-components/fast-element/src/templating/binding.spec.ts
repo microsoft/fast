@@ -5,7 +5,7 @@ import { html, ViewTemplate } from "./template.js";
 import { toHTML } from "../__test__/helpers.js";
 import { SyntheticView, HTMLView } from "./view.js";
 import { Updates } from "../observation/update-queue.js";
-import { Aspect, HTMLDirective } from "./html-directive.js";
+import { Aspect } from "./html-directive.js";
 import { DOM } from "./dom.js";
 import { Signal, signal } from "./binding-signal.js";
 import { twoWay, TwoWayBindingOptions } from "./binding-two-way.js";
@@ -119,6 +119,20 @@ describe("The HTML binding directive", () => {
             await Updates.next();
 
             expect(node.textContent).to.equal(model.value);
+        });
+
+        it("should not throw if DOM stringified", () => {
+            const { behavior, node, targets } = contentBinding();
+            const model = new Model("This is a test");
+            const controller = Fake.viewController(targets, behavior);
+
+            controller.bind(model);
+
+            expect(node.textContent).to.equal(model.value);
+
+            expect(() => {
+                JSON.stringify(node);
+            }).to.not.throw();
         });
     });
 
@@ -284,6 +298,20 @@ describe("The HTML binding directive", () => {
 
             expect(toHTML(parentNode)).to.equal(`<a>Hi there!</a>`);
         });
+
+        it("target node should not stringify $fastView or $fastTemplate", () => {
+            const { behavior, node, targets } = contentBinding();
+            const template = html<Model>`This is a template. ${x => x.knownValue}`;
+            const model = new Model(template);
+            const controller = Fake.viewController(targets, behavior);
+
+            controller.bind(model);
+
+            const clone = JSON.parse(JSON.stringify(node));
+
+            expect("$fastView" in clone).to.be.false;
+            expect("$fastTemplate" in clone).to.be.false;
+        });
     })
 
     context("when unbinding template content", () => {
@@ -423,6 +451,18 @@ describe("The HTML binding directive", () => {
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
             });
+
+            it("should not throw if DOM stringified", () => {
+                const { behavior, node, targets } = defaultBinding(aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                expect(() => {
+                    JSON.stringify(node);
+                }).to.not.throw();
+            });
         }
     });
 
@@ -468,6 +508,18 @@ describe("The HTML binding directive", () => {
                 await Updates.next();
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+            });
+
+            it("should not throw if DOM stringified", () => {
+                const { behavior, node, targets } = oneTimeBinding(aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                expect(() => {
+                    JSON.stringify(node);
+                }).to.not.throw();
             });
         }
     });
@@ -524,6 +576,18 @@ describe("The HTML binding directive", () => {
                 await Updates.next();
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+            });
+
+            it("should not throw if DOM stringified", () => {
+                const { behavior, node, targets } = signalBinding("test-signal", aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                expect(() => {
+                    JSON.stringify(node);
+                }).to.not.throw();
             });
         }
     });
@@ -624,6 +688,18 @@ describe("The HTML binding directive", () => {
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
             });
+
+            it("should not throw if DOM stringified", () => {
+                const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect);
+                const model = new Model(aspectScenario.originalValue);
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                expect(() => {
+                    JSON.stringify(node);
+                }).to.not.throw();
+            });
         }
     });
 
@@ -685,6 +761,18 @@ describe("The HTML binding directive", () => {
 
             node.dispatchEvent(new CustomEvent("my-event"));
             expect(model.actionInvokeCount).to.equal(1);
+        });
+
+        it("should not throw if DOM stringified", () => {
+            const { behavior, targets, node } = eventBinding({}, "@my-event");
+            const model = new Model("Test value.");
+            const controller = Fake.viewController(targets, behavior);
+
+            controller.bind(model);
+
+            expect(() => {
+                JSON.stringify(node);
+            }).to.not.throw();
         });
     });
 
@@ -748,6 +836,21 @@ describe("The HTML binding directive", () => {
 
             updateTarget(element, observerA, undefined);
             expect(contains('foo')).false;
+        });
+
+        it("should not throw if DOM stringified", () => {
+            const directive = new HTMLBindingDirective(bind(() => ""));
+            const { behavior, node, targets } = configureDirective(directive, ":classList");
+
+            Aspect.assign(directive, ":classList");
+            const model = new Model("Test value.");
+            const controller = Fake.viewController(targets, behavior);
+
+            controller.bind(model);
+
+            expect(() => {
+                JSON.stringify(node);
+            }).to.not.throw();
         });
     });
 });

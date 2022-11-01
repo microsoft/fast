@@ -1,4 +1,4 @@
-import { Message, Mutable, StyleStrategy, StyleTarget } from "../interfaces.js";
+import { Message, Mutable, noop, StyleStrategy, StyleTarget } from "../interfaces.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { Observable, SourceLifetime } from "../observation/observable.js";
 import { FAST } from "../platform.js";
@@ -437,6 +437,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         return false;
     }
+
+    /**
+     * Opts out of JSON stringification.
+     * @internal
+     */
+    toJSON = noop;
 
     private renderTemplate(template: ElementViewTemplate | null | undefined): void {
         // When getting the host to render to, we start by looking
