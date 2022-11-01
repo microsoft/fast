@@ -262,6 +262,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     readonly source: TElement;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
+    // @internal
+    toJSON: () => undefined;
     readonly view: ElementView<TElement> | null;
 }
 
@@ -518,6 +520,8 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     readonly sourceLifetime: SourceLifetime;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
+    // @internal
+    toJSON: () => undefined;
     unbind(): void;
 }
 
@@ -758,6 +762,8 @@ export abstract class StatelessAttachedAttributeDirective<TOptions> implements H
     nodeId: string;
     // (undocumented)
     protected options: TOptions;
+    // @internal
+    toJSON: () => undefined;
 }
 
 // @public
@@ -908,6 +914,8 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
+    // @internal
+    toJSON: () => undefined;
 }
 
 // @public
