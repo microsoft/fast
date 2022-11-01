@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Adds `defer-hydration` attribute emission during rendering",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}
