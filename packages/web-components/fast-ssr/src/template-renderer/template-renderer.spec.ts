@@ -104,26 +104,26 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<with-slot></with-slot>`)
 
-            expect(consolidate(result)).toBe("<with-slot defer-hydration><template shadowroot=\"open\"><slot></slot></template></with-slot>");
+            expect(consolidate(result)).toBe("<with-slot><template shadowroot=\"open\"><slot></slot></template></with-slot>");
         });
         test("should emit template element with shadowroot attribute for defined custom element", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<hello-world></hello-world>`)
 
-            expect(consolidate(result)).toBe("<hello-world defer-hydration><template shadowroot=\"open\"></template></hello-world>");
+            expect(consolidate(result)).toBe("<hello-world><template shadowroot=\"open\"></template></hello-world>");
         });
         test("should render a custom element with a static attribute", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<hello-world id="test"></hello-world>`)
 
-            expect(consolidate(result)).toBe(`<hello-world  id="test" defer-hydration><template shadowroot=\"open\"></template></hello-world>`);
+            expect(consolidate(result)).toBe(`<hello-world  id="test"><template shadowroot=\"open\"></template></hello-world>`);
         });
 
         test("should emit a custom element with attributes and properties reflected from an element's root <template> element", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<with-host-attributes id="foo"></with-host-attributes>`)
 
-            expect(consolidate(result)).toBe(`<with-host-attributes  id="foo" static="static" dynamic="dynamic" bool-true defer-hydration><template shadowroot=\"open\">value<slot></slot></template></with-host-attributes>`);
+            expect(consolidate(result)).toBe(`<with-host-attributes  id="foo" static="static" dynamic="dynamic" bool-true><template shadowroot=\"open\">value<slot></slot></template></with-host-attributes>`);
         });
     });
     test.describe("rendering a FAST element configured with a null shadowOptions config", () => {
@@ -138,7 +138,7 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<${name}></${name}>`);
 
-            expect(consolidate(result)).toBe(`<${name} defer-hydration></${name}>`);
+            expect(consolidate(result)).toBe(`<${name}></${name}>`);
         });
         test("should render it's template to the light DOM", () => {
             const name = uniqueElementName();
@@ -152,7 +152,7 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<${name}></${name}>`);
 
-            expect(consolidate(result)).toBe(`<${name} defer-hydration><p>Hello world</p></${name}>`);
+            expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
         });
 
         test("should render styles as the first child elements in the element's light DOM", () => {
@@ -168,7 +168,7 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<${name}></${name}>`);
 
-            expect(consolidate(result)).toBe(`<${name} defer-hydration><style>:host {color: red;}</style><p>With styles</p></${name}>`);
+            expect(consolidate(result)).toBe(`<${name}><style>:host {color: red;}</style><p>With styles</p></${name}>`);
         });
         test("should render child elements into the element's light DOM", () => {
             const name = uniqueElementName();
@@ -181,7 +181,7 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<${name}><p>Hello world</p></${name}>`);
 
-            expect(consolidate(result)).toBe(`<${name} defer-hydration><p>Hello world</p></${name}>`);
+            expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
         });
     });
 
@@ -207,7 +207,7 @@ test.describe("TemplateRenderer", () => {
 
         for (const key of [name, definition, MyElement]) {
             const  { ElementRenderer, templateRenderer } = fastSSR();
-            expect(consolidate(templateRenderer.render(html`<${name}></${name}>`))).toBe(`<${name} defer-hydration><template shadowroot="open"><p>Hello world</p></template></${name}>`);
+            expect(consolidate(templateRenderer.render(html`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"><p>Hello world</p></template></${name}>`);
             ElementRenderer.disable(key);
             expect(consolidate(templateRenderer.render(html`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`);
         }
@@ -259,7 +259,7 @@ test.describe("TemplateRenderer", () => {
         const { templateRenderer } = fastSSR();
         const result = templateRenderer.render(html`<hello-world my-attr=${x => "foobar"}></hello-world>`)
 
-        expect(consolidate(result)).toBe(`<hello-world  my-attr="foobar" defer-hydration><template shadowroot=\"open\"></template></hello-world>`);
+        expect(consolidate(result)).toBe(`<hello-world  my-attr="foobar"><template shadowroot=\"open\"></template></hello-world>`);
     });
     test("should emit an element with a boolean attribute when the attr binding returns true", () => {
         const { templateRenderer } = fastSSR();
@@ -312,7 +312,7 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR();
 
             const result = consolidate(templateRenderer.render(html`<hello-world :classList=${x => "foo bar"}></hello-world>`))
-            expect(result).toBe(`<hello-world  class="foo bar" defer-hydration><template shadowroot="open"></template></hello-world>`);
+            expect(result).toBe(`<hello-world  class="foo bar"><template shadowroot="open"></template></hello-world>`);
         });
     });
 

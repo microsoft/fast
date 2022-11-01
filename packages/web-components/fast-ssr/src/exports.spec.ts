@@ -12,12 +12,12 @@ test.describe("fastSSR default export", () => {
         expect(templateRenderer.createRenderInfo().elementRenderers.includes(ElementRenderer)).toBe(true)
     })
 
-    test("should render FAST elements with the `defer-hydration` attribute by default", () => {
+    test("should render FAST elements without the `defer-hydration` attribute by default", () => {
         const { templateRenderer } = fastSSR();
         const name = uniqueElementName();
         FASTElement.define(name);
 
-        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name} defer-hydration><template shadowroot="open"></template></${name}>`)
+        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`)
     });
     test("should render FAST elements with the `defer-hydration` attribute when deferHydration is configured to be true", () => {
         const { templateRenderer } = fastSSR({deferHydration: true});

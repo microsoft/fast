@@ -44,7 +44,7 @@ export interface SSRConfiguration {
      * The `defer-hydration` attribute can be used to prevent immediate hydration of the element
      * by fast-element by importing hydration support in the client bundle.
      *
-     * Defaults to `true`
+     * Defaults to `false`
      * @example
      *
      * ```ts
@@ -95,7 +95,7 @@ function fastSSR(
  * @beta
  */
 function fastSSR(config?: SSRConfiguration): any {
-    config = { renderMode: "sync", deferHydration: true, ...config } as Required<
+    config = { renderMode: "sync", deferHydration: false, ...config } as Required<
         SSRConfiguration
     >;
     const templateRenderer = new DefaultTemplateRenderer();

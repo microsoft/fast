@@ -192,11 +192,11 @@ templateRenderer.render(html`<my-element></my-element>`);
 
 ### Hydration
 #### `defer-hydration` Attribute
-The `defer-hydration` attribute is an attribute added to each custom-element rendered by the `ElementRenderer`. The presence of the attribute indicates to client-side code that the element should not hydrate it's view. When the attribute is removed, the element is free to hydrate itself.
+The `defer-hydration` attribute is an attribute that indicates to client-side code that the element should not hydrate it's view. When the attribute is removed, the element is free to hydrate itself.
 
-This attribute is added automatically during custom element rendering to all FAST custom elements. If your app does not require orchestrating element hydration, emission of this attribute can be prevented by configuring the renderer:
+The SSR renderer can be configured to emit the `defer-hydration` attribute to all FAST custom elements:
 ```ts
-const { templateRenderer } = fastSSR({deferHydration: false});
+const { templateRenderer } = fastSSR({deferHydration: true});
 ```
 
 > For more information on this community-protocol, see https://github.com/webcomponents-cg/community-protocols/pull/15
