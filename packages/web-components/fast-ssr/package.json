@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-ssr",
-  "version": "1.0.0-beta.19",
+  "version": "1.0.0-beta.20",
   "type": "module",
   "author": {
     "name": "Microsoft",
@@ -53,11 +53,11 @@
     "tslib": "^2.4.0"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.16"
+    "@microsoft/fast-element": "^2.0.0-beta.17"
   },
   "devDependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.16",
-    "@microsoft/fast-foundation": "^3.0.0-alpha.19",
+    "@microsoft/fast-element": "^2.0.0-beta.17",
+    "@microsoft/fast-foundation": "^3.0.0-alpha.20",
     "@microsoft/api-extractor": "7.24.2",
     "@playwright/test": "^1.25.2",
     "@types/express": "^4.17.13",

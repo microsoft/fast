@@ -1,8 +1,19 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Fri, 28 Oct 2022 20:44:44 GMT and should not be manually modified.
+This log was last generated on Tue, 01 Nov 2022 23:26:26 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.20
+
+Tue, 01 Nov 2022 23:26:26 GMT
+
+### Changes
+
+- Adds `defer-hydration` attribute emission during rendering (nicholasrice@users.noreply.github.com)
+- Fixed bug preventing dist files from being included in the published package (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.17
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.20
 
 ## 1.0.0-beta.19
 

@@ -21,6 +21,12 @@ abstract class FASTElementRenderer extends DefaultElementRenderer {
     public readonly element!: FASTElement;
 
     /**
+     * When true, instructs the ElementRenderer to yield the `defer-hydration` attribute for
+     * rendered elements.
+     */
+    protected abstract deferHydration: boolean;
+
+    /**
      * The template renderer to use when rendering a component template
      */
     protected abstract templateRenderer: DefaultTemplateRenderer;
@@ -129,15 +135,8 @@ export abstract class AsyncFASTElementRenderer extends FASTElementRenderer
             if (this.awaiting.size) {
                 yield this.pauseRendering().then(() => "");
             }
-            const { attributes } = this.element;
 
-            for (
-                let i = 0, name, value;
-                i < attributes.length && ({ name, value } = attributes[i]);
-                i++
-            ) {
-                yield renderAttribute(name, value, this.element.tagName);
-            }
+            yield* renderAttributesSync.call(this);
         }
     }
     renderShadow = renderShadow as (
@@ -174,7 +173,25 @@ function* renderAttributesSync(this: FASTElementRenderer): IterableIterator<stri
             i < attributes.length && ({ name, value } = attributes[i]);
             i++
         ) {
-            yield renderAttribute(name, value, this.element.tagName);
+            if (value === "" || value === undefined || value === null) {
+                yield ` ${name}`;
+            } else if (typeof value === "string") {
+                yield ` ${name}="${escapeHtml(value)}"`;
+            } else if (typeof value === "boolean") {
+                if (name.startsWith("aria-")) {
+                    yield ` ${name}="${(value as any).toString()}"`;
+                } else {
+                    yield value ? ` ${name}` : "";
+                }
+            } else {
+                throw new Error(
+                    `Cannot assign attribute '${name}' for element ${this.element.tagName}.`
+                );
+            }
+        }
+
+        if (this.deferHydration) {
+            yield " defer-hydration";
         }
     }
 }
@@ -198,24 +215,6 @@ function* renderShadow(
             renderInfo,
             this.element,
             ExecutionContext.default
-        );
-    }
-}
-
-function renderAttribute(name: string, value: any, elementTagName: string): string {
-    if (value === "" || value === undefined || value === null) {
-        return ` ${name}`;
-    } else if (typeof value === "string") {
-        return ` ${name}="${escapeHtml(value)}"`;
-    } else if (typeof value === "boolean") {
-        if (name.startsWith("aria-")) {
-            return ` ${name}="${value.toString()}"`;
-        } else {
-            return value ? ` ${name}` : "";
-        }
-    } else {
-        throw new Error(
-            `Cannot assign attribute '${name}' for element ${elementTagName}.`
         );
     }
 }

@@ -108,6 +108,7 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element ><template shadowroot=\"open\"></template></bare-element>
             `);
         });
+
         test("should render an attribute with no value when a boolean attr evaluates true", () => {
             const { templateRenderer } = fastSSR();
             const result = consolidate(templateRenderer.render(html`
@@ -139,6 +140,7 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element  aria-expanded="false"><template shadowroot=\"open\"></template></bare-element>
             `);
         });
+
         test("should render an attribute with a string value", () => {
             const { templateRenderer } = fastSSR();
             const result = consolidate(templateRenderer.render(html`
@@ -148,6 +150,7 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element  attr="my-str-value"><template shadowroot=\"open\"></template></bare-element>
             `);
         });
+
         test("should throw error when rendering an attribute with an object value", () => {
             const { templateRenderer } = fastSSR();
             try {
@@ -228,7 +231,7 @@ test.describe("FASTElementRenderer", () => {
             const { templateRenderer } = fastSSR();
 
             const result = consolidate(templateRenderer.render(html`<test-event-listener data="bubble-success"><test-event-dispatch></test-event-dispatch></test-event-listener>`));
-            expect(result).toBe(`<test-event-listener  data=\"bubble-success\"><template shadowroot=\"open\"></template><test-event-dispatch event-detail=\"bubble-success\"><template shadowroot=\"open\"></template></test-event-dispatch></test-event-listener>`)
+            expect(result).toBe("<test-event-listener  data=\"bubble-success\"><template shadowroot=\"open\"></template><test-event-dispatch event-detail=\"bubble-success\"><template shadowroot=\"open\"></template></test-event-dispatch></test-event-listener>")
         });
         test("Should bubble events to the document", () => {
             document.addEventListener("test-event", (e) => {
@@ -237,6 +240,7 @@ test.describe("FASTElementRenderer", () => {
             const { templateRenderer } = fastSSR();
 
             const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`));
+
             expect(result).toBe(`<test-event-dispatch event-detail=\"document-success\"><template shadowroot=\"open\"></template></test-event-dispatch>`);
         });
         test("Should bubble events to the window", () => {

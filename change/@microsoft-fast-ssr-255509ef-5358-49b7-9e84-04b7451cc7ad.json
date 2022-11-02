@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Fixed bug preventing dist files from being included in the published package",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

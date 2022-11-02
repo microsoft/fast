@@ -112,7 +112,7 @@ test.describe("TemplateRenderer", () => {
 
             expect(consolidate(result)).toBe("<hello-world><template shadowroot=\"open\"></template></hello-world>");
         });
-        test("should a custom element with a static attribute", () => {
+        test("should render a custom element with a static attribute", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<hello-world id="test"></hello-world>`)
 
