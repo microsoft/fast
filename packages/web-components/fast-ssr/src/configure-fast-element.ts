@@ -7,6 +7,9 @@ import {
 import { FASTSSRStyleStrategy } from "./styles/style-strategy.js";
 import { SSRView } from "./view.js";
 
+/**
+ * 2.a. Configure FAST Element
+ */
 Compiler.setDefaultStrategy(
     (
         html: string | HTMLTemplateElement,

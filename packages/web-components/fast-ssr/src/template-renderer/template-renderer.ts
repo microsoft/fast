@@ -77,6 +77,9 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
         source: unknown = undefined,
         context: ExecutionContext = ExecutionContext.default
     ): IterableIterator<string> {
+        /**
+         * 4.
+         */
         const codes =
             template instanceof ViewTemplate
                 ? parseTemplateToOpCodes(template)
@@ -99,6 +102,9 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
         source: unknown,
         context: ExecutionContext
     ): IterableIterator<string> {
+        /**
+         * 5. Render Op Codes
+         */
         for (const code of codes) {
             switch (code.type) {
                 case OpType.text:

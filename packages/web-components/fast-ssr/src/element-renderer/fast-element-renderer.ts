@@ -116,6 +116,9 @@ abstract class FASTElementRenderer extends DefaultElementRenderer {
     }
 }
 
+/**
+ * 6. ElementRenderer
+ */
 export abstract class SyncFASTElementRenderer extends FASTElementRenderer
     implements ElementRenderer {
     renderAttributes = renderAttributesSync;
@@ -186,6 +189,11 @@ function* renderAttributesSync(this: FASTElementRenderer): IterableIterator<stri
     }
 }
 
+/**
+ * 6.c
+ * @param this
+ * @param renderInfo
+ */
 function* renderShadow(
     this: FASTElementRenderer,
     renderInfo: RenderInfo

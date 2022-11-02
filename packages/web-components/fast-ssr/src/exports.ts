@@ -22,6 +22,9 @@ import {
     TemplateRenderer,
 } from "./template-renderer/template-renderer.js";
 
+/**
+ * 2.b Configure FAST element
+ */
 // Perform necessary configuration of FAST-Element library
 // for rendering in NodeJS
 import "./configure-fast-element.js";
@@ -95,9 +98,13 @@ function fastSSR(
  * @beta
  */
 function fastSSR(config?: SSRConfiguration): any {
+    /**
+     * 2.c. Create TemplateRenderer and ElementRenderer
+     */
     config = { renderMode: "sync", deferHydration: false, ...config } as Required<
         SSRConfiguration
     >;
+
     const templateRenderer = new DefaultTemplateRenderer();
 
     const elementRenderer = class extends (config.renderMode !== "async"
