@@ -1,6 +1,9 @@
-import { app, DefaultTodoList, TodoList } from "fast-todo-app";
+import { customElement, FASTElement, html } from "@microsoft/fast-element";
 
-const SSRState = (window as any).__SSR_STATE__ || [];
-
-TodoList.provide(document, new DefaultTodoList(SSRState));
-app.define();
+@customElement({
+    name: "my-element",
+    template: html`
+        Hello world
+    `,
+})
+export class MyElement extends FASTElement {}

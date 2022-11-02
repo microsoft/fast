@@ -6,6 +6,7 @@ import "@microsoft/fast-ssr/install-dom-shim";
 import { html } from "@microsoft/fast-element";
 import fastSSR from "@microsoft/fast-ssr";
 import express from "express";
+import "./src/my-element.js";
 
 const app = express();
 const port = 8080;
@@ -19,18 +20,9 @@ app.use(express.static("./www"));
 
 const template = html`
     <!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <meta charset="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>SSR Example</title>
+    <html>
         <body>
-            <!--
-                Use caution in production environments embedding JSON.
-                In general the JSON should be sanitized to prevent
-                JSON injection attacks.
-            -->
-            <script src="/bundle.js" defer></script>
+            <my-element></my-element>
         </body>
     </html>
 `;
