@@ -1,6 +1,9 @@
 import { DOMAspect, DOMPolicy, DOMSink } from "./dom.js";
 import { isString, TrustedTypesPolicy } from "./interfaces.js";
 
+/**
+ * A specific DOM sink guard for a node aspect.
+ */
 export type DOMSinkGuards = Record<
     string,
     (
@@ -11,17 +14,44 @@ export type DOMSinkGuards = Record<
     ) => DOMSink
 >;
 
+/**
+ * Aspect-specific guards for a DOM Policy.
+ */
 export type DOMAspectGuards = {
+    /**
+     * Guards for attributes.
+     */
     [DOMAspect.attribute]?: DOMSinkGuards;
+    /**
+     * Guards for boolean attributes.
+     */
     [DOMAspect.booleanAttribute]?: DOMSinkGuards;
+    /**
+     * Guards for properties.
+     */
     [DOMAspect.property]?: DOMSinkGuards;
+    /**
+     * Guards for content.
+     */
     [DOMAspect.content]?: DOMSinkGuards;
+    /**
+     * Guards for token list manipulation.
+     */
     [DOMAspect.tokenList]?: DOMSinkGuards;
+    /**
+     * Guards for events.
+     */
     [DOMAspect.event]?: DOMSinkGuards;
 };
 
+/**
+ * Element-specific guards for a DOM Policy.
+ */
 export type DOMElementGuards = Record<string, DOMAspectGuards>;
 
+/**
+ * Guard configuration for a DOM Policy.
+ */
 export type DOMGuards = {
     elements: DOMElementGuards;
     aspects: DOMAspectGuards;
@@ -405,6 +435,11 @@ export type DOMPolicyOptions = {
 };
 
 const DOMPolicy = Object.freeze({
+    /**
+     * Creates a new DOM Policy object.
+     * @param options The options to use in creating the policy.
+     * @returns The newly created DOMPolicy.
+     */
     create(options: DOMPolicyOptions = {}): Readonly<DOMPolicy> {
         const trustedType = options.trustedType ?? createTrustedType();
         const guards = createDOMGuards(options.guards ?? {}, defaultDOMGuards);
