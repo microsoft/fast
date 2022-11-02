@@ -208,7 +208,11 @@ function renderAttribute(name: string, value: any, elementTagName: string): stri
     } else if (typeof value === "string") {
         return ` ${name}="${escapeHtml(value)}"`;
     } else if (typeof value === "boolean") {
-        return ` ${name}="${value.toString()}"`;
+        if (name.startsWith("aria-")) {
+            return ` ${name}="${value.toString()}"`;
+        } else {
+            return value ? ` ${name}` : "";
+        }
     } else {
         throw new Error(
             `Cannot assign attribute '${name}' for element ${elementTagName}.`
