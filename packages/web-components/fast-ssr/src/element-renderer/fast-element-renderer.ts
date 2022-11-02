@@ -136,11 +136,7 @@ export abstract class AsyncFASTElementRenderer extends FASTElementRenderer
                 i < attributes.length && ({ name, value } = attributes[i]);
                 i++
             ) {
-                if (value === "" || value === undefined || value === null) {
-                    yield ` ${name}`;
-                } else {
-                    yield ` ${name}="${escapeHtml(value)}"`;
-                }
+                yield renderAttribute(name, value, this.element.tagName);
             }
         }
     }
@@ -178,11 +174,7 @@ function* renderAttributesSync(this: FASTElementRenderer): IterableIterator<stri
             i < attributes.length && ({ name, value } = attributes[i]);
             i++
         ) {
-            if (value === "" || value === undefined || value === null) {
-                yield ` ${name}`;
-            } else {
-                yield ` ${name}="${escapeHtml(value)}"`;
-            }
+            yield renderAttribute(name, value, this.element.tagName);
         }
     }
 }
@@ -206,6 +198,20 @@ function* renderShadow(
             renderInfo,
             this.element,
             ExecutionContext.default
+        );
+    }
+}
+
+function renderAttribute(name: string, value: any, elementTagName: string): string {
+    if (value === "" || value === undefined || value === null) {
+        return ` ${name}`;
+    } else if (typeof value === "string") {
+        return ` ${name}="${escapeHtml(value)}"`;
+    } else if (typeof value === "boolean") {
+        return ` ${name}="${value.toString()}"`;
+    } else {
+        throw new Error(
+            `Cannot assign attribute '${name}' for element ${elementTagName}.`
         );
     }
 }
