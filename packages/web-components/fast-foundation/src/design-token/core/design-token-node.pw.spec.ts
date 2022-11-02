@@ -967,22 +967,12 @@ test.describe("DesignTokenNode", () => {
 
             parentB.appendChild(descendent);
 
-            expect(handleChange).toHaveBeenCalledTimes(2);
-            expect(handleChange).toHaveBeenNthCalledWith(
-                1,
+            expect(handleChange).toHaveBeenCalledTimes(1);
+            expect(handleChange).toHaveBeenCalledWith(
                 token,
                 new DesignTokenChangeRecord(
                     descendent,
-                    DesignTokenMutationType.delete,
-                    token
-                )
-            );
-            expect(handleChange).toHaveBeenNthCalledWith(
-                2,
-                token,
-                new DesignTokenChangeRecord(
-                    descendent,
-                    DesignTokenMutationType.add,
+                    DesignTokenMutationType.change,
                     token,
                     value
                 )

@@ -308,8 +308,10 @@ export class DesignTokenNode {
      * Appends a child to the node, notifying for any tokens set for the node's context.
      */
     public appendChild(child: DesignTokenNode) {
+        let prevContext: DesignToken<any>[] = [];
         if (child.parent !== null) {
-            child.parent.removeChild(child);
+            prevContext = DesignTokenNode.composeAssignedTokensForNode(child.parent);
+            child.parent._children.delete(child);
         }
 
         const context = DesignTokenNode.composeAssignedTokensForNode(this);
@@ -318,15 +320,33 @@ export class DesignTokenNode {
         this._children.add(child);
 
         for (const token of context) {
+            const prevContextIndex = prevContext.indexOf(token);
+            const type =
+                prevContextIndex === -1
+                    ? DesignTokenMutationType.add
+                    : DesignTokenMutationType.change;
+            prevContext.splice(prevContextIndex, 1);
             child.dispatch(
                 new DesignTokenChangeRecordImpl(
                     this,
-                    DesignTokenMutationType.add,
+                    type,
                     token,
                     derivedContext.get(token)?.evaluator.value
                 )
             );
         }
+
+        for (const token of prevContext) {
+            child.dispatch(
+                new DesignTokenChangeRecordImpl(
+                    this,
+                    DesignTokenMutationType.delete,
+                    token,
+                    derivedContext.get(token)?.evaluator.value
+                )
+            );
+        }
+
         DesignTokenNode.notify();
     }
 
