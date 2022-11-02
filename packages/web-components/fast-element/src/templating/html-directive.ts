@@ -1,5 +1,5 @@
 import type { HostBehavior } from "../index.js";
-import type { Constructable, Mutable } from "../interfaces.js";
+import { Constructable, Mutable, noop } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -410,6 +410,12 @@ export abstract class StatelessAttachedAttributeDirective<TOptions>
      * The structural id of the DOM node to which the created behavior will apply.
      */
     public nodeId: string;
+
+    /**
+     * Opts out of JSON stringification.
+     * @internal
+     */
+    toJSON = noop;
 
     /**
      * Creates an instance of RefDirective.

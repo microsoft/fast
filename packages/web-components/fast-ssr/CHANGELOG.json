@@ -2,6 +2,74 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Tue, 01 Nov 2022 23:26:26 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.20",
+      "version": "1.0.0-beta.20",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "32d18d0900047899d1dadfe94f7923b6164b0cf3",
+            "comment": "Adds `defer-hydration` attribute emission during rendering"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "b7bc2ba4dc3099ae1e33554c53e5675946302de9",
+            "comment": "Fixed bug preventing dist files from being included in the published package"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.17",
+            "commit": "32d18d0900047899d1dadfe94f7923b6164b0cf3"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.20",
+            "commit": "32d18d0900047899d1dadfe94f7923b6164b0cf3"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 28 Oct 2022 20:44:44 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.19",
+      "version": "1.0.0-beta.19",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "7aaf156483ac6f5922a529b5b54e04e87445d882",
+            "comment": "use floating-ui for menu-item submenus"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "2536c024febdf8a89300c257805a19a946f8039d",
+            "comment": "Adds shim for MediaQueryList.addEventListener and updates matchMedia to always use the window's MediaQueryList"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.16",
+            "commit": "5b745b1fb3bf249a7a2d172b7fb69cb08694aadd"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.19",
+            "commit": "5b745b1fb3bf249a7a2d172b7fb69cb08694aadd"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Oct 2022 20:24:32 GMT",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.18",
       "version": "1.0.0-beta.18",

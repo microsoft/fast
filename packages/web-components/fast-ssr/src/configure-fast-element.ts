@@ -1,6 +1,5 @@
 import {
     Compiler,
-    ElementController,
     ElementStyles,
     Updates,
     ViewBehaviorFactory,

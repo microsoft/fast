@@ -1,7 +1,14 @@
-import { ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate, tagFor } from "../patterns/index.js";
-import { MenuItemRole } from "./menu-item.js";
+import {
+    elements,
+    ElementViewTemplate,
+    html,
+    ref,
+    slotted,
+    when,
+} from "@microsoft/fast-element";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
+import { MenuItemRole } from "./menu-item.options.js";
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#(FASTMenuItem:class)} component using
@@ -10,9 +17,8 @@ import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
  * @public
  */
 export function menuItemTemplate<T extends FASTMenuItem>(
-    options: MenuItemOptions
+    options: MenuItemOptions = {}
 ): ElementViewTemplate<T> {
-    const anchoredRegionTag = tagFor(options.anchoredRegion);
     return html<T>`
     <template
         aria-haspopup="${x => (x.hasSubmenu ? "menu" : void 0)}"
@@ -69,26 +75,17 @@ export function menuItemTemplate<T extends FASTMenuItem>(
                 </div>
             `
         )}
-        ${when(
-            x => x.expanded,
-            html<T>`
-                <${anchoredRegionTag}
-                    :anchorElement="${x => x}"
-                    vertical-positioning-mode="dynamic"
-                    vertical-default-position="bottom"
-                    vertical-inset="true"
-                    horizontal-positioning-mode="dynamic"
-                    horizontal-default-position="end"
-                    class="submenu-region"
-                    dir="${x => x.currentDirection}"
-                    @loaded="${x => x.submenuLoaded()}"
-                    ${ref("submenuRegion")}
-                    part="submenu-region"
-                >
-                    <slot name="submenu"></slot>
-                </${anchoredRegionTag}>
-            `
-        )}
+        <span
+            ?hidden="${x => !x.expanded}"
+            class="submenu-container"
+            part="submenu-container"
+            ${ref("submenuContainer")}
+        >
+            <slot name="submenu" ${slotted({
+                property: "slottedSubmenu",
+                filter: elements("[role='menu']"),
+            })}></slot>
+        </span>
     </template>
     `;
 }
