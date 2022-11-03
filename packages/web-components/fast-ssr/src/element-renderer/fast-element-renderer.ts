@@ -178,7 +178,7 @@ function* renderAttributesSync(this: FASTElementRenderer): IterableIterator<stri
             } else if (typeof value === "string") {
                 yield ` ${name}="${escapeHtml(value)}"`;
             } else if (typeof value === "boolean") {
-                yield ` ${name}="${(value as any).toString()}"`;
+                yield ` ${name}="${value}"`;
             } else {
                 throw new Error(
                     `Cannot assign attribute '${name}' for element ${this.element.tagName}.`

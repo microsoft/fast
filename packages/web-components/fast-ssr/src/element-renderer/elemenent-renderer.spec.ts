@@ -109,27 +109,19 @@ test.describe("FASTElementRenderer", () => {
             `);
         });
 
-        test("should render an attribute with no value when a boolean attr evaluates true", () => {
+        test("should render a boolean attribute with the values of true or false", () => {
             const { templateRenderer } = fastSSR();
             const result = consolidate(templateRenderer.render(html`
                 <bare-element ?attr="${x => true}"></bare-element>
+                <bare-element ?attr="${x => false}"></bare-element>
             `));
             expect(result).toBe(`
                 <bare-element  attr><template shadowroot=\"open\"></template></bare-element>
-            `);
-        });
-        test("should render an attribute with a boolean value for non-aria attributes", () => {
-            const { templateRenderer } = fastSSR();
-            const result = consolidate(templateRenderer.render(html`
-                <bare-element disabled="${x => true}"></bare-element>
-                <bare-element disabled="${x => false}"></bare-element>
-            `));
-            expect(result).toBe(`
-                <bare-element  disabled><template shadowroot=\"open\"></template></bare-element>
                 <bare-element ><template shadowroot=\"open\"></template></bare-element>
             `);
         });
-        test("should render an attribute with a boolean value for aria attributes", () => {
+
+        test("should render a non-boolean attribute with the values of true or false", () => {
             const { templateRenderer } = fastSSR();
             const result = consolidate(templateRenderer.render(html`
                 <bare-element aria-expanded="${x => true}"></bare-element>
