@@ -178,11 +178,7 @@ function* renderAttributesSync(this: FASTElementRenderer): IterableIterator<stri
             } else if (typeof value === "string") {
                 yield ` ${name}="${escapeHtml(value)}"`;
             } else if (typeof value === "boolean") {
-                if (name.startsWith("aria-")) {
-                    yield ` ${name}="${(value as any).toString()}"`;
-                } else {
-                    yield value ? ` ${name}` : "";
-                }
+                yield ` ${name}="${(value as any).toString()}"`;
             } else {
                 throw new Error(
                     `Cannot assign attribute '${name}' for element ${this.element.tagName}.`
