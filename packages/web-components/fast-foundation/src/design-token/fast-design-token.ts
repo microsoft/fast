@@ -1,5 +1,4 @@
 import {
-    AddViewBehaviorFactory,
     CSSDirective,
     HostController,
     htmlDirective,
