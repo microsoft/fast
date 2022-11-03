@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 28 Oct 2022 20:44:44 GMT and should not be manually modified.
+This log was last generated on Tue, 01 Nov 2022 23:26:26 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.20
+
+Tue, 01 Nov 2022 23:26:26 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.17
 
 ## 3.0.0-alpha.19
 

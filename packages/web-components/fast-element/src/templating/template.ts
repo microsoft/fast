@@ -1,4 +1,4 @@
-import { isFunction, isString } from "../interfaces.js";
+import { isFunction, isString, noop } from "../interfaces.js";
 import type { Expression } from "../observation/observable.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
@@ -124,6 +124,12 @@ export class ViewTemplate<TSource = any, TParent = any>
         view.appendTo(host);
         return view;
     }
+
+    /**
+     * Opts out of JSON stringification.
+     * @internal
+     */
+    toJSON = noop;
 }
 
 // Much thanks to LitHTML for working this out!

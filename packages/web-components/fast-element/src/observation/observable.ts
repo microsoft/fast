@@ -4,6 +4,7 @@ import {
     isString,
     KernelServiceId,
     Message,
+    noop,
 } from "../interfaces.js";
 import { createMetadataLocator, FAST } from "../platform.js";
 import { Updates } from "./update-queue.js";
@@ -253,6 +254,11 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         ) {
             super(expression, initialSubscriber);
         }
+
+        /**
+         * Opts out of JSON stringification.
+         */
+        toJSON = noop;
 
         public setMode(isAsync: boolean): void {
             this.isAsync = this.needsQueue = isAsync;
