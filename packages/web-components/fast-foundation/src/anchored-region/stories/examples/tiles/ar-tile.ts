@@ -1,12 +1,5 @@
 import { Updates } from "@microsoft/fast-element";
-import {
-    attr,
-    css,
-    ElementViewTemplate,
-    html,
-    observable,
-    ref,
-} from "@microsoft/fast-element";
+import { css, ElementViewTemplate, html, observable, ref } from "@microsoft/fast-element";
 import { eventMouseMove, eventMouseUp } from "@microsoft/fast-web-utilities";
 import type {
     HorizontalPosition,
@@ -80,6 +73,7 @@ export class ARTile extends FASTAnchoredRegion {
             socket.parentTile = this;
         });
         this.addEventListener("transitionend", this.handleTransitionEnd);
+        this.classList.toggle("fixed", this.tileData.fixed === true);
     }
 
     public disconnectedCallback(): void {
@@ -248,5 +242,9 @@ export const arTileStyles = css`
         font-size: 24px;
         grid-row: 1 / 4;
         grid-column: 1 / 4;
+    }
+
+    :host(.fixed) .content {
+        background: blue;
     }
 `;
