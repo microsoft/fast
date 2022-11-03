@@ -175,8 +175,14 @@ function* renderAttributesSync(this: FASTElementRenderer): IterableIterator<stri
         ) {
             if (value === "" || value === undefined || value === null) {
                 yield ` ${name}`;
-            } else {
+            } else if (typeof value === "string") {
                 yield ` ${name}="${escapeHtml(value)}"`;
+            } else if (typeof value === "boolean") {
+                yield ` ${name}="${value}"`;
+            } else {
+                throw new Error(
+                    `Cannot assign attribute '${name}' for element ${this.element.tagName}.`
+                );
             }
         }
 
