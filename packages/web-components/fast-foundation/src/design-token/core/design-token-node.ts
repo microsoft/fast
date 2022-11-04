@@ -308,7 +308,10 @@ export class DesignTokenNode {
      * Appends a child to the node, notifying for any tokens set for the node's context.
      */
     public appendChild(child: DesignTokenNode) {
-        let prevContext: DesignToken<any>[] = [];
+        let prevContext: DesignToken<any>[] | null = null;
+
+        // If this node is already attached, get it's context so change record
+        // types can be determined
         if (child.parent !== null) {
             prevContext = DesignTokenNode.composeAssignedTokensForNode(child.parent);
             child.parent._children.delete(child);
@@ -320,12 +323,14 @@ export class DesignTokenNode {
         this._children.add(child);
 
         for (const token of context) {
-            const prevContextIndex = prevContext.indexOf(token);
-            const type =
-                prevContextIndex === -1
-                    ? DesignTokenMutationType.add
-                    : DesignTokenMutationType.change;
-            prevContext.splice(prevContextIndex, 1);
+            let type = DesignTokenMutationType.add;
+            if (prevContext !== null) {
+                const prevContextIndex = prevContext.indexOf(token);
+                if (prevContextIndex !== -1) {
+                    type = DesignTokenMutationType.change;
+                    prevContext.splice(prevContextIndex, 1);
+                }
+            }
             child.dispatch(
                 new DesignTokenChangeRecordImpl(
                     this,
@@ -336,15 +341,17 @@ export class DesignTokenNode {
             );
         }
 
-        for (const token of prevContext) {
-            child.dispatch(
-                new DesignTokenChangeRecordImpl(
-                    this,
-                    DesignTokenMutationType.delete,
-                    token,
-                    derivedContext.get(token)?.evaluator.value
-                )
-            );
+        if (prevContext !== null && prevContext.length > 0) {
+            for (const token of prevContext) {
+                child.dispatch(
+                    new DesignTokenChangeRecordImpl(
+                        this,
+                        DesignTokenMutationType.delete,
+                        token,
+                        derivedContext.get(token)?.evaluator.value
+                    )
+                );
+            }
         }
 
         DesignTokenNode.notify();
