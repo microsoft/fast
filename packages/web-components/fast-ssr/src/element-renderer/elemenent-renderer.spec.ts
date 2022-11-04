@@ -109,14 +109,47 @@ test.describe("FASTElementRenderer", () => {
             `);
         });
 
-        test("should render an attribute with no value when a boolean attr evaluates true", () => {
+        test("should render a boolean attribute with the values of true or false", () => {
             const { templateRenderer } = fastSSR();
             const result = consolidate(templateRenderer.render(html`
                 <bare-element ?attr="${x => true}"></bare-element>
+                <bare-element ?attr="${x => false}"></bare-element>
             `));
             expect(result).toBe(`
                 <bare-element  attr><template shadowroot=\"open\"></template></bare-element>
+                <bare-element ><template shadowroot=\"open\"></template></bare-element>
             `);
+        });
+
+        test("should render a non-boolean attribute with the values of true or false", () => {
+            const { templateRenderer } = fastSSR();
+            const result = consolidate(templateRenderer.render(html`
+                <bare-element aria-expanded="${x => true}"></bare-element>
+                <bare-element aria-expanded="${x => false}"></bare-element>
+            `));
+            expect(result).toBe(`
+                <bare-element  aria-expanded="true"><template shadowroot=\"open\"></template></bare-element>
+                <bare-element  aria-expanded="false"><template shadowroot=\"open\"></template></bare-element>
+            `);
+        });
+
+        test("should render an attribute with a string value", () => {
+            const { templateRenderer } = fastSSR();
+            const result = consolidate(templateRenderer.render(html`
+                <bare-element attr="${x => 'my-str-value'}"></bare-element>
+            `));
+            expect(result).toBe(`
+                <bare-element  attr="my-str-value"><template shadowroot=\"open\"></template></bare-element>
+            `);
+        });
+
+        test("should throw error when rendering an attribute with an object value", () => {
+            const { templateRenderer } = fastSSR();
+            try {
+                consolidate(templateRenderer.render(html`<bare-element attr="${x => ({ key: 'my-value' })}"></bare-element>`));
+            } catch (error) {
+                expect(error).toEqual(new Error("Cannot assign attribute 'attr' for element bare-element."));
+            }
         });
     });
 
