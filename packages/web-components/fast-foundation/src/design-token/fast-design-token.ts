@@ -1,4 +1,10 @@
-import type { CSSDirective, HostController, Subscriber } from "@microsoft/fast-element";
+import {
+    CSSDirective,
+    HostController,
+    htmlDirective,
+    HTMLDirective,
+    Subscriber,
+} from "@microsoft/fast-element";
 import {
     cssDirective,
     FASTElement,
@@ -254,7 +260,9 @@ export class DesignToken<T> {
  * @public
  */
 @cssDirective()
-export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
+@htmlDirective()
+export class CSSDesignToken<T> extends DesignToken<T>
+    implements CSSDirective, HTMLDirective {
     /**
      * The CSS Custom property name of the token.
      */
@@ -267,6 +275,14 @@ export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
     public createCSS(): string {
         return this.cssVar;
     }
+
+    /**
+     * Creates HTML to be used within a template.
+     */
+    public createHTML(): string {
+        return this.cssVar;
+    }
+
     private cssReflector: Subscriber = {
         handleChange: <T>(
             source: DesignToken<T>,

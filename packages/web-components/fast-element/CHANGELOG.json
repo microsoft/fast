@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 01 Nov 2022 23:26:26 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.17",
+      "version": "2.0.0-beta.17",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "a4982f452702a8fee67397767b603d4a67702b10",
+            "comment": "fix: prevent circular reference errors when stringifying DOM nodes controlled by FAST's rendering engine"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 28 Oct 2022 20:44:44 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.16",
       "version": "2.0.0-beta.16",
