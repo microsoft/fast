@@ -108,7 +108,10 @@ export class Document extends Node {
     }
 }
 
-class CustomEvent<T = any> extends Event {
+/**
+ * @beta
+ */
+export class CustomEvent<T = any> extends Event {
     public detail: T | null = null;
     constructor(type: string, init?: CustomEventInit<T>) {
         super(type, init);
@@ -119,16 +122,28 @@ class CustomEvent<T = any> extends Event {
     }
 }
 
-class CSSStyleRule {
-    public readonly style = new CSSStyleDeclaration();
-    constructor(public selectorText: string) {}
+/**
+ * @beta
+ */
+export class CSSStyleRule {
+    public selectorText: string | undefined;
+    public readonly style = new window.CSSStyleDeclaration();
 
     public get cssText(): string {
+        if (typeof this.selectorText !== "string") {
+            throw new Error(
+                "Cannot format cssText for CSSStyleRule. No selectorText property is assigned."
+            );
+        }
+
         return `${this.selectorText} { ${this.style.cssText} }`;
     }
 }
 
-class CSSStyleDeclaration {
+/**
+ * @beta
+ */
+export class CSSStyleDeclaration {
     private rules = new Map<string, string>();
     public setProperty(name: string, value: string = "") {
         this.rules.set(name, value);
@@ -156,11 +171,9 @@ export class CSSStyleSheet {
     public readonly cssRules: CSSRule[] = [];
     insertRule(rule: string, index: number = 0) {
         const selectorText = rule.split("{")[0];
-        this.cssRules.splice(
-            index,
-            0,
-            (new CSSStyleRule(selectorText) as unknown) as CSSRule
-        );
+        const styleRule = new window.CSSStyleRule();
+        styleRule.selectorText = selectorText;
+        this.cssRules.splice(index, 0, styleRule);
 
         return index;
     }
@@ -212,57 +225,57 @@ export class MediaQueryList {
 }
 
 /**
+ * @beta
+ */
+export class Window extends EventTarget {
+    public Node = Node;
+    public Element = Element;
+    public HTMLElement = HTMLElement;
+    public Document = Document;
+    public CustomEvent = CustomEvent;
+    public CSSStyleSheet = CSSStyleSheet;
+    public CSSStyleDeclaration = CSSStyleDeclaration;
+    public CSSStyleRule = CSSStyleRule;
+    public ShadowRoot = ShadowRoot;
+    public CustomElementRegistry = CustomElementRegistry;
+    public MutationObserver = MutationObserver;
+    public MediaQueryList = MediaQueryList;
+    public matchMedia = () => new this.MediaQueryList();
+
+    // Defined in constructor
+    public window: unknown;
+    public document: unknown;
+    public customElements: unknown;
+    public dispatchEvent: any;
+    public addEventListener: any;
+    public removeEventListener: any;
+
+    constructor(props?: Record<string, any>) {
+        super();
+
+        /**
+         * Methods of EventTarget must be assigned explicitly, otherwise they get omitted
+         * when the window is merged into the `globalThis` in {@link installWindowOnGlobal}.
+         */
+        this.dispatchEvent = EventTarget.prototype.dispatchEvent.bind(this);
+        this.addEventListener = EventTarget.prototype.addEventListener.bind(this);
+        this.removeEventListener = EventTarget.prototype.removeEventListener.bind(this);
+
+        Object.assign(this, props);
+        this.window = this;
+        this.document = new this.Document();
+        this.customElements = new this.CustomElementRegistry();
+    }
+}
+
+/**
  * Creates a window object.
  * @param props - Additional properties to expose on the window.
  *
  * @beta
  */
-export function createWindow(
-    props: { [key: string]: unknown } = {}
-): { [key: string]: unknown } {
-    class Window extends EventTarget {
-        public Node = Node;
-        public Element = Element;
-        public HTMLElement = HTMLElement;
-        public Document = Document;
-        public CustomEvent = CustomEvent;
-        public CSSStyleSheet = CSSStyleSheet;
-        public ShadowRoot = ShadowRoot;
-        public CustomElementRegistry = CustomElementRegistry;
-        public MutationObserver = MutationObserver;
-        public MediaQueryList = MediaQueryList;
-        public matchMedia = () => new this.MediaQueryList();
-
-        // Defined in constructor
-        public window: unknown;
-        public document: unknown;
-        public customElements: unknown;
-        public dispatchEvent: any;
-        public addEventListener: any;
-        public removeEventListener: any;
-
-        constructor(props: { [key: string]: unknown }) {
-            super();
-
-            /**
-             * Methods of EventTarget must be assigned explicitly, otherwise they get omitted
-             * when the window is merged into the `globalThis` in {@link installWindowOnGlobal}.
-             */
-            this.dispatchEvent = EventTarget.prototype.dispatchEvent.bind(this);
-            this.addEventListener = EventTarget.prototype.addEventListener.bind(this);
-            this.removeEventListener = EventTarget.prototype.removeEventListener.bind(
-                this
-            );
-
-            Object.assign(this, props);
-            this.window = this;
-            this.document = new this.Document();
-            this.customElements = new this.CustomElementRegistry();
-        }
-    }
-    const window = new Window(props) as any;
-
-    return window;
+export function createWindow<T extends Record<string, any>>(props?: T): Window & T {
+    return new Window(props) as Window & T;
 }
 
 /**
@@ -271,9 +284,9 @@ export function createWindow(
  *
  * @beta
  */
-export function installWindowOnGlobal(window: { [key: string]: unknown }) {
+export function installWindowOnGlobal(window: Record<string, any>) {
     if (globalThis.window === undefined) {
         Object.assign(globalThis, window);
-        globalThis.window = globalThis as typeof globalThis & Window;
+        globalThis.window = globalThis as any;
     }
 }
