@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { DOMPolicy, DOMPolicyOptions } from "./dom-policy.js";
-import { DOMAspect, DOMSink } from "./dom.js";
+import { DOM, DOMAspect, DOMSink } from "./dom.js";
 
 describe("the dom policy helper", () => {
     it("can create a policy with a custom trusted types policy", () => {
@@ -51,14 +51,67 @@ describe("the dom policy helper", () => {
 
         const policy = DOMPolicy.create(options);
 
-        const sink = policy.protect("a", DOMAspect.attribute, "href", () => {});
+        const sink = policy.protect("a", DOMAspect.attribute, "href", DOM.setAttribute);
 
         expect(created).to.be.true;
         expect(invoked).to.be.false;
 
-        sink(document.createElement("a"), "a", "test");
+        const element = document.createElement("a");
+        sink(element, "href", "test");
 
+        expect(element.getAttribute("href")).to.equal("test");
         expect(created).to.be.true;
         expect(invoked).to.be.true;
+    });
+
+    it("creates policies that fallback to default element guards", () => {
+        let created = 0;
+        let invoked = 0;
+        const options: DOMPolicyOptions = {
+            guards: {
+                elements: {
+                    "a": {
+                        [DOMAspect.attribute]: {
+                            href: function safeURL(
+                                tagName: string | null,
+                                aspect: DOMAspect,
+                                aspectName: string,
+                                sink: DOMSink
+                            ): DOMSink {
+                                created++;
+                                return (target: Node, name: string, value: string, ...rest: any[]) => {
+                                    invoked++;
+                                    sink(target, name, value, ...rest);
+                                };
+                            }
+                        }
+                    }
+                },
+                aspects: {}
+            }
+        };
+
+        const policy = DOMPolicy.create(options);
+
+        const sink = policy.protect("a", DOMAspect.attribute, "href", DOM.setAttribute);
+
+        expect(created).to.equal(1);
+        expect(invoked).to.equal(0);
+
+        const element = document.createElement("a");
+        sink(element, "href", "test");
+
+        expect(element.getAttribute("href")).to.equal("test");
+        expect(created).to.equal(1);
+        expect(invoked).to.equal(1);
+
+        const sink2 = policy.protect("a", DOMAspect.property, "href", (node, name, value) => node[name] = value);
+
+        const element2 = document.createElement("a");
+        sink2(element2, "href", "https://fast.design/");
+
+        expect(element2.href).to.equal("https://fast.design/");
+        expect(created).to.equal(1);
+        expect(invoked).to.equal(1);
     });
 });
