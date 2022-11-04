@@ -127,7 +127,7 @@ export class CustomEvent<T = any> extends Event {
  */
 export class CSSStyleRule {
     public selectorText: string | undefined;
-    public readonly style = new window.CSSStyleDeclaration();
+    public readonly style = new CSSStyleDeclaration();
 
     public get cssText(): string {
         if (typeof this.selectorText !== "string") {
