@@ -46,6 +46,10 @@
       "types": "./dist/dts/dom-shim.d.ts",
       "default": "./dist/esm/dom-shim.js"
     },
+    "./request-storage": {
+      "types": "./dist/dts/request-storage.d.ts",
+      "default": "./dist/esm/request-storage.js"
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {
