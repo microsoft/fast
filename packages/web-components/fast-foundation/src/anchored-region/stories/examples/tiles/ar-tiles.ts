@@ -47,15 +47,15 @@ export interface BoardTile {
 export class ARTiles extends FASTElement {
     @observable
     public tileData: TileData[] = [
-        { title: "A", value: 1, column: 5, row: 5, fixed: true },
-        { title: "B", value: 1, column: 6, row: 5, fixed: true },
-        { title: "C", value: 1, column: 7, row: 5, fixed: true },
-        { title: "D", value: 1, column: 5, row: 4, fixed: true },
-        { title: "E", value: 1, column: 5, row: 6, fixed: true },
-        { title: "F", value: 1 },
-        { title: "G", value: 1 },
-        { title: "H", value: 1 },
-        { title: "I", value: 1 },
+        { title: "W", value: 1, column: 5, row: 6, fixed: true },
+        { title: "O", value: 1, column: 6, row: 6, fixed: true },
+        { title: "R", value: 1, column: 7, row: 6, fixed: true },
+        { title: "D", value: 1, column: 8, row: 6, fixed: true },
+        { title: "S", value: 1, column: 9, row: 6, fixed: true },
+        { title: "W", value: 1 },
+        { title: "R", value: 1 },
+        { title: "D", value: 1 },
+        { title: "S", value: 1 },
         { title: "J", value: 1 },
         { title: "K", value: 1 },
         { title: "L", value: 1 },
@@ -397,8 +397,10 @@ export class ARTiles extends FASTElement {
 
     private updateActiveSockets(detail: tileDragEventArgs): void {
         this.activeSockets.forEach(socket => {
-            socket.virtualAnchorX = detail.event.pageX;
-            socket.virtualAnchorY = detail.event.pageY;
+            socket.virtualAnchorX =
+                detail.event.pageX - document.documentElement.scrollLeft;
+            socket.virtualAnchorY =
+                detail.event.pageY - document.documentElement.scrollTop;
         });
     }
 

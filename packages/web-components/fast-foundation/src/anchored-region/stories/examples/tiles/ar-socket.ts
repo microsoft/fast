@@ -7,7 +7,6 @@ import {
     Updates,
     when,
 } from "@microsoft/fast-element";
-import type { AutoUpdateMode } from "src/anchored-region/anchored-region.options.js";
 import { FASTAnchoredRegion } from "../../../anchored-region.js";
 import type { ARTile } from "./ar-tile.js";
 
@@ -123,8 +122,8 @@ export class ARSocket extends FASTAnchoredRegion {
             return 0;
         }
 
-        const anchorX: number = anchorRect.top;
-        const anchorY: number = anchorRect.left;
+        const anchorX: number = anchorRect.top + anchorRect.height / 2;
+        const anchorY: number = anchorRect.left + anchorRect.width / 2;
         const regionX: number = regionRect.top + regionRect.height / 2;
         const regionY: number = regionRect.left + regionRect.width / 2;
 
