@@ -3,5 +3,5 @@
   "comment": "Fixed bug in DesignTokenNode reparenting",
   "packageName": "@microsoft/fast-foundation",
   "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
