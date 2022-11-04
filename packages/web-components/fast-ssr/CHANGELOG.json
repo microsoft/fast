@@ -2,6 +2,39 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Fri, 04 Nov 2022 22:28:49 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.21",
+      "version": "1.0.0-beta.21",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "9b183666f84a94b40274391d016d3ceb00509d2c",
+            "comment": "export features from DOM shim, refactor for better TypeScript support"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "a5f67af6d27aa3bed5bffc10d0c58ebcc606a439",
+            "comment": "Adds export path for RequestStorage"
+          },
+          {
+            "author": "daviwu@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "20f5c40d27283c4df856970e854c8712c85c29c1",
+            "comment": "Fix boolean attribute rendering issues and throw error for unknown/object type of attributes"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.21",
+            "commit": "e60decc0627e763249e74937e00fab61c5c748e6"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 01 Nov 2022 23:26:26 GMT",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.20",
       "version": "1.0.0-beta.20",

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Fix boolean attribute rendering issues and throw error for unknown/object type of attributes",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "daviwu@microsoft.com",
-  "dependentChangeType": "prerelease"
-}
