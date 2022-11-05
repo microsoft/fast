@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Removed legacy unsupported delegates focus from Anchor and Button now that `delgatesFocus` is supported in firefox since version 94.",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "32497422+KingOfTac@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
