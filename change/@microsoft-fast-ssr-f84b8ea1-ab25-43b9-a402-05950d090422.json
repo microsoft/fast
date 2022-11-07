@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "export features from DOM shim, refactor for better TypeScript support",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

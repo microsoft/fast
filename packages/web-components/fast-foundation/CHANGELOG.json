@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 04 Nov 2022 22:28:49 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.21",
+      "version": "3.0.0-alpha.21",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "9c594ef006d5189b3660de0e4d61dd6c5bb16496",
+            "comment": "feat: enable using design tokens in html"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 01 Nov 2022 23:26:26 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.20",
       "version": "3.0.0-alpha.20",
