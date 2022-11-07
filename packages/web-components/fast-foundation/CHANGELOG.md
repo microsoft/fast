@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 01 Nov 2022 23:26:26 GMT and should not be manually modified.
+This log was last generated on Fri, 04 Nov 2022 22:28:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.21
+
+Fri, 04 Nov 2022 22:28:49 GMT
+
+### Changes
+
+- feat: enable using design tokens in html (roeisenb@microsoft.com)
 
 ## 3.0.0-alpha.20
 
