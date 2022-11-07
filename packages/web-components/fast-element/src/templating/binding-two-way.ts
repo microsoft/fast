@@ -159,7 +159,7 @@ class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding
  * Creates a default binding.
  * @param expression - The binding to refresh when changed.
  * @param optionsOrChangeEvent - The binding options or the name of the change event to use.
- * @param policy - The security policy to associate with th binding.
+ * @param policy - The security policy to associate with the binding.
  * @param isBindingVolatile - Indicates whether the binding is volatile or not.
  * @returns A binding.
  * @public
