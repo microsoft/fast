@@ -7,10 +7,9 @@ export type {
     Mutable,
     StyleStrategy,
     StyleTarget,
-    TrustedTypes,
-    TrustedTypesPolicy,
 } from "./interfaces.js";
 export * from "./platform.js";
+export * from "./dom.js";
 
 // Observation
 export * from "./observation/observable.js";
@@ -25,7 +24,6 @@ export * from "./styles/css-directive.js";
 export * from "./styles/host.js";
 
 // Templating
-export * from "./templating/dom.js";
 export * from "./templating/template.js";
 export * from "./templating/compiler.js";
 export { Markup, Parser } from "./templating/markup.js";
@@ -38,6 +36,7 @@ export * from "./templating/slotted.js";
 export * from "./templating/children.js";
 export * from "./templating/view.js";
 export * from "./templating/node-observation.js";
+export * from "./templating/dangerous-html.js";
 
 // Components
 export * from "./components/fast-element.js";

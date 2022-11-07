@@ -11,11 +11,16 @@ import type { CaptureType } from "./template.js";
  */
 export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     /**
+     * The structural id of the DOM node to which the created behavior will apply.
+     */
+    targetNodeId: string;
+
+    /**
      * Bind this behavior.
      * @param controller - The view controller that manages the lifecycle of this behavior.
      */
     public bind(controller: ViewController): void {
-        controller.source[this.options] = controller.targets[this.nodeId];
+        controller.source[this.options] = controller.targets[this.targetNodeId];
     }
 }
 

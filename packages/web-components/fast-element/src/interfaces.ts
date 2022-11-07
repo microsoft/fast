@@ -49,31 +49,6 @@ export type Mutable<T> = {
 };
 
 /**
- * A policy for use with the standard trustedTypes platform API.
- * @public
- */
-export type TrustedTypesPolicy = {
-    /**
-     * Creates trusted HTML.
-     * @param html - The HTML to clear as trustworthy.
-     */
-    createHTML(html: string): string;
-};
-
-/**
- * Enables working with trusted types.
- * @public
- */
-export type TrustedTypes = {
-    /**
-     * Creates a trusted types policy.
-     * @param name - The policy name.
-     * @param rules - The policy rules implementation.
-     */
-    createPolicy(name: string, rules: TrustedTypesPolicy): TrustedTypesPolicy;
-};
-
-/**
  * The FAST global.
  * @internal
  */
@@ -182,11 +157,14 @@ export const enum Message {
     // 1101 - 1200 Observation
     needsArrayObservation = 1101,
     // 1201 - 1300 Templating
-    onlySetHTMLPolicyOnce = 1201,
+    onlySetDOMPolicyOnce = 1201,
     bindingInnerHTMLRequiresTrustedTypes = 1202,
     twoWayBindingRequiresObservables = 1203,
     hostBindingWithoutHost = 1204,
     unsupportedBindingBehavior = 1205,
+    directCallToHTMLTagNotAllowed = 1206,
+    onlySetTemplatePolicyOnce = 1207,
+    cannotSetTemplatePolicyAfterCompilation = 1208,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,
@@ -222,3 +200,15 @@ export const isString = (object: any): object is string => typeof object === "st
  * @internal
  */
 export const noop = () => void 0;
+
+/**
+ * A policy for use with the standard trustedTypes platform API.
+ * @public
+ */
+export type TrustedTypesPolicy = {
+    /**
+     * Creates trusted HTML.
+     * @param html - The HTML to clear as trustworthy.
+     */
+    createHTML(html: string): string;
+};

@@ -2,7 +2,7 @@ import { Accessor, Observable } from "../observation/observable.js";
 import type { Notifier } from "../observation/notifier.js";
 import { isString } from "../interfaces.js";
 import { Updates } from "../observation/update-queue.js";
-import { DOM } from "../templating/dom.js";
+import { DOM } from "../dom.js";
 import { createMetadataLocator } from "../platform.js";
 
 /**

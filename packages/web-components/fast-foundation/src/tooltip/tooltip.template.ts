@@ -1,4 +1,10 @@
-import { ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
+import {
+    dangerousHTML,
+    ElementViewTemplate,
+    html,
+    ref,
+    when,
+} from "@microsoft/fast-element";
 import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
 import type { FASTTooltip } from "./tooltip.js";
 
@@ -17,11 +23,12 @@ export type TooltipOptions = {
 export function tooltipTemplate<T extends FASTTooltip>(
     options: TooltipOptions
 ): ElementViewTemplate<T> {
+    const tag = dangerousHTML(tagFor(options.anchoredRegion));
     return html<T>`
         ${when(
             x => x.tooltipVisible,
             html<T>`
-            <${tagFor(options.anchoredRegion)}
+            <${tag}
                 fixed-placement="true"
                 auto-update-mode="${x => x.autoUpdateMode}"
                 vertical-positioning-mode="${x => x.verticalPositioningMode}"
@@ -40,7 +47,7 @@ export function tooltipTemplate<T extends FASTTooltip>(
                 <div class="tooltip" part="tooltip" role="tooltip">
                     <slot></slot>
                 </div>
-            </${tagFor(options.anchoredRegion)}>
+            </${tag}>
         `
         )}
     `;
