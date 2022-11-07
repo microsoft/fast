@@ -163,7 +163,7 @@ export class ARTile extends FASTAnchoredRegion {
  */
 export function arTileTemplate<T extends ARTile>(): ElementViewTemplate<T> {
     return html<T>`
-        <template @mousedown="${(x, c) => x.handleMouseDown(c.event as MouseEvent)}">
+        <template>
             <ar-socket
                 socket-facing="top"
                 class="socket-top"
@@ -184,8 +184,16 @@ export function arTileTemplate<T extends ARTile>(): ElementViewTemplate<T> {
                 class="socket-left"
                 ${ref("socketLeft")}
             ></ar-socket>
-            <div class="content">
-                <slot></slot>
+            <div
+                class="content"
+                @mousedown="${(x, c) => x.handleMouseDown(c.event as MouseEvent)}"
+            >
+                <span class="title">
+                    ${x => x.tileData.title}
+                </span>
+                <span class="value">
+                    ${x => x.tileData.value}
+                </span>
             </div>
         </template>
     `;
@@ -193,11 +201,10 @@ export function arTileTemplate<T extends ARTile>(): ElementViewTemplate<T> {
 
 export const arTileStyles = css`
     :host {
-        display: block;
         display: grid;
         user-select: none;
-        grid-template-columns: 10px 20px 10px;
-        grid-template-rows: 10px 20px 10px;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
     }
 
     :host(.loaded) {
@@ -205,30 +212,32 @@ export const arTileStyles = css`
     }
 
     :host(.dragging) {
+        opacity: 0.7;
         transition: unset;
         z-index: 100;
         pointer-events: none;
     }
 
-    .socket-top .socket-right .socket-bottom .socket-left {
-        box-sizing: border-box;
+    .socket-top,
+    .socket-right,
+    .socket-bottom,
+    .socket-left {
+        position: absolute;
+        height: 36px;
+        width: 36px;
     }
 
     .socket-top {
-        grid-row: 1;
-        grid-column: 1 / 4;
+        transform: translate(2px, -38px) !important;
     }
     .socket-right {
-        grid-row: 1 / 4;
-        grid-column: 3;
+        transform: translate(42px, 2px) !important;
     }
     .socket-bottom {
-        grid-row: 3;
-        grid-column: 1 / 4;
+        transform: translate(2px, 42px) !important;
     }
     .socket-left {
-        grid-row: 1 / 4;
-        grid-column: 1;
+        transform: translate(-36px, 2px) !important;
     }
     .content {
         height: 40px;
@@ -239,9 +248,15 @@ export const arTileStyles = css`
         padding: 4px;
         display: flex;
         justify-content: center;
-        font-size: 24px;
-        grid-row: 1 / 4;
-        grid-column: 1 / 4;
+    }
+
+    .title {
+        margin: 4px;
+        font-size: 20px;
+    }
+
+    .value {
+        font-size: 8px;
     }
 
     :host(.fixed) .content {

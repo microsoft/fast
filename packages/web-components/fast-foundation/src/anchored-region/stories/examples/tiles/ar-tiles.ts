@@ -52,27 +52,38 @@ export class ARTiles extends FASTElement {
         { title: "R", value: 1, column: 7, row: 6, fixed: true },
         { title: "D", value: 1, column: 8, row: 6, fixed: true },
         { title: "S", value: 1, column: 9, row: 6, fixed: true },
-        { title: "W", value: 1 },
+        { title: "E", value: 1 },
+        { title: "A", value: 1 },
         { title: "R", value: 1 },
-        { title: "D", value: 1 },
-        { title: "S", value: 1 },
-        { title: "J", value: 1 },
-        { title: "K", value: 1 },
-        { title: "L", value: 1 },
-        { title: "M", value: 1 },
-        { title: "N", value: 1 },
+        { title: "I", value: 1 },
         { title: "O", value: 1 },
-        { title: "P", value: 1 },
-        { title: "Q", value: 1 },
+        { title: "T", value: 2 },
+        { title: "N", value: 2 },
+        { title: "S", value: 2 },
+        { title: "L", value: 2 },
+        { title: "C", value: 2 },
+        { title: "U", value: 3 },
+        { title: "D", value: 3 },
+        { title: "P", value: 3 },
+        { title: "M", value: 3 },
+        { title: "H", value: 3 },
+        { title: "G", value: 3 },
+        { title: "B", value: 4 },
+        { title: "F", value: 4 },
+        { title: "Y", value: 4 },
+        { title: "W", value: 4 },
+        { title: "K", value: 4 },
+        { title: "V", value: 4 },
+        { title: "X", value: 5 },
+        { title: "Z", value: 5 },
+        { title: "J", value: 5 },
+        { title: "Q", value: 5 },
+        { title: "A", value: 1 },
+        { title: "E", value: 1 },
+        { title: "I", value: 1 },
+        { title: "O", value: 1 },
+        { title: "U", value: 3 },
         { title: "R", value: 1 },
-        { title: "S", value: 1 },
-        { title: "T", value: 1 },
-        { title: "U", value: 1 },
-        { title: "V", value: 1 },
-        { title: "W", value: 1 },
-        { title: "X", value: 1 },
-        { title: "Y", value: 1 },
-        { title: "Z", value: 1 },
     ];
 
     public tilesChanged(): void {
@@ -92,6 +103,9 @@ export class ARTiles extends FASTElement {
 
     @observable
     public score: number = 0;
+
+    @observable
+    public bestScore: number = 0;
 
     public layout: HTMLDivElement;
     public board: HTMLDivElement;
@@ -116,6 +130,8 @@ export class ARTiles extends FASTElement {
     private fixedTileData: TileData[] = [];
     private handTileData: TileData[] = [];
 
+    private activeBoardTiles: HTMLElement[] = [];
+
     private currentDragTile: ARTile | undefined;
 
     private hoverSocket: ARSocket | undefined;
@@ -127,8 +143,8 @@ export class ARTiles extends FASTElement {
     private horizontalWordPlaceholder: Node | null = null;
     private boardTilePlaceholder: Node | null = null;
 
-    private boardRows: number = 15;
-    private boardColumns: number = 15;
+    private boardRows: number = 14;
+    private boardColumns: number = 14;
 
     private tileUpdateQueued: boolean = false;
 
@@ -243,7 +259,10 @@ export class ARTiles extends FASTElement {
         this.placedTiles.forEach(tile => {
             tile.update();
             tile.sockets.forEach(socket => {
-                socket.update();
+                socket.virtualAnchorX =
+                    detail.event.pageX - document.documentElement.scrollLeft;
+                socket.virtualAnchorY =
+                    detail.event.pageY - document.documentElement.scrollTop;
             });
         });
         this.currentDragTile.addEventListener(
@@ -264,10 +283,28 @@ export class ARTiles extends FASTElement {
             this.handleDragTilePositionChange
         );
         Updates.enqueue(() => {
+            const activeBoardTileIds: string[] = [];
             this.allSockets.forEach(socket => {
                 if (this.isValidSocket(socket)) {
                     socket.socketActive = true;
                     this.activeSockets.push(socket);
+                    if (socket.parentTile) {
+                        const boardTile: BoardTile = this.getBoardTileForSocket(socket);
+                        const boardTileId: string = `board-tile-${boardTile.row}-${boardTile.column}`;
+                        if (!activeBoardTileIds.includes(boardTileId)) {
+                            activeBoardTileIds.push(boardTileId);
+                        }
+                    }
+                }
+            });
+            activeBoardTileIds.forEach(boardTileId => {
+                const boardTile:
+                    | HTMLElement
+                    | null
+                    | undefined = this.shadowRoot?.getElementById(boardTileId);
+                if (boardTile) {
+                    boardTile.classList.toggle("active", true);
+                    this.activeBoardTiles.push(boardTile);
                 }
             });
         });
@@ -300,6 +337,10 @@ export class ARTiles extends FASTElement {
         this.currentDragTile.removeEventListener("dragtile", this.handleTileDrag);
         this.currentDragTile = undefined;
         this.hoverSocket = undefined;
+
+        this.activeBoardTiles.forEach(boardTile => {
+            boardTile.classList.toggle("active", false);
+        });
     };
 
     private isValidSocket(socket: ARSocket): boolean {
@@ -362,29 +403,7 @@ export class ARTiles extends FASTElement {
             return undefined;
         }
 
-        const socketRect = socket.regionRect;
-        let tileTop = 0;
-        let tileLeft = 0;
-
-        switch (socket.socketFacing) {
-            case "left":
-                tileTop = socketRect.top + 5;
-                tileLeft = socketRect.left - tileRect.width + 5;
-                break;
-            case "right":
-                tileTop = socketRect.top + 5;
-                tileLeft = socketRect.right + 5;
-                break;
-            case "top":
-                tileTop = socketRect.top - tileRect.height + 5;
-                tileLeft = socketRect.left + 5;
-                break;
-            case "bottom":
-                tileTop = socketRect.bottom + 5;
-                tileLeft = socketRect.left + 5;
-                break;
-        }
-        return new DOMRect(tileLeft, tileTop, tileRect.width - 10, tileRect.height - 10);
+        return socket.regionRect;
     }
 
     public handleTileDrag = (e: CustomEvent): void => {
@@ -474,30 +493,14 @@ export class ARTiles extends FASTElement {
                 });
             }
 
-            let row: number = socket.parentTile.tileData.row || 0;
-            let column: number = socket.parentTile.tileData.column || 0;
+            const boardTile: BoardTile = this.getBoardTileForSocket(socket);
 
-            switch (socket.socketFacing) {
-                case "left":
-                    column = column - 1;
-                    break;
-                case "right":
-                    column = column + 1;
-                    break;
-                case "top":
-                    row = row - 1;
-                    break;
-                case "bottom":
-                    row = row + 1;
-                    break;
-            }
-
-            tile.tileData.row = row;
-            tile.tileData.column = column;
+            tile.tileData.row = boardTile.row;
+            tile.tileData.column = boardTile.column;
 
             if (this.shadowRoot) {
                 anchorElement = this.shadowRoot.getElementById(
-                    `board-tile-${row}-${column}`
+                    `board-tile-${boardTile.row}-${boardTile.column}`
                 );
             }
         }
@@ -512,6 +515,28 @@ export class ARTiles extends FASTElement {
         }
         this.updateScore();
         Updates.enqueue(() => tile.update());
+    }
+
+    private getBoardTileForSocket(socket: ARSocket): BoardTile {
+        let row: number = socket.parentTile?.tileData.row || 0;
+        let column: number = socket.parentTile?.tileData.column || 0;
+
+        switch (socket.socketFacing) {
+            case "left":
+                column = column - 1;
+                break;
+            case "right":
+                column = column + 1;
+                break;
+            case "top":
+                row = row - 1;
+                break;
+            case "bottom":
+                row = row + 1;
+                break;
+        }
+
+        return { row, column };
     }
 
     private removeTileFromSocket(tile: ARTile): void {
@@ -618,6 +643,9 @@ export class ARTiles extends FASTElement {
             }
         });
         this.score = newScore;
+        if (this.score > this.bestScore) {
+            this.bestScore = this.score;
+        }
     }
 
     private reset(): void {
@@ -716,9 +744,16 @@ const boardTileTemplate: ViewTemplate<BoardTile> = html`
 `;
 
 const scoreWordTemplate: ViewTemplate<ScoreWord> = html`
-    <div>
-        ${x => x.word} -> ${x => x.value}
-    </div>
+    <fast-option class="score-word-option">
+        <div class="score-word-display">
+            <div class="score-word-word">
+                ${x => x.word}
+            </div>
+            <div class="score-word-score">
+                ${x => x.value}
+            </div>
+        </div>
+    </fast-option>
 `;
 
 const letterTileTemplate: ViewTemplate<TileData> = html`
@@ -732,9 +767,7 @@ const letterTileTemplate: ViewTemplate<TileData> = html`
         viewport="layout"
         vertical-viewport-lock="true"
         horizontal-viewport-lock="true"
-    >
-        ${x => x.title}
-    </ar-tile>
+    ></ar-tile>
 `;
 
 const dispenserTemplate: ViewTemplate<TileData> = html`
@@ -768,17 +801,31 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                 <div id="board" class="board" ${ref("board")}></div>
                 <div id="hand" class="hand" ${ref("hand")}></div>
                 <div class="scoring">
+                    <h2>
+                        ScoreWords
+                    </h2>
                     Score: ${x => x.score}
-                    <p>
-                        Vertical words:
-                    </p>
+                    <br></br>
+                    Best Score: ${x => x.bestScore}
+                    <h3>
+                        Vertical Words
+                    </h3>
 
-                    <div ${ref("verticalWordDisplay")}></div>
-                    <p>
+                    <fast-listbox
+                        ${ref("verticalWordDisplay")}
+                        class="score-word-listbox"
+                    >
+                    </fast-listbox>
+
+                    <h3>
                         Horizontal Words
-                    </p>
+                    </h3>
 
-                    <div ${ref("horizontalWordDisplay")}></div>
+                    <fast-listbox
+                        ${ref("horizontalWordDisplay")}
+                        class="score-word-listbox"
+                    >
+                    </fast-listbox>
                 </div>
             </div>
         </template>
@@ -809,8 +856,8 @@ export const arTilesStyles = css`
         width: 1000px;
         position: relative;
         display: grid;
-        grid-template-columns: 10px 600px 10px 200px 10px;
-        grid-template-rows: 10px 600px 10px auto 10px;
+        grid-template-columns: 10px 560px 10px 200px 10px;
+        grid-template-rows: 10px 560px 10px auto 10px;
     }
 
     .board {
@@ -825,7 +872,7 @@ export const arTilesStyles = css`
     .hand {
         position: relative;
         grid-row: 4;
-        grid-column: 2 / 5;
+        grid-column: 2;
         background: lightgray;
         display: flex;
         gap; 10px;
@@ -835,11 +882,47 @@ export const arTilesStyles = css`
     .scoring {
         padding: 10px;
         background: darkgray;
-        grid-row: 2;
+        grid-row: 2 / 5;
         grid-column: 4;
     }
 
     .board-tile {
         border: solid 2px;
+    }
+
+    .board-tile.active {
+        background: white;
+    }
+
+    .score-word-listbox {
+        width: 100%;
+        min-height: 50px;
+    }
+
+    .score-word-option {
+        width: 100%;
+    }
+
+    .score-word-option::part(content){
+        width: 100%;
+    }
+
+    .score-word-display {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: 1fr;
+    }
+
+    .score-word-word {
+        grid-column: 1;
+        grid-row: 1;
+
+    }
+
+    .score-word-score {
+        background: green;
+        grid-column: 2;
+        grid-row: 1;
     }
 `;

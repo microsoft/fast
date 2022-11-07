@@ -345,6 +345,7 @@ export class FASTAnchoredRegion extends FASTElement {
         if (this.initialLayoutComplete) {
             this.stopObservers();
             this.startObservers();
+            this.anchorRect = undefined;
             this.updateForAttributeChange();
         } else {
             this.requestReset();

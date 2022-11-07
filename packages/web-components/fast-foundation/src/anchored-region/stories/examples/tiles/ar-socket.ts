@@ -53,9 +53,11 @@ export class ARSocket extends FASTAnchoredRegion {
             return;
         }
         if (this.socketActive) {
+            this.classList.toggle("active", true);
             this.addEventListener("mouseenter", this.handleMouseEnter);
             this.addEventListener("mouseleave", this.handleMouseLeave);
         } else {
+            this.classList.toggle("active", false);
             this.removeEventListener("mouseenter", this.handleMouseEnter);
             this.removeEventListener("mouseleave", this.handleMouseLeave);
             this.socketHovered = false;
@@ -144,7 +146,7 @@ export function arSocketTemplate<T extends ARSocket>(): ElementViewTemplate<T> {
                     <div
                         class="background ${x => x.socketFacing}"
                         style="opacity:${x =>
-                            (200 - x.getDistance(x.anchorRect, x.regionRect)) / 200};"
+                            (80 - x.getDistance(x.anchorRect, x.regionRect)) / 80};"
                     ></div>
                 `
             )}
@@ -156,11 +158,15 @@ export const arSocketStyles = css`
     :host {
         box-sizing: border-box;
         display: grid;
-        grid-template-columns: 1fr 10px 1fr;
-        grid-template-rows: 1fr 10px 1fr;
+        grid-template-columns: 1fr 36px 1fr;
+        grid-template-rows: 1fr 36px 1fr;
+        pointer-events: none;
     }
-    :host(.preview) {
-        background: green;
+    :host(.preview) .background {
+        background: black;
+    }
+    :host(.active) {
+        pointer-events: auto;
     }
     .background {
         background: green;
