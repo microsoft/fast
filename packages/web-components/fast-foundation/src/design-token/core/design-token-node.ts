@@ -464,7 +464,7 @@ export class DesignTokenNode {
             return value;
         } else {
             throw new Error(
-                `No value set for token ${token.name ?? token} in node tree.`
+                `No value set for token '${token.name ?? token}' in node tree.`
             );
         }
     }

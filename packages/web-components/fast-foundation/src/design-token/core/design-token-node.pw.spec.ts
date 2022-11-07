@@ -287,6 +287,12 @@ test.describe("DesignTokenNode", () => {
                 });
             }).toThrow();
         });
+        test("should include the token name in the error message, if it exists, when a token is unable to be resolved", () => {
+            const token = { $value: undefined, name: "error-token" };
+            expect(() => new DesignTokenNode().getTokenValue(token)).toThrow(
+                "No value set for token 'error-token' in node tree."
+            );
+        });
     });
 
     test.describe("getting a token value", () => {
