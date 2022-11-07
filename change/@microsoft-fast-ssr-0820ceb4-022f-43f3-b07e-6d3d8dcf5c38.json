@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Adds export path for RequestStorage",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}
