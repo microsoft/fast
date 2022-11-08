@@ -39,6 +39,17 @@ export interface BoardTile {
     column: number;
 }
 
+export interface GameConfig {
+    rowCount?: number;
+    columnCount?: number;
+    tileData: TileData[];
+}
+
+export interface GameState {
+    score: number;
+    tileData: TileData[];
+}
+
 /**
  *
  *
@@ -46,47 +57,62 @@ export interface BoardTile {
  */
 export class ARTiles extends FASTElement {
     @observable
-    public tileData: TileData[] = [
-        { title: "W", value: 1, column: 5, row: 6, fixed: true },
-        { title: "O", value: 1, column: 6, row: 6, fixed: true },
-        { title: "R", value: 1, column: 7, row: 6, fixed: true },
-        { title: "D", value: 1, column: 8, row: 6, fixed: true },
-        { title: "S", value: 1, column: 9, row: 6, fixed: true },
-        { title: "E", value: 1 },
-        { title: "A", value: 1 },
-        { title: "R", value: 1 },
-        { title: "I", value: 1 },
-        { title: "O", value: 1 },
-        { title: "T", value: 2 },
-        { title: "N", value: 2 },
-        { title: "S", value: 2 },
-        { title: "L", value: 2 },
-        { title: "C", value: 2 },
-        { title: "U", value: 3 },
-        { title: "D", value: 3 },
-        { title: "P", value: 3 },
-        { title: "M", value: 3 },
-        { title: "H", value: 3 },
-        { title: "G", value: 3 },
-        { title: "B", value: 4 },
-        { title: "F", value: 4 },
-        { title: "Y", value: 4 },
-        { title: "W", value: 4 },
-        { title: "K", value: 4 },
-        { title: "V", value: 4 },
-        { title: "X", value: 5 },
-        { title: "Z", value: 5 },
-        { title: "J", value: 5 },
-        { title: "Q", value: 5 },
-        { title: "A", value: 1 },
-        { title: "E", value: 1 },
-        { title: "I", value: 1 },
-        { title: "O", value: 1 },
-        { title: "U", value: 3 },
-        { title: "R", value: 1 },
-    ];
+    public tileData: TileData[] = [];
 
-    public tilesChanged(): void {
+    @observable
+    public gameConfig: GameConfig = {
+        columnCount: 14,
+        rowCount: 14,
+        tileData: [
+            { title: "W", value: 1, column: 5, row: 6, fixed: true },
+            { title: "O", value: 1, column: 6, row: 6, fixed: true },
+            { title: "R", value: 1, column: 7, row: 6, fixed: true },
+            { title: "D", value: 1, column: 8, row: 6, fixed: true },
+            { title: "S", value: 1, column: 9, row: 6, fixed: true },
+            { title: "E", value: 1 },
+            { title: "A", value: 1 },
+            { title: "R", value: 1 },
+            { title: "I", value: 1 },
+            { title: "O", value: 1 },
+            { title: "T", value: 2 },
+            { title: "N", value: 2 },
+            { title: "S", value: 2 },
+            { title: "L", value: 2 },
+            { title: "C", value: 2 },
+            { title: "U", value: 3 },
+            { title: "D", value: 3 },
+            { title: "P", value: 3 },
+            { title: "M", value: 3 },
+            { title: "H", value: 3 },
+            { title: "G", value: 3 },
+            { title: "B", value: 4 },
+            { title: "F", value: 4 },
+            { title: "Y", value: 4 },
+            { title: "W", value: 4 },
+            { title: "K", value: 4 },
+            { title: "V", value: 4 },
+            { title: "X", value: 5 },
+            { title: "Z", value: 5 },
+            { title: "J", value: 5 },
+            { title: "Q", value: 5 },
+            { title: "A", value: 1 },
+            { title: "E", value: 1 },
+            { title: "I", value: 1 },
+            { title: "O", value: 1 },
+            { title: "U", value: 3 },
+            { title: "R", value: 1 },
+        ],
+    };
+    public gameConfigChanged(): void {
+        this.columnCount = this.gameConfig.columnCount || 14;
+        this.rowCount = this.gameConfig.rowCount || 14;
+        this.tileData.splice(0, this.tileData.length, ...this.gameConfig.tileData);
+        this.tileData.forEach(tile => {
+            if (!tile.row) {
+                tile.row = undefined;
+                tile.column = undefined;
+            }
+        });
         if (this.$fastController.isConnected) {
             this.reset();
         }
@@ -124,11 +150,22 @@ export class ARTiles extends FASTElement {
         }
     }
 
+    @observable
+    public enablePrevious: boolean = false;
+
+    @observable
+    public enableNext: boolean = false;
+
+    private previousGameStates: GameState[] = [];
+    private nextGameStates: GameState[] = [];
+
     private allSockets: ARSocket[] = [];
     private activeSockets: ARSocket[] = [];
     private placedTiles: ARTile[] = [];
     private fixedTileData: TileData[] = [];
     private handTileData: TileData[] = [];
+
+    private bestGameState: GameState;
 
     private activeBoardTiles: HTMLElement[] = [];
 
@@ -143,8 +180,8 @@ export class ARTiles extends FASTElement {
     private horizontalWordPlaceholder: Node | null = null;
     private boardTilePlaceholder: Node | null = null;
 
-    private boardRows: number = 14;
-    private boardColumns: number = 14;
+    private rowCount: number;
+    private columnCount: number;
 
     private tileUpdateQueued: boolean = false;
 
@@ -317,10 +354,16 @@ export class ARTiles extends FASTElement {
         e.preventDefault();
         if (this.hoverSocket) {
             this.setTileInSocket(this.hoverSocket, this.currentDragTile);
+            this.previousGameStates.push(this.getCurrentGameState());
+            this.enablePrevious = true;
+            this.enableNext = false;
+            this.nextGameStates.splice(0, this.nextGameStates.length);
         } else {
             const originalSocket = this.shadowRoot?.getElementById(
                 `dispenser-${this.currentDragTile.tileData.tileId}`
             );
+            this.currentDragTile.tileData.column = undefined;
+            this.currentDragTile.tileData.row = undefined;
             if (originalSocket) {
                 this.setTileInSocket(originalSocket as ARSocket, this.currentDragTile);
             }
@@ -342,6 +385,20 @@ export class ARTiles extends FASTElement {
             boardTile.classList.toggle("active", false);
         });
     };
+
+    private getCurrentGameState(): GameState {
+        const currentTileData: TileData[] = [];
+        this.tileData.forEach(tileData => {
+            currentTileData.push(
+                Object.assign({ row: undefined, column: undefined }, tileData)
+            );
+        });
+        const gameState: GameState = {
+            score: this.score,
+            tileData: currentTileData,
+        };
+        return gameState;
+    }
 
     private isValidSocket(socket: ARSocket): boolean {
         if (
@@ -453,6 +510,31 @@ export class ARTiles extends FASTElement {
         this.hoverSocket = e.detail as ARSocket;
 
         this.setTileInSocket(this.hoverSocket, this.currentDragTile);
+    };
+
+    public handlePreviousClick = (e: MouseEvent): void => {
+        if (this.previousGameStates.length === 0) {
+            return;
+        }
+        const gameState: GameState = this.previousGameStates.splice(0, 1)[0];
+        this.applyGameState(gameState);
+        this.nextGameStates.push(gameState);
+        this.enableNext = true;
+        if (this.previousGameStates.length === 0) {
+            this.enablePrevious = false;
+        }
+        return;
+    };
+
+    private applyGameState(gameState: GameState): void {
+        for (let i = 0; i < gameState.tileData.length; i++) {
+            Object.assign(this.tileData[i], gameState.tileData[i]);
+        }
+        this.reset();
+    }
+
+    public handleNextClick = (e: MouseEvent): void => {
+        return;
     };
 
     public handleSocketUnhovered = (e: CustomEvent): void => {
@@ -654,12 +736,13 @@ export class ARTiles extends FASTElement {
         this.activeSockets.splice(0, this.activeSockets.length);
         this.placedTiles.splice(0, this.placedTiles.length);
         this.fixedTileData.splice(0, this.fixedTileData.length);
+        this.handTileData.splice(0, this.handTileData.length);
         this.boardSpaces.splice(0, this.boardSpaces.length);
         this.currentDragTile = undefined;
         this.hoverSocket = undefined;
 
-        for (let row = 1; row <= this.boardRows; row++) {
-            for (let column = 1; column <= this.boardColumns; column++) {
+        for (let row = 1; row <= this.rowCount; row++) {
+            for (let column = 1; column <= this.columnCount; column++) {
                 this.boardSpaces.push({
                     row,
                     column,
@@ -807,6 +890,19 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                     Score: ${x => x.score}
                     <br></br>
                     Best Score: ${x => x.bestScore}
+                    <br></br>
+                    <fast-button
+                        disabled="${x => (x.enablePrevious ? void 0 : "true")}"
+                        @click="${(x, c) => x.handlePreviousClick(c.event as MouseEvent)}"
+                    >
+                    Previous
+                    </fast-button>
+                    <fast-button
+                        disabled="${x => (x.enableNext ? void 0 : "true")}"
+                        @click="${(x, c) => x.handleNextClick(c.event as MouseEvent)}"
+                    >
+                    Next
+                    </fast-button>
                     <h3>
                         Vertical Words
                     </h3>

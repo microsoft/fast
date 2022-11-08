@@ -26,6 +26,9 @@ const styles = css`
         display: none;
     }
 
+    :host([disabled]) {
+        display: none;
+    }
     .control {
         background: transparent;
         height: inherit;
