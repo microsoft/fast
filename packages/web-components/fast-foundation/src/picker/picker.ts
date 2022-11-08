@@ -518,8 +518,8 @@ export class FASTPicker extends FormAssociatedPicker {
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective(
-                    bind(x => x.selectedItems, false),
-                    bind(x => x.activeListItemTemplate, false),
+                    bind(x => x.selectedItems),
+                    bind(x => x.activeListItemTemplate),
                     { positioning: true }
                 ),
                 this.itemsPlaceholderElement
@@ -527,8 +527,8 @@ export class FASTPicker extends FormAssociatedPicker {
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective(
-                    bind(x => x.filteredOptionsList, false),
-                    bind(x => x.activeMenuOptionTemplate, false),
+                    bind(x => x.filteredOptionsList),
+                    bind(x => x.activeMenuOptionTemplate),
                     { positioning: true }
                 ),
                 this.optionsPlaceholder

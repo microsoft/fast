@@ -58,6 +58,10 @@ import "../src/menu/stories/menu.register.js";
 import "../src/tree-item/stories/tree-item.register.js";
 import "../src/tree-view/stories/tree-view.register.js";
 
+import { FAST, html } from "@microsoft/fast-element";
+
+FAST.html = html;
+
 export const decorators = [
     (Story, context) => {
         const [_, updateArgs] = useArgs();

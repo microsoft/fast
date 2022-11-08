@@ -1,6 +1,6 @@
 import {
-    Aspect,
     Aspected,
+    DOMAspect,
     ExecutionContext,
     FASTElementDefinition,
     ViewBehaviorFactory,
@@ -125,7 +125,7 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
                         } else if (result === null || result === undefined) {
                             // Don't yield anything if result is null
                             break;
-                        } else if (factory.aspectType === Aspect.content) {
+                        } else if (factory.aspectType === DOMAspect.content) {
                             yield result;
                         } else {
                             // debugging error - we should handle all result cases
@@ -220,7 +220,7 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
                 case OpType.attributeBinding: {
                     const { aspect, dataBinding: binding } = code;
                     // Don't emit anything for events or directives without bindings
-                    if (aspect === Aspect.event) {
+                    if (aspect === DOMAspect.event) {
                         break;
                     }
 
@@ -297,12 +297,12 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
 
     private getAttributeBindingRenderer(code: AttributeBindingOp) {
         switch (code.aspect) {
-            case Aspect.booleanAttribute:
+            case DOMAspect.booleanAttribute:
                 return DefaultTemplateRenderer.renderBooleanAttribute;
-            case Aspect.property:
-            case Aspect.tokenList:
+            case DOMAspect.property:
+            case DOMAspect.tokenList:
                 return DefaultTemplateRenderer.renderProperty;
-            case Aspect.attribute:
+            case DOMAspect.attribute:
                 return DefaultTemplateRenderer.renderAttribute;
         }
     }
@@ -352,10 +352,10 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
 
             if (instance) {
                 switch (code.aspect) {
-                    case Aspect.property:
+                    case DOMAspect.property:
                         instance.setProperty(target, value);
                         break;
-                    case Aspect.tokenList:
+                    case DOMAspect.tokenList:
                         instance.setAttribute("class", value);
                         break;
                 }
