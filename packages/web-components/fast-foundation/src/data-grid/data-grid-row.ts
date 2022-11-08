@@ -4,9 +4,9 @@ import {
     FASTElement,
     observable,
     RepeatDirective,
-    ViewBehaviorOrchestrator,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities";
 import {
     eventFocusOut,
     eventKeyDown,
