@@ -167,7 +167,7 @@ FAST libraries can also be used in combination with a wide variety of existing t
 - [React](../integrations/react.md)
 - [Rollup](../integrations/rollup.md)
 - [Svelte](../integrations/svelte.md)
-- [Vite](..integrations/vite.md)
+- [Vite](../integrations/vite.md)
 - [Vue](../integrations/vue.md)
 - [Webpack](../integrations/webpack.md)
 

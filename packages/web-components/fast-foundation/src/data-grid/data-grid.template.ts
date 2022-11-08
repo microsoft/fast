@@ -1,4 +1,10 @@
-import { children, elements, ElementViewTemplate, html } from "@microsoft/fast-element";
+import {
+    children,
+    dangerousHTML,
+    elements,
+    ElementViewTemplate,
+    html,
+} from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
 import type { FASTDataGrid } from "./data-grid.js";
@@ -14,7 +20,7 @@ export type DataGridOptions = {
 function rowItemTemplate<T extends FASTDataGrid>(
     options: DataGridOptions
 ): ViewTemplate<any, T> {
-    const rowTag = tagFor(options.dataGridRow);
+    const rowTag = dangerousHTML(tagFor(options.dataGridRow));
     return html<any, T>`
     <${rowTag}
         :rowData="${x => x}"
@@ -38,7 +44,7 @@ export function dataGridTemplate<T extends FASTDataGrid>(
         <template
             role="grid"
             tabindex="0"
-            :rowElementTag="${() => rowTag}"
+            :rowElementTag="${rowTag}"
             :defaultRowItemTemplate="${rowItemTemplate(options)}"
             ${children({
                 property: "rowElements",

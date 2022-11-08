@@ -1,6 +1,6 @@
 
 import "../install-dom-shim.js";
-import { Aspect, customElement, FASTElement, html, ViewBehaviorFactory, ViewTemplate } from "@microsoft/fast-element";
+import { customElement, DOMAspect, FASTElement, html, ViewBehaviorFactory, ViewTemplate } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
 import { AttributeBindingOp, CustomElementOpenOp, ViewBehaviorFactoryOp, OpType, TemplateElementOpenOp, TextOp } from "./op-codes.js";
 import { parseTemplateToOpCodes } from "./template-parser.js";
@@ -85,20 +85,20 @@ test.describe("parseTemplateToOpCodes", () => {
         const codes = parseTemplateToOpCodes(input).filter(x => x.type === OpType.attributeBinding) as AttributeBindingOp[];
 
         expect(codes.length).toBe(4);
-        expect(codes[0].aspect).toBe(Aspect.attribute);
-        expect(codes[1].aspect).toBe(Aspect.booleanAttribute);
-        expect(codes[2].aspect).toBe(Aspect.property);
-        expect(codes[3].aspect).toBe(Aspect.event);
+        expect(codes[0].aspect).toBe(DOMAspect.attribute);
+        expect(codes[1].aspect).toBe(DOMAspect.booleanAttribute);
+        expect(codes[2].aspect).toBe(DOMAspect.property);
+        expect(codes[3].aspect).toBe(DOMAspect.event);
     });
     test("should emit attributes binding ops for a custom element with attribute bindings", () => {
         const input = html`<hello-world string-value="${x => "value"}" ?bool-value="${x => false}" :property-value="${x => "value"}" @event="${x => {}}"></hello-world>`;
         const codes = parseTemplateToOpCodes(input).filter(x => x.type === OpType.attributeBinding) as AttributeBindingOp[];
 
         expect(codes.length).toBe(4);
-        expect(codes[0].aspect).toBe(Aspect.attribute);
-        expect(codes[1].aspect).toBe(Aspect.booleanAttribute);
-        expect(codes[2].aspect).toBe(Aspect.property);
-        expect(codes[3].aspect).toBe(Aspect.event);
+        expect(codes[0].aspect).toBe(DOMAspect.attribute);
+        expect(codes[1].aspect).toBe(DOMAspect.booleanAttribute);
+        expect(codes[2].aspect).toBe(DOMAspect.property);
+        expect(codes[3].aspect).toBe(DOMAspect.event);
     });
 
     test("should emit names to attribute bindings ops that do not contain attribute type prefixes", () => {
@@ -132,13 +132,13 @@ test.describe("parseTemplateToOpCodes", () => {
         }))
 
         expect(attrs.has("id")).toBe(true);
-        expect(attrs.get("id")!.aspect).toBe(Aspect.attribute);
+        expect(attrs.get("id")!.aspect).toBe(DOMAspect.attribute);
         expect(attrs.has("boolean")).toBe(true);
-        expect(attrs.get("boolean")!.aspect).toBe(Aspect.booleanAttribute);
+        expect(attrs.get("boolean")!.aspect).toBe(DOMAspect.booleanAttribute);
         expect(attrs.has("event")).toBe(true);
-        expect(attrs.get("event")!.aspect).toBe(Aspect.event);
+        expect(attrs.get("event")!.aspect).toBe(DOMAspect.event);
         expect(attrs.has("property")).toBe(true);
-        expect(attrs.get("property")!.aspect).toBe(Aspect.property);
+        expect(attrs.get("property")!.aspect).toBe(DOMAspect.property);
     });
     test("should emit template open ops with static and dynamic attributes", () => {
         const input = html`<template id="foo" ?boolean=${x => true}></template>`;

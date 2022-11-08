@@ -6,8 +6,8 @@ import {
     observable,
     RepeatDirective,
     Updates,
-    ViewBehaviorOrchestrator,
 } from "@microsoft/fast-element";
+import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities";
 import {
     eventFocus,
     eventFocusOut,
@@ -52,7 +52,7 @@ export interface ColumnDefinition {
     /**
      *  Header cell template
      */
-    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
+    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate;
 
     /**
      * Whether the header cell has an internal focus queue
@@ -71,7 +71,7 @@ export interface ColumnDefinition {
     /**
      * cell template
      */
-    cellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
+    cellTemplate?: ViewTemplate | SyntheticViewTemplate;
 
     /**
      * Whether the cell has an internal focus queue
@@ -341,8 +341,8 @@ export class FASTDataGrid extends FASTElement {
             this.$fastController.addBehavior(this.behaviorOrchestrator);
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<FASTDataGrid>(
-                    bind(x => x.rowsData, false),
-                    bind(x => x.rowItemTemplate, false),
+                    bind(x => x.rowsData),
+                    bind(x => x.rowItemTemplate),
                     { positioning: true }
                 ),
                 this.appendChild((this.rowsPlaceholder = document.createComment("")))

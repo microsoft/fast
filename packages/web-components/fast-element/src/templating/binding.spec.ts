@@ -2,14 +2,16 @@ import { expect } from "chai";
 import { bind, HTMLBindingDirective, oneTime, listener } from "./binding.js";
 import { observable } from "../observation/observable.js";
 import { html, ViewTemplate } from "./template.js";
-import { toHTML } from "../__test__/helpers.js";
+import { createTrackableDOMPolicy, toHTML } from "../__test__/helpers.js";
 import { SyntheticView, HTMLView } from "./view.js";
 import { Updates } from "../observation/update-queue.js";
-import { Aspect } from "./html-directive.js";
-import { DOM } from "./dom.js";
+import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
 import { Signal, signal } from "./binding-signal.js";
 import { twoWay, TwoWayBindingOptions } from "./binding-two-way.js";
 import { Fake } from "../testing/fakes.js";
+import { HTMLDirective } from "./html-directive.js";
+import { dangerousHTML } from "./dangerous-html.js";
+import { nextId } from "./markup.js";
 
 describe("The HTML binding directive", () => {
     class Model {
@@ -38,7 +40,10 @@ describe("The HTML binding directive", () => {
 
     function contentBinding(propertyName: keyof Model = "value") {
         const directive = new HTMLBindingDirective(bind(x => x[propertyName]));
-        directive.nodeId = 'r';
+        directive.id = nextId();
+        directive.targetNodeId = 'r';
+        directive.targetTagName = null;
+        directive.policy = DOM.policy;
 
         const node = document.createTextNode(" ");
         const targets = { r: node };
@@ -51,14 +56,20 @@ describe("The HTML binding directive", () => {
         return { directive, behavior, node, parentNode, targets };
     }
 
-    function configureDirective(directive: HTMLBindingDirective, sourceAspect?: string) {
-        directive.nodeId = 'r';
-
+    function compileDirective(directive: HTMLBindingDirective, sourceAspect?: string, node?: HTMLElement) {
         if (sourceAspect) {
-            Aspect.assign(directive, sourceAspect);
+            HTMLDirective.assignAspect(directive, sourceAspect);
         }
 
-        const node = document.createElement("div");
+        if (!node) {
+            node = document.createElement("div");
+        }
+
+        directive.id = nextId();
+        directive.targetNodeId = 'r';
+        directive.targetTagName = node.tagName ?? null;
+        directive.policy = DOM.policy;
+
         const targets = { r: node };
 
         const behavior = directive.createBehavior();
@@ -69,29 +80,29 @@ describe("The HTML binding directive", () => {
         return { directive, behavior, node, parentNode, targets };
     }
 
-    function defaultBinding(sourceAspect?: string) {
-        const directive = new HTMLBindingDirective(bind<Model>(x => x.value));
-        return configureDirective(directive, sourceAspect);
+    function defaultBinding(sourceAspect?: string, policy?: DOMPolicy) {
+        const directive = new HTMLBindingDirective(bind<Model>(x => x.value, policy));
+        return compileDirective(directive, sourceAspect);
     }
 
-    function oneTimeBinding(sourceAspect?: string) {
-        const directive = new HTMLBindingDirective(oneTime<Model>(x => x.value));
-        return configureDirective(directive, sourceAspect);
+    function oneTimeBinding(sourceAspect?: string, policy?: DOMPolicy) {
+        const directive = new HTMLBindingDirective(oneTime<Model>(x => x.value, policy));
+        return compileDirective(directive, sourceAspect);
     }
 
-    function signalBinding(signalName: string, sourceAspect?: string) {
-        const directive = new HTMLBindingDirective(signal<Model>(x => x.value, signalName));
-        return configureDirective(directive, sourceAspect);
+    function signalBinding(signalName: string, sourceAspect?: string, policy?: DOMPolicy) {
+        const directive = new HTMLBindingDirective(signal<Model>(x => x.value, signalName, policy));
+        return compileDirective(directive, sourceAspect);
     }
 
-    function twoWayBinding(options: TwoWayBindingOptions, sourceAspect?: string) {
-        const directive = new HTMLBindingDirective(twoWay<Model>(x => x.value, options));
-        return configureDirective(directive, sourceAspect);
+    function twoWayBinding(options: TwoWayBindingOptions, sourceAspect?: string, policy?: DOMPolicy) {
+        const directive = new HTMLBindingDirective(twoWay<Model>(x => x.value, options, policy));
+        return compileDirective(directive, sourceAspect);
     }
 
     function eventBinding(options: AddEventListenerOptions, sourceAspect: string) {
         const directive = new HTMLBindingDirective(listener<Model>(x => x.invokeAction(), options));
-        return configureDirective(directive, sourceAspect);
+        return compileDirective(directive, sourceAspect);
     }
 
     context("when binding text content", () => {
@@ -281,9 +292,9 @@ describe("The HTML binding directive", () => {
             expect(toHTML(parentNode)).to.equal(`This is a template. testing...`);
         });
 
-        it("allows interpolated HTML tags in templates", async () => {
+        it("allows interpolated HTML tags in templates using dangerousHTML", async () => {
             const { behavior, parentNode, targets } = contentBinding();
-            const template = html`${x => html`<${x.knownValue}>Hi there!</${x.knownValue}>`}`;
+            const template = html`${x => html`<${dangerousHTML(x.knownValue)}>Hi there!</${dangerousHTML(x.knownValue)}>`}`;
             const model = new Model(template);
             model.knownValue = "button"
             const controller = Fake.viewController(targets, behavior);
@@ -452,6 +463,18 @@ describe("The HTML binding directive", () => {
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
             });
 
+            it(`uses the dom policy when setting a ${aspectScenario.name} binding`, () => {
+                const policy = createTrackableDOMPolicy();
+                const { behavior, node, targets } = defaultBinding(aspectScenario.sourceAspect, policy);
+                const model = new Model(aspectScenario.originalValue);
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+                expect(policy.used).to.be.true;
+            });
+
             it("should not throw if DOM stringified", () => {
                 const { behavior, node, targets } = defaultBinding(aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
@@ -508,6 +531,18 @@ describe("The HTML binding directive", () => {
                 await Updates.next();
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+            });
+
+            it(`uses the dom policy when setting a ${aspectScenario.name} binding`, () => {
+                const policy = createTrackableDOMPolicy();
+                const { behavior, node, targets } = oneTimeBinding(aspectScenario.sourceAspect, policy);
+                const model = new Model(aspectScenario.originalValue);
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+                expect(policy.used).to.be.true;
             });
 
             it("should not throw if DOM stringified", () => {
@@ -576,6 +611,19 @@ describe("The HTML binding directive", () => {
                 await Updates.next();
 
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
+            });
+
+
+            it(`uses the dom policy when setting a ${aspectScenario.name} binding`, () => {
+                const policy = createTrackableDOMPolicy();
+                const { behavior, node, targets } = signalBinding("test-signal", aspectScenario.sourceAspect, policy);
+                const model = new Model(aspectScenario.originalValue);
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+                expect(policy.used).to.be.true;
             });
 
             it("should not throw if DOM stringified", () => {
@@ -689,6 +737,18 @@ describe("The HTML binding directive", () => {
                 expect(aspectScenario.getValue(node)).to.equal(aspectScenario.originalValue);
             });
 
+            it(`uses the dom policy when setting a ${aspectScenario.name} binding`, () => {
+                const policy = createTrackableDOMPolicy();
+                const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect, policy);
+                const model = new Model(aspectScenario.originalValue);
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                expect(aspectScenario.getValue(node)).to.equal(model.value);
+                expect(policy.used).to.be.true;
+            });
+
             it("should not throw if DOM stringified", () => {
                 const { behavior, node, targets } = twoWayBinding({}, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
@@ -786,10 +846,9 @@ describe("The HTML binding directive", () => {
             );
         }
 
-        function createClassBinding() {
+        function createClassBinding(element: HTMLElement) {
             const directive = new HTMLBindingDirective(bind(() => ""));
-            Aspect.assign(directive, ":classList");
-            return directive.createBehavior() as HTMLBindingDirective;
+            return compileDirective(directive, ":classList", element);
         }
 
         it('adds and removes own classes', () => {
@@ -797,8 +856,8 @@ describe("The HTML binding directive", () => {
             element.classList.add("foo");
             element.classList.add("bar");
 
-            const observerA = createClassBinding();
-            const observerB = createClassBinding();
+            const { directive: observerA } = createClassBinding(element);
+            const { directive: observerB } = createClassBinding(element);
             const contains = element.classList.contains.bind(element.classList);
 
             expect(contains('foo') && contains('bar')).true;
@@ -840,9 +899,9 @@ describe("The HTML binding directive", () => {
 
         it("should not throw if DOM stringified", () => {
             const directive = new HTMLBindingDirective(bind(() => ""));
-            const { behavior, node, targets } = configureDirective(directive, ":classList");
+            const { behavior, node, targets } = compileDirective(directive, ":classList");
 
-            Aspect.assign(directive, ":classList");
+            HTMLDirective.assignAspect(directive, ":classList");
             const model = new Model("Test value.");
             const controller = Fake.viewController(targets, behavior);
 
