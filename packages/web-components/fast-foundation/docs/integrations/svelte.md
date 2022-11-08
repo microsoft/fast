@@ -34,7 +34,6 @@ cd fast-svelte
 
 From your new project folder, run this command to install the FAST packages, along with supporting libraries.
 
-
 ```shell
 npm install --save @microsoft/fast-components @microsoft/fast-foundation @microsoft/fast-element
 ```
@@ -130,4 +129,4 @@ With all the basic pieces in place, let's run our app in dev mode with `npm run 
 
 Congratulations! You're now set up to use FAST, Svelte, Vite, and TypeScript. You can import and use more components, build your own components, and when you are ready, build and deploy your website or app to production.
 
-See a FAST+Svelte+Vite+TypeScript starter project [here](../../../../../examples/vite-starters/vite-fast-typescript-starter/README.md).
+See a FAST+Svelte+Vite+TypeScript starter project [here](https://github.com/microsoft/fast/tree/master/examples/svelte-starters/svelte-fast-typescript-starter).

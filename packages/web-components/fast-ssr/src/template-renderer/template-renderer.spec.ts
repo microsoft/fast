@@ -1,5 +1,5 @@
 import "../install-dom-shim.js";
-import { children, css, customElement, ExecutionContext, FASTElement, html, ref, repeat, slotted, when } from "@microsoft/fast-element";
+import { children, css, customElement, dangerousHTML, ExecutionContext, FASTElement, html, ref, repeat, slotted, when } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
@@ -136,7 +136,7 @@ test.describe("TemplateRenderer", () => {
             class MyElement extends FASTElement {}
 
             const { templateRenderer } = fastSSR();
-            const result = templateRenderer.render(html`<${name}></${name}>`);
+            const result = templateRenderer.render(html`<${dangerousHTML(name)}></${dangerousHTML(name)}>`);
 
             expect(consolidate(result)).toBe(`<${name}></${name}>`);
         });
@@ -150,7 +150,7 @@ test.describe("TemplateRenderer", () => {
             class MyElement extends FASTElement {}
 
             const { templateRenderer } = fastSSR();
-            const result = templateRenderer.render(html`<${name}></${name}>`);
+            const result = templateRenderer.render(html`<${dangerousHTML(name)}></${dangerousHTML(name)}>`);
 
             expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
         });
@@ -166,7 +166,7 @@ test.describe("TemplateRenderer", () => {
             class MyElement extends FASTElement {}
 
             const { templateRenderer } = fastSSR();
-            const result = templateRenderer.render(html`<${name}></${name}>`);
+            const result = templateRenderer.render(html`<${dangerousHTML(name)}></${dangerousHTML(name)}>`);
 
             expect(consolidate(result)).toBe(`<${name}><style>:host {color: red;}</style><p>With styles</p></${name}>`);
         });
@@ -179,7 +179,7 @@ test.describe("TemplateRenderer", () => {
             class MyElement extends FASTElement {}
 
             const { templateRenderer } = fastSSR();
-            const result = templateRenderer.render(html`<${name}><p>Hello world</p></${name}>`);
+            const result = templateRenderer.render(html`<${dangerousHTML(name)}><p>Hello world</p></${dangerousHTML(name)}>`);
 
             expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
         });
@@ -207,9 +207,9 @@ test.describe("TemplateRenderer", () => {
 
         for (const key of [name, definition, MyElement]) {
             const  { ElementRenderer, templateRenderer } = fastSSR();
-            expect(consolidate(templateRenderer.render(html`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"><p>Hello world</p></template></${name}>`);
+            expect(consolidate(templateRenderer.render(html`<${dangerousHTML(name)}></${dangerousHTML(name)}>`))).toBe(`<${name}><template shadowroot="open"><p>Hello world</p></template></${name}>`);
             ElementRenderer.disable(key);
-            expect(consolidate(templateRenderer.render(html`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`);
+            expect(consolidate(templateRenderer.render(html`<${dangerousHTML(name)}></${dangerousHTML(name)}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`);
         }
     });
 

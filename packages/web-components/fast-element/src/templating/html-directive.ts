@@ -1,4 +1,4 @@
-import type { HostBehavior } from "../index.js";
+import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
 import { Constructable, Mutable, noop } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
@@ -8,7 +8,7 @@ import {
     ExpressionObserver,
 } from "../observation/observable.js";
 import { createTypeRegistry } from "../platform.js";
-import type { HostController } from "../styles/host.js";
+import type { HostBehavior, HostController } from "../styles/host.js";
 import { Markup, nextId } from "./markup.js";
 
 /**
@@ -87,10 +87,15 @@ export const ViewBehaviorOrchestrator = Object.freeze({
                 return isConnected;
             },
             addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void {
-                const nodeId = factory.nodeId || (factory.nodeId = nextId());
-                factory.id || (factory.id = nextId());
-                this.addTarget(nodeId, target);
-                this.addBehavior(factory.createBehavior());
+                const compiled = factory as CompiledViewBehaviorFactory;
+
+                compiled.id = compiled.id ?? nextId();
+                compiled.targetNodeId = compiled.targetNodeId ?? nextId();
+                compiled.targetTagName = (target as HTMLElement).tagName ?? null;
+                compiled.policy = compiled.policy ?? DOM.policy;
+
+                this.addTarget(compiled.targetNodeId, target);
+                this.addBehavior(compiled.createBehavior());
             },
             addTarget(nodeId: string, target: Node) {
                 targets[nodeId] = target;
@@ -149,18 +154,34 @@ export interface ViewBehaviorFactory {
     /**
      * The unique id of the factory.
      */
-    id: string;
+    id?: string;
 
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    nodeId: string;
+    targetNodeId?: string;
+
+    /**
+     * The tag name of the DOM node to which the created behavior will apply.
+     */
+    targetTagName?: string | null;
+
+    /**
+     * The policy that the created behavior must run under.
+     */
+    policy?: DOMPolicy;
 
     /**
      * Creates a behavior.
      */
     createBehavior(): ViewBehavior;
 }
+
+/**
+ * Represents a ViewBehaviorFactory after the compilation process has completed.
+ * @public
+ */
+export type CompiledViewBehaviorFactory = Required<ViewBehaviorFactory>;
 
 /**
  * Used to add behavior factories when constructing templates.
@@ -178,6 +199,32 @@ export interface HTMLDirective {
      * @param add - Can be used to add  behavior factories to a template.
      */
     createHTML(add: AddViewBehaviorFactory): string;
+}
+
+/**
+ * Represents something that applies to a specific aspect of the DOM.
+ * @public
+ */
+export interface Aspected {
+    /**
+     * The original source aspect exactly as represented in markup.
+     */
+    sourceAspect: string;
+
+    /**
+     * The evaluated target aspect, determined after processing the source.
+     */
+    targetAspect: string;
+
+    /**
+     * The type of aspect to target.
+     */
+    aspectType: DOMAspect;
+
+    /**
+     * A binding if one is associated with the aspect.
+     */
+    dataBinding?: Binding;
 }
 
 /**
@@ -238,6 +285,44 @@ export const HTMLDirective = Object.freeze({
         registry.register(options as HTMLDirectiveDefinition);
         return type;
     },
+
+    /**
+     *
+     * @param directive - The directive to assign the aspect to.
+     * @param value - The value to base the aspect determination on.
+     * @remarks
+     * If a falsy value is provided, then the content aspect will be assigned.
+     */
+    assignAspect(directive: Aspected, value?: string): void {
+        if (!value) {
+            directive.aspectType = DOMAspect.content;
+            return;
+        }
+
+        directive.sourceAspect = value;
+
+        switch (value[0]) {
+            case ":":
+                directive.targetAspect = value.substring(1);
+                directive.aspectType =
+                    directive.targetAspect === "classList"
+                        ? DOMAspect.tokenList
+                        : DOMAspect.property;
+                break;
+            case "?":
+                directive.targetAspect = value.substring(1);
+                directive.aspectType = DOMAspect.booleanAttribute;
+                break;
+            case "@":
+                directive.targetAspect = value.substring(1);
+                directive.aspectType = DOMAspect.event;
+                break;
+            default:
+                directive.targetAspect = value;
+                directive.aspectType = DOMAspect.attribute;
+                break;
+        }
+    },
 });
 
 /**
@@ -266,10 +351,12 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     /**
      * Creates a binding.
      * @param evaluate - Evaluates the binding.
+     * @param policy - The security policy to associate with this binding.
      * @param isVolatile - Indicates whether the binding is volatile.
      */
     public constructor(
         public evaluate: Expression<TSource, TReturn, TParent>,
+        public policy?: DOMPolicy,
         public isVolatile: boolean = false
     ) {}
 
@@ -285,132 +372,11 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
 }
 
 /**
- * The type of HTML aspect to target.
- * @public
- */
-export const Aspect = Object.freeze({
-    /**
-     * Not aspected.
-     */
-    none: 0 as const,
-
-    /**
-     * An attribute.
-     */
-    attribute: 1 as const,
-
-    /**
-     * A boolean attribute.
-     */
-    booleanAttribute: 2 as const,
-
-    /**
-     * A property.
-     */
-    property: 3 as const,
-
-    /**
-     * Content
-     */
-    content: 4 as const,
-
-    /**
-     * A token list.
-     */
-    tokenList: 5 as const,
-
-    /**
-     * An event.
-     */
-    event: 6 as const,
-
-    /**
-     *
-     * @param directive - The directive to assign the aspect to.
-     * @param value - The value to base the aspect determination on.
-     * @remarks
-     * If a falsy value is provided, then the content aspect will be assigned.
-     */
-    assign(directive: Aspected, value?: string): void {
-        if (!value) {
-            directive.aspectType = Aspect.content;
-            return;
-        }
-
-        directive.sourceAspect = value;
-
-        switch (value[0]) {
-            case ":":
-                directive.targetAspect = value.substring(1);
-                directive.aspectType =
-                    directive.targetAspect === "classList"
-                        ? Aspect.tokenList
-                        : Aspect.property;
-                break;
-            case "?":
-                directive.targetAspect = value.substring(1);
-                directive.aspectType = Aspect.booleanAttribute;
-                break;
-            case "@":
-                directive.targetAspect = value.substring(1);
-                directive.aspectType = Aspect.event;
-                break;
-            default:
-                directive.targetAspect = value;
-                directive.aspectType = Aspect.attribute;
-                break;
-        }
-    },
-} as const);
-
-/**
- * The type of HTML aspect to target.
- * @public
- */
-export type Aspect = typeof Aspect[Exclude<keyof typeof Aspect, "assign" | "none">];
-
-/**
- * Represents something that applies to a specific aspect of the DOM.
- * @public
- */
-export interface Aspected {
-    /**
-     * The original source aspect exactly as represented in markup.
-     */
-    sourceAspect: string;
-
-    /**
-     * The evaluated target aspect, determined after processing the source.
-     */
-    targetAspect: string;
-
-    /**
-     * The type of aspect to target.
-     */
-    aspectType: Aspect;
-
-    /**
-     * A binding if one is associated with the aspect.
-     */
-    dataBinding?: Binding;
-}
-
-/**
  * A base class used for attribute directives that don't need internal state.
  * @public
  */
 export abstract class StatelessAttachedAttributeDirective<TOptions>
     implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
-    /**
-     * The unique id of the factory.
-     */
-    public id: string = nextId();
-
-    /**
-     * The structural id of the DOM node to which the created behavior will apply.
-     */
-    public nodeId: string;
-
     /**
      * Opts out of JSON stringification.
      * @internal

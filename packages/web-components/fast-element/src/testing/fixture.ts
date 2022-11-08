@@ -125,7 +125,7 @@ export async function fixture<TElement = HTMLElement>(
 
     if (typeof templateNameOrType === "string") {
         const html = `<${templateNameOrType}></${templateNameOrType}>`;
-        templateNameOrType = new ViewTemplate(html, {});
+        templateNameOrType = new ViewTemplate(html);
     }
 
     const view = templateNameOrType.create();

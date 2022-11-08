@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "add new DOM Policy protection throughout",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

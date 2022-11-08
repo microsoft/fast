@@ -47,8 +47,7 @@ const defaultOptions: ContributorOptions = {
 };
 
 class NavigationContributorDirective implements ViewBehaviorFactory {
-    id: string;
-    nodeId: string;
+    targetNodeId: string;
 
     constructor(public readonly options: Required<ContributorOptions>) {}
 
@@ -72,8 +71,9 @@ class NavigationContributorBehavior implements ViewBehavior {
     bind(controller: ViewController): void {
         const context = controller.context as RouterExecutionContext;
         const options = this.directive.options;
-        this.contributor = controller.targets[this.directive.nodeId] as HTMLElement &
-            NavigationContributor;
+        this.contributor = controller.targets[
+            this.directive.targetNodeId
+        ] as HTMLElement & NavigationContributor;
 
         if (options.lifecycle) {
             this.router = context.router ?? Router.find(this.contributor);

@@ -1,4 +1,4 @@
-import { Aspect, DOM, ExecutionContext, FASTElement } from "@microsoft/fast-element";
+import { DOM, DOMAspect, ExecutionContext, FASTElement } from "@microsoft/fast-element";
 import { PendingTaskEvent } from "@microsoft/fast-element/pending-task";
 import { escapeHtml } from "../escape-html.js";
 import { RenderInfo } from "../render-info.js";
@@ -67,13 +67,13 @@ abstract class FASTElementRenderer extends DefaultElementRenderer {
 
                     const { target } = attr;
                     switch (attr.aspect) {
-                        case Aspect.property:
+                        case DOMAspect.property:
                             (this.element as any)[target] = result;
                             break;
-                        case Aspect.attribute:
+                        case DOMAspect.attribute:
                             DOM.setAttribute(this.element, target, result);
                             break;
-                        case Aspect.booleanAttribute:
+                        case DOMAspect.booleanAttribute:
                             DOM.setBooleanAttribute(this.element, target, result);
                             break;
                     }
