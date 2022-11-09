@@ -6,8 +6,8 @@ import {
     observable,
     RepeatDirective,
     Updates,
-    ViewBehaviorOrchestrator,
 } from "@microsoft/fast-element";
+import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities";
 import {
     eventFocus,
     eventFocusOut,
