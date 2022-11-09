@@ -1,15 +1,13 @@
-import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
+import { DOMAspect, DOMPolicy } from "../dom.js";
 import { Constructable, Mutable, noop } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
-import {
-    ExecutionContext,
+import type {
     Expression,
     ExpressionController,
     ExpressionObserver,
 } from "../observation/observable.js";
 import { createTypeRegistry } from "../platform.js";
-import type { HostBehavior, HostController } from "../styles/host.js";
-import { Markup, nextId } from "./markup.js";
+import { Markup } from "./markup.js";
 
 /**
  * The target nodes available to a behavior.
@@ -30,108 +28,6 @@ export interface ViewController<TSource = any, TParent = any>
      */
     readonly targets: ViewBehaviorTargets;
 }
-
-/**
- * Bridges between ViewBehaviors and HostBehaviors, enabling a host to
- * control ViewBehaviors.
- * @public
- */
-export interface ViewBehaviorOrchestrator<TSource = any, TParent = any>
-    extends ViewController<TSource, TParent>,
-        HostBehavior<TSource> {
-    /**
-     *
-     * @param nodeId - The structural id of the DOM node to which a behavior will apply.
-     * @param target - The DOM node associated with the id.
-     */
-    addTarget(nodeId: string, target: Node): void;
-
-    /**
-     * Adds a behavior.
-     * @param behavior - The behavior to add.
-     */
-    addBehavior(behavior: ViewBehavior): void;
-
-    /**
-     * Adds a behavior factory.
-     * @param factory - The behavior factory to add.
-     * @param target - The target the factory will create behaviors for.
-     */
-    addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void;
-}
-
-/**
- * Bridges between ViewBehaviors and HostBehaviors, enabling a host to
- * control ViewBehaviors.
- * @public
- */
-export const ViewBehaviorOrchestrator = Object.freeze({
-    /**
-     * Creates a ViewBehaviorOrchestrator.
-     * @param source - The source to to associate behaviors with.
-     * @returns A ViewBehaviorOrchestrator.
-     */
-    create<TSource = any, TParent = any>(
-        source: TSource
-    ): ViewBehaviorOrchestrator<TSource, TParent> {
-        const behaviors: ViewBehavior[] = [];
-        const targets: ViewBehaviorTargets = {};
-        let unbindables: { unbind(controller: ViewController<TSource>) }[] | null = null;
-        let isConnected = false;
-
-        return {
-            source,
-            context: ExecutionContext.default,
-            targets,
-            get isBound() {
-                return isConnected;
-            },
-            addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void {
-                const compiled = factory as CompiledViewBehaviorFactory;
-
-                compiled.id = compiled.id ?? nextId();
-                compiled.targetNodeId = compiled.targetNodeId ?? nextId();
-                compiled.targetTagName = (target as HTMLElement).tagName ?? null;
-                compiled.policy = compiled.policy ?? DOM.policy;
-
-                this.addTarget(compiled.targetNodeId, target);
-                this.addBehavior(compiled.createBehavior());
-            },
-            addTarget(nodeId: string, target: Node) {
-                targets[nodeId] = target;
-            },
-            addBehavior(behavior: ViewBehavior): void {
-                behaviors.push(behavior);
-
-                if (isConnected) {
-                    behavior.bind(this);
-                }
-            },
-            onUnbind(unbindable: { unbind(controller: ViewController<TSource>) }) {
-                if (unbindables === null) {
-                    unbindables = [];
-                }
-
-                unbindables.push(unbindable);
-            },
-            connectedCallback(controller: HostController<TSource>) {
-                if (!isConnected) {
-                    isConnected = true;
-                    behaviors.forEach(x => x.bind(this));
-                }
-            },
-            disconnectedCallback(controller: HostController<TSource>) {
-                if (isConnected) {
-                    isConnected = false;
-
-                    if (unbindables !== null) {
-                        unbindables.forEach(x => x.unbind(this));
-                    }
-                }
-            },
-        };
-    },
-});
 
 /**
  * Represents an object that can contribute behavior to a view.

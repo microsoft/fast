@@ -129,6 +129,39 @@ const result = templateRenderer.render(html`
 
 > Unsupported directives are no-ops. To understand more about why, see the [Design Philosophy.](#design-philosophy)
 
+##### Rendering Custom Directives
+`@microsoft/fast-element` supports creating custom directives, and `@microsoft/fast-ssr` supports *rendering* 
+those custom directives by associating a SSR *renderer* to the custom directive.
+
+> This section does not cover *creating* a FAST directives - that documentation is coming to fast-element.
+
+With your directive (`MyDirective`) created, create a `ViewBehaviorFactoryRenderer` using the Directive
+
+```ts
+const MyDirectiveRenderer: ViewBehaviorFactoryRenderer<MyDirective> = {
+    // Instructs the TemplateRenderer to use this renderer when instances of
+    // 'MyDirective' are found in a template
+    matches: MyDirective,
+    *render(directive, renderInfo, source, templateRenderer, context) {
+        // Yield something, or do nothing
+    }
+}
+```
+
+What a custom directive should *do* on the server depends highly on the scenario. As discussed above, several FAST directives are no-ops because the use-case doesn't make sense in an SSR context. The `render()` function is provided the directive instance, the SSR renderInfo object, any source data, the `TemplateRenderer`, and the `ExecutionContext` - use these to render what makes sense for the custom directive.
+
+To use the custom renderer, you must configure `fastSSR`:
+```ts
+import fastSSR from "@microsoft/fast-ssr";
+
+const { templateRenderer} = fastSSR({viewBehaviorFactoryRenderers: [MyDirectiveRenderer]});
+```
+
+Then, templates that use `MyDirective` can be rendered:
+
+```ts
+templateRenderer.render(html`<p ${new MyDirective("some-option")}></p>`);
+```
 #### Rendering Asynchronous Components
 Sometimes it is necessary for a component to do asynchronous work prior to rending it's template, and `@microsoft/fast-ssr` can be configured to support async work by supplying the `renderMode: "async"` configuration to the SSR factory:
 

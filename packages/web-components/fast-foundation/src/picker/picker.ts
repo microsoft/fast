@@ -7,9 +7,9 @@ import {
     ref,
     RepeatDirective,
     Updates,
-    ViewBehaviorOrchestrator,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities";
 import {
     keyArrowDown,
     keyArrowLeft,
