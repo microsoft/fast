@@ -134,6 +134,7 @@ export const RequestStorageManager: Readonly<{
 export interface SSRConfiguration {
     deferHydration?: boolean;
     renderMode?: "sync" | "async";
+    viewBehaviorFactoryRenderers?: ViewBehaviorFactoryRenderer<any>[];
 }
 
 // @beta
@@ -163,15 +164,15 @@ export interface TemplateRenderer {
 export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
     matcher: Constructable<T>;
     // Warning: (ae-forgotten-export) The symbol "DefaultTemplateRenderer" needs to be exported by the entry point exports.d.ts
-    render(behavior: T, renderInfo: RenderInfo, source: any, renderer: DefaultTemplateRenderer, context: ExecutionContext): IterableIterator<string>;
+    render(behaviorFactory: T, renderInfo: RenderInfo, source: any, renderer: DefaultTemplateRenderer, context: ExecutionContext): IterableIterator<string>;
 }
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/exports.d.ts:37:5 - (ae-forgotten-export) The symbol "SyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
-// dist/dts/exports.d.ts:40:5 - (ae-incompatible-release-tags) The symbol "templateRenderer" is marked as @public, but its signature references "TemplateRenderer" which is marked as @beta
-// dist/dts/exports.d.ts:41:5 - (ae-incompatible-release-tags) The symbol "ElementRenderer" is marked as @public, but its signature references "ConstructableFASTElementRenderer" which is marked as @beta
-// dist/dts/exports.d.ts:51:5 - (ae-forgotten-export) The symbol "AsyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
+// dist/dts/exports.d.ts:41:5 - (ae-forgotten-export) The symbol "SyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
+// dist/dts/exports.d.ts:44:5 - (ae-incompatible-release-tags) The symbol "templateRenderer" is marked as @public, but its signature references "TemplateRenderer" which is marked as @beta
+// dist/dts/exports.d.ts:45:5 - (ae-incompatible-release-tags) The symbol "ElementRenderer" is marked as @public, but its signature references "ConstructableFASTElementRenderer" which is marked as @beta
+// dist/dts/exports.d.ts:55:5 - (ae-forgotten-export) The symbol "AsyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
 // dist/dts/request-storage.d.ts:32:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
 
 // (No @packageDocumentation comment for this package)

@@ -52,6 +52,11 @@ export interface SSRConfiguration {
      * ```
      */
     deferHydration?: boolean;
+
+    /**
+     * Renderers for author-defined ViewBehaviorFactories.
+     */
+    viewBehaviorFactoryRenderers?: ViewBehaviorFactoryRenderer<any>[];
 }
 
 /** @beta */
@@ -138,9 +143,19 @@ function fastSSR(config?: SSRConfiguration): any {
     templateRenderer.withDefaultElementRenderers(
         (elementRenderer as unknown) as ConstructableElementRenderer
     );
+
+    // Configure out-of-box ViewBehaviorFactory renderers first
     templateRenderer.withViewBehaviorFactoryRenderers(
         ...defaultViewBehaviorFactoryRenderers
     );
+
+    // Add any author-defined ViewBehaviorFactories. This order allows overriding
+    // out-of-box renderers.
+    if (Array.isArray(config.viewBehaviorFactoryRenderers)) {
+        templateRenderer.withViewBehaviorFactoryRenderers(
+            ...config.viewBehaviorFactoryRenderers
+        );
+    }
 
     return {
         templateRenderer,
