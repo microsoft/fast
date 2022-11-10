@@ -167,8 +167,6 @@ export class FASTDataGridRow extends FASTElement {
      */
     public disableClickSelect: boolean = false;
 
-    private cellsPlaceholder: Node | null = null;
-
     /**
      * @internal
      */

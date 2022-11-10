@@ -434,14 +434,6 @@ export class FASTDataGrid extends FASTElement {
         this.queueRowIndexUpdate();
     }
 
-    /**
-     * Selected range
-     *
-     * @internal
-     */
-    @observable
-    public selectedRanges: DataGridSelectedRange[] = [];
-
     private rowsPlaceholder: Node | null = null;
     private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
 

@@ -321,7 +321,7 @@ export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "
 export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // @public
-export function dataGridCellTemplate(): ElementViewTemplate<FASTDataGridCell>;
+export function dataGridCellTemplate<T extends FASTDataGridCell>(): ElementViewTemplate<T>;
 
 // @public
 export const DataGridCellTypes: {
@@ -352,7 +352,7 @@ export const DataGridRowTypes: {
 export type DataGridRowTypes = ValuesOf<typeof DataGridRowTypes>;
 
 // @public
-export function dataGridTemplate(options: DataGridOptions): ElementViewTemplate<FASTDataGrid>;
+export function dataGridTemplate<T extends FASTDataGrid>(options: DataGridOptions): ElementViewTemplate<T>;
 
 // @public
 export class DateFormatter {

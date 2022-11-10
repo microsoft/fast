@@ -4,8 +4,7 @@ import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 
 test.describe("DataGridRow", () => {
-    const cellQueryString =
-        '[role="cell"], [role="gridcell"], [role="columnheader"], [role="rowheader"]';
+    const cellQueryString = "fast-data-grid-cell";
 
     let page: Page;
     let element: Locator;
@@ -175,5 +174,66 @@ test.describe("DataGridRow", () => {
         });
 
         await expect(cells).toHaveCount(3);
+    });
+
+    test("should emit a 'rowselectionchange' event when clicked with disableClickSelect disabled", async () => {
+        await root.evaluate((node: FASTDataGridRow) => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-row>
+                    <fast-data-grid-cell ></fast-data-grid-cell>
+                </fast-data-grid-row>
+            `;
+            node.disableClickSelect = false;
+        });
+
+        const wasInvoked = await Promise.all([
+            element.evaluate(node =>
+                node.addEventListener("rowselectionchange", () => true)
+            ),
+            element.click(),
+        ]);
+
+        expect(wasInvoked).toBeTruthy;
+    });
+
+    test("should not emit a 'rowselectionchange' event when clicked with disableClickSelect disabled", async () => {
+        await root.evaluate((node: FASTDataGridRow) => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-row>
+                    <fast-data-grid-cell ></fast-data-grid-cell>
+                </fast-data-grid-row>
+            `;
+            node.disableClickSelect = true;
+        });
+
+        const wasInvoked = await Promise.all([
+            element.evaluate(node =>
+                node.addEventListener("rowselectionchange", () => true)
+            ),
+            element.click(),
+        ]);
+
+        expect(wasInvoked).toBeFalsy;
+    });
+
+    test("should emit a 'rowselectionchange' event when space key is pressed with disableClickSelect disabled", async () => {
+        await root.evaluate((node: FASTDataGridRow) => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid-row>
+                    <fast-data-grid-cell ></fast-data-grid-cell>
+                </fast-data-grid-row>
+            `;
+            node.disableClickSelect = false;
+        });
+
+        const wasInvoked = await Promise.all([
+            element.evaluate(node => {
+                node.addEventListener("rowselectionchange", () => true);
+                // FIXME: Playwright's keyboard API is not working as expected.
+                node.dispatchEvent(new KeyboardEvent("keydown", { key: "Space" }));
+            }),
+        ]);
+
+        expect(wasInvoked).toBeTruthy;
     });
 });
