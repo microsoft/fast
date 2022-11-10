@@ -461,9 +461,7 @@ export class FASTDataGrid extends FASTElement {
                     this.focusOnCell(0, 0, "nearest");
                     break;
                 }
-                console.log(this.getPageSize());
-                console.log(this.focusRowIndex);
-                console.log(this.focusRowIndex - this.getPageSize());
+
                 newFocusRowIndex = Math.max(0, this.focusRowIndex - this.getPageSize());
 
                 this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, "start");
@@ -543,14 +541,13 @@ export class FASTDataGrid extends FASTElement {
     private focusOnCell = (
         rowIndex: number,
         columnIndex: number,
-        alignment: "start" | "center" | "end" | "nearest"
+        alignment: ScrollLogicalPosition
     ): void => {
         if (this.rowElements.length === 0) {
             this.focusRowIndex = 0;
             this.focusColumnIndex = 0;
             return;
         }
-
         const focusRowIndex = Math.max(
             0,
             Math.min(this.rowElements.length - 1, rowIndex)
