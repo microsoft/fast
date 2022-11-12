@@ -112,7 +112,6 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
 
 | Name            | Privacy | Type      | Default | Description                                                                                                                                                                                 | Inherited From         |
 | --------------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `readOnly`      | public  | `boolean` |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                        |
 | `indeterminate` | public  | `boolean` | `false` | The indeterminate state of the control                                                                                                                                                      |                        |
 | `proxy`         |         |           |         |                                                                                                                                                                                             | FormAssociatedCheckbox |
 
