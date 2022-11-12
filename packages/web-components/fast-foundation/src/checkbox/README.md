@@ -110,28 +110,16 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
 
 #### Fields
 
-| Name            | Privacy | Type      | Default | Description                                                                                                                                                                                 | Inherited From         |
-| --------------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `indeterminate` | public  | `boolean` | `false` | The indeterminate state of the control                                                                                                                                                      |                        |
-| `proxy`         |         |           |         |                                                                                                                                                                                             | FormAssociatedCheckbox |
-
-#### Methods
-
-| Name              | Privacy   | Description | Parameters | Return | Inherited From |
-| ----------------- | --------- | ----------- | ---------- | ------ | -------------- |
-| `readOnlyChanged` | protected |             |            | `void` |                |
+| Name            | Privacy | Type      | Default | Description                            | Inherited From         |
+| --------------- | ------- | --------- | ------- | -------------------------------------- | ---------------------- |
+| `indeterminate` | public  | `boolean` | `false` | The indeterminate state of the control |                        |
+| `proxy`         |         |           |         |                                        | FormAssociatedCheckbox |
 
 #### Events
 
 | Name     | Type | Description                                                | Inherited From |
 | -------- | ---- | ---------------------------------------------------------- | -------------- |
 | `change` |      | Emits a custom change event when the checked state changes |                |
-
-#### Attributes
-
-| Name       | Field    | Inherited From |
-| ---------- | -------- | -------------- |
-| `readonly` | readOnly |                |
 
 #### CSS Parts
 

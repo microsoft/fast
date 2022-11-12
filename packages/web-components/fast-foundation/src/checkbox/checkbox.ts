@@ -26,20 +26,6 @@ export type CheckboxOptions = {
  */
 export class FASTCheckbox extends FormAssociatedCheckbox {
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
-     * @public
-     * @remarks
-     * HTML Attribute: readonly
-     */
-    @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean; // Map to proxy element
-    protected readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.readOnly = this.readOnly;
-        }
-    }
-
-    /**
      * The element's value to be included in form submission when checked.
      * Default to "on" to reach parity with input[type="checkbox"]
      *
@@ -69,10 +55,6 @@ export class FASTCheckbox extends FormAssociatedCheckbox {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent): void => {
-        if (this.readOnly) {
-            return;
-        }
-
         switch (e.key) {
             case keySpace:
                 if (this.indeterminate) {
@@ -87,7 +69,7 @@ export class FASTCheckbox extends FormAssociatedCheckbox {
      * @internal
      */
     public clickHandler = (e: MouseEvent): void => {
-        if (!this.disabled && !this.readOnly) {
+        if (!this.disabled) {
             if (this.indeterminate) {
                 this.indeterminate = false;
             }

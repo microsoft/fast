@@ -150,38 +150,6 @@ test.describe("Checkbox", () => {
         await expect(element).not.toHaveAttribute("tabindex", "0");
     });
 
-    test("should NOT set a default `aria-readonly` value when `readonly` is not defined", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-checkbox></fast-checkbox>
-            `;
-        });
-
-        await expect(element).not.toHaveBooleanAttribute("readonly");
-
-        await expect(element).not.hasAttribute("aria-readonly");
-    });
-
-    test("should set the `aria-readonly` attribute equal to the `readonly` property", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-checkbox></fast-checkbox>
-            `;
-        });
-
-        await element.evaluate((node: FASTCheckbox) => {
-            node.readOnly = true;
-        });
-
-        await expect(element).toHaveAttribute("aria-readonly", "true");
-
-        await element.evaluate((node: FASTCheckbox) => {
-            node.readOnly = false;
-        });
-
-        await expect(element).toHaveAttribute("aria-readonly", "false");
-    });
-
     test("should set the aria-checked value to 'mixed' when indeterminate property is true", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `

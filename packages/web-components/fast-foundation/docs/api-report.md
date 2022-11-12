@@ -883,9 +883,6 @@ export class FASTCheckbox extends FormAssociatedCheckbox {
     initialValue: string;
     // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
-    readOnly: boolean;
-    // (undocumented)
-    protected readOnlyChanged(): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
