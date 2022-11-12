@@ -335,12 +335,12 @@ export class FASTAnchoredRegion extends FASTElement {
     }
 
     /**
-     * The HTML element being used as the anchor
+     * The element being used as the anchor
      *
      * @public
      */
     @observable
-    public anchorElement: HTMLElement | null = null;
+    public anchorElement: Element | null = null;
     protected anchorElementChanged(): void {
         if (this.initialLayoutComplete) {
             this.stopObservers();
@@ -358,7 +358,7 @@ export class FASTAnchoredRegion extends FASTElement {
      * @public
      */
     @observable
-    public viewportElement: HTMLElement | null = null;
+    public viewportElement: Element | null = null;
     protected viewportElementChanged(): void {
         if (this.$fastController.isConnected && this.initialLayoutComplete) {
             this.initialize();

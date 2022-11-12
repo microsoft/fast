@@ -166,6 +166,7 @@ export class ARTiles extends FASTElement {
     private handTileData: TileData[] = [];
 
     private bestGameState: GameState;
+    private cachedGameState: GameState | undefined;
 
     private activeBoardTiles: HTMLElement[] = [];
 
@@ -278,6 +279,7 @@ export class ARTiles extends FASTElement {
             return;
         }
         e.preventDefault();
+        this.cachedGameState = this.getCurrentGameState();
         const detail = e.detail as tileDragEventArgs;
         this.currentDragTile = detail.tile;
 
@@ -353,8 +355,13 @@ export class ARTiles extends FASTElement {
         }
         e.preventDefault();
         if (this.hoverSocket) {
+            if (this.cachedGameState) {
+                this.previousGameStates.push(this.cachedGameState);
+                this.cachedGameState = undefined;
+            }
+            this.nextGameStates.splice(0, this.nextGameStates.length);
+            this.enableNext = false;
             this.setTileInSocket(this.hoverSocket, this.currentDragTile);
-            this.previousGameStates.push(this.getCurrentGameState());
             this.enablePrevious = true;
             this.enableNext = false;
             this.nextGameStates.splice(0, this.nextGameStates.length);
@@ -362,6 +369,9 @@ export class ARTiles extends FASTElement {
             const originalSocket = this.shadowRoot?.getElementById(
                 `dispenser-${this.currentDragTile.tileData.tileId}`
             );
+            if (this.cachedGameState) {
+                this.cachedGameState = undefined;
+            }
             this.currentDragTile.tileData.column = undefined;
             this.currentDragTile.tileData.row = undefined;
             if (originalSocket) {
@@ -516,12 +526,30 @@ export class ARTiles extends FASTElement {
         if (this.previousGameStates.length === 0) {
             return;
         }
-        const gameState: GameState = this.previousGameStates.splice(0, 1)[0];
-        this.applyGameState(gameState);
-        this.nextGameStates.push(gameState);
-        this.enableNext = true;
-        if (this.previousGameStates.length === 0) {
-            this.enablePrevious = false;
+        const gameState: GameState | undefined = this.previousGameStates.pop();
+        if (gameState) {
+            this.nextGameStates.push(this.getCurrentGameState());
+            this.applyGameState(gameState);
+            this.enableNext = true;
+            if (this.previousGameStates.length === 0) {
+                this.enablePrevious = false;
+            }
+        }
+        return;
+    };
+
+    public handleNextClick = (e: MouseEvent): void => {
+        if (this.nextGameStates.length === 0) {
+            return;
+        }
+        const gameState: GameState | undefined = this.nextGameStates.pop();
+        if (gameState) {
+            this.previousGameStates.push(this.getCurrentGameState());
+            this.applyGameState(gameState);
+            if (this.nextGameStates.length === 0) {
+                this.enableNext = false;
+            }
+            this.enablePrevious = true;
         }
         return;
     };
@@ -530,12 +558,8 @@ export class ARTiles extends FASTElement {
         for (let i = 0; i < gameState.tileData.length; i++) {
             Object.assign(this.tileData[i], gameState.tileData[i]);
         }
-        this.reset();
+        this.updateTiles();
     }
-
-    public handleNextClick = (e: MouseEvent): void => {
-        return;
-    };
 
     public handleSocketUnhovered = (e: CustomEvent): void => {
         if (
@@ -760,13 +784,28 @@ export class ARTiles extends FASTElement {
         });
     }
 
-    private updateTiles = (): void => {
+    private updateTiles(): void {
         this.tileUpdateQueued = false;
         this.placedTiles.splice(0, this.placedTiles.length);
+        let anchorElement: Element | null | undefined = null;
         this.allTiles.forEach(tile => {
             if (tile.tileData.row && tile.tileData.column) {
+                anchorElement = this.shadowRoot?.getElementById(
+                    `board-tile-${tile.tileData.row}-${tile.tileData.column}`
+                );
                 this.placedTiles.push(tile);
+            } else {
+                anchorElement = this.shadowRoot?.getElementById(
+                    `dispenser-${tile.tileData.tileId}`
+                );
             }
+            if (anchorElement !== undefined && anchorElement !== tile.anchorElement) {
+                tile.anchorElement = anchorElement;
+            }
+            tile.sockets.forEach(socket => {
+                socket.connectedTile = undefined;
+            });
+            anchorElement = null;
         });
 
         this.placedTiles.forEach(tile => {
@@ -793,7 +832,7 @@ export class ARTiles extends FASTElement {
         });
 
         this.updateScore();
-    };
+    }
 
     private connectTileToSocket(socket: ARSocket, tile: ARTile): void {
         socket.connectedTile = tile;
@@ -843,10 +882,6 @@ const letterTileTemplate: ViewTemplate<TileData> = html`
     <ar-tile
         :tileData="${x => x}"
         id="${x => x.tileId}"
-        anchor="${x =>
-            x.row && x.column
-                ? `board-tile-${x.row}-${x.column}`
-                : `dispenser-${x.tileId}`}"
         viewport="layout"
         vertical-viewport-lock="true"
         horizontal-viewport-lock="true"
