@@ -63,14 +63,10 @@ export class ARTiles extends FASTElement {
 
     @observable
     public gameConfig: GameConfig = {
-        columnCount: 12,
-        rowCount: 12,
+        columnCount: 11,
+        rowCount: 11,
         tileData: [
-            { title: "W", value: 1, column: 5, row: 6, fixed: true },
-            { title: "O", value: 1, column: 6, row: 6, fixed: true },
-            { title: "R", value: 1, column: 7, row: 6, fixed: true },
-            { title: "D", value: 1, column: 8, row: 6, fixed: true },
-            { title: "S", value: 1, column: 9, row: 6, fixed: true },
+            { title: "E", value: 1, column: 6, row: 6, fixed: true },
             { title: "E", value: 1 },
             { title: "A", value: 1 },
             { title: "R", value: 1 },
@@ -103,6 +99,7 @@ export class ARTiles extends FASTElement {
             { title: "O", value: 1 },
             { title: "U", value: 3 },
             { title: "R", value: 1 },
+            { title: "T", value: 2 },
         ],
     };
     public gameConfigChanged(): void {
@@ -118,6 +115,9 @@ export class ARTiles extends FASTElement {
         if (this.$fastController.isConnected) {
             this.reset();
         }
+        // this.style.setProperty("--tile-size", "40px");
+        this.style.setProperty("--column-count", `${this.columnCount}`);
+        this.style.setProperty("--row-count", `${this.rowCount}`);
     }
 
     @observable
@@ -426,27 +426,51 @@ export class ARTiles extends FASTElement {
                 Object.assign({ row: undefined, column: undefined }, tileData)
             );
         });
+        const date: Date = new Date();
         const gameState: GameState = {
+            timeStamp: date.toLocaleString(),
             score: this.score,
             tileData: currentTileData,
         };
         return gameState;
     }
 
+    private isSocketOutsideGameGrid(socket: ARSocket): boolean {
+        if (
+            !socket.parentTile ||
+            !this.placedTiles.includes(socket.parentTile) ||
+            !socket.parentTile.tileData.row ||
+            !socket.parentTile.tileData.column
+        ) {
+            return false;
+        }
+
+        const boardTile: BoardTile = this.getBoardTileForSocket(socket);
+        if (
+            boardTile.column < 1 ||
+            boardTile.column > this.columnCount ||
+            boardTile.row < 1 ||
+            boardTile.row > this.rowCount
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
     private isValidSocket(socket: ARSocket): boolean {
         if (
             (this.currentDragTile && this.currentDragTile.sockets.includes(socket)) ||
-            !socket.parentTile ||
-            !this.placedTiles.includes(socket.parentTile) ||
+            !this.isSocketOutsideGameGrid(socket) ||
             this.hand.contains(socket) ||
             socket.connectedTile !== undefined
         ) {
             return false;
         }
 
-        if (socket.parentTile === undefined) {
-            return true;
-        }
+        // if (socket.parentTile === undefined) {
+        //     return true;
+        // }
 
         const dropRect: DOMRect | undefined = this.getDropRect(
             socket,
@@ -688,7 +712,10 @@ export class ARTiles extends FASTElement {
                 });
                 const tileToCheck: ARTile = dragTileSocket.connectedTile;
                 dragTileSocket.connectedTile = undefined;
-                if (!this.isConnectedToFixedTile(tileToCheck, [])) {
+                if (
+                    !tileToCheck.tileData.fixed &&
+                    !this.isConnectedToFixedTile(tileToCheck, [])
+                ) {
                     this.removeTileFromSocket(tileToCheck);
                 }
             }
@@ -881,6 +908,11 @@ export class ARTiles extends FASTElement {
     public handleSaveGameClick = (e: MouseEvent): void => {
         this.savedGames.push(this.getCurrentGameState());
     };
+
+    public handleLoadSaveGameClick = (e: MouseEvent, gameState: GameState): void => {
+        this.saveCurrentGameStateToBackStack();
+        this.applyGameState(gameState);
+    };
 }
 
 const boardTileTemplate: ViewTemplate<BoardTile> = html`
@@ -905,7 +937,10 @@ const scoreWordTemplate: ViewTemplate<ScoreWord> = html`
 `;
 
 const savedGameTemplate: ViewTemplate<GameState> = html`
-    <fast-option class="saved-game-option">
+    <fast-option
+        class="saved-game-option"
+        @click="${(x, c) => c.parent.handleLoadSaveGameClick(c.event as MouseEvent, x)}"
+    >
         <div class="saved-game-display">
             <div class="saved-game-timestamp">
                 ${x => x.timeStamp}
@@ -957,9 +992,6 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                 </div>
             </div>
             <div class="scoring">
-                    <h2>
-                        ScoreWords
-                    </h2>
                     Score: ${x => x.score}
                     <br></br>
                     Best Score: ${x => x.bestScore}
@@ -1073,7 +1105,8 @@ export const arTilesStyles = css`
 
     .scoring {
         contain: size;
-        height: 100%;
+        height: auto;
+        padding: 10px;
         overflow-y: auto;
         overflow-x: hidden;
         background: darkgray;
