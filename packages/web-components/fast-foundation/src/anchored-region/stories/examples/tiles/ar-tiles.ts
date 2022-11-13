@@ -46,6 +46,8 @@ export interface GameConfig {
 }
 
 export interface GameState {
+    title?: string;
+    timeStamp?: string;
     score: number;
     tileData: TileData[];
 }
@@ -61,8 +63,8 @@ export class ARTiles extends FASTElement {
 
     @observable
     public gameConfig: GameConfig = {
-        columnCount: 14,
-        rowCount: 14,
+        columnCount: 12,
+        rowCount: 12,
         tileData: [
             { title: "W", value: 1, column: 5, row: 6, fixed: true },
             { title: "O", value: 1, column: 6, row: 6, fixed: true },
@@ -138,6 +140,8 @@ export class ARTiles extends FASTElement {
     public hand: HTMLDivElement;
     public verticalWordDisplay: HTMLDivElement;
     public horizontalWordDisplay: HTMLDivElement;
+    public savedGameDisplay: HTMLDivElement;
+    public savedBoardDisplay: HTMLDivElement;
 
     @observable
     public allTiles: ARTile[] = [];
@@ -156,6 +160,9 @@ export class ARTiles extends FASTElement {
     @observable
     public enableNext: boolean = false;
 
+    @observable
+    public savedGames: GameState[] = [];
+
     private previousGameStates: GameState[] = [];
     private nextGameStates: GameState[] = [];
 
@@ -166,7 +173,6 @@ export class ARTiles extends FASTElement {
     private handTileData: TileData[] = [];
 
     private bestGameState: GameState;
-    private cachedGameState: GameState | undefined;
 
     private activeBoardTiles: HTMLElement[] = [];
 
@@ -180,6 +186,7 @@ export class ARTiles extends FASTElement {
     private verticalWordPlaceholder: Node | null = null;
     private horizontalWordPlaceholder: Node | null = null;
     private boardTilePlaceholder: Node | null = null;
+    private savedGamePlaceholder: Node | null = null;
 
     private rowCount: number;
     private columnCount: number;
@@ -198,6 +205,7 @@ export class ARTiles extends FASTElement {
         this.verticalWordPlaceholder = document.createComment("");
         this.horizontalWordPlaceholder = document.createComment("");
         this.boardTilePlaceholder = document.createComment("");
+        this.savedGamePlaceholder = document.createComment("");
 
         if (this.behaviorOrchestrator === null) {
             this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
@@ -250,6 +258,15 @@ export class ARTiles extends FASTElement {
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<ARTiles>(
+                    bind(x => x.savedGames, false),
+                    bind(x => savedGameTemplate, false),
+                    { positioning: true }
+                ),
+                this.savedGameDisplay.appendChild(this.savedGamePlaceholder)
+            );
+
+            this.behaviorOrchestrator.addBehaviorFactory(
+                new RepeatDirective<ARTiles>(
                     bind(x => x.boardSpaces, false),
                     bind(x => boardTileTemplate, false),
                     { positioning: true }
@@ -279,7 +296,7 @@ export class ARTiles extends FASTElement {
             return;
         }
         e.preventDefault();
-        this.cachedGameState = this.getCurrentGameState();
+        this.saveCurrentGameStateToBackStack();
         const detail = e.detail as tileDragEventArgs;
         this.currentDragTile = detail.tile;
 
@@ -355,10 +372,6 @@ export class ARTiles extends FASTElement {
         }
         e.preventDefault();
         if (this.hoverSocket) {
-            if (this.cachedGameState) {
-                this.previousGameStates.push(this.cachedGameState);
-                this.cachedGameState = undefined;
-            }
             this.nextGameStates.splice(0, this.nextGameStates.length);
             this.enableNext = false;
             this.setTileInSocket(this.hoverSocket, this.currentDragTile);
@@ -366,14 +379,11 @@ export class ARTiles extends FASTElement {
             this.enableNext = false;
             this.nextGameStates.splice(0, this.nextGameStates.length);
         } else {
+            this.currentDragTile.tileData.column = undefined;
+            this.currentDragTile.tileData.row = undefined;
             const originalSocket = this.shadowRoot?.getElementById(
                 `dispenser-${this.currentDragTile.tileData.tileId}`
             );
-            if (this.cachedGameState) {
-                this.cachedGameState = undefined;
-            }
-            this.currentDragTile.tileData.column = undefined;
-            this.currentDragTile.tileData.row = undefined;
             if (originalSocket) {
                 this.setTileInSocket(originalSocket as ARSocket, this.currentDragTile);
             }
@@ -395,6 +405,19 @@ export class ARTiles extends FASTElement {
             boardTile.classList.toggle("active", false);
         });
     };
+
+    private saveCurrentGameStateToBackStack(): void {
+        const currentGameState = this.getCurrentGameState();
+        if (
+            this.previousGameStates.length > 0 &&
+            JSON.stringify(
+                this.previousGameStates[this.previousGameStates.length - 1]
+            ) === JSON.stringify(currentGameState)
+        ) {
+            return;
+        }
+        this.previousGameStates.push(currentGameState);
+    }
 
     private getCurrentGameState(): GameState {
         const currentTileData: TileData[] = [];
@@ -544,7 +567,7 @@ export class ARTiles extends FASTElement {
         }
         const gameState: GameState | undefined = this.nextGameStates.pop();
         if (gameState) {
-            this.previousGameStates.push(this.getCurrentGameState());
+            this.saveCurrentGameStateToBackStack();
             this.applyGameState(gameState);
             if (this.nextGameStates.length === 0) {
                 this.enableNext = false;
@@ -652,6 +675,9 @@ export class ARTiles extends FASTElement {
         if (originalSocket) {
             tile.anchorElement = originalSocket;
         }
+
+        tile.tileData.column = undefined;
+        tile.tileData.row = undefined;
 
         tile.sockets.forEach(dragTileSocket => {
             if (dragTileSocket.connectedTile) {
@@ -851,11 +877,11 @@ export class ARTiles extends FASTElement {
                 break;
         }
     }
-}
 
-const sectionDividerTemplate = html`
-    <fast-divider style="margin:20px;"></fast-divider>
-`;
+    public handleSaveGameClick = (e: MouseEvent): void => {
+        this.savedGames.push(this.getCurrentGameState());
+    };
+}
 
 const boardTileTemplate: ViewTemplate<BoardTile> = html`
     <div
@@ -873,6 +899,19 @@ const scoreWordTemplate: ViewTemplate<ScoreWord> = html`
             </div>
             <div class="score-word-score">
                 ${x => x.value}
+            </div>
+        </div>
+    </fast-option>
+`;
+
+const savedGameTemplate: ViewTemplate<GameState> = html`
+    <fast-option class="saved-game-option">
+        <div class="saved-game-display">
+            <div class="saved-game-timestamp">
+                ${x => x.timeStamp}
+            </div>
+            <div class="saved-game-score">
+                ${x => x.score}
             </div>
         </div>
     </fast-option>
@@ -903,10 +942,6 @@ const dispenserTemplate: ViewTemplate<TileData> = html`
 export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
     return html<T>`
         <template>
-            <h1>
-                Tiles
-            </h1>
-            ${sectionDividerTemplate} Blah ${sectionDividerTemplate}
             <div
                 id="layout"
                 class="layout"
@@ -917,8 +952,11 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                 ${ref("layout")}
             >
                 <div id="board" class="board" ${ref("board")}></div>
-                <div id="hand" class="hand" ${ref("hand")}></div>
-                <div class="scoring">
+                <div class="hand-panel">
+                    <div id="hand" class="hand" ${ref("hand")}></div>
+                </div>
+            </div>
+            <div class="scoring">
                     <h2>
                         ScoreWords
                     </h2>
@@ -957,63 +995,89 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                         class="score-word-listbox"
                     >
                     </fast-listbox>
+
+                    <h3>
+                        Saved Games
+                    </h3>
+                    <fast-button
+                        @click="${(x, c) => x.handleSaveGameClick(c.event as MouseEvent)}"
+                    >
+                    Save
+                    </fast-button>
+                    <br></br>
+                    <fast-listbox
+                        ${ref("savedGameDisplay")}
+                        class="saved-game-listbox"
+                    >
+                    </fast-listbox>
                 </div>
-            </div>
         </template>
     `;
 }
 
 export const arTilesStyles = css`
     :host {
-    }
-
-    .start {
-        grid-row: 5;
-        grid-column: 5;
-        background: yellow;
-        height: 40px;
-        width: 40px;
+        --tile-size: 40px;
+        --column-count: 12;
+        --row-count: 12;
+        height: auto;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 10px auto 10px 1fr 10px;
+        grid-template-rows: 10px 1fr 10px;
     }
 
     .dispenser {
-        margin: 5px;
-        background: brown;
-        height: 40px;
-        width: 40px;
+        display: inline-block;
+        height: var(--tile-size);
+        width: var(--tile-size);
     }
 
     .layout {
         height: auto;
-        width: 1000px;
+        width: auto;
         position: relative;
         display: grid;
-        grid-template-columns: 10px 560px 10px 200px 10px;
-        grid-template-rows: 10px 560px 10px auto 10px;
+        grid-row: 2;
+        grid-column: 2;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 10px 1fr;
     }
 
     .board {
-        grid-row: 2;
+        width: auto;
+        grid-row: 1;
         grid-column: 2;
         background: lightgray;
         display: grid;
-        grid-template-columns: repeat(15, 40px);
-        grid-template-rows: repeat(15, 40px);
+        grid-template-columns: repeat(var(--column-count), var(--tile-size));
+        grid-template-rows: repeat(var(--row-count), var(--tile-size));
+    }
+
+    .hand-panel {
+        contain: inline-size;
+        display: block;
+        width: 100%;
+        height: auto;
+        grid-row: 3;
+        grid-column: 2;
+        background: lightgray;
     }
 
     .hand {
-        position: relative;
-        grid-row: 4;
-        grid-column: 2;
-        background: lightgray;
-        display: flex;
-        gap; 10px;
         flex-wrap: wrap;
+        display: flex;
+        width: 100%;
+        height: auto;
     }
 
     .scoring {
-        padding: 10px;
+        contain: size;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
         background: darkgray;
-        grid-row: 2 / 5;
+        grid-row: 2;
         grid-column: 4;
     }
 
@@ -1034,7 +1098,7 @@ export const arTilesStyles = css`
         width: 100%;
     }
 
-    .score-word-option::part(content){
+    .score-word-option::part(content) {
         width: 100%;
     }
 
@@ -1048,10 +1112,40 @@ export const arTilesStyles = css`
     .score-word-word {
         grid-column: 1;
         grid-row: 1;
-
     }
 
     .score-word-score {
+        background: green;
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .saved-game-listbox {
+        width: 100%;
+        min-height: 50px;
+    }
+
+    .saved-game-display {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: 1fr;
+    }
+
+    .saved-game-option {
+        width: 100%;
+    }
+
+    .saved-game-option::part(content) {
+        width: 100%;
+    }
+
+    .saved-game-timestamp {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .saved-game-score {
         background: green;
         grid-column: 2;
         grid-row: 1;
