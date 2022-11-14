@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "features inert in tooltip to avoid possible focus",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "yinon@hotmail.com",
+  "dependentChangeType": "none"
+}
