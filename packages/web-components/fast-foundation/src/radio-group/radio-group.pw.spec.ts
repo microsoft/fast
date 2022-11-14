@@ -37,6 +37,19 @@ test.describe("Radio Group", () => {
         await expect(element).toHaveAttribute("role", "radiogroup");
     });
 
+    test("should set a default `aria-orientation` value when `orientation` is not defined", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group></fast-radio-group>
+            `;
+        });
+
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            `${Orientation.horizontal}`
+        );
+    });
+
     test("should set a matching class on the `positioning-region` when an orientation is provided", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -60,6 +73,26 @@ test.describe("Radio Group", () => {
         }, Orientation);
 
         await expect(positioningRegion).toHaveClass(/horizontal/);
+    });
+
+    test("should set the `aria-orientation` attribute equal to the `orientation` value", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group></fast-radio-group>
+            `;
+        });
+
+        await element.evaluate((node: FASTRadioGroup, Orientation) => {
+            node.orientation = Orientation.horizontal;
+        }, Orientation);
+
+        await expect(element).toHaveAttribute("aria-orientation", Orientation.horizontal);
+
+        await element.evaluate((node: FASTRadioGroup, Orientation) => {
+            node.orientation = Orientation.vertical;
+        }, Orientation);
+
+        await expect(element).toHaveAttribute("aria-orientation", Orientation.vertical);
     });
 
     test("should set the `aria-disabled` attribute when disabled", async () => {
