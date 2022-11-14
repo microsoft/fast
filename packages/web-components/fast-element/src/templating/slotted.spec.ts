@@ -20,7 +20,7 @@ describe("The slotted", () => {
         it("creates a behavior by returning itself", () => {
             const nodeId = 'r';
             const directive = slotted("test") as SlottedDirective;
-            directive.nodeId = nodeId;
+            directive.targetNodeId = nodeId;
             const behavior = directive.createBehavior();
 
             expect(behavior).to.equal(directive);
@@ -73,7 +73,7 @@ describe("The slotted", () => {
         it("gathers nodes from a slot", () => {
             const { children, targets, nodeId } = createDOM();
             const behavior = new SlottedDirective({ property: "nodes" });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = createController(model, targets);
 
@@ -88,7 +88,7 @@ describe("The slotted", () => {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = createController(model, targets);
 
@@ -100,7 +100,7 @@ describe("The slotted", () => {
         it("updates when slotted nodes change", async () => {
             const { host, slot, children, targets, nodeId } = createDOM("foo-bar");
             const behavior = new SlottedDirective({ property: "nodes" });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = createController(model, targets);
 
@@ -121,7 +121,7 @@ describe("The slotted", () => {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = createController(model, targets);
 
@@ -139,7 +139,7 @@ describe("The slotted", () => {
         it("clears and unwatches when unbound", async () => {
             const { host, slot, children, targets, nodeId } = createDOM("foo-bar");
             const behavior = new SlottedDirective({ property: "nodes" });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = createController(model, targets);
 

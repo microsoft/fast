@@ -5,8 +5,8 @@ import {
     SourceLifetime,
 } from "../observation/observable.js";
 import type {
+    CompiledViewBehaviorFactory,
     ViewBehavior,
-    ViewBehaviorFactory,
     ViewBehaviorTargets,
     ViewController,
 } from "./html-directive.js";
@@ -224,7 +224,7 @@ export class HTMLView<TSource = any, TParent = any>
      */
     public constructor(
         private fragment: DocumentFragment,
-        private factories: ReadonlyArray<ViewBehaviorFactory>,
+        private factories: ReadonlyArray<CompiledViewBehaviorFactory>,
         public readonly targets: ViewBehaviorTargets
     ) {
         this.firstChild = fragment.firstChild!;

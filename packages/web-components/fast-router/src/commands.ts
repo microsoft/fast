@@ -1,7 +1,9 @@
 import {
+    CompiledViewBehaviorFactory,
     FASTElementDefinition,
     html,
     HTMLView,
+    ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { RenderOperation, Router } from "./router.js";
@@ -90,11 +92,11 @@ function factoryFromElementInstance(element: HTMLElement): ViewFactory {
     const fragment = document.createDocumentFragment();
     fragment.appendChild(element);
 
-    const factory = navigationContributor();
-    factory.nodeId = "h";
+    const factory = (navigationContributor() as ViewBehaviorFactory) as CompiledViewBehaviorFactory;
+    factory.targetNodeId = "h";
 
     const view = new HTMLView(fragment, [factory], {
-        [factory.nodeId]: element,
+        [factory.targetNodeId]: element,
     });
 
     return {

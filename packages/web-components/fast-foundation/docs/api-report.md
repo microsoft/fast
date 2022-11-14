@@ -6,7 +6,7 @@
 
 import type { CaptureType } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
-import type { CSSDirective } from '@microsoft/fast-element';
+import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -15,6 +15,7 @@ import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
 import { HostBehavior } from '@microsoft/fast-element';
 import { HostController } from '@microsoft/fast-element';
+import { HTMLDirective } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
@@ -268,12 +269,12 @@ export function checkboxTemplate<T extends FASTCheckbox>(options?: CheckboxOptio
 export interface ColumnDefinition {
     cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
     cellInternalFocusQueue?: boolean;
-    cellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
+    cellTemplate?: ViewTemplate | SyntheticViewTemplate;
     columnDataKey: string;
     gridColumn?: string;
     headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
     headerCellInternalFocusQueue?: boolean;
-    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
+    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate;
     isRowHeader?: boolean;
     title?: string;
 }
@@ -301,9 +302,10 @@ export function comboboxTemplate<T extends FASTCombobox>(options?: ComboboxOptio
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
 // @public (undocumented)
-export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
+export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective, HTMLDirective {
     constructor(configuration: CSSDesignTokenConfiguration);
     createCSS(): string;
+    createHTML(): string;
     readonly cssCustomProperty: string;
 }
 

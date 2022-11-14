@@ -3,9 +3,9 @@
  * Please see {@link ../ACKNOWLEDGEMENTS.md}
  */
 import {
-    Aspect,
     Aspected,
     Compiler,
+    DOMAspect,
     Parser,
     ViewBehaviorFactory,
     ViewTemplate,
@@ -199,7 +199,7 @@ export function parseStringToOpCodes(
                     const factory = Compiler.aggregate(parsed) as ViewBehaviorFactory &
                         Aspected;
                     // Guard against directives like children, ref, and slotted
-                    if (factory.dataBinding && factory.aspectType !== Aspect.content) {
+                    if (factory.dataBinding && factory.aspectType !== DOMAspect.content) {
                         prev.dynamic.set(current, {
                             type: OpType.attributeBinding,
                             dataBinding: factory.dataBinding,

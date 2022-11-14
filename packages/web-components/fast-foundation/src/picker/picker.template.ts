@@ -1,4 +1,5 @@
 import {
+    dangerousHTML,
     ElementViewTemplate,
     html,
     ref,
@@ -9,7 +10,7 @@ import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
 import type { FASTPicker } from "./picker.js";
 
 function defaultListItemTemplate(options: PickerOptions): ViewTemplate {
-    const pickerListItemTag: string = tagFor(options.pickerListItem);
+    const pickerListItemTag = dangerousHTML(tagFor(options.pickerListItem));
     return html`
     <${pickerListItemTag}
         value="${x => x}"
@@ -20,7 +21,7 @@ function defaultListItemTemplate(options: PickerOptions): ViewTemplate {
 }
 
 function defaultMenuOptionTemplate(options: PickerOptions): ViewTemplate {
-    const pickerMenuOptionTag: string = tagFor(options.pickerMenuOption);
+    const pickerMenuOptionTag = dangerousHTML(tagFor(options.pickerMenuOption));
     return html`
     <${pickerMenuOptionTag}
         value="${x => x}"
@@ -50,10 +51,10 @@ export type PickerOptions = {
 export function pickerTemplate<T extends FASTPicker>(
     options: PickerOptions
 ): ElementViewTemplate<T> {
-    const anchoredRegionTag: string = tagFor(options.anchoredRegion);
-    const pickerMenuTag: string = tagFor(options.pickerMenu);
-    const pickerListTag: string = tagFor(options.pickerList);
-    const progressRingTag: string = tagFor(options.progressRing);
+    const anchoredRegionTag = dangerousHTML(tagFor(options.anchoredRegion));
+    const pickerMenuTag = dangerousHTML(tagFor(options.pickerMenu));
+    const pickerListTag = dangerousHTML(tagFor(options.pickerList));
+    const progressRingTag = dangerousHTML(tagFor(options.progressRing));
 
     return html<T>`
         <template
