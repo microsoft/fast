@@ -51,16 +51,20 @@ export class FASTCheckbox extends FormAssociatedCheckbox {
         this.proxy.setAttribute("type", "checkbox");
     }
 
+    private toggleChecked() {
+        if (this.indeterminate) {
+            this.indeterminate = false;
+        }
+        this.checked = !this.checked;
+    }
+
     /**
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent): void => {
         switch (e.key) {
             case keySpace:
-                if (this.indeterminate) {
-                    this.indeterminate = false;
-                }
-                this.checked = !this.checked;
+                this.toggleChecked();
                 break;
         }
     };
@@ -70,10 +74,7 @@ export class FASTCheckbox extends FormAssociatedCheckbox {
      */
     public clickHandler = (e: MouseEvent): void => {
         if (!this.disabled) {
-            if (this.indeterminate) {
-                this.indeterminate = false;
-            }
-            this.checked = !this.checked;
+            this.toggleChecked();
         }
     };
 }
