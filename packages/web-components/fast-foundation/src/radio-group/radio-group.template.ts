@@ -12,6 +12,7 @@ export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTempl
             role="radiogroup"
             aria-disabled="${x => x.disabled}"
             aria-readonly="${x => x.readOnly}"
+            aria-orientation="${x => x.orientation}"
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
             @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
             @focusout="${(x, c) => x.focusOutHandler(c.event as FocusEvent)}"
