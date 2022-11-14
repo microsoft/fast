@@ -11,6 +11,7 @@ import "../src/dialog/stories/dialog.register.js";
 import "../src/disclosure/stories/disclosure.register.js";
 import "../src/divider/stories/divider.register.js";
 import "../src/flipper/stories/flipper.register.js";
+import "../src/form-associated/stories/form-associated.register.js";
 import "../src/number-field/stories/number-field.register.js";
 import "../src/picker/stories/picker.register.js";
 import "../src/progress-ring/stories/progress-ring.register.js";
