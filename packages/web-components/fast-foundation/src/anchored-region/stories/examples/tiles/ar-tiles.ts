@@ -526,6 +526,7 @@ export class ARTiles extends FASTElement {
         }
         e.preventDefault();
         this.updateActiveSockets(e.detail as tileDragEventArgs);
+        this.currentDragTile?.scrollIntoView({ block: "center", inline: "center" });
     };
 
     private updateActiveSockets(detail: tileDragEventArgs): void {

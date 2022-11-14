@@ -237,7 +237,7 @@ export const arTileStyles = css`
         transform: translate(2px, 42px) !important;
     }
     .socket-left {
-        transform: translate(-36px, 2px) !important;
+        transform: translate(-38px, 2px) !important;
     }
     .content {
         height: 40px;
