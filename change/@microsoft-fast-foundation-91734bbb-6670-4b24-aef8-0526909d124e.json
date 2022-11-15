@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: add missing dangerousHTML to data-grid",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "jes@microsoft.com",
+  "dependentChangeType": "patch"
+}
