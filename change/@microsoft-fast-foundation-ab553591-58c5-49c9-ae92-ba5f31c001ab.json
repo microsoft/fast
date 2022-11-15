@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "add aria-orientation to radio-group",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "olaf-k@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

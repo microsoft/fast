@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Tue, 01 Nov 2022 23:26:26 GMT and should not be manually modified.
+This log was last generated on Tue, 15 Nov 2022 02:40:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.18
+
+Tue, 15 Nov 2022 02:40:34 GMT
+
+### Changes
+
+- chore: move ViewBehaviorOrchestrator to utilities (roeisenb@microsoft.com)
+- feat: add new DOM Policy protection throughout (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.17
 

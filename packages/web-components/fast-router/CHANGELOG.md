@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Tue, 01 Nov 2022 23:26:26 GMT and should not be manually modified.
+This log was last generated on Tue, 15 Nov 2022 02:40:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.18
+
+Tue, 15 Nov 2022 02:40:35 GMT
+
+### Changes
+
+- feat: add new DOM Policy protection throughout (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.18
 
 ## 1.0.0-alpha.17
 
