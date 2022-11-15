@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "chore: move ViewBehaviorOrchestrator to utilities",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "prerelease"
-}
