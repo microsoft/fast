@@ -1,8 +1,19 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Fri, 04 Nov 2022 22:28:49 GMT and should not be manually modified.
+This log was last generated on Tue, 15 Nov 2022 02:40:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.22
+
+Tue, 15 Nov 2022 02:40:34 GMT
+
+### Changes
+
+- Added configuration option to fast-ssr to render custom directives (nicholasrice@users.noreply.github.com)
+- add new DOM Policy protection throughout (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.18
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.22
 
 ## 1.0.0-beta.21
 
