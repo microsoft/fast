@@ -39,7 +39,7 @@ function rowItemTemplate<T extends FASTDataGrid>(
 export function dataGridTemplate<T extends FASTDataGrid>(
     options: DataGridOptions
 ): ElementViewTemplate<T> {
-    const rowTag = tagFor(options.dataGridRow);
+    const rowTag = dangerousHTML(tagFor(options.dataGridRow));
     return html<T>`
         <template
             role="grid"
