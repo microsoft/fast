@@ -119,7 +119,7 @@ type KernelServiceId = {
 let KernelServiceId: KernelServiceId;
 
 switch (kernelMode) {
-    case "shared": // share the kernel across major versions
+    case "share": // share the kernel across major versions
         KernelServiceId = Object.freeze({
             updateQueue: 1,
             observable: 2,
@@ -127,7 +127,7 @@ switch (kernelMode) {
             elementRegistry: 4,
         });
         break;
-    case "shared-v2": // only share the kernel with other v2 instances
+    case "share-v2": // only share the kernel with other v2 instances
         KernelServiceId = Object.freeze({
             updateQueue: 1.2,
             observable: 2.2,
