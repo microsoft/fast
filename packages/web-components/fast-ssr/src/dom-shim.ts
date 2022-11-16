@@ -39,24 +39,28 @@ function checkTokenAndGetIndex(classList: DOMTokenList, token: string) {
 /**
  * @beta
  */
-export class DOMTokenList extends Array<string> {
-    constructor(private element: HTMLElement, private attributeName: string) {
-        super();
+export class DOMTokenList {
+    private tokens: string[] = [];
 
+    public constructor(private element: HTMLElement, private attributeName: string) {
         const trimmedClasses = (element.getAttribute(attributeName) || "").trim();
         const classes = trimmedClasses ? trimmedClasses.split(/\s+/) : [];
 
         for (let i = 0, len = classes.length; i < len; i++) {
-            this.push(classes[i]);
+            this.tokens.push(classes[i]);
         }
     }
 
     public item(i: number) {
-        return this[i] || null;
+        return this.tokens[i] || null;
     }
 
     public contains(token: string) {
         return ~checkTokenAndGetIndex(this, token + "");
+    }
+
+    public indexOf(token: string) {
+        return this.tokens.indexOf(token);
     }
 
     public add(...tokens: string[]) {
@@ -68,7 +72,7 @@ export class DOMTokenList extends Array<string> {
             const token = tokens[index] + "";
 
             if (!~checkTokenAndGetIndex(this, token)) {
-                this.push(token);
+                this.tokens.push(token);
                 updated = true;
             }
         } while (++index < length);
@@ -88,7 +92,7 @@ export class DOMTokenList extends Array<string> {
             let result = checkTokenAndGetIndex(this, token);
 
             while (~result) {
-                this.splice(result, 1);
+                this.tokens.splice(result, 1);
                 updated = true;
                 result = checkTokenAndGetIndex(this, token);
             }
@@ -118,13 +122,13 @@ export class DOMTokenList extends Array<string> {
         const index = checkTokenAndGetIndex(this, token + "");
 
         if (~index) {
-            this.splice(index, 1, replacement);
+            this.tokens.splice(index, 1, replacement);
             this.updateClassName();
         }
     }
 
     public toString(): string {
-        return this.join(" ");
+        return this.tokens.join(" ");
     }
 
     private updateClassName() {
