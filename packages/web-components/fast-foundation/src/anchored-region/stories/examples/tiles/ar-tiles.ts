@@ -8,14 +8,17 @@ import {
     html,
     observable,
     ref,
+    repeat,
     RepeatDirective,
     Updates,
     ViewBehaviorOrchestrator,
     ViewTemplate,
+    when,
 } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { ARTile, registerARTile, TileData, tileDragEventArgs } from "./ar-tile.js";
 import { ARSocket, registerARSocket } from "./ar-socket.js";
+import { registerScorePanel, ScorePanel, ScoreWord } from "./score-panel.js";
 
 export function registerARTiles() {
     ARTiles.define({
@@ -25,13 +28,7 @@ export function registerARTiles() {
     });
     registerARTile();
     registerARSocket();
-}
-
-export interface ScoreWord {
-    word: string;
-    tiles: ARTile[];
-    value: number;
-    orientation: Orientation;
+    registerScorePanel();
 }
 
 export interface BoardTile {
@@ -124,12 +121,6 @@ export class ARTiles extends FASTElement {
     public boardSpaces: BoardTile[] = [];
 
     @observable
-    public horizontalWords: ScoreWord[] = [];
-
-    @observable
-    public verticalWords: ScoreWord[] = [];
-
-    @observable
     public score: number = 0;
 
     @observable
@@ -138,10 +129,8 @@ export class ARTiles extends FASTElement {
     public layout: HTMLDivElement;
     public board: HTMLDivElement;
     public hand: HTMLDivElement;
-    public verticalWordDisplay: HTMLDivElement;
-    public horizontalWordDisplay: HTMLDivElement;
     public savedGameDisplay: HTMLDivElement;
-    public savedBoardDisplay: HTMLDivElement;
+    public scorePanel: ScorePanel;
 
     @observable
     public allTiles: ARTile[] = [];
@@ -161,6 +150,15 @@ export class ARTiles extends FASTElement {
     public enableNext: boolean = false;
 
     @observable
+    public enableLoad: boolean = false;
+
+    @observable
+    public showLoadMenu: boolean = false;
+
+    @observable
+    public showScoring: boolean = false;
+
+    @observable
     public savedGames: GameState[] = [];
 
     private previousGameStates: GameState[] = [];
@@ -172,8 +170,6 @@ export class ARTiles extends FASTElement {
     private fixedTileData: TileData[] = [];
     private handTileData: TileData[] = [];
 
-    private bestGameState: GameState;
-
     private activeBoardTiles: HTMLElement[] = [];
 
     private currentDragTile: ARTile | undefined;
@@ -183,8 +179,7 @@ export class ARTiles extends FASTElement {
 
     private dispenserPlaceholder: Node | null = null;
     private tilePlaceholder: Node | null = null;
-    private verticalWordPlaceholder: Node | null = null;
-    private horizontalWordPlaceholder: Node | null = null;
+
     private boardTilePlaceholder: Node | null = null;
     private savedGamePlaceholder: Node | null = null;
 
@@ -202,20 +197,18 @@ export class ARTiles extends FASTElement {
 
         this.dispenserPlaceholder = document.createComment("");
         this.tilePlaceholder = document.createComment("");
-        this.verticalWordPlaceholder = document.createComment("");
-        this.horizontalWordPlaceholder = document.createComment("");
         this.boardTilePlaceholder = document.createComment("");
         this.savedGamePlaceholder = document.createComment("");
 
         if (this.behaviorOrchestrator === null) {
             this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
-
             this.$fastController.addBehavior(this.behaviorOrchestrator);
+
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<ARTiles>(
                     bind(x => x.handTileData, false),
                     bind(x => dispenserTemplate, false),
-                    { positioning: true }
+                    {}
                 ),
                 this.hand.appendChild(this.dispenserPlaceholder)
             );
@@ -224,7 +217,7 @@ export class ARTiles extends FASTElement {
                 new RepeatDirective<ARTiles>(
                     bind(x => x.handTileData, false),
                     bind(x => letterTileTemplate, false),
-                    { positioning: true }
+                    {}
                 ),
                 this.layout.appendChild(this.tilePlaceholder)
             );
@@ -233,37 +226,19 @@ export class ARTiles extends FASTElement {
                 new RepeatDirective<ARTiles>(
                     bind(x => x.fixedTileData, false),
                     bind(x => letterTileTemplate, false),
-                    { positioning: true }
+                    {}
                 ),
                 this.layout.appendChild(this.tilePlaceholder)
             );
 
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<ARTiles>(
-                    bind(x => x.verticalWords, false),
-                    bind(x => scoreWordTemplate, false),
-                    { positioning: true }
-                ),
-                this.verticalWordDisplay.appendChild(this.verticalWordPlaceholder)
-            );
-
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<ARTiles>(
-                    bind(x => x.horizontalWords, false),
-                    bind(x => scoreWordTemplate, false),
-                    { positioning: true }
-                ),
-                this.horizontalWordDisplay.appendChild(this.horizontalWordPlaceholder)
-            );
-
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<ARTiles>(
-                    bind(x => x.savedGames, false),
-                    bind(x => savedGameTemplate, false),
-                    { positioning: true }
-                ),
-                this.savedGameDisplay.appendChild(this.savedGamePlaceholder)
-            );
+            // this.behaviorOrchestrator.addBehaviorFactory(
+            //     new RepeatDirective<ARTiles>(
+            //         bind(x => x.savedGames, false),
+            //         bind(x => savedGameTemplate, false),
+            //         { positioning: true }
+            //     ),
+            //     this.savedGameDisplay.appendChild(this.savedGamePlaceholder)
+            // );
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<ARTiles>(
@@ -526,7 +501,11 @@ export class ARTiles extends FASTElement {
         }
         e.preventDefault();
         this.updateActiveSockets(e.detail as tileDragEventArgs);
-        this.currentDragTile?.scrollIntoView({ block: "center", inline: "center" });
+        this.currentDragTile?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "center",
+        });
     };
 
     private updateActiveSockets(detail: tileDragEventArgs): void {
@@ -749,8 +728,11 @@ export class ARTiles extends FASTElement {
 
     private updateScore(): void {
         let newScore: number = 0;
-        this.horizontalWords.splice(0, this.horizontalWords.length);
-        this.verticalWords.splice(0, this.verticalWords.length);
+        this.scorePanel.horizontalWords?.splice(
+            0,
+            this.scorePanel.horizontalWords.length
+        );
+        this.scorePanel.verticalWords?.splice(0, this.scorePanel.verticalWords.length);
 
         let wordTiles: ARTile[];
         let wordString: string;
@@ -776,7 +758,7 @@ export class ARTiles extends FASTElement {
                     value: wordValue,
                     orientation: Orientation.horizontal,
                 };
-                this.horizontalWords.push(scoreWord);
+                this.scorePanel.horizontalWords?.push(scoreWord);
                 newScore = newScore + wordValue;
             }
 
@@ -798,7 +780,7 @@ export class ARTiles extends FASTElement {
                     value: wordValue,
                     orientation: Orientation.vertical,
                 };
-                this.verticalWords.push(scoreWord);
+                this.scorePanel.verticalWords?.push(scoreWord);
                 newScore = newScore + wordValue;
             }
         });
@@ -908,11 +890,21 @@ export class ARTiles extends FASTElement {
 
     public handleSaveGameClick = (e: MouseEvent): void => {
         this.savedGames.push(this.getCurrentGameState());
+        this.enableLoad = true;
+    };
+
+    public handleLoadGameClick = (e: MouseEvent): void => {
+        this.showLoadMenu = !this.showLoadMenu;
     };
 
     public handleLoadSaveGameClick = (e: MouseEvent, gameState: GameState): void => {
         this.saveCurrentGameStateToBackStack();
         this.applyGameState(gameState);
+        this.showLoadMenu = false;
+    };
+
+    public handleShowScoringClick = (e: MouseEvent): void => {
+        this.showScoring = !this.showScoring;
     };
 }
 
@@ -922,19 +914,6 @@ const boardTileTemplate: ViewTemplate<BoardTile> = html`
         class="board-tile"
         style="grid-column:${x => x.column}; grid-row:${x => x.row}"
     ></div>
-`;
-
-const scoreWordTemplate: ViewTemplate<ScoreWord> = html`
-    <fast-option class="score-word-option">
-        <div class="score-word-display">
-            <div class="score-word-word">
-                ${x => x.word}
-            </div>
-            <div class="score-word-score">
-                ${x => x.value}
-            </div>
-        </div>
-    </fast-option>
 `;
 
 const savedGameTemplate: ViewTemplate<GameState> = html`
@@ -978,6 +957,70 @@ const dispenserTemplate: ViewTemplate<TileData> = html`
 export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
     return html<T>`
         <template>
+            <fast-toolbar orientation="horizontal" class="toolbar" toolbar-item-gap="0">
+                <fast-button
+                    class="previous-button"
+                    disabled="${x => (x.enablePrevious ? void 0 : "true")}"
+                    @click="${(x, c) => x.handlePreviousClick(c.event as MouseEvent)}"
+                >
+                    ◄
+                </fast-button>
+                <fast-button
+                    class="next-button"
+                    disabled="${x => (x.enableNext ? void 0 : "true")}"
+                    @click="${(x, c) => x.handleNextClick(c.event as MouseEvent)}"
+                >
+                    ►
+                </fast-button>
+
+                <fast-button
+                    class="save-button"
+                    @click="${(x, c) => x.handleSaveGameClick(c.event as MouseEvent)}"
+                >
+                    Save
+                </fast-button>
+
+                <fast-button
+                    id="load-button"
+                    class="load-button"
+                    disabled="${x => (x.enableLoad ? void 0 : "true")}"
+                    @click="${(x, c) => x.handleLoadGameClick(c.event as MouseEvent)}"
+                >
+                    Load
+                </fast-button>
+
+                <fast-button id="validate-button" class="validate-button">
+                    Validate
+                </fast-button>
+
+                <fast-button
+                    class="scoring-button"
+                    @click="${(x, c) => x.handleShowScoringClick(c.event as MouseEvent)}"
+                >
+                    Score: ${x => x.score}
+                </fast-button>
+            </fast-toolbar>
+            ${when(
+                x => x.showLoadMenu,
+                html`
+                    <fast-anchored-region
+                        class="show-menu-region"
+                        anchor="load-button"
+                        auto-update-mode="auto"
+                        horizontal-inset="true"
+                        horizontal-viewport-lock="true"
+                        horizontal-positioning-mode="dynamic"
+                        horizontal-scaling="content"
+                        vertical-default-position="bottom"
+                        vertical-positioning-mode="locktodefault"
+                        vertical-scaling="fill"
+                    >
+                        <fast-menu class="load-menu">
+                            ${repeat(x => x.savedGames, savedGameTemplate)}
+                        </fast-menu>
+                    </fast-anchored-region>
+                `
+            )}
             <div
                 id="layout"
                 class="layout"
@@ -992,58 +1035,7 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                     <div id="hand" class="hand" ${ref("hand")}></div>
                 </div>
             </div>
-            <div class="scoring">
-                    Score: ${x => x.score}
-                    <br></br>
-                    Best Score: ${x => x.bestScore}
-                    <br></br>
-                    <fast-button
-                        disabled="${x => (x.enablePrevious ? void 0 : "true")}"
-                        @click="${(x, c) => x.handlePreviousClick(c.event as MouseEvent)}"
-                    >
-                    Previous
-                    </fast-button>
-                    <fast-button
-                        disabled="${x => (x.enableNext ? void 0 : "true")}"
-                        @click="${(x, c) => x.handleNextClick(c.event as MouseEvent)}"
-                    >
-                    Next
-                    </fast-button>
-                    <h3>
-                        Vertical Words
-                    </h3>
-
-                    <fast-listbox
-                        ${ref("verticalWordDisplay")}
-                        class="score-word-listbox"
-                    >
-                    </fast-listbox>
-
-                    <h3>
-                        Horizontal Words
-                    </h3>
-
-                    <fast-listbox
-                        ${ref("horizontalWordDisplay")}
-                        class="score-word-listbox"
-                    >
-                    </fast-listbox>
-
-                    <h3>
-                        Saved Games
-                    </h3>
-                    <fast-button
-                        @click="${(x, c) => x.handleSaveGameClick(c.event as MouseEvent)}"
-                    >
-                    Save
-                    </fast-button>
-                    <br></br>
-                    <fast-listbox
-                        ${ref("savedGameDisplay")}
-                        class="saved-game-listbox"
-                    >
-                    </fast-listbox>
-                </div>
+            <score-panel class="scoring" ${ref("scorePanel")}></score-panel>
         </template>
     `;
 }
@@ -1057,13 +1049,33 @@ export const arTilesStyles = css`
         width: 100%;
         display: grid;
         grid-template-columns: 10px auto 10px 1fr 10px;
-        grid-template-rows: 10px 1fr 10px;
+        grid-template-rows: 10px auto 1fr 10px;
     }
 
-    .dispenser {
-        display: inline-block;
-        height: var(--tile-size);
-        width: var(--tile-size);
+    .toolbar {
+        grid-row: 2;
+        grid-column: 2 / 5;
+        --toolbar-item-gap: 2;
+    }
+
+    .toolbar::part(positioning-region) {
+        width: 100%;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+    }
+
+    .previous-button,
+    .next-button,
+    .save-button,
+    .load-button,
+    .validate-button,
+    .scoring-button {
+        height: 30px;
+    }
+
+    .scoring-button {
+        flex: 0 1 100%;
     }
 
     .layout {
@@ -1071,7 +1083,7 @@ export const arTilesStyles = css`
         width: auto;
         position: relative;
         display: grid;
-        grid-row: 2;
+        grid-row: 3;
         grid-column: 2;
         grid-template-columns: 1fr;
         grid-template-rows: auto 10px 1fr;
@@ -1104,6 +1116,12 @@ export const arTilesStyles = css`
         height: auto;
     }
 
+    .dispenser {
+        display: inline-block;
+        height: var(--tile-size);
+        width: var(--tile-size);
+    }
+
     .scoring {
         contain: size;
         height: auto;
@@ -1111,7 +1129,7 @@ export const arTilesStyles = css`
         overflow-y: auto;
         overflow-x: hidden;
         background: darkgray;
-        grid-row: 2;
+        grid-row: 3;
         grid-column: 4;
     }
 
@@ -1121,37 +1139,6 @@ export const arTilesStyles = css`
 
     .board-tile.active {
         background: white;
-    }
-
-    .score-word-listbox {
-        width: 100%;
-        min-height: 50px;
-    }
-
-    .score-word-option {
-        width: 100%;
-    }
-
-    .score-word-option::part(content) {
-        width: 100%;
-    }
-
-    .score-word-display {
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr auto;
-        grid-template-rows: 1fr;
-    }
-
-    .score-word-word {
-        grid-column: 1;
-        grid-row: 1;
-    }
-
-    .score-word-score {
-        background: green;
-        grid-column: 2;
-        grid-row: 1;
     }
 
     .saved-game-listbox {
@@ -1183,5 +1170,18 @@ export const arTilesStyles = css`
         background: green;
         grid-column: 2;
         grid-row: 1;
+    }
+
+    .show-menu-region {
+        display: flex;
+        flex-direction: column;
+        z-index: 100;
+        overflow: hidden;
+    }
+
+    .load-menu {
+        width: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 `;

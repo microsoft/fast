@@ -681,7 +681,7 @@ export class FASTAnchoredRegion extends FASTElement {
     anchor: string;
     // (undocumented)
     protected anchorChanged(): void;
-    anchorElement: HTMLElement | null;
+    anchorElement: Element | null;
     // (undocumented)
     protected anchorElementChanged(): void;
     // @internal (undocumented)
@@ -748,7 +748,7 @@ export class FASTAnchoredRegion extends FASTElement {
     viewport: string;
     // (undocumented)
     protected viewportChanged(): void;
-    viewportElement: HTMLElement | null;
+    viewportElement: Element | null;
     // (undocumented)
     protected viewportElementChanged(): void;
     // @internal (undocumented)

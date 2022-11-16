@@ -208,11 +208,11 @@ export const arTileStyles = css`
     }
 
     :host(.loaded) {
-        transition: transform 0.2s ease-out;
+        transition: transform 0.2s ease-in;
     }
 
     :host(.dragging) {
-        opacity: 0.7;
+        opacity: 0.8;
         transition: unset;
         z-index: 100;
         pointer-events: none;

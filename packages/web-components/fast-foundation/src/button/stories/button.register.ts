@@ -27,8 +27,9 @@ const styles = css`
     }
 
     :host([disabled]) {
-        display: none;
+        opacity: 0.5;
     }
+
     .control {
         background: transparent;
         height: inherit;
@@ -52,11 +53,11 @@ const styles = css`
         line-height: inherit;
     }
 
-    :host(:hover) {
+    :host(:not([disabled]):hover) {
         background-color: var(--neutral-fill-hover);
     }
 
-    :host(:active) {
+    :host(:not([disabled]):active) {
         background-color: var(--neutral-fill-active);
     }
 
