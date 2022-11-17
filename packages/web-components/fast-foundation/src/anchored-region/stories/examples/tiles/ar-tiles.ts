@@ -47,6 +47,7 @@ export interface GameState {
     timeStamp?: string;
     score: number;
     tileData: TileData[];
+    validated: boolean;
 }
 
 /**
@@ -181,12 +182,12 @@ export class ARTiles extends FASTElement {
     private tilePlaceholder: Node | null = null;
 
     private boardTilePlaceholder: Node | null = null;
-    private savedGamePlaceholder: Node | null = null;
 
     private rowCount: number;
     private columnCount: number;
 
     private tileUpdateQueued: boolean = false;
+    private currentStateValidated: boolean = false;
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -230,15 +231,6 @@ export class ARTiles extends FASTElement {
                 ),
                 this.layout.appendChild(this.tilePlaceholder)
             );
-
-            // this.behaviorOrchestrator.addBehaviorFactory(
-            //     new RepeatDirective<ARTiles>(
-            //         bind(x => x.savedGames, false),
-            //         bind(x => savedGameTemplate, false),
-            //         { positioning: true }
-            //     ),
-            //     this.savedGameDisplay.appendChild(this.savedGamePlaceholder)
-            // );
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<ARTiles>(
@@ -406,6 +398,7 @@ export class ARTiles extends FASTElement {
             timeStamp: date.toLocaleString(),
             score: this.score,
             tileData: currentTileData,
+            validated: this.currentStateValidated,
         };
         return gameState;
     }
@@ -442,10 +435,6 @@ export class ARTiles extends FASTElement {
         ) {
             return false;
         }
-
-        // if (socket.parentTile === undefined) {
-        //     return true;
-        // }
 
         const dropRect: DOMRect | undefined = this.getDropRect(
             socket,
@@ -484,6 +473,17 @@ export class ARTiles extends FASTElement {
         return true;
     }
 
+    private isOutside(viewportRect: DOMRect, elementRect: DOMRect): boolean {
+        // todo: rig up horizontal?
+        if (
+            elementRect.top - 40 > viewportRect.top &&
+            elementRect.bottom + 40 < viewportRect.bottom
+        ) {
+            return false;
+        }
+        return true;
+    }
+
     private getDropRect(
         socket: ARSocket,
         tileRect: DOMRect | undefined
@@ -496,16 +496,27 @@ export class ARTiles extends FASTElement {
     }
 
     public handleTileDrag = (e: CustomEvent): void => {
-        if (e.defaultPrevented) {
+        if (e.defaultPrevented || !this.currentDragTile) {
             return;
         }
         e.preventDefault();
         this.updateActiveSockets(e.detail as tileDragEventArgs);
-        this.currentDragTile?.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-            inline: "center",
-        });
+
+        if (
+            this.currentDragTile.viewportRect &&
+            this.currentDragTile.regionRect &&
+            this.isOutside(
+                this.currentDragTile.viewportRect,
+                this.currentDragTile.regionRect
+            )
+        ) {
+            console.debug("outside");
+            this.currentDragTile.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                inline: "center",
+            });
+        }
     };
 
     private updateActiveSockets(detail: tileDragEventArgs): void {

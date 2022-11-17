@@ -125,10 +125,11 @@ export const scorePanelStyles = css`
 
     .score-word-listbox {
         width: 100%;
-        min-height: 50px;
+        min-height: 30px;
     }
 
     .score-word-option {
+        height: 30px;
         width: 100%;
     }
 
