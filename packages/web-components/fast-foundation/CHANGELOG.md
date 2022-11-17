@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 25 Oct 2022 03:07:31 GMT and should not be manually modified.
+This log was last generated on Thu, 17 Nov 2022 20:54:18 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.47.1-0
+
+Thu, 17 Nov 2022 20:54:18 GMT
+
+### Changes
+
+- hidden horizontal-scroll fix (robarb@microsoft.com)
 
 ## 2.47.0
 
