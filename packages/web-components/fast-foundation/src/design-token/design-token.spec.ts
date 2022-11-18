@@ -155,6 +155,19 @@ describe("A DesignToken", () => {
             removeElement(target);
         });
 
+        it("should support getting and setting enumerated values", () => {
+            const target = addElement();
+            const Animal = {
+                cat: 'cat',
+                dog: 'dog'
+            } as const;
+            type Animal = typeof Animal[keyof typeof Animal];
+            const token = DesignToken.create<Animal>("test");
+            token.setValueFor(target, Animal.cat);
+            expect(token.getValueFor(target)).to.equal(Animal.cat);
+            removeElement(target);
+        });
+
         describe("that is a CSSDesignToken", () => {
             it("should set the CSS custom property for the element", async () => {
                 const target = addElement();
@@ -413,6 +426,19 @@ describe("A DesignToken", () => {
                 }
             })
             removeElement(target)
+        });
+
+        it("should support getting and setting enumerated values", () => {
+            const target = addElement();
+            const Animal = {
+                cat: 'cat',
+                dog: 'dog'
+            } as const;
+            type Animal = typeof Animal[keyof typeof Animal];
+            const token = DesignToken.create<Animal>("test");
+            token.setValueFor(target, (): Animal => Animal.cat);
+            expect(token.getValueFor(target)).to.equal(Animal.cat);
+            removeElement(target);
         });
     });
 
