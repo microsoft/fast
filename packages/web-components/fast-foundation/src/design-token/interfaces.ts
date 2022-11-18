@@ -11,7 +11,7 @@ export type DerivedDesignTokenValue<T> = [T] extends [Function]
  * A design token value with no observable dependencies
  * @public
  */
-export type StaticDesignTokenValue<T> = [T] extends [Function] ? never : T;
+export type StaticDesignTokenValue<T> = T extends Function ? never : T;
 
 /**
  * The type that a {@link (DesignToken:interface)} can be set to.
