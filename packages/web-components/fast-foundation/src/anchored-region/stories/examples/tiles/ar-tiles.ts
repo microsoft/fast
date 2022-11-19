@@ -144,6 +144,9 @@ export class ARTiles extends FASTElement {
     @observable
     public savedGames: GameState[] = [];
 
+    @observable
+    public currentBoardValid: boolean | undefined;
+
     private previousGameStates: GameState[] = [];
     private nextGameStates: GameState[] = [];
 
@@ -801,6 +804,16 @@ export class ARTiles extends FASTElement {
             }
         });
         this.score = newScore;
+
+        if (
+            !this.scorePanel.verticalWords.length &&
+            !this.scorePanel.horizontalWords.length
+        ) {
+            this.currentBoardValid = undefined;
+        } else {
+            this.currentBoardValid = isBoardValid;
+        }
+
         if (
             isBoardValid &&
             (this.scorePanel.verticalWords.length ||
@@ -1079,7 +1092,15 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                 </fast-button>
 
                 <fast-button
-                    class="scoring-button"
+                    class="
+                        scoring-button
+                        ${x =>
+                        x.currentBoardValid === true
+                            ? "valid"
+                            : x.currentBoardValid === false
+                            ? "invalid"
+                            : void 0}
+                    "
                     @click="${(x, c) => x.handleShowScoringClick(c.event as MouseEvent)}"
                 >
                     Score: ${x => x.score}
@@ -1161,6 +1182,14 @@ export const arTilesStyles = css`
 
     .scoring-button {
         flex: 0 1 100%;
+    }
+
+    .valid {
+        background: green;
+    }
+
+    .invalid {
+        background: red;
     }
 
     .layout {
