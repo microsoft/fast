@@ -16,9 +16,10 @@ import {
     when,
 } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { ARTile, registerARTile, TileData, tileDragEventArgs } from "./ar-tile.js";
+import { ARTile, registerARTile, tileDragEventArgs } from "./ar-tile.js";
 import { ARSocket, registerARSocket } from "./ar-socket.js";
 import { registerScorePanel, ScorePanel, ScoreWord } from "./score-panel.js";
+import type { BoardTile, GameConfig, GameState, TileData } from "./interfaces.js";
 
 export function registerARTiles() {
     ARTiles.define({
@@ -29,25 +30,6 @@ export function registerARTiles() {
     registerARTile();
     registerARSocket();
     registerScorePanel();
-}
-
-export interface BoardTile {
-    row: number;
-    column: number;
-}
-
-export interface GameConfig {
-    rowCount?: number;
-    columnCount?: number;
-    tileData: TileData[];
-}
-
-export interface GameState {
-    title?: string;
-    timeStamp?: string;
-    score: number;
-    tileData: TileData[];
-    validated: boolean;
 }
 
 /**
@@ -125,7 +107,7 @@ export class ARTiles extends FASTElement {
     public score: number = 0;
 
     @observable
-    public bestScore: number = 0;
+    public bestGame: GameState;
 
     public layout: HTMLDivElement;
     public board: HTMLDivElement;
@@ -189,17 +171,21 @@ export class ARTiles extends FASTElement {
     private tileUpdateQueued: boolean = false;
     private currentStateValidated: boolean = false;
 
+    private validWords: string[] = [];
+    private pendingVerification: string[] = [];
+    private invalidWords: string[] = [];
+
     public connectedCallback(): void {
         super.connectedCallback();
         this.addEventListener("socketconnected", this.handleSocketConnected);
         this.addEventListener("socketdisconnected", this.handleSocketDisconnected);
         this.addEventListener("dragtilestart", this.handleDragTileStart);
         this.addEventListener("dragtileend", this.handleDragTileEnd);
+        this.addEventListener("loadbestgame", this.loadBestGame);
 
         this.dispenserPlaceholder = document.createComment("");
         this.tilePlaceholder = document.createComment("");
         this.boardTilePlaceholder = document.createComment("");
-        this.savedGamePlaceholder = document.createComment("");
 
         if (this.behaviorOrchestrator === null) {
             this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
@@ -510,7 +496,6 @@ export class ARTiles extends FASTElement {
                 this.currentDragTile.regionRect
             )
         ) {
-            console.debug("outside");
             this.currentDragTile.scrollIntoView({
                 behavior: "smooth",
                 block: "center",
@@ -749,6 +734,8 @@ export class ARTiles extends FASTElement {
         let wordString: string;
         let currentTile: ARTile;
         let wordValue: number;
+        let isWordValid: boolean | undefined = true;
+        let isBoardValid: boolean | undefined = true;
 
         this.placedTiles.forEach(tile => {
             if (!tile.socketLeft.connectedTile && tile.socketRight.connectedTile) {
@@ -762,12 +749,21 @@ export class ARTiles extends FASTElement {
                     wordString = `${wordString}${currentTile.tileData.title}`;
                     wordValue = wordValue + currentTile.tileData.value;
                 }
+                isWordValid = this.validWords.includes(wordString)
+                    ? true
+                    : this.invalidWords.includes(wordString)
+                    ? false
+                    : undefined;
+                if (isBoardValid) {
+                    isBoardValid = isWordValid;
+                }
                 wordValue = wordValue * wordTiles.length;
                 const scoreWord: ScoreWord = {
                     word: wordString,
                     tiles: wordTiles,
                     value: wordValue,
                     orientation: Orientation.horizontal,
+                    isValid: isWordValid,
                 };
                 this.scorePanel.horizontalWords?.push(scoreWord);
                 newScore = newScore + wordValue;
@@ -784,20 +780,37 @@ export class ARTiles extends FASTElement {
                     wordString = `${wordString}${currentTile.tileData.title}`;
                     wordValue = wordValue + currentTile.tileData.value;
                 }
+                isWordValid = this.validWords.includes(wordString)
+                    ? true
+                    : this.invalidWords.includes(wordString)
+                    ? false
+                    : undefined;
+                if (isBoardValid) {
+                    isBoardValid = isWordValid;
+                }
                 wordValue = wordValue * wordTiles.length;
                 const scoreWord: ScoreWord = {
                     word: wordString,
                     tiles: wordTiles,
                     value: wordValue,
                     orientation: Orientation.vertical,
+                    isValid: isWordValid,
                 };
                 this.scorePanel.verticalWords?.push(scoreWord);
                 newScore = newScore + wordValue;
             }
         });
         this.score = newScore;
-        if (this.score > this.bestScore) {
-            this.bestScore = this.score;
+        if (
+            isBoardValid &&
+            (this.scorePanel.verticalWords.length ||
+                this.scorePanel.horizontalWords.length)
+        ) {
+            if (!this.scorePanel.bestGame) {
+                this.scorePanel.bestGame = this.getCurrentGameState();
+            } else if (this.score > this.scorePanel.bestGame.score) {
+                this.scorePanel.bestGame = this.getCurrentGameState();
+            }
         }
     }
 
@@ -917,6 +930,63 @@ export class ARTiles extends FASTElement {
     public handleShowScoringClick = (e: MouseEvent): void => {
         this.showScoring = !this.showScoring;
     };
+
+    public handleValidateClick = (e: MouseEvent): void => {
+        this.validateWords(this.scorePanel.horizontalWords);
+        this.validateWords(this.scorePanel.verticalWords);
+    };
+
+    public loadBestGame = (): void => {
+        if (this.scorePanel.bestGame) {
+            this.saveCurrentGameStateToBackStack();
+            this.applyGameState(this.scorePanel.bestGame);
+        }
+    };
+
+    private validateWords(words: ScoreWord[]): void {
+        words.forEach(scoreWord => {
+            if (
+                !this.validWords.includes(scoreWord.word) &&
+                !this.invalidWords.includes(scoreWord.word) &&
+                !this.pendingVerification.includes(scoreWord.word)
+            ) {
+                this.pendingVerification.push(scoreWord.word);
+                this.validateWord(scoreWord.word);
+            }
+        });
+    }
+
+    private async validateWord(word: string): Promise<void> {
+        try {
+            const response: Response = await fetch(
+                `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+            );
+            const data: Object = await response.json();
+            if (this.pendingVerification.includes(word)) {
+                this.pendingVerification.splice(
+                    this.pendingVerification.indexOf(word),
+                    1
+                );
+            }
+            if (Array.isArray(data)) {
+                if (!this.validWords.includes(word)) {
+                    this.validWords.push(word);
+                }
+            } else {
+                if (!this.invalidWords.includes(word)) {
+                    this.invalidWords.push(word);
+                }
+            }
+        } catch (err) {
+            if (this.pendingVerification.includes(word)) {
+                this.pendingVerification.splice(
+                    this.pendingVerification.indexOf(word),
+                    1
+                );
+            }
+        }
+        this.updateScore();
+    }
 }
 
 const boardTileTemplate: ViewTemplate<BoardTile> = html`
@@ -1000,7 +1070,11 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                     Load
                 </fast-button>
 
-                <fast-button id="validate-button" class="validate-button">
+                <fast-button
+                    id="validate-button"
+                    class="validate-button"
+                    @click="${(x, c) => x.handleValidateClick(c.event as MouseEvent)}"
+                >
                     Validate
                 </fast-button>
 

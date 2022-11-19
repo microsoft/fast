@@ -8,6 +8,7 @@ import type {
 import type { AxisPositioningMode } from "src/index.js";
 import { FASTAnchoredRegion } from "../../../anchored-region.js";
 import type { ARSocket } from "./ar-socket.js";
+import type { TileData } from "./interfaces.js";
 
 export function registerARTile() {
     ARTile.define({
@@ -20,16 +21,6 @@ export function registerARTile() {
 export interface tileDragEventArgs {
     tile: ARTile;
     event: MouseEvent;
-}
-
-export interface TileData {
-    title: string;
-    value: number;
-    fixed?: boolean;
-    column?: number;
-    row?: number;
-    tileId?: string;
-    anchorId?: string;
 }
 
 /**

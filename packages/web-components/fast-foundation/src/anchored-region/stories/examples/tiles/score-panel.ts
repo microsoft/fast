@@ -6,10 +6,12 @@ import {
     RepeatDirective,
     ViewBehaviorOrchestrator,
     ViewTemplate,
+    when,
 } from "@microsoft/fast-element";
 import { css, ElementViewTemplate, html } from "@microsoft/fast-element";
 import type { Orientation } from "@microsoft/fast-web-utilities";
 import type { ARTile } from "./ar-tile.js";
+import type { GameState } from "./interfaces.js";
 
 export function registerScorePanel() {
     ScorePanel.define({
@@ -24,6 +26,7 @@ export interface ScoreWord {
     tiles: ARTile[];
     value: number;
     orientation: Orientation;
+    isValid?: boolean;
 }
 
 /**
@@ -37,6 +40,9 @@ export class ScorePanel extends FASTElement {
 
     @observable
     public verticalWords: ScoreWord[] = [];
+
+    @observable
+    public bestGame: GameState;
 
     public verticalWordDisplay: HTMLDivElement;
     public horizontalWordDisplay: HTMLDivElement;
@@ -82,7 +88,13 @@ export class ScorePanel extends FASTElement {
 }
 
 const scoreWordTemplate: ViewTemplate<ScoreWord> = html`
-    <fast-option class="score-word-option">
+    <fast-option
+        class="
+            score-word-option
+            ${x =>
+            x.isValid === true ? "valid" : x.isValid === false ? "invalid" : void 0}
+        "
+    >
         <div class="score-word-display">
             <div class="score-word-word">
                 ${x => x.word}
@@ -101,16 +113,27 @@ const scoreWordTemplate: ViewTemplate<ScoreWord> = html`
 export function scorePanelTemplate<T extends ScorePanel>(): ElementViewTemplate<T> {
     return html<T>`
         <template>
-            <h3>
+            ${when(
+                x => x.bestGame,
+                html`
+                    <fast-button
+                        class="best-game-button valid"
+                        @click="${x => x.$emit("loadbestgame")}"
+                    >
+                        Your Best: ${x => x.bestGame.score}
+                    </fast-button>
+                `
+            )}
+            <h4>
                 Vertical Words
-            </h3>
+            </h4>
             <fast-listbox
                 class="score-word-listbox"
                 ${ref("verticalWordDisplay")}
             ></fast-listbox>
-            <h3>
+            <h4>
                 Horizontal Words
-            </h3>
+            </h4>
             <fast-listbox
                 class="score-word-listbox"
                 ${ref("horizontalWordDisplay")}
@@ -123,9 +146,22 @@ export const scorePanelStyles = css`
     :host {
     }
 
+    .valid {
+        background: green;
+    }
+
+    .invalid {
+        background: red;
+    }
+
     .score-word-listbox {
         width: 100%;
         min-height: 30px;
+    }
+
+    .score-word-option {
+        height: 30px;
+        width: 100%;
     }
 
     .score-word-option {
@@ -150,7 +186,6 @@ export const scorePanelStyles = css`
     }
 
     .score-word-score {
-        background: green;
         grid-column: 2;
         grid-row: 1;
     }
