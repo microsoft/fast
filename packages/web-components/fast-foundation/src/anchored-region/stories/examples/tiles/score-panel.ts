@@ -1,15 +1,14 @@
 import {
-    bind,
     FASTElement,
     observable,
     ref,
-    RepeatDirective,
-    ViewBehaviorOrchestrator,
+    repeat,
     ViewTemplate,
     when,
 } from "@microsoft/fast-element";
 import { css, ElementViewTemplate, html } from "@microsoft/fast-element";
 import type { Orientation } from "@microsoft/fast-web-utilities";
+import { FASTMenu, FASTMenuItem, FASTTooltip } from "../../../../index.js";
 import type { ARTile } from "./ar-tile.js";
 import type { GameState } from "./interfaces.js";
 
@@ -44,51 +43,70 @@ export class ScorePanel extends FASTElement {
     @observable
     public bestGame: GameState;
 
-    public verticalWordDisplay: HTMLDivElement;
-    public horizontalWordDisplay: HTMLDivElement;
+    public wordDisplay: FASTMenu;
+    public menuTooltip: FASTTooltip;
 
-    private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
-
-    private verticalWordPlaceholder: Node | null = null;
-    private horizontalWordPlaceholder: Node | null = null;
+    private currentHiliteWord: ScoreWord | undefined;
 
     public connectedCallback(): void {
         super.connectedCallback();
-
-        this.verticalWordPlaceholder = document.createComment("");
-        this.horizontalWordPlaceholder = document.createComment("");
-
-        if (this.behaviorOrchestrator === null) {
-            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
-            this.$fastController.addBehavior(this.behaviorOrchestrator);
-
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<ScorePanel>(
-                    bind(x => x.verticalWords, false),
-                    bind(x => scoreWordTemplate, false),
-                    {}
-                ),
-                this.verticalWordDisplay.appendChild(this.verticalWordPlaceholder)
-            );
-
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<ScorePanel>(
-                    bind(x => x.horizontalWords, false),
-                    bind(x => scoreWordTemplate, false),
-                    {}
-                ),
-                this.horizontalWordDisplay.appendChild(this.horizontalWordPlaceholder)
-            );
-        }
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
     }
+
+    public handleMenuItemMouseEnter = (e: MouseEvent, scoreWord: ScoreWord): void => {
+        if (e.target instanceof FASTMenuItem) {
+            this.menuTooltip.anchorElement = e.target;
+        }
+        this.hiliteWord(scoreWord);
+    };
+
+    public handleMenuItemMouseLeave = (e: MouseEvent, scoreWord: ScoreWord): void => {
+        this.unhiliteWord(scoreWord);
+    };
+
+    public handleMenuItemFocusIn = (e: MouseEvent, scoreWord: ScoreWord): void => {
+        if (e.target instanceof FASTMenuItem) {
+            this.menuTooltip.anchorElement = e.target;
+        }
+        this.hiliteWord(scoreWord);
+    };
+
+    public handleMenuItemFocusOut = (e: MouseEvent, scoreWord: ScoreWord): void => {
+        this.unhiliteWord(scoreWord);
+    };
+
+    private hiliteWord(scoreWord: ScoreWord): void {
+        if (this.currentHiliteWord) {
+            this.unhiliteWord(this.currentHiliteWord);
+        }
+        this.currentHiliteWord = scoreWord;
+        scoreWord.tiles.forEach(tile => {
+            tile.classList.toggle("hilite", true);
+        });
+    }
+
+    private unhiliteWord(scoreWord: ScoreWord): void {
+        if (scoreWord !== this.currentHiliteWord) {
+            return;
+        }
+        scoreWord.tiles.forEach(tile => {
+            tile.classList.toggle("hilite", false);
+        });
+        this.currentHiliteWord = undefined;
+    }
 }
 
 const scoreWordTemplate: ViewTemplate<ScoreWord> = html`
-    <fast-option
+    <fast-menu-item
+        @mouseenter="${(x, c) =>
+            c.parent.handleMenuItemMouseEnter(c.event as MouseEvent, x)}"
+        @mouseleave="${(x, c) =>
+            c.parent.handleMenuItemMouseLeave(c.event as MouseEvent, x)}"
+        @focusin="${(x, c) => c.parent.handleMenuItemFocusIn(c.event as MouseEvent, x)}"
+        @focusout="${(x, c) => c.parent.handleMenuItemFocusOut(c.event as MouseEvent, x)}"
         class="
             score-word-option
             ${x =>
@@ -103,7 +121,7 @@ const scoreWordTemplate: ViewTemplate<ScoreWord> = html`
                 ${x => x.value}
             </div>
         </div>
-    </fast-option>
+    </fast-menu-item>
 `;
 
 /**
@@ -124,20 +142,19 @@ export function scorePanelTemplate<T extends ScorePanel>(): ElementViewTemplate<
                     </fast-button>
                 `
             )}
-            <h4>
-                Vertical Words
-            </h4>
-            <fast-listbox
-                class="score-word-listbox"
-                ${ref("verticalWordDisplay")}
-            ></fast-listbox>
-            <h4>
-                Horizontal Words
-            </h4>
-            <fast-listbox
-                class="score-word-listbox"
-                ${ref("horizontalWordDisplay")}
-            ></fast-listbox>
+            <fast-menu class="score-word-listbox">
+                <h4>
+                    Horizontal Words
+                </h4>
+                ${repeat(x => x.horizontalWords, scoreWordTemplate)}
+                <h4>
+                    Vertical Words
+                </h4>
+                ${repeat(x => x.verticalWords, scoreWordTemplate)}
+            </fast-menu>
+            <fast-tooltip auto-update-mode="auto" ${ref("menuTooltip")}>
+                BOO
+            </fast-tooltip>
         </template>
     `;
 }

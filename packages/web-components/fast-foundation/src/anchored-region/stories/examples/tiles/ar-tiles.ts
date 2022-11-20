@@ -964,36 +964,36 @@ export class ARTiles extends FASTElement {
                 !this.pendingVerification.includes(scoreWord.word)
             ) {
                 this.pendingVerification.push(scoreWord.word);
-                this.validateWord(scoreWord.word);
+                this.validateWord(scoreWord);
             }
         });
     }
 
-    private async validateWord(word: string): Promise<void> {
+    private async validateWord(scoreWord: ScoreWord): Promise<void> {
         try {
             const response: Response = await fetch(
-                `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+                `https://api.dictionaryapi.dev/api/v2/entries/en/${scoreWord.word}`
             );
             const data: Object = await response.json();
-            if (this.pendingVerification.includes(word)) {
+            if (this.pendingVerification.includes(scoreWord.word)) {
                 this.pendingVerification.splice(
-                    this.pendingVerification.indexOf(word),
+                    this.pendingVerification.indexOf(scoreWord.word),
                     1
                 );
             }
             if (Array.isArray(data)) {
-                if (!this.validWords.includes(word)) {
-                    this.validWords.push(word);
+                if (!this.validWords.includes(scoreWord.word)) {
+                    this.validWords.push(scoreWord.word);
                 }
             } else {
-                if (!this.invalidWords.includes(word)) {
-                    this.invalidWords.push(word);
+                if (!this.invalidWords.includes(scoreWord.word)) {
+                    this.invalidWords.push(scoreWord.word);
                 }
             }
         } catch (err) {
-            if (this.pendingVerification.includes(word)) {
+            if (this.pendingVerification.includes(scoreWord.word)) {
                 this.pendingVerification.splice(
-                    this.pendingVerification.indexOf(word),
+                    this.pendingVerification.indexOf(scoreWord.word),
                     1
                 );
             }
@@ -1088,7 +1088,7 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                     class="validate-button"
                     @click="${(x, c) => x.handleValidateClick(c.event as MouseEvent)}"
                 >
-                    Validate
+                    Check spelling
                 </fast-button>
 
                 <fast-button

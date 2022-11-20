@@ -209,6 +209,11 @@ export const arTileStyles = css`
         pointer-events: none;
     }
 
+    :host(.hilite) .content,
+    :host(.fixed.hilite) .content {
+        background: orange;
+    }
+
     .socket-top,
     .socket-right,
     .socket-bottom,
