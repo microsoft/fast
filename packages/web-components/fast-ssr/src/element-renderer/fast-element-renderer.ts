@@ -1,4 +1,4 @@
-import { Aspect, DOM, ExecutionContext, FASTElement } from "@microsoft/fast-element";
+import { DOM, DOMAspect, ExecutionContext, FASTElement } from "@microsoft/fast-element";
 import { PendingTaskEvent } from "@microsoft/fast-element/pending-task";
 import { escapeHtml } from "../escape-html.js";
 import { RenderInfo } from "../render-info.js";
@@ -19,6 +19,12 @@ abstract class FASTElementRenderer extends DefaultElementRenderer {
      * The element instance represented by the {@link FASTElementRenderer}.
      */
     public readonly element!: FASTElement;
+
+    /**
+     * When true, instructs the ElementRenderer to yield the `defer-hydration` attribute for
+     * rendered elements.
+     */
+    protected abstract deferHydration: boolean;
 
     /**
      * The template renderer to use when rendering a component template
@@ -61,13 +67,13 @@ abstract class FASTElementRenderer extends DefaultElementRenderer {
 
                     const { target } = attr;
                     switch (attr.aspect) {
-                        case Aspect.property:
+                        case DOMAspect.property:
                             (this.element as any)[target] = result;
                             break;
-                        case Aspect.attribute:
+                        case DOMAspect.attribute:
                             DOM.setAttribute(this.element, target, result);
                             break;
-                        case Aspect.booleanAttribute:
+                        case DOMAspect.booleanAttribute:
                             DOM.setBooleanAttribute(this.element, target, result);
                             break;
                     }
@@ -129,19 +135,8 @@ export abstract class AsyncFASTElementRenderer extends FASTElementRenderer
             if (this.awaiting.size) {
                 yield this.pauseRendering().then(() => "");
             }
-            const { attributes } = this.element;
 
-            for (
-                let i = 0, name, value;
-                i < attributes.length && ({ name, value } = attributes[i]);
-                i++
-            ) {
-                if (value === "" || value === undefined || value === null) {
-                    yield ` ${name}`;
-                } else {
-                    yield ` ${name}="${escapeHtml(value)}"`;
-                }
-            }
+            yield* renderAttributesSync.call(this);
         }
     }
     renderShadow = renderShadow as (
@@ -180,9 +175,19 @@ function* renderAttributesSync(this: FASTElementRenderer): IterableIterator<stri
         ) {
             if (value === "" || value === undefined || value === null) {
                 yield ` ${name}`;
-            } else {
+            } else if (typeof value === "string") {
                 yield ` ${name}="${escapeHtml(value)}"`;
+            } else if (typeof value === "boolean") {
+                yield ` ${name}="${value}"`;
+            } else {
+                throw new Error(
+                    `Cannot assign attribute '${name}' for element ${this.element.tagName}.`
+                );
             }
+        }
+
+        if (this.deferHydration) {
+            yield " defer-hydration";
         }
     }
 }

@@ -1,16 +1,14 @@
-import type { TrustedTypesPolicy } from "./interfaces.js";
-
-// GlobalThis goes to platform
-declare const global: any;
-
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 (function ensureGlobalThis() {
     if (typeof globalThis !== "undefined") {
         // We're running in a modern environment.
         return;
     }
 
+    // @ts-ignore
     if (typeof global !== "undefined") {
         // We're running in NodeJS
+        // @ts-ignore
         global.globalThis = global;
     } else if (typeof self !== "undefined") {
         (self as any).globalThis = self;
@@ -25,10 +23,3 @@ declare const global: any;
         result.globalThis = result;
     }
 })();
-
-// API-only Polyfill for trustedTypes
-if (!globalThis.trustedTypes) {
-    globalThis.trustedTypes = {
-        createPolicy: (n: string, r: TrustedTypesPolicy) => r,
-    };
-}

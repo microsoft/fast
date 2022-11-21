@@ -49,7 +49,25 @@ export const elements = (selector?: string): ElementsFilter =>
 export abstract class NodeObservationDirective<
     T extends NodeBehaviorOptions
 > extends StatelessAttachedAttributeDirective<T> {
-    private sourceProperty = `${this.id}-s`;
+    private _id: string;
+    private _controllerProperty: string;
+
+    /**
+     * The unique id of the factory.
+     */
+    public get id(): string {
+        return this._id;
+    }
+
+    public set id(value: string) {
+        this._id = value;
+        this._controllerProperty = `${value}-c`;
+    }
+
+    /**
+     * The structural id of the DOM node to which the created behavior will apply.
+     */
+    public targetNodeId: string;
 
     /**
      * Bind this behavior to the source.
@@ -58,8 +76,8 @@ export abstract class NodeObservationDirective<
      * @param targets - The targets that behaviors in a view can attach to.
      */
     bind(controller: ViewController): void {
-        const target = controller.targets[this.nodeId] as any;
-        target[this.sourceProperty] = controller.source;
+        const target = controller.targets[this.targetNodeId] as any;
+        target[this._controllerProperty] = controller;
         this.updateTarget(controller.source, this.computeNodes(target));
         this.observe(target);
         controller.onUnbind(this);
@@ -72,10 +90,10 @@ export abstract class NodeObservationDirective<
      * @param targets - The targets that behaviors in a view can attach to.
      */
     unbind(controller: ViewController): void {
-        const target = controller.targets[this.nodeId] as any;
+        const target = controller.targets[this.targetNodeId] as any;
         this.updateTarget(controller.source, emptyArray);
         this.disconnect(target);
-        target[this.sourceProperty] = null;
+        target[this._controllerProperty] = null;
     }
 
     /**
@@ -84,7 +102,7 @@ export abstract class NodeObservationDirective<
      * @returns The source.
      */
     protected getSource(target: Node) {
-        return target[this.sourceProperty];
+        return target[this._controllerProperty].source;
     }
 
     /**

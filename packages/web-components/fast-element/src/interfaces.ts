@@ -49,31 +49,6 @@ export type Mutable<T> = {
 };
 
 /**
- * A policy for use with the standard trustedTypes platform API.
- * @public
- */
-export type TrustedTypesPolicy = {
-    /**
-     * Creates trusted HTML.
-     * @param html - The HTML to clear as trustworthy.
-     */
-    createHTML(html: string): string;
-};
-
-/**
- * Enables working with trusted types.
- * @public
- */
-export type TrustedTypes = {
-    /**
-     * Creates a trusted types policy.
-     * @param name - The policy name.
-     * @param rules - The policy rules implementation.
-     */
-    createPolicy(name: string, rules: TrustedTypesPolicy): TrustedTypesPolicy;
-};
-
-/**
  * The FAST global.
  * @internal
  */
@@ -115,16 +90,64 @@ export interface FASTGlobal {
     addMessages(messages: Record<number, string>): void;
 }
 
+let kernelMode;
+const kernelAttr = "fast-kernel";
+
+try {
+    if (document.currentScript) {
+        kernelMode = document.currentScript.getAttribute(kernelAttr);
+    } else {
+        const scripts = document.getElementsByTagName("script");
+        const currentScript = scripts[scripts.length - 1];
+        kernelMode = currentScript.getAttribute(kernelAttr);
+    }
+} catch (e) {
+    kernelMode = "isolate";
+}
+
 /**
- * Core services shared across FAST instances.
+ * Core services that can be shared across FAST instances.
  * @internal
  */
-export const enum KernelServiceId {
-    updateQueue = 1,
-    observable = 2,
-    contextEvent = 3,
-    elementRegistry = 4,
+type KernelServiceId = {
+    readonly updateQueue: string | number;
+    readonly observable: string | number;
+    readonly contextEvent: string | number;
+    readonly elementRegistry: string | number;
+};
+
+let KernelServiceId: KernelServiceId;
+
+switch (kernelMode) {
+    case "share": // share the kernel across major versions
+        KernelServiceId = Object.freeze({
+            updateQueue: 1,
+            observable: 2,
+            contextEvent: 3,
+            elementRegistry: 4,
+        });
+        break;
+    case "share-v2": // only share the kernel with other v2 instances
+        KernelServiceId = Object.freeze({
+            updateQueue: 1.2,
+            observable: 2.2,
+            contextEvent: 3.2,
+            elementRegistry: 4.2,
+        });
+        break;
+    default:
+        // fully isolate the kernel from all other FAST instances
+        const postfix = `-${Math.random().toString(36).substring(2, 8)}`;
+        KernelServiceId = Object.freeze({
+            updateQueue: `1.2${postfix}`,
+            observable: `2.2${postfix}`,
+            contextEvent: `3.2${postfix}`,
+            elementRegistry: `4.2${postfix}`,
+        });
+        break;
 }
+
+export { KernelServiceId };
 
 /**
  * A node that can be targeted by styles.
@@ -182,11 +205,14 @@ export const enum Message {
     // 1101 - 1200 Observation
     needsArrayObservation = 1101,
     // 1201 - 1300 Templating
-    onlySetHTMLPolicyOnce = 1201,
+    onlySetDOMPolicyOnce = 1201,
     bindingInnerHTMLRequiresTrustedTypes = 1202,
     twoWayBindingRequiresObservables = 1203,
     hostBindingWithoutHost = 1204,
     unsupportedBindingBehavior = 1205,
+    directCallToHTMLTagNotAllowed = 1206,
+    onlySetTemplatePolicyOnce = 1207,
+    cannotSetTemplatePolicyAfterCompilation = 1208,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,
@@ -222,3 +248,15 @@ export const isString = (object: any): object is string => typeof object === "st
  * @internal
  */
 export const noop = () => void 0;
+
+/**
+ * A policy for use with the standard trustedTypes platform API.
+ * @public
+ */
+export type TrustedTypesPolicy = {
+    /**
+     * Creates trusted HTML.
+     * @param html - The HTML to clear as trustworthy.
+     */
+    createHTML(html: string): string;
+};

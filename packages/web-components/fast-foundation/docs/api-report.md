@@ -5,10 +5,8 @@
 ```ts
 
 import type { CaptureType } from '@microsoft/fast-element';
-import { composedContains } from '@microsoft/fast-element/utilities';
-import { composedParent } from '@microsoft/fast-element/utilities';
 import { Constructable } from '@microsoft/fast-element';
-import type { CSSDirective } from '@microsoft/fast-element';
+import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -17,6 +15,7 @@ import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
 import { HostBehavior } from '@microsoft/fast-element';
 import { HostController } from '@microsoft/fast-element';
+import { HTMLDirective } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
@@ -270,12 +269,12 @@ export function checkboxTemplate<T extends FASTCheckbox>(options?: CheckboxOptio
 export interface ColumnDefinition {
     cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
     cellInternalFocusQueue?: boolean;
-    cellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
+    cellTemplate?: ViewTemplate | SyntheticViewTemplate;
     columnDataKey: string;
     gridColumn?: string;
     headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
     headerCellInternalFocusQueue?: boolean;
-    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
+    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate;
     isRowHeader?: boolean;
     title?: string;
 }
@@ -299,17 +298,14 @@ export type ComboboxOptions = StartEndOptions & {
 // @public
 export function comboboxTemplate<T extends FASTCombobox>(options?: ComboboxOptions): ElementViewTemplate<T>;
 
-export { composedContains }
-
-export { composedParent }
-
 // @beta
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
 // @public (undocumented)
-export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective {
+export class CSSDesignToken<T> extends DesignToken<T> implements CSSDirective, HTMLDirective {
     constructor(configuration: CSSDesignTokenConfiguration);
     createCSS(): string;
+    createHTML(): string;
     readonly cssCustomProperty: string;
 }
 
@@ -899,6 +895,7 @@ export class FASTCheckbox extends FormAssociatedCheckbox {
 // @public
 export class FASTCombobox extends FormAssociatedCombobox {
     autocomplete: ComboboxAutocomplete | undefined;
+    cleanup: () => void;
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
@@ -907,6 +904,8 @@ export class FASTCombobox extends FormAssociatedCombobox {
     control: HTMLInputElement;
     // @internal
     disabledChanged(prev: boolean, next: boolean): void;
+    // (undocumented)
+    disconnectedCallback(): void;
     filteredOptions: FASTListboxOption[];
     filterOptions(): void;
     // @internal
@@ -925,8 +924,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
     listbox: HTMLDivElement;
     // @internal
     listboxId: string;
-    // @internal
-    maxHeight: number;
     open: boolean;
     // @internal
     protected openChanged(): void;
@@ -935,10 +932,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
     placeholder: string;
     // @internal
     protected placeholderChanged(): void;
-    position?: SelectPosition;
-    positionAttribute?: SelectPosition;
-    // (undocumented)
-    protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition | undefined): void;
     // @internal
     selectedIndexChanged(prev: number | undefined, next: number): void;
     // @internal
@@ -1333,12 +1326,17 @@ export class FASTMenu extends FASTElement {
     handleFocusOut: (e: FocusEvent) => void;
     // @internal (undocumented)
     handleMenuKeyDown(e: KeyboardEvent): void | boolean;
+    protected isMenuItemElement: (el: Element) => el is HTMLElement;
     // @internal (undocumented)
     readonly isNestedMenu: () => boolean;
     // @internal (undocumented)
     items: HTMLElement[];
     // (undocumented)
     protected itemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
+    // (undocumented)
+    protected menuItems: Element[] | undefined;
+    // (undocumented)
+    protected setItems(): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1349,16 +1347,13 @@ export class FASTMenuItem extends FASTElement {
     checked: boolean;
     // (undocumented)
     protected checkedChanged(oldValue: boolean, newValue: boolean): void;
-    // @internal (undocumented)
-    connectedCallback(): void;
-    // @internal
-    currentDirection: Direction;
+    cleanup: () => void;
     disabled: boolean;
     // @internal (undocumented)
     disconnectedCallback(): void;
     expanded: boolean;
     // (undocumented)
-    protected expandedChanged(oldValue: boolean): void;
+    protected expandedChanged(prev: boolean | undefined, next: boolean): void;
     // @internal (undocumented)
     handleMenuItemClick: (e: MouseEvent) => boolean;
     // @internal (undocumented)
@@ -1368,17 +1363,20 @@ export class FASTMenuItem extends FASTElement {
     // @internal (undocumented)
     handleMouseOver: (e: MouseEvent) => boolean;
     // @internal (undocumented)
-    hasSubmenu: boolean;
+    get hasSubmenu(): boolean;
     hidden: boolean;
     role: MenuItemRole;
-    // @deprecated (undocumented)
-    startColumnCount: MenuItemColumnCount;
+    // @internal
+    slottedSubmenu: HTMLElement[];
+    // @internal
+    protected slottedSubmenuChanged(prev: HTMLElement[] | undefined, next: HTMLElement[]): void;
     // @internal (undocumented)
-    submenu: Element | undefined;
+    submenu: HTMLElement | undefined;
+    // @internal
+    submenuContainer: HTMLDivElement;
     // @internal (undocumented)
     submenuLoaded: () => void;
-    // @internal
-    submenuRegion: FASTAnchoredRegion;
+    updateSubmenu(): void;
 }
 
 // @internal
@@ -1700,6 +1698,7 @@ export interface FASTSearch extends StartEnd, DelegatesARIASearch {
 //
 // @public
 export class FASTSelect extends FormAssociatedSelect {
+    cleanup: () => void;
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // @internal
@@ -1725,18 +1724,12 @@ export class FASTSelect extends FormAssociatedSelect {
     listbox: HTMLDivElement;
     // @internal
     listboxId: string;
-    // @internal
-    maxHeight: number;
     // @internal @override
     mousedownHandler(e: MouseEvent): boolean | void;
     multipleChanged(prev: boolean | undefined, next: boolean): void;
     open: boolean;
     // @internal
     protected openChanged(prev: boolean | undefined, next: boolean): void;
-    position?: SelectPosition;
-    positionAttribute?: SelectPosition;
-    // (undocumented)
-    protected positionChanged(prev: SelectPosition | undefined, next: SelectPosition | undefined): void;
     // @internal
     selectedIndexChanged(prev: number | undefined, next: number): void;
     // @internal @override
@@ -2376,15 +2369,11 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
 // @public
 export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListEvent) => void;
 
-// @public @deprecated
-export type MenuItemColumnCount = 0 | 1 | 2;
-
 // @public
 export type MenuItemOptions = StartEndOptions & {
     checkboxIndicator?: string | SyntheticViewTemplate;
     expandCollapseGlyph?: string | SyntheticViewTemplate;
     radioIndicator?: string | SyntheticViewTemplate;
-    anchoredRegion: TemplateElementDependency;
 };
 
 // @public
@@ -2398,7 +2387,7 @@ export const MenuItemRole: {
 export type MenuItemRole = typeof MenuItemRole[keyof typeof MenuItemRole];
 
 // @public
-export function menuItemTemplate<T extends FASTMenuItem>(options: MenuItemOptions): ElementViewTemplate<T>;
+export function menuItemTemplate<T extends FASTMenuItem>(options?: MenuItemOptions): ElementViewTemplate<T>;
 
 // @beta
 export const MenuPlacement: {
@@ -2567,15 +2556,6 @@ export function searchTemplate<T extends FASTSearch>(options?: SearchOptions): E
 export type SelectOptions = StartEndOptions & {
     indicator?: string | SyntheticViewTemplate;
 };
-
-// @public
-export const SelectPosition: {
-    readonly above: "above";
-    readonly below: "below";
-};
-
-// @public
-export type SelectPosition = typeof SelectPosition[keyof typeof SelectPosition];
 
 // @public
 export function selectTemplate<T extends FASTSelect>(options?: SelectOptions): ElementViewTemplate<T>;
@@ -2815,7 +2795,6 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/menu-item/menu-item.d.ts:21:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:11:5 - (ae-incompatible-release-tags) The symbol "pickerMenuOption" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

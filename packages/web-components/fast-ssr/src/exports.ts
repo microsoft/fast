@@ -1,3 +1,4 @@
+import { FASTElement, FASTElementDefinition } from "@microsoft/fast-element";
 import {
     AsyncFASTElementRenderer,
     SyncFASTElementRenderer,
@@ -24,18 +25,48 @@ import {
 // Perform necessary configuration of FAST-Element library
 // for rendering in NodeJS
 import "./configure-fast-element.js";
-import { FASTElement, FASTElementDefinition } from "@microsoft/fast-element";
 
 /**
  * Configuration for SSR factory.
  * @beta
  */
 export interface SSRConfiguration {
-    renderMode: "sync" | "async";
+    /**
+     * When 'async', configures the renderer to support async rendering.
+     * 'async' rendering will yield 'string | Promise<string>'
+     *
+     * Defaults to 'sync'.
+     */
+    renderMode?: "sync" | "async";
+
+    /**
+     * Configures the renderer to yield the `defer-hydration` attribute during element rendering.
+     * The `defer-hydration` attribute can be used to prevent immediate hydration of the element
+     * by fast-element by importing hydration support in the client bundle.
+     *
+     * Defaults to `false`
+     * @example
+     *
+     * ```ts
+     * import "@microsoft/fast-element/install-element-hydration";
+     * ```
+     */
+    deferHydration?: boolean;
+
+    /**
+     * Renderers for author-defined ViewBehaviorFactories.
+     */
+    viewBehaviorFactoryRenderers?: ViewBehaviorFactoryRenderer<any>[];
 }
 
 /** @beta */
 function fastSSR(): {
+    templateRenderer: TemplateRenderer;
+    ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
+};
+function fastSSR(
+    config: Omit<SSRConfiguration, "renderMode">
+): {
     templateRenderer: TemplateRenderer;
     ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
 };
@@ -53,6 +84,7 @@ function fastSSR(
     templateRenderer: AsyncTemplateRenderer;
     ElementRenderer: ConstructableFASTElementRenderer<AsyncFASTElementRenderer>;
 };
+
 /**
  * Factory for creating SSR rendering assets.
  * @example
@@ -68,10 +100,12 @@ function fastSSR(
  * @beta
  */
 function fastSSR(config?: SSRConfiguration): any {
-    const async = config && config.renderMode === "async";
+    config = { renderMode: "sync", deferHydration: false, ...config } as Required<
+        SSRConfiguration
+    >;
     const templateRenderer = new DefaultTemplateRenderer();
 
-    const elementRenderer = class extends (!async
+    const elementRenderer = class extends (config.renderMode !== "async"
         ? SyncFASTElementRenderer
         : AsyncFASTElementRenderer) {
         static #disabledConstructors = new Set<typeof HTMLElement | string>();
@@ -103,14 +137,25 @@ function fastSSR(config?: SSRConfiguration): any {
         }
         protected templateRenderer: DefaultTemplateRenderer = templateRenderer;
         protected styleRenderer = new StyleElementStyleRenderer();
+        protected deferHydration = config?.deferHydration;
     };
 
     templateRenderer.withDefaultElementRenderers(
         (elementRenderer as unknown) as ConstructableElementRenderer
     );
+
+    // Configure out-of-box ViewBehaviorFactory renderers first
     templateRenderer.withViewBehaviorFactoryRenderers(
         ...defaultViewBehaviorFactoryRenderers
     );
+
+    // Add any author-defined ViewBehaviorFactories. This order allows overriding
+    // out-of-box renderers.
+    if (Array.isArray(config.viewBehaviorFactoryRenderers)) {
+        templateRenderer.withViewBehaviorFactoryRenderers(
+            ...config.viewBehaviorFactoryRenderers
+        );
+    }
 
     return {
         templateRenderer,

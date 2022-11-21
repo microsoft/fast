@@ -76,6 +76,17 @@ class ReflectAttributesDirective extends StatelessAttachedAttributeDirective<str
      * The attributes the behavior is reflecting
      */
     public attributes: Readonly<string[]>;
+
+    /**
+     * The unique id of the factory.
+     */
+    id: string;
+
+    /**
+     * The structural id of the DOM node to which the created behavior will apply.
+     */
+    targetNodeId: string;
+
     constructor(attributes: string[]) {
         super(attributes);
         this.attributes = Object.freeze(attributes);
@@ -84,7 +95,7 @@ class ReflectAttributesDirective extends StatelessAttachedAttributeDirective<str
     public bind(controller: ViewController): void {
         const source = controller.source;
         const subscription = AttributeReflectionSubscriptionSet.getOrCreateFor(source);
-        subscription[this.id] = controller.targets[this.nodeId];
+        subscription[this.id] = controller.targets[this.targetNodeId];
         subscription.subscribe(this);
 
         // Reflect any existing attributes because MutationObserver will only

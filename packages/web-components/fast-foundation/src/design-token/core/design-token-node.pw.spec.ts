@@ -160,6 +160,23 @@ test.describe("DesignTokenNode", () => {
 
             expect(target.getTokenValue(token)).toEqual(14);
         });
+
+        test("should not throw when setting a token value from within a change handler", () => {
+            const node = new DesignTokenNode();
+            const tokenA = { $value: undefined };
+            const tokenB = { $value: undefined };
+
+            node.setTokenValue(tokenA, 12);
+            Observable.getNotifier(tokenA).subscribe({
+                handleChange(source, args) {
+                    node.setTokenValue(tokenB, 14);
+                },
+            });
+
+            expect(() => {
+                node.setTokenValue(tokenA, 13);
+            }).not.toThrow();
+        });
     });
     test.describe("setting a token to a derived value", () => {
         test("should support getting and setting falsey values", () => {
@@ -286,6 +303,23 @@ test.describe("DesignTokenNode", () => {
                     return resolve(token) * 2;
                 });
             }).toThrow();
+        });
+
+        test("should not throw when setting a token derived value from within a change handler", () => {
+            const node = new DesignTokenNode();
+            const tokenA = { $value: undefined };
+            const tokenB = { $value: undefined };
+
+            node.setTokenValue(tokenA, 12);
+            Observable.getNotifier(tokenA).subscribe({
+                handleChange(source, args) {
+                    node.setTokenValue(tokenB, () => 12);
+                },
+            });
+
+            expect(() => {
+                node.setTokenValue(tokenA, 13);
+            }).not.toThrow();
         });
     });
 

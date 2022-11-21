@@ -2,6 +2,157 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 15 Nov 2022 02:40:34 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.22",
+      "version": "3.0.0-alpha.22",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "olaf-k@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "416dc9167e9d41e6ffe11d87ed79b2f455357923",
+            "comment": "add aria-orientation to radio-group"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e4a2bfccc07e65f9cfd1db9a943d93a84fb13ae4",
+            "comment": "Fixing bug in DesignToken causing RangeError"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "1a1fc0b9e85f1e65c605e32f6724402291ffbcaa",
+            "comment": "chore: move ViewBehaviorOrchestrator to utilities"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "3c14603089495a7af8ed5b55122c418b47c45fd5",
+            "comment": "feat: add new DOM Policy protection throughout"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.18",
+            "commit": "416dc9167e9d41e6ffe11d87ed79b2f455357923"
+          }
+        ],
+        "none": [
+          {
+            "author": "steph@huynhicode.dev",
+            "package": "@microsoft/fast-foundation",
+            "commit": "c35569f91f83e3c776461624d80dc32c8fa50823",
+            "comment": "update links for svelte and vite integration guides - current and legacy doc versions"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 04 Nov 2022 22:28:49 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.21",
+      "version": "3.0.0-alpha.21",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "9c594ef006d5189b3660de0e4d61dd6c5bb16496",
+            "comment": "feat: enable using design tokens in html"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 23:26:26 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.20",
+      "version": "3.0.0-alpha.20",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.17",
+            "commit": "32d18d0900047899d1dadfe94f7923b6164b0cf3"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 28 Oct 2022 20:44:44 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.19",
+      "version": "3.0.0-alpha.19",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7aaf156483ac6f5922a529b5b54e04e87445d882",
+            "comment": "use floating-ui for menu-item submenus"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "45b9c12961ea49694276b6a6d4d1f932ee9f83e8",
+            "comment": "use floating-ui for select and combobox"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "a614cb8270fe4b1d389cc3775c96913424dfc71b",
+            "comment": "remove indent logic from foundation menu and menu item, move to example"
+          },
+          {
+            "author": "tebin.raouf@thomsonreuters.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "f7186f122613e3cc66f9cf3700138c2b41175ed4",
+            "comment": "remove unnecessary composedParent & composedContains exports from Foundation"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.16",
+            "commit": "5b745b1fb3bf249a7a2d172b7fb69cb08694aadd"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Oct 2022 20:24:32 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.18",
+      "version": "3.0.0-alpha.18",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2455b606ad905219af52f15e35a74e20921e2eb4",
+            "comment": "add readonly property to identify tree items and udpate isTreeItemElement check"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e2604dd734275f78cfb577527c48b9c014f0929e",
+            "comment": "remove unnecessary click handler from legacy button span implementation"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.15",
+            "commit": "220cc7e0e0de490e51cc8b6f42ff46b03228beaa"
+          }
+        ],
+        "none": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "016cbf86b111923d2424f9d44e707efb80750cde",
+            "comment": "Migrate DesignToken tests to Playwright"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 14 Oct 2022 18:26:11 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.17",
       "version": "3.0.0-alpha.17",

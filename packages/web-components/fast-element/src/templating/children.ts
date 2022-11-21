@@ -1,4 +1,4 @@
-import { isString } from "../interfaces.js";
+import { isString, noop } from "../interfaces.js";
 import { HTMLDirective } from "./html-directive.js";
 import { NodeBehaviorOptions, NodeObservationDirective } from "./node-observation.js";
 import type { CaptureType } from "./template.js";
@@ -61,10 +61,15 @@ export class ChildrenDirective extends NodeObservationDirective<
      * @param target - The target to observe.
      */
     observe(target: any): void {
-        const observer =
-            target[this.observerProperty] ??
-            (target[this.observerProperty] = new MutationObserver(this.handleEvent));
-        observer.target = target;
+        let observer = target[this.observerProperty];
+
+        if (!observer) {
+            observer = new MutationObserver(this.handleEvent);
+            observer.toJSON = noop;
+            observer.target = target;
+            target[this.observerProperty] = observer;
+        }
+
         observer.observe(target, this.options);
     }
 

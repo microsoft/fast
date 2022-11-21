@@ -1,4 +1,5 @@
-import { isString, Message } from "../interfaces.js";
+import type { DOMPolicy } from "../dom.js";
+import { isString, Message, noop } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -133,6 +134,12 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
             value
         );
     }
+
+    /**
+     * Opts out of JSON stringification.
+     * @internal
+     */
+    toJSON = noop;
 }
 
 class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
@@ -152,6 +159,7 @@ class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding
  * Creates a default binding.
  * @param expression - The binding to refresh when changed.
  * @param optionsOrChangeEvent - The binding options or the name of the change event to use.
+ * @param policy - The security policy to associate with the binding.
  * @param isBindingVolatile - Indicates whether the binding is volatile or not.
  * @returns A binding.
  * @public
@@ -159,6 +167,7 @@ class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding
 export function twoWay<T = any>(
     expression: Expression<T>,
     optionsOrChangeEvent?: TwoWayBindingOptions | string,
+    policy?: DOMPolicy,
     isBindingVolatile = Observable.isVolatileBinding(expression)
 ): Binding<T> {
     if (isString(optionsOrChangeEvent)) {
@@ -171,7 +180,7 @@ export function twoWay<T = any>(
         optionsOrChangeEvent.fromView = defaultOptions.fromView;
     }
 
-    const binding = new TwoWayBinding(expression, isBindingVolatile);
+    const binding = new TwoWayBinding(expression, policy, isBindingVolatile);
     binding.options = optionsOrChangeEvent;
     return binding;
 }
