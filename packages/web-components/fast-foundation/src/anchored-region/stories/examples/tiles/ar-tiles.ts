@@ -1,5 +1,4 @@
 import {
-    bind,
     children,
     css,
     elements,
@@ -9,9 +8,7 @@ import {
     observable,
     ref,
     repeat,
-    RepeatDirective,
     Updates,
-    ViewBehaviorOrchestrator,
     ViewTemplate,
     when,
 } from "@microsoft/fast-element";
@@ -130,17 +127,15 @@ export class ARTiles extends FASTElement {
     private activeSockets: ARSocket[] = [];
     private placedTiles: ARTile[] = [];
     private fixedTileData: TileData[] = [];
-    private handTileData: TileData[] = [];
+
+    @observable
+    public playableTileData: TileData[] = [];
 
     private activeBoardTiles: HTMLElement[] = [];
 
     private currentDragTile: ARTile | undefined;
 
     private hoverSocket: ARSocket | undefined;
-    private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
-
-    private dispenserPlaceholder: Node | null = null;
-    private tilePlaceholder: Node | null = null;
 
     private rowCount: number;
     private columnCount: number;
@@ -160,43 +155,9 @@ export class ARTiles extends FASTElement {
         this.addEventListener("dragtileend", this.handleDragTileEnd);
         this.addEventListener("loadbestgame", this.loadBestGame);
 
-        this.dispenserPlaceholder = document.createComment("");
-        this.tilePlaceholder = document.createComment("");
-
-        if (this.behaviorOrchestrator === null) {
-            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
-            this.$fastController.addBehavior(this.behaviorOrchestrator);
-
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<ARTiles>(
-                    bind(x => x.handTileData, false),
-                    bind(x => dispenserTemplate, false),
-                    {}
-                ),
-                this.hand.appendChild(this.dispenserPlaceholder)
-            );
-
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<ARTiles>(
-                    bind(x => x.handTileData, false),
-                    bind(x => letterTileTemplate, false),
-                    {}
-                ),
-                this.layout.appendChild(this.tilePlaceholder)
-            );
-
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<ARTiles>(
-                    bind(x => x.fixedTileData, false),
-                    bind(x => letterTileTemplate, false),
-                    {}
-                ),
-                this.layout.appendChild(this.tilePlaceholder)
-            );
-            Updates.enqueue(() => {
-                this.reset();
-            });
-        }
+        Updates.enqueue(() => {
+            this.reset();
+        });
     }
 
     public disconnectedCallback(): void {
@@ -827,7 +788,7 @@ export class ARTiles extends FASTElement {
         this.activeSockets.splice(0, this.activeSockets.length);
         this.placedTiles.splice(0, this.placedTiles.length);
         this.fixedTileData.splice(0, this.fixedTileData.length);
-        this.handTileData.splice(0, this.handTileData.length);
+        this.playableTileData.splice(0, this.playableTileData.length);
         this.currentDragTile = undefined;
         this.hoverSocket = undefined;
 
@@ -836,7 +797,7 @@ export class ARTiles extends FASTElement {
             if (thisTileData.fixed) {
                 this.fixedTileData.push(thisTileData);
             } else {
-                this.handTileData.push(thisTileData);
+                this.playableTileData.push(thisTileData);
             }
         });
     }
@@ -1126,8 +1087,12 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                     ${ref("board")}
                 ></fast-data-grid>
                 <div class="hand-panel">
-                    <div id="hand" class="hand" ${ref("hand")}></div>
+                    <div id="hand" class="hand" ${ref("hand")}>
+                        ${repeat(x => x.playableTileData, dispenserTemplate)}
+                    </div>
                 </div>
+                ${repeat(x => x.fixedTileData, letterTileTemplate)}
+                ${repeat(x => x.playableTileData, letterTileTemplate)}
             </div>
             <score-panel class="scoring" ${ref("scorePanel")}></score-panel>
         </template>
