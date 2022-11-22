@@ -16,6 +16,7 @@ import {
     when,
 } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
+import type { ColumnDefinition, FASTDataGrid } from "../../../../index.js";
 import { ARTile, registerARTile, tileDragEventArgs } from "./ar-tile.js";
 import { ARSocket, registerARSocket } from "./ar-socket.js";
 import { registerScorePanel, ScorePanel, ScoreWord } from "./score-panel.js";
@@ -42,46 +43,7 @@ export class ARTiles extends FASTElement {
     public tileData: TileData[] = [];
 
     @observable
-    public gameConfig: GameConfig = {
-        columnCount: 11,
-        rowCount: 11,
-        tileData: [
-            { title: "E", value: 1, column: 6, row: 6, fixed: true },
-            { title: "E", value: 1 },
-            { title: "A", value: 1 },
-            { title: "R", value: 1 },
-            { title: "I", value: 1 },
-            { title: "O", value: 1 },
-            { title: "T", value: 2 },
-            { title: "N", value: 2 },
-            { title: "S", value: 2 },
-            { title: "L", value: 2 },
-            { title: "C", value: 2 },
-            { title: "U", value: 3 },
-            { title: "D", value: 3 },
-            { title: "P", value: 3 },
-            { title: "M", value: 3 },
-            { title: "H", value: 3 },
-            { title: "G", value: 3 },
-            { title: "B", value: 4 },
-            { title: "F", value: 4 },
-            { title: "Y", value: 4 },
-            { title: "W", value: 4 },
-            { title: "K", value: 4 },
-            { title: "V", value: 4 },
-            { title: "X", value: 5 },
-            { title: "Z", value: 5 },
-            { title: "J", value: 5 },
-            { title: "Q", value: 5 },
-            { title: "A", value: 1 },
-            { title: "E", value: 1 },
-            { title: "I", value: 1 },
-            { title: "O", value: 1 },
-            { title: "U", value: 3 },
-            { title: "R", value: 1 },
-            { title: "T", value: 2 },
-        ],
-    };
+    public gameConfig: GameConfig;
     public gameConfigChanged(): void {
         this.columnCount = this.gameConfig.columnCount || 14;
         this.rowCount = this.gameConfig.rowCount || 14;
@@ -95,13 +57,18 @@ export class ARTiles extends FASTElement {
         if (this.$fastController.isConnected) {
             this.reset();
         }
-        // this.style.setProperty("--tile-size", "40px");
+        this.tileSize = 40;
         this.style.setProperty("--column-count", `${this.columnCount}`);
         this.style.setProperty("--row-count", `${this.rowCount}`);
+        this.createBoardData();
+        this.updateGridTemplateColumns();
     }
 
     @observable
-    public boardSpaces: BoardTile[] = [];
+    public boardData: object[];
+
+    @observable
+    public boardColumnDefinitions: ColumnDefinition[] = [];
 
     @observable
     public score: number = 0;
@@ -110,7 +77,7 @@ export class ARTiles extends FASTElement {
     public bestGame: GameState;
 
     public layout: HTMLDivElement;
-    public board: HTMLDivElement;
+    public board: FASTDataGrid;
     public hand: HTMLDivElement;
     public savedGameDisplay: HTMLDivElement;
     public scorePanel: ScorePanel;
@@ -147,6 +114,15 @@ export class ARTiles extends FASTElement {
     @observable
     public currentBoardValid: boolean | undefined;
 
+    @observable
+    public boardGridTemplateColumns: string;
+
+    @observable
+    public tileSize: number;
+    private tileSizeChanged(): void {
+        this.style.setProperty("--tile-size", `${this.tileSize}px`);
+    }
+
     private previousGameStates: GameState[] = [];
     private nextGameStates: GameState[] = [];
 
@@ -165,8 +141,6 @@ export class ARTiles extends FASTElement {
 
     private dispenserPlaceholder: Node | null = null;
     private tilePlaceholder: Node | null = null;
-
-    private boardTilePlaceholder: Node | null = null;
 
     private rowCount: number;
     private columnCount: number;
@@ -188,7 +162,6 @@ export class ARTiles extends FASTElement {
 
         this.dispenserPlaceholder = document.createComment("");
         this.tilePlaceholder = document.createComment("");
-        this.boardTilePlaceholder = document.createComment("");
 
         if (this.behaviorOrchestrator === null) {
             this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
@@ -220,17 +193,9 @@ export class ARTiles extends FASTElement {
                 ),
                 this.layout.appendChild(this.tilePlaceholder)
             );
-
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<ARTiles>(
-                    bind(x => x.boardSpaces, false),
-                    bind(x => boardTileTemplate, false),
-                    { positioning: true }
-                ),
-                this.board.appendChild(this.boardTilePlaceholder)
-            );
-
-            this.reset();
+            Updates.enqueue(() => {
+                this.reset();
+            });
         }
     }
 
@@ -295,28 +260,25 @@ export class ARTiles extends FASTElement {
             this.handleDragTilePositionChange
         );
         Updates.enqueue(() => {
-            const activeBoardTileIds: string[] = [];
+            const activeBoardTiles: BoardTile[] = [];
             this.allSockets.forEach(socket => {
                 if (this.isValidSocket(socket)) {
                     socket.socketActive = true;
                     this.activeSockets.push(socket);
                     if (socket.parentTile) {
                         const boardTile: BoardTile = this.getBoardTileForSocket(socket);
-                        const boardTileId: string = `board-tile-${boardTile.row}-${boardTile.column}`;
-                        if (!activeBoardTileIds.includes(boardTileId)) {
-                            activeBoardTileIds.push(boardTileId);
+                        if (!activeBoardTiles.includes(boardTile)) {
+                            activeBoardTiles.push(boardTile);
                         }
                     }
                 }
             });
-            activeBoardTileIds.forEach(boardTileId => {
-                const boardTile:
-                    | HTMLElement
-                    | null
-                    | undefined = this.shadowRoot?.getElementById(boardTileId);
-                if (boardTile) {
-                    boardTile.classList.toggle("active", true);
-                    this.activeBoardTiles.push(boardTile);
+            activeBoardTiles.forEach(boardTile => {
+                const boardTileElement: Element = this.board.children[boardTile.row - 1]
+                    .children[boardTile.column - 1];
+                if (boardTileElement) {
+                    boardTileElement.classList.toggle("active", true);
+                    this.activeBoardTiles.push(boardTileElement as HTMLElement);
                 }
             });
         });
@@ -605,7 +567,7 @@ export class ARTiles extends FASTElement {
     };
 
     private setTileInSocket(socket: ARSocket, tile: ARTile): void {
-        let anchorElement: HTMLElement | null = null;
+        let anchorElement: Element | null = null;
 
         if (socket.parentTile) {
             const dropRect: DOMRect | undefined = this.getDropRect(
@@ -631,9 +593,9 @@ export class ARTiles extends FASTElement {
             tile.tileData.column = boardTile.column;
 
             if (this.shadowRoot) {
-                anchorElement = this.shadowRoot.getElementById(
-                    `board-tile-${boardTile.row}-${boardTile.column}`
-                );
+                anchorElement = this.board.children[boardTile.row - 1].children[
+                    boardTile.column - 1
+                ];
             }
         }
 
@@ -827,6 +789,38 @@ export class ARTiles extends FASTElement {
         }
     }
 
+    private updateGridTemplateColumns(): void {
+        let gridTemplateColumns: string = "";
+        for (let column = 1; column <= this.columnCount; column++) {
+            gridTemplateColumns = `${gridTemplateColumns} ${this.tileSize}px`;
+        }
+
+        this.boardGridTemplateColumns = gridTemplateColumns;
+    }
+
+    private createBoardData(): void {
+        for (let column = 1; column <= this.columnCount; column++) {
+            this.boardColumnDefinitions.push({
+                columnDataKey: `${column}`,
+                cellTemplate: boardTileTemplate,
+            });
+        }
+
+        const boardData: object[] = [];
+        for (let row = 1; row <= this.rowCount; row++) {
+            const thisRow: object = {};
+            for (let column = 1; column <= this.columnCount; column++) {
+                thisRow[`${column}`] = {
+                    row,
+                    column,
+                };
+            }
+            boardData.push(thisRow);
+        }
+
+        this.boardData = boardData;
+    }
+
     private reset(): void {
         this.score = 0;
         this.allSockets.splice(0, this.allSockets.length);
@@ -834,18 +828,8 @@ export class ARTiles extends FASTElement {
         this.placedTiles.splice(0, this.placedTiles.length);
         this.fixedTileData.splice(0, this.fixedTileData.length);
         this.handTileData.splice(0, this.handTileData.length);
-        this.boardSpaces.splice(0, this.boardSpaces.length);
         this.currentDragTile = undefined;
         this.hoverSocket = undefined;
-
-        for (let row = 1; row <= this.rowCount; row++) {
-            for (let column = 1; column <= this.columnCount; column++) {
-                this.boardSpaces.push({
-                    row,
-                    column,
-                });
-            }
-        }
 
         this.tileData.forEach(thisTileData => {
             thisTileData.tileId = `tile-${this.tileData.indexOf(thisTileData)}`;
@@ -863,9 +847,9 @@ export class ARTiles extends FASTElement {
         let anchorElement: Element | null | undefined = null;
         this.allTiles.forEach(tile => {
             if (tile.tileData.row && tile.tileData.column) {
-                anchorElement = this.shadowRoot?.getElementById(
-                    `board-tile-${tile.tileData.row}-${tile.tileData.column}`
-                );
+                anchorElement = this.board.children[tile.tileData.row - 1].children[
+                    tile.tileData.column - 1
+                ];
                 this.placedTiles.push(tile);
             } else {
                 anchorElement = this.shadowRoot?.getElementById(
@@ -1003,11 +987,7 @@ export class ARTiles extends FASTElement {
 }
 
 const boardTileTemplate: ViewTemplate<BoardTile> = html`
-    <div
-        id="board-tile-${x => x.row}-${x => x.column}"
-        class="board-tile"
-        style="grid-column:${x => x.column}; grid-row:${x => x.row}"
-    ></div>
+    <div id="board-tile-${x => x.row}-${x => x.column}" class="board-tile"></div>
 `;
 
 const savedGameTemplate: ViewTemplate<GameState> = html`
@@ -1136,7 +1116,15 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                 })}
                 ${ref("layout")}
             >
-                <div id="board" class="board" ${ref("board")}></div>
+                <fast-data-grid
+                    grid-template-columns="${x => x.boardGridTemplateColumns}"
+                    generate-header="none"
+                    :rowsData="${x => x.boardData}"
+                    :columnDefinitions="${x => x.boardColumnDefinitions}"
+                    id="board"
+                    class="board"
+                    ${ref("board")}
+                ></fast-data-grid>
                 <div class="hand-panel">
                     <div id="hand" class="hand" ${ref("hand")}></div>
                 </div>
@@ -1208,9 +1196,6 @@ export const arTilesStyles = css`
         grid-row: 1;
         grid-column: 2;
         background: lightgray;
-        display: grid;
-        grid-template-columns: repeat(var(--column-count), var(--tile-size));
-        grid-template-rows: repeat(var(--row-count), var(--tile-size));
     }
 
     .hand-panel {
@@ -1247,8 +1232,15 @@ export const arTilesStyles = css`
         grid-column: 4;
     }
 
+    fast-data-grid-row {
+        height: var(--tile-size);
+        border-bottom: unset;
+    }
+
     .board-tile {
         border: solid 2px;
+        height: var(--tile-size);
+        width: var(--tile-size);
     }
 
     .board-tile.active {

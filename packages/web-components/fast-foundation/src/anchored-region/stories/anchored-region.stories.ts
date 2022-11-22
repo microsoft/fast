@@ -12,6 +12,48 @@ import {
 } from "../anchored-region.options.js";
 import type { DraggableAnchor } from "./examples/draggable-anchor.js";
 import { ArPositions } from "./examples/ar-position-demo.js";
+import type { GameConfig } from "./examples/tiles/interfaces.js";
+
+const gameConfig: GameConfig = {
+    columnCount: 11,
+    rowCount: 11,
+    tileData: [
+        { title: "E", value: 1, column: 6, row: 6, fixed: true },
+        { title: "E", value: 1 },
+        { title: "A", value: 1 },
+        { title: "R", value: 1 },
+        { title: "I", value: 1 },
+        { title: "O", value: 1 },
+        { title: "T", value: 2 },
+        { title: "N", value: 2 },
+        { title: "S", value: 2 },
+        { title: "L", value: 2 },
+        { title: "C", value: 2 },
+        { title: "U", value: 3 },
+        { title: "D", value: 3 },
+        { title: "P", value: 3 },
+        { title: "M", value: 3 },
+        { title: "H", value: 3 },
+        { title: "G", value: 3 },
+        { title: "B", value: 4 },
+        { title: "F", value: 4 },
+        { title: "Y", value: 4 },
+        { title: "W", value: 4 },
+        { title: "K", value: 4 },
+        { title: "V", value: 4 },
+        { title: "X", value: 5 },
+        { title: "Z", value: 5 },
+        { title: "J", value: 5 },
+        { title: "Q", value: 5 },
+        { title: "A", value: 1 },
+        { title: "E", value: 1 },
+        { title: "I", value: 1 },
+        { title: "O", value: 1 },
+        { title: "U", value: 3 },
+        { title: "R", value: 1 },
+        { title: "T", value: 2 },
+    ],
+};
 
 const storyTemplate = html<StoryArgs<FASTAnchoredRegion>>`
         <fast-anchored-region
@@ -214,7 +256,7 @@ LockIntoView.args = {};
 
 export const Tiles: Story<FASTAnchoredRegion> = renderComponent(
     html<StoryArgs<FASTAnchoredRegion>>`
-        <ar-tiles></ar-tiles>
+        <ar-tiles :gameConfig="${gameConfig}"></ar-tiles>
     `
 ).bind({});
 Tiles.parameters = { controls: { include: [], hideNoControlsWarning: true } };
