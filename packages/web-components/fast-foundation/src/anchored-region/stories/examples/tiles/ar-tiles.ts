@@ -987,7 +987,7 @@ export class ARTiles extends FASTElement {
 }
 
 const boardTileTemplate: ViewTemplate<BoardTile> = html`
-    <div id="board-tile-${x => x.row}-${x => x.column}" class="board-tile"></div>
+    <div class="board-tile"></div>
 `;
 
 const savedGameTemplate: ViewTemplate<GameState> = html`
@@ -1233,17 +1233,23 @@ export const arTilesStyles = css`
     }
 
     fast-data-grid-row {
+        padding: 0px;
         height: var(--tile-size);
         border-bottom: unset;
     }
 
-    .board-tile {
-        border: solid 2px;
-        height: var(--tile-size);
-        width: var(--tile-size);
+    fast-data-grid-cell:focus-visible {
+        border-color: blue;
     }
 
-    .board-tile.active {
+    fast-data-grid-cell {
+        border: solid 2px;
+        height: 100%;
+        width: 100%;
+        border-radius: 0;
+    }
+
+    fast-data-grid-cell.active {
         background: white;
     }
 
