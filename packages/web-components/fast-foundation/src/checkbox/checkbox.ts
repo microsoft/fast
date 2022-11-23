@@ -62,6 +62,10 @@ export class FASTCheckbox extends FormAssociatedCheckbox {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent): void => {
+        if (this.disabled) {
+            return;
+        }
+
         switch (e.key) {
             case keySpace:
                 this.toggleChecked();
