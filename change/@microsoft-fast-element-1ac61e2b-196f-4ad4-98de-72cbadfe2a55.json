@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "chore: move ViewBehaviorOrchestrator to utilities",
+  "comment": "feat: add kernel mode with isolation by default",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
   "dependentChangeType": "prerelease"
