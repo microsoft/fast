@@ -239,7 +239,8 @@ export async function generateBenchmarks(
         ];
 
         versions.forEach(version => {
-            const isPublishedVersion = version.includes(".");
+            // regex exp that checks if string is indeed in version format: ${number}.${number}.${number}
+            const isPublishedVersion = /[0-9]+\.[0-9]+\.[0-9]+/.test(version);
             const isLocalBranch = localProps.branchName && version === LOCAL;
             const isBranch = isLocalBranch || !isPublishedVersion;
             const url =

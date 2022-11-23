@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "add new DOM Policy protection throughout",
+  "comment": "feat: shim DOMTokenList for class and part properties on HTMLElement",
   "packageName": "@microsoft/fast-ssr",
   "email": "roeisenb@microsoft.com",
   "dependentChangeType": "prerelease"
