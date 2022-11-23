@@ -18,6 +18,8 @@ import { ARTile, registerARTile, tileDragEventArgs } from "./ar-tile.js";
 import { ARSocket, registerARSocket } from "./ar-socket.js";
 import { registerScorePanel, ScorePanel, ScoreWord } from "./score-panel.js";
 import type { BoardTile, GameConfig, GameState, TileData } from "./interfaces.js";
+import { registerTileDispenser, TileDispenser } from "./tile-dispenser.js";
+import { registerHandPane } from "./hand-pane.js";
 
 export function registerARTiles() {
     ARTiles.define({
@@ -28,6 +30,8 @@ export function registerARTiles() {
     registerARTile();
     registerARSocket();
     registerScorePanel();
+    registerTileDispenser();
+    registerHandPane();
 }
 
 /**
@@ -207,11 +211,15 @@ export class ARTiles extends FASTElement {
             "positionchange",
             this.handleDragTilePositionChange
         );
-        const originalSocket = this.shadowRoot?.getElementById(
+        const originalDispenser:
+            | HTMLElement
+            | undefined
+            | null = this.shadowRoot?.getElementById(
             `dispenser-${this.currentDragTile.tileData.tileId}`
         );
-        if (originalSocket) {
-            this.currentDragTile.anchorElement = originalSocket;
+        if (originalDispenser) {
+            this.currentDragTile.anchorElement = originalDispenser;
+            (originalDispenser as TileDispenser).connectedTile = undefined;
         }
     };
 
@@ -260,11 +268,15 @@ export class ARTiles extends FASTElement {
         } else {
             this.currentDragTile.tileData.column = undefined;
             this.currentDragTile.tileData.row = undefined;
-            const originalSocket = this.shadowRoot?.getElementById(
+            const originalDispenser:
+                | HTMLElement
+                | null
+                | undefined = this.shadowRoot?.getElementById(
                 `dispenser-${this.currentDragTile.tileData.tileId}`
             );
-            if (originalSocket) {
-                this.setTileInSocket(originalSocket as ARSocket, this.currentDragTile);
+            if (originalDispenser) {
+                this.setTileInSocket(originalDispenser, this.currentDragTile);
+                (originalDispenser as TileDispenser).connectedTile = this.currentDragTile;
             }
         }
 
@@ -527,10 +539,10 @@ export class ARTiles extends FASTElement {
         this.hoverSocket = undefined;
     };
 
-    private setTileInSocket(socket: ARSocket, tile: ARTile): void {
+    private setTileInSocket(socket: HTMLElement, tile: ARTile): void {
         let anchorElement: Element | null = null;
 
-        if (socket.parentTile) {
+        if (socket instanceof ARSocket && socket.parentTile) {
             const dropRect: DOMRect | undefined = this.getDropRect(
                 socket,
                 tile.regionRect
@@ -818,7 +830,13 @@ export class ARTiles extends FASTElement {
                 );
             }
             if (anchorElement !== undefined && anchorElement !== tile.anchorElement) {
+                if (tile.anchorElement instanceof TileDispenser) {
+                    tile.anchorElement.connectedTile = undefined;
+                }
                 tile.anchorElement = anchorElement;
+                if (anchorElement instanceof TileDispenser) {
+                    anchorElement.connectedTile = tile;
+                }
             }
             tile.sockets.forEach(socket => {
                 socket.connectedTile = undefined;
@@ -978,11 +996,12 @@ const letterTileTemplate: ViewTemplate<TileData> = html`
 `;
 
 const dispenserTemplate: ViewTemplate<TileData> = html`
-    <ar-socket
+    <tile-dispenser
         id="dispenser-${x => x.tileId}"
-        socket-facing="center"
+        tabindex="-1"
         class="dispenser"
-    ></ar-socket>
+        role="listitem"
+    ></tile-dispenser>
 `;
 
 /**
@@ -1086,11 +1105,9 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                     class="board"
                     ${ref("board")}
                 ></fast-data-grid>
-                <div class="hand-panel">
-                    <div id="hand" class="hand" ${ref("hand")}>
-                        ${repeat(x => x.playableTileData, dispenserTemplate)}
-                    </div>
-                </div>
+                <hand-pane id="hand-pane" class="hand-pane" ${ref("hand")}>
+                    ${repeat(x => x.playableTileData, dispenserTemplate)}
+                </hand-pane>
                 ${repeat(x => x.fixedTileData, letterTileTemplate)}
                 ${repeat(x => x.playableTileData, letterTileTemplate)}
             </div>
@@ -1163,7 +1180,7 @@ export const arTilesStyles = css`
         background: lightgray;
     }
 
-    .hand-panel {
+    .hand-pane {
         contain: inline-size;
         display: block;
         width: 100%;
@@ -1173,17 +1190,14 @@ export const arTilesStyles = css`
         background: lightgray;
     }
 
-    .hand {
-        flex-wrap: wrap;
-        display: flex;
-        width: 100%;
-        height: auto;
-    }
-
     .dispenser {
         display: inline-block;
         height: var(--tile-size);
         width: var(--tile-size);
+    }
+
+    .dispenser:focus-visible {
+        border-color: blue;
     }
 
     .scoring {
@@ -1208,6 +1222,7 @@ export const arTilesStyles = css`
     }
 
     fast-data-grid-cell {
+        border: solid 2px;
         border: solid 2px;
         height: 100%;
         width: 100%;

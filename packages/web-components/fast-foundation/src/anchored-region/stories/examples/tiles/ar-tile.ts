@@ -1,5 +1,11 @@
-import { Updates } from "@microsoft/fast-element";
-import { css, ElementViewTemplate, html, observable, ref } from "@microsoft/fast-element";
+import {
+    css,
+    ElementViewTemplate,
+    html,
+    observable,
+    ref,
+    Updates,
+} from "@microsoft/fast-element";
 import { eventMouseMove, eventMouseUp } from "@microsoft/fast-web-utilities";
 import type {
     HorizontalPosition,
