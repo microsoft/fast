@@ -8,6 +8,8 @@ import {
 } from "@microsoft/fast-element";
 import { eventMouseMove, eventMouseUp } from "@microsoft/fast-web-utilities";
 import type {
+    AutoUpdateMode,
+    AxisScalingMode,
     HorizontalPosition,
     VerticalPosition,
 } from "src/anchored-region/anchored-region.options.js";
@@ -42,6 +44,8 @@ export class ARTile extends FASTAnchoredRegion {
     public verticalPositioningMode: AxisPositioningMode = "locktodefault";
     public verticalDefaultPosition: VerticalPosition = "center";
     public horizontalDefaultPosition: HorizontalPosition = "center";
+    public horizontalScaling: AxisScalingMode = "anchor";
+    public verticalScaling: AxisScalingMode = "anchor";
 
     @observable
     public dragging: boolean = false;
@@ -242,8 +246,6 @@ export const arTileStyles = css`
         transform: translate(-38px, 2px) !important;
     }
     .content {
-        height: 40px;
-        width: 40px;
         background: gray;
         border: solid 1px black;
         box-sizing: border-box;

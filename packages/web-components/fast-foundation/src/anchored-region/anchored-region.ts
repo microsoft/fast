@@ -1116,6 +1116,12 @@ export class FASTAnchoredRegion extends FASTElement {
 
         switch (this.horizontalScaling) {
             case "anchor":
+                nextRegionWidth = this.useVirtualAnchor
+                    ? this.virtualAnchorWidth
+                    : this.anchorRect.width;
+                this.regionWidth = `${nextRegionWidth}px`;
+                break;
+
             case "fill":
                 nextRegionWidth = this.horizontalViewportLock
                     ? this.viewportRect.width
@@ -1199,6 +1205,12 @@ export class FASTAnchoredRegion extends FASTElement {
 
         switch (this.verticalScaling) {
             case "anchor":
+                nextRegionHeight = this.useVirtualAnchor
+                    ? this.virtualAnchorHeight
+                    : this.anchorRect.height;
+                this.regionHeight = `${nextRegionHeight}px`;
+                break;
+
             case "fill":
                 nextRegionHeight = this.verticalViewportLock
                     ? this.viewportRect.height

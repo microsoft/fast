@@ -4,7 +4,6 @@ import {
     FASTElement,
     html,
     observable,
-    ref,
 } from "@microsoft/fast-element";
 import type { ARTile } from "./ar-tile.js";
 
@@ -47,6 +46,5 @@ export function tileDispenserTemplate<T extends TileDispenser>(): ElementViewTem
 export const tileDispenserStyles = css`
     :host {
         box-sizing: border-box;
-        border: solid 1px black;
     }
 `;

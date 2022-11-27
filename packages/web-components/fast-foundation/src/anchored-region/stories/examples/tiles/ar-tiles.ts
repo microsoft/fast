@@ -203,6 +203,8 @@ export class ARTiles extends FASTElement {
         this.addEventListener("socketunhovered", this.handleSocketUnhovered);
         this.currentDragTile.addEventListener("dragtile", this.handleTileDrag);
         this.currentDragTile.useVirtualAnchor = true;
+        this.currentDragTile.virtualAnchorHeight = this.tileSize;
+        this.currentDragTile.virtualAnchorWidth = this.tileSize;
         this.currentDragTile.horizontalDefaultPosition = "right";
         this.currentDragTile.verticalDefaultPosition = "bottom";
         this.placedTiles.forEach(tile => {
@@ -1172,9 +1174,6 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
 
 export const arTilesStyles = css`
     :host {
-        --tile-size: 40px;
-        --column-count: 12;
-        --row-count: 12;
         height: auto;
         width: 100%;
         display: grid;

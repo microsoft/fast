@@ -7,8 +7,6 @@ import {
     html,
     observable,
 } from "@microsoft/fast-element";
-import { ColumnDefinition, FASTDataGrid } from "../../../../index.js";
-import type { TileDispenser } from "./tile-dispenser.js";
 
 export function registerHandPane() {
     HandPane.define({
