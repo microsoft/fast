@@ -48,6 +48,9 @@ export class ARTiles extends FASTElement {
     public gameConfigChanged(): void {
         this.columnCount = this.gameConfig.columnCount || 14;
         this.rowCount = this.gameConfig.rowCount || 14;
+        this.tileSize = 40;
+        this.style.setProperty("--column-count", `${this.columnCount}`);
+        this.style.setProperty("--row-count", `${this.rowCount}`);
         this.tileData.splice(0, this.tileData.length, ...this.gameConfig.tileData);
         this.tileData.forEach(tile => {
             if (!tile.row) {
@@ -58,18 +61,19 @@ export class ARTiles extends FASTElement {
         if (this.$fastController.isConnected) {
             this.reset();
         }
-        this.tileSize = 40;
-        this.style.setProperty("--column-count", `${this.columnCount}`);
-        this.style.setProperty("--row-count", `${this.rowCount}`);
-        this.createBoardData();
-        this.updateGridTemplateColumns();
     }
 
     @observable
-    public boardData: object[];
+    public boardData: object[] = [];
+
+    @observable
+    public dispensersData: object[] = [];
 
     @observable
     public boardColumnDefinitions: ColumnDefinition[] = [];
+
+    @observable
+    public dispensersColumnDefinitions: ColumnDefinition[] = [];
 
     @observable
     public score: number = 0;
@@ -107,6 +111,9 @@ export class ARTiles extends FASTElement {
     public showLoadMenu: boolean = false;
 
     @observable
+    public showTiles: boolean = false;
+
+    @observable
     public showScoring: boolean = false;
 
     @observable
@@ -124,6 +131,9 @@ export class ARTiles extends FASTElement {
         this.style.setProperty("--tile-size", `${this.tileSize}px`);
     }
 
+    @observable
+    public playableTileData: TileData[] = [];
+
     private previousGameStates: GameState[] = [];
     private nextGameStates: GameState[] = [];
 
@@ -131,9 +141,6 @@ export class ARTiles extends FASTElement {
     private activeSockets: ARSocket[] = [];
     private placedTiles: ARTile[] = [];
     private fixedTileData: TileData[] = [];
-
-    @observable
-    public playableTileData: TileData[] = [];
 
     private activeBoardTiles: HTMLElement[] = [];
 
@@ -211,11 +218,8 @@ export class ARTiles extends FASTElement {
             "positionchange",
             this.handleDragTilePositionChange
         );
-        const originalDispenser:
-            | HTMLElement
-            | undefined
-            | null = this.shadowRoot?.getElementById(
-            `dispenser-${this.currentDragTile.tileData.tileId}`
+        const originalDispenser: HTMLElement = this.getOriginalDispenser(
+            this.currentDragTile
         );
         if (originalDispenser) {
             this.currentDragTile.anchorElement = originalDispenser;
@@ -268,11 +272,8 @@ export class ARTiles extends FASTElement {
         } else {
             this.currentDragTile.tileData.column = undefined;
             this.currentDragTile.tileData.row = undefined;
-            const originalDispenser:
-                | HTMLElement
-                | null
-                | undefined = this.shadowRoot?.getElementById(
-                `dispenser-${this.currentDragTile.tileData.tileId}`
+            const originalDispenser: HTMLElement = this.getOriginalDispenser(
+                this.currentDragTile
             );
             if (originalDispenser) {
                 this.setTileInSocket(originalDispenser, this.currentDragTile);
@@ -607,9 +608,7 @@ export class ARTiles extends FASTElement {
     }
 
     private removeTileFromSocket(tile: ARTile): void {
-        const originalSocket = this.shadowRoot?.getElementById(
-            `dispenser-${tile.tileData.tileId}`
-        );
+        const originalSocket = this.getOriginalDispenser(tile);
         if (originalSocket) {
             tile.anchorElement = originalSocket;
         }
@@ -771,6 +770,34 @@ export class ARTiles extends FASTElement {
         this.boardGridTemplateColumns = gridTemplateColumns;
     }
 
+    private createDispenserData(): void {
+        for (let column = 1; column <= this.columnCount; column++) {
+            this.dispensersColumnDefinitions.push({
+                columnDataKey: `${column}`,
+                cellTemplate: dispenserTemplate,
+            });
+        }
+
+        const rowCount: number = Math.ceil(
+            this.playableTileData.length / this.columnCount
+        );
+
+        const dispensersData: object[] = [];
+        let currentIndex: number = 0;
+        for (let row = 1; row <= rowCount; row++) {
+            const thisRow: object = {};
+            for (let column = 1; column <= this.columnCount; column++) {
+                thisRow[`${column}`] = {
+                    tileData: this.playableTileData[currentIndex],
+                };
+                currentIndex++;
+            }
+            dispensersData.push(thisRow);
+        }
+
+        this.dispensersData = dispensersData;
+    }
+
     private createBoardData(): void {
         for (let column = 1; column <= this.columnCount; column++) {
             this.boardColumnDefinitions.push({
@@ -803,6 +830,7 @@ export class ARTiles extends FASTElement {
         this.playableTileData.splice(0, this.playableTileData.length);
         this.currentDragTile = undefined;
         this.hoverSocket = undefined;
+        this.showTiles = false;
 
         this.tileData.forEach(thisTileData => {
             thisTileData.tileId = `tile-${this.tileData.indexOf(thisTileData)}`;
@@ -812,6 +840,23 @@ export class ARTiles extends FASTElement {
                 this.playableTileData.push(thisTileData);
             }
         });
+
+        this.updateGridTemplateColumns();
+        this.createBoardData();
+        this.createDispenserData();
+        Updates.enqueue(() => {
+            this.showTiles = true;
+        });
+    }
+
+    private getOriginalDispenser(tile: ARTile): HTMLElement {
+        const tileIndex: number = this.playableTileData.indexOf(tile.tileData);
+        const row: number = Math.floor(tileIndex / this.columnCount);
+        const column: number = tileIndex - row * this.columnCount;
+        const originalDispenser: HTMLElement = this.hand.children[row].children[
+            column
+        ] as HTMLElement;
+        return originalDispenser;
     }
 
     private updateTiles(): void {
@@ -825,9 +870,7 @@ export class ARTiles extends FASTElement {
                 ];
                 this.placedTiles.push(tile);
             } else {
-                anchorElement = this.shadowRoot?.getElementById(
-                    `dispenser-${tile.tileData.tileId}`
-                );
+                anchorElement = this.getOriginalDispenser(tile);
             }
             if (anchorElement !== undefined && anchorElement !== tile.anchorElement) {
                 if (tile.anchorElement instanceof TileDispenser) {
@@ -1087,15 +1130,7 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                     </fast-anchored-region>
                 `
             )}
-            <div
-                id="layout"
-                class="layout"
-                ${children({
-                    property: "allTiles",
-                    filter: elements("ar-tile"),
-                })}
-                ${ref("layout")}
-            >
+            <div id="layout" class="layout" ${ref("layout")}>
                 <fast-data-grid
                     grid-template-columns="${x => x.boardGridTemplateColumns}"
                     generate-header="none"
@@ -1105,11 +1140,30 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                     class="board"
                     ${ref("board")}
                 ></fast-data-grid>
-                <hand-pane id="hand-pane" class="hand-pane" ${ref("hand")}>
-                    ${repeat(x => x.playableTileData, dispenserTemplate)}
-                </hand-pane>
-                ${repeat(x => x.fixedTileData, letterTileTemplate)}
-                ${repeat(x => x.playableTileData, letterTileTemplate)}
+                <fast-data-grid
+                    grid-template-columns="${x => x.boardGridTemplateColumns}"
+                    generate-header="none"
+                    :rowsData="${x => x.dispensersData}"
+                    :columnDefinitions="${x => x.dispensersColumnDefinitions}"
+                    id="hand-pane"
+                    class="hand-pane"
+                    ${ref("hand")}
+                ></fast-data-grid>
+                ${when(
+                    x => x.showTiles,
+                    html`
+                        <div
+                            class="tiles"
+                            ${children({
+                                property: "allTiles",
+                                filter: elements("ar-tile"),
+                            })}
+                        >
+                            ${repeat(x => x.fixedTileData, letterTileTemplate)}
+                            ${repeat(x => x.playableTileData, letterTileTemplate)}
+                        </div>
+                    `
+                )}
             </div>
             <score-panel class="scoring" ${ref("scorePanel")}></score-panel>
         </template>
@@ -1188,6 +1242,11 @@ export const arTilesStyles = css`
         grid-row: 3;
         grid-column: 2;
         background: lightgray;
+    }
+
+    .tiles {
+        grid-row: 1/4;
+        grid-column: 2;
     }
 
     .dispenser {
