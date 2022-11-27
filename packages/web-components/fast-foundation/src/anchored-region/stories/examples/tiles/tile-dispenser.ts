@@ -1,10 +1,5 @@
-import {
-    css,
-    ElementViewTemplate,
-    FASTElement,
-    html,
-    observable,
-} from "@microsoft/fast-element";
+import { css, ElementViewTemplate, html, observable } from "@microsoft/fast-element";
+import { FASTDataGridCell } from "../../../../index.js";
 import type { ARTile } from "./ar-tile.js";
 
 export function registerTileDispenser() {
@@ -20,7 +15,7 @@ export function registerTileDispenser() {
  *
  * @public
  */
-export class TileDispenser extends FASTElement {
+export class TileDispenser extends FASTDataGridCell {
     @observable
     public connectedTile: ARTile | undefined;
 
@@ -39,7 +34,9 @@ export class TileDispenser extends FASTElement {
  */
 export function tileDispenserTemplate<T extends TileDispenser>(): ElementViewTemplate<T> {
     return html<T>`
-        <template></template>
+        <template>
+            <slot></slot>
+        </template>
     `;
 }
 

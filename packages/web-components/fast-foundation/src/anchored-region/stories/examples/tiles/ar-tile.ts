@@ -204,8 +204,8 @@ export const arTileStyles = css`
     :host {
         display: grid;
         user-select: none;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
+        grid-template-columns: 4px 1fr 4px;
+        grid-template-rows: 4px 1fr 4px;
     }
 
     :host(.loaded) {
@@ -229,8 +229,8 @@ export const arTileStyles = css`
     .socket-bottom,
     .socket-left {
         position: absolute;
-        height: 36px;
-        width: 36px;
+        grid-column: 1 / 3;
+        grid-row: 1 / 3;
     }
 
     .socket-top {
@@ -246,10 +246,11 @@ export const arTileStyles = css`
         transform: translate(-38px, 2px) !important;
     }
     .content {
+        position: relative;
+        grid-column: 2;
+        grid-row: 2;
         background: gray;
-        border: solid 1px black;
         box-sizing: border-box;
-        padding: 4px;
         display: flex;
         justify-content: center;
     }

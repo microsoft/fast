@@ -776,7 +776,6 @@ export class ARTiles extends FASTElement {
         for (let column = 1; column <= this.columnCount; column++) {
             this.dispensersColumnDefinitions.push({
                 columnDataKey: `${column}`,
-                cellTemplate: dispenserTemplate,
             });
         }
 
@@ -804,7 +803,6 @@ export class ARTiles extends FASTElement {
         for (let column = 1; column <= this.columnCount; column++) {
             this.boardColumnDefinitions.push({
                 columnDataKey: `${column}`,
-                cellTemplate: boardTileTemplate,
             });
         }
 
@@ -1010,10 +1008,6 @@ export class ARTiles extends FASTElement {
     }
 }
 
-const boardTileTemplate: ViewTemplate<BoardTile> = html`
-    <div class="board-tile"></div>
-`;
-
 const savedGameTemplate: ViewTemplate<GameState> = html`
     <fast-option
         class="saved-game-option"
@@ -1040,12 +1034,14 @@ const letterTileTemplate: ViewTemplate<TileData> = html`
     ></ar-tile>
 `;
 
-const dispenserTemplate: ViewTemplate<TileData> = html`
+const dispenserCellTemplate: ViewTemplate = html`
     <tile-dispenser
-        id="dispenser-${x => x.tileId}"
-        tabindex="-1"
         class="dispenser"
-        role="listitem"
+        tabindex="-1"
+        role="gridcell"
+        grid-column="${(x, c) => c.index + 1}"
+        :rowData="${(x, c) => c.parent.rowData}"
+        :columnDefinition="${x => x}"
     ></tile-dispenser>
 `;
 
@@ -1136,6 +1132,7 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                 <fast-data-grid
                     grid-template-columns="${x => x.boardGridTemplateColumns}"
                     generate-header="none"
+                    :cellItemTemplate="${dispenserCellTemplate}"
                     :rowsData="${x => x.boardData}"
                     :columnDefinitions="${x => x.boardColumnDefinitions}"
                     id="board"
@@ -1145,6 +1142,7 @@ export function arTilesTemplate<T extends ARTiles>(): ElementViewTemplate<T> {
                 <fast-data-grid
                     grid-template-columns="${x => x.boardGridTemplateColumns}"
                     generate-header="none"
+                    :cellItemTemplate="${dispenserCellTemplate}"
                     :rowsData="${x => x.dispensersData}"
                     :columnDefinitions="${x => x.dispensersColumnDefinitions}"
                     id="hand-pane"
@@ -1275,11 +1273,12 @@ export const arTilesStyles = css`
         border-bottom: unset;
     }
 
-    fast-data-grid-cell:focus-visible {
+    tile-dispenser:focus-visible {
         border-color: blue;
+        background: blue;
     }
 
-    fast-data-grid-cell {
+    tile-dispenser {
         border: solid 2px;
         border: solid 2px;
         height: 100%;
@@ -1287,7 +1286,7 @@ export const arTilesStyles = css`
         border-radius: 0;
     }
 
-    fast-data-grid-cell.active {
+    tile-dispenser.active {
         background: white;
     }
 
