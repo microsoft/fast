@@ -1,4 +1,4 @@
-import { css, ElementStyles } from "@microsoft/fast-element";
+import { css, html, ElementStyles } from "@microsoft/fast-element";
 import { FASTSelect } from "../select.js";
 import { selectTemplate } from "../select.template.js";
 
@@ -209,7 +209,7 @@ export class Select extends FASTSelect {
 Select.define({
     name: "fast-select",
     template: selectTemplate({
-        indicator: /* html */ `
+        indicator: /* html */ html`
             <svg
                 class="select-indicator"
                 part="select-indicator"

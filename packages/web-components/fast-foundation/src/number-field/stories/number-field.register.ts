@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTNumberField } from "../number-field.js";
 import { numberFieldTemplate } from "../number-field.template.js";
@@ -165,8 +166,12 @@ FASTNumberField.define({
     name: "fast-number-field",
     styles,
     template: numberFieldTemplate({
-        stepDownGlyph: /* html */ `<span class="step-down-glyph" part="step-down-glyph"></span>`,
-        stepUpGlyph: /* html */ `<span class="step-up-glyph" part="step-up-glyph"></span>`,
+        stepDownGlyph: /* html */ html`
+            <span class="step-down-glyph" part="step-down-glyph"></span>
+        `,
+        stepUpGlyph: /* html */ html`
+            <span class="step-up-glyph" part="step-up-glyph"></span>
+        `,
     }),
     shadowOptions: {
         delegatesFocus: true,
