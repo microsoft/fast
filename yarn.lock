@@ -3293,6 +3293,16 @@
     "@microsoft/fast-web-utilities" "^5.4.1"
     tslib "^1.13.0"
 
+"@microsoft/fast-foundation@^2.13.1", "@microsoft/fast-foundation@^2.23.0", "@microsoft/fast-foundation@^2.42.0", "@microsoft/fast-foundation@^2.46.2", "@microsoft/fast-foundation@^2.46.9":
+  version "2.47.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-foundation/-/fast-foundation-2.47.0.tgz#a4cc8c5277e21d080215f5adcaed4266a8dd8a8e"
+  integrity sha512-EyFuioaZQ9ngjUNRQi8R3dIPPsaNQdUOS+tP0G7b1MJRhXmQWIitBM6IeveQA6ZvXG6H21dqgrfEWlsYrUZ2sw==
+  dependencies:
+    "@microsoft/fast-element" "^1.11.0"
+    "@microsoft/fast-web-utilities" "^5.4.1"
+    tabbable "^5.2.0"
+    tslib "^1.13.0"
+
 "@microsoft/fast-jss-manager-react@^3.0.0 || ^4.0.0":
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-jss-manager-react/-/fast-jss-manager-react-4.8.0.tgz#0694b18e9250a26a443ad0d6ab5938bbca2147ca"
