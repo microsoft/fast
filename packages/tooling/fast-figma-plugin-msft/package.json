@@ -54,6 +54,6 @@
     "@microsoft/fast-colors": "^5.3.0",
     "@microsoft/fast-components": "^2.30.6",
     "@microsoft/fast-element": "^1.11.0",
-    "@microsoft/fast-react-wrapper": "^0.3.15"
+    "@microsoft/fast-react-wrapper": "^0.3.16-0"
   }
 }
