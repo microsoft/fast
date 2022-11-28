@@ -21,10 +21,12 @@ export class TileDispenser extends FASTDataGridCell {
 
     public connectedCallback(): void {
         super.connectedCallback();
+        this.$emit("dispenserconnected", { dispenser: this });
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
+        this.$emit("dispenserconnected", { dispenser: this });
     }
 }
 
@@ -35,7 +37,7 @@ export class TileDispenser extends FASTDataGridCell {
 export function tileDispenserTemplate<T extends TileDispenser>(): ElementViewTemplate<T> {
     return html<T>`
         <template>
-            <slot></slot>
+            ${x => x.connectedTile?.tileData.title}
         </template>
     `;
 }

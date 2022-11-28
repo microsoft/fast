@@ -98,6 +98,9 @@ export class ARTiles extends FASTElement {
         }
     }
 
+    private boardDispensers: TileDispenser[] = [];
+    private handDispensers: TileDispenser[] = [];
+
     @observable
     public enablePrevious: boolean = false;
 
@@ -162,6 +165,8 @@ export class ARTiles extends FASTElement {
         super.connectedCallback();
         this.addEventListener("socketconnected", this.handleSocketConnected);
         this.addEventListener("socketdisconnected", this.handleSocketDisconnected);
+        this.addEventListener("dispenserconnected", this.handleDispenserConnected);
+        this.addEventListener("dispenserdisconnected", this.handleDispenserDisconnected);
         this.addEventListener("dragtilestart", this.handleDragTileStart);
         this.addEventListener("dragtileend", this.handleDragTileEnd);
         this.addEventListener("loadbestgame", this.loadBestGame);
@@ -235,29 +240,40 @@ export class ARTiles extends FASTElement {
             this.handleDragTilePositionChange
         );
         Updates.enqueue(() => {
-            const activeBoardTiles: BoardTile[] = [];
-            this.allSockets.forEach(socket => {
-                if (this.isValidSocket(socket)) {
-                    socket.socketActive = true;
-                    this.activeSockets.push(socket);
-                    if (socket.parentTile) {
-                        const boardTile: BoardTile = this.getBoardTileForSocket(socket);
-                        if (!activeBoardTiles.includes(boardTile)) {
-                            activeBoardTiles.push(boardTile);
-                        }
-                    }
-                }
-            });
-            activeBoardTiles.forEach(boardTile => {
-                const boardTileElement: Element = this.board.children[boardTile.row - 1]
-                    .children[boardTile.column - 1];
-                if (boardTileElement) {
-                    boardTileElement.classList.toggle("active", true);
-                    this.activeBoardTiles.push(boardTileElement as HTMLElement);
-                }
-            });
+            this.activateBoardTiles();
         });
     };
+
+    private deactivateBoardTiles(): void {
+        this.activeBoardTiles.forEach(boardTile => {
+            boardTile.classList.toggle("active", false);
+        });
+    }
+
+    private activateBoardTiles(): void {
+        this.deactivateBoardTiles();
+        const activeBoardTiles: BoardTile[] = [];
+        this.allSockets.forEach(socket => {
+            if (this.isValidSocket(socket)) {
+                socket.socketActive = true;
+                this.activeSockets.push(socket);
+                if (socket.parentTile) {
+                    const boardTile: BoardTile = this.getBoardTileForSocket(socket);
+                    if (!activeBoardTiles.includes(boardTile)) {
+                        activeBoardTiles.push(boardTile);
+                    }
+                }
+            }
+        });
+        activeBoardTiles.forEach(boardTile => {
+            const boardTileElement: Element = this.board.children[boardTile.row - 1]
+                .children[boardTile.column - 1];
+            if (boardTileElement) {
+                boardTileElement.classList.toggle("active", true);
+                this.activeBoardTiles.push(boardTileElement as HTMLElement);
+            }
+        });
+    }
 
     public handleDragTileEnd = (e: CustomEvent): void => {
         if (e.defaultPrevented || !this.currentDragTile) {
@@ -294,10 +310,7 @@ export class ARTiles extends FASTElement {
         this.currentDragTile.removeEventListener("dragtile", this.handleTileDrag);
         this.currentDragTile = undefined;
         this.hoverSocket = undefined;
-
-        this.activeBoardTiles.forEach(boardTile => {
-            boardTile.classList.toggle("active", false);
-        });
+        this.deactivateBoardTiles();
     };
 
     private saveCurrentGameStateToBackStack(): void {
@@ -454,6 +467,32 @@ export class ARTiles extends FASTElement {
         });
     }
 
+    public handleDispenserConnected = (e: CustomEvent): void => {
+        if (e.defaultPrevented) {
+            return;
+        }
+        e.preventDefault();
+        const dispenser: TileDispenser = e.detail.dispenser as TileDispenser;
+        if (this.board.contains(dispenser)) {
+            this.boardDispensers.push(dispenser);
+        } else {
+            this.handDispensers.push(dispenser);
+        }
+    };
+
+    public handleDispenserDisconnected = (e: CustomEvent): void => {
+        if (e.defaultPrevented || !e.target) {
+            return;
+        }
+        e.preventDefault();
+        const dispenser: TileDispenser = e.detail.dispenser as TileDispenser;
+        if (this.boardDispensers.includes(dispenser)) {
+            this.boardDispensers.splice(this.boardDispensers.indexOf(dispenser), 1);
+        } else if (this.handDispensers.includes(dispenser)) {
+            this.handDispensers.splice(this.handDispensers.indexOf(dispenser), 1);
+        }
+    };
+
     public handleSocketConnected = (e: CustomEvent): void => {
         if (e.defaultPrevented) {
             return;
@@ -568,14 +607,15 @@ export class ARTiles extends FASTElement {
             tile.tileData.row = boardTile.row;
             tile.tileData.column = boardTile.column;
 
-            if (this.shadowRoot) {
-                anchorElement = this.board.children[boardTile.row - 1].children[
-                    boardTile.column - 1
-                ];
-            }
+            anchorElement = this.board.children[boardTile.row - 1].children[
+                boardTile.column - 1
+            ];
         }
 
         tile.anchorElement = anchorElement || socket;
+        if (anchorElement) {
+            (anchorElement as TileDispenser).connectedTile = tile;
+        }
         tile.useVirtualAnchor = false;
         tile.horizontalDefaultPosition = "center";
         tile.verticalDefaultPosition = "center";
@@ -611,6 +651,11 @@ export class ARTiles extends FASTElement {
 
     private removeTileFromSocket(tile: ARTile): void {
         const originalSocket = this.getOriginalDispenser(tile);
+
+        if (tile.anchorElement instanceof TileDispenser) {
+            tile.anchorElement.connectedTile = undefined;
+        }
+
         if (originalSocket) {
             tile.anchorElement = originalSocket;
         }
@@ -861,6 +906,7 @@ export class ARTiles extends FASTElement {
 
     private updateTiles(): void {
         this.tileUpdateQueued = false;
+
         this.placedTiles.splice(0, this.placedTiles.length);
         let anchorElement: Element | null | undefined = null;
         this.allTiles.forEach(tile => {
@@ -872,10 +918,7 @@ export class ARTiles extends FASTElement {
             } else {
                 anchorElement = this.getOriginalDispenser(tile);
             }
-            if (anchorElement !== undefined && anchorElement !== tile.anchorElement) {
-                if (tile.anchorElement instanceof TileDispenser) {
-                    tile.anchorElement.connectedTile = undefined;
-                }
+            if (anchorElement !== undefined) {
                 tile.anchorElement = anchorElement;
                 if (anchorElement instanceof TileDispenser) {
                     anchorElement.connectedTile = tile;
