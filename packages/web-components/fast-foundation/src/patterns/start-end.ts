@@ -1,6 +1,6 @@
 import {
-    html,
     DangerousHTMLDirective,
+    html,
     ref,
     SyntheticViewTemplate,
     ViewTemplate,

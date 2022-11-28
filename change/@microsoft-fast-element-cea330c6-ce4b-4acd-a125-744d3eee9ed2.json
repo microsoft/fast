@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "update return type for dangerousHTML to DangerousHTMLDirective",
+  "packageName": "@microsoft/fast-element",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}

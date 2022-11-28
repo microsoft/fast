@@ -1,4 +1,4 @@
-import { css, html, ElementStyles } from "@microsoft/fast-element";
+import { css, ElementStyles, html } from "@microsoft/fast-element";
 import { FASTSelect } from "../select.js";
 import { selectTemplate } from "../select.template.js";
 
