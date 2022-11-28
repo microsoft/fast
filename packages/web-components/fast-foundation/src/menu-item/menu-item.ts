@@ -2,6 +2,7 @@ import type { Placement } from "@floating-ui/dom";
 import { autoUpdate, computePosition, flip, shift, size } from "@floating-ui/dom";
 import {
     attr,
+    DangerousHTMLDirective,
     FASTElement,
     observable,
     SyntheticViewTemplate,
@@ -26,9 +27,9 @@ export { MenuItemRole, roleForMenuItem };
  * @public
  */
 export type MenuItemOptions = StartEndOptions & {
-    checkboxIndicator?: string | SyntheticViewTemplate;
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
-    radioIndicator?: string | SyntheticViewTemplate;
+    checkboxIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+    expandCollapseGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
+    radioIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**
