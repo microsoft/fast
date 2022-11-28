@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Mon, 28 Nov 2022 18:28:05 GMT",
+      "tag": "@microsoft/fast-foundation_v2.47.1-0",
+      "version": "2.47.1-0",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "robarb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "1538e4766a95811301309cd33b4eb78c53db9aeb",
+            "comment": "hidden horizontal-scroll fix"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Oct 2022 03:07:31 GMT",
       "tag": "@microsoft/fast-foundation_v2.47.0",
       "version": "2.47.0",
