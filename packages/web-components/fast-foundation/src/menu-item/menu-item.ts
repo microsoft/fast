@@ -109,7 +109,7 @@ export class FASTMenuItem extends FASTElement {
      * HTML Attribute: checked
      */
     @attr({ mode: "boolean" })
-    public checked: boolean;
+    public checked: boolean = false;
     protected checkedChanged(oldValue: boolean, newValue: boolean): void {
         if (this.$fastController.isConnected) {
             this.$emit("change");
