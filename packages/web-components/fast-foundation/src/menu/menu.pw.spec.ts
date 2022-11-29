@@ -299,15 +299,15 @@ test.describe("Menu", () => {
 
         await expect(menuItems.nth(0)).toHaveAttribute("aria-checked", "true");
         await expect(menuItems.nth(1)).toHaveAttribute("aria-checked", "false");
-        await expect(menuItems.nth(2)).toHaveAttribute("aria-checked", "");
-        await expect(menuItems.nth(3)).toHaveAttribute("aria-checked", "");
+        await expect(menuItems.nth(2)).toHaveAttribute("aria-checked", "false");
+        await expect(menuItems.nth(3)).toHaveAttribute("aria-checked", "false");
 
         await menuItems.nth(1).click();
 
         await expect(menuItems.nth(0)).toHaveAttribute("aria-checked", "false");
         await expect(menuItems.nth(1)).toHaveAttribute("aria-checked", "true");
-        await expect(menuItems.nth(2)).toHaveAttribute("aria-checked", "");
-        await expect(menuItems.nth(3)).toHaveAttribute("aria-checked", "");
+        await expect(menuItems.nth(2)).toHaveAttribute("aria-checked", "false");
+        await expect(menuItems.nth(3)).toHaveAttribute("aria-checked", "false");
 
         await menuItems.nth(2).click();
 
