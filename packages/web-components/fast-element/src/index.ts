@@ -5,8 +5,6 @@ export type {
     Disposable,
     FASTGlobal,
     Mutable,
-    StyleStrategy,
-    StyleTarget,
 } from "./interfaces.js";
 export * from "./platform.js";
 export * from "./dom.js";
@@ -22,6 +20,7 @@ export * from "./styles/element-styles.js";
 export * from "./styles/css.js";
 export * from "./styles/css-directive.js";
 export * from "./styles/host.js";
+export * from "./styles/style-strategy.js";
 
 // Templating
 export * from "./templating/template.js";
