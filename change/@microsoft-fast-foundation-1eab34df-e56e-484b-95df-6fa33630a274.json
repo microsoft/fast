@@ -3,5 +3,5 @@
   "comment": "checkbox remove irrelevant read-only property",
   "packageName": "@microsoft/fast-foundation",
   "email": "yinon@hotmail.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
