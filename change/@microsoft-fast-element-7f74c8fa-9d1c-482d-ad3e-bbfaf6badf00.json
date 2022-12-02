@@ -3,5 +3,5 @@
   "comment": "chore: cleanup fast-element interfaces",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
