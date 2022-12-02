@@ -2,9 +2,9 @@
 export type {
     Callable,
     Constructable,
+    Class,
     Disposable,
-    FASTGlobal,
-    Mutable,
+    TrustedTypesPolicy,
 } from "./interfaces.js";
 export * from "./platform.js";
 export * from "./dom.js";

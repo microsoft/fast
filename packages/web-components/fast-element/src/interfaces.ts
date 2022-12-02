@@ -5,7 +5,7 @@
 export type Callable = typeof Function.prototype.call | { call(): void };
 
 /**
- * Allows for the creation of Constructable mixin classes.
+ * Represents a type which can be constructed with the new operator.
  *
  * @public
  */
@@ -14,7 +14,7 @@ export type Constructable<T = {}> = {
 };
 
 /**
- * Represents a class.
+ * Represents a constructable class with a prototype.
  * @public
  */
 export type Class<T, C = {}> = C &
@@ -35,6 +35,18 @@ export interface Disposable {
      */
     dispose(): void;
 }
+
+/**
+ * A policy for use with the standard trustedTypes platform API.
+ * @public
+ */
+export type TrustedTypesPolicy = {
+    /**
+     * Creates trusted HTML.
+     * @param html - The HTML to clear as trustworthy.
+     */
+    createHTML(html: string): string;
+};
 
 /**
  * Reverses all readonly members, making them mutable.
@@ -183,29 +195,20 @@ export const enum Message {
 }
 
 /**
+ * Determines whether or not an object is a function.
  * @internal
  */
 export const isFunction = (object: any): object is Function =>
     typeof object === "function";
 
 /**
+ * Determines whether or not an object is a string.
  * @internal
  */
 export const isString = (object: any): object is string => typeof object === "string";
 
 /**
+ * A function which does nothing.
  * @internal
  */
 export const noop = () => void 0;
-
-/**
- * A policy for use with the standard trustedTypes platform API.
- * @public
- */
-export type TrustedTypesPolicy = {
-    /**
-     * Creates trusted HTML.
-     * @param html - The HTML to clear as trustworthy.
-     */
-    createHTML(html: string): string;
-};
