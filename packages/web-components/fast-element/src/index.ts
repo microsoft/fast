@@ -4,6 +4,7 @@ export type {
     Constructable,
     Class,
     Disposable,
+    FASTGlobal,
     TrustedTypesPolicy,
 } from "./interfaces.js";
 export * from "./platform.js";

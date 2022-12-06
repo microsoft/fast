@@ -392,7 +392,6 @@ export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any>
     bind(controller: ExpressionController<TSource, TParent>): TReturn;
 }
 
-// Warning: (ae-forgotten-export) The symbol "FASTGlobal" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-missing-underscore) The name "FAST" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -434,6 +433,19 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly styles?: ElementStyles;
     readonly template?: ElementViewTemplate;
     readonly type: TType;
+}
+
+// Warning: (ae-internal-missing-underscore) The name "FASTGlobal" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export interface FASTGlobal {
+    addMessages(messages: Record<number, string>): void;
+    error(code: number, values?: Record<string, any>): Error;
+    getById<T>(id: string | number): T | null;
+    // (undocumented)
+    getById<T>(id: string | number, initialize: () => T): T;
+    readonly versions: string[];
+    warn(code: number, values?: Record<string, any>): void;
 }
 
 // @public
