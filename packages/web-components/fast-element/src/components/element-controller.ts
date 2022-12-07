@@ -33,7 +33,10 @@ export interface ElementControllerStrategy {
     new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
 }
 
-const enum Stages {
+/**
+ * @internal
+ */
+export const enum Stages {
     connecting,
     connected,
     disconnecting,
@@ -48,10 +51,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     extends PropertyChangeNotifier
     implements HostController<TElement> {
     private boundObservables: Record<string, any> | null = null;
-    private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
-    private stage: Stages = Stages.disconnected;
+    protected stage: Stages = Stages.disconnected;
+    protected needsInitialization: boolean = true;
     /**
      * A guard against connecting behaviors multiple times
      * during connect in scenarios where a behavior adds
@@ -336,29 +339,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         this.stage = Stages.connecting;
 
-        // If we have any observables that were bound, re-apply their values.
-        if (this.boundObservables !== null) {
-            const element = this.source;
-            const boundObservables = this.boundObservables;
-            const propertyNames = Object.keys(boundObservables);
-
-            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
-                const propertyName = propertyNames[i];
-                (element as any)[propertyName] = boundObservables[propertyName];
-            }
-
-            this.boundObservables = null;
-        }
-
-        const behaviors = this.behaviors;
-        if (behaviors !== null) {
-            this.guardBehaviorConnection = true;
-            for (const key of behaviors.keys()) {
-                key.connectedCallback && key.connectedCallback(this);
-            }
-
-            this.guardBehaviorConnection = false;
-        }
+        this.initializeObservables();
+        this.connectBehaviors();
 
         if (this.needsInitialization) {
             this.renderTemplate(this.template);
@@ -371,6 +353,40 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         this.stage = Stages.connected;
         Observable.notify(this, isConnectedPropertyName);
+    }
+
+    /**
+     * Re-assigns any observable values that were overridden with observable property accessors
+     * during construction.
+     */
+    protected initializeObservables() {
+        if (this.boundObservables !== null) {
+            const element = this.source;
+            const boundObservables = this.boundObservables;
+            const propertyNames = Object.keys(boundObservables);
+
+            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
+                const propertyName = propertyNames[i];
+                (element as any)[propertyName] = boundObservables[propertyName];
+            }
+
+            this.boundObservables = null;
+        }
+    }
+
+    /**
+     * Connects any behaviors added to the element.
+     */
+    protected connectBehaviors() {
+        const behaviors = this.behaviors;
+        if (behaviors !== null) {
+            this.guardBehaviorConnection = true;
+            for (const key of behaviors.keys()) {
+                key.connectedCallback && key.connectedCallback(this);
+            }
+
+            this.guardBehaviorConnection = false;
+        }
     }
 
     /**
