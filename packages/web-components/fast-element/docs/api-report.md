@@ -559,6 +559,12 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
 }
 
 // @public
+export class InlineTemplateDirective<TSource, TParent> implements HTMLDirective {
+    constructor(template: ViewTemplate<TSource, TParent>);
+    createHTML(add: AddViewBehaviorFactory): string;
+}
+
+// @public
 export interface LengthObserver extends Subscriber {
     length: number;
 }
@@ -839,6 +845,7 @@ export interface SyntheticView<TSource = any, TParent = any> extends View<TSourc
 // @public
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent>;
+    inline(): CaptureType<TSource, TParent>;
 }
 
 // @public
@@ -925,6 +932,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy): ViewTemplate<TSource, TParent>;
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
+    inline(): CaptureType<TSource, TParent>;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
     // @internal
     toJSON: () => undefined;
