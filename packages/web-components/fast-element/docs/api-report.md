@@ -273,18 +273,26 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     addBehavior(behavior: HostBehavior<TElement>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     connect(): void;
+    protected connectBehaviors(): void;
     readonly definition: FASTElementDefinition;
     disconnect(): void;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement): ElementController;
+    protected initializeObservables(): void;
     get isConnected(): boolean;
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
+    // (undocumented)
+    protected needsInitialization: boolean;
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     removeBehavior(behavior: HostBehavior<TElement>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     static setStrategy(strategy: ElementControllerStrategy): void;
     readonly source: TElement;
+    // Warning: (ae-forgotten-export) The symbol "Stages" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    protected stage: Stages;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
     // @internal
