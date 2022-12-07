@@ -3,5 +3,5 @@
   "comment": "feat: add ability to inline templates",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
