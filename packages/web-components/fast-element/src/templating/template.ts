@@ -99,7 +99,7 @@ export type TemplateValue<TSource, TParent = any> =
 export class InlineTemplateDirective<TSource, TParent> implements HTMLDirective {
     /**
      * Creates an instance of InlineTemplateDirective.
-     * @param template The template to inline.
+     * @param template - The template to inline.
      */
     public constructor(private template: ViewTemplate<TSource, TParent>) {}
 
