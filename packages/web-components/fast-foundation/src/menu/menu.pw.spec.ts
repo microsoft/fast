@@ -234,7 +234,7 @@ test.describe("Menu", () => {
         for (let i = 0; i < menuItemsCount; i++) {
             const item = menuItems.nth(i);
 
-            await expect(item).toHaveAttribute("aria-checked", "");
+            await expect(item).toHaveAttribute("aria-checked", "false");
 
             await item.click();
 
