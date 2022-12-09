@@ -41,7 +41,7 @@
   },
   "scripts": {
     "bump": "beachball bump",
-    "change": "beachball change",
+    "change": "beachball change --branch origin/archives/fast-element-1",
     "checkchange": "beachball check --branch origin/archives/fast-element-1 --scope \"!sites/*\" --changehint \"Run 'yarn change' to generate a change file\"",
     "check": "beachball check ",
     "publish": "beachball publish",

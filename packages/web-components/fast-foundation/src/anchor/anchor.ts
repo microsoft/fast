@@ -113,7 +113,7 @@ export class Anchor extends FoundationElement {
     /**
      * References the root element
      */
-    public control: HTMLAnchorElement;
+    public control: HTMLAnchorElement | undefined;
 
     /**
      * @internal
@@ -137,7 +137,7 @@ export class Anchor extends FoundationElement {
             this.$fastController.definition.shadowOptions?.delegatesFocus
         ) {
             this.focus = () => {
-                this.control.focus();
+                this.control?.focus();
             };
         }
     };
