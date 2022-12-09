@@ -102,7 +102,7 @@ test.describe("Menu item", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-checked");
+        await expect(element).hasAttribute("aria-checked", "false");
 
         await element.click();
 
@@ -120,7 +120,7 @@ test.describe("Menu item", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-checked");
+        await expect(element).hasAttribute("aria-checked", "false");
 
         await element.click();
 

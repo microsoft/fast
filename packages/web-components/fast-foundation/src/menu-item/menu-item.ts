@@ -2,6 +2,7 @@ import type { Placement } from "@floating-ui/dom";
 import { autoUpdate, computePosition, flip, shift, size } from "@floating-ui/dom";
 import {
     attr,
+    DangerousHTMLDirective,
     FASTElement,
     observable,
     SyntheticViewTemplate,
@@ -26,9 +27,9 @@ export { MenuItemRole, roleForMenuItem };
  * @public
  */
 export type MenuItemOptions = StartEndOptions & {
-    checkboxIndicator?: string | SyntheticViewTemplate;
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
-    radioIndicator?: string | SyntheticViewTemplate;
+    checkboxIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+    expandCollapseGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
+    radioIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**
@@ -109,7 +110,7 @@ export class FASTMenuItem extends FASTElement {
      * HTML Attribute: checked
      */
     @attr({ mode: "boolean" })
-    public checked: boolean;
+    public checked: boolean = false;
     protected checkedChanged(oldValue: boolean, newValue: boolean): void {
         if (this.$fastController.isConnected) {
             this.$emit("change");
