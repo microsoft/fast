@@ -3845,6 +3845,11 @@
   dependencies:
     "@octokit/openapi-types" "^13.11.0"
 
+"@open-wc/form-control@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@open-wc/form-control/-/form-control-0.4.1.tgz#8ad8bd9f83d7619b2d8f71d26ba919f8061b6142"
+  integrity sha512-9mUrlKgB9No56LtcOeG9sTy16r9aQsOR/9fKh3r9xtkAgaU6tK9nlI8u9z/6CHsvMeyumxuWjE5sypajVN7qBA==
+
 "@parcel/watcher@2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@parcel/watcher/-/watcher-2.0.4.tgz#f300fef4cc38008ff4b8c29d92588eced3ce014b"
