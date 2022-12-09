@@ -1,4 +1,9 @@
-import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import {
+    attr,
+    DangerousHTMLDirective,
+    observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
 import { FormAssociatedCheckbox } from "./checkbox.form-associated.js";
 
@@ -7,8 +12,8 @@ import { FormAssociatedCheckbox } from "./checkbox.form-associated.js";
  * @public
  */
 export type CheckboxOptions = {
-    checkedIndicator?: string | SyntheticViewTemplate;
-    indeterminateIndicator?: string | SyntheticViewTemplate;
+    checkedIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+    indeterminateIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**

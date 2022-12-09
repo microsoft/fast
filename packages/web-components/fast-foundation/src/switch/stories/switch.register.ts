@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTSwitch } from "../switch.js";
 import { switchTemplate } from "../switch.template.js";
@@ -134,7 +135,7 @@ const styles = css`
 FASTSwitch.define({
     name: "fast-switch",
     template: switchTemplate({
-        switch: /* html */ `
+        switch: /* html */ html`
             <span class="checked-indicator" part="checked-indicator"></span>
         `,
     }),
