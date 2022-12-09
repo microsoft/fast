@@ -1,4 +1,7 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import type {
+    DangerousHTMLDirective,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 import type { Direction, Orientation } from "@microsoft/fast-web-utilities";
 
 /**
@@ -32,5 +35,5 @@ export interface SliderConfiguration {
  * @public
  */
 export type SliderOptions = {
-    thumb?: string | SyntheticViewTemplate;
+    thumb?: DangerousHTMLDirective | SyntheticViewTemplate;
 };

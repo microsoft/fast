@@ -7,6 +7,7 @@
 import type { CaptureType } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
+import { DangerousHTMLDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -31,8 +32,8 @@ export type AccordionExpandMode = typeof AccordionExpandMode[keyof typeof Accord
 
 // @public
 export type AccordionItemOptions = StartEndOptions & {
-    expandedIcon?: string | SyntheticViewTemplate;
-    collapsedIcon?: string | SyntheticViewTemplate;
+    expandedIcon?: DangerousHTMLDirective | SyntheticViewTemplate;
+    collapsedIcon?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -128,7 +129,7 @@ export type AutoUpdateMode = typeof AutoUpdateMode[keyof typeof AutoUpdateMode];
 
 // @public
 export type AvatarOptions = {
-    media?: string | SyntheticViewTemplate;
+    media?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -159,7 +160,7 @@ export function badgeTemplate<T extends FASTBadge>(): ElementViewTemplate<T>;
 
 // @public
 export type BreadcrumbItemOptions = StartEndOptions & {
-    separator?: string | SyntheticViewTemplate;
+    separator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -258,8 +259,8 @@ export type CheckableFormAssociatedElement = FormAssociatedElement & CheckableFo
 
 // @public
 export type CheckboxOptions = {
-    checkedIndicator?: string | SyntheticViewTemplate;
-    indeterminateIndicator?: string | SyntheticViewTemplate;
+    checkedIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+    indeterminateIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -292,7 +293,7 @@ export type ComboboxAutocomplete = typeof ComboboxAutocomplete[keyof typeof Comb
 
 // @public
 export type ComboboxOptions = StartEndOptions & {
-    indicator?: string | SyntheticViewTemplate;
+    indicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -619,7 +620,7 @@ export function dividerTemplate<T extends FASTDivider>(): ElementViewTemplate<T>
 
 // @public
 export type EndOptions = {
-    end?: string | SyntheticViewTemplate;
+    end?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2176,8 +2177,8 @@ export type FlipperDirection = typeof FlipperDirection[keyof typeof FlipperDirec
 
 // @public
 export type FlipperOptions = {
-    next?: string | SyntheticViewTemplate;
-    previous?: string | SyntheticViewTemplate;
+    next?: DangerousHTMLDirective | SyntheticViewTemplate;
+    previous?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2373,9 +2374,9 @@ export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListE
 
 // @public
 export type MenuItemOptions = StartEndOptions & {
-    checkboxIndicator?: string | SyntheticViewTemplate;
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
-    radioIndicator?: string | SyntheticViewTemplate;
+    checkboxIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+    expandCollapseGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
+    radioIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2434,8 +2435,8 @@ export function noninteractiveCalendarTemplate<T extends FASTCalendar>(options: 
 
 // @public
 export type NumberFieldOptions = StartEndOptions & {
-    stepDownGlyph?: string | SyntheticViewTemplate;
-    stepUpGlyph?: string | SyntheticViewTemplate;
+    stepDownGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
+    stepUpGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2478,13 +2479,13 @@ export function pickerTemplate<T extends FASTPicker>(options: PickerOptions): El
 
 // @public
 export type ProgressOptions = {
-    indeterminateIndicator1?: string | SyntheticViewTemplate;
-    indeterminateIndicator2?: string | SyntheticViewTemplate;
+    indeterminateIndicator1?: DangerousHTMLDirective | SyntheticViewTemplate;
+    indeterminateIndicator2?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
 export type ProgressRingOptions = {
-    indeterminateIndicator?: string | SyntheticViewTemplate;
+    indeterminateIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2521,7 +2522,7 @@ export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTempl
 
 // @public
 export type RadioOptions = {
-    checkedIndicator?: string | SyntheticViewTemplate;
+    checkedIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2556,7 +2557,7 @@ export function searchTemplate<T extends FASTSearch>(options?: SearchOptions): E
 
 // @public
 export type SelectOptions = StartEndOptions & {
-    indicator?: string | SyntheticViewTemplate;
+    indicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2601,7 +2602,7 @@ export type SliderMode = typeof SliderMode[keyof typeof SliderMode];
 
 // @public
 export type SliderOptions = {
-    thumb?: string | SyntheticViewTemplate;
+    thumb?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2620,7 +2621,7 @@ export type StartEndOptions = StartOptions & EndOptions;
 
 // @public
 export type StartOptions = {
-    start?: string | SyntheticViewTemplate;
+    start?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2634,7 +2635,7 @@ export const supportsElementInternals: boolean;
 
 // @public
 export type SwitchOptions = {
-    switch?: string | SyntheticViewTemplate;
+    switch?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2742,7 +2743,7 @@ export function tooltipTemplate<T extends FASTTooltip>(options: TooltipOptions):
 
 // @public
 export type TreeItemOptions = StartEndOptions & {
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
+    expandCollapseGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public

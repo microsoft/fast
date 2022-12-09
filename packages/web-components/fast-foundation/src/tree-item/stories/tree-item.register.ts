@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTTreeItem } from "../tree-item.js";
 import { treeItemTemplate } from "../tree-item.template.js";
@@ -204,7 +205,7 @@ FASTTreeItem.define({
     name: "fast-tree-item",
     styles,
     template: treeItemTemplate({
-        expandCollapseGlyph: /* html */ `
+        expandCollapseGlyph: /* html */ html`
             <svg
                 viewBox="0 0 16 16"
                 xmlns="http://www.w3.org/2000/svg"

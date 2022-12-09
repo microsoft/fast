@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 02 Dec 2022 01:18:22 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.23",
+      "version": "3.0.0-alpha.23",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "yinon@hotmail.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "802443ffb2b19a078f9b48f62e6d1a35e3276fb5",
+            "comment": "checkbox remove irrelevant read-only property"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.19",
+            "commit": "040867e9a2a9e0ae25b78dfb3265fbe8f60fe023"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 15 Nov 2022 02:40:34 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.22",
       "version": "3.0.0-alpha.22",
