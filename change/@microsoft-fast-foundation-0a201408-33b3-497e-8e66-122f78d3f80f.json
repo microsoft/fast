@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "rewrite tooltip to use floating-ui",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}
