@@ -2052,51 +2052,34 @@ export interface FASTToolbar extends StartEnd, DelegatesARIAToolbar {
 // @public
 export class FASTTooltip extends FASTElement {
     anchor: string;
-    // (undocumented)
-    protected anchorChanged(): void;
-    anchorElement: HTMLElement | null;
-    // (undocumented)
-    protected anchorElementChanged(oldValue: HTMLElement | null): void;
-    autoUpdateMode: AutoUpdateMode;
+    // @internal
+    protected anchorChanged(prev: string | undefined, next: string): void;
+    // @internal
+    anchorElement: Element | null;
+    cleanup: () => void;
     // (undocumented)
     connectedCallback(): void;
     // @internal
-    currentDirection: Direction;
-    delay: number;
-    // (undocumented)
-    disconnectedCallback(): void;
+    protected controlledVisibilityChanged(prev: boolean | undefined, next: boolean): void;
     // @internal
-    handlePositionChange: (ev: Event) => void;
-    // @internal (undocumented)
-    horizontalDefaultPosition: string | undefined;
-    // @internal (undocumented)
-    horizontalInset: string;
-    // @internal (undocumented)
-    horizontalPositioningMode: AxisPositioningMode;
-    // @internal (undocumented)
-    horizontalScaling: AxisScalingMode;
-    horizontalViewportLock: boolean;
-    position: TooltipPosition;
+    protected focusinAnchorHandler: () => void;
     // @internal
-    region: FASTAnchoredRegion;
-    // @internal (undocumented)
-    tooltipVisible: boolean;
-    // @internal (undocumented)
-    verticalDefaultPosition: string | undefined;
-    // @internal (undocumented)
-    verticalInset: string;
-    // @internal (undocumented)
-    verticalPositioningMode: AxisPositioningMode;
-    // @internal (undocumented)
-    verticalScaling: AxisScalingMode;
-    verticalViewportLock: boolean;
+    protected focusoutAnchorHandler: () => void;
     // @internal
-    viewportElement: HTMLElement | null;
+    hideTooltip(): void;
+    id: string;
     // (undocumented)
-    protected viewportElementChanged(): void;
-    visible: boolean;
+    idChanged(prev: string, next: string): void;
+    placement: TooltipPlacement;
+    // @internal
+    protected positionStyles: ElementStyles;
+    // @internal
+    protected positionStylesChanged(prev: ElementStyles | undefined, next: ElementStyles | undefined): void;
+    setPositioning(): void;
+    show: boolean | undefined;
     // (undocumented)
-    protected visibleChanged(): void;
+    showChanged(prev: boolean | undefined, next: boolean | undefined): void;
+    get visible(): boolean | undefined;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -2710,36 +2693,26 @@ export type ToolbarOptions = StartEndOptions;
 export function toolbarTemplate<T extends FASTToolbar>(options?: ToolbarOptions): ElementViewTemplate<T>;
 
 // @public
-export type TooltipOptions = {
-    anchoredRegion: TemplateElementDependency;
-};
-
-// @public
-export const TooltipPosition: {
-    readonly top: "top";
-    readonly right: "right";
+export const TooltipPlacement: {
     readonly bottom: "bottom";
-    readonly left: "left";
-    readonly center: "center";
-    readonly start: "start";
-    readonly end: "end";
-    readonly topLeft: "top-left";
-    readonly topCenter: "top-center";
-    readonly topRight: "top-right";
-    readonly bottomLeft: "bottom-left";
-    readonly bottomCenter: "bottom-center";
-    readonly bottomRight: "bottom-right";
-    readonly topStart: "top-start";
-    readonly topEnd: "top-end";
-    readonly bottomStart: "bottom-start";
     readonly bottomEnd: "bottom-end";
+    readonly bottomStart: "bottom-start";
+    readonly left: "left";
+    readonly leftEnd: "left-end";
+    readonly leftStart: "left-start";
+    readonly right: "right";
+    readonly rightEnd: "right-end";
+    readonly rightStart: "right-start";
+    readonly top: "top";
+    readonly topEnd: "top-end";
+    readonly topStart: "top-start";
 };
 
 // @public
-export type TooltipPosition = typeof TooltipPosition[keyof typeof TooltipPosition];
+export type TooltipPlacement = typeof TooltipPlacement[keyof typeof TooltipPlacement];
 
 // @public
-export function tooltipTemplate<T extends FASTTooltip>(options: TooltipOptions): ElementViewTemplate<T>;
+export function tooltipTemplate<T extends FASTTooltip>(): ElementViewTemplate<T>;
 
 // @public
 export type TreeItemOptions = StartEndOptions & {
@@ -2804,7 +2777,6 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/picker/picker.template.d.ts:12:5 - (ae-incompatible-release-tags) The symbol "pickerList" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:13:5 - (ae-incompatible-release-tags) The symbol "pickerListItem" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:14:5 - (ae-incompatible-release-tags) The symbol "progressRing" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/tooltip/tooltip.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 
 // (No @packageDocumentation comment for this package)
 

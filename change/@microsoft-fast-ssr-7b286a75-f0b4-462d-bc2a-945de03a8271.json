@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "remove tooltip options from dom-shim spec",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
