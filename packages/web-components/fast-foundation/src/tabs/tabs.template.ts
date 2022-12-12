@@ -29,8 +29,8 @@ export const tabsTemplate: FoundationElementTemplate<ViewTemplate<Tabs>, TabsOpt
             )}
         </div>
         ${endSlotTemplate(context, definition)}
-        <div class="tabpanel">
-            <slot name="tabpanel" part="tabpanel" ${slotted("tabpanels")}></slot>
+        <div class="tabpanel" part="tabpanel">
+            <slot name="tabpanel" ${slotted("tabpanels")}></slot>
         </div>
     </template>
 `;
