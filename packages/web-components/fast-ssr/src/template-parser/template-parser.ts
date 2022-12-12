@@ -11,14 +11,16 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
-    Attribute,
-    DefaultTreeCommentNode,
-    DefaultTreeElement,
-    DefaultTreeNode,
-    DefaultTreeParentNode,
-    DefaultTreeTextNode,
+    // Attribute,
+    // DefaultTreeCommentNode,
+    // DefaultTreeElement,
+    // DefaultTreeNode,
+    // DefaultTreeParentNode,
+    // DefaultTreeTextNode,
+    DefaultTreeAdapterMap,
     parse,
     parseFragment,
+    Token,
 } from "parse5";
 import { AttributeBindingOp, Op, OpType } from "./op-codes.js";
 
@@ -32,11 +34,14 @@ interface Visitor {
     leave?: (node: DefaultTreeNode) => void;
 }
 
-declare module "parse5" {
-    interface DefaultTreeElement {
-        isDefinedCustomElement?: boolean;
-    }
-}
+type DefaultTreeNode = DefaultTreeAdapterMap["node"];
+type DefaultTreeCommentNode = DefaultTreeAdapterMap["commentNode"];
+type DefaultTreeElement = DefaultTreeAdapterMap["element"] & {
+    isDefinedCustomElement?: boolean;
+};
+type DefaultTreeParentNode = DefaultTreeAdapterMap["parentNode"];
+type DefaultTreeTextNode = DefaultTreeAdapterMap["textNode"];
+type Attribute = Token.Attribute;
 
 /**
  * Traverses a tree of nodes depth-first, invoking callbacks from visitor for each node as it goes.
@@ -140,12 +145,8 @@ export function parseStringToOpCodes(
      */
     templateString: string,
     factories: Record<string, ViewBehaviorFactory>,
-
-    /**
-     * Adjust behavior when parsing a template used
-     * as a custom element's template
-     */
-    forCustomElement = false
+    forCustomElement: boolean = false
+    // parser: typeof parseFragment | typeof parse = parseFragment
 ): Op[] {
     const nodeTree = (forCustomElement ? parseFragment : parse)(templateString, {
         sourceCodeLocationInfo: true,
@@ -235,13 +236,13 @@ export function parseStringToOpCodes(
             // Template elements need special handling due to the host directive behavior
             // when used as the root element in a custom element template
             // (https://www.fast.design/docs/fast-element/using-directives#host-directives).
-            flushTo(node.sourceCodeLocation?.startTag.startOffset);
+            flushTo(node.sourceCodeLocation!.startTag!.startOffset);
             opCodes.push({
                 type: OpType.templateElementOpen,
                 staticAttributes: attributes.static,
                 dynamicAttributes: Array.from(attributes.dynamic.values()),
             });
-            skipTo(node.sourceCodeLocation!.startTag.endOffset);
+            skipTo(node.sourceCodeLocation!.startTag!.endOffset);
             return;
         }
 
@@ -251,7 +252,7 @@ export function parseStringToOpCodes(
         // so this code skips over static attributes in that case.
         for (const attr of node.attrs) {
             if (attributes.dynamic.has(attr)) {
-                const location = node.sourceCodeLocation!.attrs[attr.name];
+                const location = node.sourceCodeLocation!.attrs![attr.name]!;
                 const code = attributes.dynamic.get(attr)!;
                 flushTo(location.startOffset);
                 augmentOpeningTag = true;
@@ -261,14 +262,14 @@ export function parseStringToOpCodes(
                 // Handle interpolated directives like children, ref, and slotted
                 const parsed = Parser.parse(attr.value, factories);
                 if (parsed) {
-                    const location = node.sourceCodeLocation!.attrs[attr.name];
+                    const location = node.sourceCodeLocation!.attrs![attr.name];
                     const factory = Compiler.aggregate(parsed);
                     flushTo(location.startOffset);
                     opCodes.push({ type: OpType.viewBehaviorFactory, factory });
                     skipTo(location.endOffset);
                 }
             } else if (node.isDefinedCustomElement) {
-                const location = node.sourceCodeLocation!.attrs[attr.name];
+                const location = node.sourceCodeLocation!.attrs![attr.name];
                 flushTo(location.startOffset);
                 skipTo(location.endOffset);
             }
@@ -276,12 +277,12 @@ export function parseStringToOpCodes(
 
         if (augmentOpeningTag && node.tagName !== "template") {
             if (ctor) {
-                flushTo(node.sourceCodeLocation!.startTag.endOffset - 1);
+                flushTo(node.sourceCodeLocation!.startTag!.endOffset - 1);
                 opCodes.push({ type: OpType.customElementAttributes });
                 flush(">");
-                skipTo(node.sourceCodeLocation!.startTag.endOffset);
+                skipTo(node.sourceCodeLocation!.startTag!.endOffset);
             } else {
-                flushTo(node.sourceCodeLocation!.startTag.endOffset);
+                flushTo(node.sourceCodeLocation!.startTag!.endOffset);
             }
         }
 
@@ -348,8 +349,8 @@ export function parseStringToOpCodes(
         if (fec !== null && fec.tagName === "template") {
             tree = fec as DefaultTreeParentNode;
             const location = fec.sourceCodeLocation!;
-            finalOffset = location.endTag.endOffset;
-            lastOffset = location.startTag.startOffset;
+            finalOffset = location.endTag!.endOffset;
+            lastOffset = location.startTag!.startOffset;
         }
     }
 
@@ -386,9 +387,9 @@ export function parseStringToOpCodes(
                 if (node.isDefinedCustomElement) {
                     opCodes.push({ type: OpType.customElementClose });
                 } else if (node.tagName === "template") {
-                    flushTo(node.sourceCodeLocation?.endTag.startOffset);
+                    flushTo(node.sourceCodeLocation?.endTag!.startOffset);
                     opCodes.push({ type: OpType.templateElementClose });
-                    skipTo(node.sourceCodeLocation!.endTag.endOffset);
+                    skipTo(node.sourceCodeLocation!.endTag!.endOffset);
                 }
             }
         },
