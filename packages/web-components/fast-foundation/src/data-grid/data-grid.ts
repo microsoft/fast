@@ -473,10 +473,6 @@ export class FASTDataGrid extends FASTElement {
                     this.focusOnCell(0, 0, "nearest");
                     break;
                 }
-
-                console.log(this.getPageSize());
-                console.log(this.focusRowIndex);
-                console.log(this.focusRowIndex + this.getPageSize());
                 newFocusRowIndex = Math.min(
                     this.rowElements.length - 1,
                     this.focusRowIndex + this.getPageSize()
