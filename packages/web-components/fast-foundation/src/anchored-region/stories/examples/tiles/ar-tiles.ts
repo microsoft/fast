@@ -171,6 +171,9 @@ export class ARTiles extends FASTElement {
         this.addEventListener("dragtileend", this.handleDragTileEnd);
         this.addEventListener("loadbestgame", this.loadBestGame);
 
+        this.board.addEventListener("dispenserinvoked", this.handleBoardDispenserInvoked);
+        this.hand.addEventListener("dispenserinvoked", this.handleHandDispenserInovoked);
+
         Updates.enqueue(() => {
             this.reset();
         });
@@ -188,6 +191,14 @@ export class ARTiles extends FASTElement {
         this.currentDragTile = undefined;
         this.hoverSocket = undefined;
     }
+
+    public handleBoardDispenserInvoked = (e: CustomEvent): void => {
+        e.preventDefault();
+    };
+
+    public handleHandDispenserInovoked = (e: CustomEvent): void => {
+        e.preventDefault();
+    };
 
     public handleDragTileStart = (e: CustomEvent): void => {
         if (e.defaultPrevented) {
@@ -246,7 +257,7 @@ export class ARTiles extends FASTElement {
 
     private deactivateBoardTiles(): void {
         this.activeBoardTiles.forEach(boardTile => {
-            boardTile.classList.toggle("active", false);
+            (boardTile as TileDispenser).active = false;
         });
     }
 
@@ -269,7 +280,7 @@ export class ARTiles extends FASTElement {
             const boardTileElement: Element = this.board.children[boardTile.row - 1]
                 .children[boardTile.column - 1];
             if (boardTileElement) {
-                boardTileElement.classList.toggle("active", true);
+                (boardTileElement as TileDispenser).active = true;
                 this.activeBoardTiles.push(boardTileElement as HTMLElement);
             }
         });
