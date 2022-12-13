@@ -87,18 +87,28 @@ export const Router = Object.freeze({
     ): { new (): InstanceType<TBase> & RouterElement } {
         class RouterBase extends (BaseType as any) {
             public readonly [routerProperty]!: Router;
-
-            public get config(): RouterConfiguration {
-                return this[routerProperty].config!;
-            }
-
-            public set config(value: RouterConfiguration) {
-                this[routerProperty].config = value;
-            }
+            declare config: RouterConfiguration | null;
 
             constructor() {
                 super();
-                Router.getOrCreateFor(this as any);
+
+                const router = Router.getOrCreateFor(this as any);
+                const config = this.config || null;
+
+                delete (this as any).config;
+
+                Reflect.defineProperty(this, "config", {
+                    get() {
+                        return router.config;
+                    },
+                    set(value) {
+                        router.config = value;
+                    },
+                });
+
+                if (config !== null) {
+                    router.config = config;
+                }
             }
         }
 
