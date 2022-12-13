@@ -77,10 +77,15 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
         source: unknown = undefined,
         context: ExecutionContext = ExecutionContext.default
     ): IterableIterator<string> {
+        // If render is being called without any custom elements in the stack,
+        // it means templates can contain document-level tags like html, body, etc.
+        // and templates should be parsed as documents and not fragments
+        // TODO: re-architect the parser so that it doesn't all hinge on this boolean
+        const forCustomElement = renderInfo.customElementInstanceStack.length > 0;
         const codes =
             template instanceof ViewTemplate
-                ? parseTemplateToOpCodes(template)
-                : parseStringToOpCodes(template, {});
+                ? parseTemplateToOpCodes(template, forCustomElement)
+                : parseStringToOpCodes(template, {}, forCustomElement);
 
         yield* this.renderOpCodes(codes, renderInfo, source, context);
     }

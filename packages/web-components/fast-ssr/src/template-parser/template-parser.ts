@@ -11,12 +11,7 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
-    // Attribute,
-    // DefaultTreeCommentNode,
-    // DefaultTreeElement,
-    // DefaultTreeNode,
-    // DefaultTreeParentNode,
-    // DefaultTreeTextNode,
+    defaultTreeAdapter,
     DefaultTreeAdapterMap,
     parse,
     parseFragment,
@@ -30,42 +25,55 @@ import { AttributeBindingOp, Op, OpType } from "./op-codes.js";
 const opCache: Map<ViewTemplate, Op[]> = new Map();
 
 interface Visitor {
-    visit?: (node: DefaultTreeNode) => void;
-    leave?: (node: DefaultTreeNode) => void;
+    visit?: (node: Node) => void;
+    leave?: (node: Node) => void;
 }
 
-type DefaultTreeNode = DefaultTreeAdapterMap["node"];
-type DefaultTreeCommentNode = DefaultTreeAdapterMap["commentNode"];
-type DefaultTreeElement = DefaultTreeAdapterMap["element"] & {
+type Document = DefaultTreeAdapterMap["document"];
+type DocumentFragment = DefaultTreeAdapterMap["documentFragment"];
+type Node = DefaultTreeAdapterMap["node"];
+type ParentNode = DefaultTreeAdapterMap["parentNode"];
+type TextNode = DefaultTreeAdapterMap["textNode"];
+type CommentNode = DefaultTreeAdapterMap["commentNode"];
+type Element = DefaultTreeAdapterMap["element"] & {
     isDefinedCustomElement?: boolean;
 };
-type DefaultTreeParentNode = DefaultTreeAdapterMap["parentNode"];
-type DefaultTreeTextNode = DefaultTreeAdapterMap["textNode"];
 type Attribute = Token.Attribute;
+
+/**
+ * Determines if a node is represented in a template.
+ *
+ * @param node - The node to check
+ * @returns - true if the node is represented in the template, false
+ * if the node was implicitly created.
+ */
+function templateContainsNode(node: Node) {
+    return node.sourceCodeLocation !== null && node.sourceCodeLocation !== undefined;
+}
 
 /**
  * Traverses a tree of nodes depth-first, invoking callbacks from visitor for each node as it goes.
  * @param node - the node to traverse
  * @param visitor - callbacks to be invoked during node traversal
  */
-function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visitor) {
+function traverse(node: Document | DocumentFragment, visitor: Visitor) {
+    // function _traverse(node: Node | ParentNode, visitor: Visitor)
     // Templates parsed with `parse()` are parsed as full documents and will contain
     // html, body tags whether the template contains them or not. Skip over visiting and
     // leaving these elements if there is no source-code location, because that indicates
     // they are not in the template string.
-    const shouldVisit = (node as DefaultTreeElement).sourceCodeLocation !== null;
+    const shouldVisit = templateContainsNode(node);
+
     if (visitor.visit && shouldVisit) {
         visitor.visit(node);
     }
 
-    if ("childNodes" in node) {
-        const { childNodes } = node;
-        for (const child of childNodes) {
-            traverse(child, visitor);
-        }
+    // defaultTreeAdapter.getChildNodes()
+    for (const child of defaultTreeAdapter.getChildNodes(node) || []) {
+        traverse(child as any, visitor);
     }
 
-    if (node.nodeName === "template") {
+    if ((node as any).nodeName === "template") {
         traverse((node as any).content, visitor);
     }
 
@@ -74,38 +82,12 @@ function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visito
     }
 }
 
-/**
- * Test if a node is a comment node.
- * @param node - the node to test
- */
-function isCommentNode(node: DefaultTreeNode): node is DefaultTreeCommentNode {
-    return node.nodeName === "#comment";
-}
-
-/**
- * Test if a node is a text node.
- * @param node - the node to test
- */
-function isTextNode(node: DefaultTreeNode): node is DefaultTreeTextNode {
-    return node.nodeName === "#text";
-}
-
-/**
- * Test if a node is an element node
- * @param node - the node to test
- */
-function isElementNode(node: DefaultTreeNode): node is DefaultTreeElement {
-    return (node as DefaultTreeElement).tagName !== undefined;
-}
-
-function isDefaultTreeParentNode(node: any): node is DefaultTreeParentNode {
-    return Array.isArray(node.childNodes);
-}
-
-function firstElementChild(node: DefaultTreeParentNode): DefaultTreeElement | null {
+function firstElementChild(node: ParentNode): Element | null {
     return (
-        (node.childNodes.find(child => isElementNode(child)) as
-            | DefaultTreeElement
+        (defaultTreeAdapter
+            .getChildNodes(node)
+            .find(child => defaultTreeAdapter.isElementNode(child)) as
+            | Element
             | undefined) || null
     );
 }
@@ -114,7 +96,10 @@ function firstElementChild(node: DefaultTreeParentNode): DefaultTreeElement | nu
  * Parses a template into a set of operation instructions
  * @param template - The template to parse
  */
-export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
+export function parseTemplateToOpCodes(
+    template: ViewTemplate,
+    forCustomElement = true
+): Op[] {
     const cached: Op[] | undefined = opCache.get(template);
     if (cached !== undefined) {
         return cached;
@@ -134,7 +119,11 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
      */
     const templateString = html;
 
-    const codes = parseStringToOpCodes(templateString, template.factories);
+    const codes = parseStringToOpCodes(
+        templateString,
+        template.factories,
+        forCustomElement
+    );
     opCache.set(template, codes);
     return codes;
 }
@@ -145,21 +134,14 @@ export function parseStringToOpCodes(
      */
     templateString: string,
     factories: Record<string, ViewBehaviorFactory>,
-    forCustomElement: boolean = false
-    // parser: typeof parseFragment | typeof parse = parseFragment
+    forCustomElement: boolean = true
 ): Op[] {
-    const nodeTree = (forCustomElement ? parseFragment : parse)(templateString, {
-        sourceCodeLocationInfo: true,
-    });
-
-    if (!isDefaultTreeParentNode(nodeTree)) {
-        // I'm not sure when exactly this is encountered but the type system seems to say it's possible.
-        throw new Error(`Error parsing template`);
-    }
-
-    // TypeScript gets confused about what 'nodeTree' is.
-    // Creating a new var clears that up.
-    let tree = nodeTree as DefaultTreeParentNode;
+    let tree: Document | DocumentFragment = (forCustomElement ? parseFragment : parse)(
+        templateString,
+        {
+            sourceCodeLocationInfo: true,
+        }
+    );
 
     /**
      * Tracks the offset location in the source template string where the last
@@ -179,7 +161,7 @@ export function parseStringToOpCodes(
      * the collection of ops for the template
      * @param node - The element node to parse
      */
-    function parseElementNode(node: DefaultTreeElement): void {
+    function parseElementNode(node: Element): void {
         // Track whether the opening tag of an element should be augmented.
         // All constructable custom elements will need to be augmented,
         // as well as any element with attribute bindings
@@ -347,7 +329,8 @@ export function parseStringToOpCodes(
         const fec = firstElementChild(tree);
 
         if (fec !== null && fec.tagName === "template") {
-            tree = fec as DefaultTreeParentNode;
+            tree = defaultTreeAdapter.createDocumentFragment();
+            defaultTreeAdapter.appendChild(tree, fec);
             const location = fec.sourceCodeLocation!;
             finalOffset = location.endTag!.endOffset;
             lastOffset = location.startTag!.startOffset;
@@ -355,11 +338,13 @@ export function parseStringToOpCodes(
     }
 
     traverse(tree, {
-        visit(node: DefaultTreeNode): void {
-            if (isCommentNode(node) || isTextNode(node)) {
+        visit(node: Node): void {
+            if (
+                defaultTreeAdapter.isCommentNode(node) ||
+                defaultTreeAdapter.isTextNode(node)
+            ) {
                 const parsed = Parser.parse(
-                    (node as DefaultTreeCommentNode)?.data ||
-                        (node as DefaultTreeTextNode).value,
+                    (node as CommentNode)?.data || (node as TextNode).value,
                     factories
                 );
 
@@ -377,14 +362,14 @@ export function parseStringToOpCodes(
                     }
                     skipTo(node.sourceCodeLocation!.endOffset);
                 }
-            } else if (isElementNode(node)) {
+            } else if (defaultTreeAdapter.isElementNode(node)) {
                 parseElementNode(node);
             }
         },
 
-        leave(node: DefaultTreeNode): void {
-            if (isElementNode(node)) {
-                if (node.isDefinedCustomElement) {
+        leave(node: Node): void {
+            if (defaultTreeAdapter.isElementNode(node)) {
+                if ((node as Element).isDefinedCustomElement) {
                     opCodes.push({ type: OpType.customElementClose });
                 } else if (node.tagName === "template") {
                     flushTo(node.sourceCodeLocation?.endTag!.startOffset);
