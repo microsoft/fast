@@ -1,4 +1,9 @@
-import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import {
+    attr,
+    DangerousHTMLDirective,
+    observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
 import { FormAssociatedSwitch } from "./switch.form-associated.js";
 
@@ -7,7 +12,7 @@ import { FormAssociatedSwitch } from "./switch.form-associated.js";
  * @public
  */
 export type SwitchOptions = {
-    switch?: string | SyntheticViewTemplate;
+    switch?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**

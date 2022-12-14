@@ -127,6 +127,11 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
 export type ChildrenDirectiveOptions<T = any> = ChildListDirectiveOptions<T> | SubtreeDirectiveOptions<T>;
 
 // @public
+export type Class<T, C = {}> = C & Constructable<T> & {
+    readonly prototype: T;
+};
+
+// @public
 export type CompilationStrategy = (
 html: string | HTMLTemplateElement,
 factories: Record<string, ViewBehaviorFactory>,
@@ -215,7 +220,7 @@ export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (Compos
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
 
 // @public
-export function dangerousHTML<TSource = any, TParent = any>(html: string): CaptureType<TSource, TParent>;
+export function dangerousHTML<TSource = any, TParent = any>(html: string): DangerousHTMLDirective;
 
 // @public
 export class DangerousHTMLDirective implements HTMLDirective {
@@ -571,13 +576,6 @@ export const Markup: Readonly<{
     comment: (id: string) => string;
 }>;
 
-// Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export type Mutable<T> = {
-    -readonly [P in keyof T]: T[P];
-};
-
 // @public
 export interface NodeBehaviorOptions<T = any> {
     filter?: ElementsFilter;
@@ -609,6 +607,9 @@ export interface Notifier {
     subscribe(subscriber: Subscriber, propertyToWatch?: any): void;
     unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
 }
+
+// @public
+export const nullableBooleanConverter: ValueConverter;
 
 // @public
 export const nullableNumberConverter: ValueConverter;
@@ -845,6 +846,11 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 
 // @public
 export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource, TParent>;
+
+// @public
+export type TrustedTypesPolicy = {
+    createHTML(html: string): string;
+};
 
 // Warning: (ae-internal-missing-underscore) The name "TypeDefinition" should be prefixed with an underscore because the declaration is marked as @internal
 //

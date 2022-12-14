@@ -1,5 +1,6 @@
 import {
     attr,
+    DangerousHTMLDirective,
     FASTElement,
     observable,
     SyntheticViewTemplate,
@@ -23,7 +24,7 @@ export function isTreeItemElement(el: Element): el is HTMLElement {
  * @public
  */
 export type TreeItemOptions = StartEndOptions & {
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
+    expandCollapseGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**

@@ -240,11 +240,12 @@ export class DesignTokenNode {
      * Emit all queued notifications
      */
     private static notify() {
-        for (const record of this._notifications) {
+        const notifications = this._notifications;
+        this._notifications = [];
+
+        for (const record of notifications) {
             record.notify();
         }
-
-        this._notifications = [];
     }
 
     private static queueNotification(...records: DesignTokenChangeRecordImpl<any>[]) {

@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTProgress } from "../progress.js";
 import { progressTemplate } from "../progress.template.js";
@@ -109,11 +110,17 @@ const styles = css`
 FASTProgress.define({
     name: "fast-progress",
     template: progressTemplate({
-        indeterminateIndicator1: /* html */ `
-            <span class="indeterminate-indicator-1" part="indeterminate-indicator-1"></span>
+        indeterminateIndicator1: /* html */ html`
+            <span
+                class="indeterminate-indicator-1"
+                part="indeterminate-indicator-1"
+            ></span>
         `,
-        indeterminateIndicator2: /* html */ `
-            <span class="indeterminate-indicator-2" part="indeterminate-indicator-2"></span>
+        indeterminateIndicator2: /* html */ html`
+            <span
+                class="indeterminate-indicator-2"
+                part="indeterminate-indicator-2"
+            ></span>
         `,
     }),
     styles,

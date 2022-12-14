@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "chore: move ViewBehaviorOrchestrator to utilities",
+  "comment": "chore: cleanup fast-element interfaces",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
   "dependentChangeType": "prerelease"

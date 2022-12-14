@@ -1,4 +1,4 @@
-import type { StyleStrategy, StyleTarget } from "../interfaces.js";
+import type { StyleStrategy, StyleTarget } from "./style-strategy.js";
 import type { HostBehavior } from "./host.js";
 
 /**

@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "chore: move ViewBehaviorOrchestrator to utilities",
+  "comment": "add missing part attribute for tabpanel in tabs",
   "packageName": "@microsoft/fast-foundation",
-  "email": "roeisenb@microsoft.com",
+  "email": "chhol@microsoft.com",
   "dependentChangeType": "prerelease"
 }

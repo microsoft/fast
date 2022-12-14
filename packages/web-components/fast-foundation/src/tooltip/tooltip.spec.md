@@ -33,33 +33,28 @@ _Component name:_
 _Attributes:_
 
 -   `anchor` - The html id of the HTMLElement which the tooltip is attached to.
--   `delay` - time in milliseconds to wait before showing and hiding the tooltip. Defaults to 300.
--   `visible` - boolean value to toggle the visibility of the tooltip (defaults to undefined).
--   `position` - where the tooltip should appear relative to its target. 'start' and 'end' are like 'left' and 'right' but are inverted when the direction is 'rtl' When the position is undefined the tooltip is placed above or below the anchor based on available space.
-    -   top
-    -   bottom
-    -   left
-    -   right
-    -   start
-    -   end
-    -   top-left
-    -   top-right
-    -   bottom-left
-    -   bottom-right
-    -   top-start
-    -   top-end
-    -   bottom-start
-    -   bottom-end
+-   `show` - boolean value to toggle the visibility of the tooltip (defaults to `undefined`). When `undefined`, the tooltip will only be visible when the anchor element is hovered or focused.
+-   `placement` - The placement of the tooltip relative to the anchor element. Available values:
 
-- auto-update-mode - Corresponds to anchored region's auto update mode and governs when the tooltip checks its position.  Default is "auto".
-
-- horizontal-viewport-lock - Controls if the tooltip will always remain fully in the viewport on the horizontal axis
-
-- vertical-viewport-lock - Controls if the tooltip will always remain fully in the viewport on the vertical axis
+    | Value          | Placement                                                                                                                                                   |
+    | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `top`          | The tooltip is positioned above the anchor element, with the center of the tooltip aligned to the center of the anchor element.                             |
+    | `top-start`    | The tooltip is positioned above the anchor element, with the left edge of the tooltip aligned to the left edge of the anchor element.                       |
+    | `top-end`      | The tooltip is positioned above the anchor element, with the right edge of the tooltip aligned to the right edge of the anchor element.                     |
+    | `right`        | The tooltip is positioned to the right of the anchor element, with the vertical center of the tooltip aligned to the vertical center of the anchor element. |
+    | `right-start`  | The tooltip is positioned to the right of the anchor element, with the top edge of the tooltip aligned to the top edge of the anchor element.               |
+    | `right-end`    | The tooltip is positioned to the right of the anchor element, with the bottom edge of the tooltip aligned to the bottom edge of the anchor element.         |
+    | `bottom`       | The tooltip is positioned below the anchor element, with the right edge of the tooltip aligned to the right edge of the anchor element.                     |
+    | `bottom-start` | The tooltip is positioned below the anchor element, with the left edge of the tooltip aligned to the left edge of the anchor element.                       |
+    | `bottom-end`   | The tooltip is positioned below the anchor element, with the horizontal center of the tooltip aligned to the horizontal center of the anchor element.       |
+    | `left`         | The tooltip is positioned to the left of the anchor element, with the vertical center of the tooltip aligned to the vertical center of the anchor element.  |
+    | `left-start`   | The tooltip is positioned to the left of the anchor element, with the top edge of the tooltip aligned to the top edge of the anchor element.                |
+    | `left-end`     | The tooltip is positioned to the left of the anchor element, with the bottom edge of the tooltip aligned to the bottom edge of the anchor element.          |
 
 _Properties:_
 
 -   `anchorElement` - Holds a reference to the HTMLElement currently being used as the anchor. Can be set directly or be populated by setting the anchor attribute.
+-   `visible` - Returns the current visibility of the tooltip.
 
 _Slots:_
 
@@ -69,27 +64,23 @@ _Events_
 
 -   `dismiss` - Event fired when a user presses escape
 
-_functions_
-
--   `createTooltipTemplate(string: prefix)` - Generates a `ViewTemplate` for the tooltip based on the provided prefix (ie. "fast", "fluent", etc...). This is required because tooltip uses an `anchored-region` internally and the create function generates a template using the appropriate `anchored-region` tag (ie. "fast-anchored-region" vs. "fluent-anchored-region", for example). Note that the appropriate `anchored-region` component must also be declared.
-
 ### Anatomy and Appearance
 
 _Template:_
 
-```
-<template
-    role="tooltip"
->
+```html
+<template role="tooltip">
     <slot></slot>
 </template>
 ```
 
 ## Implementation
 
-```
+```html
 <button id="foo" aria-describedby="tooltip">Foo</button>
-<fast-tooltip anchor="foo" id="tooltip">This is a tooltip. It does not receive focus.</fast-tooltip>
+<fast-tooltip anchor="foo" id="tooltip">
+    This is a tooltip. It does not receive focus.
+</fast-tooltip>
 ```
 
 ### Accessibility
@@ -100,7 +91,3 @@ Two important things to note:
 
 1. Focus stays on the triggering element while the tooltip is displayed.
 2. If the tooltip is invoked when the trigger element receives focus, then it is dismissed when it no longer has focus (onBlur). If the tooltip is invoked with mouseIn, then it is dismissed with on mouseOut.
-
-### Dependencies
-
-This component depends on Fast Element and should be positioned using [anchored region](../anchored-region/anchored-region.spec.md).

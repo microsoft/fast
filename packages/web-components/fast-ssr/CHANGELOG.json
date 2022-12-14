@@ -2,6 +2,66 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Fri, 02 Dec 2022 01:18:22 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.23",
+      "version": "1.0.0-beta.23",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "22f68aaabe18d350ffb12469d53b09fec5be81d1",
+            "comment": "feat: shim DOMTokenList for class and part properties on HTMLElement"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.19",
+            "commit": "040867e9a2a9e0ae25b78dfb3265fbe8f60fe023"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.23",
+            "commit": "040867e9a2a9e0ae25b78dfb3265fbe8f60fe023"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 15 Nov 2022 02:40:34 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.22",
+      "version": "1.0.0-beta.22",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "ebfe1a316b75ecdd52622d62a525b271626fb463",
+            "comment": "Added configuration option to fast-ssr to render custom directives"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "3c14603089495a7af8ed5b55122c418b47c45fd5",
+            "comment": "add new DOM Policy protection throughout"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.18",
+            "commit": "416dc9167e9d41e6ffe11d87ed79b2f455357923"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.22",
+            "commit": "416dc9167e9d41e6ffe11d87ed79b2f455357923"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 04 Nov 2022 22:28:49 GMT",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.21",
       "version": "1.0.0-beta.21",
