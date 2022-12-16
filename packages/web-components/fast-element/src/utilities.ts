@@ -1,3 +1,15 @@
+import { DOM } from "./dom.js";
+import { ExecutionContext } from "./observation/observable.js";
+import type { HostBehavior, HostController } from "./styles/host.js";
+import type {
+    CompiledViewBehaviorFactory,
+    ViewBehavior,
+    ViewBehaviorFactory,
+    ViewBehaviorTargets,
+    ViewController,
+} from "./templating/html-directive.js";
+import { nextId } from "./templating/markup.js";
+
 /**
  * Retrieves the "composed parent" element of a node, ignoring DOM tree boundaries.
  * When the parent of a node is a shadow-root, it will return the host
@@ -83,3 +95,105 @@ export class UnobservableMutationObserver extends MutationObserver {
         }
     }
 }
+
+/**
+ * Bridges between ViewBehaviors and HostBehaviors, enabling a host to
+ * control ViewBehaviors.
+ * @public
+ */
+export interface ViewBehaviorOrchestrator<TSource = any, TParent = any>
+    extends ViewController<TSource, TParent>,
+        HostBehavior<TSource> {
+    /**
+     *
+     * @param nodeId - The structural id of the DOM node to which a behavior will apply.
+     * @param target - The DOM node associated with the id.
+     */
+    addTarget(nodeId: string, target: Node): void;
+
+    /**
+     * Adds a behavior.
+     * @param behavior - The behavior to add.
+     */
+    addBehavior(behavior: ViewBehavior): void;
+
+    /**
+     * Adds a behavior factory.
+     * @param factory - The behavior factory to add.
+     * @param target - The target the factory will create behaviors for.
+     */
+    addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void;
+}
+
+/**
+ * Bridges between ViewBehaviors and HostBehaviors, enabling a host to
+ * control ViewBehaviors.
+ * @public
+ */
+export const ViewBehaviorOrchestrator = Object.freeze({
+    /**
+     * Creates a ViewBehaviorOrchestrator.
+     * @param source - The source to to associate behaviors with.
+     * @returns A ViewBehaviorOrchestrator.
+     */
+    create<TSource = any, TParent = any>(
+        source: TSource
+    ): ViewBehaviorOrchestrator<TSource, TParent> {
+        const behaviors: ViewBehavior[] = [];
+        const targets: ViewBehaviorTargets = {};
+        let unbindables: { unbind(controller: ViewController<TSource>) }[] | null = null;
+        let isConnected = false;
+
+        return {
+            source,
+            context: ExecutionContext.default,
+            targets,
+            get isBound() {
+                return isConnected;
+            },
+            addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void {
+                const compiled = factory as CompiledViewBehaviorFactory;
+
+                compiled.id = compiled.id ?? nextId();
+                compiled.targetNodeId = compiled.targetNodeId ?? nextId();
+                compiled.targetTagName = (target as HTMLElement).tagName ?? null;
+                compiled.policy = compiled.policy ?? DOM.policy;
+
+                this.addTarget(compiled.targetNodeId, target);
+                this.addBehavior(compiled.createBehavior());
+            },
+            addTarget(nodeId: string, target: Node) {
+                targets[nodeId] = target;
+            },
+            addBehavior(behavior: ViewBehavior): void {
+                behaviors.push(behavior);
+
+                if (isConnected) {
+                    behavior.bind(this);
+                }
+            },
+            onUnbind(unbindable: { unbind(controller: ViewController<TSource>) }) {
+                if (unbindables === null) {
+                    unbindables = [];
+                }
+
+                unbindables.push(unbindable);
+            },
+            connectedCallback(controller: HostController<TSource>) {
+                if (!isConnected) {
+                    isConnected = true;
+                    behaviors.forEach(x => x.bind(this));
+                }
+            },
+            disconnectedCallback(controller: HostController<TSource>) {
+                if (isConnected) {
+                    isConnected = false;
+
+                    if (unbindables !== null) {
+                        unbindables.forEach(x => x.unbind(this));
+                    }
+                }
+            },
+        };
+    },
+});

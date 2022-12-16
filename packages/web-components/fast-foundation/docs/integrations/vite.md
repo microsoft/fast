@@ -2,13 +2,14 @@
 id: vite
 title: Vite
 sidebar_label: Vite
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/integrations/vite.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/docs/integrations/vite.md
 description: FAST works great with TypeScript and Vite, using a fairly standard setup. Let's take a look at how you can set up a FAST+Vite+TypeScript project, starting from scratch.
 keywords:
   - vite
 ---
 
 FAST works great with Vite and TypeScript, using a fairly standard setup. Let's take a look at how you can set up a FAST+TypeScript+Vite project, starting from scratch.
+
 ## Setting up the Vite project
 
 First, you'll need to make sure that you have Node.js version >=12.2.0 installed. You can learn more and download that [on the official site](https://nodejs.org/).
@@ -150,4 +151,4 @@ After saving your `style.css` file, your browser will automatically refresh and 
 
 Congratulations! You're now set up to use FAST, TypeScript, and Vite. You can import and use more components, build your own components, and when you are ready, build and deploy your website or app to production.
 
-See a FAST+Vite+TypeScript starter project [here](../../../../../examples/vite-starters/vite-fast-typescript-starter/README.md).
+See a FAST+Vite+TypeScript starter project [here](https://github.com/microsoft/fast/tree/master/examples/vite-starters/vite-fast-typescript-starter).

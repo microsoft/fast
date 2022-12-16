@@ -1,8 +1,32 @@
 # Change Log - @microsoft/adaptive-ui
 
-This log was last generated on Tue, 01 Nov 2022 23:26:26 GMT and should not be manually modified.
+This log was last generated on Fri, 02 Dec 2022 01:18:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.23
+
+Fri, 02 Dec 2022 01:18:22 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.23
+
+## 1.0.0-alpha.22
+
+Tue, 15 Nov 2022 02:40:35 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.22
+
+## 1.0.0-alpha.21
+
+Fri, 04 Nov 2022 22:28:49 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.21
 
 ## 1.0.0-alpha.20
 

@@ -8,10 +8,9 @@ import {
     Observable,
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
-import { DOM } from "./dom.js";
+import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
 import {
     AddViewBehaviorFactory,
-    Aspect,
     Aspected,
     Binding,
     HTMLDirective,
@@ -19,20 +18,7 @@ import {
     ViewBehaviorFactory,
     ViewController,
 } from "./html-directive.js";
-import { Markup, nextId } from "./markup.js";
-
-declare class TrustedHTML {}
-const createInnerHTMLBinding = globalThis.TrustedHTML
-    ? (binding: Expression) => (s, c) => {
-          const value = binding(s, c);
-
-          if (value instanceof TrustedHTML) {
-              return value;
-          }
-
-          throw FAST.error(Message.bindingInnerHTMLRequiresTrustedTypes);
-      }
-    : (binding: Expression) => binding;
+import { Markup } from "./markup.js";
 
 class OnChangeBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
     TSource,
@@ -245,8 +231,14 @@ function updateTokenList(
     }
 }
 
-const setProperty = (t, a, v) => (t[a] = v);
-const eventTarget = () => void 0;
+const sinkLookup: Record<DOMAspect, UpdateTarget> = {
+    [DOMAspect.attribute]: DOM.setAttribute,
+    [DOMAspect.booleanAttribute]: DOM.setBooleanAttribute,
+    [DOMAspect.property]: (t, a, v) => (t[a] = v),
+    [DOMAspect.content]: updateContent,
+    [DOMAspect.tokenList]: updateTokenList,
+    [DOMAspect.event]: () => void 0,
+};
 
 /**
  * A directive that applies bindings.
@@ -260,12 +252,22 @@ export class HTMLBindingDirective
     /**
      * The unique id of the factory.
      */
-    id: string = nextId();
+    id: string;
 
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    nodeId: string;
+    targetNodeId: string;
+
+    /**
+     * The tagname associated with the target node.
+     */
+    targetTagName: string | null;
+
+    /**
+     * The policy that the created behavior must run under.
+     */
+    policy: DOMPolicy;
 
     /**
      * The original source aspect exactly as represented in markup.
@@ -280,15 +282,13 @@ export class HTMLBindingDirective
     /**
      * The type of aspect to target.
      */
-    aspectType: Aspect = Aspect.content;
+    aspectType: DOMAspect = DOMAspect.content;
 
     /**
      * Creates an instance of HTMLBindingDirective.
      * @param dataBinding - The binding configuration to apply.
      */
-    constructor(public dataBinding: Binding) {
-        this.data = `${this.id}-d`;
-    }
+    constructor(public dataBinding: Binding) {}
 
     /**
      * Creates HTML to be used within a template.
@@ -303,34 +303,20 @@ export class HTMLBindingDirective
      */
     createBehavior(): ViewBehavior {
         if (this.updateTarget === null) {
-            if (this.targetAspect === "innerHTML") {
-                this.dataBinding.evaluate = createInnerHTMLBinding(
-                    this.dataBinding.evaluate
-                );
+            const sink = sinkLookup[this.aspectType];
+            const policy = this.dataBinding.policy ?? this.policy;
+
+            if (!sink) {
+                throw FAST.error(Message.unsupportedBindingBehavior);
             }
 
-            switch (this.aspectType) {
-                case 1:
-                    this.updateTarget = DOM.setAttribute;
-                    break;
-                case 2:
-                    this.updateTarget = DOM.setBooleanAttribute;
-                    break;
-                case 3:
-                    this.updateTarget = setProperty;
-                    break;
-                case 4:
-                    this.updateTarget = updateContent;
-                    break;
-                case 5:
-                    this.updateTarget = updateTokenList;
-                    break;
-                case 6:
-                    this.updateTarget = eventTarget;
-                    break;
-                default:
-                    throw FAST.error(Message.unsupportedBindingBehavior);
-            }
+            this.data = `${this.id}-d`;
+            this.updateTarget = policy.protect(
+                this.targetTagName,
+                this.aspectType,
+                this.targetAspect,
+                sink
+            );
         }
 
         return this;
@@ -338,10 +324,10 @@ export class HTMLBindingDirective
 
     /** @internal */
     bind(controller: ViewController): void {
-        const target = controller.targets[this.nodeId];
+        const target = controller.targets[this.targetNodeId];
 
-        switch (this.updateTarget) {
-            case eventTarget:
+        switch (this.aspectType) {
+            case DOMAspect.event:
                 target[this.data] = controller;
                 target.addEventListener(
                     this.targetAspect,
@@ -349,7 +335,7 @@ export class HTMLBindingDirective
                     this.dataBinding.options
                 );
                 break;
-            case updateContent:
+            case DOMAspect.content:
                 controller.onUnbind(this);
             // intentional fall through
             default:
@@ -372,7 +358,7 @@ export class HTMLBindingDirective
 
     /** @internal */
     unbind(controller: ViewController): void {
-        const target = controller.targets[this.nodeId] as ContentTarget;
+        const target = controller.targets[this.targetNodeId] as ContentTarget;
         const view = target.$fastView as ComposableView;
 
         if (view !== void 0 && view.isComposed) {
@@ -417,25 +403,31 @@ HTMLDirective.define(HTMLBindingDirective, { aspected: true });
 /**
  * Creates an standard binding.
  * @param expression - The binding to refresh when changed.
+ * @param policy - The security policy to associate with th binding.
  * @param isVolatile - Indicates whether the binding is volatile or not.
  * @returns A binding configuration.
  * @public
  */
 export function bind<T = any>(
     expression: Expression<T>,
+    policy?: DOMPolicy,
     isVolatile = Observable.isVolatileBinding(expression)
 ): Binding<T> {
-    return new OnChangeBinding(expression, isVolatile);
+    return new OnChangeBinding(expression, policy, isVolatile);
 }
 
 /**
  * Creates a one time binding
  * @param expression - The binding to refresh when signaled.
+ * @param policy - The security policy to associate with th binding.
  * @returns A binding configuration.
  * @public
  */
-export function oneTime<T = any>(expression: Expression<T>): Binding<T> {
-    return new OneTimeBinding(expression);
+export function oneTime<T = any>(
+    expression: Expression<T>,
+    policy?: DOMPolicy
+): Binding<T> {
+    return new OneTimeBinding(expression, policy);
 }
 
 /**
@@ -449,7 +441,7 @@ export function listener<T = any>(
     expression: Expression<T>,
     options?: AddEventListenerOptions
 ): Binding<T> {
-    const config = new OnChangeBinding(expression, false);
+    const config = new OnChangeBinding(expression);
     config.options = options;
     return config;
 }

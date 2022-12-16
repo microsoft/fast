@@ -2,6 +2,42 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Fri, 02 Dec 2022 01:18:22 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.19",
+      "version": "1.0.0-alpha.19",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.19",
+            "commit": "040867e9a2a9e0ae25b78dfb3265fbe8f60fe023"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 15 Nov 2022 02:40:35 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.18",
+      "version": "1.0.0-alpha.18",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-router",
+            "commit": "3c14603089495a7af8ed5b55122c418b47c45fd5",
+            "comment": "feat: add new DOM Policy protection throughout"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.18",
+            "commit": "416dc9167e9d41e6ffe11d87ed79b2f455357923"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 01 Nov 2022 23:26:26 GMT",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.17",
       "version": "1.0.0-alpha.17",

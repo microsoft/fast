@@ -1,8 +1,37 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 01 Nov 2022 23:26:26 GMT and should not be manually modified.
+This log was last generated on Fri, 02 Dec 2022 01:18:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.23
+
+Fri, 02 Dec 2022 01:18:22 GMT
+
+### Changes
+
+- checkbox remove irrelevant read-only property (yinon@hotmail.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.19
+
+## 3.0.0-alpha.22
+
+Tue, 15 Nov 2022 02:40:34 GMT
+
+### Changes
+
+- add aria-orientation to radio-group (olaf-k@users.noreply.github.com)
+- Fixing bug in DesignToken causing RangeError (nicholasrice@users.noreply.github.com)
+- chore: move ViewBehaviorOrchestrator to utilities (roeisenb@microsoft.com)
+- feat: add new DOM Policy protection throughout (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.18
+
+## 3.0.0-alpha.21
+
+Fri, 04 Nov 2022 22:28:49 GMT
+
+### Changes
+
+- feat: enable using design tokens in html (roeisenb@microsoft.com)
 
 ## 3.0.0-alpha.20
 

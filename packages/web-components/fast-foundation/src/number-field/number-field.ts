@@ -1,5 +1,6 @@
 import {
     attr,
+    DangerousHTMLDirective,
     nullableNumberConverter,
     observable,
     SyntheticViewTemplate,
@@ -16,8 +17,8 @@ import { FormAssociatedNumberField } from "./number-field.form-associated.js";
  * @public
  */
 export type NumberFieldOptions = StartEndOptions & {
-    stepDownGlyph?: string | SyntheticViewTemplate;
-    stepUpGlyph?: string | SyntheticViewTemplate;
+    stepDownGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
+    stepUpGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**

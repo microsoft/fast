@@ -55,7 +55,7 @@ describe("The children", () => {
             const behavior = new ChildrenDirective({
                 property: "nodes",
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = Fake.viewController(targets, behavior);
 
@@ -70,7 +70,7 @@ describe("The children", () => {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = Fake.viewController(targets, behavior);
 
@@ -84,7 +84,7 @@ describe("The children", () => {
             const behavior = new ChildrenDirective({
                 property: "nodes",
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = Fake.viewController(targets, behavior);
 
@@ -105,7 +105,7 @@ describe("The children", () => {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = Fake.viewController(targets, behavior);
 
@@ -138,7 +138,7 @@ describe("The children", () => {
                 subtree: true,
                 selector: subtreeElement,
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
 
             const model = new Model();
             const controller = Fake.viewController(targets, behavior);
@@ -167,7 +167,7 @@ describe("The children", () => {
             const behavior = new ChildrenDirective({
                 property: "nodes",
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
             const controller = Fake.viewController(targets, behavior);
 

@@ -1,4 +1,9 @@
-import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import {
+    attr,
+    DangerousHTMLDirective,
+    observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
 import { FormAssociatedRadio } from "./radio.form-associated.js";
 
@@ -16,7 +21,7 @@ export type RadioControl = Pick<
  * @public
  */
 export type RadioOptions = {
-    checkedIndicator?: string | SyntheticViewTemplate;
+    checkedIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**
