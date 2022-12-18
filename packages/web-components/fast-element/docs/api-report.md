@@ -220,7 +220,7 @@ export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (Compos
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
 
 // @public
-export function dangerousHTML<TSource = any, TParent = any>(html: string): CaptureType<TSource, TParent>;
+export function dangerousHTML<TSource = any, TParent = any>(html: string): DangerousHTMLDirective;
 
 // @public
 export class DangerousHTMLDirective implements HTMLDirective {
@@ -613,6 +613,9 @@ export interface Notifier {
     subscribe(subscriber: Subscriber, propertyToWatch?: any): void;
     unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
 }
+
+// @public
+export const nullableBooleanConverter: ValueConverter;
 
 // @public
 export const nullableNumberConverter: ValueConverter;

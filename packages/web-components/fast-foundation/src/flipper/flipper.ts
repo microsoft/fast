@@ -1,6 +1,7 @@
 import {
     attr,
     booleanConverter,
+    DangerousHTMLDirective,
     FASTElement,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
@@ -13,8 +14,8 @@ export { FlipperDirection };
  * @public
  */
 export type FlipperOptions = {
-    next?: string | SyntheticViewTemplate;
-    previous?: string | SyntheticViewTemplate;
+    next?: DangerousHTMLDirective | SyntheticViewTemplate;
+    previous?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**

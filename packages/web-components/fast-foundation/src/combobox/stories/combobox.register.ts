@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTCombobox } from "../combobox.js";
 import { comboboxTemplate } from "../combobox.template.js";
@@ -205,7 +206,7 @@ const styles = css`
 FASTCombobox.define({
     name: "fast-combobox",
     template: comboboxTemplate({
-        indicator: /* html */ `
+        indicator: /* html */ html`
             <svg
                 class="select-indicator"
                 part="select-indicator"

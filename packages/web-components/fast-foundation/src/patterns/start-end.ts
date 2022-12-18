@@ -1,11 +1,17 @@
-import { html, ref, SyntheticViewTemplate, ViewTemplate } from "@microsoft/fast-element";
+import {
+    DangerousHTMLDirective,
+    html,
+    ref,
+    SyntheticViewTemplate,
+    ViewTemplate,
+} from "@microsoft/fast-element";
 
 /**
  * Start configuration options
  * @public
  */
 export type StartOptions = {
-    start?: string | SyntheticViewTemplate;
+    start?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**
@@ -13,7 +19,7 @@ export type StartOptions = {
  * @public
  */
 export type EndOptions = {
-    end?: string | SyntheticViewTemplate;
+    end?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**

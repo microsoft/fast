@@ -50,9 +50,9 @@ export const myTooltip = Tooltip.compose({
 
 ### Variables
 
-| Name              | Description                           | Type                                                                                                                                                                                                                                                                                                                                                                        |
-| ----------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `TooltipPosition` | Enumerates possible tooltip positions | `{ top: "top", right: "right", bottom: "bottom", left: "left", center: "center", start: "start", end: "end", topLeft: "top-left", topCenter: "top-center", topRight: "top-right", bottomLeft: "bottom-left", bottomCenter: "bottom-center", bottomRight: "bottom-right", topStart: "top-start", topEnd: "top-end", bottomStart: "bottom-start", bottomEnd: "bottom-end", }` |
+| Name               | Description                             | Type                                                                                                                                                                                                                                                              |
+| ------------------ | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TooltipPlacement` | Enumerates possible tooltip placements. | `{ bottom: "bottom", bottomEnd: "bottom-end", bottomStart: "bottom-start", left: "left", leftEnd: "left-end", leftStart: "left-start", right: "right", rightEnd: "right-end", rightStart: "right-start", top: "top", topEnd: "top-end", topStart: "top-start", }` |
 
 <hr/>
 
@@ -68,25 +68,22 @@ export const myTooltip = Tooltip.compose({
 
 #### Fields
 
-| Name                     | Privacy | Type                  | Default    | Description                                                                                                                                                                                                      | Inherited From |
-| ------------------------ | ------- | --------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `visible`                | public  | `boolean`             |            | Whether the tooltip is visible or not. If undefined tooltip is shown when anchor element is hovered                                                                                                              |                |
-| `anchor`                 | public  | `string`              | `""`       | The id of the element the tooltip is anchored to                                                                                                                                                                 |                |
-| `delay`                  | public  | `number`              | `300`      | The delay in milliseconds before a tooltip is shown after a hover event                                                                                                                                          |                |
-| `position`               | public  | `TooltipPosition`     |            | Controls the placement of the tooltip relative to the anchor. When the position is undefined the tooltip is placed above or below the anchor based on available space.                                           |                |
-| `autoUpdateMode`         | public  | `AutoUpdateMode`      | `"anchor"` | Controls when the tooltip updates its position, default is 'anchor' which only updates when the anchor is resized.  'auto' will update on scroll/resize events. Corresponds to anchored-region auto-update-mode. |                |
-| `horizontalViewportLock` | public  | `boolean`             |            | Controls if the tooltip will always remain fully in the viewport on the horizontal axis                                                                                                                          |                |
-| `verticalViewportLock`   | public  | `boolean`             |            | Controls if the tooltip will always remain fully in the viewport on the vertical axis                                                                                                                            |                |
-| `anchorElement`          | public  | `HTMLElement or null` | `null`     | the html element currently being used as anchor. Setting this directly overrides the anchor attribute.                                                                                                           |                |
+| Name        | Privacy | Type                   | Default | Description                                                  | Inherited From |
+| ----------- | ------- | ---------------------- | ------- | ------------------------------------------------------------ | -------------- |
+| `anchor`    | public  | `string`               |         | The id of the element the tooltip is anchored to.            |                |
+| `cleanup`   | public  | `() => void`           |         | Cleanup function for the tooltip positioner.                 |                |
+| `id`        | public  | `string`               |         | The tooltip ID attribute.                                    |                |
+| `placement` | public  | `TooltipPlacement`     |         | The placement of the tooltip relative to the anchor element. |                |
+| `show`      | public  | `boolean or undefined` |         | The visibility state of the tooltip.                         |                |
+| `visible`   | public  | `boolean or undefined` |         | Returns the current visibility of the tooltip.               |                |
 
 #### Methods
 
-| Name                     | Privacy   | Description | Parameters                      | Return | Inherited From |
-| ------------------------ | --------- | ----------- | ------------------------------- | ------ | -------------- |
-| `visibleChanged`         | protected |             |                                 | `void` |                |
-| `anchorChanged`          | protected |             |                                 | `void` |                |
-| `anchorElementChanged`   | protected |             | `oldValue: HTMLElement or null` | `void` |                |
-| `viewportElementChanged` | protected |             |                                 | `void` |                |
+| Name             | Privacy | Description                | Parameters                                               | Return | Inherited From |
+| ---------------- | ------- | -------------------------- | -------------------------------------------------------- | ------ | -------------- |
+| `idChanged`      | public  |                            | `prev: string, next: string`                             | `void` |                |
+| `showChanged`    | public  |                            | `prev: boolean or undefined, next: boolean or undefined` | `void` |                |
+| `setPositioning` | public  | Sets the tooltip position. |                                                          | `void` |                |
 
 #### Events
 
@@ -96,21 +93,12 @@ export const myTooltip = Tooltip.compose({
 
 #### Attributes
 
-| Name                       | Field                  | Inherited From |
-| -------------------------- | ---------------------- | -------------- |
-|                            | visible                |                |
-| `anchor`                   | anchor                 |                |
-| `delay`                    | delay                  |                |
-| `position`                 | position               |                |
-| `auto-update-mode`         | autoUpdateMode         |                |
-| `horizontal-viewport-lock` | horizontalViewportLock |                |
-| `vertical-viewport-lock`   | verticalViewportLock   |                |
-
-#### CSS Parts
-
-| Name      | Description         |
-| --------- | ------------------- |
-| `tooltip` | The tooltip element |
+| Name        | Field     | Inherited From |
+| ----------- | --------- | -------------- |
+| `anchor`    | anchor    |                |
+| `id`        | id        |                |
+| `placement` | placement |                |
+| `show`      | show      |                |
 
 #### Slots
 

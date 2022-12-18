@@ -1,8 +1,9 @@
 import "./install-dom-shim.js";
-import { expect, test } from "@playwright/test";
-import * as Foundation from "@microsoft/fast-foundation";
+
 import { ElementViewTemplate, FASTElement } from "@microsoft/fast-element";
-import  { createWindow } from "./dom-shim.js";
+import * as Foundation from "@microsoft/fast-foundation";
+import { expect, test } from "@playwright/test";
+import { createWindow } from "./dom-shim.js";
 import fastSSR from "./exports.js";
 import { uniqueElementName } from "@microsoft/fast-element/testing";
 
@@ -104,9 +105,7 @@ const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTTextArea, Foundation.textAreaTemplate()],
     [Foundation.FASTTextField, Foundation.textFieldTemplate()],
     [Foundation.FASTToolbar, Foundation.toolbarTemplate()],
-    [Foundation.FASTTooltip, Foundation.tooltipTemplate({
-        anchoredRegion
-    })],
+    [Foundation.FASTTooltip, Foundation.tooltipTemplate()],
     [Foundation.FASTTreeItem, Foundation.treeItemTemplate()],
     [Foundation.FASTTreeView, Foundation.treeViewTemplate()]
 ];

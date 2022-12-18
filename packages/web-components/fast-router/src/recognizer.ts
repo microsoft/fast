@@ -4,9 +4,28 @@ import { QueryString } from "./query-string.js";
 /**
  * @beta
  */
-export type RouteParameterConverter = (value: string | undefined) => any | Promise<any>;
-const defaultParameterConverter: RouteParameterConverter = (value: string | undefined) =>
-    value;
+export interface RouteParameterConverterContext<TSettings = any> {
+    readonly endpoint: Endpoint<TSettings>;
+    readonly params: Readonly<Record<string, string | undefined>>;
+    readonly typedParams: Record<string, any>;
+    readonly queryParams: Record<string, string>;
+}
+
+/**
+ * @beta
+ */
+export type RouteParameterConverter = (
+    name: string,
+    value: string | undefined,
+    context: RouteParameterConverterContext
+) => any | Promise<any>;
+const defaultParameterConverter: RouteParameterConverter = (
+    name: string,
+    value: string | undefined,
+    context: RouteParameterConverterContext
+) => {
+    return value;
+};
 
 /**
  * @beta
@@ -54,8 +73,8 @@ export class RecognizedRoute<TSettings = any> {
         };
 
         this.allTypedParams = {
-            ...typedParams,
             ...queryParams,
+            ...typedParams,
         };
     }
 
@@ -268,11 +287,11 @@ class Candidate<T> {
                 segmentB = stateB.segment!;
             }
 
-            if (segmentA.kind < segmentB.kind) {
+            if (segmentA!.kind < segmentB!.kind) {
                 return 1;
             }
 
-            if (segmentA.kind > segmentB.kind) {
+            if (segmentA!.kind > segmentB!.kind) {
                 return -1;
             }
 
@@ -519,14 +538,23 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
         const paramNames = endpoint.paramNames;
         const paramTypes = endpoint.paramTypes;
         const params = candidate.getParams();
-        const typedParams = {};
+        const typedParams = {} as Record<string, any>;
+        const converterContext: RouteParameterConverterContext = {
+            endpoint,
+            params,
+            typedParams,
+            queryParams,
+        };
 
         for (let i = 0, ii = paramNames.length; i < ii; ++i) {
-            const name = paramNames[i];
+            const paramName = paramNames[i];
+            const paramValue = params[paramName];
             const convert = converters[paramTypes[i]] || defaultParameterConverter;
-            const untypedValue = params[name];
-            const typedValue = await convert(untypedValue);
-            typedParams[name] = typedValue;
+            typedParams[paramName] = await convert(
+                paramName,
+                paramValue,
+                converterContext
+            );
         }
 
         return new RecognizedRoute<TSettings>(endpoint, params, typedParams, queryParams);
@@ -564,7 +592,7 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
             return null;
         }
 
-        const routeParams = Object.assign({}, params);
+        const routeParams = Object.assign({}, params) as Record<string, string>;
         const consumed = {};
         let output = "";
 
@@ -815,7 +843,10 @@ class DynamicSegment<T> {
         return state;
     }
 
-    public generate(params: Object, consumed: Object): string {
+    public generate(
+        params: Record<string, string>,
+        consumed: Record<string, boolean>
+    ): string {
         consumed[this.name] = true;
         return params[this.name];
     }
@@ -841,7 +872,10 @@ class StarSegment<T> {
         return state;
     }
 
-    public generate(params: Object, consumed: Object): string {
+    public generate(
+        params: Record<string, string>,
+        consumed: Record<string, boolean>
+    ): string {
         consumed[this.name] = true;
         return params[this.name];
     }
