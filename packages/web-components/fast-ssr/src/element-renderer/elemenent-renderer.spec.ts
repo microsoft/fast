@@ -1,5 +1,5 @@
 import "../install-dom-shim.js";
-import { FASTElement, customElement, css, html, attr, observable, when } from "@microsoft/fast-element";
+import { FASTElement, customElement, css, html, attr, observable, when, dangerousHTML } from "@microsoft/fast-element";
 import { expect, test } from '@playwright/test';
 import { SyncFASTElementRenderer } from "./fast-element-renderer.js";
 import fastSSR from "../exports.js";
@@ -276,7 +276,7 @@ test.describe("FASTElementRenderer", () => {
                 }
             }
 
-            const template = html`<${name}></${name}>`;
+            const template = html`<${dangerousHTML(name)}></${dangerousHTML(name)}>`;
             const { templateRenderer } = fastSSR({renderMode: "async"});
 
             expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-resolved><template shadowroot="open"></template></${name}>`)
@@ -300,7 +300,7 @@ test.describe("FASTElementRenderer", () => {
                 }
             }
 
-            const template = html`<${name}></${name}>`;
+            const template = html`<${dangerousHTML(name)}></${dangerousHTML(name)}>`;
             const { templateRenderer } = fastSSR({renderMode: "async"});
 
             expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-reject><template shadowroot="open"></template></${name}>`)
@@ -328,7 +328,7 @@ test.describe("FASTElementRenderer", () => {
                 }
             }
 
-            const template = html`<${name}></${name}>`;
+            const template = html`<${dangerousHTML(name)}></${dangerousHTML(name)}>`;
             const { templateRenderer } = fastSSR({renderMode: "async"});
 
             expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-resolved-one async-resolved-two><template shadowroot="open"></template></${name}>`)
@@ -353,7 +353,7 @@ test.describe("FASTElementRenderer", () => {
                 }
             }
 
-            const template = html`<${name}></${name}>`;
+            const template = html`<${dangerousHTML(name)}></${dangerousHTML(name)}>`;
             const { templateRenderer } = fastSSR({renderMode: "async"});
 
             expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name}><template shadowroot="open"><h1>Async content success</h1></template></${name}>`)
@@ -378,7 +378,7 @@ test.describe("FASTElementRenderer", () => {
                 }
             }
 
-            const template = html`<${name}><${name}></${name}></${name}>`;
+            const template = html`<${dangerousHTML(name)}><${dangerousHTML(name)}></${dangerousHTML(name)}></${dangerousHTML(name)}>`;
             const { templateRenderer } = fastSSR({renderMode: "async"});
 
             expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-resolved><template shadowroot="open"><slot></slot></template><${name} async-resolved><template shadowroot="open"><slot></slot></template></${name}></${name}>`)

@@ -20,14 +20,14 @@ import { DefaultTemplateRenderer } from "./template-renderer.js";
 export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
     /**
      * Renders a ViewBehaviorFactory
-     * @param behavior - The behavior to render
+     * @param behaviorFactory - The ViewBehaviorFactory instance to render
      * @param renderInfo - The current RenderInfo context
      * @param source - Source data
-     * @param renderer - The current TemplateRenderer
+     * @param renderer - The TemplateRenderer
      * @param context - The ExecutionContext
      */
     render(
-        behavior: T,
+        behaviorFactory: T,
         renderInfo: RenderInfo,
         source: any,
         renderer: DefaultTemplateRenderer,

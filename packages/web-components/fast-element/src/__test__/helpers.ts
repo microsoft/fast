@@ -9,3 +9,16 @@ export function toHTML(node: Node, preserveCommentMarkup: boolean = false): stri
         })
         .join("");
 }
+
+export function createTrackableDOMPolicy() {
+    return {
+        used: false,
+        createHTML: (html: string) => html,
+        protect(tagName, aspect, aspectName, sink) {
+            return (node, aspectName, value, ...args) => {
+                this.used = true;
+                sink(node, aspectName, value, ...args);
+            };
+        },
+    };
+}

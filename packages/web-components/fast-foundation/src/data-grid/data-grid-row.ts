@@ -4,9 +4,9 @@ import {
     FASTElement,
     observable,
     RepeatDirective,
-    ViewBehaviorOrchestrator,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities";
 import {
     eventFocusOut,
     eventKeyDown,
@@ -178,8 +178,8 @@ export class FASTDataGridRow extends FASTElement {
             this.$fastController.addBehavior(this.behaviorOrchestrator);
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<FASTDataGridRow>(
-                    bind(x => x.columnDefinitions, false),
-                    bind(x => x.activeCellItemTemplate, false),
+                    bind(x => x.columnDefinitions),
+                    bind(x => x.activeCellItemTemplate),
                     { positioning: true }
                 ),
                 this.appendChild(document.createComment(""))

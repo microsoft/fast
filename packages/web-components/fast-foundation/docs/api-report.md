@@ -7,6 +7,7 @@
 import type { CaptureType } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
+import { DangerousHTMLDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -31,8 +32,8 @@ export type AccordionExpandMode = typeof AccordionExpandMode[keyof typeof Accord
 
 // @public
 export type AccordionItemOptions = StartEndOptions & {
-    expandedIcon?: string | SyntheticViewTemplate;
-    collapsedIcon?: string | SyntheticViewTemplate;
+    expandedIcon?: DangerousHTMLDirective | SyntheticViewTemplate;
+    collapsedIcon?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -128,7 +129,7 @@ export type AutoUpdateMode = typeof AutoUpdateMode[keyof typeof AutoUpdateMode];
 
 // @public
 export type AvatarOptions = {
-    media?: string | SyntheticViewTemplate;
+    media?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -159,7 +160,7 @@ export function badgeTemplate<T extends FASTBadge>(): ElementViewTemplate<T>;
 
 // @public
 export type BreadcrumbItemOptions = StartEndOptions & {
-    separator?: string | SyntheticViewTemplate;
+    separator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -258,8 +259,8 @@ export type CheckableFormAssociatedElement = FormAssociatedElement & CheckableFo
 
 // @public
 export type CheckboxOptions = {
-    checkedIndicator?: string | SyntheticViewTemplate;
-    indeterminateIndicator?: string | SyntheticViewTemplate;
+    checkedIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+    indeterminateIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -269,12 +270,12 @@ export function checkboxTemplate<T extends FASTCheckbox>(options?: CheckboxOptio
 export interface ColumnDefinition {
     cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
     cellInternalFocusQueue?: boolean;
-    cellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
+    cellTemplate?: ViewTemplate | SyntheticViewTemplate;
     columnDataKey: string;
     gridColumn?: string;
     headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
     headerCellInternalFocusQueue?: boolean;
-    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate | string;
+    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate;
     isRowHeader?: boolean;
     title?: string;
 }
@@ -292,7 +293,7 @@ export type ComboboxAutocomplete = typeof ComboboxAutocomplete[keyof typeof Comb
 
 // @public
 export type ComboboxOptions = StartEndOptions & {
-    indicator?: string | SyntheticViewTemplate;
+    indicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -619,7 +620,7 @@ export function dividerTemplate<T extends FASTDivider>(): ElementViewTemplate<T>
 
 // @public
 export type EndOptions = {
-    end?: string | SyntheticViewTemplate;
+    end?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -881,9 +882,6 @@ export class FASTCheckbox extends FormAssociatedCheckbox {
     initialValue: string;
     // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
-    readOnly: boolean;
-    // (undocumented)
-    protected readOnlyChanged(): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -982,6 +980,7 @@ export class FASTDataGrid extends FASTElement {
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
+    pageSize: number | undefined;
     // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
@@ -2052,51 +2051,34 @@ export interface FASTToolbar extends StartEnd, DelegatesARIAToolbar {
 // @public
 export class FASTTooltip extends FASTElement {
     anchor: string;
-    // (undocumented)
-    protected anchorChanged(): void;
-    anchorElement: HTMLElement | null;
-    // (undocumented)
-    protected anchorElementChanged(oldValue: HTMLElement | null): void;
-    autoUpdateMode: AutoUpdateMode;
+    // @internal
+    protected anchorChanged(prev: string | undefined, next: string): void;
+    // @internal
+    anchorElement: Element | null;
+    cleanup: () => void;
     // (undocumented)
     connectedCallback(): void;
     // @internal
-    currentDirection: Direction;
-    delay: number;
-    // (undocumented)
-    disconnectedCallback(): void;
+    protected controlledVisibilityChanged(prev: boolean | undefined, next: boolean): void;
     // @internal
-    handlePositionChange: (ev: Event) => void;
-    // @internal (undocumented)
-    horizontalDefaultPosition: string | undefined;
-    // @internal (undocumented)
-    horizontalInset: string;
-    // @internal (undocumented)
-    horizontalPositioningMode: AxisPositioningMode;
-    // @internal (undocumented)
-    horizontalScaling: AxisScalingMode;
-    horizontalViewportLock: boolean;
-    position: TooltipPosition;
+    protected focusinAnchorHandler: () => void;
     // @internal
-    region: FASTAnchoredRegion;
-    // @internal (undocumented)
-    tooltipVisible: boolean;
-    // @internal (undocumented)
-    verticalDefaultPosition: string | undefined;
-    // @internal (undocumented)
-    verticalInset: string;
-    // @internal (undocumented)
-    verticalPositioningMode: AxisPositioningMode;
-    // @internal (undocumented)
-    verticalScaling: AxisScalingMode;
-    verticalViewportLock: boolean;
+    protected focusoutAnchorHandler: () => void;
     // @internal
-    viewportElement: HTMLElement | null;
+    hideTooltip(): void;
+    id: string;
     // (undocumented)
-    protected viewportElementChanged(): void;
-    visible: boolean;
+    idChanged(prev: string, next: string): void;
+    placement: TooltipPlacement;
+    // @internal
+    protected positionStyles: ElementStyles;
+    // @internal
+    protected positionStylesChanged(prev: ElementStyles | undefined, next: ElementStyles | undefined): void;
+    setPositioning(): void;
+    show: boolean | undefined;
     // (undocumented)
-    protected visibleChanged(): void;
+    showChanged(prev: boolean | undefined, next: boolean | undefined): void;
+    get visible(): boolean | undefined;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -2177,8 +2159,8 @@ export type FlipperDirection = typeof FlipperDirection[keyof typeof FlipperDirec
 
 // @public
 export type FlipperOptions = {
-    next?: string | SyntheticViewTemplate;
-    previous?: string | SyntheticViewTemplate;
+    next?: DangerousHTMLDirective | SyntheticViewTemplate;
+    previous?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2374,9 +2356,9 @@ export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListE
 
 // @public
 export type MenuItemOptions = StartEndOptions & {
-    checkboxIndicator?: string | SyntheticViewTemplate;
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
-    radioIndicator?: string | SyntheticViewTemplate;
+    checkboxIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+    expandCollapseGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
+    radioIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2435,8 +2417,8 @@ export function noninteractiveCalendarTemplate<T extends FASTCalendar>(options: 
 
 // @public
 export type NumberFieldOptions = StartEndOptions & {
-    stepDownGlyph?: string | SyntheticViewTemplate;
-    stepUpGlyph?: string | SyntheticViewTemplate;
+    stepDownGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
+    stepUpGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2479,13 +2461,13 @@ export function pickerTemplate<T extends FASTPicker>(options: PickerOptions): El
 
 // @public
 export type ProgressOptions = {
-    indeterminateIndicator1?: string | SyntheticViewTemplate;
-    indeterminateIndicator2?: string | SyntheticViewTemplate;
+    indeterminateIndicator1?: DangerousHTMLDirective | SyntheticViewTemplate;
+    indeterminateIndicator2?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
 export type ProgressRingOptions = {
-    indeterminateIndicator?: string | SyntheticViewTemplate;
+    indeterminateIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2522,7 +2504,7 @@ export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTempl
 
 // @public
 export type RadioOptions = {
-    checkedIndicator?: string | SyntheticViewTemplate;
+    checkedIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2557,7 +2539,7 @@ export function searchTemplate<T extends FASTSearch>(options?: SearchOptions): E
 
 // @public
 export type SelectOptions = StartEndOptions & {
-    indicator?: string | SyntheticViewTemplate;
+    indicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2602,7 +2584,7 @@ export type SliderMode = typeof SliderMode[keyof typeof SliderMode];
 
 // @public
 export type SliderOptions = {
-    thumb?: string | SyntheticViewTemplate;
+    thumb?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2621,7 +2603,7 @@ export type StartEndOptions = StartOptions & EndOptions;
 
 // @public
 export type StartOptions = {
-    start?: string | SyntheticViewTemplate;
+    start?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2635,7 +2617,7 @@ export const supportsElementInternals: boolean;
 
 // @public
 export type SwitchOptions = {
-    switch?: string | SyntheticViewTemplate;
+    switch?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2710,40 +2692,30 @@ export type ToolbarOptions = StartEndOptions;
 export function toolbarTemplate<T extends FASTToolbar>(options?: ToolbarOptions): ElementViewTemplate<T>;
 
 // @public
-export type TooltipOptions = {
-    anchoredRegion: TemplateElementDependency;
-};
-
-// @public
-export const TooltipPosition: {
-    readonly top: "top";
-    readonly right: "right";
+export const TooltipPlacement: {
     readonly bottom: "bottom";
-    readonly left: "left";
-    readonly center: "center";
-    readonly start: "start";
-    readonly end: "end";
-    readonly topLeft: "top-left";
-    readonly topCenter: "top-center";
-    readonly topRight: "top-right";
-    readonly bottomLeft: "bottom-left";
-    readonly bottomCenter: "bottom-center";
-    readonly bottomRight: "bottom-right";
-    readonly topStart: "top-start";
-    readonly topEnd: "top-end";
-    readonly bottomStart: "bottom-start";
     readonly bottomEnd: "bottom-end";
+    readonly bottomStart: "bottom-start";
+    readonly left: "left";
+    readonly leftEnd: "left-end";
+    readonly leftStart: "left-start";
+    readonly right: "right";
+    readonly rightEnd: "right-end";
+    readonly rightStart: "right-start";
+    readonly top: "top";
+    readonly topEnd: "top-end";
+    readonly topStart: "top-start";
 };
 
 // @public
-export type TooltipPosition = typeof TooltipPosition[keyof typeof TooltipPosition];
+export type TooltipPlacement = typeof TooltipPlacement[keyof typeof TooltipPlacement];
 
 // @public
-export function tooltipTemplate<T extends FASTTooltip>(options: TooltipOptions): ElementViewTemplate<T>;
+export function tooltipTemplate<T extends FASTTooltip>(): ElementViewTemplate<T>;
 
 // @public
 export type TreeItemOptions = StartEndOptions & {
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
+    expandCollapseGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 // @public
@@ -2804,7 +2776,6 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 // dist/dts/picker/picker.template.d.ts:12:5 - (ae-incompatible-release-tags) The symbol "pickerList" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:13:5 - (ae-incompatible-release-tags) The symbol "pickerListItem" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:14:5 - (ae-incompatible-release-tags) The symbol "progressRing" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/tooltip/tooltip.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 
 // (No @packageDocumentation comment for this package)
 

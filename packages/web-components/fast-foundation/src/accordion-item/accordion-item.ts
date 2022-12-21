@@ -1,5 +1,6 @@
 import {
     attr,
+    DangerousHTMLDirective,
     FASTElement,
     nullableNumberConverter,
     SyntheticViewTemplate,
@@ -12,8 +13,8 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * @public
  */
 export type AccordionItemOptions = StartEndOptions & {
-    expandedIcon?: string | SyntheticViewTemplate;
-    collapsedIcon?: string | SyntheticViewTemplate;
+    expandedIcon?: DangerousHTMLDirective | SyntheticViewTemplate;
+    collapsedIcon?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**

@@ -1,7 +1,10 @@
 import {
+    CompiledViewBehaviorFactory,
+    dangerousHTML,
     FASTElementDefinition,
     html,
     HTMLView,
+    ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { RenderOperation, Router } from "./router.js";
@@ -80,8 +83,10 @@ export class Redirect implements NavigationCommand {
     }
 }
 
-function factoryFromElementName(name: string) {
-    return html`<${name} ${navigationContributor()}></${name}>`;
+function factoryFromElementName(tagName: string) {
+    return html`<${dangerousHTML(tagName)} ${navigationContributor()}></${dangerousHTML(
+        tagName
+    )}>`;
 }
 
 type ViewFactory = { create(): HTMLView };
@@ -90,11 +95,11 @@ function factoryFromElementInstance(element: HTMLElement): ViewFactory {
     const fragment = document.createDocumentFragment();
     fragment.appendChild(element);
 
-    const factory = navigationContributor();
-    factory.nodeId = "h";
+    const factory = (navigationContributor() as ViewBehaviorFactory) as CompiledViewBehaviorFactory;
+    factory.targetNodeId = "h";
 
     const view = new HTMLView(fragment, [factory], {
-        [factory.nodeId]: element,
+        [factory.targetNodeId]: element,
     });
 
     return {
