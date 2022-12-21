@@ -9,6 +9,7 @@ import {
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
 import { MenuItemRole } from "./menu-item.options.js";
+import { staticallyComposeOption } from "../utilities/template-helpers.js";
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#(FASTMenuItem:class)} component using
@@ -36,7 +37,7 @@ export function menuItemTemplate<T extends FASTMenuItem>(
                     <div part="input-container" class="input-container">
                         <span part="checkbox" class="checkbox">
                             <slot name="checkbox-indicator">
-                                ${options.checkboxIndicator ?? ""}
+                                ${staticallyComposeOption(options.checkboxIndicator)}
                             </slot>
                         </span>
                     </div>
@@ -48,7 +49,7 @@ export function menuItemTemplate<T extends FASTMenuItem>(
                     <div part="input-container" class="input-container">
                         <span part="radio" class="radio">
                             <slot name="radio-indicator">
-                                ${options.radioIndicator ?? ""}
+                                ${staticallyComposeOption(options.radioIndicator)}
                             </slot>
                         </span>
                     </div>
@@ -69,7 +70,7 @@ export function menuItemTemplate<T extends FASTMenuItem>(
                 >
                     <span part="expand-collapse" class="expand-collapse">
                         <slot name="expand-collapse-indicator">
-                            ${options.expandCollapseGlyph ?? ""}
+                            ${staticallyComposeOption(options.expandCollapseGlyph)}
                         </slot>
                     </span>
                 </div>

@@ -3,6 +3,7 @@ import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { FASTHorizontalScroll } from "./horizontal-scroll.js";
 import type { HorizontalScrollOptions } from "./horizontal-scroll.options.js";
+import { staticallyComposeOption } from "../utilities/template-helpers.js";
 
 /**
  * @public
@@ -43,7 +44,7 @@ export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
                         >
                             <div class="scroll-action" part="scroll-action-previous">
                                 <slot name="previous-flipper">
-                                    ${options.previousFlipper ?? ""}
+                                    ${staticallyComposeOption(options.previousFlipper)}
                                 </slot>
                             </div>
                         </div>
@@ -54,7 +55,7 @@ export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
                         >
                             <div class="scroll-action" part="scroll-action-next">
                                 <slot name="next-flipper">
-                                    ${options.nextFlipper ?? ""}
+                                    ${staticallyComposeOption(options.nextFlipper)}
                                 </slot>
                             </div>
                         </div>

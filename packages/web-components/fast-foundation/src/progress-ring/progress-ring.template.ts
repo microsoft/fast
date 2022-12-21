@@ -1,5 +1,6 @@
 import type { ElementViewTemplate } from "@microsoft/fast-element";
 import { html, when } from "@microsoft/fast-element";
+import { staticallyComposeOption } from "../utilities/template-helpers.js";
 import type { FASTProgressRing } from "./progress-ring.js";
 import type { ProgressRingOptions } from "./progress-ring.options.js";
 
@@ -52,7 +53,7 @@ export function progressRingTemplate<T extends FASTProgressRing>(
                 x => typeof x.value !== "number",
                 html<T>`
                     <slot name="indeterminate">
-                        ${options.indeterminateIndicator ?? ""}
+                        ${staticallyComposeOption(options.indeterminateIndicator)}
                     </slot>
                 `
             )}

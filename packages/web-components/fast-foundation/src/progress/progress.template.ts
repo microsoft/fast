@@ -1,5 +1,6 @@
 import type { ElementViewTemplate } from "@microsoft/fast-element";
 import { html, when } from "@microsoft/fast-element";
+import { staticallyComposeOption } from "../utilities/template-helpers.js";
 import type { FASTProgress } from "./progress.js";
 import type { ProgressOptions } from "./progress.options.js";
 
@@ -34,8 +35,8 @@ export function progressTemplate<T extends FASTProgress>(
                 html<T>`
                     <div class="progress" part="progress" slot="indeterminate">
                         <slot name="indeterminate">
-                            ${options.indeterminateIndicator1 ?? ""}
-                            ${options.indeterminateIndicator2 ?? ""}
+                            ${staticallyComposeOption(options.indeterminateIndicator1)}
+                            ${staticallyComposeOption(options.indeterminateIndicator2)}
                         </slot>
                     </div>
                 `

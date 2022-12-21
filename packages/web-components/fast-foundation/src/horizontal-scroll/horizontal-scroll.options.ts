@@ -1,4 +1,7 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import type {
+    DangerousHTMLDirective,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 import type { StartEndOptions } from "../patterns/index.js";
 
 /**
@@ -38,6 +41,6 @@ export type ScrollEasing = typeof ScrollEasing[keyof typeof ScrollEasing];
  * @public
  */
 export type HorizontalScrollOptions = StartEndOptions & {
-    nextFlipper?: SyntheticViewTemplate | string;
-    previousFlipper?: SyntheticViewTemplate | string;
+    nextFlipper?: SyntheticViewTemplate | DangerousHTMLDirective;
+    previousFlipper?: SyntheticViewTemplate | DangerousHTMLDirective;
 };

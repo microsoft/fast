@@ -1,6 +1,7 @@
 import { ElementViewTemplate, html, ref, slotted, when } from "@microsoft/fast-element";
 import { FASTListbox } from "../listbox/listbox.js";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
+import { staticallyComposeOption } from "../utilities/template-helpers.js";
 import type { FASTSelect, SelectOptions } from "./select.js";
 
 /**
@@ -43,7 +44,7 @@ export function selectTemplate<T extends FASTSelect>(
                             </div>
                             <div aria-hidden="true" class="indicator" part="indicator">
                                 <slot name="indicator">
-                                    ${options.indicator ?? ""}
+                                    ${staticallyComposeOption(options.indicator)}
                                 </slot>
                             </div>
                         </slot>

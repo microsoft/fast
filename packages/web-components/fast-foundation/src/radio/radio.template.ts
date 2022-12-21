@@ -1,6 +1,7 @@
 import type { ElementViewTemplate } from "@microsoft/fast-element";
 import { html, slotted } from "@microsoft/fast-element";
 import { whitespaceFilter } from "../utilities/whitespace-filter.js";
+import { staticallyComposeOption } from "../utilities/template-helpers.js";
 import type { FASTRadio, RadioOptions } from "./radio.js";
 
 /**
@@ -22,7 +23,7 @@ export function radioTemplate<T extends FASTRadio>(
         >
             <div part="control" class="control">
                 <slot name="checked-indicator">
-                    ${options.checkedIndicator ?? ""}
+                    ${staticallyComposeOption(options.checkedIndicator)}
                 </slot>
             </div>
             <label

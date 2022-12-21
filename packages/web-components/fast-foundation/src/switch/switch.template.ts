@@ -1,4 +1,5 @@
 import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import { staticallyComposeOption } from "../utilities/template-helpers.js";
 import type { FASTSwitch, SwitchOptions } from "./switch.js";
 
 /**
@@ -28,7 +29,7 @@ export function switchTemplate<T extends FASTSwitch>(
                 <slot ${slotted("defaultSlottedNodes")}></slot>
             </label>
             <div part="switch" class="switch">
-                <slot name="switch">${options.switch ?? ""}</slot>
+                <slot name="switch">${staticallyComposeOption(options.switch)}</slot>
             </div>
             <span class="status-message" part="status-message">
                 <span class="checked-message" part="checked-message">

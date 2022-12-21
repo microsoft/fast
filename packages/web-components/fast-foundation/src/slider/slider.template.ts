@@ -1,4 +1,5 @@
 import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
+import { staticallyComposeOption } from "../utilities/template-helpers.js";
 import type { FASTSlider } from "./slider.js";
 import type { SliderOptions } from "./slider.options.js";
 
@@ -40,7 +41,7 @@ export function sliderTemplate<T extends FASTSlider>(
                     class="thumb-container"
                     style="${x => x.position}"
                 >
-                    <slot name="thumb">${options.thumb ?? ""}</slot>
+                    <slot name="thumb">${staticallyComposeOption(options.thumb)}</slot>
                 </div>
             </div>
         </template>

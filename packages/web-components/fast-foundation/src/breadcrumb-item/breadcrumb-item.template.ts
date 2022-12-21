@@ -1,5 +1,6 @@
 import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
 import { anchorTemplate } from "../anchor/anchor.template.js";
+import { staticallyComposeOption } from "../utilities/template-helpers.js";
 import type { BreadcrumbItemOptions, FASTBreadcrumbItem } from "./breadcrumb-item.js";
 
 /**
@@ -16,7 +17,9 @@ export function breadcrumbItemTemplate<T extends FASTBreadcrumbItem>(
                 x => x.separator,
                 html<T>`
                     <span class="separator" part="separator" aria-hidden="true">
-                        <slot name="separator">${options.separator ?? ""}</slot>
+                        <slot name="separator">
+                            ${staticallyComposeOption(options.separator)}
+                        </slot>
                     </span>
                 `
             )}

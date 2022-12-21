@@ -1,4 +1,5 @@
 import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import { staticallyComposeOption } from "../utilities/template-helpers.js";
 import { FASTListbox } from "../listbox/listbox.js";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { ComboboxOptions, FASTCombobox } from "./combobox.js";
@@ -44,7 +45,7 @@ export function comboboxTemplate<T extends FASTCombobox>(
                     />
                     <div class="indicator" part="indicator" aria-hidden="true">
                         <slot name="indicator">
-                            ${options.indicator ?? ""}
+                            ${staticallyComposeOption(options.indicator)}
                         </slot>
                     </div>
                 </slot>
