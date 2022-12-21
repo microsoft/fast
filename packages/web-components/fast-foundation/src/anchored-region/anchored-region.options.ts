@@ -1,3 +1,5 @@
+import type { ValuesOf } from "../utilities/index.js";
+
 /**
  * Values to define the base behavior of an anchored region on a particular axis
  * @public
@@ -12,7 +14,7 @@ export const AxisPositioningMode = {
  * Type to define the base behavior of an anchored region on a particular axis
  * @public
  */
-export type AxisPositioningMode = typeof AxisPositioningMode[keyof typeof AxisPositioningMode];
+export type AxisPositioningMode = ValuesOf<typeof AxisPositioningMode>;
 
 /**
  * Values to define the scaling behavior of an anchored region on a particular axis
@@ -29,7 +31,7 @@ export const AxisScalingMode = {
  *
  * @public
  */
-export type AxisScalingMode = typeof AxisScalingMode[keyof typeof AxisScalingMode];
+export type AxisScalingMode = ValuesOf<typeof AxisScalingMode>;
 
 /**
  * Values for the horizontal positioning options for an anchored region
@@ -49,7 +51,7 @@ export const HorizontalPosition = {
  *
  * @public
  */
-export type HorizontalPosition = typeof HorizontalPosition[keyof typeof HorizontalPosition];
+export type HorizontalPosition = ValuesOf<typeof HorizontalPosition>;
 
 /**
  * Values for the vertical positioning options for an anchored region
@@ -67,7 +69,7 @@ export const VerticalPosition = {
  *
  * @public
  */
-export type VerticalPosition = typeof VerticalPosition[keyof typeof VerticalPosition];
+export type VerticalPosition = ValuesOf<typeof VerticalPosition>;
 
 /**
  * Defines if the component updates its position automatically. Calling update() always provokes an update.
@@ -90,7 +92,7 @@ export const AutoUpdateMode = {
  * Type for the auto update mode values
  * @public
  */
-export type AutoUpdateMode = typeof AutoUpdateMode[keyof typeof AutoUpdateMode];
+export type AutoUpdateMode = ValuesOf<typeof AutoUpdateMode>;
 
 /**
  * Values to describe the possible positions of the region relative to its anchor.
@@ -111,7 +113,7 @@ export const AnchoredRegionPositionLabel = {
  *
  * @public
  */
-export type AnchoredRegionPositionLabel = typeof AnchoredRegionPositionLabel[keyof typeof AnchoredRegionPositionLabel];
+export type AnchoredRegionPositionLabel = ValuesOf<typeof AnchoredRegionPositionLabel>;
 
 /**
  * @internal
