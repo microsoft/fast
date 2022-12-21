@@ -135,6 +135,7 @@ FASTCheckbox.define({
     template: checkboxTemplate({
         checkedIndicator: /* html */ html`
             <svg
+                id="default-checked-indicator"
                 part="checked-indicator"
                 class="checked-indicator"
                 viewBox="0 0 20 20"
@@ -148,7 +149,11 @@ FASTCheckbox.define({
             </svg>
         `,
         indeterminateIndicator: /* html */ html`
-            <div part="indeterminate-indicator" class="indeterminate-indicator"></div>
+            <div
+                id="default-indeterminate-indicator"
+                part="indeterminate-indicator"
+                class="indeterminate-indicator"
+            ></div>
         `,
     }),
     styles,
