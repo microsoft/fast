@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "update foundation templates using new template helper for rendering default slotted content inline",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

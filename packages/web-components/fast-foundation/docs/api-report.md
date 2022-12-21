@@ -2294,8 +2294,8 @@ export type HorizontalPosition = typeof HorizontalPosition[keyof typeof Horizont
 
 // @public
 export type HorizontalScrollOptions = StartEndOptions & {
-    nextFlipper?: SyntheticViewTemplate | string;
-    previousFlipper?: SyntheticViewTemplate | string;
+    nextFlipper?: SyntheticViewTemplate | DangerousHTMLDirective;
+    previousFlipper?: SyntheticViewTemplate | DangerousHTMLDirective;
 };
 
 // @public (undocumented)
