@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { html, ViewTemplate } from "./template.js";
-import { Markup, Parser } from "./markup.js";
+import { Markup, nextId, Parser } from "./markup.js";
 import { bind, HTMLBindingDirective } from "./binding.js";
 import { HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory, CompiledViewBehaviorFactory } from "./html-directive.js";
 import { Constructable, isString } from "../interfaces.js";
@@ -586,5 +586,58 @@ describe("The ViewTemplate", () => {
             const differentPolicy = createTrackableDOMPolicy();
             template.withPolicy(differentPolicy);
         }).to.throw();
+    });
+
+    it("can inline a basic template built by the tagged template helper", () => {
+        const nested = html`Nested`;
+
+        const root = html`Before${nested.inline()}After`;
+
+        expect(root.html).to.equal("BeforeNestedAfter");
+    });
+
+    it("can inline a basic template built from a template element", () => {
+        const template = document.createElement("template");
+        template.innerHTML = "Nested";
+        const nested = new ViewTemplate(template);
+
+        const root = html`Before${nested.inline()}After`;
+
+        expect(root.html).to.equal("BeforeNestedAfter");
+    });
+
+    function getFirstBehavior(template: ViewTemplate) {
+        for (const key in template.factories) {
+            return template.factories[key];
+        }
+    }
+
+    it("can inline a template with directives built by the tagged template helper", () => {
+        const nested = html`Nested${x => x.foo}`;
+
+        const root = html`Before${nested.inline()}After`;
+
+        const nestedBehavior = getFirstBehavior(nested);
+        const nestedBehaviorId = nestedBehavior?.id!;
+        const nestedBehaviorPlaceholder = Markup.interpolation(nestedBehaviorId);
+
+        expect(root.html).to.equal(`BeforeNested${nestedBehaviorPlaceholder}After`);
+        expect(getFirstBehavior(root)).equals(nestedBehavior);
+    });
+
+    it("can inline a template with directives built from a template element", () => {
+        const nestedBehaviorId = nextId();
+        const nestedBehaviorPlaceholder = Markup.interpolation(nestedBehaviorId);
+        const template = document.createElement("template");
+        template.innerHTML = `Nested${nestedBehaviorPlaceholder}`;
+        const nested = new ViewTemplate(template, {
+            nestedBehaviorId: new HTMLBindingDirective(bind(x => x.foo))
+        });
+
+        const nestedBehavior = getFirstBehavior(nested);
+        const root = html`Before${nested.inline()}After`;
+
+        expect(root.html).to.equal(`BeforeNested${nestedBehaviorPlaceholder}After`);
+        expect(getFirstBehavior(root)).equals(nestedBehavior);
     });
 });
