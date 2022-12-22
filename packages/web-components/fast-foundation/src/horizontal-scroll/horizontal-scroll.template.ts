@@ -1,9 +1,9 @@
 import type { ElementViewTemplate } from "@microsoft/fast-element";
 import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import { staticallyComposeOption } from "../utilities/template-helpers.js";
 import type { FASTHorizontalScroll } from "./horizontal-scroll.js";
 import type { HorizontalScrollOptions } from "./horizontal-scroll.options.js";
-import { staticallyComposeOption } from "../utilities/template-helpers.js";
 
 /**
  * @public

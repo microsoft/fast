@@ -7,9 +7,9 @@ import {
     when,
 } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
+import { staticallyComposeOption } from "../utilities/template-helpers.js";
 import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
 import { MenuItemRole } from "./menu-item.options.js";
-import { staticallyComposeOption } from "../utilities/template-helpers.js";
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#(FASTMenuItem:class)} component using
