@@ -391,9 +391,12 @@ export class FASTDataGrid extends FASTElement {
         this.removeEventListener(eventKeyDown, this.handleKeydown);
         this.removeEventListener(eventFocusOut, this.handleFocusOut);
 
-        // disconnect observer
         this.observer.disconnect();
-        this.generatedHeader = null;
+
+        if (this.generatedHeader !== null) {
+            this.removeChild(this.generatedHeader);
+            this.generatedHeader = null;
+        }
     }
 
     /**
