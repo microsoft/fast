@@ -4,3 +4,4 @@ export * from "./property-stylesheet-behavior.js";
 export * from "./style/index.js";
 export * from "./direction.js";
 export * from "./whitespace-filter.js";
+export { StaticallyComposableHTML } from "./template-helpers.js";

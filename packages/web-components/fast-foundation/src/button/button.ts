@@ -12,7 +12,7 @@ import { ButtonType } from "./button.options.js";
  * Button configuration options
  * @public
  */
-export type ButtonOptions = StartEndOptions;
+export type ButtonOptions = StartEndOptions<FASTButton>;
 
 /**
  * A Button Custom HTML Element.

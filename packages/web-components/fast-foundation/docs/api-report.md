@@ -4,10 +4,9 @@
 
 ```ts
 
-import type { CaptureType } from '@microsoft/fast-element';
+import { CaptureType } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
-import { DangerousHTMLDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -18,7 +17,7 @@ import { HostBehavior } from '@microsoft/fast-element';
 import { HostController } from '@microsoft/fast-element';
 import { HTMLDirective } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
-import { SyntheticViewTemplate } from '@microsoft/fast-element';
+import type { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
@@ -31,9 +30,9 @@ export const AccordionExpandMode: {
 export type AccordionExpandMode = typeof AccordionExpandMode[keyof typeof AccordionExpandMode];
 
 // @public
-export type AccordionItemOptions = StartEndOptions & {
-    expandedIcon?: DangerousHTMLDirective | SyntheticViewTemplate;
-    collapsedIcon?: DangerousHTMLDirective | SyntheticViewTemplate;
+export type AccordionItemOptions = StartEndOptions<FASTAccordionItem> & {
+    expandedIcon?: StaticallyComposableHTML<FASTAccordionItem>;
+    collapsedIcon?: StaticallyComposableHTML<FASTAccordionItem>;
 };
 
 // @public
@@ -76,7 +75,7 @@ export type AnchoredRegionPositionLabel = typeof AnchoredRegionPositionLabel[key
 export function anchoredRegionTemplate<T extends FASTAnchoredRegion>(): ElementViewTemplate<T>;
 
 // @public
-export type AnchorOptions = StartEndOptions;
+export type AnchorOptions = StartEndOptions<FASTAnchor>;
 
 // @public
 export const AnchorTarget: {
@@ -90,7 +89,7 @@ export const AnchorTarget: {
 export type AnchorTarget = typeof AnchorTarget[keyof typeof AnchorTarget];
 
 // @public
-export function anchorTemplate<T extends FASTAnchor>(options?: AnchorOptions): ElementViewTemplate<T>;
+export function anchorTemplate<T extends FASTAnchor>(options?: AnchorOptions): ViewTemplate<T>;
 
 // @public
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
@@ -129,7 +128,7 @@ export type AutoUpdateMode = typeof AutoUpdateMode[keyof typeof AutoUpdateMode];
 
 // @public
 export type AvatarOptions = {
-    media?: DangerousHTMLDirective | SyntheticViewTemplate;
+    media?: StaticallyComposableHTML<FASTAvatar>;
 };
 
 // @public
@@ -160,7 +159,7 @@ export function badgeTemplate<T extends FASTBadge>(): ElementViewTemplate<T>;
 
 // @public
 export type BreadcrumbItemOptions = StartEndOptions & {
-    separator?: DangerousHTMLDirective | SyntheticViewTemplate;
+    separator?: StaticallyComposableHTML<FASTBreadcrumbItem>;
 };
 
 // @public
@@ -170,7 +169,7 @@ export function breadcrumbItemTemplate<T extends FASTBreadcrumbItem>(options?: B
 export function breadcrumbTemplate<T extends FASTBreadcrumb>(): ElementViewTemplate<T>;
 
 // @public
-export type ButtonOptions = StartEndOptions;
+export type ButtonOptions = StartEndOptions<FASTButton>;
 
 // @public
 export function buttonTemplate<T extends FASTButton>(options?: ButtonOptions): ElementViewTemplate<T>;
@@ -204,11 +203,11 @@ export type CalendarInfo = MonthInfo & {
 };
 
 // @public
-export type CalendarOptions = StartEndOptions & {
+export type CalendarOptions = StartEndOptions<FASTCalendar> & {
     dataGridCell: TemplateElementDependency;
     dataGridRow: TemplateElementDependency;
     dataGrid: TemplateElementDependency;
-    title?: SyntheticViewTemplate | string;
+    title?: StaticallyComposableHTML<FASTCalendar>;
 };
 
 // @public (undocumented)
@@ -259,8 +258,8 @@ export type CheckableFormAssociatedElement = FormAssociatedElement & CheckableFo
 
 // @public
 export type CheckboxOptions = {
-    checkedIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
-    indeterminateIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+    checkedIndicator?: StaticallyComposableHTML<FASTCheckbox>;
+    indeterminateIndicator?: StaticallyComposableHTML<FASTCheckbox>;
 };
 
 // @public
@@ -292,8 +291,8 @@ export const ComboboxAutocomplete: {
 export type ComboboxAutocomplete = typeof ComboboxAutocomplete[keyof typeof ComboboxAutocomplete];
 
 // @public
-export type ComboboxOptions = StartEndOptions & {
-    indicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+export type ComboboxOptions = StartEndOptions<FASTCombobox> & {
+    indicator?: StaticallyComposableHTML<FASTCombobox>;
 };
 
 // @public
@@ -619,12 +618,12 @@ export type DividerRole = typeof DividerRole[keyof typeof DividerRole];
 export function dividerTemplate<T extends FASTDivider>(): ElementViewTemplate<T>;
 
 // @public
-export type EndOptions = {
-    end?: DangerousHTMLDirective | SyntheticViewTemplate;
+export type EndOptions<TSource = any, TParent = any> = {
+    end?: StaticallyComposableHTML<TSource, TParent>;
 };
 
 // @public
-export function endSlotTemplate(options: EndOptions): ViewTemplate<StartEnd>;
+export function endSlotTemplate<TSource extends StartEnd = StartEnd, TParent = any>(options: EndOptions<TSource, TParent>): CaptureType<TSource, TParent>;
 
 // @public
 export class FASTAccordion extends FASTElement {
@@ -830,6 +829,9 @@ export class FASTButton extends FormAssociatedButton {
 export interface FASTButton extends StartEnd, DelegatesARIAButton {
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FASTCalendar" because one of its declarations is marked as @internal
+//
 // @public
 export class FASTCalendar extends FASTElement {
     dateFormatter: DateFormatter;
@@ -862,6 +864,10 @@ export class FASTCalendar extends FASTElement {
     yearFormat: YearFormat;
     // (undocumented)
     protected yearFormatChanged(): void;
+}
+
+// @internal
+export interface FASTCalendar extends StartEnd {
 }
 
 // @public
@@ -1104,6 +1110,9 @@ export class FASTFlipper extends FASTElement {
     keyupHandler(e: Event & KeyboardEvent): void;
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FASTHorizontalScroll" because one of its declarations is marked as @internal
+//
 // @public
 export class FASTHorizontalScroll extends FASTElement {
     // (undocumented)
@@ -1130,6 +1139,10 @@ export class FASTHorizontalScroll extends FASTElement {
     scrollToPrevious(): void;
     speed: number;
     view: HorizontalScrollView;
+}
+
+// @internal
+export interface FASTHorizontalScroll extends StartEnd {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -2159,8 +2172,8 @@ export type FlipperDirection = typeof FlipperDirection[keyof typeof FlipperDirec
 
 // @public
 export type FlipperOptions = {
-    next?: DangerousHTMLDirective | SyntheticViewTemplate;
-    previous?: DangerousHTMLDirective | SyntheticViewTemplate;
+    next?: StaticallyComposableHTML<FASTFlipper>;
+    previous?: StaticallyComposableHTML<FASTFlipper>;
 };
 
 // @public
@@ -2291,9 +2304,9 @@ export const HorizontalPosition: {
 export type HorizontalPosition = typeof HorizontalPosition[keyof typeof HorizontalPosition];
 
 // @public
-export type HorizontalScrollOptions = StartEndOptions & {
-    nextFlipper?: SyntheticViewTemplate | string;
-    previousFlipper?: SyntheticViewTemplate | string;
+export type HorizontalScrollOptions = StartEndOptions<FASTHorizontalScroll> & {
+    nextFlipper?: StaticallyComposableHTML<FASTHorizontalScroll>;
+    previousFlipper?: StaticallyComposableHTML<FASTHorizontalScroll>;
 };
 
 // @public (undocumented)
@@ -2323,7 +2336,7 @@ export function isTreeItemElement(el: Element): el is HTMLElement;
 export const lightModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // @public
-export type ListboxOptionOptions = StartEndOptions;
+export type ListboxOptionOptions = StartEndOptions<FASTListboxOption>;
 
 // @public
 export function listboxOptionTemplate<T extends FASTListboxOption>(options?: ListboxOptionOptions): ElementViewTemplate<T>;
@@ -2355,10 +2368,10 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
 export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListEvent) => void;
 
 // @public
-export type MenuItemOptions = StartEndOptions & {
-    checkboxIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
-    expandCollapseGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
-    radioIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+export type MenuItemOptions = StartEndOptions<FASTMenuItem> & {
+    checkboxIndicator?: StaticallyComposableHTML<FASTMenuItem>;
+    expandCollapseGlyph?: StaticallyComposableHTML<FASTMenuItem>;
+    radioIndicator?: StaticallyComposableHTML<FASTMenuItem>;
 };
 
 // @public
@@ -2416,9 +2429,9 @@ export type MonthInfo = {
 export function noninteractiveCalendarTemplate<T extends FASTCalendar>(options: CalendarOptions, todayString: string): ViewTemplate<T>;
 
 // @public
-export type NumberFieldOptions = StartEndOptions & {
-    stepDownGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
-    stepUpGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
+export type NumberFieldOptions = StartEndOptions<FASTNumberField> & {
+    stepDownGlyph?: StaticallyComposableHTML<FASTNumberField>;
+    stepUpGlyph?: StaticallyComposableHTML<FASTNumberField>;
 };
 
 // @public
@@ -2461,13 +2474,13 @@ export function pickerTemplate<T extends FASTPicker>(options: PickerOptions): El
 
 // @public
 export type ProgressOptions = {
-    indeterminateIndicator1?: DangerousHTMLDirective | SyntheticViewTemplate;
-    indeterminateIndicator2?: DangerousHTMLDirective | SyntheticViewTemplate;
+    indeterminateIndicator1?: StaticallyComposableHTML<FASTProgress>;
+    indeterminateIndicator2?: StaticallyComposableHTML<FASTProgress>;
 };
 
 // @public
 export type ProgressRingOptions = {
-    indeterminateIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+    indeterminateIndicator?: StaticallyComposableHTML<FASTProgressRing>;
 };
 
 // @public
@@ -2504,7 +2517,7 @@ export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTempl
 
 // @public
 export type RadioOptions = {
-    checkedIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+    checkedIndicator?: StaticallyComposableHTML<FASTRadio>;
 };
 
 // @public
@@ -2532,14 +2545,14 @@ export const ScrollEasing: {
 export type ScrollEasing = typeof ScrollEasing[keyof typeof ScrollEasing];
 
 // @public
-export type SearchOptions = StartEndOptions;
+export type SearchOptions = StartEndOptions<FASTSearch>;
 
 // @public
 export function searchTemplate<T extends FASTSearch>(options?: SearchOptions): ElementViewTemplate<T>;
 
 // @public
-export type SelectOptions = StartEndOptions & {
-    indicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+export type SelectOptions = StartEndOptions<FASTSelect> & {
+    indicator?: StaticallyComposableHTML<FASTSelect>;
 };
 
 // @public
@@ -2584,7 +2597,7 @@ export type SliderMode = typeof SliderMode[keyof typeof SliderMode];
 
 // @public
 export type SliderOptions = {
-    thumb?: DangerousHTMLDirective | SyntheticViewTemplate;
+    thumb?: StaticallyComposableHTML<FASTSlider>;
 };
 
 // @public
@@ -2599,15 +2612,18 @@ export class StartEnd {
 }
 
 // @public
-export type StartEndOptions = StartOptions & EndOptions;
+export type StartEndOptions<TSource = any, TParent = any> = StartOptions<TSource, TParent> & EndOptions<TSource, TParent>;
 
 // @public
-export type StartOptions = {
-    start?: DangerousHTMLDirective | SyntheticViewTemplate;
+export type StartOptions<TSource = any, TParent = any> = {
+    start?: StaticallyComposableHTML<TSource, TParent>;
 };
 
 // @public
-export function startSlotTemplate(options: StartOptions): ViewTemplate<StartEnd>;
+export function startSlotTemplate<TSource extends StartEnd = StartEnd, TParent = any>(options: StartOptions<TSource, TParent>): CaptureType<TSource, TParent>;
+
+// @public
+export type StaticallyComposableHTML<TSource = any, TParent = any> = string | HTMLDirective | SyntheticViewTemplate<TSource, TParent> | undefined;
 
 // @public
 export type StaticDesignTokenValue<T> = T extends (...args: any[]) => any ? DerivedDesignTokenValue<T> : T;
@@ -2617,7 +2633,7 @@ export const supportsElementInternals: boolean;
 
 // @public
 export type SwitchOptions = {
-    switch?: DangerousHTMLDirective | SyntheticViewTemplate;
+    switch?: StaticallyComposableHTML<FASTSwitch>;
 };
 
 // @public
@@ -2630,7 +2646,7 @@ export type TabOptionOptions = StartEndOptions;
 export function tabPanelTemplate<T extends FASTTabPanel>(): ElementViewTemplate<T>;
 
 // @public
-export type TabsOptions = StartEndOptions;
+export type TabsOptions = StartEndOptions<FASTTabs>;
 
 // @public
 export const TabsOrientation: {
@@ -2645,7 +2661,7 @@ export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientatio
 export function tabsTemplate<T extends FASTTabs>(options?: TabsOptions): ElementViewTemplate<T>;
 
 // @public
-export function tabTemplate<T extends FASTTab>(options?: StartEndOptions): ElementViewTemplate<T>;
+export function tabTemplate<T extends FASTTab>(options?: StartEndOptions<FASTTab>): ElementViewTemplate<T>;
 
 // @beta
 export function tagFor(dependency: TemplateElementDependency): string;
@@ -2668,7 +2684,7 @@ export type TextAreaResize = typeof TextAreaResize[keyof typeof TextAreaResize];
 export function textAreaTemplate<T extends FASTTextArea>(): ElementViewTemplate<T>;
 
 // @public
-export type TextFieldOptions = StartEndOptions;
+export type TextFieldOptions = StartEndOptions<FASTTextField>;
 
 // @public
 export function textFieldTemplate<T extends FASTTextField>(options?: TextFieldOptions): ElementViewTemplate<T>;
@@ -2686,7 +2702,7 @@ export const TextFieldType: {
 export type TextFieldType = typeof TextFieldType[keyof typeof TextFieldType];
 
 // @public
-export type ToolbarOptions = StartEndOptions;
+export type ToolbarOptions = StartEndOptions<FASTToolbar>;
 
 // @public
 export function toolbarTemplate<T extends FASTToolbar>(options?: ToolbarOptions): ElementViewTemplate<T>;
@@ -2714,8 +2730,8 @@ export type TooltipPlacement = typeof TooltipPlacement[keyof typeof TooltipPlace
 export function tooltipTemplate<T extends FASTTooltip>(): ElementViewTemplate<T>;
 
 // @public
-export type TreeItemOptions = StartEndOptions & {
-    expandCollapseGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
+export type TreeItemOptions = StartEndOptions<FASTTreeItem> & {
+    expandCollapseGlyph?: StaticallyComposableHTML<FASTTreeItem>;
 };
 
 // @public
@@ -2765,9 +2781,9 @@ export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/calendar/calendar.d.ts:49:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:50:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:50:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

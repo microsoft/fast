@@ -11,7 +11,7 @@ import type { AnchorTarget } from "./anchor.options.js";
  * Anchor configuration options
  * @public
  */
-export type AnchorOptions = StartEndOptions;
+export type AnchorOptions = StartEndOptions<FASTAnchor>;
 
 /**
  * An Anchor Custom HTML Element.

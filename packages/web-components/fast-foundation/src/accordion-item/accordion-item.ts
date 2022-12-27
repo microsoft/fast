@@ -1,10 +1,5 @@
-import {
-    attr,
-    DangerousHTMLDirective,
-    FASTElement,
-    nullableNumberConverter,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
@@ -12,9 +7,9 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * Accordion Item configuration options
  * @public
  */
-export type AccordionItemOptions = StartEndOptions & {
-    expandedIcon?: DangerousHTMLDirective | SyntheticViewTemplate;
-    collapsedIcon?: DangerousHTMLDirective | SyntheticViewTemplate;
+export type AccordionItemOptions = StartEndOptions<FASTAccordionItem> & {
+    expandedIcon?: StaticallyComposableHTML<FASTAccordionItem>;
+    collapsedIcon?: StaticallyComposableHTML<FASTAccordionItem>;
 };
 
 /**

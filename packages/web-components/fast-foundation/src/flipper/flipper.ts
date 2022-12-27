@@ -1,10 +1,5 @@
-import {
-    attr,
-    booleanConverter,
-    DangerousHTMLDirective,
-    FASTElement,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, booleanConverter, FASTElement } from "@microsoft/fast-element";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { FlipperDirection } from "./flipper.options.js";
 
 export { FlipperDirection };
@@ -14,8 +9,8 @@ export { FlipperDirection };
  * @public
  */
 export type FlipperOptions = {
-    next?: DangerousHTMLDirective | SyntheticViewTemplate;
-    previous?: DangerousHTMLDirective | SyntheticViewTemplate;
+    next?: StaticallyComposableHTML<FASTFlipper>;
+    previous?: StaticallyComposableHTML<FASTFlipper>;
 };
 
 /**

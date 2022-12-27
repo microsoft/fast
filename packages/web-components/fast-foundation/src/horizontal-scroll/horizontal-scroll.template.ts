@@ -1,5 +1,6 @@
 import type { ElementViewTemplate } from "@microsoft/fast-element";
 import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { FASTHorizontalScroll } from "./horizontal-scroll.js";
 import type { HorizontalScrollOptions } from "./horizontal-scroll.options.js";
@@ -10,7 +11,7 @@ import type { HorizontalScrollOptions } from "./horizontal-scroll.options.js";
 export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
     options: HorizontalScrollOptions = {}
 ): ElementViewTemplate<T> {
-    return html`
+    return html<T>`
         <template @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}">
             ${startSlotTemplate(options)}
             <div class="scroll-area" part="scroll-area">
@@ -43,7 +44,7 @@ export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
                         >
                             <div class="scroll-action" part="scroll-action-previous">
                                 <slot name="previous-flipper">
-                                    ${options.previousFlipper ?? ""}
+                                    ${staticallyCompose(options.previousFlipper)}
                                 </slot>
                             </div>
                         </div>
@@ -54,7 +55,7 @@ export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
                         >
                             <div class="scroll-action" part="scroll-action-next">
                                 <slot name="next-flipper">
-                                    ${options.nextFlipper ?? ""}
+                                    ${staticallyCompose(options.nextFlipper)}
                                 </slot>
                             </div>
                         </div>

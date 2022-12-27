@@ -16,7 +16,7 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * Tabs option configuration options
  * @public
  */
-export type TabsOptions = StartEndOptions;
+export type TabsOptions = StartEndOptions<FASTTabs>;
 
 /**
  * The orientation of the {@link @microsoft/fast-foundation#(FASTTabs:class)} component
