@@ -3,5 +3,5 @@
   "comment": "refactor(fast-element): replace dangerousHTML with html.partial",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
