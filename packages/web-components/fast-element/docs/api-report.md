@@ -557,6 +557,7 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
 export class InlineTemplateDirective implements HTMLDirective {
     constructor(html: string, factories?: Record<string, ViewBehaviorFactory>);
     createHTML(add: AddViewBehaviorFactory): string;
+    static readonly empty: InlineTemplateDirective;
 }
 
 // @public

@@ -100,6 +100,11 @@ const noFactories = Object.create(null);
  */
 export class InlineTemplateDirective implements HTMLDirective {
     /**
+     * An empty template partial.
+     */
+    public static readonly empty = new InlineTemplateDirective("");
+
+    /**
      * Creates an instance of InlineTemplateDirective.
      * @param template - The template to inline.
      */
