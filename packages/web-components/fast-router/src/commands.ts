@@ -1,6 +1,5 @@
 import {
     CompiledViewBehaviorFactory,
-    dangerousHTML,
     FASTElementDefinition,
     html,
     HTMLView,
@@ -84,9 +83,8 @@ export class Redirect implements NavigationCommand {
 }
 
 function factoryFromElementName(tagName: string) {
-    return html`<${dangerousHTML(tagName)} ${navigationContributor()}></${dangerousHTML(
-        tagName
-    )}>`;
+    const tag = html.partial(tagName);
+    return html`<${tag} ${navigationContributor()}></${tag}>`;
 }
 
 type ViewFactory = { create(): HTMLView };
