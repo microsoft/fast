@@ -220,16 +220,6 @@ export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (Compos
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
 
 // @public
-export function dangerousHTML<TSource = any, TParent = any>(html: string): DangerousHTMLDirective;
-
-// @public
-export class DangerousHTMLDirective implements HTMLDirective {
-    constructor(html: string);
-    // (undocumented)
-    createHTML(): string;
-}
-
-// @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
 // @public
@@ -468,7 +458,7 @@ export interface HostController<TSource = any> {
 }
 
 // @public
-export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
+export const html: HTMLTemplateTag;
 
 // @public
 export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected {
@@ -521,6 +511,11 @@ export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
 }
 
 // @public
+export type HTMLTemplateTag = (<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]) => ViewTemplate<TSource, TParent>) & {
+    partial(html: string): InlineTemplateDirective;
+};
+
+// @public
 export class HTMLView<TSource = any, TParent = any> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> {
     constructor(fragment: DocumentFragment, factories: ReadonlyArray<CompiledViewBehaviorFactory>, targets: ViewBehaviorTargets);
     appendTo(node: Node): void;
@@ -559,8 +554,8 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
 }
 
 // @public
-export class InlineTemplateDirective<TSource, TParent> implements HTMLDirective {
-    constructor(template: ViewTemplate<TSource, TParent>);
+export class InlineTemplateDirective implements HTMLDirective {
+    constructor(html: string, factories?: Record<string, ViewBehaviorFactory>);
     createHTML(add: AddViewBehaviorFactory): string;
 }
 

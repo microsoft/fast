@@ -5,12 +5,11 @@ import { html, ViewTemplate } from "./template.js";
 import { createTrackableDOMPolicy, toHTML } from "../__test__/helpers.js";
 import { SyntheticView, HTMLView } from "./view.js";
 import { Updates } from "../observation/update-queue.js";
-import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
+import { DOM, DOMPolicy } from "../dom.js";
 import { Signal, signal } from "./binding-signal.js";
 import { twoWay, TwoWayBindingOptions } from "./binding-two-way.js";
 import { Fake } from "../testing/fakes.js";
 import { HTMLDirective } from "./html-directive.js";
-import { dangerousHTML } from "./dangerous-html.js";
 import { nextId } from "./markup.js";
 
 describe("The HTML binding directive", () => {
@@ -294,7 +293,7 @@ describe("The HTML binding directive", () => {
 
         it("allows interpolated HTML tags in templates using dangerousHTML", async () => {
             const { behavior, parentNode, targets } = contentBinding();
-            const template = html`${x => html`<${dangerousHTML(x.knownValue)}>Hi there!</${dangerousHTML(x.knownValue)}>`}`;
+            const template = html`${x => html`<${html.partial(x.knownValue)}>Hi there!</${html.partial(x.knownValue)}>`}`;
             const model = new Model(template);
             model.knownValue = "button"
             const controller = Fake.viewController(targets, behavior);

@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { attr } from "../components/attributes.js";
 import { customElement, FASTElement } from "../components/fast-element.js";
-import { dangerousHTML } from "../index.js";
 import { observable } from "../observation/observable.js";
 import { Updates } from "../observation/update-queue.js";
 import { html } from "../templating/template.js";
@@ -32,7 +31,7 @@ describe("The fixture helper", () => {
     });
 
     it("can create a fixture for an element by template", async () => {
-        const tag = dangerousHTML(name);
+        const tag = html.partial(name);
         const { element } = await fixture(html`
       <${tag}>
         Some content here.
@@ -70,7 +69,7 @@ describe("The fixture helper", () => {
     });
 
     it("can bind an element to data", async () => {
-        const tag = dangerousHTML(name);
+        const tag = html.partial(name);
         const source = new MyModel();
         const { element, disconnect } = await fixture<MyElement>(
             html<MyModel>`
