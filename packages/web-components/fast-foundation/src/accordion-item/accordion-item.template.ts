@@ -24,6 +24,7 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
                 aria-controls="${x => x.id}-panel"
                 id="${x => x.id}"
                 @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
+                tabindex="${x => (x.disabled ? "-1" : "0")}"
             >
                 <span class="heading-content" part="heading-content">
                     <slot name="heading"></slot>
@@ -31,7 +32,7 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
             </button>
             ${startSlotTemplate(options)}
             ${endSlotTemplate(options)}
-            <span class="icon" part="icon" aria-hidden="true">
+            <span class="icon" part="icon" aria-hidden="true" >
                 <slot name="expanded-icon">
                     ${options.expandedIcon ?? ""}
                 </slot>

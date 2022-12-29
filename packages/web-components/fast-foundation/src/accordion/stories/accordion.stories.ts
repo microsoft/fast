@@ -5,7 +5,7 @@ import { FASTAccordion } from "../accordion.js";
 import { AccordionExpandMode } from "../accordion.options.js";
 
 const storyTemplate = html<StoryArgs<FASTAccordion>>`
-    <fast-accordion expand-mode="${x => x.expandmode}">
+    <fast-accordion expand-mode="single">
         ${x => x.storyContent}
     </fast-accordion>
 `;
@@ -25,9 +25,13 @@ export default {
 export const Accordion: Story<FASTAccordion> = renderComponent(storyTemplate).bind({});
 Accordion.args = {
     storyContent: html`
-        <fast-accordion-item>
+        <fast-accordion-item disabled>
             <div slot="heading">Accordion Item 1 Heading</div>
             Accordion Item 1 Content
+        </fast-accordion-item>
+        <fast-accordion-item disabled>
+            <div slot="heading">Accordion Item 2 Heading</div>
+            <fast-checkbox>A checkbox as content</fast-checkbox>
         </fast-accordion-item>
         <fast-accordion-item>
             <div slot="heading">Accordion Item 2 Heading</div>

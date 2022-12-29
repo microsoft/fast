@@ -56,13 +56,22 @@ export class FASTAccordion extends FASTElement {
         this.$emit("change", this.activeid);
     };
 
-    private findExpandedItem(): FASTAccordionItem | null {
+    private findActiveItem(): FASTAccordionItem | null {
         for (let item: number = 0; item < this.accordionItems.length; item++) {
-            if (this.accordionItems[item].getAttribute("expanded") === "true") {
+            if (!this.accordionItems[item].hasAttribute("disabled")) {
                 return this.accordionItems[item] as FASTAccordionItem;
             }
         }
         return null;
+    }
+
+    private findExpandedItem(): FASTAccordionItem | null {
+        for (let item: number = 0; item < this.accordionItems.length; item++) {
+            if (this.accordionItems[item].hasAttribute("expanded")) {
+                return this.accordionItems[item] as FASTAccordionItem;
+            }
+        }
+        return this.findActiveItem();
     }
 
     private setItems = (): void => {
@@ -74,7 +83,10 @@ export class FASTAccordion extends FASTElement {
             if (item instanceof FASTAccordionItem) {
                 item.addEventListener("change", this.activeItemChange);
                 if (this.isSingleExpandMode()) {
-                    this.activeItemIndex !== index
+                    if (item.disabled) {
+                        this.activeItemIndex++;
+                    }
+                    this.activeItemIndex !== index || item.disabled
                         ? (item.expanded = false)
                         : (item.expanded = true);
                 }
@@ -89,9 +101,10 @@ export class FASTAccordion extends FASTElement {
             item.addEventListener("focus", this.handleItemFocus);
         });
         if (this.isSingleExpandMode()) {
-            const expandedItem: FASTAccordionItem | null =
-                this.findExpandedItem() ?? (this.accordionItems[0] as FASTAccordionItem);
-            expandedItem.setAttribute("aria-disabled", "true");
+            const expandedItem: FASTAccordionItem | null = this.findExpandedItem();
+            if (expandedItem) {
+                expandedItem.setAttribute("aria-disabled", "true");
+            }
         }
     };
 

@@ -63,6 +63,16 @@ export class FASTAccordionItem extends FASTElement {
     public expanded: boolean = false;
 
     /**
+     * Disables the item.
+     *
+     * @public
+     * @remarks
+     * HTML attribute: disabled
+     */
+    @attr({ mode: "boolean" })
+    public disabled: boolean = false;
+
+    /**
      * The item ID
      *
      * @public
@@ -81,6 +91,7 @@ export class FASTAccordionItem extends FASTElement {
      * @internal
      */
     public clickHandler = (e: MouseEvent) => {
+        if (this.disabled) return;
         this.expanded = !this.expanded;
         this.change();
     };
