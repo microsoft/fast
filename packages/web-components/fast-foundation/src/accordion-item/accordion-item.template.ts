@@ -32,7 +32,7 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
             </button>
             ${startSlotTemplate(options)}
             ${endSlotTemplate(options)}
-            <span class="icon" part="icon" aria-hidden="true" >
+            <span class="icon" part="icon" aria-hidden="true">
                 <slot name="expanded-icon">
                     ${options.expandedIcon ?? ""}
                 </slot>
