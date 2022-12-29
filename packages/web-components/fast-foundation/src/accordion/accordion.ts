@@ -83,12 +83,10 @@ export class FASTAccordion extends FASTElement {
             if (item instanceof FASTAccordionItem) {
                 item.addEventListener("change", this.activeItemChange);
                 if (this.isSingleExpandMode()) {
-                    if (item.disabled) {
-                        this.activeItemIndex++;
+                    const expandedItem: FASTAccordionItem | null = this.findExpandedItem();
+                    if (expandedItem) {
+                        expandedItem.expanded = true;
                     }
-                    this.activeItemIndex !== index || item.disabled
-                        ? (item.expanded = false)
-                        : (item.expanded = true);
                 }
             }
             const itemId: string | null = this.accordionIds[index];
@@ -101,9 +99,10 @@ export class FASTAccordion extends FASTElement {
             item.addEventListener("focus", this.handleItemFocus);
         });
         if (this.isSingleExpandMode()) {
-            const expandedItem: FASTAccordionItem | null =
-                this.findExpandedItem() ?? (this.accordionItems[0] as FASTAccordionItem);
-            expandedItem.setAttribute("aria-disabled", "true");
+            const expandedItem: FASTAccordionItem | null = this.findExpandedItem();
+            if (expandedItem) {
+                expandedItem.setAttribute("aria-disabled", "true");
+            }
         }
     };
 
