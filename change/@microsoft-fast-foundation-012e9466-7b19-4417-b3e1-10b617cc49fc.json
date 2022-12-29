@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "adds disabled state to accordion item",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "email not defined",
+  "dependentChangeType": "patch"
+}
