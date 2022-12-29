@@ -642,6 +642,7 @@ export class FASTAccordion extends FASTElement {
 export class FASTAccordionItem extends FASTElement {
     // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
+    disabled: boolean;
     // @internal (undocumented)
     expandbutton: HTMLElement;
     expanded: boolean;
