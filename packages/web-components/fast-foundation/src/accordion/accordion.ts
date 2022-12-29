@@ -101,10 +101,9 @@ export class FASTAccordion extends FASTElement {
             item.addEventListener("focus", this.handleItemFocus);
         });
         if (this.isSingleExpandMode()) {
-            const expandedItem: FASTAccordionItem | null = this.findExpandedItem();
-            if (expandedItem) {
-                expandedItem.setAttribute("aria-disabled", "true");
-            }
+            const expandedItem: FASTAccordionItem | null =
+                this.findExpandedItem() ?? (this.accordionItems[0] as FASTAccordionItem);
+            expandedItem.setAttribute("aria-disabled", "true");
         }
     };
 
