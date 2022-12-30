@@ -659,8 +659,6 @@ export interface FASTAccordionItem extends StartEnd {
 //
 // @public
 export class FASTAnchor extends FASTElement {
-    // @internal (undocumented)
-    connectedCallback(): void;
     control: HTMLAnchorElement;
     // @internal
     defaultSlottedContent: HTMLElement[];
