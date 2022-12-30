@@ -1,11 +1,16 @@
-import { attr, FASTElement, SyntheticViewTemplate } from "@microsoft/fast-element";
+import {
+    attr,
+    DangerousHTMLDirective,
+    FASTElement,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 
 /**
  * Avatar configuration options
  * @public
  */
 export type AvatarOptions = {
-    media?: string | SyntheticViewTemplate;
+    media?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**

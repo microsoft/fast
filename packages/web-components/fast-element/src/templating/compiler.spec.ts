@@ -7,7 +7,6 @@ import { bind, HTMLBindingDirective } from "./binding.js";
 import { Compiler } from "./compiler.js";
 import { CompiledViewBehaviorFactory, HTMLDirective, ViewBehaviorFactory } from "./html-directive.js";
 import { html } from "./template.js";
-import type { StyleTarget } from "../interfaces.js";
 import { ElementStyles } from "../index.debug.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { Fake } from "../testing/fakes.js";
@@ -615,15 +614,15 @@ describe("The template compiler", () => {
             const testElement = host.firstElementChild!;
             const shadowRoot = testElement!.shadowRoot!;
 
-            expect((shadowRoot as StyleTarget).adoptedStyleSheets!.length).to.equal(1);
+            expect((shadowRoot as any).adoptedStyleSheets!.length).to.equal(1);
 
             view.remove();
 
-            expect((shadowRoot as StyleTarget).adoptedStyleSheets!.length).to.equal(1);
+            expect((shadowRoot as any).adoptedStyleSheets!.length).to.equal(1);
 
             view.appendTo(host);
 
-            expect((shadowRoot as StyleTarget).adoptedStyleSheets!.length).to.equal(1);
+            expect((shadowRoot as any).adoptedStyleSheets!.length).to.equal(1);
         });
     }
 });

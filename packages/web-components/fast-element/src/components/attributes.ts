@@ -90,6 +90,22 @@ export const booleanConverter: ValueConverter = {
     },
 };
 
+/**
+ * A {@link ValueConverter} that converts to and from `boolean` values. `null`, `undefined`, `""`, and `void` values are converted to `null`.
+ * @public
+ */
+export const nullableBooleanConverter: ValueConverter = {
+    toView(value: any): string {
+        return typeof value === "boolean" ? value.toString() : "";
+    },
+
+    fromView(value: any): any {
+        return [null, undefined, void 0].includes(value)
+            ? null
+            : booleanConverter.fromView(value);
+    },
+};
+
 function toNumber(value: any): any {
     if (value === null || value === undefined) {
         return null;

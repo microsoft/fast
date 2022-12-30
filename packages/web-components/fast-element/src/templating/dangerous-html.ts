@@ -22,6 +22,6 @@ HTMLDirective.define(DangerousHTMLDirective);
  */
 export function dangerousHTML<TSource = any, TParent = any>(
     html: string
-): CaptureType<TSource, TParent> {
+): DangerousHTMLDirective {
     return new DangerousHTMLDirective(html);
 }

@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "feat: add new DOM Policy protection throughout",
+  "comment": "update default value of menu item checked attribute to false",
   "packageName": "@microsoft/fast-foundation",
-  "email": "roeisenb@microsoft.com",
+  "email": "chhol@microsoft.com",
   "dependentChangeType": "prerelease"
 }

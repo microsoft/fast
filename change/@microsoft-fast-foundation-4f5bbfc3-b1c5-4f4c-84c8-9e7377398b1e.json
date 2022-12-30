@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "Fixing bug in DesignToken causing RangeError",
+  "comment": "add missing part attribute for tabpanel in tabs",
   "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
+  "email": "chhol@microsoft.com",
   "dependentChangeType": "prerelease"
 }

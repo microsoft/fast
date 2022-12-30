@@ -1,6 +1,7 @@
 import { autoUpdate, computePosition, flip, hide, size } from "@floating-ui/dom";
 import {
     attr,
+    DangerousHTMLDirective,
     Observable,
     observable,
     SyntheticViewTemplate,
@@ -19,7 +20,7 @@ import { ComboboxAutocomplete } from "./combobox.options.js";
  * @public
  */
 export type ComboboxOptions = StartEndOptions & {
-    indicator?: string | SyntheticViewTemplate;
+    indicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**

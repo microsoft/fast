@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "add nullableBooleanConverter for attributes",
+  "packageName": "@microsoft/fast-element",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}

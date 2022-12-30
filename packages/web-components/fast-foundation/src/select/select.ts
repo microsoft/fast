@@ -1,6 +1,7 @@
 import { autoUpdate, computePosition, flip, hide, size } from "@floating-ui/dom";
 import {
     attr,
+    DangerousHTMLDirective,
     Observable,
     observable,
     SyntheticViewTemplate,
@@ -29,7 +30,7 @@ import { FormAssociatedSelect } from "./select.form-associated.js";
  * @public
  */
 export type SelectOptions = StartEndOptions & {
-    indicator?: string | SyntheticViewTemplate;
+    indicator?: DangerousHTMLDirective | SyntheticViewTemplate;
 };
 
 /**

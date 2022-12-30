@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Added configuration option to fast-ssr to render custom directives",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

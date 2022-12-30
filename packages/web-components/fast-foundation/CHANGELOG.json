@@ -2,6 +2,74 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 02 Dec 2022 01:18:22 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.23",
+      "version": "3.0.0-alpha.23",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "yinon@hotmail.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "802443ffb2b19a078f9b48f62e6d1a35e3276fb5",
+            "comment": "checkbox remove irrelevant read-only property"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.19",
+            "commit": "040867e9a2a9e0ae25b78dfb3265fbe8f60fe023"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 15 Nov 2022 02:40:34 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.22",
+      "version": "3.0.0-alpha.22",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "olaf-k@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "416dc9167e9d41e6ffe11d87ed79b2f455357923",
+            "comment": "add aria-orientation to radio-group"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e4a2bfccc07e65f9cfd1db9a943d93a84fb13ae4",
+            "comment": "Fixing bug in DesignToken causing RangeError"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "1a1fc0b9e85f1e65c605e32f6724402291ffbcaa",
+            "comment": "chore: move ViewBehaviorOrchestrator to utilities"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "3c14603089495a7af8ed5b55122c418b47c45fd5",
+            "comment": "feat: add new DOM Policy protection throughout"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.18",
+            "commit": "416dc9167e9d41e6ffe11d87ed79b2f455357923"
+          }
+        ],
+        "none": [
+          {
+            "author": "steph@huynhicode.dev",
+            "package": "@microsoft/fast-foundation",
+            "commit": "c35569f91f83e3c776461624d80dc32c8fa50823",
+            "comment": "update links for svelte and vite integration guides - current and legacy doc versions"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 04 Nov 2022 22:28:49 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.21",
       "version": "3.0.0-alpha.21",

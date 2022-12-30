@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "chore: move ViewBehaviorOrchestrator to utilities",
+  "comment": "clean up header on disconnect",
   "packageName": "@microsoft/fast-foundation",
-  "email": "roeisenb@microsoft.com",
+  "email": "stephcomeau@msn.com",
   "dependentChangeType": "prerelease"
 }
