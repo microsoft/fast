@@ -1,3 +1,5 @@
+import type { ValuesOf } from "../utilities/index.js";
+
 /**
  * Day format values for DateFormatter.
  * @public
@@ -11,7 +13,7 @@ export const DayFormat = {
  * Day format type for DateFormatter.
  * @public
  */
-export type DayFormat = typeof DayFormat[keyof typeof DayFormat];
+export type DayFormat = ValuesOf<typeof DayFormat>;
 
 /**
  * Weekday format values for DateFormatter.
@@ -27,7 +29,7 @@ export const WeekdayFormat = {
  * Weekday format type for DateFormatter.
  * @public
  */
-export type WeekdayFormat = typeof WeekdayFormat[keyof typeof WeekdayFormat];
+export type WeekdayFormat = ValuesOf<typeof WeekdayFormat>;
 
 /**
  * Month format values for DateFormatter.
@@ -45,7 +47,7 @@ export const MonthFormat = {
  * Month format type for DateFormatter.
  * @public
  */
-export type MonthFormat = typeof MonthFormat[keyof typeof MonthFormat];
+export type MonthFormat = ValuesOf<typeof MonthFormat>;
 
 /**
  * Year format values for DateFormatter.
@@ -60,4 +62,4 @@ export const YearFormat = {
  * Year format type for DateFormatter.
  * @public
  */
-export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
+export type YearFormat = ValuesOf<typeof YearFormat>;

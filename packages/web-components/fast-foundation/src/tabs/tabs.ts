@@ -11,6 +11,7 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
+import type { ValuesOf } from "../utilities/index.js";
 
 /**
  * Tabs option configuration options
@@ -31,7 +32,7 @@ export const TabsOrientation = {
  * The types for the Tabs component
  * @public
  */
-export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientation];
+export type TabsOrientation = ValuesOf<typeof TabsOrientation>;
 
 /**
  * A Tabs Custom HTML Element.
