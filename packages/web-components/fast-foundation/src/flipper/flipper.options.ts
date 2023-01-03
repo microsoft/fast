@@ -1,3 +1,5 @@
+import type { ValuesOf } from "../utilities/index.js";
+
 /**
  * The direction options for flipper.
  * @public
@@ -11,4 +13,4 @@ export const FlipperDirection = {
  * The types for the flipper direction options.
  * @public
  */
-export type FlipperDirection = typeof FlipperDirection[keyof typeof FlipperDirection];
+export type FlipperDirection = ValuesOf<typeof FlipperDirection>;
