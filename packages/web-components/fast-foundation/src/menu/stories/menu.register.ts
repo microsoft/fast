@@ -58,9 +58,11 @@ export class FancyMenu extends FASTMenu {
         this.menuItems
             ?.filter(this.isMenuItemElement)
             .forEach((item: HTMLElement, index: number) => {
-                const indent: FancyMenuItemColumnCount = menuItems.reduce(
+                const indent: FancyMenuItemColumnCount = this.menuItems!.reduce(
                     (accum, current) => {
-                        const elementValue = FASTMenu.elementIndent(current);
+                        const elementValue = FancyMenu.elementIndent(
+                            current as HTMLElement
+                        );
 
                         return Math.max(
                             accum,
