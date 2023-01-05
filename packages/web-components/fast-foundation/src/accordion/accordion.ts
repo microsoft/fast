@@ -68,7 +68,7 @@ export class FASTAccordion extends FASTElement {
     };
 
     private findExpandedItem(): FASTAccordionItem | null {
-        for (let item: number = 0; item < this.accordionItems.length; item++) {
+        for (let item: number = 0; item < this._accordionItems.length; item++) {
             if (this._accordionItems[item].getAttribute("expanded") === "true") {
                 return (this._accordionItems[item] as unknown) as FASTAccordionItem;
             }
@@ -89,11 +89,7 @@ export class FASTAccordion extends FASTElement {
             Observable.getNotifier(child).subscribe(this, "disabled")
         );
 
-        const newItems: Element[] = children.filter(
-            child => !child.hasAttribute("disabled")
-        );
-
-        this._accordionItems = newItems;
+        this._accordionItems = children.filter(child => !child.hasAttribute("disabled"));
 
         this.accordionIds = this.getItemIds();
 
