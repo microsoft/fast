@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "chore: remove deprecated APIs from fast-element",
+  "packageName": "@microsoft/fast-element",
+  "email": "rob@bluespire.com",
+  "dependentChangeType": "patch"
+}
