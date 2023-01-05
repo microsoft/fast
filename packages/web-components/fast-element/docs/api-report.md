@@ -208,9 +208,6 @@ export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective
     readonly type: TType;
 }
 
-// @public @deprecated (undocumented)
-export const cssPartial: (strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]) => CSSDirective;
-
 // @public
 export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]) => ElementStyles) & {
     partial(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): CSSDirective;
@@ -229,9 +226,6 @@ export interface Disposable {
 
 // @public
 export const DOM: Readonly<{
-    queueUpdate: (callable: Callable) => void;
-    nextUpdate: () => Promise<void>;
-    processUpdates: () => void;
     readonly policy: DOMPolicy;
     setPolicy(value: DOMPolicy): void;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;

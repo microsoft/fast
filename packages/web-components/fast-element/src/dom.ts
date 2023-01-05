@@ -1,5 +1,4 @@
-import { Updates } from "./observation/update-queue.js";
-import { Callable, Message, TrustedTypesPolicy } from "./interfaces.js";
+import { Message, TrustedTypesPolicy } from "./interfaces.js";
 import { FAST } from "./platform.js";
 
 /**
@@ -113,24 +112,6 @@ const fastPolicy = defaultPolicy;
  * @public
  */
 export const DOM = Object.freeze({
-    /**
-     * @deprecated
-     * Use Updates.enqueue().
-     */
-    queueUpdate: Updates.enqueue as (callable: Callable) => void,
-
-    /**
-     * @deprecated
-     * Use Updates.next()
-     */
-    nextUpdate: Updates.next,
-
-    /**
-     * @deprecated
-     * Use Updates.process()
-     */
-    processUpdates: Updates.process,
-
     /**
      * Gets the dom policy used by the templating system.
      */
