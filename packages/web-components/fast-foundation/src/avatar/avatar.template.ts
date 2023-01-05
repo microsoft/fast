@@ -1,4 +1,5 @@
 import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { AvatarOptions, FASTAvatar } from "./avatar.js";
 
 /**
@@ -18,7 +19,7 @@ export function avatarTemplate<T extends FASTAvatar>(
             part="link"
             href="${x => (x.link ? x.link : void 0)}"
         >
-            <slot name="media">${options.media ?? ""}</slot>
+            <slot name="media">${staticallyCompose(options.media)}</slot>
             <slot><slot>
         </a>
     </div>

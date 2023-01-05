@@ -10,7 +10,6 @@ import { html } from "./template.js";
 import { ElementStyles } from "../index.debug.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { Fake } from "../testing/fakes.js";
-import { dangerousHTML } from "./dangerous-html.js";
 import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
 
 /**
@@ -588,7 +587,7 @@ describe("The template compiler", () => {
     if (ElementStyles.supportsAdoptedStyleSheets) {
         it("handles templates with adoptedStyleSheets", () => {
             const name = uniqueElementName();
-            const tag = dangerousHTML(name);
+            const tag = html.partial(name);
 
             @customElement({
                 name,

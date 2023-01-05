@@ -1,10 +1,6 @@
-import {
-    attr,
-    DangerousHTMLDirective,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { FormAssociatedSwitch } from "./switch.form-associated.js";
 
 /**
@@ -12,7 +8,7 @@ import { FormAssociatedSwitch } from "./switch.form-associated.js";
  * @public
  */
 export type SwitchOptions = {
-    switch?: DangerousHTMLDirective | SyntheticViewTemplate;
+    switch?: StaticallyComposableHTML<FASTSwitch>;
 };
 
 /**

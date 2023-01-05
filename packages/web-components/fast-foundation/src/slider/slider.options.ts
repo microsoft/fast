@@ -1,9 +1,6 @@
-import type {
-    DangerousHTMLDirective,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
 import type { Direction, Orientation } from "@microsoft/fast-web-utilities";
-import type { ValuesOf } from "../utilities/index.js";
+import type { StaticallyComposableHTML, ValuesOf } from "../utilities/index.js";
+import type { FASTSlider } from "./slider.js";
 
 /**
  * The selection modes of a {@link @microsoft/fast-foundation#(FASTSlider:class)}.
@@ -36,5 +33,5 @@ export interface SliderConfiguration {
  * @public
  */
 export type SliderOptions = {
-    thumb?: DangerousHTMLDirective | SyntheticViewTemplate;
+    thumb?: StaticallyComposableHTML<FASTSlider>;
 };

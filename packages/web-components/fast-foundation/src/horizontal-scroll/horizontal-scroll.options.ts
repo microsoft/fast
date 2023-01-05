@@ -1,6 +1,6 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import type { StaticallyComposableHTML, ValuesOf } from "../utilities/index.js";
 import type { StartEndOptions } from "../patterns/index.js";
-import type { ValuesOf } from "../utilities/index.js";
+import type { FASTHorizontalScroll } from "./horizontal-scroll.js";
 
 /**
  * View options for the {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)|FASTHorizontalScroll} component.
@@ -38,7 +38,7 @@ export type ScrollEasing = ValuesOf<typeof ScrollEasing>;
  * Horizontal scroll configuration options
  * @public
  */
-export type HorizontalScrollOptions = StartEndOptions & {
-    nextFlipper?: SyntheticViewTemplate | string;
-    previousFlipper?: SyntheticViewTemplate | string;
+export type HorizontalScrollOptions = StartEndOptions<FASTHorizontalScroll> & {
+    nextFlipper?: StaticallyComposableHTML<FASTHorizontalScroll>;
+    previousFlipper?: StaticallyComposableHTML<FASTHorizontalScroll>;
 };

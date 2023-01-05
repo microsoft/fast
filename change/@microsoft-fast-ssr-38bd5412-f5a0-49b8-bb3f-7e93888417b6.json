@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix(fast-ssr): update to use html.partial",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

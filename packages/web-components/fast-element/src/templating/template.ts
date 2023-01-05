@@ -92,35 +92,39 @@ export type TemplateValue<TSource, TParent = any> =
     | HTMLDirective
     | CaptureType<TSource, TParent>;
 
+const noFactories = Object.create(null);
+
 /**
  * Inlines a template into another template.
  * @public
  */
-export class InlineTemplateDirective<TSource, TParent> implements HTMLDirective {
+export class InlineTemplateDirective implements HTMLDirective {
+    /**
+     * An empty template partial.
+     */
+    public static readonly empty = new InlineTemplateDirective("");
+
     /**
      * Creates an instance of InlineTemplateDirective.
      * @param template - The template to inline.
      */
-    public constructor(private template: ViewTemplate<TSource, TParent>) {}
+    public constructor(
+        private html: string,
+        private factories: Record<string, ViewBehaviorFactory> = noFactories
+    ) {}
 
     /**
      * Creates HTML to be used within a template.
      * @param add - Can be used to add  behavior factories to a template.
      */
     public createHTML(add: AddViewBehaviorFactory): string {
-        const factories = this.template.factories;
+        const factories = this.factories;
 
         for (const key in factories) {
             add(factories[key]);
         }
 
-        const html = this.template.html;
-
-        if (isString(html)) {
-            return html;
-        }
-
-        return html.innerHTML;
+        return this.html;
     }
 }
 
@@ -197,7 +201,10 @@ export class ViewTemplate<TSource = any, TParent = any>
      * Returns a directive that can inline the template.
      */
     public inline(): CaptureType<TSource, TParent> {
-        return new InlineTemplateDirective(this);
+        return new InlineTemplateDirective(
+            isString(this.html) ? this.html : this.html.innerHTML,
+            this.factories
+        );
     }
 
     /**
@@ -312,13 +319,38 @@ export class ViewTemplate<TSource = any, TParent = any>
  * other template instances, and Directive instances.
  * @public
  */
-export function html<TSource = any, TParent = any>(
+export type HTMLTemplateTag = (<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
     ...values: TemplateValue<TSource, TParent>[]
-): ViewTemplate<TSource, TParent> {
+) => ViewTemplate<TSource, TParent>) & {
+    /**
+     * Transforms a template literal string into partial HTML.
+     * @param html - The HTML string fragment to interpolate.
+     * @public
+     */
+    partial(html: string): InlineTemplateDirective;
+};
+
+/**
+ * Transforms a template literal string into a ViewTemplate.
+ * @param strings - The string fragments that are interpolated with the values.
+ * @param values - The values that are interpolated with the string fragments.
+ * @remarks
+ * The html helper supports interpolation of strings, numbers, binding expressions,
+ * other template instances, and Directive instances.
+ * @public
+ */
+export const html: HTMLTemplateTag = (<TSource = any, TParent = any>(
+    strings: TemplateStringsArray,
+    ...values: TemplateValue<TSource, TParent>[]
+): ViewTemplate<TSource, TParent> => {
     if (Array.isArray(strings) && Array.isArray(strings.raw)) {
         return ViewTemplate.create((strings as any) as string[], values);
     }
 
     throw FAST.error(Message.directCallToHTMLTagNotAllowed);
-}
+}) as any;
+
+html.partial = (html: string): InlineTemplateDirective => {
+    return new InlineTemplateDirective(html);
+};

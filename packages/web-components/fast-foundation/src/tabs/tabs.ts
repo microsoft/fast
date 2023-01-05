@@ -17,7 +17,7 @@ import type { ValuesOf } from "../utilities/index.js";
  * Tabs option configuration options
  * @public
  */
-export type TabsOptions = StartEndOptions;
+export type TabsOptions = StartEndOptions<FASTTabs>;
 
 /**
  * The orientation of the {@link @microsoft/fast-foundation#(FASTTabs:class)} component

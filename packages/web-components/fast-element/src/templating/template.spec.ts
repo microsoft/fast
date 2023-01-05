@@ -5,7 +5,6 @@ import { bind, HTMLBindingDirective } from "./binding.js";
 import { HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory, CompiledViewBehaviorFactory } from "./html-directive.js";
 import { Constructable, isString } from "../interfaces.js";
 import { Fake } from "../testing/fakes.js";
-import { dangerousHTML } from "./dangerous-html.js";
 import { DOMAspect, DOMPolicy } from "../dom.js";
 import { createTrackableDOMPolicy } from "../__test__/helpers.js";
 import { Compiler } from "./compiler.js";
@@ -536,7 +535,7 @@ describe(`The html tag template helper`, () => {
     });
 
     it("Should properly interpolate HTML tags with opening / closing tags using dangerousHTML", () => {
-      const element = dangerousHTML("button");
+      const element = html.partial("button");
       const template = html`<${element}></${element}>`
       expect(template.html).to.equal('<button></button>')
     })

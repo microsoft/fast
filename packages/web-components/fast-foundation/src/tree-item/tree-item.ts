@@ -1,11 +1,6 @@
-import {
-    attr,
-    DangerousHTMLDirective,
-    FASTElement,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
@@ -23,8 +18,8 @@ export function isTreeItemElement(el: Element): el is HTMLElement {
  * Tree Item configuration options
  * @public
  */
-export type TreeItemOptions = StartEndOptions & {
-    expandCollapseGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
+export type TreeItemOptions = StartEndOptions<FASTTreeItem> & {
+    expandCollapseGlyph?: StaticallyComposableHTML<FASTTreeItem>;
 };
 
 /**
