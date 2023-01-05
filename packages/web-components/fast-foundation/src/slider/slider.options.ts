@@ -1,7 +1,6 @@
 import type { Direction, Orientation } from "@microsoft/fast-web-utilities";
-import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
+import type { StaticallyComposableHTML, ValuesOf } from "../utilities/index.js";
 import type { FASTSlider } from "./slider.js";
-import type { ValuesOf } from "../utilities/index.js";
 
 /**
  * The selection modes of a {@link @microsoft/fast-foundation#(FASTSlider:class)}.

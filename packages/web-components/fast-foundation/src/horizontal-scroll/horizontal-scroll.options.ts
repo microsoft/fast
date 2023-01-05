@@ -1,7 +1,6 @@
-import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
+import type { StaticallyComposableHTML, ValuesOf } from "../utilities/index.js";
 import type { StartEndOptions } from "../patterns/index.js";
 import type { FASTHorizontalScroll } from "./horizontal-scroll.js";
-import type { ValuesOf } from "../utilities/index.js";
 
 /**
  * View options for the {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)|FASTHorizontalScroll} component.
