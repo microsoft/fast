@@ -1,3 +1,5 @@
+import type { ValuesOf } from "../utilities/index.js";
+
 /**
  * Autocomplete values for combobox.
  * @public
@@ -13,4 +15,4 @@ export const ComboboxAutocomplete = {
  * Autocomplete type for combobox.
  * @public
  */
-export type ComboboxAutocomplete = typeof ComboboxAutocomplete[keyof typeof ComboboxAutocomplete];
+export type ComboboxAutocomplete = ValuesOf<typeof ComboboxAutocomplete>;

@@ -190,7 +190,9 @@ export class FASTMenuItem extends FASTElement {
 
             case keyArrowRight:
                 //open/focus on submenu
-                this.expandAndFocus();
+                this.expanded && this.submenu
+                    ? this.submenu.focus()
+                    : this.expandAndFocus();
                 return false;
 
             case keyEscape:
@@ -231,6 +233,7 @@ export class FASTMenuItem extends FASTElement {
         if (!this.focusSubmenuOnLoad) {
             return;
         }
+
         this.focusSubmenuOnLoad = false;
         if (this.submenu) {
             this.submenu.focus();
@@ -280,6 +283,7 @@ export class FASTMenuItem extends FASTElement {
         if (!this.hasSubmenu) {
             return;
         }
+
         this.focusSubmenuOnLoad = true;
         this.expanded = true;
     };

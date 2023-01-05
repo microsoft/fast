@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "ensure submenu items are navigable after parent menu item has been clicked",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

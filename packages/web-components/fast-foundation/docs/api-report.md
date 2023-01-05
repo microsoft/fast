@@ -27,7 +27,7 @@ export const AccordionExpandMode: {
 };
 
 // @public
-export type AccordionExpandMode = typeof AccordionExpandMode[keyof typeof AccordionExpandMode];
+export type AccordionExpandMode = ValuesOf<typeof AccordionExpandMode>;
 
 // @public
 export type AccordionItemOptions = StartEndOptions<FASTAccordionItem> & {
@@ -69,7 +69,7 @@ export const AnchoredRegionPositionLabel: {
 };
 
 // @public
-export type AnchoredRegionPositionLabel = typeof AnchoredRegionPositionLabel[keyof typeof AnchoredRegionPositionLabel];
+export type AnchoredRegionPositionLabel = ValuesOf<typeof AnchoredRegionPositionLabel>;
 
 // @public
 export function anchoredRegionTemplate<T extends FASTAnchoredRegion>(): ElementViewTemplate<T>;
@@ -86,7 +86,7 @@ export const AnchorTarget: {
 };
 
 // @public
-export type AnchorTarget = typeof AnchorTarget[keyof typeof AnchorTarget];
+export type AnchorTarget = ValuesOf<typeof AnchorTarget>;
 
 // @public
 export function anchorTemplate<T extends FASTAnchor>(options?: AnchorOptions): ViewTemplate<T>;
@@ -124,7 +124,7 @@ export const AutoUpdateMode: {
 };
 
 // @public
-export type AutoUpdateMode = typeof AutoUpdateMode[keyof typeof AutoUpdateMode];
+export type AutoUpdateMode = ValuesOf<typeof AutoUpdateMode>;
 
 // @public
 export type AvatarOptions = {
@@ -142,7 +142,7 @@ export const AxisPositioningMode: {
 };
 
 // @public
-export type AxisPositioningMode = typeof AxisPositioningMode[keyof typeof AxisPositioningMode];
+export type AxisPositioningMode = ValuesOf<typeof AxisPositioningMode>;
 
 // @public
 export const AxisScalingMode: {
@@ -152,7 +152,7 @@ export const AxisScalingMode: {
 };
 
 // @public
-export type AxisScalingMode = typeof AxisScalingMode[keyof typeof AxisScalingMode];
+export type AxisScalingMode = ValuesOf<typeof AxisScalingMode>;
 
 // @public
 export function badgeTemplate<T extends FASTBadge>(): ElementViewTemplate<T>;
@@ -182,7 +182,7 @@ export const ButtonType: {
 };
 
 // @public
-export type ButtonType = typeof ButtonType[keyof typeof ButtonType];
+export type ButtonType = ValuesOf<typeof ButtonType>;
 
 // @public
 export function calendarCellTemplate(options: CalendarOptions, todayString: string): ViewTemplate<CalendarDateInfo>;
@@ -288,7 +288,7 @@ export const ComboboxAutocomplete: {
 };
 
 // @public
-export type ComboboxAutocomplete = typeof ComboboxAutocomplete[keyof typeof ComboboxAutocomplete];
+export type ComboboxAutocomplete = ValuesOf<typeof ComboboxAutocomplete>;
 
 // @public
 export type ComboboxOptions = StartEndOptions<FASTCombobox> & {
@@ -331,7 +331,7 @@ export const DataGridCellTypes: {
 };
 
 // @public
-export type DataGridCellTypes = typeof DataGridCellTypes[keyof typeof DataGridCellTypes];
+export type DataGridCellTypes = ValuesOf<typeof DataGridCellTypes>;
 
 // @public
 export type DataGridOptions = {
@@ -349,7 +349,7 @@ export const DataGridRowTypes: {
 };
 
 // @public
-export type DataGridRowTypes = typeof DataGridRowTypes[keyof typeof DataGridRowTypes];
+export type DataGridRowTypes = ValuesOf<typeof DataGridRowTypes>;
 
 // @public
 export function dataGridTemplate<T extends FASTDataGrid>(options: DataGridOptions): ElementViewTemplate<T>;
@@ -393,7 +393,7 @@ export const DayFormat: {
 };
 
 // @public
-export type DayFormat = typeof DayFormat[keyof typeof DayFormat];
+export type DayFormat = ValuesOf<typeof DayFormat>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAButton" because one of its declarations is marked as @internal
@@ -612,7 +612,7 @@ export const DividerRole: {
 };
 
 // @public
-export type DividerRole = typeof DividerRole[keyof typeof DividerRole];
+export type DividerRole = ValuesOf<typeof DividerRole>;
 
 // @public
 export function dividerTemplate<T extends FASTDivider>(): ElementViewTemplate<T>;
@@ -2168,7 +2168,7 @@ export const FlipperDirection: {
 };
 
 // @public
-export type FlipperDirection = typeof FlipperDirection[keyof typeof FlipperDirection];
+export type FlipperDirection = ValuesOf<typeof FlipperDirection>;
 
 // @public
 export type FlipperOptions = {
@@ -2282,7 +2282,7 @@ export const GenerateHeaderOptions: {
 };
 
 // @public
-export type GenerateHeaderOptions = typeof GenerateHeaderOptions[keyof typeof GenerateHeaderOptions];
+export type GenerateHeaderOptions = ValuesOf<typeof GenerateHeaderOptions>;
 
 // @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
@@ -2301,7 +2301,7 @@ export const HorizontalPosition: {
 };
 
 // @public
-export type HorizontalPosition = typeof HorizontalPosition[keyof typeof HorizontalPosition];
+export type HorizontalPosition = ValuesOf<typeof HorizontalPosition>;
 
 // @public
 export type HorizontalScrollOptions = StartEndOptions<FASTHorizontalScroll> & {
@@ -2319,7 +2319,7 @@ export const HorizontalScrollView: {
 };
 
 // @public
-export type HorizontalScrollView = typeof HorizontalScrollView[keyof typeof HorizontalScrollView];
+export type HorizontalScrollView = ValuesOf<typeof HorizontalScrollView>;
 
 // Warning: (ae-internal-missing-underscore) The name "interactiveCalendarGridTemplate" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -2382,7 +2382,7 @@ export const MenuItemRole: {
 };
 
 // @public
-export type MenuItemRole = typeof MenuItemRole[keyof typeof MenuItemRole];
+export type MenuItemRole = ValuesOf<typeof MenuItemRole>;
 
 // @public
 export function menuItemTemplate<T extends FASTMenuItem>(options?: MenuItemOptions): ElementViewTemplate<T>;
@@ -2398,7 +2398,7 @@ export const MenuPlacement: {
 };
 
 // @beta
-export type MenuPlacement = typeof MenuPlacement[keyof typeof MenuPlacement];
+export type MenuPlacement = ValuesOf<typeof MenuPlacement>;
 
 // @public
 export function menuTemplate<T extends FASTMenu>(): ElementViewTemplate<T>;
@@ -2413,7 +2413,7 @@ export const MonthFormat: {
 };
 
 // @public
-export type MonthFormat = typeof MonthFormat[keyof typeof MonthFormat];
+export type MonthFormat = ValuesOf<typeof MonthFormat>;
 
 // @public
 export type MonthInfo = {
@@ -2542,7 +2542,7 @@ export const ScrollEasing: {
 };
 
 // @public
-export type ScrollEasing = typeof ScrollEasing[keyof typeof ScrollEasing];
+export type ScrollEasing = ValuesOf<typeof ScrollEasing>;
 
 // @public
 export type SearchOptions = StartEndOptions<FASTSearch>;
@@ -2565,7 +2565,7 @@ export const SkeletonShape: {
 };
 
 // @public (undocumented)
-export type SkeletonShape = typeof SkeletonShape[keyof typeof SkeletonShape];
+export type SkeletonShape = ValuesOf<typeof SkeletonShape>;
 
 // @public
 export function skeletonTemplate<T extends FASTSkeleton>(): ElementViewTemplate<T>;
@@ -2593,7 +2593,7 @@ export const SliderMode: {
 };
 
 // @public
-export type SliderMode = typeof SliderMode[keyof typeof SliderMode];
+export type SliderMode = ValuesOf<typeof SliderMode>;
 
 // @public
 export type SliderOptions = {
@@ -2655,7 +2655,7 @@ export const TabsOrientation: {
 };
 
 // @public
-export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientation];
+export type TabsOrientation = ValuesOf<typeof TabsOrientation>;
 
 // @public
 export function tabsTemplate<T extends FASTTabs>(options?: TabsOptions): ElementViewTemplate<T>;
@@ -2678,7 +2678,7 @@ export const TextAreaResize: {
 };
 
 // @public
-export type TextAreaResize = typeof TextAreaResize[keyof typeof TextAreaResize];
+export type TextAreaResize = ValuesOf<typeof TextAreaResize>;
 
 // @public
 export function textAreaTemplate<T extends FASTTextArea>(): ElementViewTemplate<T>;
@@ -2699,7 +2699,7 @@ export const TextFieldType: {
 };
 
 // @public
-export type TextFieldType = typeof TextFieldType[keyof typeof TextFieldType];
+export type TextFieldType = ValuesOf<typeof TextFieldType>;
 
 // @public
 export type ToolbarOptions = StartEndOptions<FASTToolbar>;
@@ -2724,7 +2724,7 @@ export const TooltipPlacement: {
 };
 
 // @public
-export type TooltipPlacement = typeof TooltipPlacement[keyof typeof TooltipPlacement];
+export type TooltipPlacement = ValuesOf<typeof TooltipPlacement>;
 
 // @public
 export function tooltipTemplate<T extends FASTTooltip>(): ElementViewTemplate<T>;
@@ -2741,6 +2741,9 @@ export function treeItemTemplate<T extends FASTTreeItem>(options?: TreeItemOptio
 export function treeViewTemplate<T extends FASTTreeView>(): ElementViewTemplate<T>;
 
 // @public
+export type ValuesOf<T> = T[keyof T];
+
+// @public
 export const VerticalPosition: {
     readonly top: "top";
     readonly bottom: "bottom";
@@ -2749,7 +2752,7 @@ export const VerticalPosition: {
 };
 
 // @public
-export type VerticalPosition = typeof VerticalPosition[keyof typeof VerticalPosition];
+export type VerticalPosition = ValuesOf<typeof VerticalPosition>;
 
 // @public
 export const WeekdayFormat: {
@@ -2759,7 +2762,7 @@ export const WeekdayFormat: {
 };
 
 // @public
-export type WeekdayFormat = typeof WeekdayFormat[keyof typeof WeekdayFormat];
+export type WeekdayFormat = ValuesOf<typeof WeekdayFormat>;
 
 // @public
 export type WeekdayText = {
@@ -2777,7 +2780,7 @@ export const YearFormat: {
 };
 
 // @public
-export type YearFormat = typeof YearFormat[keyof typeof YearFormat];
+export type YearFormat = ValuesOf<typeof YearFormat>;
 
 // Warnings were encountered during analysis:
 //
