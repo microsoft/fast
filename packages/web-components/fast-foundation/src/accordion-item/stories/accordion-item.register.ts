@@ -14,6 +14,10 @@ const styles = css`
             var(--neutral-stroke-divider-rest);
     }
 
+    :host([disabled]) {
+        opacity: var(--disabled-opacity);
+    }
+
     .region {
         display: none;
         padding: calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);

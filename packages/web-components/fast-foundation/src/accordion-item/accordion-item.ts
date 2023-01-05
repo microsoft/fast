@@ -1,5 +1,6 @@
 import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
 import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
+import { uniqueId } from "@microsoft/fast-web-utilities";
 import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
@@ -58,6 +59,16 @@ export class FASTAccordionItem extends FASTElement {
     public expanded: boolean = false;
 
     /**
+     * Disables an accordion item
+     *
+     * @public
+     * @remarks
+     * HTML attribute: disabled
+     */
+    @attr({ mode: "boolean" })
+    public disabled: boolean = false;
+
+    /**
      * The item ID
      *
      * @public
@@ -65,7 +76,7 @@ export class FASTAccordionItem extends FASTElement {
      * HTML Attribute: id
      */
     @attr
-    public id: string;
+    public id: string = uniqueId("accordion-");
 
     /**
      * @internal
@@ -76,6 +87,9 @@ export class FASTAccordionItem extends FASTElement {
      * @internal
      */
     public clickHandler = (e: MouseEvent) => {
+        if (this.disabled) {
+            return;
+        }
         this.expanded = !this.expanded;
         this.change();
     };

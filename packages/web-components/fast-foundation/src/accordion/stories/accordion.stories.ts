@@ -33,5 +33,9 @@ Accordion.args = {
             <div slot="heading">Accordion Item 2 Heading</div>
             <fast-checkbox>A checkbox as content</fast-checkbox>
         </fast-accordion-item>
+        <fast-accordion-item disabled>
+            <div slot="heading">Accordion Item 3 Heading</div>
+            Accordion Item 3 Content
+        </fast-accordion-item>
     `,
 };

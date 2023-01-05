@@ -1,3 +1,4 @@
+import { Observable } from "@microsoft/fast-element";
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
     keyArrowDown,
@@ -38,12 +39,22 @@ export class FASTAccordion extends FASTElement {
     @observable
     public accordionItems: HTMLElement[];
 
+    protected _accordionItems: Element[];
+
     /**
      * @internal
      */
     public accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
-            this.removeItemListeners(oldValue);
+            this.setItems();
+        }
+    }
+
+    /**
+     * @internal
+     */
+    public handleChange(source: any, propertyName: string) {
+        if (propertyName === "disabled") {
             this.setItems();
         }
     }
@@ -58,8 +69,8 @@ export class FASTAccordion extends FASTElement {
 
     private findExpandedItem(): FASTAccordionItem | null {
         for (let item: number = 0; item < this.accordionItems.length; item++) {
-            if (this.accordionItems[item].getAttribute("expanded") === "true") {
-                return this.accordionItems[item] as FASTAccordionItem;
+            if (this._accordionItems[item].getAttribute("expanded") === "true") {
+                return (this._accordionItems[item] as unknown) as FASTAccordionItem;
             }
         }
         return null;
@@ -69,8 +80,24 @@ export class FASTAccordion extends FASTElement {
         if (this.accordionItems.length === 0) {
             return;
         }
+
+        const children: Element[] = Array.from(this.children);
+
+        this.removeItemListeners(children);
+
+        children.forEach((child: Element) =>
+            Observable.getNotifier(child).subscribe(this, "disabled")
+        );
+
+        const newItems: Element[] = children.filter(
+            child => !child.hasAttribute("disabled")
+        );
+
+        this._accordionItems = newItems;
+
         this.accordionIds = this.getItemIds();
-        this.accordionItems.forEach((item: HTMLElement, index: number) => {
+
+        this._accordionItems.forEach((item: HTMLElement, index: number) => {
             if (item instanceof FASTAccordionItem) {
                 item.addEventListener("change", this.activeItemChange);
                 if (this.isSingleExpandMode()) {
@@ -90,12 +117,14 @@ export class FASTAccordion extends FASTElement {
         });
         if (this.isSingleExpandMode()) {
             const expandedItem: FASTAccordionItem | null =
-                this.findExpandedItem() ?? (this.accordionItems[0] as FASTAccordionItem);
+                this.findExpandedItem() ??
+                ((this._accordionItems[0] as unknown) as FASTAccordionItem);
             expandedItem.setAttribute("aria-disabled", "true");
         }
     };
 
     private resetItems(): void {
+        // reset ALL items if we swap to single expand mode (should we reset an expanded item which is disabled?)
         this.accordionItems.forEach((item: FASTAccordionItem, index: number) => {
             item.expanded = false;
         });
@@ -103,6 +132,7 @@ export class FASTAccordion extends FASTElement {
 
     private removeItemListeners = (oldValue: any): void => {
         oldValue.forEach((item: HTMLElement, index: number) => {
+            Observable.getNotifier(item).unsubscribe(this, "disabled");
             item.removeEventListener("change", this.activeItemChange);
             item.removeEventListener("keydown", this.handleItemKeyDown);
             item.removeEventListener("focus", this.handleItemFocus);
@@ -121,19 +151,19 @@ export class FASTAccordion extends FASTElement {
             this.resetItems();
             selectedItem.expanded = true;
             selectedItem.setAttribute("aria-disabled", "true");
-            this.accordionItems.forEach((item: HTMLElement) => {
+            this._accordionItems.forEach((item: HTMLElement) => {
                 if (!item.hasAttribute("disabled") && item.id !== this.activeid) {
                     item.removeAttribute("aria-disabled");
                 }
             });
         }
-        this.activeItemIndex = Array.from(this.accordionItems).indexOf(selectedItem);
+        this.activeItemIndex = Array.from(this._accordionItems).indexOf(selectedItem);
         this.change();
     };
 
     private getItemIds(): Array<string | null> {
         return this.accordionItems.map((accordionItem: HTMLElement) => {
-            return accordionItem.getAttribute("id");
+            return accordionItem.id;
         });
     }
 
@@ -162,7 +192,7 @@ export class FASTAccordion extends FASTElement {
                 this.focusItem();
                 break;
             case keyEnd:
-                this.activeItemIndex = this.accordionItems.length - 1;
+                this.activeItemIndex = this._accordionItems.length - 1;
                 this.focusItem();
                 break;
         }
@@ -174,7 +204,7 @@ export class FASTAccordion extends FASTElement {
         if (event.target === event.currentTarget) {
             const focusedItem = event.target as HTMLElement;
             const focusedIndex: number = (this.activeItemIndex = Array.from(
-                this.accordionItems
+                this._accordionItems
             ).indexOf(focusedItem));
             if (this.activeItemIndex !== focusedIndex && focusedIndex !== -1) {
                 this.activeItemIndex = focusedIndex;
@@ -186,14 +216,14 @@ export class FASTAccordion extends FASTElement {
     private adjust(adjustment: number): void {
         this.activeItemIndex = wrapInBounds(
             0,
-            this.accordionItems.length - 1,
+            this._accordionItems.length - 1,
             this.activeItemIndex + adjustment
         );
         this.focusItem();
     }
 
     private focusItem(): void {
-        const element: HTMLElement = this.accordionItems[this.activeItemIndex];
+        const element: Element = this._accordionItems[this.activeItemIndex];
         if (element instanceof FASTAccordionItem) {
             element.expandbutton.focus();
         }
