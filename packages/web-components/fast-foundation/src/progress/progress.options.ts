@@ -1,10 +1,11 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
+import type { FASTProgress } from "./progress.js";
 
 /**
  * Progress configuration options
  * @public
  */
 export type ProgressOptions = {
-    indeterminateIndicator1?: string | SyntheticViewTemplate;
-    indeterminateIndicator2?: string | SyntheticViewTemplate;
+    indeterminateIndicator1?: StaticallyComposableHTML<FASTProgress>;
+    indeterminateIndicator2?: StaticallyComposableHTML<FASTProgress>;
 };

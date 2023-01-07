@@ -178,6 +178,10 @@ The index of the row in the parent grid. This is typically set by the parent gri
 - `row-type`  
 The row can either be either "default", "header" or "sticky-header" type according to the `DataGridRowTypes` enum. This determines the type of cells the row generates and what css classes get applied to it.
 
+- `page-size`  
+The number of rows to move selection on page up/down keystrokes.
+When undefined the grid will use viewport height/the height of the first non-header row. If the grid itself is a scrolling container it will be considered the viewport for this purpose, otherwise the document will be used.
+
 *properties:*
 - `rowData`  
 The object that contains the data to be displayed in this row.

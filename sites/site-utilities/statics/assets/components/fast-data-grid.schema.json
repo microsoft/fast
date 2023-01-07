@@ -31,6 +31,12 @@
       "mapsToAttribute": "no-tabbing",
       "type": "boolean"
     },
+    "page-size": {
+      "title": "Page size",
+      "description": "The number of rows to move selection on page up/down keystrokes.",
+      "mapsToAttribute": "page-size",
+      "type": "number"
+    },
     "Slot": {
       "title": "Default slot",
       "description": "The content as data grid rows",

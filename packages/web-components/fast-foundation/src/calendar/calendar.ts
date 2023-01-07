@@ -1,11 +1,12 @@
-import {
-    attr,
-    FASTElement,
-    nullableNumberConverter,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
-import type { StartEndOptions, TemplateElementDependency } from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
+import {
+    StartEnd,
+    StartEndOptions,
+    TemplateElementDependency,
+} from "../patterns/index.js";
 import { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./calendar.options.js";
 import { DateFormatter } from "./date-formatter.js";
 
@@ -53,11 +54,11 @@ export type WeekdayText = { text: string; abbr?: string };
  * Calendar configuration options
  * @public
  */
-export type CalendarOptions = StartEndOptions & {
+export type CalendarOptions = StartEndOptions<FASTCalendar> & {
     dataGridCell: TemplateElementDependency;
     dataGridRow: TemplateElementDependency;
     dataGrid: TemplateElementDependency;
-    title?: SyntheticViewTemplate | string;
+    title?: StaticallyComposableHTML<FASTCalendar>;
 };
 
 /**
@@ -360,3 +361,12 @@ export class FASTCalendar extends FASTElement {
         return true;
     }
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface FASTCalendar extends StartEnd {}
+applyMixins(FASTCalendar, StartEnd);

@@ -11,7 +11,7 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * Listbox option configuration options
  * @public
  */
-export type ListboxOptionOptions = StartEndOptions;
+export type ListboxOptionOptions = StartEndOptions<FASTListboxOption>;
 
 /**
  * Determines if the element is a {@link (FASTListboxOption:class)}

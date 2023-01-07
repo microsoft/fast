@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: router cannot render component and has missing types",
+  "packageName": "@microsoft/fast-router",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

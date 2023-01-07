@@ -1,12 +1,7 @@
 import { autoUpdate, computePosition, flip, hide, size } from "@floating-ui/dom";
-import {
-    attr,
-    Observable,
-    observable,
-    SyntheticViewTemplate,
-    Updates,
-} from "@microsoft/fast-element";
+import { attr, Observable, observable, Updates } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox } from "../listbox/listbox.js";
 import { StartEnd, StartEndOptions } from "../patterns/index.js";
@@ -18,8 +13,8 @@ import { ComboboxAutocomplete } from "./combobox.options.js";
  * Combobox configuration options
  * @public
  */
-export type ComboboxOptions = StartEndOptions & {
-    indicator?: string | SyntheticViewTemplate;
+export type ComboboxOptions = StartEndOptions<FASTCombobox> & {
+    indicator?: StaticallyComposableHTML<FASTCombobox>;
 };
 
 /**

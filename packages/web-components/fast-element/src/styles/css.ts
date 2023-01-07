@@ -148,9 +148,3 @@ css.partial = (
     const { styles, behaviors } = collectStyles(strings, values);
     return new CSSPartial(styles, behaviors);
 };
-
-/**
- * @deprecated Use css.partial instead.
- * @public
- */
-export const cssPartial = css.partial;

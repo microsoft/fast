@@ -1,4 +1,5 @@
 import { ElementViewTemplate, html, ref, slotted, when } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { FASTNumberField, NumberFieldOptions } from "./number-field.js";
 
@@ -71,7 +72,7 @@ export function numberFieldTemplate<T extends FASTNumberField>(
                     <div class="controls" part="controls">
                         <div class="step-up" part="step-up" @click="${x => x.stepUp()}">
                             <slot name="step-up-glyph">
-                                ${options.stepUpGlyph ?? ""}
+                                ${staticallyCompose(options.stepUpGlyph)}
                             </slot>
                         </div>
                         <div
@@ -80,7 +81,7 @@ export function numberFieldTemplate<T extends FASTNumberField>(
                             @click="${x => x.stepDown()}"
                         >
                             <slot name="step-down-glyph">
-                                ${options.stepDownGlyph ?? ""}
+                                ${staticallyCompose(options.stepDownGlyph)}
                             </slot>
                         </div>
                     </div>

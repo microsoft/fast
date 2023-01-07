@@ -15,7 +15,7 @@ import { FormAssociatedSearch } from "./search.form-associated.js";
  * Search configuration options
  * @public
  */
-export type SearchOptions = StartEndOptions;
+export type SearchOptions = StartEndOptions<FASTSearch>;
 
 /**
  * A Search Custom HTML Element.

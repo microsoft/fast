@@ -863,12 +863,6 @@ export const DI = Object.freeze({
     createContext,
 
     /**
-     * @deprecated
-     * Use DI.createContext instead.
-     */
-    createInterface: createContext,
-
-    /**
      * A decorator that specifies what to inject into its target.
      * @param dependencies - The dependencies to inject.
      * @returns The decorator to be applied to the target class.

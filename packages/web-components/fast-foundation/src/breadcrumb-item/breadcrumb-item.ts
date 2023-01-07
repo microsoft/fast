@@ -1,4 +1,5 @@
-import { observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { DelegatesARIALink, FASTAnchor } from "../anchor/anchor.js";
 import { StartEnd, StartEndOptions } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
@@ -14,7 +15,7 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * @public
  */
 export type BreadcrumbItemOptions = StartEndOptions & {
-    separator?: string | SyntheticViewTemplate;
+    separator?: StaticallyComposableHTML<FASTBreadcrumbItem>;
 };
 
 /**

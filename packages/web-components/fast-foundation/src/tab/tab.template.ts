@@ -8,7 +8,7 @@ import type { FASTTab } from "./tab.js";
  * @public
  */
 export function tabTemplate<T extends FASTTab>(
-    options: StartEndOptions = {}
+    options: StartEndOptions<FASTTab> = {}
 ): ElementViewTemplate<T> {
     return html<T>`
         <template slot="tab" role="tab" aria-disabled="${x => x.disabled}">

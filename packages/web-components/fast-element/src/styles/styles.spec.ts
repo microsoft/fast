@@ -2,7 +2,7 @@ import { expect } from "chai";
 import {
     AdoptedStyleSheetsStrategy, StyleElementStrategy
 } from "../components/element-controller.js";
-import type { StyleTarget } from "../interfaces.js";
+import type { StyleTarget } from "./style-strategy.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { AddBehavior, cssDirective, CSSDirective } from "./css-directive.js";
 import { css } from "./css.js";

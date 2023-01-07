@@ -165,9 +165,17 @@ The development, release, and work management processes must reflect this princi
 
 *Steering committee* members are key *collaborators* who have demonstrated design or technical expertise critical to driving the FAST project and community forward.
 
+* Aaron Wentzel
+* Brian Heston
+* Chris Holt
+* Jane Chu
+* Jason Falk
+* Nicholas Rice
+* Rob Eisenberg
+
 ### Collaborators
 
-*Collaborators* have write access and have an active and sustained impact on the project and participate in triaging issues, reviewing code, mentoring, and working to improve the architectural quality.
+*Collaborators* have write access and have an active and sustained impact on the project and participate in triaging issues, reviewing code, mentoring, and working to improve the architectural quality. 
 
 ### Code owners
 

@@ -127,6 +127,11 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
 export type ChildrenDirectiveOptions<T = any> = ChildListDirectiveOptions<T> | SubtreeDirectiveOptions<T>;
 
 // @public
+export type Class<T, C = {}> = C & Constructable<T> & {
+    readonly prototype: T;
+};
+
+// @public
 export type CompilationStrategy = (
 html: string | HTMLTemplateElement,
 factories: Record<string, ViewBehaviorFactory>,
@@ -203,9 +208,6 @@ export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective
     readonly type: TType;
 }
 
-// @public @deprecated (undocumented)
-export const cssPartial: (strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]) => CSSDirective;
-
 // @public
 export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]) => ElementStyles) & {
     partial(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): CSSDirective;
@@ -213,16 +215,6 @@ export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (Compos
 
 // @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
-
-// @public
-export function dangerousHTML<TSource = any, TParent = any>(html: string): CaptureType<TSource, TParent>;
-
-// @public
-export class DangerousHTMLDirective implements HTMLDirective {
-    constructor(html: string);
-    // (undocumented)
-    createHTML(): string;
-}
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
@@ -234,9 +226,6 @@ export interface Disposable {
 
 // @public
 export const DOM: Readonly<{
-    queueUpdate: (callable: Callable) => void;
-    nextUpdate: () => Promise<void>;
-    processUpdates: () => void;
     readonly policy: DOMPolicy;
     setPolicy(value: DOMPolicy): void;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
@@ -463,7 +452,7 @@ export interface HostController<TSource = any> {
 }
 
 // @public
-export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
+export const html: HTMLTemplateTag;
 
 // @public
 export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected {
@@ -516,6 +505,11 @@ export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
 }
 
 // @public
+export type HTMLTemplateTag = (<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]) => ViewTemplate<TSource, TParent>) & {
+    partial(html: string): InlineTemplateDirective;
+};
+
+// @public
 export class HTMLView<TSource = any, TParent = any> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> {
     constructor(fragment: DocumentFragment, factories: ReadonlyArray<CompiledViewBehaviorFactory>, targets: ViewBehaviorTargets);
     appendTo(node: Node): void;
@@ -554,6 +548,13 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
 }
 
 // @public
+export class InlineTemplateDirective implements HTMLDirective {
+    constructor(html: string, factories?: Record<string, ViewBehaviorFactory>);
+    createHTML(add: AddViewBehaviorFactory): string;
+    static readonly empty: InlineTemplateDirective;
+}
+
+// @public
 export interface LengthObserver extends Subscriber {
     length: number;
 }
@@ -570,13 +571,6 @@ export const Markup: Readonly<{
     attribute: (id: string) => string;
     comment: (id: string) => string;
 }>;
-
-// Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export type Mutable<T> = {
-    -readonly [P in keyof T]: T[P];
-};
 
 // @public
 export interface NodeBehaviorOptions<T = any> {
@@ -609,6 +603,9 @@ export interface Notifier {
     subscribe(subscriber: Subscriber, propertyToWatch?: any): void;
     unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
 }
+
+// @public
+export const nullableBooleanConverter: ValueConverter;
 
 // @public
 export const nullableNumberConverter: ValueConverter;
@@ -841,10 +838,16 @@ export interface SyntheticView<TSource = any, TParent = any> extends View<TSourc
 // @public
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent>;
+    inline(): CaptureType<TSource, TParent>;
 }
 
 // @public
 export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource, TParent>;
+
+// @public
+export type TrustedTypesPolicy = {
+    createHTML(html: string): string;
+};
 
 // Warning: (ae-internal-missing-underscore) The name "TypeDefinition" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -922,6 +925,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy): ViewTemplate<TSource, TParent>;
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
+    inline(): CaptureType<TSource, TParent>;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
     // @internal
     toJSON: () => undefined;

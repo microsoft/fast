@@ -47,7 +47,7 @@ const defaultOptions: ContributorOptions = {
 };
 
 class NavigationContributorDirective implements ViewBehaviorFactory {
-    targetNodeId: string;
+    targetNodeId!: string;
 
     constructor(public readonly options: Required<ContributorOptions>) {}
 
@@ -64,7 +64,7 @@ HTMLDirective.define(NavigationContributorDirective);
 
 class NavigationContributorBehavior implements ViewBehavior {
     private router: Router | null = null;
-    private contributor: HTMLElement & NavigationContributor;
+    private contributor!: HTMLElement & NavigationContributor;
 
     constructor(private directive: NavigationContributorDirective) {}
 
@@ -85,7 +85,7 @@ class NavigationContributorBehavior implements ViewBehavior {
         }
 
         if (options.parameters) {
-            const contributor = this.contributor;
+            const contributor = this.contributor as any;
             const routeParams = controller.source;
 
             for (const key in routeParams) {
