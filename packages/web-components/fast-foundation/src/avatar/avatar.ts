@@ -1,11 +1,12 @@
-import { attr, FASTElement, SyntheticViewTemplate } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 
 /**
  * Avatar configuration options
  * @public
  */
 export type AvatarOptions = {
-    media?: string | SyntheticViewTemplate;
+    media?: StaticallyComposableHTML<FASTAvatar>;
 };
 
 /**

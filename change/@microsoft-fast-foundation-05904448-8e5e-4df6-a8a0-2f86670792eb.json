@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "refactor(fast-foundation): template inline options and html.partial",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

@@ -13,7 +13,7 @@ import { getDirection } from "../utilities/direction.js";
  * Toolbar configuration options
  * @public
  */
-export type ToolbarOptions = StartEndOptions;
+export type ToolbarOptions = StartEndOptions<FASTToolbar>;
 
 /**
  * A map for directionality derived from keyboard input strings,

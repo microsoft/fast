@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTSlider } from "../slider.js";
 import { sliderTemplate } from "../slider.template.js";
@@ -126,7 +127,9 @@ const styles = css`
 FASTSlider.define({
     name: "fast-slider",
     template: sliderTemplate({
-        thumb: /* html */ `<div class="thumb-cursor"></div>`,
+        thumb: /* html */ html`
+            <div class="thumb-cursor"></div>
+        `,
     }),
     styles,
 });

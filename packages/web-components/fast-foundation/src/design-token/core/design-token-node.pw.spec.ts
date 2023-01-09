@@ -1001,27 +1001,35 @@ test.describe("DesignTokenNode", () => {
 
             parentB.appendChild(descendent);
 
-            expect(handleChange).toHaveBeenCalledTimes(2);
-            expect(handleChange).toHaveBeenNthCalledWith(
-                1,
+            expect(handleChange).toHaveBeenCalledTimes(1);
+            expect(handleChange).toHaveBeenCalledWith(
                 token,
                 new DesignTokenChangeRecord(
                     descendent,
-                    DesignTokenMutationType.delete,
-                    token
-                )
-            );
-            expect(handleChange).toHaveBeenNthCalledWith(
-                2,
-                token,
-                new DesignTokenChangeRecord(
-                    descendent,
-                    DesignTokenMutationType.add,
+                    DesignTokenMutationType.change,
                     token,
                     value
                 )
             );
             expect(descendent.getTokenValue(token)).toEqual(21);
+        });
+        test("should support reparenting a node with a derived token assigned to a tree where the immediate parent doesn't not have the dependency assigned", () => {
+            const ancestor = new DesignTokenNode();
+            const parent = new DesignTokenNode();
+            const child = new DesignTokenNode();
+
+            const tokenA = new DesignToken<number>();
+            const tokenB = new DesignToken<number>();
+            ancestor.appendChild(child);
+
+            ancestor.setTokenValue(tokenA, 12);
+            ancestor.setTokenValue(tokenB, 12);
+
+            child.setTokenValue(tokenB, resolve => resolve(tokenA) * 2);
+            ancestor.appendChild(parent);
+            parent.appendChild(child);
+
+            expect(child.getTokenValue(tokenB)).toBe(24);
         });
 
         /**

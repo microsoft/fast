@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "feat: add kernel mode with isolation by default",
+  "comment": "refactor(fast-element): replace dangerousHTML with html.partial",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
   "dependentChangeType": "prerelease"

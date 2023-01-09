@@ -1,3 +1,5 @@
+import type { ValuesOf } from "../utilities/index.js";
+
 /**
  * Divider roles
  * @public
@@ -18,4 +20,4 @@ export const DividerRole = {
  * The types for Divider roles
  * @public
  */
-export type DividerRole = typeof DividerRole[keyof typeof DividerRole];
+export type DividerRole = ValuesOf<typeof DividerRole>;

@@ -1,5 +1,6 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import type { Direction, Orientation } from "@microsoft/fast-web-utilities";
+import type { StaticallyComposableHTML, ValuesOf } from "../utilities/index.js";
+import type { FASTSlider } from "./slider.js";
 
 /**
  * The selection modes of a {@link @microsoft/fast-foundation#(FASTSlider:class)}.
@@ -13,7 +14,7 @@ export const SliderMode = {
  * The types for the selection mode of the slider
  * @public
  */
-export type SliderMode = typeof SliderMode[keyof typeof SliderMode];
+export type SliderMode = ValuesOf<typeof SliderMode>;
 
 /**
  * The configuration structure of {@link @microsoft/fast-foundation#(FASTSlider:class)}.
@@ -32,5 +33,5 @@ export interface SliderConfiguration {
  * @public
  */
 export type SliderOptions = {
-    thumb?: string | SyntheticViewTemplate;
+    thumb?: StaticallyComposableHTML<FASTSlider>;
 };

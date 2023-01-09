@@ -1,9 +1,10 @@
-import { Message, Mutable, noop, StyleStrategy, StyleTarget } from "../interfaces.js";
+import { Message, Mutable, noop } from "../interfaces.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { Observable, SourceLifetime } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { ElementStyles } from "../styles/element-styles.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
+import type { StyleStrategy, StyleTarget } from "../styles/style-strategy.js";
 import type { ViewController } from "../templating/html-directive.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";

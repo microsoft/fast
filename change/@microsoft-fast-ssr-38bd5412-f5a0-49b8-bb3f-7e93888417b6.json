@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "feat: shim DOMTokenList for class and part properties on HTMLElement",
+  "comment": "fix(fast-ssr): update to use html.partial",
   "packageName": "@microsoft/fast-ssr",
   "email": "roeisenb@microsoft.com",
   "dependentChangeType": "prerelease"

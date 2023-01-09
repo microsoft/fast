@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "add missing part attribute for tabpanel in tabs",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

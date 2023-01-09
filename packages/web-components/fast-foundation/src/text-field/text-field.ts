@@ -19,7 +19,7 @@ export { TextFieldType };
  * Text field configuration options
  * @public
  */
-export type TextFieldOptions = StartEndOptions;
+export type TextFieldOptions = StartEndOptions<FASTTextField>;
 
 /**
  * A Text Field Custom HTML Element.

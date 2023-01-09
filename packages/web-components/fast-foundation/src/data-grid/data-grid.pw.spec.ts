@@ -432,21 +432,35 @@ test.describe("Data grid", () => {
         await expect(cells.nth(0)).toBeFocused();
     });
 
-    test("should auto generate grid-columns from a manual row", async () => {
+    test("should scroll into view on focus", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
-                <fast-data-grid generate-header="none">
-                    <fast-data-grid-row>
+                <fast-data-grid generate-header="none" style="height:100px; overflow-y: scroll;">
+                    <fast-data-grid-row style="height:100px;">
                         <fast-data-grid-cell>1</fast-data-grid-cell>
+                    </fast-data-grid-row>
+                    <fast-data-grid-row style="height:100px;">
                         <fast-data-grid-cell>2</fast-data-grid-cell>
+                    </fast-data-grid-row>
+                    <fast-data-grid-row style="height:100px;">
+                        <fast-data-grid-cell>3</fast-data-grid-cell>
+                    </fast-data-grid-row>
+                    <fast-data-grid-row style="height:100px;">
                         <fast-data-grid-cell>3</fast-data-grid-cell>
                     </fast-data-grid-row>
                 </fast-data-grid>
             `;
         });
 
-        const lastRow = element.locator("fast-data-grid-row");
+        const cells = element.locator("fast-data-grid-cell");
+        await expect(cells).toHaveCount(4);
 
-        await expect(lastRow).toHaveJSProperty("gridTemplateColumns", "1fr 1fr 1fr");
+        await expect(element).toHaveJSProperty("scrollTop", 0);
+        await cells.nth(0).focus();
+        await expect(element).toHaveJSProperty("scrollTop", 0);
+        await cells.nth(1).focus();
+        await expect(element).toHaveJSProperty("scrollTop", 100);
+        await cells.nth(2).focus();
+        await expect(element).toHaveJSProperty("scrollTop", 200);
     });
 });
