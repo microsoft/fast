@@ -3,7 +3,7 @@
  * or arbitrary observable properties.
  * @public
  */
-export type DerivedDesignTokenValue<T> = T extends Function
+export type DerivedDesignTokenValue<T> = [T] extends [Function]
     ? never
     : (target: HTMLElement) => T;
 
