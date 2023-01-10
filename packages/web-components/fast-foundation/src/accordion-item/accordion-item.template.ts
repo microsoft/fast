@@ -23,6 +23,7 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
                 ${ref("expandbutton")}
                 aria-expanded="${x => x.expanded}"
                 aria-controls="${x => x.id}-panel"
+                aria-disabled="${x => (x.disabled ? "true" : void 0)}"
                 id="${x => x.id}"
                 @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
             >

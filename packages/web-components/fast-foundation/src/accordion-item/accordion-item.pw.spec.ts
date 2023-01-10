@@ -76,6 +76,23 @@ test.describe("Accordion item", () => {
         await expect(button).toHaveAttribute("aria-expanded", "false");
     });
 
+    test("should set `aria-disabled` property on the internal control equal to the `disabled` property", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion-item disabled></fast-accordion-item>
+            `;
+        });
+
+        await expect(button).toHaveAttribute("aria-disabled", "true");
+
+        await element.evaluate<void, FASTAccordionItem>(node => {
+            node.disabled = false;
+        });
+
+        await expect(button).not.toHaveAttribute("aria-disabled", "true");
+        await expect(button).not.toHaveAttribute("aria-disabled", "false");
+    });
+
     test("should set internal properties to match the id when provided", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
