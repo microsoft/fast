@@ -5,4 +5,4 @@ export * from "./property-stylesheet-behavior.js";
 export * from "./style/index.js";
 export * from "./typings.js";
 export * from "./whitespace-filter.js";
-export { StaticallyComposableHTML } from "./template-helpers.js";
+export * from "./template-helpers.js";
