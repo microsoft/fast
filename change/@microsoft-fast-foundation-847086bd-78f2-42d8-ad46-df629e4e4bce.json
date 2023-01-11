@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "export staticallyCompose function",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Fri, 02 Dec 2022 01:18:22 GMT and should not be manually modified.
+This log was last generated on Wed, 11 Jan 2023 22:07:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.20
+
+Wed, 11 Jan 2023 22:07:44 GMT
+
+### Changes
+
+- fix: router cannot render component and has missing types (roeisenb@microsoft.com)
+- fix(fast-router): update to use html.partial (roeisenb@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.20
 
 ## 1.0.0-alpha.19
 

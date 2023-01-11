@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "remove deprecation notice from display helpers",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}
