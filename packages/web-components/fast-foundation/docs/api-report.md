@@ -314,7 +314,7 @@ export interface CSSDesignTokenConfiguration extends DesignTokenConfiguration {
     cssCustomPropertyName: string;
 }
 
-// @public @deprecated
+// @public
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
 // @public
@@ -602,7 +602,7 @@ export const disabledCursor = "not-allowed";
 // @public
 export function disclosureTemplate<T extends FASTDisclosure>(): ElementViewTemplate<T>;
 
-// @public @deprecated
+// @public
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
@@ -2292,7 +2292,7 @@ export type GenerateHeaderOptions = ValuesOf<typeof GenerateHeaderOptions>;
 // @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
 
-// @public @deprecated
+// @public
 export const hidden = ":host([hidden]){display:none}";
 
 // @public
