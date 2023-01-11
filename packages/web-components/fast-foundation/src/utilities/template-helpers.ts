@@ -20,6 +20,7 @@ export type StaticallyComposableHTML<TSource = any, TParent = any> =
 
 /**
  * A function to compose template options.
+ * @public
  */
 export function staticallyCompose<TSource = any, TParent = any>(
     item: StaticallyComposableHTML<TSource, TParent>

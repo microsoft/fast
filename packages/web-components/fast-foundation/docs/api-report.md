@@ -2631,6 +2631,9 @@ export function startSlotTemplate<TSource extends StartEnd = StartEnd, TParent =
 export type StaticallyComposableHTML<TSource = any, TParent = any> = string | HTMLDirective | SyntheticViewTemplate<TSource, TParent> | undefined;
 
 // @public
+export function staticallyCompose<TSource = any, TParent = any>(item: StaticallyComposableHTML<TSource, TParent>): CaptureType<TSource, TParent>;
+
+// @public
 export type StaticDesignTokenValue<T> = T extends (...args: any[]) => any ? DerivedDesignTokenValue<T> : T;
 
 // @alpha (undocumented)
