@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "fix(Calendar): add fix for the timezones from #5539",
+  "comment": "export staticallyCompose function",
   "packageName": "@microsoft/fast-foundation",
-  "email": "Mathieu.Salois@goto.com",
+  "email": "chhol@microsoft.com",
   "dependentChangeType": "prerelease"
 }
