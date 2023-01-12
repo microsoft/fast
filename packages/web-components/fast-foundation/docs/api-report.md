@@ -1627,8 +1627,6 @@ export class FASTProgressRing extends FASTBaseProgress {
 // @public
 export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     constructor();
-    // @beta
-    clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
@@ -1650,7 +1648,7 @@ export class FASTRadioGroup extends FASTElement {
     // (undocumented)
     childItems: HTMLElement[];
     // @internal (undocumented)
-    clickHandler: (e: MouseEvent) => void;
+    clickHandler: (e: MouseEvent) => void | boolean;
     // @internal (undocumented)
     connectedCallback(): void;
     disabled: boolean;
@@ -1660,6 +1658,8 @@ export class FASTRadioGroup extends FASTElement {
     disconnectedCallback(): void;
     // @internal (undocumented)
     focusOutHandler: (e: FocusEvent) => boolean | void;
+    // @internal (undocumented)
+    handleDisabledClick: (e: MouseEvent) => void | boolean;
     // @internal
     keydownHandler: (e: KeyboardEvent) => boolean | void;
     name: string;
