@@ -53,15 +53,7 @@ export class FASTRadioGroup extends FASTElement {
      */
     @attr({ attribute: "disabled", mode: "boolean" })
     public disabled: boolean;
-    // protected disabledChanged(): void {
-    //     if (this.slottedRadioButtons) {
-    //         this.slottedRadioButtons.forEach((radio: FASTRadio) => {
-    //             if (this.disabled && !this.isInsideFoundationToolbar) {
-    //                 radio.setAttribute("tabindex", "-1")
-    //             }
-    //         });
-    //     }
-    // }
+    protected disabledChanged(): void {}
 
     /**
      * The name of the radio group. Setting this value will set the name value
