@@ -149,6 +149,103 @@ test.describe("Accordion", () => {
         await expect(secondItem).toHaveBooleanAttribute("expanded");
     });
 
+    test("should set the first item as expanded if no child is expanded by default in single mode", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion expand-mode="single">
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 1</span>
+                        <div>Content 1</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 2</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                </fast-accordion>
+            `;
+        });
+
+        const items = element.locator("fast-accordion-item");
+
+        const firstItem = items.nth(0);
+
+        const secondItem = items.nth(1);
+
+        await expect(firstItem).toHaveBooleanAttribute("expanded");
+
+        await expect(secondItem).not.toHaveBooleanAttribute("expanded");
+    });
+
+    test("should set the first item with an expanded attribute to expanded in single mode", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion expand-mode="single">
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 1</span>
+                        <div>Content 1</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item expanded>
+                        <span slot="heading">Heading 2</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item expanded>
+                        <span slot="heading">Heading 3</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                </fast-accordion>
+            `;
+        });
+
+        const items = element.locator("fast-accordion-item");
+
+        const firstItem = items.nth(0);
+
+        const secondItem = items.nth(1);
+
+        const thirdItem = items.nth(2);
+
+        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+
+        await expect(secondItem).toHaveBooleanAttribute("expanded");
+
+        await expect(thirdItem).not.toHaveBooleanAttribute("expanded");
+    });
+
+    test.only("should allow disabled items to be expanded when in single mode", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion expand-mode="single">
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 1</span>
+                        <div>Content 1</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item expanded disabled>
+                        <span slot="heading">Heading 2</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item expanded>
+                        <span slot="heading">Heading 3</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                </fast-accordion>
+            `;
+        });
+
+        const items = element.locator("fast-accordion-item");
+
+        const firstItem = items.nth(0);
+
+        const secondItem = items.nth(1);
+
+        const thirdItem = items.nth(2);
+
+        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+
+        await expect(secondItem).toHaveBooleanAttribute("expanded");
+
+        await expect(thirdItem).toHaveBooleanAttribute("expanded");
+    });
+
     test("should ignore `change` events from components other than accordion items", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
