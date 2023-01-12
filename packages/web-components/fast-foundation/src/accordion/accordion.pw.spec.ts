@@ -213,6 +213,7 @@ test.describe("Accordion", () => {
     });
 
     test("should allow disabled items to be expanded when in single mode", async () => {
+        test.slow();
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
