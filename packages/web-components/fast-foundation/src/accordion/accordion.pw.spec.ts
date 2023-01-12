@@ -1,6 +1,7 @@
 import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
+import type { FASTAccordionItem } from "../accordion-item/index.js";
 import { AccordionExpandMode } from "./accordion.options.js";
 
 test.describe("Accordion", () => {
@@ -211,7 +212,7 @@ test.describe("Accordion", () => {
         await expect(thirdItem).not.toHaveBooleanAttribute("expanded");
     });
 
-    test.only("should allow disabled items to be expanded when in single mode", async () => {
+    test("should allow disabled items to be expanded when in single mode", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
@@ -244,6 +245,16 @@ test.describe("Accordion", () => {
         await expect(secondItem).toHaveBooleanAttribute("expanded");
 
         await expect(thirdItem).toHaveBooleanAttribute("expanded");
+
+        await secondItem.evaluate(node => {
+            node.removeAttribute("disabled");
+        });
+
+        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+
+        await expect(secondItem).toHaveBooleanAttribute("expanded");
+
+        await expect(thirdItem).not.toHaveBooleanAttribute("expanded");
     });
 
     test("should ignore `change` events from components other than accordion items", async () => {

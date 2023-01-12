@@ -99,7 +99,6 @@ export class FASTAccordion extends FASTElement {
         this._accordionItems.forEach((item: HTMLElement, index: number) => {
             if (item instanceof FASTAccordionItem) {
                 item.addEventListener("change", this.activeItemChange);
-                // Observable.getNotifier(item).subscribe(this, "expanded");
             }
 
             const itemId: string | null = this.accordionIds[index];
