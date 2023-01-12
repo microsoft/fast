@@ -2,11 +2,8 @@ import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-elem
 import { keyEnter } from "@microsoft/fast-web-utilities";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
-import {
-    StartEnd,
-    StartEndOptions,
-    TemplateElementDependency,
-} from "../patterns/index.js";
+import { StartEnd, TemplateElementDependency } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./calendar.options.js";
 import { DateFormatter } from "./date-formatter.js";
 
@@ -64,6 +61,8 @@ export type CalendarOptions = StartEndOptions<FASTCalendar> & {
 /**
  * Calendar component
  *
+ * @slot start - Content which can be provided before the calendar content
+ * @slot end - Content which can be provided after the calendar content
  * @slot - The default slot for calendar content
  * @fires dateselected - Fires a custom 'dateselected' event when Enter is invoked via keyboard on a date
  *
