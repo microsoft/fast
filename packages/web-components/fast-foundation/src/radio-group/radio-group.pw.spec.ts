@@ -3,7 +3,7 @@ import type { Locator, Page } from "@playwright/test";
 import type { FASTRadio } from "../radio/index.js";
 import { fixtureURL } from "../__test__/helpers.js";
 import { RadioGroupOrientation } from "./radio-group.options.js";
-import type { FASTRadioGroup } from "./index.js";
+import type { FASTRadioGroup } from "./radio-group.js";
 
 test.describe("Radio Group", () => {
     let page: Page;
@@ -269,11 +269,52 @@ test.describe("Radio Group", () => {
 
         await expect(second).toBeFocused();
 
-        await expect(
-            element.evaluate<boolean, FASTRadioGroup>(
+        expect(
+            await element.evaluate<boolean, FASTRadioGroup>(
                 node => node.getAttribute("tabindex") === "-1"
             )
         ).toBeTruthy();
+    });
+
+    test("should NOT be focusable via click when disabled", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <button>Button</button>
+                <fast-radio-group>
+                    <fast-radio></fast-radio>
+                    <fast-radio></fast-radio>
+                    <fast-radio></fast-radio>
+                </fast-radio-group>
+            `;
+        });
+
+        const radioItemsCount = await radios.count();
+
+        for (let i = 0; i < radioItemsCount; i++) {
+            const item = radios.nth(i);
+
+            await item.click();
+
+            await expect(item).toBeFocused();
+        }
+
+        const button = page.locator("button", { hasText: "Button" });
+
+        await button.focus();
+
+        await expect(button).toBeFocused();
+
+        await element.evaluate<boolean, FASTRadioGroup>(node => (node.disabled = true));
+
+        await expect(element).toHaveBooleanAttribute("disabled");
+
+        for (let i = 0; i < radioItemsCount; i++) {
+            const item = radios.nth(i);
+
+            await item.click();
+
+            await expect(item).not.toBeFocused();
+        }
     });
 
     test("should set all child radio elements to readonly when the `readonly` property is true", async () => {

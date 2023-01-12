@@ -53,7 +53,15 @@ export class FASTRadioGroup extends FASTElement {
      */
     @attr({ attribute: "disabled", mode: "boolean" })
     public disabled: boolean;
-    protected disabledChanged(): void {}
+    // protected disabledChanged(): void {
+    //     if (this.slottedRadioButtons) {
+    //         this.slottedRadioButtons.forEach((radio: FASTRadio) => {
+    //             if (this.disabled && !this.isInsideFoundationToolbar) {
+    //                 radio.setAttribute("tabindex", "-1")
+    //             }
+    //         });
+    //     }
+    // }
 
     /**
      * The name of the radio group. Setting this value will set the name value
@@ -143,6 +151,7 @@ export class FASTRadioGroup extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
         this.direction = getDirection(this);
+
         this.setupRadioButtons();
     }
 
@@ -188,6 +197,7 @@ export class FASTRadioGroup extends FASTElement {
                 }
                 radio.checked = false;
             }
+
             radio.addEventListener("change", this.radioChangeHandler);
         });
 
@@ -302,21 +312,33 @@ export class FASTRadioGroup extends FASTElement {
     /**
      * @internal
      */
-    public clickHandler = (e: MouseEvent): void => {
+    public handleDisabledClick = (e: MouseEvent): void | boolean => {
+        // prevent focus events on items from the click handler when disabled
+        if (this.disabled) {
+            e.preventDefault();
+            return;
+        }
+
+        return true;
+    };
+
+    /**
+     * @internal
+     */
+    public clickHandler = (e: MouseEvent): void | boolean => {
         if (this.disabled) {
             return;
         }
 
+        e.preventDefault();
         const radio: FASTRadio | null = e.target as FASTRadio;
 
-        if (radio && radio instanceof FASTRadio && !radio.disabled) {
+        if (radio && radio instanceof FASTRadio) {
             radio.checked = true;
             radio.setAttribute("tabindex", "0");
             this.selectedRadio = radio;
             this.focusedRadio = radio;
         }
-
-        e.preventDefault();
     };
 
     private shouldMoveOffGroupToTheRight = (
@@ -414,7 +436,7 @@ export class FASTRadioGroup extends FASTElement {
     public keydownHandler = (e: KeyboardEvent): boolean | void => {
         const key = e.key;
 
-        if (key in ArrowKeys && this.isInsideFoundationToolbar) {
+        if (key in ArrowKeys && (this.isInsideFoundationToolbar || this.disabled)) {
             return true;
         }
 
