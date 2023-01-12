@@ -144,8 +144,8 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
      * @beta
      */
     public clickHandler(e: MouseEvent): boolean | void {
-        if (!this.disabled && !this.readOnly && !this.checked) {
-            this.checked = true;
-        }
+        // if (!this.disabled && !this.readOnly && !this.checked) {
+        //     this.checked = true;
+        // }
     }
 }

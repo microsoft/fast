@@ -10,6 +10,7 @@ export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTempl
     return html<T>`
         <template
             role="radiogroup"
+            tabindex=${x => (x.disabled ? -1 : void 0)}
             aria-disabled="${x => x.disabled}"
             aria-readonly="${x => x.readOnly}"
             aria-orientation="${x => x.orientation}"
