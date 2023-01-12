@@ -119,23 +119,17 @@ const styles = css`
         fill: currentcolor;
     }
 
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
         display: flex;
-        fill: currentcolor;
     }
 
-    ::slotted(svg) {
-        width: 16px;
-        height: 16px;
+    ::slotted([slot="start"]) {
+        margin-inline-end: 11px;
     }
 
-    .start {
-        margin-inline-end: calc(var(--design-unit) * 2px + 2px);
-    }
-
-    .end {
-        margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+    ::slotted([slot="end"]) {
+        margin-inline-start: 11px;
     }
 
     :host([aria-expanded="true"]) > .items {

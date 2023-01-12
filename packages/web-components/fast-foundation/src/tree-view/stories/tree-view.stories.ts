@@ -22,17 +22,14 @@ export default {
 export const TreeView: Story<FASTTreeView> = renderComponent(storyTemplate).bind({});
 TreeView.args = {
     storyContent: html`
-        <fast-divider></fast-divider>
         <fast-tree-item>
             Root item 1
-            <fast-divider></fast-divider>
             <fast-tree-item expanded>
                 Flowers
                 <fast-tree-item>Daisy</fast-tree-item>
                 <fast-tree-item disabled>Sunflower</fast-tree-item>
                 <fast-tree-item expanded>
                     Rose
-                    <fast-divider role="presentation"></fast-divider>
                     <fast-tree-item>Pink</fast-tree-item>
                     <fast-tree-item>Red</fast-tree-item>
                     <fast-tree-item>White</fast-tree-item>
@@ -45,7 +42,6 @@ TreeView.args = {
             Root item 2
             <fast-tree-item>
                 Flowers
-                <fast-divider></fast-divider>
                 <fast-tree-item disabled>Daisy</fast-tree-item>
                 <fast-tree-item>Sunflower</fast-tree-item>
                 <fast-tree-item>Rose</fast-tree-item>
@@ -55,6 +51,27 @@ TreeView.args = {
         </fast-tree-item>
         <fast-tree-item>
             Root item 3
+        </fast-tree-item>
+    `,
+};
+
+export const TreeViewFlat: Story<FASTTreeView> = renderComponent(storyTemplate).bind({});
+TreeViewFlat.args = {
+    storyContent: html`
+        <fast-tree-item>
+            <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+            Tree item 1
+            <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+        </fast-tree-item>
+        <fast-tree-item>
+            <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+            Tree item 2
+            <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+        </fast-tree-item>
+        <fast-tree-item>
+            <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+            Tree item 3
+            <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
         </fast-tree-item>
     `,
 };

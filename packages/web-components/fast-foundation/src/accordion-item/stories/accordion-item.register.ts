@@ -107,18 +107,19 @@ const styles = css`
         display: flex;
     }
 
-    .start {
+    ::slotted([slot="start"]) {
         display: flex;
         align-items: center;
-        padding-inline-start: calc(var(--design-unit) * 1px);
+        margin-inline-end: calc(var(--design-unit) * 1px);
         justify-content: center;
         grid-column: 1;
         position: relative;
     }
 
-    .end {
+    ::slotted([slot="end"]) {
         display: flex;
         align-items: center;
+        margin-inline-start: calc(var(--design-unit) * 1px);
         justify-content: center;
         grid-column: 3;
         position: relative;
