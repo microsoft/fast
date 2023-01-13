@@ -67,16 +67,17 @@ export class FASTAccordion extends FASTElement {
         this.$emit("change", this.activeid);
     };
 
-    private findExpandedItem(): FASTAccordionItem | Element {
-        for (let item: number = 0; item < this._accordionItems.length; item++) {
-            if (
-                ((this._accordionItems[item] as unknown) as FASTAccordionItem)
-                    .expanded === true
-            ) {
-                return this._accordionItems[item];
-            }
+    private findExpandedItem(): FASTAccordionItem | Element | null {
+        if (this.accordionItems.length === 0) {
+            return null;
         }
-        return this._accordionItems[0];
+
+        return (
+            this._accordionItems.find(
+                (item: Element | FASTAccordionItem) =>
+                    item instanceof FASTAccordionItem && item.expanded
+            ) ?? this._accordionItems[0]
+        );
     }
 
     private setItems = (): void => {
@@ -118,18 +119,21 @@ export class FASTAccordion extends FASTElement {
     };
 
     private setSingleExpandMode(expandedItem: Element): void {
+        if (this._accordionItems.length === 0) {
+            return;
+        }
         const currentItems = Array.from(this._accordionItems);
         this.activeItemIndex = currentItems.indexOf(expandedItem);
 
         currentItems.forEach((item: FASTAccordionItem, index: number) => {
             if (this.activeItemIndex === index) {
                 item.expanded = true;
-                item.expandbutton.setAttribute("aria-disabled", "true");
+                item.expandbutton.setAttribute("disabled", "");
             } else {
                 item.expanded = false;
 
                 if (!item.hasAttribute("disabled")) {
-                    item.removeAttribute("aria-disabled");
+                    item.expandbutton.removeAttribute("disabled");
                 }
             }
         });
