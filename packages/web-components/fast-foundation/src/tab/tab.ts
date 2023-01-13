@@ -4,7 +4,7 @@ import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
- * Tab option configuration options
+ * Tab configuration options
  * @public
  */
 export type TabOptions = StartEndOptions<FASTTab>;
