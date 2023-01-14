@@ -26,15 +26,41 @@ export const Accordion: Story<FASTAccordion> = renderComponent(storyTemplate).bi
 Accordion.args = {
     storyContent: html`
         <fast-accordion-item>
-            <div slot="heading">Accordion Item 1 Heading</div>
+            <span slot="heading">Accordion Item 1 Heading</span>
             Accordion Item 1 Content
         </fast-accordion-item>
         <fast-accordion-item>
-            <div slot="heading">Accordion Item 2 Heading</div>
+            <span slot="heading">Accordion Item 2 Heading</span>
             <fast-checkbox>A checkbox as content</fast-checkbox>
         </fast-accordion-item>
         <fast-accordion-item disabled>
-            <div slot="heading">Accordion Item 3 Heading</div>
+            <span slot="heading">Accordion Item 3 Heading</span>
+            Accordion Item 3 Content
+        </fast-accordion-item>
+    `,
+};
+
+export const AccordionWithSlottedStartEnd: Story<FASTAccordion> = renderComponent(
+    storyTemplate
+).bind({});
+AccordionWithSlottedStartEnd.args = {
+    storyContent: html`
+        <fast-accordion-item>
+            <fast-badge slot="start">start</fast-badge>
+            <span slot="heading">Accordion Item 1 Heading</span>
+            <fast-badge slot="end">end</fast-badge>
+            Accordion Item 1 Content
+        </fast-accordion-item>
+        <fast-accordion-item>
+            <fast-badge slot="start">start</fast-badge>
+            <span slot="heading">Accordion Item 2 Heading</span>
+            <fast-badge slot="end">end</fast-badge>
+            <fast-checkbox>A checkbox as content</fast-checkbox>
+        </fast-accordion-item>
+        <fast-accordion-item disabled>
+            <fast-badge slot="start">start</fast-badge>
+            <span slot="heading">Accordion Item 3 Heading</span>
+            <fast-badge slot="end">end</fast-badge>
             Accordion Item 3 Content
         </fast-accordion-item>
     `,

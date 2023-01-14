@@ -152,20 +152,17 @@ const styles = css`
                 rgba(0, 0, 0, calc(0.13 * (2 - var(--background-luminance, 1))));
     }
 
-    .end {
-        margin-inline-start: auto;
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
+        display: flex;
     }
 
-    .start,
-    .end,
-    .indicator,
-    .select-indicator,
-    ::slotted(svg) {
-        fill: currentcolor;
-        height: 1em;
-        min-height: calc(var(--design-unit) * 4px);
-        min-width: calc(var(--design-unit) * 4px);
-        width: 1em;
+    ::slotted([slot="start"]) {
+        margin-inline-end: 11px;
+    }
+
+    ::slotted([slot="end"]) {
+        margin-inline-start: 11px;
     }
 
     ::slotted([role="option"]),
@@ -192,7 +189,6 @@ const styles = css`
         height: calc(100% - (var(--stroke-width) * 1px));
         line-height: var(--type-ramp-base-line-height);
         margin: auto 0;
-        width: 100%;
     }
 
     .selected-value:hover,
@@ -211,6 +207,8 @@ FASTCombobox.define({
                 class="select-indicator"
                 part="select-indicator"
                 viewBox="0 0 12 7"
+                width="12"
+                height="7"
                 xmlns="http://www.w3.org/2000/svg"
             >
                 <path

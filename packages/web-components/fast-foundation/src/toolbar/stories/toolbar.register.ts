@@ -34,15 +34,11 @@ const styles = css`
     :host([orientation="vertical"]) ::slotted(:not([slot])) {
         margin: var(--toolbar-item-gap) 0;
     }
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
         display: flex;
         margin: auto;
         margin-inline: 0;
-    }
-    ::slotted(svg) {
-        width: 16px;
-        height: 16px;
     }
 `;
 

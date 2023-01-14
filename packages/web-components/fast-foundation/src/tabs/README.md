@@ -211,9 +211,11 @@ export const myTabs = Tabs.compose({
 
 #### Slots
 
-| Name | Description                          |
-| ---- | ------------------------------------ |
-|      | The default slot for the tab content |
+| Name    | Description                                          |
+| ------- | ---------------------------------------------------- |
+| `start` | Content which can be provided before the tab content |
+| `end`   | Content which can be provided after the tab content  |
+|         | The default slot for the tab content                 |
 
 <hr/>
 

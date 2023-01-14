@@ -158,7 +158,7 @@ export type AxisScalingMode = ValuesOf<typeof AxisScalingMode>;
 export function badgeTemplate<T extends FASTBadge>(): ElementViewTemplate<T>;
 
 // @public
-export type BreadcrumbItemOptions = StartEndOptions & {
+export type BreadcrumbItemOptions = StartEndOptions<FASTBreadcrumbItem> & {
     separator?: StaticallyComposableHTML<FASTBreadcrumbItem>;
 };
 
@@ -600,7 +600,10 @@ export interface Dimension {
 export const disabledCursor = "not-allowed";
 
 // @public
-export function disclosureTemplate<T extends FASTDisclosure>(): ElementViewTemplate<T>;
+export type DisclosureOptions = StartEndOptions<FASTDisclosure>;
+
+// @public
+export function disclosureTemplate<T extends FASTDisclosure>(options?: DisclosureOptions): ElementViewTemplate<T>;
 
 // @public
 export function display(displayValue: CSSDisplayPropertyValue): string;
@@ -1084,6 +1087,9 @@ export class FASTDialog extends FASTElement {
     show(): void;
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FASTDisclosure" because one of its declarations is marked as @internal
+//
 // @public
 export class FASTDisclosure extends FASTElement {
     // @internal (undocumented)
@@ -1099,6 +1105,10 @@ export class FASTDisclosure extends FASTElement {
     show(): void;
     summary: string;
     toggle(): void;
+}
+
+// @internal
+export interface FASTDisclosure extends StartEnd {
 }
 
 // @public
@@ -2648,7 +2658,7 @@ export type SwitchOptions = {
 export function switchTemplate<T extends FASTSwitch>(options?: SwitchOptions): ElementViewTemplate<T>;
 
 // @public
-export type TabOptionOptions = StartEndOptions;
+export type TabOptions = StartEndOptions<FASTTab>;
 
 // @public
 export function tabPanelTemplate<T extends FASTTabPanel>(): ElementViewTemplate<T>;
@@ -2669,7 +2679,7 @@ export type TabsOrientation = ValuesOf<typeof TabsOrientation>;
 export function tabsTemplate<T extends FASTTabs>(options?: TabsOptions): ElementViewTemplate<T>;
 
 // @public
-export function tabTemplate<T extends FASTTab>(options?: StartEndOptions<FASTTab>): ElementViewTemplate<T>;
+export function tabTemplate<T extends FASTTab>(options?: TabOptions): ElementViewTemplate<T>;
 
 // @beta
 export function tagFor(dependency: TemplateElementDependency): string;
@@ -2792,9 +2802,9 @@ export type YearFormat = ValuesOf<typeof YearFormat>;
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/calendar/calendar.d.ts:50:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:53:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

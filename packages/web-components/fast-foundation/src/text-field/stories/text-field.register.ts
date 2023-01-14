@@ -26,7 +26,7 @@ const styles = css`
         height: calc(
             (var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px
         );
-        align-items: baseline;
+        align-items: center;
     }
 
     .control {
@@ -36,7 +36,6 @@ const styles = css`
         border: 0;
         color: inherit;
         height: calc(100% - 4px);
-        width: 100%;
         margin-top: auto;
         margin-bottom: auto;
         border: none;
@@ -66,30 +65,10 @@ const styles = css`
         visibility: hidden;
     }
 
-    .start,
-    .control,
-    .end {
-        align-self: center;
-    }
-
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
         display: flex;
-        margin: auto;
-        fill: currentcolor;
-    }
-
-    ::slotted(svg) {
-        width: 16px;
-        height: 16px;
-    }
-
-    .start {
-        margin-inline-start: 11px;
-    }
-
-    .end {
-        margin-inline-end: 11px;
+        margin-inline: 11px;
     }
 
     :host(:hover:not([disabled])) .root {
