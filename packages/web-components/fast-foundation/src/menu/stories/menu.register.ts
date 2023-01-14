@@ -241,11 +241,11 @@ FancyMenuItem.define({
             grid-row: 1;
         }
 
-        :host([start-column-count="2"]) .start {
+        :host([start-column-count="2"]) ::slotted([slot="start"]) {
             grid-column: 2;
         }
 
-        :host([start-column-count="2"]) .end {
+        :host([start-column-count="2"]) ::slotted([slot="end"]) {
             grid-column: 4;
         }
 
@@ -254,6 +254,7 @@ FancyMenuItem.define({
             background: var(--neutral-fill-rest);
             color: var(--neutral-foreground-rest);
         }
+
         :host([disabled]) {
             cursor: var(--disabled-cursor);
             opacity: var(--disabled-opacity);
@@ -265,35 +266,22 @@ FancyMenuItem.define({
             background: var(--neutral-fill-stealth-rest);
         }
 
-        :host([disabled]:hover) .start,
-        :host([disabled]:hover) .end,
-        :host([disabled]:hover)::slotted(svg) {
-            fill: var(--neutral-foreground-rest);
-        }
-
-        .expand-collapse-glyph,
-        ::slotted(svg) {
+        .expand-collapse-glyph {
             width: 16px;
             height: 16px;
         }
 
-        ::slotted(svg) {
-            fill: currentcolor;
-        }
-
-        .start,
-        .end {
+        ::slotted([slot="start"]),
+        ::slotted([slot="end"]) {
             display: flex;
-            justify-content: center;
         }
 
-        :host(:hover) .start,
-        :host(:hover) .end,
-        :host(:hover)::slotted(svg),
-        :host(:active) .start,
-        :host(:active) .end,
-        :host(:active)::slotted(svg) {
-            fill: var(--neutral-foreground-rest);
+        ::slotted([slot="start"]) {
+            margin-inline-start: 10px;
+        }
+
+        ::slotted([slot="end"]) {
+            margin-inline-end: 10px;
         }
 
         :host([start-column-count="0"][aria-haspopup="menu"]),
@@ -308,7 +296,8 @@ FancyMenuItem.define({
             min-height: 32px;
         }
 
-        :host([start-column-count="2"]:not([aria-haspopup="menu"])) .end {
+        :host([start-column-count="2"]:not([aria-haspopup="menu"]))
+            ::slotted([slot="end"]) {
             grid-column: 5;
         }
 
@@ -334,9 +323,9 @@ FancyMenuItem.define({
             grid-column-start: 1;
         }
 
-        :host([aria-haspopup="menu"]) .end,
-        :host([role="menuitemcheckbox"]) .end,
-        :host([role="menuitemradio"]) .end {
+        :host([aria-haspopup="menu"]) ::slotted([slot="end"]),
+        :host([role="menuitemcheckbox"]) ::slotted([slot="end"]),
+        :host([role="menuitemradio"]) ::slotted([slot="end"]) {
             grid-column-start: 4;
         }
 

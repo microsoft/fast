@@ -13,6 +13,7 @@ const styles = css`
         list-style-type: none;
         background: var(--accent-fill-rest);
         color: var(--foreground-accent-rest);
+        fill: currentcolor;
         font-family: var(--body-font);
         font-size: var(--type-ramp-base-font-size);
         border-radius: calc(var(--control-corner-radius) * 1px);
@@ -32,11 +33,26 @@ const styles = css`
         color: var(--foreground-on-accent-hover);
     }
     .invoker {
+        display: flex;
+        align-items: center;
         background: transparent;
         color: var(--accent-foreground-rest);
         cursor: pointer;
         width: max-content;
         margin: 16px 0;
+    }
+
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
+        display: flex;
+    }
+
+    ::slotted([slot="start"]) {
+        margin-inline-end: 11px;
+    }
+
+    ::slotted([slot="end"]) {
+        margin-inline-start: 11px;
     }
 
     .disclosure[open] .invoker ~ * {
