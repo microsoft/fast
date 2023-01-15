@@ -220,6 +220,7 @@ export class FASTTabs extends FASTElement {
                 tab.setAttribute("tabindex", isActiveTab ? "0" : "-1");
                 if (isActiveTab) {
                     this.activetab = tab;
+                    this.activeid = tabId;
                 }
             }
 
