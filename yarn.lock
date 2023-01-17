@@ -1743,6 +1743,11 @@
   resolved "https://registry.yarnpkg.com/@fluentui/svg-icons/-/svg-icons-1.1.167.tgz#b16f2be02061d438f520c8499ab184e700cfcfbf"
   integrity sha512-db/7i0cJ9DvlZC24h1feJp+oPQmlZ9xGS+8yLnzuEmWYtoaAEg8d0suiM54uUdQo4xyI6DN7ocIyJdNBebLX5Q==
 
+"@fluentui/svg-icons@^1.1.191":
+  version "1.1.191"
+  resolved "https://registry.yarnpkg.com/@fluentui/svg-icons/-/svg-icons-1.1.191.tgz#9e91e1141a0bae90d18d5e90c446c358dc8528da"
+  integrity sha512-NhQ+4xDKKWYL/85ZQ5PGevMU1VeO5avqKZLZowpoCOmmz9bwcKUB1yFliWkqgkjyFXV0OPFgjf8aeOh5RJYDww==
+
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"

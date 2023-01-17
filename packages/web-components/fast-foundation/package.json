@@ -63,6 +63,7 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.5.7",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
+    "@fluentui/svg-icons": "^1.1.191",
     "@microsoft/api-extractor": "7.24.2",
     "@microsoft/tsdoc-config": "^0.13.4",
     "@playwright/test": "^1.25.2",
@@ -87,6 +88,7 @@
     "rollup": "^2.71.1",
     "source-map-loader": "^0.2.4",
     "source-map": "^0.7.3",
+    "svg-inline-loader": "^0.8.2",
     "ts-loader": "^7.0.2",
     "ts-node": "^8.9.1",
     "tsconfig-paths": "^3.9.0",

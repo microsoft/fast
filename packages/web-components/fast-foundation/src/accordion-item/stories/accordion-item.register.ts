@@ -1,3 +1,5 @@
+import chevronDownIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.svg";
+import chevronUpIcon from "@fluentui/svg-icons/icons/chevron_up_12_regular.svg";
 import { css } from "@microsoft/fast-element";
 import { FASTAccordionItem } from "../accordion-item.js";
 import { accordionItemTemplate } from "../accordion-item.template.js";
@@ -128,6 +130,9 @@ const styles = css`
 
 FASTAccordionItem.define({
     name: "fast-accordion-item",
-    template: accordionItemTemplate(),
+    template: accordionItemTemplate({
+        collapsedIcon: chevronDownIcon,
+        expandedIcon: chevronUpIcon,
+    }),
     styles,
 });
