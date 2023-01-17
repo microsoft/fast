@@ -1,7 +1,7 @@
 {
-  "type": "prerelease",
+  "type": "none",
   "comment": "Import icons for fast-foundation stories",
   "packageName": "@microsoft/fast-foundation",
   "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
+  "dependentChangeType": "none"
 }
