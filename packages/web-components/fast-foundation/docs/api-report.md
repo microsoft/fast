@@ -770,7 +770,6 @@ export class FASTBaseProgress extends FASTElement {
     min: number;
     // (undocumented)
     protected minChanged(): void;
-    paused: boolean;
     // @internal
     percentComplete: number;
     value: number | null;
