@@ -10568,6 +10568,11 @@ electron-to-chromium@^1.4.172:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.180.tgz#380b06037836055d12c7de181ee90b8ed911c3e7"
   integrity sha512-7at5ash3FD9U5gPa3/wPr6OdiZd/zBjvDZaaHBpcqFOFUhZiWnb7stkqk8xUFL9H9nk7Yok5vCCNK8wyC/+f8A==
 
+element-internals-polyfill@^1.1.17:
+  version "1.1.17"
+  resolved "https://registry.yarnpkg.com/element-internals-polyfill/-/element-internals-polyfill-1.1.17.tgz#74b74232dda8d20098c614969007af7e2728bcf5"
+  integrity sha512-sMDJyJiwvcHB6wLnyG+y/9FRxi/9OyI8bmjyw18K6b5iVlBjmA5CJVTFz4K2I7R53yqevK8WkTrfBmSHJXH9Rw==
+
 elliptic@^6.5.3:
   version "6.5.4"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.4.tgz#da37cebd31e79a1367e941b592ed1fbebd58abbb"

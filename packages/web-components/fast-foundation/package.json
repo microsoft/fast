@@ -75,6 +75,7 @@
     "@storybook/html": "6.5.10",
     "@storybook/manager-webpack5": "6.5.10",
     "concurrently": "^7.3.0",
+    "element-internals-polyfill": "^1.1.17",
     "esm": "^3.2.25",
     "express": "^4.18.1",
     "expect": "29.2.1",

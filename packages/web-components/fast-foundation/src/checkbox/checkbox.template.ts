@@ -12,12 +12,12 @@ export function checkboxTemplate<T extends FASTCheckbox>(
     return html<T>`
         <template
             role="checkbox"
-            aria-checked="${x => (x.indeterminate ? "mixed" : x.checked)}"
-            aria-required="${x => x.required}"
+            aria-checked="${x => x.ariaChecked}"
             aria-disabled="${x => x.disabled}"
+            aria-required="${x => x.required}"
             tabindex="${x => (x.disabled ? null : 0)}"
             @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
-            @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
+            @click="${(x, c) => x.clickHandler(c.event)}"
         >
             <div part="control" class="control">
                 <slot name="checked-indicator">

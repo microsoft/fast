@@ -6,6 +6,7 @@
 
 import { CaptureType } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
+import { Constructor } from '@open-wc/form-control';
 import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
@@ -13,11 +14,14 @@ import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
+import { FormControlInterface } from '@open-wc/form-control';
 import { HostBehavior } from '@microsoft/fast-element';
 import { HostController } from '@microsoft/fast-element';
 import { HTMLDirective } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
+import { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import type { SyntheticViewTemplate } from '@microsoft/fast-element';
+import { Validator } from '@open-wc/form-control';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
@@ -911,20 +915,53 @@ export interface FASTCalendar extends StartEnd {
 export class FASTCard extends FASTElement {
 }
 
-// Warning: (ae-forgotten-export) The symbol "FormAssociatedCheckbox" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "FASTCheckbox_base" needs to be exported by the entry point index.d.ts
 //
 // @public
-export class FASTCheckbox extends FormAssociatedCheckbox {
-    constructor();
-    // @internal (undocumented)
-    clickHandler: (e: MouseEvent) => void;
+export class FASTCheckbox extends FASTCheckbox_base {
+    // (undocumented)
+    ariaChecked: string | null;
+    // (undocumented)
+    checked: boolean;
+    checkedAttribute: boolean;
+    // (undocumented)
+    protected checkedAttributeChanged(prev: boolean | undefined, next: boolean): void;
+    // (undocumented)
+    checkedChanged(prev: boolean | undefined, next: boolean): void;
+    // @internal
+    clickHandler: (e: Event) => void;
+    currentChecked: boolean;
+    // (undocumented)
+    currentCheckedChanged(prev: boolean | undefined, next: boolean): void;
+    // (undocumented)
+    defaultChecked: boolean;
+    // (undocumented)
+    defaultCheckedChanged(): void;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    indeterminate: boolean;
+    protected dirtyChecked: boolean;
     // @internal
+    dirtyValue: boolean;
+    disabled: boolean;
+    // (undocumented)
+    static formControlValidators: Validator[];
+    indeterminate: boolean | undefined;
+    // (undocumented)
+    indeterminateChanged(prev: boolean | undefined, next: boolean | undefined): void;
     initialValue: string;
-    // @internal (undocumented)
+    initialValueChanged(previous: string, next: string): void;
+    // @internal
     keypressHandler: (e: KeyboardEvent) => void;
+    name: string;
+    required: boolean;
+    // (undocumented)
+    resetFormControl(): void;
+    // (undocumented)
+    shouldFormValueUpdate(): boolean;
+    // (undocumented)
+    value: string;
+    // (undocumented)
+    valueChanged(previous: string, next: string): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag

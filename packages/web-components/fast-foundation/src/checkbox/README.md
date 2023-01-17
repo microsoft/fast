@@ -104,22 +104,69 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
 
 #### Superclass
 
-| Name                     | Module                                    | Package |
-| ------------------------ | ----------------------------------------- | ------- |
-| `FormAssociatedCheckbox` | /src/checkbox/checkbox.form-associated.js |         |
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
+
+#### Mixins
+
+| Name               | Module | Package               |
+| ------------------ | ------ | --------------------- |
+| `FormControlMixin` |        | @open-wc/form-control |
+
+#### Static Fields
+
+| Name                    | Privacy | Type    | Default               | Description | Inherited From |
+| ----------------------- | ------- | ------- | --------------------- | ----------- | -------------- |
+| `formControlValidators` |         | `array` | `[requiredValidator]` |             |                |
 
 #### Fields
 
-| Name            | Privacy | Type      | Default | Description                            | Inherited From         |
-| --------------- | ------- | --------- | ------- | -------------------------------------- | ---------------------- |
-| `indeterminate` | public  | `boolean` | `false` | The indeterminate state of the control |                        |
-| `proxy`         |         |           |         |                                        | FormAssociatedCheckbox |
+| Name               | Privacy   | Type                   | Default | Description                                                                                                                                                                                                                                                                                                                             | Inherited From |
+| ------------------ | --------- | ---------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `checkedAttribute` | public    | `boolean`              | `false` | The initial state of the checkbox.                                                                                                                                                                                                                                                                                                      |                |
+| `defaultChecked`   | public    | `boolean`              |         |                                                                                                                                                                                                                                                                                                                                         |                |
+| `initialValue`     | public    | `string`               | `"on"`  | The initial value of the form. This value sets the \`value\` property only when the \`value\` property has not been explicitly set.                                                                                                                                                                                                     |                |
+| `value`            | public    | `string`               |         |                                                                                                                                                                                                                                                                                                                                         |                |
+| `currentChecked`   | public    | `boolean`              |         | The current checkedness of the element. This property serves as a mechanism to set the \`checked\` property through both property assignment and the .setAttribute() method. This is useful for setting the field's checkedness in UI libraries that bind data through the .setAttribute() API and don't support IDL attribute binding. |                |
+| `dirtyChecked`     | protected | `boolean`              | `false` | Tracks whether the "checked" property has been changed. This is necessary to provide consistent behavior with normal input checkboxes                                                                                                                                                                                                   |                |
+| `checked`          | public    | `boolean`              | `false` |                                                                                                                                                                                                                                                                                                                                         |                |
+| `disabled`         | public    | `boolean`              | `false` | Sets the element's disabled state. A disabled element will not be included during form submission.                                                                                                                                                                                                                                      |                |
+| `ariaChecked`      | public    | `string or null`       |         |                                                                                                                                                                                                                                                                                                                                         |                |
+| `indeterminate`    | public    | `boolean or undefined` |         | The indeterminate state of the control                                                                                                                                                                                                                                                                                                  |                |
+| `name`             | public    | `string`               |         | The name of the element. This element's value will be surfaced during form submission under the provided name.                                                                                                                                                                                                                          |                |
+| `required`         | public    | `boolean`              | `false` | The required state of the element. If true, the element will be required to complete the form.                                                                                                                                                                                                                                          |                |
+
+#### Methods
+
+| Name                      | Privacy   | Description                                         | Parameters                                               | Return    | Inherited From |
+| ------------------------- | --------- | --------------------------------------------------- | -------------------------------------------------------- | --------- | -------------- |
+| `checkedAttributeChanged` | protected |                                                     | `prev: boolean or undefined, next: boolean`              | `void`    |                |
+| `defaultCheckedChanged`   | public    |                                                     |                                                          | `void`    |                |
+| `initialValueChanged`     | public    | Invoked when the \`initialValue\` property changes. | `previous: string, next: string`                         | `void`    |                |
+| `valueChanged`            | public    |                                                     | `previous: string, next: string`                         | `void`    |                |
+| `currentCheckedChanged`   | public    |                                                     | `prev: boolean or undefined, next: boolean`              |           |                |
+| `checkedChanged`          | public    |                                                     | `prev: boolean or undefined, next: boolean`              | `void`    |                |
+| `shouldFormValueUpdate`   |           |                                                     |                                                          | `boolean` |                |
+| `resetFormControl`        |           |                                                     |                                                          | `void`    |                |
+| `indeterminateChanged`    | public    |                                                     | `prev: boolean or undefined, next: boolean or undefined` | `void`    |                |
 
 #### Events
 
 | Name     | Type | Description                                                | Inherited From |
 | -------- | ---- | ---------------------------------------------------------- | -------------- |
 | `change` |      | Emits a custom change event when the checked state changes |                |
+
+#### Attributes
+
+| Name              | Field            | Inherited From |
+| ----------------- | ---------------- | -------------- |
+| `checked`         | checkedAttribute |                |
+| `value`           | initialValue     |                |
+| `current-checked` | currentChecked   |                |
+|                   | disabled         |                |
+| `name`            | name             |                |
+|                   | required         |                |
 
 #### CSS Parts
 
