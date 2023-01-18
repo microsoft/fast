@@ -65,3 +65,48 @@ AccordionWithSlottedStartEnd.args = {
         </fast-accordion-item>
     `,
 };
+
+export const AccordionWithExpandedChild: Story<FASTAccordion> = renderComponent(
+    storyTemplate
+).bind({});
+AccordionWithExpandedChild.args = {
+    storyContent: html`
+        <fast-accordion-item>
+            <div slot="heading">Accordion Item 1 Heading</div>
+            Accordion Item 1 Content
+        </fast-accordion-item>
+        <fast-accordion-item>
+            <div slot="heading">Accordion Item 2 Heading</div>
+            <fast-checkbox>A checkbox as content</fast-checkbox>
+        </fast-accordion-item>
+        <fast-accordion-item expanded>
+            <div slot="heading">Accordion Item 3 Heading</div>
+            Accordion Item 3 Content
+        </fast-accordion-item>
+    `,
+};
+
+export const AccordionWithSingleExpandMode: Story<FASTAccordion> = renderComponent(
+    storyTemplate
+).bind({});
+AccordionWithSingleExpandMode.args = {
+    expandmode: "single",
+    storyContent: html`
+        <fast-accordion-item expanded disabled>
+            <div slot="heading">Accordion Item 1 Heading</div>
+            Accordion Item 1 Content
+        </fast-accordion-item>
+        <fast-accordion-item expanded>
+            <div slot="heading">Accordion Item 2 Heading</div>
+            <fast-checkbox>A checkbox as content</fast-checkbox>
+        </fast-accordion-item>
+        <fast-accordion-item>
+            <div slot="heading">Accordion Item 3 Heading</div>
+            Accordion Item 3 Content
+        </fast-accordion-item>
+        <fast-accordion-item>
+            <div slot="heading">Accordion Item 4 Heading</div>
+            Accordion Item 4 Content
+        </fast-accordion-item>
+    `,
+};

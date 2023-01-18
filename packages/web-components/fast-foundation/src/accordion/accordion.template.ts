@@ -8,7 +8,9 @@ import type { FASTAccordion } from "./accordion.js";
 export function accordionTemplate<T extends FASTAccordion>(): ElementViewTemplate<T> {
     return html<T>`
         <template>
-            <slot ${slotted({ property: "accordionItems", filter: elements() })}></slot>
+            <slot
+                ${slotted({ property: "slottedAccordionItems", filter: elements() })}
+            ></slot>
         </template>
     `;
 }
