@@ -124,10 +124,10 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 #### Fields
 
-| Name              | Privacy   | Type                  | Default | Description                                                                                   | Inherited From |
-| ----------------- | --------- | --------------------- | ------- | --------------------------------------------------------------------------------------------- | -------------- |
-| `expandmode`      | public    | `AccordionExpandMode` |         | Controls the expand mode of the Accordion, either allowing single or multiple item expansion. |                |
-| `_accordionItems` | protected | `Element[]`           |         |                                                                                               |                |
+| Name             | Privacy   | Type                  | Default | Description                                                                                   | Inherited From |
+| ---------------- | --------- | --------------------- | ------- | --------------------------------------------------------------------------------------------- | -------------- |
+| `expandmode`     | public    | `AccordionExpandMode` |         | Controls the expand mode of the Accordion, either allowing single or multiple item expansion. |                |
+| `accordionItems` | protected | `Element[]`           |         |                                                                                               |                |
 
 #### Events
 
