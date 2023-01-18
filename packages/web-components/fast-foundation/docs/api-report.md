@@ -630,15 +630,15 @@ export function endSlotTemplate<TSource extends StartEnd = StartEnd, TParent = a
 
 // @public
 export class FASTAccordion extends FASTElement {
-    // @internal (undocumented)
-    accordionItems: HTMLElement[];
     // (undocumented)
-    protected _accordionItems: Element[];
-    // @internal (undocumented)
-    accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
+    protected accordionItems: Element[];
     expandmode: AccordionExpandMode;
     // @internal (undocumented)
     handleChange(source: any, propertyName: string): void;
+    // @internal (undocumented)
+    slottedAccordionItems: HTMLElement[];
+    // @internal (undocumented)
+    slottedAccordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
