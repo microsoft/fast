@@ -1,5 +1,5 @@
-import chevronIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.svg";
 import { css } from "@microsoft/fast-element";
+import chevronIcon from "../../../statics/svg/chevron_down_12_regular.svg";
 import { FASTCombobox } from "../combobox.js";
 import { comboboxTemplate } from "../combobox.template.js";
 

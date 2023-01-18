@@ -15,11 +15,12 @@ const storyTemplate = html<StoryArgs<FASTFlipper>>`
 export default {
     title: "Flipper",
     args: {
+        direction: FlipperDirection.next,
         disabled: false,
         hiddenFromAT: true,
     },
     argTypes: {
-        direction: { control: "select", options: Object.values(FlipperDirection) },
+        direction: { control: "radio", options: Object.values(FlipperDirection) },
         disabled: { control: "boolean" },
         hiddenFromAT: { control: "boolean" },
     },

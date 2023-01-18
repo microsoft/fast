@@ -63,7 +63,6 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.5.7",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
-    "@fluentui/svg-icons": "^1.1.191",
     "@microsoft/api-extractor": "7.24.2",
     "@microsoft/tsdoc-config": "^0.13.4",
     "@playwright/test": "^1.25.2",

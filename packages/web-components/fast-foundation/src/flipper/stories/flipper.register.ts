@@ -1,6 +1,6 @@
-import chevronLeftIcon from "@fluentui/svg-icons/icons/chevron_left_16_regular.svg";
-import chevronRightIcon from "@fluentui/svg-icons/icons/chevron_right_16_regular.svg";
 import { css } from "@microsoft/fast-element";
+import chevronLeftIcon from "../../../statics/svg/chevron_left_16_regular.svg";
+import chevronRightIcon from "../../../statics/svg/chevron_right_16_regular.svg";
 import { FASTFlipper } from "../flipper.js";
 import { flipperTemplate } from "../flipper.template.js";
 
