@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "ensure single expand mode accordions support explicitly expanded items",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}
