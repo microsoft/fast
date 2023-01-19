@@ -753,7 +753,6 @@ export class FASTAnchoredRegion extends FASTElement {
 
 // @public
 export class FASTAvatar extends FASTElement {
-    link: string;
 }
 
 // @public
