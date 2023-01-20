@@ -32,6 +32,24 @@ export class FASTAccordion extends FASTElement {
      */
     @attr({ attribute: "expand-mode" })
     public expandmode: AccordionExpandMode = AccordionExpandMode.multi;
+    public expandmodeChanged(prev: AccordionExpandMode, next: AccordionExpandMode) {
+        if (!this.$fastController.isConnected) {
+            return;
+        }
+
+        const expandedItem = this.findExpandedItem();
+
+        if (!expandedItem) {
+            return;
+        }
+
+        if (next !== AccordionExpandMode.single) {
+            console.log(next, "next");
+            (expandedItem as FASTAccordionItem)?.expandbutton.removeAttribute("disabled");
+        } else {
+            this.setSingleExpandMode(expandedItem);
+        }
+    }
 
     /**
      * @internal
