@@ -642,6 +642,8 @@ export class FASTAccordion extends FASTElement {
     // (undocumented)
     protected accordionItems: Element[];
     expandmode: AccordionExpandMode;
+    // (undocumented)
+    expandmodeChanged(prev: AccordionExpandMode, next: AccordionExpandMode): void;
     // @internal (undocumented)
     handleChange(source: any, propertyName: string): void;
     // @internal (undocumented)
