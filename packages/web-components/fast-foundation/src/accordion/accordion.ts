@@ -44,7 +44,6 @@ export class FASTAccordion extends FASTElement {
         }
 
         if (next !== AccordionExpandMode.single) {
-            console.log(next, "next");
             (expandedItem as FASTAccordionItem)?.expandbutton.removeAttribute("disabled");
         } else {
             this.setSingleExpandMode(expandedItem);
