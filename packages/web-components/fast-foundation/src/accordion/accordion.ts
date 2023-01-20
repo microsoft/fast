@@ -44,7 +44,9 @@ export class FASTAccordion extends FASTElement {
         }
 
         if (next !== AccordionExpandMode.single) {
-            (expandedItem as FASTAccordionItem)?.expandbutton.removeAttribute("disabled");
+            (expandedItem as FASTAccordionItem)?.expandbutton.removeAttribute(
+                "aria-disabled"
+            );
         } else {
             this.setSingleExpandMode(expandedItem);
         }
@@ -148,12 +150,12 @@ export class FASTAccordion extends FASTElement {
         currentItems.forEach((item: FASTAccordionItem, index: number) => {
             if (this.activeItemIndex === index) {
                 item.expanded = true;
-                item.expandbutton.setAttribute("disabled", "");
+                item.expandbutton.setAttribute("aria-disabled", "true");
             } else {
                 item.expanded = false;
 
                 if (!item.hasAttribute("disabled")) {
-                    item.expandbutton.removeAttribute("disabled");
+                    item.expandbutton.removeAttribute("aria-disabled");
                 }
             }
         });
