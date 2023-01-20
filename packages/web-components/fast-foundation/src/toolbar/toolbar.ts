@@ -1,16 +1,10 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
-import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
+import { ArrowKeys, Direction, limit } from "@microsoft/fast-web-utilities";
 import { isFocusable } from "tabbable";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { getDirection } from "../utilities/direction.js";
-
-/**
- * Toolbar configuration options
- * @public
- */
-export type ToolbarOptions = StartEndOptions<FASTToolbar>;
+import { ToolbarOrientation } from "./toolbar.options.js";
 
 /**
  * A map for directionality derived from keyboard input strings,
@@ -20,19 +14,19 @@ export type ToolbarOptions = StartEndOptions<FASTToolbar>;
  */
 const ToolbarArrowKeyMap = Object.freeze({
     [ArrowKeys.ArrowUp]: {
-        [Orientation.vertical]: -1,
+        [ToolbarOrientation.vertical]: -1,
     },
     [ArrowKeys.ArrowDown]: {
-        [Orientation.vertical]: 1,
+        [ToolbarOrientation.vertical]: 1,
     },
     [ArrowKeys.ArrowLeft]: {
-        [Orientation.horizontal]: {
+        [ToolbarOrientation.horizontal]: {
             [Direction.ltr]: -1,
             [Direction.rtl]: 1,
         },
     },
     [ArrowKeys.ArrowRight]: {
-        [Orientation.horizontal]: {
+        [ToolbarOrientation.horizontal]: {
             [Direction.ltr]: 1,
             [Direction.rtl]: -1,
         },
@@ -99,7 +93,7 @@ export class FASTToolbar extends FASTElement {
      * HTML Attribute: `orientation`
      */
     @attr
-    public orientation: Orientation = Orientation.horizontal;
+    public orientation: ToolbarOrientation = ToolbarOrientation.horizontal;
 
     /**
      * The elements in the default slot.

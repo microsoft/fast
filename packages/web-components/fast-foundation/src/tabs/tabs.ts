@@ -10,30 +10,8 @@ import {
     uniqueId,
 } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
-import type { ValuesOf } from "../utilities/index.js";
-
-/**
- * Tabs option configuration options
- * @public
- */
-export type TabsOptions = StartEndOptions<FASTTabs>;
-
-/**
- * The orientation of the {@link @microsoft/fast-foundation#(FASTTabs:class)} component
- * @public
- */
-export const TabsOrientation = {
-    vertical: "vertical",
-    horizontal: "horizontal",
-} as const;
-
-/**
- * The types for the Tabs component
- * @public
- */
-export type TabsOrientation = ValuesOf<typeof TabsOrientation>;
+import { TabsOrientation } from "./tabs.options.js";
 
 /**
  * A Tabs Custom HTML Element.

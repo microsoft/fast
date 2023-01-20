@@ -1,6 +1,19 @@
-import type { Direction, Orientation } from "@microsoft/fast-web-utilities";
+import type { Direction } from "@microsoft/fast-web-utilities";
+import { Orientation } from "@microsoft/fast-web-utilities";
 import type { StaticallyComposableHTML, ValuesOf } from "../utilities/index.js";
 import type { FASTSlider } from "./slider.js";
+
+/**
+ * The orientation of a {@link @microsoft/fast-foundation#(FASTSlider:class)}.
+ * @public
+ */
+export const SliderOrientation = Orientation;
+
+/**
+ * The types for the orientation of the slider
+ * @public
+ */
+export type SliderOrientation = ValuesOf<typeof SliderOrientation>;
 
 /**
  * The selection modes of a {@link @microsoft/fast-foundation#(FASTSlider:class)}.
@@ -23,7 +36,7 @@ export type SliderMode = ValuesOf<typeof SliderMode>;
 export interface SliderConfiguration {
     max: number;
     min: number;
-    orientation?: Orientation;
+    orientation?: SliderOrientation;
     direction?: Direction;
     disabled?: boolean;
 }

@@ -1,6 +1,5 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
-import { DividerRole } from "./divider.options.js";
+import { DividerOrientation, DividerRole } from "./divider.options.js";
 
 export { DividerRole };
 
@@ -29,5 +28,5 @@ export class FASTDivider extends FASTElement {
      * HTML Attribute: orientation
      */
     @attr
-    public orientation: Orientation = Orientation.horizontal;
+    public orientation: DividerOrientation = DividerOrientation.horizontal;
 }

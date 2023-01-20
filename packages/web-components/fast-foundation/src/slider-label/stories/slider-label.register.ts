@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import { SliderOrientation } from "src/index.js";
 import { FASTSliderLabel } from "../slider-label.js";
 import { sliderLabelTemplate } from "../slider-label.template.js";
 
@@ -76,15 +76,18 @@ const verticalSliderLabelStyles = css`
 `;
 
 class SliderLabel extends FASTSliderLabel {
-    protected orientationChanged(prev?: Orientation, next?: Orientation): void {
+    protected orientationChanged(
+        prev?: SliderOrientation,
+        next?: SliderOrientation
+    ): void {
         switch (next) {
-            case Orientation.horizontal: {
+            case SliderOrientation.horizontal: {
                 this.$fastController.addStyles(horizontalSliderLabelStyles);
                 this.$fastController.removeStyles(verticalSliderLabelStyles);
                 break;
             }
 
-            case Orientation.vertical: {
+            case SliderOrientation.vertical: {
                 this.$fastController.addStyles(verticalSliderLabelStyles);
                 this.$fastController.removeStyles(horizontalSliderLabelStyles);
             }
