@@ -94,10 +94,6 @@ export class FASTAccordionItem extends FASTElement {
 
         this.$emit("click", e);
     };
-
-    // private change = (): void => {
-    //     this.$emit("change");
-    // };
 }
 
 /**
