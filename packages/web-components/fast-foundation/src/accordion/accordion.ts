@@ -121,7 +121,7 @@ export class FASTAccordion extends FASTElement {
 
         this.accordionItems.forEach((item: HTMLElement, index: number) => {
             if (item instanceof FASTAccordionItem) {
-                item.addEventListener("change", this.activeItemChange);
+                item.addEventListener("click", this.activeItemChange);
             }
 
             const itemId: string | null = this.accordionIds[index];
@@ -164,7 +164,7 @@ export class FASTAccordion extends FASTElement {
     private removeItemListeners = (oldValue: any): void => {
         oldValue.forEach((item: HTMLElement, index: number) => {
             Observable.getNotifier(item).unsubscribe(this, "disabled");
-            item.removeEventListener("change", this.activeItemChange);
+            item.removeEventListener("click", this.activeItemChange);
             item.removeEventListener("keydown", this.handleItemKeyDown);
             item.removeEventListener("focus", this.handleItemFocus);
         });
@@ -181,6 +181,7 @@ export class FASTAccordion extends FASTElement {
 
         if (!this.isSingleExpandMode()) {
             // setSingleExpandMode sets activeItemIndex on its own
+            selectedItem.expanded = !selectedItem.expanded;
             this.activeItemIndex = this.accordionItems.indexOf(selectedItem);
         } else {
             this.setSingleExpandMode(selectedItem);

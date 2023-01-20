@@ -91,13 +91,13 @@ export class FASTAccordionItem extends FASTElement {
         if (this.disabled) {
             return;
         }
-        this.expanded = !this.expanded;
-        this.change();
+
+        this.$emit("click", e);
     };
 
-    private change = (): void => {
-        this.$emit("change");
-    };
+    // private change = (): void => {
+    //     this.$emit("change");
+    // };
 }
 
 /**
