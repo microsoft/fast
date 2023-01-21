@@ -25,6 +25,20 @@ function startCapturingWarnings() {
 
 describe(`The HTMLView`, () => {
     context("when binding hosts", () => {
+        it("should gracefully handle empty templates", () => {
+            const template = html``;
+
+            const view = template.create(document.createElement('div'));
+
+            expect(() => {
+                view.appendTo(document.body)
+            }).to.not.throw();
+
+            expect(() => {
+                view.remove();
+            }).to.not.throw();
+        });
+
         it("warns on class bindings when host not present", () => {
             const template = html`
                 <template class="foo"></template>
