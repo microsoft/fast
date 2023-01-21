@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { SliderOrientation } from "src/index.js";
+import { SliderOrientation } from "../../slider/slider.options.js";
 import { FASTSliderLabel } from "../slider-label.js";
 import { sliderLabelTemplate } from "../slider-label.template.js";
 
