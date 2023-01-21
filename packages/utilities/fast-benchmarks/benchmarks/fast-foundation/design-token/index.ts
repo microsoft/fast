@@ -1,5 +1,5 @@
-import { FASTButton } from "@microsoft/fast-foundation";
+import { DesignToken } from "@microsoft/fast-foundation";
 
 (window as any).test = () => {
-    class X extends FASTButton {}
+    DesignToken.create<number>("").withDefault(12);
 };
