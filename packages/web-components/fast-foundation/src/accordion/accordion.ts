@@ -191,7 +191,7 @@ export class FASTAccordion extends FASTElement {
     private handleExpandedChange = (item: HTMLElement) => {
         if (item instanceof FASTAccordionItem) {
             this.activeid = item.getAttribute("id");
-            console.log("expanded change called");
+
             if (!this.isSingleExpandMode()) {
                 item.expanded = !item.expanded;
                 // setSingleExpandMode sets activeItemIndex on its own
