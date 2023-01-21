@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "update HTMLView to gracefully handle null scenarios for first and last child properties",
+  "packageName": "@microsoft/fast-element",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
