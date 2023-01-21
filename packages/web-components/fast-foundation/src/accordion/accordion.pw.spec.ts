@@ -263,6 +263,12 @@ test.describe("Accordion", () => {
         await expect(firstItem).toHaveBooleanAttribute("expanded");
 
         await expect(secondItem).not.toHaveBooleanAttribute("expanded");
+
+        await secondItem.evaluate<void>(node => node.setAttribute("expanded", ""));
+
+        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+
+        await expect(secondItem).toHaveBooleanAttribute("expanded");
     });
 
     test("should set the first item with an expanded attribute to expanded in single mode", async () => {
