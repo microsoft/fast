@@ -60,12 +60,12 @@ export interface SyntheticView<TSource = any, TParent = any>
     /**
      * The first DOM node in the range of nodes that make up the view.
      */
-    readonly firstChild: Node;
+    readonly firstChild: Node | null;
 
     /**
      * The last DOM node in the range of nodes that make up the view.
      */
-    readonly lastChild: Node;
+    readonly lastChild: Node | null;
 
     /**
      * Inserts the view's DOM nodes before the referenced node.
@@ -210,12 +210,12 @@ export class HTMLView<TSource = any, TParent = any>
     /**
      * The first DOM node in the range of nodes that make up the view.
      */
-    public firstChild: Node;
+    public firstChild: Node | null;
 
     /**
      * The last DOM node in the range of nodes that make up the view.
      */
-    public lastChild: Node;
+    public lastChild: Node | null;
 
     /**
      * Constructs an instance of HTMLView.
@@ -227,8 +227,8 @@ export class HTMLView<TSource = any, TParent = any>
         private factories: ReadonlyArray<CompiledViewBehaviorFactory>,
         public readonly targets: ViewBehaviorTargets
     ) {
-        this.firstChild = fragment.firstChild!;
-        this.lastChild = fragment.lastChild!;
+        this.firstChild = fragment?.firstChild;
+        this.lastChild = fragment?.lastChild;
     }
 
     /**
@@ -269,9 +269,13 @@ export class HTMLView<TSource = any, TParent = any>
      * The nodes are not disposed and the view can later be re-inserted.
      */
     public remove(): void {
+        if (!this.firstChild || !this.lastChild) {
+            return;
+        }
+
         const fragment = this.fragment;
-        const end = this.lastChild!;
-        let current = this.firstChild!;
+        const end = this.lastChild;
+        let current = this.firstChild;
         let next;
 
         while (current !== end) {
@@ -288,6 +292,10 @@ export class HTMLView<TSource = any, TParent = any>
      * Once a view has been disposed, it cannot be inserted or bound again.
      */
     public dispose(): void {
+        if (!this.firstChild || !this.lastChild) {
+            return;
+        }
+
         removeNodeSequence(this.firstChild, this.lastChild);
         this.unbind();
     }
@@ -377,7 +385,14 @@ export class HTMLView<TSource = any, TParent = any>
             return;
         }
 
-        removeNodeSequence(views[0].firstChild, views[views.length - 1].lastChild);
+        const firstChild = views[0].firstChild;
+        const lastChild = views[views.length - 1].lastChild;
+
+        if (!firstChild || !lastChild) {
+            return;
+        }
+
+        removeNodeSequence(firstChild, lastChild);
 
         for (let i = 0, ii = views.length; i < ii; ++i) {
             views[i].unbind();

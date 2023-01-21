@@ -520,7 +520,7 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     get event(): Event;
     eventDetail<TDetail>(): TDetail;
     eventTarget<TTarget extends EventTarget>(): TTarget;
-    firstChild: Node;
+    firstChild: Node | null;
     index: number;
     insertBefore(node: Node): void;
     isBound: boolean;
@@ -529,7 +529,7 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     get isInMiddle(): boolean;
     get isLast(): boolean;
     get isOdd(): boolean;
-    lastChild: Node;
+    lastChild: Node | null;
     length: number;
     // (undocumented)
     onUnbind(behavior: {
@@ -829,9 +829,9 @@ export interface SubtreeDirectiveOptions<T = any> extends NodeBehaviorOptions<T>
 
 // @public
 export interface SyntheticView<TSource = any, TParent = any> extends View<TSource, TParent> {
-    readonly firstChild: Node;
+    readonly firstChild: Node | null;
     insertBefore(node: Node): void;
-    readonly lastChild: Node;
+    readonly lastChild: Node | null;
     remove(): void;
 }
 
