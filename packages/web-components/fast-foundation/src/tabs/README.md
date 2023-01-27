@@ -106,6 +106,16 @@ export const myTabs = Tabs.compose({
 
 
 
+### Variables
+
+| Name              | Description                                                                  | Type |
+| ----------------- | ---------------------------------------------------------------------------- | ---- |
+| `TabsOrientation` | The orientation of the @microsoft/fast-foundation#(FASTTabs:class) component |      |
+
+<hr/>
+
+
+
 ### class: `FASTTabs`
 
 #### Superclass
@@ -161,11 +171,13 @@ export const myTabs = Tabs.compose({
 
 <hr/>
 
+
+
 ### Variables
 
-| Name              | Description                                                                  | Type                                                  |
-| ----------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `TabsOrientation` | The orientation of the @microsoft/fast-foundation#(FASTTabs:class) component | `{ vertical: "vertical", horizontal: "horizontal", }` |
+| Name              | Description                                                                  | Type |
+| ----------------- | ---------------------------------------------------------------------------- | ---- |
+| `TabsOrientation` | The orientation of the @microsoft/fast-foundation#(FASTTabs:class) component |      |
 
 <hr/>
 
@@ -184,38 +196,6 @@ export const myTabs = Tabs.compose({
 | Name | Description                               |
 | ---- | ----------------------------------------- |
 |      | The default slot for the tabpanel content |
-
-<hr/>
-
-
-
-### class: `FASTTab`
-
-#### Superclass
-
-| Name          | Module | Package                 |
-| ------------- | ------ | ----------------------- |
-| `FASTElement` |        | @microsoft/fast-element |
-
-#### Fields
-
-| Name       | Privacy | Type      | Default | Description                                                                                                                                                                                 | Inherited From |
-| ---------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `disabled` | public  | `boolean` |         | When true, the control will be immutable by user interaction. See [disabled HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) for more information. |                |
-
-#### Attributes
-
-| Name | Field    | Inherited From |
-| ---- | -------- | -------------- |
-|      | disabled |                |
-
-#### Slots
-
-| Name    | Description                                          |
-| ------- | ---------------------------------------------------- |
-| `start` | Content which can be provided before the tab content |
-| `end`   | Content which can be provided after the tab content  |
-|         | The default slot for the tab content                 |
 
 <hr/>
 

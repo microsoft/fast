@@ -609,6 +609,15 @@ export function disclosureTemplate<T extends FASTDisclosure>(options?: Disclosur
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
+export const DividerOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type DividerOrientation = ValuesOf<typeof DividerOrientation>;
+
+// @public
 export const DividerRole: {
     readonly separator: "separator";
     readonly presentation: "presentation";
@@ -1111,7 +1120,7 @@ export interface FASTDisclosure extends StartEnd {
 
 // @public
 export class FASTDivider extends FASTElement {
-    orientation: Orientation;
+    orientation: DividerOrientation;
     role: DividerRole;
 }
 
@@ -1654,7 +1663,7 @@ export class FASTRadioGroup extends FASTElement {
     name: string;
     // (undocumented)
     protected nameChanged(): void;
-    orientation: Orientation | "horizontal" | "vertical";
+    orientation: RadioGroupOrientation;
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;
@@ -1849,7 +1858,7 @@ export class FASTSliderLabel extends FASTElement {
     handleChange(source: any, propertyName: string): void;
     hideMark: boolean;
     // @deprecated
-    orientation: Orientation;
+    orientation: SliderOrientation;
     // @internal (undocumented)
     protected orientationChanged(): void;
     position: string;
@@ -2059,7 +2068,7 @@ export class FASTToolbar extends FASTElement {
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
-    orientation: Orientation;
+    orientation: ToolbarOrientation;
     // @internal
     protected reduceFocusableElements(): void;
     // @internal
@@ -2526,6 +2535,15 @@ export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputEl
 export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute">;
 
 // @public
+export const RadioGroupOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type RadioGroupOrientation = ValuesOf<typeof RadioGroupOrientation>;
+
+// @public
 export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTemplate<T>;
 
 // @public
@@ -2594,7 +2612,7 @@ export interface SliderConfiguration {
     // (undocumented)
     min: number;
     // (undocumented)
-    orientation?: Orientation;
+    orientation?: SliderOrientation;
 }
 
 // @public
@@ -2612,6 +2630,15 @@ export type SliderMode = ValuesOf<typeof SliderMode>;
 export type SliderOptions = {
     thumb?: StaticallyComposableHTML<FASTSlider>;
 };
+
+// @public
+export const SliderOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type SliderOrientation = ValuesOf<typeof SliderOrientation>;
 
 // @public
 export function sliderTemplate<T extends FASTSlider>(options?: SliderOptions): ElementViewTemplate<T>;
@@ -2666,8 +2693,8 @@ export type TabsOptions = StartEndOptions<FASTTabs>;
 
 // @public
 export const TabsOrientation: {
-    readonly vertical: "vertical";
     readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
 };
 
 // @public
@@ -2719,6 +2746,15 @@ export type TextFieldType = ValuesOf<typeof TextFieldType>;
 
 // @public
 export type ToolbarOptions = StartEndOptions<FASTToolbar>;
+
+// @public
+export const ToolbarOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type ToolbarOrientation = ValuesOf<typeof ToolbarOrientation>;
 
 // @public
 export function toolbarTemplate<T extends FASTToolbar>(options?: ToolbarOptions): ElementViewTemplate<T>;

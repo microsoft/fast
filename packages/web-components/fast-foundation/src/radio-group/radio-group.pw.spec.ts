@@ -1,8 +1,8 @@
-import { Orientation } from "@microsoft/fast-web-utilities";
 import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 import type { FASTRadio } from "../radio/index.js";
 import { fixtureURL } from "../__test__/helpers.js";
+import { RadioGroupOrientation } from "./radio-group.options.js";
 import type { FASTRadioGroup } from "./index.js";
 
 test.describe("Radio Group", () => {
@@ -46,7 +46,7 @@ test.describe("Radio Group", () => {
 
         await expect(element).toHaveAttribute(
             "aria-orientation",
-            `${Orientation.horizontal}`
+            `${RadioGroupOrientation.horizontal}`
         );
     });
 
@@ -62,15 +62,15 @@ test.describe("Radio Group", () => {
         // Horizontal by default
         await expect(positioningRegion).toHaveClass(/horizontal/);
 
-        await element.evaluate((node: FASTRadioGroup, Orientation) => {
-            node.orientation = Orientation.vertical;
-        }, Orientation);
+        await element.evaluate((node: FASTRadioGroup, RadioGroupOrientation) => {
+            node.orientation = RadioGroupOrientation.vertical;
+        }, RadioGroupOrientation);
 
         await expect(positioningRegion).toHaveClass(/vertical/);
 
-        await element.evaluate((node: FASTRadioGroup, Orientation) => {
-            node.orientation = Orientation.horizontal;
-        }, Orientation);
+        await element.evaluate((node: FASTRadioGroup, RadioGroupOrientation) => {
+            node.orientation = RadioGroupOrientation.horizontal;
+        }, RadioGroupOrientation);
 
         await expect(positioningRegion).toHaveClass(/horizontal/);
     });
@@ -82,17 +82,23 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await element.evaluate((node: FASTRadioGroup, Orientation) => {
-            node.orientation = Orientation.horizontal;
-        }, Orientation);
+        await element.evaluate((node: FASTRadioGroup, RadioGroupOrientation) => {
+            node.orientation = RadioGroupOrientation.horizontal;
+        }, RadioGroupOrientation);
 
-        await expect(element).toHaveAttribute("aria-orientation", Orientation.horizontal);
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            RadioGroupOrientation.horizontal
+        );
 
-        await element.evaluate((node: FASTRadioGroup, Orientation) => {
-            node.orientation = Orientation.vertical;
-        }, Orientation);
+        await element.evaluate((node: FASTRadioGroup, RadioGroupOrientation) => {
+            node.orientation = RadioGroupOrientation.vertical;
+        }, RadioGroupOrientation);
 
-        await expect(element).toHaveAttribute("aria-orientation", Orientation.vertical);
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            RadioGroupOrientation.vertical
+        );
     });
 
     test("should set the `aria-disabled` attribute when disabled", async () => {

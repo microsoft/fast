@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
 import { Meta, renderComponent, Story, StoryArgs } from "../../__test__/helpers.js";
+import { SliderOrientation } from "../../slider/slider.options.js";
 import type { FASTSliderLabel } from "../slider-label.js";
 
 export const storyTemplate = html<StoryArgs<FASTSliderLabel>>`
@@ -26,7 +26,10 @@ export default {
         disabled: { control: "boolean" },
         hideMark: { control: "boolean" },
         position: { control: "number" },
-        sliderOrientation: { control: "radio", options: Object.values(Orientation) },
+        sliderOrientation: {
+            control: "radio",
+            options: Object.values(SliderOrientation),
+        },
         storyContent: { table: { disable: true } },
     },
 } as Meta<FASTSliderLabel>;
