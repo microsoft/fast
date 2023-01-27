@@ -31,14 +31,6 @@ export function switchTemplate<T extends FASTSwitch>(
             <div part="switch" class="switch">
                 <slot name="switch">${staticallyCompose(options.switch)}</slot>
             </div>
-            <span class="status-message" part="status-message">
-                <span class="checked-message" part="checked-message">
-                    <slot name="checked-message"></slot>
-                </span>
-                <span class="unchecked-message" part="unchecked-message">
-                    <slot name="unchecked-message"></slot>
-                </span>
-            </span>
         </template>
     `;
 }
