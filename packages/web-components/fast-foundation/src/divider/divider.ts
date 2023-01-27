@@ -1,8 +1,6 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
 import { DividerOrientation, DividerRole } from "./divider.options.js";
 
-export { DividerRole };
-
 /**
  * A Divider Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#separator | ARIA separator } or {@link https://www.w3.org/TR/wai-aria-1.1/#presentation | ARIA presentation}.

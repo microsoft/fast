@@ -609,6 +609,15 @@ export function disclosureTemplate<T extends FASTDisclosure>(options?: Disclosur
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
+export const DividerOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type DividerOrientation = ValuesOf<typeof DividerOrientation>;
+
+// @public
 export const DividerRole: {
     readonly separator: "separator";
     readonly presentation: "presentation";
@@ -1111,7 +1120,6 @@ export interface FASTDisclosure extends StartEnd {
 
 // @public
 export class FASTDivider extends FASTElement {
-    // Warning: (ae-forgotten-export) The symbol "DividerOrientation" needs to be exported by the entry point index.d.ts
     orientation: DividerOrientation;
     role: DividerRole;
 }
