@@ -150,7 +150,7 @@ test.describe("Accordion", () => {
         await expect(secondItem).toHaveBooleanAttribute("expanded");
     });
 
-    test("should set the expanded items' button to disabled when in single expand mode", async () => {
+    test("should set the expanded items' button to aria-disabled when in single expand mode", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
@@ -176,13 +176,23 @@ test.describe("Accordion", () => {
 
         await expect(firstItem).toHaveBooleanAttribute("expanded");
 
-        await expect(firstItem.locator("button")).toHaveBooleanAttribute("disabled");
+        await expect(firstItem.locator("button")).toHaveAttribute(
+            "aria-disabled",
+            "true"
+        );
 
         await secondItem.click();
 
         await expect(firstItem).not.toHaveBooleanAttribute("expanded");
 
-        await expect(firstItem.locator("button")).not.hasAttribute("aria-disabled");
+        await expect(firstItem.locator("button")).not.toHaveAttribute(
+            "aria-disabled",
+            "true"
+        );
+        await expect(firstItem.locator("button")).not.toHaveAttribute(
+            "aria-disabled",
+            "false"
+        );
 
         await expect(secondItem).toHaveBooleanAttribute("expanded");
 
@@ -192,7 +202,7 @@ test.describe("Accordion", () => {
         );
     });
 
-    test.only("should remove an expanded items' expandbutton aria-disabled attribute when expand mode changes from single to multi", async () => {
+    test("should remove an expanded items' expandbutton aria-disabled attribute when expand mode changes from single to multi", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
