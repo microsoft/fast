@@ -32,6 +32,25 @@ export class FASTAccordion extends FASTElement {
      */
     @attr({ attribute: "expand-mode" })
     public expandmode: AccordionExpandMode = AccordionExpandMode.multi;
+    public expandmodeChanged(prev: AccordionExpandMode, next: AccordionExpandMode) {
+        if (!this.$fastController.isConnected) {
+            return;
+        }
+
+        const expandedItem = this.findExpandedItem();
+
+        if (!expandedItem) {
+            return;
+        }
+
+        if (next !== AccordionExpandMode.single) {
+            (expandedItem as FASTAccordionItem)?.expandbutton.removeAttribute(
+                "aria-disabled"
+            );
+        } else {
+            this.setSingleExpandMode(expandedItem);
+        }
+    }
 
     /**
      * @internal
@@ -131,12 +150,12 @@ export class FASTAccordion extends FASTElement {
         currentItems.forEach((item: FASTAccordionItem, index: number) => {
             if (this.activeItemIndex === index) {
                 item.expanded = true;
-                item.expandbutton.setAttribute("disabled", "");
+                item.expandbutton.setAttribute("aria-disabled", "true");
             } else {
                 item.expanded = false;
 
                 if (!item.hasAttribute("disabled")) {
-                    item.expandbutton.removeAttribute("disabled");
+                    item.expandbutton.removeAttribute("aria-disabled");
                 }
             }
         });
