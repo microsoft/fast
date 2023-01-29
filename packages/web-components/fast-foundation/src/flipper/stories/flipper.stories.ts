@@ -15,7 +15,6 @@ const storyTemplate = html<StoryArgs<FASTFlipper>>`
 export default {
     title: "Flipper",
     args: {
-        direction: FlipperDirection.next,
         disabled: false,
         hiddenFromAT: true,
     },
