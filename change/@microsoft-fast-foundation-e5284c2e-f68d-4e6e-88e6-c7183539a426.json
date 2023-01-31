@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "add default slot to divider",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}
