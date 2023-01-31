@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "observe accordion children to accommodate single expand scenarios with programmatic changes",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}
