@@ -117,7 +117,7 @@ export function pickerTemplate<T extends FASTPicker>(
                                 <slot name="loading-region">
                                     <${progressRingTag}
                                         part="loading-progress"
-                                        class="loading-progress
+                                        class="loading-progress"
                                         slot="loading-region"
                                     ></${progressRingTag}>
                                         ${x => x.loadingText}
