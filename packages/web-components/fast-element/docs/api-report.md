@@ -376,9 +376,7 @@ export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any>
     bind(controller: ExpressionController<TSource, TParent>): TReturn;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "FAST" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export const FAST: FASTGlobal;
 
 // @public
@@ -419,9 +417,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly type: TType;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "FASTGlobal" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export interface FASTGlobal {
     addMessages(messages: Record<number, string>): void;
     error(code: number, values?: Record<string, any>): Error;

@@ -58,7 +58,7 @@ export type Mutable<T> = {
 
 /**
  * The FAST global.
- * @internal
+ * @public
  */
 export interface FASTGlobal {
     /**
