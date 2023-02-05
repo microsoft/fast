@@ -1,7 +1,4 @@
 /**
- * This module provides
- */
-/**
  * An implementation of the https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/pending-task.md proposal.
  * @beta
  */
