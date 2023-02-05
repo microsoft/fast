@@ -15,7 +15,7 @@ export type Context<T> = {
  * A constant key that can be used to represent a Context dependency.
  * The key can be used for context or DI but also doubles as a decorator for
  * resolving the associated dependency.
- * @beta
+ * @public
  */
 export type ContextDecorator<T = any> = Readonly<Context<T>> &
     PropertyDecorator &
@@ -24,20 +24,20 @@ export type ContextDecorator<T = any> = Readonly<Context<T>> &
 /**
  * A Context object defines an optional initial value for a Context, as well as a name identifier for debugging purposes.
  * The FASTContext can also be used as a decorator to declare context dependencies or as a key for DI.
- * @beta
+ * @public
  */
 export type FASTContext<T> = ContextDecorator<T> & {
     get(target: EventTarget): T;
     provide(target: EventTarget, value: T): void;
     request(target: EventTarget, callback: ContextCallback<T>, multiple?: boolean): void;
-    handle(target: EventTarget, callback: (event: ContextEvent<FASTContext<T>>) => void);
+    handle(target: EventTarget, callback: (event: ContextEvent<FASTContext<T>>) => void): void;
 };
 
 /**
  * A strategy that controls how all Context.request API calls are handled.
  * @remarks
- * By default this is handled via Context.dispatch, which dispatched a ContextEvent.
- * @beta
+ * By default this is handled via Context.dispatch, which dispatches a ContextEvent.
+ * @public
  */
 export type FASTContextRequestStrategy = <T extends UnknownContext>(
     target: EventTarget,
@@ -51,7 +51,7 @@ let requestStrategy: FASTContextRequestStrategy;
 
 /**
  * Enables using the {@link https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md | W3C Community Context protocol.}
- * @beta
+ * @public
  */
 export const Context = Object.freeze({
     /**
@@ -229,7 +229,7 @@ export const Context = Object.freeze({
         propertyName: string,
         context: T
     ) {
-        const field = `$di_${propertyName}`;
+        const field = Symbol.for(`fast:di:${propertyName}`);
 
         Reflect.defineProperty(target, propertyName, {
             get: function (this: EventTarget) {
