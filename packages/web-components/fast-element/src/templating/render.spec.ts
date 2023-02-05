@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { customElement, FASTElement } from "../components/fast-element.js";
-import { observable } from "../observation/observable.js";
+import { ExecutionContext, Observable, observable } from "../observation/observable.js";
 import { Updates } from "../observation/update-queue.js";
 import { Fake } from "../testing/fakes.js";
 import { uniqueElementName } from "../testing/fixture.js";
@@ -10,6 +10,10 @@ import { Markup } from "./markup.js";
 import { NodeTemplate, render, RenderBehavior, RenderDirective, RenderInstruction, renderWith } from "./render.js";
 import { html, ViewTemplate } from "./template.js";
 import type { SyntheticView } from "./view.js";
+import type { ElementCreateOptions } from "./render.js";
+import { children } from "./children.js";
+import { elements } from "./node-observation.js";
+import { ref } from "./ref.js";
 
 describe("The render", () => {
     const childTemplate = html`Child Template`;
@@ -712,9 +716,19 @@ describe("The render", () => {
 
     context("createElementTemplate function", () => {
         const childTemplate = html<Child>`This is a template. ${x => x.knownValue}`;
+
+        const templateAttributeOptions: ElementCreateOptions = {
+            attributes: { id: x => x.id },
+        }
+
+        const templateStaticViewOptions: ElementCreateOptions = {
+            content: "foo"
+        }
+
         class Child {
             id = 'child-1';
             @observable knownValue: string = "value";
+            @observable ref: HTMLElement;
         }
 
         it(`creates a template from a tag name`, () => {
@@ -726,7 +740,7 @@ describe("The render", () => {
         it(`creates a template with attributes`, () => {
             const template = RenderInstruction.createElementTemplate(
                 "button",
-                { id: x => x.id }
+                templateAttributeOptions
             );
 
             const targetNode = document.createElement("div");
@@ -741,7 +755,7 @@ describe("The render", () => {
         });
 
         it(`creates a template with static content`, () => {
-            const template = RenderInstruction.createElementTemplate("button", undefined, "foo");
+            const template = RenderInstruction.createElementTemplate("button", templateStaticViewOptions);
             const targetNode = document.createElement("div");
             const view = template.create();
 
@@ -751,13 +765,13 @@ describe("The render", () => {
             expect(toHTML(targetNode.firstElementChild!)).to.equal("foo");
         });
 
-        it(`creates a template with attributes and content ViewTemplate`, () => {
+        it(`creates a template with attributes and content ViewTemplate`, async () => {
             const template = RenderInstruction.createElementTemplate(
                 "button",
                 {
-                    id: x => x.id
-                },
-                childTemplate
+                    ...templateAttributeOptions,
+                    content: childTemplate
+                }
             );
 
             const targetNode = document.createElement("div");
@@ -775,9 +789,9 @@ describe("The render", () => {
             const template = RenderInstruction.createElementTemplate(
                 "button",
                 {
-                    id: x => x.id
-                },
-                childTemplate
+                    ...templateAttributeOptions,
+                    content: childTemplate
+                }
             );
 
             const targetNode = document.createElement("div");
