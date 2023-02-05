@@ -1,8 +1,10 @@
 import { DOMAspect, DOMPolicy, DOMSink } from "./dom.js";
-import { isString, TrustedTypesPolicy } from "./interfaces.js";
+import { isString, Message, TrustedTypesPolicy } from "./interfaces.js";
+import { FAST } from "./platform.js";
 
 /**
  * A specific DOM sink guard for a node aspect.
+ * @public
  */
 export type DOMSinkGuards = Record<
     string,
@@ -16,6 +18,7 @@ export type DOMSinkGuards = Record<
 
 /**
  * Aspect-specific guards for a DOM Policy.
+ * @public
  */
 export type DOMAspectGuards = {
     /**
@@ -46,14 +49,23 @@ export type DOMAspectGuards = {
 
 /**
  * Element-specific guards for a DOM Policy.
+ * @public
  */
 export type DOMElementGuards = Record<string, DOMAspectGuards>;
 
 /**
  * Guard configuration for a DOM Policy.
+ * @public
  */
 export type DOMGuards = {
+    /**
+     * Guards for specific elements.
+     */
     elements: DOMElementGuards;
+
+    /**
+     * General aspect guards independent of the element type.
+     */
     aspects: DOMAspectGuards;
 };
 
@@ -78,9 +90,7 @@ function block(
     aspectName: string,
     sink: DOMSink
 ): DOMSink {
-    throw new Error(
-        `${aspectName} on ${tagName ?? "text"} is blocked by the current DOMPolicy.`
-    );
+    throw FAST.error(Message.blockedByDOMPolicy, { aspectName, tagName: tagName ?? "text" });
 }
 
 const defaultDOMElementGuards = {
@@ -421,6 +431,7 @@ function tryGuard(
 
 /**
  * Options for creating a DOM Policy.
+ * @public
  */
 export type DOMPolicyOptions = {
     /**
@@ -434,6 +445,10 @@ export type DOMPolicyOptions = {
     guards?: Partial<DOMGuards>;
 };
 
+/**
+ * A helper for creating DOM policies.
+ * @public
+ */
 const DOMPolicy = Object.freeze({
     /**
      * Creates a new DOM Policy object.

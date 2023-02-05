@@ -174,6 +174,7 @@ export const enum Message {
     directCallToHTMLTagNotAllowed = 1206,
     onlySetTemplatePolicyOnce = 1207,
     cannotSetTemplatePolicyAfterCompilation = 1208,
+    blockedByDOMPolicy = 1209,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,
