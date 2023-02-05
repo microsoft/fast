@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { customElement, FASTElement } from "../components/fast-element.js";
-import { ExecutionContext, Observable, observable } from "../observation/observable.js";
+import { observable } from "../observation/observable.js";
 import { Updates } from "../observation/update-queue.js";
 import { Fake } from "../testing/fakes.js";
 import { uniqueElementName } from "../testing/fixture.js";
@@ -11,9 +11,6 @@ import { NodeTemplate, render, RenderBehavior, RenderDirective, RenderInstructio
 import { html, ViewTemplate } from "./template.js";
 import type { SyntheticView } from "./view.js";
 import type { ElementCreateOptions } from "./render.js";
-import { children } from "./children.js";
-import { elements } from "./node-observation.js";
-import { ref } from "./ref.js";
 
 describe("The render", () => {
     const childTemplate = html`Child Template`;
