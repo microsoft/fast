@@ -44,21 +44,21 @@ export default {
     },
     argTypes: {
         style: {
-            control: { type: "text" },
+            control: "text",
         },
         content: { table: { disable: true } },
         noTabbing: {
-            control: { type: "boolean" },
+            control: "boolean",
         },
         generateHeader: {
             options: Object.values(GenerateHeaderOptions),
-            control: { type: "select" },
+            control: "select",
         },
         pageSize: {
-            control: { type: "number" },
+            control: "number",
         },
         gridTemplateColumns: {
-            control: { type: "text" },
+            control: "text",
         },
         columnDefinitions: {
             control: { type: "object" },
@@ -68,13 +68,13 @@ export default {
         },
         selectionMode: {
             options: Object.values(DataGridSelectionMode),
-            control: { type: "select" },
+            control: "select",
         },
         disableClickSelect: {
-            control: { type: "boolean" },
+            control: "boolean",
         },
         initialRowSelection: {
-            control: { type: "text" },
+            control: "text",
         },
     },
 } as Meta<FASTDataGrid>;

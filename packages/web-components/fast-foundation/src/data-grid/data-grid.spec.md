@@ -220,9 +220,6 @@ Sets how the grid handles selection.
 - `click-select`
 Whether the grid selects items based on click events or not.  Authors may wish to invoke selection directly from their own ui, like having a specific checkbox to select a row, in which case `click-select` would be disabled and `toggleSelected()` called on the desired row/cell.  Default is `true`.
 
-- `select-row-header`
-Sets whether the header row is selectable when row selection is enabled.  Default is false.
-
 - `initial-row-selection`
  The initially selected row elements. The format should be a comma delimited list of row indexes. ie. "1,3,5"
 
