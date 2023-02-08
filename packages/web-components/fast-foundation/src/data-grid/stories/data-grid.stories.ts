@@ -1,7 +1,7 @@
 import { html } from "@microsoft/fast-element";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
-import type { FASTDataGrid } from "../data-grid.js";
+import type { DataGridSelectionMode, FASTDataGrid, GenerateHeaderOptions } from "../data-grid.js";
 
 const storyTemplate = html<StoryArgs<FASTDataGrid>>`
     <fast-data-grid
@@ -51,7 +51,7 @@ export default {
             control: { type: "boolean" },
         },
         generateHeader: {
-            options: ["none", "default", "sticky"],
+            options: Object.values(GenerateHeaderOptions),
             control: { type: "select" },
         },
         pageSize: {
@@ -67,7 +67,7 @@ export default {
             table: { disable: true },
         },
         selectionMode: {
-            options: ["none", "single-row", "multi-row"],
+            options: Object.values(DataGridSelectionMode),
             control: { type: "select" },
         },
         disableClickSelect: {

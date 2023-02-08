@@ -104,9 +104,21 @@ export interface DataGridSelectionChangeDetail {
     ctrlKey: boolean;
 }
 
+
 /**
- * Describes the how the data grid element handles selection
+ * Enumerates the data grid selection mode options
  *
  * @public
  */
-export type DataGridSelectionMode = "none" | "single-row" | "multi-row";
+export const DataGridSelectionMode = {
+    none: "none",
+    singleRow: "single-row",
+    multiRow: "multi-row",
+} as const;
+
+/**
+ * The types for the data grid selection mode options
+ *
+ * @public
+ */
+export type DataGridSelectionMode = ValuesOf<typeof DataGridSelectionMode>;
