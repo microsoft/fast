@@ -122,3 +122,21 @@ export const DataGridSelectionMode = {
  * @public
  */
 export type DataGridSelectionMode = ValuesOf<typeof DataGridSelectionMode>;
+
+/**
+ * Enumerates the data grid selection behavior options
+ *
+ * @public
+ */
+export const DataGridSelectionBehavior = {
+    programmatic: "programmatic",
+    keyboardOnly: "keyboard-only",
+    auto: "auto",
+} as const;
+
+/**
+ * The types for the data grid selection mode options
+ *
+ * @public
+ */
+export type DataGridSelectionBehavior = ValuesOf<typeof DataGridSelectionBehavior>;

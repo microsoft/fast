@@ -18,7 +18,7 @@ import {
     keySpace,
 } from "@microsoft/fast-web-utilities";
 import type { ColumnDefinition } from "./data-grid.js";
-import { DataGridRowTypes, DataGridSelectionChangeDetail } from "./data-grid.options.js";
+import { DataGridRowTypes, DataGridSelectionBehavior, DataGridSelectionChangeDetail } from "./data-grid.options.js";
 
 /**
  * A Data Grid Row Custom HTML Element.
@@ -161,11 +161,11 @@ export class FASTDataGridRow extends FASTElement {
     public selected: boolean;
 
     /**
-     * Whether click select is enabled
+     * Selection behavior
      *
      * @internal
      */
-    public disableClickSelect: boolean = false;
+    public selectionBehavior: DataGridSelectionBehavior = DataGridSelectionBehavior.auto;
 
     /**
      * @internal
@@ -298,7 +298,11 @@ export class FASTDataGridRow extends FASTElement {
                 break;
 
             case keySpace:
-                if (this.selected !== undefined) {
+                if (
+                    e.shiftKey &&
+                    this.selected !== undefined &&
+                    this.selectionBehavior !== DataGridSelectionBehavior.programmatic
+                ) {
                     e.preventDefault();
                     this.toggleSelected({
                         newValue: !this.isSelected(),
@@ -320,7 +324,7 @@ export class FASTDataGridRow extends FASTElement {
     public handleClick(e: MouseEvent): void {
         if (
             e.defaultPrevented ||
-            this.disableClickSelect ||
+            this.selectionBehavior !== DataGridSelectionBehavior.auto||
             this.selected === undefined
         ) {
             return;

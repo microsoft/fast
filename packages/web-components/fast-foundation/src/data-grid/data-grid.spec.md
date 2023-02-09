@@ -142,13 +142,15 @@ Keyboard selection model is based on guidance [here](https://w3c.github.io/aria-
 #### "single-row" selection mode: 
 
 When in single row selection mode a maximum of one row can be selected at a time.  All rows are labelled with `aria-selected' with any selected row having a value of "true".
-When the grid's `click-select` attribute is set to "true", which is the default, any click on a selectable row will select that row, or deselect if already selected.
+
+When the grid's `disable-click-select` attribute is set to "false", the default, any click on a selectable row will select that row, or deselect if already selected. Setting it to `true` will disable automatically selecting a row via a mouse click. 
 Keyboard:
-- Space: Selects the currently focused row, or deselects it if already selected.
+- Shift + Space: Selects the currently focused row, or deselects it if already selected.
+
 #### "multi-row" selection mode: 
 When in single row selection mode a maximum of one row can be selected at a time.  All rows are labelled with `aria-selected' with any selected row having a value of "true".
 
-When the grid's `disable-click-select` attribute is set to "false", which is the default, any click on a selectable row will select that row, or deselect if already selected.  It will additionally deselect all other selected rows.  Holding the control key while selecting prevents deselection of other rows, and holding shift while selecting selects the row and all the rows between it and the last non-shift selected row, if any. 
+When the grid's `disable-click-select` attribute is set to "false", which is the default, any click on a selectable row will select that row, or deselect if already selected.  It will additionally deselect all other selected rows.  Holding the control key while selecting prevents deselection of other rows, and holding shift while selecting selects the row and all the rows between it and the last non-shift selected row, if any. Setting it to `true` will disable automatically selecting a row via a mouse click.  
 
 Keyboard: 
 
@@ -217,8 +219,8 @@ Sets how the grid handles selection.
 "single-row" - Single row elements are selectable.
 "multi-row" - Multiple rows can be selected.
 
-- `click-select`
-Whether the grid selects items based on click events or not.  Authors may wish to invoke selection directly from their own ui, like having a specific checkbox to select a row, in which case `click-select` would be disabled and `toggleSelected()` called on the desired row/cell.  Default is `true`.
+- `disable-click-select`
+Whether the grid selects items based on click events or not.  Authors may wish to invoke selection directly from their own ui, like having a specific checkbox to select a row, in which case `disable-click-select` would be disabled and `toggleSelected()` called on the desired row/cell.  Default is `true`.
 
 - `initial-row-selection`
  The initially selected row elements. The format should be a comma delimited list of row indexes. ie. "1,3,5"

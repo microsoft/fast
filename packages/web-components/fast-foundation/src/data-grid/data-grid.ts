@@ -24,12 +24,13 @@ import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import {
     DataGridRowTypes,
+    DataGridSelectionBehavior,
     DataGridSelectionChangeDetail,
     DataGridSelectionMode,
     GenerateHeaderOptions,
 } from "./data-grid.options.js";
 
-export { DataGridRowTypes, DataGridSelectionMode, GenerateHeaderOptions };
+export { DataGridRowTypes, DataGridSelectionBehavior, DataGridSelectionMode, GenerateHeaderOptions };
 
 /**
  * Defines a column in the grid
@@ -229,7 +230,7 @@ export class FASTDataGrid extends FASTElement {
      * HTML Attribute: selection-mode
      */
     @attr({ attribute: "selection-mode" })
-    public selectionMode: DataGridSelectionMode = "none";
+    public selectionMode: DataGridSelectionMode = DataGridSelectionMode.auto;
     private selectionModeChanged(
         prev: DataGridSelectionMode,
         next: DataGridSelectionMode
@@ -249,14 +250,14 @@ export class FASTDataGrid extends FASTElement {
     }
 
     /**
-     * Determines if clicks can automatically select
+     * Controls selection behavior
      *
      * @public
      * @remarks
-     * HTML Attribute: disable-click-select
+     * HTML Attribute: selection-mode
      */
-    @attr({ attribute: "disable-click-select", mode: "boolean" })
-    public disableClickSelect: boolean = false;
+    @attr({ attribute: "selection-behavior" })
+    public selectionBehavior: DataGridSelectionBehavior = DataGridSelectionBehavior.auto
 
     /**
      * The indexes of initially selected grid elements. Includes header rows.
@@ -951,7 +952,7 @@ export class FASTDataGrid extends FASTElement {
             const thisRow = element as FASTDataGridRow;
             thisRow.rowIndex = index;
             thisRow.gridTemplateColumns = newGridTemplateColumns;
-            thisRow.disableClickSelect = this.disableClickSelect;
+            thisRow.selectionBehavior = this.selectionBehavior;
             if (
                 this.selectionMode === DataGridSelectionMode.singleRow ||
                 this.selectionMode === DataGridSelectionMode.multiRow
