@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Fix Picker template missing quote and dependent tag names",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}
