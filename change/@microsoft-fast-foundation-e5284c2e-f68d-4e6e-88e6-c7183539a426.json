@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "update default value of menu item checked attribute to false",
+  "comment": "add default slot to divider",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",
   "dependentChangeType": "prerelease"

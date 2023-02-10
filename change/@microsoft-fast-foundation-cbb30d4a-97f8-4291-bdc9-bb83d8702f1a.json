@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "rewrite tooltip to use floating-ui",
+  "comment": "Cleaned up `start` and `end` definitions",
   "packageName": "@microsoft/fast-foundation",
-  "email": "863023+radium-v@users.noreply.github.com",
+  "email": "47367562+bheston@users.noreply.github.com",
   "dependentChangeType": "prerelease"
 }

@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "add ValuesOf helper for mapping types from a const object",
+  "comment": "add explicit exports for component orientations",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",
   "dependentChangeType": "prerelease"

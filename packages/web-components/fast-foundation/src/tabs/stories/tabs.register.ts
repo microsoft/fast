@@ -26,9 +26,16 @@ const styles = css`
         padding: calc(var(--design-unit) * 4px) calc(var(--design-unit) * 4px) 0;
         box-sizing: border-box;
     }
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
+        display: flex;
         align-self: center;
+    }
+    ::slotted([slot="start"]) {
+        margin-inline-end: 11px;
+    }
+    ::slotted([slot="end"]) {
+        margin-inline-start: 11px;
     }
     .active-indicator {
         grid-row: 2;
@@ -73,7 +80,7 @@ const styles = css`
         grid-row-start: 1;
         grid-row-end: 4;
     }
-    :host([orientation="vertical"]) .end {
+    :host([orientation="vertical"]) ::slotted([slot="end"]) {
         grid-row: 3;
     }
     :host([orientation="vertical"]) .activeIndicator {

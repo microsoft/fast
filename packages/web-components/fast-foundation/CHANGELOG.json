@@ -2,6 +2,131 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 11 Jan 2023 22:07:43 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.24",
+      "version": "3.0.0-alpha.24",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "Mathieu.Salois@goto.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "dfab11aed93627f28d0985a376f6fd461b27cdb6",
+            "comment": "fix(Calendar): add fix for the timezones from #5539"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "4e39f28dfca811ef5b977c0ab706669fca732ed7",
+            "comment": "export staticallyCompose function"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2bb85c931a84d4de3a8b61d6f26f89f2d9a525f6",
+            "comment": "remove deprecation notice from display helpers"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "d003ef9f7980a7e3697592f28a14ec01fad6aaed",
+            "comment": "add disabled attribute support to accordion item"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "02ae46b6bc91f73f0d77fa4c1a2517925f4295d5",
+            "comment": "add ValuesOf helper for mapping types from a const object"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "b28b297e014939aba1810fe8d22ff35b2ad86efb",
+            "comment": "Removed legacy unsupported delegates focus from Anchor and Button now that `delgatesFocus` is supported in firefox since version 94."
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "52cd5171c3e9061af8066443023782bca2b0e59b",
+            "comment": "updates types for default slotted content to remove string and support DangerousHTMLDirective"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "d29b0a0c840cc9a5dedd5f3c79508cc7d6355986",
+            "comment": "update default value of menu item checked attribute to false"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "3a3bd3ab29344c8b98bf88d8528cbfa4e07958f9",
+            "comment": "add missing part attribute for tabpanel in tabs"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "a3d8260e210a2ed94d76b89226c2ed15e12ac229",
+            "comment": "clean up header on disconnect"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "d33b910a8fabe927e0afb63bba843c20cf67f2f4",
+            "comment": "Fixed bug in DesignTokenNode reparenting"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "03ec71cfce57046ee857088f44362910050cc0f8",
+            "comment": "rework scroll into view"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "3c5495be5875ac01527d99855ab912fa0298d3cf",
+            "comment": "ensure submenu items are navigable after parent menu item has been clicked"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "5c3b2f0431ae8f840d3dc778ff93be73b585c6e2",
+            "comment": "refactor(fast-foundation): template inline options and html.partial"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "555f1b2cd614a1d5a9bc3985fb892d040c110cb3",
+            "comment": "rewrite tooltip to use floating-ui"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.20",
+            "commit": "2bb85c931a84d4de3a8b61d6f26f89f2d9a525f6"
+          }
+        ],
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "fedf41e5222c14cf27be1886161d6acad0fcbfab",
+            "comment": "convert form-associated tests to playwright"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7d3b7f3741523c27adce82ef4e1eca202954dee4",
+            "comment": "fix FancyMenu example class issues"
+          },
+          {
+            "author": "rina.oksman@vonage.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2f51c838340d27b7b73a253f6e0a87f8de333728",
+            "comment": "add user-select to button"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 02 Dec 2022 01:18:22 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.23",
       "version": "3.0.0-alpha.23",

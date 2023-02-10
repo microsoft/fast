@@ -7,9 +7,9 @@ import {
     keyArrowRight,
     keyArrowUp,
     keyEnter,
-    Orientation,
 } from "@microsoft/fast-web-utilities";
 import { getDirection } from "../utilities/direction.js";
+import { RadioGroupOrientation } from "./radio-group.options.js";
 
 /**
  * An Radio Group Custom HTML Element.
@@ -111,7 +111,7 @@ export class FASTRadioGroup extends FASTElement {
      * HTML Attribute: orientation
      */
     @attr
-    public orientation: Orientation | "horizontal" | "vertical" = Orientation.horizontal;
+    public orientation: RadioGroupOrientation = RadioGroupOrientation.horizontal;
 
     @observable
     public childItems: HTMLElement[];

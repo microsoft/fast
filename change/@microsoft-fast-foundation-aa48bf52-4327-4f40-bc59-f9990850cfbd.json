@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "updates types for default slotted content to remove string and support DangerousHTMLDirective",
+  "comment": "remove paused attribute from progress",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",
   "dependentChangeType": "prerelease"

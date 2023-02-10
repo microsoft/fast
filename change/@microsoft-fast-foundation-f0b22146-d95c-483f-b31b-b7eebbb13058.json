@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "clean up header on disconnect",
+  "comment": "remove readonly classname from switch",
   "packageName": "@microsoft/fast-foundation",
-  "email": "stephcomeau@msn.com",
+  "email": "chhol@microsoft.com",
   "dependentChangeType": "prerelease"
 }

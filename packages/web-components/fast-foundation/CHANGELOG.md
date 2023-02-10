@@ -1,8 +1,31 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 02 Dec 2022 01:18:22 GMT and should not be manually modified.
+This log was last generated on Wed, 11 Jan 2023 22:07:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.24
+
+Wed, 11 Jan 2023 22:07:43 GMT
+
+### Changes
+
+- fix(Calendar): add fix for the timezones from #5539 (Mathieu.Salois@goto.com)
+- export staticallyCompose function (chhol@microsoft.com)
+- remove deprecation notice from display helpers (chhol@microsoft.com)
+- add disabled attribute support to accordion item (chhol@microsoft.com)
+- add ValuesOf helper for mapping types from a const object (chhol@microsoft.com)
+- Removed legacy unsupported delegates focus from Anchor and Button now that `delgatesFocus` is supported in firefox since version 94. (32497422+KingOfTac@users.noreply.github.com)
+- updates types for default slotted content to remove string and support DangerousHTMLDirective (chhol@microsoft.com)
+- update default value of menu item checked attribute to false (chhol@microsoft.com)
+- add missing part attribute for tabpanel in tabs (chhol@microsoft.com)
+- clean up header on disconnect (stephcomeau@msn.com)
+- Fixed bug in DesignTokenNode reparenting (nicholasrice@users.noreply.github.com)
+- rework scroll into view (stephcomeau@msn.com)
+- ensure submenu items are navigable after parent menu item has been clicked (chhol@microsoft.com)
+- refactor(fast-foundation): template inline options and html.partial (roeisenb@microsoft.com)
+- rewrite tooltip to use floating-ui (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.20
 
 ## 3.0.0-alpha.23
 

@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "add missing part attribute for tabpanel in tabs",
+  "comment": "ensure single expand mode accordions support explicitly expanded items",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",
   "dependentChangeType": "prerelease"

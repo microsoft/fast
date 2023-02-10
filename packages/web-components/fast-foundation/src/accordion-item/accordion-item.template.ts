@@ -21,6 +21,7 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
                 class="button"
                 part="button"
                 ${ref("expandbutton")}
+                ?disabled="${x => (x.disabled ? "true" : void 0)}"
                 aria-expanded="${x => x.expanded}"
                 aria-controls="${x => x.id}-panel"
                 id="${x => x.id}"

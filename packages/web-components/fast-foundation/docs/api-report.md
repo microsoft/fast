@@ -158,7 +158,7 @@ export type AxisScalingMode = ValuesOf<typeof AxisScalingMode>;
 export function badgeTemplate<T extends FASTBadge>(): ElementViewTemplate<T>;
 
 // @public
-export type BreadcrumbItemOptions = StartEndOptions & {
+export type BreadcrumbItemOptions = StartEndOptions<FASTBreadcrumbItem> & {
     separator?: StaticallyComposableHTML<FASTBreadcrumbItem>;
 };
 
@@ -314,7 +314,7 @@ export interface CSSDesignTokenConfiguration extends DesignTokenConfiguration {
     cssCustomPropertyName: string;
 }
 
-// @public @deprecated
+// @public
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
 // @public
@@ -600,10 +600,22 @@ export interface Dimension {
 export const disabledCursor = "not-allowed";
 
 // @public
-export function disclosureTemplate<T extends FASTDisclosure>(): ElementViewTemplate<T>;
+export type DisclosureOptions = StartEndOptions<FASTDisclosure>;
 
-// @public @deprecated
+// @public
+export function disclosureTemplate<T extends FASTDisclosure>(options?: DisclosureOptions): ElementViewTemplate<T>;
+
+// @public
 export function display(displayValue: CSSDisplayPropertyValue): string;
+
+// @public
+export const DividerOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type DividerOrientation = ValuesOf<typeof DividerOrientation>;
 
 // @public
 export const DividerRole: {
@@ -627,11 +639,17 @@ export function endSlotTemplate<TSource extends StartEnd = StartEnd, TParent = a
 
 // @public
 export class FASTAccordion extends FASTElement {
-    // @internal (undocumented)
-    accordionItems: HTMLElement[];
-    // @internal (undocumented)
-    accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
+    // (undocumented)
+    protected accordionItems: Element[];
     expandmode: AccordionExpandMode;
+    // (undocumented)
+    expandmodeChanged(prev: AccordionExpandMode, next: AccordionExpandMode): void;
+    // @internal (undocumented)
+    handleChange(source: any, propertyName: string): void;
+    // @internal (undocumented)
+    slottedAccordionItems: HTMLElement[];
+    // @internal (undocumented)
+    slottedAccordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -641,6 +659,7 @@ export class FASTAccordion extends FASTElement {
 export class FASTAccordionItem extends FASTElement {
     // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
+    disabled: boolean;
     // @internal (undocumented)
     expandbutton: HTMLElement;
     expanded: boolean;
@@ -745,7 +764,6 @@ export class FASTAnchoredRegion extends FASTElement {
 
 // @public
 export class FASTAvatar extends FASTElement {
-    link: string;
 }
 
 // @public
@@ -762,7 +780,6 @@ export class FASTBaseProgress extends FASTElement {
     min: number;
     // (undocumented)
     protected minChanged(): void;
-    paused: boolean;
     // @internal
     percentComplete: number;
     value: number | null;
@@ -1079,6 +1096,9 @@ export class FASTDialog extends FASTElement {
     show(): void;
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FASTDisclosure" because one of its declarations is marked as @internal
+//
 // @public
 export class FASTDisclosure extends FASTElement {
     // @internal (undocumented)
@@ -1096,9 +1116,13 @@ export class FASTDisclosure extends FASTElement {
     toggle(): void;
 }
 
+// @internal
+export interface FASTDisclosure extends StartEnd {
+}
+
 // @public
 export class FASTDivider extends FASTElement {
-    orientation: Orientation;
+    orientation: DividerOrientation;
     role: DividerRole;
 }
 
@@ -1641,7 +1665,7 @@ export class FASTRadioGroup extends FASTElement {
     name: string;
     // (undocumented)
     protected nameChanged(): void;
-    orientation: Orientation | "horizontal" | "vertical";
+    orientation: RadioGroupOrientation;
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;
@@ -1836,7 +1860,7 @@ export class FASTSliderLabel extends FASTElement {
     handleChange(source: any, propertyName: string): void;
     hideMark: boolean;
     // @deprecated
-    orientation: Orientation;
+    orientation: SliderOrientation;
     // @internal (undocumented)
     protected orientationChanged(): void;
     position: string;
@@ -2046,7 +2070,7 @@ export class FASTToolbar extends FASTElement {
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
-    orientation: Orientation;
+    orientation: ToolbarOrientation;
     // @internal
     protected reduceFocusableElements(): void;
     // @internal
@@ -2287,7 +2311,7 @@ export type GenerateHeaderOptions = ValuesOf<typeof GenerateHeaderOptions>;
 // @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
 
-// @public @deprecated
+// @public
 export const hidden = ":host([hidden]){display:none}";
 
 // @public
@@ -2513,6 +2537,15 @@ export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputEl
 export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute">;
 
 // @public
+export const RadioGroupOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type RadioGroupOrientation = ValuesOf<typeof RadioGroupOrientation>;
+
+// @public
 export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTemplate<T>;
 
 // @public
@@ -2581,7 +2614,7 @@ export interface SliderConfiguration {
     // (undocumented)
     min: number;
     // (undocumented)
-    orientation?: Orientation;
+    orientation?: SliderOrientation;
 }
 
 // @public
@@ -2599,6 +2632,15 @@ export type SliderMode = ValuesOf<typeof SliderMode>;
 export type SliderOptions = {
     thumb?: StaticallyComposableHTML<FASTSlider>;
 };
+
+// @public
+export const SliderOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type SliderOrientation = ValuesOf<typeof SliderOrientation>;
 
 // @public
 export function sliderTemplate<T extends FASTSlider>(options?: SliderOptions): ElementViewTemplate<T>;
@@ -2626,6 +2668,9 @@ export function startSlotTemplate<TSource extends StartEnd = StartEnd, TParent =
 export type StaticallyComposableHTML<TSource = any, TParent = any> = string | HTMLDirective | SyntheticViewTemplate<TSource, TParent> | undefined;
 
 // @public
+export function staticallyCompose<TSource = any, TParent = any>(item: StaticallyComposableHTML<TSource, TParent>): CaptureType<TSource, TParent>;
+
+// @public
 export type StaticDesignTokenValue<T> = T extends (...args: any[]) => any ? DerivedDesignTokenValue<T> : T;
 
 // @alpha (undocumented)
@@ -2640,7 +2685,7 @@ export type SwitchOptions = {
 export function switchTemplate<T extends FASTSwitch>(options?: SwitchOptions): ElementViewTemplate<T>;
 
 // @public
-export type TabOptionOptions = StartEndOptions;
+export type TabOptions = StartEndOptions<FASTTab>;
 
 // @public
 export function tabPanelTemplate<T extends FASTTabPanel>(): ElementViewTemplate<T>;
@@ -2650,8 +2695,8 @@ export type TabsOptions = StartEndOptions<FASTTabs>;
 
 // @public
 export const TabsOrientation: {
-    readonly vertical: "vertical";
     readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
 };
 
 // @public
@@ -2661,7 +2706,7 @@ export type TabsOrientation = ValuesOf<typeof TabsOrientation>;
 export function tabsTemplate<T extends FASTTabs>(options?: TabsOptions): ElementViewTemplate<T>;
 
 // @public
-export function tabTemplate<T extends FASTTab>(options?: StartEndOptions<FASTTab>): ElementViewTemplate<T>;
+export function tabTemplate<T extends FASTTab>(options?: TabOptions): ElementViewTemplate<T>;
 
 // @beta
 export function tagFor(dependency: TemplateElementDependency): string;
@@ -2703,6 +2748,15 @@ export type TextFieldType = ValuesOf<typeof TextFieldType>;
 
 // @public
 export type ToolbarOptions = StartEndOptions<FASTToolbar>;
+
+// @public
+export const ToolbarOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type ToolbarOrientation = ValuesOf<typeof ToolbarOrientation>;
 
 // @public
 export function toolbarTemplate<T extends FASTToolbar>(options?: ToolbarOptions): ElementViewTemplate<T>;
@@ -2784,9 +2838,9 @@ export type YearFormat = ValuesOf<typeof YearFormat>;
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/calendar/calendar.d.ts:50:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:53:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

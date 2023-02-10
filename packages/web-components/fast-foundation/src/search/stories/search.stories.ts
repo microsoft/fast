@@ -89,6 +89,15 @@ export default {
 
 export const Search: Story<FASTSearch> = renderComponent(storyTemplate).bind({});
 
+export const SearchWithSlottedStartEnd: Story<FASTSearch> = Search.bind({});
+SearchWithSlottedStartEnd.args = {
+    storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        Search
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
+};
+
 export const SearchInForm: Story<FASTSearch> = renderComponent(
     html<FASTSearch>`
         <form @submit="${() => false}">

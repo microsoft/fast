@@ -83,6 +83,15 @@ ComboboxWithBothAutocomplete.args = {
     autocomplete: ComboboxAutocomplete.both,
 };
 
+export const ComboboxWithSlottedStartEnd: Story<FASTCombobox> = Combobox.bind({});
+ComboboxWithSlottedStartEnd.args = {
+    storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        ${repeat(x => x.storyItems, listboxOptionTemplate)}
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
+};
+
 export const ComboboxInForm: Story<FASTCombobox> = renderComponent(
     html<StoryArgs<FASTCombobox>>`
         <form @submit="${() => false}">

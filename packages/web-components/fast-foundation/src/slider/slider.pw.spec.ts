@@ -1,8 +1,9 @@
-import { Direction, Orientation } from "@microsoft/fast-web-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
 import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTSlider } from "./slider.js";
+import { SliderOrientation } from "./slider.options.js";
 
 // TODO: Need to add tests for keyboard handling, position, and focus management
 test.describe("Slider", () => {
@@ -83,7 +84,7 @@ test.describe("Slider", () => {
 
         await expect(element).toHaveAttribute(
             "aria-orientation",
-            `${Orientation.horizontal}`
+            `${SliderOrientation.horizontal}`
         );
     });
 
@@ -160,17 +161,23 @@ test.describe("Slider", () => {
             `;
         });
 
-        await element.evaluate((node: FASTSlider, Orientation) => {
-            node.orientation = Orientation.horizontal;
-        }, Orientation);
+        await element.evaluate((node: FASTSlider, SliderOrientation) => {
+            node.orientation = SliderOrientation.horizontal;
+        }, SliderOrientation);
 
-        await expect(element).toHaveAttribute("aria-orientation", Orientation.horizontal);
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            SliderOrientation.horizontal
+        );
 
-        await element.evaluate((node: FASTSlider, Orientation) => {
-            node.orientation = Orientation.vertical;
-        }, Orientation);
+        await element.evaluate((node: FASTSlider, SliderOrientation) => {
+            node.orientation = SliderOrientation.vertical;
+        }, SliderOrientation);
 
-        await expect(element).toHaveAttribute("aria-orientation", Orientation.vertical);
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            SliderOrientation.vertical
+        );
     });
 
     test("should set direction equal to the `direction` value", async () => {
