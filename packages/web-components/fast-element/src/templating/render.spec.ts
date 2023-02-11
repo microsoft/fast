@@ -12,6 +12,8 @@ import { html, ViewTemplate } from "./template.js";
 import type { SyntheticView } from "./view.js";
 import type { ElementCreateOptions } from "./render.js";
 import { ref } from "./ref.js";
+import { children } from "./children.js";
+import { elements } from "./node-observation.js";
 
 describe("The render", () => {
     const childTemplate = html`Child Template`;
@@ -727,6 +729,7 @@ describe("The render", () => {
             id = 'child-1';
             @observable knownValue: string = "value";
             @observable ref: HTMLElement;
+            @observable childElements: Array<HTMLElement>;
         }
 
         it(`creates a template from a tag name`, () => {
@@ -829,6 +832,33 @@ describe("The render", () => {
             await Updates.next();
 
             expect(source.ref).to.be.instanceof(HTMLElement);
+        });
+
+        it(`creates a template with ref and children directives on the host tag`, async () => {
+            const template = RenderInstruction.createElementTemplate(
+                "ul",
+                {
+                    directives: [ref("ref"), children({ property: "childElements", filter: elements() })],
+                    content: html`
+                        <li>item-1</li>
+                        <li>item-1</li>
+                        <li>item-1</li>
+                    `
+                }
+            );
+
+            const targetNode = document.createElement("div");
+            const source = new RenderSource();
+            const view = template.create();
+            view.bind(source);
+            view.appendTo(targetNode);
+
+            expect(view.source).to.equal(source);
+
+            await Updates.next();
+
+            expect(source.ref).to.be.instanceof(HTMLElement);
+            expect(source.childElements).to.have.lengthOf(3);
         });
     });
 });
