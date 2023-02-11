@@ -613,8 +613,6 @@ export class StyleElementStrategy implements StyleStrategy {
             `.${this.styleClass}`
         );
 
-        styles[0].parentNode;
-
         for (let i = 0, ii = styles.length; i < ii; ++i) {
             target.removeChild(styles[i]);
         }
