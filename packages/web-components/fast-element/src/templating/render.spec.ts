@@ -11,6 +11,7 @@ import { NodeTemplate, render, RenderBehavior, RenderDirective, RenderInstructio
 import { html, ViewTemplate } from "./template.js";
 import type { SyntheticView } from "./view.js";
 import type { ElementCreateOptions } from "./render.js";
+import { ref } from "./ref.js";
 
 describe("The render", () => {
     const childTemplate = html`Child Template`;
@@ -712,7 +713,7 @@ describe("The render", () => {
     });
 
     context("createElementTemplate function", () => {
-        const childTemplate = html<Child>`This is a template. ${x => x.knownValue}`;
+        const sourceTemplate = html<RenderSource>`This is a template. ${x => x.knownValue}`;
 
         const templateAttributeOptions: ElementCreateOptions = {
             attributes: { id: x => x.id },
@@ -722,7 +723,7 @@ describe("The render", () => {
             content: "foo"
         }
 
-        class Child {
+        class RenderSource {
             id = 'child-1';
             @observable knownValue: string = "value";
             @observable ref: HTMLElement;
@@ -741,7 +742,7 @@ describe("The render", () => {
             );
 
             const targetNode = document.createElement("div");
-            const source = new Child();
+            const source = new RenderSource();
             const view = template.create();
 
             view.bind(source);
@@ -767,12 +768,12 @@ describe("The render", () => {
                 "button",
                 {
                     ...templateAttributeOptions,
-                    content: childTemplate
+                    content: sourceTemplate
                 }
             );
 
             const targetNode = document.createElement("div");
-            const source = new Child();
+            const source = new RenderSource();
             const view = template.create();
 
             view.bind(source);
@@ -787,12 +788,12 @@ describe("The render", () => {
                 "button",
                 {
                     ...templateAttributeOptions,
-                    content: childTemplate
+                    content: sourceTemplate
                 }
             );
 
             const targetNode = document.createElement("div");
-            const source = new Child();
+            const source = new RenderSource();
             const view = template.create();
 
             view.bind(source);
@@ -806,6 +807,28 @@ describe("The render", () => {
             await Updates.next();
 
             expect(toHTML(targetNode.firstElementChild!)).to.equal("This is a template. new-value");
+        });
+
+        it(`creates a template with a ref directive on the host tag.`, async () => {
+            const template = RenderInstruction.createElementTemplate(
+                "button",
+                {
+                    directives: [ref("ref")],
+                    ...templateStaticViewOptions
+                }
+            );
+
+            const targetNode = document.createElement("div");
+            const source = new RenderSource();
+            const view = template.create();
+            view.bind(source);
+            view.appendTo(targetNode);
+
+            expect(view.source).to.equal(source);
+
+            await Updates.next();
+
+            expect(source.ref).to.be.instanceof(HTMLElement);
         });
     });
 });
