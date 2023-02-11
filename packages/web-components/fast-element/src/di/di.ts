@@ -808,11 +808,11 @@ export const DI = Object.freeze({
         key: Key,
         respectConnection = false
     ) {
-        const diPropertyKey = `$di_${propertyName}`;
+        const field = Symbol.for(`fast:di:${propertyName}`);
 
         Reflect.defineProperty(target, propertyName, {
             get: function (this: any) {
-                let value = this[diPropertyKey];
+                let value = this[field];
 
                 if (value === void 0) {
                     const container: Container =
@@ -821,7 +821,7 @@ export const DI = Object.freeze({
                             : DI.getOrCreateDOMContainer();
 
                     value = container.get(key);
-                    this[diPropertyKey] = value;
+                    this[field] = value;
 
                     if (respectConnection) {
                         const notifier = (this as any).$fastController;
@@ -833,10 +833,10 @@ export const DI = Object.freeze({
                         const handleChange = () => {
                             const newContainer = DI.findResponsibleContainer(this);
                             const newValue = newContainer.get(key) as any;
-                            const oldValue = this[diPropertyKey];
+                            const oldValue = this[field];
 
                             if (newValue !== oldValue) {
-                                this[diPropertyKey] = value;
+                                this[field] = value;
                                 notifier.notify(propertyName);
                             }
                         };
