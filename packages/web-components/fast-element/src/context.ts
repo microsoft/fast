@@ -30,7 +30,10 @@ export type FASTContext<T> = ContextDecorator<T> & {
     get(target: EventTarget): T;
     provide(target: EventTarget, value: T): void;
     request(target: EventTarget, callback: ContextCallback<T>, multiple?: boolean): void;
-    handle(target: EventTarget, callback: (event: ContextEvent<FASTContext<T>>) => void): void;
+    handle(
+        target: EventTarget,
+        callback: (event: ContextEvent<FASTContext<T>>) => void
+    ): void;
 };
 
 /**

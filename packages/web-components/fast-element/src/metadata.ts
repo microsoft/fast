@@ -44,7 +44,8 @@ export const Metadata = Object.freeze({
      * @returns The metadata array or a frozen empty array if no metadata is found.
      */
     getDesignParamTypes: (Type: Constructable) =>
-        ((Reflect as any).getOwnMetadata("design:paramtypes", Type) ?? emptyArray) as readonly any[],
+        ((Reflect as any).getOwnMetadata("design:paramtypes", Type) ??
+            emptyArray) as readonly any[],
 
     /**
      * Gets the "annotation:paramtypes" metadata for the specified type.
@@ -52,7 +53,8 @@ export const Metadata = Object.freeze({
      * @returns The metadata array or a frozen empty array if no metadata is found.
      */
     getAnnotationParamTypes: (Type: Constructable) =>
-        ((Reflect as any).getOwnMetadata(annotationParamTypesKey, Type) ?? emptyArray) as readonly any[],
+        ((Reflect as any).getOwnMetadata(annotationParamTypesKey, Type) ??
+            emptyArray) as readonly any[],
 
     /**
      * Gets the "annotation:paramtypes" metadata for the specified type. If none is found,

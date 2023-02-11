@@ -90,7 +90,10 @@ function block(
     aspectName: string,
     sink: DOMSink
 ): DOMSink {
-    throw FAST.error(Message.blockedByDOMPolicy, { aspectName, tagName: tagName ?? "text" });
+    throw FAST.error(Message.blockedByDOMPolicy, {
+        aspectName,
+        tagName: tagName ?? "text",
+    });
 }
 
 const defaultDOMElementGuards = {

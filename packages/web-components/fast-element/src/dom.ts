@@ -157,7 +157,11 @@ export const DOM = Object.freeze({
      * @remarks
      * If the value is true, the attribute is added; otherwise it is removed.
      */
-    setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void {
+    setBooleanAttribute(
+        element: HTMLElement,
+        attributeName: string,
+        value: boolean
+    ): void {
         value
             ? element.setAttribute(attributeName, "")
             : element.removeAttribute(attributeName);
