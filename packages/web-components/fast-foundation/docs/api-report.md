@@ -352,6 +352,26 @@ export const DataGridRowTypes: {
 export type DataGridRowTypes = ValuesOf<typeof DataGridRowTypes>;
 
 // @public
+export const DataGridSelectionBehavior: {
+    readonly programmatic: "programmatic";
+    readonly keyboardOnly: "keyboard-only";
+    readonly auto: "auto";
+};
+
+// @public
+export type DataGridSelectionBehavior = ValuesOf<typeof DataGridSelectionBehavior>;
+
+// @public
+export const DataGridSelectionMode: {
+    readonly none: "none";
+    readonly singleRow: "single-row";
+    readonly multiRow: "multi-row";
+};
+
+// @public
+export type DataGridSelectionMode = ValuesOf<typeof DataGridSelectionMode>;
+
+// @public
 export function dataGridTemplate<T extends FASTDataGrid>(options: DataGridOptions): ElementViewTemplate<T>;
 
 // @public
@@ -981,7 +1001,6 @@ export class FASTDataGrid extends FASTElement {
     connectedCallback(): void;
     // @internal
     defaultRowItemTemplate: ViewTemplate;
-    disableClickSelect: boolean;
     // @internal (undocumented)
     disconnectedCallback(): void;
     focusColumnIndex: number;
@@ -1017,7 +1036,7 @@ export class FASTDataGrid extends FASTElement {
     rowSelectableCallback: (rowIndex: number, grid: FASTDataGrid) => boolean;
     get selectedRowIndexes(): number[];
     set selectedRowIndexes(next: number[]);
-    // Warning: (ae-forgotten-export) The symbol "DataGridSelectionMode" needs to be exported by the entry point index.d.ts
+    selectionBehavior: DataGridSelectionBehavior;
     selectionMode: DataGridSelectionMode;
 }
 
@@ -1057,8 +1076,6 @@ export class FASTDataGridRow extends FASTElement {
     defaultCellItemTemplate?: ViewTemplate;
     // @internal
     defaultHeaderCellItemTemplate?: ViewTemplate;
-    // @internal
-    disableClickSelect: boolean;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // @internal (undocumented)
@@ -1084,6 +1101,8 @@ export class FASTDataGridRow extends FASTElement {
     rowType: DataGridRowTypes;
     // @internal
     selected: boolean;
+    // @internal
+    selectionBehavior: DataGridSelectionBehavior;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
     // Warning: (ae-forgotten-export) The symbol "DataGridSelectionChangeDetail" needs to be exported by the entry point index.d.ts

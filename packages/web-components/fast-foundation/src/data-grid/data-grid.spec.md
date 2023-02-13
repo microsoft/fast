@@ -219,8 +219,11 @@ Sets how the grid handles selection.
 "single-row" - Single row elements are selectable.
 "multi-row" - Multiple rows can be selected.
 
-- `disable-click-select`
-Whether the grid selects items based on click events or not.  Authors may wish to invoke selection directly from their own ui, like having a specific checkbox to select a row, in which case `disable-click-select` would be disabled and `toggleSelected()` called on the desired row/cell.  Default is `true`.
+- `selection-behavior`
+Determines what ui interactions can invoke selection.  
+    "programmatic" - Elements can only be selected programmatically.
+    "keyboard-only" - Programmatic + keyboard.
+    "auto" - Programmatic + keyboard + pointer events.
 
 - `initial-row-selection`
  The initially selected row elements. The format should be a comma delimited list of row indexes. ie. "1,3,5"

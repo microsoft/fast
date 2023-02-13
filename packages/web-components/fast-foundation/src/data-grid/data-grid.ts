@@ -230,7 +230,7 @@ export class FASTDataGrid extends FASTElement {
      * HTML Attribute: selection-mode
      */
     @attr({ attribute: "selection-mode" })
-    public selectionMode: DataGridSelectionMode = DataGridSelectionMode.auto;
+    public selectionMode: DataGridSelectionMode = DataGridSelectionMode.none;
     private selectionModeChanged(
         prev: DataGridSelectionMode,
         next: DataGridSelectionMode
@@ -254,7 +254,7 @@ export class FASTDataGrid extends FASTElement {
      *
      * @public
      * @remarks
-     * HTML Attribute: selection-mode
+     * HTML Attribute: selection-behavior
      */
     @attr({ attribute: "selection-behavior" })
     public selectionBehavior: DataGridSelectionBehavior = DataGridSelectionBehavior.auto
