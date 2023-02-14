@@ -125,7 +125,6 @@ export const myRadio = Radio.compose<RadioOptions>({
 | ----------------- | --------- | --------------------------------- | ------------------ | ----------------- | -------------- |
 | `readOnlyChanged` | protected |                                   |                    | `void`            |                |
 | `keypressHandler` | public    | Handles key presses on the radio. | `e: KeyboardEvent` | `boolean or void` |                |
-| `clickHandler`    | public    | Handles clicks on the radio.      | `e: MouseEvent`    | `boolean or void` |                |
 
 #### Events
 
