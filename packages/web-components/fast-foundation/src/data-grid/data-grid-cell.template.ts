@@ -14,14 +14,6 @@ export function dataGridCellTemplate<T extends FASTDataGridCell>(): ElementViewT
         <template
             tabindex="-1"
             role="${x => DataGridCellRole[x.cellType] ?? DataGridCellRole.default}"
-            :classList="
-            ${x =>
-                x.cellType === "columnheader"
-                    ? "column-header"
-                    : x.cellType === "rowheader"
-                    ? "row-header"
-                    : ""}
-            "
         >
             <slot></slot>
         </template>
