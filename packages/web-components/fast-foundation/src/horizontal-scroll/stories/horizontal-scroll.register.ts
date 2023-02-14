@@ -3,15 +3,21 @@ import { FASTHorizontalScroll } from "../horizontal-scroll.js";
 import { horizontalScrollTemplate } from "../horizontal-scroll.template.js";
 
 const ActionsStyles = css`
+    :host {
+        --scroll-fade-next: var(--fill-color);
+        --scroll-fade-previous: var(--fill-color);
+    }
+
     .scroll-area {
         position: relative;
     }
 
-    div.scroll-view {
-        overflow-x: hidden;
+    .scroll-view {
+        overflow-x: hidden !important;
     }
 
-    .scroll {
+    .scroll-next,
+    .scroll-previous {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -21,16 +27,13 @@ const ActionsStyles = css`
         align-items: center;
     }
 
-    .scroll-next {
-        right: 0;
-    }
-
-    .scroll.disabled {
+    .scroll-next.disabled,
+    .scroll-previous.disabled {
         display: none;
     }
 
-    .scroll::before {
-        background: linear-gradient(to right, var(--scroll-fade-previous), transparent);
+    .scroll-next::before,
+    .scroll-previous::before {
         content: "";
         display: block;
         position: absolute;
@@ -39,12 +42,21 @@ const ActionsStyles = css`
         pointer-events: none;
     }
 
-    .scroll-next.scroll::before {
+    .scroll-next {
+        right: 0;
+        justify-content: flex-end;
+    }
+
+    .scroll-next::before {
         background: linear-gradient(to right, transparent, var(--scroll-fade-next));
     }
 
-    .scroll-next {
-        justify-content: flex-end;
+    .scroll-previous {
+        justify-content: flex-start;
+    }
+
+    .scroll-previous::before {
+        background: linear-gradient(to right, var(--scroll-fade-previous), transparent);
     }
 
     slot[name="previous-flipper"] *,

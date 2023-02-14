@@ -45,11 +45,11 @@ export function comboboxTemplate<T extends FASTCombobox>(
                     />
                 </slot>
                 ${endSlotTemplate(options)}
-                <div class="open-close-icon" part="open-close-icon" aria-hidden="true">
+                <span class="open-close-icon" part="open-close-icon" aria-hidden="true">
                     <slot name="open-close-icon">
                         ${staticallyCompose(options.openCloseIcon)}
                     </slot>
-                </div>
+                </span>
             </div>
             <slot name="listbox-container">
                 <div

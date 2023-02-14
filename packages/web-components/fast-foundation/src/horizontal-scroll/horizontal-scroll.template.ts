@@ -35,7 +35,7 @@ export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
                     x => x.view !== "mobile",
                     html<T>`
                         <div
-                            class="scroll scroll-previous"
+                            class="scroll-previous"
                             part="scroll-previous"
                             ${ref("previousFlipperContainer")}
                         >
@@ -55,7 +55,7 @@ export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
                             </slot>
                         </div>
                         <div
-                            class="scroll scroll-next"
+                            class="scroll-next"
                             part="scroll-next"
                             ${ref("nextFlipperContainer")}
                         >
