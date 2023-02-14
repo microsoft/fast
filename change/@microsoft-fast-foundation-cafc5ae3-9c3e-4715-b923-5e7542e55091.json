@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Allow enum types on derived DesignToken values",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "rajsite@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
