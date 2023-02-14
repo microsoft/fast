@@ -2,6 +2,101 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 14 Feb 2023 04:02:34 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.25",
+      "version": "3.0.0-alpha.25",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e504d092f81623e6332fa8cdf72ce9114e6c842e",
+            "comment": "fix radio group disabled handling"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "a85467bdbf2241628dc3007610cb017017da04d0",
+            "comment": "remove readonly classname from switch"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "4a616b4a3b1c3c3b060756c74ec8802e09e6600e",
+            "comment": "add explicit exports for component orientations"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "48a29ca6d68093fb2b70abfd99e888f75085ade2",
+            "comment": "ensure single expand mode accordions support explicitly expanded items"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "5a27a1cebf1ada23f41863e3ec909f5229d7888e",
+            "comment": "Cleaned up `start` and `end` definitions"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "f8dde59eee21a1152263447d22a76593ee5ed9e5",
+            "comment": "add default slot to divider"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "26a07b9c59e9a6bdc94c35577eb96cd934523ced",
+            "comment": "observe accordion children to accommodate single expand scenarios with programmatic changes"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "92c0d0da33ff43ed0c520dbd84bfb959384985ee",
+            "comment": "Fix Picker template missing quote and dependent tag names"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "0ae312ee9be8f451519187c0925a6c6ac6071f22",
+            "comment": "remove paused attribute from progress"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "91beb0e43a390692240e62e085c2f49256500852",
+            "comment": "remove status messages from switch template"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2a2fe957ccb823a40a8eebdc25fd2c3f8e444070",
+            "comment": "fixes an issue where accordion expand-mode changes were not reflected in the component"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "21c210f2164c5cf285cade1a328460c67e4b97e6",
+            "comment": "Remove link from Avatar"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.21",
+            "commit": "e504d092f81623e6332fa8cdf72ce9114e6c842e"
+          }
+        ],
+        "none": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2f8c3d3b2176571dc2cf4038af33a0dc22d1932e",
+            "comment": "Import icons for fast-foundation stories"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Jan 2023 22:07:43 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.24",
       "version": "3.0.0-alpha.24",

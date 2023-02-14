@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 14 Feb 2023 04:02:35 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.21",
+      "version": "2.0.0-beta.21",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "d38d31d2dd7496b5eb1e7c65b57de9a5e05e8546",
+            "comment": "fix: cleanup types, docs, etc. in root source files of fast-element in preparation for release"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "09d57ca18700331d054515c3b3f6fae07528cca0",
+            "comment": "Remove un-necessary expression from StyleElementStrategy"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Jan 2023 22:07:47 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.20",
       "version": "2.0.0-beta.20",

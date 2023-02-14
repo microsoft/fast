@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fixes an issue where accordion expand-mode changes were not reflected in the component",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

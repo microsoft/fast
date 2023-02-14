@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: cleanup types, docs, etc. in root source files of fast-element in preparation for release",
-  "packageName": "@microsoft/fast-element",
-  "email": "rob@bluespire.com",
-  "dependentChangeType": "prerelease"
-}
