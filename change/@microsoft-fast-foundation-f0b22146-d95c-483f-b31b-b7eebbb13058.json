@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "remove readonly classname from switch",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}
