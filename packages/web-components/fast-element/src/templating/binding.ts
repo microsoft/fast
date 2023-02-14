@@ -19,7 +19,7 @@ import {
     ViewController,
 } from "./html-directive.js";
 import { Markup } from "./markup.js";
-
+console.log('changing something')
 class OnChangeBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
     TSource,
     TReturn,
