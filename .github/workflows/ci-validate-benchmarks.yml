@@ -19,6 +19,13 @@ jobs:
         uses: andrewiggins/tachometer-reporter-action@v2
         with:
             initialize: true
+      
+      - name: Install latest Chrome version
+        uses: browser-actions/setup-chrome@v1
+        id: setup-chrome
+        run: |
+            echo Installed chromium version: ${{ steps.setup-chrome.outputs.chrome-version }}
+            chrome --version
 
   render_create10k:
     name: Run rendering benchmark with create 10k elements operation
