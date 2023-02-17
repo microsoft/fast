@@ -1,7 +1,7 @@
 {
-  "type": "patch",
-  "comment": "Fix Safari 16 issue",
-  "packageName": "@microsoft/fast-element",
-  "email": "mahwy.asdf@gmail.com",
-  "dependentChangeType": "patch"
+    "type": "patch",
+    "comment": "Fix Safari 16 adoptNode issue",
+    "packageName": "@microsoft/fast-element",
+    "email": "mahwy.asdf@gmail.com",
+    "dependentChangeType": "patch"
 }
