@@ -40,6 +40,7 @@ const styles = css`
             );
         appearance: none;
         border: none;
+        border-radius: calc(var(--control-corner-radius) * 1px);
         background: none;
         grid-column: 2;
         grid-row: 1;
@@ -62,10 +63,8 @@ const styles = css`
         color: var(--neutral-foreground-rest);
     }
 
-    .button:focus-visible::before {
-        outline: none;
-        border: calc(var(--focus-stroke-width) * 1px) solid var(--focus-stroke-outer);
-        border-radius: calc(var(--control-corner-radius) * 1px);
+    .button:focus-visible {
+        outline: calc(var(--focus-stroke-width) * 1px) solid var(--focus-stroke-outer);
     }
 
     :host([expanded]) .panel {
