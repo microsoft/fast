@@ -357,7 +357,15 @@ export const Compiler = {
         }
 
         // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
-        const fragment = document.adoptNode(template.content);
+        let fragment = document.adoptNode(template.content);
+
+        // Safari 16 introduced breaking changes with adoptNode.
+        // If fragment was not adopted, then use importNode
+        // https://github.com/microsoft/fast/issues/6537#issuecomment-1328513375
+        if (fragment.ownerDocument !== document) {
+            fragment = document.importNode(fragment, true)
+        }
+
         const context = new CompilationContext<TSource, TParent>(
             fragment,
             factories,
