@@ -924,19 +924,19 @@ export class FASTCheckbox extends FASTCheckbox_base {
     // (undocumented)
     checked: boolean;
     checkedAttribute: boolean;
-    // (undocumented)
-    protected checkedAttributeChanged(prev: boolean | undefined, next: boolean): void;
+    // @internal
+    checkedAttributeChanged(prev: boolean | undefined, next: boolean): void;
     // (undocumented)
     checkedChanged(prev: boolean | undefined, next: boolean): void;
     // @internal
-    clickHandler: (e: Event) => void;
+    clickHandler(e: Event): void;
     currentChecked: boolean;
     // (undocumented)
     currentCheckedChanged(prev: boolean | undefined, next: boolean): void;
     // (undocumented)
     defaultChecked: boolean;
-    // (undocumented)
-    defaultCheckedChanged(): void;
+    // @internal
+    defaultCheckedChanged(prev: boolean | undefined, next: boolean): void;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     protected dirtyChecked: boolean;
@@ -946,19 +946,20 @@ export class FASTCheckbox extends FASTCheckbox_base {
     // (undocumented)
     static formControlValidators: Validator[];
     indeterminate: boolean | undefined;
-    // (undocumented)
+    // @internal
     indeterminateChanged(prev: boolean | undefined, next: boolean | undefined): void;
     initialValue: string;
     initialValueChanged(previous: string, next: string): void;
     // @internal
-    keypressHandler: (e: KeyboardEvent) => void;
+    keypressHandler(e: KeyboardEvent): void;
     name: string;
     required: boolean;
+    // (undocumented)
+    requiredChanged(): void;
     // (undocumented)
     resetFormControl(): void;
     // (undocumented)
     shouldFormValueUpdate(): boolean;
-    // (undocumented)
     value: string;
     // (undocumented)
     valueChanged(previous: string, next: string): void;
