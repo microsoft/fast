@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: clean up toJSON noop on core fast-element types",
+  "packageName": "@microsoft/fast-element",
+  "email": "rob@bluespire.com",
+  "dependentChangeType": "patch"
+}
