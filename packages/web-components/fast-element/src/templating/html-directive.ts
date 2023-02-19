@@ -1,12 +1,12 @@
 import { DOMAspect, DOMPolicy } from "../dom.js";
-import { Constructable, Mutable, noop } from "../interfaces.js";
+import type { Constructable, Mutable } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
     Expression,
     ExpressionController,
     ExpressionObserver,
 } from "../observation/observable.js";
-import { createTypeRegistry } from "../platform.js";
+import { createTypeRegistry, makeSerializationNoop } from "../platform.js";
 import { Markup } from "./markup.js";
 
 /**
@@ -274,12 +274,6 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
 export abstract class StatelessAttachedAttributeDirective<TOptions>
     implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
     /**
-     * Opts out of JSON stringification.
-     * @internal
-     */
-    toJSON = noop;
-
-    /**
      * Creates an instance of RefDirective.
      * @param options - The options to use in configuring the directive.
      */
@@ -309,3 +303,5 @@ export abstract class StatelessAttachedAttributeDirective<TOptions>
      */
     public abstract bind(controller: ViewController): void;
 }
+
+makeSerializationNoop(StatelessAttachedAttributeDirective);

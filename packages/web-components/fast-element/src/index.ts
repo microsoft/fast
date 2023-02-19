@@ -7,7 +7,13 @@ export type {
     FASTGlobal,
     TrustedTypesPolicy,
 } from "./interfaces.js";
-export * from "./platform.js";
+
+export {
+    FAST,
+    emptyArray
+} from "./platform.js";
+
+// DOM
 export * from "./dom.js";
 
 // Observation
