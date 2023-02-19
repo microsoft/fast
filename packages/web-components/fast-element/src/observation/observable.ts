@@ -380,7 +380,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         }
     }
 
-    makeSerializationNoop(ExpressionNotifierImplementation)
+    makeSerializationNoop(ExpressionNotifierImplementation);
 
     return Object.freeze({
         /**

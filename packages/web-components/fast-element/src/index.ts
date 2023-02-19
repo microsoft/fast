@@ -8,10 +8,7 @@ export type {
     TrustedTypesPolicy,
 } from "./interfaces.js";
 
-export {
-    FAST,
-    emptyArray
-} from "./platform.js";
+export { FAST, emptyArray } from "./platform.js";
 
 // DOM
 export * from "./dom.js";
