@@ -1,6 +1,7 @@
-import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
-import type { FASTRadioGroup } from "src/radio-group/radio-group.js";
+import { FASTRadioGroup } from "../radio-group/index.js";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { FormAssociatedRadio } from "./radio.form-associated.js";
 
 /**
@@ -17,7 +18,7 @@ export type RadioControl = Pick<
  * @public
  */
 export type RadioOptions = {
-    checkedIndicator?: string | SyntheticViewTemplate;
+    checkedIndicator?: StaticallyComposableHTML<FASTRadio>;
 };
 
 /**
@@ -126,15 +127,5 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
         }
 
         return true;
-    }
-
-    /**
-     * Handles clicks on the radio.
-     * @beta
-     */
-    public clickHandler(e: MouseEvent): boolean | void {
-        if (!this.disabled && !this.radioGroup?.readOnly && !this.checked) {
-            this.checked = true;
-        }
     }
 }

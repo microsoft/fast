@@ -1,5 +1,6 @@
-import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { FormAssociatedSwitch } from "./switch.form-associated.js";
 
 /**
@@ -7,7 +8,7 @@ import { FormAssociatedSwitch } from "./switch.form-associated.js";
  * @public
  */
 export type SwitchOptions = {
-    switch?: string | SyntheticViewTemplate;
+    switch?: StaticallyComposableHTML<FASTSwitch>;
 };
 
 /**
@@ -39,10 +40,6 @@ export class FASTSwitch extends FormAssociatedSwitch {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
-
-        this.readOnly
-            ? this.classList.add("readonly")
-            : this.classList.remove("readonly");
     }
 
     /**

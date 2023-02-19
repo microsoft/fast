@@ -95,6 +95,15 @@ export default {
 
 export const TextField: Story<FASTTextField> = renderComponent(storyTemplate).bind({});
 
+export const TextFieldWithSlottedStartEnd: Story<FASTTextField> = TextField.bind({});
+TextFieldWithSlottedStartEnd.args = {
+    storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        Text Field
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
+};
+
 export const TextFieldInForm: Story<FASTTextField> = renderComponent(
     html<StoryArgs<FASTTextField>>`
         <form @submit="${() => false}">

@@ -1,4 +1,5 @@
 import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { CheckboxOptions, FASTCheckbox } from "./checkbox.js";
 
 /**
@@ -14,17 +15,16 @@ export function checkboxTemplate<T extends FASTCheckbox>(
             aria-checked="${x => (x.indeterminate ? "mixed" : x.checked)}"
             aria-required="${x => x.required}"
             aria-disabled="${x => x.disabled}"
-            aria-readonly="${x => x.readOnly}"
             tabindex="${x => (x.disabled ? null : 0)}"
             @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         >
             <div part="control" class="control">
                 <slot name="checked-indicator">
-                    ${options.checkedIndicator ?? ""}
+                    ${staticallyCompose(options.checkedIndicator)}
                 </slot>
                 <slot name="indeterminate-indicator">
-                    ${options.indeterminateIndicator ?? ""}
+                    ${staticallyCompose(options.indeterminateIndicator)}
                 </slot>
             </div>
             <label

@@ -1,3 +1,5 @@
+import type { ValuesOf } from "../utilities/index.js";
+
 /**
  * Menu items roles.
  * @public
@@ -23,7 +25,7 @@ export const MenuItemRole = {
  * The types for menu item roles
  * @public
  */
-export type MenuItemRole = typeof MenuItemRole[keyof typeof MenuItemRole];
+export type MenuItemRole = ValuesOf<typeof MenuItemRole>;
 
 /**
  * @internal

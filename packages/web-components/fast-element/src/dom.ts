@@ -1,5 +1,4 @@
-import { Updates } from "./observation/update-queue.js";
-import { Callable, Message, TrustedTypesPolicy } from "./interfaces.js";
+import { Message, TrustedTypesPolicy } from "./interfaces.js";
 import { FAST } from "./platform.js";
 
 /**
@@ -114,27 +113,9 @@ const fastPolicy = defaultPolicy;
  */
 export const DOM = Object.freeze({
     /**
-     * @deprecated
-     * Use Updates.enqueue().
-     */
-    queueUpdate: Updates.enqueue as (callable: Callable) => void,
-
-    /**
-     * @deprecated
-     * Use Updates.next()
-     */
-    nextUpdate: Updates.next,
-
-    /**
-     * @deprecated
-     * Use Updates.process()
-     */
-    processUpdates: Updates.process,
-
-    /**
      * Gets the dom policy used by the templating system.
      */
-    get policy() {
+    get policy(): DOMPolicy {
         return defaultPolicy;
     },
 
@@ -145,7 +126,7 @@ export const DOM = Object.freeze({
      * This API can only be called once, for security reasons. It should be
      * called by the application developer at the start of their program.
      */
-    setPolicy(value: DOMPolicy) {
+    setPolicy(value: DOMPolicy): void {
         if (defaultPolicy !== fastPolicy) {
             throw FAST.error(Message.onlySetDOMPolicyOnce);
         }
@@ -162,7 +143,7 @@ export const DOM = Object.freeze({
      * If the value is `null` or `undefined`, the attribute is removed, otherwise
      * it is set to the provided value using the standard `setAttribute` API.
      */
-    setAttribute(element: HTMLElement, attributeName: string, value: any) {
+    setAttribute(element: HTMLElement, attributeName: string, value: any): void {
         value === null || value === undefined
             ? element.removeAttribute(attributeName)
             : element.setAttribute(attributeName, value);
@@ -176,7 +157,11 @@ export const DOM = Object.freeze({
      * @remarks
      * If the value is true, the attribute is added; otherwise it is removed.
      */
-    setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean) {
+    setBooleanAttribute(
+        element: HTMLElement,
+        attributeName: string,
+        value: boolean
+    ): void {
         value
             ? element.setAttribute(attributeName, "")
             : element.removeAttribute(attributeName);

@@ -8,3 +8,8 @@ declare global {
 }
 
 export {};
+
+declare module "*.svg" {
+    const content: any;
+    export default content;
+}

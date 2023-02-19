@@ -82,8 +82,9 @@ export class Redirect implements NavigationCommand {
     }
 }
 
-function factoryFromElementName(name: string) {
-    return html`<${name} ${navigationContributor()}></${name}>`;
+function factoryFromElementName(tagName: string) {
+    const tag = html.partial(tagName);
+    return html`<${tag} ${navigationContributor()}></${tag}>`;
 }
 
 type ViewFactory = { create(): HTMLView };

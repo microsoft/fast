@@ -1,9 +1,6 @@
 import { attr, observable } from "@microsoft/fast-element";
-import {
-    ARIAGlobalStatesAndProperties,
-    StartEnd,
-    StartEndOptions,
-} from "../patterns/index.js";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedButton } from "./button.form-associated.js";
 import { ButtonType } from "./button.options.js";
@@ -12,7 +9,7 @@ import { ButtonType } from "./button.options.js";
  * Button configuration options
  * @public
  */
-export type ButtonOptions = StartEndOptions;
+export type ButtonOptions = StartEndOptions<FASTButton>;
 
 /**
  * A Button Custom HTML Element.
@@ -167,7 +164,6 @@ export class FASTButton extends FormAssociatedButton {
         super.connectedCallback();
 
         this.proxy.setAttribute("type", this.type);
-        this.handleUnsupportedDelegatesFocus();
     }
 
     /**
@@ -203,24 +199,6 @@ export class FASTButton extends FormAssociatedButton {
     };
 
     public control: HTMLButtonElement;
-
-    /**
-     * Overrides the focus call for where delegatesFocus is unsupported.
-     * This check works for Chrome, Edge Chromium, FireFox, and Safari
-     * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
-     */
-    private handleUnsupportedDelegatesFocus = () => {
-        // Check to see if delegatesFocus is supported
-        if (
-            window.ShadowRoot &&
-            !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
-            this.$fastController.definition.shadowOptions?.delegatesFocus
-        ) {
-            this.focus = () => {
-                this.control.focus();
-            };
-        }
-    };
 }
 
 /**

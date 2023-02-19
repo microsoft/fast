@@ -198,7 +198,7 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `expanded` | public  | `boolean`      |         | The expanded state of the element.           |                |
 | `role`     | public  | `MenuItemRole` |         | The role of the element.                     |                |
 | `cleanup`  | public  | `() => void`   |         | Cleanup function for the submenu positioner. |                |
-| `checked`  | public  | `boolean`      |         | The checked value of the element.            |                |
+| `checked`  | public  | `boolean`      | `false` | The checked value of the element.            |                |
 | `hidden`   | public  | `boolean`      |         | The hidden attribute.                        |                |
 
 #### Methods

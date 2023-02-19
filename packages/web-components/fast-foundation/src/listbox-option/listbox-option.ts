@@ -1,17 +1,14 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import {
-    ARIAGlobalStatesAndProperties,
-    StartEnd,
-    StartEndOptions,
-} from "../patterns/index.js";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Listbox option configuration options
  * @public
  */
-export type ListboxOptionOptions = StartEndOptions;
+export type ListboxOptionOptions = StartEndOptions<FASTListboxOption>;
 
 /**
  * Determines if the element is a {@link (FASTListboxOption:class)}

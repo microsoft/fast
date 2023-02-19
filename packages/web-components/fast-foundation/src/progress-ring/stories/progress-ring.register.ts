@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTProgressRing } from "../progress-ring.js";
 import { progressRingTemplate } from "../progress-ring.template.js";
@@ -44,15 +45,6 @@ const styles = css`
         animation: spin-infinite 2s linear infinite;
     }
 
-    :host([paused]) .indeterminate-indicator-1 {
-        animation-play-state: paused;
-        stroke: var(--neutral-fill-rest);
-    }
-
-    :host([paused]) .determinate {
-        stroke: var(--neutral-foreground-hint);
-    }
-
     @keyframes spin-infinite {
         0% {
             stroke-dasharray: 0.01px 43.97px;
@@ -72,7 +64,7 @@ const styles = css`
 FASTProgressRing.define({
     name: "fast-progress-ring",
     template: progressRingTemplate({
-        indeterminateIndicator: /* html */ `
+        indeterminateIndicator: /* html */ html`
             <svg class="progress" part="progress" viewBox="0 0 16 16">
                 <circle
                     class="background"

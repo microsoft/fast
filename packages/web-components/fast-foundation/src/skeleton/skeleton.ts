@@ -1,4 +1,5 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
+import type { ValuesOf } from "../utilities/index.js";
 
 /**
  * A structure representing skeleton shapes
@@ -12,7 +13,7 @@ export const SkeletonShape = {
 /**
  * @public
  */
-export type SkeletonShape = typeof SkeletonShape[keyof typeof SkeletonShape];
+export type SkeletonShape = ValuesOf<typeof SkeletonShape>;
 
 /**
  * A Skeleton Custom HTML Element.

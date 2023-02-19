@@ -2,6 +2,89 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Tue, 14 Feb 2023 04:02:36 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.25",
+      "version": "1.0.0-beta.25",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.21",
+            "commit": "e504d092f81623e6332fa8cdf72ce9114e6c842e"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.25",
+            "commit": "e504d092f81623e6332fa8cdf72ce9114e6c842e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 11 Jan 2023 22:07:44 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.24",
+      "version": "1.0.0-beta.24",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "5c3b2f0431ae8f840d3dc778ff93be73b585c6e2",
+            "comment": "fix(fast-ssr): update to use html.partial"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.20",
+            "commit": "2bb85c931a84d4de3a8b61d6f26f89f2d9a525f6"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.24",
+            "commit": "2bb85c931a84d4de3a8b61d6f26f89f2d9a525f6"
+          }
+        ],
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "555f1b2cd614a1d5a9bc3985fb892d040c110cb3",
+            "comment": "remove tooltip options from dom-shim spec"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 02 Dec 2022 01:18:22 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.23",
+      "version": "1.0.0-beta.23",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "22f68aaabe18d350ffb12469d53b09fec5be81d1",
+            "comment": "feat: shim DOMTokenList for class and part properties on HTMLElement"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.19",
+            "commit": "040867e9a2a9e0ae25b78dfb3265fbe8f60fe023"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.23",
+            "commit": "040867e9a2a9e0ae25b78dfb3265fbe8f60fe023"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 15 Nov 2022 02:40:34 GMT",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.22",
       "version": "1.0.0-beta.22",

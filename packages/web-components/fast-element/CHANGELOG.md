@@ -1,8 +1,38 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Tue, 15 Nov 2022 02:40:34 GMT and should not be manually modified.
+This log was last generated on Tue, 14 Feb 2023 04:02:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.21
+
+Tue, 14 Feb 2023 04:02:35 GMT
+
+### Changes
+
+- fix: cleanup types, docs, etc. in root source files of fast-element in preparation for release (rob@bluespire.com)
+- Remove un-necessary expression from StyleElementStrategy (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.20
+
+Wed, 11 Jan 2023 22:07:47 GMT
+
+### Changes
+
+- add nullableBooleanConverter for attributes (863023+radium-v@users.noreply.github.com)
+- update return type for dangerousHTML to DangerousHTMLDirective (chhol@microsoft.com)
+- chore: remove deprecated APIs from fast-element (rob@bluespire.com)
+- chore: cleanup fast-element interfaces (roeisenb@microsoft.com)
+- refactor(fast-element): replace dangerousHTML with html.partial (roeisenb@microsoft.com)
+- feat: add ability to inline templates (roeisenb@microsoft.com)
+
+## 2.0.0-beta.19
+
+Fri, 02 Dec 2022 01:18:22 GMT
+
+### Changes
+
+- feat: add kernel mode with isolation by default (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.18
 

@@ -1,8 +1,7 @@
-import { Orientation } from "@microsoft/fast-web-utilities";
 import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
-import { DividerRole } from "./divider.options.js";
+import { DividerOrientation, DividerRole } from "./divider.options.js";
 import type { FASTDivider } from "./index.js";
 
 test.describe("Divider", () => {
@@ -57,12 +56,18 @@ test.describe("Divider", () => {
             `;
         });
 
-        await expect(element).toHaveAttribute("aria-orientation", Orientation.vertical);
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            DividerOrientation.vertical
+        );
 
-        await element.evaluate((node: FASTDivider, Orientation) => {
-            node.orientation = Orientation.horizontal;
-        }, Orientation);
+        await element.evaluate((node: FASTDivider, DividerOrientation) => {
+            node.orientation = DividerOrientation.horizontal;
+        }, DividerOrientation);
 
-        await expect(element).toHaveAttribute("aria-orientation", Orientation.horizontal);
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            DividerOrientation.horizontal
+        );
     });
 });

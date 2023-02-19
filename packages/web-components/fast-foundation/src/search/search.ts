@@ -4,18 +4,15 @@ import {
     observable,
     Updates,
 } from "@microsoft/fast-element";
-import {
-    ARIAGlobalStatesAndProperties,
-    StartEnd,
-    StartEndOptions,
-} from "../patterns/index.js";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedSearch } from "./search.form-associated.js";
 /**
  * Search configuration options
  * @public
  */
-export type SearchOptions = StartEndOptions;
+export type SearchOptions = StartEndOptions<FASTSearch>;
 
 /**
  * A Search Custom HTML Element.

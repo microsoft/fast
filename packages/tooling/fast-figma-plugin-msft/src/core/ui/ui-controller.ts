@@ -285,11 +285,9 @@ export class UIController {
         });
     }
 
-    private evaluateRecipe<
-        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
-    >(recipe: DesignTokenDefinition<T>, node: PluginUINodeData): T {
+    private evaluateRecipe(recipe: DesignTokenDefinition, node: PluginUINodeData): any {
         // console.log("    evaluateRecipe", recipe);
-        let value: T = this.getDesignTokenValue<T>(node, recipe.token);
+        let value: any = this.getDesignTokenValue(node, recipe.token);
         if (typeof (value as any).toColorString === "function") {
             value = (value as any).toColorString();
         }
@@ -357,9 +355,11 @@ export class UIController {
         this.dispatchState("assignRecipe");
     }
 
-    private setDesignTokenForElement<
-        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
-    >(nodeElement: HTMLElement, token: DesignToken<T>, value: T | null) {
+    private setDesignTokenForElement<T>(
+        nodeElement: HTMLElement,
+        token: DesignToken<any>,
+        value: T | null
+    ) {
         try {
             if (value) {
                 // TODO figure out a better way to handle storage data types
@@ -462,27 +462,21 @@ export class UIController {
         }
     }
 
-    public getDesignTokenDefinitions(): DesignTokenDefinition<any>[] {
+    public getDesignTokenDefinitions(): DesignTokenDefinition[] {
         return this._designTokenRegistry.find(DesignTokenType.designToken);
     }
 
-    public getDesignTokenDefinition<
-        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
-    >(id: string): DesignTokenDefinition<T> | null {
+    public getDesignTokenDefinition(id: string): DesignTokenDefinition | null {
         return this._designTokenRegistry.get(id);
     }
 
-    public getDefaultDesignTokenValue<
-        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
-    >(token: DesignToken<T>): string {
+    public getDefaultDesignTokenValue(token: DesignToken<any>): string {
         const val = this.valueToString(token.getValueFor(this._rootElement));
         // console.log("getDefaultDesignTokenValue", "token", token, "value", val);
         return val;
     }
 
-    public getDesignTokenValue<
-        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
-    >(node: PluginUINodeData, token: DesignToken<T>): T {
+    public getDesignTokenValue(node: PluginUINodeData, token: DesignToken<any>): any {
         // Evaluate the token based on the tokens provided to the element.
         const element = this.getElementForNode(node);
         const val = token.getValueFor(element);
@@ -490,12 +484,10 @@ export class UIController {
         return val;
     }
 
-    private setDesignTokenForNode<
-        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
-    >(
+    private setDesignTokenForNode(
         node: PluginUINodeData,
-        definition: DesignTokenDefinition<T>,
-        value: T | null
+        definition: DesignTokenDefinition,
+        value: any
     ): void {
         if (value) {
             const designToken = new AppliedDesignToken();
@@ -510,9 +502,7 @@ export class UIController {
         this.setDesignTokenForElement(element, definition.token, value);
     }
 
-    public assignDesignToken<
-        T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
-    >(definition: DesignTokenDefinition<T>, value: T): void {
+    public assignDesignToken<T>(definition: DesignTokenDefinition, value: T): void {
         const nodes = this._selectedNodes.filter(node =>
             node.supports.includes(DesignTokenType.designToken)
         );

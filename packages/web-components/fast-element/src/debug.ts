@@ -21,6 +21,7 @@ const debugMessages = {
     [1206 /* directCallToHTMLTagNotAllowed */]: "Calling html`` as a normal function invalidates the security guarantees provided by FAST.",
     [1207 /* onlySetTemplatePolicyOnce */]: "The DOM Policy for an HTML template can only be set once.",
     [1208 /* cannotSetTemplatePolicyAfterCompilation */]: "The DOM Policy cannot be set after a template is compiled.",
+    [1209 /* blockedByDOMPolicy */]: "'${aspectName}' on '${tagName}' is blocked by the current DOMPolicy.",
     [1401 /* missingElementDefinition */]: "Missing FASTElement definition.",
     [1501 /* noRegistrationForContext */]: "No registration for Context/Interface '${name}'.",
     [1502 /* noFactoryForResolver */]: "Dependency injection resolver for '${key}' returned a null factory.",

@@ -21,3 +21,12 @@ export default {
 } as Meta<FASTTab>;
 
 export const Tab: Story<FASTTab> = renderComponent(storyTemplate).bind({});
+
+export const TabWithSlottedStartEnd: Story<FASTTab> = Tab.bind({});
+TabWithSlottedStartEnd.args = {
+    storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        Tab
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
+};
