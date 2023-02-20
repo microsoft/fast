@@ -40,7 +40,7 @@ export function composedParent<T extends HTMLElement>(element: T): HTMLElement |
  * Determines if the reference element contains the test element in a "composed" DOM tree that
  * ignores shadow DOM boundaries.
  *
- * Returns true of the test element is a descendent of the reference, or exist in
+ * Returns true of the test element is a descendent of the reference, or exists in
  * a shadow DOM that is a logical descendent of the reference. Otherwise returns false.
  * @param reference - The element to test for containment against.
  * @param test - The element being tested for containment.
@@ -62,13 +62,14 @@ export function composedContains(reference: HTMLElement, test: HTMLElement): boo
 }
 
 /**
+ * An extension of MutationObserver that supports unobserving nodes.
  * @internal
  */
 export class UnobservableMutationObserver extends MutationObserver {
     private observedNodes: Set<Node> = new Set();
 
     /**
-     * An extension of MutationObserver that supports unobserving nodes.
+     * Creates an instance of UnobservableMutationObserver.
      * @param callback - The callback to invoke when observed nodes are changed.
      */
     constructor(private readonly callback: MutationCallback) {

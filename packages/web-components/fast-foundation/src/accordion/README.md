@@ -129,6 +129,12 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | `expandmode`     | public    | `AccordionExpandMode` |         | Controls the expand mode of the Accordion, either allowing single or multiple item expansion. |                |
 | `accordionItems` | protected | `Element[]`           |         |                                                                                               |                |
 
+#### Methods
+
+| Name                | Privacy | Description | Parameters                                             | Return | Inherited From |
+| ------------------- | ------- | ----------- | ------------------------------------------------------ | ------ | -------------- |
+| `expandmodeChanged` | public  |             | `prev: AccordionExpandMode, next: AccordionExpandMode` |        |                |
+
 #### Events
 
 | Name     | Type | Description                                                | Inherited From |

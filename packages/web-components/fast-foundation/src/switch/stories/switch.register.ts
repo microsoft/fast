@@ -60,16 +60,6 @@ const styles = css`
         border-radius: calc(var(--control-corner-radius) * 1px);
         transition: all 0.2s ease-in-out;
     }
-    .status-message {
-        color: var(--neutral-foreground-rest);
-        cursor: pointer;
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--typeRamp-base-line-height);
-    }
-    :host([disabled]) .status-message,
-    :host([readonly]) .status-message {
-        cursor: var(--disabled-cursor);
-    }
     .label {
         color: var(--neutral-foreground-rest);
         margin-inline-end: calc(var(--design-unit) * 2px + 2px);
@@ -80,10 +70,6 @@ const styles = css`
     .label__hidden {
         display: none;
         visibility: hidden;
-    }
-    ::slotted([slot="checked-message"]),
-    ::slotted([slot="unchecked-message"]) {
-        margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
     :host([aria-checked="true"]) .checked-indicator {
         background: var(--foreground-on-accent-rest);
@@ -109,19 +95,6 @@ const styles = css`
     :host([aria-checked="true"]:focus-visible:not([disabled])) .switch {
         box-shadow: 0 0 0 2px var(--fill-color), 0 0 0 4px var(--focus-stroke-outer);
     }
-    .unchecked-message {
-        display: block;
-    }
-    .checked-message {
-        display: none;
-    }
-    :host([aria-checked="true"]) .unchecked-message {
-        display: none;
-    }
-    :host([aria-checked="true"]) .checked-message {
-        display: block;
-    }
-
     .checked-indicator {
         left: 5px;
         right: calc(((var(--height-number) / 2) + 1) * 1px);

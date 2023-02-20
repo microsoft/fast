@@ -17,7 +17,7 @@ if (globalThis.FAST === void 0) {
 
 /**
  * The FAST global.
- * @internal
+ * @public
  */
 export const FAST: FASTGlobal = globalThis.FAST;
 

@@ -1,5 +1,6 @@
 import { attr, observable } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
+import { FASTRadioGroup } from "../radio-group/index.js";
 import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { FormAssociatedRadio } from "./radio.form-associated.js";
 
@@ -137,15 +138,5 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
         }
 
         return true;
-    }
-
-    /**
-     * Handles clicks on the radio.
-     * @beta
-     */
-    public clickHandler(e: MouseEvent): boolean | void {
-        if (!this.disabled && !this.readOnly && !this.checked) {
-            this.checked = true;
-        }
     }
 }

@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTToolbar } from "../toolbar.js";
+import { ToolbarOrientation } from "../toolbar.options.js";
 
 const storyTemplate = html<StoryArgs<FASTToolbar>>`
     <fast-toolbar
@@ -17,7 +17,7 @@ const storyTemplate = html<StoryArgs<FASTToolbar>>`
 export default {
     title: "Toolbar",
     argTypes: {
-        orientation: { control: "radio", options: Object.values(Orientation) },
+        orientation: { control: "radio", options: Object.values(ToolbarOrientation) },
         ariaLabel: { control: "text" },
         ariaLabelledby: { control: "text" },
         storyContent: { table: { disable: true } },

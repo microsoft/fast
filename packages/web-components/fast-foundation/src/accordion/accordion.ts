@@ -32,6 +32,25 @@ export class FASTAccordion extends FASTElement {
      */
     @attr({ attribute: "expand-mode" })
     public expandmode: AccordionExpandMode = AccordionExpandMode.multi;
+    public expandmodeChanged(prev: AccordionExpandMode, next: AccordionExpandMode) {
+        if (!this.$fastController.isConnected) {
+            return;
+        }
+
+        const expandedItem = this.findExpandedItem();
+
+        if (!expandedItem) {
+            return;
+        }
+
+        if (next !== AccordionExpandMode.single) {
+            (expandedItem as FASTAccordionItem)?.expandbutton.removeAttribute(
+                "aria-disabled"
+            );
+        } else {
+            this.setSingleExpandMode(expandedItem);
+        }
+    }
 
     /**
      * @internal
@@ -59,6 +78,12 @@ export class FASTAccordion extends FASTElement {
     public handleChange(source: any, propertyName: string) {
         if (propertyName === "disabled") {
             this.setItems();
+        } else if (propertyName === "expanded") {
+            // we only need to manage single expanded instances
+            // such as scenarios where a child is programatically expanded
+            if (source.expanded && this.isSingleExpandMode()) {
+                this.setSingleExpandMode(source);
+            }
         }
     }
 
@@ -102,7 +127,8 @@ export class FASTAccordion extends FASTElement {
 
         this.accordionItems.forEach((item: HTMLElement, index: number) => {
             if (item instanceof FASTAccordionItem) {
-                item.addEventListener("change", this.activeItemChange);
+                item.addEventListener("click", this.activeItemChange);
+                Observable.getNotifier(item).subscribe(this, "expanded");
             }
 
             const itemId: string | null = this.accordionIds[index];
@@ -131,12 +157,12 @@ export class FASTAccordion extends FASTElement {
         currentItems.forEach((item: FASTAccordionItem, index: number) => {
             if (this.activeItemIndex === index) {
                 item.expanded = true;
-                item.expandbutton.setAttribute("disabled", "");
+                item.expandbutton.setAttribute("aria-disabled", "true");
             } else {
                 item.expanded = false;
 
                 if (!item.hasAttribute("disabled")) {
-                    item.expandbutton.removeAttribute("disabled");
+                    item.expandbutton.removeAttribute("aria-disabled");
                 }
             }
         });
@@ -145,7 +171,8 @@ export class FASTAccordion extends FASTElement {
     private removeItemListeners = (oldValue: any): void => {
         oldValue.forEach((item: HTMLElement, index: number) => {
             Observable.getNotifier(item).unsubscribe(this, "disabled");
-            item.removeEventListener("change", this.activeItemChange);
+            Observable.getNotifier(item).unsubscribe(this, "expanded");
+            item.removeEventListener("click", this.activeItemChange);
             item.removeEventListener("keydown", this.handleItemKeyDown);
             item.removeEventListener("focus", this.handleItemFocus);
         });
@@ -157,17 +184,24 @@ export class FASTAccordion extends FASTElement {
         }
 
         event.preventDefault();
-        const selectedItem = event.target as FASTAccordionItem;
-        this.activeid = selectedItem.getAttribute("id");
 
-        if (!this.isSingleExpandMode()) {
-            // setSingleExpandMode sets activeItemIndex on its own
-            this.activeItemIndex = this.accordionItems.indexOf(selectedItem);
-        } else {
-            this.setSingleExpandMode(selectedItem);
+        this.handleExpandedChange(event.target as HTMLElement);
+    };
+
+    private handleExpandedChange = (item: HTMLElement) => {
+        if (item instanceof FASTAccordionItem) {
+            this.activeid = item.getAttribute("id");
+
+            if (!this.isSingleExpandMode()) {
+                item.expanded = !item.expanded;
+                // setSingleExpandMode sets activeItemIndex on its own
+                this.activeItemIndex = this.accordionItems.indexOf(item);
+            } else {
+                this.setSingleExpandMode(item);
+            }
+
+            this.change();
         }
-
-        this.change();
     };
 
     private getItemIds(): Array<string | null> {

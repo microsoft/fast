@@ -51,8 +51,8 @@ export function pickerTemplate<T extends FASTPicker>(
     options: PickerOptions
 ): ElementViewTemplate<T> {
     const anchoredRegionTag = html.partial(tagFor(options.anchoredRegion));
-    const pickerMenuTag = html.partial(tagFor(options.pickerMenu));
-    const pickerListTag = html.partial(tagFor(options.pickerList));
+    const pickerMenuTag = tagFor(options.pickerMenu);
+    const pickerListTag = tagFor(options.pickerList);
     const progressRingTag = html.partial(tagFor(options.progressRing));
 
     return html<T>`
@@ -117,7 +117,7 @@ export function pickerTemplate<T extends FASTPicker>(
                                 <slot name="loading-region">
                                     <${progressRingTag}
                                         part="loading-progress"
-                                        class="loading-progress
+                                        class="loading-progress"
                                         slot="loading-region"
                                     ></${progressRingTag}>
                                         ${x => x.loadingText}

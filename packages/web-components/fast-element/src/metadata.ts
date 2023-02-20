@@ -32,6 +32,8 @@ if (!("metadata" in Reflect)) {
     };
 }
 
+const annotationParamTypesKey = "annotation:paramtypes";
+
 /**
  * Provides basic metadata capabilities used by Context and Dependency Injection.
  */
@@ -41,30 +43,30 @@ export const Metadata = Object.freeze({
      * @param Type - The type to get the metadata for.
      * @returns The metadata array or a frozen empty array if no metadata is found.
      */
-    getDesignParamTypes: Type =>
-        (Reflect as any).getOwnMetadata("design:paramtypes", Type) ??
-        (emptyArray as readonly any[]),
+    getDesignParamTypes: (Type: Constructable) =>
+        ((Reflect as any).getOwnMetadata("design:paramtypes", Type) ??
+            emptyArray) as readonly any[],
 
     /**
      * Gets the "annotation:paramtypes" metadata for the specified type.
      * @param Type - The type to get the metadata for.
      * @returns The metadata array or a frozen empty array if no metadata is found.
      */
-    getAnnotationParamTypes: Type =>
-        (Reflect as any).getOwnMetadata("annotation:paramtypes", Type) ??
-        (emptyArray as readonly any[]),
+    getAnnotationParamTypes: (Type: Constructable) =>
+        ((Reflect as any).getOwnMetadata(annotationParamTypesKey, Type) ??
+            emptyArray) as readonly any[],
 
     /**
-     *
-     * @param Type - Gets the "annotation:paramtypes" metadata for the specified type. If none is found,
+     * Gets the "annotation:paramtypes" metadata for the specified type. If none is found,
      * an empty, mutable metadata array is created and added.
-     * @returns The metadata array.
+     * @param Type - The type to get or create the metadata for.
+     * @returns A mutable metadata array.
      */
     getOrCreateAnnotationParamTypes(Type: Constructable): any[] {
         let types = this.getAnnotationParamTypes(Type);
 
         if (types === emptyArray) {
-            (Reflect as any).defineMetadata("annotation:paramtypes", (types = []), Type);
+            (Reflect as any).defineMetadata(annotationParamTypesKey, (types = []), Type);
         }
 
         return types;
