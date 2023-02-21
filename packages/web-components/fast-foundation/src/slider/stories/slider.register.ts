@@ -81,7 +81,7 @@ const styles = css`
     }
     :host([orientation="vertical"]) .thumb-container {
         transform: translateX(calc(var(--thumb-translate) * 1px))
-            translateY(calc(var(--thumb-size) * 0.5px));
+            translateY(calc(var(--thumb-size) * -0.5px));
     }
     :host([orientation="horizontal"]) {
         touch-action: pan-y;
@@ -113,7 +113,7 @@ const styles = css`
     :host([orientation="vertical"]) .track-start {
         height: auto;
         width: 100%;
-        top: 0;
+        bottom: 0;
     }
     :host([disabled]),
     :host([readonly]) {

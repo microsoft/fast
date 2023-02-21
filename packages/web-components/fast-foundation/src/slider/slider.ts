@@ -336,8 +336,8 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
                 : `right: ${percentage}%; transition: all 0.2s ease;`;
         } else {
             this.position = this.isDragging
-                ? `bottom: ${percentage}%; transition: none;`
-                : `bottom: ${percentage}%; transition: all 0.2s ease;`;
+                ? `top: ${percentage}%; transition: none;`
+                : `top: ${percentage}%; transition: all 0.2s ease;`;
         }
     }
 
@@ -357,8 +357,8 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         const clientRect: DOMRect = this.track.getBoundingClientRect();
         this.trackWidth = this.track.clientWidth;
         this.trackMinWidth = this.track.clientLeft;
-        this.trackHeight = clientRect.bottom;
-        this.trackMinHeight = clientRect.top;
+        this.trackHeight = clientRect.top;
+        this.trackMinHeight = clientRect.bottom;
         this.trackLeft = this.getBoundingClientRect().left;
         if (this.trackWidth === 0) {
             this.trackWidth = 1;
@@ -431,7 +431,6 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         if (this.readOnly || this.disabled || e.defaultPrevented) {
             return;
         }
-
         // update the value based on current position
         const sourceEvent =
             window.TouchEvent && e instanceof TouchEvent
