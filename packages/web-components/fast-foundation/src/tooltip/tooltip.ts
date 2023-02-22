@@ -37,7 +37,7 @@ export class FASTTooltip extends FASTElement {
      * @remarks
      * HTML Attribute: `anchor`
      */
-    @attr({ attribute: "anchor" })
+    @attr
     public anchor: string;
 
     /**
@@ -49,7 +49,7 @@ export class FASTTooltip extends FASTElement {
      * @internal
      */
     protected anchorChanged(prev: string | undefined, next: string): void {
-        if (this.$fastController.isConnected) {
+        if (next) {
             this.removeListeners();
 
             this.removeAnchorAriaDescribedBy(this.id);

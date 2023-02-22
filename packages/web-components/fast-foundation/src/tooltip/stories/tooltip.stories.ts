@@ -17,11 +17,11 @@ const componentTemplate = html<StoryArgs<FASTTooltip>>`
 export default {
     title: "Tooltip",
     args: {
-        anchor: "anchor-default",
+        anchor: "button-1",
         storyContent: "Tooltip",
     },
     argTypes: {
-        anchor: { control: "text" },
+        anchor: { control: "select", options: ["button-1", "button-2"] },
         placement: {
             control: "select",
             options: Object.values(TooltipPlacement),
@@ -32,10 +32,13 @@ export default {
 
 export const Tooltip: Story<FASTTooltip> = renderComponent(html<StoryArgs<FASTTooltip>>`
     <div>
-        <fast-button id="${x => x.anchor}">
+        <fast-button id="button-1">
             ${x => x.buttonContent ?? "Hover or focus me"}
         </fast-button>
         ${componentTemplate}
+        <fast-button id="button-2">
+            ${x => x.buttonContent ?? "Hover or focus me"}
+        </fast-button>
     </div>
 `).bind({});
 
