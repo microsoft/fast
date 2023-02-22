@@ -377,11 +377,7 @@ function createElementTemplate<TSource = any, TParent = any>(
         for (let i = 0, ii = directives.length; i < ii; ++i) {
             const directive = directives[i];
 
-            if (i === 0) {
-                markup.push(" ");
-            } else {
-                markup.push("");
-            }
+            markup.push(i > 0 ? "" : " ");
 
             values.push(directive);
         }
