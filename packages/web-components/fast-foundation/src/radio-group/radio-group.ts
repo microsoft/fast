@@ -162,10 +162,6 @@ export class FASTRadioGroup extends FASTElement {
                 radio.setAttribute("name", this.name);
             }
 
-            if (this.readOnly) {
-                radio.readOnly = true;
-            }
-
             if (this.value && this.value === radio.value) {
                 this.selectedRadio = radio;
                 this.focusedRadio = radio;
@@ -228,15 +224,7 @@ export class FASTRadioGroup extends FASTElement {
         const radio: FASTRadio = group[index] as FASTRadio;
         if (!this.isInsideToolbar) {
             radio.setAttribute("tabindex", "0");
-            if (radio.readOnly) {
-                this.slottedRadioButtons.forEach((nextRadio: FASTRadio) => {
-                    if (nextRadio !== radio) {
-                        nextRadio.setAttribute("tabindex", "-1");
-                    }
-                });
-            } else {
-                radio.checked = true;
-            }
+            radio.checked = true;
             this.selectedRadio = radio;
         }
         this.focusedRadio = radio;
@@ -341,7 +329,6 @@ export class FASTRadioGroup extends FASTElement {
     private checkFocusedRadio = (): void => {
         if (
             this.focusedRadio !== null &&
-            !this.focusedRadio.readOnly &&
             !this.focusedRadio.checked
         ) {
             this.focusedRadio.checked = true;
