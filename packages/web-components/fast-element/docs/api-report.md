@@ -175,16 +175,6 @@ export interface ContentView {
     unbind(): void;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "createMetadataLocator" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[];
-
-// Warning: (ae-internal-missing-underscore) The name "createTypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRegistry<TDefinition>;
-
 // @public
 export const css: CSSTemplateTag;
 
@@ -276,8 +266,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     readonly source: TElement;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
-    // @internal
-    toJSON: () => undefined;
     readonly view: ElementView<TElement> | null;
 }
 
@@ -376,9 +364,7 @@ export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any>
     bind(controller: ExpressionController<TSource, TParent>): TReturn;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "FAST" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export const FAST: FASTGlobal;
 
 // @public
@@ -419,9 +405,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly type: TType;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "FASTGlobal" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export interface FASTGlobal {
     addMessages(messages: Record<number, string>): void;
     error(code: number, values?: Record<string, any>): Error;
@@ -542,8 +526,6 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     readonly sourceLifetime: SourceLifetime;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
-    // @internal
-    toJSON: () => undefined;
     unbind(): void;
 }
 
@@ -788,8 +770,6 @@ export abstract class StatelessAttachedAttributeDirective<TOptions> implements H
     createHTML(add: AddViewBehaviorFactory): string;
     // (undocumented)
     protected options: TOptions;
-    // @internal
-    toJSON: () => undefined;
 }
 
 // @public
@@ -849,26 +829,6 @@ export type TrustedTypesPolicy = {
     createHTML(html: string): string;
 };
 
-// Warning: (ae-internal-missing-underscore) The name "TypeDefinition" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export interface TypeDefinition {
-    // (undocumented)
-    type: Function;
-}
-
-// Warning: (ae-internal-missing-underscore) The name "TypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export interface TypeRegistry<TDefinition extends TypeDefinition> {
-    // (undocumented)
-    getByType(key: Function): TDefinition | undefined;
-    // (undocumented)
-    getForInstance(object: any): TDefinition | undefined;
-    // (undocumented)
-    register(definition: TDefinition): boolean;
-}
-
 // @public
 export interface UpdateQueue {
     enqueue(callable: Callable): void;
@@ -927,8 +887,6 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     readonly html: string | HTMLTemplateElement;
     inline(): CaptureType<TSource, TParent>;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
-    // @internal
-    toJSON: () => undefined;
     withPolicy(policy: DOMPolicy): this;
 }
 

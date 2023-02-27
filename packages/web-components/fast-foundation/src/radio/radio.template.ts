@@ -19,7 +19,6 @@ export function radioTemplate<T extends FASTRadio>(
             aria-disabled="${x => x.disabled}"
             aria-readonly="${x => x.readOnly}"
             @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
-            @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         >
             <div part="control" class="control">
                 <slot name="checked-indicator">

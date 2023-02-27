@@ -1,4 +1,4 @@
-import type { FASTGlobal } from "./interfaces.js";
+import { FASTGlobal, noop } from "./interfaces.js";
 import "./polyfills.js";
 
 // ensure FAST global - duplicated debug.ts
@@ -17,7 +17,7 @@ if (globalThis.FAST === void 0) {
 
 /**
  * The FAST global.
- * @internal
+ * @public
  */
 export const FAST: FASTGlobal = globalThis.FAST;
 
@@ -132,4 +132,13 @@ export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[] 
 
         return metadata;
     };
+}
+
+/**
+ * Makes a type noop for JSON serialization.
+ * @param type - The type to make noop for JSON serialization.
+ * @internal
+ */
+export function makeSerializationNoop(type: { readonly prototype: any }) {
+    type.prototype.toJSON = noop;
 }
