@@ -1,5 +1,5 @@
 import type { DOMPolicy } from "../dom.js";
-import { isString, Message, noop } from "../interfaces.js";
+import { isString, Message } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -9,7 +9,7 @@ import {
     Observable,
     ObservationRecord,
 } from "../observation/observable.js";
-import { FAST } from "../platform.js";
+import { FAST, makeSerializationNoop } from "../platform.js";
 import type { HTMLBindingDirective } from "./binding.js";
 import { Binding } from "./html-directive.js";
 
@@ -134,13 +134,9 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
             value
         );
     }
-
-    /**
-     * Opts out of JSON stringification.
-     * @internal
-     */
-    toJSON = noop;
 }
+
+makeSerializationNoop(TwoWayObserver);
 
 class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
     TSource,

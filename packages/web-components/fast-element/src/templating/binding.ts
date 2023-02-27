@@ -1,5 +1,5 @@
 import type { Subscriber } from "../index.js";
-import { isFunction, Message, noop } from "../interfaces.js";
+import { isFunction, Message } from "../interfaces.js";
 import {
     ExecutionContext,
     Expression,
@@ -7,7 +7,7 @@ import {
     ExpressionObserver,
     Observable,
 } from "../observation/observable.js";
-import { FAST } from "../platform.js";
+import { FAST, makeSerializationNoop } from "../platform.js";
 import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
 import {
     AddViewBehaviorFactory,
@@ -43,13 +43,9 @@ class OneTimeBinding<TSource = any, TReturn = any, TParent = any>
     bind(controller: ExpressionController): TReturn {
         return this.evaluate(controller.source, controller.context);
     }
-
-    /**
-     * Opts out of JSON stringification.
-     * @internal
-     */
-    toJSON = noop;
 }
+
+makeSerializationNoop(OneTimeBinding);
 
 type UpdateTarget = (
     this: HTMLBindingDirective,

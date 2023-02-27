@@ -1,9 +1,10 @@
-import { Disposable, noop } from "../interfaces.js";
+import type { Disposable } from "../interfaces.js";
 import {
     ExecutionContext,
     Observable,
     SourceLifetime,
 } from "../observation/observable.js";
+import { makeSerializationNoop } from "../platform.js";
 import type {
     CompiledViewBehaviorFactory,
     ViewBehavior,
@@ -352,12 +353,6 @@ export class HTMLView<TSource = any, TParent = any>
         this.isBound = false;
     }
 
-    /**
-     * Opts out of JSON stringification.
-     * @internal
-     */
-    toJSON = noop;
-
     private evaluateUnbindables() {
         const unbindables = this.unbindables;
 
@@ -385,5 +380,6 @@ export class HTMLView<TSource = any, TParent = any>
     }
 }
 
+makeSerializationNoop(HTMLView);
 Observable.defineProperty(HTMLView.prototype, "index");
 Observable.defineProperty(HTMLView.prototype, "length");

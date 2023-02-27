@@ -3,9 +3,10 @@ import type {
     ExpressionController,
     ExpressionObserver,
 } from "../observation/observable.js";
-import { isString, noop } from "../interfaces.js";
+import { isString } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type { DOMPolicy } from "../dom.js";
+import { makeSerializationNoop } from "../platform.js";
 import type { HTMLBindingDirective } from "./binding.js";
 import { Binding } from "./html-directive.js";
 
@@ -79,12 +80,6 @@ class SignalObserver<TSource = any, TReturn = any, TParent = any> implements Sub
         this.subscriber.handleChange(this.dataBinding.evaluate, this);
     }
 
-    /**
-     * Opts out of JSON stringification.
-     * @internal
-     */
-    toJSON = noop;
-
     private getSignal(controller: ExpressionController<TSource, TParent>): string {
         const options = this.dataBinding.options;
         return isString(options)
@@ -92,6 +87,8 @@ class SignalObserver<TSource = any, TReturn = any, TParent = any> implements Sub
             : options(controller.source, controller.context);
     }
 }
+
+makeSerializationNoop(SignalObserver);
 
 class SignalBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
     TSource,
