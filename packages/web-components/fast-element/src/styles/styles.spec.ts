@@ -14,6 +14,7 @@ import type { HostBehavior } from "./host.js";
 import { html} from "../templating/template.js"
 import { ref} from "../templating/ref.js"
 import { FASTElement, customElement } from "../components/fast-element.js";
+import { ExecutionContext } from "../index.js";
 
 if (ElementStyles.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStrategy", () => {
@@ -511,7 +512,9 @@ describe("cssPartial", () => {
         const controller = {
             mainStyles: null,
             isConnected: false,
+            isBound: false,
             source: {},
+            context: ExecutionContext.default,
             addStyles(style: ElementStyles) {
                 expect(style.styles.includes(styles)).to.be.true;
                 addStylesCalled = true;
@@ -519,6 +522,7 @@ describe("cssPartial", () => {
             removeStyles(styles) {},
             addBehavior() {},
             removeBehavior() {},
+            onUnbind() {}
         };
 
         const add = (x: HostBehavior) => capturedBehaviors.push(x);
