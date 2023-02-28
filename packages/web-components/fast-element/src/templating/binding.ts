@@ -9,10 +9,10 @@ import {
 } from "../observation/observable.js";
 import { FAST, makeSerializationNoop } from "../platform.js";
 import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
+import { Binding, BindingSource } from "../observation/binding.js";
 import {
     AddViewBehaviorFactory,
     Aspected,
-    Binding,
     HTMLDirective,
     ViewBehavior,
     ViewBehaviorFactory,
@@ -26,7 +26,6 @@ class OnChangeBinding<TSource = any, TReturn = any, TParent = any> extends Bindi
     TParent
 > {
     createObserver(
-        _: HTMLBindingDirective,
         subscriber: Subscriber
     ): ExpressionObserver<TSource, TReturn, TParent> {
         return Observable.binding(this.evaluate, subscriber, this.isVolatile);
@@ -241,7 +240,7 @@ const sinkLookup: Record<DOMAspect, UpdateTarget> = {
  * @public
  */
 export class HTMLBindingDirective
-    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected {
+    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected, BindingSource {
     private data: string;
     private updateTarget: UpdateTarget | null = null;
 

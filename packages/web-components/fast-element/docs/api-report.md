@@ -86,7 +86,7 @@ export function bind<T = any>(expression: Expression<T>, policy?: DOMPolicy, isV
 // @public
 export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     constructor(evaluate: Expression<TSource, TReturn, TParent>, policy?: DOMPolicy | undefined, isVolatile?: boolean);
-    abstract createObserver(directive: HTMLDirective, subscriber: Subscriber): ExpressionObserver<TSource, TReturn, TParent>;
+    abstract createObserver(subscriber: Subscriber, bindingSource: BindingSource): ExpressionObserver<TSource, TReturn, TParent>;
     // (undocumented)
     evaluate: Expression<TSource, TReturn, TParent>;
     // (undocumented)
@@ -94,6 +94,13 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     options?: any;
     // (undocumented)
     policy?: DOMPolicy | undefined;
+}
+
+// @public
+export interface BindingSource {
+    readonly aspectType?: DOMAspect;
+    readonly dataBinding: Binding;
+    readonly targetAspect?: string;
 }
 
 // @public
@@ -177,6 +184,19 @@ export interface ContentView {
 
 // @public
 export const css: CSSTemplateTag;
+
+// @public
+export class CSSBindingDirective implements HostBehavior, Subscriber, CSSDirective, BindingSource {
+    constructor(dataBinding: Binding, targetAspect: string);
+    connectedCallback(controller: HostController): void;
+    createCSS(add: AddBehavior): ComposableStyles;
+    // (undocumented)
+    readonly dataBinding: Binding;
+    // @internal
+    handleChange(_: any, observer: ExpressionObserver): void;
+    // (undocumented)
+    readonly targetAspect: string;
+}
 
 // @public
 export interface CSSDirective {
@@ -448,7 +468,7 @@ export interface HostController<TSource = any> extends ExpressionController {
 export const html: HTMLTemplateTag;
 
 // @public
-export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected {
+export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected, BindingSource {
     constructor(dataBinding: Binding);
     aspectType: DOMAspect;
     // @internal (undocumented)
@@ -679,7 +699,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 }
 
 // @public
-export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory {
+export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory, BindingSource {
     constructor(dataBinding: Binding<TSource>, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(): RepeatBehavior<TSource>;
     createHTML(add: AddViewBehaviorFactory): string;

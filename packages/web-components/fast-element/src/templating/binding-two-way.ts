@@ -1,5 +1,6 @@
 import type { DOMPolicy } from "../dom.js";
 import { isString, Message } from "../interfaces.js";
+import { Binding, BindingSource } from "../observation/binding.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -10,8 +11,6 @@ import {
     ObservationRecord,
 } from "../observation/observable.js";
 import { FAST, makeSerializationNoop } from "../platform.js";
-import type { HTMLBindingDirective } from "./binding.js";
-import { Binding } from "./html-directive.js";
 
 /**
  * The twoWay binding options.
@@ -33,10 +32,10 @@ const defaultOptions: TwoWayBindingOptions = {
 export interface TwoWaySettings {
     /**
      * Determines which event to listen to, to detect changes in the view.
-     * @param directive - The directive to determine the change event for.
+     * @param bindingSource - The directive to determine the change event for.
      * @param target - The target element to determine the change event for.
      */
-    determineChangeEvent(directive: HTMLBindingDirective, target: HTMLElement): string;
+    determineChangeEvent(bindingSource: BindingSource, target: HTMLElement): string;
 }
 
 let twoWaySettings: TwoWaySettings = {
@@ -66,7 +65,7 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     changeEvent: string;
 
     constructor(
-        private directive: HTMLBindingDirective,
+        private bindingSource: BindingSource,
         private subscriber: Subscriber,
         private dataBinding: TwoWayBinding
     ) {
@@ -81,7 +80,7 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
         if (!this.changeEvent) {
             this.changeEvent =
                 this.dataBinding.options.changeEvent ??
-                twoWaySettings.determineChangeEvent(this.directive, this.target);
+                twoWaySettings.determineChangeEvent(this.bindingSource, this.target);
         }
 
         if (this.isNotBound) {
@@ -103,7 +102,7 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     }
 
     handleEvent(event: Event): void {
-        const directive = this.directive;
+        const bindingSource = this.bindingSource;
         const target = event.currentTarget as HTMLElement;
         const notifier = this.notifier;
         const last = (notifier as any).last as ObservationRecord; // using internal API!!!
@@ -115,18 +114,18 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
 
         let value;
 
-        switch (directive.aspectType) {
+        switch (bindingSource.aspectType) {
             case 1:
-                value = target.getAttribute(directive.targetAspect);
+                value = target.getAttribute(bindingSource.targetAspect!);
                 break;
             case 2:
-                value = target.hasAttribute(directive.targetAspect);
+                value = target.hasAttribute(bindingSource.targetAspect!);
                 break;
             case 4:
                 value = target.innerText;
                 break;
             default:
-                value = target[directive.targetAspect];
+                value = target[bindingSource.targetAspect!];
                 break;
         }
 
@@ -144,10 +143,10 @@ class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding
     TParent
 > {
     createObserver(
-        directive: HTMLBindingDirective,
-        subscriber: Subscriber
+        subscriber: Subscriber,
+        bindingSource: BindingSource
     ): ExpressionObserver<TSource, TReturn, TParent> {
-        return new TwoWayObserver(directive, subscriber, this);
+        return new TwoWayObserver(bindingSource, subscriber, this);
     }
 }
 

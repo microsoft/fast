@@ -1,5 +1,6 @@
 import type { DOMPolicy } from "../dom.js";
 import { isFunction, isString, Message } from "../interfaces.js";
+import { Binding } from "../observation/binding.js";
 import type { Expression } from "../observation/observable.js";
 import { FAST, makeSerializationNoop } from "../platform.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
@@ -7,7 +8,6 @@ import { Compiler } from "./compiler.js";
 import {
     AddViewBehaviorFactory,
     Aspected,
-    Binding,
     CompiledViewBehaviorFactory,
     HTMLDirective,
     HTMLDirectiveDefinition,

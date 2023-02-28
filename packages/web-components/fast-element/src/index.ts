@@ -18,6 +18,7 @@ export * from "./observation/observable.js";
 export * from "./observation/notifier.js";
 export * from "./observation/arrays.js";
 export * from "./observation/update-queue.js";
+export * from "./observation/binding.js";
 
 // Styles
 export * from "./styles/element-styles.js";
@@ -25,6 +26,7 @@ export * from "./styles/css.js";
 export * from "./styles/css-directive.js";
 export * from "./styles/host.js";
 export * from "./styles/style-strategy.js";
+export * from "./styles/css-binding-directive.js";
 
 // Templating
 export * from "./templating/template.js";

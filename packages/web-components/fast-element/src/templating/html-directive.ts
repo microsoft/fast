@@ -1,11 +1,7 @@
 import { DOMAspect, DOMPolicy } from "../dom.js";
 import type { Constructable, Mutable } from "../interfaces.js";
-import type { Subscriber } from "../observation/notifier.js";
-import type {
-    Expression,
-    ExpressionController,
-    ExpressionObserver,
-} from "../observation/observable.js";
+import type { Binding } from "../observation/binding.js";
+import type { ExpressionController } from "../observation/observable.js";
 import { createTypeRegistry, makeSerializationNoop } from "../platform.js";
 import { Markup } from "./markup.js";
 
@@ -231,40 +227,6 @@ export function htmlDirective(options?: PartialHTMLDirectiveDefinition) {
     return function (type: Constructable<HTMLDirective>) {
         HTMLDirective.define(type, options);
     };
-}
-
-/**
- * Captures a binding expression along with related information and capabilities.
- *
- * @public
- */
-export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
-    /**
-     * Options associated with the binding.
-     */
-    options?: any;
-
-    /**
-     * Creates a binding.
-     * @param evaluate - Evaluates the binding.
-     * @param policy - The security policy to associate with this binding.
-     * @param isVolatile - Indicates whether the binding is volatile.
-     */
-    public constructor(
-        public evaluate: Expression<TSource, TReturn, TParent>,
-        public policy?: DOMPolicy,
-        public isVolatile: boolean = false
-    ) {}
-
-    /**
-     * Creates an observer capable of notifying a subscriber when the output of a binding changes.
-     * @param directive - The HTML Directive to create the observer for.
-     * @param subscriber - The subscriber to changes in the binding.
-     */
-    abstract createObserver(
-        directive: HTMLDirective,
-        subscriber: Subscriber
-    ): ExpressionObserver<TSource, TReturn, TParent>;
 }
 
 /**

@@ -2,6 +2,7 @@ import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
 import type { DOMPolicy } from "../dom.js";
 import { Constructable, isFunction, isString } from "../interfaces.js";
+import { Binding, BindingSource } from "../observation/binding.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
     ExecutionContext,
@@ -17,7 +18,6 @@ import {
 } from "./binding.js";
 import {
     AddViewBehaviorFactory,
-    Binding,
     HTMLDirective,
     ViewBehavior,
     ViewBehaviorFactory,
@@ -56,10 +56,10 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
      * @param directive - The render directive that created this behavior.
      */
     public constructor(private directive: RenderDirective) {
-        this.dataBindingObserver = directive.dataBinding.createObserver(directive, this);
+        this.dataBindingObserver = directive.dataBinding.createObserver(this, directive);
         this.templateBindingObserver = directive.templateBinding.createObserver(
-            directive,
-            this
+            this,
+            directive
         );
     }
 
@@ -149,7 +149,7 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
  * @public
  */
 export class RenderDirective<TSource = any>
-    implements HTMLDirective, ViewBehaviorFactory {
+    implements HTMLDirective, ViewBehaviorFactory, BindingSource {
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
