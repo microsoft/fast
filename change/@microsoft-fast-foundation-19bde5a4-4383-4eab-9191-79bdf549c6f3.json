@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "prerelease",
   "comment": "Changes how the Slider works in vertical orientation by adjusting the slider to increase value when the thumb is moved upwards",
   "packageName": "@microsoft/fast-foundation",
   "email": "ryan@ryanmerrill.net",
