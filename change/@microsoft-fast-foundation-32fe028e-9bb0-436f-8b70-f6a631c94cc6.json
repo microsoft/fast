@@ -3,5 +3,5 @@
   "comment": "remove className logic from switch checkedChanged",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
