@@ -1,10 +1,10 @@
 import type { SyntheticViewTemplate, ViewTemplate } from "@microsoft/fast-element";
 import {
     attr,
-    bind,
     FASTElement,
     nullableNumberConverter,
     observable,
+    oneWay,
     RepeatDirective,
     Updates,
 } from "@microsoft/fast-element";
@@ -355,8 +355,8 @@ export class FASTDataGrid extends FASTElement {
             this.$fastController.addBehavior(this.behaviorOrchestrator);
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<FASTDataGrid>(
-                    bind(x => x.rowsData),
-                    bind(x => x.rowItemTemplate),
+                    oneWay(x => x.rowsData),
+                    oneWay(x => x.rowItemTemplate),
                     { positioning: true }
                 ),
                 this.appendChild((this.rowsPlaceholder = document.createComment("")))
