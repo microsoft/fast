@@ -7,7 +7,7 @@ import { isString } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type { DOMPolicy } from "../dom.js";
 import { makeSerializationNoop } from "../platform.js";
-import { Binding } from "../observation/binding.js";
+import { Binding } from "./binding.js";
 
 const subscribers: Record<
     string,

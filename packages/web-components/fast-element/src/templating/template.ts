@@ -1,9 +1,11 @@
 import type { DOMPolicy } from "../dom.js";
 import { isFunction, isString, Message } from "../interfaces.js";
-import { Binding } from "../observation/binding.js";
+import { Binding } from "../binding/binding.js";
 import type { Expression } from "../observation/observable.js";
 import { FAST, makeSerializationNoop } from "../platform.js";
-import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
+import { oneWay } from "../binding/one-way.js";
+import { oneTime } from "../binding/one-time.js";
+import { HTMLBindingDirective } from "./html-binding-directive.js";
 import { Compiler } from "./compiler.js";
 import {
     AddViewBehaviorFactory,
@@ -280,7 +282,7 @@ export class ViewTemplate<TSource = any, TParent = any>
             html += currentString;
 
             if (isFunction(currentValue)) {
-                currentValue = new HTMLBindingDirective(bind(currentValue));
+                currentValue = new HTMLBindingDirective(oneWay(currentValue));
             } else if (currentValue instanceof Binding) {
                 currentValue = new HTMLBindingDirective(currentValue);
             } else if (!(definition = HTMLDirective.getForInstance(currentValue))) {

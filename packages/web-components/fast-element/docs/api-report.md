@@ -81,9 +81,6 @@ export class AttributeDefinition implements Accessor {
 export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
 // @public
-export function bind<T = any>(expression: Expression<T>, policy?: DOMPolicy, isVolatile?: boolean): Binding<T>;
-
-// @public
 export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     constructor(evaluate: Expression<TSource, TReturn, TParent>, policy?: DOMPolicy | undefined, isVolatile?: boolean);
     abstract createObserver(subscriber: Subscriber, bindingSource: BindingSource): ExpressionObserver<TSource, TReturn, TParent>;
@@ -219,9 +216,12 @@ export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective
 }
 
 // @public
-export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]) => ElementStyles) & {
-    partial(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): CSSDirective;
+export type CSSTemplateTag = (<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: CSSValue<TSource, TParent>[]) => ElementStyles) & {
+    partial<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: CSSValue<TSource, TParent>[]): CSSDirective;
 };
+
+// @public
+export type CSSValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | ComposableStyles | CSSDirective;
 
 // @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
@@ -605,9 +605,6 @@ export abstract class NodeObservationDirective<T extends NodeBehaviorOptions> ex
 }
 
 // @public
-export function normalizeBinding<TSource = any, TReturn = any, TParent = any>(value: Expression<TSource, TReturn, TParent> | Binding<TSource, TReturn, TParent> | {}): Binding<TSource, TReturn, TParent>;
-
-// @public
 export interface Notifier {
     notify(args: any): void;
     readonly subject: any;
@@ -645,6 +642,9 @@ export interface ObservationRecord {
 
 // @public
 export function oneTime<T = any>(expression: Expression<T>, policy?: DOMPolicy): Binding<T>;
+
+// @public
+export function oneWay<T = any>(expression: Expression<T>, policy?: DOMPolicy, isVolatile?: boolean): Binding<T>;
 
 // @public
 export const Parser: Readonly<{

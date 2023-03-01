@@ -1,11 +1,25 @@
-import { isString } from "../interfaces.js";
+import { isFunction, isString } from "../interfaces.js";
+import type { Expression } from "../observation/observable.js";
+import { Binding } from "../binding/binding.js";
+import { oneWay } from "../binding/one-way.js";
 import type { HostBehavior, HostController } from "./host.js";
 import { AddBehavior, CSSDirective } from "./css-directive.js";
 import { ComposableStyles, ElementStyles } from "./element-styles.js";
+import { CSSBindingDirective } from "./css-binding-directive.js";
 
-function collectStyles(
+/**
+ * Represents the types of values that can be interpolated into a template.
+ * @public
+ */
+export type CSSValue<TSource, TParent = any> =
+    | Expression<TSource, any, TParent>
+    | Binding<TSource, any, TParent>
+    | ComposableStyles
+    | CSSDirective;
+
+function collectStyles<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
-    values: (ComposableStyles | CSSDirective)[]
+    values: CSSValue<TSource, TParent>[]
 ): { styles: ComposableStyles[]; behaviors: HostBehavior<HTMLElement>[] } {
     const styles: ComposableStyles[] = [];
     let cssString = "";
@@ -17,6 +31,12 @@ function collectStyles(
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         cssString += strings[i];
         let value = values[i];
+
+        if (isFunction(value)) {
+            value = new CSSBindingDirective(oneWay(value), "");
+        } else if (value instanceof Binding) {
+            value = new CSSBindingDirective(value, "");
+        }
 
         if (CSSDirective.getForInstance(value) !== void 0) {
             value = (value as CSSDirective).createCSS(add);
@@ -55,9 +75,9 @@ function collectStyles(
  * Use the .partial method to create partial CSS fragments.
  * @public
  */
-export type CSSTemplateTag = ((
+export type CSSTemplateTag = (<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
-    ...values: (ComposableStyles | CSSDirective)[]
+    ...values: CSSValue<TSource, TParent>[]
 ) => ElementStyles) & {
     /**
      * Transforms a template literal string into partial CSS.
@@ -65,9 +85,9 @@ export type CSSTemplateTag = ((
      * @param values - The values that are interpolated with the string fragments.
      * @public
      */
-    partial(
+    partial<TSource = any, TParent = any>(
         strings: TemplateStringsArray,
-        ...values: (ComposableStyles | CSSDirective)[]
+        ...values: CSSValue<TSource, TParent>[]
     ): CSSDirective;
 };
 
@@ -79,9 +99,9 @@ export type CSSTemplateTag = ((
  * The css helper supports interpolation of strings and ElementStyle instances.
  * @public
  */
-export const css: CSSTemplateTag = ((
+export const css: CSSTemplateTag = (<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
-    ...values: (ComposableStyles | CSSDirective)[]
+    ...values: CSSValue<TSource, TParent>[]
 ): ElementStyles => {
     const { styles, behaviors } = collectStyles(strings, values);
     const elementStyles = new ElementStyles(styles);
@@ -141,9 +161,9 @@ class CSSPartial implements CSSDirective, HostBehavior<HTMLElement> {
 
 CSSDirective.define(CSSPartial);
 
-css.partial = (
+css.partial = <TSource = any, TParent = any>(
     strings: TemplateStringsArray,
-    ...values: (ComposableStyles | CSSDirective)[]
+    ...values: CSSValue<TSource, TParent>[]
 ): CSSDirective => {
     const { styles, behaviors } = collectStyles(strings, values);
     return new CSSPartial(styles, behaviors);

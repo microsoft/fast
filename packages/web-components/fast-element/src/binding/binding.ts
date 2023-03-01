@@ -1,6 +1,6 @@
 import type { DOMAspect, DOMPolicy } from "../dom.js";
-import type { Subscriber } from "./notifier.js";
-import type { Expression, ExpressionObserver } from "./observable.js";
+import type { Subscriber } from "../observation/notifier.js";
+import type { Expression, ExpressionObserver } from "../observation/observable.js";
 
 /**
  * The source from which a binding originates.

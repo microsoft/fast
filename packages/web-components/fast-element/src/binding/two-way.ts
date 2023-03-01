@@ -1,6 +1,5 @@
 import type { DOMPolicy } from "../dom.js";
 import { isString, Message } from "../interfaces.js";
-import { Binding, BindingSource } from "../observation/binding.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -11,6 +10,7 @@ import {
     ObservationRecord,
 } from "../observation/observable.js";
 import { FAST, makeSerializationNoop } from "../platform.js";
+import { Binding, BindingSource } from "./binding.js";
 
 /**
  * The twoWay binding options.

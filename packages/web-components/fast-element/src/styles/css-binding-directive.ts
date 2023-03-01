@@ -1,4 +1,4 @@
-import type { Binding, BindingSource } from "../observation/binding.js";
+import type { Binding, BindingSource } from "../binding/binding.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type { ExpressionObserver } from "../observation/observable.js";
 import { AddBehavior, CSSDirective } from "./css-directive.js";

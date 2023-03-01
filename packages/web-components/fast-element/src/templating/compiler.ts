@@ -2,9 +2,10 @@ import { isFunction, isString, Message } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { DOM, DOMPolicy } from "../dom.js";
-import type { Binding } from "../observation/binding.js";
+import type { Binding } from "../binding/binding.js";
+import { oneTime } from "../binding/one-time.js";
 import { nextId, Parser } from "./markup.js";
-import { HTMLBindingDirective, oneTime } from "./binding.js";
+import { HTMLBindingDirective } from "./html-binding-directive.js";
 import {
     Aspected,
     CompiledViewBehaviorFactory,

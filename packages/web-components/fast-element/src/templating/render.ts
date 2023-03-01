@@ -2,20 +2,20 @@ import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
 import type { DOMPolicy } from "../dom.js";
 import { Constructable, isFunction, isString } from "../interfaces.js";
-import { Binding, BindingSource } from "../observation/binding.js";
+import { Binding, BindingSource } from "../binding/binding.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
     ExecutionContext,
     Expression,
     ExpressionObserver,
 } from "../observation/observable.js";
-import {
-    bind,
+import { oneTime } from "../binding/one-time.js";
+import { oneWay } from "../binding/one-way.js";
+import { normalizeBinding } from "../binding/normalize.js";
+import type {
     ContentTemplate,
     ContentView,
-    normalizeBinding,
-    oneTime,
-} from "./binding.js";
+} from "./html-binding-directive.js";
 import {
     AddViewBehaviorFactory,
     HTMLDirective,
@@ -666,7 +666,7 @@ export function render<TSource = any, TItem = any, TParent = any>(
             return instructionToTemplate(getForInstance(data));
         });
     } else if (isFunction(template)) {
-        templateBinding = bind(
+        templateBinding = oneWay(
             (s: any, c: ExecutionContext) => {
                 let result = template(s, c);
 

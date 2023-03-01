@@ -18,7 +18,11 @@ export * from "./observation/observable.js";
 export * from "./observation/notifier.js";
 export * from "./observation/arrays.js";
 export * from "./observation/update-queue.js";
-export * from "./observation/binding.js";
+
+// Binding
+export * from "./binding/binding.js";
+export * from "./binding/one-way.js";
+export * from "./binding/one-time.js";
 
 // Styles
 export * from "./styles/element-styles.js";
@@ -32,7 +36,7 @@ export * from "./styles/css-binding-directive.js";
 export * from "./templating/template.js";
 export * from "./templating/compiler.js";
 export { Markup, Parser } from "./templating/markup.js";
-export * from "./templating/binding.js";
+export * from "./templating/html-binding-directive.js";
 export * from "./templating/html-directive.js";
 export * from "./templating/ref.js";
 export * from "./templating/when.js";
