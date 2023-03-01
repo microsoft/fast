@@ -303,12 +303,12 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         } else if (!e.shiftKey) {
             switch (e.key) {
                 case keyArrowRight:
-                case keyArrowUp:
+                case keyArrowDown:
                     e.preventDefault();
                     this.increment();
                     break;
                 case keyArrowLeft:
-                case keyArrowDown:
+                case keyArrowUp:
                     e.preventDefault();
                     this.decrement();
                     break;

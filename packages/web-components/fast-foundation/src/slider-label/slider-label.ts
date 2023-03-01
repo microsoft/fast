@@ -202,7 +202,7 @@ export class FASTSliderLabel extends FASTElement {
                 ? `right: ${leftNum}%; left: ${rightNum}%;`
                 : `left: ${leftNum}%; right: ${rightNum}%;`;
         } else {
-            return `top: ${leftNum}%; bottom: ${rightNum}%;`;
+            return `top: ${rightNum}%; bottom: ${leftNum}%;`;
         }
     };
 }
