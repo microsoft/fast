@@ -32,11 +32,11 @@
     },
     "./binding/two-way": {
       "types": "./dist/dts/binding/two-way.d.ts",
-      "default": "./dist/esm/templating/two-way.js"
+      "default": "./dist/esm/binding/two-way.js"
     },
     "./binding/signal": {
-      "types": "./dist/dts/templating/signal.d.ts",
-      "default": "./dist/esm/templating/signal.js"
+      "types": "./dist/dts/binding/signal.d.ts",
+      "default": "./dist/esm/binding/signal.js"
     },
     "./render": {
       "types": "./dist/dts/templating/render.d.ts",
