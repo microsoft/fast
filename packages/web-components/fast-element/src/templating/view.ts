@@ -60,7 +60,7 @@ export interface ElementView<TSource = any, TParent = any>
      * Registers an unbind handler with the controller.
      * @param behavior - An object to call when the controller unbinds.
      */
-    onUnbind(behavior: { unbind(controller: ViewController<TSource, TParent>); }): void;
+    onUnbind(behavior: { unbind(controller: ViewController<TSource, TParent>) }): void;
 
     /**
      * Appends the view's DOM nodes to the referenced node.

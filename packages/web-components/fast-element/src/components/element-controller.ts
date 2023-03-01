@@ -1,6 +1,11 @@
 import { Message, Mutable } from "../interfaces.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
-import { ExecutionContext, ExpressionController, Observable, SourceLifetime } from "../observation/observable.js";
+import {
+    ExecutionContext,
+    ExpressionController,
+    Observable,
+    SourceLifetime,
+} from "../observation/observable.js";
 import { FAST, makeSerializationNoop } from "../platform.js";
 import { ElementStyles } from "../styles/element-styles.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
@@ -244,9 +249,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Registers an unbind handler with the controller.
      * @param behavior - An object to call when the controller unbinds.
      */
-    onUnbind(behavior: {
-        unbind(controller: ExpressionController<TElement>);
-    }): void {
+    onUnbind(behavior: { unbind(controller: ExpressionController<TElement>) }): void {
         this.view?.onUnbind(behavior);
     }
 

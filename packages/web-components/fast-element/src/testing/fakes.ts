@@ -1,6 +1,10 @@
 import { noop } from "../interfaces.js";
 import { ExecutionContext } from "../observation/observable.js";
-import type { ViewBehavior, ViewBehaviorTargets, ViewController } from "../templating/html-directive.js";
+import type {
+    ViewBehavior,
+    ViewBehaviorTargets,
+    ViewController,
+} from "../templating/html-directive.js";
 
 export const Fake = Object.freeze({
     executionContext<TParent = any>(

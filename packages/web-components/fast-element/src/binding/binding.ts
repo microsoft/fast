@@ -54,6 +54,6 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
      */
     abstract createObserver(
         subscriber: Subscriber,
-        bindingSource: BindingSource,
+        bindingSource: BindingSource
     ): ExpressionObserver<TSource, TReturn, TParent>;
 }

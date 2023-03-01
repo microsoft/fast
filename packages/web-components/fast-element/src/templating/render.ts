@@ -12,10 +12,7 @@ import type {
 import { oneTime } from "../binding/one-time.js";
 import { oneWay } from "../binding/one-way.js";
 import { normalizeBinding } from "../binding/normalize.js";
-import type {
-    ContentTemplate,
-    ContentView,
-} from "./html-binding-directive.js";
+import type { ContentTemplate, ContentView } from "./html-binding-directive.js";
 import {
     AddViewBehaviorFactory,
     HTMLDirective,

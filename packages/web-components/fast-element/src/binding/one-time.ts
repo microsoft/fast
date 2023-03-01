@@ -1,5 +1,9 @@
 import type { DOMPolicy } from "../dom.js";
-import type { Expression, ExpressionController, ExpressionObserver } from "../observation/observable.js";
+import type {
+    Expression,
+    ExpressionController,
+    ExpressionObserver,
+} from "../observation/observable.js";
 import { makeSerializationNoop } from "../platform.js";
 import { Binding } from "./binding.js";
 

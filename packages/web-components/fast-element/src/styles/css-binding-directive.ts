@@ -10,15 +10,16 @@ import type { HostBehavior, HostController } from "./host.js";
  *
  * @public
  */
-export class CSSBindingDirective implements HostBehavior, Subscriber, CSSDirective, BindingSource {
-  /**
-   * Creates an instance of CSSBindingDirective.
-   * @param dataBinding - The binding to use in CSS.
-   * @param targetAspect - The CSS property to target.
-   */
+export class CSSBindingDirective
+    implements HostBehavior, Subscriber, CSSDirective, BindingSource {
+    /**
+     * Creates an instance of CSSBindingDirective.
+     * @param dataBinding - The binding to use in CSS.
+     * @param targetAspect - The CSS property to target.
+     */
     public constructor(
-      public readonly dataBinding: Binding,
-      public readonly targetAspect: string
+        public readonly dataBinding: Binding,
+        public readonly targetAspect: string
     ) {}
 
     /**
@@ -26,8 +27,8 @@ export class CSSBindingDirective implements HostBehavior, Subscriber, CSSDirecti
      * @returns - the string to interpolate into CSS
      */
     createCSS(add: AddBehavior): ComposableStyles {
-      add(this);
-      return `var(${this.targetAspect})`;
+        add(this);
+        return `var(${this.targetAspect})`;
     }
 
     /**
@@ -35,13 +36,16 @@ export class CSSBindingDirective implements HostBehavior, Subscriber, CSSDirecti
      * @param controller - Controls the behavior lifecycle.
      */
     connectedCallback(controller: HostController): void {
-      const observer: ExpressionObserver =
-        (controller as any)[this.targetAspect] ??
-        ((controller as any)[this.targetAspect] = this.dataBinding.createObserver(this, this));
+        const observer: ExpressionObserver =
+            (controller as any)[this.targetAspect] ??
+            ((controller as any)[this.targetAspect] = this.dataBinding.createObserver(
+                this,
+                this
+            ));
 
-      (observer as any).controller = controller;
+        (observer as any).controller = controller;
 
-      this.handleChange(null, observer);
+        this.handleChange(null, observer);
     }
 
     /**
@@ -52,10 +56,12 @@ export class CSSBindingDirective implements HostBehavior, Subscriber, CSSDirecti
      * @internal
      */
     handleChange(_: any, observer: ExpressionObserver): void {
-      const controller = (observer as any).controller;
-      (controller.source as HTMLElement).style
-        .setProperty(this.targetAspect, observer.bind(controller));
+        const controller = (observer as any).controller;
+        (controller.source as HTMLElement).style.setProperty(
+            this.targetAspect,
+            observer.bind(controller)
+        );
     }
-  }
+}
 
-  CSSDirective.define(CSSBindingDirective);
+CSSDirective.define(CSSBindingDirective);
