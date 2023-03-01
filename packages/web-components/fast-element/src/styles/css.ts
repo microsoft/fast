@@ -19,7 +19,7 @@ export type CSSValue<TSource, TParent = any> =
 
 const marker = `${Math.random().toString(36).substring(2, 8)}`;
 let varId = 0;
-const nextCSSVariable = (): string => `v${marker}${++varId}`;
+const nextCSSVariable = (): string => `--v${marker}${++varId}`;
 
 function collectStyles<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
