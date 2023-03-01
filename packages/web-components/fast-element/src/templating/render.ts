@@ -271,6 +271,23 @@ export type BaseElementRenderOptions<
 };
 
 /**
+ * Render options for directly creating an element with {@link RenderInstruction.createElementTemplate}
+ * @public
+ */
+export type ElementCreateOptions<TSource = any, TParent = any> = Omit<
+    BaseElementRenderOptions,
+    "type" | "name"
+> & {
+    /**
+     * Directives to use when creating the element template. These directives are applied directly to the specified tag.
+     *
+     * @remarks
+     * Directives supported by this API are: `ref`, `children`, `slotted`, or any custom `HTMLDirective` that can be used on a HTML tag.
+     */
+    directives?: TemplateValue<TSource, TParent>[];
+};
+
+/**
  * Render options used to specify an element.
  * @public
  */
@@ -329,16 +346,15 @@ function instructionToTemplate(def: RenderInstruction | undefined) {
 
 function createElementTemplate<TSource = any, TParent = any>(
     tagName: string,
-    attributes?: Record<string, string | TemplateValue<TSource, TParent>>,
-    content?: string | ContentTemplate,
-    policy?: DOMPolicy
+    options?: ElementCreateOptions
 ): ViewTemplate<TSource, TParent> {
     const markup: Array<string> = [];
     const values: Array<TemplateValue<TSource, TParent>> = [];
+    const { attributes, directives, content, policy } = options ?? {};
 
+    markup.push(`<${tagName}`);
     if (attributes) {
         const attrNames = Object.getOwnPropertyNames(attributes);
-        markup.push(`<${tagName}`);
 
         for (let i = 0, ii = attrNames.length; i < ii; ++i) {
             const name = attrNames[i];
@@ -352,10 +368,22 @@ function createElementTemplate<TSource = any, TParent = any>(
             values.push(attributes[name]);
         }
 
-        markup.push(`">`);
-    } else {
-        markup.push(`<${tagName}>`);
+        markup.push(`"`);
     }
+
+    if (directives) {
+        markup[markup.length - 1] += " ";
+
+        for (let i = 0, ii = directives.length; i < ii; ++i) {
+            const directive = directives[i];
+
+            markup.push(i > 0 ? "" : " ");
+
+            values.push(directive);
+        }
+    }
+
+    markup[markup.length - 1] += ">";
 
     if (content && isFunction((content as any).create)) {
         values.push(content);
@@ -390,12 +418,11 @@ function create(options: any): RenderInstruction {
             }
         }
 
-        template = createElementTemplate(
-            tagName,
-            options.attributes ?? defaultAttributes,
-            options.content,
-            options.policy
-        );
+        if (!options.attributes) {
+            options.attributes = defaultAttributes;
+        }
+
+        template = createElementTemplate(tagName, options);
     } else {
         template = options.template;
     }
