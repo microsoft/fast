@@ -1,7 +1,7 @@
 import type { DOMPolicy } from "../dom.js";
-import { isFunction, isString, Message, noop } from "../interfaces.js";
+import { isFunction, isString, Message } from "../interfaces.js";
 import type { Expression } from "../observation/observable.js";
-import { FAST } from "../platform.js";
+import { FAST, makeSerializationNoop } from "../platform.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
 import {
@@ -247,12 +247,6 @@ export class ViewTemplate<TSource = any, TParent = any>
     }
 
     /**
-     * Opts out of JSON stringification.
-     * @internal
-     */
-    toJSON = noop;
-
-    /**
      * Creates a template based on a set of static strings and dynamic values.
      * @param strings - The static strings to create the template with.
      * @param values - The dynamic values to create the template with.
@@ -309,6 +303,8 @@ export class ViewTemplate<TSource = any, TParent = any>
         );
     }
 }
+
+makeSerializationNoop(ViewTemplate);
 
 /**
  * Transforms a template literal string into a ViewTemplate.

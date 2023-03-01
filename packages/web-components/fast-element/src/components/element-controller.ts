@@ -1,7 +1,7 @@
-import { Message, Mutable, noop } from "../interfaces.js";
+import { Message, Mutable } from "../interfaces.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { Observable, SourceLifetime } from "../observation/observable.js";
-import { FAST } from "../platform.js";
+import { FAST, makeSerializationNoop } from "../platform.js";
 import { ElementStyles } from "../styles/element-styles.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import type { StyleStrategy, StyleTarget } from "../styles/style-strategy.js";
@@ -439,12 +439,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         return false;
     }
 
-    /**
-     * Opts out of JSON stringification.
-     * @internal
-     */
-    toJSON = noop;
-
     private renderTemplate(template: ElementViewTemplate | null | undefined): void {
         // When getting the host to render to, we start by looking
         // up the shadow root. If there isn't one, then that means
@@ -509,6 +503,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         elementControllerStrategy = strategy;
     }
 }
+
+makeSerializationNoop(ElementController);
 
 // Set default strategy for ElementController
 ElementController.setStrategy(ElementController);
