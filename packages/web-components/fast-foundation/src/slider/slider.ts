@@ -266,7 +266,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         const newVal: number =
             this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
                 ? Number(this.value) + Number(this.step)
-                : Number(this.value) - Number(this.step);
+                : Number(this.value) + Number(this.step);
         const incrementedVal: number = this.convertToConstrainedValue(newVal);
         const incrementedValString: string =
             incrementedVal < Number(this.max) ? `${incrementedVal}` : `${this.max}`;
@@ -282,7 +282,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         const newVal =
             this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
                 ? Number(this.value) - Number(this.step)
-                : Number(this.value) + Number(this.step);
+                : Number(this.value) - Number(this.step);
         const decrementedVal: number = this.convertToConstrainedValue(newVal);
         const decrementedValString: string =
             decrementedVal > Number(this.min) ? `${decrementedVal}` : `${this.min}`;
@@ -296,10 +296,14 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
 
         if (e.key === keyHome) {
             e.preventDefault();
-            this.value = `${this.min}`;
+            this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
+                ? (this.value = `${this.min}`)
+                : (this.value = `${this.max}`);
         } else if (e.key === keyEnd) {
             e.preventDefault();
-            this.value = `${this.max}`;
+            this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
+                ? (this.value = `${this.max}`)
+                : (this.value = `${this.min}`);
         } else if (!e.shiftKey) {
             switch (e.key) {
                 case keyArrowRight:
