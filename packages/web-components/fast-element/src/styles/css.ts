@@ -17,6 +17,10 @@ export type CSSValue<TSource, TParent = any> =
     | ComposableStyles
     | CSSDirective;
 
+const marker = `${Math.random().toString(36).substring(2, 8)}`;
+let varId = 0;
+const nextCSSVariable = (): string => `v${marker}${++varId}`;
+
 function collectStyles<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
     values: CSSValue<TSource, TParent>[]
@@ -33,12 +37,12 @@ function collectStyles<TSource = any, TParent = any>(
         let value = values[i];
 
         if (isFunction(value)) {
-            value = new CSSBindingDirective(oneWay(value), "");
+            value = new CSSBindingDirective(oneWay(value), nextCSSVariable()).createCSS(
+                add
+            );
         } else if (value instanceof Binding) {
-            value = new CSSBindingDirective(value, "");
-        }
-
-        if (CSSDirective.getForInstance(value) !== void 0) {
+            value = new CSSBindingDirective(value, nextCSSVariable()).createCSS(add);
+        } else if (CSSDirective.getForInstance(value) !== void 0) {
             value = (value as CSSDirective).createCSS(add);
         }
 
