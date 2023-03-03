@@ -1884,8 +1884,6 @@ export class FASTSliderLabel extends FASTElement {
 export class FASTSwitch extends FormAssociatedSwitch {
     constructor();
     // @internal (undocumented)
-    checkedChanged(prev: boolean | undefined, next: boolean): void;
-    // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
