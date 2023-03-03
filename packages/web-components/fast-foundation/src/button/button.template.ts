@@ -10,10 +10,15 @@ export function buttonTemplate<T extends FASTButton>(
     options: ButtonOptions = {}
 ): ElementViewTemplate<T> {
     return html<T>`
+    <template
+        aria-disabled="${x => x.disabled}"
+        ?autofocus="${x => x.autofocus}"
+        tabindex=${x => x.tabIndex ? x.tabIndex : x.disabled ? -1 : 0}
+        role="button"
+    >
         <button
             class="control"
             part="control"
-            ?autofocus="${x => x.autofocus}"
             ?disabled="${x => x.disabled}"
             form="${x => x.formId}"
             formaction="${x => x.formaction}"
@@ -24,27 +29,9 @@ export function buttonTemplate<T extends FASTButton>(
             name="${x => x.name}"
             type="${x => x.type}"
             value="${x => x.value}"
-            aria-atomic="${x => x.ariaAtomic}"
-            aria-busy="${x => x.ariaBusy}"
-            aria-controls="${x => x.ariaControls}"
-            aria-current="${x => x.ariaCurrent}"
-            aria-describedby="${x => x.ariaDescribedby}"
-            aria-details="${x => x.ariaDetails}"
-            aria-disabled="${x => x.ariaDisabled}"
-            aria-errormessage="${x => x.ariaErrormessage}"
-            aria-expanded="${x => x.ariaExpanded}"
-            aria-flowto="${x => x.ariaFlowto}"
-            aria-haspopup="${x => x.ariaHaspopup}"
-            aria-hidden="${x => x.ariaHidden}"
-            aria-invalid="${x => x.ariaInvalid}"
-            aria-keyshortcuts="${x => x.ariaKeyshortcuts}"
-            aria-label="${x => x.ariaLabel}"
-            aria-labelledby="${x => x.ariaLabelledby}"
-            aria-live="${x => x.ariaLive}"
-            aria-owns="${x => x.ariaOwns}"
-            aria-pressed="${x => x.ariaPressed}"
-            aria-relevant="${x => x.ariaRelevant}"
-            aria-roledescription="${x => x.ariaRoledescription}"
+            role="none"
+            aria-hidden="true"
+            tabindex="-1"
             ${ref("control")}
         >
             ${startSlotTemplate(options)}
@@ -53,5 +40,6 @@ export function buttonTemplate<T extends FASTButton>(
             </span>
             ${endSlotTemplate(options)}
         </button>
+    </template>
     `;
 }

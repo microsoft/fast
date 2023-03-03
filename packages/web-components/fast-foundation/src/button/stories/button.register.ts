@@ -58,13 +58,13 @@ const styles = css`
         background-color: var(--neutral-fill-active);
     }
 
-    .control:focus-visible {
+    :host(:focus-visible) {
         border-color: var(--focus-stroke-outer);
         box-shadow: 0 0 0 calc((var(--focus-stroke-width) - var(--stroke-width)) * 1px)
             var(--focus-stroke-outer) inset;
     }
 
-    .control::-moz-focus-inner {
+    :host(::-moz-focus-inner) {
         border: 0;
     }
 
@@ -93,7 +93,4 @@ FASTButton.define({
     name: "fast-button",
     template: buttonTemplate(),
     styles,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
 });

@@ -49,7 +49,7 @@ export default {
         autofocus: false,
         disabled: false,
         formnovalidate: false,
-        storyContent: "Button",
+        storyContent: "This is a test",
     },
     argTypes: {
         autofocus: { control: "boolean" },
