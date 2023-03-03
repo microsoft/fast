@@ -290,7 +290,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     }
 
     protected keypressHandler = (e: KeyboardEvent) => {
-        if (this.readOnly) {
+        if (this.readOnly || this.disabled) {
             return;
         }
 
