@@ -5,6 +5,22 @@ import { AddBehavior, CSSDirective } from "./css-directive.js";
 import type { ComposableStyles } from "./element-styles.js";
 import type { HostBehavior, HostController } from "./host.js";
 
+type CSSBindingEntry = {
+    observer: ExpressionObserver;
+    controller: HostController;
+};
+
+function handleChange(
+    directive: CSSBindingDirective,
+    controller: HostController<HTMLElement>,
+    observer: ExpressionObserver
+): void {
+    controller.source.style.setProperty(
+        directive.targetAspect,
+        observer.bind(controller)
+    );
+}
+
 /**
  * Enables bindings in CSS.
  *
@@ -32,10 +48,30 @@ export class CSSBindingDirective
     }
 
     /**
-     * Executed when this behavior's host is connected.
+     * Executed when this behavior is attached to a controller.
      * @param controller - Controls the behavior lifecycle.
      */
-    connectedCallback(controller: HostController): void {
+    addedCallback(
+        controller: HostController<
+            HTMLElement & { $cssBindings: Map<CSSBindingDirective, CSSBindingEntry> }
+        >
+    ) {
+        const element = controller.source;
+
+        if (!element.$cssBindings) {
+            element.$cssBindings = new Map();
+            const setAttribute = element.setAttribute;
+            element.setAttribute = (attr, value) => {
+                setAttribute.call(element, attr, value);
+
+                if (attr === "style") {
+                    element.$cssBindings.forEach((v, k) =>
+                        handleChange(k, v.controller, v.observer)
+                    );
+                }
+            };
+        }
+
         const observer: ExpressionObserver =
             (controller as any)[this.targetAspect] ??
             ((controller as any)[this.targetAspect] = this.dataBinding.createObserver(
@@ -44,8 +80,33 @@ export class CSSBindingDirective
             ));
 
         (observer as any).controller = controller;
+        controller.source.$cssBindings.set(this, { controller, observer });
+    }
 
-        this.handleChange(null, observer);
+    /**
+     * Executed when this behavior's host is connected.
+     * @param controller - Controls the behavior lifecycle.
+     */
+    connectedCallback(
+        controller: HostController<
+            HTMLElement & { $cssBindings: Map<CSSBindingDirective, CSSBindingEntry> }
+        >
+    ): void {
+        handleChange(this, controller, (controller as any)[this.targetAspect]);
+    }
+
+    /**
+     * Executed when this behavior is detached from a controller.
+     * @param controller - Controls the behavior lifecycle.
+     */
+    removedCallback(
+        controller: HostController<
+            HTMLElement & { $cssBindings: Map<CSSBindingDirective, CSSBindingEntry> }
+        >
+    ) {
+        if (controller.source.$cssBindings) {
+            controller.source.$cssBindings.delete(this);
+        }
     }
 
     /**
@@ -56,11 +117,7 @@ export class CSSBindingDirective
      * @internal
      */
     handleChange(_: any, observer: ExpressionObserver): void {
-        const controller = (observer as any).controller;
-        (controller.source as HTMLElement).style.setProperty(
-            this.targetAspect,
-            observer.bind(controller)
-        );
+        handleChange(this, (observer as any).controller, observer);
     }
 }
 

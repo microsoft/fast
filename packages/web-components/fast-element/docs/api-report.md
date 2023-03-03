@@ -185,12 +185,20 @@ export const css: CSSTemplateTag;
 // @public
 export class CSSBindingDirective implements HostBehavior, Subscriber, CSSDirective, BindingSource {
     constructor(dataBinding: Binding, targetAspect: string);
-    connectedCallback(controller: HostController): void;
+    addedCallback(controller: HostController<HTMLElement & {
+        $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
+    }>): void;
+    connectedCallback(controller: HostController<HTMLElement & {
+        $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
+    }>): void;
     createCSS(add: AddBehavior): ComposableStyles;
     // (undocumented)
     readonly dataBinding: Binding;
     // @internal
     handleChange(_: any, observer: ExpressionObserver): void;
+    removedCallback(controller: HostController<HTMLElement & {
+        $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
+    }>): void;
     // (undocumented)
     readonly targetAspect: string;
 }
@@ -455,7 +463,7 @@ export interface HostBehavior<TSource = any> {
 }
 
 // @public
-export interface HostController<TSource = any> extends ExpressionController {
+export interface HostController<TSource = any> extends ExpressionController<TSource> {
     addBehavior(behavior: HostBehavior<TSource>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     readonly isConnected: boolean;
@@ -931,6 +939,7 @@ export function when<TSource = any, TReturn = any, TParent = any>(condition: Exp
 // dist/dts/components/fast-element.d.ts:60:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
 // dist/dts/components/fast-element.d.ts:61:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
 // dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
+// dist/dts/styles/css-binding-directive.d.ts:35:9 - (ae-forgotten-export) The symbol "CSSBindingEntry" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
