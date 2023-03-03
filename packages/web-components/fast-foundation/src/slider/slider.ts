@@ -290,7 +290,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     }
 
     protected keypressHandler = (e: KeyboardEvent) => {
-        if (this.readOnly) {
+        if (this.readOnly || this.disabled) {
             return;
         }
 
@@ -410,12 +410,6 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
      *  If the event handler is null it removes the events
      */
     private handleThumbMouseDown = (event: MouseEvent | null): void => {
-        if (event) {
-            if (this.readOnly || this.disabled || event.defaultPrevented) {
-                return;
-            }
-            (event.target as HTMLElement).focus();
-        }
         const eventAction = `${event !== null ? "add" : "remove"}EventListener`;
         window[eventAction]("mouseup", this.handleWindowMouseUp);
         window[eventAction]("mousemove", this.handleMouseMove, { passive: true });
@@ -496,9 +490,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
             window[eventAction]("mousemove", this.handleMouseMove);
 
             if (e) {
-                e.preventDefault();
                 this.setupTrackConstraints();
-                (e.target as HTMLElement).focus();
                 const controlValue: number =
                     this.orientation === Orientation.horizontal
                         ? e.pageX - document.documentElement.scrollLeft - this.trackLeft
