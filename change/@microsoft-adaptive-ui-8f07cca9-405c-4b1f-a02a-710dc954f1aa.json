@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Marked @microsoft/adaptive-ui package for deprecation",
+  "packageName": "@microsoft/adaptive-ui",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}
