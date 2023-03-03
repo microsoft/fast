@@ -322,6 +322,66 @@ test.describe("Slider", () => {
         });
     });
 
+    test("should increase or decrease the slider value on arrow left/right keys", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <form>
+                    <fast-slider min="0" max="100"></fast-slider>
+                </form>
+            `;
+        });
+
+        await element.waitFor({ state: "attached" });
+
+        await element.evaluate(node => {
+            node.focus();
+        });
+
+        await element.evaluate((node: FASTSlider) => {
+            node.value = "7";
+        });
+
+        await expect(element).toHaveJSProperty("value", "7");
+
+        await element.press("ArrowLeft");
+
+        await expect(element).toHaveJSProperty("value", "6");
+
+        await element.press("ArrowRight");
+
+        await expect(element).toHaveJSProperty("value", "7");
+    });
+
+    test("should increase or decrease the slider value on arrow up/down keys", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <form>
+                    <fast-slider min="0" max="100"></fast-slider>
+                </form>
+            `;
+        });
+
+        await element.waitFor({ state: "attached" });
+
+        await element.evaluate(node => {
+            node.focus();
+        });
+
+        await element.evaluate((node: FASTSlider) => {
+            node.value = "7";
+        });
+
+        await expect(element).toHaveJSProperty("value", "7");
+
+        await element.press("ArrowDown");
+
+        await expect(element).toHaveJSProperty("value", "6");
+
+        await element.press("ArrowUp");
+
+        await expect(element).toHaveJSProperty("value", "7");
+    });
+
     test("should constrain and normalize the value between `min` and `max` when the value is out of range", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
