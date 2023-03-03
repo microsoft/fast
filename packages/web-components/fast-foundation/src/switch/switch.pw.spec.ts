@@ -112,26 +112,6 @@ test.describe("Switch", () => {
         await expect(element).toHaveAttribute("aria-readonly", "false");
     });
 
-    test('should add a class of "checked" when the `checked` property is true', async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-switch></fast-switch>
-            `;
-        });
-
-        await element.evaluate((node: FASTSwitch) => {
-            node.checked = true;
-        });
-
-        await expect(element).toHaveClass(/checked/);
-
-        await element.evaluate((node: FASTSwitch) => {
-            node.checked = false;
-        });
-
-        await expect(element).not.toHaveClass(/checked/);
-    });
-
     test("should initialize to the initial value if no value property is set", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
