@@ -3,5 +3,5 @@
   "comment": "feat: add Context.for",
   "packageName": "@microsoft/fast-element",
   "email": "rob@bluespire.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
