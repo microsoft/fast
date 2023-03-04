@@ -50,7 +50,7 @@ export type TrustedTypesPolicy = {
 
 /**
  * Reverses all readonly members, making them mutable.
- * @internal
+ * @public
  */
 export type Mutable<T> = {
     -readonly [P in keyof T]: T[P];
@@ -197,19 +197,19 @@ export const enum Message {
 
 /**
  * Determines whether or not an object is a function.
- * @internal
+ * @public
  */
 export const isFunction = (object: any): object is Function =>
     typeof object === "function";
 
 /**
  * Determines whether or not an object is a string.
- * @internal
+ * @public
  */
 export const isString = (object: any): object is string => typeof object === "string";
 
 /**
  * A function which does nothing.
- * @internal
+ * @public
  */
 export const noop = () => void 0;
