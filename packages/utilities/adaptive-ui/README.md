@@ -1,5 +1,15 @@
 # Adaptive UI
 
+> This package is no longer maintained. This effort has migrated to @adaptive-web/adaptive-ui.
+
+> @adaptive-web version 0.0.1 is compatible with @microsoft version 1.0.0-alpha.2 with the following changes:
+> - The default value for "accent-base-color" has changed from "#0078D4" to "#F26C0D" (Microsoft blue to a custom orange)
+> - The default value for "accent-fill-min-contrast" has changed from 5.5 to 4.5
+> - The default value for "body-font" has changed from '"Segoe UI Variable", "Segoe UI", sans-serif' to 'Arial, Helvetica, sans-serif'
+> - Font Variations have been removed for all steps in the type ramp (ex: "type-ramp-base-font-variations")
+> - Layer recipes (ex: "layer-fill-fixed-base") have been fixed so they go the same direction in dark mode as they did in light mode
+> - The "direction" design token has been removed
+
 Adaptive UI is a library for building highly-consistent design systems based around your visual decisions. This represents an evolution of many token implementations that provide end-result values without the means to track how they were derived or easily adjust them.
 
 This is a core feature of [FAST](https://fast.design) and is incorporated into the [Fluent UI Web Components](https://aka.ms/fluentwebcomponents) and other design systems.

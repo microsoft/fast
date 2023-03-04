@@ -39,7 +39,7 @@ const styles = css`
         grid-template-columns: calc(var(--thumb-size) * 1px) 1fr;
     }
 
-    :host(:focus-visible) .thumb-cursor {
+    :host(:focus) .thumb-cursor {
         box-shadow: 0 0 0 2px var(--fill-color), 0 0 0 4px var(--focus-stroke-outer);
     }
 
