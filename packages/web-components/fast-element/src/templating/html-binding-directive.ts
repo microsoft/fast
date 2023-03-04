@@ -1,51 +1,21 @@
-import type { Subscriber } from "../index.js";
-import { isFunction, Message } from "../interfaces.js";
+import { Message } from "../interfaces.js";
 import {
     ExecutionContext,
     Expression,
-    ExpressionController,
     ExpressionObserver,
-    Observable,
 } from "../observation/observable.js";
-import { FAST, makeSerializationNoop } from "../platform.js";
+import { FAST } from "../platform.js";
 import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
+import type { Binding, BindingDirective } from "../binding/binding.js";
 import {
     AddViewBehaviorFactory,
     Aspected,
-    Binding,
     HTMLDirective,
     ViewBehavior,
     ViewBehaviorFactory,
     ViewController,
 } from "./html-directive.js";
 import { Markup } from "./markup.js";
-
-class OnChangeBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
-    TSource,
-    TReturn,
-    TParent
-> {
-    createObserver(
-        _: HTMLBindingDirective,
-        subscriber: Subscriber
-    ): ExpressionObserver<TSource, TReturn, TParent> {
-        return Observable.binding(this.evaluate, subscriber, this.isVolatile);
-    }
-}
-
-class OneTimeBinding<TSource = any, TReturn = any, TParent = any>
-    extends Binding<TSource, TReturn, TParent>
-    implements ExpressionObserver<TSource, TReturn, TParent> {
-    createObserver(): ExpressionObserver<TSource, TReturn, TParent> {
-        return this;
-    }
-
-    bind(controller: ExpressionController): TReturn {
-        return this.evaluate(controller.source, controller.context);
-    }
-}
-
-makeSerializationNoop(OneTimeBinding);
 
 type UpdateTarget = (
     this: HTMLBindingDirective,
@@ -241,7 +211,12 @@ const sinkLookup: Record<DOMAspect, UpdateTarget> = {
  * @public
  */
 export class HTMLBindingDirective
-    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected {
+    implements
+        HTMLDirective,
+        ViewBehaviorFactory,
+        ViewBehavior,
+        Aspected,
+        BindingDirective {
     private data: string;
     private updateTarget: UpdateTarget | null = null;
 
@@ -395,65 +370,3 @@ export class HTMLBindingDirective
 }
 
 HTMLDirective.define(HTMLBindingDirective, { aspected: true });
-
-/**
- * Creates an standard binding.
- * @param expression - The binding to refresh when changed.
- * @param policy - The security policy to associate with th binding.
- * @param isVolatile - Indicates whether the binding is volatile or not.
- * @returns A binding configuration.
- * @public
- */
-export function bind<T = any>(
-    expression: Expression<T>,
-    policy?: DOMPolicy,
-    isVolatile = Observable.isVolatileBinding(expression)
-): Binding<T> {
-    return new OnChangeBinding(expression, policy, isVolatile);
-}
-
-/**
- * Creates a one time binding
- * @param expression - The binding to refresh when signaled.
- * @param policy - The security policy to associate with th binding.
- * @returns A binding configuration.
- * @public
- */
-export function oneTime<T = any>(
-    expression: Expression<T>,
-    policy?: DOMPolicy
-): Binding<T> {
-    return new OneTimeBinding(expression, policy);
-}
-
-/**
- * Creates an event listener binding.
- * @param expression - The binding to invoke when the event is raised.
- * @param options - Event listener options.
- * @returns A binding configuration.
- * @public
- */
-export function listener<T = any>(
-    expression: Expression<T>,
-    options?: AddEventListenerOptions
-): Binding<T> {
-    const config = new OnChangeBinding(expression);
-    config.options = options;
-    return config;
-}
-
-/**
- * Normalizes the input value into a binding.
- * @param value - The value to create the default binding for.
- * @returns A binding configuration for the provided value.
- * @public
- */
-export function normalizeBinding<TSource = any, TReturn = any, TParent = any>(
-    value: Expression<TSource, TReturn, TParent> | Binding<TSource, TReturn, TParent> | {}
-): Binding<TSource, TReturn, TParent> {
-    return isFunction(value)
-        ? bind(value)
-        : value instanceof Binding
-        ? value
-        : oneTime(() => value);
-}

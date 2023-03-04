@@ -7,8 +7,7 @@ import { isString } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type { DOMPolicy } from "../dom.js";
 import { makeSerializationNoop } from "../platform.js";
-import type { HTMLBindingDirective } from "./binding.js";
-import { Binding } from "./html-directive.js";
+import { Binding } from "./binding.js";
 
 const subscribers: Record<
     string,
@@ -96,7 +95,6 @@ class SignalBinding<TSource = any, TReturn = any, TParent = any> extends Binding
     TParent
 > {
     createObserver(
-        directive: HTMLBindingDirective,
         subscriber: Subscriber
     ): ExpressionObserver<TSource, TReturn, TParent> {
         return new SignalObserver(this, subscriber);

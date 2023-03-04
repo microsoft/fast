@@ -1,8 +1,8 @@
 import {
     attr,
-    bind,
     FASTElement,
     observable,
+    oneWay,
     RepeatDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
@@ -178,8 +178,8 @@ export class FASTDataGridRow extends FASTElement {
             this.$fastController.addBehavior(this.behaviorOrchestrator);
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<FASTDataGridRow>(
-                    bind(x => x.columnDefinitions),
-                    bind(x => x.activeCellItemTemplate),
+                    oneWay(x => x.columnDefinitions),
+                    oneWay(x => x.activeCellItemTemplate),
                     { positioning: true }
                 ),
                 this.appendChild(document.createComment(""))

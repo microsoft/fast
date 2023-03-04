@@ -4,7 +4,6 @@ import {
     isString,
     KernelServiceId,
     Message,
-    noop,
 } from "../interfaces.js";
 import { createMetadataLocator, FAST, makeSerializationNoop } from "../platform.js";
 import { Updates } from "./update-queue.js";

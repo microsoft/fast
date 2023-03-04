@@ -2,22 +2,19 @@ import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
 import type { DOMPolicy } from "../dom.js";
 import { Constructable, isFunction, isString } from "../interfaces.js";
+import { Binding, BindingDirective } from "../binding/binding.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
     ExecutionContext,
     Expression,
     ExpressionObserver,
 } from "../observation/observable.js";
-import {
-    bind,
-    ContentTemplate,
-    ContentView,
-    normalizeBinding,
-    oneTime,
-} from "./binding.js";
+import { oneTime } from "../binding/one-time.js";
+import { oneWay } from "../binding/one-way.js";
+import { normalizeBinding } from "../binding/normalize.js";
+import type { ContentTemplate, ContentView } from "./html-binding-directive.js";
 import {
     AddViewBehaviorFactory,
-    Binding,
     HTMLDirective,
     ViewBehavior,
     ViewBehaviorFactory,
@@ -56,10 +53,10 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
      * @param directive - The render directive that created this behavior.
      */
     public constructor(private directive: RenderDirective) {
-        this.dataBindingObserver = directive.dataBinding.createObserver(directive, this);
+        this.dataBindingObserver = directive.dataBinding.createObserver(this, directive);
         this.templateBindingObserver = directive.templateBinding.createObserver(
-            directive,
-            this
+            this,
+            directive
         );
     }
 
@@ -149,10 +146,10 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
  * @public
  */
 export class RenderDirective<TSource = any>
-    implements HTMLDirective, ViewBehaviorFactory {
+    implements HTMLDirective, ViewBehaviorFactory, BindingDirective {
     /**
      * The structural id of the DOM node to which the created behavior will apply.
-     */
+     */ BindingDirective;
     public targetNodeId: string;
 
     /**
@@ -666,7 +663,7 @@ export function render<TSource = any, TItem = any, TParent = any>(
             return instructionToTemplate(getForInstance(data));
         });
     } else if (isFunction(template)) {
-        templateBinding = bind(
+        templateBinding = oneWay(
             (s: any, c: ExecutionContext) => {
                 let result = template(s, c);
 
