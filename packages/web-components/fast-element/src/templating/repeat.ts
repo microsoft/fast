@@ -2,7 +2,7 @@ import type { Notifier, Subscriber } from "../observation/notifier.js";
 import { Expression, ExpressionObserver, Observable } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
 import { ArrayObserver, Splice } from "../observation/arrays.js";
-import type { Binding, BindingSource } from "../binding/binding.js";
+import type { Binding, BindingDirective } from "../binding/binding.js";
 import { normalizeBinding } from "../binding/normalize.js";
 import { Markup } from "./markup.js";
 import {
@@ -293,7 +293,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
  * @public
  */
 export class RepeatDirective<TSource = any>
-    implements HTMLDirective, ViewBehaviorFactory, BindingSource {
+    implements HTMLDirective, ViewBehaviorFactory, BindingDirective {
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */

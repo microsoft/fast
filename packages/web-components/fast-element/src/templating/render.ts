@@ -2,7 +2,7 @@ import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
 import type { DOMPolicy } from "../dom.js";
 import { Constructable, isFunction, isString } from "../interfaces.js";
-import { Binding, BindingSource } from "../binding/binding.js";
+import { Binding, BindingDirective } from "../binding/binding.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
     ExecutionContext,
@@ -146,10 +146,10 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
  * @public
  */
 export class RenderDirective<TSource = any>
-    implements HTMLDirective, ViewBehaviorFactory, BindingSource {
+    implements HTMLDirective, ViewBehaviorFactory, BindingDirective {
     /**
      * The structural id of the DOM node to which the created behavior will apply.
-     */
+     */ BindingDirective;
     public targetNodeId: string;
 
     /**

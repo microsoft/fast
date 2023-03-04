@@ -1,4 +1,4 @@
-import type { Binding, BindingSource } from "../binding/binding.js";
+import type { Binding, BindingDirective } from "../binding/binding.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type { ExpressionObserver } from "../observation/observable.js";
 import { AddBehavior, CSSDirective } from "./css-directive.js";
@@ -27,7 +27,7 @@ function handleChange(
  * @public
  */
 export class CSSBindingDirective
-    implements HostBehavior, Subscriber, CSSDirective, BindingSource {
+    implements HostBehavior, Subscriber, CSSDirective, BindingDirective {
     /**
      * Creates an instance of CSSBindingDirective.
      * @param dataBinding - The binding to use in CSS.

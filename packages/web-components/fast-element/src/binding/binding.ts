@@ -3,11 +3,11 @@ import type { Subscriber } from "../observation/notifier.js";
 import type { Expression, ExpressionObserver } from "../observation/observable.js";
 
 /**
- * The source from which a binding originates.
+ * The directive from which a binding originates.
  *
  * @public
  */
-export interface BindingSource {
+export interface BindingDirective {
     /**
      * The binding.
      */
@@ -50,10 +50,10 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     /**
      * Creates an observer capable of notifying a subscriber when the output of a binding changes.
      * @param subscriber - The subscriber to changes in the binding.
-     * @param bindingSource - The Binding Source to create the observer for.
+     * @param directive - The Binding directive to create the observer for.
      */
     abstract createObserver(
         subscriber: Subscriber,
-        bindingSource: BindingSource
+        directive: BindingDirective
     ): ExpressionObserver<TSource, TReturn, TParent>;
 }

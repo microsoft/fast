@@ -83,7 +83,7 @@ export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView"
 // @public
 export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     constructor(evaluate: Expression<TSource, TReturn, TParent>, policy?: DOMPolicy | undefined, isVolatile?: boolean);
-    abstract createObserver(subscriber: Subscriber, bindingSource: BindingSource): ExpressionObserver<TSource, TReturn, TParent>;
+    abstract createObserver(subscriber: Subscriber, directive: BindingDirective): ExpressionObserver<TSource, TReturn, TParent>;
     // (undocumented)
     evaluate: Expression<TSource, TReturn, TParent>;
     // (undocumented)
@@ -94,7 +94,7 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
 }
 
 // @public
-export interface BindingSource {
+export interface BindingDirective {
     readonly aspectType?: DOMAspect;
     readonly dataBinding: Binding;
     readonly targetAspect?: string;
@@ -183,7 +183,7 @@ export interface ContentView {
 export const css: CSSTemplateTag;
 
 // @public
-export class CSSBindingDirective implements HostBehavior, Subscriber, CSSDirective, BindingSource {
+export class CSSBindingDirective implements HostBehavior, Subscriber, CSSDirective, BindingDirective {
     constructor(dataBinding: Binding, targetAspect: string);
     addedCallback(controller: HostController<HTMLElement & {
         $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
@@ -476,7 +476,7 @@ export interface HostController<TSource = any> extends ExpressionController<TSou
 export const html: HTMLTemplateTag;
 
 // @public
-export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected, BindingSource {
+export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected, BindingDirective {
     constructor(dataBinding: Binding);
     aspectType: DOMAspect;
     // @internal (undocumented)
@@ -707,7 +707,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 }
 
 // @public
-export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory, BindingSource {
+export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory, BindingDirective {
     constructor(dataBinding: Binding<TSource>, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(): RepeatBehavior<TSource>;
     createHTML(add: AddViewBehaviorFactory): string;

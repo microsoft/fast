@@ -6,7 +6,7 @@ import {
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
-import type { Binding, BindingSource } from "../binding/binding.js";
+import type { Binding, BindingDirective } from "../binding/binding.js";
 import {
     AddViewBehaviorFactory,
     Aspected,
@@ -211,7 +211,12 @@ const sinkLookup: Record<DOMAspect, UpdateTarget> = {
  * @public
  */
 export class HTMLBindingDirective
-    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected, BindingSource {
+    implements
+        HTMLDirective,
+        ViewBehaviorFactory,
+        ViewBehavior,
+        Aspected,
+        BindingDirective {
     private data: string;
     private updateTarget: UpdateTarget | null = null;
 
