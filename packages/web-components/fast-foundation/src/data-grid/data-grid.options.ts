@@ -102,6 +102,9 @@ export interface DataGridSelectionChangeDetail {
 
     // if the control key is pressed
     ctrlKey: boolean;
+
+    // is keyboard event
+    isKeyboardEvent: boolean
 }
 
 

@@ -299,7 +299,6 @@ export class FASTDataGridRow extends FASTElement {
 
             case keySpace:
                 if (
-                    e.shiftKey &&
                     this.selected !== undefined &&
                     this.selectionBehavior !== DataGridSelectionBehavior.programmatic
                 ) {
@@ -308,6 +307,7 @@ export class FASTDataGridRow extends FASTElement {
                         newValue: !this.isSelected(),
                         shiftKey: e.shiftKey,
                         ctrlKey: e.ctrlKey,
+                        isKeyboardEvent : true,
                     });
                 }
                 break;
@@ -324,7 +324,7 @@ export class FASTDataGridRow extends FASTElement {
     public handleClick(e: MouseEvent): void {
         if (
             e.defaultPrevented ||
-            this.selectionBehavior !== DataGridSelectionBehavior.auto||
+            this.selectionBehavior !== DataGridSelectionBehavior.auto ||
             this.selected === undefined
         ) {
             return;
@@ -334,6 +334,7 @@ export class FASTDataGridRow extends FASTElement {
             newValue: !this.isSelected(),
             shiftKey: e.shiftKey,
             ctrlKey: e.ctrlKey,
+            isKeyboardEvent: false
         });
     }
 

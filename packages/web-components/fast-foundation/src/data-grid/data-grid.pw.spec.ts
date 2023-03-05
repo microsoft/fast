@@ -619,7 +619,7 @@ test.describe("Data grid", () => {
         await expect(selectedRows).toHaveCount(0);
     });
 
-    test("should select and deselect rows with space bar key", async () => {
+    test("should select and deselect rows with space bar + shift keys", async () => {
         const rows = element.locator(rowQueryString);
         const selectedRows = element.locator(selectedRowQueryString);
         const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
@@ -641,14 +641,14 @@ test.describe("Data grid", () => {
 
         await firstCell.focus();
         await expect(selectedRows).toHaveCount(0);
-        await page.keyboard.press("Space");
+        await page.keyboard.press("Shift+Space");
         await expect(selectedRows).toHaveCount(1);
         await expect(element).toHaveJSProperty("selectedRowIndexes", [0]);
         expect;
-        await page.keyboard.press("Space");
+        await page.keyboard.press("Shift+Space");
         await expect(selectedRows).toHaveCount(0);
         await lastCell.focus();
-        await page.keyboard.press("Space");
+        await page.keyboard.press("Shift+Space");
         await expect(selectedRows).toHaveCount(1);
         await expect(element).toHaveJSProperty("selectedRowIndexes", [2]);
     });
@@ -713,35 +713,6 @@ test.describe("Data grid", () => {
         await expect(selectedRows).toHaveCount(0);
     });
 
-    test("should select multiple rows with ctrl key in multi-select mode", async () => {
-        const selectedRows = element.locator(selectedRowQueryString);
-        const rows = element.locator(rowQueryString);
-        const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
-        const lastCell = rows.nth(2).locator("fast-data-grid-cell").nth(2);
-        await firstCell.focus();
-
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-data-grid generate-header="none" selection-mode="multi-row"></fast-data-grid>
-            `;
-        });
-
-        await element.evaluate((node: FASTDataGrid) => {
-            node.rowsData = [
-                { id: "1", name: "item 1", shape: "circle" },
-                { id: "2", name: "item 2", shape: "square" },
-                { id: "3", name: "item 3", shape: "triangle" },
-            ];
-        });
-
-        await firstCell.focus();
-        await page.keyboard.press("Space");
-        await expect(selectedRows).toHaveCount(1);
-        await lastCell.focus();
-        await page.keyboard.press("Control+Space");
-        await expect(selectedRows).toHaveCount(2);
-    });
-
     test("should select/deselect multiple rows with shift key in multi-select mode", async () => {
         const selectedRows = element.locator(selectedRowQueryString);
         const rows = element.locator(rowQueryString);
@@ -764,47 +735,16 @@ test.describe("Data grid", () => {
         });
 
         await firstCell.focus();
-        await page.keyboard.press("Space");
-        await expect(selectedRows).toHaveCount(1);
-        await lastCell.focus();
-        await page.keyboard.press("Control+Space");
-        await expect(selectedRows).toHaveCount(2);
-    });
-
-    test("should select/deselect multiple rows with ctrl key in multi-select mode", async () => {
-        const selectedRows = element.locator(selectedRowQueryString);
-        const rows = element.locator(rowQueryString);
-        const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
-        const lastCell = rows.nth(2).locator("fast-data-grid-cell").nth(2);
-        await firstCell.focus();
-
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-data-grid generate-header="none" selection-mode="multi-row"></fast-data-grid>
-            `;
-        });
-
-        await element.evaluate((node: FASTDataGrid) => {
-            node.rowsData = [
-                { id: "1", name: "item 1", shape: "circle" },
-                { id: "2", name: "item 2", shape: "square" },
-                { id: "3", name: "item 3", shape: "triangle" },
-            ];
-        });
-
-        await firstCell.focus();
-        await page.keyboard.press("Space");
+        await page.keyboard.press("Shift+Space");
         await expect(selectedRows).toHaveCount(1);
         await lastCell.focus();
         await page.keyboard.press("Shift+Space");
-        await expect(selectedRows).toHaveCount(3);
+        await expect(selectedRows).toHaveCount(2);
     });
 
     test("should emit an event when row selection changes", async () => {
-        const selectedRows = element.locator(selectedRowQueryString);
         const rows = element.locator(rowQueryString);
         const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
-        const lastCell = rows.nth(2).locator("fast-data-grid-cell").nth(2);
         await firstCell.focus();
 
         await root.evaluate(node => {
@@ -830,36 +770,4 @@ test.describe("Data grid", () => {
 
         expect(wasInvoked).toBeTruthy;
     });
-    // it("should emit an event when row selection changes", async () => {
-    //     const { document, element, connect, disconnect } = await setup();
-
-    //     element.rowsData = newDataSet(5);
-    //     element.setAttribute("selection-mode", "multi-row");
-
-    //     await connect();
-    //     await Updates.next();
-
-    //     const rows: Element[] = Array.from(element.querySelectorAll('[role="row"]'));
-    //     let cells: Element[] = Array.from(rows[3].querySelectorAll(cellQueryString));
-
-    //     let wasInvoked: boolean = false;
-    //     element.addEventListener("selectionchange", e => {
-    //         wasInvoked = true;
-    //     });
-
-    //     (cells[0] as HTMLElement).focus();
-    //     document.activeElement?.dispatchEvent(spaceEvent);
-    //     await Updates.next();
-    //     expect(wasInvoked).to.equal(true);
-
-    //     wasInvoked = false;
-    //     (cells[0] as HTMLElement).click();
-    //     await Updates.next();
-    //     expect(wasInvoked).to.equal(true);
-
-    //     element.removeEventListener("selectionchange", e => {
-    //         wasInvoked = true;
-    //     });
-    //     await disconnect();
-    // });
 });

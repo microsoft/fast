@@ -12,10 +12,10 @@ const storyTemplate = html<StoryArgs<FASTDataGrid>>`
         generate-header="${x => x.generateHeader}"
         grid-template-columns="${x => x.gridTemplateColumns}"
         page-size="${x => x.pageSize}"
-        click-select="${x => x.clickSelect}"
         disable-click-select="${x => x.disableClickSelect}"
         selection-mode="${x => x.selectionMode}"
         initial-row-selection="${x => x.initialRowSelection}"
+        selection-behavior="${x => x.selectionBehavior}"
     >
         ${x => x.content}
     </fast-data-grid>

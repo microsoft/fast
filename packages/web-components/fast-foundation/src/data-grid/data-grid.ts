@@ -670,66 +670,112 @@ export class FASTDataGrid extends FASTElement {
             e.preventDefault();
             const changedRow: FASTDataGridRow = rowMatch as FASTDataGridRow;
             const changeEventDetail: DataGridSelectionChangeDetail = e.detail;
-            let newSelection: number[] = this.selectedRowIndexes.slice();
+
             switch (this.selectionMode) {
                 case DataGridSelectionMode.singleRow:
                     this.handleSingleRowSelection(changedRow, changeEventDetail);
                     break;
 
                 case DataGridSelectionMode.multiRow:
-                    if (e.detail.shiftKey) {
-                        if (this.lastNotShiftSelectedRowIndex === -1) {
-                            this.handleSingleRowSelection(changedRow, changeEventDetail);
-                        } else {
-                            if (this.preShiftRowSelection !== null) {
-                                // undo the last thing
-                                newSelection = this.preShiftRowSelection.slice();
-                            } else {
-                                this.preShiftRowSelection = newSelection.slice();
-                            }
-
-                            const dirMod: number =
-                                changedRow.rowIndex > this.lastNotShiftSelectedRowIndex
-                                    ? 1
-                                    : -1;
-                            let i: number = this.lastNotShiftSelectedRowIndex + dirMod;
-                            for (i; i !== changedRow.rowIndex + dirMod; i = i + dirMod) {
-                                const selectedRowIndex: number = newSelection.indexOf(i);
-                                if (
-                                    !newSelection.includes(changedRow.rowIndex) &&
-                                    selectedRowIndex === -1
-                                ) {
-                                    newSelection.push(i);
-                                }
-                            }
-                        }
-                        this.updateSelectedRows(newSelection);
-                    } else if (e.detail.ctrlKey) {
-                        if (
-                            changeEventDetail.newValue &&
-                            !newSelection.includes(changedRow.rowIndex)
-                        ) {
-                            newSelection.push(changedRow.rowIndex);
-                            this.lastNotShiftSelectedRowIndex = changedRow.rowIndex;
-                        }
-                        if (
-                            !changeEventDetail.newValue &&
-                            newSelection.includes(changedRow.rowIndex)
-                        ) {
-                            newSelection.splice(
-                                newSelection.indexOf(changedRow.rowIndex),
-                                1
-                            );
-                            this.lastNotShiftSelectedRowIndex = -1;
-                        }
-                        this.preShiftRowSelection = null;
-                        this.updateSelectedRows(newSelection);
+                    if (changeEventDetail.isKeyboardEvent) {
+                        this.handleMultiRowKeyboardSelection(changedRow, changeEventDetail);
                     } else {
-                        this.handleSingleRowSelection(changedRow, changeEventDetail);
-                        this.preShiftRowSelection = null;
+                        this.handleMultiRowPointerSelection(changedRow, changeEventDetail);
                     }
                     break;
             }
+        }
+    }
+
+    private handleMultiRowPointerSelection(
+        changedRow: FASTDataGridRow,
+        changeEventDetail: DataGridSelectionChangeDetail
+    ): void {
+        let newSelection: number[] = this.selectedRowIndexes.slice();
+        if (changeEventDetail.shiftKey) {
+            if (this.lastNotShiftSelectedRowIndex === -1) {
+                this.handleSingleRowSelection(changedRow, changeEventDetail);
+            } else {
+                if (this.preShiftRowSelection !== null) {
+                    // undo the last thing
+                    newSelection = this.preShiftRowSelection.slice();
+                } else {
+                    this.preShiftRowSelection = newSelection.slice();
+                }
+
+                const dirMod: number =
+                    changedRow.rowIndex > this.lastNotShiftSelectedRowIndex
+                        ? 1
+                        : -1;
+                let i: number = this.lastNotShiftSelectedRowIndex + dirMod;
+                for (i; i !== changedRow.rowIndex + dirMod; i = i + dirMod) {
+                    const selectedRowIndex: number = newSelection.indexOf(i);
+                    if (
+                        !newSelection.includes(changedRow.rowIndex) &&
+                        selectedRowIndex === -1
+                    ) {
+                        newSelection.push(i);
+                    }
+                }
+            }
+            this.updateSelectedRows(newSelection);
+        } else if (changeEventDetail.ctrlKey) {
+            if (
+                changeEventDetail.newValue &&
+                !newSelection.includes(changedRow.rowIndex)
+            ) {
+                newSelection.push(changedRow.rowIndex);
+                this.lastNotShiftSelectedRowIndex = changedRow.rowIndex;
+            }
+            if (
+                !changeEventDetail.newValue &&
+                newSelection.includes(changedRow.rowIndex)
+            ) {
+                newSelection.splice(
+                    newSelection.indexOf(changedRow.rowIndex),
+                    1
+                );
+                this.lastNotShiftSelectedRowIndex = -1;
+            }
+            this.preShiftRowSelection = null;
+            this.updateSelectedRows(newSelection);
+        } else {
+            this.handleSingleRowSelection(changedRow, changeEventDetail);
+            this.preShiftRowSelection = null;
+        }
+    }
+
+    private handleMultiRowKeyboardSelection(
+        changedRow: FASTDataGridRow,
+        changeEventDetail: DataGridSelectionChangeDetail
+    ): void {
+        if (changeEventDetail.isKeyboardEvent && !changeEventDetail.shiftKey) {
+            return;
+        }
+        this.preShiftRowSelection = null;
+        this.lastNotShiftSelectedRowIndex = -1;
+        const newSelection: number[] = this.selectedRowIndexes.slice();
+        if (newSelection.includes(changedRow.rowIndex)) {
+            newSelection.splice(newSelection.indexOf(changedRow.rowIndex), 1);
+        } else {
+            newSelection.push(changedRow.rowIndex);
+        }
+        this.updateSelectedRows(newSelection);
+    }
+
+    private handleSingleRowSelection(
+        changedRow: FASTDataGridRow,
+        changeEventDetail: DataGridSelectionChangeDetail
+    ): void {
+        if (changeEventDetail.isKeyboardEvent && !changeEventDetail.shiftKey) {
+            return;
+        }
+        if (changeEventDetail.newValue) {
+            this.updateSelectedRows([changedRow.rowIndex]);
+            this.lastNotShiftSelectedRowIndex = changedRow.rowIndex;
+        } else {
+            this.updateSelectedRows([]);
+            this.lastNotShiftSelectedRowIndex = -1;
         }
     }
 
@@ -809,19 +855,6 @@ export class FASTDataGrid extends FASTElement {
     private deselectAllRows(): void {
         this.updateSelectedRows([]);
         this.lastNotShiftSelectedRowIndex = -1;
-    }
-
-    private handleSingleRowSelection(
-        changedRow: FASTDataGridRow,
-        detail: DataGridSelectionChangeDetail
-    ): void {
-        if (detail.newValue) {
-            this.updateSelectedRows([changedRow.rowIndex]);
-            this.lastNotShiftSelectedRowIndex = changedRow.rowIndex;
-        } else {
-            this.updateSelectedRows([]);
-            this.lastNotShiftSelectedRowIndex = -1;
-        }
     }
 
     private focusOnCell = (
