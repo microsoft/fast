@@ -11,6 +11,11 @@ export function textFieldTemplate<T extends FASTTextField>(
     options: TextFieldOptions = {}
 ): ElementViewTemplate<T> {
     return html<T>`
+    <template
+    aria-disabled="${x => x.disabled}"
+        ?autofocus="${x => x.autofocus}"
+        role="textbox"
+    >
         <label
             part="label"
             for="control"
@@ -48,28 +53,13 @@ export function textFieldTemplate<T extends FASTTextField>(
                 ?spellcheck="${x => x.spellcheck}"
                 :value="${x => x.value}"
                 type="${x => x.type}"
-                aria-atomic="${x => x.ariaAtomic}"
-                aria-busy="${x => x.ariaBusy}"
-                aria-controls="${x => x.ariaControls}"
-                aria-current="${x => x.ariaCurrent}"
-                aria-describedby="${x => x.ariaDescribedby}"
-                aria-details="${x => x.ariaDetails}"
-                aria-disabled="${x => x.ariaDisabled}"
-                aria-errormessage="${x => x.ariaErrormessage}"
-                aria-flowto="${x => x.ariaFlowto}"
-                aria-haspopup="${x => x.ariaHaspopup}"
-                aria-hidden="${x => x.ariaHidden}"
-                aria-invalid="${x => x.ariaInvalid}"
-                aria-keyshortcuts="${x => x.ariaKeyshortcuts}"
-                aria-label="${x => x.ariaLabel}"
-                aria-labelledby="${x => x.ariaLabelledby}"
-                aria-live="${x => x.ariaLive}"
-                aria-owns="${x => x.ariaOwns}"
-                aria-relevant="${x => x.ariaRelevant}"
-                aria-roledescription="${x => x.ariaRoledescription}"
+                aria-hidden=${x => x.focused ? "false" : "true"}
+                role="none"
+                tabindex="-1"
                 ${ref("control")}
             />
             ${endSlotTemplate(options)}
         </div>
+    </template>
     `;
 }

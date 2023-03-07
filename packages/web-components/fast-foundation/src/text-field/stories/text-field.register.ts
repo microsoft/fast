@@ -114,8 +114,5 @@ const styles = css`
 FASTTextField.define({
     name: "fast-text-field",
     template: textFieldTemplate(),
-    shadowOptions: {
-        delegatesFocus: true,
-    },
     styles,
 });
