@@ -1,6 +1,6 @@
 import { observable } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
-import { FASTRadioGroup } from "../radio-group/index.js";
+import type { FASTRadioGroup } from "../radio-group/index.js";
 import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { FormAssociatedRadio } from "./radio.form-associated.js";
 
