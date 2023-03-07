@@ -187,6 +187,9 @@ export class FASTTextField extends FormAssociatedTextField {
     @observable
     public defaultSlottedNodes: Node[];
 
+    @observable
+    public focused: boolean = false;
+
     /**
      * A reference to the internal input element
      * @internal
@@ -202,11 +205,30 @@ export class FASTTextField extends FormAssociatedTextField {
         this.proxy.setAttribute("type", this.type);
         this.validate();
 
+        this.addEventListener("focus", this.focusHandler);
+        this.addEventListener("onBlur", this.onBlurHandler);
+
         if (this.autofocus) {
             Updates.enqueue(() => {
-                this.focus();
+                this.control.focus();
             });
         }
+    }
+
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+
+        this.removeEventListener("focus", this.focusHandler);
+        this.removeEventListener("onBlur", this.onBlurHandler);
+    }
+
+    private focusHandler(e: FocusEvent): void {
+        this.focused = true;
+        this.control.focus();
+    }
+
+    private onBlurHandler(e: FocusEvent): void {
+        this.focused = false;
     }
 
     /**
