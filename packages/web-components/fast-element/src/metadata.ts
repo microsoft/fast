@@ -33,9 +33,11 @@ if (!("metadata" in Reflect)) {
 }
 
 const annotationParamTypesKey = "annotation:paramtypes";
+const designParamTypesKey = "design:paramtypes";
 
 /**
  * Provides basic metadata capabilities used by Context and Dependency Injection.
+ * @public
  */
 export const Metadata = Object.freeze({
     /**
@@ -44,7 +46,7 @@ export const Metadata = Object.freeze({
      * @returns The metadata array or a frozen empty array if no metadata is found.
      */
     getDesignParamTypes: (Type: Constructable) =>
-        ((Reflect as any).getOwnMetadata("design:paramtypes", Type) ??
+        ((Reflect as any).getOwnMetadata(designParamTypesKey, Type) ??
             emptyArray) as readonly any[],
 
     /**
