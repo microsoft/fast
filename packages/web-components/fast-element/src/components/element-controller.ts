@@ -1,7 +1,12 @@
-import { Message, Mutable, noop } from "../interfaces.js";
+import { Message, Mutable } from "../interfaces.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
-import { Observable, SourceLifetime } from "../observation/observable.js";
-import { FAST } from "../platform.js";
+import {
+    ExecutionContext,
+    ExpressionController,
+    Observable,
+    SourceLifetime,
+} from "../observation/observable.js";
+import { FAST, makeSerializationNoop } from "../platform.js";
 import { ElementStyles } from "../styles/element-styles.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import type { StyleStrategy, StyleTarget } from "../styles/style-strategy.js";
@@ -97,6 +102,27 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     public get isConnected(): boolean {
         Observable.track(this, isConnectedPropertyName);
         return this.stage === Stages.connected;
+    }
+
+    /**
+     * The context the expression is evaluated against.
+     */
+    public get context(): ExecutionContext {
+        return this.view?.context ?? ExecutionContext.default;
+    }
+
+    /**
+     * Indicates whether the controller is bound.
+     */
+    public get isBound(): boolean {
+        return this.view?.isBound ?? false;
+    }
+
+    /**
+     * Indicates how the source's lifetime relates to the controller's lifetime.
+     */
+    public get sourceLifetime(): SourceLifetime | undefined {
+        return this.view?.sourceLifetime;
     }
 
     /**
@@ -217,6 +243,14 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 }
             }
         }
+    }
+
+    /**
+     * Registers an unbind handler with the controller.
+     * @param behavior - An object to call when the controller unbinds.
+     */
+    onUnbind(behavior: { unbind(controller: ExpressionController<TElement>) }): void {
+        this.view?.onUnbind(behavior);
     }
 
     /**
@@ -439,12 +473,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         return false;
     }
 
-    /**
-     * Opts out of JSON stringification.
-     * @internal
-     */
-    toJSON = noop;
-
     private renderTemplate(template: ElementViewTemplate | null | undefined): void {
         // When getting the host to render to, we start by looking
         // up the shadow root. If there isn't one, then that means
@@ -509,6 +537,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         elementControllerStrategy = strategy;
     }
 }
+
+makeSerializationNoop(ElementController);
 
 // Set default strategy for ElementController
 ElementController.setStrategy(ElementController);

@@ -81,12 +81,9 @@ export class AttributeDefinition implements Accessor {
 export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
 // @public
-export function bind<T = any>(expression: Expression<T>, policy?: DOMPolicy, isVolatile?: boolean): Binding<T>;
-
-// @public
 export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     constructor(evaluate: Expression<TSource, TReturn, TParent>, policy?: DOMPolicy | undefined, isVolatile?: boolean);
-    abstract createObserver(directive: HTMLDirective, subscriber: Subscriber): ExpressionObserver<TSource, TReturn, TParent>;
+    abstract createObserver(subscriber: Subscriber, directive: BindingDirective): ExpressionObserver<TSource, TReturn, TParent>;
     // (undocumented)
     evaluate: Expression<TSource, TReturn, TParent>;
     // (undocumented)
@@ -94,6 +91,13 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     options?: any;
     // (undocumented)
     policy?: DOMPolicy | undefined;
+}
+
+// @public
+export interface BindingDirective {
+    readonly aspectType?: DOMAspect;
+    readonly dataBinding: Binding;
+    readonly targetAspect?: string;
 }
 
 // @public
@@ -175,18 +179,29 @@ export interface ContentView {
     unbind(): void;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "createMetadataLocator" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[];
-
-// Warning: (ae-internal-missing-underscore) The name "createTypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRegistry<TDefinition>;
-
 // @public
 export const css: CSSTemplateTag;
+
+// @public
+export class CSSBindingDirective implements HostBehavior, Subscriber, CSSDirective, BindingDirective {
+    constructor(dataBinding: Binding, targetAspect: string);
+    addedCallback(controller: HostController<HTMLElement & {
+        $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
+    }>): void;
+    connectedCallback(controller: HostController<HTMLElement & {
+        $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
+    }>): void;
+    createCSS(add: AddBehavior): ComposableStyles;
+    // (undocumented)
+    readonly dataBinding: Binding;
+    // @internal
+    handleChange(_: any, observer: ExpressionObserver): void;
+    removedCallback(controller: HostController<HTMLElement & {
+        $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
+    }>): void;
+    // (undocumented)
+    readonly targetAspect: string;
+}
 
 // @public
 export interface CSSDirective {
@@ -209,9 +224,12 @@ export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective
 }
 
 // @public
-export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]) => ElementStyles) & {
-    partial(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): CSSDirective;
+export type CSSTemplateTag = (<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: CSSValue<TSource, TParent>[]) => ElementStyles) & {
+    partial<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: CSSValue<TSource, TParent>[]): CSSDirective;
 };
+
+// @public
+export type CSSValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | ComposableStyles | CSSDirective;
 
 // @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
@@ -262,22 +280,26 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     addBehavior(behavior: HostBehavior<TElement>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     connect(): void;
+    get context(): ExecutionContext;
     readonly definition: FASTElementDefinition;
     disconnect(): void;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement): ElementController;
+    get isBound(): boolean;
     get isConnected(): boolean;
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
+    onUnbind(behavior: {
+        unbind(controller: ExpressionController<TElement>): any;
+    }): void;
     removeBehavior(behavior: HostBehavior<TElement>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     static setStrategy(strategy: ElementControllerStrategy): void;
     readonly source: TElement;
+    get sourceLifetime(): SourceLifetime | undefined;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
-    // @internal
-    toJSON: () => undefined;
     readonly view: ElementView<TElement> | null;
 }
 
@@ -316,6 +338,10 @@ export class ElementStyles {
 // @public
 export interface ElementView<TSource = any, TParent = any> extends View<TSource, TParent> {
     appendTo(node: Node): void;
+    onUnbind(behavior: {
+        unbind(controller: ViewController<TSource, TParent>): any;
+    }): void;
+    readonly sourceLifetime?: SourceLifetime;
 }
 
 // @public
@@ -437,21 +463,20 @@ export interface HostBehavior<TSource = any> {
 }
 
 // @public
-export interface HostController<TSource = any> {
+export interface HostController<TSource = any> extends ExpressionController<TSource> {
     addBehavior(behavior: HostBehavior<TSource>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     readonly isConnected: boolean;
     mainStyles: ElementStyles | null;
     removeBehavior(behavior: HostBehavior<TSource>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
-    readonly source: TSource;
 }
 
 // @public
 export const html: HTMLTemplateTag;
 
 // @public
-export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected {
+export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected, BindingDirective {
     constructor(dataBinding: Binding);
     aspectType: DOMAspect;
     // @internal (undocumented)
@@ -538,8 +563,6 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     readonly sourceLifetime: SourceLifetime;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
-    // @internal
-    toJSON: () => undefined;
     unbind(): void;
 }
 
@@ -590,9 +613,6 @@ export abstract class NodeObservationDirective<T extends NodeBehaviorOptions> ex
 }
 
 // @public
-export function normalizeBinding<TSource = any, TReturn = any, TParent = any>(value: Expression<TSource, TReturn, TParent> | Binding<TSource, TReturn, TParent> | {}): Binding<TSource, TReturn, TParent>;
-
-// @public
 export interface Notifier {
     notify(args: any): void;
     readonly subject: any;
@@ -630,6 +650,9 @@ export interface ObservationRecord {
 
 // @public
 export function oneTime<T = any>(expression: Expression<T>, policy?: DOMPolicy): Binding<T>;
+
+// @public
+export function oneWay<T = any>(expression: Expression<T>, policy?: DOMPolicy, isVolatile?: boolean): Binding<T>;
 
 // @public
 export const Parser: Readonly<{
@@ -684,7 +707,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 }
 
 // @public
-export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory {
+export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory, BindingDirective {
     constructor(dataBinding: Binding<TSource>, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(): RepeatBehavior<TSource>;
     createHTML(add: AddViewBehaviorFactory): string;
@@ -784,8 +807,6 @@ export abstract class StatelessAttachedAttributeDirective<TOptions> implements H
     createHTML(add: AddViewBehaviorFactory): string;
     // (undocumented)
     protected options: TOptions;
-    // @internal
-    toJSON: () => undefined;
 }
 
 // @public
@@ -845,26 +866,6 @@ export type TrustedTypesPolicy = {
     createHTML(html: string): string;
 };
 
-// Warning: (ae-internal-missing-underscore) The name "TypeDefinition" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export interface TypeDefinition {
-    // (undocumented)
-    type: Function;
-}
-
-// Warning: (ae-internal-missing-underscore) The name "TypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export interface TypeRegistry<TDefinition extends TypeDefinition> {
-    // (undocumented)
-    getByType(key: Function): TDefinition | undefined;
-    // (undocumented)
-    getForInstance(object: any): TDefinition | undefined;
-    // (undocumented)
-    register(definition: TDefinition): boolean;
-}
-
 // @public
 export interface UpdateQueue {
     enqueue(callable: Callable): void;
@@ -886,6 +887,7 @@ export interface ValueConverter {
 export interface View<TSource = any, TParent = any> extends Disposable {
     bind(source: TSource, context?: ExecutionContext<TParent>): void;
     readonly context: ExecutionContext<TParent>;
+    readonly isBound: boolean;
     readonly source: TSource | null;
     unbind(): void;
 }
@@ -923,8 +925,6 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     readonly html: string | HTMLTemplateElement;
     inline(): CaptureType<TSource, TParent>;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
-    // @internal
-    toJSON: () => undefined;
     withPolicy(policy: DOMPolicy): this;
 }
 
@@ -939,6 +939,7 @@ export function when<TSource = any, TReturn = any, TParent = any>(condition: Exp
 // dist/dts/components/fast-element.d.ts:60:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
 // dist/dts/components/fast-element.d.ts:61:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
 // dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
+// dist/dts/styles/css-binding-directive.d.ts:35:9 - (ae-forgotten-export) The symbol "CSSBindingEntry" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

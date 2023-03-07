@@ -1,9 +1,9 @@
 import {
     attr,
-    bind,
     html,
     HTMLView,
     observable,
+    oneWay,
     ref,
     RepeatDirective,
     Updates,
@@ -518,8 +518,8 @@ export class FASTPicker extends FormAssociatedPicker {
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective(
-                    bind(x => x.selectedItems),
-                    bind(x => x.activeListItemTemplate),
+                    oneWay(x => x.selectedItems),
+                    oneWay(x => x.activeListItemTemplate),
                     { positioning: true }
                 ),
                 this.itemsPlaceholderElement
@@ -527,8 +527,8 @@ export class FASTPicker extends FormAssociatedPicker {
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective(
-                    bind(x => x.filteredOptionsList),
-                    bind(x => x.activeMenuOptionTemplate),
+                    oneWay(x => x.filteredOptionsList),
+                    oneWay(x => x.activeMenuOptionTemplate),
                     { positioning: true }
                 ),
                 this.optionsPlaceholder

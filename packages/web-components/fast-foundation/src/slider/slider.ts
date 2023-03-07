@@ -266,7 +266,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         const newVal: number =
             this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
                 ? Number(this.value) + Number(this.step)
-                : Number(this.value) - Number(this.step);
+                : Number(this.value) + Number(this.step);
         const incrementedVal: number = this.convertToConstrainedValue(newVal);
         const incrementedValString: string =
             incrementedVal < Number(this.max) ? `${incrementedVal}` : `${this.max}`;
@@ -282,7 +282,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         const newVal =
             this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
                 ? Number(this.value) - Number(this.step)
-                : Number(this.value) + Number(this.step);
+                : Number(this.value) - Number(this.step);
         const decrementedVal: number = this.convertToConstrainedValue(newVal);
         const decrementedValString: string =
             decrementedVal > Number(this.min) ? `${decrementedVal}` : `${this.min}`;
@@ -290,16 +290,20 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     }
 
     protected keypressHandler = (e: KeyboardEvent) => {
-        if (this.readOnly) {
+        if (this.readOnly || this.disabled) {
             return;
         }
 
         if (e.key === keyHome) {
             e.preventDefault();
-            this.value = `${this.min}`;
+            this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
+                ? (this.value = `${this.min}`)
+                : (this.value = `${this.max}`);
         } else if (e.key === keyEnd) {
             e.preventDefault();
-            this.value = `${this.max}`;
+            this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
+                ? (this.value = `${this.max}`)
+                : (this.value = `${this.min}`);
         } else if (!e.shiftKey) {
             switch (e.key) {
                 case keyArrowRight:
@@ -336,8 +340,8 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
                 : `right: ${percentage}%; transition: all 0.2s ease;`;
         } else {
             this.position = this.isDragging
-                ? `bottom: ${percentage}%; transition: none;`
-                : `bottom: ${percentage}%; transition: all 0.2s ease;`;
+                ? `top: ${percentage}%; transition: none;`
+                : `top: ${percentage}%; transition: all 0.2s ease;`;
         }
     }
 
@@ -357,8 +361,8 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         const clientRect: DOMRect = this.track.getBoundingClientRect();
         this.trackWidth = this.track.clientWidth;
         this.trackMinWidth = this.track.clientLeft;
-        this.trackHeight = clientRect.bottom;
-        this.trackMinHeight = clientRect.top;
+        this.trackHeight = clientRect.top;
+        this.trackMinHeight = clientRect.bottom;
         this.trackLeft = this.getBoundingClientRect().left;
         if (this.trackWidth === 0) {
             this.trackWidth = 1;
@@ -410,12 +414,6 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
      *  If the event handler is null it removes the events
      */
     private handleThumbMouseDown = (event: MouseEvent | null): void => {
-        if (event) {
-            if (this.readOnly || this.disabled || event.defaultPrevented) {
-                return;
-            }
-            (event.target as HTMLElement).focus();
-        }
         const eventAction = `${event !== null ? "add" : "remove"}EventListener`;
         window[eventAction]("mouseup", this.handleWindowMouseUp);
         window[eventAction]("mousemove", this.handleMouseMove, { passive: true });
@@ -431,7 +429,6 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         if (this.readOnly || this.disabled || e.defaultPrevented) {
             return;
         }
-
         // update the value based on current position
         const sourceEvent =
             window.TouchEvent && e instanceof TouchEvent
@@ -496,9 +493,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
             window[eventAction]("mousemove", this.handleMouseMove);
 
             if (e) {
-                e.preventDefault();
                 this.setupTrackConstraints();
-                (e.target as HTMLElement).focus();
                 const controlValue: number =
                     this.orientation === Orientation.horizontal
                         ? e.pageX - document.documentElement.scrollLeft - this.trackLeft
