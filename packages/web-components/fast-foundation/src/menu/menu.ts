@@ -146,9 +146,9 @@ export class Menu extends FoundationElement {
             // find our first focusable element
             const focusIndex: number = this.menuItems.findIndex(this.isFocusableElement);
             // set the current focus index's tabindex to -1
-            this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
+            this.setTabIndex(this.menuItems[this.focusIndex], "-1");
             // set the first focusable element tabindex to 0
-            this.menuItems[focusIndex].setAttribute("tabindex", "0");
+            this.setTabIndex(this.menuItems[focusIndex], "0");
             // set the focus index
             this.focusIndex = focusIndex;
         }
@@ -161,9 +161,9 @@ export class Menu extends FoundationElement {
             this.menuItems !== undefined &&
             targetItem !== this.menuItems[this.focusIndex]
         ) {
-            this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
+            this.setTabIndex(this.menuItems[this.focusIndex], "-1");
             this.focusIndex = this.menuItems.indexOf(targetItem);
-            targetItem.setAttribute("tabindex", "0");
+            this.setTabIndex(targetItem, "0");
         }
     };
 
@@ -194,10 +194,10 @@ export class Menu extends FoundationElement {
             if (this.expandedItem !== null && this.expandedItem !== changedItem) {
                 this.expandedItem.expanded = false;
             }
-            this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
+            this.setTabIndex(this.menuItems[this.focusIndex], "-1");
             this.expandedItem = changedItem;
             this.focusIndex = this.menuItems.indexOf(changedItem);
-            changedItem.setAttribute("tabindex", "0");
+            this.setTabIndex(changedItem, "0");
         }
     };
 
@@ -245,7 +245,7 @@ export class Menu extends FoundationElement {
         }, 0);
 
         menuItems.forEach((item: HTMLElement, index: number) => {
-            item.setAttribute("tabindex", index === 0 ? "0" : "-1");
+            this.setTabIndex(item, index === 0 ? "0" : "-1");
             item.addEventListener("expanded-change", this.handleExpandedChanged);
             item.addEventListener("focus", this.handleItemFocus);
 
@@ -335,14 +335,14 @@ export class Menu extends FoundationElement {
                     this.focusIndex > -1 &&
                     this.menuItems.length >= this.focusIndex - 1
                 ) {
-                    this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
+                    this.setTabIndex(this.menuItems[this.focusIndex], "-1");
                 }
 
                 // update the focus index
                 this.focusIndex = focusIndex;
 
                 // update the tabindex of next focusable element
-                child.setAttribute("tabindex", "0");
+                this.setTabIndex(child, "0");
 
                 // focus the element
                 child.focus();
@@ -351,6 +351,17 @@ export class Menu extends FoundationElement {
             }
 
             focusIndex += adjustment;
+        }
+    }
+
+    private setTabIndex(item: Element, value: string): void {
+        // If the item is a custom element that delegates focus, setting the tabindex on
+        // the host would trigger the inner element to lose focus, which will close the
+        // submenu, if it is in one.
+        if (item.shadowRoot?.delegatesFocus) {
+            item.shadowRoot?.firstElementChild?.setAttribute("tabindex", value);
+        } else {
+            item.setAttribute("tabindex", value);
         }
     }
 }
