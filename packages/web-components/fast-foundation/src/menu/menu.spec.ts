@@ -15,6 +15,21 @@ const FASTMenuItem = MenuItem.compose({
     template: itemTemplate,
 })
 
+class AnchorMenuItem extends MenuItem {}
+
+const FASTAnchorMenuItem = AnchorMenuItem.compose({
+    baseName: "anchor-menu-item",
+    template: html`
+        <template role="menuitem">
+            <a href="#">
+                <slot></slot>
+            </a>
+        </template>`,
+    shadowOptions: {
+        delegatesFocus: true
+    }
+});
+
 const arrowUpEvent = new KeyboardEvent("keydown", {
     key: keyArrowUp,
     bubbles: true,
@@ -26,7 +41,7 @@ const arrowDownEvent = new KeyboardEvent("keydown", {
 } as KeyboardEventInit);
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture([FASTMenu(), FASTMenuItem()]);
+    const { element, connect, disconnect } = await fixture([FASTMenu(), FASTMenuItem(), FASTAnchorMenuItem()]);
 
     const menuItem1 = document.createElement("fast-menu-item");
     (menuItem1 as MenuItem).textContent = "Foo";
@@ -44,12 +59,17 @@ async function setup() {
     (menuItem4 as MenuItem).textContent = "Bat";
     (menuItem4 as MenuItem).id = "id4";
 
+    const menuItem5 = document.createElement("fast-anchor-menu-item");
+    (menuItem5 as MenuItem).textContent = "Bap";
+    (menuItem5 as MenuItem).id = "id5";
+
     element.appendChild(menuItem1);
     element.appendChild(menuItem2);
     element.appendChild(menuItem3);
     element.appendChild(menuItem4);
+    element.appendChild(menuItem5);
 
-    return { element, connect, disconnect, menuItem1, menuItem2, menuItem3, menuItem4 };
+    return { element, connect, disconnect, menuItem1, menuItem2, menuItem3, menuItem4, menuItem5 };
 }
 
 describe("Menu", () => {
@@ -124,6 +144,19 @@ describe("Menu", () => {
         await DOM.nextUpdate();
 
         expect(document.getElementById("not-an-item")?.hasAttribute("tabindex")).to.equal(false);
+
+        await disconnect();
+    });
+
+    it("should set tabindex in shadow DOM for custom menu item with delegatesFocus", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(document.getElementById("id5")?.hasAttribute("tabindex")).to.equal(false);
+        expect(document.getElementById("id5")?.shadowRoot?.querySelector('[tabindex]')).to.not.equal(null);
 
         await disconnect();
     });
@@ -343,6 +376,12 @@ describe("Menu", () => {
         expect(document.activeElement?.id).to.equal("id4");
 
         document.activeElement?.dispatchEvent(arrowDownEvent);
+        expect(document.activeElement?.id).to.equal("id5");
+
+        document.activeElement?.dispatchEvent(arrowDownEvent);
+        expect(document.activeElement?.id).to.equal("id5");
+
+        document.activeElement?.dispatchEvent(arrowUpEvent);
         expect(document.activeElement?.id).to.equal("id4");
 
         document.activeElement?.dispatchEvent(arrowUpEvent);
@@ -389,6 +428,12 @@ describe("Menu", () => {
         expect(document.activeElement?.id).to.equal("id4");
 
         document.activeElement?.dispatchEvent(arrowDownEvent);
+        expect(document.activeElement?.id).to.equal("id5");
+
+        document.activeElement?.dispatchEvent(arrowDownEvent);
+        expect(document.activeElement?.id).to.equal("id5");
+
+        document.activeElement?.dispatchEvent(arrowUpEvent);
         expect(document.activeElement?.id).to.equal("id4");
 
         document.activeElement?.dispatchEvent(arrowUpEvent);
