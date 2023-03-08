@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Support custom elements with delegatesFocus=true in submenus",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "7282195+m-akinc@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
