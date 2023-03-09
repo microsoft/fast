@@ -115,7 +115,7 @@ export class FASTDataGrid extends FASTElement {
     };
 
     /**
-     *  generates a gridTemplateColumns based on columndata array
+     *  generates a gridTemplateColumns based on columndefinitions
      */
     private static generateTemplateColumns(
         columnDefinitions: ColumnDefinition[]
@@ -222,8 +222,7 @@ export class FASTDataGrid extends FASTElement {
     @observable
     public columnDefinitions: ColumnDefinition[] | null = null;
     protected columnDefinitionsChanged(): void {
-        if (this.columnDefinitions === null) {
-            this.generatedGridTemplateColumns = "";
+        if (!this.columnDefinitions) {
             return;
         }
         this.generatedGridTemplateColumns = FASTDataGrid.generateTemplateColumns(
@@ -560,9 +559,10 @@ export class FASTDataGrid extends FASTElement {
         const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
 
         const focusTarget: HTMLElement = cells[focusColumnIndex] as HTMLElement;
-
-        focusTarget.scrollIntoView({ block: alignment });
-        focusTarget.focus();
+        if (focusTarget) {
+            focusTarget.scrollIntoView({ block: alignment });
+            focusTarget.focus();
+        }
     };
 
     private queueFocusUpdate(): void {
@@ -590,8 +590,7 @@ export class FASTDataGrid extends FASTElement {
         }
 
         if (
-            this.generateHeader !== GenerateHeaderOptions.none &&
-            this.rowsData.length > 0
+            this.generateHeader !== GenerateHeaderOptions.none
         ) {
             const generatedHeaderElement: HTMLElement = document.createElement(
                 this.rowElementTag
