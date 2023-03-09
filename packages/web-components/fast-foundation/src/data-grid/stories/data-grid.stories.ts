@@ -6,7 +6,7 @@ import type { FASTDataGrid } from "../data-grid.js";
 const storyTemplate = html<StoryArgs<FASTDataGrid>>`
     <fast-data-grid
         style="${x => x.style}"
-        :columnDefinitions="${x => x.columnDefinitions ? x.columnDefinitions : null}"
+        :columnDefinitions="${x => (x.columnDefinitions ? x.columnDefinitions : null)}"
         :rowsData="${x => x.rowsData}"
         no-tabbing="${x => x.noTabbing}"
         generate-header="${x => x.generateHeader}"
@@ -58,7 +58,7 @@ export default {
         },
         columnDefinitions: {
             control: { type: "object" },
-        }
+        },
     },
 } as Meta<FASTDataGrid>;
 
@@ -76,5 +76,9 @@ export const DataGridColumnDefinitions: Story<FASTDataGrid> = renderComponent(
 ).bind({});
 DataGridColumnDefinitions.args = {
     style: "height: 200px; overflow-y: scroll;",
-    columnDefinitions: [{ columnDataKey: "rowId" }, { columnDataKey: "item1" },  { columnDataKey: "item2" }],
+    columnDefinitions: [
+        { columnDataKey: "rowId" },
+        { columnDataKey: "item1" },
+        { columnDataKey: "item2" },
+    ],
 };
