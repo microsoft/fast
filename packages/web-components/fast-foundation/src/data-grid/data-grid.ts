@@ -589,7 +589,11 @@ export class FASTDataGrid extends FASTElement {
             this.generatedHeader = null;
         }
 
-        if (this.generateHeader !== GenerateHeaderOptions.none) {
+        if (
+            this.generateHeader !== GenerateHeaderOptions.none &&
+            this.columnDefinitions &&
+            this.columnDefinitions.length
+        ) {
             const generatedHeaderElement: HTMLElement = document.createElement(
                 this.rowElementTag
             );
