@@ -4,16 +4,16 @@ import { convertStylePropertyPixelsToNumber, getClientRectWithMargin } from "./h
 describe("getClientRectWithMargin", () => {
     const mockWidth: number = 120;
     const mockHeight: number = 120;
-    const mockRect: ClientRect | DOMRect = {
+    const mockRect: DOMRect = {
         width: mockWidth,
         height: mockHeight,
         top: 0,
         left: 0,
         bottom: 0,
         right: 0,
-        x: undefined,
-        y: undefined,
-        toJSON: undefined,
+        x: undefined!,
+        y: undefined!,
+        toJSON: undefined!,
     };
 
     beforeEach(() => {
@@ -38,7 +38,7 @@ describe("getClientRectWithMargin", () => {
         const expectedWidth: number = mockWidth + 40;
         const expectedHeight: number = mockHeight + 20;
 
-        const expectedRect: ClientRect | DOMRect = Object.assign({}, mockRect, {
+        const expectedRect: DOMRect = Object.assign({}, mockRect, {
             width: expectedWidth,
             height: expectedHeight,
         });
