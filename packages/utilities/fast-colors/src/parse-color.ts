@@ -258,7 +258,7 @@ export function parseColorNamed(
 ): ColorRGBA64 | null {
     // const rawLower: typeof raw =  raw.toLowerCase() : raw.toString();
     const config: typeof namedColorsConfigs[keyof typeof namedColorsConfigs] | void =
-        namedColorsConfigs[raw.toLowerCase()];
+        namedColorsConfigs[raw as keyof typeof namedColorsConfigs];
 
     return config
         ? new ColorRGBA64(
