@@ -8,7 +8,6 @@ export const storyTemplate = html<StoryArgs<FASTRadio>>`
         ?checked="${x => x.checked}"
         ?disabled="${x => x.disabled}"
         ?required="${x => x.required}"
-        ?readonly="${x => x.readOnly}"
         name="${x => x.name}"
         value="${x => x.value}"
     >
@@ -23,7 +22,6 @@ export default {
         checked: false,
         disabled: false,
         required: false,
-        readOnly: false,
         storyContent: "Label",
     },
     argTypes: {

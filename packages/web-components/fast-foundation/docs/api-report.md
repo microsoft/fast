@@ -1638,9 +1638,6 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     // @beta
     keypressHandler(e: KeyboardEvent): boolean | void;
     name: string;
-    readOnly: boolean;
-    // (undocumented)
-    protected readOnlyChanged(): void;
 }
 
 // @public
@@ -1667,8 +1664,6 @@ export class FASTRadioGroup extends FASTElement {
     protected nameChanged(): void;
     orientation: RadioGroupOrientation;
     readOnly: boolean;
-    // (undocumented)
-    protected readOnlyChanged(): void;
     // @internal (undocumented)
     slottedRadioButtons: HTMLElement[];
     // (undocumented)
@@ -2532,7 +2527,7 @@ export interface PropertyTarget {
 export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
 
 // @public
-export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute">;
+export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "focus" | "setAttribute" | "getAttribute">;
 
 // @public
 export const RadioGroupOrientation: {
