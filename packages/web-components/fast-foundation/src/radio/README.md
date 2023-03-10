@@ -120,9 +120,9 @@ export const myRadio = Radio.compose<RadioOptions>({
 
 #### Methods
 
-| Name              | Privacy   | Description                       | Parameters         | Return            | Inherited From |
-| ----------------- | --------- | --------------------------------- | ------------------ | ----------------- | -------------- |
-| `keypressHandler` | public    | Handles key presses on the radio. | `e: KeyboardEvent` | `boolean or void` |                |
+| Name              | Privacy | Description                       | Parameters         | Return            | Inherited From |
+| ----------------- | ------- | --------------------------------- | ------------------ | ----------------- | -------------- |
+| `keypressHandler` | public  | Handles key presses on the radio. | `e: KeyboardEvent` | `boolean or void` |                |
 
 #### Events
 
