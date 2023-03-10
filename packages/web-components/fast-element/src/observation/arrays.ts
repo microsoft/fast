@@ -911,16 +911,13 @@ export const ArrayObserver = Object.freeze({
                 proto.splice,
                 proto.unshift,
             ].forEach(method => {
-                proto[method.name] = function (...args) {
+                proto[method.name as keyof typeof proto] = function (...args: any[]) {
                     const o = this.$fastController as ArrayObserver;
                     return o === void 0
                         ? method.apply(this, args)
-                        : (o.strategy ?? defaultSpliceStrategy)[method.name](
-                              this,
-                              o,
-                              method,
-                              args
-                          );
+                        : (o["strategy" as keyof typeof o] ?? defaultSpliceStrategy)[
+                              method.name
+                          ](this, o, method, args);
                 };
             });
         }

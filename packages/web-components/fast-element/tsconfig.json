@@ -6,20 +6,13 @@
         "importsNotUsedAsValues": "error",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "noImplicitAny": false,
-        "strictPropertyInitialization": false,
+        "noImplicitAny": true,
+        "strictPropertyInitialization": true,
         "target": "es2015",
         "module": "ESNext",
         "moduleResolution": "Node16",
-        "types": [
-            "mocha",
-            "webpack-env"
-        ],
-        "lib": [
-            "DOM",
-            "ES2015",
-            "ES2016.Array.Include"
-        ]
+        "types": ["mocha", "webpack-env"],
+        "lib": ["DOM", "ES2015", "ES2016.Array.Include"]
     },
     "include": ["src"]
 }

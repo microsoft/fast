@@ -117,7 +117,7 @@ export interface ExpressionController<TSource = any, TParent = any> {
      * @param behavior - An object to call when the controller unbinds.
      */
     onUnbind(behavior: {
-        unbind(controller: ExpressionController<TSource, TParent>);
+        unbind(controller: ExpressionController<TSource, TParent>): any;
     }): void;
 }
 
@@ -244,7 +244,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         private propertyName: string | undefined = void 0;
         private notifier: Notifier | undefined = void 0;
         private next: SubscriptionRecord | undefined = void 0;
-        private controller: ExpressionController;
+        private controller: ExpressionController | undefined = void 0;
 
         constructor(
             private expression: Expression<TSource, TReturn>,

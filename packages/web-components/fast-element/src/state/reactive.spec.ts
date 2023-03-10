@@ -66,7 +66,7 @@ describe("The reactive function", () => {
 
         const names: string[] = [];
         const subscriber = {
-            handleChange(subject, propertyName) {
+            handleChange(subject: any, propertyName: string) {
                 names.push(propertyName);
             }
         };
@@ -91,7 +91,7 @@ describe("The reactive function", () => {
 
         const names: string[] = [];
         const subscriber = {
-            handleChange(subject, propertyName) {
+            handleChange(subject: any, propertyName: string) {
                 names.push(propertyName);
             }
         };
@@ -123,7 +123,7 @@ describe("The reactive function", () => {
 
         const names: string[] = [];
         const subscriber = {
-            handleChange(subject, propertyName) {
+            handleChange(subject: any, propertyName: string) {
                 names.push(propertyName);
             }
         };
@@ -145,7 +145,7 @@ describe("The reactive function", () => {
     function subscribeToComplexObject(obj: ReturnType<typeof createComplexObject>) {
         const names: string[] = [];
         const subscriber = {
-            handleChange(subject, propertyName) {
+            handleChange(subject: any, propertyName: string) {
                 names.push(propertyName);
             }
         };
@@ -208,7 +208,7 @@ describe("The reactive function", () => {
 
         const names: string[] = [];
         const subscriber = {
-            handleChange(subject, propertyName) {
+            handleChange(subject: any, propertyName: string) {
                 names.push(propertyName);
             }
         };

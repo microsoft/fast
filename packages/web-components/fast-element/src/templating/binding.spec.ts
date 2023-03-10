@@ -687,7 +687,7 @@ describe("The HTML binding directive", () => {
             });
 
             it(`updates the model when a change event fires for the ${aspectScenario.name} with conversion`, async () => {
-                const fromView = value => "fixed value";
+                const fromView = () => "fixed value";
                 const { behavior, node, targets } = twoWayBinding({ fromView }, aspectScenario.sourceAspect);
                 const model = new Model(aspectScenario.originalValue);
                 const controller = Fake.viewController(targets, behavior);

@@ -4,7 +4,7 @@ import { html } from "./template.js";
 
 describe("the ref directive", () => {
     class Model {
-        reference: HTMLDivElement;
+        reference!: HTMLDivElement;
     }
 
     it("should capture an element reference", () => {

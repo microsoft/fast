@@ -123,8 +123,8 @@ describe(`The HTMLView`, () => {
 
             class SourceCaptureDirective
                 implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
-                id: string;
-                nodeId: string;
+                id!: string;
+                nodeId!: string;
 
                 createHTML(add: AddViewBehaviorFactory): string {
                     return Markup.attribute(add(this));

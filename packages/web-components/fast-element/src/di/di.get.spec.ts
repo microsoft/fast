@@ -8,6 +8,7 @@ import {
     optional,
     Registration,
     singleton,
+    Key,
 } from "./di.js";
 
 describe("DI.get", function () {
@@ -568,7 +569,7 @@ describe("DI.getAsync", () => {
         const key = "key";
         const instance = {};
 
-        const asyncRegistrationLocator = async key => {
+        const asyncRegistrationLocator = async (key: Key) => {
             return Registration.instance(key, instance);
         };
 
@@ -593,7 +594,7 @@ describe("DI.getAsync", () => {
         const key3 = "key3";
         const instance3 = {};
 
-        const asyncRegistrationLocator = async key => {
+        const asyncRegistrationLocator = async (key: Key) => {
             switch(key) {
                 case key1:
                     return Registration.instance(key1, instance1);
@@ -612,9 +613,9 @@ describe("DI.getAsync", () => {
 
         class Test {
             constructor(
-                @inject(key1) public one,
-                @inject(key2) public two,
-                @inject(key3) public three
+                @inject(key1) public one: Key,
+                @inject(key2) public two: Key,
+                @inject(key3) public three: Key
             ){}
         }
 
@@ -643,9 +644,9 @@ describe("DI.getAsync", () => {
 
         class Test {
             constructor(
-                @inject(key1) public one,
-                @inject(key2) public two,
-                @inject(key3) public three
+                @inject(key1) public one: Key,
+                @inject(key2) public two: Key,
+                @inject(key3) public three: Key
             ){}
         }
 
@@ -655,7 +656,7 @@ describe("DI.getAsync", () => {
             ) {}
         }
 
-        const asyncRegistrationLocator = async key => {
+        const asyncRegistrationLocator = async (key: Key) => {
             switch(key) {
                 case key1:
                     return Registration.instance(key1, instance1);

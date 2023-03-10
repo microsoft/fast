@@ -142,7 +142,9 @@ export const ViewBehaviorOrchestrator = Object.freeze({
     ): ViewBehaviorOrchestrator<TSource, TParent> {
         const behaviors: ViewBehavior[] = [];
         const targets: ViewBehaviorTargets = {};
-        let unbindables: { unbind(controller: ViewController<TSource>) }[] | null = null;
+        let unbindables:
+            | { unbind(controller: ViewController<TSource>): any }[]
+            | null = null;
         let isConnected = false;
 
         return {
@@ -173,7 +175,7 @@ export const ViewBehaviorOrchestrator = Object.freeze({
                     behavior.bind(this);
                 }
             },
-            onUnbind(unbindable: { unbind(controller: ViewController<TSource>) }) {
+            onUnbind(unbindable: { unbind(controller: ViewController<TSource>): any }) {
                 if (unbindables === null) {
                     unbindables = [];
                 }

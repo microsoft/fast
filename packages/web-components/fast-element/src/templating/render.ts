@@ -149,8 +149,8 @@ export class RenderDirective<TSource = any>
     implements HTMLDirective, ViewBehaviorFactory, BindingDirective {
     /**
      * The structural id of the DOM node to which the created behavior will apply.
-     */ BindingDirective;
-    public targetNodeId: string;
+     */ BindingDirective: any;
+    public targetNodeId!: string;
 
     /**
      * Creates an instance of RenderDirective.
@@ -326,7 +326,7 @@ const typeToInstructionLookup = new Map<
 >();
 
 /* eslint @typescript-eslint/naming-convention: "off"*/
-const defaultAttributes = { ":model": x => x };
+const defaultAttributes = { ":model": (x: any) => x };
 const brand = Symbol("RenderInstruction");
 const defaultViewName = "default-view";
 const nullTemplate = html`

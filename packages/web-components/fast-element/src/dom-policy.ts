@@ -296,7 +296,7 @@ function createDomSinkGuards(
     config: Partial<DOMSinkGuards>,
     defaults: DOMSinkGuards
 ): DOMSinkGuards {
-    const result = {};
+    const result: DOMSinkGuards = {};
 
     for (const name in defaults) {
         const overrideValue = config[name];
@@ -320,7 +320,7 @@ function createDomSinkGuards(
     // add any new sinks that were not overrides
     for (const name in config) {
         if (!(name in result)) {
-            result[name] = config[name];
+            (result as DOMSinkGuards)[name] = config[name]!;
         }
     }
 
@@ -331,11 +331,11 @@ function createDOMAspectGuards(
     config: DOMAspectGuards,
     defaults: DOMAspectGuards
 ): DOMAspectGuards {
-    const result = {};
+    const result: Record<string, DOMSinkGuards> = {};
 
     for (const aspect in defaults) {
-        const overrideValue = config[aspect];
-        const defaultValue = defaults[aspect];
+        const overrideValue = config[+aspect as keyof DOMAspectGuards]!;
+        const defaultValue = defaults[+aspect as keyof DOMAspectGuards]!;
 
         switch (overrideValue) {
             case null:
@@ -355,7 +355,10 @@ function createDOMAspectGuards(
     // add any new aspect guards that were not overrides
     for (const aspect in config) {
         if (!(aspect in result)) {
-            result[aspect] = createDomSinkGuards(config[aspect], {});
+            result[aspect] = createDomSinkGuards(
+                config[+aspect as keyof DOMAspectGuards]!,
+                {}
+            );
         }
     }
 
@@ -366,7 +369,7 @@ function createElementGuards(
     config: DOMElementGuards,
     defaults: DOMElementGuards
 ): DOMElementGuards {
-    const result = {};
+    const result: Record<string, DOMAspectGuards> = {};
 
     for (const tag in defaults) {
         const overrideValue = config[tag];
@@ -409,9 +412,9 @@ function createDOMGuards(config: Partial<DOMGuards>, defaults: DOMGuards): DOMGu
 }
 
 function createTrustedType() {
-    const createHTML = html => html;
-    return globalThis.trustedTypes
-        ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
+    const createHTML = (html: HTMLElement) => html;
+    return (globalThis as any).trustedTypes
+        ? (globalThis as any).trustedTypes.createPolicy("fast-html", { createHTML })
         : { createHTML };
 }
 

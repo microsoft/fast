@@ -99,12 +99,12 @@ export const Fake = Object.freeze({
         targets: ViewBehaviorTargets = {},
         ...behaviors: ViewBehavior<TSource, TParent>[]
     ) {
-        const unbindables = new Set<{ unbind(controller: ViewController) }>();
+        const unbindables = new Set<{ unbind(controller: ViewController): any }>();
 
         return {
             isBound: false,
             context: (null as any) as ExecutionContext<TParent>,
-            onUnbind(object) {
+            onUnbind(object: any) {
                 unbindables.add(object);
             },
             source: (null as any) as TSource,

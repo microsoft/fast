@@ -54,7 +54,7 @@ describe(`A SubscriberSet`, () => {
                 subscriberCounts.forEach(y => {
                     set.subscribe(
                         (subscribers[y - 1] = {
-                            handleChange(source, args) {
+                            handleChange(source: any, args:string) {
                                 expect(source).to.equal(sourceValue);
                                 expect(args).to.equal(argsValue);
                                 notified.push(this);

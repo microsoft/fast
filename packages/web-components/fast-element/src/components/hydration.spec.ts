@@ -24,7 +24,8 @@ describe("The HydratableElementController", () => {
         const name = uniqueElementName();
         const definition = FASTElementDefinition.compose(
             class ControllerTest extends BaseClass {
-                static definition = { ...config, name };
+                static definition: Omit<PartialFASTElementDefinition, "name"> & { name: string}
+                = { ...config, name };
             }
         ).define();
 

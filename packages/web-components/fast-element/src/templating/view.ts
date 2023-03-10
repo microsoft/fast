@@ -1,4 +1,3 @@
-import type { HostController } from "../index.js";
 import type { Disposable } from "../interfaces.js";
 import {
     ExecutionContext,
@@ -60,7 +59,9 @@ export interface ElementView<TSource = any, TParent = any>
      * Registers an unbind handler with the controller.
      * @param behavior - An object to call when the controller unbinds.
      */
-    onUnbind(behavior: { unbind(controller: ViewController<TSource, TParent>) }): void;
+    onUnbind(behavior: {
+        unbind(controller: ViewController<TSource, TParent>): any;
+    }): void;
 
     /**
      * Appends the view's DOM nodes to the referenced node.
@@ -122,7 +123,7 @@ export class HTMLView<TSource = any, TParent = any>
         SyntheticView<TSource, TParent>,
         ExecutionContext<TParent> {
     private behaviors: ViewBehavior[] | null = null;
-    private unbindables: { unbind(controller: ViewController) }[] = [];
+    private unbindables: { unbind(controller: ViewController): any }[] = [];
 
     /**
      * The data that the view is bound to.
@@ -157,12 +158,12 @@ export class HTMLView<TSource = any, TParent = any>
     /**
      * The parent data source within a nested context.
      */
-    public readonly parent: TParent;
+    public readonly parent!: TParent;
 
     /**
      * The parent execution context when in nested context scenarios.
      */
-    public readonly parentContext: ExecutionContext<TParent>;
+    public readonly parentContext!: ExecutionContext<TParent>;
 
     /**
      * The current event within an event handler.
@@ -311,7 +312,7 @@ export class HTMLView<TSource = any, TParent = any>
     }
 
     public onUnbind(behavior: {
-        unbind(controller: ViewController<TSource, TParent>);
+        unbind(controller: ViewController<TSource, TParent>): any;
     }): void {
         this.unbindables.push(behavior);
     }

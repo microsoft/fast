@@ -62,7 +62,7 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     target!: HTMLElement;
     source!: any;
     context!: ExecutionContext;
-    changeEvent: string;
+    changeEvent!: string;
 
     constructor(
         private directive: BindingDirective,
@@ -125,7 +125,7 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
                 value = target.innerText;
                 break;
             default:
-                value = target[bindingSource.targetAspect!];
+                value = (target as any)[bindingSource.targetAspect!];
                 break;
         }
 

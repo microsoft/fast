@@ -249,7 +249,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Registers an unbind handler with the controller.
      * @param behavior - An object to call when the controller unbinds.
      */
-    onUnbind(behavior: { unbind(controller: ExpressionController<TElement>) }): void {
+    onUnbind(behavior: {
+        unbind(controller: ExpressionController<TElement>): any;
+    }): void {
         this.view?.onUnbind(behavior);
     }
 

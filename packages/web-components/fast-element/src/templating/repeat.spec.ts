@@ -170,7 +170,7 @@ describe("The repeat", () => {
             size: number,
             filter: (index: number) => boolean = () => true,
             prefix = "",
-            wrapper = input => input,
+            wrapper = (input: any) => input,
             fromIndex: number = 0
         ) {
             let output = "";
@@ -185,12 +185,12 @@ describe("The repeat", () => {
         }
 
         function createController(source: any, targets: ViewBehaviorTargets) {
-            const unbindables: { unbind(controller: ViewController) }[] = [];
+            const unbindables: { unbind(controller: ViewController): any }[] = [];
 
             return {
                 isBound: false,
                 context: Fake.executionContext(),
-                onUnbind(object) {
+                onUnbind(object: any) {
                     unbindables.push(object);
                 },
                 source,
