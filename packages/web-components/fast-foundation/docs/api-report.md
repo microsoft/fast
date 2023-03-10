@@ -1820,7 +1820,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;
-    step: number;
+    step: number | undefined;
     // @internal (undocumented)
     stepMultiplier: number;
     // @internal (undocumented)

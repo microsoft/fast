@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "picker should work in shadow dom",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "prerelease"
+}

@@ -1,11 +1,12 @@
 import { html } from "@microsoft/fast-element";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
-import { FASTDataGrid, GenerateHeaderOptions } from "../data-grid.js";
+import type { FASTDataGrid } from "../data-grid.js";
 
 const storyTemplate = html<StoryArgs<FASTDataGrid>>`
     <fast-data-grid
         style="${x => x.style}"
+        :columnDefinitions="${x => (x.columnDefinitions ? x.columnDefinitions : null)}"
         :rowsData="${x => x.rowsData}"
         no-tabbing="${x => x.noTabbing}"
         generate-header="${x => x.generateHeader}"
@@ -35,7 +36,7 @@ function newDataSet(rowCount: number): any[] {
 export default {
     title: "Data Grid",
     args: {
-        rowsData: newDataSet(100),
+        rowsData: newDataSet(20),
     },
     argTypes: {
         style: {
@@ -55,6 +56,9 @@ export default {
         gridTemplateColumns: {
             control: { type: "text" },
         },
+        columnDefinitions: {
+            control: { type: "object" },
+        },
     },
 } as Meta<FASTDataGrid>;
 
@@ -65,4 +69,16 @@ export const DataGridFixedHeight: Story<FASTDataGrid> = renderComponent(
 ).bind({});
 DataGridFixedHeight.args = {
     style: "height: 200px; overflow-y: scroll;",
+};
+
+export const DataGridColumnDefinitions: Story<FASTDataGrid> = renderComponent(
+    storyTemplate
+).bind({});
+DataGridColumnDefinitions.args = {
+    style: "height: 200px; overflow-y: scroll;",
+    columnDefinitions: [
+        { columnDataKey: "rowId" },
+        { columnDataKey: "item1" },
+        { columnDataKey: "item2" },
+    ],
 };

@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Turned on strictNullChecks, strictPropertyInitialization for fast-web-utilities",
+  "packageName": "@microsoft/fast-web-utilities",
+  "email": "nonusethi1272@gmail.com",
+  "dependentChangeType": "none"
+}
