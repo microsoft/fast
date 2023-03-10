@@ -327,10 +327,7 @@ export class FASTRadioGroup extends FASTElement {
     };
 
     private checkFocusedRadio = (): void => {
-        if (
-            this.focusedRadio !== null &&
-            !this.focusedRadio.checked
-        ) {
+        if (this.focusedRadio !== null && !this.focusedRadio.checked) {
             this.focusedRadio.checked = true;
             this.focusedRadio.setAttribute("tabindex", "0");
             this.focusedRadio.focus();
