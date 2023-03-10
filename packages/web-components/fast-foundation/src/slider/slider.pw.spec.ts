@@ -320,6 +320,40 @@ test.describe("Slider", () => {
 
             await expect(element).toHaveAttribute("aria-valuenow", "45");
         });
+
+        test("should increment the value when the `increment()` method is invoked and step is not provided", async () => {
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-slider min="0" max="100" value="50"></fast-slider>
+                `;
+            });
+
+            await expect(element).toHaveAttribute("aria-valuenow", "50");
+
+            await element.evaluate((node: FASTSlider) => {
+                node.increment();
+            });
+
+            await expect(element).toHaveJSProperty("value", "55");
+
+            await expect(element).toHaveAttribute("aria-valuenow", "55");
+        });
+
+        test("should decrement the value when the `decrement()` method is invoked and step is not provided", async () => {
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-slider min="0" max="100" value="50"></fast-slider>
+                `;
+            });
+
+            await element.evaluate((node: FASTSlider) => {
+                node.decrement();
+            });
+
+            await expect(element).toHaveJSProperty("value", "45");
+
+            await expect(element).toHaveAttribute("aria-valuenow", "45");
+        });
     });
 
     test("should increase or decrease the slider value on arrow left/right keys", async () => {
