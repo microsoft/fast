@@ -709,7 +709,9 @@ export class FASTPicker extends FormAssociatedPicker {
                 }
 
                 const selectedItems: Element[] = Array.from(this.listElement.children);
-                const currentFocusedItemIndex: number = selectedItems.indexOf(activeElement);
+                const currentFocusedItemIndex: number = selectedItems.indexOf(
+                    activeElement
+                );
 
                 if (currentFocusedItemIndex > -1) {
                     // delete currently focused item
@@ -805,9 +807,7 @@ export class FASTPicker extends FormAssociatedPicker {
             this.maxSelected !== undefined &&
             this.selectedItems.length >= this.maxSelected
         ) {
-            if (
-                this.getRootActiveElement() === this.inputElement
-            ) {
+            if (this.getRootActiveElement() === this.inputElement) {
                 const selectedItemInstances: Element[] = Array.from(
                     this.listElement.querySelectorAll("[role='listitem']")
                 );
