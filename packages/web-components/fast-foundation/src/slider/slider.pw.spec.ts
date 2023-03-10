@@ -334,9 +334,9 @@ test.describe("Slider", () => {
                 node.increment();
             });
 
-            await expect(element).toHaveJSProperty("value", "55");
+            await expect(element).toHaveJSProperty("value", "51");
 
-            await expect(element).toHaveAttribute("aria-valuenow", "55");
+            await expect(element).toHaveAttribute("aria-valuenow", "51");
         });
 
         test("should decrement the value when the `decrement()` method is invoked and step is not provided", async () => {
@@ -350,9 +350,9 @@ test.describe("Slider", () => {
                 node.decrement();
             });
 
-            await expect(element).toHaveJSProperty("value", "45");
+            await expect(element).toHaveJSProperty("value", "49");
 
-            await expect(element).toHaveAttribute("aria-valuenow", "45");
+            await expect(element).toHaveAttribute("aria-valuenow", "49");
         });
     });
 
